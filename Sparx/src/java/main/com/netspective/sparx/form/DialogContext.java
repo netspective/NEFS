@@ -468,12 +468,12 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         parent.appendChild(dcElem);
     }
 
-    public String getAutoExecUrlParams()
+    public String getUrlParamsToRecreateDialog(String prefix)
     {
         StringBuffer sb = new StringBuffer();
 
         ServletRequest request = getRequest();
-        sb.append(Dialog.PARAMNAME_AUTOEXECUTE + "=1&");
+        sb.append(prefix);
         sb.append(fieldStates.getAsUrlParams());
 
         Set retainedParams = null;
@@ -523,6 +523,11 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         }
 
         return sb.toString();
+    }
+
+    public String getAutoExecUrlParams()
+    {
+        return getUrlParamsToRecreateDialog(Dialog.PARAMNAME_AUTOEXECUTE + "=1&");
     }
 
     public void setFromXml(String xml) throws ParserConfigurationException, SAXException, IOException
