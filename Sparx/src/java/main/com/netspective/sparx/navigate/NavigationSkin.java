@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationSkin.java,v 1.4 2003-10-22 19:08:21 shahid.shah Exp $
+ * $Id: NavigationSkin.java,v 1.5 2003-11-27 19:30:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -67,14 +67,6 @@ import com.netspective.sparx.theme.ThemeSkin;
 
 public interface NavigationSkin extends ThemeSkin
 {
-    /**
-     * Create a context that can be used to render this navigation skin.
-     * @param jspPageContext The JSP page that will be rendering the navigation skin.
-     * @param navTreeId The active page that will be rendered.
-     * @return NavigationContext
-     */
-    public NavigationContext createContext(PageContext jspPageContext, NavigationTree tree, String navTreeId);
-
     /**
      * Create a context that can be used to render this navigation skin.
      * @param navTreeId The active page that will be rendered.
