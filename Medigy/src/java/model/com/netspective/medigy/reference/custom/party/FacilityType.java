@@ -40,6 +40,8 @@
 package com.netspective.medigy.reference.custom.party;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
@@ -48,6 +50,39 @@ import javax.ejb.Id;
 @Entity
 public class FacilityType extends AbstractCustomReferenceEntity
 {
+    public enum Cache implements CachedCustomReferenceEntity
+    {
+        WAREHOUSE("WARE"),
+        BUILDING("BLDG"),
+        PLANT("PLANT"),
+        FLOOR("FLOOR"),
+        ROOM("ROOM"),
+        OFFICE("OFFICE");
+
+        private final String code;
+        private FacilityType entity;
+
+        Cache(final String code)
+        {
+            this.code = code;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+        public FacilityType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (FacilityType) entity;
+        }
+    }
+
     @Id(generate = GeneratorType.AUTO)
     public Long getFacilityTypeId()
     {
