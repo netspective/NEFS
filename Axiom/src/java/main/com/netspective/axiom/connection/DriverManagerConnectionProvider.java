@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -235,6 +236,11 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
         }
         else
             throw new NamingException("Information for DataSource '" + dataSourceId + "' not found.");
+    }
+
+    public DataSource getDataSource(ValueContext vc, String dataSourceId) throws NamingException, SQLException
+    {
+        throw new RuntimeException("Not implemented -- please use getConnection() instead.");
     }
 
     public Set getAvailableDataSources()

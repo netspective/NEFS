@@ -331,7 +331,6 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
 
     public DataSource getDataSource(ValueContext vc, String dataSourceId) throws NamingException
     {
-
         DataSource dataSource = (DataSource) dataSources.get(dataSourceId);
         if(dataSource == null)
         {

@@ -37,6 +37,7 @@ import java.sql.SQLException;
 import java.util.Set;
 
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import com.netspective.commons.value.ValueContext;
 
@@ -57,6 +58,15 @@ public interface ConnectionProvider
      * @return An open database connection for the given identifier
      */
     public Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException;
+
+    /**
+     * Given a valid data source identifier, return a database connection for the data source
+     *
+     * @param dataSourceId The data source identifier
+     *
+     * @return An open database connection for the given identifier
+     */
+    public DataSource getDataSource(ValueContext vc, String dataSourceId) throws NamingException, SQLException;
 
     /**
      * Get the class that actually implements the connection provider.

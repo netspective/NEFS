@@ -110,19 +110,24 @@ public class JndiConnectionProvider implements ConnectionProvider
 
     public final Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException
     {
-        if(dataSourceId == null)
-            throw new NamingException("dataSourceId is NULL in " + this.getClass().getName() + ".getConnection(String)");
-
-        Context env = getRootContext();
-        DataSource source = (DataSource) env.lookup(dataSourceId);
+        DataSource source = getDataSource(vc, dataSourceId);
         if(source == null)
         {
             if(log.isDebugEnabled())
                 log.debug("dataSourceId not found in " + JndiConnectionProvider.class.getName() + ".getConnection('" + dataSourceId + "'). Available: " + getAvailableDataSources());
-            throw new NamingException("Data source '" + dataSourceId + "' not found in JNDI provider " + env);
+            throw new NamingException("Data source '" + dataSourceId + "' not found in JNDI provider " + getRootContext());
         }
 
         return source.getConnection();
+    }
+
+    public DataSource getDataSource(ValueContext vc, String dataSourceId) throws NamingException, SQLException
+    {
+        if(dataSourceId == null)
+            throw new NamingException("dataSourceId is NULL in " + this.getClass().getName() + ".getConnection(String)");
+
+        Context env = getRootContext();
+        return (DataSource) env.lookup(dataSourceId);
     }
 
     public ConnectionProviderEntry getDataSourceEntry(String dataSourceId, DataSource source) throws SQLException
