@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>      
+
+      <para>All of the NEF (Sparx, Axiom, and Commons) components are declared
+      in an <emphasis>input source </emphasis>file known as the
+      <emphasis>Project File</emphasis>. The Project File may be either a
+      single file with all components or may be broken up into multiple files
+      and pulled into the main Project File by using <sgmltag
+      class="starttag">xdm:include</sgmltag> tags.</para>
+
+      <para>The default Project File is
+      <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename> but may be
+      configured to be a different file. Although you may choose an alternate
+      location for the Project File, the remainder of this document assumes
+      that the Project File is
+      <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename>
+      </para>
+
