@@ -183,8 +183,10 @@
               id="declare-conn-provider-tags-eg-2" />
   &lt;<emphasis>driver-class</emphasis>&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; <co
               id="declare-conn-provider-tags-eg-3" />
-  &lt;<emphasis>url</emphasis>&gt;vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}&lt;/url&gt; <co
+  &lt;<emphasis>url</emphasis>&gt;
+  vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db} <co
               id="declare-conn-provider-tags-eg-4" />
+  &lt;/url&gt; 
   &lt;<emphasis>user</emphasis>&gt;sa&lt;/user&gt; <co
               id="declare-conn-provider-tags-eg-5" />
   &lt;<emphasis>password</emphasis>&gt;&lt;/password&gt; <co
@@ -330,7 +332,8 @@
    &lt;column name="author" type="text" size="64" descr="Name of the author(s)"/&gt;
    &lt;column name="genre" <emphasis>lookup-ref="Book_Type"</emphasis>/&gt; <co
             id="declare-schema-tags-eg-5" />
-   &lt;column name="isbn" type="text" size="10" <emphasis>unique="yes"</emphasis> descr="The 10 digit ISBN number"/&gt; <co
+   &lt;column name="isbn" type="text" size="10" 
+           <emphasis>unique="yes"</emphasis> descr="The 10 digit ISBN number"/&gt; <co
             id="declare-schema-tags-eg-6" />
   &lt;/table&gt;
 
@@ -574,7 +577,9 @@
 
             <programlisting>&lt;servlet&gt;
  &lt;servlet-name&gt;SparxNavigationController&lt;/servlet-name&gt;
- &lt;servlet-class&gt;com.netspective.sparx.navigate.NavigationControllerServlet&lt;/servlet-class&gt;
+ &lt;servlet-class&gt;
+   com.netspective.sparx.navigate.NavigationControllerServlet
+ &lt;/servlet-class&gt;
 &lt;/servlet&gt;</programlisting>
           </step>
 
@@ -584,7 +589,9 @@
 
             <programlisting>&lt;servlet&gt; 
  &lt;servlet-name&gt;SparxNavigationController&lt;/servlet-name&gt;
- &lt;servlet-class&gt;com.netspective.sparx.navigate.NavigationControllerServlet&lt;/servlet-class&gt;
+ &lt;servlet-class&gt;
+   com.netspective.sparx.navigate.NavigationControllerServlet
+ &lt;/servlet-class&gt;
  &lt;init-param&gt; 
   &lt;param-name&gt;com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS&lt;/param-name&gt;
   &lt;param-value&gt;
@@ -686,7 +693,7 @@
           <title>Using XSL to Generate Test Data</title>
 
           <programlisting>&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-                xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer"&gt; <co
+     xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer"&gt; <co
               id="declare-test-db-xsl-eg-1" />
 
     &lt;xsl:output method="xml" indent="yes"/&gt; <co
@@ -883,7 +890,7 @@
         </varlistentry>
 
         <varlistentry>
-          <term>Dynamic SQL (Query Definition)</term>
+          <term>Dynamic SQL (Query-Defn)</term>
 
           <listitem>
             <para>One of Axiom's powerful features is to generate dynamic SQL
@@ -984,21 +991,21 @@
         &lt;<emphasis>frame</emphasis> heading="<emphasis>static:All available books</emphasis>"/&gt; <co
               id="declare-pres-tags-eg-3" />
         &lt;<emphasis>report</emphasis>&gt; <co id="declare-pres-tags-eg-4" />
-                &lt;<emphasis>actions</emphasis>&gt; <co
+           &lt;<emphasis>actions</emphasis>&gt; <co
               id="declare-pres-tags-eg-5" />
-                    &lt;<emphasis>action</emphasis> <emphasis>type="add"</emphasis> caption="Add Book" redirect="page-id:/add"/&gt; <co
+               &lt;<emphasis>action</emphasis> <emphasis>type="add"</emphasis> caption="Add Book" redirect="page-id:/add"/&gt; <co
               id="declare-pres-tags-eg-6" />
-                    &lt;action type="<emphasis><literal>edit</literal></emphasis>" <emphasis>redirect</emphasis>="page-id:/edit?id=${0}"/&gt; <co
+               &lt;action type="<emphasis><literal>edit</literal></emphasis>" <emphasis>redirect</emphasis>="page-id:/edit?id=${0}"/&gt; <co
               id="declare-pres-tags-eg-7" />
-                    &lt;action type="<emphasis>delete</emphasis>" redirect="page-id:/delete?id=${0}"/&gt; <co
+               &lt;action type="<emphasis>delete</emphasis>" redirect="page-id:/delete?id=${0}"/&gt; <co
               id="declare-pres-tags-eg-8" />
-                &lt;/actions&gt;
-                &lt;column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/&gt; <co
+           &lt;/actions&gt;
+           &lt;column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/&gt; <co
               id="declare-pres-tags-eg-9" />
-                &lt;column heading="Name" /&gt;
-                &lt;column heading="Author"/&gt;
-                &lt;column heading="Genre"/&gt;
-                &lt;column heading="ISBN"/&gt;
+           &lt;column heading="Name" /&gt;
+           &lt;column heading="Author"/&gt;
+           &lt;column heading="Genre"/&gt;
+           &lt;column heading="ISBN"/&gt;
         &lt;/report&gt;
     &lt;/panel&gt;
   &lt;/presentation&gt;
@@ -1130,17 +1137,17 @@
 
           <programlisting>&lt;<emphasis>query-defn</emphasis> name="books"&gt; <co
               id="declare-qry-defn-tags-eg-1" />
-   &lt;<emphasis>field</emphasis> name="book_id" caption="Book ID" <emphasis>join</emphasis>="BookInfo" column="id"/&gt; <co
+  &lt;<emphasis>field</emphasis> name="book_id" caption="Book ID" <emphasis>join</emphasis>="BookInfo" column="id"/&gt; <co
               id="declare-qry-defn-tags-eg-2" />
-   &lt;field name="name" caption="Name" join="BookInfo" column="name"/&gt; 
-   &lt;field name="author" caption="Author" join="BookInfo" column="author"/&gt;
-   &lt;field <emphasis>name="genre_id"</emphasis> caption="Genre ID" join="BookInfo" <emphasis>column="genre"</emphasis>/&gt; <co
+  &lt;field name="name" caption="Name" join="BookInfo" column="name"/&gt; 
+  &lt;field name="author" caption="Author" join="BookInfo" column="author"/&gt;
+  &lt;field <emphasis>name="genre_id"</emphasis> caption="Genre ID" join="BookInfo" <emphasis>column="genre"</emphasis>/&gt; <co
               id="declare-qry-defn-tags-eg-3" />
-   &lt;field name="genre_caption" caption="Genre" join="BookType" column="caption"/&gt;
-   &lt;field name="isbn" caption="ISBN" join="BookInfo" column="isbn"/&gt;
+  &lt;field name="genre_caption" caption="Genre" join="BookType" column="caption"/&gt;
+  &lt;field name="isbn" caption="ISBN" join="BookInfo" column="isbn"/&gt;
 
-   &lt;join name="BookInfo" table="book_info"/&gt; 
-   <emphasis>&lt;join name="BookType" table="book_type" condition="BookType.id = BookInfo.genre"/&gt;</emphasis> <co
+  &lt;join name="BookInfo" table="book_info"/&gt; 
+  <emphasis>&lt;join name="BookType" table="book_type" condition="BookType.id = BookInfo.genre"/&gt;</emphasis> <co
               id="declare-qry-defn-tags-eg-4" />
 
 &lt;/query-defn&gt;</programlisting>
@@ -1223,44 +1230,45 @@
               id="declare-qry-defn-pres-tags-eg-1" />
    &lt;<emphasis>select-dialog</emphasis> name="searchBooksDialog" <emphasis>allow-debug</emphasis>="yes" <co
               id="declare-qry-defn-pres-tags-eg-2" />
-                  <emphasis>hide-output-dests</emphasis>="no" <emphasis>hide-readonly-hints</emphasis>="yes" &gt; <co
-              id="declare-qry-defn-pres-tags-eg-3" /><emphasis>     
+                  <emphasis>hide-output-dests</emphasis>="no" <emphasis>hide-readonly-hints</emphasis>="yes" &gt; <emphasis>     
                   </emphasis> 
      &lt;<emphasis>frame</emphasis> heading="Search for Books" /&gt; <co
-              id="declare-qry-defn-pres-tags-eg-4" />
+              id="declare-qry-defn-pres-tags-eg-3" />
      &lt;field type="text" name="book_id" caption="Book ID" /&gt;
      &lt;field type="text" name="name" caption="Book Name"/&gt;
      &lt;field type="text" name="author" caption="Author"/&gt;
      &lt;field type="text" name="isbn" caption="ISBN"/&gt;
      &lt;<emphasis>field</emphasis> type="select" style="list" name="genre" 
                           caption="Genre" choices="<emphasis>schema-enum:Book_Type</emphasis>"/&gt; <co
-              id="declare-qry-defn-pres-tags-eg-5" />
+              id="declare-qry-defn-pres-tags-eg-4" />
 
      &lt;<emphasis>select</emphasis> name="test"&gt; <co
-              id="declare-qry-defn-pres-tags-eg-6" />
+              id="declare-qry-defn-pres-tags-eg-5" />
         &lt;display field="book_id"/&gt; 
         &lt;display field="name"/&gt;
         &lt;display field="author"/&gt;
         &lt;<emphasis>display</emphasis> field="genre_caption"/&gt; <co
-              id="declare-qry-defn-pres-tags-eg-7" />
+              id="declare-qry-defn-pres-tags-eg-6" />
         &lt;display field="isbn"/&gt;<emphasis>
 
         &lt;condition field="book_id" allow-null="no" comparison="equals" </emphasis><co
-              id="declare-qry-defn-pres-tags-eg-8" />
-                   <emphasis>value</emphasis>="field" <emphasis>connector</emphasis>="and"/&gt; <co
-              id="declare-qry-defn-pres-tags-eg-9" />
-        &lt;condition field="name" allow-null="no" comparison="starts-with" value="field:name" connector="and"/&gt;
-        &lt;condition field="author" allow-null="no" comparison="equals" value="field:author" connector="and"/&gt;
-        &lt;condition field="genre_id" allow-null="no" comparison="equals" value="field:genre" connector="and"/&gt;
+              id="declare-qry-defn-pres-tags-eg-7" />
+                                   <emphasis>value</emphasis>="field" <emphasis>connector</emphasis>="and"/&gt; 
+        &lt;condition field="name" allow-null="no" comparison="starts-with" 
+                                   value="field:name" connector="and"/&gt;
+        &lt;condition field="author" allow-null="no" comparison="equals" 
+                                   value="field:author" connector="and"/&gt;
+        &lt;condition field="genre_id" allow-null="no" comparison="equals" 
+                                   value="field:genre" connector="and"/&gt;
 
         &lt;<emphasis>presentation</emphasis>&gt; <co
-              id="declare-qry-defn-pres-tags-eg-10" />
+              id="declare-qry-defn-pres-tags-eg-8" />
            &lt;<emphasis>panel</emphasis> name="report"&gt; 
               &lt;frame heading="static:Book Search Results"/&gt;
                 &lt;<emphasis>report</emphasis>&gt; <co
-              id="declare-qry-defn-pres-tags-eg-11" />
+              id="declare-qry-defn-pres-tags-eg-9" />
                    &lt;<emphasis>column</emphasis> heading="ID" format="plain" <emphasis>redirect</emphasis>="page-id:/edit?id=${0}"/&gt; <co
-              id="declare-qry-defn-pres-tags-eg-12" />
+              id="declare-qry-defn-pres-tags-eg-10" />
                    &lt;column heading="Name" /&gt;
                    &lt;column heading="Author"/&gt;
                    &lt;column heading="Genre"/&gt;
@@ -1300,9 +1308,7 @@
               checkbox is checked and the dialog is submitted, the generated
               SQL with its bind parameters is displayed for debugging purposes
               instead of execution of the generated SQL</para>
-            </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-3">
               <para>The <sgmltag>hide-output-dests</sgmltag> attribute is used
               to give the user several output options: HTML output (pageable
               report and row count per page), CSV output format, tab delimited
@@ -1312,12 +1318,12 @@
               example).</para>
             </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-4">
+            <callout arearefs="declare-qry-defn-pres-tags-eg-3">
               <para>The <sgmltag>frame</sgmltag> tag is used to draw a frame,
               with appropriate heading, around the search dialog.</para>
             </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-5">
+            <callout arearefs="declare-qry-defn-pres-tags-eg-4">
               <para>The first part of a <sgmltag>select-dialog</sgmltag> is a
               declaration of all the fields (and their corresponding UI
               representations) that the <sgmltag>select-dialog</sgmltag> will
@@ -1329,7 +1335,7 @@
               table using <sgmltag>schema-enum</sgmltag> value source.</para>
             </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-6">
+            <callout arearefs="declare-qry-defn-pres-tags-eg-5">
               <para>The second part of a <sgmltag>select-dialog</sgmltag> is a
               select section which has two parts in itself. The
               <sgmltag>select</sgmltag> component is what determines which of
@@ -1340,13 +1346,13 @@
               through its name (<literal>test</literal> in this case).</para>
             </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-7">
+            <callout arearefs="declare-qry-defn-pres-tags-eg-6">
               <para>The <sgmltag>display</sgmltag> tags have one attribute,
               <sgmltag>field</sgmltag>, which points to the name of a field
               declared in the main query definition.</para>
             </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-8">
+            <callout arearefs="declare-qry-defn-pres-tags-eg-7">
               <para>The <sgmltag>condition</sgmltag> tags determine how the
               data input from the <sgmltag>select-dialog</sgmltag> will be
               interpreted by the query definition engine. Basically, it
@@ -1364,9 +1370,7 @@
               of the <sgmltag>condition</sgmltag> tag describes the relational
               operator to use ("<emphasis>equals</emphasis>" in this
               case).</para>
-            </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-9">
               <para>The <sgmltag>value</sgmltag> attribute of the
               <sgmltag>condition</sgmltag> tag describes the field from the
               main query definition (<literal>book_id</literal> in this case)
@@ -1383,18 +1387,18 @@
               selected in the final result.</para>
             </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-10">
+            <callout arearefs="declare-qry-defn-pres-tags-eg-8">
               <para>The result of this dynamically generated and executed
               query can be configured in different ways using
               <sgmltag>presentation</sgmltag> tag hierarchy.</para>
             </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-11">
+            <callout arearefs="declare-qry-defn-pres-tags-eg-9">
               <para>The <sgmltag>report</sgmltag> tag customizes the displayed
               query result fields.</para>
             </callout>
 
-            <callout arearefs="declare-qry-defn-pres-tags-eg-12">
+            <callout arearefs="declare-qry-defn-pres-tags-eg-10">
               <para>Each <sgmltag>report</sgmltag> tag contains
               <sgmltag>column</sgmltag> tags to customize the display of
               individual query result fields. You may also provide a redirect
@@ -1416,6 +1420,8 @@
         Management</guimenu> | <guisubmenu>Dynamic Queries</guisubmenu>
         section in the Console. This displays all the Dynamic SQL statements
         defined in your <filename>project.xml</filename> file.</para>
+
+        <para></para>
 
         <screenshot>
           <graphic fileref="./resources/images/screen-console--dynamic-queries.gif" />
@@ -1498,9 +1504,9 @@
 ...
  &lt;<emphasis>navigation-tree</emphasis> name="app" <emphasis>default="yes"</emphasis>&gt; <co
             id="declare-nav-tags-eg-1" />
-        &lt;<emphasis>page</emphasis> name="home" <emphasis>default="yes"</emphasis> caption="Home" <co
+    &lt;<emphasis>page</emphasis> name="home" <emphasis>default="yes"</emphasis> caption="Home" <co
             id="declare-nav-tags-eg-2" />
-              <emphasis>command="query,books.get-all-books,-,-,-,record-editor-compressed"</emphasis>/&gt; <co
+          <emphasis>command="query,books.get-all-books,-,-,-,record-editor-compressed"</emphasis>/&gt; <co
             id="declare-nav-tags-eg-3" />
  &lt;/navigation-tree&gt;
 ...</programlisting>
@@ -1578,7 +1584,7 @@
         <title>Creating "Add Book" Page</title>
 
         <programlisting>&lt;navigation-tree name="app" default="yes"&gt; 
-    &lt;page name="add" caption="Add Book" <emphasis>command="dialog,schema.db.Book_Info,add"</emphasis>/&gt; <co
+  &lt;page name="add" caption="Add Book" <emphasis>command="dialog,schema.db.Book_Info,add"</emphasis>/&gt; <co
             id="declare-page-tags-eg-1" />
 &lt;navigation-tree&gt;</programlisting>
 
@@ -1606,14 +1612,14 @@
         <title>Creating "Edit Book" Page</title>
 
         <programlisting>&lt;navigation-tree name="app" default="yes"&gt;         
-    &lt;page name="edit" caption="Edit Book" command="dialog,schema.db.Book_Info,<emphasis>edit</emphasis>" <co
+  &lt;page name="edit" caption="Edit Book" command="dialog,schema.db.Book_Info,<emphasis>edit</emphasis>" <co
             id="declare-edit-page-eg-1" />
-          require-request-param="id" <co id="declare-edit-page-eg-2" />
-          retain-params="id"&gt; <co id="declare-edit-page-eg-3" />
-        &lt;missing-params-body&gt; <co id="declare-edit-page-eg-4" />
-          Please choose a book to edit from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;. 
-        &lt;/missing-params-body&gt;
-    &lt;/page&gt;
+        require-request-param="id" <co id="declare-edit-page-eg-2" />
+        retain-params="id"&gt; <co id="declare-edit-page-eg-3" />
+   &lt;missing-params-body&gt; <co id="declare-edit-page-eg-4" />
+    Please choose a book to edit from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;. 
+   &lt;/missing-params-body&gt;
+  &lt;/page&gt;
 &lt;/navigation-tree&gt;</programlisting>
 
         <calloutlist>
@@ -1719,7 +1725,8 @@
         <title>Creating "Search Books" Page</title>
 
         <programlisting>&lt;navigation-tree name="app" default="yes"&gt;         
-   &lt;page name="search" caption="Search Books" command="query-defn,books,test,searchBooksDialog"/&gt; <co
+   &lt;page name="search" caption="Search Books" 
+                       command="query-defn, books, test, searchBooksDialog"/&gt; <co
             id="declare-qry-defn-use-eg-1" />
 &lt;/navigation-tree&gt;</programlisting>
 
@@ -1750,7 +1757,7 @@
         <title>Linking to the Books Application Console</title>
 
         <programlisting>&lt;navigation-tree name="app" default="yes"&gt;  
-   &lt;page name="console" caption="Console" redirect="servlet-context-uri:/console"/&gt; <co
+ &lt;page name="console" caption="Console" redirect="servlet-context-uri:/console"/&gt; <co
             id="declare-console-eg-1" />
 &lt;/navigation-tree&gt;</programlisting>
 
@@ -1819,11 +1826,11 @@ import com.netspective.sparx.form.DialogContext;
 
 public class Util implements DialogNextActionProvider <co id="util-class-eg-3" />
 {
-    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl) <co
+  public String getDialogNextActionUrl(DialogContext dc, String defaultUrl) <co
             id="util-class-eg-4" />
-    {
-        return dc.getServletRootUrl(); <co id="util-class-eg-5" />
-    }
+  {
+    return dc.getServletRootUrl(); <co id="util-class-eg-5" />
+  }
 }</programlisting>
 
         <calloutlist>
