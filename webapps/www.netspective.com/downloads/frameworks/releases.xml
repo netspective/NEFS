@@ -2,6 +2,29 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.0.16"/>
+        <change-log>
+            <summary>Minor bug fixes</summary>
+            <change-log-entry>
+                Added a default empty constructor to StandardDialogSkin so that extending
+                child classes can be registered using XDM.
+            </change-log-entry>
+            <change-log-entry>
+                The 'hasValue' check in DialogFieldConditionalApplyFlag class was only
+                checking for NULLs. It is more logical to check for zero length values
+                (after stripping spaces). This way values being checked MUST contain an actual
+                non-zero length string for the 'hasValue' check to return TRUE.
+            </change-log-entry>
+            <change-log-entry>
+                Removed getSelectedItem() method from the SelectField's value object
+                because this method was misleading and does not work for select fields that
+                allow multiple selections. The best way to get values from a select field is to
+                do a getTextValue() or getTextValues() on the state object.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Sparx" version="7.0.15"/>
         <change-log>
             <summary>Minor bug fixed</summary>
