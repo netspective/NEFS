@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.21 2003-11-19 02:27:32 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.22 2004-01-07 16:58:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -47,6 +47,8 @@ package com.netspective.sparx.security;
 import java.util.BitSet;
 import java.io.Writer;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -72,6 +74,8 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.axiom.schema.Column;
+import com.netspective.axiom.schema.Table;
 
 public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorListener
 {
@@ -520,6 +524,17 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     public LoginDialog createLoginDialog()
     {
         return new LoginDialog(this);
+    }
+
+    public LoginDialog createLoginDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(LoginDialog.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { HttpLoginManager.class });
+            return (LoginDialog) c.newInstance(new Object[] { this });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
     public void addLoginDialog(LoginDialog loginDialog)

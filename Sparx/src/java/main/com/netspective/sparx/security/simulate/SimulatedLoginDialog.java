@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SimulatedLoginDialog.java,v 1.1 2004-01-06 20:08:09 shahid.shah Exp $
+ * $Id: SimulatedLoginDialog.java,v 1.2 2004-01-07 16:58:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.simulate;
@@ -66,6 +66,7 @@ public class SimulatedLoginDialog extends LoginDialog
 
     public boolean isAutoExecByDefault()
     {
+        // we will never ask for input, always just run
         return true;
     }
 
