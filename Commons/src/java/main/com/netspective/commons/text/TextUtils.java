@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.13 2003-12-10 23:36:38 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.14 2004-03-16 22:01:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -275,6 +275,17 @@ public class TextUtils
                 s.equalsIgnoreCase("true") ||
                 s.equalsIgnoreCase("on") ||
                 s.equalsIgnoreCase("1"));
+    }
+
+    /**
+     * returns the boolean equivalent of a string, which is considered true but allows a default value if s is null
+     */
+    public static boolean toBoolean(String s, boolean valueIfNull)
+    {
+        if(s == null)
+            return valueIfNull;
+        else
+            return toBoolean(s);
     }
 
     /**

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.11 2004-02-11 21:33:59 aye.thu Exp $
+ * $Id: ProductRelease.java,v 1.12 2004-03-16 22:01:03 shahid.shah Exp $
  */
 
 package com.netspective.commons;
@@ -53,7 +53,7 @@ public class ProductRelease implements Product
 
     public static final int PRODUCT_RELEASE_NUMBER = 7;
     public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 7;
+    public static final int PRODUCT_VERSION_MINOR = 8;
 
     public ProductRelease()
     {
