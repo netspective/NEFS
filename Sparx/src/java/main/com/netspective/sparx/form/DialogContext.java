@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.17 2003-08-06 05:21:46 aye.thu Exp $
+ * $Id: DialogContext.java,v 1.18 2003-08-06 18:06:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -670,7 +670,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         importFromXml(doc.getDocumentElement());
     }
 
-    public String getAsXml() throws ParserConfigurationException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    public Document getAsXmlDocument() throws ParserConfigurationException
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -679,6 +679,12 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         doc.appendChild(root);
 
         exportToXml(doc.getDocumentElement());
+        return doc;
+    }
+
+    public String getAsXml() throws ParserConfigurationException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        Document doc = getAsXmlDocument();
 
         // we use reflection so that org.apache.xml.serialize.* is not a package requirement
         // TODO: when DOM Level 3 is finalized, switch it over to Load/Save methods in that DOM3 spec
