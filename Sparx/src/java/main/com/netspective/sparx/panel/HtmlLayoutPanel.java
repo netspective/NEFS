@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.25 2004-03-26 14:25:16 zahara.khan Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.26 2004-04-21 22:31:20 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -319,18 +319,22 @@ public class HtmlLayoutPanel implements HtmlPanel
                     column++;
                     if (column == 1)
                     {
+                        columnOne.write("<div class=\"panel-layout-column\">");
                         children.get(i).render(columnOne, nc, theme, flags);
+                        columnOne.write("</div>");
                     }
                     else if (column == 2)
                     {
+                        columnTwo.write("<div class=\"panel-layout-column\">");
                         children.get(i).render(columnTwo, nc, theme, flags);
                         column = 0;
+                        columnTwo.write("</div>");
                     }
                 }
-                writer.write("<table class=\"panel-layout-table\">");
-                writer.write("<tr valign=\"top\"><td>" + columnOne + "</td>");
-                writer.write("<td>" + columnTwo + "</td></tr>");
-                writer.write("</table>");
+                writer.write("<table class=\"panel-layout-table\">\n");
+                writer.write("<tr valign=\"top\">\n<td>" + columnOne + "</td>\n");
+                writer.write("<td>" + columnTwo + "</td>\n</tr>\n");
+                writer.write("</table>\n");
                 break;
 
             case HtmlPanelsStyleEnumeratedAttribute.TABBED:
