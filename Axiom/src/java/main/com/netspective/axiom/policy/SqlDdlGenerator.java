@@ -39,24 +39,20 @@
  */
 
 /**
- * $Id: CacheDatabasePolicy.java,v 1.4 2004-03-26 02:15:37 shahid.shah Exp $
+ * $Id: SqlDdlGenerator.java,v 1.1 2004-03-26 02:15:37 shahid.shah Exp $
  */
+
 package com.netspective.axiom.policy;
 
-import com.netspective.commons.xdm.XmlDataModelSchema;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 
-public class CacheDatabasePolicy extends AnsiDatabasePolicy
+import com.netspective.axiom.schema.Schema;
+import com.netspective.axiom.value.DatabasePolicyValueContext;
+
+public interface SqlDdlGenerator
 {
-    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final String DBMSID_CACHE_SQL = "Cache";
-
-    public String getDbmsIdentifier()
-    {
-        return DBMSID_CACHE_SQL;
-    }
-
-    public String[] getDbmsIdentifiers()
-    {
-        return new String[]{getDbmsIdentifier(), "Cache"};
-    }
+    public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst) throws IOException;
+    public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst) throws IOException;
 }

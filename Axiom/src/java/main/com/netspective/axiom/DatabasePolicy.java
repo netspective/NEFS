@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabasePolicy.java,v 1.3 2003-12-03 01:40:28 shahid.shah Exp $
+ * $Id: DatabasePolicy.java,v 1.4 2004-03-26 02:15:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -60,6 +60,8 @@ import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.column.type.GuidColumn;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelectStmtGenerator;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.policy.SqlDdlFormats;
+import com.netspective.axiom.policy.SqlDdlGenerator;
 
 public interface DatabasePolicy
 {
@@ -187,16 +189,6 @@ public interface DatabasePolicy
     public void reverseEngineer(File output, Connection conn, String catalog, String schemaPattern) throws IOException, SQLException;
 
     /**
-     * Generate the SQL DDL for the given schema and send output to the given writer.
-     */
-    public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst) throws IOException;
-
-    /**
-     * Generate the SQL DDL for the given schema and send output to the given file.
-     */
-    public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst) throws IOException;
-
-    /**
      * Insert values into a database managed by this policy.
      * @param cc The connection context (required only if flags has DMLFLAG_EXECUTE set, null otherwise)
      * @param flags One or more DMLFLAG_* flags
@@ -239,6 +231,14 @@ public interface DatabasePolicy
     public boolean isPrefixTableNamesWithSchemaName();
 
     public void setPrefixTableNamesWithSchemaName(boolean prefix);
+
+    public SqlDdlFormats getDdlFormats();
+
+    public SqlDdlGenerator getDdlGenerator();
+
+    public boolean supportsSequences();
+
+    public boolean supportsForeignKeyConstraints();
 
     public interface RowInsertListener
     {

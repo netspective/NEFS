@@ -39,19 +39,20 @@
  */
 
 /**
- * $Id: PostgreSqlDatabasePolicy.java,v 1.1 2003-03-13 18:25:39 shahid.shah Exp $
+ * $Id: PostgreSqlDatabasePolicy.java,v 1.2 2004-03-26 02:15:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
 
 import java.sql.SQLException;
 
-import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class PostgreSqlDatabasePolicy extends AnsiDatabasePolicy
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String DBMSID_POSTGRESQL = "postgres";
 
     public String getDbmsIdentifier()

@@ -39,24 +39,24 @@
  */
 
 /**
- * $Id: CacheDatabasePolicy.java,v 1.4 2004-03-26 02:15:37 shahid.shah Exp $
+ * $Id: SqlServerSqlDdlFormats.java,v 1.1 2004-03-26 02:15:36 shahid.shah Exp $
  */
-package com.netspective.axiom.policy;
+
+package com.netspective.axiom.policy.ddl;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
-public class CacheDatabasePolicy extends AnsiDatabasePolicy
+public class SqlServerSqlDdlFormats extends AnsiSqlDdlFormats
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final String DBMSID_CACHE_SQL = "Cache";
 
-    public String getDbmsIdentifier()
+    public SqlServerSqlDdlFormats()
     {
-        return DBMSID_CACHE_SQL;
-    }
+        super();
 
-    public String[] getDbmsIdentifiers()
-    {
-        return new String[]{getDbmsIdentifier(), "Cache"};
+        // don't do on delete cascade because SQL Server 2000 is very strict about paths to cascade
+        setFkeyConstraintTableClauseFormat("CONSTRAINT ${fkey.constraintName} FOREIGN KEY (${fkey.sourceColumns.getOnlyNames(', ')}) REFERENCES ${fkey.referencedColumns.first.table.name} (${fkey.referencedColumns.getOnlyNames(', ')})");
+        setFkeyConstraintAlterTableStatementFormat("ALTER TABLE ${fkey.sourceColumns.first.table.name} ADD " + getFkeyConstraintTableClauseFormat());
     }
 }
+

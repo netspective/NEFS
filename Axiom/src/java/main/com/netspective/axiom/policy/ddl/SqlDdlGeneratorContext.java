@@ -39,24 +39,88 @@
  */
 
 /**
- * $Id: CacheDatabasePolicy.java,v 1.4 2004-03-26 02:15:37 shahid.shah Exp $
+ * $Id: SqlDdlGeneratorContext.java,v 1.1 2004-03-26 02:15:36 shahid.shah Exp $
  */
-package com.netspective.axiom.policy;
 
-import com.netspective.commons.xdm.XmlDataModelSchema;
+package com.netspective.axiom.policy.ddl;
 
-public class CacheDatabasePolicy extends AnsiDatabasePolicy
+import java.io.Writer;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.policy.SqlDdlFormats;
+import com.netspective.axiom.schema.Schema;
+import com.netspective.axiom.value.DatabasePolicyValueContext;
+
+public class SqlDdlGeneratorContext
 {
-    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final String DBMSID_CACHE_SQL = "Cache";
+    private static final Log log = LogFactory.getLog(SqlDdlGeneratorContext.class);
 
-    public String getDbmsIdentifier()
+    private Writer writer;
+    private DatabasePolicyValueContext valueContext;
+    private Schema schema;
+    private boolean dropObjectsFirst;
+    private Set visitedTables = new HashSet();
+    private Set delayedConstraints = new HashSet();
+
+    public SqlDdlGeneratorContext(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropObjectsFirst)
     {
-        return DBMSID_CACHE_SQL;
+        this.writer = writer;
+        this.valueContext = vc;
+        this.schema = schema;
+        this.dropObjectsFirst = dropObjectsFirst;
     }
 
-    public String[] getDbmsIdentifiers()
+    public Writer getWriter()
     {
-        return new String[]{getDbmsIdentifier(), "Cache"};
+        return writer;
+    }
+
+    public DatabasePolicyValueContext getValueContext()
+    {
+        return valueContext;
+    }
+
+    public DatabasePolicy getDatabasePolicy()
+    {
+        try
+        {
+            return valueContext.getDatabasePolicy();
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+            throw new NestableRuntimeException(e);
+        }
+    }
+
+    public SqlDdlFormats getSqlDdlFormats()
+    {
+        return getDatabasePolicy().getDdlFormats();
+    }
+
+    public Schema getSchema()
+    {
+        return schema;
+    }
+
+    public boolean isDropObjectsFirst()
+    {
+        return dropObjectsFirst;
+    }
+
+    public Set getVisitedTables()
+    {
+        return visitedTables;
+    }
+
+    public Set getDelayedConstraints()
+    {
+        return delayedConstraints;
     }
 }

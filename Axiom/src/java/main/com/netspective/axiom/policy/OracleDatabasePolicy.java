@@ -39,31 +39,22 @@
  */
 
 /**
- * $Id: OracleDatabasePolicy.java,v 1.1 2003-03-13 18:25:39 shahid.shah Exp $
+ * $Id: OracleDatabasePolicy.java,v 1.2 2004-03-26 02:15:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
 
 import java.sql.SQLException;
 
-import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.policy.ddl.OracleSqlDdlFormats;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class OracleDatabasePolicy extends AnsiDatabasePolicy
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String DBMSID_ORACLE = "oracle";
-
-    protected class OracleSqlDdlFormats extends AnsiSqlDdlFormats
-    {
-        public OracleSqlDdlFormats()
-        {
-            super();
-            setCreateSequenceStatementFormat("CREATE SEQUENCE ${column.sequenceName} increment by 1 start with 1 nomaxvalue nocache nocycle");
-        }
-    }
-
-    private OracleSqlDdlFormats sqlDdlFormats = new OracleSqlDdlFormats();
 
     public String getDbmsIdentifier()
     {
@@ -75,9 +66,9 @@ public class OracleDatabasePolicy extends AnsiDatabasePolicy
         return new String[] { getDbmsIdentifier(), "Oracle" };
     }
 
-    public SqlDdlFormats getDdlFormats()
+    public SqlDdlFormats createDdlFormats()
     {
-        return sqlDdlFormats;
+        return new OracleSqlDdlFormats();
     }
 
     public boolean supportsSequences()

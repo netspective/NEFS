@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlServerDatabasePolicy.java,v 1.5 2003-12-15 20:12:42 dan.bron Exp $
+ * $Id: SqlServerDatabasePolicy.java,v 1.6 2004-03-26 02:15:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -47,25 +47,14 @@ package com.netspective.axiom.policy;
 import java.sql.SQLException;
 
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.policy.ddl.SqlServerSqlDdlFormats;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class SqlServerDatabasePolicy extends AnsiDatabasePolicy
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String DBMSID_MICROSOFT_SQL_SERVER = "mssql";
-
-    protected class SqlServerSqlDdlFormats extends AnsiSqlDdlFormats
-    {
-        public SqlServerSqlDdlFormats()
-        {
-            super();
-
-            // don't do on delete cascade because SQL Server 2000 is very strict about paths to cascade
-            setFkeyConstraintTableClauseFormat("CONSTRAINT ${fkey.constraintName} FOREIGN KEY (${fkey.sourceColumns.getOnlyNames(', ')}) REFERENCES ${fkey.referencedColumns.first.table.name} (${fkey.referencedColumns.getOnlyNames(', ')})");
-            setFkeyConstraintAlterTableStatementFormat("ALTER TABLE ${fkey.sourceColumns.first.table.name} ADD " + getFkeyConstraintTableClauseFormat());
-        }
-    }
-
-    private SqlServerSqlDdlFormats sqlDdlFormats = new SqlServerSqlDdlFormats();
 
     public String getDbmsIdentifier()
     {
@@ -77,9 +66,9 @@ public class SqlServerDatabasePolicy extends AnsiDatabasePolicy
         return new String[] { getDbmsIdentifier(), "Microsoft SQL Server" };
     }
 
-    public SqlDdlFormats getDdlFormats()
+    public SqlDdlFormats createDdlFormats()
     {
-        return sqlDdlFormats;
+        return new SqlServerSqlDdlFormats();
     }
 
     public boolean retainAutoIncColInInsertDml()

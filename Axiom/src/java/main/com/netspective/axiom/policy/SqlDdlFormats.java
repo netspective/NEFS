@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlDdlFormats.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: SqlDdlFormats.java,v 1.2 2004-03-26 02:15:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -74,10 +74,8 @@ public interface SqlDdlFormats
     public void setScriptStatementTerminator(String scriptStatementTerminator);
 
     boolean isCreatePrimaryKeyIndex();
-
     void setCreatePrimaryKeyIndex(boolean createPrimaryKeyIndex);
 
     boolean isCreateParentKeyIndex();
-
     void setCreateParentKeyIndex(boolean createParentKeyIndex);
 }

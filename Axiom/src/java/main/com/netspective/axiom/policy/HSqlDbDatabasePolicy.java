@@ -39,31 +39,22 @@
  */
 
 /**
- * $Id: HSqlDbDatabasePolicy.java,v 1.2 2003-12-03 01:40:29 shahid.shah Exp $
+ * $Id: HSqlDbDatabasePolicy.java,v 1.3 2004-03-26 02:15:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
 
 import java.sql.SQLException;
 
-import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.policy.ddl.HsqlDbSqlDdlFormats;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class HSqlDbDatabasePolicy extends AnsiDatabasePolicy
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String DBMSID_HYPERSONIC_SQL = "hsqldb";
-
-    protected class HsqlDbSqlDdlFormats extends AnsiSqlDdlFormats
-    {
-        public HsqlDbSqlDdlFormats()
-        {
-            super();
-            setCreateTableClauseFormat("CREATE CACHED TABLE ${table.name}");
-        }
-    }
-
-    private HsqlDbSqlDdlFormats sqlDdlFormats = new HsqlDbSqlDdlFormats();
 
     public String getDbmsIdentifier()
     {
@@ -75,9 +66,9 @@ public class HSqlDbDatabasePolicy extends AnsiDatabasePolicy
         return new String[] { getDbmsIdentifier(), "HSQL Database Engine" };
     }
 
-    public SqlDdlFormats getDdlFormats()
+    public SqlDdlFormats createDdlFormats()
     {
-        return sqlDdlFormats;
+        return new HsqlDbSqlDdlFormats();
     }
 
     public boolean retainAutoIncColInInsertDml()

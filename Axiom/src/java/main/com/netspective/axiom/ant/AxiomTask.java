@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.10 2003-10-17 15:56:24 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.11 2004-03-26 02:15:36 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -505,7 +505,7 @@ public class AxiomTask extends XdmComponentTask
             File ddlFile = new File(getDestDir(), schema.getName() + "-" + policy.getDbmsIdentifier() + getFileExtn(".sql"));
             try
             {
-                policy.generateSqlDdl(ddlFile, vc, schema, createDdlDropSql);
+                policy.getDdlGenerator().generateSqlDdl(ddlFile, vc, schema, createDdlDropSql);
             }
             catch (Exception e)
             {

@@ -39,209 +39,63 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.14 2004-02-06 03:07:06 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.15 2004-03-26 02:15:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
 
-import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Iterator;
-import java.security.NoSuchAlgorithmException;
-import java.net.UnknownHostException;
-import java.io.Writer;
-import java.io.IOException;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.axiom.DatabasePolicy;
-import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.policy.ddl.AnsiSqlDdlFormats;
+import com.netspective.axiom.policy.ddl.AnsiSqlDdlGenerator;
 import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.Columns;
-import com.netspective.axiom.schema.Tables;
-import com.netspective.axiom.schema.ForeignKey;
-import com.netspective.axiom.schema.Rows;
-import com.netspective.axiom.schema.Row;
-import com.netspective.axiom.schema.Indexes;
-import com.netspective.axiom.schema.Index;
-import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.ColumnValue;
+import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.GeneratedValueColumn;
-import com.netspective.axiom.schema.PrimaryKeyColumns;
-import com.netspective.axiom.sql.DbmsSqlText;
-import com.netspective.axiom.sql.QueryExecutionLog;
-import com.netspective.axiom.sql.QueryExecutionLogEntry;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelectStmtGenerator;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
-import com.netspective.axiom.schema.column.SqlDataDefns;
-import com.netspective.axiom.schema.column.BasicColumn;
-import com.netspective.axiom.schema.table.TablesCollection;
-import com.netspective.axiom.schema.table.IndexesCollection;
+import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.column.type.GuidColumn;
-import com.netspective.axiom.value.DatabasePolicyValueContext;
+import com.netspective.axiom.sql.QueryExecutionLog;
+import com.netspective.axiom.sql.QueryExecutionLogEntry;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelectStmtGenerator;
 import com.netspective.commons.text.GloballyUniqueIdentifier;
-import com.netspective.commons.text.JavaExpressionText;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class AnsiDatabasePolicy implements DatabasePolicy
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(AnsiDatabasePolicy.class);
 
+    private SqlDdlFormats ddlFormats = createDdlFormats();
+    private SqlDdlGenerator ddlGenerator = createDdlGenerator();
     private boolean prefixTableNamesWithSchemaName = false;
 
     /* --------------------------------------------------------------------------------------------------------------*/
-
-    protected class AnsiSqlDdlFormats implements SqlDdlFormats
-    {
-        private String scriptStatementTerminator;
-        private String createTableClauseFormat;
-        private String dropTableStatementFormat;
-        private String createIndexStatementFormat;
-        private String dropIndexStatementFormat;
-        private String createSequenceStatementFormat;
-        private String dropSequenceStatementFormat;
-        private String fkeyConstraintAlterTableStatementFormat;
-        private String fkeyConstraintTableClauseFormat;
-        private boolean createPrimaryKeyIndex;
-        private boolean createParentKeyIndex;
-
-        public AnsiSqlDdlFormats()
-        {
-            setScriptStatementTerminator(";");
-            setCreateTableClauseFormat("CREATE TABLE ${table.name}");
-            setDropTableStatementFormat("DROP TABLE ${table.name}");
-            setCreateIndexStatementFormat("CREATE ${index.type} INDEX ${index.name} on ${index.table.name} (${index.columns.getNamesDelimited(', ')})");
-            setDropIndexStatementFormat("DROP INDEX ${index.name}");
-            setCreateSequenceStatementFormat("CREATE SEQUENCE ${column.sequenceName} increment 1 start 1");
-            setDropSequenceStatementFormat("DROP SEQUENCE ${column.sequenceName}");
-            setFkeyConstraintTableClauseFormat("CONSTRAINT ${fkey.constraintName} FOREIGN KEY (${fkey.sourceColumns.getOnlyNames(', ')}) REFERENCES ${fkey.referencedColumns.first.table.name} (${fkey.referencedColumns.getOnlyNames(', ')}) ON DELETE CASCADE");
-            setFkeyConstraintAlterTableStatementFormat("ALTER TABLE ${fkey.sourceColumns.first.table.name} ADD " + getFkeyConstraintTableClauseFormat());
-            setCreatePrimaryKeyIndex(true);
-            setCreateParentKeyIndex(true);
-        }
-
-        public String getCreateTableClauseFormat()
-        {
-            return createTableClauseFormat;
-        }
-
-        public void setCreateTableClauseFormat(String createTableClauseFormat)
-        {
-            this.createTableClauseFormat = createTableClauseFormat;
-        }
-
-        public String getDropTableStatementFormat()
-        {
-            return dropTableStatementFormat;
-        }
-
-        public String getCreateIndexStatementFormat()
-        {
-            return createIndexStatementFormat;
-        }
-
-        public String getDropIndexStatementFormat()
-        {
-            return dropIndexStatementFormat;
-        }
-
-        public void setCreateIndexStatementFormat(String createIndexStatementFormat)
-        {
-            this.createIndexStatementFormat = createIndexStatementFormat;
-        }
-
-        public void setDropIndexStatementFormat(String dropIndexStatementFormat)
-        {
-            this.dropIndexStatementFormat = dropIndexStatementFormat;
-        }
-
-        public void setDropTableStatementFormat(String dropTableStatementFormat)
-        {
-            this.dropTableStatementFormat = dropTableStatementFormat;
-        }
-
-        public String getCreateSequenceStatementFormat()
-        {
-            return createSequenceStatementFormat;
-        }
-
-        public void setCreateSequenceStatementFormat(String createSequenceStatementFormat)
-        {
-            this.createSequenceStatementFormat = createSequenceStatementFormat;
-        }
-
-        public String getDropSequenceStatementFormat()
-        {
-            return dropSequenceStatementFormat;
-        }
-
-        public void setDropSequenceStatementFormat(String dropSequenceStatementFormat)
-        {
-            this.dropSequenceStatementFormat = dropSequenceStatementFormat;
-        }
-
-        public String getfkeyConstraintAlterTableStatementFormat()
-        {
-            return fkeyConstraintAlterTableStatementFormat;
-        }
-
-        public void setFkeyConstraintAlterTableStatementFormat(String fKeyConstraintAlterTableStatementFormat)
-        {
-            this.fkeyConstraintAlterTableStatementFormat = fKeyConstraintAlterTableStatementFormat;
-        }
-
-        public String getFkeyConstraintTableClauseFormat()
-        {
-            return fkeyConstraintTableClauseFormat;
-        }
-
-        public void setFkeyConstraintTableClauseFormat(String fKeyConstraintTableClauseFormat)
-        {
-            this.fkeyConstraintTableClauseFormat = fKeyConstraintTableClauseFormat;
-        }
-
-        public String getScriptStatementTerminator()
-        {
-            return scriptStatementTerminator;
-        }
-
-        public void setScriptStatementTerminator(String scriptStatementTerminator)
-        {
-            this.scriptStatementTerminator = scriptStatementTerminator;
-        }
-
-        public boolean isCreatePrimaryKeyIndex()
-        {
-            return createPrimaryKeyIndex;
-        }
-
-        public void setCreatePrimaryKeyIndex(boolean createPrimaryKeyIndex)
-        {
-            this.createPrimaryKeyIndex = createPrimaryKeyIndex;
-        }
-
-        public boolean isCreateParentKeyIndex()
-        {
-            return createParentKeyIndex;
-        }
-
-        public void setCreateParentKeyIndex(boolean createParentKeyIndex)
-        {
-            this.createParentKeyIndex = createParentKeyIndex;
-        }
-    }
 
     public boolean isPrefixTableNamesWithSchemaName()
     {
@@ -255,11 +109,34 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
     /* --------------------------------------------------------------------------------------------------------------*/
 
-    private SqlDdlFormats ddlFormats = new AnsiSqlDdlFormats();
+    public SqlDdlFormats createDdlFormats()
+    {
+        return new AnsiSqlDdlFormats();
+    }
+
+    public void addDdlFormats(SqlDdlFormats ddlFormats)
+    {
+        this.ddlFormats = ddlFormats;
+    }
 
     public SqlDdlFormats getDdlFormats()
     {
         return ddlFormats;
+    }
+
+    public SqlDdlGenerator createDdlGenerator()
+    {
+        return new AnsiSqlDdlGenerator();
+    }
+
+    public void addDdlGenerator(SqlDdlGenerator ddlGenerator)
+    {
+        this.ddlGenerator = ddlGenerator;
+    }
+
+    public SqlDdlGenerator getDdlGenerator()
+    {
+        return ddlGenerator;
     }
 
     public boolean supportsSequences()
@@ -1007,408 +884,5 @@ public class AnsiDatabasePolicy implements DatabasePolicy
     public QueryDefnSelectStmtGenerator createSelectStatementGenerator(QueryDefnSelect queryDefnSelect)
     {
         return new QueryDefnAnsiSelectStmtGenerator(this, queryDefnSelect);
-    }
-
-    /* --------------------------------------------------------------------------------------------------------------*/
-
-    public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst) throws IOException
-    {
-        Writer writer = new FileWriter(output);
-        try
-        {
-            generateSqlDdl(writer, vc, schema, dropFirst);
-        }
-        finally
-        {
-            if(writer != null) writer.close();
-        }
-    }
-
-    public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst) throws IOException
-    {
-        SqlDdlGeneratorContext gc = new SqlDdlGeneratorContext(writer, vc, schema, dropFirst);
-        renderSqlDdlSchemaScript(gc);
-    }
-
-    /* --------------------------------------------------------------------------------------------------------------*/
-
-    public class SqlDdlGeneratorContext
-    {
-        private Writer writer;
-        private DatabasePolicyValueContext valueContext;
-        private Schema schema;
-        private boolean dropObjectsFirst;
-        private Set visitedTables = new HashSet();
-        private Set delayedConstraints = new HashSet();
-
-        public SqlDdlGeneratorContext(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropObjectsFirst)
-        {
-            this.writer = writer;
-            this.valueContext = vc;
-            this.schema = schema;
-            this.dropObjectsFirst = dropObjectsFirst;
-        }
-    }
-
-    public void renderSqlDdlSchemaScript(SqlDdlGeneratorContext gc) throws IOException
-    {
-        Writer writer = gc.writer;
-        SqlDdlFormats ddlFormats = getDdlFormats();
-        Tables tablesWithData = new TablesCollection();
-
-        Tables tables = gc.schema.getTables();
-        for(int i = 0; i < tables.size(); i++)
-        {
-            Table table = tables.get(i);
-
-            if(i > 0)
-                writer.write("\n");
-
-            if(gc.dropObjectsFirst)
-            {
-                if(supportsSequences())
-                    renderSqlDdlSequenceStatements(gc, table, true);
-
-                renderSqlDdlIndexStatements(gc, table, true);
-
-                if(renderSqlDdlTableStatement(gc, table, true))
-                {
-                    writer.write(ddlFormats.getScriptStatementTerminator());
-                    writer.write("\n");
-                }
-            }
-
-            if(supportsSequences())
-                renderSqlDdlSequenceStatements(gc, table, false);
-
-            if(renderSqlDdlTableStatement(gc, table, false))
-            {
-                writer.write(ddlFormats.getScriptStatementTerminator());
-                writer.write("\n");
-            }
-
-            renderSqlDdlIndexStatements(gc, table, false);
-
-            gc.visitedTables.add(table);
-
-            if(table.getData() != null)
-                tablesWithData.add(table);
-        }
-
-        if(gc.delayedConstraints.size() > 0)
-        {
-            writer.write("\n");
-            for(Iterator iter = gc.delayedConstraints.iterator(); iter.hasNext(); )
-            {
-                ForeignKey fKey = (ForeignKey) iter.next();
-                renderSqlDdlConstraintClause(gc, null, fKey);
-                writer.write(ddlFormats.getScriptStatementTerminator());
-                writer.write("\n");
-            }
-        }
-
-        if(tablesWithData.size() > 0)
-        {
-            for(int i = 0; i < tablesWithData.size(); i++)
-            {
-                Table table = tablesWithData.get(i);
-                Rows dataRows = table.getData();
-
-                writer.write("\n");
-                try
-                {
-                    for(int dr = 0; dr < dataRows.size(); dr++)
-                    {
-                        Row dataRow = dataRows.getRow(dr);
-                        String sql = insertValues(null, 0, dataRow.getColumnValues(), null);
-                        writer.write(sql);
-                        writer.write(ddlFormats.getScriptStatementTerminator());
-                        writer.write("\n");
-                    }
-                }
-                catch (Exception e)
-                {
-                    log.error(e.getMessage(), e);
-                }
-            }
-        }
-    }
-
-    public boolean renderSqlDdlSequenceStatements(SqlDdlGeneratorContext gc, Table table, boolean isDropSql) throws IOException
-    {
-        Writer writer = gc.writer;
-        SqlDdlFormats ddlFormats = getDdlFormats();
-
-        String format = isDropSql ? ddlFormats.getDropSequenceStatementFormat() : ddlFormats.getCreateSequenceStatementFormat();
-
-        int seqCount = 0;
-        Map vars = new HashMap();
-        vars.put("table", table);
-
-        JavaExpressionText jet = new JavaExpressionText(format, vars);
-
-        try
-        {
-            Columns columns = table.getColumns();
-            for(int i = 0; i < columns.size(); i++)
-            {
-                Column column = columns.get(i);
-                if(column instanceof AutoIncColumn)
-                {
-                    jet.getJexlContext().getVars().put("column", column);
-                    String clause = jet.getFinalText(gc.valueContext);
-
-                    writer.write(clause);
-                    writer.write(ddlFormats.getScriptStatementTerminator());
-                    writer.write("\n");
-
-                    seqCount++;
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            log.error("Error in "+ AnsiDatabasePolicy.class +".renderSqlDdlSequenceStatements(): " + e.getMessage(), e);
-            throw new IOException(e.toString());
-        }
-
-        return seqCount > 0;
-    }
-
-    public boolean renderSqlDdlIndexStatements(SqlDdlGeneratorContext gc, Table table, boolean isDropSql) throws IOException
-    {
-        Writer writer = gc.writer;
-        SqlDdlFormats ddlFormats = getDdlFormats();
-
-        String format = isDropSql ? ddlFormats.getDropIndexStatementFormat() : ddlFormats.getCreateIndexStatementFormat();
-
-        Map vars = new HashMap();
-        vars.put("table", table);
-
-        JavaExpressionText jet = new JavaExpressionText(format, vars);
-
-        Indexes tableIndexes = table.getIndexes();
-        Indexes createIndexes = new IndexesCollection();
-        createIndexes.merge(tableIndexes);
-
-        if(ddlFormats.isCreatePrimaryKeyIndex())
-        {
-            PrimaryKeyColumns pkCols = table.getPrimaryKeyColumns();
-            if(pkCols != null && pkCols.size() > 0)
-            {
-                Index index = table.createIndex();
-                index.setName("PK_" + table.getName());
-                index.setColumns(pkCols.getOnlyNames(","));
-                createIndexes.add(index);
-            }
-        }
-
-        if(ddlFormats.isCreateParentKeyIndex())
-        {
-            Columns prCols = table.getParentRefColumns();
-            if(prCols != null && prCols.size() > 0)
-            {
-                for(int i = 0; i < prCols.size(); i++)
-                {
-                    Index index = table.createIndex();
-                    index.setName("PR_" + table.getAbbrev() + "_" + prCols.get(i).getName());
-                    index.setColumns(prCols.get(i).getName());
-                    createIndexes.add(index);
-                }
-            }
-        }
-
-        try
-        {
-            for(int i = 0; i < createIndexes.size(); i++)
-            {
-                Index index = createIndexes.get(i);
-                jet.getJexlContext().getVars().put("index", index);
-
-                String statement = jet.getFinalText(gc.valueContext);
-
-                writer.write(statement);
-                writer.write(ddlFormats.getScriptStatementTerminator());
-                writer.write("\n");
-            }
-        }
-        catch (Exception e)
-        {
-            log.error("Error in "+ AnsiDatabasePolicy.class +".renderSqlDdlIndexStatements(): " + e.getMessage(), e);
-            throw new IOException(e.toString());
-        }
-
-        return createIndexes.size() > 0;
-    }
-
-    public void renderSqlDdlConstraintClause(SqlDdlGeneratorContext gc, Table table, ForeignKey fkey) throws IOException
-    {
-        Writer writer = gc.writer;
-        SqlDdlFormats ddlFormats = getDdlFormats();
-
-        String format = table != null ? ddlFormats.getFkeyConstraintTableClauseFormat() : ddlFormats.getfkeyConstraintAlterTableStatementFormat();
-        if(format == null)
-            return;
-
-        Map vars = new HashMap();
-        vars.put("table", fkey);
-        vars.put("fkey", fkey);
-
-        JavaExpressionText jet = new JavaExpressionText(format, vars);
-        writer.write(jet.getFinalText(gc.valueContext));
-    }
-
-    public boolean renderSqlDdlTableStatement(SqlDdlGeneratorContext gc, Table table, boolean isDropSql) throws IOException
-    {
-        if(table.getColumns().size() == 0)
-            return false;
-
-        Writer writer = gc.writer;
-        SqlDdlFormats ddlFormats = getDdlFormats();
-
-        String format = isDropSql ? ddlFormats.getDropTableStatementFormat() : ddlFormats.getCreateTableClauseFormat();
-        if(format == null)
-            return false;
-
-        Map vars = new HashMap();
-        vars.put("table", table);
-
-        Set tableConstraints = new HashSet();
-        Set tableDelayedConstraints = new HashSet();
-
-        JavaExpressionText jet = new JavaExpressionText(format, vars);
-        try
-        {
-            writer.write(jet.getFinalText(gc.valueContext));
-
-            // the rest of the text from here on is for create table, not drop table
-            if(isDropSql)
-                return true;
-
-            writer.write("\n");
-            writer.write("(\n");
-
-            final String indent = "    ";
-
-            Columns columns = table.getColumns();
-            int lastColumn = columns.size() - 1;
-            for(int i = 0; i < columns.size(); i++)
-            {
-                Column column = columns.get(i);
-
-                writer.write(indent);
-                renderSqlDdlColumnCreateClause(gc, column);
-
-                if(supportsForeignKeyConstraints())
-                {
-                    ForeignKey fKey = column.getForeignKey();
-                    if(fKey != null)
-                    {
-                        /*
-                          1) if visitedTables is not provided, we'll assume that we'll place the foreign key contraints inside the table
-                          2) if visitedTables is provided, we'll assume that we'll only place the fkey constraints inside the table if the
-                             table has already been defined; otherwise, we'll assume fkeys will be created later using "alter table"
-                        */
-
-                        if(gc.visitedTables.contains(fKey.getReferencedColumns().getFirst().getTable()))
-                            tableConstraints.add(fKey);
-                        else
-                        {
-                            gc.delayedConstraints.add(fKey);
-                            tableDelayedConstraints.add(fKey);
-                        }
-                    }
-                }
-
-                if(i < lastColumn)
-                    writer.write(",");
-                else if(i == lastColumn && tableConstraints.size() > 0)
-                    writer.write(",");
-
-                writer.write(" /* ");
-                writer.write(TextUtils.getRelativeClassName(BasicColumn.class, column.getClass()));
-                writer.write(" */");
-
-                writer.write("\n");
-            }
-
-            if(tableConstraints.size() > 0)
-            {
-                writer.write("\n");
-
-                int lastConstr = tableConstraints.size() - 1;
-                int constrIndex = 0;
-                for(Iterator constr = tableConstraints.iterator(); constr.hasNext(); )
-                {
-                    ForeignKey fKey = (ForeignKey) constr.next();
-
-                    writer.write(indent);
-
-                    renderSqlDdlConstraintClause(gc, table, fKey);
-                    if(constrIndex < lastConstr)
-                        writer.write(",");
-
-                    writer.write("\n");
-                    constrIndex++;
-                }
-
-                if(tableDelayedConstraints.size() > 0)
-                {
-                    writer.write("\n");
-
-                    for(Iterator constr = tableDelayedConstraints.iterator(); constr.hasNext(); )
-                    {
-                        ForeignKey fKey = (ForeignKey) constr.next();
-
-                        writer.write(indent);
-
-                        writer.write("/* DELAYED: ");
-                        renderSqlDdlConstraintClause(gc, table, fKey);
-                        writer.write(" ("+ fKey.getReferencedColumns().getFirst().getTable().getName() +" table not created yet) */");
-
-                        writer.write("\n");
-                        constrIndex++;
-                    }
-                }
-            }
-
-            writer.write(")");
-        }
-        catch (Exception e)
-        {
-            log.error("Error in "+ AnsiDatabasePolicy.class +".renderSqlDdlTableStatement(): " + e.getMessage(), e);
-            throw new IOException(e.toString());
-        }
-
-        return true;
-    }
-
-    public void renderSqlDdlColumnCreateClause(SqlDdlGeneratorContext gc, Column column) throws IOException
-    {
-        Writer writer = gc.writer;
-
-        SqlDataDefns sqlDataDefns = column.getSqlDdl();
-        DbmsSqlText defineExpr = sqlDataDefns.getSqlDefns().getByDbmsOrAnsi(this);
-        DbmsSqlText defaultExpr = sqlDataDefns.getDefaultSqlExprValues().getByDbmsOrAnsi(this);
-
-        writer.write(column.getName());
-        writer.write(" ");
-
-        if(defineExpr != null)
-            writer.write(defineExpr.getSql(gc.valueContext).toUpperCase());
-        else
-            writer.write("No definition found in column '"+ column +"' for policy '"+ getDbmsIdentifier() +"' or ANSI. Available: " + sqlDataDefns.getSqlDefns().getAvailableDbmsIds());
-
-        if(defaultExpr != null)
-        {
-            writer.write(" DEFAULT ");
-            writer.write(defaultExpr.getSql(gc.valueContext));
-        }
-
-        if(column.isPrimaryKey())
-            writer.write(" PRIMARY KEY");
-
-        if(column.isRequiredByApp() || column.isRequiredByDbms())
-            writer.write(" NOT NULL");
     }
 }
