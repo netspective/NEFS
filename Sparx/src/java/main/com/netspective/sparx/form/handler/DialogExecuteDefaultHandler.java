@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteDefaultHandler.java,v 1.2 2003-11-16 01:41:11 shahid.shah Exp $
+ * $Id: DialogExecuteDefaultHandler.java,v 1.3 2003-11-26 17:31:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -55,6 +55,7 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 /**
  * This class serves as the default template so that the Dialog.createOnExecute() method has a concrete class
@@ -63,6 +64,7 @@ import com.netspective.commons.xml.template.TemplateConsumer;
  */
 public class DialogExecuteDefaultHandler implements DialogExecuteHandler, TemplateConsumer
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(DialogExecuteDefaultHandler.class);
 
     public DialogExecuteDefaultHandler()

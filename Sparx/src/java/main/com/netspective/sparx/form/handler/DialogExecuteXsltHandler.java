@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteXsltHandler.java,v 1.6 2003-11-16 19:52:29 shahid.shah Exp $
+ * $Id: DialogExecuteXsltHandler.java,v 1.7 2003-11-26 17:31:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -53,12 +53,14 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.Transform;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 
 public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private Transform transform = new Transform();
     private boolean writeErrorsToOutput = false;
 

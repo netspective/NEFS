@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedure.java,v 1.2 2003-11-07 05:15:59 aye.thu Exp $
+ * $Id: StoredProcedure.java,v 1.3 2003-11-26 17:31:42 shahid.shah Exp $
  */
 package com.netspective.sparx.sql;
 
@@ -160,6 +160,11 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
             return reportPanels.size();
         }
 
+        // required for XDM because XmlDataModelSchema.Options().setIgnorePcData(true) cannot be used in inner class
+        public void addText(String text)
+        {
+            // do nothing, we're ignoring the text
+        }
     }
     private Project project;
     private StoredProcedure.Presentation presentation = new StoredProcedure.Presentation();

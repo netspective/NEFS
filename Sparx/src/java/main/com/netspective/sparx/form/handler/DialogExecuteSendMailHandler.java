@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteSendMailHandler.java,v 1.4 2003-11-16 01:41:11 shahid.shah Exp $
+ * $Id: DialogExecuteSendMailHandler.java,v 1.5 2003-11-26 17:31:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -60,9 +60,11 @@ import com.netspective.commons.message.SendMail;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class DialogExecuteSendMailHandler extends SendMail implements DialogExecuteHandler, TemplateConsumer
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(DialogExecuteSendMailHandler.class);
     private TemplateProcessor successMessage;
     private TemplateProcessor failureMessage;

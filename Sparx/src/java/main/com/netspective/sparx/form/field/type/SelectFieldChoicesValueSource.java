@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SelectFieldChoicesValueSource.java,v 1.1 2003-10-26 19:08:26 shahid.shah Exp $
+ * $Id: SelectFieldChoicesValueSource.java,v 1.2 2003-11-26 17:31:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -113,6 +113,12 @@ public class SelectFieldChoicesValueSource extends AbstractValueSource
         public List getItems()
         {
             return items;
+        }
+
+        // required for XDM because XmlDataModelSchema.Options().setIgnorePcData(true) cannot be used in inner class
+        public void addText(String text)
+        {
+            // do nothing, we're ignoring the text
         }
     }
 

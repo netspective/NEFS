@@ -42,6 +42,7 @@ package com.netspective.sparx.panel;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.sql.QueryResultSetDataSource;
 import com.netspective.sparx.sql.StoredProcedure;
@@ -54,10 +55,11 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author  Aye Thu
- * @version $Id: StoredProcedureReportPanel.java,v 1.2 2003-11-10 23:03:07 aye.thu Exp $
+ * @version $Id: StoredProcedureReportPanel.java,v 1.3 2003-11-26 17:31:42 shahid.shah Exp $
  */
 public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(StoredProcedureReportPanel.class);
     private static final ValueSource NO_DATA_MSG = new StaticValueSource("No data in stored procedure results.");
 
