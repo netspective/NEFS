@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.22 2004-02-20 14:49:05 aye.thu Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.23 2004-02-23 19:15:25 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -221,7 +221,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
             ValueSource hvs = frame.getHeading();
             if(hvs != null)
                 heading = hvs.getValue(vc).getTextValue();
-            if(heading != null && !frame.hideHeading())
+            if(heading != null && !frame.isHideHeading(vc))
             {
                 writer.write("<tr>\n");
                 writer.write("    <td class=\""+ panelClassNamePrefix +"\">\n");
@@ -251,6 +251,20 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                     "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"100%\" border=\"0\">--></td>\n");
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\"></td>\n");
                 produceHeadingExtras(writer, vc, frame);
+                writer.write("        </tr>\n");
+                writer.write("    </table>\n");
+                writer.write("    </td>\n");
+                writer.write("</tr>\n");
+            }
+            else
+            {
+                writer.write("<tr>\n");
+                writer.write("    <td class=\""+ panelClassNamePrefix +"\">\n");
+                writer.write("    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap>\n");
+                writer.write("        <tr>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-begin-cap\" align=\"left\" valign=\"top\" nowrap width=\"2\"></td>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-mid\" align=\"right\" valign=\"top\" nowrap width=\"100%\"></td>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\"></td>\n");
                 writer.write("        </tr>\n");
                 writer.write("    </table>\n");
                 writer.write("    </td>\n");
