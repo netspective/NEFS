@@ -3,7 +3,7 @@
 <!--
   ************************************************************************************
   * Commons standard configuration file (designed to be included in other XDM files.
-  * $Id: commons.xml,v 1.3 2003-04-05 17:11:50 shahid.shah Exp $
+  * $Id: commons.xml,v 1.4 2003-09-06 16:43:49 shahid.shah Exp $
   ************************************************************************************
  -->
 
@@ -14,8 +14,8 @@
       * Rreport column calculators that can be used by tabular report columns.  *
       ***************************************************************************
      -->
-    <register-tabular-report-calc-type class="com.netspective.commons.report.tabular.calc.ColumnSumCalculator"/>
-    <register-tabular-report-calc-type class="com.netspective.commons.report.tabular.calc.ColumnCountCalculator"/>
+    <tabular-report-calc-type class="com.netspective.commons.report.tabular.calc.ColumnSumCalculator"/>
+    <tabular-report-calc-type class="com.netspective.commons.report.tabular.calc.ColumnCountCalculator"/>
 
     <!--
       **********************************************************************************************************

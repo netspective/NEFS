@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.14 2003-09-05 22:35:26 roque.hernandez Exp $
+ * $Id: SqlManager.java,v 1.15 2003-09-06 16:43:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -266,7 +266,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public void addRegisterDatabasePolicy(DatabasePolicy policy)
+    public void addDatabasePolicy(DatabasePolicy policy)
     {
         DatabasePolicies.getInstance().registerDatabasePolicy(policy);
     }

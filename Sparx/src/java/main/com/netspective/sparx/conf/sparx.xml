@@ -2,29 +2,29 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.49 2003-08-31 03:10:49 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.50 2003-09-06 16:44:09 shahid.shah Exp $
   *****************************************************************************************
  -->
 
  <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-    <register-value-source class="com.netspective.sparx.value.source.ServletContextFileValueSource"/>
-    <register-value-source class="com.netspective.sparx.value.source.ServletContextUriValueSource"/>
-    <register-value-source class="com.netspective.sparx.value.source.ServletRequestParameterValueSource"/>
-    <register-value-source class="com.netspective.sparx.value.source.HttpServletSessionAttributeValueSource"/>
-    <register-value-source class="com.netspective.sparx.value.source.DialogPerspectiveExprValueSource"/>
-    <register-value-source class="com.netspective.sparx.value.source.DialogFieldValueSource"/>
-    <register-value-source class="com.netspective.sparx.value.source.AuthenticatedUserValueSource"/>
-    <register-value-source class="com.netspective.sparx.value.source.EncryptParameterValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.ServletContextFileValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.ServletContextUriValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.ServletRequestParameterValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.HttpServletSessionAttributeValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.DialogPerspectiveExprValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.DialogFieldValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.AuthenticatedUserValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.EncryptParameterValueSource"/>
 
-    <register-command class="com.netspective.sparx.command.RedirectCommand"/>
-    <register-command class="com.netspective.sparx.command.DialogCommand"/>
-    <register-command class="com.netspective.sparx.command.ValueSourceCommand"/>
-    <register-command class="com.netspective.sparx.command.QueryCommand"/>
-    <register-command class="com.netspective.sparx.command.QueryDefnCommand"/>
+    <command class="com.netspective.sparx.command.RedirectCommand"/>
+    <command class="com.netspective.sparx.command.DialogCommand"/>
+    <command class="com.netspective.sparx.command.ValueSourceCommand"/>
+    <command class="com.netspective.sparx.command.QueryCommand"/>
+    <command class="com.netspective.sparx.command.QueryDefnCommand"/>
 
-    <register-connection-provider-entry-statistics class="com.netspective.sparx.console.util.ResinDataSourcePoolStatistics"/>
-    <register-class-path-provider class="com.netspective.sparx.console.util.ResinCompilingClassPathProvider"/>
+    <connection-provider-entry-statistics class="com.netspective.sparx.console.util.ResinDataSourcePoolStatistics"/>
+    <class-path-provider class="com.netspective.sparx.console.util.ResinCompilingClassPathProvider"/>
 
     <theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" inherit-resources-from-themes="common"/>
 
@@ -99,12 +99,12 @@
     <dialog-execute-handler name="style-sheet" class="com.netspective.sparx.form.handler.DialogExecuteXsltHandler"/>
     <dialog-execute-handler name="mail" class="com.netspective.sparx.form.handler.DialogExecuteSendMailHandler"/>
 
-    <register-ant-project id="Project" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-project.xml" default="yes">
+    <ant-project id="Project" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-project.xml" default="yes">
         <dialog type="ant-build"/>
-    </register-ant-project>
+    </ant-project>
 
-    <register-ant-project id="NEFS/Sparx" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-nefs.xml">
+    <ant-project id="NEFS/Sparx" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-nefs.xml">
         <dialog type="ant-build"/>
-    </register-ant-project>
+    </ant-project>
 
 </xdm:container>

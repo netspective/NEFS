@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.16 2003-08-15 02:16:23 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.17 2003-09-06 16:43:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -101,17 +101,17 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     private Configurations configsManager;
     private Reports reportsManager;
 
-    public void addRegisterValueSource(ValueSource vs)
+    public void addValueSource(ValueSource vs)
     {
         ValueSources.getInstance().registerValueSource(vs.getClass());
     }
 
-    public void addRegisterCommand(Command command)
+    public void addCommand(Command command)
     {
         Commands.getInstance().registerCommand(command.getClass());
     }
 
-    public void addRegisterTabularReportCalcType(ColumnDataCalculator calc)
+    public void addTabularReportCalcType(ColumnDataCalculator calc)
     {
         TabularReportCalcs.getInstance().registerColumnDataCalc(calc.getClass());
     }

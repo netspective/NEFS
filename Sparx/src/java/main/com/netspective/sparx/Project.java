@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.24 2003-09-02 21:35:54 shahid.shah Exp $
+ * $Id: Project.java,v 1.25 2003-09-06 16:44:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -309,12 +309,12 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /* ------------------------------------------------------------------------------------------------------------ */
 
-    public AntProject createRegisterAntProject()
+    public AntProject createAntProject()
     {
         return new AntProject();
     }
 
-    public void addRegisterAntProject(AntProject antProject)
+    public void addAntProject(AntProject antProject)
     {
         antProjects.add(antProject);
     }
@@ -326,12 +326,12 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /* ------------------------------------------------------------------------------------------------------------ */
 
-    public void addRegisterConnectionProviderEntryStatistics(ConnectionProviderEntryStatistics stats)
+    public void addConnectionProviderEntryStatistics(ConnectionProviderEntryStatistics stats)
     {
         BasicConnectionProviderEntry.registerStatisticsProvider(stats);
     }
 
-    public void addRegisterClassPathProvider(ClassPath.ClassPathProvider provider)
+    public void addClassPathProvider(ClassPath.ClassPathProvider provider)
     {
         ClassPath.registerClassPathProvider(provider);
     }
@@ -436,12 +436,12 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         return FreeMarkerConfigurationAdapters.getInstance().getConfiguration(name);
     }
 
-    public FreeMarkerConfigurationAdapter createRegisterFreemarkerConfiguration()
+    public FreeMarkerConfigurationAdapter createFreemarkerConfiguration()
     {
         return FreeMarkerConfigurationAdapters.getInstance().createConfigurationAdapter();
     }
 
-    public void addRegisterFreemarkerConfiguration(FreeMarkerConfigurationAdapter config)
+    public void addFreemarkerConfiguration(FreeMarkerConfigurationAdapter config)
     {
         FreeMarkerConfigurationAdapters.getInstance().addConfiguration(config);
     }
