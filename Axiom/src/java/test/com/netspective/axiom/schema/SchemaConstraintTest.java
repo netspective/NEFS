@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaConstraintTest.java,v 1.1 2003-06-30 04:27:15 roque.hernandez Exp $
+ * $Id: SchemaConstraintTest.java,v 1.2 2003-07-04 05:35:46 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -136,10 +136,10 @@ public class SchemaConstraintTest extends TestCase
         ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         Row row = fKey.getFirstReferencedRow(cc, colVal);
-        assertEquals("Zero",row.getColumnValues().getByName("caption").getTextValue());
+        assertEquals("Zero", row.getColumnValues().getByName("caption").getTextValue());
 
-        Rows rows  = fKey.getReferencedRows(cc, colVal);
-        assertEquals(1,rows.size());
+        Rows rows = fKey.getReferencedRows(cc, colVal);
+        assertEquals(1, rows.size());
         assertEquals("Zero", rows.getRow(0).getColumnValues().getByName("caption").getTextValue());
 
         ColumnValues colVals = table.getColumns().constructValuesInstance();
@@ -150,7 +150,7 @@ public class SchemaConstraintTest extends TestCase
         ColumnValues srcVals = table.getColumns().constructValuesInstance();
         assertNull(srcVals.getByName("enumIdRef").getTextValue());
         fKey.fillSourceValuesFromReferencedConnector(srcVals, enumTable.getEnums().getById(2).getColumnValues());
-        assertEquals("2",srcVals.getByName("enumIdRef").getTextValue());
+        assertEquals("2", srcVals.getByName("enumIdRef").getTextValue());
 
         fKey.getReferencedRows(cc, enumTable.getEnums().getById(2));
 
@@ -171,12 +171,49 @@ public class SchemaConstraintTest extends TestCase
         //TODO: Need to see why setReferencedColumns is checking for instanceof agains a class that could not be a child of Columns
         //Columns fkHolderCol = (Columns) new ForeignKeyPlaceholderColumn(table);
         //fKey.setReferencedColumns(fkHolderCol);
+    }
 
-        ParentForeignKey pfKey = (ParentForeignKey) enumTable.getColumns().getByName("id").getForeignKey();
-        //fillChildValuesFromParentConnector
-        //getChildRowsByParentValues
-        //getChildRowsByParentRow
+    public void testParentForeignKey() throws NamingException, SQLException
+    {
+        Table table4 = populatedSchema.getTables().getByName("Test_Four");
+        Table table3 = populatedSchema.getTables().getByName("Test_Three");
+        ParentForeignKey pfKey = (ParentForeignKey) table4.getColumns().getByName("child_column_a").getForeignKey();
 
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+
+        Rows rows;
+        try
+        {
+            rows = pfKey.getChildRowsByParentRow(cc, table4.createRow());
+            fail();
+        }
+        catch (SQLException e)
+        {
+            // Thi is ok
+        }
+
+        Row row = table3.createRow();
+        QueryResultSet result = table3.getAccessorByColumnEquality(table3.getColumns().getByName("column_a")).execute(dbvc,new String[]{"abc"}, false);
+        ResultSet resultSet = result.getResultSet();
+        if (resultSet.next())
+            row.getColumnValues().populateValues(resultSet, 1);
+
+        rows = pfKey.getChildRowsByParentRow(cc,row);
+        assertEquals(1, rows.size());
+        assertEquals("column_b", rows.getRow(0).getColumnValues().getByName("column_b").getTextValue());
+
+        rows = null;
+        rows = pfKey.getChildRowsByParentValues(cc, row.getColumnValues());
+        assertEquals(1, rows.size());
+        assertEquals("column_b", rows.getRow(0).getColumnValues().getByName("column_b").getTextValue());
+
+        Row row2 = table4.createRow();
+
+        pfKey.fillChildValuesFromParentConnector(row2.getColumnValues(),row.getColumnValues());
+        assertEquals("abc", row2.getColumnValues().getByName("child_column_a").getTextValue());
 
     }
 

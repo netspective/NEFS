@@ -161,7 +161,7 @@
               </xdm:container>
 
 
-        <table name="Test_Three" abbrev="Tst3" type="Default">
+      <table name="Test_Three" abbrev="Tst3" type="Default">
          <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
          <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
          <column name="text_set_column" type="text-set" descr="Text Set Column"/>
@@ -169,7 +169,14 @@
          <column name="column_a" indexed="yes" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
          <column name="enumIdRef" lookupref="Enum_set_Lookup" descr="Testing the EnumerationIdRefColumn"/>
          <column name="column_b" indexed="yes" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
-            <index name="column_a_b_index" columns="column_a,column_b" unique="yes"/>
+         <index name="column_a_b_index" columns="column_a,column_b" unique="yes"/>
+          <index name="column_a_index" columns="column_a" unique="yes"/>
+      </table>
+      <table name="Test_Four" abbrev="Test4" type="Default">
+         <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
+         <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
+         <column name="child_column_a" indexed="yes" parentref="Test_Three.column_a" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+         <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
       </table>
 
         <table name="To_Be_Deleted" abbrev="ToBDel" type="Default">
