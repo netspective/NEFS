@@ -39,22 +39,21 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.6 2003-09-14 17:04:39 shahid.shah Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.7 2004-03-03 08:22:04 aye.thu Exp $
  */
 
 package com.netspective.sparx.sql;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.sql.QueryResultSet;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.axiom.sql.QueryResultSet;
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.commons.value.ValueSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSource
 {
@@ -178,6 +177,10 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
                     // set the cusor back to the original row
                     resultSet.absolute(currentRow);
                 }
+            }
+            else
+            {
+                log.error("The result set cursor may move only forward, thus unable to obtain total rows.");
             }
         }
         catch (SQLException e)
