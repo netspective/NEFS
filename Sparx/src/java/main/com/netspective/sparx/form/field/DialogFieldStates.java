@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFieldStates.java,v 1.1 2003-11-13 17:20:23 shahid.shah Exp $
+ * $Id: DialogFieldStates.java,v 1.2 2003-11-14 19:46:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -182,6 +182,31 @@ public class DialogFieldStates
             DialogField.State state = (DialogField.State) i.next();
             state.exportToXml(parent);
         }
+    }
+
+    public Map createTextValuesMap(String fieldNamePrefix)
+    {
+        Map result = new HashMap();
+        Iterator i = statesByQualifiedName.values().iterator();
+
+        if(fieldNamePrefix == null)
+        {
+            while (i.hasNext())
+            {
+                DialogField.State state = (DialogField.State) i.next();
+                result.put(state.getField().getQualifiedName(), state.getValue().getTextValue());
+            }
+        }
+        else
+        {
+            while (i.hasNext())
+            {
+                DialogField.State state = (DialogField.State) i.next();
+                result.put(fieldNamePrefix + state.getField().getQualifiedName(), state.getValue().getTextValue());
+            }
+        }
+
+        return result;
     }
 
     public int size()
