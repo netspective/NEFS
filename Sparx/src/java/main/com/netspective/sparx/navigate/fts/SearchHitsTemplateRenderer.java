@@ -154,13 +154,13 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
 
     protected Query getFieldQuery(final NavigationContext nc, final String fieldName, String fieldParamValue)
     {
-        final Term term = new Term(fieldName, fieldParamValue);
-        final Query fieldQuery;
         final FullTextSearchPage.FieldAttribute fieldAttribute = ((FullTextSearchPage) nc.getActivePage()).getFieldAttribute(fieldName);
         if(fieldAttribute.isUppercase())
             fieldParamValue = fieldParamValue.toUpperCase();
         else if(fieldAttribute.isLowercase())
             fieldParamValue = fieldParamValue.toLowerCase();
+        final Term term = new Term(fieldName, fieldParamValue);
+        final Query fieldQuery;
         if(fieldAttribute != null && fieldAttribute.isTreatAdvancedFieldExprsAsPhrases())
         {
             // This is useful so that fields get rewritten as field:"value" and then a subclassed query
