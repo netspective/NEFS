@@ -40,6 +40,7 @@ package com.netspective.medigy.model.data;
 
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,11 +70,24 @@ public class EntitySeedDataPopulator
         if (log.isInfoEnabled())
             log.info("Initializing with seed data");
         HibernateUtil.beginTransaction();
-        globalParty = new Party("SYS_GLOBAL_PARTY");
+        globalParty = new Party(Party.SYS_GLOBAL_PARTY_NAME);
         session.save(globalParty);
 
         populatePartyRoleType();
+        populatePartyRelationshipType();
         HibernateUtil.commitTransaction();
+    }
+
+    protected void populatePartyRelationshipType() throws HibernateException
+    {
+        populateEntity(session, PartyRelationshipType.class, new String[] {"code", "label", "party"},
+                new Object[][]
+                {
+                    {PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getCode(), "Organization Rollup", globalParty},
+                    {PartyRelationshipType.Cache.PARTNERSHIP.getCode(), "Partnership", globalParty},
+                    {PartyRelationshipType.Cache.CUSTOMER_RELATIONSHIP.getCode(), "Customer Relationship", globalParty},
+                }
+        );
     }
 
     protected void populatePartyRoleType() throws HibernateException
@@ -92,7 +106,6 @@ public class EntitySeedDataPopulator
                 {PartyRoleType.Cache.EMPLOYEE.getCode(), "Employee", null, globalParty},
             }
         );
-
     }
 
     protected void  populateEntity(final Session session,
