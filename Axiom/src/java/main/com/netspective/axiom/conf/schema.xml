@@ -190,16 +190,16 @@
             <define dbms="ansi" xdm:replace-template-expressions="no">varchar(${column.getSize()})</define>
         </sql-ddl>
         <presentation>
-            <field.guid32>
+            <field type="guid32">
                 <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-            </field.guid32>
+            </field>
         </presentation>
     </data-type>
 
     <data-type name="guid32" type="guid-text" class="com.netspective.axiom.schema.column.type.GuidColumn">
         <foreign-key-referencee-class>com.netspective.axiom.schema.column.type.GuidTextColumn</foreign-key-referencee-class>
         <presentation>
-            <field.guid32/>
+            <field type="guid32"/>
         </presentation>
     </data-type>
 
