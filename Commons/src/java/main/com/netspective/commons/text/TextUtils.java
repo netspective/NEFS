@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.18 2004-08-09 22:14:27 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.19 2004-08-12 00:24:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -671,6 +671,20 @@ public class TextUtils
             sb.append((char) iRead);
             iRead = is.read();
         }
+        return sb.toString();
+    }
+
+    public String pad(String text, int length, String fillWith)
+    {
+        if(text != null && text.length() > length)
+            return text;
+
+        if(text == null)
+            text = "";
+
+        StringBuffer sb = new StringBuffer(text);
+        while(sb.length() < length)
+            sb.append(fillWith);
         return sb.toString();
     }
 
