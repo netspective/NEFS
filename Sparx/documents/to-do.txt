@@ -1,4 +1,5 @@
-* [IMPORANT] read http://www.qos.ch/logging/thinkAgain.html on why we may need to revert to using log4j instead of Commons Logging for NDC/MDC support.
+* [IMPORTANT] read http://www.qos.ch/logging/thinkAgain.html on why we may need to revert to using log4j instead of Commons Logging for NDC/MDC support.
+* [IMPORTANT] ensure that "remember login" works within servlet contexts (servlet paths). right now, when you remember a login it sets the root path as the cookie path (BAD)
 * Run ChangeLog on local CVS repository in NBCS to make sure all changes are propogated to Sparx 7.0 from NBCS Sparx 2.3 branch.
 * Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
 * Add permissions, conditionals, etc into navigation trees
