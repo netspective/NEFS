@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.7 2003-06-12 14:36:10 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.8 2003-06-16 06:48:13 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -162,7 +162,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         controlAreaRequiredStyleClass = "dialog_control_required";
         controlAreaReadonlyStyleClass = "dialog_control_readonly";
 
-        controlAttrs = " onfocus='controlOnFocus(this, event)' onchange='controlOnChange(this, event)' " +
+        controlAttrs = " onfocus='return controlOnFocus(this, event)' onchange='controlOnChange(this, event)' " +
                 "onblur='controlOnBlur(this, event)' onkeypress='controlOnKeypress(this, event)' onclick='controlOnClick(this, event) '";
         separatorFontAttrs = "face='verdana,arial' size=2 color=#555555";
         separatorBannerTextFontAttrs = "face='arial' size=2 color=#555555";
@@ -653,11 +653,9 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             if (field instanceof SeparatorField)
                 fieldsHtml.append("<tr" + rowAttr + "><td class=\"dialog-fields-separator\" colspan='2'>" + controlHtml + "</td></tr>\n");
             else
-                fieldsHtml.append("<tr" + rowAttr + "><td colspan='2'>" + controlHtml + "</td></tr>\n");
-
-            if (hint != null)
-                fieldsHtml.append("<tr><td class=\"dialog-fields-hint-table\" align=\"left\" valign=\"top\" nowrap colspan=\"2\" width=\"50%\">" +
-                    "<span class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span></td></tr>\n");
+                fieldsHtml.append("<tr" + rowAttr + "><td colspan='2'>" + controlHtml +
+                        (hint != null ? "<br><span class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>": "") +
+                        "</td></tr>\n");
 
             if (haveErrors)
                 fieldsHtml.append("<tr><td><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  messagesHtml + "</span></td></tr>\n");
@@ -665,12 +663,10 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         else
         {
             fieldsHtml.append(
-                    "<tr><td " + captionClass + ">" + caption + "</td>" +
-                    "<td "+ controlAreaClass + " width='100%'>" + controlHtml + "</td></tr>\n");
-
-            if (hint != null)
-                fieldsHtml.append("<tr><td>&nbsp;</td><td class=\"dialog-fields-hint-table\" align=\"left\" valign=\"top\" nowrap width=\"50%\">" +
-                    "<span class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span></td></tr>\n");
+                    "<tr" + rowAttr + "><td " + captionClass + ">" + caption + "</td>" +
+                    "<td "+ controlAreaClass + " width='100%'>" + controlHtml +
+                    (hint != null ? "<br><span class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>": "") +
+                    "</td></tr>\n");
 
             if (haveErrors)
                 fieldsHtml.append("<tr><td>&nbsp;</td><td>" +
@@ -783,7 +779,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             }
         }
 
-        String resourcesUrl = getTheme().getResourcesPath().getTextValue(dc);
+        String resourcesUrl = dc.getNavigationContext().getThemeResourcesRootUrl(getTheme());
         String sharedScriptsUrl = resourcesUrl + "/scripts";
 
         StringBuffer errorMsgsHtml = new StringBuffer();
@@ -820,10 +816,12 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
         writer.write(
                 "<script language='JavaScript'>\n" +
+                 "<!--\n" +
                 "	if(typeof dialogLibraryLoaded == 'undefined')\n" +
                 "	{\n" +
                 "		alert('ERROR: " + sharedScriptsUrl + "/dialog.js could not be loaded');\n" +
                 "	}\n" +
+                "-->\n" +
                 "</script>\n");
 
         if(dialogIncludeJS != null)
@@ -860,11 +858,13 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
         writer.write(
                 "<script language='JavaScript'>\n" +
+                "<!--\n" +
                 "       var " + dialogName + " = new Dialog(\"" + dialogName + "\");\n" +
                 "       var dialog = " + dialogName + "; setActiveDialog(dialog);\n" +
                 "       var field;\n" +
                 fieldsJSDefn +
                 "       dialog.finalizeContents();\n" +
+                "-->\n" +
                 "</script>\n");
 
         if(appendPostScript != null)
