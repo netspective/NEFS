@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.91 2003-08-24 22:09:37 shahid.shah Exp $
+  * $Id: console.xml,v 1.92 2003-09-05 14:55:43 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -233,6 +233,20 @@
         </page>
 
         <xdm:include resource="com/netspective/sparx/conf/console-user-manual-pages.xml"/>
+
+        <page name="reference" caption="XDM Tags Reference" require-login="no" body-affects-navigation="yes">
+            <body config="console" source="content/xdm-doc.ftl"/>
+
+            <page name="overview" caption="XDM Overview" heading="Overview of the XML Data Model (XDM)">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Using XDM"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+            </page>
+        </page>
     </navigation-tree>
 
     <login-manager name="console">

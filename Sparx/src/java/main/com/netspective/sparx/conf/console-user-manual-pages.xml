@@ -268,37 +268,6 @@
         </page>
 
         <page name="tutorials" caption="Tutorials"/>
-
-        <page name="reference" caption="XDM Reference" heading="XML Data Model (XDM) Reference">
-            <panels>
-                <panel type="console-page-summary"/>
-                <panel type="html">
-                    <frame heading="Using XDM"/>
-                    <body config="console" source="console-page-content:documentation.ftl"/>
-                </panel>
-            </panels>
-
-            <page name="components" caption="Instances">
-                <panels>
-                    <panel class="com.netspective.sparx.console.panel.framework.XdmComponentsPanel"/>
-                </panels>
-            </page>
-            <page name="structure" caption="Structure" retain-params="xdm-class">
-                <panels>
-                    <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel"/>
-                </panels>
-            </page>
-            <page name="detail" caption="Detail" retain-params="xdm-class">
-                <panels style="horizontal">
-                    <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="tree" height="320"/>
-                    <panels style="tabbed">
-                        <frame heading="tabbed"/>
-                        <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="detail-ancestors"/>
-                        <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="detail"/>
-                    </panels>
-                </panels>
-            </page>
-        </page>
     </page>
 
 </xdm:container>

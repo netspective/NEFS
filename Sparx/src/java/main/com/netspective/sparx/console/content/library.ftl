@@ -88,12 +88,38 @@
 
 <!--
  ****************************************************************************************
+ ** MACRO: xdmPath
+ ** PARAMS: parentTags (the '/' separated names of tags that lead to a XDM child)
+ ** PARAMS: parentXdmClasses (the '/' separated names of classes that lead to a XDM child)
+ ****************************************************************************************
+ -->
+ <#macro xdmPath tags="" classes="" separator="<code> / </code>">
+    <#if tags != "">
+        <#assign tagsList=tags?split('/')/>
+        <#assign classesList=classes?split('/')/>
+
+        <code>${vc.projectComponent.inputSource.file.name}</code>
+
+        <#assign activeTags = ""/>
+        <#assign activeClasses = ""/>
+
+        <!-- start from 1 because of the leading / -->
+        <#list 1..tagsList?size-1 as index>
+            ${separator}<code>&lt;<a href="?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}">${tagsList[index]}</a>&gt;</code>
+            <#assign activeTags = "${activeTags}/${tagsList[index]}"/>
+            <#assign activeClasses = "${activeClasses}/${classesList[index]}"/>
+        </#list>
+    </#if>
+ </#macro>
+
+<!--
+ ****************************************************************************************
  ** MACRO: xdmStructure
  ** PARAMS: className (the name of the class the structure is being requested for)
  ** PARAMS: heading (the heading to display above the description of the class)
  ****************************************************************************************
  -->
-<#macro xdmStructure className tag="" heading="" expandFlagAliases="yes">
+<#macro xdmStructure className tag="" heading="" expandFlagAliases="yes" parentTags="" parentXdmClasses="">
 <div class="textbox">
 
     <#assign schema = getXmlDataModelSchema(className)/>
@@ -106,6 +132,9 @@
     <#assign classSuffix="odd"/>
 
     <table width=100%>
+        <tr>
+            <td colspan=2><@xdmPath tags=parentTags classes=parentXdmClasses/></td>
+        </tr>
         <tr valign=center>
             <td>
                 <img src="${vc.activeTheme.getResourceUrl('/images/xml/xml.gif')}"/>
@@ -125,10 +154,11 @@
     </table>
 
     <p>
+    <b>Attributes</b><br>
     <table class="report" border="0" cellspacing="2" cellpadding="0">
         <tr>
             <td class="report-column-heading">&nbsp;</td>
-            <td class="report-column-heading">Node</td>
+            <td class="report-column-heading">Name</td>
             <td class="report-column-heading">Type</td>
             <td class="report-column-heading">Choices</td>
         </tr>
@@ -179,30 +209,45 @@
             <#assign classSuffix='odd'/>
         </#if>
     </#list>
+    </table>
+
+    <p>
+    <b>Child Elements</b><br>
+    <table class="report" border="0" cellspacing="2" cellpadding="0">
+        <tr>
+            <td class="report-column-heading">&nbsp;</td>
+            <td class="report-column-heading">Name</td>
+            <td class="report-column-heading">Class</td>
+            <td class="report-column-heading">Text</td>
+        </tr>
 
     <#list childElements as childDetail>
         <tr>
             <td class="report-column-${classSuffix}" rowspan=2>
                 <#if childDetail.isTemplateProducer()>
                     <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-template-producer.gif")}" title="Template Producer"/>
+                    <#assign href=""/>
                 <#else>
                     <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-element.gif")}" title="Element"/>
+                    <#assign href="xdm-tag=${childDetail.elemName}&xdm-class=${childDetail.elemType.name}"/>
                 </#if>
             </td>
             <td class="report-column-${classSuffix}">
                 <nobr>
+                <#if href != ''><a href="?parent-tags=${parentTags}/${tag}&parent-xdm-classes=${parentXdmClasses}/${className}&${href}"></#if>
                 <#if childDetail.isRequired()>
                     &lt;<b>${childDetail.elemName}</b>&gt;
                 <#else>
                     &lt;${childDetail.elemName}&gt;
                 </#if>
+                <#if href != ''></a></#if>
                 </nobr>
             </td>
             <td class="report-column-${classSuffix}">
                 <@classReference className = childDetail.elemType.name/>
             </td>
             <td class="report-column-${classSuffix}">
-                &nbsp;
+                <#if getXmlDataModelSchema(childDetail.elemType.name).supportsCharacters()>Yes<#else>&nbsp;</#if>
             </td>
         </tr>
         <tr>
@@ -216,7 +261,6 @@
             <#assign classSuffix='odd'/>
         </#if>
     </#list>
-
     </table>
 </div>
 </#macro>

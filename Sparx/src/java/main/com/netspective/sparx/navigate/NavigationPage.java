@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.39 2003-08-31 23:41:05 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.40 2003-09-05 14:55:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -95,7 +95,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final Log log = LogFactory.getLog(NavigationPage.class);
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 14];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 15];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
@@ -119,6 +119,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 11] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_HEADER", Flags.HANDLE_HEADER);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 12] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_FOOTER", Flags.HANDLE_FOOTER);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 13] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "DEBUG_REQUEST", Flags.DEBUG_REQUEST);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 14] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "BODY_AFFECTS_NAVIGATION", Flags.BODY_AFFECTS_NAVIGATION);
     }
 
     protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
@@ -150,7 +151,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         public static final int HANDLE_HEADER = HANDLE_META_DATA * 2;
         public static final int HANDLE_FOOTER = HANDLE_HEADER * 2;
         public static final int DEBUG_REQUEST = HANDLE_FOOTER * 2;
-        public static final int START_CUSTOM = DEBUG_REQUEST * 2;
+        public static final int BODY_AFFECTS_NAVIGATION = DEBUG_REQUEST * 2;
+        public static final int START_CUSTOM = BODY_AFFECTS_NAVIGATION * 2;
 
         public Flags()
         {
@@ -846,7 +848,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         if(bodyPanel != null && bodyPanel.affectsNavigationContext(nc))
             return true;
         else
-            return false;
+            return nc.getActiveState().getFlags().flagIsSet(Flags.BODY_AFFECTS_NAVIGATION);
     }
 
     public void handlePage(Writer writer, NavigationContext nc) throws ServletException, IOException
