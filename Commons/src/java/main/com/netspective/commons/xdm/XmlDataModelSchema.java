@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.34 2003-10-07 19:08:52 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.35 2003-10-11 14:34:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -67,6 +67,7 @@ import com.netspective.commons.xdm.exception.UnsupportedElementException;
 import com.netspective.commons.xdm.exception.UnsupportedTextException;
 import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.io.InputSourceTracker;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.RedirectValueSource;
@@ -131,6 +132,11 @@ public class XmlDataModelSchema
     public interface InputSourceTrackerListener
     {
         public void setInputSourceTracker(InputSourceTracker tracker);
+    }
+
+    public interface InputSourceLocatorListener
+    {
+        public void setInputSourceLocator(InputSourceLocator locator);
     }
 
     public static class Options

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmHandler.java,v 1.4 2003-08-17 00:06:47 shahid.shah Exp $
+ * $Id: XdmHandler.java,v 1.5 2003-10-11 14:34:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -63,6 +63,7 @@ import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.AbstractContentHandler;
 import com.netspective.commons.xml.NodeIdentifiers;
+import com.netspective.commons.io.InputSourceLocator;
 
 public class XdmHandler extends AbstractContentHandler
 {
@@ -264,6 +265,9 @@ public class XdmHandler extends AbstractContentHandler
 
             if(childInstance != null)
             {
+                if (childInstance instanceof XmlDataModelSchema.InputSourceLocatorListener)
+                    ((XmlDataModelSchema.InputSourceLocatorListener) childInstance).setInputSourceLocator(new InputSourceLocator(getParseContext().getInputSrcTracker(), getParseContext().getLocator().getLineNumber()));
+
                 XdmHandlerNodeStackEntry childEntry = null;
                 try
                 {

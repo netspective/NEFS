@@ -39,45 +39,34 @@
  */
 
 /**
- * $Id: InputSourceTracker.java,v 1.3 2003-10-11 14:32:42 shahid.shah Exp $
+ * $Id: InputSourceLocator.java,v 1.1 2003-10-11 14:32:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
 
-import java.util.List;
-import java.io.File;
-
-public interface InputSourceTracker
+public class InputSourceLocator
 {
-    String getIdentifier();
+    private InputSourceTracker inputSourceTracker;
+    private int lineNumber;
 
-    boolean sourceChanged();
+    public InputSourceLocator(InputSourceTracker inputSourceTracker, int lineNumber)
+    {
+        this.inputSourceTracker = inputSourceTracker;
+        this.lineNumber = lineNumber;
+    }
 
-    int getDependenciesCount();
+    public InputSourceTracker getInputSourceTracker()
+    {
+        return inputSourceTracker;
+    }
 
-    InputSourceTracker getOwner();
+    public int getLineNumber()
+    {
+        return lineNumber;
+    }
 
-    InputSourceTracker getParent();
-
-    List getIncludes();
-
-    List getPreProcessors();
-
-    void setOwner(InputSourceTracker owner);
-
-    void setParent(InputSourceTracker parent);
-
-    void addPreProcessor(InputSourceTracker value);
-
-    void addPreProcessor(File file);
-
-    void addPreProcessor(String filename);
-
-    void addInclude(InputSourceTracker value);
-
-    void addInclude(File file);
-
-    void addInclude(String filename);
-
-    boolean dependenciesSourcesChanged();
+    public String toString()
+    {
+        return inputSourceTracker.getIdentifier() + " line " + lineNumber;
+    }
 }
