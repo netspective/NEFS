@@ -1,4 +1,4 @@
-e/*
+/*
  * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
@@ -39,7 +39,7 @@ e/*
  */
 
 /**
- * $Id: DialogFlags.java,v 1.16 2004-03-19 14:55:03 zahara.khan Exp $
+ * $Id: DialogFlags.java,v 1.17 2004-03-19 19:14:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
