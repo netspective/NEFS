@@ -4,12 +4,12 @@
 
 <dal xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer">
 
-<firms    dal:csv-file="C:\Projects\Frameworks\webapps\nefs-sample-ndc\WEB-INF\database\data\firms.csv"/>
-<listings dal:csv-file="C:\Projects\Frameworks\webapps\nefs-sample-ndc\WEB-INF\database\data\listings.csv"/>
-<drugclas dal:csv-file="C:\Projects\Frameworks\webapps\nefs-sample-ndc\WEB-INF\database\data\drugclas.csv"/>
-<formulat dal:csv-file="C:\Projects\Frameworks\webapps\nefs-sample-ndc\WEB-INF\database\data\formulat.csv"/>
-<packages dal:csv-file="C:\Projects\Frameworks\webapps\nefs-sample-ndc\WEB-INF\database\data\packages.csv"/>
-<routes   dal:csv-file="C:\Projects\Frameworks\webapps\nefs-sample-ndc\WEB-INF\database\data\routes.csv"/>
+<firms    dal:csv-file="C:/Projects/Frameworks/webapps/nefs-sample-ndc/WEB-INF/database/data/firms.csv"/>
+<listings dal:csv-file="C:/Projects/Frameworks/webapps/nefs-sample-ndc/WEB-INF/database/data/listings.csv"/>
+<drugclas dal:csv-file="C:/Projects/Frameworks/webapps/nefs-sample-ndc/WEB-INF/database/data/drugclas.csv"/>
+<formulat dal:csv-file="C:/Projects/Frameworks/webapps/nefs-sample-ndc/WEB-INF/database/data/formulat.csv"/>
+<packages dal:csv-file="C:/Projects/Frameworks/webapps/nefs-sample-ndc/WEB-INF/database/data/packages.csv"/>
+<routes   dal:csv-file="C:/Projects/Frameworks/webapps/nefs-sample-ndc/WEB-INF/database/data/routes.csv"/>
 
 </dal>
 
