@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Column.java,v 1.4 2003-07-02 13:57:15 shahid.shah Exp $
+ * $Id: Column.java,v 1.5 2003-07-19 00:35:27 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -209,6 +209,12 @@ public interface Column
      * because the two types are slightly different (for obvious reasons).
      */
     public Class getForeignKeyReferenceeClass();
+
+    /**
+     * Sets the class that should be used to create a ForeignKey to this column.
+     * @see Column#getForeignKeyReferenceeClass
+     */
+    public void setForeignKeyReferenceeClass(Class cls);
 
     /**
      * Returns the @link ForeignKey object for this column or null if the column is not a

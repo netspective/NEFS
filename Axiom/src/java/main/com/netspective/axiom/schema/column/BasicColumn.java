@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.13 2003-07-02 13:57:15 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.14 2003-07-19 00:35:47 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -301,6 +301,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     private TemplateProducers templateProducers;
     private TemplateConsumerDefn templateConsumer;
     private ValidationRules validationRules;
+    private Class foreignKeyReferenceeClass;
 
     static public String translateColumnNameForMapKey(String name)
     {
@@ -310,6 +311,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     public BasicColumn(Table table)
     {
         setTable(table);
+        setForeignKeyReferenceeClass(this.getClass());
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
@@ -613,7 +615,12 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public Class getForeignKeyReferenceeClass()
     {
-        return this.getClass();
+        return foreignKeyReferenceeClass;
+    }
+
+    public void setForeignKeyReferenceeClass(Class cls)
+    {
+        foreignKeyReferenceeClass = cls;
     }
 
     public ForeignKey getForeignKey()
@@ -804,6 +811,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         TemplateProducer columnPresentationTemplates = getPresentation();
         if(columnPresentationTemplates.getInstances().size() > 0)
         {
+            // get only the last template because if there was inheritace of a data-type we want the "final" one
             Template columnPresentationTemplate = (Template) columnPresentationTemplates.getInstances().get(columnPresentationTemplates.getInstances().size() - 1);
             List copyColumnPresTmplChildren = columnPresentationTemplate.getChildren();
             for(int cc = 0; cc < copyColumnPresTmplChildren.size(); cc++)
