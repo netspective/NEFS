@@ -7,24 +7,21 @@
     <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
 
-    <navigation-tree name="app" default="yes">
-        <page name="home" default="yes" caption="Home">
-            <body>
-                Welcome to the Home page for the Sparx starter app.
-                <![CDATA[<p>
-                <#include "console/content/library.ftl"/>
 
-                <i>If you're asked to log into Console, use 'console' for both user id and password.</i>
-                <ul>
-                    <li>Edit the NEFS <@projectFile/> file to begin declaring your application components.
-                    <li>Open the <a href="${vc.consoleUrl}?_dc.userId=console&_dc.password=console">Console</a> for this application.
-                    <li>Browse the <a href="${vc.consoleUrl}/manual">User's Manual</a>.
-                </ul>
-                ]]>
-            </body>
-        </page>
+    <!--
+    **********************************************************************
+    ** USER INTERFACE (PRESENTATION) SPECIFICATIONS                     **
+    ********************************************************************** 
+    -->
+
+    <navigation-tree name="app" default="yes">
+        <page name="home" default="yes" caption="Home/Drug Name" 
+            command="query-defn,sbn,sbnt,searchByNameDialog"/>
+        <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
+        <dialog-next-action-provider class="app.Util"/>
     </navigation-tree>
 
+  
     <!--
     *******************************************************************************************************************
     ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
@@ -110,6 +107,58 @@
             <column name="route_name" type="text" size="28" descr="Text Description of Route"/>
 	</table>
     </schema>
+
+    <!--
+    **********************************************************************
+    ** DATA MANAGEMENT STATIC QUERY (SQL) SPECIFICATIONS                **
+    ********************************************************************** 
+    -->
+
+    <!--
+    **********************************************************************
+    ** DATA MANAGEMENT DYNAMIC QUERY-DEFM (SQL) SPECIFICATIONS          **
+    ********************************************************************** 
+    -->
+    <query-defn name="sbn">
+        <field name="listing_seq_no" caption="Lst Seq No" join="Listing" column="listing_seq_no"/>
+        <field name="lblcode" caption="Lbl" join="Listing" column="lblcode"/>
+        <field name="prodcode" caption="Prod" join="Listing" column="prodcode"/>
+        <field name="strength" caption="Strength" join="Listing" column="strength"/>
+        <field name="unit" caption="Unit" join="Listing" column="unit"/>
+        <field name="rx_otc" caption="R/O" join="Listing" column="rx_otc"/>
+        <field name="dosage" caption="Dosage" join="Listing" column="dosage"/>
+        <field name="firm_seq_no" caption="Firm Seq" join="Listing" column="firm_seq_no"/>
+        <field name="firm-name" caption="Firm Name" join="Firms" column="firm_name"/>
+        <field name="tradename" caption="Trade Name" join="Listing" column="tradename"/>
+
+        <join name="Listing" table="listing"/>
+	<join name="Firms" table="firms" condition="Listing.firm_seq_no = Firms.firm_seq_no"/>
+
+        <presentation>
+            <select-dialog name="searchByNameDialog"  allow-debug="yes" hide-output-dests="no" hide-readonly-hints="yes" >
+                <frame heading="Search for Drug by Trade Name" />
+                <field type="text" name="Tradename" caption="Trade Name"/>
+                
+                <select name="sbnt">
+                    <display field="Tradename"/>
+
+                    <condition field="tradename" allow-null="no" comparison="starts-with" value="field:Tradename"/>
+
+                    <presentation>
+                        <panel name="report">
+                            <frame heading="static:Search by Trade Name Results"/>
+                            <report>
+                                <column format="plain" redirect="page-id:/disp?listing_seq_no=${0}"/>
+                             </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+    </query-defn>
+
+
+
 
 
 
