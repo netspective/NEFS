@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.16 2003-11-12 12:50:31 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.17 2004-02-04 23:15:47 min-gu.lee Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -440,7 +440,7 @@ public class DateTimeField extends TextField
 
             writer.write(
                     "<a href='#' onclick='javascript:showCalendar(\"" + getQualifiedName() + "\", \""+ getClientCalendarFormat() +"\")'>" +
-                    "<img src='" + theme.getResourceUrl("/images/calendar.gif") + "' title='Select from Calendar' border=0></a>");
+                    "<img src='" + theme.getResourceUrl("/images/calendar.gif") + "' title='Select from Calendar' border=0 alt='calendar'></a>");
         }
     }
 }
