@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlSyntaxHighlightPanel.java,v 1.4 2003-04-24 17:01:11 shahid.shah Exp $
+ * $Id: HtmlSyntaxHighlightPanel.java,v 1.5 2003-05-09 15:56:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -60,34 +60,34 @@ import com.Ostermiller.Syntax.Lexer.Token;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
 
-public class HtmlSyntaxHighlightPanel implements HtmlPanel
+public class HtmlSyntaxHighlightPanel extends AbstractPanel
 {
-    private static int panelNumber = 0;
-    private int height = -1, width = -1;
-    private HtmlPanelFrame frame;
-    private HtmlPanelBanner banner;
     private String lexerType;
     private String text;
     private File file;
-    private String identifier = "HtmlSyntaxHighlightPanel_" + getNextPanelNumber();
-
-    synchronized static private final int getNextPanelNumber()
-    {
-        return ++panelNumber;
-    }
 
     public HtmlSyntaxHighlightPanel()
     {
     }
 
-    public String getIdentifier()
+    public File getFile()
     {
-        return identifier;
+        return file;
     }
 
-    public void setIdentifier(String identifier)
+    public void setFile(File file)
     {
-        this.identifier = identifier;
+        this.file = file;
+    }
+
+    public static Map getLexers()
+    {
+        return lexers;
+    }
+
+    public static void setLexers(Map lexers)
+    {
+        HtmlSyntaxHighlightPanel.lexers = lexers;
     }
 
     public String getLexerType()
@@ -110,46 +110,6 @@ public class HtmlSyntaxHighlightPanel implements HtmlPanel
         this.text = text;
     }
 
-    public File getFile()
-    {
-        return file;
-    }
-
-    public void setFile(File file)
-    {
-        this.file = file;
-    }
-
-    public boolean affectsNavigationContext(NavigationContext nc)
-    {
-        return false;
-    }
-
-    public HtmlPanelBanner getBanner()
-    {
-        return banner;
-    }
-
-    public HtmlPanels getChildren()
-    {
-        return null;
-    }
-
-    public HtmlPanelFrame getFrame()
-    {
-        return frame;
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public int getWidth()
-    {
-        return width;
-    }
-
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         if(text != null)
@@ -161,26 +121,6 @@ public class HtmlSyntaxHighlightPanel implements HtmlPanel
         {
             emitHtml(file, writer);
         }
-    }
-
-    public void setBanner(HtmlPanelBanner value)
-    {
-        banner = value;
-    }
-
-    public void setFrame(HtmlPanelFrame rf)
-    {
-        frame = rf;
-    }
-
-    public void setHeight(int height)
-    {
-        this.height = height;
-    }
-
-    public void setWidth(int width)
-    {
-        this.width = width;
     }
 
     private static Map lexers = new HashMap();

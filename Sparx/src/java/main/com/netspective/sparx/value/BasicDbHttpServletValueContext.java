@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.8 2003-05-06 17:18:19 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.9 2003-05-09 15:56:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -58,6 +58,7 @@ import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.SqlManager;
 import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.ApplicationManagerComponent;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
@@ -75,6 +76,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_MODE = "netspective-runtime-environment-mode";
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
 
+    private NavigationContext navigationContext;
     private ServletContext context;
     private Servlet servlet;
     private ServletRequest request;
@@ -100,6 +102,22 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         this.response = response;
         this.servlet = servlet;
         rootUrl = ((HttpServletRequest) request).getContextPath();
+    }
+
+    public void initialize(NavigationContext nc)
+    {
+        initialize(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse());
+        setNavigationContext(nc);
+    }
+
+    public NavigationContext getNavigationContext()
+    {
+        return navigationContext;
+    }
+
+    public void setNavigationContext(NavigationContext navigationContext)
+    {
+        this.navigationContext = navigationContext;
     }
 
     public Object getContextLocation()

@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.29 2003-05-07 03:39:17 shahid.shah Exp $
+  * $Id: console.xml,v 1.30 2003-05-09 15:56:37 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -50,10 +50,10 @@
 				<page name="detail" caption="Dialog">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsPanel"/>
+                        <panel type="command" command="dynamic,simple-expr:dialog,${request:selected-dialog-id}"/>
                     </panels>
                 </page>
-				<page name="test" caption="Unit Test"/>
-		        <page name="fields" caption="Fields"/>
+		        <page name="fields" caption="Field Types"/>
 	        </page>
 	        <page name="theme" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
         </page>

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.2 2003-05-09 15:56:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -297,7 +297,8 @@ public class DialogContext extends BasicDbHttpServletValueContext
      */
     public void initialize(NavigationContext nc, Dialog aDialog, DialogSkin aSkin)
     {
-        super.initialize(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse());
+        super.initialize(nc);
+
         HttpServletRequest request = nc.getHttpRequest();
         nc.getRequest().setAttribute(DIALOG_CONTEXT_ATTR_NAME, this);
 
@@ -365,6 +366,14 @@ public class DialogContext extends BasicDbHttpServletValueContext
 
         dataCommands.setValue(dataCmdStr);
         debugFlags.setValue(debugFlagsStr);
+
+        ValueSource ncRetainVS = nc.getActivePage().getRetainParams();
+        if(ncRetainVS != null)
+        {
+            String ncRetain = ncRetainVS.getTextValue(this);
+            if(ncRetain != null && ncRetain.length() > 0)
+                addRetainRequestParams(TextUtils.split(ncRetain, ",", true));
+        }
     }
 
     public void setLastRowManipulated(Row row)
@@ -961,9 +970,19 @@ public class DialogContext extends BasicDbHttpServletValueContext
      *
      * @param params HTTP request parameters
      */
-    public void setRetainRequestParams(String[] params)
+    public void addRetainRequestParams(String[] params)
     {
-        retainReqParams = params;
+        if(retainReqParams == null)
+            retainReqParams = params;
+        else
+        {
+            String[] oldReqParams = retainReqParams;
+            retainReqParams = new String[oldReqParams.length + params.length];
+            for(int i = 0; i < oldReqParams.length; i++)
+                retainReqParams[i] = oldReqParams[i];
+            for(int i = 0; i < params.length; i++)
+                retainReqParams[oldReqParams.length + i] = params[i];
+        }
     }
 
     /**

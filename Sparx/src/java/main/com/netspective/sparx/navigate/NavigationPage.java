@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.16 2003-05-09 01:22:20 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.17 2003-05-09 15:56:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -64,6 +64,7 @@ import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandException;
+import com.netspective.commons.command.Command;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
@@ -98,7 +99,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "REJECT_FOCUS", Flags.REJECT_FOCUS);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_BODY", Flags.HAS_BODY);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD", Flags.ALLOW_PAGE_CMD);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD_PARAM", Flags.ALLOW_PAGE_CMD_PARAM);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 5] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_RETAIN_PARAMS", Flags.INHERIT_RETAIN_PARAMS);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 6] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_ASSIGN_STATE_PARAMS", Flags.INHERIT_ASSIGN_STATE_PARAMS);
@@ -122,15 +123,15 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         public static final int REJECT_FOCUS = NavigationPath.Flags.START_CUSTOM;
         public static final int HAS_BODY = REJECT_FOCUS * 2;
         public static final int HIDDEN = HAS_BODY * 2;
-        public static final int ALLOW_PAGE_CMD = HIDDEN * 2;
-        public static final int HAS_CONDITIONAL_ACTIONS = ALLOW_PAGE_CMD * 2;
+        public static final int ALLOW_PAGE_CMD_PARAM = HIDDEN * 2;
+        public static final int HAS_CONDITIONAL_ACTIONS = ALLOW_PAGE_CMD_PARAM * 2;
         public static final int INHERIT_RETAIN_PARAMS = HAS_CONDITIONAL_ACTIONS * 2;
         public static final int INHERIT_ASSIGN_STATE_PARAMS = INHERIT_RETAIN_PARAMS * 2;
         public static final int START_CUSTOM = INHERIT_ASSIGN_STATE_PARAMS * 2;
 
         public Flags()
         {
-            setFlag(ALLOW_PAGE_CMD | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
+            setFlag(ALLOW_PAGE_CMD_PARAM | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
         }
 
         public FlagDefn[] getFlagsDefns()
@@ -168,6 +169,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     private ValueSource redirect;
     private HtmlLayoutPanel bodyPanel;
     private TemplateProcessor bodyTemplate;
+    private Command bodyCommand;
     private List pageTypesConsumed = new ArrayList();
 
     /* --- Templates consumption ------------------------------------------------------------------------------------*/
@@ -521,6 +523,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         setRetainParams(params);
     }
 
+    public Command getCommand()
+    {
+        return bodyCommand;
+    }
+
+    public void setCommand(Command command)
+    {
+        this.bodyCommand = command;
+    }
+
     /* -------------------------------------------------------------------------------------------------------------*/
 
     public HtmlLayoutPanel createPanels()
@@ -565,7 +577,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        if(getFlags().flagIsSet(Flags.ALLOW_PAGE_CMD))
+        if(getFlags().flagIsSet(Flags.ALLOW_PAGE_CMD_PARAM))
         {
             String commandSpec = nc.getRequest().getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
             if(commandSpec != null)
@@ -582,6 +594,20 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
                 }
                 return;
             }
+        }
+
+        if(bodyCommand != null)
+        {
+            try
+            {
+                ((HttpServletCommand) bodyCommand).handleCommand(writer, nc, false);
+            }
+            catch (CommandException e)
+            {
+                log.error(e);
+                throw new ServletException(e);
+            }
+            return;
         }
 
         if(bodyPanel != null)

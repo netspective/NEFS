@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.1 2003-05-09 01:22:19 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.2 2003-05-09 15:56:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -230,7 +230,7 @@ public class DialogCommand extends AbstractHttpServletCommand
         if(debugFlags != null)
             dc.getDebugFlags().setFlag(debugFlags.getFlags());
 
-        dc.setRetainRequestParams(DIALOG_COMMAND_RETAIN_PARAMS);
+        dc.addRetainRequestParams(DIALOG_COMMAND_RETAIN_PARAMS);
         dialog.prepareContext(dc);
 
         /*
