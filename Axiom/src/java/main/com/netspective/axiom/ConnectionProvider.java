@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: ConnectionProvider.java,v 1.2 2003-05-24 20:26:48 shahid.shah Exp $
+ * $Id: ConnectionProvider.java,v 1.3 2003-09-05 16:09:18 roque.hernandez Exp $
  */
 
 package com.netspective.axiom;
+
+import com.netspective.commons.value.ValueContext;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -58,7 +60,7 @@ public interface ConnectionProvider
      * @throws NamingException
      * @throws SQLException
      */
-    public Connection getConnection(String dataSourceId) throws NamingException, SQLException;
+    public Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException;
 
     /**
      * Get the class that actually implements the connection provider.
@@ -78,12 +80,12 @@ public interface ConnectionProvider
      * catalog the available datasources and inquire about their details.
      * @return ConnectionProviderEntries
      */
-    public ConnectionProviderEntries getDataSourceEntries();
+    public ConnectionProviderEntries getDataSourceEntries(ValueContext vc);
 
     /**
      * Retrieve an informational record of a particular data sources being managed by this provider. This method is used
      * to inquire about the details of a particular data source.
      * @return ConnectionProviderEntry
      */
-    public ConnectionProviderEntry getDataSourceEntry(String dataSourceId);
+    public ConnectionProviderEntry getDataSourceEntry(ValueContext vc, String dataSourceId);
 }
