@@ -39,58 +39,22 @@
  */
 
 /**
- * $Id: HttpServletValueContext.java,v 1.3 2003-05-06 17:18:19 shahid.shah Exp $
+ * $Id: DialogsManager.java,v 1.1 2003-05-06 17:18:19 shahid.shah Exp $
  */
 
-package com.netspective.sparx.value;
+package com.netspective.sparx.form;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.form.DialogsManager;
-
-public interface HttpServletValueContext extends ServletValueContext
+public interface DialogsManager
 {
-    public DialogsManager getDialogsManager();
+    Dialogs getDialogs();
 
-    /**
-     * Retrieve the active servlet (page scope).
-     */
-    public HttpServlet getHttpServlet();
+    Dialog getDialog(String name);
 
-    /**
-     * Retrive the active servlet request (request scope).
-     */
-    public HttpServletRequest getHttpRequest();
+    Dialog createDialog();
 
-    /**
-     * Retrive the active servlet response.
-     */
-    public HttpServletResponse getHttpResponse();
+    void addDialog(Dialog query);
 
-    public Theme getActiveTheme();
+    DialogsPackage createDialogs();
 
-    public String getThemeResourcesRootUrl(Theme theme);
-
-    public String getThemeImagesRootUrl(Theme theme);
-
-    /**
-     * Return true if the servlet is being used in a popup window
-     */
-    public boolean isPopup();
-
-    public void setIsPopup(boolean popup);
-
-    /**
-     * Return true if the servlet is being used for printing content
-     */
-    public boolean isPrint();
-
-    public void setIsPrint(boolean print);
-
-    public String getRootUrl();
-
-    public String getServletRootUrl();
+    void addDialogs(DialogsPackage pkg);
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.2 2003-05-06 14:52:14 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.3 2003-05-06 17:18:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -152,7 +152,7 @@ public class Dialog
      */
     public Dialog()
     {
-        fields = createFields();
+        fields = constructFields();
         dialogFlags = createDialogFlags();
         debugFlags = createDebugFlags();
     }
@@ -163,7 +163,7 @@ public class Dialog
         setNameSpace(pkg);
     }
 
-    public DialogFields createFields()
+    public DialogFields constructFields()
     {
         return new DialogFields(this);
     }

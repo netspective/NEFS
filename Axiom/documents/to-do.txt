@@ -52,3 +52,4 @@
 * Come up with a better name for SchemaDoc and stick to it.
 * Consider using 'proxies' for DAL -- is DAL just a SQL proxy that can plug into JDO, EJBs, etc?
 * Allow reverse engineering policies that includ standard mappings from JDBC data types to axiom.xml data-types.
+* Take a look at DBD::Multiplex (multiplexing DBD driver for Perl) and see if it makes sense to implement in Axiom

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.4 2003-05-05 21:25:29 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.5 2003-05-06 17:18:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -61,10 +61,11 @@ import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.Dialogs;
+import com.netspective.sparx.form.DialogsManager;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 
-public class ApplicationManager extends SqlManager implements NavigationTreesManager, ConsoleManager
+public class ApplicationManager extends SqlManager implements NavigationTreesManager, ConsoleManager, DialogsManager
 {
     private static final Log log = LogFactory.getLog(ApplicationManager.class);
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";

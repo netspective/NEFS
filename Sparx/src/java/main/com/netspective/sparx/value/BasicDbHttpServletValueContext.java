@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.7 2003-05-05 21:25:32 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.8 2003-05-06 17:18:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -58,6 +58,7 @@ import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.SqlManager;
 import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.ApplicationManagerComponent;
+import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.xdm.XdmComponentFactory;
@@ -223,6 +224,11 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     }
 
     public SqlManager getSqlManager()
+    {
+        return getApplicationManager();
+    }
+
+    public DialogsManager getDialogsManager()
     {
         return getApplicationManager();
     }

@@ -39,30 +39,22 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.9 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.10 2003-05-06 17:18:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
 
 import java.io.IOException;
-import java.io.Writer;
-import java.io.File;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
-import javax.servlet.ServletConfig;
 
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.ApplicationManagerComponent;
 import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
-import com.netspective.commons.xdm.XdmComponentFactory;
 
 public class ConsoleServlet extends NavigationControllerServlet
 {
@@ -78,6 +70,7 @@ public class ConsoleServlet extends NavigationControllerServlet
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
+        long startTime = System.currentTimeMillis();
         NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
         if(nc.isRedirectToAlternateChildRequired())
         {
@@ -87,5 +80,8 @@ public class ConsoleServlet extends NavigationControllerServlet
 
         nc.setConsoleMode(true);
         renderPage(nc);
+
+        long renderTime = System.currentTimeMillis() - startTime;
+        httpServletResponse.getWriter().write("Render time: " + renderTime + " milliseconds");
     }
 }

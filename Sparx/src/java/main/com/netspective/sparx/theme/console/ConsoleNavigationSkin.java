@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.6 2003-04-29 19:57:24 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.7 2003-05-06 17:18:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -568,7 +568,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("		</td>");
         writer.write("	</tr>");
         writer.write("</table>");
-        writer.write("Render time: " + new Long(System.currentTimeMillis() - nc.getCreationTime()) + " milliseconds");
         writer.write("</body>");
     }
 

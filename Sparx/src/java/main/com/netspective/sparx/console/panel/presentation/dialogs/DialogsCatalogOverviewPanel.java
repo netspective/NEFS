@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogOverviewPanel.java,v 1.1 2003-05-06 14:52:14 shahid.shah Exp $
+ * $Id: DialogsCatalogOverviewPanel.java,v 1.2 2003-05-06 17:18:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -49,8 +49,8 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
-import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.form.DialogFlags;
+import com.netspective.sparx.form.DialogsManager;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
@@ -122,7 +122,7 @@ public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
 
     public class CatalogDataSource extends DialogsCatalogDataSource
     {
-        public CatalogDataSource(HtmlTabularReportValueContext vc, ApplicationManager appManager, String selectedDialogName)
+        public CatalogDataSource(HtmlTabularReportValueContext vc, DialogsManager appManager, String selectedDialogName)
         {
             super(vc, appManager, selectedDialogName);
         }

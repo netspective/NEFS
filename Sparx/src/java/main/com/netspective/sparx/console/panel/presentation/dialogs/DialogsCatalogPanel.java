@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogPanel.java,v 1.1 2003-05-06 14:52:14 shahid.shah Exp $
+ * $Id: DialogsCatalogPanel.java,v 1.2 2003-05-06 17:18:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -55,10 +55,9 @@ import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.ApplicationManager;
+import com.netspective.sparx.form.DialogsManager;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.ValueSource;
 
 public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 {
@@ -96,7 +95,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
-        public DialogsCatalogDataSource(HtmlTabularReportValueContext vc, ApplicationManager appManager, String selectedDialogName)
+        public DialogsCatalogDataSource(HtmlTabularReportValueContext vc, DialogsManager appManager, String selectedDialogName)
         {
             super(vc);
             dialogs = appManager.getDialogs();
