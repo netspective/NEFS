@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.11 2003-06-20 05:23:45 aye.thu Exp $
+ * $Id: DialogDirector.java,v 1.12 2003-08-07 03:45:57 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -65,6 +65,8 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.field.type.DirectorNextActionsSelectField;
 import com.netspective.sparx.form.field.DialogField;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class DialogDirector extends DialogField
 {
@@ -301,6 +303,19 @@ public class DialogDirector extends DialogField
                 if("back".equals(cancelStr))
                 {
                     writer.write("onclick=\"history.back()\" ");
+                }
+                else if (("submit").equals(cancelStr))
+                {
+                    // if the cancel url is 'submit', make it submit the form but with an additional flag
+                    String actionURL = null;
+                    actionURL = this.getSubmitActionUrl() != null ? this.getSubmitActionUrl().getValue(dc).getTextValue() : null;
+
+                    if(actionURL == null)
+                        actionURL = ((HttpServletRequest) dc.getRequest()).getRequestURI();
+                    if (actionURL.indexOf('?') > 0)
+                        writer.write("onclick=\"javascript:this.form.action=this.form.action+'&cancelButton=yes';this.form.submit()\"");
+                    else
+                        writer.write("onclick=\"javascript:this.form.action=this.form.action+'?cancelButton=yes';this.form.submit()\"");
                 }
                 else if(cancelStr != null && cancelStr.startsWith("javascript:"))
                 {
