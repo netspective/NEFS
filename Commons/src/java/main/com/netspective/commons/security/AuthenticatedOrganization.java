@@ -41,4 +41,6 @@ public interface AuthenticatedOrganization
     public Object getOrgType();
 
     public String getOrgName();
+
+    public String getOrgLabel();
 }

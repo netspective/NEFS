@@ -41,4 +41,6 @@ public interface MutableAuthenticatedOrganization extends AuthenticatedOrganizat
     public void setOrgType(Object type);
 
     public void setOrgName(String name);
+
+    public void setOrgLabel(String name);
 }

@@ -38,6 +38,7 @@ public class BasicAuthenticatedOrganization implements MutableAuthenticatedOrgan
     private Object orgId;
     private Object orgType;
     private String orgName;
+    private String orgLabel = "Org";
 
     public boolean isPrimary()
     {
@@ -74,8 +75,18 @@ public class BasicAuthenticatedOrganization implements MutableAuthenticatedOrgan
         return orgName;
     }
 
+    public String getOrgLabel()
+    {
+        return orgLabel;
+    }
+
     public void setOrgName(String name)
     {
         this.orgName = name;
+    }
+
+    public void setOrgLabel(String label)
+    {
+        this.orgLabel = label;
     }
 }
