@@ -37,8 +37,9 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
+
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.Hits;
 
 import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -53,10 +54,12 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
     private TemplateProcessor resultsTemplate;
     private TemplateProcessor queryErrorBodyTemplate;
     private String expressionFormFieldName = "expression";
+    private String searchWithinSearchResultsFormFieldName = "searchWithinResults";
     private String requestFormFieldTemplateVarName = "formFieldName";
+    private String searchWithinCheckboxFormFieldTemplateVarName = "searchWithinFieldName";
+    private String rendererTemplateVarName = "renderer";
+    private String searchResultsTemplateVarName = "searchResults";
     private String expressionTemplateVarName = "expression";
-    private String hitsTemplateVarName = "hits";
-    private String hitsMatrixTemplateVarName = "hitsMatrix";
     private String exceptionTemplateVarName = "exception";
     private String[] hitsMatrixFieldNames;
 
@@ -73,18 +76,41 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
         addResultsBody(renderer);
     }
 
-    protected Map createDefaultTemplateVars(String expression)
+    protected Map createDefaultTemplateVars(FullTextSearchResults searchResults)
     {
         final Map templateVars = new HashMap();
+        templateVars.put(rendererTemplateVarName, this);
         templateVars.put(requestFormFieldTemplateVarName, expressionFormFieldName);
-        if(expression != null)
-            templateVars.put(expressionTemplateVarName, expression);
+        templateVars.put(searchWithinCheckboxFormFieldTemplateVarName, searchWithinSearchResultsFormFieldName);
+        if(searchResults != null)
+        {
+            templateVars.put(searchResultsTemplateVarName, searchResults);
+            templateVars.put(expressionTemplateVarName, searchResults.getExpression().getExprText());
+        }
         return templateVars;
     }
 
-    public String getExpressionParameterName()
+    public SearchExpression getSearchExpression(NavigationContext nc)
     {
-        return getExpressionFormFieldName();
+        final ServletRequest request = nc.getRequest();
+        final String exprText = request.getParameter(getExpressionFormFieldName());
+        return exprText == null ? null : new SearchExpression()
+        {
+            public String getExprText()
+            {
+                return exprText;
+            }
+
+            public boolean isEmptyExpression()
+            {
+                return exprText.length() == 0;
+            }
+
+            public boolean isSearchWithinPreviousResults()
+            {
+                return request.getParameter(searchWithinSearchResultsFormFieldName) != null;
+            }
+        };
     }
 
     public void renderSearchRequest(Writer writer, NavigationContext nc) throws IOException
@@ -95,13 +121,14 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
 
     public void renderEmptyQuery(Writer writer, NavigationContext nc) throws IOException
     {
-        final Map templateVars = createDefaultTemplateVars("");
+        final Map templateVars = createDefaultTemplateVars(null);
+        templateVars.put(expressionTemplateVarName, "");
         requestTemplate.process(writer, nc, templateVars);
     }
 
-    public void renderQueryError(Writer writer, NavigationContext nc, String expression, ParseException exception) throws IOException
+    public void renderQueryError(Writer writer, NavigationContext nc, SearchExpression expression, ParseException exception) throws IOException
     {
-        final Map templateVars = createDefaultTemplateVars(expression);
+        final Map templateVars = createDefaultTemplateVars(null);
         templateVars.put(expressionTemplateVarName, expression);
         templateVars.put(exceptionTemplateVarName, exception);
         if(queryErrorBodyTemplate != null)
@@ -110,21 +137,9 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
             requestTemplate.process(writer, nc, templateVars);
     }
 
-    public void renderSearchResults(Writer writer, NavigationContext nc, SearchResults searchResults) throws IOException
+    public void renderSearchResults(Writer writer, NavigationContext nc, FullTextSearchResults searchResults) throws IOException
     {
-        final Map templateVars = createDefaultTemplateVars(searchResults.getExpression());
-        final Hits hits = searchResults.getHits();
-        templateVars.put(hitsTemplateVarName, hits);
-
-        // see if we want to convert the hits into an object matrix where we read out the field values and put them
-        // into a String[][] array -- this is much faster to do in java than in templates that might need to use
-        // reflection to read the hits
-        if(hitsMatrixFieldNames != null)
-        {
-            String[][] hitsMatrix = searchResults.getAllHitFieldValues(hitsMatrixFieldNames);
-            templateVars.put(hitsMatrixTemplateVarName, hitsMatrix);
-        }
-
+        final Map templateVars = createDefaultTemplateVars(searchResults);
         resultsTemplate.process(writer, nc, templateVars);
     }
 
@@ -181,26 +196,6 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
     public TemplateProcessor getQueryErrorBody()
     {
         return queryErrorBodyTemplate;
-    }
-
-    public String getHitsTemplateVarName()
-    {
-        return hitsTemplateVarName;
-    }
-
-    public void setHitsTemplateVarName(String hitsTemplateVarName)
-    {
-        this.hitsTemplateVarName = hitsTemplateVarName;
-    }
-
-    public String getHitsMatrixTemplateVarName()
-    {
-        return hitsMatrixTemplateVarName;
-    }
-
-    public void setHitsMatrixTemplateVarName(String hitsMatrixTemplateVarName)
-    {
-        this.hitsMatrixTemplateVarName = hitsMatrixTemplateVarName;
     }
 
     public String[] getHitsMatrixFieldNames()

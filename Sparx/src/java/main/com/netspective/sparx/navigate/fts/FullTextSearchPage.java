@@ -42,13 +42,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -57,9 +58,12 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationPageBodyType;
 import com.netspective.sparx.navigate.NavigationTree;
+import com.netspective.sparx.navigate.fts.SearchHitsRenderer.SearchExpression;
 
 public class FullTextSearchPage extends NavigationPage
 {
+    private String activeScrollPageParamName = "scroll-page";
+    private String activeUserSearchResultsSessAttrName = "active-search-results";
     private File indexDir;
     private IndexSearcher indexSearcher;
     private Analyzer analyzer = new StandardAnalyzer();
@@ -100,6 +104,26 @@ public class FullTextSearchPage extends NavigationPage
             indexSearcher = new IndexSearcher(indexDir.getAbsolutePath());
         }
         this.indexDir = indexDir;
+    }
+
+    public String getActiveScrollPageParamName()
+    {
+        return activeScrollPageParamName;
+    }
+
+    public void setActiveScrollPageParamName(String activeScrollPageParamName)
+    {
+        this.activeScrollPageParamName = activeScrollPageParamName;
+    }
+
+    public String getActiveUserSearchResultsSessAttrName()
+    {
+        return activeUserSearchResultsSessAttrName;
+    }
+
+    public void setActiveUserSearchResultsSessAttrName(String activeUserSearchResultsSessAttrName)
+    {
+        this.activeUserSearchResultsSessAttrName = activeUserSearchResultsSessAttrName;
     }
 
     public IndexSearcher getIndexSearcher()
@@ -167,22 +191,78 @@ public class FullTextSearchPage extends NavigationPage
         return renderer;
     }
 
+    public FullTextSearchResults getActiveUserSearchResults(NavigationContext nc)
+    {
+        return (FullTextSearchResults) nc.getHttpRequest().getSession().getAttribute(activeUserSearchResultsSessAttrName);
+    }
+
+    public void setActiveUserSearchResults(NavigationContext nc, FullTextSearchResults searchResults)
+    {
+        nc.getHttpRequest().getSession().setAttribute(activeUserSearchResultsSessAttrName, searchResults);
+    }
+
+    public Query parseQuery(NavigationContext nc, SearchExpression expression) throws ParseException
+    {
+        if(expression.isSearchWithinPreviousResults())
+        {
+            final FullTextSearchResults searchResults = getActiveUserSearchResults(nc);
+            if(searchResults == null)
+                getLog().error("Attempting to search within a search but there is are no active search results");
+            else
+            {
+                BooleanQuery booleanQuery = new BooleanQuery();
+                booleanQuery.add(searchResults.getQuery(), true, false);
+                booleanQuery.add(QueryParser.parse(expression.getExprText(), defaultSearchFieldName, analyzer), true, false);
+                return booleanQuery;
+            }
+        }
+
+        return QueryParser.parse(expression.getExprText(), defaultSearchFieldName, analyzer);
+    }
+
+    public FullTextSearchResults constructSearchResults(NavigationContext nc, SearchExpression expression, Query query, Hits hits)
+    {
+        return new DefaultSearchResults(this, expression, query, hits, maxResultsPerPage);
+    }
+
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        final String expression = nc.getRequest().getParameter(renderer.getExpressionParameterName());
+        final ServletRequest request = nc.getRequest();
+        final SearchExpression expression = renderer.getSearchExpression(nc);
+        final String scrollToPage = request.getParameter(activeScrollPageParamName);
 
         if(expression != null)
         {
-            if(expression.length() == 0)
+            if(expression.isEmptyExpression())
             {
                 renderer.renderEmptyQuery(writer, nc);
                 return;
             }
 
+            // check to see if we're requesting a scroll to another page; if so, we expect search results to be stored
+            // in the session
+            if(scrollToPage != null)
+            {
+                final FullTextSearchResults searchResults = getActiveUserSearchResults(nc);
+
+                // if the search expression has not changed, reused the existing hits and go to another page
+                if(searchResults != null && expression.getExprText().equals(searchResults.getExpression().getExprText()))
+                {
+                    final String activePageParamValue = request.getParameter(activeScrollPageParamName);
+                    if(activePageParamValue != null)
+                        searchResults.scrollToPage(Integer.parseInt(activePageParamValue));
+                    renderer.renderSearchResults(writer, nc, searchResults);
+                    return;
+                }
+
+                // if we get to here it means that the search expression has changed or is null and we'll drop to the
+                // "normal" processing
+            }
+
             final Query query;
             try
             {
-                query = QueryParser.parse(expression, defaultSearchFieldName, analyzer);
+                query = parseQuery(nc, expression);
             }
             catch(ParseException e)
             {
@@ -191,55 +271,12 @@ public class FullTextSearchPage extends NavigationPage
             }
 
             final Hits hits = indexSearcher.search(query);
-            SearchHitsRenderer.SearchResults searchResults = new SearchHitsRenderer.SearchResults()
-            {
-                public int getEndRow()
-                {
-                    return Integer.MAX_VALUE;
-                }
-
-                public String getExpression()
-                {
-                    return expression;
-                }
-
-                public Hits getHits()
-                {
-                    return hits;
-                }
-
-                public Query getQuery()
-                {
-                    return query;
-                }
-
-                public int getStartRow()
-                {
-                    return 0;
-                }
-
-                public String[][] getAllHitFieldValues(String[] fieldNames) throws IOException
-                {
-                    String[][] hitsMatrix = new String[hits.length()][fieldNames.length];
-                    for(int i = 0; i < hits.length(); i++)
-                    {
-                        Document doc = hits.doc(i);
-                        for(int j = 0; j < fieldNames.length; j++)
-                        {
-                            hitsMatrix[i][j] = doc.get(fieldNames[j]);
-                        }
-                    }
-                    return hitsMatrix;
-                }
-
-                public FullTextSearchPage getFullTextSearchPage()
-                {
-                    return FullTextSearchPage.this;
-                }
-            };
-
+            final FullTextSearchResults searchResults = constructSearchResults(nc, expression, query, hits);
             FullTextSearchResultsActivity activity = new FullTextSearchResultsActivity(nc, searchResults);
             nc.getProject().broadcastActivity(activity);
+
+            if(searchResults.isScrollable())
+                setActiveUserSearchResults(nc, searchResults);
 
             renderer.renderSearchResults(writer, nc, searchResults);
         }

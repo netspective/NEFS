@@ -36,31 +36,24 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.Hits;
-import org.apache.lucene.search.Query;
 
 import com.netspective.sparx.navigate.NavigationContext;
 
 public interface SearchHitsRenderer
 {
-    public interface SearchResults
+    public interface SearchExpression
     {
-        public String getExpression();
+        public String getExprText();
 
-        public Query getQuery();
+        public boolean isEmptyExpression();
 
-        public Hits getHits();
-
-        public String[][] getAllHitFieldValues(String[] fieldNames) throws IOException;
-
-        public int getStartRow();
-
-        public int getEndRow();
-
-        public FullTextSearchPage getFullTextSearchPage();
+        public boolean isSearchWithinPreviousResults();
     }
 
-    public String getExpressionParameterName();
+    /**
+     * The search expression that has been entered by the user
+     */
+    public SearchExpression getSearchExpression(NavigationContext nc);
 
     /**
      * Called when the user should be requested (through a form or something) to enter a search expression
@@ -70,15 +63,21 @@ public interface SearchHitsRenderer
     /**
      * Called when the user has entered a search parameter and now should be shown the results
      */
-    public void renderSearchResults(Writer writer, NavigationContext nc, SearchResults searchResults) throws IOException;
+    public void renderSearchResults(Writer writer, NavigationContext nc, FullTextSearchResults searchResults) throws IOException;
 
     /**
      * Called when the user has entered a search query but the query could not be parsed properly
      */
-    public void renderQueryError(Writer writer, NavigationContext nc, String expression, ParseException exception) throws IOException;
+    public void renderQueryError(Writer writer, NavigationContext nc, SearchExpression expression, ParseException exception) throws IOException;
 
     /**
      * Called when the user enters an empty query
      */
     public void renderEmptyQuery(Writer writer, NavigationContext nc) throws IOException;
+
+    /**
+     * If this renderer expects to get a hits matrix using SearchResults.getActivePageHitMatrix then it can provide
+     * the default field names that belong in the matrix
+     */
+    public String[] getHitsMatrixFieldNames();
 }

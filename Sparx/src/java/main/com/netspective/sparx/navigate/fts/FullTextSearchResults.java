@@ -32,58 +32,46 @@
  */
 package com.netspective.sparx.navigate.fts;
 
-import com.netspective.commons.activity.Activity;
-import com.netspective.commons.activity.ActivityManager;
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.sparx.navigate.NavigationContext;
+import java.io.IOException;
 
-public class FullTextSearchResultsActivity implements Activity
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.Query;
+
+import com.netspective.sparx.navigate.fts.SearchHitsRenderer.SearchExpression;
+
+public interface FullTextSearchResults
 {
-    private NavigationContext navigationContext;
-    private FullTextSearchResults searchResults;
+    public SearchExpression getExpression();
 
-    public FullTextSearchResultsActivity(NavigationContext nc, FullTextSearchResults searchResults)
-    {
-        this.navigationContext = nc;
-        this.searchResults = searchResults;
-    }
+    public Query getQuery();
 
-    public String getUrlToRepeatSearch()
-    {
-        final FullTextSearchPage fullTextSearchPage = searchResults.getSearchPage();
+    public Hits getHits();
 
-        // the fullTextSearchPage.getUrl will already contain "expression" as part of the URL since expression is a
-        // retained param for that page
-        return fullTextSearchPage.getUrl(navigationContext);
-    }
+    public String[][] getActivePageHitValues(String[] fieldNames) throws IOException;
 
-    public void broadcastChildActivity(Activity activity)
-    {
-        navigationContext.getProject().broadcastActivity(activity);
-    }
+    public FullTextSearchPage getSearchPage();
 
-    public AuthenticatedUser getActivityAuthenticatedUser()
-    {
-        return navigationContext.getAuthenticatedUser();
-    }
+    public int getScrollTotalRows();
 
-    public ActivityManager getActivityManager()
-    {
-        return navigationContext.getActivityManager();
-    }
+    public int getScrollTotalPages();
 
-    public Activity getParentActivity()
-    {
-        return navigationContext;
-    }
+    public int getScrollRowsPerPage();
 
-    public boolean isAuthenticatedUserActivity()
-    {
-        return true;
-    }
+    public int getScrollActivePage();
 
-    public FullTextSearchResults getSearchResults()
-    {
-        return searchResults;
-    }
+    public int getScrollActivePageStartRow();
+
+    public int getScrollActivePageEndRow();
+
+    public boolean scrollToPage(int page);
+
+    public boolean isScrollable();
+
+    public int getScrollPagesRangeSize();
+
+    public int getScrollPagesRangeStartPage();
+
+    public int getScrollPagesRangeEndPage();
+
 }
+
