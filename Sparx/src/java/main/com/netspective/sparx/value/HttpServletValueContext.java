@@ -39,11 +39,12 @@
  */
 
 /**
- * $Id: HttpServletValueContext.java,v 1.8 2003-11-08 23:11:55 shahid.shah Exp $
+ * $Id: HttpServletValueContext.java,v 1.9 2003-11-09 19:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -102,4 +103,16 @@ public interface HttpServletValueContext extends ServletValueContext
      */
     public String constructAppUrl(String url);
 
+    /**
+     * Redirect the page to another page. This ends up calling the response sendRedirect() but also sets a flag
+     * so that the navigation system knows about it.
+     * @param url The URL to redirect to (it is automatically encoded).
+     */
+    public void sendRedirect(String url) throws IOException;
+
+    /**
+     * Ascertain whether the sendRedirect method was called
+     * @return True if send redirect was called, false if no redirection occurred
+     */
+    public boolean isRedirected();
 }

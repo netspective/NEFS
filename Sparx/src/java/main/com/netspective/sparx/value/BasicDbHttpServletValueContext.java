@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.44 2003-11-08 23:09:48 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.45 2003-11-09 19:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
 
 import java.sql.SQLException;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServlet;
@@ -112,6 +113,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     private ServletRequest request;
     private ServletResponse response;
     private String rootUrl;
+    private boolean redirected;
 
     public BasicDbHttpServletValueContext()
     {
@@ -412,6 +414,18 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         }
 
         return getConsoleFileBrowserLinkShowAlt(absolutePath, null);
+    }
+
+    public void sendRedirect(String url) throws IOException
+    {
+        HttpServletResponse resp = (HttpServletResponse) response;
+        resp.sendRedirect(resp.encodeRedirectURL(url));
+        redirected = true;
+    }
+
+    public boolean isRedirected()
+    {
+        return redirected;
     }
 
     public final String getConsoleFileBrowserLinkShowAlt(String absolutePath, String showAltPath)
