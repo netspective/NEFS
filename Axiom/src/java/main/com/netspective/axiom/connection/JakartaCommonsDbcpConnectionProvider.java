@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JakartaCommonsDbcpConnectionProvider.java,v 1.3 2003-09-09 00:56:02 roque.hernandez Exp $
+ * $Id: JakartaCommonsDbcpConnectionProvider.java,v 1.4 2003-09-13 03:03:53 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -248,6 +248,18 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
 
     }
 
+    public class DbcpPoolingDataSource extends PoolingDataSource
+    {
+        public DbcpPoolingDataSource(ObjectPool objectPool)
+        {
+            super(objectPool);
+        }
+
+        public ObjectPool getPool(){
+            return _pool;
+        }
+    }
+
     protected DataSource createDataSource(ValueContext vc, String dataSourceId) throws NamingException
     {
 
@@ -294,7 +306,7 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
             return null;
         }
 
-        PoolingDataSource dataSource = new PoolingDataSource(connectionPool);
+        DbcpPoolingDataSource dataSource = new DbcpPoolingDataSource(connectionPool);
 
         return dataSource;
     }
