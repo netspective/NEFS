@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+
+<netspective>
+    <product id="netspective-commons" version="7">
+        <dependencies>
+            <library>
+                <name>Apache Xalan</name>
+                <version>2.40</version>
+                <class-path>xalan.jar</class-path>
+                <source home-uri="http://xml.apache.org/xalan-j"
+                        license="Apache Software License"
+                        license-uri="http://xml.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Apache JAXP/TrAX XML APIs</name>
+                <version>2.4.0</version>
+                <class-path>xml-apis.jar</class-path>
+                <source home-uri="http://xml.apache.org/xerces-j"
+                    license="Apache Software License"
+                    license-uri="http://xml.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Apache Xerces</name>
+                <version>2.0.2</version>
+                <class-path>xerces.jar</class-path>
+                <source home-uri="http://xml.apache.org/xerces-j"
+                    license="Apache Software License"
+                    license-uri="http://xml.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jakarta Ant</name>
+                <version>1.5.3</version>
+                <class-path>ant.jar:ant-optional.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/ant"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jakarta Log4J</name>
+                <version>1.2.6</version>
+                <class-path>log4j.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/log4j/"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jakarta ORO</name>
+                <version>2.0.4</version>
+                <class-path>oro.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/oro/"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jakarta Commons Collections</name>
+                <version>2.1.0</version>
+                <class-path>commons-collections.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/commons/collections/"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jakarta Commons CLI (Command Line Interface)</name>
+                <version>1.0</version>
+                <class-path>commons-cli.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/commons/cli/"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jakarta Commons Discovery</name>
+                <version>0.0.1</version>
+                <class-path>commons-discovery.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/commons/discovery/"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jakarta Commons Lang</name>
+                <version>1.0.1</version>
+                <class-path>commons-lang.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/commons/lang/j"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jakarta Commons Logging</name>
+                <version>1.0.2</version>
+                <class-path>commons-logging.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/commons/logging/"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jakarta Commons Jexl</name>
+                <version>1.0 beta 1</version>
+                <class-path>commons-jexl.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/commons/jexl/"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
+                <name>Jenesis Source Code Generation Library</name>
+                <version>0.2.1</version>
+                <class-path>jenesis.jar</class-path>
+                <source home-uri="http://www.inxar.org/jenesis"
+                        license="GNU GPL"/>
+            </library>
+
+            <library>
+                <name>JUnit Testing Framework</name>
+                <version>3.8</version>
+                <class-path>junit.jar</class-path>
+                <source home-uri="http://www.junit.org"
+                        license="OSI Common Public License"
+                        license-uri="http://www.opensource.org/licenses/cpl.php"/>
+            </library>
+
+            <library>
+                <name>Sun Microsystems Java JDBC API</name>
+                <version>2.0</version>
+                <class-path>jdbc.jar</class-path>
+                <source home-uri="http://java.sun.com"
+                        license="Sun Microsystems"/>
+            </library>
+
+            <library>
+                <name>Sun Microsystems JavaDoc to XML Library</name>
+                <version>1.0</version>
+                <class-path>XmlDoclet.jar</class-path>
+                <source home-uri="http://www.sun.com/software/xml/developers/doclet/"
+                        license="Sun Microsystems"/>
+            </library>
+        </dependencies>
+    </product>
+</netspective>
+
+

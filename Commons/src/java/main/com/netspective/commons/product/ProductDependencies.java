@@ -39,85 +39,51 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.3 2003-08-15 01:48:52 shahid.shah Exp $
+ * $Id: ProductDependencies.java,v 1.1 2003-08-15 01:48:53 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.product;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import com.netspective.commons.product.NetspectiveComponent;
-
-public class ProductRelease implements Product
+public class ProductDependencies
 {
-    public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
+    private ProductInfo owner;
+    private List products = new ArrayList();
+    private List libraries = new ArrayList();
 
-    public static final String PRODUCT_NAME = "Netspective Commons";
-    public static final String PRODUCT_ID = "netspective-commons";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
+    public ProductDependencies()
     {
-        NetspectiveComponent.getInstance().registerProduct(this);
     }
 
-    public String getProductId()
+    public ProductDependency createProduct()
     {
-        return PRODUCT_ID;
+        return new ProductDependency();
     }
 
-    public String getProductName()
+    public void addProduct(ProductDependency product)
     {
-        return PRODUCT_NAME;
+        products.add(product);
     }
 
-    public final int getReleaseNumber()
+    public List getProducts()
     {
-        return PRODUCT_RELEASE_NUMBER;
+        return products;
     }
 
-    public final int getVersionMajor()
+    public LibraryDependency createLibrary()
     {
-        return PRODUCT_VERSION_MAJOR;
+        return new LibraryDependency();
     }
 
-    public final int getVersionMinor()
+    public void addLibrary(LibraryDependency library)
     {
-        return PRODUCT_VERSION_MINOR;
+        libraries.add(library);
     }
 
-    public final int getBuildNumber()
+    public List getLibraries()
     {
-        return BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        return libraries;
     }
 }

@@ -39,85 +39,105 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.3 2003-08-15 01:48:52 shahid.shah Exp $
+ * $Id: LibraryDependency.java,v 1.1 2003-08-15 01:48:53 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.product;
 
-
-import com.netspective.commons.product.NetspectiveComponent;
-
-public class ProductRelease implements Product
+public class LibraryDependency
 {
-    public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
-
-    public static final String PRODUCT_NAME = "Netspective Commons";
-    public static final String PRODUCT_ID = "netspective-commons";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
+    public class Source
     {
-        NetspectiveComponent.getInstance().registerProduct(this);
+        private String homeUri;
+        private String license;
+        private String licenseUri;
+
+        public Source()
+        {
+        }
+
+        public String getHomeUri()
+        {
+            return homeUri;
+        }
+
+        public void setHomeUri(String homeUri)
+        {
+            this.homeUri = homeUri;
+        }
+
+        public String getLicense()
+        {
+            return license;
+        }
+
+        public void setLicense(String license)
+        {
+            this.license = license;
+        }
+
+        public String getLicenseUri()
+        {
+            return licenseUri == null ? homeUri : licenseUri;
+        }
+
+        public void setLicenseUri(String licenseUri)
+        {
+            this.licenseUri = licenseUri;
+        }
     }
 
-    public String getProductId()
+    private String name;
+    private String classPath;
+    private String version;
+    private Source source;
+
+    public LibraryDependency()
     {
-        return PRODUCT_ID;
     }
 
-    public String getProductName()
+    public String getClassPath()
     {
-        return PRODUCT_NAME;
+        return classPath;
     }
 
-    public final int getReleaseNumber()
+    public void setClassPath(String classPath)
     {
-        return PRODUCT_RELEASE_NUMBER;
+        this.classPath = classPath;
     }
 
-    public final int getVersionMajor()
+    public String getName()
     {
-        return PRODUCT_VERSION_MAJOR;
+        return name;
     }
 
-    public final int getVersionMinor()
+    public void setName(String name)
     {
-        return PRODUCT_VERSION_MINOR;
+        this.name = name;
     }
 
-    public final int getBuildNumber()
+    public Source getSource()
     {
-        return BuildLog.BUILD_NUMBER;
+        return source;
     }
 
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
+    public Source createSource()
     {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
+        return new Source();
     }
 
-    public final String getVersion()
+    public void addSource(Source source)
     {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
+        this.source = source;
     }
 
-    public final String getVersionAndBuild()
+    public String getVersion()
     {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
+        return version;
     }
 
-    public final String getProductBuild()
+    public void setVersion(String version)
     {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        this.version = version;
     }
 }

@@ -39,85 +39,72 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.3 2003-08-15 01:48:52 shahid.shah Exp $
+ * $Id: Netspective.java,v 1.1 2003-08-15 01:48:53 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.product;
 
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.Iterator;
 
-import com.netspective.commons.product.NetspectiveComponent;
+import com.netspective.commons.Product;
 
-public class ProductRelease implements Product
+public class Netspective
 {
-    public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
+    private List productInfos = new ArrayList();
+    private Map productInfoById = new HashMap();
 
-    public static final String PRODUCT_NAME = "Netspective Commons";
-    public static final String PRODUCT_ID = "netspective-commons";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
+    public Netspective()
     {
-        NetspectiveComponent.getInstance().registerProduct(this);
     }
 
-    public String getProductId()
+    public ProductInfo createProduct()
     {
-        return PRODUCT_ID;
+        return new ProductInfo();
     }
 
-    public String getProductName()
+    public void addProduct(ProductInfo info)
     {
-        return PRODUCT_NAME;
+        productInfos.add(info);
+        productInfoById.put(info.getId(), info);
     }
 
-    public final int getReleaseNumber()
+    public ProductInfo getProductInfo(Product product)
     {
-        return PRODUCT_RELEASE_NUMBER;
+        return (ProductInfo) productInfoById.get(product.getProductId());
     }
 
-    public final int getVersionMajor()
+    public Map getProductInfoById()
     {
-        return PRODUCT_VERSION_MAJOR;
+        return productInfoById;
     }
 
-    public final int getVersionMinor()
+    public List getProductInfos()
     {
-        return PRODUCT_VERSION_MINOR;
+        return productInfos;
     }
 
-    public final int getBuildNumber()
+    public List getAllLibraryDependencies()
     {
-        return BuildLog.BUILD_NUMBER;
-    }
+        Map libsBySortedName = new TreeMap();
+        for(int productInfoIndex = 0; productInfoIndex < productInfos.size(); productInfoIndex++)
+        {
+            ProductInfo info = (ProductInfo) productInfos.get(productInfoIndex);
+            List libDependencies = info.getDependencies().getLibraries();
+            for(int libDepIndex = 0; libDepIndex < libDependencies.size(); libDepIndex++)
+            {
+                LibraryDependency libDependency = (LibraryDependency) libDependencies.get(libDepIndex);
+                libsBySortedName.put(libDependency.getName(), libDependency);
+            }
+        }
 
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        List result = new ArrayList();
+        for(Iterator i = libsBySortedName.keySet().iterator(); i.hasNext(); )
+            result.add(libsBySortedName.get(i.next()));
+        return result;
     }
 }

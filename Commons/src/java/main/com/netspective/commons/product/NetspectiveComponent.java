@@ -39,85 +39,78 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.3 2003-08-15 01:48:52 shahid.shah Exp $
+ * $Id: NetspectiveComponent.java,v 1.1 2003-08-15 01:48:53 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.product;
 
+import java.util.List;
 
-import com.netspective.commons.product.NetspectiveComponent;
+import org.apache.tools.ant.BuildException;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
-public class ProductRelease implements Product
+import com.netspective.commons.Product;
+import com.netspective.commons.io.Resource;
+import com.netspective.commons.xdm.XdmComponentFactory;
+import com.netspective.commons.xdm.DefaultXdmComponent;
+
+public class NetspectiveComponent extends DefaultXdmComponent
 {
-    public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
+    private static final Log log = LogFactory.getLog(NetspectiveComponent.class);
+    private static final NetspectiveComponent INSTANCE = new NetspectiveComponent();
 
-    public static final String PRODUCT_NAME = "Netspective Commons";
-    public static final String PRODUCT_ID = "netspective-commons";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
+    public static NetspectiveComponent getInstance()
     {
-        NetspectiveComponent.getInstance().registerProduct(this);
+        return INSTANCE;
     }
 
-    public String getProductId()
+    private Netspective netspective = new Netspective();
+
+    public NetspectiveComponent()
     {
-        return PRODUCT_ID;
     }
 
-    public String getProductName()
+    public void registerProduct(Product product)
     {
-        return PRODUCT_NAME;
+        String productInfoConfFile = "conf/product-info.xml";
+        try
+        {
+            XdmComponentFactory.load(this, new Resource(product.getClass(), productInfoConfFile));
+            List errors = getErrors();
+            if(errors.size() > 0)
+            {
+                for(int i = 0; i < errors.size(); i++)
+                {
+                    Object error = errors.get(i);
+                    if(error instanceof Exception)
+                        throw new BuildException((Exception) error);
+                    log.error(error.toString());
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            log.error("Unable to load component", e);
+            e.printStackTrace();
+            return;
+        }
+
     }
 
-    public final int getReleaseNumber()
+    public Netspective createNetspective()
     {
-        return PRODUCT_RELEASE_NUMBER;
+        return netspective;
     }
 
-    public final int getVersionMajor()
+    public void addNetspective(Netspective netspective)
     {
-        return PRODUCT_VERSION_MAJOR;
     }
 
-    public final int getVersionMinor()
+    public Netspective getNetspective()
     {
-        return PRODUCT_VERSION_MINOR;
+        return netspective;
     }
 
-    public final int getBuildNumber()
-    {
-        return BuildLog.BUILD_NUMBER;
-    }
 
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
-    }
 }

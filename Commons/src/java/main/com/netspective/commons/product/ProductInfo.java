@@ -39,85 +39,52 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.3 2003-08-15 01:48:52 shahid.shah Exp $
+ * $Id: ProductInfo.java,v 1.1 2003-08-15 01:48:53 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.product;
 
-
-import com.netspective.commons.product.NetspectiveComponent;
-
-public class ProductRelease implements Product
+public class ProductInfo
 {
-    public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
+    private String id;
+    private String version;
+    private ProductDependencies dependencies = new ProductDependencies();
 
-    public static final String PRODUCT_NAME = "Netspective Commons";
-    public static final String PRODUCT_ID = "netspective-commons";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
+    public ProductInfo()
     {
-        NetspectiveComponent.getInstance().registerProduct(this);
     }
 
-    public String getProductId()
+    public String getId()
     {
-        return PRODUCT_ID;
+        return id;
     }
 
-    public String getProductName()
+    public void setId(String id)
     {
-        return PRODUCT_NAME;
+        this.id = id;
     }
 
-    public final int getReleaseNumber()
+    public String getVersion()
     {
-        return PRODUCT_RELEASE_NUMBER;
+        return version;
     }
 
-    public final int getVersionMajor()
+    public void setVersion(String version)
     {
-        return PRODUCT_VERSION_MAJOR;
+        this.version = version;
     }
 
-    public final int getVersionMinor()
+    public ProductDependencies createDependencies()
     {
-        return PRODUCT_VERSION_MINOR;
+        return dependencies;
     }
 
-    public final int getBuildNumber()
+    public void addDependencies(ProductDependencies dependencies)
     {
-        return BuildLog.BUILD_NUMBER;
     }
 
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
+    public ProductDependencies getDependencies()
     {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        return dependencies;
     }
 }

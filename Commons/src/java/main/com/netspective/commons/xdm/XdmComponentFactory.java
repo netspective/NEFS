@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentFactory.java,v 1.4 2003-05-17 17:51:04 shahid.shah Exp $
+ * $Id: XdmComponentFactory.java,v 1.5 2003-08-15 01:48:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -148,6 +148,30 @@ public class XdmComponentFactory
     }
 
     /**
+     * Factory method for obtaining a particular (already-instantiated) component from a file. This method will load
+     * the appropriate component file but not cache it for future use.
+     * @param file The file to obtain the content from
+     * @throws java.io.FileNotFoundException
+     */
+    public static void load(XdmComponent component, File file) throws DataModelException, FileNotFoundException
+    {
+        // if the class's attributes and model is not known, get it now
+        XmlDataModelSchema.getSchema(component.getClass());
+
+        // parse the XML file
+        long startTime = System.currentTimeMillis();
+        XdmParseContext pc = XdmParseContext.parse(component, file);
+        component.setLoadDuration(startTime, System.currentTimeMillis());
+
+        // if we had some syntax errors, make sure the component records them for later use
+        if(pc != null && pc.getErrors().size() != 0)
+            component.getErrors().addAll(pc.getErrors());
+
+        if(pc != null && pc.getWarnings().size() != 0)
+            component.getWarnings().addAll(pc.getWarnings());
+    }
+
+    /**
      * Factory method for obtaining a particular component from a resource. The ClassLoader of the given componentClass
      * is used to locate the resource. If the resource is actually a file, then this method locates the resource, creates
      * a File object and calls get(componentClass, File, true).
@@ -186,6 +210,28 @@ public class XdmComponentFactory
             warnings.addAll(pc.getWarnings());
 
         return component;
+    }
+
+    /**
+     * Factory method for obtaining a particular (pre-instantiated) component from a resource. This method will load
+     * the appropriate component file but not cache it for future use.
+     */
+    public static void load(XdmComponent component, Resource resource) throws IOException, DataModelException, FileNotFoundException
+    {
+        // if the class's attributes and model is not known, get it now
+        XmlDataModelSchema.getSchema(component.getClass());
+
+        // parse the XML file
+        long startTime = System.currentTimeMillis();
+        XdmParseContext pc = XdmParseContext.parse(component, resource);
+        component.setLoadDuration(startTime, System.currentTimeMillis());
+
+        // if we had some syntax errors, make sure the component records them for later use
+        if(pc != null && pc.getErrors().size() != 0)
+            component.getErrors().addAll(pc.getErrors());
+
+        if(pc != null && pc.getWarnings().size() != 0)
+            component.getWarnings().addAll(pc.getWarnings());
     }
 
     /**
