@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.6 2003-05-30 23:08:01 shahid.shah Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.7 2003-06-25 06:51:03 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -65,6 +65,8 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
         public ScrollState(String identifier)
         {
             setIdentifier(identifier);
+            haveMoreRows = true;
+            reachedEndOnce = false;
         }
 
         public TabularReport getReport()
@@ -83,6 +85,11 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
                 this.rowsProcessed += rowsProcessed;
         }
 
+        public void setNoMoreRows()
+        {
+            haveMoreRows = false;
+            reachedEndOnce = true;
+        }
         public void close()
         {
             AbstractTabularReportDataSource.this.close();

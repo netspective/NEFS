@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportDataSourceScrollState.java,v 1.1 2003-05-30 23:08:01 shahid.shah Exp $
+ * $Id: TabularReportDataSourceScrollState.java,v 1.2 2003-06-25 06:51:03 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -52,7 +52,7 @@ public interface TabularReportDataSourceScrollState
 
     public TabularReport getReport();
     public TabularReportDataSource getDataSource();
-
+    public void setNoMoreRows();
     public int getActivePage();
     public void setActivePage(int page);
     public void setPageDelta(int delta);
