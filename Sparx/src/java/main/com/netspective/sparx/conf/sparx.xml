@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.56 2003-09-15 03:59:57 aye.thu Exp $
+  * $Id: sparx.xml,v 1.57 2003-10-01 03:34:06 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -17,6 +17,7 @@
     <value-source class="com.netspective.sparx.value.source.AuthenticatedUserValueSource"/>
     <value-source class="com.netspective.sparx.value.source.EncryptParameterValueSource"/>
     <value-source class="com.netspective.commons.value.source.RedirectValueSource"/>
+     <value-source class="com.netspective.sparx.value.source.PageIdValueSource"/>
 
     <command class="com.netspective.sparx.command.RedirectCommand"/>
     <command class="com.netspective.sparx.command.DialogCommand"/>
