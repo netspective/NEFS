@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerAuthenticatedUser.java,v 1.1 2003-10-22 19:04:13 shahid.shah Exp $
+ * $Id: NavigationControllerAuthenticatedUser.java,v 1.2 2003-10-22 19:06:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -60,7 +60,10 @@ public interface NavigationControllerAuthenticatedUser
     public boolean hasUserSpecificNavigationTree();
 
     /**
-     * Return the user's special navigation tree (perhaps based on role or other decisions).
+     * Return the user's special navigation tree (perhaps based on role or other decisions). The actual navigation tree
+     * instance will usually be retrieved from the ncServlet.getProject() method. Unless the method is dynamically
+     * generating the navigation tree, the implementation should not cache the navigation tree because navigation trees
+     * like all other Project components may be refreshed if the XML files that created them change in the file system.
      * @return The navigation tree that the user should use or NULL if it has no special tree and the default one
      *         assigned by the NavigationController should be used.
      */
