@@ -62,6 +62,40 @@ public class ResultSetUtils
     }
 
     /**
+     * Create a text array that contains the headings of the columns in the given result set.
+     *
+     * @param resultSet                  The result set that we want to create column headers for
+     * @param preferColumnLabelForHeader True if we want to use the label (if available) for a column or use it's name if unavailable or false
+     *
+     * @return The headings
+     */
+    public String[] getColumnHeadings(ResultSet resultSet, boolean preferColumnLabelForHeader) throws SQLException
+    {
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+        int columnsCount = rsmd.getColumnCount();
+
+        String[] header = new String[columnsCount];
+        if(preferColumnLabelForHeader)
+        {
+            for(int i = 1; i < columnsCount; i++)
+            {
+                String label = rsmd.getColumnLabel(i);
+                if(label != null && label.length() > 0)
+                    header[i - 1] = label;
+                else
+                    header[i - 1] = rsmd.getColumnName(i);
+            }
+        }
+        else
+        {
+            for(int i = 1; i < columnsCount; i++)
+                header[i - 1] = rsmd.getColumnName(i);
+        }
+
+        return header;
+    }
+
+    /**
      * Given a ResultSet, return a Map of all the column names in the ResultSet
      * in lowercase as the key and the index of the column as the value.
      */
