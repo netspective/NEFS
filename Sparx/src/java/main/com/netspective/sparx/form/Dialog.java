@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.40 2003-11-13 04:53:57 aye.thu Exp $
+ * $Id: Dialog.java,v 1.41 2003-11-13 17:26:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -61,6 +61,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -102,20 +106,13 @@ import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 
 /**
  * The <code>Dialog</code> object contains the dialog/form's structural information, field types, rules, and
  * execution logic. It is cached and reused whenever needed. It contains methods to create the HTML for display,
  * to perform client-side validations, and to perform server-side validations.
- * <p>
- * <center>
- * <img src="doc-files/dialog-1.jpg"/>
- * </center>
- * <p>
- * The dialog execution logic can contain different actions
- * such as SQL and business actions. These actions may be specified as XML or can point to any Java action classes.
- * For dialog objects that need more complex actions for data population, validation,
- * and execution, the <code>Dialog</code> class can be subclassed to implement customized actions.
  */
 public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, XmlDataModelSchema.ConstructionFinalizeListener
 {
@@ -152,34 +149,12 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     public static final String PARAMNAME_DIALOGPREFIX = "_d.";
     public static final String PARAMNAME_CONTROLPREFIX = "_dc.";
 
-    public static final String PARAMNAME_ACTIVEMODE = ".active_mode";
-    public static final String PARAMNAME_NEXTMODE = ".next_mode";
-    public static final String PARAMNAME_RUNSEQ = ".run_sequence";
-    public static final String PARAMNAME_EXECSEQ = ".exec_sequence";
-    public static final String PARAMNAME_ORIG_REFERER = ".orig_referer";
+    public static final String ATTRNAME_DIALOG_STATES = "dialog_states";
+    public static final String PARAMNAME_DIALOG_STATE_ID = ".dialog_state_id";
     public static final String PARAMNAME_POST_EXECUTE_REDIRECT = ".post_exec_redirect";
-    public static final String PARAMNAME_TRANSACTIONID = ".transaction_id";
     public static final String PARAMNAME_SUBMIT_DATA = ".submit_data";
     public static final String PARAMNAME_PEND_DATA = ".pend_data";
-    public static final String PARAMNAME_RESETCONTEXT = ".reset_context";
-    public static final String PARAMNAME_INITIALCONTEXT = ".initial_context";
-
-    /*
-	   the debug flags when first passed in (start of dialog, run seq == 1)
-	   is passed using the parameter "debug_flags" (INITIAL). When the dialog is
-	   in run sequence > 1 (after submit) the data command is passed in as a
-	   hidden "pass-thru" variable with the suffix PARAMNAME_DEBUG_FLAGS
-    */
-    public static final String PARAMNAME_DEBUG_FLAGS_INITIAL = "debug_flags";
-    public static final String PARAMNAME_DEBUG_FLAGS = ".debug_flags";
-    /*
-	   the data perspective when first passed in (start of dialog, run seq == 1)
-	   is passed using the parameter "perspective" (INITIAL). When the dialog is
-	   in run sequence > 1 (after submit) the data command is passed in as a
-	   hidden "pass-thru" variable with the suffix PARAMNAME_PERSPECTIVE
-    */
-    public static final String PARAMNAME_PERSPECTIVE_INITIAL = "data_perspective";
-    public static final String PARAMNAME_PERSPECTIVE = ".data_perspective";
+    public static final String PARAMNAME_RESET_CONTEXT = ".reset_context";
 
     public static final String translateNameForMapKey(String name)
     {
@@ -205,6 +180,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     private DialogExecuteHandlers executeHandlers = new DialogExecuteHandlers();
     private DialogNextActionProvider nextActionProvider;
     private boolean redirectAfterExecute = true;
+    private ValueSource multipleExecErrorMessage = new StaticValueSource("Multiple executions of this dialog are not allowed.");
 
     private boolean haveInitialPopulateForDisplayListeners;
     private boolean haveInitialPopulateForSubmitListeners;
@@ -395,7 +371,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
      */
     public boolean hideHeading(DialogContext dc)
     {
-        if(dialogFlags.flagIsSet(DialogFlags.HIDE_HEADING_IN_EXEC_MODE) && dc.inExecuteMode())
+        if(dialogFlags.flagIsSet(DialogFlags.HIDE_HEADING_IN_EXEC_MODE) && dc.getDialogState().isInExecuteMode())
             return true;
         else
             return false;
@@ -421,39 +397,14 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_POST_EXECUTE_REDIRECT;
     }
 
-    public String getOriginalRefererParamName()
+    public String getDialogStateIdentifierParamName()
     {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_ORIG_REFERER;
-    }
-
-    public String getActiveModeParamName()
-    {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_ACTIVEMODE;
-    }
-
-    public String getNextModeParamName()
-    {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_NEXTMODE;
-    }
-
-    public String getRunSequenceParamName()
-    {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_RUNSEQ;
-    }
-
-    public String getExecuteSequenceParamName()
-    {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_EXECSEQ;
-    }
-
-    public String getTransactionIdParamName()
-    {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_TRANSACTIONID;
+        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_DIALOG_STATE_ID;
     }
 
     public String getResetContextParamName()
     {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_RESETCONTEXT;
+        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_RESET_CONTEXT;
     }
 
     public String getSubmitDataParamName()
@@ -466,24 +417,9 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_PEND_DATA;
     }
 
-    public final String getInitialContextParamName()
-    {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_INITIALCONTEXT;
-    }
-
     public String getValuesRequestAttrName()
     {
         return "dialog-" + htmlFormName + "-field-values";
-    }
-
-    public String getDataCmdParamName()
-    {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_PERSPECTIVE;
-    }
-
-    public String getDebugFlagsParamName()
-    {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_DEBUG_FLAGS;
     }
 
     /**
@@ -529,6 +465,16 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
             retainRequestParams = TextUtils.split(value, ",", true);
     }
 
+    public ValueSource getMultipleExecErrorMessage()
+    {
+        return multipleExecErrorMessage;
+    }
+
+    public void setMultipleExecErrorMessage(ValueSource multipleExecErrorMessage)
+    {
+        this.multipleExecErrorMessage = multipleExecErrorMessage;
+    }
+
     /**
      * Gets the URL for the next action of the dialog after execution
      * @param dc
@@ -537,12 +483,20 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
      */
     public String getNextActionUrl(DialogContext dc, String defaultUrl)
     {
+        // first see if there is tree-wide next action provider
+        DialogNextActionProvider navNextActionProvider = dc.getNavigationContext().getOwnerTree().getDialogNextActionProvider();
+        if(navNextActionProvider != null)
+            return navNextActionProvider.getDialogNextActionUrl(dc, defaultUrl);
+
+        // see if we are delegating our next action call to another class
         if(nextActionProvider != null)
             return nextActionProvider.getDialogNextActionUrl(dc, defaultUrl);
 
+        // if we don't have a director we'll have to use the default
         if(director == null)
             return defaultUrl;
 
+        // if we have a director then check to see if the director is supplying a next action
         String result = director.getNextActionUrl(dc);
         if(result == null || result.equals("-"))
             return defaultUrl;
@@ -715,6 +669,8 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
      */
     public void populateValues(DialogContext dc, int formatType)
     {
+        DialogState dialogState = dc.getDialogState();
+
         for(int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
@@ -729,7 +685,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
                 field.populateValue(dc, formatType);
         }
 
-        if(dc.isInitialEntry())
+        if(dialogState.isInitialEntry())
         {
             if(formatType == DialogField.DISPLAY_FORMAT && haveInitialPopulateForDisplayListeners)
             {
@@ -748,22 +704,6 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
                 for(int i = 0; i < initialPopulateListeners.size(); i++)
                     ((DialogInitialPopulateListener) initialPopulateListeners.get(i)).populateInitialDialogValues(dc, formatType);
             }
-            // save the initial values of the dialog if requested
-            try
-            {
-                if (getDialogFlags().flagIsSet(DialogFlags.RETAIN_INITIAL_STATE))
-                {
-                    // set the context XML string in the current request and it will be used to create a hidden
-                    // field when the dialog is generated
-                    dc.setInitialContextXml(dc.getAsXml());
-                }
-            }
-            catch (Exception e)
-            {
-                // failed to construct an XML string representation of the Dialog context
-                log.error("Failed to save the dialog's initial context as an XML string. ", e);
-            }
-
         }
 
         if(formatType == DialogField.DISPLAY_FORMAT && havePopulateForDisplayListeners)
@@ -783,15 +723,18 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
             for(int i = 0; i < populateListeners.size(); i++)
                 ((DialogPopulateListener) populateListeners.get(i)).populateDialogValues(dc, formatType);
         }
+
+        if(getDialogFlags().flagIsSet(DialogFlags.RETAIN_INITIAL_STATE) && dialogState.isInitialEntry())
+            dialogState.saveInitialState(dc);
     }
 
     /**
-     * Checks each field to make sure the state of it needs to be changed or not
+     * Checks each field to make see if the state of it needs to be changed or not
      * usually based on Conditionals.
      *
      * <b>IMPORTANT</b>: If any changes are made in this class, make sure
      * that they are also reflected in QuerySelectDialog and QueryBuilderDialog classes
-     * which extend this class but they overwrite this method and doesn't make a call
+     * which extend this class but they overwrite this method and don't make a call
      * to this method.
      */
     public void makeStateChanges(DialogContext dc, int stage)
@@ -805,13 +748,13 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         if(director != null)
             director.makeStateChanges(dc, stage);
 
-        if(stage == DialogContext.STATECALCSTAGE_INITIAL && haveStateBeforeValidationListeners)
+        if(stage == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION && haveStateBeforeValidationListeners)
         {
             for(int i = 0; i < stateBeforeValidationListeners.size(); i++)
                 ((DialogStateBeforeValidationListener) stateBeforeValidationListeners.get(i)).makeDialogStateChangesBeforeValidation(dc);
         }
 
-        if(stage == DialogContext.STATECALCSTAGE_FINAL && haveStateAfterValidationListeners)
+        if(stage == DialogContext.STATECALCSTAGE_AFTER_VALIDATION && haveStateAfterValidationListeners)
         {
             for(int i = 0; i < stateAfterValidationListeners.size(); i++)
                 ((DialogStateAfterValidationListener) stateAfterValidationListeners.get(i)).makeDialogStateChangesChangesAfterValidation(dc);
@@ -934,6 +877,36 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         writer.write(message + e.toString());
     }
 
+    public DialogState getDialogState(DialogContext dc)
+    {
+        HttpSession session = dc.getHttpRequest().getSession(true);
+        Map dialogStates = (Map) session.getAttribute(ATTRNAME_DIALOG_STATES);
+        if(dialogStates == null)
+        {
+            dialogStates = new HashMap();
+            session.setAttribute(ATTRNAME_DIALOG_STATES, dialogStates);
+        }
+
+        DialogState result = null;
+        String existingStateId = dc.getRequest().getParameter(getDialogStateIdentifierParamName());
+        if(existingStateId != null)
+            result = (DialogState) dialogStates.get(existingStateId);
+
+        if(result == null)
+        {
+            result = constructDialogState();
+            result.initialize(dc);
+            dialogStates.put(result.getIdentifier(), result);
+        }
+
+        return result;
+    }
+
+    public DialogState constructDialogState()
+    {
+        return new DialogState();
+    }
+
     /**
      * Create a dialog context for this dialog. If a custome dialog context class is defined, the custom class will be
      * instantiated, else a default <code>DialogContext</code> object will be returned.
@@ -967,7 +940,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         populateValues(dc, DialogField.DISPLAY_FORMAT);
         dc.calcState();
         // validated and the dialog is ready for execution
-        if(dc.inExecuteMode())
+        if(dc.getDialogState().isInExecuteMode())
         {
             dc.persistValues();
             populateValues(dc, DialogField.SUBMIT_FORMAT);
@@ -986,7 +959,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         if(!contextPreparedAlready)
             prepareContext(dc);
 
-        if(dc.inExecuteMode())
+        if(dc.getDialogState().isInExecuteMode())
         {
             boolean debug = debugFlags.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA);
             if(debug)
@@ -1131,7 +1104,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         code.append("{\n");
         code.append("    public static final String DIALOG_ID = \""+ getQualifiedName() +"\";\n");
         code.append("    private DialogContext dialogContext;\n");
-        code.append("    private DialogContext.DialogFieldStates fieldStates;\n\n");
+        code.append("    private DialogFieldStates fieldStates;\n\n");
         code.append("    public "+ className +"Context(DialogContext dc)\n");
         code.append("    {\n");
         code.append("        this.dialogContext = dc;\n");
