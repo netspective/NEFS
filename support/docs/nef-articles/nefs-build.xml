@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<article>
+  <title>NEFS Build Guide</title>
+
+  <sect1>
+    <title>Standard Tools</title>
+
+    <para>Although <acronym>NEFS</acronym> will work with almost any IDE and
+    app server, when performing any work on the Frameworks from a development
+    perspective, the assumption is that we're using the following
+    tools:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><ulink url="http://java.sun.com">JDK 1.3 or 1.4</ulink> for Java
+        Software Development Kit</para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="http://www.cvshome.org">CVS</ulink> for revision
+        control (visit <ulink
+        url="http://www.wincvs.org">www.wincvs.org</ulink> for a Windows
+        client)</para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="http://www.caucho.com">Resin 2.1.10+</ulink> for web
+        application server. Release 3.0 of Resin should work but has
+        <emphasis>not</emphasis> been tested.</para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="http://www.jetbrains.com">JetBrains IDEA 3.0.3 or
+        above</ulink> for Java IDE (optional) or you can use the supplied Ant
+        build scripts</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+    <title>CVSROOT Information</title>
+
+    <para>CVSROOT is <filename
+    class="directory">user@cvs.netspective.com:/home/netspective/cvs/Frameworks</filename>.
+    If you already have access to Sparx CVS, then your
+    <varname>user.name</varname> and <varname>password</varname> is the same.
+    If you don't yet have access to Sparx CVS then you'll need to get a
+    login/account.</para>
+  </sect1>
+
+  <sect1>
+    <title>Default Paths</title>
+
+    <para>Default location on development boxes are:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><filename class="directory">C:/Projects/Frameworks</filename>
+        for framework modules (called <varname>NEFS_HOME</varname>).</para>
+      </listitem>
+
+      <listitem>
+        <para><filename class="directory">NEFS_HOME/webapps</filename> for
+        test applications</para>
+      </listitem>
+
+      <listitem>
+        <para><filename class="directory">NEFS_HOME/ide</filename> for all
+        IDE-related files</para>
+      </listitem>
+
+      <listitem>
+        <para><filename class="directory">NEFS_HOME/support/build</filename>
+        for global build files</para>
+      </listitem>
+
+      <listitem>
+        <para><filename
+        class="directory">NEFS_HOME/support/ide/classes/main</filename> for
+        all classes compiled using an IDE</para>
+      </listitem>
+
+      <listitem>
+        <para><filename
+        class="directory">NEFS_HOME/support/ide/classes/test</filename> for
+        test cases</para>
+      </listitem>
+
+      <listitem>
+        <para><filename class="directory">NEFS_HOME/support/scripts</filename>
+        for various scripts associated with NEFS</para>
+      </listitem>
+
+      <listitem>
+        <para><filename
+        class="directory">NEFS_HOME/support/scripts/www</filename> for the
+        scripts used to update the <ulink
+        url="http://www.netspective.com">www.netspective.com</ulink>
+        site</para>
+      </listitem>
+    </itemizedlist>
+
+    <note>
+      <para>All defaults assume development work is being done on a Win32
+      platform but everything will work on <acronym>OS X</acronym>,
+      <acronym>Linux</acronym>, and <acronym>UNIX</acronym> as well. If you
+      are using OS X, Linux, or UNIX the default shell scripts assume that you
+      are using <filename class="directory"><filename
+      class="directory">$HOME/projects/Frameworks</filename></filename> as
+      <varname>NEFS_HOME</varname>.</para>
+    </note>
+  </sect1>
+
+  <sect1>
+    <title>Steps for CVS Checkout of NEFS Modules</title>
+
+    <orderedlist>
+      <listitem>
+        <para><command>cvs checkout Axiom </command>(into <filename
+        class="directory"><filename
+        class="directory">NEFS_HOME/Axiom</filename></filename>)</para>
+      </listitem>
+
+      <listitem>
+        <para><command>cvs checkout Commons</command> (into <filename
+        class="directory">NEFS_HOME/Commons</filename>)</para>
+      </listitem>
+
+      <listitem>
+        <para><command>cvs checkout Junxion</command> (into <filename
+        class="directory">NEFS_HOME/Junxion</filename>)</para>
+      </listitem>
+
+      <listitem>
+        <para><command>cvs checkout Sparx</command> (into <filename
+        class="directory">NEFS_HOME/Sparx</filename>)</para>
+      </listitem>
+
+      <listitem>
+        <para><command>cvs checkout support</command> (into <filename
+        class="directory">NEFS_HOME/support</filename>)</para>
+      </listitem>
+
+      <listitem>
+        <para><command>cvs checkout webapps</command> (into <filename
+        class="directory">NEFS_HOME/webapps</filename> -- contains all the
+        test and sample applications)</para>
+      </listitem>
+    </orderedlist>
+  </sect1>
+
+  <sect1>
+    <title>Compilation of Modules</title>
+
+    <sect2>
+      <title>If you're using JDK 1.4</title>
+
+      <orderedlist>
+        <listitem>
+          <para>Locate the <filename>xalan.jar</filename> file located in
+          <filename
+          class="directory">NEFS_HOME/Commons/lib/redist</filename>.</para>
+        </listitem>
+
+        <listitem>
+          <para>Locate your <varname>JAVA_HOME</varname> folder.</para>
+        </listitem>
+
+        <listitem>
+          <para>Create a folder under <filename
+          class="directory">JAVA_HOME/jre/lib</filename> named endorsed if
+          there isn't one already.</para>
+        </listitem>
+
+        <listitem>
+          <para>Copy the <filename>xalan.jar</filename> file into the
+          previously mentioned folder.</para>
+        </listitem>
+      </orderedlist>
+    </sect2>
+
+    <sect2>
+      <title>If you're compiling with Intellij IDEA</title>
+
+      <orderedlist>
+        <listitem>
+          <para>Open <acronym>IDEA</acronym> using
+          <filename><filename>NEFS_HOME/tools/idea/Netspective
+          Frameworks.ipr</filename></filename> project file.</para>
+        </listitem>
+
+        <listitem>
+          <para>In IDEA, open <guimenuitem>File</guimenuitem> |
+          <guimenuitem>Project Properties</guimenuitem> and make sure that the
+          output directory points to <filename
+          class="directory">NEFS_HOME/support/ide/classes/main</filename>.</para>
+        </listitem>
+
+        <listitem>
+          <para>Compile full project using <guimenuitem>Build</guimenuitem> |
+          <guimenuitem>Rebuild Project</guimenuitem> (this will put classes in
+          <filename
+          class="directory">NEFS_HOME/support/ide/classes/main</filename>)</para>
+        </listitem>
+      </orderedlist>
+    </sect2>
+
+    <sect2>
+      <title>If you compiled with Ant</title>
+
+      <orderedlist>
+        <listitem>
+          <para>Make sure the <varname>JAVA_HOME</varname> environment
+          variable is set to point to the <acronym>JDK</acronym>
+          folder.</para>
+        </listitem>
+
+        <listitem>
+          <para>Make sure the following files are not in READ-ONLY
+          mode:</para>
+
+          <itemizedlist>
+            <listitem>
+              <para><filename>NEFS_HOME/Axiom/src/java/main/com/netspective/axiom/BuildLog.java</filename></para>
+            </listitem>
+
+            <listitem>
+              <para><filename>NEFS_HOME/Commons/src/java/main/com/nespective/commons/BuildLog.java</filename></para>
+            </listitem>
+
+            <listitem>
+              <para><filename>NEFS_HOME/Sparx/src/java/main/com/nespective/sparx/BuildLog.java</filename></para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+
+        <listitem>
+          <para>Open command prompt or terminal window.</para>
+        </listitem>
+
+        <listitem>
+          <para><command>cd NEFS_HOME/tools</command></para>
+        </listitem>
+
+        <listitem>
+          <para>On Win32 type <command>build</command> and on UNIX type
+          <command>sh build.sh</command></para>
+        </listitem>
+      </orderedlist>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Starting the Resin App Server</title>
+
+    <para>If you are not using the standard directory locations, open the
+    Resin <filename>NEFS_HOME/webapps/nefs-resin-*.conf</filename>
+    configuration files and follow the directions in the top of each file to
+    ensure that the proper paths are supplied. </para>
+
+    <sect2>
+      <title>If you compiled using Intellij IDEA</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>Resin is started on Windows from the command line using
+          <command>RESIN_HOME/bin/httpd -conf
+          NEFS_HOME/webapps/nefs-resin-sde-ide.conf</command></para>
+        </listitem>
+
+        <listitem>
+          <para>Resin is started on UNIX/OS X from the command line using
+          <command>RESIN_HOME/bin/httpd.sh -conf
+          NEFS_HOME/webapps/nefs-resin-sde-ide.conf</command> </para>
+        </listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>If you compiled with Ant</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>Resin is started on Windows from the command line using
+          <command>RESIN_HOME/bin/httpd -conf
+          NEFS_HOME/webapps/nefs-resin-sde-ant.conf</command></para>
+        </listitem>
+
+        <listitem>
+          <para>Resin is started on UNIX/OS X from the command line using
+          <command>RESIN_HOME/bin/httpd.sh -conf
+          NEFS_HOME/webapps/nefs-resin-sde-ant.conf</command></para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Point to <ulink
+      url="http://localhost:8099">http://localhost:8099</ulink> to view the
+      <application>NEFS Sampler</application> home page.</para>
+    </sect2>
+  </sect1>
+</article>
