@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataSourcesCatalogPanel.java,v 1.4 2003-09-05 16:12:13 roque.hernandez Exp $
+ * $Id: DataSourcesCatalogPanel.java,v 1.5 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -50,6 +50,7 @@ import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.source.AbstractValueSource;
 import com.netspective.commons.value.ValueSource;
@@ -74,7 +75,7 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
     {
         TabularReportColumn column = catalogReport.createColumn();
         column.setHeading(new StaticValueSource("Identifier"));
-        column.setCommand("redirect,explorer?"+ REQPARAMNAME_DATA_SOURCE +"=%{0}");
+        column.setRedirect(new HttpServletRedirectValueSource("explorer?"+ REQPARAMNAME_DATA_SOURCE +"=%{0}"));
         catalogReport.addColumn(column);
 
         column = catalogReport.createColumn();
@@ -184,7 +185,7 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
                     if((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
                         return entry.getDataSourceId();
                     else
-                        return reportValueContext.getSkin().constructRedirect(reportValueContext, reportValueContext.getReport().getColumn(0).getCommand(), entry.getDataSourceId(), entry.getDataSourceId(), null);
+                        return reportValueContext.getSkin().constructRedirect(reportValueContext, reportValueContext.getReport().getColumn(0).getRedirect(), entry.getDataSourceId(), entry.getDataSourceId(), null);
 
                 case 1:
                     return ((HtmlTabularReportValueContext) reportValueContext).getDefaultDataSource().equals(entry.getDataSourceId()) ?

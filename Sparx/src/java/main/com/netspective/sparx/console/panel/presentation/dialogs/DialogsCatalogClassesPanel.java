@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogClassesPanel.java,v 1.4 2003-07-10 00:52:08 shahid.shah Exp $
+ * $Id: DialogsCatalogClassesPanel.java,v 1.5 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -66,6 +66,7 @@ import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.value.ValueSource;
 
 public class DialogsCatalogClassesPanel extends DialogsCatalogPanel
@@ -76,7 +77,7 @@ public class DialogsCatalogClassesPanel extends DialogsCatalogPanel
     static
     {
         dialogIdColumn.setHeading(new StaticValueSource("Dialog"));
-        dialogIdColumn.setCommand("redirect,detail?"+ DialogDetailPanel.REQPARAMNAME_DIALOG +"=%{1}");
+        dialogIdColumn.setRedirect(new HttpServletRedirectValueSource("detail?"+ DialogDetailPanel.REQPARAMNAME_DIALOG +"=%{1}"));
         catalogReport.addColumn(dialogIdColumn);
 
         // this is here just so that it will be available as part of the URL (it's hidden)

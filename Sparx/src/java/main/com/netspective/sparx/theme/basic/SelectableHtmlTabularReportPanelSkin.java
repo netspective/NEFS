@@ -10,6 +10,7 @@ import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelActions;
 import com.netspective.sparx.command.RedirectCommand;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.command.Command;
@@ -20,7 +21,7 @@ import java.io.Writer;
 
 /**
  * @author aye
- * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.4 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.5 2003-09-10 04:02:19 aye.thu Exp $
  */
 public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularReportPanelSkin
 {
@@ -50,14 +51,14 @@ public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularRepor
             if (reportAction != null)
             {
                 Theme theme = rc.getActiveTheme();
-                Command command = reportAction.getCommand(vc);
+                HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource) reportAction.getRedirect();
                 if (frameActions.size() > 0)
                     writer.write("            <td bgcolor=\"white\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");
-                if (command instanceof RedirectCommand)
+                if (redirect != null)
                 {
                      writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
-                        "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ ((RedirectCommand) command).getLocation().getTextValue(rc)  +
+                        "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ redirect.getUrl(rc)  +
                         "\">&nbsp;" + reportAction.getCaption().getTextValue(vc) + "&nbsp;</a></td>");
                 }
             }
@@ -86,7 +87,7 @@ public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularRepor
                 HtmlPanelFrame frame = ((HtmlTabularReportValueContext) rc).getPanel().getFrame();
                 HtmlPanelAction panelAction = frame.createAction();
                 panelAction.setCaption(reportAction.getCaption() != null ? reportAction.getCaption() : new StaticValueSource("Process Items"));
-                panelAction.setCommand(reportAction.getCommand());
+                panelAction.setRedirect(reportAction.getRedirect());
                 frame.addAction(panelAction);
             }
         }*/

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.4 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.5 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.framework;
@@ -54,6 +54,7 @@ import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModel;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -85,7 +86,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
     static
     {
         elementTagIdColumn.setHeading(new StaticValueSource("Element"));
-        elementTagIdColumn.setCommand("redirect,detail?"+ REQPARAMNAME_SHOW_CLASS_DETAIL +"=%{1}");
+        elementTagIdColumn.setRedirect(new HttpServletRedirectValueSource("detail?"+ REQPARAMNAME_SHOW_CLASS_DETAIL +"=%{1}"));
         structureReport.addColumn(elementTagIdColumn);
 
         GeneralColumn xdmClass = new GeneralColumn();
@@ -449,7 +450,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             {
                 case 0:
                     if(activeRow.isConcreteClass())
-                        return reportValueContext.getSkin().constructRedirect(reportValueContext, elementTagIdColumn.getCommand(), activeRow.elementName, null, null);
+                        return reportValueContext.getSkin().constructRedirect(reportValueContext, elementTagIdColumn.getRedirect(), activeRow.elementName, null, null);
                     else
                         return activeRow.elementName;
 
@@ -598,7 +599,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             {
                 case 0:
                     if(activeRow.isConcreteClass())
-                        return reportValueContext.getSkin().constructRedirect(reportValueContext, elementTagIdColumn.getCommand(), activeRow.elementName, null, null);
+                        return reportValueContext.getSkin().constructRedirect(reportValueContext, elementTagIdColumn.getRedirect(), activeRow.elementName, null, null);
                     else
                         return activeRow.elementName;
 

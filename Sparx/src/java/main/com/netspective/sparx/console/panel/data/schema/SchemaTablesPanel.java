@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTablesPanel.java,v 1.5 2003-05-30 23:11:32 shahid.shah Exp $
+ * $Id: SchemaTablesPanel.java,v 1.6 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -53,11 +53,11 @@ import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
@@ -81,7 +81,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
     static
     {
         schemaTableColumn.setHeading(new StaticValueSource("SQL Table Name"));
-        schemaTableColumn.setCommand("redirect,table?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"=%{1}");
+        schemaTableColumn.setRedirect(new HttpServletRedirectValueSource("table?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"=%{1}"));
         structureReport.addColumn(schemaTableColumn);
 
         GeneralColumn column = new GeneralColumn();

@@ -61,8 +61,7 @@ import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.panel.HtmlPanelActions;
-import com.netspective.sparx.command.RedirectCommand;
-import com.netspective.commons.command.Command;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -70,7 +69,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordViewerReportSkin.java,v 1.9 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: RecordViewerReportSkin.java,v 1.10 2003-09-10 04:02:19 aye.thu Exp $
  */
 public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -105,14 +104,14 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
             if (reportAction != null)
             {
                 Theme theme = rc.getActiveTheme();
-                Command command = reportAction.getCommand(vc);
+                HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource) reportAction.getRedirect();
                 if (frameActions.size() > 0)
                     writer.write("            <td bgcolor=\"white\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");
-                if (command instanceof RedirectCommand)
+                if (redirect != null)
                 {
                      writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
-                        "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ ((RedirectCommand) command).getLocation().getTextValue(rc)  +
+                        "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ redirect.getUrl(rc)  +
                         "\">&nbsp;" + reportAction.getCaption().getTextValue(vc) + "&nbsp;</a></td>");
                 }
             }
@@ -139,12 +138,12 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
         if (reportAction != null)
         {
-            Command actionCommand = reportAction.getCommand(rc);
+            HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource) reportAction.getRedirect();
             Theme theme = rc.getActiveTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-edit.gif") + "\" " +
                 "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
-            String editRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
+            String editRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
             writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
             writer.write(editRecordUrl);

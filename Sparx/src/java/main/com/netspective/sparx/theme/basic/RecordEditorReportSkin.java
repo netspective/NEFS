@@ -59,13 +59,14 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.commons.command.Command;
+import com.netspective.commons.value.ValueSource;
 
 import java.io.Writer;
 import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordEditorReportSkin.java,v 1.10 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: RecordEditorReportSkin.java,v 1.11 2003-09-10 04:02:19 aye.thu Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -92,11 +93,11 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 
         if (reportAction != null)
         {
-            Command actionCommand = reportAction.getCommand(rc);
+            ValueSource redirect = reportAction.getRedirect();
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-delete.gif") + "\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
-            String deleteRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
+            String deleteRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             deleteRecordUrl = report.replaceOutputPatterns(rc, ds, deleteRecordUrl);
 
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
@@ -127,12 +128,12 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
         if (reportAction != null)
         {
-            Command actionCommand = reportAction.getCommand(rc);
+            ValueSource redirect = reportAction.getRedirect();
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-edit.gif") + "\" " +
                 "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
-            String editRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
+            String editRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
             writer.write(editRecordUrl);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SelectFieldChoicesPanel.java,v 1.4 2003-09-07 19:26:00 aye.thu Exp $
+ * $Id: SelectFieldChoicesPanel.java,v 1.5 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -68,6 +68,8 @@ import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.command.Command;
 
@@ -96,8 +98,8 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
     public SelectFieldChoicesPanel()
     {
         getFrame().setHeading(new StaticValueSource("Select Field Choices"));
-        setIdColumnCommand("redirect,javascript\\:opener.activeDialogPopup.populateControls(\"${0}\"\\, \"${1}\")");
-        setCaptionColumnCommand("redirect,javascript\\:opener.activeDialogPopup.populateControls(\"${0}\"\\, \"${1}\")");
+        setIdColumnRedirect("javascript:opener.activeDialogPopup.populateControls('${0}', '${1}')");
+        setCaptionColumnRedirect("javascript:opener.activeDialogPopup.populateControls('${0}', '${1}')");
     }
 
     /**
@@ -162,30 +164,30 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
         return choicesReport.getColumn(CHOICE_CAPTION_COLUMN_INDEX);
     }
 
-    public Command getIdColumnCommand()
+    public ValueSource getIdColumnRedirect()
     {
-        return choicesReport.getColumn(CHOICE_ID_COLUMN_INDEX).getCommand();
+        return choicesReport.getColumn(CHOICE_ID_COLUMN_INDEX).getRedirect();
     }
 
-    public Command getCaptionColumnCommand()
+    public ValueSource getCaptionColumnRedirect()
     {
-        return choicesReport.getColumn(CHOICE_CAPTION_COLUMN_INDEX).getCommand();
-    }
-
-    /**
-     * Sets the command associated with the ID column
-     */
-    public void setIdColumnCommand(String command)
-    {
-        choicesReport.getColumn(CHOICE_ID_COLUMN_INDEX).setCommand(command);
+        return choicesReport.getColumn(CHOICE_CAPTION_COLUMN_INDEX).getRedirect();
     }
 
     /**
-     * Sets the command asociated with the caption column
+     * Sets the redirect url associated with the ID column
      */
-    public void setCaptionColumnCommand(String command)
+    public void setIdColumnRedirect(String redirect)
     {
-        choicesReport.getColumn(CHOICE_CAPTION_COLUMN_INDEX).setCommand(command);
+        choicesReport.getColumn(CHOICE_ID_COLUMN_INDEX).setRedirect(new HttpServletRedirectValueSource(redirect));
+    }
+
+    /**
+     * Sets the redirect url asociated with the caption column
+     */
+    public void setCaptionColumnRedirect(String redirect)
+    {
+        choicesReport.getColumn(CHOICE_CAPTION_COLUMN_INDEX).setRedirect(new HttpServletRedirectValueSource(redirect));
     }
 
     /**

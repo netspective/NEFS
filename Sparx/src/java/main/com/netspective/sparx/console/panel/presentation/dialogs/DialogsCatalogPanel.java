@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogPanel.java,v 1.8 2003-08-24 18:41:28 shahid.shah Exp $
+ * $Id: DialogsCatalogPanel.java,v 1.9 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -206,7 +206,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
             switch(columnIndex)
             {
                 case 0:
-                    return reportValueContext.getSkin().constructRedirect(reportValueContext, reportValueContext.getReport().getColumn(0).getCommand(), activeRowDialog.getName(), activeRowDialog.getQualifiedName(), null);
+                    return reportValueContext.getSkin().constructRedirect(reportValueContext, reportValueContext.getReport().getColumn(0).getRedirect(), activeRowDialog.getName(), activeRowDialog.getQualifiedName(), null);
 
                 case 1:
                     return activeRowDialog.getQualifiedName();

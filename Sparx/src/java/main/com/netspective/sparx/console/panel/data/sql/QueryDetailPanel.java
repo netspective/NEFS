@@ -39,13 +39,12 @@
  */
 
 /**
- * $Id: QueryDetailPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: QueryDetailPanel.java,v 1.4 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
 
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -100,7 +99,9 @@ public abstract class QueryDetailPanel extends AbstractHtmlTabularReportPanel
         String name = (String) nc.getHttpRequest().getAttribute(REQPARAMNAME_QUERY);
         if(name == null)
             name = nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY);
-
-        return new SelectedQuery(nc.getSqlManager().getQueries(), name);
+        if (name != null)
+            return new SelectedQuery(nc.getSqlManager().getQueries(), name);
+        else
+            return null;
     }
 }

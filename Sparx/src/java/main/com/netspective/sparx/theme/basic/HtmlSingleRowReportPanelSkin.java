@@ -48,7 +48,7 @@
  * OF SUCH DAMAGES.
  *
  * @author Shahid N. Shah
- * $Id: HtmlSingleRowReportPanelSkin.java,v 1.4 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: HtmlSingleRowReportPanelSkin.java,v 1.5 2003-09-10 04:02:19 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -63,6 +63,7 @@ import com.netspective.commons.report.tabular.TabularReportColumns;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.command.Command;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -157,10 +158,10 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
                         state.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN) ?
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_FOR_URL);
-                Command command = column.getCommand();
-                if (command != null && command instanceof RedirectCommand)
+                HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource)column.getRedirect();
+                if (redirect != null)
                 {
-                    data = rc.getSkin().constructRedirect(rc, column.getCommand(), data, null, null);
+                    data = rc.getSkin().constructRedirect(rc, redirect, data, null, null);
                 }
 
                 String heading = column.getHeading() != null ? column.getHeading().getValue(rc).getTextValue() : "&nbsp;";

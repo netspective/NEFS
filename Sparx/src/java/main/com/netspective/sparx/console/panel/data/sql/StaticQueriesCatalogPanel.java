@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticQueriesCatalogPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: StaticQueriesCatalogPanel.java,v 1.4 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -54,9 +54,8 @@ import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
@@ -75,7 +74,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
     static
     {
         queryIdColumn.setHeading(new StaticValueSource("Query"));
-        queryIdColumn.setCommand("redirect,detail?"+ QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY +"=%{1}");
+        queryIdColumn.setRedirect(new HttpServletRedirectValueSource("detail?"+ QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY +"=%{1}"));
         catalogReport.addColumn(queryIdColumn);
 
         // this is here just so that it will be available as part of the URL (it's hidden)
@@ -265,7 +264,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             switch(columnIndex)
             {
                 case 0:
-                    return reportValueContext.getSkin().constructRedirect(reportValueContext, queryIdColumn.getCommand(), activeRowQuery.getName(), activeRowQuery.getQualifiedName(), null);
+                    return reportValueContext.getSkin().constructRedirect(reportValueContext, queryIdColumn.getRedirect(), activeRowQuery.getName(), activeRowQuery.getQualifiedName(), null);
 
                 case 1:
                     return activeRowQuery.getQualifiedName();

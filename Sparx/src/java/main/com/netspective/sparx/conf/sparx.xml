@@ -2,11 +2,12 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.50 2003-09-06 16:44:09 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.51 2003-09-10 04:02:18 aye.thu Exp $
   *****************************************************************************************
  -->
 
  <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
 
     <value-source class="com.netspective.sparx.value.source.ServletContextFileValueSource"/>
     <value-source class="com.netspective.sparx.value.source.ServletContextUriValueSource"/>
@@ -16,12 +17,17 @@
     <value-source class="com.netspective.sparx.value.source.DialogFieldValueSource"/>
     <value-source class="com.netspective.sparx.value.source.AuthenticatedUserValueSource"/>
     <value-source class="com.netspective.sparx.value.source.EncryptParameterValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.HttpServletRedirectValueSource"/>
+    <value-source class="com.netspective.commons.value.source.RedirectValueSource"/>
+
+
 
     <command class="com.netspective.sparx.command.RedirectCommand"/>
     <command class="com.netspective.sparx.command.DialogCommand"/>
     <command class="com.netspective.sparx.command.ValueSourceCommand"/>
     <command class="com.netspective.sparx.command.QueryCommand"/>
     <command class="com.netspective.sparx.command.QueryDefnCommand"/>
+    <command class="com.netspective.sparx.command.ListValueSourceCommand"/>
 
     <connection-provider-entry-statistics class="com.netspective.sparx.console.util.ResinDataSourcePoolStatistics"/>
     <class-path-provider class="com.netspective.sparx.console.util.ResinCompilingClassPathProvider"/>

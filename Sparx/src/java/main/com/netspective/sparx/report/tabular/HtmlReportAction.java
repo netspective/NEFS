@@ -49,7 +49,7 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
 /**
  * @author aye
- * $Id: HtmlReportAction.java,v 1.4 2003-07-27 04:57:34 aye.thu Exp $
+ * $Id: HtmlReportAction.java,v 1.5 2003-09-10 04:02:18 aye.thu Exp $
  */
 public class HtmlReportAction
 {
@@ -83,7 +83,7 @@ public class HtmlReportAction
     }
 
     private ValueSource caption;
-    private ValueSource command;
+    private ValueSource redirect;
     private ValueSource title;
     private Type type;
 
@@ -143,38 +143,20 @@ public class HtmlReportAction
     }
 
     /**
-     * Gets the command of the report action
+     * Gets the redirect of the report action
      * @return   Valuesource
      */
-    public ValueSource getCommand()
+    public ValueSource getRedirect()
     {
-        return command;
+        return redirect;
     }
 
     /**
-     * Gets the command object of the report action
-     * @param vc
-     * @return
-     * @throws CommandNotFoundException
+     * Sets the redirect of the report action
+     * @param redirect
      */
-    public Command getCommand(ValueContext vc) throws CommandNotFoundException
+    public void setRedirect(ValueSource redirect)
     {
-        if(command == null)
-            return null;
-
-        String cmd = command.getTextValue(vc);
-        if(cmd == null)
-            return null;
-
-        return Commands.getInstance().getCommand(cmd);
-    }
-
-    /**
-     * Sets the command of the report action
-     * @param command
-     */
-    public void setCommand(ValueSource command)
-    {
-        this.command = command;
+        this.redirect = redirect;
     }
 }

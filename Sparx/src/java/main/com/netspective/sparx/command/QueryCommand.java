@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.9 2003-08-01 05:43:45 aye.thu Exp $
+ * $Id: QueryCommand.java,v 1.10 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -156,7 +156,17 @@ public class QueryCommand extends AbstractHttpServletCommand
             if(rowsPerPageStr.length() == 0 || rowsPerPageStr.equals(PARAMVALUE_DEFAULT))
                 rowsPerPage = UNLIMITED_ROWS;
             else
-                rowsPerPage = Integer.parseInt(rowsPerPageStr);
+            {
+                try
+                {
+                    rowsPerPage = Integer.parseInt(rowsPerPageStr);
+                }
+                catch (NumberFormatException e)
+                {
+                    e.printStackTrace();
+                    log.error("Invalid rows per page value for query command", e);
+                }
+            }
         }
         else
             rowsPerPage = UNLIMITED_ROWS;

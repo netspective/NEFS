@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsInheritancePanel.java,v 1.3 2003-05-30 23:11:32 shahid.shah Exp $
+ * $Id: SchemaTableColumnsInheritancePanel.java,v 1.4 2003-09-10 04:02:18 aye.thu Exp $
  */
 
 import java.util.List;
@@ -56,6 +56,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Columns;
@@ -73,7 +74,7 @@ public class SchemaTableColumnsInheritancePanel extends SchemaTableColumnsPanel
         columnsInhReport.addColumn(column);
 
         schemaTableColumn.setHeading(new StaticValueSource("Column"));
-        schemaTableColumn.setCommand("redirect,detail?"+ REQPARAMNAME_SHOW_DETAIL_COLUMN +"=%{0}");
+        schemaTableColumn.setRedirect(new HttpServletRedirectValueSource("detail?"+ REQPARAMNAME_SHOW_DETAIL_COLUMN +"=%{0}"));
         columnsInhReport.addColumn(schemaTableColumn);
 
         column = new GeneralColumn();

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.25 2003-09-07 19:19:41 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.26 2003-09-10 04:02:19 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -59,12 +59,10 @@ package com.netspective.sparx.theme.basic;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.StringTokenizer;
-import java.util.List;
 
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.sparx.panel.HtmlPanelActions;
 import com.netspective.commons.report.tabular.TabularReportColumns;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
@@ -79,12 +77,11 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollSta
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
-import com.netspective.sparx.command.RedirectCommand;
 import com.netspective.sparx.form.sql.QueryDialog;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.commons.command.Command;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -146,23 +143,32 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
     /**
      * Constructs the redirect URL from the passed in command
      * @param rc
-     * @param command
+     * @param redirect
      * @param label
      * @param hint
      * @param target
      * @return
      */
-    public String constructRedirect(TabularReportValueContext rc, Command command, String label, String hint, String target)
+    public String constructRedirect(TabularReportValueContext rc, ValueSource redirect, String label, String hint, String target)
     {
-        if (command instanceof RedirectCommand)
+        if (redirect instanceof HttpServletRedirectValueSource)
         {
             StringBuffer sb = new StringBuffer();
-            sb.append("<a href=\"" + ((RedirectCommand)command).getLocation().getTextValue(rc) + "\"");
+            String url = ((HttpServletRedirectValueSource)redirect).getUrl(rc);
+            if (url.startsWith("javascript"))
+            {
+                sb.append("<a href=\"#\" onclick=\"" + url + "\"");
+            }
+            else
+            {
+                sb.append("<a href='" + url + "'");
+
+            }
             if (hint != null)
                 sb.append(" title=\"" + hint + "\"");
             if (target != null)
                 sb.append(" target=\"" + target + "\"");
-            sb.append(">" + label + "</a");
+            sb.append(">" + label + "</a>");
             return sb.toString();
         }
         return null;
@@ -340,10 +346,10 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                         state.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN) ?
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
-                Command command = column.getCommand();
-                if (command != null && command instanceof RedirectCommand)
+                HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource) column.getRedirect();
+                if (redirect != null)
                 {
-                    data = rc.getSkin().constructRedirect(rc, column.getCommand(), data, null, null);
+                    data = rc.getSkin().constructRedirect(rc, redirect, data, null, null);
                     data = defn.replaceOutputPatterns(rc, ds, data);
                 }
 
@@ -468,14 +474,14 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 int colsCount = columns.size() + getRowDecoratorPrependColsCount(rc) + getRowDecoratorAppendColsCount(rc);
 
                 Theme theme = rc.getActiveTheme();
-                Command command = reportAction.getCommand(rc);
-                if (command instanceof RedirectCommand)
+                HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource)reportAction.getRedirect();
+                if (redirect != null)
                 {
                     String title = reportAction.getTitle().getTextValue(rc);
                     sb.append("            <td colspan=\"" + colsCount + "\" class=\"report-column-heading\">" +
                             "<a class=\""+ panelClassNamePrefix +"-frame-action\" title=\""+ title + "\" href=\"" +
-                             ((RedirectCommand) command).getLocation().getTextValue(rc)  + "\" onClick=\"return ReportAction_submit(" + QueryDialog.EXECUTE_SELECT_ACTION +
-                            ", '"+ ((RedirectCommand) command).getLocation().getTextValue(rc)  +
+                             redirect.getUrl(rc)  + "\" onClick=\"return ReportAction_submit(" + QueryDialog.EXECUTE_SELECT_ACTION +
+                            ", '"+ redirect.getUrl(rc)  +
                             "')\">&nbsp;" + reportAction.getCaption().getTextValue(rc) + "&nbsp;</a></td>");
                 }
             }
