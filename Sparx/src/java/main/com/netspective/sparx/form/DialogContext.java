@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.32 2003-11-13 22:58:31 aye.thu Exp $
+ * $Id: DialogContext.java,v 1.33 2003-12-16 19:25:38 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -759,10 +759,19 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         debugPanels.getFrame().setHeading(new StaticValueSource("Dialog Context Debug"));
         debugPanels.setStyle(new HtmlPanelsStyleEnumeratedAttribute(HtmlPanelsStyleEnumeratedAttribute.TABBED));
         debugPanels.getFrame().setFooting(new StaticValueSource("NOTE: You need to add override Dialog.execute(Writer, DialogContext)."));
+        debugPanels.setIdentifier("DlgCntxt_Debug");
 
-        debugPanels.addPanel(new DialogContextAttributesPanel());
-        debugPanels.addPanel(new DialogContextFieldStatesPanel());
-        debugPanels.addPanel(new DialogContextFieldStatesClassesPanel());
-        debugPanels.addPanel(new HttpRequestParametersPanel());
+        DialogContextAttributesPanel attrPanel = new DialogContextAttributesPanel();
+        attrPanel.setPanelIdentifier("DlgCntxt_Debug_Attributes");
+        debugPanels.addPanel(attrPanel);
+        DialogContextFieldStatesPanel statesPanel = new DialogContextFieldStatesPanel();
+        statesPanel.setPanelIdentifier("DlgCntxt_Debug_States");
+        debugPanels.addPanel(statesPanel);
+        DialogContextFieldStatesClassesPanel stateClassesPanel = new DialogContextFieldStatesClassesPanel();
+        stateClassesPanel.setPanelIdentifier("DlgCntxt_Debug_State_Classes");
+        debugPanels.addPanel(stateClassesPanel);
+        HttpRequestParametersPanel reqPanel = new HttpRequestParametersPanel();
+        reqPanel.setPanelIdentifier("DlgCntxt_Debug_RequestParams");
+        debugPanels.addPanel(reqPanel);
     }
 }
