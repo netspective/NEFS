@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CalendarUtils.java,v 1.4 2004-03-31 14:24:13 shahid.shah Exp $
+ * $Id: CalendarUtils.java,v 1.5 2004-04-06 18:15:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
@@ -158,12 +158,6 @@ public class CalendarUtils
     public String formatTimeOnly(Date date)
     {
         return timeOnlyFormat.format(date);
-    }
-
-    public int getJulianDay(long dateMillis)
-    {
-        calendar.setTimeInMillis(dateMillis);
-        return getJulianDay(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.YEAR));
     }
 
     public int getJulianDay(Date date)
