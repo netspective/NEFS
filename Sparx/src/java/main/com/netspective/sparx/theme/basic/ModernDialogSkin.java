@@ -72,7 +72,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     public static final String GRIDFIELDROW_PREFIX = "_dgfr.";
 
     /* flag indicating whether or not to display all the field errors at the top of the dialog */
-    private boolean summarizeErrors;
+    private boolean summarizeErrors = true;
 
     private String dialogTableStyleClass = null;
 
@@ -107,17 +107,12 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
     /* CSS style name for the dialog director block element */
     private String directorStyleClass = null;
-    /* CSS style name for the error message of the dialog */
-    private String errorStyleClass = null;
-    /* CSS style name for the error message heading element of the dialog */
-    private String errorHeadingStyleClass = null;
+
+    /* CSS style name for the block of errors at dialog */
+    private String dialogMessagesStyleClass = null;
 
     /* The string to display as the error message heading */
     private String errorMessageHeadingText = null;
-    /* CSS style name for the error description link displayed */
-    private String errorMessageLinkStyleClass = null;
-    /* CSS style name for the error message itself */
-    private String errorMessageStyleClass = null;
     /* CSS style name for the grid's row caption block element */
     private String gridCaptionBlockStyleClass = null;
     /* CSS style name for the grid's row data block element */
@@ -186,9 +181,8 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         separatorBlockStyleClass = "dialog-field-separator-block";
         separatorBannerStyleClass = "dialog-field-separator-banner";
         directorStyleClass = "dialog-buttons-block";
-        errorMessageStyleClass = "";
-        errorMessageHeadingText = "Please review the following:";
-        errorMessageLinkStyleClass = "";
+        errorMessageHeadingText = "Please review the following";
+        dialogMessagesStyleClass = "dialog-messages";
         gridCaptionBlockStyleClass = "dialog-field-grid-column-block";
         gridCaptionStyleClass = "dialog-field-grid-column-caption";
         gridCaptionRequiredStyleClass = "dialog-field-grid-column-caption-required";
@@ -308,22 +302,6 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     }
 
     /**
-     * Gets the CSS class name for the error message text
-     */
-    public String getErrorMessageStyleClass()
-    {
-        return errorMessageStyleClass;
-    }
-
-    /**
-     * Sets the CSS class name for the error message text
-     */
-    public void setErrorMessageStyleClass(String errorMessageStyleClass)
-    {
-        this.errorMessageStyleClass = errorMessageStyleClass;
-    }
-
-    /**
      * Gets the CSS class name for the grid row's caption string
      */
     public String getGridRowCaptionStyleClass()
@@ -421,22 +399,6 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     }
 
     /**
-     * Gets the CSS class name for the dialog's error message list item link
-     */
-    public String getErrorMessageLinkStyleClass()
-    {
-        return errorMessageLinkStyleClass;
-    }
-
-    /**
-     * Sets the CSS class name for the dialog's error message list item link
-     */
-    public void setErrorMessageLinkStyleClass(String errorMessageLinkStyleClass)
-    {
-        this.errorMessageLinkStyleClass = errorMessageLinkStyleClass;
-    }
-
-    /**
      * Gets the string to display as the error message heading of the dialog
      */
     public String getErrorMessageHeadingText()
@@ -455,33 +417,17 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     /**
      * Gets the CSS class name for the dialog's error message heading
      */
-    public String getErrorHeadingStyleClass()
+    public String getDialogMessagesStyleClass()
     {
-        return errorHeadingStyleClass;
+        return dialogMessagesStyleClass;
     }
 
     /**
      * Sets the CSS class name for the dialog's error message heading
      */
-    public void setErrorHeadingStyleClass(String errorHeadingStyleClass)
+    public void setDialogMessagesStyleClass(String dialogMessagesStyleClass)
     {
-        this.errorHeadingStyleClass = errorHeadingStyleClass;
-    }
-
-    /**
-     * Gets the CSS class name for the dialog's error message list item
-     */
-    public String getErrorStyleClass()
-    {
-        return errorStyleClass;
-    }
-
-    /**
-     * Sets the CSS class name for the dialog's error message list item
-     */
-    public void setErrorStyleClass(String errorStyleClass)
-    {
-        this.errorStyleClass = errorStyleClass;
+        this.dialogMessagesStyleClass = dialogMessagesStyleClass;
     }
 
     /**
@@ -606,8 +552,8 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                 {
                     // render the field
                     DialogFieldFlags flags = field.getFlags();
-                    //if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE))
-                    //    writer.write("<br/>");
+                    if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE))
+                        writer.write("<br/>");
 
                     writer.write("<td class='dialog-field-composite-item'>");
                     //check to see if the caption of the child field should be shown
@@ -648,7 +594,6 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(parentField.getCaption() != null && parentField.getCaption().hasValue(dc))
             writer.write("<legend>" + parentField.getCaption().getTextValue(dc) + "</legend>\n");
         writer.write("<table class=\"dialog-section-field\">\n");
-        int displayedColCount = 0;
         for(int i = 0; i < children.size(); i++)
         {
             DialogField field = children.get(i);
@@ -661,39 +606,15 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                 }
                 else
                 {
-                    //if (displayedColCount == 0)
-                    //    writer.write("<tr>\n");
-                    // render the field
                     String captionHtml = generateFieldCaption(field, dc);
                     String controlHtml = generateFieldControl(field, dc);
                     String messagesHtml = generateFieldErrorMessage(field, dc, fieldErrorMsgs);
                     String hintHtml = generateFieldHint(field, dc);
-                    //writer.write("<td>");
-                    //writer.write(captionHtml + "<br/>" + controlHtml);
-                    //writer.write(hintHtml != null ? "<br/>"+  hintHtml : "");
 
                     writer.write(generateFieldBlock(dc, field, captionHtml, controlHtml, hintHtml, messagesHtml));
-
-                    // now append the error message html on the next row
-                    //if (errorHtml != null && errorHtml.length() > 0)
-                    //    fieldsHtml.append("<tr><td><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  errorHtml + "</span></td></tr>\n");
-
-                    //writer.write("</td>\n");
-                    displayedColCount++;
-
-
-                    //if (displayedColCount == ((SectionField)parentField).getDisplayColumns())
-                    //{
-                    //    writer.write("</tr>\n");
-                    //    displayedColCount = 0;
-                    //}
                 }
             }
         }
-        //if (displayedColCount != 0)
-        //{
-        //    writer.write("<td colspan=\"" + (4- displayedColCount) + "\">&nbsp;</td></tr>");
-        //}
         writer.write("</table>\n");
         writer.write("</fieldset>\n");
         writer.write(hiddenWriter.getBuffer().toString());
@@ -857,7 +778,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                 if(errorMessages != null)
                 {
                     // display the error message for the row
-                    messagesHtml.append("<span class=\"" + getErrorMessageLinkStyleClass() + "\">");
+                    messagesHtml.append("<span class=\"" + getFieldErrorStyleClass() + "\">");
                     Iterator emi = errorMessages.iterator();
                     while(emi.hasNext())
                     {
@@ -910,13 +831,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         // if the section field is hidden, then all the children must be hidden too
         StringWriter writer = new StringWriter();
         renderSectionControlsHtml(writer, dc, field, fieldErrorMsgs);
-        String idHtml = generateFieldBlockId(field);
-        //fieldsHtml.append("<tr" + getFieldBlockStyleClass() != null ? (" class=\"" + getFieldBlockStyleClass() + "\">\n") : ">\n" +
-        //                "<td>\n" + writer.getBuffer().toString() + "</td></tr>\n");
-
         fieldsHtml.append("<tr class=\"" + getFieldBlockStyleClass() + "\">\n<td colspan=\"2\">\n" + writer.getBuffer().toString() + "</td></tr>\n");
-        //fieldsHtml.append(writer.getBuffer().toString());
-
         if(field.getName() != null)
             fieldsJSDefn.append(field.getJavaScriptDefn(dc));
     }
@@ -1092,7 +1007,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
         StringBuffer errorMsgsHtml = new StringBuffer();
         if(fieldErrorMsgs.size() > 0)
-            errorMsgsHtml.append(generateErrorMessages(fieldErrorMsgs, dlgTableColSpan));
+            errorMsgsHtml.append(generateDialogErrorMessages(fieldErrorMsgs, dlgTableColSpan));
         List fileList = dialog.getClientJs();
         String[] includeJSList = new String[fileList.size()];
         for(int i = 0; i < includeJSList.length; i++)
@@ -1188,18 +1103,17 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
      * @param fieldErrorMsgs  list of field error messages
      * @param dlgTableColSpan the number of columns defined for display
      */
-    protected String generateErrorMessages(List fieldErrorMsgs, int dlgTableColSpan)
+    protected String generateDialogErrorMessages(List fieldErrorMsgs, int dlgTableColSpan)
     {
         StringBuffer errorMsgsHtml = new StringBuffer();
-        errorMsgsHtml.append("<tr><td colspan='" + dlgTableColSpan + "'><ul type=\"square\">" +
-                             "<span class=\"" + getErrorHeadingStyleClass() + "\">" + getErrorMessageHeadingText() + "</span>\n");
+        final String dialogMessagesStyleClass = getDialogMessagesStyleClass();
+        errorMsgsHtml.append("<tr><td class='" + dialogMessagesStyleClass + "' colspan='" + dlgTableColSpan + "'><fieldset><legend>" + getErrorMessageHeadingText() + "</legend>\n<ul type='square'>");
         for(int i = 0; i < fieldErrorMsgs.size(); i++)
         {
             String errorMsg = (String) fieldErrorMsgs.get(i);
-            errorMsgsHtml.append("<li><a href='#dc_error_msg_" + i + "' class=\">" + getErrorMessageLinkStyleClass() + "\" " +
-                                 errorMsg + "</a></li>\n");
+            errorMsgsHtml.append("<li><a href='#dc_error_msg_" + i + "'> " + errorMsg + "</a></li>\n");
         }
-        errorMsgsHtml.append("</ul></td></tr>\n");
+        errorMsgsHtml.append("</ul></fieldset></td></tr>\n");
         return errorMsgsHtml.toString();
     }
 
@@ -1223,7 +1137,6 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         return fieldsHtml.toString();
     }
 
-
     /**
      * Generates the ID for the html block that will represent the field. This block could be any html block element
      * such as a TR or a DIV.
@@ -1235,6 +1148,19 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     protected String generateFieldBlockId(DialogField field)
     {
         return " id=\"" + FIELDROW_PREFIX + field.getQualifiedName() + "\" ";
+    }
+
+    /**
+     * Generates the ID for the html block that will represent the field. This block could be any html block element
+     * such as a TR or a DIV.
+     *
+     * @param field dialog field
+     *
+     * @return the field block ID (e.g. id="_dfr.myField")
+     */
+    protected String generateFieldBlockErrorsId(DialogField field)
+    {
+        return " id=\"" + FIELDROW_PREFIX + field.getQualifiedName() + "_errors\" ";
     }
 
     /**
@@ -1251,11 +1177,11 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     protected String generateFieldBlock(DialogContext dc, DialogField field, String captionHtml, String controlHtml, String hintHtml,
                                         String errorHtml)
     {
-        StringBuffer fieldsHtml = new StringBuffer();
+        final StringBuffer fieldsHtml = new StringBuffer();
         /*
         * each field block (row) gets its own ID so DHTML can hide/show the row
         */
-        String idHtml = generateFieldBlockId(field);
+        final String idHtml = generateFieldBlockId(field);
 
         String blockStyle = null;
         if(errorHtml != null && errorHtml.length() > 0)
@@ -1263,10 +1189,11 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         else
             blockStyle = getFieldBlockStyleClass();
 
+        final String blockClassAttr = (blockStyle != null ? (" class=\"" + blockStyle + "\"") : "");
         if(captionHtml == null)
         {
             // append the field input html
-            fieldsHtml.append("<tr" + idHtml + (blockStyle != null ? (" class=\"" + blockStyle + "\">") : ">") +
+            fieldsHtml.append("<tr" + idHtml + blockClassAttr + ">" +
                               "<td colspan='2'>" + controlHtml);
             // now append the hint message html on the NEXT LINE but within the same row. This is so that when you hide the
             // field using the block ID, the hint will  also be hidden
@@ -1274,12 +1201,12 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                               "</td></tr>\n");
             // now append the error message html on the next row
             if(errorHtml != null && errorHtml.length() > 0)
-                fieldsHtml.append("<tr><td colspan=\"2\"><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;" + errorHtml + "</span></td></tr>\n");
+                fieldsHtml.append("<tr" + generateFieldBlockErrorsId(field) + blockClassAttr + "><td colspan=\"2\"><span class=\"" + getFieldErrorStyleClass() + "\">&nbsp;&nbsp;&nbsp;" + errorHtml + "</span></td></tr>\n");
         }
         else
         {
 
-            fieldsHtml.append("<tr" + idHtml + (blockStyle != null ? (" class=\"" + blockStyle + "\">") : ">") +
+            fieldsHtml.append("<tr" + idHtml + blockClassAttr + ">" +
                               "<td class=\"" + (field.isRequired(dc)
                                                 ? getCaptionRequiredStyleClass() : getCaptionStyleClass()) + "\">" +
                               captionHtml + "</td><td>" + controlHtml + "");
@@ -1287,7 +1214,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                               "</td></tr>\n");
             // now append the error message html on the next row
             if(errorHtml != null && errorHtml.length() > 0)
-                fieldsHtml.append("<tr><td>&nbsp;</td><td><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;" + errorHtml + "</span></td></tr>\n");
+                fieldsHtml.append("<tr" + generateFieldBlockErrorsId(field) + blockClassAttr + "><td>&nbsp;</td><td><span class=\"" + getFieldErrorStyleClass() + "\">&nbsp;&nbsp;&nbsp;" + errorHtml + "</span></td></tr>\n");
         }
         return fieldsHtml.toString();
     }
@@ -1400,7 +1327,6 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(errorMessages.size() > 0)
         {
             messagesHtml = new StringBuffer();
-            messagesHtml.append("<span class=\"" + getErrorMessageStyleClass() + "\">");
             for(int i = 0; i < errorMessages.size(); i++)
             {
                 String msgStr = (String) errorMessages.get(i);
@@ -1409,7 +1335,6 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                     messagesHtml.append("<br/>");
                 messagesHtml.append("<a name='dc_error_msg_" + i + "'>" + msgStr + "</a>");
             }
-            messagesHtml.append("</span>");
         }
         return messagesHtml != null ? messagesHtml.toString() : null;
     }

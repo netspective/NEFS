@@ -36,6 +36,7 @@ import com.netspective.commons.validate.BasicValidationContext;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValue;
+import com.netspective.sparx.form.field.type.SectionField;
 
 public class DialogValidationContext extends BasicValidationContext
 {
@@ -99,8 +100,11 @@ public class DialogValidationContext extends BasicValidationContext
     {
         DialogFieldValue dfValue = (DialogFieldValue) key;
         DialogField parent = dfValue.getField().getParent();
-        if(parent != null)
+        if(parent != null && !(parent instanceof SectionField))
         {
+            // as long as the field is not a part of a section field (which is really visual grouping) then
+            // we want to put the error message into the parent (the composite or the grid row for example) so that
+            // the skin can appropriately render it
             DialogContext dc = getDialogContext();
             super.addError(dc.getFieldStates().getState(parent).getValue(), message);
         }
