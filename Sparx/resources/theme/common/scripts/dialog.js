@@ -1300,7 +1300,11 @@ function TextField_isValid(field, control)
 		return false;
 	}
 
-	if (control.value.length > 0)
+    /* 12.14.04 Bug# 490/768 JH - When there is no data yet in the system a value
+        in the array of objects can be null, so the code below can complain generating
+        a run-time error.
+    */
+    if (control.value != null && control.value.length > 0)
 	{
 		if (field.validValues)
 		{
