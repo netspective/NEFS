@@ -1,6 +1,6 @@
 @echo off
 
-REM $Id: build.bat,v 1.1 2003-03-13 18:24:57 shahid.shah Exp $
+REM $Id: build.bat,v 1.2 2003-06-11 18:41:36 roque.hernandez Exp $
 
 REM **************************************************************************
 REM ** This script should be be run from the PROJECT_HOME\conf directory.   **
@@ -18,6 +18,6 @@ if not exist "%JAVACMD%.exe" echo Error: "%JAVACMD%.exe" not found - check JAVA_
 if exist "%JAVA_HOME%/lib/tools.jar" set JAVACP=%JAVA_HOME%\lib\tools.jar
 if exist "%JAVA_HOME%/lib/classes.zip" set JAVACP=%JAVACP%;%JAVA_HOME%\lib\classes.zip
 
-%JAVACMD% -classpath %NS_COMMONS_REDIST_LIB%\ant.jar;%NS_COMMONS_REDIST_LIB%\ant-optional.jar;%NS_COMMONS_REDIST_LIB%\junit.jar;%NS_COMMONS_REDIST_LIB%\xerces.jar;%JAVACP% org.apache.tools.ant.Main %1 %2 %3 %4 %5 %6 %7 %8 %9
+%JAVACMD% -classpath %NS_COMMONS_REDIST_LIB%\ant.jar;%NS_COMMONS_REDIST_LIB%\ant-optional.jar;%NS_COMMONS_REDIST_LIB%\junit.jar;%NS_COMMONS_REDIST_LIB%\clover.jar;%NS_COMMONS_REDIST_LIB%\xerces.jar;%JAVACP% org.apache.tools.ant.Main %1 %2 %3 %4 %5 %6 %7 %8 %9
 
 :end
