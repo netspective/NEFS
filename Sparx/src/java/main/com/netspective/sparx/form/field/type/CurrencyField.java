@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: CurrencyField.java,v 1.9 2004-03-23 17:49:48 aye.thu Exp $
+ * $Id: CurrencyField.java,v 1.10 2004-03-23 18:15:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -112,7 +112,7 @@ public class CurrencyField extends TextField
                 {
                     // sets the format for the currency value bacause toString() of a double produces
                     // exponential formats when the value is large
-                    DecimalFormat format = new DecimalFormat("###0.0#");
+                    DecimalFormat format = new DecimalFormat("###0.##");
                     return format.format(((Double)getValue()).doubleValue());
                 }
                 return getValue() != null ? getValue().toString() : null;
@@ -228,7 +228,7 @@ public class CurrencyField extends TextField
                     "$/$1$3$4/g");
             setInvalidRegExMessage("Currency values must have the format " +
                     currencySymbol + "xxx.xx for positive values and " +
-                    "-" + currencySymbol + "xxx.xx for negative values.");
+                    "-" + currencySymbol + "xxx.xx for negative values. (decimals = " + decimalsRequired + ")");
         }
         else if(negativePos.getValueIndex() == NegativePosLocation.AFTER_SYMBOL)
         {
@@ -237,7 +237,7 @@ public class CurrencyField extends TextField
             setSubmitPattern("s/" + "^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$" + "/$2$3/g");
             setInvalidRegExMessage("Currency values must have the format " +
                     currencySymbol + "xxx.xx for positive values and " +
-                    currencySymbol + "-xxx.xx for negative values.");
+                    currencySymbol + "-xxx.xx for negative values. (decimals = " + decimalsRequired + ")");
         }
     }
 
