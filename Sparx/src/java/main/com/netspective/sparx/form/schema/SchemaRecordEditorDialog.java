@@ -1204,7 +1204,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                         duplicateFound = true;
                     }
                     resultSet.close();
-                    results.close(true);
+                    results.close(false);
                 }
             }
         }
@@ -1221,10 +1221,10 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         boolean isValid = true;
 
         SchemaRecordEditorDialogContext sredc = ((SchemaRecordEditorDialogContext) dc);
-
+        ConnectionContext cc = null;
         try
         {
-            ConnectionContext cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, true);
+            cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, true);
             sredc.setActiveConnectionContext(cc);
             switch((int) dc.getDialogState().getPerspectives().getFlags())
             {
@@ -1237,7 +1237,21 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
         catch(Exception e)
         {
-            getLog().error("Error while Validating duplicates on unique columns.", e);
+            getLog().error("Error while validating duplicates on unique columns.", e);
+        }
+        finally
+        {
+            if(cc != null)
+            {
+                try
+                {
+                    cc.close();
+                }
+                catch(SQLException e)
+                {
+                    getLog().error("Error while validating duplicates on unique columns.", e);                    
+                }
+            }
         }
 
         return isValid;
