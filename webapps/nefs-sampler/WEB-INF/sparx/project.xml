@@ -53,7 +53,7 @@
         </page>
         <page type="top-level" name="forms-input" caption="Forms Input">
             <summary>
-                This page and its chldren pages contain samples that demonstrate how forms and input fields are created in Sparx.
+                This page and its children pages contain samples that demonstrate how forms and input fields are created in Sparx.
                 There are many examples that show how quick and easy it is to set up forms to accept input values
                 and automatically validate them.
             </summary>
