@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.39 2003-08-11 07:17:01 aye.thu Exp $
+  * $Id: sparx.xml,v 1.40 2003-08-12 18:41:36 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -19,6 +19,8 @@
         <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"
             panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output" />
         <report-skin class="com.netspective.sparx.theme.basic.RecordEditorReportSkin" name="record-editor"
+            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
+        <report-skin class="com.netspective.sparx.theme.basic.HtmlSingleRowReportPanelSkin" name="detail"
             panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
     </register-theme>
 
