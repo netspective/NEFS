@@ -13,6 +13,14 @@
 
     <para>You can download the NEF Starter Application file from <ulink
     url="http://www.netspective.com/corp/downloads/frameworks/samples">http://www.netspective.com/corp/downloads/frameworks/samples</ulink></para>
+
+    <important>
+      <para>Depending upon the operating system and browser you're using, the
+      downloaded file may be saved as a zip file
+      (<filename>nefs-starter-empty.war.zip</filename>). In that case, rename
+      the file as <filename>nefs-starter-empty.war</filename> after it is
+      downloaded successfully.</para>
+    </important>
   </section>
 
   <section>
@@ -45,7 +53,7 @@
           <para>Create a new folder in the <filename
           class="directory">webapps</filename> folder of your application
           server. Change this folder's name to <filename
-          class="directory">nefs-starter-empty</filename> </para>
+          class="directory">nefs-starter-empty</filename></para>
 
           <figure>
             <title>Creating a New Folder for NEFS Starter Application</title>
