@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtilsTest.java,v 1.2 2003-03-27 22:11:06 shahid.shah Exp $
+ * $Id: TextUtilsTest.java,v 1.3 2003-04-01 13:07:42 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.text;
@@ -286,14 +286,10 @@ public class TextUtilsTest extends TestCase
 		String original = "Testing Code since 1990 - Weird Phrases Magazine";
 
 		String replacedOne = TextUtils.replaceTextValues(original, null, "test");
-		assertNull(replacedOne);
+		assertEquals(original, replacedOne);
 
 		String replacedTwo = TextUtils.replaceTextValues(original, "since", null);
-		assertNull(replacedTwo);
-
-		String replacedThree = TextUtils.replaceTextValues(null, "since", "till");
-		assertNull(replacedThree);
-
+		assertEquals(original, replacedTwo);
 	}
 
 	public void testStringMiscellaneousUtilities()
