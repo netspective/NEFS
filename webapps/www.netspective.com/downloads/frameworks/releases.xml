@@ -7,6 +7,16 @@
             <summary>Minor bug fix, enhancements, and code roll-up</summary>
             <change-log-entry>
                 <![CDATA[
+                In TextValueValidationRule, optimized the regular expression handling so that a pattern is created,
+                cached, and reused by a matcher instead of being recreated for each call to isValid(). Also added better
+                error messages when text validation fails. <b>API CHANGE:</b> if you use the regular expression validation
+                you should no longer prefix or suffix the reg-ex with '/'. For example, if you used <code>/[A-z]*/</code> in the past,
+                now you should just use <code>[A-z]*</code> without the '/' at the beginning and end. If you now include
+                '/' as part of the expression, it will be considered a requirement in the pattern.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
                 Added new validation, <code>TimeZoneValidationRule</code>, for timezones using the TimeZone class. Also added
                 validation class called <code>InternetHostnameValidationRule</code> for validating internet hostnames and IPs.
                 ]]>
@@ -15,11 +25,6 @@
                 The MultipleUriAddressableFileLocators cache was storing the locator instead of the resource.
                 Bug fixed so that the cache now stores the resource; this was causing a ClassCastException if the cache
                 was in use (but no error if the cache was ignored).
-            </change-log-entry>
-            <change-log-entry>
-                In TextValueValidationRule, optimized the regular expression handling so that a pattern is created,
-                cached, and reused by a matcher instead of being recreated for each call to isValid(). Also added better
-                error messages when text validation fails.
             </change-log-entry>
             <change-log-entry>
                  Added new DelimitedValuesParser class useful for parsing comma-separated values (CSV) input.
@@ -59,6 +64,14 @@
         <product name="Sparx" version="7.1.0"/>
         <change-log>
             <summary>Major enhancements and code roll-up</summary>
+            <change-log-entry>
+                <![CDATA[
+                <b>API CHANGE:</b> if you use the regular expression validation (reg-expr attribute) in TextField,
+                you should no longer prefix or suffix the reg-expr value with '/'. For example, where you used <code>reg-expr="/[A-z]*/"</code> in the past,
+                now you must just use <code>reg-expr="[A-z]*"</code> without the '/' at the beginning and end. If you include
+                '/' as part of the expression, it will be considered a requirement in the pattern.
+                ]]>
+            </change-log-entry>
             <change-log-entry>
                 Made change to DateTimeField so that if the size or max-length attributes are provided they override
                 the format pattern length. Before this change, even if a 'size' or 'max-length' was provided,
