@@ -50,9 +50,6 @@
  * @author Shahid N. Shah
  */
 
-/**
- * $Id: NavigationPage.java,v 1.58 2004-02-10 16:30:17 shahid.shah Exp $
- */
 
 package com.netspective.sparx.navigate;
 
@@ -102,6 +99,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.exception.NestableException;
 
+/**
+ * Main class for handling the navigation page XML tag, &lt;page&gt;.
+ *
+ *
+ * @version $Id: NavigationPage.java,v 1.59 2004-02-11 17:17:00 aye.thu Exp $
+ */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
@@ -148,6 +151,10 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         }
     }
 
+    /**
+     * Flag class for handling flags assigned to a navigation page
+     *
+     */
     public class Flags extends NavigationPathFlags
     {
         public static final int REQUIRE_LOGIN = NavigationPathFlags.START_CUSTOM;
@@ -179,6 +186,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             return PAGE_FLAG_DEFNS;
         }
 
+        /**
+         * Clears the passed in flag
+         *
+         * @param flag
+         */
         public void clearFlag(long flag)
         {
             super.clearFlag(flag);
@@ -186,6 +198,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 clearFlagRecursively(flag);
         }
 
+        /**
+         * Sets the passed in flag
+         *
+         * @param flag
+         */
         public void setFlag(long flag)
         {
             super.setFlag(flag);
@@ -193,16 +210,31 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 setFlagRecursively(flag);
         }
 
+        /**
+         * Checks to see if the page is in popup mode
+         *
+         * @return
+         */
         public boolean isPopup()
         {
             return flagIsSet(IS_POPUP_MODE);
         }
 
+        /**
+         * Checks to see if page is in hidden mode
+         *
+         * @return
+         */
         public boolean isHidden()
         {
             return flagIsSet(HIDDEN);
         }
 
+        /**
+         * Checks to see if page is in reject focus mode
+         *
+         * @return
+         */
         public boolean isRejectFocus()
         {
             return flagIsSet(REJECT_FOCUS);
@@ -213,6 +245,12 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             return flagIsSet(DEBUG_REQUEST);
         }
 
+        /**
+         * Checks to see if page's XML source is allowed to be viewed. This method is mainly used for
+         * display page XML source for tutorial purposes.
+         *
+         * @return
+         */
         public boolean isAllowViewSource()
         {
             return flagIsSet(ALLOW_VIEW_SOURCE);
@@ -269,6 +307,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         this.inputSourceLocator = inputSourceLocator;
     }
 
+    /**
+     * Adds a listener for the navigation page. Listeners can handle entries and exits into the page
+     *
+     * @param listener  listeners that implement the <code>NavigationPathListener</code> interface
+     */
     public void addListener(NavigationPathListener listener)
     {
         super.addListener(listener);
@@ -313,16 +356,36 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
+    /**
+     * Adds a child page
+     *
+     * @param page
+     */
     public void addPage(NavigationPage page)
     {
         appendChild(page);
     }
 
+    /**
+     * Creates a default navigation error page
+     *
+     * @return
+     */
     public NavigationErrorPage createErrorPage()
     {
         return new NavigationErrorPage(getOwner());
     }
 
+    /**
+     * Creates a custom navigation error page
+     *
+     * @param cls       The custom error page class
+     * @return
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     public NavigationErrorPage createErrorPage(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
         if(NavigationErrorPage.class.isAssignableFrom(cls))
@@ -334,45 +397,75 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
-    public void registerErrorPage(NavigationErrorPage page)
+    /**
+     * Registers the error page to all pages related to the current page such as the parent and owner of this page
+     *
+     * @param errorPage
+     */
+    public void registerErrorPage(NavigationErrorPage errorPage)
     {
-        errorPageDescendantsByQualifiedName.put(page.getQualifiedName(), page);
+        errorPageDescendantsByQualifiedName.put(errorPage.getQualifiedName(), errorPage);
         if (getParent() != null)
-            ((NavigationPage) getParent()).registerErrorPage(page);
-        getOwner().registerErrorPage(page);
+            ((NavigationPage) getParent()).registerErrorPage(errorPage);
+        getOwner().registerErrorPage(errorPage);
     }
 
-    public void unregisterErrorPage(NavigationErrorPage page)
+    /**
+     * Unregisters the error page from all pages related to the current page such as the parent and owner of this page
+     *
+     * @param errorPage
+     */
+    public void unregisterErrorPage(NavigationErrorPage errorPage)
     {
-        errorPageDescendantsByQualifiedName.remove(page.getQualifiedName());
+        errorPageDescendantsByQualifiedName.remove(errorPage.getQualifiedName());
         if (getParent() != null)
-            ((NavigationPage) getParent()).unregisterErrorPage(page);
-        getOwner().unregisterErrorPage(page);
+            ((NavigationPage) getParent()).unregisterErrorPage(errorPage);
+        getOwner().unregisterErrorPage(errorPage);
     }
 
+    /**
+     * Returns a list of error pages defined for this page
+     *
+     * @return
+     */
     public List getErrorPagesList()
     {
         return errorPagesList;
     }
 
+    /**
+     * Returns a map of error pages defined for this page
+     *
+     * @return
+     */
     public Map getErrorPagesMap()
     {
         return errorPagesMap;
     }
 
-    public void addErrorPage(NavigationErrorPage page)
+    /**
+     * Adds and registers an error page to the list of error pages defined for this page.
+     *
+     * @param errorPage
+     */
+    public void addErrorPage(NavigationErrorPage errorPage)
     {
-        page.setParent(this);
-        errorPagesList.add(page);
-        errorPagesMap.put(page.getName(), page);
-        registerErrorPage(page);
+        errorPage.setParent(this);
+        errorPagesList.add(errorPage);
+        errorPagesMap.put(errorPage.getName(), errorPage);
+        registerErrorPage(errorPage);
     }
 
-    public void removeErrorPage(NavigationErrorPage page)
+    /**
+     * Removes abd ubnregisters an error page to the list of error pages defined for this page.
+     *
+     * @param errorPage
+     */
+    public void removeErrorPage(NavigationErrorPage errorPage)
     {
-        errorPagesList.remove(page);
-        errorPagesMap.remove(page.getName());
-        unregisterErrorPage(page);
+        errorPagesList.remove(errorPage);
+        errorPagesMap.remove(errorPage.getName());
+        unregisterErrorPage(errorPage);
     }
 
     /**
@@ -509,6 +602,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /* -------------------------------------------------------------------------------------------------------------*/
 
+    /**
+     * Checks to see if the current page is valid or not. Currently, the validity of a page is only determined
+     * by required request parameters.
+     *
+     * @param nc    current navigation context
+     * @return      True if all required request parameters are available
+     */
     public boolean isValid(NavigationContext nc)
     {
         List reqParams = getRequireRequestParams();
@@ -874,6 +974,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         this.assignStateParams = assignStateParams;
     }
 
+    /**
+     * Gets the parameters to be retained for the page
+     *
+     * @return
+     */
     public ValueSource getRetainParams()
     {
         if(retainParams != null)
@@ -1013,6 +1118,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return new FreeMarkerTemplateProcessor();
     }
 
+    /**
+     * Adds a template body for the page
+     *
+     * @param templateProcessor
+     */
     public void addBody(TemplateProcessor templateProcessor)
     {
         bodyTemplate = templateProcessor;
@@ -1044,18 +1154,42 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return true;
     }
 
+    /**
+     * Handles the generation of the page metadata using the assigned page skin
+     *
+     * @param writer            writer object to write the output to
+     * @param nc                current navigation context
+     * @throws ServletException
+     * @throws IOException
+     */
     public void handlePageMetaData(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         NavigationSkin skin = nc.getSkin();
         if(skin != null) skin.renderPageMetaData(writer, nc);
     }
 
+    /**
+     * Handles generation of the page header using the assigned page skin
+     *
+     * @param writer            writer object to write the output to
+     * @param nc                current navigation context
+     * @throws ServletException
+     * @throws IOException
+     */
     public void handlePageHeader(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         NavigationSkin skin = nc.getSkin();
         if(skin != null) skin.renderPageHeader(writer, nc);
     }
 
+    /**
+     * Handles the generation of the page body using the assigned page skin
+     *
+     * @param writer            writer object to write the output to
+     * @param nc                current navigation context
+     * @throws ServletException
+     * @throws IOException
+     */
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         // see if dynamic commands should be allowed
@@ -1160,6 +1294,15 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         }
     }
 
+    /**
+     * Handles the display of the page's footer by using the skin defined for the page. This method will also
+     * include the page's XML source if the <code>ALLOW_VIEW_SOURCE</code> flag is set.
+     *
+     * @param writer
+     * @param nc
+     * @throws ServletException
+     * @throws IOException
+     */
     public void handlePageFooter(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         renderViewSource(writer, nc);
@@ -1167,6 +1310,14 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         if(skin != null) skin.renderPageFooter(writer, nc);
     }
 
+    /**
+     * Checks to see if the body defined for this page will effect the navigation (meaning the body might do
+     * forwards or redirects). This method is used by <code>handlePage()</code> method to determine if the
+     * body should be generated first before other sections such as headers and footers.
+     *
+     * @param nc    current navigation context
+     * @return      True if the <code>BODY_AFFECTS_NAVIGATION</code> flag is set or the <i>affects-navigation-context</i> is set
+     */
     public boolean bodyAffectsNavigationContext(NavigationContext nc)
     {
         if(bodyPanel != null && bodyPanel.affectsNavigationContext(nc))
@@ -1175,6 +1326,17 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             return nc.getActiveState().getFlags().flagIsSet(Flags.BODY_AFFECTS_NAVIGATION);
     }
 
+    /**
+     * Main method for handling the logic and content of the page. Generally, a navigation page is broken into
+     * several sections: header, metadata, body, and footer. If there are no forwards/redirects configured, the page
+     * sections are handled by calling the following methods: <code>handlePageMetaData()</code>, <code>handlePageHeader()</code>,
+     * <code>handlePageBody()</code>, and <code>handlePageFooter()</code> methods.
+     *
+     * @param writer            Writer object to write the page output to
+     * @param nc                current navigation context
+     * @throws ServletException
+     * @throws IOException
+     */
     public void handlePage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         Flags flags = (Flags) nc.getActiveState().getFlags();
@@ -1248,6 +1410,17 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         exitPage(nc);
     }
 
+    /**
+     * Handles generation of an informational page when the current page cannot be displayed bcause it failed the
+     * validation check. This will generate the page metadata, header, and footer sections and a special message
+     * body sections. The message body will contain a custom message if there is one (using the &lt;missing-params-body&gt; XML tag)
+     * else it will display a default message indicating that there are missing required request parameters.
+     *
+     * @param writer
+     * @param nc
+     * @throws ServletException
+     * @throws IOException
+     */
     public void handleInvalidPage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         Flags flags = (Flags) nc.getActiveState().getFlags();
