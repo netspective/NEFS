@@ -74,51 +74,74 @@
             <!-- This page is for demonstrating numeric fields in a form -->
             <page name="numeric-fields" caption="Numbers" command="dialog,form.input.numeric-fields">
                 <summary>
-                    This page demonstrates how to create and use numeric fields. More explanation...
+                    This page demonstrates the usage of various types of numeric fields that are available: float, integer,
+                    currency, phone, and zip code. Each type have their own validation rules and formatting patterns.
                 </summary>
             </page>
             <!-- This page is for demonstrating boolean fields in a form -->
             <page name="boolean-fields" caption="Boolean" command="dialog,form.input.boolean-fields">
                 <summary>
-                    This page demonstrates how to create and use boolean fields. More explanation...
+                    <![CDATA[
+                    This page demonstrates usage of boolean fields which are fields that can only have a value
+                    that is either true or false.  There are several display styles available for boolean fields:
+                    <i>radio</i>, <i>check-alone</i>, <i>popup</i>, and <i>combo</i>.
+                    ]]>
                 </summary>
             </page>
 
             <!-- This page is for demonstrating selection fields in a form -->
             <page name="select-fields" caption="Selection" command="dialog,form.input.select-fields">
                 <summary>
-                    This page demonstrates how to create and use select fields. More explanation...
+                    <![CDATA[
+                    This page demonstrates how to create and use fields that allow selection of values. There are several
+                    styles available: <i>list</i>, <i>multidual</i>, <i>multilist</i>, <i>combo</i>, <i>radio</i>, and
+                    <i>multicheck</i>.
+                    ]]>
                 </summary>
             </page>
             <!-- This page is for demonstrating grid and composite fields in a form -->
             <page name="grid-fields" caption="Grids" command="dialog,form.input.grid-and-composite-fields">
                 <summary>
-                    This page demonstrates how to create and use grid and composite fields. More explanation...
+                    This page demonstrates how to create and use grid and composite fields. A composite field can be
+                    described as a logical field that contains several children fields. Usually, a grid field will have
+                    multiple composite fields which act as rows.
                 </summary>
             </page>
             <!-- This page is for demonstrating "conditional" fields in a form -->
             <page name="conditional-fields" caption="Conditionals" command="dialog,form.input.conditional-fields">
                 <summary>
-                    This page demonstrates how to create and use conditional fields. More explanation...
+                    This page demonstrates how flags and values can be applied to a dialog field based on conditionals
+                    defined for that field.
                 </summary>
             </page>
             <!-- This page is for demonstrating popup fields in a form -->
             <page name="popup-fields" caption="Popups" command="dialog,form.input.popup-fields">
                 <summary>
-                    This page demonstrates how to create and use popup fields. More explanation...
+                    <![CDATA[
+                    This page demonstrates how to create and use popup fields. Popup fields are visually identifiable
+                    by their special <i>magnifying glass</i> icon beside them.
+                    ]]>
                 </summary>
             </page>
             <!-- This page is for demonstrating date fields in a form -->
             <page name="date-fields" caption="Date/Time" command="dialog,form.input.date-fields">
                 <summary>
-                    This page demonstrates how to create and use date/time fields. More explanation...
+                    <![CDATA[
+                    This page demonstrates how to create and use date/time fields. There are several versions of
+                    date/time fields that are available: <i>time</i>, <i>date</i>, <i>date and time</i>, and <i>duration</i>.
+                    ]]>
                 </summary>
             </page>
 
-            <page name="advance-input" caption="Advanced">
-                <summary></summary>
+            <page type="container" name="advance-input" caption="Advanced">
+                <summary>This page and its children pages are for demonstrating more advanced usage of the
+                built-in features of the dialog fields.
+                </summary>
                 <page name="client-side-scripts" caption="Client side scripts" command="dialog,form.input.client-side-scripts">
-                    <summary>This page demonstrates the usage of data perspectives for filling dialog fields.</summary>
+                    <summary>
+                    This page demonstrates how to &quot;plug&quot; custom javascript calls to the client-side events
+                    (e.g. click, value-changed, lose-focus, key-press, is-valid) of the dialog fields.
+                    </summary>
                 </page>
                 <page name="perspectives" caption="Perspectives" command="dialog,form.input.data-perspective-conditionals">
                     <summary>This page demonstrates the usage of data perspectives for filling dialog fields.</summary>
@@ -150,21 +173,103 @@
                 delegation.
             </summary>
 
-            <page name="director" caption="Director" command="dialog,form.exec.director-next-action"/>
+            <page name="director" caption="Director" command="dialog,form.exec.director-next-action">
+                <summary>
+                    <![CDATA[
+                    This page demonstrates the usage of a <i>Dialog Director</i> which controls destinations after successful
+                    form submission and the display of the dialog buttons.
+                    ]]>
+                </summary>
+            </page>
             <page type="container" name="template" caption="Templates">
-                <page name="body-xml" caption="Body in XML" heading="Get data, execute template body in project.xml" command="dialog,form.exec.template.body-xml"/>
-                <page name="body-file" caption="Body in File" heading="Get data, execute template body in separate file" command="dialog,form.exec.template.body-file"/>
-                <page name="inc-jsp" caption="Include JSP" heading="Get data, process using JSP include" command="dialog,form.exec.template.inc-jsp"/>
+                <summary>
+                    <![CDATA[
+                    This page demonstrates the ability to <i>execute</i> templates or display JSP output after successful
+                    submission of a dialog. Usually executing a template means displaying the output from a template
+                    processing engine.
+                    ]]>
+                </summary>
+                <page name="body-xml" caption="Body in XML" heading="Get data, execute template body in project.xml" command="dialog,form.exec.template.body-xml">
+                    <summary>
+                    <![CDATA[
+                    This page contains an example of a dialog which will execute a template body defined in the dialog's
+                    XML declaration and display the output.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="body-file" caption="Body in File" heading="Get data, execute template body in separate file" command="dialog,form.exec.template.body-file">
+                    <summary>
+                    <![CDATA[
+                    This page contains an example of a dialog which will execute a template body defined in a seperate file
+                    and display the output.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="inc-jsp" caption="Include JSP" heading="Get data, process using JSP include" command="dialog,form.exec.template.inc-jsp">
+                   <summary>
+                    <![CDATA[
+                    This page contains an example of a dialog which will display an output from a JSP upon execution.
+                    ]]>
+                    </summary>
+                </page>
             </page>
 
             <page type="container" name="handler" caption="Handlers">
-                <page name="inc-html" caption="Include URL" heading="Get URL, process using HTML include of an external page" command="dialog,form.exec.handler.inc-html"/>
-                <page name="send-mail" caption="Send Mail" heading="Send an e-mail" command="dialog,form.exec.handler.send-mail"/>
-                <page name="exec-cmd" caption="Exec Command" heading="Execute a Command" command="dialog,form.exec.handler.exec-cmd"/>
-                <page name="exec-panels" caption="Exec Panels" heading="Execute Panels" command="dialog,form.exec.handler.exec-panels"/>
+                <summary>
+                    <![CDATA[
+                    This page demonstrates the usage of various <i>handlers</i> for the execution of a dialog. These handlers
+                    are processed once the internal validation of the dialog is complete and the dialog is ready to be be executed.
+                    Handlers are special built-in actions defined for convenience and reusability: <i>url</i>, <i>mail</i>, <i>command</i>, <i>panels</i>,
+                    and <i>style-sheet</i>. For defining more
+                    complex actions and logic for execution, please take a look at the <b>inheritence</b> or <b>delegation</b> examples.
+                    ]]>
+                </summary>
+                <page name="inc-html" caption="Include URL" heading="Get URL, process using HTML include of an external page" command="dialog,form.exec.handler.inc-html">
+                    <summary>
+                    <![CDATA[
+                    This page contains an example of a dialog which has a handler that will display HTML from an external page.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="send-mail" caption="Send Mail" heading="Send an e-mail" command="dialog,form.exec.handler.send-mail">
+                    <summary>
+                    <![CDATA[
+                    This page contains an example of a dialog which has a handler that will send an email upon execution of the dialog.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="exec-cmd" caption="Exec Command" heading="Execute a Command" command="dialog,form.exec.handler.exec-cmd">
+                    <summary>
+                    <![CDATA[
+                    This page contains an example of a dialog which has a handler that will process a <i>command</i> upon execution of the dialog.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="exec-panels" caption="Exec Panels" heading="Execute Panels" command="dialog,form.exec.handler.exec-panels">
+                    <summary>
+                    <![CDATA[
+                    This page contains an example of a dialog which has a handler that will display <i>panels</i>
+                    upon execution of the dialog. The panels can contain html from various entities such as JSPs or URLs.
+                    ]]>
+                    </summary>
+                </page>
 
-                <page name="transform-xslt-dc" caption="Transform Bean" command="dialog,form.exec.handler.transform-xslt-dc"/>
-                <page name="transform-xslt-file" caption="Transform File" command="dialog,form.exec.handler.transform-xslt-file"/>
+                <page name="transform-xslt-dc" caption="Transform Bean" command="dialog,form.exec.handler.transform-xslt-dc">
+                    <summary>
+                    <![CDATA[
+                    This page contains an example of a dialog which has a handler that will display output
+                    from a XSL style sheet transformation upon execution of the dialog.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="transform-xslt-file" caption="Transform File" command="dialog,form.exec.handler.transform-xslt-file">
+                    <summary>
+                    <![CDATA[
+                    This page contains an example of a dialog which has a handler that will display output
+                    from a XSL style sheet transformation upon execution of the dialog.
+                    ]]>
+                    </summary>
+                </page>
 
                 <error-page name="transform-error" heading="Transformation Error">
                     <error exception-class="javax.xml.transform.TransformerConfigurationException"/>
@@ -174,15 +279,75 @@
             </page>
 
             <page type="container" name="inheritance" caption="Inheritance">
-                <page name="exec1a" caption="Exec 1 A" heading="Execute Sample 1 A" command="dialog,form.exec.inheritance.exec1a"/>
-                <page name="exec1b" caption="Exec 1 B" heading="Execute Sample 1 B" command="dialog,form.exec.inheritance.exec1b"/>
-                <page name="validate" caption="Validation" heading="Validation Sample" command="dialog,form.exec.inheritance.validate"/>
+                <summary>
+                    <![CDATA[
+                    This page demonstrates the <i>inheritance</i> model for defining custom logic or action for
+                    different stages of a dialog. This model should only be used for the most complex cases where
+                    you need to override the default behavior of the dialog. By extending the default dialog class,
+                    <code>com.netspective.sparx.form.Dialog</code>, you have full control over the dialog
+                    and its' behavior.
+                    ]]>
+                </summary>
+                <page name="exec1a" caption="Exec 1 A" heading="Execute Sample 1 A" command="dialog,form.exec.inheritance.exec1a">
+                    <summary>
+                    <![CDATA[
+                    This page contains a dialog which has a custom dialog class that overrides only the default execution
+                    behavior of the dialog.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="exec1b" caption="Exec 1 B" heading="Execute Sample 1 B" command="dialog,form.exec.inheritance.exec1b">
+                    <summary>
+                    <![CDATA[
+                    This page contains a dialog which has a custom dialog class that overrides only the default execution
+                    behavior of the dialog.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="validate" caption="Validation" heading="Validation Sample" command="dialog,form.exec.inheritance.validate">
+                    <summary>
+                    <![CDATA[
+                    This page contains a dialog which has a custom dialog class that overrides the default population, validation, and execution
+                    behaviors of the dialog.
+                    ]]>
+                    </summary>
+                </page>
             </page>
 
             <page type="container" name="delegation" caption="Delegation">
-                <page name="exec1a" caption="Exec 1 A" heading="Execute Sample 1 A" command="dialog,form.exec.delegation.exec1a"/>
-                <page name="exec1b" caption="Exec 1 B" heading="Execute Sample 1 B" command="dialog,form.exec.delegation.exec1b"/>
-                <page name="validate" caption="Validation" heading="Validation Sample" command="dialog,form.exec.delegation.validate"/>
+                <summary>
+                    <![CDATA[
+                    This page demonstrates the <i>delegation</i> model for defining custom logic or action for
+                    different stages of a dialog. The Framework allows definition of various <i>listeners</i> for different
+                    stages of a dialog. By implementing the listener interfaces and then assigning the custom listeners
+                    to a dialog, these listeners will get executed.
+                    ]]>
+                </summary>
+                <page name="exec1a" caption="Exec 1 A" heading="Execute Sample 1 A" command="dialog,form.exec.delegation.exec1a">
+                    <summary>
+                        <![CDATA[
+                        This page demonstrates an <b>execution</b> listener for the <i>delegation</i> model. An execution listener
+                        implements the <code>com.netspective.sparx.form.handler.DialogExecuteHandler</code> interface.
+                        ]]>
+                    </summary>
+                </page>
+                <page name="exec1b" caption="Exec 1 B" heading="Execute Sample 1 B" command="dialog,form.exec.delegation.exec1b">
+                    <summary>
+                         <![CDATA[
+                        This page demonstrates an <b>execution</b> listener for the <i>delegation</i> model. An execution listener
+                        implements the <code>com.netspective.sparx.form.handler.DialogExecuteHandler</code> interface.
+                        ]]>
+                    </summary>
+                </page>
+                <page name="validate" caption="Validation" heading="Validation Sample" command="dialog,form.exec.delegation.validate">
+                    <summary>
+                         <![CDATA[
+                        This page contains a dialog that demonstrates <b>validation</b>, <b>population</b>, and <b>execution</b> listeners
+                        for the <i>delegation</i> model. A listener class can implement various listener interfaces
+                        to define custom business logic for various dialog stages.
+                        ]]>
+                    </summary>
+                </page>
             </page>
         </page>
 
