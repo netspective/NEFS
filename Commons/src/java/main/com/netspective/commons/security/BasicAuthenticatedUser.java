@@ -88,7 +88,7 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io
         return userId;
     }
 
-    public void setUserId(String userId)
+    public void setUserId(Object userId)
     {
         this.userId = userId;
     }

@@ -43,7 +43,7 @@ public interface MutableAuthenticatedUser extends AuthenticatedUser
 
     public void init(ValueContext vc) throws AuthenticatedUserInitializationException;
 
-    public void setUserId(String userId);
+    public void setUserId(Object userId);
 
     public void setUserName(String userName);
 
