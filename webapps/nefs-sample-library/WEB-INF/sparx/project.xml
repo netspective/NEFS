@@ -54,7 +54,7 @@
 	** DATA MANAGEMENT STRUCTURE (SCHEMA) SPECIFICATIONS                **
 	********************************************************************** -->
 
-	<schema name="library">
+	<schema name="db">
 		<xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
 		<table name="Book_Info" abbrev="bkI">

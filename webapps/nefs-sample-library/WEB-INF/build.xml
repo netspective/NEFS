@@ -10,13 +10,13 @@
         <property name="app.WEB-INF.classes.path" value="${app.WEB-INF.path}/classes"/>
 
         <property name="sparx.resources.path" value="${app.path}/sparx"/>
-        <property name="sparx.conf.path" value="${app.WEB-INF.path}/sparx"/>
-        <property name="sparx.conf.file" value="${sparx.conf.path}/project.xml"/>
+        <property name="sparx.project.path" value="${app.WEB-INF.path}/sparx"/>
+        <property name="sparx.project.file" value="${sparx.project.path}/project.xml"/>
 
         <property name="app.database.path" value="${app.WEB-INF.path}/database"/>
         <property name="app.database.instance.path" value="${app.WEB-INF.path}/database/instance"/>
         <property name="app.database.data.path" value="${app.database.path}/data"/>
-        <property name="app.database.schema.name" value="library"/>
+        <property name="app.database.schema.name" value="db"/>
         <property name="app.database.schema.ddl.path" value="${app.database.path}/ddl"/>
         <property name="app.database.schema.ddl.loader.file" value="${app.database.schema.ddl.path}/${app.database.schema.name}-hsqldb.sql"/>
         <property name="app.database.schema.dal.classes.path" value="${app.WEB-INF.classes.path}"/>
@@ -38,15 +38,15 @@
     </target>
 
     <target name="generate-id-constants" depends="init">
-        <sparx action="generate-id-constants" xdmFile="${sparx.conf.file}" idConstantsDir="${app.id-constants.classes.path}" idConstantsClass="${app.id-constants.classes.package}"/>
+        <sparx action="generate-id-constants" xdmFile="${sparx.project.file}" idConstantsDir="${app.id-constants.classes.path}" idConstantsClass="${app.id-constants.classes.package}"/>
     </target>
 
     <target name="generate-ddl" depends="init">
-        <sparx action="generate-ddl" xdmFile="${sparx.conf.file}" ddl="*" destDir="${app.database.schema.ddl.path}"/>
+        <sparx action="generate-ddl" xdmFile="${sparx.project.file}" ddl="*" destDir="${app.database.schema.ddl.path}"/>
     </target>
 
     <target name="generate-dal" depends="init">
-        <sparx action="generate-dal" xdmFile="${sparx.conf.file}" destDir="${app.database.schema.dal.classes.path}" dalPackage="${app.database.schema.dal.classes.package}"/>
+        <sparx action="generate-dal" xdmFile="${sparx.project.file}" destDir="${app.database.schema.dal.classes.path}" dalPackage="${app.database.schema.dal.classes.package}"/>
     </target>
 
     <target name="create-database" depends="init">
@@ -59,11 +59,11 @@
     </target>
 
     <target name="generate-import-data-dtd" depends="init">
-        <sparx action="generate-import-data-dtd" xdmFile="${sparx.conf.file}" genImportDtd="${app.database.data.path}/${app.database.schema.name}.dtd"/>
+        <sparx action="generate-import-data-dtd" xdmFile="${sparx.project.file}" genImportDtd="${app.database.data.path}/${app.database.schema.name}.dtd"/>
     </target>
 
     <target name="import-data" depends="create-database">
-        <sparx action="import-data" import="${app.database.data.path}/initial-and-test-data.xml" xdmFile="${sparx.conf.file}"
+        <sparx action="import-data" import="${app.database.data.path}/initial-and-test-data.xml" xdmFile="${sparx.project.file}"
                driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.userid}" password="" />
     </target>
 
