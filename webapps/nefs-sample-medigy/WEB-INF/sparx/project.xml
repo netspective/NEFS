@@ -124,7 +124,7 @@
         <page-type name="entity" type="default"/>
         <page-type name="entity-view" type="default"/>
 
-        <page type="entity" name="person" hidden="yes">
+        <page type="entity" name="person" hidden="yes" retain-params="person_id">
             <page type="entity-view" name="summary" caption="Summary" require-request-param="person_id">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
@@ -144,7 +144,7 @@
             <page type="entity-view" name="associate" caption="Associate"/>
             <page type="entity-view" name="documents" caption="Documents"/>
         </page>
-        <page type="entity" name="org" hidden="yes">
+        <page type="entity" name="org" hidden="yes" retain-params="org_id">
             <page type="entity-view" name="summary" caption="Summary" require-request-param="org_id">
                 <panels style="two-columns">
                     <panel type="command" command="query,orgAttribute.profile,-,-,-,detail" />
