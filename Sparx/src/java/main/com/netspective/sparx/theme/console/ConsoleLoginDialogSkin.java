@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleLoginDialogSkin.java,v 1.3 2003-08-19 16:21:05 shahid.shah Exp $
+ * $Id: ConsoleLoginDialogSkin.java,v 1.4 2003-08-19 17:52:35 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -51,7 +51,6 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.basic.LoginDialogSkin;
 import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.commons.value.ValueSource;
 
 public class ConsoleLoginDialogSkin extends LoginDialogSkin
 {
@@ -76,11 +75,7 @@ public class ConsoleLoginDialogSkin extends LoginDialogSkin
     public void renderContentsHtml(Writer writer, DialogContext dc, String dialogName, String actionURL, String encType, int dlgTableColSpan, StringBuffer errorMsgsHtml, StringBuffer fieldsHtml) throws IOException
     {
         String themeImagesRootUrl = dc.getNavigationContext().getThemeImagesRootUrl(dc.getActiveTheme());
-        ValueSource heading = dc.getDialog().getFrame().getHeading();
 
-        //writer.write("        <table width=\"100%\" height=\"100%\" border=\"2\" cellspacing=\"0\" cellpadding=\"0\">");
-        //writer.write("            <tr>");
-        //writer.write("                <td class=\"panel-input-login-content\">");
         writer.write("                    <table border=\"0\" width=\"50%\" cellspacing=\"0\" cellpadding=\"0\">");
 
            writer.write("                        <tr width=\"100%\" height=\"100%\">");
@@ -120,15 +115,12 @@ public class ConsoleLoginDialogSkin extends LoginDialogSkin
         writer.write("                        </tr>");
         writer.write("<table class=\"panel-input-login\" border=\"0\" width=\"692\" height=\"85\" cellspacing=\"0\" cellpadding=\"17\">");
 		writer.write("	<tr>");
-		writer.write("	    <td align=\"center\" valign=\"middle\"><img src=\"" + themeImagesRootUrl + "/login/sparx-76px.gif\" alt=\"\" border=\"0\"></td>\n");
-        writer.write("	    <td align=\"center\"><img src=\"" + themeImagesRootUrl + "/login/axiom-76px.gif\" alt=\"\" border=\"0\"></td>\n");
-        writer.write("	    <td align=\"center\"><img src=\"" + themeImagesRootUrl + "/login/commons-76px.gif\" alt=\"\" border=\"0\"></td>\n");
+		writer.write("	    <td align=\"center\" valign=\"middle\"><img src=\"" + themeImagesRootUrl + "/login/box-logo-sparx-76px.gif\" alt=\"\" border=\"0\"></td>\n");
+        writer.write("	    <td align=\"center\"><img src=\"" + themeImagesRootUrl + "/login/box-logo-axiom-76px.gif\" alt=\"\" border=\"0\"></td>\n");
+        writer.write("	    <td align=\"center\"><img src=\"" + themeImagesRootUrl + "/login/box-logo-commons-76px.gif\" alt=\"\" border=\"0\"></td>\n");
 		writer.write("	</tr>  ");
 		writer.write("</table> ");
         writer.write("                    </table>");
-        //writer.write("                </td>");
-        //writer.write("            </tr>");
-        //writer.write("        </table>");
     }
 
     /**
@@ -140,15 +132,10 @@ public class ConsoleLoginDialogSkin extends LoginDialogSkin
      */
     public void renderHtml(Writer writer, DialogContext dc) throws IOException
     {
-	dc.setPanelRenderFlags(dc.getPanelRenderFlags() | HtmlPanel.RENDERFLAG_NOFRAME);
+	    dc.setPanelRenderFlags(dc.getPanelRenderFlags() | HtmlPanel.RENDERFLAG_NOFRAME);
         writer.write("<body style='background-color: black'>");
-        //writer.write("<p>&nbsp;<p>&nbsp;<p>&nbsp;<p><center>");
         super.renderHtml(writer, dc);
         writer.write("</center>");
         writer.write("</body>");
-
-        // writer.write("<table class=\"panel-input-login\" width=\"100%\" height=100% ><tr><td><center>");
-        // super.renderHtml(writer, dc);
-        // writer.write("</center></td></tr></table>");
     }
 }
