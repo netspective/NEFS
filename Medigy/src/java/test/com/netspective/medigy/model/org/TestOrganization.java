@@ -41,37 +41,78 @@
 package com.netspective.medigy.model.org;
 
 import com.netspective.medigy.model.TestCase;
+import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.person.TestPerson;
-import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.ProcessSession;
+import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.medigy.reference.type.party.PartyRoleType;
 
 public class TestOrganization  extends TestCase
 {
     public void testOrg()
     {
-        HibernateUtil.beginTransaction();
-
         Session session = new ProcessSession();
         session.setProcessName(TestPerson.class.getName() + ".testOrg()");
         HibernateUtil.getSession().save(session);
         SessionManager.getInstance().setActiveSession(session);
 
-        Organization newOrg = new Organization();
-        newOrg.setName("American Red Cross");
-        newOrg.setEin("123456789");
+        Organization org1 = new Organization();
+        org1.setName("Acme Corporation");
+        org1.setEin("123456789");
 
-        HibernateUtil.getSession().save(newOrg);
+        final Organization org2 = new Organization();
+        org2.setName("Acme Subsidiary");
+        org2.setEin("000000000");
+
+        HibernateUtil.beginTransaction();
+
+        HibernateUtil.getSession().save(org1);
+        HibernateUtil.getSession().save(org2);
+
+        HibernateUtil.commitTransaction();
+        //HibernateUtil.closeSession();
+
+        final Organization persistedOrg1 = (Organization) HibernateUtil.getSession().load(Organization.class,
+                org1.getOrgId());
+        assertEquals(persistedOrg1.getName(), "Acme Corporation");
+        assertEquals(persistedOrg1.getPartyName(), "Acme Corporation");
+        assertEquals(persistedOrg1.getEin(), "123456789");
+
+        final Organization persistedOrg2 = (Organization) HibernateUtil.getSession().load(Organization.class,
+                org2.getOrgId());
+        assertEquals(persistedOrg2.getName(), "Acme Subsidiary");
+        assertEquals(persistedOrg2.getPartyName(), "Acme Subsidiary");
+        assertEquals(persistedOrg2.getEin(), "000000000");
+
+        HibernateUtil.beginTransaction();
+
+        final PartyRole role1 = new PartyRole();
+        role1.setParty(persistedOrg1);
+        role1.setType(PartyRoleType.Cache.PARENT_ORGANIZATION.getEntity());
+        persistedOrg1.getPartyRoles().add(role1);
+
+
+        final PartyRole role2 = new PartyRole();
+        role2.setParty(persistedOrg2);
+        role2.setType(PartyRoleType.Cache.SUBSIDIARY.getEntity());
+        persistedOrg2.getPartyRoles().add(role2);
+
+        HibernateUtil.getSession().save(persistedOrg1);
+        HibernateUtil.getSession().save(role2);
 
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
 
-        final Organization persistedOrganization = (Organization) HibernateUtil.getSession().load(Organization.class,
-                newOrg.getOrgId());
-        assertEquals(persistedOrganization.getName(), "American Red Cross");
-        assertEquals(persistedOrganization.getPartyName(), "American Red Cross");
-        assertEquals(persistedOrganization.getEin(), "123456789");
+        // validate that the roles are assigned to the organizations
+        final Organization updatedOrg1 = (Organization) HibernateUtil.getSession().load(Organization.class,
+                persistedOrg1.getOrgId());
+        assertEquals(1, updatedOrg1.getPartyRoles().size());
+        assertEquals(PartyRoleType.Cache.PARENT_ORGANIZATION.getEntity(),
+                ((PartyRole) updatedOrg1.getPartyRoles().toArray()[0]).getType());
 
+        
+        HibernateUtil.closeSession();
     }
 }
