@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.66 2003-07-05 02:11:43 shahid.shah Exp $
+  * $Id: console.xml,v 1.67 2003-07-05 19:28:07 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -43,23 +43,25 @@
             </page>
 	        <page name="build" caption="Ant Build" heading="Execute Ant Build Target" command="dialog,console.ant-build"/>
             <page name="commands" caption="Commands">
-                <body config="console" source="console-page-content:../commands.ftl"/>
+                <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="selected-command">
+                    <body config="console" source="console-page-content:../catalog.ftl"/>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Command Documentation" retain-params="selected-command">
+                    <body config="console" source="console-page-content:../documentation.ftl"/>
+                </page>
+                <page name="unit-test" caption="Unit Test" heading="Command Unit Test" retain-params="selected-command">
+                    <body config="console" source="console-page-content:../unit-test.ftl"/>
+                </page>
             </page>
 	        <page name="value-sources" caption="Value Sources">
-                <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="value-source-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesCatalogPanel"/>
-                    </panels>
+                <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="selected-value-source">
+                    <body config="console" source="console-page-content:../catalog.ftl"/>
                 </page>
-                <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="value-source-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesCatalogPanel"/>
-                    </panels>
+                <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="selected-value-source">
+                    <body config="console" source="console-page-content:../documentation.ftl"/>
                 </page>
-                <page name="usage" caption="Usage" heading="Value Sources Usage" retain-params="value-source-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesUsagePanel"/>
-                    </panels>
+                <page name="unit-test" caption="Unit Test" heading="Value Source Unit Test" retain-params="selected-value-source">
+                    <body config="console" source="console-page-content:../unit-test.ftl"/>
                 </page>
             </page>
 	        <page name="metrics" caption="Metrics"/>
@@ -76,10 +78,6 @@
         <page name="presentation" caption="Presentation" heading="Presentation Layer">
 
 	        <page name="navigation" caption="Navigation">
-                <panels>
-                    <panel type="console-page-summary"/>
-                </panels>
-
                 <page name="catalog" caption="Catalog"/>
                 <page name="test" caption="Unit Test"/>
 	        </page>
@@ -232,7 +230,7 @@
     </navigation-tree>
 
     <dialogs package="console">
-        <dialog name="sql-editor" class="com.netspective.sparx.console.form.data.SqlEditorDialog">
+        <dialog name="sql-editor" class="com.netspective.sparx.console.form.SqlEditorDialog">
 
             <!-- TODO: setup so that only DML/DQL can be restricted or that it can only run in development mode, etc -->
 
@@ -249,6 +247,12 @@
             <field name="project-file" type="text" caption="Registered Ant Project File" read-only="yes"/>
             <field name="target" type="select" caption="Execute Target" style="combo" required="yes"/>
             <field name="target-descriptions" type="html" caption="Target Documentation"/>
+        </dialog>
+
+        <dialog name="value-source-test" class="com.netspective.sparx.form.TemplateDialog">
+            <frame heading="Test Value Source Specification"/>
+            <field name="value-source-spec" type="text" caption="Value Source" size="60" default="simple-expr:${request:selected-value-source}:"/>
+            <body config="console" source="content/project/value-sources/unit-test-execute.ftl"/>
         </dialog>
     </dialogs>
 

@@ -1,15 +1,14 @@
 <#include "*/library.ftl">
 
-<div class="textbox">
+<#assign factory = statics["com.netspective.commons.command.Commands"].getInstance()/>
+<#assign commandClassesMap = factory.getClassesMap()/>
+<#assign describeCommand = vc.getRequest().getParameter('selected-command')?default('-')/>
 
-    <#assign factory = statics["com.netspective.commons.command.Commands"].getInstance()/>
-    <#assign commandClassesMap = factory.getClassesMap()/>
-    <#assign describeCommand = vc.getRequest().getParameter('selected-command')?default('-')/>
-
-    <#if describeCommand != '-'>
-        <#assign commandClass = commandClassesMap.get(describeCommand)/>
-        <#assign docs = factory.getCommandDocumentation(commandClass)/>
-        <@panel heading="${describeCommand} Command">
+<#if describeCommand != '-' && commandClassesMap.containsKey(describeCommand)>
+    <#assign commandClass = commandClassesMap.get(describeCommand)/>
+    <#assign docs = factory.getCommandDocumentation(commandClass)?default('-')/>
+    <#if docs != '-'>
+        <@panel heading="${describeCommand} Command Documentation">
             <div class=textbox>
             ${docs.description}
             </div>
@@ -59,39 +58,13 @@
                 </#if>
             </#list>
             </@reportTable>
+            <div class=textbox>
+            <img src="${vc.getThemeResourcesRootUrl(vc.activeTheme) + "/images/java-class.gif"}"> Handler: <code>${commandClass.name}</code>
+            </div>
         </@panel>
-        <p>
+    <#else>
+        <div class="textbox">No documentation available for command <code>${describeCommand}</code>.</div>
     </#if>
-
-    <@panel heading="All Commands">
-        <@reportTable>
-        <#assign classSuffix="odd"/>
-            <tr>
-                <td class="report-column-heading">Command</td>
-                <td class="report-column-heading">Class</td>
-                <td class="report-column-heading">Description</td>
-            </tr>
-        <#list commandClassesMap.keySet().iterator() as command>
-            <#assign commandClass = commandClassesMap.get(command)/>
-            <#assign docs = factory.getCommandDocumentation(commandClass)/>
-            <tr>
-                <td class="report-column-${classSuffix}">
-                    <a href="?selected-command=${command}"><b>${command}</b></a>
-                </td>
-                <td class="report-column-${classSuffix}">
-                    <@classReference commandClass.name/>
-                </td>
-                <td class="report-column-${classSuffix}">
-                    ${docs.description}
-                </td>
-            </tr>
-            <#if classSuffix = 'odd'>
-                <#assign classSuffix='even'/>
-            <#else>
-                <#assign classSuffix='odd'/>
-            </#if>
-        </#list>
-        </@reportTable>
-    </@panel>
-
-</div>
+<#else>
+    <div class="textbox">Please select a command from the <a href='catalog'>Catalog</a> first.</div>
+</#if>

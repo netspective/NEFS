@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.12 2003-07-03 00:42:44 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapter.java,v 1.13 2003-07-05 19:28:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -95,6 +95,7 @@ public class FreeMarkerConfigurationAdapter
             configuration.setSharedVariable("getClassInstanceForName", new ClassInstanceMethod());
             configuration.setSharedVariable("getAntBuildProject", new AntBuildProjectMethod());
             configuration.setSharedVariable("getInputSourceDependencies", new InputSourceDependenciesMethod());
+            configuration.setSharedVariable("executeCommand", new ExecuteCommandMethod());
             configuration.setSharedVariable("panel", new PanelTransform());
             configuration.setSharedVariable("statics", BeansWrapper.getDefaultInstance().getStaticModels());
             SyntaxHighlightTransform.registerTransforms(configuration);

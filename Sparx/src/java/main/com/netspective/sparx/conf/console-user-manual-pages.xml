@@ -35,16 +35,13 @@
                 </panels>
             </page>
             <page name="commands" caption="Commands">
-                <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="command-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.CommandsCatalogPanel"/>
-                    </panels>
-                </page>
-                <page name="documentation" caption="Documentation" heading="Command Documentation" retain-params="command-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.CommandsCatalogPanel"/>
-                    </panels>
-                </page>
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Using Commands"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
             </page>
             <page name="value-sources" caption="Value Sources">
                 <panels>
@@ -54,22 +51,6 @@
                         <body config="console" source="console-page-content:documentation.ftl"/>
                     </panel>
                 </panels>
-
-                <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="value-source-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesCatalogPanel"/>
-                    </panels>
-                </page>
-                <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="value-source-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesCatalogPanel"/>
-                    </panels>
-                </page>
-                <page name="usage" caption="Usage" heading="Value Sources Usage" retain-params="value-source-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesUsagePanel"/>
-                    </panels>
-                </page>
             </page>
             <page name="access-control" caption="Access Control"/>
             <page name="documents" caption="Documents"/>
