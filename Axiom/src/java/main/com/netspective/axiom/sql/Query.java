@@ -550,10 +550,11 @@ public class Query
     public int executeUpdateAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
     {
         if(log.isTraceEnabled()) trace(cc, overrideParams);
+
+        PreparedStatement stmt = null;
         try
         {
             Connection conn = cc.getConnection();
-            PreparedStatement stmt = null;
             String sql = getSqlText(cc);
             stmt = conn.prepareStatement(sql);
 
@@ -566,7 +567,6 @@ public class Query
                 parameters.apply(cc, stmt);
 
             int executeStmtResult = stmt.executeUpdate();
-            stmt.close();
             return executeStmtResult;
         }
         catch(SQLException e)
@@ -574,11 +574,24 @@ public class Query
             log.error(createExceptionMessage(cc, overrideParams), e);
             throw e;
         }
+        finally
+        {
+            if(stmt != null) stmt.close();
+        }
     }
 
-    public int executeUpdate(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean autoCommit) throws NamingException, SQLException
+    public int executeUpdate(DatabaseConnValueContext dbvc, Object[] overrideParams) throws NamingException, SQLException
     {
-        String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
-        return executeUpdateAndIgnoreStatistics(dbvc.getConnection(dataSrcIdText, !autoCommit), overrideParams);
+        ConnectionContext cc = null;
+        try
+        {
+            String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
+            cc = dbvc.getConnection(dataSrcIdText, true);
+            return executeUpdateAndIgnoreStatistics(cc, overrideParams);
+        }
+        finally
+        {
+            if(cc != null) cc.close();
+        }
     }
 }
