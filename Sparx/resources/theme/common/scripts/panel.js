@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: panel.js,v 1.3 2003-11-19 14:29:23 shahid.shah Exp $
+ * $Id: panel.js,v 1.4 2003-12-12 17:20:38 shahid.shah Exp $
  */
 
 // **************************************************************************
@@ -662,3 +662,22 @@ function TreeNode_setDisplay(visible)
     for(var i = 0; i < this.children.length; i++)
         this.children[i].setDisplay(visible);
 }
+
+// -------------------------------------------------------------------------------------------------------------------
+// -- View Source
+// -------------------------------------------------------------------------------------------------------------------
+
+function ViewXmlSource(panelId)
+{
+    var viewSourceIdPrefix = "view-src-" + panelId;
+    var viewSourceCmdShowElemId = viewSourceIdPrefix + "-cmd-show";
+    var viewSourceCmdHideElemId = viewSourceIdPrefix + "-cmd-hide";
+    var viewSourceLocationElemId = viewSourceIdPrefix + "-location";
+    var viewSourceContentElemId = viewSourceIdPrefix + "-content";
+
+    setDisplay(viewSourceCmdShowElemId, DISPLAYTYPE_TOGGLEVISIBLILITY, true);
+    setDisplay(viewSourceCmdHideElemId, DISPLAYTYPE_TOGGLEVISIBLILITY, true);
+    setDisplay(viewSourceLocationElemId, DISPLAYTYPE_TOGGLEVISIBLILITY, true);
+    setDisplay(viewSourceContentElemId, DISPLAYTYPE_TOGGLEVISIBLILITY, true);
+}
+

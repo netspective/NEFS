@@ -39,16 +39,24 @@
  */
 
 /**
- * $Id: AbstractPanel.java,v 1.3 2003-11-07 17:44:27 shahid.shah Exp $
+ * $Id: AbstractPanel.java,v 1.4 2003-12-12 17:20:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.io.StringReader;
+
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.value.HttpServletValueContext;
+import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.text.TextUtils;
 
 public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
 {
@@ -76,6 +84,8 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
     protected HtmlPanelFrame frame;
     protected HtmlPanelBanner banner;
     private String identifier = "AbstractPanel_" + getNextPanelNumber();
+    private InputSourceLocator inputSourceLocator;
+    private boolean allowViewSource;
 
     synchronized static private final int getNextPanelNumber()
     {
@@ -86,6 +96,16 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
     {
         banner = createBanner();
         frame = createFrame();
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
@@ -169,5 +189,42 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
     public boolean affectsNavigationContext(NavigationContext nc)
     {
         return false;
+    }
+
+    public boolean isAllowViewSource(HttpServletValueContext vc)
+    {
+        return allowViewSource;
+    }
+
+    public void setAllowViewSource(boolean allowViewSource)
+    {
+        this.allowViewSource = allowViewSource;
+    }
+
+    public static void renderPanelViewSource(HtmlPanel panel, Writer writer, NavigationContext nc) throws IOException
+    {
+        if(! panel.isAllowViewSource(nc))
+            return;
+
+        Theme theme = nc.getActiveTheme();
+        String xmlSourceImg = theme.getResourceUrl("/images/xml-source.gif");
+        String panelId = panel.getPanelIdentifier();
+        InputSourceLocator isl = panel.getInputSourceLocator();
+
+        writer.write("<table class='view-xml-source'>\n");
+        writer.write("  <tr id='view-src-"+ panelId +"-cmd-show'><td class='cmd-view'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ panelId +"')\">View Panel XDM Code</a></td></tr>\n");
+        writer.write("  <tr id='view-src-"+ panelId +"-cmd-hide' style='display:none'><td class='cmd-hide'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ panelId +"')\">Hide Panel XDM Code</a></td></tr>\n");
+        writer.write("  <tr id='view-src-"+ panelId +"-location' style='display:none'><td class='location'>XML Location: "+ nc.getConsoleFileBrowserLink(isl.getInputSourceTracker().getIdentifier(), true) + " " + isl.getLineNumbersText());
+        writer.write("      <br>Java Class Instantiated: <code>"+ nc.getClassSourceHtml(panel.getClass(), false) + "</code></td></tr>\n");
+        writer.write("      </td></tr>\n");
+        writer.write("  <tr id='view-src-"+ panelId +"-content' style='display:none'><td class='content'>\n");
+        HtmlSyntaxHighlightPanel.emitHtml("xml", new StringReader(TextUtils.getUnindentedText(isl.getSourceText())), writer);
+        writer.write("  </td></tr>\n");
+        writer.write("</table>\n");
+    }
+
+    public void renderViewSource(Writer writer, NavigationContext nc) throws IOException
+    {
+        renderPanelViewSource(this, writer, nc);
     }
 }

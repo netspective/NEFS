@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.20 2003-11-08 03:30:45 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.21 2003-12-12 17:20:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -50,9 +50,11 @@ import java.io.IOException;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.io.InputSourceLocator;
 
 public class HtmlLayoutPanel implements HtmlPanel
 {
@@ -64,6 +66,8 @@ public class HtmlLayoutPanel implements HtmlPanel
     private HtmlPanelFrame frame;
     private HtmlPanelBanner banner;
     private String identifier = "HtmlLayoutPanel_" + getNextPanelNumber();
+    private boolean allowViewSource;
+    private InputSourceLocator inputSourceLocator;
 
     synchronized static private final int getNextPanelNumber()
     {
@@ -80,6 +84,16 @@ public class HtmlLayoutPanel implements HtmlPanel
     public TemplateConsumerDefn getTemplateConsumerDefn()
     {
         return AbstractHtmlTabularReportPanel.templateConsumer;
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator locator)
+    {
+        this.inputSourceLocator = locator;
     }
 
     public void registerTemplateConsumption(Template template)
@@ -194,6 +208,21 @@ public class HtmlLayoutPanel implements HtmlPanel
     public HtmlPanels getChildren()
     {
         return children;
+    }
+
+    public boolean isAllowViewSource(HttpServletValueContext vc)
+    {
+        return allowViewSource;
+    }
+
+    public void setAllowViewSource(boolean allowViewSource)
+    {
+        this.allowViewSource = allowViewSource;
+    }
+
+    public void renderViewSource(Writer writer, NavigationContext nc) throws IOException
+    {
+        AbstractPanel.renderPanelViewSource(this, writer, nc);
     }
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException

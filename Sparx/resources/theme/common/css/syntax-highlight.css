@@ -50,7 +50,8 @@ body {
 }
 .comment{
     font-family: lucida console, courier;
-	color:green;
+    font-style: oblique;
+	color:#999999;
 }
 .preprocessor{
     font-family: lucida console, courier;
@@ -73,3 +74,14 @@ code
     font-family: lucida console, courier;
     font-size: 9pt;
 }
+
+table.view-xml-source { border: 1px solid #EEEEEE; }
+
+table.view-xml-source tr { }
+
+table.view-xml-source td { font-family: verdana, arial; font-size: 9pt; }
+table.view-xml-source td.cmd-view { }
+table.view-xml-source td.cmd-hide { }
+table.view-xml-source td.location { border-bottom: 1px solid #EEEEEE; }
+table.view-xml-source td.content { font-size: 8pt; padding: 3px; }
+table.view-xml-source td.content pre { font-size: 8pt; }

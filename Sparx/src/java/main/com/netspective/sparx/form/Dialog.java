@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.49 2003-11-20 05:39:20 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.50 2003-12-12 17:20:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -95,6 +95,7 @@ import com.netspective.sparx.form.listener.DialogValidateListener;
 import com.netspective.sparx.form.listener.DialogListener;
 import com.netspective.sparx.form.listener.DialogListenerPlaceholder;
 import com.netspective.sparx.panel.AbstractPanel;
+import com.netspective.sparx.panel.HtmlInputPanel;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.Project;
 import com.netspective.commons.text.TextUtils;
@@ -105,7 +106,6 @@ import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateCatalog;
-import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 
@@ -114,7 +114,7 @@ import com.netspective.commons.value.source.StaticValueSource;
  * execution logic. It is cached and reused whenever needed. It contains methods to create the HTML for display,
  * to perform client-side validations, and to perform server-side validations.
  */
-public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, XmlDataModelSchema.ConstructionFinalizeListener
+public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateConsumer, XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String ATTRNAME_TYPE = "type";
@@ -167,7 +167,6 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     }
 
     private Project project;
-    private InputSourceLocator inputSourceLocator;
     private Log log = LogFactory.getLog(Dialog.class);
     private DialogFields fields;
     private DialogFlags dialogFlags;
@@ -228,16 +227,6 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     public Project getProject()
     {
         return project;
-    }
-
-    public InputSourceLocator getInputSourceLocator()
-    {
-        return inputSourceLocator;
-    }
-
-    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
-    {
-        this.inputSourceLocator = inputSourceLocator;
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
@@ -1029,6 +1018,8 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         {
             dc.getSkin().renderHtml(writer, dc);
         }
+
+        renderViewSource(writer, dc.getNavigationContext());
     }
 
     /**

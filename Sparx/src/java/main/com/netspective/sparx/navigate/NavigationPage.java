@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.54 2003-11-25 00:52:12 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.55 2003-12-12 17:20:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -70,6 +70,7 @@ import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.util.AlternateOutputDestServletResponse;
 import com.netspective.commons.template.TemplateProcessor;
@@ -83,10 +84,12 @@ import com.netspective.sparx.navigate.handler.NavigationPageBodyDefaultHandler;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.theme.Theme;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.io.StringWriter;
+import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -102,12 +105,12 @@ import org.apache.commons.lang.exception.NestableException;
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 16];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 17];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
     public static final String REQATTRNAME_NAVIGATION_CONTEXT = "navigationContext";
-    private static final int INHERIT_PAGE_FLAGS_FROM_PARENT = NavigationPath.INHERIT_PATH_FLAGS_FROM_PARENT | Flags.REQUIRE_LOGIN | Flags.ALLOW_PAGE_CMD_PARAM;
+    private static final int INHERIT_PAGE_FLAGS_FROM_PARENT = NavigationPath.INHERIT_PATH_FLAGS_FROM_PARENT | Flags.REQUIRE_LOGIN | Flags.ALLOW_PAGE_CMD_PARAM | Flags.ALLOW_VIEW_SOURCE;
 
     static
     {
@@ -129,6 +132,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 13] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_FOOTER", Flags.HANDLE_FOOTER);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 14] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "DEBUG_REQUEST", Flags.DEBUG_REQUEST);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 15] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "BODY_AFFECTS_NAVIGATION", Flags.BODY_AFFECTS_NAVIGATION);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 16] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_VIEW_SOURCE", Flags.ALLOW_VIEW_SOURCE);
     }
 
     protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
@@ -162,7 +166,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public static final int HANDLE_FOOTER = HANDLE_HEADER * 2;
         public static final int DEBUG_REQUEST = HANDLE_FOOTER * 2;
         public static final int BODY_AFFECTS_NAVIGATION = DEBUG_REQUEST * 2;
-        public static final int START_CUSTOM = BODY_AFFECTS_NAVIGATION * 2;
+        public static final int ALLOW_VIEW_SOURCE = BODY_AFFECTS_NAVIGATION * 2;
+        public static final int START_CUSTOM = ALLOW_VIEW_SOURCE * 2;
 
         public Flags()
         {
@@ -206,6 +211,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public boolean isDebuggingRequest()
         {
             return flagIsSet(DEBUG_REQUEST);
+        }
+
+        public boolean isAllowViewSource()
+        {
+            return flagIsSet(ALLOW_VIEW_SOURCE);
         }
     }
 
@@ -1132,6 +1142,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     public void handlePageFooter(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
+        renderViewSource(writer, nc);
         NavigationSkin skin = nc.getSkin();
         if(skin != null) skin.renderPageFooter(writer, nc);
     }
@@ -1236,5 +1247,27 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         if(flags.flagIsSet(Flags.HANDLE_FOOTER))
             handlePageFooter(writer, nc);
         exitPage(nc);
+    }
+
+    public void renderViewSource(Writer writer, NavigationContext nc) throws IOException
+    {
+        if(! getFlags().flagIsSet(Flags.ALLOW_VIEW_SOURCE))
+            return;
+
+        Theme theme = nc.getActiveTheme();
+        String xmlSourceImg = theme.getResourceUrl("/images/xml-source.gif");
+        String pageId = getQualifiedNameIncludingTreeId();
+        InputSourceLocator isl = getInputSourceLocator();
+
+        writer.write("<p><table class='view-xml-source'>\n");
+        writer.write("  <tr id='view-src-"+ pageId +"-cmd-show'><td class='cmd-view'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ pageId +"')\">View Navigation/Page XDM Code</a></td></tr>\n");
+        writer.write("  <tr id='view-src-"+ pageId +"-cmd-hide' style='display:none'><td class='cmd-hide'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ pageId +"')\">Hide Navigation/Page XDM Code</a></td></tr>\n");
+        writer.write("  <tr id='view-src-"+ pageId +"-location' style='display:none'><td class='location'>XML Location: "+ nc.getConsoleFileBrowserLink(isl.getInputSourceTracker().getIdentifier(), true) + " " + isl.getLineNumbersText());
+        writer.write("      <br>Java Class Instantiated: <code>"+ nc.getClassSourceHtml(getClass(), false) + "</code></td></tr>\n");
+        writer.write("      </td></tr>\n");
+        writer.write("  <tr id='view-src-"+ pageId +"-content' style='display:none'><td class='content'>\n");
+        HtmlSyntaxHighlightPanel.emitHtml("xml", new StringReader(TextUtils.getUnindentedText(isl.getSourceText())), writer);
+        writer.write("  </td></tr>\n");
+        writer.write("</table>\n");
     }
 }

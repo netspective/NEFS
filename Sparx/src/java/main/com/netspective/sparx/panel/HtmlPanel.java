@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.13 2003-11-08 03:30:45 shahid.shah Exp $
+ * $Id: HtmlPanel.java,v 1.14 2003-12-12 17:20:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -50,9 +50,11 @@ import java.io.Writer;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
-public interface HtmlPanel extends TemplateConsumer
+public interface HtmlPanel extends TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
 {
     public final int RENDERFLAG_NOFRAME = 1;
     public final int RENDERFLAGS_DEFAULT = 0;
@@ -77,6 +79,10 @@ public interface HtmlPanel extends TemplateConsumer
 
     public void setHeight(int height);
 
+    public boolean isAllowViewSource(HttpServletValueContext vc);
+
+    public void setAllowViewSource(boolean flag);
+
     /**
      * return true if the panel changes anything in the page heading, title, etc -- basically anything outside
      */
@@ -85,4 +91,6 @@ public interface HtmlPanel extends TemplateConsumer
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException;
 
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException;
+
+    public void renderViewSource(Writer writer, NavigationContext nc) throws IOException;
 }

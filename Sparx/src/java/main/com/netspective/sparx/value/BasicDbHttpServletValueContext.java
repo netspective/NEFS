@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.48 2003-11-30 00:34:43 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.49 2003-12-12 17:20:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
 
 import java.sql.SQLException;
 import java.io.IOException;
+import java.io.File;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServlet;
@@ -83,6 +84,7 @@ import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.RuntimeEnvironment;
+import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.value.ValueSource;
 
 public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContext
@@ -415,6 +417,44 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         }
 
         return getConsoleFileBrowserLinkShowAlt(absolutePath, null);
+    }
+
+    public String getClassSourceHtml(Class cls, boolean showShortClassName)
+    {
+        String className = cls.getName();
+        String packageName = cls.getPackage().getName();
+        String classNameNoInner = className.replace('$', '.');
+        String classNameShort = classNameNoInner.substring(packageName.length()+1);
+        String showClassName = showShortClassName ? classNameShort : className;
+
+        if(packageName.startsWith("java.lang"))
+            return "<span title='"+ className +"'>"+ showClassName +"</span>";
+        else
+        {
+            String classJavaSourceFileName = ClassPath.getClassFileName(className);
+            if(classJavaSourceFileName == null)
+                return "<span title='"+ className +"'>"+ showClassName +"</span>";
+            else
+            {
+                File classJavaSourceFile = new File(classJavaSourceFileName);
+                if(classJavaSourceFile.exists())
+                {
+                    String servletRootPath = getHttpServlet().getServletContext().getRealPath("");
+                    if(classJavaSourceFile.getAbsolutePath().startsWith(servletRootPath))
+                    {
+                        String relativePath = classJavaSourceFile.getAbsolutePath().substring(servletRootPath.length());
+                        String relativePathProperDelims = relativePath.replace('\\', '/');
+                        String relativePathProperExtn = relativePathProperDelims.substring(0, relativePathProperDelims.length() - ".class".length()) + ".java";
+                        return "<a href='"+ getConsoleUrl() +"/project/files/"+ relativePathProperExtn +"' title='"+ className +" ("+ classJavaSourceFileName +")'>"+ showClassName +"</a>";
+                    }
+                    else
+                        return "<span title='"+ className +" ("+ classJavaSourceFileName +")'>"+ showClassName +"</span>";
+
+                }
+                else
+                    return "<span title='"+ classJavaSourceFileName +"'>"+ showClassName +"</span>";
+            }
+        }
     }
 
     public void sendRedirect(String url) throws IOException
