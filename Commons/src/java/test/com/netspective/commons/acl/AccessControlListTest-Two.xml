@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<component>
+
+	<access-control-list name="main">
+		<permission name="app">
+			<permission name="orders">
+				<permission name="order_list"/>
+				<permission name="create_order"/>
+				<permission name="edit_order"/>
+				<permission name="view_order"/>
+				<permission name="delete_order"/>
+			</permission>
+		</permission>
+
+		<permission name="role">
+			<permission name="super-user">
+				<grant permission="/main/app/orders"/>
+			</permission>
+			<permission name="normal-user">
+				<grant permission="/main/app/orders"/>
+				<revoke permission="/main/app/orders/delete_order"/>
+			</permission>
+		</permission>
+	</access-control-list>
+
+</component>
