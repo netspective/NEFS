@@ -39,26 +39,154 @@
  */
 
 /**
- * $Id: TestUtils.java,v 1.2 2003-04-12 05:47:57 shahbaz.javeed Exp $
+ * $Id: TestUtils.java,v 1.3 2003-06-11 02:40:40 roque.hernandez Exp $
  */
 
 package com.netspective.axiom;
 
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
+import com.netspective.axiom.ant.AxiomTask;
 import com.netspective.commons.io.Resource;
+import com.netspective.commons.io.FileFind;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
 
-public class TestUtils
-{
-    private static final String DB = "medspective";
-    public static final String DATASRCID_DEFAULT = "default";
-    public static final DriverManagerConnectionProvider connProvider = new DriverManagerConnectionProvider();
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Target;
+import org.apache.tools.ant.taskdefs.SQLExec;
+import org.apache.tools.ant.taskdefs.Delete;
 
-    static
-    {
-        String classDir = TestUtils.class.getPackage().getName().replace('.', '/');
-        Resource resource = new Resource(TestUtils.class.getClassLoader(), classDir + "/hsqldb-data/"+ DB +".properties");
-        connProvider.addDataSourceInfo(DATASRCID_DEFAULT, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:" + resource.getFile().getParent() + File.separator + DB, "sa", "");
-    }
+public class TestUtils {
+   private static final String DB = "medspective";
+   public static final String DATASRCID_DEFAULT = "default";
+   protected static final DriverManagerConnectionProvider connProvider = new DriverManagerConnectionProvider();
+
+   protected static String schemaFilename = "test-data-schema.xml";
+   protected static String dataImportFile = "test-data.xml";
+   protected static String destinationTestDataFolder = "/test-data";
+   protected static String ddlPath = destinationTestDataFolder + "/ddl";
+   protected static String dbPath = destinationTestDataFolder + "/hsqldb-data";
+   protected static String dbName = "test";
+   protected static String dataImportDtdFile = destinationTestDataFolder + "/import-data.dtd";
+
+
+   public static Map connProviders = new HashMap();
+
+   //TODO: We could setup a default DB for the whole Axiom and set that as the default DB to get if you don't pass an Id.
+   //TODO: Cleanup the file structure (every package will have its own DB, it will pass the package name as an id to the DB)
+
+   static public DriverManagerConnectionProvider getConnProvider(Class connProviderId){
+      return getConnProvider(connProviderId.getName());
+   }
+
+   static public DriverManagerConnectionProvider getConnProvider(Package connProviderId){
+      return getConnProvider(connProviderId.getName());
+   }
+
+   static public DriverManagerConnectionProvider getConnProvider(String connProviderId){
+      return getConnProvider(connProviderId, false);  //TODO: Really need to think about if the default should false
+   }
+
+   static public DriverManagerConnectionProvider getConnProvider(Class connProviderId, boolean reCreateDb){
+      return getConnProvider(connProviderId.getName(), reCreateDb);
+   }
+
+   static public DriverManagerConnectionProvider getConnProvider(Package connProviderId, boolean reCreateDb){
+      return getConnProvider(connProviderId.getName(), reCreateDb);
+   }
+
+   static public DriverManagerConnectionProvider getConnProvider(String connProviderId, boolean reCreateDb){
+
+
+      ConnectionProviderEntry entry = connProvider.getDataSourceEntry(connProviderId);
+
+      if (entry == null || reCreateDb)
+         setupDb(connProviderId);
+
+      return connProvider;
+   }
+
+
+
+   static public void setupDb(String connProviderId) {
+
+      String classDir = connProviderId.replace('.', '/');
+
+      FileFind.FileFindResults ffr = FileFind.findInClasspath(classDir + "/" + schemaFilename, FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
+      if (!ffr.isFileFound()){
+          ffr = FileFind.findInClasspath(classDir + "-" + schemaFilename, FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
+      }
+
+      if (!ffr.isFileFound()) {
+          return;
+      }
+
+      File schemaFile = ffr.getFoundFile();
+      String rootPath = schemaFile.getParentFile().getAbsolutePath();
+
+      Project project = new Project();
+
+      Target target = new Target();
+      target.setName("generate-ddl");
+
+      AxiomTask task = new AxiomTask();
+      task.setTaskName("generate-ddl");
+      task.setSchema("db");
+      task.setDdl("*");
+      task.setXdmFile(new File(rootPath + "/" + schemaFilename));
+      task.setDestDir(new File(rootPath + ddlPath));
+
+      target.addTask(task);
+      project.addTarget(target);
+      task.setProject(project);
+
+      SqlManager manager = task.getSqlManager();
+      task.generateDdlFiles(manager);
+
+
+      SQLExec sqlExec = new SQLExec();
+      target.addTask(sqlExec);
+      sqlExec.setProject(project);
+      File dbFolder = new File(rootPath + dbPath);
+
+      //need to do a recursive delete or call the deleteTree ant task
+      Delete del = new Delete();
+      target.addTask(del);
+      del.setProject(project);
+      del.setDir(dbFolder);
+      del.execute();
+
+      dbFolder.mkdir();
+
+      sqlExec.setSrc(new File(rootPath + ddlPath + "/db-hsqldb.sql"));
+      sqlExec.setDriver("org.hsqldb.jdbcDriver");
+      sqlExec.setUrl("jdbc:hsqldb:" + rootPath + dbPath + "/" + dbName);
+      sqlExec.setUserid("sa");
+      sqlExec.setPassword("");
+      sqlExec.execute();
+
+      //TODO: If we ever nee to generate the dal for a unit test, then we'll have to figure out how to
+      //      go up the tree hirearchy and generate the dal at the c:\...\test folder
+      //task.setDestDir(new File("C:/Projects/Frameworks/Axiom/src/java/test/com/netspective/axiom"));
+      //task.setDalPackage("sql.dal");
+      //task.generateDalFiles(manager);
+      //System.out.println("TASK: dal");
+      //System.out.println("destDir: " + "C:/Projects/Frameworks/Axiom/src/java/test");
+
+      task.setImport(new File(rootPath + "/" + dataImportFile));
+      task.setGenImportDtd(new File(rootPath + dataImportDtdFile));
+      task.generateImportDtd(manager);
+
+      task.setDriver("org.hsqldb.jdbcDriver");
+      task.setUrl("jdbc:hsqldb:" + rootPath + dbPath + "/" + dbName);
+      task.setUserId("sa");
+      task.setPassword("");
+      task.importData(manager);
+
+      connProvider.addDataSourceInfo(connProviderId, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:" + rootPath + dbPath + File.separator + dbName, "sa", "");
+
+   }
 }
