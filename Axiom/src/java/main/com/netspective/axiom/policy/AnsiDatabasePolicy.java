@@ -545,7 +545,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         return result.toString();
     }
 
-    protected void executeAndRecordStatistics(ConnectionContext cc, QueryExecutionLog qel, String identifer, String sql, Object[] bindValues, Object[] addlParams) throws NamingException, SQLException
+    protected int executeAndRecordStatistics(ConnectionContext cc, QueryExecutionLog qel, String identifer, String sql, Object[] bindValues, Object[] addlParams) throws NamingException, SQLException
     {
         if(log.isTraceEnabled())
             log.trace(getDmlDebugText(sql, bindValues));
@@ -587,9 +587,10 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             logEntry.registerBindParamsEnd();
 
             logEntry.registerExecSqlBegin();
-            stmt.execute();
+            int result = stmt.executeUpdate();
             stmt.close();
             logEntry.registerExecSqlEndSuccess();
+            return result;
         }
         catch(SQLException e)
         {
@@ -603,7 +604,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         }
     }
 
-    protected void executeAndIgnoreStatistics(ConnectionContext cc, String sql, Object[] bindValues, Object[] addlParams) throws NamingException, SQLException
+    protected int executeAndIgnoreStatistics(ConnectionContext cc, String sql, Object[] bindValues, Object[] addlParams) throws NamingException, SQLException
     {
         if(log.isTraceEnabled())
             log.trace(getDmlDebugText(sql, bindValues));
@@ -639,8 +640,9 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 }
             }
 
-            stmt.execute();
+            int result = stmt.executeUpdate();
             stmt.close();
+            return result;
         }
         catch(SQLException e)
         {
