@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemasCollection.java,v 1.2 2003-06-28 00:47:06 shahid.shah Exp $
+ * $Id: SchemasCollection.java,v 1.3 2003-09-29 01:55:38 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -50,13 +50,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.netspective.axiom.schema.Schemas;
 import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.table.BasicTable;
+import com.netspective.commons.text.TextUtils;
 
 public class SchemasCollection implements Schemas
 {
+    private static final Log log = LogFactory.getLog(SchemasCollection.class);
+
     private List schemas = new ArrayList();
     private Map mapByName = new TreeMap();
     private Map mapByNameOrXmlNodeName = new TreeMap();
@@ -107,6 +113,83 @@ public class SchemasCollection implements Schemas
     public Set getNames()
     {
         return mapByName.keySet();
+    }
+
+    public Table getTable(String schemaTableNames)
+    {
+        if(size() == 0)
+        {
+            log.error("No schemas available in getTable()");
+            return null;
+        }
+
+        String[] parts = TextUtils.split(schemaTableNames, ".", true);
+        Schema schema = null;
+        String tableName = null;
+
+        switch(parts.length)
+        {
+            case 1:
+                schema = get(0); // the "default" schema
+                tableName = parts[0];
+                break;
+
+            case 2:
+                schema = getByName(parts[0]);
+                tableName = parts[1];
+                break;
+
+            default:
+                log.error("Unknown format for getTable(): " + schemaTableNames + ", exepcted Schema_Name.Table_Name or just Table_Name");
+                return null;
+        }
+
+        if(schema == null)
+        {
+            log.error("No schema found in getTable(): " + schemaTableNames + ", exepcted Schema_Name.Table_Name or just Table_Name");
+            return null;
+        }
+        else
+            return schema.getTables().getByName(tableName);
+    }
+
+    public Column getColumn(String schemaTableColumnNames, Table defaultTable)
+    {
+        if(size() == 0)
+            return null;
+
+        Table table = null;
+        String columnName = null;
+
+        String[] parts = TextUtils.split(schemaTableColumnNames, ".", true);
+        switch(parts.length)
+        {
+            case 1:
+                table = defaultTable;
+                columnName = parts[0];
+                break;
+
+            case 2:
+                table = getTable(parts[0]);
+                columnName = parts[1];
+                break;
+
+            case 3:
+                table = getTable(parts[0] + "." + parts[1]);
+                columnName = parts[2];
+
+            default:
+                log.error("Unknown format for getColumn(): " + schemaTableColumnNames + ", expected Schema_Name.Table_Name.Column_Name, Table_Name.Column_Name, or just Column_Name");
+                return null;
+        }
+
+        if(table == null)
+        {
+            log.error("Table not found in getColumn(): " + schemaTableColumnNames + ", expected Schema_Name.Table_Name.Column_Name, Table_Name.Column_Name, or just Column_Name");
+            return null;
+        }
+        else
+            return table.getColumns().getByName(columnName);
     }
 
     public String toString()

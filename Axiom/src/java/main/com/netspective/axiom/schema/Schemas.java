@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Schemas.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: Schemas.java,v 1.2 2003-09-29 01:55:38 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -54,4 +54,21 @@ public interface Schemas
     public Schema getByNameOrXmlNodeName(String name);
     public Set getNames();
     public int size();
+
+    /**
+     * Return the table identified by the format Schema_Name.Table_Name. If no schema is provided, then the "default"
+     * schema is used (usually the first schema). If both schema and table names are provided then both items are used.
+     * @param schemaTableNames The table in the format Schema.Table
+     * @return
+     */
+    public Table getTable(String schemaTableNames);
+
+    /**
+     * Return the table identified by the format Schema_Name.Table_Name.column_name. If no table is provided (e.g. only
+     * a column_name is provided, then the defaultTable parameter is used.
+     * @param schemaTableColumnNames The column in the format Schema.Table.Column
+     * @param defaultTable The default table to use if no table is provided in the schemaTableColumnNames parameter
+     * @return
+     */
+    public Column getColumn(String schemaTableColumnNames, Table defaultTable);
 }
