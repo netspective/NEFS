@@ -10,7 +10,7 @@
     <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
 
-    <theme name="slate" default="yes" class="app.theme.AppTheme" inherit-resources-from-themes="common">
+    <theme name="slate" default="yes" class="app.AppTheme" inherit-resources-from-themes="common">
         <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"
             panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output" />
         <report-skin class="com.netspective.sparx.theme.basic.RecordEditorReportSkin" name="record-editor"
@@ -83,7 +83,7 @@
          ********************************************************************************************************** -->
 
     <dialogs package="survey">
-        <dialog name="external" class="app.dialog.RiskResponseDialog">
+        <dialog name="external" class="app.RiskResponseDialog">
             <risk-group>External</risk-group>
             <risk-fields name="natural_hazard" heading="Natural Hazard Risk" text="Major catastrophe (e.g., flood, tornado) that can interrupt the day-today operations of Battelle"/>
             <risk-fields name="political" heading="Political Risk" text="Political actions (e.g., legislation, appropriations, court decisions, etc.) on a local, state, and national level"/>
@@ -91,7 +91,7 @@
             <risk-fields name="technology" heading="Technological Innovation Risk" text="Management of technological advancements on Battelle's business model and strategies"/>
         </dialog>
 
-        <dialog name="internal_strategic" class="app.dialog.RiskResponseDialog">
+        <dialog name="internal_strategic" class="app.RiskResponseDialog">
             <risk-group>Internal/Strategic</risk-group>
             <risk-fields name="marketing" heading="Marketing Risk" text="Effective and accurate publicity of Battelle's  products and services both internally and externally"/>
             <risk-fields name="business_model" heading="Business Model Risk" text="Current business model's ability to meet Battelle's strategic objectives does not adequately address the changing business environment"/>
@@ -99,7 +99,7 @@
             <risk-fields name="business_portfolio" heading="Business Portfolio Risk" text="Battelle projects, services, or clients are not diversified in source or direction"/>
         </dialog>
 
-        <dialog name="internal_operational_process" class="app.dialog.RiskResponseDialog">
+        <dialog name="internal_operational_process" class="app.RiskResponseDialog">
             <risk-group>Internal/Operational/Process</risk-group>
             <risk-fields name="contract" heading="Contract Commitment/Execution Risk" text="Maintenance of relevant and/or reliable information concerning contractual commitments"/>
             <risk-fields name="product_service" heading="Product/Service Performance" text="Quality of product or service performance or non-performance"/>
@@ -111,7 +111,7 @@
             <risk-fields name="security" heading="Physical Security Risk" text="Ability to ensure physical security of infrastructure"/>
         </dialog>
 
-        <dialog name="internal_operational_human_capital" class="app.dialog.RiskResponseDialog">
+        <dialog name="internal_operational_human_capital" class="app.RiskResponseDialog">
             <risk-group>Internal/Operational/Human Capital</risk-group>
             <risk-fields name="placement" heading="Placement Risk" text="Personnel flow into, out of, and within Battelle so that personnel with the requisite knowledge and skill sets are in the right positions"/>
             <risk-fields name="personnel" heading="Personnel Dependence Risk" text="Reliance on highly trained, specialized, or educated personnel in certain areas or projects"/>
@@ -120,7 +120,7 @@
             <risk-fields name="training" heading="Training/Development Risk" text="Existence of effective and formal training programs to build consistent skill sets and meet employee needs"/>
         </dialog>
 
-        <dialog name="internal_operational_business_reporting" class="app.dialog.RiskResponseDialog">
+        <dialog name="internal_operational_business_reporting" class="app.RiskResponseDialog">
             <risk-group>Internal/Operational/Business Reporting</risk-group>
             <risk-fields name="mgmt_reporting" heading="Management Reporting Risk" text="Completeness, accuracy, and timeliness of information"/>
             <risk-fields name="budgeting_planning" heading="Budgeting and Planning Risk" text="Completeness and accuracy of information relating to financial reporting and planning as well as development of strategic plans to capitalize on the current business environment"/>
@@ -129,26 +129,26 @@
             <risk-fields name="investment" heading="Investment Evaluation Risk" text="Ability to evaluate investment risk of commercial ventures, spinouts and new technical platforms"/>
         </dialog>
 
-        <dialog name="internal_operational_integrity" class="app.dialog.RiskResponseDialog">
+        <dialog name="internal_operational_integrity" class="app.RiskResponseDialog">
             <risk-group>Internal/Operational/Integrity</risk-group>
             <risk-fields name="employee_fraud" heading="Employee Fraud Risk" text="Employee misrepresentations (e.g.,  falsification of research or product capabilities)"/>
             <risk-fields name="conflict_of_interest" heading="Conflict of Interest Risk" text="Personal or professional interest of Battelle, an employee, or client impacts Battelle's ability to objectively execute duties"/>
         </dialog>
 
-        <dialog name="internal_operational_technology" class="app.dialog.RiskResponseDialog">
+        <dialog name="internal_operational_technology" class="app.RiskResponseDialog">
             <risk-group>Internal/Operational/Technology</risk-group>
             <risk-fields name="access" heading="Access Risk" text="Appropriate access of sensitive information of designated personnel"/>
             <risk-fields name="availability" heading="Availability Risk" text="Ability of designated personnel to access information at critical times"/>
             <risk-fields name="infrastructure" heading="Technological Infrastructure Risk" text="Formalized information technology infrastructure (e.g., hardware, networks, software, personnel, and procedures) that changes the consistency, quality, and efficiency of the way Battelle does business"/>
         </dialog>
 
-        <dialog name="internal_financial" class="app.dialog.RiskResponseDialog">
+        <dialog name="internal_financial" class="app.RiskResponseDialog">
             <risk-group>Internal/Financial</risk-group>
             <risk-fields name="counter_party" heading="Counter-Party Risk" text="Inability of subcontractor, teaming partners, etc. to perform according to the terms of a contract or joint venture agreement"/>
             <risk-fields name="liquidity" heading="Liquidity Risk" text="Ability to obtain cash and to turn assets into cash in a timely manner affects Battelle's ability to pay its financial obligations"/>
          </dialog>
 
-        <dialog name="additional" class="app.dialog.RiskResponseDialog">
+        <dialog name="additional" class="app.RiskResponseDialog">
             <risk-group>Additional</risk-group>
             <risk-fields name="additional_1" heading="Additional Risk (1)" text="Additional critical risks you perceive" custom="yes"/>
             <risk-fields name="additional_2" heading="Additional Risk (2)" text="Additional critical risks you perceive" custom="yes"/>
