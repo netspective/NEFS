@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.7 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.8 2003-04-05 14:14:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report;
@@ -57,6 +57,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 
 public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
 {
+    private int height = -1, width = -1;
     private HtmlPanelFrame frame;
     private HtmlPanelBanner banner;
 
@@ -64,6 +65,26 @@ public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularRepor
     {
         frame = createFrame();
         banner = createBanner();
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public void setHeight(int height)
+    {
+        this.height = height;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth(int width)
+    {
+        this.width = width;
     }
 
     public HtmlPanelFrame getFrame()

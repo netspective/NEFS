@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.7 2003-04-04 20:25:11 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.8 2003-04-05 14:14:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -56,6 +56,7 @@ import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.AbstractTabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModel;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
@@ -79,6 +80,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
     public static final String REQPARAMNAME_SHOW_CLASS_DETAIL = "xdm-class";
     private static final HtmlTabularReport structureReport = new BasicHtmlTabularReport();
     private static final HtmlTabularReport detailReport = new BasicHtmlTabularReport();
+    private static final ValueSource noSelectedRowMsgSource = new StaticValueSource("Please select an element.");
 
     static
     {
@@ -264,6 +266,20 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
     public void setView(XdmSchemaStructurePanelViewEnumeratedAttribute view)
     {
         this.view = view;
+        switch(view.getValueIndex())
+        {
+            case XdmSchemaStructurePanelViewEnumeratedAttribute.TREE:
+                getFrame().setHeading(new StaticValueSource("All Elements"));
+                break;
+
+            case XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL_ANCESTORS:
+                getFrame().setHeading(new StaticValueSource("Ancestors"));
+                break;
+
+            case XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL:
+                getFrame().setHeading(new StaticValueSource("Children"));
+                break;
+        }
     }
 
     public XmlDataModel getDataModel()
@@ -290,36 +306,64 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             states[1].getFlags().setFlag(TabularReportColumn.Flags.HIDDEN);
             states[3].getFlags().setFlag(TabularReportColumn.Flags.HIDDEN);
         }
+
         return vc;
+    }
+
+    public StructureRow getSelectedStructureRow(NavigationContext nc, List structureRows)
+    {
+        String selectedClass = nc.getRequest().getParameter(REQPARAMNAME_SHOW_CLASS_DETAIL);
+        if(selectedClass == null)
+            return null;
+
+        for(int i = 0; i < structureRows.size(); i++)
+        {
+            StructureRow structureRow = (StructureRow) structureRows.get(i);
+            if(structureRow.schema != null && structureRow.schema.getBean().getName().equals(selectedClass))
+            {
+                nc.setPageHeading(structureRow.schema.getBean().getName());
+                return structureRow;
+            }
+        }
+
+        return null;
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         List structureRows = createStructureRows(dataModel == null ? nc.getApplicationManagerComponent() : dataModel);
-        if(view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL)
+        StructureRow selectedRow = getSelectedStructureRow(nc, structureRows);
+
+        switch(view.getValueIndex())
         {
-            String showClassDetail = nc.getRequest().getParameter(REQPARAMNAME_SHOW_CLASS_DETAIL);
-            for(int i = 0; i < structureRows.size(); i++)
-            {
-                try
+            case XdmSchemaStructurePanelViewEnumeratedAttribute.STRUCTURE:
+                return new StructureDataSource(structureRows, selectedRow);
+
+            case XdmSchemaStructurePanelViewEnumeratedAttribute.TREE:
+                return new StructureDataSource(structureRows, selectedRow);
+
+            case XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL_ANCESTORS:
+            case XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL:
+                if(selectedRow != null)
                 {
-                    StructureRow structureRow = (StructureRow) structureRows.get(i);
-                    if(structureRow.schema != null && structureRow.schema.getBean().getName().equals(showClassDetail))
+                    try
                     {
-                        nc.setPageHeading(structureRow.schema.getBean().getName());
-                        return new DetailDataSource(structureRows, structureRow);
+                        if(view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL_ANCESTORS)
+                            return new DetailAncestorsDataSource(structureRows, selectedRow);
+                        else
+                            return new DetailDataSource(structureRows, selectedRow);
+                    }
+                    catch (DataModelException e)
+                    {
+                        log.error(e);
+                        return new DetailNotFoundDataSource();
                     }
                 }
-                catch (DataModelException e)
-                {
-                    log.error(e);
-                    return new DetailNotFoundDataSource();
-                }
-            }
-            return new DetailNotFoundDataSource();
+                return new DetailNotFoundDataSource();
+
+            default:
+                return null;
         }
-        else
-            return new StructureDataSource(structureRows);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -332,6 +376,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         protected int row = -1;
         protected int lastRow;
         protected StructureRow activeRow;
+        protected StructureRow selectedRow;
         protected List rows;
         protected Hierarchy hierarchy = new ActiveHierarchy();
 
@@ -363,9 +408,10 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             return hierarchy;
         }
 
-        public StructureDataSource(List rows)
+        public StructureDataSource(List rows, StructureRow selectedRow)
         {
             this.rows = rows;
+            this.selectedRow = selectedRow;
             lastRow = rows.size() - 1;
         }
 
@@ -427,10 +473,142 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         {
             return row + 1;
         }
+
+        public boolean isActiveRowSelected()
+        {
+            return activeRow == selectedRow;
+        }
+    }
+
+    protected class DetailAncestorsDataSource extends AbstractTabularReportDataSource
+    {
+        protected int row = -1;
+        protected int lastRow;
+        protected StructureRow activeRow;
+        protected StructureRow selectedRow;
+        protected List ancestorRows;
+        protected Hierarchy hierarchy = new ActiveHierarchy();
+
+        protected class ActiveHierarchy implements Hierarchy
+        {
+            public int getColumn()
+            {
+                return 0;
+            }
+
+            public int getLevel()
+            {
+                return activeRow.level;
+            }
+
+            public int getParentRow()
+            {
+                return row-1;
+            }
+        }
+
+        public boolean isHierarchical()
+        {
+            return true;
+        }
+
+        public TabularReportDataSource.Hierarchy getActiveHierarchy()
+        {
+            return hierarchy;
+        }
+
+        public DetailAncestorsDataSource(List structureRows, StructureRow selectedRow)
+        {
+            this.selectedRow = selectedRow;
+            this.ancestorRows = new ArrayList();
+
+            for(int i = 0; i < structureRows.size(); i++)
+            {
+                StructureRow checkRow = (StructureRow) structureRows.get(i);
+                if(checkRow == selectedRow ||
+                   (selectedRow.ancestors.contains(checkRow.schema) && checkRow.level < selectedRow.level))
+                    ancestorRows.add(structureRows.get(i));
+            }
+
+            lastRow = this.ancestorRows.size() - 1;
+        }
+
+        public ValueSource getNoDataFoundMessage()
+        {
+            return noSelectedRowMsgSource;
+        }
+
+        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
+        {
+            switch(columnIndex)
+            {
+                case 0:
+                    return activeRow.elementName;
+
+                case 1:
+                    if((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
+                    {
+                        if(activeRow.templateProducer != null)
+                            return activeRow.templateProducer.getClass().getName();
+                        else
+                            return activeRow.schema.getBean().getName();
+                    }
+                    else
+                    {
+                        if(activeRow.templateProducer != null)
+                        {
+                            if(activeRow.templateProducer.isStatic())
+                                return "Template producer (namespace '" + activeRow.templateProducer.getNameSpaceId() + "')";
+                            else
+                                return "Template producer (dynamic namespace: "+ vc.getSkin().constructClassRef(activeRow.templateProducer.getClass()) +")";
+                        }
+                        else
+                            return vc.getSkin().constructClassRef(activeRow.schema.getBean());
+                    }
+
+                case 2:
+                    if(activeRow.templateProducer == null)
+                        return activeRow.schema.supportsCharacters() ? "Yes" : vc.getSkin().getBlankValue();
+                    else
+                        return vc.getSkin().getBlankValue();
+
+                case 3:
+                    return activeRow.recursive ? "Yes" : vc.getSkin().getBlankValue();
+
+                default:
+                    return "Unknown column " + columnIndex;
+            }
+        }
+
+        public boolean next()
+        {
+            if(row < lastRow)
+            {
+                row++;
+                activeRow = (StructureRow) ancestorRows.get(row);
+                return true;
+            }
+
+            return false;
+        }
+
+        public int getActiveRowNumber()
+        {
+            return row + 1;
+        }
+
+        public boolean isActiveRowSelected()
+        {
+            return activeRow == selectedRow;
+        }
     }
 
     protected class DetailNotFoundDataSource extends AbstractTabularReportDataSource
     {
+        public ValueSource getNoDataFoundMessage()
+        {
+            return noSelectedRowMsgSource;
+        }
     }
 
     protected class DetailDataSource extends AbstractTabularReportDataSource
@@ -451,7 +629,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             public DetailRow(String attrName) throws DataModelException
             {
                 this.attrName = attrName;
-                attrType = structureRow.schema.getAttributeType(attrName);
+                attrType = selectedRow.schema.getAttributeType(attrName);
             }
 
             public DetailRow(String attrName, XdmBitmaskedFlagsAttribute bfa, XdmBitmaskedFlagsAttribute.FlagDefn flagDefn)
@@ -464,43 +642,32 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
         private List structureRows;
         private Map childPropertyNames;
-        private StructureRow structureRow;
+        private StructureRow selectedRow;
         private int activeRowNum = -1;
         private int lastRowNum;
         private DetailRow activeRow;
         private List detailRows = new ArrayList();
 
-        public DetailDataSource(List structureRows, StructureRow structureRow) throws DataModelException
+        public DetailDataSource(List structureRows, StructureRow selectedRow) throws DataModelException
         {
             this.structureRows = structureRows;
-            this.structureRow = structureRow;
+            this.selectedRow = selectedRow;
 
-            if(structureRow.schema != null)
+            if(selectedRow.schema != null)
             {
-                // find all the structure rows that have this structureRow as the first ancestor (meaning we're their parent)
-                for(int i = 0; i < structureRows.size(); i++)
-                {
-                    StructureRow checkChildRow = (StructureRow) structureRows.get(i);
-                    if(checkChildRow.schema != null)
-                    {
-                        if(checkChildRow.ancestors.get(0) == structureRow.schema)
-                            detailRows.add(new DetailRow(checkChildRow));
-                    }
-                }
-
-                childPropertyNames = structureRow.schema.getPropertyNames();
+                childPropertyNames = selectedRow.schema.getPropertyNames();
 
                 Map flagSetters = new HashMap();
-                if(structureRow.instance != null)
+                if(selectedRow.instance != null)
                 {
-                    for(Iterator i = structureRow.schema.getFlagsAttributeAccessors().entrySet().iterator(); i.hasNext(); )
+                    for(Iterator i = selectedRow.schema.getFlagsAttributeAccessors().entrySet().iterator(); i.hasNext(); )
                     {
                         Map.Entry entry = (Map.Entry) i.next();
                         XmlDataModelSchema.AttributeAccessor accessor = (XmlDataModelSchema.AttributeAccessor) entry.getValue();
                         Object returnVal = null;
                         try
                         {
-                            returnVal = accessor.get(null, structureRow.instance);
+                            returnVal = accessor.get(null, selectedRow.instance);
                         }
                         catch (Exception e)
                         {
@@ -521,7 +688,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                     }
                 }
 
-                Set sortedChildPropertyNames = new TreeSet(structureRow.schema.getAttributes());
+                Set sortedChildPropertyNames = new TreeSet(selectedRow.schema.getAttributes());
                 sortedChildPropertyNames.addAll(flagSetters.keySet());
                 Iterator iterator = sortedChildPropertyNames.iterator();
                 while (iterator.hasNext())
@@ -535,7 +702,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                         continue;
                     }
 
-                    if(structureRow.schema.getOptions().ignoreAttribute(attrName))
+                    if(selectedRow.schema.getOptions().ignoreAttribute(attrName))
                         continue;
 
                     XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
@@ -545,10 +712,32 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                     detailRows.add(new DetailRow(attrName));
                 }
 
+                // find all the structure rows that have this structureRow as the first ancestor (meaning we're their parent)
+                Set addedChildElems = new HashSet();
+                for(int i = 0; i < structureRows.size(); i++)
+                {
+                    StructureRow checkChildRow = (StructureRow) structureRows.get(i);
+                    if(checkChildRow.schema != null)
+                    {
+                        if(checkChildRow.ancestors.get(0) == selectedRow.schema)
+                        {
+                            if(!addedChildElems.contains(checkChildRow.schema))
+                            {
+                                addedChildElems.add(checkChildRow.schema);
+                                detailRows.add(new DetailRow(checkChildRow));
+                            }
+                        }
+                    }
+                }
             }
 
             activeRowNum = -1;
             lastRowNum = detailRows.size() - 1;
+        }
+
+        public ValueSource getNoDataFoundMessage()
+        {
+            return noSelectedRowMsgSource;
         }
 
         public boolean next()
@@ -568,13 +757,18 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             return activeRowNum;
         }
 
+        public boolean isActiveRowSelected()
+        {
+            return activeRow.childElement == selectedRow;
+        }
+
         public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
         {
             switch(columnIndex)
             {
                 case 0 :
                     if(activeRow.childElement != null)
-                        return "&lt;" + activeRow.childElement.elementName + "&gt;";
+                        return "<a href=\"?xdm-class="+ activeRow.childElement.schema.getBean().getName() +"\">&lt;" + activeRow.childElement.elementName + "&gt;</a>";
                     else
                         return activeRow.attrName;
 
@@ -582,7 +776,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                     if(activeRow.childElement != null)
                         return vc.getSkin().constructClassRef(activeRow.childElement.schema.getBean());
                     else if(activeRow.bfa != null)
-                        return "boolean (alias for "+ vc.getSkin().constructClassRef(activeRow.bfa.getClass()) +"."+ activeRow.flagDefn.getName() +")";
+                        return "<span title=\"alias for " + activeRow.flagDefn.getName() + " (" + activeRow.bfa.getClass() +")\">boolean (dynamic)</span>";
                     else
                         return vc.getSkin().constructClassRef(activeRow.attrType);
 
@@ -594,9 +788,9 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                             XdmBitmaskedFlagsAttribute bfa = null;
                             try
                             {
-                                XmlDataModelSchema.NestedCreator creator = (XmlDataModelSchema.NestedCreator) structureRow.schema.getNestedCreators().get(activeRow.attrName);
+                                XmlDataModelSchema.NestedCreator creator = (XmlDataModelSchema.NestedCreator) selectedRow.schema.getNestedCreators().get(activeRow.attrName);
                                 if(creator != null)
-                                    bfa = (XdmBitmaskedFlagsAttribute) creator.create(structureRow.instance);
+                                    bfa = (XdmBitmaskedFlagsAttribute) creator.create(selectedRow.instance);
                                 else
                                     bfa = (XdmBitmaskedFlagsAttribute) activeRow.attrType.newInstance();
                             }
@@ -623,7 +817,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
                             return TextUtils.join(ea.getValues(), ", ");
                         }
-                        else if(Boolean.class.isAssignableFrom(activeRow.attrType))
+                        else if(Boolean.class.isAssignableFrom(activeRow.attrType) || (activeRow.attrType == boolean.class))
                             return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
                         else
                             return vc.getSkin().getBlankValue();

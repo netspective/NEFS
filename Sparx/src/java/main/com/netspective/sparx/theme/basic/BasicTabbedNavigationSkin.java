@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.4 2003-04-04 17:19:33 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.5 2003-04-05 14:14:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -79,14 +79,8 @@ import java.util.List;
 public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements NavigationSkin
 {
     static public final String HEADING_ACTION_IMAGE = "action-icon";
-    static public final String HEADING_ENTITY_IMAGE = "entity-icon";
-    static public final String HEADING_BACKGROUND_IMAGE = "heading-background";
-    static public final String HEADING_MIDDLE_IMAGE = "heading-middle";
-    static public final String TAB_SEPARATOR_IMAGE = "tab-separator";
-    static public final String TAB_ON_IMAGE = "tab-on";
-    static public final String TAB_OFF_IMAGE = "tab-off";
 
-    private int sidebarWidth = 150;
+    private int sidebarWidth = 125;
 
     public BasicTabbedNavigationSkin(Theme theme)
     {

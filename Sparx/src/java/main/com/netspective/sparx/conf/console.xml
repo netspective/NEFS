@@ -27,7 +27,10 @@
                 <page name="detail" caption="Detail">
                     <panels style="horizontal">
                         <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="tree"/>
-                        <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="detail"/>
+                        <panels style="vertical">
+                            <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="detail-ancestors"/>
+                            <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="detail"/>
+                        </panels>
                     </panels>
                 </page>
             </page>

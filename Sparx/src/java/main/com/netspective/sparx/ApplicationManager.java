@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.1 2003-03-24 13:28:00 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.2 2003-04-05 14:14:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -53,6 +53,8 @@ import com.netspective.sparx.theme.Themes;
 import com.netspective.sparx.theme.basic.AbstractTheme;
 import com.netspective.sparx.console.ConsoleManager;
 import com.netspective.sparx.console.ConsoleNavigationTree;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.commons.report.tabular.TabularReport;
 
 public class ApplicationManager extends SqlManager implements NavigationTreesManager, ConsoleManager
 {
@@ -70,6 +72,11 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
     public void addRegisterTheme(Theme theme)
     {
         Themes.getInstance().registerTheme(theme);
+    }
+
+    public TabularReport createTabularReport()
+    {
+        return new BasicHtmlTabularReport();
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */

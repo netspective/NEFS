@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanelViewEnumeratedAttribute.java,v 1.1 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanelViewEnumeratedAttribute.java,v 1.2 2003-04-05 14:14:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -51,8 +51,9 @@ public class XdmSchemaStructurePanelViewEnumeratedAttribute extends XdmEnumerate
     public static final int STRUCTURE = 0;
     public static final int TREE = 1;
     public static final int DETAIL = 2;
+    public static final int DETAIL_ANCESTORS = 3;
 
-    private static final String[] VALUES = new String[] { "structure", "tree", "detail" };
+    private static final String[] VALUES = new String[] { "structure", "tree", "detail", "detail-ancestors" };
 
     public XdmSchemaStructurePanelViewEnumeratedAttribute()
     {

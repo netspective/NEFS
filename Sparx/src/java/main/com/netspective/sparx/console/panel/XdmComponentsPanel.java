@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.10 2003-04-04 20:25:11 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.11 2003-04-05 14:14:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -52,6 +52,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportException;
+import com.netspective.commons.report.tabular.AbstractTabularReportDataSource;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
@@ -97,7 +98,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
         return report;
     }
 
-    public class UsageReportDataSource implements TabularReportDataSource
+    public class UsageReportDataSource extends AbstractTabularReportDataSource
     {
         protected int row = -1;
         protected int lastRow = XdmComponentFactory.getComponentsBySystemId().size() - 1;
@@ -105,16 +106,6 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
         protected Iterator iterator = componentsBySystemId.entrySet().iterator();
         protected String systemId;
         protected XdmComponent component;
-
-        public boolean isHierarchical()
-        {
-            return false;
-        }
-
-        public TabularReportDataSource.Hierarchy getActiveHierarchy()
-        {
-            return null;
-        }
 
         public String getHtml(FileTracker ft)
         {
@@ -141,6 +132,20 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             return src.toString();
         }
 
+        public String getErrorsHtml(List errors)
+        {
+            StringBuffer src = new StringBuffer();
+            if(errors.size() > 0)
+            {
+                src.append("<ul>");
+                for(int i = 0; i < errors.size(); i++)
+                    src.append("<li>"+ errors.get(i) +"</li>");
+                src.append("</ul>");
+            }
+
+            return src.toString();
+        }
+
         public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
         {
             switch(columnIndex)
@@ -152,11 +157,14 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
                     return vc.getSkin().constructClassRef(component.getClass());
 
                 case 2:
+                    StringBuffer sb = new StringBuffer();
                     InputSourceTracker ist = component.getInputSource();
                     if(ist instanceof FileTracker)
-                        return getHtml((FileTracker) ist);
+                        sb.append(getHtml((FileTracker) ist));
                     else
-                        return ist.getIdentifier() + " (Dependencies: " + ist.getDependenciesCount() + ")";
+                        sb.append(ist.getIdentifier() + " (Dependencies: " + ist.getDependenciesCount() + ")");
+                    sb.append(getErrorsHtml(component.getErrors()));
+                    return sb.toString();
 
                 default:
                     return "Invalid column: " + columnIndex;

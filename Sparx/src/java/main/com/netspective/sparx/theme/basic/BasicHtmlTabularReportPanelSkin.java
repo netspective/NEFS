@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.2 2003-04-04 20:25:11 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.3 2003-04-05 14:14:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -70,6 +70,7 @@ import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.Value;
 import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
@@ -111,7 +112,10 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
     public String constructClassRef(Class cls)
     {
-        return "<span title=\""+ ClassPath.getClassFileName(cls) +"\">" + cls.getName() + "</span>";
+        String className = cls.getName();
+        if(className.startsWith("com.netspective"))
+            className = "~" + className.substring("com.netspective".length());
+        return "<span title=\""+ ClassPath.getClassFileName(cls) +"\">" + className + "</span>";
     }
 
     public String getBlankValue()
@@ -203,10 +207,10 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
                     colHeading += sortDescImgTag;
 
-                writer.write("        <td class=\"report-field\" nowrap>" + colHeading  + "</td>");
+                writer.write("        <td class=\"report-column-heading\" nowrap>" + colHeading  + "</td>");
             }
             else
-                writer.write("        <td class=\"report-field\" nowrap>&nbsp;&nbsp;</td>");
+                writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
         }
 
         produceHeadingRowDecoratorAppend(writer, rc);
@@ -251,16 +255,16 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
                     colHeading += sortDescImgTag;
 
-                writer.write("        <td class=\"report-field\" nowrap>" + colHeading  + "</td>");
+                writer.write("        <td class=\"report-column-heading\" nowrap>" + colHeading  + "</td>");
             }
             else
-                writer.write("        <td class=\"report-field\" nowrap>&nbsp;&nbsp;</td>");
+                writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
         }
 
         produceHeadingRowDecoratorAppend(writer, rc);
     }
 
-    public void produceDataRows(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
+    public int produceDataRows(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
         HtmlTabularReport defn = ((HtmlTabularReport) rc.getReport());
         TabularReportColumns columns = rc.getColumns();
@@ -310,9 +314,9 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
                 String style = state.getCssStyleAttrValue();
                 if(hiearchical && (hiearchyCol == i) && activeLevel > 0)
-                    style += "padding-left:" + (activeLevel * 15);
+                    style += "padding-left:" + (activeLevel * 15) + ";";
 
-                String singleRow = "<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " style=\"" + style +  "\">" +
+                String singleRow = "<td class=\"" + (ds.isActiveRowSelected() ? "report-column-selected" : (isOddRow ? "report-column-even" : "report-column-odd")) + "\" style=\"" + style +  "\">" +
                         (state.getFlags().flagIsSet(TabularReportColumn.Flags.WRAP_URL) ? "<a href=\"" + state.getUrl() + "\" " + state.getUrlAnchorAttrs() + ">" +
                         data + "</a>" : data) +
                         "&nbsp;</td>";
@@ -330,7 +334,10 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
         if(rowsWritten == 0)
         {
-            writer.write("<tr><td class=\"report-summary\" colspan='" + tableColsCount + "'>No data found.</td></tr>");
+            ValueSource noDataFoundMsgSrc = ds.getNoDataFoundMessage();
+            String noDataFoundMsg = noDataFoundMsgSrc != null ? noDataFoundMsgSrc.getTextValue(rc) : null;
+            if(noDataFoundMsg != null)
+                writer.write("<tr><td class=\"report-column-summary\" colspan='" + tableColsCount + "'>"+ noDataFoundMsg +"</td></tr>");
             //TODO: Sparx 2.x conversion required
             //if(paging)
             //    scrollState.setNoMoreRows();
@@ -342,6 +349,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         //    if(rowsWritten < scrollState.getRowsPerPage())
         //        scrollState.setNoMoreRows();
         //}
+
+        return rowsWritten;
     }
 
     public void produceFootRow(Writer writer, TabularReportValueContext rc) throws IOException
@@ -365,7 +374,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             if(summary == null)
                 summary = "&nbsp;";
 
-            writer.write("<td class=\"report-summary\" style=\""+ states[i].getCssStyleAttrValue() +"\">" + summary + "</td>");
+            writer.write("<td class=\"report-column-summary\" style=\""+ states[i].getCssStyleAttrValue() +"\">" + summary + "</td>");
         }
         writer.write("</tr>");
     }

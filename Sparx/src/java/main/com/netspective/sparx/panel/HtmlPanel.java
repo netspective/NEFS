@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.5 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: HtmlPanel.java,v 1.6 2003-04-05 14:14:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -60,6 +60,14 @@ public interface HtmlPanel
     public HtmlPanelBanner getBanner();
 
     public void setBanner(HtmlPanelBanner value);
+
+    public int getWidth();
+
+    public void setWidth(int width);
+
+    public int getHeight();
+
+    public void setHeight(int height);
 
     /**
      * return true if the panel changes anything in the page heading, title, etc -- basically anything outside

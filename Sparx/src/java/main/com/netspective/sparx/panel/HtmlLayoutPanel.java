@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.4 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.5 2003-04-05 14:14:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -51,6 +51,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 
 public class HtmlLayoutPanel implements HtmlPanel
 {
+    private int height = -1, width = -1;
     private HtmlPanels children = new BasicHtmlPanels();
     private HtmlPanelFrame frame;
     private HtmlPanelBanner banner;
@@ -59,6 +60,26 @@ public class HtmlLayoutPanel implements HtmlPanel
     {
         frame = createFrame();
         banner = createBanner();
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public void setHeight(int height)
+    {
+        this.height = height;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth(int width)
+    {
+        this.width = width;
     }
 
     public HtmlPanelFrame getFrame()
@@ -79,6 +100,16 @@ public class HtmlLayoutPanel implements HtmlPanel
     public void setBanner(HtmlPanelBanner value)
     {
         banner = value;
+    }
+
+    public HtmlLayoutPanel createPanels()
+    {
+        return new HtmlLayoutPanel();
+    }
+
+    public void addPanels(HtmlLayoutPanel panel)
+    {
+        children.add(panel);
     }
 
     public HtmlPanelFrame createFrame()
@@ -132,7 +163,7 @@ public class HtmlLayoutPanel implements HtmlPanel
         {
             for(int i = 0; i < children.size(); i++)
             {
-                writer.write("<div>");
+                writer.write("<div style='padding-bottom: 6'>");
                 children.get(i).render(writer, nc);
                 writer.write("</div>");
             }
@@ -156,7 +187,7 @@ public class HtmlLayoutPanel implements HtmlPanel
         {
             for(int i = 0; i < children.size(); i++)
             {
-                writer.write("<div>");
+                writer.write("<div style='padding-bottom: 6'>");
                 children.get(i).render(writer, nc, skin);
                 writer.write("</div>");
             }
