@@ -74,7 +74,6 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
     private String expressionTemplateVarName = "expression";
     private String exceptionTemplateVarName = "exception";
     private String[] hitsMatrixFieldNames;
-    private boolean treatAdvancedFieldExprsAsPhrases = true;
     private boolean rewriteAdvancedAsSimpleQuery = true;
 
     public SearchHitsTemplateRenderer()
@@ -122,19 +121,19 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
 
         if(allWordsParamValue != null && allWordsParamValue.trim().length() > 0)
         {
-            Query query = getAllWordsQuery(defaultFieldName, allWordsParamValue);
+            Query query = getAllWordsQuery(nc, defaultFieldName, allWordsParamValue);
             advancedQuery.add(query, true, false);
         }
 
         if(exactPhraseParamValue != null && exactPhraseParamValue.trim().length() > 0)
         {
-            Query query = getExactPhraseQuery(defaultFieldName, exactPhraseParamValue);
+            Query query = getExactPhraseQuery(nc, defaultFieldName, exactPhraseParamValue);
             advancedQuery.add(query, true, false);
         }
 
         if(atLeastOneWordParamValue != null && atLeastOneWordParamValue.trim().length() > 0)
         {
-            Query query = getAtLeastOneWordQuery(defaultFieldName, atLeastOneWordParamValue);
+            Query query = getAtLeastOneWordQuery(nc, defaultFieldName, atLeastOneWordParamValue);
             advancedQuery.add(query, true, false);
         }
 
@@ -145,7 +144,7 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
             final String fieldParamValue = request.getParameter("field_" + fieldName);
             if(fieldParamValue != null && fieldParamValue.trim().length() > 0)
             {
-                final Query fieldQuery = getFieldQuery(fieldName, fieldParamValue);
+                final Query fieldQuery = getFieldQuery(nc, fieldName, fieldParamValue);
                 advancedQuery.add(fieldQuery, true, false);
             }
         }
@@ -153,11 +152,16 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
         return advancedQuery;
     }
 
-    protected Query getFieldQuery(final String fieldName, final String fieldParamValue)
+    protected Query getFieldQuery(final NavigationContext nc, final String fieldName, String fieldParamValue)
     {
         final Term term = new Term(fieldName, fieldParamValue);
         final Query fieldQuery;
-        if(treatAdvancedFieldExprsAsPhrases)
+        final FullTextSearchPage.FieldAttribute fieldAttribute = ((FullTextSearchPage) nc.getActivePage()).getFieldAttribute(fieldName);
+        if(fieldAttribute.isUppercase())
+            fieldParamValue = fieldParamValue.toUpperCase();
+        else if(fieldAttribute.isLowercase())
+            fieldParamValue = fieldParamValue.toLowerCase();
+        if(fieldAttribute != null && fieldAttribute.isTreatAdvancedFieldExprsAsPhrases())
         {
             // This is useful so that fields get rewritten as field:"value" and then a subclassed query
             // parser can handle it using QueryParser.getFieldQuery(field, expr). The idea is that the advanced
@@ -179,7 +183,7 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
         return fieldQuery;
     }
 
-    protected Query getAtLeastOneWordQuery(final String defaultFieldName, final String atLeastOneWordParamValue)
+    protected Query getAtLeastOneWordQuery(final NavigationContext nc, final String defaultFieldName, final String atLeastOneWordParamValue)
     {
         String[] words = TextUtils.getInstance().split(atLeastOneWordParamValue, " ", true);
         if(words.length == 1)
@@ -193,7 +197,7 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
         }
     }
 
-    protected Query getExactPhraseQuery(final String defaultFieldName, final String exactPhraseParamValue)
+    protected Query getExactPhraseQuery(final NavigationContext nc, final String defaultFieldName, final String exactPhraseParamValue)
     {
         final PhraseQuery phraseQuery = new PhraseQuery();
         final String[] words = TextUtils.getInstance().split(exactPhraseParamValue, " ", true);
@@ -202,7 +206,7 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
         return phraseQuery;
     }
 
-    protected Query getAllWordsQuery(final String defaultFieldName, final String allWordsParamValue)
+    protected Query getAllWordsQuery(final NavigationContext nc, final String defaultFieldName, final String allWordsParamValue)
     {
         final BooleanQuery booleanQuery = new BooleanQuery();
         final String[] words = TextUtils.getInstance().split(allWordsParamValue, " ", true);
@@ -287,16 +291,6 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
                 return thisSortCriteria;
             }
         };
-    }
-
-    public boolean isTreatAdvancedFieldExprsAsPhrases()
-    {
-        return treatAdvancedFieldExprsAsPhrases;
-    }
-
-    public void setTreatAdvancedFieldExprsAsPhrases(boolean treatAdvancedFieldExprsAsPhrases)
-    {
-        this.treatAdvancedFieldExprsAsPhrases = treatAdvancedFieldExprsAsPhrases;
     }
 
     public boolean isRewriteAdvancedAsSimpleQuery()

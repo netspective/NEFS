@@ -488,6 +488,11 @@ public class FullTextSearchPage extends NavigationPage
         return fieldAttributes;
     }
 
+    public FieldAttribute getFieldAttribute(String fieldName)
+    {
+        return (FieldAttribute) fieldAttributes.get(fieldName);
+    }
+
     public String[] getAdvancedSearchFieldNames()
     {
         return advancedSearchFieldNames;
@@ -504,6 +509,9 @@ public class FullTextSearchPage extends NavigationPage
         private String description;
         private String usage;
         private Analyzer analyzer;
+        private boolean treatAdvancedFieldExprsAsPhrases;
+        private boolean uppercase;
+        private boolean lowercase;
 
         public FieldAttribute()
         {
@@ -552,6 +560,36 @@ public class FullTextSearchPage extends NavigationPage
         public void addAnalyzer(Analyzer analyzer)
         {
             this.analyzer = analyzer;
+        }
+
+        public boolean isTreatAdvancedFieldExprsAsPhrases()
+        {
+            return treatAdvancedFieldExprsAsPhrases;
+        }
+
+        public void setTreatAdvancedFieldExprsAsPhrases(boolean treatAdvancedFieldExprsAsPhrases)
+        {
+            this.treatAdvancedFieldExprsAsPhrases = treatAdvancedFieldExprsAsPhrases;
+        }
+
+        public boolean isLowercase()
+        {
+            return lowercase;
+        }
+
+        public void setLowercase(boolean lowercase)
+        {
+            this.lowercase = lowercase;
+        }
+
+        public boolean isUppercase()
+        {
+            return uppercase;
+        }
+
+        public void setUppercase(boolean uppercase)
+        {
+            this.uppercase = uppercase;
         }
 
         public void addText(String text)
