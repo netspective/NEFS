@@ -57,7 +57,7 @@
         </description>
     </table-type>
 
-    <table-type name="Org_Log" type="Log">
+    <table-type name="Org_Log" type="Activity_Log">
         <xdm:template-param name="parentRef" default="Org.org_id"/>
         <description>
             This table allows a developer to store information about any and all activity that occurs within a table.  This includes

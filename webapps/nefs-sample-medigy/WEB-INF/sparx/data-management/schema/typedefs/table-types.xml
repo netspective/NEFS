@@ -64,7 +64,7 @@
         <index name="${owner.abbrev}_unq" columns="parent_id,pref_name" unique="yes"/>
     </table-type>
 
-    <table-type name="Activity_Log" type="default">
+    <table-type name="Activity_Log" type="Default">
         <description>
             This table allows a developer to store information about any and all activity that occurs within a table.  This includes
             everything from adding a record to updating it and deleting it and anything else that needs to be logged.

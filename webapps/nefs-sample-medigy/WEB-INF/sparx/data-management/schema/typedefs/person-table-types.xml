@@ -14,7 +14,7 @@
 			of an environment variable and its corresponding value as a string.  This can be enhanced later.
 		</description></table-type>
 	
-	<table-type name="Person_Log" type="Log"><xdm:template-param name="parentRef" default="Person.person_id"/><description>
+	<table-type name="Person_Log" type="Activity_Log"><xdm:template-param name="parentRef" default="Person.person_id"/><description>
 			This table allows a developer to store information about any and all activity that occurs within a table.  This includes
 			everything from adding a record to updating it and deleting it and anything else that needs to be logged.
 		</description></table-type>
