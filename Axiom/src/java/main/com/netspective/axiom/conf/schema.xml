@@ -369,7 +369,7 @@
     </table-type>
 
     <table name="Record_Status" abbrev="RecStatus" type="Status">
-        <!-- nothing here yet, just a placeholder for later enhancements -->
+        <!-- //TODO: nothing here yet, just a placeholder for later enhancements -->
     </table>
 
     <!--
