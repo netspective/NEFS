@@ -58,8 +58,61 @@
         </xsl:copy>
     </xsl:template>
 
-    <!-- <select-dialog> and <report> tags are now under <presentation> tag -->
-    <xsl:template match="report | select-dialog">
+    <!-- <report> is now under <presentation>/<panel> tag -->
+    <xsl:template match="report">
+        <presentation>
+            <panel>
+                <xsl:if test="@name">
+                    <frame><xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute></frame>
+                </xsl:if>
+                <xsl:if test="@heading">
+                    <frame><xsl:attribute name="heading"><xsl:value-of select="@heading"/></xsl:attribute></frame>
+                </xsl:if>
+                <xsl:apply-templates select="*[name() = 'banner']"/>
+                <xsl:copy>
+                    <xsl:copy-of select="attribute::*[. != '' and name() != 'heading' and name() != 'name']"/>
+                    <xsl:apply-templates select="*[name() != 'banner']"/>
+                </xsl:copy>
+            </panel>
+        </presentation>
+    </xsl:template>
+
+    <xsl:template match="report/column">
+        <xsl:copy>
+            <xsl:copy-of select="attribute::*[. != '' and name() != 'url' and name() != 'display' and name() != 'index']"/>
+            <xsl:if test="@index">
+                <xsl:attribute name="col-index"><xsl:value-of select="@index"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@url">
+                <xsl:attribute name="command">redirect,<xsl:value-of select="@heading"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@display = 'no'">
+                <xsl:attribute name="hidden">yes</xsl:attribute>
+            </xsl:if>
+            <xsl:apply-templates/>
+        </xsl:copy>
+    </xsl:template>
+
+    <!-- <banner> is now a little different-->
+    <xsl:template match="report/banner">
+        <xsl:copy>
+            <xsl:copy-of select="attribute::*[. != '']"/>
+            <xsl:apply-templates select="item"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="report/banner/item">
+        <action>
+            <xsl:copy-of select="attribute::*[. != '' and name() != 'url']"/>
+            <xsl:if test="@url">
+                <xsl:attribute name="command">redirect,<xsl:value-of select="@heading"/></xsl:attribute>
+            </xsl:if>
+            <xsl:apply-templates/>
+        </action>
+    </xsl:template>
+
+    <!-- <select-dialog> is now under <presentation> tag -->
+    <xsl:template match="select-dialog">
         <presentation>
             <xsl:copy>
                 <xsl:copy-of select="attribute::*[. != '']"/>
