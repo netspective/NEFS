@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.7 2003-08-19 13:23:53 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.8 2003-08-26 21:54:21 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -81,6 +81,7 @@ public class DataAccessLayerGenerator
     private CompilationUnit rootUnit;
     private CompilationUnit modelsUnit;
     private CompilationUnit enumsUnit;
+    private CompilationUnit valueObjectsUnit;
     private PackageClass rootClass;
     private ClassMethod rootClassChildrenAssignmentBlock;
     private Map tableAccessorGenerators = new HashMap(); // key is table instance, value is TableAccessorGenerator instance
@@ -204,6 +205,9 @@ public class DataAccessLayerGenerator
         enumsUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
         enumsUnit.setNamespace(rootNameSpace + ".enum");
 
+        valueObjectsUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+        valueObjectsUnit.setNamespace(rootNameSpace + ".value");
+
         List mainTables = structure.getChildren();
         for (int i = 0; i < mainTables.size(); i++)
             generate((Schema.TableTreeNode) mainTables.get(i), rootClass, rootClassChildrenAssignmentBlock);
@@ -221,6 +225,13 @@ public class DataAccessLayerGenerator
             Table table = tables.get(i);
             if (table instanceof EnumerationTable)
                 generate((EnumerationTable) table);
+        }
+
+        for (int i = 0; i < tables.size(); i++)
+        {
+            Table table = tables.get(i);
+            TableValueObjectGenerator tvog = new TableValueObjectGenerator(table);
+            tvog.generate();
         }
 
         rootUnit.encode();
@@ -270,6 +281,71 @@ public class DataAccessLayerGenerator
             }
 
             enumUnit.encode();
+        }
+    }
+
+    protected class TableValueObjectGenerator
+    {
+        private Table table;
+
+        public TableValueObjectGenerator(Table table)
+        {
+            this.table = table;
+        }
+
+        public void generate() throws IOException
+        {
+            CompilationUnit valueInterfaceUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+            valueInterfaceUnit.setNamespace(valueObjectsUnit.getNamespace().getName());
+
+            CompilationUnit valueClassUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+            valueClassUnit.setNamespace(valueObjectsUnit.getNamespace().getName() + ".impl");
+
+            Columns columns = table.getColumns();
+
+            String interfaceNameNoPackage = TextUtils.xmlTextToJavaIdentifier(table.getName(), true);
+            Interface valueInterface = valueInterfaceUnit.newInterface(interfaceNameNoPackage);
+            valueInterface.setAccess(Access.PUBLIC);
+
+            String classNameNoPackage = TextUtils.xmlTextToJavaIdentifier(table.getName(), true) + "VO";
+            PackageClass valueClass = valueClassUnit.newClass(classNameNoPackage);
+            valueClass.setAccess(Access.PUBLIC);
+
+            for (int i = 0; i < columns.size(); i++)
+            {
+                Column column = columns.get(i);
+
+                ColumnValue valueInstance = column.constructValueInstance();
+                Class valueHolderClass = valueInstance.getValueHolderClass();
+                String valueInstClassName = valueHolderClass.getName();
+
+                Type valueHolderValueType = vm.newType(valueInstClassName.replace('$', '.'));
+
+                String fieldName = TextUtils.xmlTextToJavaIdentifier(column.getName(), false);
+                ClassField field = valueClass.newField(valueHolderValueType, fieldName);
+                field.setAccess(Access.PRIVATE);
+
+                String methodSuffix = TextUtils.xmlTextToJavaIdentifier(column.getName(), true);
+
+                ClassMethod method = valueClass.newMethod(valueHolderValueType, "get" + methodSuffix);
+                method.setAccess(Access.PUBLIC);
+                method.newReturn().setExpression(vm.newFree(fieldName));
+
+                method = valueClass.newMethod(vm.newType(Type.VOID), "set" + methodSuffix);
+                method.addParameter(valueHolderValueType, fieldName);
+                method.setAccess(Access.PUBLIC);
+                method.newStmt(vm.newFree("this." + fieldName + " = " + fieldName));
+
+                AbstractMethod abstractMethod = valueInterface.newMethod(valueHolderValueType, "get" + methodSuffix);
+                abstractMethod.setAccess(Access.PUBLIC);
+
+                abstractMethod = valueInterface.newMethod(vm.newType(Type.VOID), "set" + methodSuffix);
+                abstractMethod.addParameter(valueHolderValueType, fieldName);
+                abstractMethod.setAccess(Access.PUBLIC);
+            }
+
+            valueInterfaceUnit.encode();
+            valueClassUnit.encode();
         }
     }
 
@@ -813,7 +889,6 @@ public class DataAccessLayerGenerator
                 method.newStmt(vm.newFree("get"+ methodSuffix +"().copyValueByReference(value)"));
             }
         }
-
     }
 }
 
