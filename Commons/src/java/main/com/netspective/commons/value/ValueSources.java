@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.6 2003-03-18 13:54:35 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.7 2003-03-23 04:43:26 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -177,7 +177,11 @@ public class ValueSources implements MetricsProducer
         {
             String[] identifiers = (String[]) getIdsMethod.invoke(null, null);
             for(int i = 0; i < identifiers.length; i++)
+            {
                 srcClassesMap.put(identifiers[i], actualClass);
+                if(log.isTraceEnabled())
+                    log.trace("Registered value source "+ actualClass.getName() +" as '"+ identifiers[i] +"'.");
+            }
             srcClassesSet.add(actualClass);
         }
         catch (Exception e)
