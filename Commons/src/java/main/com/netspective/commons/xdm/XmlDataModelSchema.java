@@ -1067,7 +1067,7 @@ public class XmlDataModelSchema
             else if(name.startsWith("set")
                     && java.lang.Void.TYPE.equals(returnType)
                     && args.length == 1
-                    && !args[0].isArray())
+                    && (!args[0].isArray() || java.lang.String[].class.equals(args[0])))
             {
                 String[] propNames = getPropertyNames(name, "set");
                 for(int pn = 0; pn < propNames.length; pn++)
@@ -1769,8 +1769,28 @@ public class XmlDataModelSchema
      */
     private AttributeSetter createAttributeSetter(final Method m, final String attrName, final Class arg)
     {
-        // simplest case - setAttribute expects String
-        if(java.lang.String.class.equals(arg))
+        if(java.lang.String[].class.equals(arg))
+        {
+            return new AttributeSetter()
+            {
+                public void set(XdmParseContext pc, Object parent, String value)
+                        throws InvocationTargetException, IllegalAccessException
+                {
+                    m.invoke(parent, new Object[]{TextUtils.getInstance().split(value, ",", true)});
+                }
+
+                public boolean isInherited()
+                {
+                    return !m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
+            };
+        }
+        else if(java.lang.String.class.equals(arg))
         {
             return new AttributeSetter()
             {
@@ -1790,8 +1810,6 @@ public class XmlDataModelSchema
                     return m.getDeclaringClass();
                 }
             };
-
-            // now for the primitive types, use their wrappers
         }
         else if(java.lang.Character.class.equals(arg)
                 || java.lang.Character.TYPE.equals(arg))

@@ -122,6 +122,7 @@ public class DataModelSchemaTest extends TestCase
         private double testDouble;
         private Class testClass;
         private File testFile;
+        private String[] testStringArray;
 
         public RootTest()
         {
@@ -256,6 +257,16 @@ public class DataModelSchemaTest extends TestCase
         public void setInteger(int integer)
         {
             this.integer = integer;
+        }
+
+        public String[] getTestStringArray()
+        {
+            return testStringArray;
+        }
+
+        public void setTestStringArray(String[] testStringArray)
+        {
+            this.testStringArray = testStringArray;
         }
 
         public Nested1Test createNested1()
@@ -562,6 +573,7 @@ public class DataModelSchemaTest extends TestCase
         assertNotNull(dmt.getRoot().getTestFile());
         assertTrue(dmt.getRoot().getTestFile().exists());
         assertEquals("DataModelSchemaTest.xml", dmt.getRoot().getTestFile().getName());
+        assertEquals(3, dmt.getRoot().getTestStringArray().length);
 
         assertTrue(dmt.getRoot().encounteredCustom1);
         assertTrue(dmt.getRoot().finalizedConstruction);

@@ -19,6 +19,7 @@
     <test-float>3.1415926535</test-float>
     <test-double>3.1415926535897932384626433</test-double>
     <test-file>DataModelSchemaTest.xml</test-file>
+    <test-string-array>item1, item2, item3</test-string-array>
 
     <xdm:include file="DataModelSchemaTest-include.xml"/>
 
