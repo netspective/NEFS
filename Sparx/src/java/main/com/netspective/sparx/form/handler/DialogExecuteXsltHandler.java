@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteXsltHandler.java,v 1.1 2003-08-06 18:04:51 shahid.shah Exp $
+ * $Id: DialogExecuteXsltHandler.java,v 1.2 2003-10-11 14:39:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -166,6 +166,8 @@ public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
                 StyleSheetParameter param = (StyleSheetParameter) params.get(i);
                 transformer.setParameter(param.getName(), param.getValue().getTextValue(dc));
             }
+
+            //TODO: convert the dialog form field values into stylesheet parameters
 
             transformer.transform
                     (new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()),
