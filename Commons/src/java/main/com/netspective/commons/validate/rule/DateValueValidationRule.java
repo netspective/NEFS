@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DateValueValidationRule.java,v 1.2 2003-10-01 15:21:49 shahid.shah Exp $
+ * $Id: DateValueValidationRule.java,v 1.3 2003-11-12 12:47:10 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -47,6 +47,11 @@ package com.netspective.commons.validate.rule;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
@@ -55,6 +60,8 @@ import com.netspective.commons.validate.ValidationContext;
 
 public class DateValueValidationRule extends BasicValidationRule
 {
+    private static final Log log = LogFactory.getLog(DateValueValidationRule.class);
+
     private String invalidNamedDateMessage = "{0} contains an invalid {1} date: {2} (pattern is {3}).";
     private String futureOnlyDateMessage = "{0} may only contain future dates (after {1}).";
     private String pastOnlyDateMessage = "{0} may only contain past dates (before {1}.";
@@ -67,6 +74,71 @@ public class DateValueValidationRule extends BasicValidationRule
     private ValueSource minDateSource;
     private boolean futureOnly;
     private boolean pastOnly;
+
+    /**
+     * Translates a reserved date word such as "today" or "now" into the actual time
+     *
+     * @param str reserved string
+     * @return String actual time string
+     */
+    public String translateTimeString(String str)
+    {
+        String xlatedDate = str;
+
+        if(str != null && (str.startsWith("today") || str.startsWith("now")))
+        {
+            Date dt = new Date();
+            xlatedDate = format(dt);
+        }
+        return xlatedDate;
+    }
+
+    /**
+     * Translates a reserved date word such as "today" or "now" into the actual date
+     *
+     * @param str reserved string
+     * @return String actual date string
+     */
+    public String translateDateString(String str)
+    {
+        String xlatedDate = str;
+
+        if(str != null && (str.startsWith("today") || str.startsWith("now")))
+        {
+            int strLength = 0;
+            if(str.startsWith("today"))
+                strLength = "today".length();
+            else
+                strLength = "now".length();
+            Date dt = null;
+            if(str.length() > strLength)
+            {
+                try
+                {
+                    String opValueStr = null;
+                    if(str.charAt(strLength) == '+')
+                        opValueStr = str.substring(strLength + 1);
+                    else
+                        opValueStr = str.substring(strLength);
+                    int opValue = Integer.parseInt(opValueStr);
+                    Calendar calendar = new GregorianCalendar();
+                    calendar.add(Calendar.DAY_OF_MONTH, opValue);
+                    dt = calendar.getTime();
+                    xlatedDate = format(dt);
+                }
+                catch(Exception e)
+                {
+                    log.error("Unable to translate date string " + str, e);
+                }
+            }
+            else
+            {
+                dt = new Date();
+                xlatedDate = format(dt);
+            }
+        }
+        return xlatedDate;
+    }
 
     public SimpleDateFormat getFormat()
     {
@@ -130,7 +202,7 @@ public class DateValueValidationRule extends BasicValidationRule
     public void setMaxDateSource(ValueSource maxDate) throws ParseException
     {
         if(maxDate instanceof StaticValueSource)
-            this.maxDate = parse(maxDate.getTextValue(null));
+            this.maxDate = parse(translateDateString(maxDate.getTextValue(null)));
         else
             maxDateSource = maxDate;
     }
@@ -143,7 +215,7 @@ public class DateValueValidationRule extends BasicValidationRule
     public void setMinDateSource(ValueSource minDate) throws ParseException
     {
         if(minDate instanceof StaticValueSource)
-            this.minDate = parse(minDate.getTextValue(null));
+            this.minDate = parse(translateDateString(minDate.getTextValue(null)));
         else
             minDateSource = minDate;
     }
