@@ -39,22 +39,29 @@
  */
 package com.netspective.medigy.model.common;
 
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
+import com.netspective.medigy.model.party.Party;
+
 import javax.ejb.Column;
 import javax.ejb.Transient;
+import javax.ejb.JoinColumn;
+import javax.ejb.ManyToOne;
+import javax.ejb.CascadeType;
 
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
-
-public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implements CustomReferenceEntity
+public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implements CustomReferenceEntity, Comparable
 {
     private Long systemId;
-    private String appCode;
+    private String code;
     private String name;
+    private String description;
     private DataEncryptionType encryptionType;
     private int maxAllowed = 1;
 
+    private Party party;
+
     @Transient
-            public Long getSystemId()
+    public Long getSystemId()
     {
         return systemId;
     }
@@ -64,14 +71,15 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
         this.systemId = systemId;
     }
 
-    public String getAppCode()
+    @Column()
+    public String getCode()
     {
-        return appCode;
+        return code;
     }
 
-    public void setAppCode(String appCode)
+    public void setCode(String code)
     {
-        this.appCode = appCode;
+        this.code = code;
     }
 
     @Column(nullable = false)
@@ -86,7 +94,7 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     }
 
     @Column(nullable = false)
-            public DataEncryptionType getEncryptionType()
+    public DataEncryptionType getEncryptionType()
     {
         return encryptionType;
     }
@@ -97,7 +105,7 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     }
 
     @Column(nullable = false)
-            public int getMaxAllowed()
+    public int getMaxAllowed()
     {
         return maxAllowed;
     }
@@ -105,5 +113,40 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     public void setMaxAllowed(int maxAllowed)
     {
         this.maxAllowed = maxAllowed;
+    }
+
+    @Column(length = 256)
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(final String description)
+    {
+        this.description = description;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Party getParty()
+    {
+        return party;
+    }
+
+    public void setParty(final Party party)
+    {
+        this.party = party;
+    }
+
+    public int compareTo(Object o)
+    {
+        if (o == this)
+            return 0;
+
+        final CustomReferenceEntity otherType  =(CustomReferenceEntity) o;
+        if (otherType.getSystemId().longValue() == this.getSystemId().longValue())
+            return 0;
+        else
+            return -1;
     }
 }
