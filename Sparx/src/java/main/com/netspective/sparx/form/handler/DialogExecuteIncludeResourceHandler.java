@@ -39,67 +39,106 @@
  */
 
 /**
- * $Id: DialogExecuteIncludeResourceHandler.java,v 1.2 2003-08-06 18:05:31 shahid.shah Exp $
+ * $Id: DialogExecuteIncludeResourceHandler.java,v 1.3 2003-11-14 19:47:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
 
-import java.io.Writer;
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.io.Writer;
+import java.net.URL;
+import java.net.URLConnection;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.command.HttpServletCommand;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.Template;
+import com.netspective.sparx.util.AlternateOutputDestServletResponse;
 
 public class DialogExecuteIncludeResourceHandler extends DialogExecuteDefaultHandler
 {
     private static final Log log = LogFactory.getLog(DialogExecuteIncludeResourceHandler.class);
-    private ValueSource include;
+    public static final String REQATTRNAME_DIALOG_CONTEXT = "dialogContext";
+    private boolean local;
+    private ValueSource path;
 
-    public DialogExecuteIncludeResourceHandler(ValueSource include)
+    public DialogExecuteIncludeResourceHandler()
     {
-        this.include = include;
     }
 
-    public ValueSource getInclude()
+    public ValueSource getPath()
     {
-        return include;
+        return path;
     }
 
-    public void setInclude(ValueSource include)
+    public void setPath(ValueSource path)
     {
-        this.include = include;
+        this.path = path;
+        setLocal(true);
+    }
+
+    public void setUrl(ValueSource url)
+    {
+        this.path = url;
+        setLocal(false);
+    }
+
+    public boolean isLocal()
+    {
+        return local;
+    }
+
+    public void setLocal(boolean local)
+    {
+        this.local = local;
     }
 
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        if(include == null)
+        if (path == null)
         {
-            writer.write("No include resource provided.");
+            writer.write("No path to resource or URL provided.");
             return;
         }
 
-        // NOTE: the tricky thing about rd.include is that it has it uses the getReponse().getWriter(), not our writer
-        //       that was passed in -- that may cause some confusion in the output
-        String includeUrl = getInclude().getTextValue(dc);
-        RequestDispatcher rd = dc.getRequest().getRequestDispatcher(includeUrl);
-        try
+        String includePath = getPath().getTextValue(dc);
+        if(local)
         {
-            rd.include(dc.getRequest(), dc.getResponse());
+            ServletRequest request = dc.getRequest();
+            RequestDispatcher rd = request.getRequestDispatcher(includePath);
+            try
+            {
+                ServletResponse response = dc.getResponse();
+                if(writer != response.getWriter())
+                    response = new AlternateOutputDestServletResponse(writer, response);
+                request.setAttribute(REQATTRNAME_DIALOG_CONTEXT, dc);
+                rd.include(request, response);
+                request.removeAttribute(REQATTRNAME_DIALOG_CONTEXT);
+            }
+            catch (ServletException e)
+            {
+                log.error("Include error in " + this.getClass().getName(), e);
+                throw new DialogExecuteException(e);
+            }
         }
-        catch (ServletException e)
+        else
         {
-            log.error("Include error in " + this.getClass().getName(), e);
-            throw new DialogExecuteException(e);
+            URL url = new URL(includePath);
+            URLConnection urlConn = url.openConnection();
+            InputStream urlIn = urlConn.getInputStream();
+            int iRead = urlIn.read();
+            while (iRead != -1)
+            {
+                writer.write((char) iRead);
+                iRead = urlIn.read();
+            }
         }
     }
 }
