@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.8 2003-07-08 14:21:16 shahid.shah Exp $
+ * $Id: Project.java,v 1.9 2003-07-08 14:25:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -86,7 +86,6 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
 import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.text.TextUtils;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
