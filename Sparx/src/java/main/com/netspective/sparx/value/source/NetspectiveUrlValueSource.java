@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NetspectiveUrlValueSource.java,v 1.2 2003-12-07 18:06:59 shahid.shah Exp $
+ * $Id: NetspectiveUrlValueSource.java,v 1.3 2003-12-18 01:17:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -125,13 +125,23 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
                 vc);
 
-        final String wwwContextName = "www.netspective.com";
+        final String[] wwwContextNames = new String[] { "corp", "www.netspective.com" };
 
         final HttpServletRequest request = svc.getHttpRequest();
         final File contextPath = new File(svc.getServlet().getServletConfig().getServletContext().getRealPath("/"));
-        final boolean isInWWW = contextPath.getAbsolutePath().endsWith(wwwContextName);
 
-        final String wwwPublicContextUri = "http://" + wwwContextName;
+        String wwwContextName = null;
+        boolean isInWWW = false;
+        for(int i = 0; i < wwwContextNames.length; i++)
+        {
+            if(contextPath.getAbsolutePath().endsWith(wwwContextNames[i]))
+            {
+                isInWWW = true;
+                wwwContextName = wwwContextNames[i];
+            }
+        }
+
+        final String wwwPublicContextUri = "http://www.netspective.com/corp";
         final String wwwLocalContextUri = request.getContextPath() + "/../" + wwwContextName;
 
         final boolean wwwIsLocal = new File(contextPath.getParentFile(), wwwContextName).exists();
