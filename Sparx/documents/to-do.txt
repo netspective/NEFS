@@ -25,6 +25,7 @@
 * Add feature to hide/disable submit buttons once the submit button is pressed (in case it takes time to submit something) -- perhaps replace button with "please wait..."
 * Create a 16x16 Console icon that will appear in browser window tabs and URL address line
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
+* Consider adding rich text editing field mode (for field.memo) for IE/Moz using examples at http://www.interactivetools.com/products/htmlarea/ and http://www.kevinroth.com/rte/demo.htm and http://www.bris.ac.uk/is/projects/cms/ttw/ttw.html
 
 * Create "Define, Declare, Test, Customize, Deploy" tutorials
 * Add ability for child element tag documentation to be retrieved from createXXX, addXXX, or class javadoc in that order (right now only class definition javadoc is used).
@@ -47,7 +48,6 @@
 * Add built-in wiki parsing for panels so any panel/page can parse and show Wiki content
 * Add a 'tip of the day' feature to Console that would get general usage tips for Sparx, Axiom, etc.
 * Add a 'development tip of the day' feature to Console that would give general software development tips
-* Consider adding rich text editing field mode (for field.memo) for IE/Moz using examples at http://www.kevinroth.com/rte/demo.htm and http://www.bris.ac.uk/is/projects/cms/ttw/ttw.html
 * Consider using Jakarta Commons VFS (http://jakarta.apache.org/commons/sandbox/vfs/api.html) for panel body source locations so that they can be obtained from anywhere
 * Look at Struts' MessageResources class for creating an 'rb' (resource-bundle) value source for internationlization
 * Create Sparx demo using CD manager example in Sue Spielman's Struts book -- maybe other e.g.'s like that?
