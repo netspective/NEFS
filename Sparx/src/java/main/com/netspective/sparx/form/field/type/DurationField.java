@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DurationField.java,v 1.3 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: DurationField.java,v 1.4 2003-07-09 02:12:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -157,12 +157,12 @@ public class DurationField extends DialogField
 
     public void setBeginMinValue(ValueSource beginValue) throws ParseException
     {
-        beginField.setMinDate(beginValue);
+        beginField.setMin(beginValue);
     }
 
     public void setEndMaxValue(ValueSource endValue) throws ParseException
     {
-        endField.setMaxDate(endValue);
+        endField.setMax(endValue);
     }
 
     public void validate(DialogValidationContext dvc)
