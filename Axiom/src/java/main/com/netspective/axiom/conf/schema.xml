@@ -573,7 +573,7 @@
         <column name="${params.hierTypeIdColName}" lookup-ref="${params.hierTypeTable}" indexed="yes" required="yes" descr="The relationship type."/>
         <column name="${params.primaryIdColName}" parent-ref="${params.entityRef}" indexed="yes" required="yes" descr="The owner of the relationship row this entry was created for"/>
         <column name="${params.relatedIdColName}" lookup-ref="${params.entityRef}" indexed="yes" required="yes" descr="The relationship row this entry was created for"/>
-        <column name="${params.hierDistanceColName}" type="long-integer" indexed="yes" descr="The distance from which the related item is related by rel_type_id (used by ancestor, descentant)"/>
+        <column name="${params.hierDistanceColName}" type="long-integer" indexed="yes" descr="The distance from which the related item is related by rel_type_id (used by ancestor, descendant)"/>
 
         <!-- make sure a relationship record remains unique -->
         <index name="${owner.abbrev}_${params.uniqueHierIndexName}" unique="yes" columns="${params.hierTypeIdColName},${params.primaryIdColName},${params.relatedIdColName},${params.hierDistanceColName}"/>
