@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.9 2003-07-10 00:52:09 shahid.shah Exp $
+ * $Id: QueryReportPanel.java,v 1.10 2003-08-30 14:05:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -125,6 +125,11 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         this.urlFormats = urlFormats;
     }
 
+    protected String getCachedResultSetAttributeId()
+    {
+        return "QRS-" + this.hashCode();
+    }
+
     /**
      * Executes the query and assigns the result set to a new report data source object
      * @param nc
@@ -134,7 +139,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
     {
         try
         {
-            QueryResultSet resultSet = (QueryResultSet) nc.getAttribute("QRS-" + this.hashCode());
+            QueryResultSet resultSet = (QueryResultSet) nc.getAttribute(getCachedResultSetAttributeId());
             if(resultSet == null)
             {
                 if (isScrollable())
@@ -155,11 +160,11 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
-        HtmlTabularReport report = getReport();
-        if(report == null)
+        HtmlTabularReport activeReport = getReport();
+        if(activeReport == null)
         {
             // if the report is null, we need to create it by running the query and getting the meta data
-            report = new BasicHtmlTabularReport();
+            activeReport = new BasicHtmlTabularReport();
             try
             {
                 QueryResultSet resultSet = null;
@@ -167,16 +172,17 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
                     resultSet = query.execute(nc, null, true);
                 else
                     resultSet = query.execute(nc, null, false);
-                resultSet.fillReportFromMetaData(report);
-                nc.setAttribute("QRS-" + this.hashCode(), resultSet); // store the result set so we don't run it again
+                resultSet.fillReportFromMetaData(activeReport);
+                nc.setAttribute(getCachedResultSetAttributeId(), resultSet); // store the result set so we don't run it again
             }
             catch (Exception e)
             {
                 log.error("Unable to create report for query ", e);
                 throw new NestableRuntimeException(e);
             }
+            this.report = activeReport;
         }
 
-        return report;
+        return activeReport;
     }
 }
