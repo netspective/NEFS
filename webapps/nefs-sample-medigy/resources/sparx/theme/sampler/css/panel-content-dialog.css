@@ -8,10 +8,11 @@ tr.dialog-field-block-errors td { padding: 3px 3px 3px 10px }
 /* these are the spans around the captions and inputs. The style settings should only enforce the font and text alignment with no block properties */
 span.dialog-field-caption           { color: #333;    font: normal 12px georgia, serif; text-align: left; vertical-align: middle; }
 span.dialog-field-caption-required  { color: #000000; font: bold   12px georgia, serif; width: auto }
+span.dialog-field-caption-required:before  { content: '*'; color: red}
 span.dialog-field-hint              { color: #696969; font: normal 10px georgia, serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top }
 span.dialog-field-hint-hidden       { color: #696969; font: normal 10px georgia, serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top; display: none;  }
 span.dialog-field-input             { color: #000; font: normal 12px Verdana, Arial; width: auto }
-span.dialog-field-input-required    { color: #000; font: normal 12px Verdana, Arial; background: white url(../../../../../sparx/theme/sampler/images/panel/input/content-required.gif) no-repeat right top; width: auto }
+span.dialog-field-input-required    { color: #000; font: normal 12px Verdana, Arial; width: auto }
 span.dialog-field-errors            { color: red; font-size: 10px; font-family: Tahoma; }
 span.dialog-field-errors a          { color: red; font-size: 10px; font-family: Tahoma; }
 span.dialog-field-errors a:link     { color: red; font-size: 10px; font-family: Tahoma; }
