@@ -39,109 +39,69 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.3 2003-06-10 02:57:53 shahid.shah Exp $
+ * $Id: SyntaxHighlightTransform.java,v 1.1 2003-06-10 02:57:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
-import java.io.File;
+import java.io.Writer;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Map;
+import java.util.Iterator;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
+import freemarker.template.TemplateTransformModel;
 import freemarker.template.Configuration;
-import freemarker.cache.FileTemplateLoader;
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.MultiTemplateLoader;
-import freemarker.cache.TemplateLoader;
 
-public class FreeMarkerConfigurationAdapter
+import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
+
+public class SyntaxHighlightTransform implements TemplateTransformModel
 {
-    private Configuration configuration;
-    private boolean defaultAdapter;
-    private String name;
-    private File baseDir;
-    private Class baseClass;
-
-    public FreeMarkerConfigurationAdapter()
+    public static void registerTransforms(Configuration config)
     {
-    }
-
-    public boolean isDefault()
-    {
-        return defaultAdapter;
-    }
-
-    public void setDefault(boolean defaultAdapter)
-    {
-        this.defaultAdapter = defaultAdapter;
-        if(defaultAdapter)
-            Configuration.setDefaultConfiguration(configuration);
-    }
-
-    public Configuration getConfiguration()
-    {
-        if(configuration == null)
+        Iterator lexers = HtmlSyntaxHighlightPanel.getLexers().keySet().iterator();
+        while(lexers.hasNext())
         {
-            configuration = new Configuration();
-            configuration.setTemplateLoader(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
-            SyntaxHighlightTransform.registerTransforms(configuration);
+            String lexerType = (String) lexers.next();
+            config.setSharedVariable(lexerType + "Code", new SyntaxHighlightTransform(lexerType));
         }
-        return configuration;
     }
 
-    protected void updateConfiguration()
+    private String lexerType;
+
+    public SyntaxHighlightTransform(String lexerType)
     {
-        List tmplLoaders = new ArrayList();
-        tmplLoaders.add(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
+        this.lexerType = lexerType;
+    }
 
-        if(baseClass != null)
-            tmplLoaders.add(new ClassTemplateLoader(baseClass));
+    public Writer getWriter(Writer out, Map args)
+    {
+        return new SyntaxHighlightWriter(out);
+    }
 
-        try
+    private class SyntaxHighlightWriter extends Writer
+    {
+        private Writer out;
+
+        public SyntaxHighlightWriter(Writer out)
         {
-            if(baseDir != null)
-                tmplLoaders.add(new FileTemplateLoader(baseDir));
-        }
-        catch (IOException e)
-        {
-            throw new NestableRuntimeException(e);
+            this.out = out;
         }
 
-        getConfiguration().setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()])));
-    }
+        public void write(char[] cbuf, int off, int len) throws IOException
+        {
+            Reader reader = new StringReader(new String(cbuf, off, len));
+            HtmlSyntaxHighlightPanel.emitHtml(lexerType, reader, out);
+        }
 
-    public String getName()
-    {
-        return name;
-    }
+        public void flush() throws IOException
+        {
+            out.flush();
+        }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public File getBaseDir()
-    {
-        return baseDir;
-    }
-
-    public void setBaseDir(File baseDir)
-    {
-        this.baseDir = baseDir;
-        updateConfiguration();
-    }
-
-    public Class getBaseClass()
-    {
-        return baseClass;
-    }
-
-    public void setBaseClass(Class baseClass)
-    {
-        this.baseClass = baseClass;
-        updateConfiguration();
+        public void close()
+        {
+        }
     }
 }
