@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletContextFileValueSource.java,v 1.1 2003-08-08 00:57:03 shahid.shah Exp $
+ * $Id: ServletContextFileValueSource.java,v 1.2 2003-08-24 18:46:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -98,7 +98,7 @@ public class ServletContextFileValueSource extends AbstractValueSource
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
                 vc);
 
-        if(vc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.ANT_BUILD))
+        if(vc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.ANT_BUILD))
         {
             String simulatingProp = System.getProperty("com.netspective.sparx.value.source.ServletContextPathValue.simulate");
             if(simulatingProp == null)

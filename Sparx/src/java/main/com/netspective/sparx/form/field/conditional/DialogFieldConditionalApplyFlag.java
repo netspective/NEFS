@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.9 2003-08-19 05:01:37 aye.thu Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.10 2003-08-24 18:41:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -256,7 +256,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         boolean lackPermissionFlg = false;
         if(status && (this.hasPermissions != null || this.lackPermissions != null))
         {
-            if(dc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.CONSOLE_MODE))
+            if(dc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.CONSOLE_MODE))
             {
                 // if the dialog is being run in ACE, don't allow conditionals to be executed since
                 // conditionals can contain permission checking which is dependent upon the application

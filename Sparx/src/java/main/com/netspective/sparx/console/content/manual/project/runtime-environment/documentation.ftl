@@ -4,7 +4,7 @@
     or DialogContext.
     <p>
     Based on your application's configuration file (WEB-INF/web.xml), your application is using the following
-    RuntimeEnvironmentFlags: <font color=red><code>${vc.environmentFlags}</code></font>.
+    RuntimeEnvironmentFlags: <font color=red><code>${vc.runtimeEnvironmentFlags}</code></font>.
 
     <#assign paramName = 'com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS'>
     If you'd like to modify the runtime environment flags, do the following:
@@ -14,7 +14,7 @@
         be set to a single value or may contain multiple flags separated using the '<code>|</code>' character. The valid
         values for the environment flag names are:
             <ul>
-            <#list vc.environmentFlags.flagNames as i>
+            <#list vc.runtimeEnvironmentFlags.flagNames as i>
                 <li>${i}</li>
             </#list>
             </ul>

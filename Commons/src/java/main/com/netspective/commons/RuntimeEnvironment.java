@@ -39,12 +39,12 @@
  */
 
 /**
- * $Id: RuntimeEnvironment.java,v 1.4 2003-05-16 21:21:31 shahid.shah Exp $
+ * $Id: RuntimeEnvironment.java,v 1.5 2003-08-24 18:34:47 shahid.shah Exp $
  */
 
 package com.netspective.commons;
 
 public interface RuntimeEnvironment
 {
-    public RuntimeEnvironmentFlags getEnvironmentFlags();
+    public RuntimeEnvironmentFlags getRuntimeEnvironmentFlags();
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.12 2003-08-17 00:05:53 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.13 2003-08-24 18:35:02 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -72,7 +72,7 @@ public class DefaultValueContext implements ValueContext
         this.creationTime = System.currentTimeMillis();
     }
 
-    public RuntimeEnvironmentFlags getEnvironmentFlags()
+    public RuntimeEnvironmentFlags getRuntimeEnvironmentFlags()
     {
         if(environmentFlags == null)
         {

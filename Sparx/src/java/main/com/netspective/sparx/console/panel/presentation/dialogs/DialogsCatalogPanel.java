@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogPanel.java,v 1.7 2003-07-12 03:32:43 shahid.shah Exp $
+ * $Id: DialogsCatalogPanel.java,v 1.8 2003-08-24 18:41:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -103,7 +103,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
             super();
             dialogs = nc.getProject().getDialogs();
             this.selectedDialogName = selectedDialogName;
-            boolean doingFrameworkDeveploment = nc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT);
+            boolean doingFrameworkDeveploment = nc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT);
 
             //TODO: this does not account for dialogs that are not contained within a namespace
             Set sortedNamesSpaces = new TreeSet(dialogs.getNameSpaceNames());

@@ -1,6 +1,6 @@
 <#include "*/library.ftl">
 
-<#assign doingFrameworkDeveploment = vc.getEnvironmentFlags().flagIsSet(statics["com.netspective.commons.RuntimeEnvironmentFlags"].FRAMEWORK_DEVELOPMENT)/>
+<#assign doingFrameworkDeveploment = vc.runtimeEnvironmentFlags.flagIsSet(statics["com.netspective.commons.RuntimeEnvironmentFlags"].FRAMEWORK_DEVELOPMENT)/>
 <#assign dialogs = vc.project.dialogs/>
 <#assign catalog = []/>
 <#list dialogs.nameSpaceNames as nameSpaceId>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.12 2003-08-17 13:28:26 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.13 2003-08-24 18:33:26 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -252,9 +252,9 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         return dbvc.getContextLocation();
     }
 
-    public RuntimeEnvironmentFlags getEnvironmentFlags()
+    public RuntimeEnvironmentFlags getRuntimeEnvironmentFlags()
     {
-        return dbvc.getEnvironmentFlags();
+        return dbvc.getRuntimeEnvironmentFlags();
     }
 
     public void removeAttribute(String attributeId)
