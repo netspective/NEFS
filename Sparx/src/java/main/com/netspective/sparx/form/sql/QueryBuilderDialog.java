@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.6 2003-06-25 15:14:00 aye.thu Exp $
+ * $Id: QueryBuilderDialog.java,v 1.7 2003-07-02 14:07:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -104,6 +104,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollSta
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportFileDestination;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
+import com.netspective.sparx.navigate.NavigationContext;
 
 public class QueryBuilderDialog extends Dialog
 {
@@ -354,10 +355,10 @@ public class QueryBuilderDialog extends Dialog
         this.queryDefn = queryDefn;
     }
 
-    public void finalizeContents(ServletContext context)
+    public void finalizeContents(NavigationContext nc)
     {
         createContents();
-        super.finalizeContents(context);
+        super.finalizeContents(nc);
     }
 
     public void makeStateChanges(DialogContext dc, int stage)
