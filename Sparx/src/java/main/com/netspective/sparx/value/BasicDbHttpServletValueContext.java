@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.43 2003-10-17 21:01:17 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.44 2003-11-08 23:09:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -66,6 +66,7 @@ import com.netspective.axiom.ConnectionContext;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.ProjectComponent;
 import com.netspective.sparx.ProjectManager;
+import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.connection.HttpSessionBindableTransactionConnectionContext;
 import com.netspective.sparx.connection.HttpSessionBindableAutoCommitConnectionContext;
@@ -74,6 +75,7 @@ import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationControllerServletOptions;
+import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
@@ -352,6 +354,13 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return getProjectComponent().getProject();
     }
 
+    public final String getServerRootUrl()
+    {
+        String reqURL = getHttpRequest().getRequestURL().toString();
+        String reqURI = getHttpRequest().getRequestURI();
+        return reqURL.substring(0, reqURL.length() - reqURI.length());
+    }
+
     public final String getSparxResourceUrl(String resource)
     {
         return rootUrl + "/sparx/" + resource;
@@ -375,6 +384,22 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public final String getConsoleUrl()
     {
         return rootUrl + "/console";
+    }
+
+    /**
+     * Take the given URL and ensure that the current page's retain params are added to it
+     * @param url The complete URL to use
+     * @return The given url plus any of our current page's retin params
+     */
+    public final String constructAppUrl(String url)
+    {
+        NavigationPage activePage = getNavigationContext().getActivePage();
+        ValueSource retainParamsVS = activePage.getRetainParams();
+
+        if(retainParamsVS != null)
+            return HttpUtils.appendParams(getHttpRequest(), url, retainParamsVS.getTextValue(this));
+        else
+            return url;
     }
 
     public final String getConsoleFileBrowserLink(String absolutePath, boolean showRelative)
@@ -421,13 +446,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
             else
                 return absolutePath;
         }
-    }
-
-    public final String getServerRootUrl()
-    {
-        String reqURL = getHttpRequest().getRequestURL().toString();
-        String reqURI = getHttpRequest().getRequestURI();
-        return reqURL.substring(0, reqURL.length() - reqURI.length());
     }
 
     public Theme getActiveTheme()
