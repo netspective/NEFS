@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnCondition.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryDefnCondition.java,v 1.2 2003-08-11 07:23:08 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -243,26 +243,31 @@ public class QueryDefnCondition
         else
         {
             ValueSource vs = getValue();
-            Value value = vs.getValue(vc);
-            if(value == null)
-                return false;
-
-            if(value.isListValue())
+            if(vs != null)
             {
-                String[] values = value.getTextValues();
-                if(values == null || values.length == 0 || (values.length == 1 && (values[0] == null || values[0].length() == 0)))
+                Value value = vs.getValue(vc);
+                if(value == null)
                     return false;
-            }
-            else
-            {
-                String textValue = value.getTextValue();
-                if(textValue == null || textValue.length() == 0)
-                    return false;
-            }
 
-            usedConditions.add(this);
-            stmtGen.addJoin(field);
-            return true;
+                if(value.isListValue())
+                {
+                    String[] values = value.getTextValues();
+                    if(values == null || values.length == 0 || (values.length == 1 && (values[0] == null || values[0].length() == 0)))
+                        return false;
+                }
+                else
+                {
+                    String textValue = value.getTextValue();
+                    if(textValue == null || textValue.length() == 0)
+                        return false;
+                }
+
+                usedConditions.add(this);
+                stmtGen.addJoin(field);
+                return true;
+            }
+            return false;
+
         }
     }
 }
