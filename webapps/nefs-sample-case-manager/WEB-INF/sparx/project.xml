@@ -35,15 +35,11 @@
         <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
         <!-- columns that should be included in all tables -->
-        <table-type name="Default" type="Presentation">
-            <xdm:template-param name="recordStatusEnum" default="Record_Status"/>
-
-            <column name="cr_stamp" type="creation-stamp"/>
-            <column name="cr_person_id" lookup-ref="Person.system_id" descr="The user that created the record"/>
-            <column name="record_status_id" lookup-ref="${params.recordStatusEnum}" required="dbms" descr="The status of a row in the table">
-                <sql-ddl>
-                    <default dbms="ansi">0</default>
-                </sql-ddl>
+        <table-type name="Default" type="Versioned,Presentation">
+            <column name="cr_person_id" lookup-ref="Person.system_id" descr="The user that created the record">
+                <presentation>
+                    <field type="text" hidden="yes" default="session:authenticated-user"/>
+                </presentation>
             </column>
         </table-type>
 
