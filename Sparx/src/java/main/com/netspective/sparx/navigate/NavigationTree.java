@@ -166,6 +166,11 @@ public class NavigationTree implements TemplateProducerParent
         }
     }
 
+    public NavigationPage getRoot()
+    {
+        return root;
+    }
+
     public NavigationPage getHomePage()
     {
         return homePage;
