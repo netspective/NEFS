@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: ValueContext.java,v 1.6 2003-08-14 17:55:12 shahid.shah Exp $
+ * $Id: ValueContext.java,v 1.7 2003-08-17 00:05:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
+
+import java.util.Date;
 
 import com.netspective.commons.RuntimeEnvironment;
 import com.netspective.commons.security.AuthenticatedUser;
@@ -55,6 +57,11 @@ public interface ValueContext extends RuntimeEnvironment
      * Returns the time the value context was created
      */
     public long getCreationTime();
+
+    /**
+     * Return the date/time the value context was created
+     */
+    public Date getCreationDate();
 
     /**
      * Returns the default configuration properties manager.

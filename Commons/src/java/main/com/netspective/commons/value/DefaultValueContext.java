@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.11 2003-08-14 17:55:12 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.12 2003-08-17 00:05:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
+
+import java.util.Date;
 
 import org.apache.commons.discovery.tools.DiscoverClass;
 import org.apache.commons.logging.Log;
@@ -90,6 +92,11 @@ public class DefaultValueContext implements ValueContext
     public long getCreationTime()
     {
         return creationTime;
+    }
+
+    public Date getCreationDate()
+    {
+        return new Date(creationTime);
     }
 
     public AccessControlListsManager getAccessControlListsManager()
