@@ -1,3 +1,7 @@
+<h1>TODO: Architecture Overview</h1>
+
+<img src="${resourcesPath}/images/products/frameworks/architecture.gif">
+
 <h1>Key NEFS Architecture Features</h1>
 <ul class="check-list">
     <li>J2EE Design/Architecture Patterns</li>

@@ -19,9 +19,7 @@
                 <body source="products/frameworks/index.ftl"/>
                 <summary>
                     The Netspective Enterprise Frameworks Suite (NEFS) is the fastest path to building production-ready,
-                    secure, data-driven Java web applications. Ease development using &amp;lt;declarative&amp;gt; constructs
-                    instead of hand coding. Eliminate up to 80% of grunt Java code and only supply Java code for
-                    unique customizations.
+                    secure, data-driven Java web applications.
                 </summary>
 
                 <page name="what-nefs-does" caption="What does NEFS do?" tag-line="The Secret Sauce: Declare More, Code Less">
@@ -34,10 +32,10 @@
 
                 <page name="why-you-need-nefs" caption="Why use NEFS?" tag-line="Why should you use use the NEFS?">
                     <summary>
-                        If you have enough expert programmers, if you already have a great-looking user interface for
-                        your web application, or if your tools already save you from writing tedious and repetitive Java and HTML
-                        code you don't need our Java Frameworks. In case you live in the real world, though, you probably
-                        need the NEFS.
+                        If you have enough expert programmers, already have a great-looking user interface for
+                        your web application, and your tools already save you from writing repetitive Java and HTML
+                        code you probably don't need our Java Frameworks. In case you live in the real world, though,
+                        you probably need the NEFS.
                     </summary>
                     <body source="products/frameworks/why-you-need-nefs.ftl"/>
                 </page>
