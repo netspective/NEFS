@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.44 2003-11-13 22:56:36 aye.thu Exp $
+ * $Id: Dialog.java,v 1.45 2003-11-15 19:03:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -825,12 +825,19 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         if(dc.executeStageHandled())
             return;
 
-        if(executeHandlers.size() > 0)
-            executeHandlers.handleDialogExecute(writer, dc);
-        else
-            dc.renderDebugPanels(writer);
-        getDialogState(dc).setAlreadyExecuted();
-        handlePostExecute(writer, dc);
+        try
+        {
+            if(executeHandlers.size() > 0)
+                executeHandlers.handleDialogExecute(writer, dc);
+            else
+                dc.renderDebugPanels(writer);
+            getDialogState(dc).setAlreadyExecuted();
+            handlePostExecute(writer, dc);
+        }
+        catch (DialogExecuteException e)
+        {
+            handlePostExecuteException(writer, dc, null, e);
+        }
     }
 
     /**
@@ -886,13 +893,15 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
      * @param e         the exception object
      * @throws IOException
      */
-    public void handlePostExecuteException(Writer writer, DialogContext dc, String message, Exception e) throws IOException
+    public void handlePostExecuteException(Writer writer, DialogContext dc, String message, Exception e) throws DialogExecuteException, IOException
     {
         dc.setExecuteStageHandled(true);
-        log.error(message, e);
+        getLog().error(message, e);
         dc.setRedirectDisabled(true);
-        dc.performDefaultRedirect(writer, null);
-        writer.write(message + e.toString());
+        if(e instanceof DialogExecuteException)
+            throw (DialogExecuteException) e;
+        else
+            throw new DialogExecuteException(e);
     }
 
     public DialogState getDialogState(DialogContext dc)

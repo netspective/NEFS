@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.22 2003-11-13 19:25:12 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.23 2003-11-15 19:03:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -59,15 +59,21 @@ package com.netspective.sparx.navigate;
 import java.util.Map;
 import java.util.HashMap;
 import java.io.File;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletResponse;
 import javax.servlet.ServletRequest;
 import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+
+import org.apache.oro.text.perl.Perl5Util;
 
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
+import com.netspective.commons.text.TextUtils;
 
 public class NavigationContext extends BasicDbHttpServletValueContext
 {
@@ -83,6 +89,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     private String pageSubheading;
     private Map navigationStates = new HashMap();
     private int maxLevel = 0;
+    private NavigationErrorPage errorPage;
+    private Throwable errorPageException;
+    private Class matchedErrorPageExceptionClass;
 
     public NavigationContext(NavigationTree ownerTree, Servlet aServlet, ServletRequest aRequest, ServletResponse aResponse, NavigationSkin skin, String activePathId)
     {
@@ -129,6 +138,51 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     public boolean isMissingRequiredReqParams()
     {
         return missingRequiredReqParams;
+    }
+
+    public NavigationErrorPage getErrorPage()
+    {
+        return errorPage;
+    }
+
+    public Throwable getErrorPageException()
+    {
+        return errorPageException;
+    }
+
+    public String getErrorPageExceptionStackStrace()
+    {
+        if(errorPageException == null)
+            return null;
+
+        if(errorPageException instanceof ServletException)
+        {
+            Throwable rootCause = ((ServletException) errorPageException).getRootCause();
+            if(rootCause != null)
+                return TextUtils.getStackTrace(rootCause);
+        }
+
+        return TextUtils.getStackTrace(errorPageException);
+    }
+
+    public String getErrorPageExceptionStackStraceHtml()
+    {
+        String text = getErrorPageExceptionStackStrace();
+        Perl5Util perlUtil = new Perl5Util();
+        text = perlUtil.substitute("s/\n/<br>/g", text);
+        return perlUtil.substitute("s/\t/&nbsp;&nbsp;&nbsp;&nbsp;/g", text);
+    }
+
+    public Class getMatchedErrorPageExceptionClass()
+    {
+        return matchedErrorPageExceptionClass;
+    }
+
+    public void setErrorPageException(NavigationErrorPage errorPage, Throwable errorPageException, Class matchedExceptionClass)
+    {
+        this.errorPage = errorPage;
+        this.errorPageException = errorPageException;
+        this.matchedErrorPageExceptionClass = matchedExceptionClass;
     }
 
     public NavigationPage findFirstMemberWithBody(NavigationPage parent)
@@ -179,6 +233,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getPageHeading()
     {
+        if(errorPage != null)
+            return errorPage.getHeading(this);
+
         if(pageHeading != null)
             return pageHeading;
 
@@ -187,6 +244,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getPageSubheading()
     {
+        if(errorPage != null)
+            return errorPage.getSubHeading(this);
+
         if(pageSubheading != null)
             return pageSubheading;
 
@@ -195,6 +255,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getPageTitle()
     {
+        if(errorPage != null)
+            return errorPage.getTitle(this);
+
         if(pageTitle != null)
             return pageTitle;
 

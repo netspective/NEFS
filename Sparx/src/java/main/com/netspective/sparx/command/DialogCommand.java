@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.12 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.13 2003-11-15 19:03:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -259,7 +259,7 @@ public class DialogCommand extends AbstractHttpServletCommand
         catch (DialogExecuteException e)
         {
             log.error("Unable to execute dialog", e);
-            throw new CommandException("Unable to execute dialog", e, this);
+            throw new CommandException(e, this);
         }
     }
 

@@ -39,94 +39,57 @@
  */
 
 /**
- * $Id: DialogExecuteXsltHandler.java,v 1.5 2003-11-15 19:03:47 shahid.shah Exp $
+ * $Id: NavigationErrorPage.java,v 1.1 2003-11-15 19:03:47 shahid.shah Exp $
  */
 
-package com.netspective.sparx.form.handler;
+package com.netspective.sparx.navigate;
 
-import java.io.Writer;
-import java.io.IOException;
-import java.util.Map;
+import com.netspective.commons.lang.ClassMap;
 
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.text.Transform;
-import com.netspective.commons.text.TextUtils;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
-
-public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
+public class NavigationErrorPage extends NavigationPage
 {
-    private Transform transform = new Transform();
-
-    public DialogExecuteXsltHandler()
+    protected class Error
     {
-    }
+        private Class exceptionClass;
 
-    public Transform getTransform()
-    {
-        return transform;
-    }
-
-    public void addParam(Transform.StyleSheetParameter param)
-    {
-        transform.addParam(param);
-    }
-
-    public void addSystemProperty(Transform.SystemProperty param)
-    {
-        transform.addSystemProperty(param);
-    }
-
-    public Transform.StyleSheetParameter createParam()
-    {
-        return transform.createParam();
-    }
-
-    public Transform.SystemProperty createSystemProperty()
-    {
-        return transform.createSystemProperty();
-    }
-
-    public void setRelativeToClass(Class relativeToClass)
-    {
-        transform.setRelativeToClass(relativeToClass);
-    }
-
-    public void setSourceResource(ValueSource source)
-    {
-        transform.setSourceResource(source);
-    }
-
-    public void setSourceFile(ValueSource source)
-    {
-        transform.setSourceFile(source);
-    }
-
-    public void setStyleSheetResource(ValueSource styleSheet)
-    {
-        transform.setStyleSheetResource(styleSheet);
-    }
-
-    public void setStyleSheetFile(ValueSource styleSheet)
-    {
-        transform.setStyleSheetFile(styleSheet);
-    }
-
-    public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
-    {
-        try
+        public Error()
         {
-            Map textValuesMap = dc.getFieldStates().createTextValuesMap("field.");
-            transform.render(writer, dc, transform.getSource() != null ? null :
-                             new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()), textValuesMap, false);
         }
-        catch (Exception e)
+
+        public Class getExceptionClass()
         {
-            dc.getDialog().getLog().error("XSLT error in " + dc.getDialog().getQualifiedName(), e);
-            throw new DialogExecuteException(e);
+            return exceptionClass;
         }
+
+        public void setExceptionClass(Class exceptionClass)
+        {
+            this.exceptionClass = exceptionClass;
+        }
+    }
+
+    private ClassMap exceptionsMap = new ClassMap();
+
+    public NavigationErrorPage()
+    {
+    }
+
+    public Error createError()
+    {
+        return new Error();
+    }
+
+    public void addError(Error error)
+    {
+        exceptionsMap.put(error.getExceptionClass(), error);
+    }
+
+    public boolean canHandle(Throwable t, boolean checkSuperClasses)
+    {
+        return canHandle(t.getClass(), checkSuperClasses);
+    }
+
+    public boolean canHandle(Class exceptionClass, boolean checkSuperClasses)
+    {
+        return exceptionsMap.get(exceptionClass, checkSuperClasses) != null;
     }
 }

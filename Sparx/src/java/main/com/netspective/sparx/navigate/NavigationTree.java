@@ -69,7 +69,9 @@ import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.handler.NavigationPageBodyHandlerTemplateConsumer;
@@ -91,10 +93,12 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     private String name;
     private NavigationPage root;
     private NavigationPage homePage;
+    private NavigationErrorPage defaultErrorPage;
     private NavigationPage popupPage;
     private ValueSource dialogNextActionUrl;
     private DialogNextActionProvider dialogNextActionProvider;
     private Map pagesByQualifiedName = new HashMap();
+    private Map errorPagesByQualifiedName = new HashMap();
     private TemplateProducers templateProducers;
     private TemplateProducer pageTypes;
     private int maxLevel = -1;
@@ -106,6 +110,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         root = constructRoot();
         root.setOwner(this);
         root.setName("");
+        defaultErrorPage = constructDefaultErrorPage();
     }
 
     public Project getProject()
@@ -198,6 +203,16 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         pagesByQualifiedName.remove(path.getQualifiedName());
     }
 
+    public void registerErrorPage(NavigationErrorPage page)
+    {
+        errorPagesByQualifiedName.put(page.getQualifiedName(), page);
+    }
+
+    public void unregisterErrorPage(NavigationErrorPage page)
+    {
+        errorPagesByQualifiedName.remove(page.getQualifiedName());
+    }
+
     public String getName()
     {
         return name;
@@ -211,6 +226,21 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public NavigationPage constructRoot()
     {
         return new NavigationPage();
+    }
+
+    public NavigationErrorPage constructDefaultErrorPage()
+    {
+        NavigationErrorPage result = new NavigationErrorPage();
+        result.setName("default");
+        result.setHeading(new StaticValueSource("Error Encountered"));
+        NavigationErrorPage.Error error = result.createError();
+        error.setExceptionClass(Throwable.class);
+        result.addError(error);
+        FreeMarkerTemplateProcessor body = (FreeMarkerTemplateProcessor) result.createBody();
+        body.setSource(new StaticValueSource("default-error-page.ftl"));
+        body.finalizeContents();
+        result.addBody(body);
+        return result;
     }
 
     public NavigationPage createPage() throws InstantiationException, IllegalAccessException
@@ -228,6 +258,18 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         }
     }
 
+    public NavigationErrorPage createErrorPage()
+    {
+        return root.createErrorPage();
+    }
+
+    public void addErrorPage(NavigationErrorPage page)
+    {
+        root.addErrorPage(page);
+        if(page.isDefault())
+            defaultErrorPage = page;
+    }
+
     public NavigationPage getRoot()
     {
         return root;
@@ -236,6 +278,11 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public NavigationPage getHomePage()
     {
         return homePage;
+    }
+
+    public NavigationErrorPage getDefaultErrorPage()
+    {
+        return defaultErrorPage;
     }
 
     public NavigationPage getPopupPage()

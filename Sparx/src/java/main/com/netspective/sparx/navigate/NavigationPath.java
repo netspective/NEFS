@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.12 2003-10-19 17:05:32 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.13 2003-11-15 19:03:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -74,7 +74,6 @@ import com.netspective.sparx.navigate.listener.NavigationPathMakeStateChangesLis
 
 public class NavigationPath
 {
-    private static final Log log = LogFactory.getLog(NavigationPath.class);
     public static final int INHERIT_PATH_FLAGS_FROM_PARENT = 0;
 
     static public final String PATH_SEPARATOR = "/";
@@ -99,6 +98,7 @@ public class NavigationPath
         }
     }
 
+    private Log log = LogFactory.getLog(NavigationPath.class);
     private NavigationTree owner;
     private NavigationPath parent;
     private NavigationPathFlags flags;
@@ -120,6 +120,11 @@ public class NavigationPath
     public NavigationPath()
     {
         flags = createFlags();
+    }
+
+    public Log getLog()
+    {
+        return log;
     }
 
     public int size()
@@ -151,6 +156,8 @@ public class NavigationPath
 
         for (int i = 0; i < finalizeContentsListeners.size(); i++)
             ((NavigationPathFinalizeContentsListener) finalizeContentsListeners.get(i)).finalizeNavigationPathContents(this);
+
+        log = LogFactory.getLog(getClass().getName() + "." + (getOwner().getName() + getQualifiedName()).replace('/', '.'));
     }
 
     public void makeStateChanges(NavigationContext nc)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.10 2003-11-14 13:24:44 roque.hernandez Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.11 2003-11-15 19:03:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -846,7 +846,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
      ** Default execute method                                                                                       **
      ******************************************************************************************************************/
 
-    public void execute(Writer writer, DialogContext dc) throws IOException
+    public void execute(Writer writer, DialogContext dc) throws DialogExecuteException, IOException
     {
         if(dc.executeStageHandled())
             return;

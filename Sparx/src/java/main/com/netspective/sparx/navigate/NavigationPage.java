@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.49 2003-11-14 19:48:38 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.50 2003-11-15 19:03:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -89,19 +89,19 @@ import java.io.Writer;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.exception.NestableException;
 
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final Log log = LogFactory.getLog(NavigationPage.class);
     public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 15];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
@@ -236,6 +236,9 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private List exitListeners = new ArrayList();
     private ValueSource dialogNextActionUrl;
     private DialogNextActionProvider dialogNextActionProvider;
+    private List errorPagesList = new ArrayList();
+    private Map errorPagesMap = new HashMap();
+    private Map errorPageDescendantsByQualifiedName = new HashMap();
 
     public NavigationPage()
     {
@@ -292,6 +295,132 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         appendChild(page);
     }
 
+    public NavigationErrorPage createErrorPage()
+    {
+        return new NavigationErrorPage();
+    }
+
+    public void registerErrorPage(NavigationErrorPage page)
+    {
+        errorPageDescendantsByQualifiedName.put(page.getQualifiedName(), page);
+        if (getParent() != null)
+            ((NavigationPage) getParent()).registerErrorPage(page);
+        getOwner().registerErrorPage(page);
+    }
+
+    public void unregisterErrorPage(NavigationErrorPage page)
+    {
+        errorPageDescendantsByQualifiedName.remove(page.getQualifiedName());
+        if (getParent() != null)
+            ((NavigationPage) getParent()).unregisterErrorPage(page);
+        getOwner().unregisterErrorPage(page);
+    }
+
+    public List getErrorPagesList()
+    {
+        return errorPagesList;
+    }
+
+    public Map getErrorPagesMap()
+    {
+        return errorPagesMap;
+    }
+
+    public void addErrorPage(NavigationErrorPage page)
+    {
+        page.setParent(this);
+        errorPagesList.add(page);
+        errorPagesMap.put(page.getName(), page);
+        registerErrorPage(page);
+    }
+
+    public void removeErrorPage(NavigationErrorPage page)
+    {
+        errorPagesList.remove(page);
+        errorPagesMap.remove(page.getName());
+        unregisterErrorPage(page);
+    }
+
+    /**
+     * Try to locate the error page that can handle a given exception. First, check if we have any registered pages
+     * that handle the class of the exception, then check our ancestors. If we don't handle the given exception class
+     * and neither do our ancestors, check the superclass of the exception in our list and our ancestors. Keep doing
+     * the check until a navigation page is found. If a page is found the navigation context's error information will
+     * be appropriately set.
+     * @param t The exception that we would like to find a error page for
+     * @return True if we found a page, false if no page was found
+     */
+    public boolean findErrorPage(NavigationContext nc, Throwable t)
+    {
+        if(t instanceof ServletException)
+        {
+            ServletException se = (ServletException) t;
+            Throwable rootCause = se.getRootCause();
+            if(rootCause != null)
+            {
+                if(findErrorPage(nc, rootCause))
+                    return true;
+            }
+        }
+
+        // if we're dealing with a nested exception, check to see if one of the nested exceptions is something we
+        // need to handle
+        if(t instanceof NestableException)
+        {
+            NestableException ne = (NestableException) t;
+            Throwable[] throwables = ne.getThrowables();
+            for(int i = 0; i < throwables.length; i++)
+            {
+                Throwable nestedException = throwables[i];
+                if(t.getClass() == nestedException.getClass()) // don't get stuck in an infinite loop
+                    continue;
+
+                if(findErrorPage(nc, nestedException))
+                    return true;
+            }
+        }
+
+        Class exceptionClass = t.getClass();
+        while(exceptionClass != null)
+        {
+            for(int i = 0; i < errorPagesList.size(); i++)
+            {
+                NavigationErrorPage errorPage = (NavigationErrorPage) errorPagesList.get(i);
+                if(errorPage.canHandle(exceptionClass, false))
+                {
+                    nc.setErrorPageException(errorPage, t, exceptionClass);
+                    return true;
+                }
+
+                // check if we can handle of the interfaces of the current exception class
+                Class[] interfaces = exceptionClass.getInterfaces();
+                for(int intf = 0; intf < interfaces.length; intf++)
+                {
+                    Class interfaceClass = interfaces[intf];
+                    if(errorPage.canHandle(interfaceClass, false))
+                    {
+                        nc.setErrorPageException(errorPage, t, interfaceClass);
+                        return true;
+                    }
+                }
+            }
+
+            exceptionClass = exceptionClass.getSuperclass();
+            if(! Throwable.class.isAssignableFrom(exceptionClass))
+                break;
+        }
+
+        NavigationPage parentPage = (NavigationPage) getParent();
+        if(parentPage != null)
+        {
+            if(parentPage.findErrorPage(nc, t))
+                return true;
+        }
+
+        // if we get to here, neither we nor our ancestors know how to handle this exception so plead ignorance
+        return false;
+    }
+
     public NavigationPathFlags createFlags()
     {
         return new Flags();
@@ -307,6 +436,9 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public void finalizeContents()
     {
         super.finalizeContents();
+
+        for(int i = 0; i < errorPagesList.size(); i++)
+            ((NavigationErrorPage) errorPagesList.get(i)).finalizeContents();
 
         if(dialogNextActionProvider == null)
         {
@@ -885,7 +1017,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 }
                 catch (CommandException e)
                 {
-                    log.error("Command error in body", e);
+                    getLog().error("Command error in body", e);
                     throw new ServletException(e);
                 }
                 return;
@@ -914,7 +1046,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 }
                 catch (CommandException e)
                 {
-                    log.error("Command error in body", e);
+                    getLog().error("Command error in body", e);
                     throw new ServletException(e);
                 }
                 break;
@@ -986,9 +1118,21 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         {
             // render the body first and let it modify the navigation context
             StringWriter body = new StringWriter();
-            handlePageBody(body, nc);
+            boolean hasError = false;
+            try
+            {
+                handlePageBody(body, nc);
+            }
+            catch (Exception e)
+            {
+                getLog().error("Error occurred while handling the page.", e);
+                if(! findErrorPage(nc, e))
+                    nc.setErrorPageException(getOwner().getDefaultErrorPage(), e, e.getClass());
+                nc.getErrorPage().handlePage(writer, nc);
+                hasError = true;
+            }
 
-            if(! nc.isRedirected())
+            if(! hasError && ! nc.isRedirected())
             {
                 if(flags.flagIsSet(Flags.HANDLE_META_DATA))
                     handlePageMetaData(writer, nc);
@@ -1008,7 +1152,17 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 handlePageMetaData(writer, nc);
             if(flags.flagIsSet(Flags.HANDLE_HEADER))
                 handlePageHeader(writer, nc);
-            handlePageBody(writer, nc);
+            try
+            {
+                handlePageBody(writer, nc);
+            }
+            catch (Exception e)
+            {
+                getLog().error("Error occurred while handling the page.", e);
+                if(! findErrorPage(nc, e))
+                    nc.setErrorPageException(getOwner().getDefaultErrorPage(), e, e.getClass());
+                nc.getErrorPage().handlePageBody(writer, nc);
+            }
             if(flags.flagIsSet(Flags.HANDLE_FOOTER))
                 handlePageFooter(writer, nc);
         }
