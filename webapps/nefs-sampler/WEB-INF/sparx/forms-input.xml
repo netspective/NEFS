@@ -77,7 +77,8 @@
 
         <dialog type="input-sample" name="date-fields">
             <frame heading="Sample Date/Time Fields"/>
-            <field type="duration" name="duration_field" caption="Duration Field" begin-min-value="10/20/1900" end-max-value="today" hint="Format is MM/dd/yyyy"/>
+            <field type="duration" name="duration_field" caption="Duration Field" begin-min-value="10/20/1900" end-max-value="today"
+                hint="Format is MM/dd/yyyy"/>
             <field type="date" name="date_field_strict" caption="Date (Strict Year)" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"
                 default="today" hint="Format is MM-dd-yyyy"/>
             <field type="date" name="date_field_nonstrict" caption="Date (Non-Strict Year)" client-calendar-format="MM/dd/yyyy"
@@ -293,18 +294,35 @@
             <client-js href="servlet-context-path:/resources/scripts/test1.js"/>
             <client-js href="servlet-context-path:/resources/scripts/test2.js"/>
             <frame heading="Sample Custom Javascript"/>
-            <field type="float" name="float_field" caption="Float">
+            <field type="html">
+                <body>
+                    <![CDATA[
+                    <div class="textbox">
+                    For every dialog field, the Framework creates a corresponding Javascript field object when creating the
+                    html. Hence, all flags and properties defined in XML can be passed to the client-side as properties of
+                    the field object. Also, relationships between fields can also be defined and easily used to do custom
+                    client-side processing.  Please view the HTML source of this
+                    page to see and familiarize youself with the definition of these field Javascript objects.
+                    </div>
+                    <hr/>
+                    ]]>
+                </body>
+            </field>
+            <field type="float" name="float_field" caption="Float"
+                hint="This has two custom event handlings defined\: is-valid and value-changed">
                 <client-js event="is-valid" type="extends" js-expr="return testValid(field, control);"/>
                 <client-js event="value-changed" type="extends" js-expr="return testNum(field, control);"/>
             </field>
-            <field type="integer" name="integer_field" caption="Integer">
+            <field type="integer" name="integer_field" caption="Integer"
+                hint="This has four custom event handlings defined\: key-press, lose-focus, click and value-changed">
                 <client-js event="value-changed" type="extends" js-expr="return testNum(field, control);"/>
                 <client-js event="click" type="extends" js-expr="alert('onClick');return true;"/>
                 <!--client-js event="get-focus" type="extends" js-expr="alert('onFocus!');return true;"/-->
                 <client-js event="lose-focus" type="extends" js-expr="alert('onBlur!');return true;"/>
                 <client-js event="key-press" type="extends" js-expr="alert('onKeypress!');"/>
             </field>
-            <field type="ssn" name="ssn_field" caption="SSN">
+            <field type="ssn" name="ssn_field" caption="SSN"
+                hint="This has two custom event handlings defined\: is-valid and value-changed">
                 <!--
                     The JS 'override' type replacess the client side default behavior assigned
                     by the Framework with the expression defined in the 'js-expr'. The 'extends'
