@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.4 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.5 2003-06-09 06:47:06 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -59,7 +59,9 @@ package com.netspective.sparx.form.field.conditional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.Value;
 import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.DialogContext;
@@ -74,6 +76,9 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
     private String[] lackPermissions;
     private ValueSource valueSource;
     private ValueSource conditionalValueSource;
+    private Flag flag = new Flag();
+    private ValueSource hasValue;
+    private ValueSource isTrue;
 
     public DialogFieldConditionalApplyFlag()
     {
@@ -91,9 +96,46 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         flags = value.createFlags();
     }
 
+    /**
+     * Inner class for defining all the flags available for dialog field conditionals. This class
+     * directly reads from DialogField.Flags to construct all the available flags.
+     */
+    public static class Flag extends XdmEnumeratedAttribute
+    {
+        public Flag()
+        {
+        }
+
+        public String[] getValues()
+        {
+            DialogField.Flags.FlagDefn[] flagDefns =  DialogField.FLAG_DEFNS;
+            String[] values = new String[DialogField.FLAG_DEFNS.length];
+            for (int i = 0; i < values.length; i++)
+            {
+                values[i] = DialogField.FLAG_DEFNS[i].getName().toLowerCase().replace('_', '-');
+            }
+            return values;
+        }
+    }
+
+    public Flag getFlag()
+    {
+        return flag;
+    }
+
+    public void setFlag(Flag flag)
+    {
+        this.flag = flag;
+    }
+
     public DialogField.Flags getFlags()
     {
         return flags;
+    }
+
+    public void setFlags(DialogField.Flags flags)
+    {
+        this.flags = flags;
     }
 
     public boolean isClear()
@@ -111,6 +153,25 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         return false;
     }
 
+    public ValueSource getHasValue()
+    {
+        return hasValue;
+    }
+
+    public void setHasValue(ValueSource hasValue)
+    {
+        this.hasValue = hasValue;
+    }
+
+    public ValueSource getIsTrue()
+    {
+        return isTrue;
+    }
+
+    public void setIsTrue(ValueSource aTrue)
+    {
+        isTrue = aTrue;
+    }
     /*
     public boolean importFromXml(DialogField sourceField, Element elem, int conditionalItem)
     {
@@ -206,6 +267,8 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
     public void applyFlags(DialogContext dc)
     {
         boolean status = true;
+        // Need to do this to set the flags
+        flags.setValue(flag.getValue().toUpperCase().replace('-', '_'));
 
         // the keep checking things until the status is set to false -- if it's false, we're going to just leave
         // and not do anything
@@ -244,13 +307,28 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
                 status = false;
         }
 
-        if(status && valueSource != null)
+        // check the hasValue attribute
+        if(status && hasValue != null)
         {
-            Object value = valueSource.getValue(dc);
-            if(value instanceof Boolean)
-                status = ((Boolean) value).booleanValue();
+            Value value = hasValue.getValue(dc);
+            status = value.getTextValue() != null ? true : false;
+        }
+        // check the isTrue attribute
+        if(status && isTrue != null)
+        {
+            Value value = isTrue.getValue(dc);
+            if (value.getValue() instanceof Boolean)
+            {
+                boolean isTrueValue = ((Boolean)value.getValue()).booleanValue();
+                if (isTrueValue)
+                    status = true;
+                else
+                    status = false;
+            }
             else
-                status = value != null;
+            {
+                status = false;
+            }
         }
 
         if(status && clear)
