@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo Stopping Resin
-$NEFS_RESIN stop
+$HOME/www-ctl.sh stop
 
 echo Performing CVS Update
 cd Frameworks
@@ -14,15 +14,16 @@ sh build.sh
 cd ../webapps
 
 echo Cleaning old webapps class and execution.properties files
-find . -name "*.class" -exec rm {} \; -print
-find . -name "execution.properties" -exec rm {} \; -print
+find . -name "*.class" -exec rm -f {} \; -print
+find . -name "execution.properties" -exec rm -f {} \; -print
+find . -name "ant-build-project.log" -exec rm -f {} \; -print
 
 echo Starting up Resin
 cd 
-$NEFS_RESIN start
+$HOME/www-ctl.sh start
 
 echo Waiting for Resin to startup...
-sleep 10s
+sleep 15s
 
 echo Warming up all the apps...
 wget --non-verbose --input-file=$NEFS_HOME/tools/nefs-webapps-warm-up-urls.list --output-document=- > /dev/null
@@ -30,9 +31,5 @@ wget --non-verbose --input-file=$NEFS_HOME/tools/nefs-webapps-warm-up-urls.list 
 echo WARing up all the apps
 cd Frameworks/webapps
 sh build.sh nefs.war-all-apps
-
-echo Building ChangeLog
-cd Frameworks/support/docs
-sh build.sh change-log
 
 cd $HOME
