@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.16 2003-06-20 04:16:09 aye.thu Exp $
+ * $Id: Dialog.java,v 1.17 2003-07-02 14:03:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -515,7 +515,7 @@ public class Dialog extends AbstractPanel
     /**
      * Loops through each dialog field and finalize them.
      */
-    public void finalizeContents(ServletContext context)
+    public void finalizeContents(NavigationContext nc)
     {
         for(int i = 0; i < fields.size(); i++)
         {
@@ -619,7 +619,7 @@ public class Dialog extends AbstractPanel
     public DialogContext createContext(NavigationContext nc, DialogSkin skin)
     {
         if(!dialogFlags.flagIsSet(DialogFlags.CONTENTS_FINALIZED))
-            finalizeContents(nc.getServletContext());
+            finalizeContents(nc);
 
         DialogContext dc = null;
         try
