@@ -39,32 +39,10 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.15 2004-03-26 02:15:37 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.16 2004-05-19 22:03:14 aye.thu Exp $
  */
 
 package com.netspective.axiom.policy;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.net.UnknownHostException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicies;
@@ -85,6 +63,26 @@ import com.netspective.axiom.sql.dynamic.QueryDefnSelectStmtGenerator;
 import com.netspective.commons.text.GloballyUniqueIdentifier;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.naming.NamingException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class AnsiDatabasePolicy implements DatabasePolicy
 {
@@ -635,6 +633,9 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             Column column = value.getColumn();
             Object bindValue = value.getValueForSqlBindParam();
 
+            if (execute && column.isInsertManagedByDbms())
+                continue;
+
             if(execute && (column instanceof GeneratedValueColumn))
             {
                 GeneratedValueColumn generator = (GeneratedValueColumn) column;
@@ -736,6 +737,9 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
             // primary keys should not be in the update SQL
             if(column.isPrimaryKey())
+                continue;
+
+            if (execute && column.isUpdateManagedByDbms())
                 continue;
 
             if(execute && (column instanceof GeneratedValueColumn))

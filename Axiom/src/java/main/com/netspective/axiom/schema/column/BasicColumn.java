@@ -39,57 +39,67 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.19 2004-03-18 14:52:44 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.20 2004-05-19 22:02:56 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema.column;
 
-import java.util.*;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
-
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.schema.BasicSchema;
+import com.netspective.axiom.schema.Column;
+import com.netspective.axiom.schema.ColumnValue;
+import com.netspective.axiom.schema.Columns;
+import com.netspective.axiom.schema.ForeignKey;
+import com.netspective.axiom.schema.GeneratedValueColumn;
+import com.netspective.axiom.schema.Row;
+import com.netspective.axiom.schema.Rows;
+import com.netspective.axiom.schema.Schema;
+import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.Tables;
+import com.netspective.axiom.schema.constraint.BasicForeignKey;
+import com.netspective.axiom.schema.constraint.BasicTableColumnReference;
+import com.netspective.axiom.schema.constraint.ParentForeignKey;
+import com.netspective.axiom.schema.constraint.SelfForeignKey;
+import com.netspective.axiom.schema.table.BasicTable;
+import com.netspective.axiom.schema.table.TableQueryDefinition;
+import com.netspective.axiom.schema.table.TablesCollection;
+import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
+import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.sql.DbmsSqlTexts;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.validate.ValidationRule;
+import com.netspective.commons.validate.ValidationRules;
+import com.netspective.commons.validate.ValidationRulesCollection;
+import com.netspective.commons.value.AbstractValue;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xml.NodeIdentifiers;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.TemplateContentHandler;
+import com.netspective.commons.xml.template.TemplateElement;
+import com.netspective.commons.xml.template.TemplateNode;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducers;
+import com.netspective.commons.xml.template.TemplateText;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.ForeignKey;
-import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.Tables;
-import com.netspective.axiom.schema.ColumnValue;
-import com.netspective.axiom.schema.column.ForeignKeyPlaceholderColumn;
-import com.netspective.axiom.schema.BasicSchema;
-import com.netspective.axiom.schema.Row;
-import com.netspective.axiom.schema.Rows;
-import com.netspective.axiom.schema.Columns;
-import com.netspective.axiom.schema.GeneratedValueColumn;
-import com.netspective.axiom.schema.constraint.BasicTableColumnReference;
-import com.netspective.axiom.schema.constraint.BasicForeignKey;
-import com.netspective.axiom.schema.constraint.ParentForeignKey;
-import com.netspective.axiom.schema.constraint.SelfForeignKey;
-import com.netspective.axiom.schema.table.TablesCollection;
-import com.netspective.axiom.schema.table.BasicTable;
-import com.netspective.axiom.schema.table.TableQueryDefinition;
-import com.netspective.axiom.schema.table.type.EnumerationTable;
-import com.netspective.axiom.schema.table.type.EnumerationTableRows;
-import com.netspective.axiom.schema.table.type.EnumerationTableRow;
-import com.netspective.axiom.sql.DbmsSqlText;
-import com.netspective.axiom.sql.DbmsSqlTexts;
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xml.template.*;
-import com.netspective.commons.xml.NodeIdentifiers;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.validate.ValidationRules;
-import com.netspective.commons.validate.ValidationRulesCollection;
-import com.netspective.commons.validate.ValidationRule;
-import com.netspective.commons.value.AbstractValue;
-import com.netspective.commons.value.source.StaticValueSource;
+import javax.naming.NamingException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class BasicColumn implements Column, TemplateProducerParent, TemplateConsumer
 {
@@ -292,6 +302,8 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     private boolean unique;
     private boolean indexed;
     private boolean allowAddToTable;
+    private boolean updateManagedByDbms;
+    private boolean insertManagedByDbms;
     private int size = -1;
     private int indexInRow = -1;
     private SqlDataDefns sqlDataDefn = new SqlDataDefns(this);
@@ -316,6 +328,8 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     {
         setTable(table);
         setForeignKeyReferenceeClass(this.getClass());
+        setUpdateManagedByDbms(false);
+        setInsertManagedByDbms(false);
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
@@ -745,6 +759,26 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     public void setAllowAddToTable(boolean flag)
     {
         allowAddToTable = flag;
+    }
+
+    public boolean isInsertManagedByDbms()
+    {
+        return insertManagedByDbms;
+    }
+
+    public void setInsertManagedByDbms(boolean flag)
+    {
+        insertManagedByDbms = flag;
+    }
+
+    public boolean isUpdateManagedByDbms()
+    {
+        return updateManagedByDbms;
+    }
+
+    public void setUpdateManagedByDbms(boolean flag)
+    {
+        updateManagedByDbms = flag;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
