@@ -69,7 +69,7 @@
                     <td><a href="${servletPath}/products/frameworks/sparx/simplify-struts"><img src="${resourcesPath}/images/home/preview2.gif" width="111" height="78" alt="" border=0></a></td>
 
                     <td><img src="${resourcesPath}/images/home/home_32.gif" width="12" height="78" alt=""></td>
-                    <td><a href="${servletPath}/products/frameworks/suite/architecture"><img src="${resourcesPath}/images/home/preview3.gif" width="110" height="78" alt="" border=0></a></td>
+                    <td><a href="${servletPath}/products/frameworks/architecture"><img src="${resourcesPath}/images/home/preview3.gif" width="110" height="78" alt="" border=0></a></td>
                     <td><img src="${resourcesPath}/images/home/home_34.gif" width="12" height="78" alt=""></td>
                     <td><a href="${servletPath}/products/frameworks/console"><img src="${resourcesPath}/images/home/preview4.gif" width="111" height="78" alt="" border=0></a></td>
                     <td><img src="${resourcesPath}/images/home/home_36.gif" width="11" height="78" alt=""></td>
