@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: ValueContext.java,v 1.7 2003-08-17 00:05:53 shahid.shah Exp $
+ * $Id: ValueContext.java,v 1.8 2004-04-12 17:56:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
 import java.util.Date;
+import java.util.Map;
 
 import com.netspective.commons.RuntimeEnvironment;
 import com.netspective.commons.security.AuthenticatedUser;
@@ -105,4 +106,20 @@ public interface ValueContext extends RuntimeEnvironment
      * Retrieves the active locator stored by setLocator() method
      */
     public Object getContextLocation();
+
+    /**
+     * Ascertains whether the given Java expression is true in this value context.
+     * @param expr A JSTL expression
+     * @param vars Any additional variables that should be made available in expression (null if not required)
+     * @return True if the expression return a boolean and the boolean is true, false otherwise
+     */
+    public boolean isConditionalExpressionTrue(String expr, Map vars);
+
+    /**
+     * Evaluates the given Java expression in this value context and returns the value returned by the expression.
+     * @param expr A JSTL expression
+     * @param vars Any additional variables that should be made available in expression (null if not required)
+     * @return The object returned by the expression
+     */
+    public Object evaluateExpression(String expr, Map vars);
 }

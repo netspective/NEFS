@@ -39,22 +39,29 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.14 2003-10-16 14:35:58 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.15 2004-04-12 17:56:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.commons.discovery.tools.DiscoverClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.jexl.Expression;
+import org.apache.commons.jexl.ExpressionFactory;
+import org.apache.commons.jexl.JexlContext;
+import org.apache.commons.jexl.JexlHelper;
 
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.text.GloballyUniqueIdentifier;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 
 public class DefaultValueContext implements ValueContext
@@ -66,6 +73,7 @@ public class DefaultValueContext implements ValueContext
     private String contextId;
     private long creationTime;
     private RuntimeEnvironmentFlags environmentFlags;
+    private JexlContext jexlContext;
 
     public DefaultValueContext()
     {
@@ -152,5 +160,40 @@ public class DefaultValueContext implements ValueContext
         }
 
         return contextId;
+    }
+
+    public boolean isConditionalExpressionTrue(String expr, Map vars)
+    {
+        Object evalResult = evaluateExpression(expr, vars);
+        if (evalResult instanceof Boolean)
+            return ((Boolean) evalResult).booleanValue();
+        else if(evalResult != null)
+            return TextUtils.toBoolean(evalResult.toString(), false);
+        else
+        {
+            log.error("Conditional expression '" + expr + "' did not return a boolean or non-Object.");
+            return false;
+        }
+    }
+
+    public Object evaluateExpression(String expr, Map vars)
+    {
+        try
+        {
+            Expression e = ExpressionFactory.createExpression(expr);
+            if(jexlContext == null)
+                jexlContext = JexlHelper.createContext();
+
+            Map jexlVars = vars != null ? vars : new HashMap();
+            jexlVars.put("vc", this);
+            jexlContext.setVars(jexlVars);
+
+            return e.evaluate(jexlContext);
+        }
+        catch (Exception e)
+        {
+            log.error("Unable to evaluate '" + expr + "': ", e);
+            return null;
+        }
     }
 }
