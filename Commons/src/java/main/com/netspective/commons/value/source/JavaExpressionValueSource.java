@@ -56,10 +56,16 @@ public class JavaExpressionValueSource extends AbstractValueSource
         return IDENTIFIERS;
     }
 
-    public Value getValue(ValueContext vc) throws ValueSourceException
+    public Map createVars(ValueContext vc)
     {
         Map vars = new HashMap();
         vars.put("vc", vc);
+        return vars;
+    }
+
+    public Value getValue(ValueContext vc) throws ValueSourceException
+    {
+        Map vars = createVars(vc);
 
         JexlContext jexlContext = JexlHelper.createContext();
         jexlContext.setVars(vars);
