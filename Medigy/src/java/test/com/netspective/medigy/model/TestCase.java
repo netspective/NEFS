@@ -105,7 +105,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.session.ProcessSession.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
 
-
+        config.addAnnotatedClass(com.netspective.medigy.model.common.FacilityType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.common.Facility.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyIdentifier.class);
@@ -121,7 +121,6 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventPurpose.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.org.OrgIdentifierType.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.person.Person.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.MaritalStatus.class);
