@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.13 2003-11-13 22:36:06 aye.thu Exp $
+ * $Id: DialogFlags.java,v 1.14 2003-11-16 01:10:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -84,9 +84,12 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     public static final int DISABLE_AUTO_EXECUTE = RETAIN_INITIAL_STATE * 2;
     // allow the dialog to execute multiple times (using back button)
     public static final int ALLOW_MULTIPLE_EXECUTES = DISABLE_AUTO_EXECUTE * 2;
+    // allow pending data in the dialog
     public static final int ALLOW_PENDING_DATA = ALLOW_MULTIPLE_EXECUTES * 2;
+    // when generating dialog context beans (form beans) for dialogs, generate it for this particular dialog
+    public static final int GENERATE_DCB = ALLOW_PENDING_DATA * 2;
     // allow the dialog to execute when the cancel button is pressed
-    public static final int ALLOW_EXECUTE_WITH_CANCEL_BUTTON = ALLOW_PENDING_DATA * 2;
+    public static final int ALLOW_EXECUTE_WITH_CANCEL_BUTTON = GENERATE_DCB * 2;
     // custom start
     public static final int CUSTOM_START = ALLOW_EXECUTE_WITH_CANCEL_BUTTON * 2;
 
@@ -107,6 +110,7 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_AUTO_EXECUTE", DISABLE_AUTO_EXECUTE),
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_MULTIPLE_EXECUTES", ALLOW_MULTIPLE_EXECUTES),
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_PENDING_DATA", ALLOW_PENDING_DATA),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "GENERATE_DCB", GENERATE_DCB),
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_EXECUTE_WITH_CANCEL_BUTTON", ALLOW_EXECUTE_WITH_CANCEL_BUTTON)
     };
 
