@@ -170,6 +170,22 @@
             </page>
         </page>
 
+        <page class="app.AppPage" name="downloads" caption="Downloads">
+            <page name="frameworks" caption="Frameworks (NEF)">
+                <page name="suite" caption="Suite" heading="Download Framework Releases">
+                    <body source="downloads/frameworks/suite.ftl"/>
+                </page>
+                <page name="samples" caption="Sample Apps" heading="Download Sample App .war Files">
+                    <summary>
+                        All samples are provided as app-server-independent .war files which include binaries of all our
+                        Frameworks. Once you have downloaded any .war file, you have everything you need to start
+                        modifying and adding to the app.
+                    </summary>
+                    <body source="downloads/frameworks/sample-apps.ftl"/>
+                </page>
+            </page>
+        </page>
+
         <page class="app.AppPage" name="services" caption="Services" >
             <page name="overview" caption="Services" heading="We Can Get Your Projects Done">
                 <summary>
@@ -191,7 +207,11 @@
         <page class="app.AppPage" name="support" caption="Support" heading="We're Here to Help" dialog-next-action-url="page-id:/support">
             <page name="documentation" caption="Documentation">
                 <summary>All of our developer guides and documentation are available online.</summary>
-                <body source="support/documentation.ftl"/>
+                <body source="support/docs/index.ftl"/>
+
+                <page name="upgrading" heading="Upgrade Guide" hidden="yes">
+                    <body source="support/docs/upgrading.ftl"/>
+                </page>
             </page>
             <page name="faqs" caption="FAQs (AnswerDesk)">
                 <summary>This area is not completed yet but will be available very soon. Please check back later.</summary>

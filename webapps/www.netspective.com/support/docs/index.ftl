@@ -11,4 +11,8 @@
         <td><a href="${vc.rootUrl}/sampler/documentation/manual" target="sampler">NEFS User's Manual</a></td>
         <td>Provides instructions for how to use the Netspective Enterprise Frameworks Suite.</td>
     </tr>
+    <tr>
+        <td><a href="documentation/upgrading">Upgrade Guide</a></td>
+        <td>Provides instructions for how to upgrade one or more of our Java Frameworks.</td>
+    </tr>
 </table>

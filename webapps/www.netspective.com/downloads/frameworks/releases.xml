@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+
+<netspective>
+    <release>
+        <product name="Sparx" version="7.0.6"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                <![CDATA[
+                Added new Radeox wiki parser and template processor. Now you can define a page like the following:<p>
+                <code>
+                &lt;page ...><br>
+                    &nbsp;&nbsp;&nbsp;&lt;body type="wiki" source-file="name-of-file-value-source"/><br>
+                    &nbsp;&nbsp;&nbsp;&lt;body type="wiki" source-value="value-source-with-content"/><br>
+                    &nbsp;&nbsp;&nbsp;&lt;body type="wiki"><br>
+                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;snipSnap wiki content filters and macros<br>
+                    &nbsp;&nbsp;&nbsp;&lt;/body><p>
+                </code>
+                This allows treating the content of a page (or panel) as Wiki text instead of freemarker or other templating system.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Commons" version="7.0.4"/>
+
+        <change-log>
+            <summary>Minor enhancement</summary>
+            <change-log-entry>
+                Allowed template processor to become a template consumer. This allows templates like &lt;template-processor-type
+                name="abc" class="x.y.z"/&gt; to be defined in xml and then later used like &lt;body type="abc"/&gt;.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Commons" version="7.0.3"/>
+        <change-log>
+            <summary>Minor Bug Fixed</summary>
+            <change-log-entry>Added nullity check that was preventing the Project DTD from being generated after store procedures were added.</change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Axiom" version="7.0.6"/>
+        <change-log>
+            <summary>Minor bug fixes and enhancements</summary>
+            <change-log-entry>
+                Fixed problem where the 'query' value source was complaining and not setting certain result styles.
+            </change-log-entry>
+            <change-log-entry>
+                Added ability to return an accessor based on Index instead of only a column since indexes could
+                have more than one column.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Sparx" version="7.0.5"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                Added special validation in the SchemaRecordEditorDialog to make sure that when updating and inserting a record
+                unique constrains are not violated.  This additional validation takes into account unique columns and indexes
+                so that if a combination of a set of columns need to be unique, that constraint is checked against the database
+                before updating or inserting that row.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Axiom" version="7.0.5"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                Added special check in Update DML SQL for auto-inc columns. Now, if an auto-inc column is being updated
+                the database policy will be queried to see if it should be removed from the Update DML SQL statement.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Sparx" version="7.0.4"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                Added new StandardTemplateNavigationSkin that allows freemarker-template based navigation skins.
+                This allow non-java-based navigation skins to be created for content-heavy sites (as opposed to app-heavy sites).
+            </change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Commons" version="7.0.2"/>
+        <change-log>
+            <summary>Minor refactoring</summary>
+            <change-log-entry>Moved the redirect value source to be auto registered (was previously in sparx.xml but it shouldn't have been there).</change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Axiom" version="7.0.4"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>When generating the SQL to retrieve, insert, update or delete records, there is an option now to prefix the
+                table names with the schema name.  This useful when the tables are owned by a different user than
+                the one specified in the data source for connectivity.</change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Sparx" version="7.0.3"/>
+        <change-log>
+            <summary>Minor bug fixes and enhancements</summary>
+            <change-log-entry>
+                Fixed problem where tabbed panels did not remember their state across page views. Now cookies are
+                being set properly so that minimized panels and tabbed panels do proper state management.
+            </change-log-entry>
+            <change-log-entry>
+                Fixed problem where Console was logging out erroneously after a few page views on IE. It seems that
+                IE has a limit to the number of cookies allowed and after too many cookies it starts removing older
+                cookies (which kills JSESSIONID). Now,
+                Sparx 7.0.3 has consolidated numerous cookies into a smaller
+                number to help prevent against accidental removal of JSESSIONID. This problem was specific to
+                IE and did not seem to affect Mozilla or Safari.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Axiom" version="7.0.3"/>
+        <change-log>
+            <summary>Minor bug fixes</summary>
+            <change-log-entry>When locating the JDBC driver class in &lt;connection-provider&gt;, error message now shows the actual
+                driver class and not the value source spec in case the class is not found.</change-log-entry>
+            <change-log-entry>
+                In SQL DDL generator, added check to see if column is required by app or dbms in order to generate the NOT NULL constraint.
+                Before this change, only the isRequiredByDmbs() flag was checked.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Sparx" version="7.0.2"/>
+        <change-log>
+            <summary>Minor bug fixes</summary>
+            <change-log-entry>In
+                <code>com.netspective.sparx.theme.basic.BasicHtmlTabularReportPanelSkin</code>, updated the
+                code to check if the
+                <code>title</code> attribute of the
+                <code>panel/report/actions/action</code> tag is
+                not null before rendering it. This
+                <code>title</code> attribute is typically only used in selectable
+                reports.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Axiom" version="7.0.2"/>
+        <change-log>
+            <summary>Minor code cleanup</summary>
+            <change-log-entry>Removed some System.out debugging statements left in the stored procedure classes.</change-log-entry>
+        </change-log>
+    </release>
+
+
+    <release>
+        <product name="Commons" version="7.0.1"/>
+        <product name="Axiom" version="7.0.1"/>
+        <product name="Sparx" version="7.0.1"/>
+        <change-log>
+            <summary>New features</summary>
+            <change-log-entry>Improved support for error pages with additional features in &lt;navigation-tree&gt;'s and
+                &lt;page&gt;'s &lt;error-page&gt; tag.</change-log-entry>
+            <change-log-entry>
+                Changed the delimiter of the
+                <code>ListValueSourceCommand</code> from comma
+                <code>[,]</code> to
+                pipe
+                <code>[|]</code> so that embedded value sources in the command will work properly. Before this
+                change, only value sources that didn't contain commas in their specs were allowed.
+            </change-log-entry>
+            <change-log-entry>
+                Changed the rule for DialogContext Beans generation so that only
+                <code>&lt;dialog&gt;</code> tags that have the
+                <code>&lt;dialog ... generate-dcb="yes"/&gt;</code> attribute will generate dialog context beans.
+            </change-log-entry>
+            <change-log-entry>
+                Added new attribute called
+                <code>allow-execute-with-cancel-button</code> to the
+                <code>&lt;dialog&gt;</code> tag which allows
+                execution of the dialog even when the Cancel button is pressed. Currently it is up to the developer
+                to check for it and do the appropriate action in the execution listeners.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+</netspective>
