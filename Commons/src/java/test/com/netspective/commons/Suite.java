@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Suite.java,v 1.8 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: Suite.java,v 1.9 2003-03-29 19:13:31 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons;
@@ -60,6 +60,7 @@ public class Suite
 	    suite.addTest(com.netspective.commons.text.Suite.suite());
 		suite.addTest(com.netspective.commons.value.Suite.suite());
 		suite.addTest(com.netspective.commons.value.source.Suite.suite());
+		suite.addTest(com.netspective.commons.value.exception.Suite.suite());
 	    suite.addTest(com.netspective.commons.io.Suite.suite());
 	    suite.addTest(com.netspective.commons.report.Suite.suite());
         suite.addTest(new TestSuite(DataModelSchemaTest.class));
