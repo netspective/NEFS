@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.6 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: SelectField.java,v 1.7 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -65,7 +65,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.sparx.form.field.DialogFieldPopup;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValue;
@@ -269,6 +268,16 @@ public class SelectField extends TextField
     public DialogField.State constructStateInstance(DialogContext dc)
     {
         return new SelectFieldState(dc);
+    }
+
+    public Class getStateClass()
+    {
+        return SelectFieldState.class;
+    }
+
+    public Class getStateValueClass()
+    {
+        return SelectFieldState.SelectFieldValue.class;
     }
 
     public ValueSource getChoices()
@@ -668,62 +677,5 @@ public class SelectField extends TextField
             buf.append(captionBuf.toString() + valueBuf.toString());
         }
         return buf.toString();
-    }
-
-    /*
-	 * Produces Java code when a custom DialogContext is created
-	 */
-    public DialogContextMemberInfo getDialogContextMemberInfo()
-    {
-        DialogContextMemberInfo mi = null;
-        String fieldName, memberName, dataType;
-
-        switch(style.getValueIndex())
-        {
-            case Style.RADIO:
-            case Style.COMBO:
-            case Style.LIST:
-                mi = createDialogContextMemberInfo("String");
-                fieldName = mi.getFieldName();
-                memberName = mi.getMemberName();
-                dataType = mi.getDataType();
-
-                mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "() { return getValue(\"" + fieldName + "\"); }\n");
-                mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "(" + dataType + " defaultValue) { return getValue(\"" + fieldName + "\", defaultValue); }\n");
-                mi.addJavaCode("\tpublic int get" + memberName + "Int() { String s = getValue(\"" + fieldName + "\"); return s == null ? -1 : Integer.parseInt(s); }\n");
-                mi.addJavaCode("\tpublic int get" + memberName + "Int(int defaultValue) { String s = getValue(\"" + fieldName + "\"); return s == null ? defaultValue : Integer.parseInt(s); }\n");
-                mi.addJavaCode("\tpublic void set" + memberName + "(" + dataType + " value) { setValue(\"" + fieldName + "\", value); }\n");
-                mi.addJavaCode("\tpublic void set" + memberName + "(int value) { setValue(\"" + fieldName + "\", Integer.toString(value)); }\n");
-                break;
-            case Style.POPUP:
-                mi = createDialogContextMemberInfo("String");
-                fieldName = mi.getFieldName();
-                memberName = mi.getMemberName();
-                dataType = mi.getDataType();
-
-                mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "() { return getValue(\"" + fieldName + "\"); }\n");
-                mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "(" + dataType + " defaultValue) { return getValue(\"" + fieldName + "\", defaultValue); }\n");
-                mi.addJavaCode("\tpublic int get" + memberName + "Int() { String s = getValue(\"" + fieldName + "\"); return s == null ? -1 : Integer.parseInt(s); }\n");
-                mi.addJavaCode("\tpublic int get" + memberName + "Int(int defaultValue) { String s = getValue(\"" + fieldName + "\"); return s == null ? defaultValue : Integer.parseInt(s); }\n");
-                mi.addJavaCode("\tpublic void set" + memberName + "(" + dataType + " value) { setValue(\"" + fieldName + "\", value); }\n");
-                mi.addJavaCode("\tpublic void set" + memberName + "(int value) { setValue(\"" + fieldName + "\", Integer.toString(value)); }\n");
-                mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "_AdjacentValue() { return getAdjacentAreaValue(\"" + fieldName + "\"); }\n");
-                break;
-
-            case Style.MULTICHECK:
-            case Style.MULTILIST:
-            case Style.MULTIDUAL:
-                mi = createDialogContextMemberInfo("String[]");
-                fieldName = mi.getFieldName();
-                memberName = mi.getMemberName();
-                dataType = mi.getDataType();
-
-                mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "() { return getValues(\"" + fieldName + "\"); }\n");
-                mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "(" + dataType + " defaultValue) { " + dataType + " o = getValues(\"" + fieldName + "\"); return o == null ? defaultValue : o; }\n");
-                mi.addJavaCode("\tpublic void set" + memberName + "(" + dataType + " values) { setValues(\"" + fieldName + "\", values); }\n");
-                break;
-        }
-
-        return mi;
     }
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BooleanField.java,v 1.2 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: BooleanField.java,v 1.3 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -60,7 +60,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.commons.value.ValueSource;
@@ -145,6 +144,17 @@ public class BooleanField extends DialogField
                 else
                     setValue(new Integer(value));
             }
+
+            public boolean getBoolValue()
+            {
+                Integer value = (Integer) getValue();
+                return value == null ? false : (value.intValue() > 0 ? true : false);
+            }
+
+            public void setValue(boolean value)
+            {
+                setValue(new Integer(value ? 1 : 0));
+            }
         }
 
         public BooleanFieldState(DialogContext dc)
@@ -173,6 +183,16 @@ public class BooleanField extends DialogField
     public DialogField.State constructStateInstance(DialogContext dc)
     {
         return new BooleanFieldState(dc);
+    }
+
+    public Class getStateClass()
+    {
+        return BooleanFieldState.class;
+    }
+
+    public Class getStateValueClass()
+    {
+        return BooleanFieldState.BasicStateValue.class;
     }
 
     public Choices getChoices()
@@ -309,23 +329,6 @@ public class BooleanField extends DialogField
             default:
                 writer.write("Unknown style " + style);
         }
-    }
-
-   /**
-     * Produces Java code when a custom DialogContext is created
-     */
-    public DialogContextMemberInfo getDialogContextMemberInfo()
-    {
-        DialogContextMemberInfo mi = createDialogContextMemberInfo("boolean");
-        String fieldName = mi.getFieldName();
-        String memberName = mi.getMemberName();
-        String dataType = mi.getDataType();
-
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "() { Boolean o = (Boolean) getValueAsObject(\"" + fieldName + "\"); return o == null ? false : o.booleanValue(); }\n");
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "(" + dataType + " defaultValue) { Boolean o = (Boolean) getValueAsObject(\"" + fieldName + "\"); return o == null ? defaultValue : o.booleanValue(); }\n");
-        mi.addJavaCode("\tpublic void set" + memberName + "(" + dataType + " value) { setValue(\"" + fieldName + "\", value == true ? \"1\" : \"0\"); }\n");
-
-        return mi;
     }
 
     private void setChecked (String strValue, String[] val)

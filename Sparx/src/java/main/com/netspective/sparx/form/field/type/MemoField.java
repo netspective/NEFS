@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: MemoField.java,v 1.1 2003-05-15 15:51:17 shahid.shah Exp $
+ * $Id: MemoField.java,v 1.2 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -60,7 +60,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.text.TextUtils;
 
@@ -160,23 +159,5 @@ public class MemoField extends TextField
     public String getCustomJavaScriptDefn(DialogContext dc)
     {
         return (super.getCustomJavaScriptDefn(dc) + "field.maxLength = " + getMaxLength() + ";\n");
-    }
-
-    /**
-     * Produces Java code when a custom DialogContext is created
-     */
-    public DialogContextMemberInfo getDialogContextMemberInfo()
-    {
-        DialogContextMemberInfo mi = createDialogContextMemberInfo("String");
-        String fieldName = mi.getFieldName();
-        String memberName = mi.getMemberName();
-        String dataType = mi.getDataType();
-
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "() { return getValue(\"" + fieldName + "\"); }\n");
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "(" + dataType + " defaultValue) { return getValue(\"" + fieldName + "\", defaultValue); }\n");
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "OrBlank() { return getValue(\"" + fieldName + "\", \"\"); }\n");
-        mi.addJavaCode("\tpublic void set" + memberName + "(" + dataType + " value) { setValue(\"" + fieldName + "\", value); }\n");
-
-        return mi;
     }
 }

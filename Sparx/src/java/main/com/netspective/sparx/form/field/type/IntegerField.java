@@ -51,13 +51,12 @@
  */
 
 /**
- * $Id: IntegerField.java,v 1.2 2003-05-15 20:50:32 shahid.shah Exp $
+ * $Id: IntegerField.java,v 1.3 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.sparx.form.field.DialogField;
@@ -94,6 +93,25 @@ public class IntegerField extends TextField
                     invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in integer format ("+ e.getMessage() +").");
                 }
             }
+
+            public int getIntValue(int defaultValue)
+            {
+                Integer integerValue = (Integer) getValue();
+                if(integerValue != null)
+                    return integerValue.intValue();
+                else
+                    return defaultValue;
+            }
+
+            public Integer getIntegerValue()
+            {
+                return (Integer) getValue();
+            }
+
+            public void setIntValue(int value)
+            {
+                setValue(new Integer(value));
+            }
         }
 
         public IntegerFieldState(DialogContext dc)
@@ -118,6 +136,16 @@ public class IntegerField extends TextField
     public DialogField.State constructStateInstance(DialogContext dc)
     {
         return new IntegerFieldState(dc);
+    }
+
+    public Class getStateClass()
+    {
+        return IntegerFieldState.class;
+    }
+
+    public Class getStateValueClass()
+    {
+        return IntegerFieldState.IntegerFieldValue.class;
     }
 
     public DialogFieldValidations constructValidationRules()
@@ -179,31 +207,5 @@ public class IntegerField extends TextField
 			buf.append("field.maxValue = " + integerValidationRule.getMax() + ";\n");
 
 		return buf.toString();
-	}
-
-	/**
-	 * Produces Java code when a custom DialogContext is created
-	 */
-	public DialogContextMemberInfo getDialogContextMemberInfo()
-	{
-		DialogContextMemberInfo mi = createDialogContextMemberInfo("int");
-		String fieldName = mi.getFieldName();
-		String memberName = mi.getMemberName();
-		String dataType = mi.getDataType();
-
-		mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "() { Integer o = (Integer) getValueAsObject(\"" + fieldName + "\"); return o == null ? 0 : o.intValue(); }\n");
-		mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "(" + dataType + " defaultValue) { Integer o = (Integer) getValueAsObject(\"" + fieldName + "\"); return o == null ? defaultValue : o.intValue(); }\n");
-
-		mi.addJavaCode("\tpublic String get" + memberName + "String() { Integer o = (Integer) getValueAsObject(\"" + fieldName + "\"); return o == null ? \"0\" : o.toString(); }\n");
-		mi.addJavaCode("\tpublic String get" + memberName + "String(String defaultValue) { Integer o = (Integer) getValueAsObject(\"" + fieldName + "\"); return o == null ? defaultValue : o.toString(); }\n");
-
-		mi.addJavaCode("\tpublic Object get" + memberName + "Object() { return getValueAsObject(\"" + fieldName + "\"); }\n");
-		mi.addJavaCode("\tpublic Object get" + memberName + "Object(Object defaultValue) { return getValueAsObject(\"" + fieldName + "\", defaultValue); }\n");
-
-		mi.addJavaCode("\tpublic void set" + memberName + "(" + dataType + " value) { setValue(\"" + fieldName + "\", Integer.toString(value)); }\n");
-		mi.addJavaCode("\tpublic void set" + memberName + "(String value) { setValue(\"" + fieldName + "\", value); }\n");
-		mi.addJavaCode("\tpublic void set" + memberName + "Object(Object value) { setValue(\"" + fieldName + "\", value != null ? ((Integer) value).toString() : null); }\n");
-
-		return mi;
 	}
 }

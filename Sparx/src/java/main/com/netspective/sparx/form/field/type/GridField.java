@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: GridField.java,v 1.5 2003-06-09 15:37:33 shahid.shah Exp $
+ * $Id: GridField.java,v 1.6 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -60,6 +60,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.commons.value.ValueSource;
@@ -128,5 +129,10 @@ public class GridField extends DialogField
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
         dc.getSkin().renderGridControlsHtml(writer, dc, this);
+    }
+
+    public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo()
+    {
+        return getChildren().getDialogContextBeanMemberInfo(createDialogContextMemberInfo());
     }
 }

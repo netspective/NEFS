@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SparxTask.java,v 1.2 2003-06-26 16:05:57 shahid.shah Exp $
+ * $Id: SparxTask.java,v 1.3 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -50,15 +50,85 @@ import com.netspective.axiom.ant.AxiomTask;
 import com.netspective.axiom.SqlManager;
 import com.netspective.commons.xdm.XdmComponent;
 import com.netspective.sparx.ProjectComponent;
+import com.netspective.sparx.form.DialogsManager;
+import com.netspective.sparx.form.Dialogs;
+import com.netspective.sparx.form.Dialog;
+
+import java.io.IOException;
 
 public class SparxTask extends AxiomTask
 {
+    private String dcbPackage;
+
+    public void init() throws BuildException
+    {
+        super.init();
+        dcbPackage = null;
+    }
+
     public XdmComponent getComponent()
     {
         return getComponent(ProjectComponent.class);
     }
 
     public SqlManager getSqlManager() throws BuildException
+    {
+        return ((ProjectComponent) getComponent()).getProject();
+    }
+
+    public void setupActionHandlers()
+    {
+        super.setupActionHandlers();
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "generate-dcb"; }
+                    public void execute() throws BuildException
+                    {
+                        generateDialogContextBeans(getDialogsManager());
+                    }
+                });
+    }
+
+    public String getDcbPackage()
+    {
+        return dcbPackage;
+    }
+
+    public void setDcbPackage(String dcbPackage)
+    {
+        this.dcbPackage = dcbPackage;
+    }
+
+    public boolean generateDialogContextBeans(DialogsManager dialogsManager) throws BuildException
+    {
+        if(getDestDir() != null || dcbPackage != null)
+        {
+            if(getDestDir() == null || dcbPackage == null)
+                throw new BuildException("dcbRootPackage is required to generate dialog context beans.");
+
+            try
+            {
+                Dialogs dialogs = dialogsManager.getDialogs();
+                for(int i = 0; i < dialogs.size(); i++)
+                {
+                    Dialog dialog = dialogs.get(i);
+                    dialog.generateDialogContextBean(getDestDir(), dcbPackage);
+                }
+            }
+            catch (IOException e)
+            {
+                throw new BuildException(e);
+            }
+            log("Generated dialog context beans (DCBs) package '"+ dcbPackage +"' in " + getDestDir().getAbsolutePath());
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public DialogsManager getDialogsManager() throws BuildException
     {
         return ((ProjectComponent) getComponent()).getProject();
     }

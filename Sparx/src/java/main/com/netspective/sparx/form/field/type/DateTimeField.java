@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.5 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: DateTimeField.java,v 1.6 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -69,7 +69,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.sparx.form.field.DialogField;
@@ -219,6 +218,11 @@ public class DateTimeField extends TextField
                     invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in date format ("+ getFormat().toPattern() +").");
                 }
             }
+
+            public Date getDateValue()
+            {
+                return (Date) getValue();
+            }
         }
 
         public DateTimeFieldState(DialogContext dc)
@@ -245,6 +249,16 @@ public class DateTimeField extends TextField
     public DialogField.State constructStateInstance(DialogContext dc)
     {
         return new DateTimeFieldState(dc);
+    }
+
+    public Class getStateClass()
+    {
+        return DateTimeFieldState.class;
+    }
+
+    public Class getStateValueClass()
+    {
+        return DateTimeFieldState.DateTimeFieldValue.class;
     }
 
     public DialogField.Flags createFlags()
@@ -499,23 +513,5 @@ public class DateTimeField extends TextField
                     "<a href='#' onclick='javascript:showCalendar(\"" + getQualifiedName() + "\", \""+ getClientCalendarFormat() +"\")'>" +
                     "<img src='" + resourcesRootUrl + "/images/calendar.gif' title='Select from Calendar' border=0></a>");
         }
-    }
-
-    /**
-     * Produces Java code when a custom DialogContext is created
-     */
-    public DialogContextMemberInfo getDialogContextMemberInfo()
-    {
-        DialogContextMemberInfo mi = createDialogContextMemberInfo("Date");
-        mi.addImportModule("java.util.Date");
-        String fieldName = mi.getFieldName();
-        String memberName = mi.getMemberName();
-        String dataType = mi.getDataType();
-
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "() { return (Date) getValueAsObject(\"" + fieldName + "\"); }\n");
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "(" + dataType + " defaultValue) { return (Date) getValueAsObject(\"" + fieldName + "\", defaultValue); }\n");
-        mi.addJavaCode("\tpublic void set" + memberName + "(String value) { setValue(\""+ fieldName +"\", value); }\n");
-
-        return mi;
     }
 }

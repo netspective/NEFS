@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFields.java,v 1.2 2003-05-06 14:52:14 shahid.shah Exp $
+ * $Id: DialogFields.java,v 1.3 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 
 public class DialogFields
 {
@@ -206,6 +207,32 @@ public class DialogFields
                 return true;
 
         return false;
+    }
+
+    /**
+     * Produces Java code when a custom DialogContext is created
+     * The default method produces nothing; all the subclasses must define what they need.
+     */
+    public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo(DialogContextBeanMemberInfo parentMI)
+    {
+        for(int i = 0; i < size(); i++)
+        {
+            DialogField field = get(i);
+            DialogContextBeanMemberInfo childMI = field.getDialogContextBeanMemberInfo();
+            if (childMI == null)
+                continue;
+
+            String[] childImports = childMI.getImportModules();
+            if (childImports != null)
+            {
+                for (int m = 0; m < childImports.length; m++)
+                    parentMI.addImportModule(childImports[m]);
+            }
+
+            parentMI.addJavaCode(childMI.getCode());
+        }
+
+        return parentMI;
     }
 
     public String toString()

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.24 2003-07-02 14:05:41 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.25 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -70,7 +70,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.DialogContextMemberInfo;
+import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogValidationContext;
@@ -389,7 +389,6 @@ public class DialogField implements TemplateConsumer
             return stateFlags;
         }
 
-
         public DialogField getField()
         {
             return DialogField.this;
@@ -484,6 +483,16 @@ public class DialogField implements TemplateConsumer
     public State constructStateInstance(DialogContext dc)
     {
         return new State(dc);
+    }
+
+    public Class getStateClass()
+    {
+        return State.class;
+    }
+
+    public Class getStateValueClass()
+    {
+        return State.BasicStateValue.class;
     }
 
     public DialogFieldValidations constructValidationRules()
@@ -1353,22 +1362,26 @@ public class DialogField implements TemplateConsumer
 	/**
 	 * Produces Java code when a custom DialogContext is created
 	 */
-	public DialogContextMemberInfo createDialogContextMemberInfo(String dataTypeName)
+	public DialogContextBeanMemberInfo createDialogContextMemberInfo()
 	{
-		DialogContextMemberInfo mi = new DialogContextMemberInfo(this.getQualifiedName(), dataTypeName);
+		DialogContextBeanMemberInfo mi = new DialogContextBeanMemberInfo(this.getQualifiedName());
 
 		String memberName = mi.getMemberName();
 		String fieldName = mi.getFieldName();
 
-		mi.addJavaCode("\t/* To change the following auto-generated code, modify createDialogContextMemberInfo() method in " + this.getClass().getName() + " */\n");
-		mi.addJavaCode("\tpublic boolean is" + memberName + "ValueSet() { return hasValue(\"" + fieldName + "\"); }\n");
-		mi.addJavaCode("\tpublic boolean is" + memberName + "FlagSet(long flag) { return flagIsSet(\"" + fieldName + "\", flag); }\n");
-		mi.addJavaCode("\tpublic void set" + memberName + "Flag(long flag) { setFlag(\"" + fieldName + "\", flag); }\n");
-		mi.addJavaCode("\tpublic void clear" + memberName + "Flag(long flag) { clearFlag(\"" + fieldName + "\", flag); }\n");
-		mi.addJavaCode("\tpublic String get" + memberName + "RequestParam() { return request.getParameter(\"" + Dialog.PARAMNAME_CONTROLPREFIX + fieldName + "\"); }\n");
-		mi.addJavaCode("\tpublic DialogField get" + memberName + "Field() { return getField(\"" + fieldName + "\"); }\n");
-		mi.addJavaCode("\tpublic DialogContext.DialogFieldState get" + memberName + "FieldState() { return getFieldState(\"" + fieldName + "\"); }\n");
-		mi.addJavaCode("\tpublic void add" + memberName + "ErrorMsg(String msg) { addErrorMessage(\"" + fieldName + "\", msg); }\n");
+        String fieldClassName = this.getClass().getName().replace('$', '.');
+        String stateClassName = getStateClass().getName().replace('$', '.');
+        String stateValueClassName = getStateValueClass().getName().replace('$', '.');
+
+        if(stateClassName != DialogField.State.class.getName())
+            mi.addJavaCode("\tpublic "+ stateClassName +" get" + mi.getMemberName() + "State() { return ("+ stateClassName +") fieldStates.getState(\"" + mi.getFieldName() + "\"); }\n");
+        else
+            mi.addJavaCode("\tpublic DialogField.State get" + mi.getMemberName() + "State() { return fieldStates(\"" + mi.getFieldName() + "\"); }\n");
+
+		mi.addJavaCode("\tpublic "+ stateValueClassName +" get" + memberName + "() { return ("+ stateValueClassName +") get"+ mi.getMemberName() +"State().getValue(); }\n");
+		mi.addJavaCode("\tpublic DialogField.Flags get" + memberName + "StateFlags() { return get"+ mi.getMemberName() +"State().getStateFlags(); }\n");
+		mi.addJavaCode("\tpublic String get" + memberName + "RequestParam() { return dialogContext.getRequest().getParameter(\"" + Dialog.PARAMNAME_CONTROLPREFIX + fieldName + "\"); }\n");
+		mi.addJavaCode("\tpublic "+ fieldClassName +" get" + memberName + "Field() { return ("+ fieldClassName +") get"+ mi.getMemberName() +"State().getField().getChildren().getByName(\"" + fieldName + "\"); }\n");
 
 		return mi;
 	}
@@ -1377,28 +1390,8 @@ public class DialogField implements TemplateConsumer
 	 * Produces Java code when a custom DialogContext is created
 	 * The default method produces nothing; all the subclasses must define what they need.
 	 */
-	public DialogContextMemberInfo getDialogContextMemberInfo()
+	public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo()
 	{
-		if (children == null) return null;
-
-		DialogContextMemberInfo mi = createDialogContextMemberInfo("children");
-        for(int i = 0; i < children.size(); i++)
-        {
-            DialogField field = children.get(i);
-			DialogContextMemberInfo childMI = field.getDialogContextMemberInfo();
-			if (childMI == null)
-				continue;
-
-			String[] childImports = childMI.getImportModules();
-			if (childImports != null)
-			{
-				for (int m = 0; m < childImports.length; m++)
-					mi.addImportModule(childImports[m]);
-			}
-
-			mi.addJavaCode(childMI.getCode());
-		}
-
-		return mi;
+        return createDialogContextMemberInfo();
 	}
 }

@@ -39,12 +39,14 @@
  */
 
 /**
- * $Id: CompositeField.java,v 1.3 2003-06-09 15:37:33 shahid.shah Exp $
+ * $Id: CompositeField.java,v 1.4 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class CompositeField extends DialogField
@@ -53,5 +55,10 @@ public class CompositeField extends DialogField
 
     public CompositeField()
     {
+    }
+
+    public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo()
+    {
+        return getChildren().getDialogContextBeanMemberInfo(createDialogContextMemberInfo());
     }
 }

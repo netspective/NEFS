@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: GridFieldRow.java,v 1.3 2003-06-09 15:37:33 shahid.shah Exp $
+ * $Id: GridFieldRow.java,v 1.4 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class GridFieldRow extends DialogField
@@ -53,5 +54,10 @@ public class GridFieldRow extends DialogField
 
     public GridFieldRow()
     {
+    }
+
+    public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo()
+    {
+        return getChildren().getDialogContextBeanMemberInfo(createDialogContextMemberInfo());
     }
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.15 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: TextField.java,v 1.16 2003-07-08 20:15:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -61,7 +61,6 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.validate.rule.TextValueValidationRule;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValidations;
 import com.netspective.sparx.form.field.DialogFieldValue;
@@ -153,6 +152,16 @@ public class TextField extends DialogField
     public DialogField.State constructStateInstance(DialogContext dc)
     {
         return new TextFieldState(dc);
+    }
+
+    public Class getStateClass()
+    {
+        return TextFieldState.class;
+    }
+
+    public Class getStateValueClass()
+    {
+        return TextFieldState.TextFieldValue.class;
     }
 
     public int getMaxLength()
@@ -407,31 +416,5 @@ public class TextField extends DialogField
         }
 
         return buf.toString();
-    }
-
-    /**
-     * Produces Java code when a custom DialogContext is created
-     */
-    public DialogContextMemberInfo getDialogContextMemberInfo()
-    {
-        DialogContextMemberInfo mi = createDialogContextMemberInfo("String");
-        String fieldName = mi.getFieldName();
-        String memberName = mi.getMemberName();
-        String dataType = mi.getDataType();
-
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "() { return getValue(\"" + fieldName + "\"); }\n");
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "(" + dataType + " defaultValue) { return getValue(\"" + fieldName + "\", defaultValue); }\n");
-        mi.addJavaCode("\tpublic " + dataType + " get" + memberName + "OrBlank() { return getValue(\"" + fieldName + "\", \"\"); }\n");
-
-        mi.addJavaCode("\tpublic String get" + memberName + "String() { return getValue(\"" + fieldName + "\"); }\n");
-        mi.addJavaCode("\tpublic String get" + memberName + "String(String defaultValue) { return getValue(\"" + fieldName + "\", defaultValue); }\n");
-
-        mi.addJavaCode("\tpublic Object get" + memberName + "Object() { return getValueAsObject(\"" + fieldName + "\"); }\n");
-        mi.addJavaCode("\tpublic Object get" + memberName + "Object(Object defaultValue) { return getValueAsObject(\"" + fieldName + "\", defaultValue); }\n");
-
-        mi.addJavaCode("\tpublic void set" + memberName + "(" + dataType + " value) { setValue(\"" + fieldName + "\", value); }\n");
-        mi.addJavaCode("\tpublic void set" + memberName + "Object(" + dataType + " value) { setValue(\"" + fieldName + "\", (" + dataType + ") value); }\n");
-
-        return mi;
     }
 }
