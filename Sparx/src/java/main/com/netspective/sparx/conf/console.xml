@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.73 2003-07-14 04:12:38 aye.thu Exp $
+  * $Id: console.xml,v 1.74 2003-07-19 00:41:13 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -203,13 +203,14 @@
                         <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableDataPanel"/>
                     </panels>
                 </page>
-                <page name="query-defn" caption=" Table Query Defn" retain-params="schema-table">
+                <page name="query-defn" caption="Table Query Defn" retain-params="schema-table">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnFieldsPanel"/>
                         <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnJoinsPanel"/>
                         <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnSelectsPanel"/>
                     </panels>
                 </page>
+                <page name="table-dialog" caption="Table Dialog" retain-params="schema-table" command="dynamic,simple-expr:dialog,schema.${request:schema-table}"/>
                 <page name="table-types" caption="Table Types">
                      <body config="console" source="console-page-content:../table-types.ftl"/>
                 </page>

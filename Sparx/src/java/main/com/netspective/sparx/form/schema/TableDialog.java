@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.2 2003-07-10 00:52:08 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.3 2003-07-19 00:41:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -53,7 +53,6 @@ import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.value.ValueSource;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.naming.NamingException;
 import java.sql.SQLException;
 import java.io.Writer;
