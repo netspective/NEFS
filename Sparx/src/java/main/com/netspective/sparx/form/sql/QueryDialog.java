@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.4 2003-06-30 02:38:44 aye.thu Exp $
+ * $Id: QueryDialog.java,v 1.5 2003-07-11 17:40:19 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -91,6 +91,9 @@ import javax.servlet.http.HttpServletRequest;
 public class QueryDialog extends Dialog
 {
     private static final Log log = LogFactory.getLog(QueryDialog.class);
+    public static final String DEFAULT_ROWS_PER_PAGE_FIELD_NAME = "rows-per-page";
+    public static final String DEFAULT_ROWS_PER_PAGE_FIELD_CAPTION = "Rows per page";
+    public static final String DEFAULT_ROWS_PER_PAGE_FIELD_VALUE = "10";
 
     private Query query;
     private HtmlTabularReport report;
@@ -102,12 +105,14 @@ public class QueryDialog extends Dialog
     {
         super();
         createNavigatorField();
+        createRowsPerPageField();
     }
 
     public QueryDialog(DialogsPackage pkg)
     {
         super(pkg);
         createNavigatorField();
+        createRowsPerPageField();
     }
 
     public Query getQuery()
@@ -143,12 +148,29 @@ public class QueryDialog extends Dialog
                 addField(field);
             }
         }
+    }
 
+    /**
+     * Creates the rows-per-page dialog field. By default, the field is hidden.
+     */
+    private void createRowsPerPageField()
+    {
         DialogField field = new IntegerField();
-        field.setName("rows-per-page");
-        field.setCaption(new StaticValueSource("Rows per page"));
-        field.setDefault(new StaticValueSource("10"));
+        field.setName(DEFAULT_ROWS_PER_PAGE_FIELD_NAME);
+        field.setCaption(new StaticValueSource(DEFAULT_ROWS_PER_PAGE_FIELD_CAPTION));
+        field.setDefault(new StaticValueSource(DEFAULT_ROWS_PER_PAGE_FIELD_VALUE));
+        // by default, hide the field
+        field.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
         addField(field);
+        showRowsPerPageField();
+    }
+
+    /**
+     * Shows the rows per page field which is hidden by default
+     */
+    public void showRowsPerPageField()
+    {
+        getFields().getByQualifiedName(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).getFlags().clearFlag(DialogField.Flags.INPUT_HIDDEN);
     }
 
     public DialogContext createContext(NavigationContext nc, DialogSkin skin)
@@ -184,9 +206,14 @@ public class QueryDialog extends Dialog
         return rowsPerPage;
     }
 
+    /**
+     * Sets the rows per page for the report
+     * @param rowsPerPage
+     */
     public void setRowsPerPage(int rowsPerPage)
     {
         this.rowsPerPage = rowsPerPage;
+        getFields().getByQualifiedName(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).setDefault(new StaticValueSource(Integer.toString(rowsPerPage)));
     }
 
     public String[] getUrlFormats()
@@ -226,7 +253,6 @@ public class QueryDialog extends Dialog
             reportPanel.setQuery(query);
             reportPanel.setScrollable(true);
             reportPanel.setScrollRowsPerPage(this.getRowsPerPage());
-
         }
         else
         {
@@ -274,6 +300,8 @@ public class QueryDialog extends Dialog
     {
         try
         {
+            DialogField.State state = dc.getFieldStates().getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME);
+            rowsPerPage =  state.getValue().getIntValue();
 
             renderReport(writer, dc, reportSkin);
         }

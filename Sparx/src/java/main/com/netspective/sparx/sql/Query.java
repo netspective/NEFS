@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.4 2003-06-21 21:42:00 shahid.shah Exp $
+ * $Id: Query.java,v 1.5 2003-07-11 17:39:43 aye.thu Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -114,6 +114,7 @@ public class Query extends com.netspective.axiom.sql.Query
             {
                 defaultDialog = createDialog();
                 defaultDialog.createParamFields();
+                defaultDialog.showRowsPerPageField();
             }
 
             return defaultDialog;

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.6 2003-07-11 05:31:24 aye.thu Exp $
+ * $Id: QueryCommand.java,v 1.7 2003-07-11 17:39:19 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -60,6 +60,7 @@ import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogDebugFlags;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.HtmlTabularReportPanel;
 import com.netspective.sparx.panel.QueryReportPanel;
@@ -67,6 +68,7 @@ import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.CommandException;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.sql.Query;
 
@@ -325,35 +327,42 @@ public class QueryCommand extends AbstractHttpServletCommand
 
         if(additionalDialogCommand != null)
             writer.write("<table><tr valign='top'><td>");
-        if(queryDialogName != null)
-        {
 
+        boolean autoExecute = false;
+        if (queryDialogName == null && rowsPerPage < UNLIMITED_ROWS && rowsPerPage > 0)
+        {
+            // no query dialog name was given but the rows per page was set so use the default dialog and
+            // auto-execute it
+            queryDialogName = "default";
+            autoExecute = true;
+        }
+
+        if (queryDialogName != null)
+        {
+            // a non-default  query dialog name was specified or the default one was specified (explicitly or implied)
             com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
             if(queryDialog != null)
+            {
+                if (autoExecute)
+                {
+                    // set the autoexecute flag
+                    ((HttpServletRequest)nc.getRequest()).setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
+                }
+                if (rowsPerPage < UNLIMITED_ROWS && rowsPerPage > 0)
+                {
+                    queryDialog.setRowsPerPage(rowsPerPage);
+                }
                 queryDialog.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+            }
         }
         else
         {
-            // if rows per page has been set without a specific query dialog, use the default one
-            if (rowsPerPage < UNLIMITED_ROWS && rowsPerPage > 0)
-            {
-                queryDialogName = "default";
-                com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
-                if(queryDialog != null)
-                {
-                    // auto-execute the dialog
-                    queryDialog.setRowsPerPage(rowsPerPage);
-                    ((HttpServletRequest)nc.getRequest()).setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
-                    queryDialog.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
-                }
-            }
-            else
-            {
-                HtmlTabularReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
-                if(panel != null)
-                    panel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
-            }
+            // no query dialog and no rows per page was specified. So produce a full static query report
+            HtmlTabularReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
+            if(panel != null)
+                panel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
         }
+
 
         if(additionalDialogCommand != null)
         {
