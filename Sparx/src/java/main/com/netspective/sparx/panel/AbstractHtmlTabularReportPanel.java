@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.10 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.11 2003-06-25 07:10:25 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -138,10 +138,14 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
                 scrollState = (HtmlTabularReportDataSourceScrollState) ds.createScrollState(dc.getTransactionId());
                 scrollState.setPanel(this);
                 scrollState.setRowsPerPage(getScrollRowsPerPage());
+
+                // save the scroll state as a session attribute based on the dialog context transaction id
                 scrollStates.setActiveScrollState(dc, scrollState);
+                vc.setResultsScrolling(scrollState);
                 vc.produceReport(writer, ds);
                 // don't close the data source -- we're scrolling
             }
+
 
             // now that we've got our scroll state, see if the user is requesting us to move to another page
             HttpServletRequest request = dc.getHttpRequest();
