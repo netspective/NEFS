@@ -23,59 +23,129 @@
     </data-type>
 
     <data-type name="name" type="text">
-        <copytype>text</copytype>
         <validation>
-            <rule name="letters-and-spaces-only" type="regex">^[a-zA-Z ]*$</rule>
+            <rule name="letters-and-spaces-only" class="com.netspective.commons.validate.rule.TextValueValidationRule" reg-expr="^[a-zA-Z ]*$"/>
         </validation>
     </data-type>
 
-    <data-type name="event-id" type="guid32">
-        <generate-id>guid32</generate-id>
+    <data-type name="ssn" type="text">
+        <validation>
+            <rule name="ssn-format" class="com.netspective.commons.validate.rule.TextValueValidationRule" min-length="11" max-length="11" reg-expr="^[0-9]{11}$"/>
+        </validation>
+        <presentation>
+            <field type="ssn" caption="Social Security Number" required="yes" size="11"/>
+        </presentation>
     </data-type>
 
-    <data-type name="org-id" type="guid32">
-        <generate-id>guid32</generate-id>
+    <!-- Date/Time Related -->
+    <data-type name="future-date" type="date">
+        <validation>
+            <rule name="future-only" class="com.netspective.commons.validate.rule.DateValueValidationRule" future-only="yes"/>
+        </validation>
     </data-type>
 
-    <data-type name="tax-id" type="text"/>
-
-    <data-type name="person-id" type="guid32">
-        <generate-id>guid32</generate-id>
+    <data-type name="past-date" type="date">
+        <validation>
+            <rule name="past-only" class="com.netspective.commons.validate.rule.DateValueValidationRule" past-only="yes"/>
+        </validation>
     </data-type>
-
-    <data-type name="ssn" type="text"/>
-
-    <data-type name="gender" type="integer"/>
-
-    <data-type name="marital-status" type="integer"/>
-
-    <data-type name="blood-type" type="integer"/>
-
-    <data-type name="password" type="text"/>
-
-    <data-type name="reference" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
-    <data-type name="address_state" type="text"/>
-
-    <data-type name="address_zip" type="text"/>
-
-    <data-type name="age" type="integer"/>
-
-    <data-type name="md5-hash" type="text"/>
-
-    <data-type name="filename" type="text"/>
-
-    <data-type name="future-date" type="date"/>
-
-    <data-type name="past-date" type="date"/>
 
     <data-type name="future-time" type="time"/>
 
     <data-type name="past-time" type="time"/>
 
+    <data-type name="future-timestamp" type="stamp">
+        <validation>
+            <rule name="future-only" class="com.netspective.commons.validate.rule.DateValueValidationRule" future-only="yes"/>
+        </validation>
+    </data-type>
+
+    <data-type name="past-timestamp" type="stamp">
+        <validation>
+            <rule name="past-only" class="com.netspective.commons.validate.rule.DateValueValidationRule" past-only="yes"/>
+        </validation>
+    </data-type>
+
+    <data-type name="date-of-birth" type="past-date">
+        <presentation>
+            <field type="date" caption="Date of Birth" size="12"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="date-of-death" type="past-date">
+        <presentation>
+            <field type="date" caption="Date of Death" size="12"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="age" type="integer">
+        <validation>
+            <rule name="age" class="com.netspective.commons.validate.rule.IntegerValueValidationRule" min="0"/>
+        </validation>
+    </data-type>
+
+    <data-type name="password" type="text">
+        <validation>
+            <rule name="good-password" class="com.netspective.commons.validate.rule.TextValueValidationRule" min-length="6"/>
+            <!--TODO: Add a 'good' password evaluator -->
+        </validation>
+    </data-type>
+
+    <data-type name="reference" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <!-- Address Related -->
+    <!--TODO: Is there a way to validate portions of an address?  Assumption: US Addresses Only -->
+    <data-type name="address-id" type="system-id"/>
+    <data-type name="city" type="text"/>
+    <data-type name="county" type="text"/>
+    <data-type name="zip-code" type="text"/>
+    <data-type name="country" type="text"/>
+
+    <!-- Telephone Related -->
+    <!--TODO: Is there a way to validate portions of a telephone number?  Assumption: US Telephones Only -->
+    <data-type name="telephone-country-code" type="text"/>
+    <data-type name="telephone-area-code" type="text"/>
+    <data-type name="telephone-exchange-number" type="text"/>
+    <data-type name="telephone-customer-number" type="text"/>
+
+    <data-type name="md5-hash" type="text"/>
+    <data-type name="filename" type="text"/>
+    <data-type name="mime-type" type="text"/>
+    <data-type name="uri" type="text"/>
+
     <data-type name="creation-stamp" type="stamp"/>
+
+    <data-type name="stock-symbol" type="text">
+        <validation>
+            <rule name="letters-only" class="com.netspective.commons.validate.rule.TextValueValidationRule" reg-expr="^[a-zA-Z]+$"/>
+            <!--TODO rule name="yahoo-stock-symbol-check" class="com.netspective.commons.validate.rule.StockSymbolValidationRule" method="yahoo"/ -->
+        </validation>
+    </data-type>
+
+    <data-type name="timezone" type="text">
+        <validation>
+            <rule name="timezone" class="com.netspective.commons.validate.rule.TimeZoneValidationRule"/>
+        </validation>
+    </data-type>
+
+    <data-type name="internet-hostname" type="text">
+        <validation>
+            <!-- Requires at least two parts to the hostname.  TLD's aren't considered valid hostnames. -->
+            <!-- Requires custom validation -->
+            <rule name="internet-hostname" class="com.netspective.commons.validate.rule.TextValueValidationRule" reg-expr="^([a-zA-Z0-9]+\.)*[a-zA-Z0-9]+\.[a-zA-Z]+$"/>
+            <rule name="internet-hostname" class="com.netspective.commons.validate.rule.InternetHostnameValidationRule"/>
+        </validation>
+    </data-type>
+
+    <data-type name="internet-ip-address" type="text">
+        <validation>
+            <!-- Requires exactly four dotted-decimal parts -->
+            <rule name="internet-ip-address" class="com.netspective.commons.validate.rule.TextValueValidationRule" reg-expr="^([0-9]+\.){3}[0-9]+$"/>
+            <rule name="internet-ip-address" class="com.netspective.commons.validate.rule.InternetIPAddressValidationRule"/>
+        </validation>
+    </data-type>
 
     <!--
     ============================
