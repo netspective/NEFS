@@ -65,8 +65,8 @@
 
         <query name="get-person-related-organizations">
 			select
-				Org.org_id,
-				Org.org_name,
+                Org.org_name,
+				Org.org_id,				
 				PersonOrg_Relationship.rel_type
 			from
 				Org,
@@ -80,6 +80,10 @@
 					(PersonOrg_Rel_Type.caption = 'Employed (Full-time)' or PersonOrg_Rel_Type.caption = 'Employed (Part-time)') and
 				PersonOrg_Relationship.rec_stat_id = Record_Status.id and
 				Record_Status.caption = 'Active'
+            <params>
+                <param value="request:person_id"/>
+            </params>
+
         </query>
 
         <query name="personProfile">
