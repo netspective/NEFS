@@ -159,57 +159,55 @@
         <column name="system_id" type="person-classification-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="The actual person record for which classification record is being defined">
             <presentation>
-                <field type="guid32" caption="Person ID" required="yes">
-                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
+                <field type="guid32" name="${column.name}" caption="Person ID" required="yes">
+                    <conditional action="apply-flags" hidden="yes" perspective="add"/>
                 </field>
             </presentation>
         </column>
         <column name="org_id" lookupref="Org.org_id" descr="The org record for which person's classification record is being defined">
             <presentation>
-                <field type="select" caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup"/>
+                <field type="select" name="${column.name}" caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup"/>
             </presentation>
         </column>
         <column name="person_type_id" lookupref="Person_Type" descr="This person's classification">
             <presentation>
-                <field type="select" caption="Person Type"/>
+                <field type="select" name="${column.name}" caption="Person Type"/>
             </presentation>
         </column>
         <column name="person_type" type="text" size="64" descr="This person_id's classification at this org_id (if 'Other' chosen above)">
             <presentation>
-                <field type="text" caption="Other Person Type" size="16">
-                    <conditional action="display" partner="person_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+                <field type="text" name="${column.name}" caption="Other Person Type" size="16">
+                    <conditional action="display" partner-field-name="person_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
                 </field>
             </presentation>
         </column>
-        <!--presentation>
-            <dialog name="personClassificationTableDialog" retain-params="person_id,person_id">
-                <field.table-column column="cr_sess_id"/>
-                <field.table-column column="cr_stamp"/>
-                <field.table-column column="rec_stat_id"/>
-                <field.table-column column="system_id"/>
-                <field.table-column column="person_id"/>
-
-                <field.table-column column="org_id"/>
-                <field.table-column column="person_type_id"/>
-                <field.table-column column="person_type"/>
+        <presentation>
+            <dialog name="${table.name}" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog" retain-params="person_id,person_id">
+                <frame heading="create-dialog-perspective-heading:Classification"/>
+                <data-type-presentation columns="*"/>
             </dialog>
-        </presentation-->
+        </presentation>
     </table>
 
     <table name="Person_Contact" abbrev="PerCont" type="Contact_Method" xdm:param-parentRef="Person.person_id">
-        <!--presentation>
-            <dialog name="personContactTableDialog" retain-params="parent_id,person_id">
-                <field.table-column column="cr_sess_id"/>
-                <field.table-column column="cr_stamp"/>
-                <field.table-column column="rec_stat_id"/>
-                <field.table-column column="system_id"/>
-                <field.table-column column="parent_id" caption="Person ID"/>
-
-                <field.table-column column="method_type"/>
-                <field.table-column column="method_name"/>
-                <field.table-column column="method_value"/>
+        <presentation>
+            <dialog name="${table.name}" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog" retain-params="parent_id,person_id">
+                <frame heading="create-dialog-perspective-heading:Contact Information"/>
+                <data-type-presentation columns="*"/>
+                <on-add-data>
+                    <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                        rec-stat-id="static:Active"/>
+                </on-add-data>
+                <on-edit-data>
+                    <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                        rec-stat-id="static:Active"/>
+                </on-edit-data>
+                <on-delete-data>
+                    <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                        rec-stat-id="static:Active"/>
+                </on-delete-data>
             </dialog>
-        </presentation-->
+        </presentation>
     </table>
 
     <table name="Person_Ethnicity" abbrev="PerEth" type="Default">
