@@ -39,23 +39,23 @@
  */
 
 /**
- * $Id: Column.java,v 1.9 2004-04-05 14:03:31 zahara.khan Exp $
+ * $Id: Column.java,v 1.10 2004-05-19 22:02:28 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema;
 
-import java.util.Set;
-import java.util.List;
-import java.util.Map;
-
-import com.netspective.axiom.schema.column.SqlDataDefns;
-import com.netspective.axiom.schema.column.RequirementEnumeratedAttribute;
 import com.netspective.axiom.schema.column.ColumnQueryDefnField;
+import com.netspective.axiom.schema.column.RequirementEnumeratedAttribute;
+import com.netspective.axiom.schema.column.SqlDataDefns;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.commons.validate.ValidationRules;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateElement;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateElement;
+import com.netspective.commons.xml.template.TemplateProducer;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Class for handling the column of database table.  Provides functionality for
@@ -226,7 +226,7 @@ public interface Column extends TemplateConsumer
 
     /**
      * Sets the class that should be used to create a ForeignKey to this column.
-     * @see Column#sgetForeignKeyReferenceeClass
+     * @see Column#setForeignKeyReferenceeClass
      */
     public void setForeignKeyReferenceeClass(Class cls);
 
@@ -326,6 +326,24 @@ public interface Column extends TemplateConsumer
      * @param flag If <code>true</code>, this column is set as a unique field.
      */
     public void setUnique(boolean flag);
+
+    /**
+     * Indicates whether or not the columns value is populated by the underlying database
+     * and data insertion from the application is not necessary.
+     *
+     * @return  True if database is handling the insertion of value
+     */
+    public boolean isInsertManagedByDbms();
+    public void setInsertManagedByDbms(boolean flag);
+
+    /**
+     * Indicates whether or not the column's value is updated by the underlying database
+     * and data update from the application is not necessary.
+     *
+     * @return  True if database is handling the update of the column
+     */
+    public boolean isUpdateManagedByDbms();
+    public void setUpdateManagedByDbms(boolean flag);
 
     public boolean isRequiredByApp();
     public boolean isRequiredByDbms();
