@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ClassPath.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: ClassPath.java,v 1.2 2003-03-26 00:36:59 shahid.shah Exp $
  */
 
 package com.netspective.commons.lang;
@@ -55,11 +55,11 @@ public class ClassPath
      * Prints the absolute pathname of the class file containing the specified class name, as prescribed by
      * the class path.
      *
-     * @param className Name of the class.
+     * @param cls The class whose class location we're interested in
      */
-    public static String getClassFileName(String className)
+    public static String getClassFileName(String clsName)
     {
-        String resource = new String(className);
+        String resource = new String(clsName);
 
         if(!resource.startsWith("/"))
             resource = "/" + resource;
@@ -73,6 +73,11 @@ public class ClassPath
             return null;
         else
             return classUrl.getFile();
+    }
+
+    public static String getClassFileName(Class cls)
+    {
+        return getClassFileName(cls.getName());
     }
 
     static public class ClassPathInfo

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportValueContext.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: TabularReportValueContext.java,v 1.2 2003-03-26 00:36:59 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -47,8 +47,6 @@ package com.netspective.commons.report.tabular;
 import java.util.List;
 import java.io.Writer;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;

@@ -115,6 +115,17 @@
         <filter targetName="create-database" isVisible="false" />
       </targetFilters>
     </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/copy-resources.xml">
+      <useEmacsModeOutput value="true" />
+      <useCustomJdk value="false" />
+      <treeView value="true" />
+      <useJavaw value="false" />
+      <verbose value="true" />
+      <includeProjectClasspath value="false" />
+      <includeParser value="true" />
+      <maximumHeapSize value="128" />
+      <viewClosedWhenNoErrors value="false" />
+    </buildFile>
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
@@ -160,5 +171,54 @@
     <option name="OUTPUT_DIRECTORY" />
   </component>
   <component name="WebReferencesManager" />
+  <component name="MirrorPlugin.MirrorProjectComponent">
+    <var name="DATE_FORMAT" class="java.text.SimpleDateFormat" />
+    <var name="MIRROR_AUTHOR">Your Name</var>
+    <var name="MIRROR_EMAIL">your_name@example.com</var>
+    <var name="MIRROR_FILENAME_PREFIX" />
+    <var name="MIRROR_FILENAME_SUFFIX">Test</var>
+    <var name="MIRROR_MASTER_EXTENSION">.java</var>
+    <var name="MIRROR_MASTER_PREFIX">Package_</var>
+    <var name="MIRROR_MASTER_SUFFIX">_Tester</var>
+    <var name="MIRROR_OUTPUT_PATH">$PROJECT_DIR$/tst</var>
+    <var name="MIRROR_PACKAGE_PREFIX">tst</var>
+    <var name="PLUGIN_ENABLED" class="java.lang.Boolean">false</var>
+    <var name="SORTED" class="idea.plugin.mirror.velocity.variables.Sorter" />
+    <var name="TEXT" class="idea.plugin.mirror.velocity.variables.RexxString" />
+    <var name="yyyymmdd" class="java.text.SimpleDateFormat">yyyy/MM/dd HH:mm:ss</var>
+  </component>
+  <component name="simpleUML.UMLToolWindowPlugin">
+    <option name="abstractClassBackgroundColor" value="-1580132" />
+    <option name="birdViewUpdateDelay" value="2000" />
+    <option name="classBackgroundColor" value="-6508057" />
+    <option name="compartmentBehaviour" value="1" />
+    <option name="defaultContructorsExpanded" value="false" />
+    <option name="defaultFieldsExpanded" value="false" />
+    <option name="defaultFileLocation" value="file://$PROJECT_DIR$" />
+    <option name="defaultMethodsExpanded" value="false" />
+    <option name="diagramBackgroundColor" value="-986896" />
+    <option name="diagramFont" value="SansSerif,0,10" />
+    <option name="diagramTitleFont" value="SansSerif,1,12" />
+    <option name="drawDecorations" value="false" />
+    <option name="extendsBehaviour" value="1" />
+    <option name="hideConstructorList" value="" />
+    <option name="hideFieldList" value="" />
+    <option name="hideMethodList" value="" />
+    <option name="implementsBehaviour" value="1" />
+    <option name="interfaceBackgroundColor" value="-6494306" />
+    <option name="knownFile0" value="file://$PROJECT_DIR$/Commons XDM.suml" />
+    <option name="longModifier" value="true" />
+    <option name="showConstructorList" value="" />
+    <option name="showFieldList" value="" />
+    <option name="showMethodList" value="" />
+    <option name="showParameters" value="true" />
+    <option name="showReturnValues" value="true" />
+    <option name="showTooltip" value="true" />
+    <option name="useAntialiasedConnectors" value="true" />
+  </component>
+  <component name="JUnitTestConfiguration">
+    <option name="TEST_CLASS_PATTERN" value="test/$CLASS$Test" />
+    <option name="TESTED_CLASS_PATTERN" value="$CLASS$" />
+  </component>
 </project>
 

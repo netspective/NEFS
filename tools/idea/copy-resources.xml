@@ -1,0 +1,23 @@
+<project default="copy-resources">
+
+    <target name="copy-resources">
+
+        <!-- copy configuration files into the output directory, too, so that Resin has access to them -->
+
+        <copy todir="c:/Projects/Frameworks/tools/idea/classes">
+            <fileset dir="c:/Projects/Frameworks/Commons/src/java/main">
+                <include name="**/*.xml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+            <fileset dir="c:/Projects/Frameworks/Axiom/src/java/main">
+                <include name="**/*.xml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+            <fileset dir="c:/Projects/Frameworks/Sparx/src/java/main">
+                <include name="**/*.xml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
+
+    </target>
+</project>
