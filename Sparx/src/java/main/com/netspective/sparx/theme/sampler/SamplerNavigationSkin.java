@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SamplerNavigationSkin.java,v 1.2 2004-06-28 04:10:59 shahid.shah Exp $
+ * $Id: SamplerNavigationSkin.java,v 1.3 2004-07-18 14:51:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.sampler;
@@ -59,18 +59,70 @@ package com.netspective.sparx.theme.sampler;
 import java.io.IOException;
 import java.io.Writer;
 
+import com.netspective.commons.Product;
 import com.netspective.commons.security.AuthenticatedOrgUser;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.ProjectComponent;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.console.ConsoleNavigationSkin;
+import com.netspective.sparx.value.source.PageIdValueSource;
 
 public class SamplerNavigationSkin extends ConsoleNavigationSkin
 {
+    private boolean showProductVersion = false;
+    private ValueSource productVersionHref;
+    private ValueSource activeUserHref = new StaticValueSource("#");
+    private ValueSource activeUserOrgHref = new StaticValueSource("#");
+
     public SamplerNavigationSkin(Theme theme, String name)
     {
         super(theme, name);
+        productVersionHref = new PageIdValueSource();
+        productVersionHref.initialize(new ValueSourceSpecification("page-id:/about"));
+    }
+
+    public boolean isShowProductVersion()
+    {
+        return showProductVersion;
+    }
+
+    public void setShowProductVersion(boolean showProductVersion)
+    {
+        this.showProductVersion = showProductVersion;
+    }
+
+    public ValueSource getProductVersionHref()
+    {
+        return productVersionHref;
+    }
+
+    public void setProductVersionHref(ValueSource productVersionHref)
+    {
+        this.productVersionHref = productVersionHref;
+    }
+
+    public ValueSource getActiveUserHref()
+    {
+        return activeUserHref;
+    }
+
+    public void setActiveUserHref(ValueSource activeUserHref)
+    {
+        this.activeUserHref = activeUserHref;
+    }
+
+    public ValueSource getActiveUserOrgHref()
+    {
+        return activeUserOrgHref;
+    }
+
+    public void setActiveUserOrgHref(ValueSource activeUserOrgHref)
+    {
+        this.activeUserOrgHref = activeUserOrgHref;
     }
 
     /**
@@ -102,13 +154,21 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
         writer.write("<table class=\"active-user-table\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("<tr>\n");
         writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"10\" border=\"0\"></td>\n");
+
+        if(isShowProductVersion())
+        {
+            final Product product = nc.getProject().getProduct();
+            writer.write("	<td nowrap><span class=\"active-user-heading\">&nbsp;<a class=\"active-user\" href=\""+ productVersionHref.getTextValue(nc) +"\" title=\""+ product.getProductName() + " " + product.getVersionAndBuild() +"\">&nbsp;&nbsp;" + product.getVersionAndBuildShort() + "</a></span></td>");
+            writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+        }
+
         writer.write("	<td valign=\"middle\" nowrap >\n");
         writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("			<tr>\n");
         writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" " +
                 "height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;User&nbsp;</span></td>\n");
-        writer.write("				<td nowrap><a class=\"active-user\" href=\"#\" title=\"User ID is '"+ personId +"'\">&nbsp;&nbsp;" +
+        writer.write("				<td nowrap><a class=\"active-user\" href=\""+ activeUserHref.getTextValue(nc) +"\" title=\"User ID is '"+ personId +"'\">&nbsp;&nbsp;" +
                 personName + "</a></td>\n");
         writer.write("			</tr>\n");
         writer.write("		</table>\n");
@@ -125,7 +185,7 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
             writer.write("			<tr>\n");
             writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
             writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Org&nbsp;</span></td>\n");
-            writer.write("				<td nowrap><a class=\"active-user\" href=\"#\" title=\"Org ID is '"+ orgId +"'\">&nbsp;&nbsp;" + orgName +"</a></td>\n");
+            writer.write("				<td nowrap><a class=\"active-user\" href=\""+ activeUserOrgHref.getTextValue(nc) + "\" title=\"Org ID is '"+ orgId +"'\">&nbsp;&nbsp;" + orgName +"</a></td>\n");
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
             writer.write("	</td>\n");
