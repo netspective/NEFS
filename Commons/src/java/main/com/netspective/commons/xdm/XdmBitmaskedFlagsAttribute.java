@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.13 2003-06-17 11:49:32 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.14 2003-06-18 19:57:11 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -63,6 +63,12 @@ import com.netspective.commons.text.TextUtils;
 public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
 {
     private static final Log log = LogFactory.getLog(XdmBitmaskedFlagsAttribute.class);
+
+    /**
+     * If an aliasDescription has this text within it, it will be replaced at runtime with an auto-generated alias
+     * comment from XmlDataModelSchema.
+     */
+    private static final String ALIAS_COMMENT_REPL_EXPR = "${xdmAttrDetailAliasComment}";
 
     public static final int ACCESS_XDM = 1;      // available via XML
     public static final int ACCESS_PRIVATE = 2;  // available only to Java
@@ -125,9 +131,9 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
             this.description = description;
         }
 
-        public String getAliasDescription()
+        public String getAliasDescription(String aliasComment)
         {
-            return aliasDescription;
+            return TextUtils.replaceTextValues(aliasDescription, ALIAS_COMMENT_REPL_EXPR, aliasComment);
         }
 
         public void setAliasDescription(String aliasDescription)

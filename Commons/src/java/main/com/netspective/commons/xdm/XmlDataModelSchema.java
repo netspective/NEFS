@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.18 2003-06-17 11:49:32 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.19 2003-06-18 19:57:11 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -425,6 +425,85 @@ public class XmlDataModelSchema
     public String getDescription()
     {
         return JavaDocXmlDocuments.getInstance().getClassOrInterfaceDescription(getBean());
+    }
+
+    public class ElementDetail
+    {
+        private String elemName;
+        private Class elemType;
+        private boolean required;
+
+        public ElementDetail(String name) throws DataModelException
+        {
+            this.elemName = name;
+            this.elemType = getElementType(name);
+            this.required = getOptions().getRequiredAttributes().contains(name);
+        }
+
+        public String getElemName()
+        {
+            return elemName;
+        }
+
+        public void setElemName(String elemName)
+        {
+            this.elemName = elemName;
+        }
+
+        public Class getElemType()
+        {
+            return elemType;
+        }
+
+        public void setElemType(Class elemType)
+        {
+            this.elemType = elemType;
+        }
+
+        public boolean isRequired()
+        {
+            return required;
+        }
+
+        public void setRequired(boolean required)
+        {
+            this.required = required;
+        }
+
+        public String getDescription()
+        {
+            return JavaDocXmlDocuments.getInstance().getClassOrInterfaceDescription(elemType);
+        }
+    }
+
+    public class ElementDetailList extends ArrayList
+    {
+
+    }
+
+    public ElementDetailList getNestedElementsDetail() throws DataModelException
+    {
+        ElementDetailList result = new ElementDetailList();
+
+        Map childPropertyNames = getPropertyNames();
+
+        Set sortedChildPropertyNames = new TreeSet(getNestedElements().keySet());
+        Iterator iterator = sortedChildPropertyNames.iterator();
+        while (iterator.hasNext())
+        {
+            String attrName = (String) iterator.next();
+
+            if(getOptions().ignoreAttribute(attrName))
+                continue;
+
+            XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
+            if(attrNames != null && ! attrNames.isPrimaryName(attrName))
+                continue;
+
+            result.add(new ElementDetail(attrName));
+        }
+
+        return result;
     }
 
     public class AttributeDetail
@@ -867,7 +946,14 @@ public class XmlDataModelSchema
                 }
                 catch (NoSuchMethodException nse)
                 {
+                    log.warn("Unable to create nestedCreator for " + name + " " + args[0] + ", registering type only without a creator.", nse);
+                    for(int pn = 0; pn < propNames.length; pn++)
+                    {
+                        if(propNames[pn].length() > 0)
+                            nestedTypes.put(propNames[pn], args[0]);
+                    }
                 }
+
                 // prevent infinite recursion for nested recursive elements
                 if(! args[0].getClass().equals(bean.getClass()))
                     getSchema(args[0]);
