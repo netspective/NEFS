@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<component xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+<project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	<!--
 	**********************************************************************
@@ -95,4 +95,4 @@
 
     </queries>
 
-</component>
+</project>
