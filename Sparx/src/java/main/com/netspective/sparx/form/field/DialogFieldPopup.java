@@ -51,13 +51,15 @@
  */
 
 /**
- * $Id: DialogFieldPopup.java,v 1.4 2004-07-14 20:58:37 aye.thu Exp $
+ * $Id: DialogFieldPopup.java,v 1.5 2004-07-26 14:08:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.sparx.form.field.type.SelectField;
 
 /**
  * <code>DialogFieldPopup</code> class represents a dialog field with a pop up window associated with it.
@@ -69,15 +71,42 @@ public class DialogFieldPopup
     private ValueSource imageSrc = ValueSource.NULL_VALUE_SOURCE;
     private String windowClass = DEFAULT_WINDOW_CLASS;
     private ValueSource action = ValueSource.NULL_VALUE_SOURCE;
-    private String preActionScript;
-    private String[] fill = null;
-    private boolean allowMulti = false;
-    private boolean closeAfterSelect = true;
-    private String[] extract = null; // these are the fields whose values will be appended to the popup's URL
-                                                                                    
-    protected DialogFieldPopup()
-    {
+    private String preActionScript;                 // javascript to execute before opening the popup window
+    private String[] fill = null;                   // fields that will be filled with values from the popup
+    private boolean allowMulti = false;             // flag to indicate whether or not multiple records can be selected
+    private boolean closeAfterSelect = true;        // flag to indicate whether or not the popup window should be closed afterwards
+    private String[] extract = null;                // these are the fields whose values will be appended to the popup's URL
+    private Style displayStyle = new Style(Style.IMAGE); // display style for the popup action
+    private ValueSource displayStyleText = null;    // text caption to display when the popup style is TEXT or BUTTON
 
+    /**
+     * A popup action associated with a dialog field can have multiple styles. By default,
+     * it displays a popup icon defined in the skin.
+     *
+     */
+    public static class Style extends XdmEnumeratedAttribute
+    {
+        public static final int IMAGE = 0;
+        public static final int TEXT = 1;
+        public static final int BUTTON = 2;
+
+        public static final String[] VALUES = new String[] {
+            "image", "text", "button"
+        };
+
+        public Style()
+        {
+        }
+
+        public Style(int valueIndex)
+        {
+            super(valueIndex);
+        }
+
+        public String[] getValues()
+        {
+            return VALUES;
+        }
     }
 
     public ValueSource getAction()
@@ -193,6 +222,36 @@ public class DialogFieldPopup
     public void setFill(String fields)
     {
         fill = TextUtils.split(fields, ",", true);
+    }
+
+    /**
+     * Sets the display style of the popup action
+     *
+     * @param style
+     */
+    public void setStyle(Style style)
+    {
+        this.displayStyle = style;
+    }
+
+    public Style getStyle()
+    {
+        return displayStyle;
+    }
+
+    public ValueSource getStyleText()
+    {
+        return displayStyleText;
+    }
+
+    /**
+     * Sets the text associated with the display style
+     *
+     * @param displayText
+     */
+    public void setStyleText(ValueSource displayText)
+    {
+        this.displayStyleText = displayText;
     }
 
 }
