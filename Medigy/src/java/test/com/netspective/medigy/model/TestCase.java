@@ -66,7 +66,7 @@ import java.util.logging.LogManager;
 
 public abstract class TestCase extends junit.framework.TestCase
 {
-    protected static final File DEFAULT_DB_DIR = new File("C:\\temp\\medigy-test-db-01");
+    protected static final File DEFAULT_DB_DIR = new File("C:\\temp\\medigy-test-db-02");
 
     protected String getClassNameWithoutPackage()
     {
@@ -107,8 +107,10 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRole.class);        
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationship.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRole.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.Priority.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationshipStatus.class);
         config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
         config.addAnnotatedClass(com.netspective.medigy.model.org.OrgIdentifierType.class);
 
@@ -146,6 +148,7 @@ public abstract class TestCase extends junit.framework.TestCase
         hdg.generate();
         diagrammer.generateDOTSource(dotDestFile);
         Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o"+ diagramFile + " " + dotDestFile);
+        
     }
 
     protected void tearDown() throws Exception
