@@ -67,9 +67,8 @@ memory with no compile/link/debug cycle.
 <p>
 <@contentImage image='sparx-outputs.gif'/>
 
-<h1>The Roles of XML and Web Services</h1>
-<h2>XML</h2>
-The eXtensible Markup Language (XML) plays an important role in Sparx’s ease of use, extensibility, and code generation.
+<h1>XML</h1>
+The eXtensible Markup Language (XML) plays an important role in Sparx's ease of use, extensibility, and code generation.
 Sparx declarations are performed using XML -- all dialogs, fields, validation rules, some conditional processing, all
 SQL statements, dynamic queries, configuration files, database schemas, and many other resources are stored in XML
 files that are re-usable across applications. Although XML is the preferred method for creating resource files, almost
@@ -82,6 +81,12 @@ requirements that are automatically parsed, read, cached, and executed by Sparx.
 applications comes from Java through the use of a simple Value Source interface (an implementation of the Value design
 pattern), not a new programming language.
 
+<h2>Sparx XML tags and its relationship to JSP taglibs</h2>
+JSP tag libraries are usually used for emitting HTML. They are commonly use in the view component of the MVC paradigm.
+Sparx XML tags are used to describe and declare all aspects of your application (UI, database, security, etc). Sparx can
+use existing JSP tag libraries but they are seldom needed because Sparx will handle most tasks within its own, much
+simpler, and much more powerful XML tags.
+
 <h2>XML Performance</h2>
 When engineers first learn about XML and the amount of flexibility it affords in both application and data management,
 they jump at the chance to include XML features within their projects. However, soon they learn that dealing with XML
@@ -90,7 +95,7 @@ all Sparx XML files are read using lazy-read approach; meaning, they are read on
 So, the majority of all Sparx XML performance impacts (if any) occur at the startup of a server-based application.
 Once the application starts all data is cached and shared across users and XML-related performance issues are eliminated.
 
-<h2>Web Services</h2>
+<h1>Web Services</h1>
 The general topic of web services refers to the ability of applications and systems to speak to each other over
 Internet protocols. The "normal" case of web applications has a customer accessing a catalog site and making
 a purchase over a secure website. This interaction is quite common but sometimes it’s preferable to have a computer

@@ -1,4 +1,7 @@
-There are two schools of thought when it comes to answering the "where do I start writing my application?" question.
+<#include "*/library.ftl"/>
+
+There are several schools of thought when it comes to answering the "where do I start writing my application?" question.
+Two of the popular ones are:
 <ol>
     <li>
       Define and prototype the entire user interface (presentation layer or UI) and wait until the UI is completed
@@ -10,10 +13,13 @@ There are two schools of thought when it comes to answering the "where do I star
       option, the data model and schema drive the user interface.
     </li>
 </ol>
-
+<p>
 Netspective does not assume either method to be correct so it supports both of them. Basically, developing applications
 with Sparx requires that you do the following:
-
+<p>
+<center>
+<@contentImage image='nefs-swdev-process.gif'/>
+</center>
 <ol>
     <li>
         <b>Define</b> your requirements. This definition is usually a mental exercise but it may involve formal
@@ -31,6 +37,10 @@ with Sparx requires that you do the following:
         application's requirements has an automated means to verify and test your declaration within the <i>Console</i>.
         At this point you may begin to <i>involve your customers</i> by <b>demonstrating</b> the forms, validation,
         pages, etc within the Console -- before you start writing any code.
+    </li>
+    <li>
+        <b>Generate</b> SQL DDL (data definition language) for creating database schemas and generate the data access
+        objects (DAOs) that become the Data Access Layer (DAL) for reading and writing content from the database.
     </li>
     <li>
         Use Java class inheritance, composition, or listeners to <b>Customize</b> your Sparx XML declarations. The Sparx
@@ -80,7 +90,7 @@ with Sparx requires that you do the following:
 
     <tr>
         <td class="report-column-even">2</td>
-        <td class="report-column-even">Declare</td>
+        <td class="report-column-even">Declare/Describe</td>
         <td class="report-column-even"></td>
         <td class="report-column-even"></td>
         <td class="report-column-even"></td>
@@ -104,7 +114,7 @@ with Sparx requires that you do the following:
 
     <tr>
         <td class="report-column-even">4</td>
-        <td class="report-column-even">Customize</td>
+        <td class="report-column-even">Generate Code</td>
         <td class="report-column-even"></td>
         <td class="report-column-even"></td>
         <td class="report-column-even"></td>
@@ -116,7 +126,7 @@ with Sparx requires that you do the following:
 
     <tr>
         <td class="report-column-odd">5</td>
-        <td class="report-column-odd">Functional/Integration Test</td>
+        <td class="report-column-odd">Create Custom Code</td>
         <td class="report-column-odd"></td>
         <td class="report-column-odd"></td>
         <td class="report-column-odd"></td>
@@ -128,7 +138,7 @@ with Sparx requires that you do the following:
 
     <tr>
         <td class="report-column-even">6</td>
-        <td class="report-column-even">Deploy</td>
+        <td class="report-column-even">Acceptance Test</td>
         <td class="report-column-even"></td>
         <td class="report-column-even"></td>
         <td class="report-column-even"></td>
@@ -136,6 +146,18 @@ with Sparx requires that you do the following:
         <td class="report-column-even"></td>
         <td class="report-column-even"></td>
         <td class="report-column-even"></td>
+    </tr>
+
+    <tr>
+        <td class="report-column-odd">7</td>
+        <td class="report-column-odd">Deploy</td>
+        <td class="report-column-odd"></td>
+        <td class="report-column-odd"></td>
+        <td class="report-column-odd"></td>
+        <td class="report-column-odd"></td>
+        <td class="report-column-odd"></td>
+        <td class="report-column-odd"></td>
+        <td class="report-column-odd"></td>
     </tr>
 
 </table>
