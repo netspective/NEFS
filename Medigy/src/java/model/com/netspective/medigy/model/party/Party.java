@@ -66,6 +66,7 @@ public abstract class Party extends AbstractTopLevelEntity
     private Set<PartyIdentifier> partyIdentifiers = new HashSet<PartyIdentifier>();
     private Set<PartyContactMechanism> contactMechanisms = new HashSet<PartyContactMechanism>();
     private Set<PartyFacilityRole> partyFacilityRoles = new HashSet<PartyFacilityRole>();
+    private Set<PartyIdentifierType> partyIdentifierTypes = new HashSet<PartyIdentifierType>();
 
     public Party()
     {
@@ -133,5 +134,17 @@ public abstract class Party extends AbstractTopLevelEntity
     public void setPartyFacilityRoles(final Set<PartyFacilityRole> partyFacilityRoles)
     {
         this.partyFacilityRoles = partyFacilityRoles;
+    }
+
+    @OneToMany(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<PartyIdentifierType> getPartyIdentifierTypes()
+    {
+        return partyIdentifierTypes;
+    }
+
+    public void setPartyIdentifierTypes(final Set<PartyIdentifierType> partyIdentifierTypes)
+    {
+        this.partyIdentifierTypes = partyIdentifierTypes;
     }
 }
