@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: BasicTabularReportValueContext.java,v 1.1 2003-04-01 22:36:32 shahid.shah Exp $
+ * $Id: BasicTabularReportValueContext.java,v 1.2 2003-04-02 22:53:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -65,7 +65,6 @@ import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportContextListener;
 import com.netspective.commons.report.tabular.TabularReportColumns;
-import com.netspective.commons.report.tabular.TabularReportFrame;
 import com.netspective.commons.report.tabular.TabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
@@ -82,7 +81,6 @@ public class BasicTabularReportValueContext extends DefaultValueContext implemen
     private int visibleColsCount;
     private TabularReportSkin skin;
     private int rowCurrent, rowStart, rowEnd;
-    private long frameFlags;
 
     public BasicTabularReportValueContext(TabularReport reportDefn, TabularReportSkin skin)
     {
@@ -105,14 +103,11 @@ public class BasicTabularReportValueContext extends DefaultValueContext implemen
                 calcsCount++;
             states[i] = state;
         }
-
-        TabularReportFrame frame = reportDefn.getFrame();
-        frameFlags = frame != null ? frame.getFlags() : 0;
     }
 
     public boolean isMinimized()
     {
-        return (frameFlags & TabularReportFrame.RPTFRAMEFLAG_IS_COLLAPSED) != 0;
+        return false;
     }
 
     /**

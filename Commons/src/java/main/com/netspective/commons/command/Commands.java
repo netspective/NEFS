@@ -39,13 +39,16 @@
  */
 
 /**
- * $Id: Commands.java,v 1.1 2003-04-01 01:45:33 shahid.shah Exp $
+ * $Id: Commands.java,v 1.2 2003-04-02 22:53:22 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
 
-import java.util.*;
 import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.commons.discovery.tools.DiscoverClass;
@@ -54,13 +57,14 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import com.netspective.commons.metric.MetricsProducer;
 import com.netspective.commons.metric.Metric;
+import com.netspective.commons.text.TextUtils;
 
 public class Commands implements MetricsProducer
 {
     private static DiscoverClass discoverClass = new DiscoverClass();
     protected static final Log log = LogFactory.getLog(Commands.class);
 
-    public static final String CMDNAME_AND_PARAM_DELIM = ",";
+    public static final String CMDNAME_AND_FIRST_PARAM_DELIM = ",";
     public static final String CMDMETHODNAME_GETIDENTIFIERS = "getIdentifiers";
     public static final String CMDMETHODNAME_GETDOCUMENTATION = "getDocumentation";
 
@@ -147,7 +151,7 @@ public class Commands implements MetricsProducer
         }
     }
 
-    public Command.Documentation getCommandDocumentation(Class vsClass)
+    public CommandDocumentation getCommandDocumentation(Class vsClass)
     {
         Method getDocsMethod = null;
         try
@@ -161,7 +165,7 @@ public class Commands implements MetricsProducer
 
         try
         {
-            return (Command.Documentation) getDocsMethod.invoke(null, null);
+            return (CommandDocumentation) getDocsMethod.invoke(null, null);
         }
         catch (Exception e)
         {
@@ -180,15 +184,12 @@ public class Commands implements MetricsProducer
             try
             {
                 Command command = (Command) ccClass.newInstance();
-                if(params != null) command.setCommand(params);
+                if(params != null) command.setParameters(TextUtils.split(params, command.getParametersDelimiter(), false));
                 return command;
             }
-            catch (InstantiationException e)
+            catch (Exception e)
             {
-                return null;
-            }
-            catch (IllegalAccessException e)
-            {
+                log.error(e);
                 return null;
             }
         }
@@ -196,30 +197,11 @@ public class Commands implements MetricsProducer
             return null;
     }
 
-    public Command getCommand(String name, StringTokenizer params)
-    {
-        Class ccClass = (Class) srcClassesMap.get(name);
-        try
-        {
-            Command command = (Command) ccClass.newInstance();
-            command.setCommand(params);
-            return command;
-        }
-        catch (InstantiationException e)
-        {
-            return null;
-        }
-        catch (IllegalAccessException e)
-        {
-            return null;
-        }
-    }
-
     public Command getCommand(String cmdSpecification) throws CommandNotFoundException
     {
         String cmd = cmdSpecification;
         String cmdParam = null;
-        int cmdDelimPos = cmdSpecification.indexOf(CMDNAME_AND_PARAM_DELIM);
+        int cmdDelimPos = cmdSpecification.indexOf(CMDNAME_AND_FIRST_PARAM_DELIM);
         if(cmdDelimPos != -1)
         {
             cmd = cmdSpecification.substring(0, cmdDelimPos);

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AbstractComponentCommand.java,v 1.1 2003-04-01 01:45:33 shahid.shah Exp $
+ * $Id: AbstractComponentCommand.java,v 1.2 2003-04-02 22:53:22 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
@@ -60,16 +60,12 @@ import java.util.StringTokenizer;
 
 public abstract class AbstractComponentCommand implements Command
 {
-    static public final String PARAMVALUE_DEFAULT = "-";
+    static public final String EMPTY_COMMAND_PARAMETER = "-";
+    static public final String PARAMVALUE_DEFAULT = EMPTY_COMMAND_PARAMETER;
 
     public AbstractComponentCommand()
     {
 
-    }
-
-    public AbstractComponentCommand(String params)
-    {
-        setCommand(params);
     }
 
     public String getParametersDelimiter()
@@ -77,11 +73,10 @@ public abstract class AbstractComponentCommand implements Command
         return ",";
     }
 
-    abstract public String getCommand();
+    abstract public String getParameters();
 
-    public void setCommand(String params)
+    public void setParameters(String[] params)
     {
-        setCommand(new StringTokenizer(params, getParametersDelimiter()));
     }
 
     abstract public void setCommand(StringTokenizer params);

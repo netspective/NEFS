@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.1 2003-04-01 01:45:33 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.2 2003-04-02 22:53:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -57,7 +57,7 @@ public abstract class XdmBitmaskedFlagsAttribute
     protected int flags = 0;
     public static final String FLAG_DELIMITER = "|";
 
-    public class FlagDefn
+    public static class FlagDefn
     {
         private String name;
         private int mask;

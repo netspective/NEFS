@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabularReport.java,v 1.4 2003-03-31 20:16:25 shahid.shah Exp $
+ * $Id: AbstractTabularReport.java,v 1.1 2003-04-02 22:53:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -61,33 +61,29 @@ import java.util.List;
 
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.TabularReport;
-import com.netspective.commons.report.tabular.TabularReportBanner;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportColumns;
 import com.netspective.commons.report.tabular.TabularReportContextListener;
-import com.netspective.commons.report.tabular.TabularReportFrame;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
 
-public class BasicTabularReport implements TabularReport, XmlDataModelSchema.ConstructionFinalizeListener
+public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
-    static public final int REPORTFLAG_INITIALIZED = 1;
-    static public final int REPORTFLAG_HASPLACEHOLDERS = REPORTFLAG_INITIALIZED * 2;
-    static public final int REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS = REPORTFLAG_HASPLACEHOLDERS * 2;
-    static public final int REPORTFLAG_HIDE_HEADING = REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS * 2;
+    static
+    {
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "flag" });
+    }
 
     private String name;
     private TabularReportColumns columns = new TabularReportColumns();
-    private TabularReportFrame frame = new TabularReportFrame();
-    private TabularReportBanner banner = null;
-    private int flags;
+    private Flags flags = new Flags();
 
-    public BasicTabularReport()
+    public AbstractTabularReport()
     {
     }
 
@@ -101,26 +97,6 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
         this.name = name;
     }
 
-    public TabularReportFrame getFrame()
-    {
-        return frame;
-    }
-
-    public void setFrame(TabularReportFrame rf)
-    {
-        frame = rf;
-    }
-
-    public TabularReportBanner getBanner()
-    {
-        return banner;
-    }
-
-    public void setBanner(TabularReportBanner value)
-    {
-        banner = value;
-    }
-
     public TabularReportColumns getColumns()
     {
         return columns;
@@ -131,29 +107,14 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
         return columns.getColumn(i);
     }
 
-    public final long getFlags()
+    public TabularReport.Flags getFlags()
     {
         return flags;
     }
 
-    public final boolean flagIsSet(long flag)
+    public void setFlags(TabularReport.Flags flags)
     {
-        return (flags & flag) == 0 ? false : true;
-    }
-
-    public final void setFlag(long flag)
-    {
-        flags |= flag;
-    }
-
-    public final void clearFlag(long flag)
-    {
-        flags &= ~flag;
-    }
-
-    public final void updateFlag(long flag, boolean set)
-    {
-        if(set) flags |= flag; else flags &= ~flag;
+        this.flags.setFlag(flags.getFlags());
     }
 
     public void finalizeContents()
@@ -164,34 +125,8 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
             colDefn.finalizeContents(this);
 
             if(colDefn.flagIsSet(TabularReportColumn.COLFLAG_HASPLACEHOLDERS))
-                setFlag(this.REPORTFLAG_HASPLACEHOLDERS);
+                flags.setFlag(Flags.HAS_PLACE_HOLDERS);
         }
-    }
-
-    public TabularReportFrame createFrame()
-    {
-        return frame;
-    }
-
-    public TabularReportBanner createBanner()
-    {
-        return new TabularReportBanner();
-    }
-
-    public void addBanner(TabularReportBanner banner)
-    {
-        this.banner = banner;
-    }
-
-    public void setFirstRow(String firstRow)
-    {
-        if(firstRow.equals("column-headings"))
-            setFlag(REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS);
-
-        if(firstRow.equals("none"))
-            setFlag(REPORTFLAG_HIDE_HEADING);
-
-        throw new RuntimeException("Don't know what to dow with first-row value " + firstRow);
     }
 
     public TabularReportColumn createColumn()
@@ -209,6 +144,8 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
     {
         // if a record add caption/url was provided but no banner was created, go ahead and generate a banner automatically
         // banners are automatically hidden by record-viewer and shown by record-editor skins
+        //TODO: fix this
+/*
         if(frame != null && banner == null)
         {
             ValueSource recordAddCaption = frame.getRecordAddCaption();
@@ -216,10 +153,10 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
             if(recordAddCaption != null && recordAddUrl != null)
             {
                 banner = new TabularReportBanner();
-                //TODO: fix this
-                //banner.addItem(new ReportBanner.Item(recordAddCaption, recordAddUrl, ValueSources.getInstance().getValueSource("config-expr:${sparx.shared.images-url}/design/action-edit-add.gif", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION)));
+                banner.addItem(new ReportBanner.Item(recordAddCaption, recordAddUrl, ValueSources.getInstance().getValueSource("config-expr:${sparx.shared.images-url}/design/action-edit-add.gif", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION)));
             }
         }
+*/
 
         finalizeContents();
     }

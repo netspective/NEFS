@@ -51,40 +51,29 @@
  */
 
 /**
- * $Id: Command.java,v 1.1 2003-04-01 01:45:33 shahid.shah Exp $
+ * $Id: Command.java,v 1.2 2003-04-02 22:53:22 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import com.netspective.commons.value.ValueContext;
 
 public interface Command
 {
-    static public final String PAGE_COMMAND_REQUEST_PARAM_NAME = "cmd";
-    static public final String EMPTY_COMMAND_PARAMETER = "-";
-
-    /**
-     * Returns the documentation for this command
-     */
-    public Documentation getDocumentation();
-
     /**
      * Set the active command for the component
      * @param params the parameters being sent to the command
      */
-    public void setCommand(String params);
+    public void setParameters(String[] params);
 
     /**
-     * Set the active command for the component
-     * @param params the parameters being sent to the command
+     * Get the active command for the component
+     * @return the parameters set earlier by the set methods
      */
-    public void setCommand(StringTokenizer params);
+    public String getParameters();
 
     /**
      * Get the text used to delimit the parameters
@@ -93,181 +82,9 @@ public interface Command
     public String getParametersDelimiter();
 
     /**
-     * Get the active command for the component
-     * @return the parameters set earlier by the set methods
-     */
-    public String getCommand();
-
-    /**
      * Render the html for this command
      * @param vc the value context
      * @throws IOException
      */
     public void handleCommand(ValueContext vc, Writer writer, boolean unitTest) throws CommandException, IOException;
-
-    public class Documentation
-    {
-        public static class Parameter
-        {
-            private String name;
-            private boolean required;
-            private String[] enums;
-            private String defaultValue;
-            private String description;
-
-            public Parameter(String name, boolean required, String[] enums, String defaultValue, String description)
-            {
-                this.name = name;
-                this.required = required;
-                this.enums = enums;
-                this.defaultValue = defaultValue;
-                this.description = description;
-            }
-
-            public String getDefaultValue()
-            {
-                return defaultValue;
-            }
-
-            public void setDefaultValue(String defaultValue)
-            {
-                this.defaultValue = defaultValue;
-            }
-
-            public String getName()
-            {
-                return name;
-            }
-
-            public void setName(String name)
-            {
-                this.name = name;
-            }
-
-            public boolean isRequired()
-            {
-                return required;
-            }
-
-            public void setRequired(boolean required)
-            {
-                this.required = required;
-            }
-
-            public String[] getEnums()
-            {
-                return enums;
-            }
-
-            public void setEnums(String[] enums)
-            {
-                this.enums = enums;
-            }
-
-            public String getDescription()
-            {
-                return description;
-            }
-
-            public void setDescription(String description)
-            {
-                this.description = description;
-            }
-        }
-
-        private String description;
-        private List parameters = new ArrayList();
-
-        public Documentation(String descr, Parameter param)
-        {
-            this.description = descr;
-            addParameter(param);
-        }
-
-        public Documentation(String descr, Parameter[] params)
-        {
-            this.description = descr;
-            for(int i = 0; i < params.length; i++)
-                addParameter(params[i]);
-        }
-
-        public String getUsageHtml(String commandId, String delim, boolean all)
-        {
-            StringBuffer html = new StringBuffer();
-            boolean isFirst = true;
-            if(commandId != null)
-                html.append(PAGE_COMMAND_REQUEST_PARAM_NAME + "=" + commandId + ",");
-            for(int i = 0; i < parameters.size(); i++)
-            {
-                Parameter param = (Parameter) parameters.get(i);
-                if(all || param.isRequired())
-                {
-                    if(! isFirst) html.append(delim);
-                    if(param.isRequired()) html.append("<i>");
-                    html.append(param.getName());
-                    if(param.isRequired()) html.append("</i>");
-                    isFirst = false;
-                }
-            }
-            return html.toString();
-        }
-
-        public String getParamsHtml(String commandId)
-        {
-            StringBuffer html = new StringBuffer();
-            html.append("<table class='data_table' cellspacing='0' cellpadding='2' border='0'>");
-            html.append("<tr class='data_table_header'><th class='data_table'>Name</th><th class='data_table'>Req</th><th class='data_table'>Default</th><th class='data_table'>Choices</th></tr>");
-            for(int i = 0; i < parameters.size(); i++)
-            {
-                html.append("<tr class='data_table'>");
-                Parameter param = (Parameter) parameters.get(i);
-                html.append("<td class='data_table' rowspan=2><nobr>" + (param.isRequired() ? "<b>" : "") + param.getName() + "</b></nobr></td><td class='data_table'>"+ (param.isRequired() ? "required" : "optional") + "</td>");
-                String defaultValue = param.getDefaultValue();
-                html.append("<td class='data_table'>" + (defaultValue != null ? defaultValue : "&nbsp;") + "</td>");
-                html.append("<td class='data_table'>");
-                String[] enums = param.getEnums();
-                if(enums != null)
-                {
-                    for(int e = 0; e < enums.length; e++)
-                    {
-                        if(e > 0) html.append(" | ");
-                        String enum = enums[e];
-                        if(defaultValue != null && enum.equals(defaultValue))
-                        {
-                            html.append("<u>" + enums[e] + "</u>");
-                        }
-                        else
-                            html.append(enums[e]);
-                    }
-                }
-                else
-                    html.append("&nbsp;");
-                html.append("</td>");
-                html.append("</tr>");
-                html.append("<tr><td class='data_table' colspan=3><font color='blue'>"+ param.getDescription() +"</font></td></tr>");
-            }
-            html.append("</table>");
-            return html.toString();
-        }
-
-        public String getDescription()
-        {
-            return description;
-        }
-
-        public void setDescription(String description)
-        {
-            this.description = description;
-        }
-
-        public List getParameters()
-        {
-            return parameters;
-        }
-
-        public void addParameter(Parameter param)
-        {
-            parameters.add(param);
-        }
-    }
 }

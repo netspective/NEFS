@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.5 2003-04-01 22:36:32 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.6 2003-04-02 22:53:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -419,9 +419,17 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         {
             this.rc = rc;
 
+            ValueSource headingVs = GeneralColumn.this.getHeading();
+            if(headingVs != null)
+                heading = headingVs.getValue(rc).getTextValue();
+
             String calcCmd = getCalcCmd();
             if(calcCmd != null)
+            {
                 calc = TabularReportCalcs.getInstance().createDataCalc(calcCmd);
+                if(calc == null)
+                    throw new RuntimeException("Unable to find calc '"+ calcCmd +"' in column " + getHeading());
+            }
 
             flags = GeneralColumn.this.getFlags();
 
@@ -438,10 +446,6 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
                 else
                     urlAnchorAttrs = "";
             }
-
-            ValueSource headingVs = GeneralColumn.this.getHeading();
-            if(headingVs != null)
-                heading = headingVs.getValue(rc).getTextValue();
 
             if(flagIsSet(TabularReportColumn.COLFLAG_HAVECONDITIONALS))
             {

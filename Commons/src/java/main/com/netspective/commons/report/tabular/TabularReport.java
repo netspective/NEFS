@@ -51,38 +51,42 @@
  */
  
 /**
- * $Id: TabularReport.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: TabularReport.java,v 1.3 2003-04-02 22:53:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
 
 import com.netspective.commons.report.Report;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
 public interface TabularReport extends Report
 {
+    public static class Flags extends XdmBitmaskedFlagsAttribute
+    {
+        public static final int HAS_PLACE_HOLDERS = 1;
+        public static final int FIRST_DATA_ROW_HAS_HEADINGS = HAS_PLACE_HOLDERS * 2;
+        public static final int HIDE_HEADING = FIRST_DATA_ROW_HAS_HEADINGS * 2;
+
+        public static final FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
+        {
+            new FlagDefn("HAS_PLACE_HOLDERS", HAS_PLACE_HOLDERS),
+            new FlagDefn("FIRST_DATA_ROW_HAS_HEADINGS", FIRST_DATA_ROW_HAS_HEADINGS),
+            new FlagDefn("HIDE_HEADING", HIDE_HEADING),
+        };
+
+        public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
+        {
+            return FLAGDEFNS;
+        }
+    }
+
     public String getName();
 
-    public TabularReportFrame getFrame();
-
-    public void setFrame(TabularReportFrame rf);
-
-    public TabularReportBanner getBanner();
-
-    public void setBanner(TabularReportBanner value);
+    public Flags getFlags();
 
     public TabularReportColumns getColumns();
 
     public TabularReportColumn getColumn(int i);
-
-    public long getFlags();
-
-    public boolean flagIsSet(long flag);
-
-    public void setFlag(long flag);
-
-    public void clearFlag(long flag);
-
-    public void updateFlag(long flag, boolean set);
 
     public TabularReportColumn createColumn();
 

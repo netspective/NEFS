@@ -39,41 +39,22 @@
  */
 
 /**
- * $Id: Reports.java,v 1.2 2003-04-02 22:53:22 shahid.shah Exp $
+ * $Id: CommandDocumentation.java,v 1.1 2003-04-02 22:53:22 shahid.shah Exp $
  */
 
-package com.netspective.commons.report;
+package com.netspective.commons.command;
 
-import com.netspective.commons.report.tabular.AbstractTabularReport;
+import com.netspective.commons.value.ValueSourceDocumentation;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-
-public class Reports
+public class CommandDocumentation extends ValueSourceDocumentation
 {
-    private Map reportsByName = new HashMap();
-    private List reports = new ArrayList();
-
-    public void add(Report report)
+    public CommandDocumentation(String descr, CommandDocumentation.Parameter param)
     {
-        reportsByName.put(report.getName(), report);
-        reports.add(report);
+        super(descr, param);
     }
 
-    public Report get(String name)
+    public CommandDocumentation(String descr, CommandDocumentation.Parameter[] params)
     {
-        return (Report) reportsByName.get(name);
-    }
-
-    public Report get(int i)
-    {
-        return (Report) reports.get(i);
-    }
-
-    public int size()
-    {
-        return reports.size();
+        super(descr, params);
     }
 }

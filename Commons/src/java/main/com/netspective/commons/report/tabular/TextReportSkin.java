@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextReportSkin.java,v 1.1 2003-04-01 22:36:32 shahid.shah Exp $
+ * $Id: TextReportSkin.java,v 1.2 2003-04-02 22:53:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -96,7 +96,7 @@ public class TextReportSkin implements TabularReportSkin
     {
         if(firstRowContainsFieldNames)
         {
-            if(!rc.getReport().flagIsSet(BasicTabularReport.REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS))
+            if(!rc.getReport().getFlags().flagIsSet(TabularReport.Flags.FIRST_DATA_ROW_HAS_HEADINGS))
                 produceHeadingRow(writer, rc);
             else
                 produceHeadingRow(writer, rc, ds);

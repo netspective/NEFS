@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceDocumentation.java,v 1.3 2003-03-24 13:24:31 shahid.shah Exp $
+ * $Id: ValueSourceDocumentation.java,v 1.4 2003-04-02 22:53:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -150,11 +150,6 @@ public class ValueSourceDocumentation
             sb.append(name);
         }
         return sb.toString();
-    }
-
-    public String getParamsHtml(String commandId)
-    {
-        return null;
     }
 
     public String getDescription()
