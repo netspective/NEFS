@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.25 2003-04-29 19:57:23 shahid.shah Exp $
+  * $Id: console.xml,v 1.26 2003-05-05 21:25:30 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -11,7 +11,7 @@
 
     <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
 
-    <navigation-tree name="ace" class="com.netspective.sparx.console.ConsoleNavigationTree">
+    <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" default="yes" sub-heading="trying something here">
             <panels style="horizontal">
                 <!--
@@ -93,7 +93,11 @@
                 <page name="test" caption="Unit Test"/>
 	        </page>
 	        <page name="dialog" caption="Dialogs">
-				<page name="catalog" caption="Catalog"/>
+				<page name="catalog" caption="Catalog">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.presentation.DialogsCatalogPanel"/>
+                    </panels>
+                </page>
 				<page name="test" caption="Unit Test"/>
 		        <page name="fields" caption="Fields"/>
 	        </page>

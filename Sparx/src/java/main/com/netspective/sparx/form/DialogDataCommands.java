@@ -39,40 +39,39 @@
  */
 
 /**
- * $Id: Theme.java,v 1.6 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: DialogDataCommands.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.form;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.io.InheritableFileResources;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
-public interface Theme
+public class DialogDataCommands extends XdmBitmaskedFlagsAttribute
 {
-    public String getName();
+    public static final int NONE = 0;
+    public static final int ADD = 1;
+    public static final int EDIT = ADD * 2;
+    public static final int DELETE = EDIT * 2;
+    public static final int CONFIRM = DELETE * 2;
+    public static final int PRINT = CONFIRM * 2;
+    public static final int LAST = PRINT * 2;
 
-    public InheritableFileResources getResources(ValueContext vc);
+    public static final FlagDefn[] DATA_COMMAND_DEFNS = new FlagDefn[]
+    {
+        new FlagDefn(DialogFlags.ACCESS_XDM, "ADD", ADD),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "EDIT", EDIT),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "DELETE", DELETE),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "PRINT", PRINT),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "CONFIRM", CONFIRM),
+    };
 
-    public ValueSource getResourcesPath();
+    public DialogDataCommands()
+    {
+        setFlagDelimiter(",");
+    }
 
-    public void setResourcesPath(ValueSource path);
-
-    public NavigationSkin getNavigationSkin();
-
-    public HtmlPanelSkin getPanelSkin();
-
-    public HtmlTabularReportSkin getReportSkin();
-
-    public DialogSkin getDialogSkin();
-
-    public DialogSkin getDialogSkin(String name);
-
-    public boolean isDefault();
-
-    public void setDefault(boolean defaultTheme);
+    public FlagDefn[] getFlagsDefns()
+    {
+        return DATA_COMMAND_DEFNS;
+    }
 }

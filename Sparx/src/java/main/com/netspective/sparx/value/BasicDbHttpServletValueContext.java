@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.6 2003-04-25 02:23:03 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.7 2003-05-05 21:25:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -72,6 +72,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 {
     public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT = "netspective-runtime-environment";
     public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_MODE = "netspective-runtime-environment-mode";
+    public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
 
     private ServletContext context;
     private Servlet servlet;
@@ -81,7 +82,16 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     private boolean isPrint;
     private String rootUrl;
 
+    public BasicDbHttpServletValueContext()
+    {
+    }
+
     public BasicDbHttpServletValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response)
+    {
+        initialize(context, servlet, request, response);
+    }
+
+    public void initialize(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response)
     {
         contextNum++;
         this.context = context;
@@ -281,6 +291,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public Theme getActiveTheme()
     {
-        return (Theme) request.getAttribute("sparx-active-theme");
+        return (Theme) request.getAttribute(REQATTRNAME_ACTIVE_THEME);
     }
 }

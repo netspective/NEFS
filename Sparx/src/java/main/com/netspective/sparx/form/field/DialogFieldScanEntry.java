@@ -39,40 +39,70 @@
  */
 
 /**
- * $Id: Theme.java,v 1.6 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: DialogFieldScanEntry.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.form.field;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.io.InheritableFileResources;
-
-public interface Theme
+public class DialogFieldScanEntry
 {
-    public String getName();
+    private String startCode;
+    private String stopCode;
+    private String partnerField;
+    private String customScript;
+    private String ignoreCase;
 
-    public InheritableFileResources getResources(ValueContext vc);
+    public DialogFieldScanEntry()
+    {
+    }
 
-    public ValueSource getResourcesPath();
+    public String getCustomScript()
+    {
+        return customScript;
+    }
 
-    public void setResourcesPath(ValueSource path);
+    public void setCustomScript(String customScript)
+    {
+        this.customScript = customScript;
+    }
 
-    public NavigationSkin getNavigationSkin();
+    public String getIgnoreCase()
+    {
+        return ignoreCase;
+    }
 
-    public HtmlPanelSkin getPanelSkin();
+    public void setIgnoreCase(boolean ignoreCase)
+    {
+        this.ignoreCase = ignoreCase ? "i" : "";
+    }
 
-    public HtmlTabularReportSkin getReportSkin();
+    public String getPartnerField()
+    {
+        return partnerField;
+    }
 
-    public DialogSkin getDialogSkin();
+    public void setPartnerField(String partnerField)
+    {
+        this.partnerField = partnerField;
+    }
 
-    public DialogSkin getDialogSkin(String name);
+    public String getStartCode()
+    {
+        return startCode;
+    }
 
-    public boolean isDefault();
+    public void setStartCode(String startCode)
+    {
+        this.startCode = startCode;
+    }
 
-    public void setDefault(boolean defaultTheme);
+    public String getStopCode()
+    {
+        return stopCode;
+    }
+
+    public void setStopCode(String stopCode)
+    {
+        this.stopCode = stopCode;
+    }
 }

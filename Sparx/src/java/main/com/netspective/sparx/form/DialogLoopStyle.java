@@ -39,40 +39,45 @@
  */
 
 /**
- * $Id: Theme.java,v 1.6 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: DialogLoopStyle.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.form;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.io.InheritableFileResources;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
-public interface Theme
+public class DialogLoopStyle extends XdmEnumeratedAttribute
 {
-    public String getName();
+    private static final String[] VALUES = new String[] { "no", "append", "prepend" };
 
-    public InheritableFileResources getResources(ValueContext vc);
+    public static final int NONE = 0;
+    public static final int APPEND = 1;
+    public static final int PREPEND = 2;
 
-    public ValueSource getResourcesPath();
+    private String loopSeparator = "<p>";
 
-    public void setResourcesPath(ValueSource path);
+    public DialogLoopStyle()
+    {
+    }
 
-    public NavigationSkin getNavigationSkin();
+    public DialogLoopStyle(int valueIndex)
+    {
+        super(valueIndex);
+    }
 
-    public HtmlPanelSkin getPanelSkin();
+    public String[] getValues()
+    {
+        return VALUES;
+    }
 
-    public HtmlTabularReportSkin getReportSkin();
+    public String getLoopSeparator()
+    {
+        return loopSeparator;
+    }
 
-    public DialogSkin getDialogSkin();
-
-    public DialogSkin getDialogSkin(String name);
-
-    public boolean isDefault();
-
-    public void setDefault(boolean defaultTheme);
+    public void setLoopSeparator(String loopSeparator)
+    {
+        this.loopSeparator = loopSeparator;
+    }
 }
+

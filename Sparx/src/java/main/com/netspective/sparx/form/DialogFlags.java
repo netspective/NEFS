@@ -39,40 +39,60 @@
  */
 
 /**
- * $Id: Theme.java,v 1.6 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: DialogFlags.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.form;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.io.InheritableFileResources;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
-public interface Theme
+public class DialogFlags extends XdmBitmaskedFlagsAttribute
 {
-    public String getName();
+    // NOTE: when adding new flags, make sure to create them before the
+    // last DLGFLAG_CUSTOM_START entry. This is because QueryBuilderDialog
+    // extends this class and has additional flags that is based on the value
+    // of DLGFLAG_CUSTOM_START.
+    public static final int CONTENTS_FINALIZED = 1;
+    public static final int RETAIN_ALL_REQUEST_PARAMS = CONTENTS_FINALIZED * 2;
+    public static final int HIDE_READONLY_HINTS = RETAIN_ALL_REQUEST_PARAMS * 2;
+    public static final int ENCTYPE_MULTIPART_FORMDATA = HIDE_READONLY_HINTS * 2;
+    public static final int HIDE_HEADING_IN_EXEC_MODE = ENCTYPE_MULTIPART_FORMDATA * 2;
+    public static final int READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA = HIDE_HEADING_IN_EXEC_MODE * 2;
+    public static final int READONLY_FIELDS_INVISIBLE_UNLESS_HAVE_DATA = READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA * 2;
+    public static final int CUSTOM_START = READONLY_FIELDS_INVISIBLE_UNLESS_HAVE_DATA * 2;
 
-    public InheritableFileResources getResources(ValueContext vc);
+    public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
+    {
+        new FlagDefn(DialogFlags.ACCESS_PRIVATE, "CONTENTS_FINALIZED", CONTENTS_FINALIZED),
+        new FlagDefn(DialogFlags.ACCESS_PRIVATE, "RETAIN_ALL_REQUEST_PARAMS", RETAIN_ALL_REQUEST_PARAMS),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_READONLY_HINTS", HIDE_READONLY_HINTS),
+        new FlagDefn(DialogFlags.ACCESS_PRIVATE, "ENCTYPE_MULTIPART_FORMDATA", ENCTYPE_MULTIPART_FORMDATA),
+        new FlagDefn(DialogFlags.ACCESS_PRIVATE, "HIDE_HEADING_IN_EXEC_MODE", HIDE_HEADING_IN_EXEC_MODE),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA", READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_INVISIBLE_UNLESS_HAVE_DATA", READONLY_FIELDS_INVISIBLE_UNLESS_HAVE_DATA)
+    };
 
-    public ValueSource getResourcesPath();
+    public DialogFlags()
+    {
+    }
 
-    public void setResourcesPath(ValueSource path);
+    public FlagDefn[] getFlagsDefns()
+    {
+        return FLAG_DEFNS;
+    }
 
-    public NavigationSkin getNavigationSkin();
+    public void clearFlag(long flag)
+    {
+        super.clearFlag(flag);
+        //if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
+        //    clearFlagRecursively(flag);
+    }
 
-    public HtmlPanelSkin getPanelSkin();
-
-    public HtmlTabularReportSkin getReportSkin();
-
-    public DialogSkin getDialogSkin();
-
-    public DialogSkin getDialogSkin(String name);
-
-    public boolean isDefault();
-
-    public void setDefault(boolean defaultTheme);
+    public void setFlag(long flag)
+    {
+        super.setFlag(flag);
+        //if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
+        //    setFlagRecursively(flag);
+    }
 }
+

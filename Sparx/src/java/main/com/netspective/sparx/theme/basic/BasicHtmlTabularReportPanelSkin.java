@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.8 2003-05-02 15:13:26 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.9 2003-05-05 21:25:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -107,7 +107,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
     {
         super(theme, panelStyle, fullWidth);
         setPanelStyle(panelStyle);
-        flags.setFlag(Flags.SHOW_HEAD_ROW | Flags.SHOW_FOOT_ROW | Flags.ALLOW_TREE_EXPAND_COLLAPSE);
+        flags.setFlag(Flags.SHOW_HEAD_ROW | Flags.SHOW_FOOT_ROW);
     }
 
     public BasicHtmlPanelSkin.Flags createFlags()

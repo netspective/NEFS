@@ -1,0 +1,1205 @@
+/*
+ * Copyright (c) 2000-2002 Netspective Corporation -- all rights reserved
+ *
+ * Netspective Corporation permits redistribution, modification and use
+ * of this file in source and binary form ("The Software") under the
+ * Netspective Source License ("NSL" or "The License"). The following
+ * conditions are provided as a summary of the NSL but the NSL remains the
+ * canonical license and must be accepted before using The Software. Any use of
+ * The Software indicates agreement with the NSL.
+ *
+ * 1. Each copy or derived work of The Software must preserve the copyright
+ *    notice and this notice unmodified.
+ *
+ * 2. Redistribution of The Software is allowed in object code form only
+ *    (as Java .class files or a .jar file containing the .class files) and only
+ *    as part of an application that uses The Software as part of its primary
+ *    functionality. No distribution of the package is allowed as part of a software
+ *    development kit, other library, or development tool without written consent of
+ *    Netspective Corporation. Any modified form of The Software is bound by
+ *    these same restrictions.
+ *
+ * 3. Redistributions of The Software in any form must include an unmodified copy of
+ *    The License, normally in a plain ASCII text file unless otherwise agreed to,
+ *    in writing, by Netspective Corporation.
+ *
+ * 4. The names "Sparx" and "Netspective" are trademarks of Netspective
+ *    Corporation and may not be used to endorse products derived from The
+ *    Software without without written consent of Netspective Corporation. "Sparx"
+ *    and "Netspective" may not appear in the names of products derived from The
+ *    Software without written consent of Netspective Corporation.
+ *
+ * 5. Please attribute functionality to Sparx where possible. We suggest using the
+ *    "powered by Sparx" button or creating a "powered by Sparx(tm)" link to
+ *    http://www.netspective.com for each application using Sparx.
+ *
+ * The Software is provided "AS IS," without a warranty of any kind.
+ * ALL EXPRESS OR IMPLIED REPRESENTATIONS AND WARRANTIES, INCLUDING ANY
+ * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
+ *
+ * NETSPECTIVE CORPORATION AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES
+ * SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A RESULT OF USING OR DISTRIBUTING
+ * THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE
+ * FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THE SOFTWARE, EVEN IF HE HAS BEEN ADVISED OF THE POSSIBILITY
+ * OF SUCH DAMAGES.
+ *
+ * @author Shahid N. Shah
+ */
+
+/**
+ * $Id: DialogContext.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ */
+
+package com.netspective.sparx.form;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
+import com.netspective.sparx.value.source.DialogFieldValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.axiom.schema.Row;
+
+/**
+ * A dialog context functions as the controller of the dialog, tracking and managing field state and field data.
+ * A new <code>DialogContext</code> object is created for each HTTP request coming from a JSP even though
+ * the dialogs are cached.
+ * <p>
+ * <img src="doc-files/dialogcontext-1.jpg"/>
+ * <p>
+ * For most occasions, the default <code>DialogContext</code> object should be sufficient but
+ * for special curcumstances when the behavior of a dialog needs to be modified, the <code>DialogContext</code> class
+ * can be extended (inherited) to create a customzied dialog context.
+ *
+ */
+public class DialogContext extends BasicDbHttpServletValueContext
+{
+    private static final Log log = LogFactory.getLog(DialogContext.class);
+
+    /**
+     * The name of a URL parameter, if present, that will be used as the redirect string after dialog execution
+     */
+    static public final String DEFAULT_REDIRECT_PARAM_NAME = "redirect";
+
+    /* if dialog fields need to be pre-populated (before the context is created)
+     * then a java.util.Map can be created and stored in the request attribute
+     * called "dialog-field-values". All keys in the map are field names, and values
+     * are the field values
+     */
+    static public final String DIALOG_FIELD_VALUES_ATTR_NAME = "dialog-field-values";
+
+    /* after the dialog context is created, it is automatically stored as
+     * request parameter with this name so that it is available throughout the
+     * request
+     */
+    static public final String DIALOG_CONTEXT_ATTR_NAME = "dialog-context";
+
+    static public final ValueSource dialogFieldStoreValueSource = new DialogFieldValueSource();
+
+    /**
+     * Unknown dialog stage
+     */
+    static public final char DIALOGMODE_UNKNOWN = ' ';
+    /**
+     * Dialog is in input stage
+     */
+    static public final char DIALOGMODE_INPUT = 'I';
+    /**
+     * Dialog is in validation stage
+     */
+    static public final char DIALOGMODE_VALIDATE = 'V';
+    /**
+     * Dialog is in execution stage
+     */
+    static public final char DIALOGMODE_EXECUTE = 'E';
+
+    /**
+     * The following constants are setup as flags but are most often used as enumerations. We use powers of two to
+     * allow them to be used either as enums or as flags.
+     */
+
+    /**
+     * Flag value indicating that the dialog validatation has not been performed
+     */
+    static public final int VALSTAGE_NOT_PERFORMED = 0;
+    /**
+     * Flag value indicating that the dialog validation failed
+     */
+    static public final int VALSTAGE_PERFORMED_FAILED = 1;
+    /**
+     * Flag value indicating that dialog validation succeeded
+     */
+    static public final int VALSTAGE_PERFORMED_SUCCEEDED = 2;
+    static public final int VALSTAGE_IGNORE = 3;
+
+    /**
+     * Used for indicating that the calculation of a dialog's stage is starting
+     */
+    static public final int STATECALCSTAGE_INITIAL = 0;
+    /**
+     * Used for indicating that the calculation of a dialog's stage is ending
+     */
+    static public final int STATECALCSTAGE_FINAL = 1;
+
+    public class DialogFieldStates
+    {
+        private Map statesByQualifiedName = new HashMap();
+
+        public DialogFieldStates()
+        {
+        }
+
+        public DialogField.DialogFieldState getState(DialogField field)
+        {
+            DialogField.DialogFieldState state = (DialogField.DialogFieldState) statesByQualifiedName.get(field.getQualifiedName());
+            if(state == null)
+                state = field.constructStateInstance(DialogContext.this);
+
+            return state;
+        }
+
+        public DialogField.DialogFieldState getState(String qualifiedName)
+        {
+            DialogField field = dialog.getFields().getByQualifiedName(qualifiedName);
+            if(field == null)
+                throw new RuntimeException("Field '"+ qualifiedName +"' not found in dialog '"+ dialog.getName() +"'.");
+            else
+                return getState(field);
+        }
+
+        public void persistValues()
+        {
+            Iterator i = statesByQualifiedName.values().iterator();
+            while(i.hasNext())
+            {
+                DialogField.DialogFieldState state = (DialogField.DialogFieldState) i.next();
+                state.persistValue();
+            }
+        }
+
+        /**
+         * Given a map of values, assign the value to each field. Each key in the map is
+         * a case-sensitive field name (should be the same fully qualified name as the field)
+         * and the value is either a String[] or an Object. If the value is an Object, then
+         * the toString() method will be called on the object to get a single value. If the
+         * value is a String[] then the assignment will be made directly (by reference).
+         */
+        public void assignFieldValues(DialogContext dc, Map values)
+        {
+            DialogFields dialogFields = dc.getDialog().getFields();
+            for(Iterator i = values.entrySet().iterator(); i.hasNext();)
+            {
+                String fieldName = (String) ((Map.Entry) i.next()).getKey();
+                DialogField field = dialogFields.getByQualifiedName(fieldName);
+                DialogField.DialogFieldState state = getState(field);
+                state.getValue().setValue(((Map.Entry) i.next()).getValue());
+            }
+        }
+
+        public void setStateFlag(DialogField field, long flag)
+        {
+            DialogField.DialogFieldState state = getState(field);
+            state.getStateFlags().setFlag(flag);
+            DialogFields children = field.getChildren();
+            if(children != null)
+            {
+                for(int i = 0; i < children.size(); i++)
+                    setStateFlag(children.get(i), flag);
+            }
+        }
+
+        public void clearStateFlag(DialogField field, long flag)
+        {
+            DialogField.DialogFieldState state = getState(field);
+            state.getStateFlags().clearFlag(flag);
+            DialogFields children = field.getChildren();
+            if(children != null)
+            {
+                for(int i = 0; i < children.size(); i++)
+                    clearStateFlag(children.get(i), flag);
+            }
+        }
+
+        public void addErrorMessage(DialogField field, String message)
+        {
+            DialogField.DialogFieldState state = getState(field);
+            state.addErrorMessage(message);
+        }
+
+        public int size()
+        {
+            return statesByQualifiedName.size();
+        }
+
+        public String toString()
+        {
+            return statesByQualifiedName.toString();
+        }
+    }
+
+    private DialogFieldStates fieldStates = new DialogFieldStates();
+    private ArrayList dlgErrorMessages;
+    private boolean resetContext;
+    private String transactionId;
+    private Dialog dialog;
+    private DialogSkin skin;
+    private char activeMode;
+    private char nextMode;
+    private int runSequence;
+    private int execSequence;
+    private int validationStage;
+    private String originalReferer;
+    private boolean executeHandled;
+    private DialogDebugFlags debugFlags = new DialogDebugFlags();
+    private DialogDataCommands dataCommands = new DialogDataCommands();
+    private String[] retainReqParams;
+    private int errorsCount;
+    private boolean redirectDisabled;
+    private Row lastRowManipulated;
+
+    public DialogContext()
+    {
+    }
+
+    /**
+     * Initializes the dialog context object. Called by the <code>Dialog</code> after creating the context.
+     *
+     * @param aDialog the Dialog object which this context is associated with
+     * @param aSkin the DialogSkin object of the dialog
+     */
+    public void initialize(NavigationContext nc, Dialog aDialog, DialogSkin aSkin)
+    {
+        super.initialize(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse());
+        HttpServletRequest request = nc.getHttpRequest();
+        nc.getRequest().setAttribute(DIALOG_CONTEXT_ATTR_NAME, this);
+
+        String overrideSkin = request.getParameter(Dialog.PARAMNAME_OVERRIDE_SKIN);
+        if(overrideSkin != null)
+            aSkin = nc.getActiveTheme().getDialogSkin(overrideSkin);
+
+        dialog = aDialog;
+        skin = aSkin == null ? nc.getActiveTheme().getDialogSkin() : aSkin;
+
+        activeMode = DIALOGMODE_UNKNOWN;
+        nextMode = DIALOGMODE_UNKNOWN;
+        validationStage = VALSTAGE_NOT_PERFORMED;
+        String runSeqValue = request.getParameter(dialog.getRunSequenceParamName());
+        if(runSeqValue != null)
+            runSequence = new Integer(runSeqValue).intValue();
+        else
+            runSequence = 1;
+
+        String execSeqValue = request.getParameter(dialog.getExecuteSequenceParamName());
+        if(execSeqValue != null)
+            execSequence = new Integer(execSeqValue).intValue();
+        else
+            execSequence = 0; // we have not executed at all yet
+
+        String resetContext = request.getParameter(dialog.getResetContextParamName());
+        if(resetContext != null)
+        {
+            runSequence = 1;
+            execSequence = 0;
+            this.resetContext = true;
+        }
+
+        String dataCmdStr = null;
+        String debugFlagsStr = null;
+
+        if(runSequence == 1)
+        {
+            originalReferer = request.getHeader("Referer");
+            try
+            {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update((dialog.getHtmlFormName() + new Date().toString()).getBytes());
+                transactionId = md.digest().toString();
+            }
+            catch(NoSuchAlgorithmException e)
+            {
+                transactionId = "No MessageDigest Algorithm found!";
+                log.error(e);
+            }
+            dataCmdStr = (String) request.getAttribute(Dialog.PARAMNAME_DATA_CMD_INITIAL);
+            if(dataCmdStr == null)
+                dataCmdStr = request.getParameter(Dialog.PARAMNAME_DATA_CMD_INITIAL);
+            debugFlagsStr = (String) request.getAttribute(Dialog.PARAMNAME_DEBUG_FLAGS_INITIAL);
+            if(debugFlagsStr == null)
+                debugFlagsStr = request.getParameter(Dialog.PARAMNAME_DEBUG_FLAGS_INITIAL);
+        }
+        else
+        {
+            originalReferer = request.getParameter(dialog.getOriginalRefererParamName());
+            transactionId = request.getParameter(dialog.getTransactionIdParamName());
+            dataCmdStr = request.getParameter(dialog.getDataCmdParamName());
+            debugFlagsStr = request.getParameter(dialog.getDebugFlagsParamName());
+        }
+
+        dataCommands.setValue(dataCmdStr);
+        debugFlags.setValue(debugFlagsStr);
+    }
+
+    public void setLastRowManipulated(Row row)
+    {
+        lastRowManipulated = row;
+    }
+
+    public Row getLastRowManipulated()
+    {
+        return lastRowManipulated;
+    }
+
+    public void persistValues()
+    {
+        fieldStates.persistValues();
+    }
+
+    public boolean isRedirectDisabled()
+    {
+        return redirectDisabled;
+    }
+
+    public void setRedirectDisabled(boolean value)
+    {
+        redirectDisabled = value;
+    }
+
+    /**
+     * Return the next action url (where to redirect after execute) based on user input or other method.
+     */
+    public String getNextActionUrl(String defaultUrl)
+    {
+        return dialog.getNextActionUrl(this, defaultUrl);
+    }
+
+    public void performDefaultRedirect(Writer writer, String redirect) throws IOException
+    {
+        ServletRequest request = getRequest();
+        String redirectToUrl = redirect != null ? redirect : request.getParameter(DEFAULT_REDIRECT_PARAM_NAME);
+        if(redirectToUrl == null)
+        {
+            redirectToUrl = request.getParameter(dialog.getPostExecuteRedirectUrlParamName());
+            if(redirectToUrl == null)
+                redirectToUrl = getNextActionUrl(getOriginalReferer());
+        }
+
+        if(redirectDisabled || redirectToUrl == null)
+        {
+            writer.write("<p><b>Redirect is disabled</b>.");
+            writer.write("<br><code>redirect</code> method parameter is <code>"+ redirect +"</code>");
+            writer.write("<br><code>redirect</code> URL parameter is <code>"+ request.getParameter(DEFAULT_REDIRECT_PARAM_NAME) +"</code>");
+            writer.write("<br><code>redirect</code> form field is <code>"+ request.getParameter(dialog.getPostExecuteRedirectUrlParamName()) +"</code>");
+            writer.write("<br><code>getNextActionUrl</code> method result is <code>"+ getNextActionUrl(null) +"</code>");
+            writer.write("<br><code>original referer</code> url is <code>"+ getOriginalReferer() +"</code>");
+            writer.write("<p><font color=red>Would have redirected to <code>"+ redirectToUrl +"</code>.</font>");
+            return;
+        }
+
+        HttpServletResponse response = (HttpServletResponse) getResponse();
+        if(response.isCommitted())
+            skin.renderRedirectHtml(writer, this, redirectToUrl);
+        else
+            response.sendRedirect(redirectToUrl);
+    }
+
+    /**
+     * Check the dataCmdCondition against each available data command and see if it's set in the condition; if the
+     * data command is set in the condition, then check to see if our data command for that command id is set. If any
+     * of the data commands in dataCommandCondition match our current dataCmd, return true.
+     *
+     * @param dataCmdCondition the data command condition
+     * @return boolean True if the data commands in the passes in condition matches the current dialog data command
+     */
+    public boolean matchesDataCmdCondition(int dataCmdCondition)
+    {
+        if(dataCmdCondition == DialogDataCommands.NONE || dataCommands.getFlags() == DialogDataCommands.NONE)
+            return false;
+
+        int lastDataCmd = DialogDataCommands.LAST;
+        for(int i = 1; i <= lastDataCmd; i *= 2)
+        {
+            // if the dataCmdCondition's dataCmd i is set, it means we need to check our dataCmd to see if we're set
+            if((dataCmdCondition & i) != 0 && dataCommands.flagIsSet(i))
+                return true;
+        }
+
+        // if we get to here, nothing matched
+        return false;
+    }
+
+    /**
+     * Returns a string useful for displaying a unique Id for this DialogContext
+     * in a log or monitor file.
+     *
+     * @return String Log id
+     */
+    public String getLogId()
+    {
+        return dialog.getHtmlFormName() + " (" + transactionId + ")";
+    }
+
+    /**
+     * Using a Document or element that was serialized using the exportToXml method in this class,
+     * reconstruct the DialogFieldStates hash map. This is basically a data deserialization method.
+     *
+     * @param parent dialog context element's parent
+     */
+    /* TODO: implement this
+    public void importFromXml(Element parent)
+    {
+        NodeList dcList = parent.getElementsByTagName("dialog-context");
+        if(dcList.getLength() > 0)
+        {
+            Element dcElem = (Element) dcList.item(0);
+            NodeList children = dcElem.getChildNodes();
+            for(int n = 0; n < children.getLength(); n++)
+            {
+                Node node = children.item(n);
+                if(node.getNodeName().equals("field"))
+                {
+                    Element fieldElem = (Element) node;
+                    String fieldName = fieldElem.getAttribute("name");
+                    DialogFieldState state = (DialogFieldState) fieldStates.get(fieldName);
+                    if(state != null)
+                        state.importFromXml(fieldElem);
+                }
+            }
+        }
+    }
+
+    static public void exportParamToXml(Element parent, String name, String[] values)
+    {
+        Document doc = parent.getOwnerDocument();
+        Element fieldElem = doc.createElement("request-param");
+        fieldElem.setAttribute("name", name);
+        if(values != null && values.length > 1)
+        {
+            fieldElem.setAttribute("value-type", "strings");
+            Element valuesElem = doc.createElement("values");
+            for(int i = 0; i < values.length; i++)
+            {
+                Element valueElem = doc.createElement("value");
+                valueElem.appendChild(doc.createTextNode(values[i]));
+                valuesElem.appendChild(valueElem);
+            }
+            fieldElem.appendChild(valuesElem);
+            parent.appendChild(fieldElem);
+        }
+        else if(values != null)
+        {
+            fieldElem.setAttribute("value-type", "string");
+            Element valueElem = doc.createElement("value");
+            valueElem.appendChild(doc.createTextNode(values[0]));
+            fieldElem.appendChild(valueElem);
+            parent.appendChild(fieldElem);
+        }
+    }
+
+    public void exportToXml(Element parent)
+    {
+        ServletRequest request = getRequest();
+        Element dcElem = parent.getOwnerDocument().createElement("dialog-context");
+        dcElem.setAttribute("name", dialog.getName());
+        dcElem.setAttribute("transaction", transactionId);
+        for(Iterator i = fieldStates.values().iterator(); i.hasNext();)
+        {
+            DialogFieldState state = (DialogFieldState) i.next();
+            state.exportToXml(dcElem);
+        }
+
+        Set retainedParams = null;
+        if(retainReqParams != null)
+        {
+            retainedParams = new HashSet();
+            for(int i = 0; i < retainReqParams.length; i++)
+            {
+                String paramName = retainReqParams[i];
+                String[] paramValues = request.getParameterValues(paramName);
+                if(paramValues != null)
+                    exportParamToXml(dcElem, paramName, paramValues);
+                retainedParams.add(paramName);
+            }
+        }
+        boolean retainedAnyParams = retainedParams != null;
+
+        if(dialog.retainRequestParams())
+        {
+            if(dialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS))
+            {
+                for(Enumeration e = request.getParameterNames(); e.hasMoreElements();)
+                {
+                    String paramName = (String) e.nextElement();
+                    if(paramName.startsWith(Dialog.PARAMNAME_DIALOGPREFIX) ||
+                            paramName.startsWith(Dialog.PARAMNAME_CONTROLPREFIX) ||
+                            (retainedAnyParams && retainedParams.contains(paramName)))
+                        continue;
+
+                    exportParamToXml(dcElem, paramName, request.getParameterValues(paramName));
+                }
+            }
+            else
+            {
+                String[] retainParams = dialog.getRetainParams();
+                int retainParamsCount = retainParams.length;
+
+                for(int i = 0; i < retainParamsCount; i++)
+                {
+                    String paramName = retainParams[i];
+                    if(retainedAnyParams && retainedParams.contains(paramName))
+                        continue;
+
+                    exportParamToXml(dcElem, paramName, request.getParameterValues(paramName));
+                }
+            }
+        }
+
+        parent.appendChild(dcElem);
+    }
+
+    public void setFromXml(String xml) throws ParserConfigurationException, SAXException, IOException
+    {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+
+        InputStream is = new java.io.ByteArrayInputStream(xml.getBytes());
+        Document doc = builder.parse(is);
+        importFromXml(doc.getDocumentElement());
+    }
+
+    public String getAsXml() throws ParserConfigurationException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+        Element root = doc.createElement("xaf");
+        doc.appendChild(root);
+
+        exportToXml(doc.getDocumentElement());
+
+        // we use reflection so that org.apache.xml.serialize.* is not a package requirement
+
+        Class serializerCls = Class.forName("org.apache.xml.serialize.XMLSerializer");
+        Class outputFormatCls = Class.forName("org.apache.xml.serialize.OutputFormat");
+
+        Constructor serialCons = serializerCls.getDeclaredConstructor(new Class[]{OutputStream.class, outputFormatCls});
+        Constructor outputCons = outputFormatCls.getDeclaredConstructor(new Class[]{Document.class});
+
+        OutputStream os = new java.io.ByteArrayOutputStream();
+
+        Object outputFormat = outputCons.newInstance(new Object[]{doc});
+        Method indenting = outputFormatCls.getMethod("setIndenting", new Class[]{boolean.class});
+        indenting.invoke(outputFormat, new Object[]{new Boolean(true)});
+        Method omitXmlDecl = outputFormatCls.getMethod("setOmitXMLDeclaration", new Class[]{boolean.class});
+        omitXmlDecl.invoke(outputFormat, new Object[]{new Boolean(true)});
+
+        Object serializer = serialCons.newInstance(new Object[]{os, outputFormat});
+        Method serialize = serializerCls.getMethod("serialize", new Class[]{Document.class});
+        serialize.invoke(serializer, new Object[]{doc});
+
+        return os.toString();
+    }
+    */
+
+    /**
+     * Calculate what the next state or stage of the dialog should be.
+     */
+    public void calcState()
+    {
+        activeMode = DIALOGMODE_INPUT;
+        dialog.makeStateChanges(this, STATECALCSTAGE_INITIAL);
+
+        ServletRequest request = getRequest();
+        String ignoreVal = request.getParameter(Dialog.PARAMNAME_IGNORE_VALIDATION);
+        if(ignoreVal != null && !ignoreVal.equals("no"))
+            setValidationStage(VALSTAGE_IGNORE);
+
+        String autoExec = request.getParameter(Dialog.PARAMNAME_AUTOEXECUTE);
+        if (autoExec == null || autoExec.length() == 0)
+        {
+            // if no autoexec is defined in the request parameter, look for it also in the request attribute
+            autoExec = (String) request.getAttribute(Dialog.PARAMNAME_AUTOEXECUTE);
+        }
+
+        int isValidReturnVal = -1;
+
+        if(autoExec != null && !autoExec.equals("no"))
+        {
+            activeMode = dialog.isValid(this) ? DIALOGMODE_EXECUTE : DIALOGMODE_VALIDATE;
+        }
+        else if(!resetContext)
+        {
+            String modeParamValue = request.getParameter(dialog.getActiveModeParamName());
+            if(modeParamValue != null)
+            {
+                char givenMode = modeParamValue.charAt(0);
+                if(givenMode == DIALOGMODE_VALIDATE)
+                {
+                    isValidReturnVal = dialog.isValid(this) ? 1 : 0;
+                    activeMode = isValidReturnVal == 1 ? DIALOGMODE_EXECUTE : DIALOGMODE_VALIDATE;
+                }
+                else
+                    activeMode = givenMode;
+//                activeMode = (
+//                        givenMode == DIALOGMODE_VALIDATE ?
+//                        (dialog.isValid(this) ? DIALOGMODE_EXECUTE : DIALOGMODE_VALIDATE) :
+//                        givenMode
+//                        );
+            }
+        }
+
+        nextMode = activeMode;
+        if(activeMode == DIALOGMODE_INPUT)
+        {
+            nextMode = dialog.needsValidation(this) ? DIALOGMODE_VALIDATE : DIALOGMODE_EXECUTE;
+        }
+        else if(activeMode == DIALOGMODE_VALIDATE)
+        {
+            if(isValidReturnVal == -1)
+                isValidReturnVal = dialog.isValid(this) ? 1 : 0;
+            nextMode = isValidReturnVal == 1 ? DIALOGMODE_EXECUTE : DIALOGMODE_VALIDATE;
+        }
+        else if(activeMode == DIALOGMODE_EXECUTE)
+        {
+            execSequence++;
+
+            if(dialog.getLoop().getValueIndex() != DialogLoopStyle.NONE)
+                nextMode = dialog.needsValidation(this) ? DIALOGMODE_VALIDATE : DIALOGMODE_EXECUTE;
+            else
+                nextMode = DIALOGMODE_INPUT;
+        }
+
+        if(dlgErrorMessages != null)
+            nextMode = DIALOGMODE_VALIDATE;
+
+        dialog.makeStateChanges(this, STATECALCSTAGE_FINAL);
+    }
+
+    public DialogFieldStates getFieldStates()
+    {
+        return this.fieldStates;
+    }
+
+    public String getTransactionId()
+    {
+        return transactionId;
+    }
+
+    /**
+     * Indicates whether or not the context was reset
+     *
+     * @return boolean True if context was reset
+     */
+    public boolean contextWasReset()
+    {
+        return resetContext;
+    }
+
+    /**
+     * Gets the number of times the dialog has been ran
+     *
+     * @return int sequence number
+     */
+    public int getRunSequence()
+    {
+        return runSequence;
+    }
+
+    /**
+     * Gets the number of times the dialog has been executed
+     *
+     * @return int execution count
+     */
+    public int getExecuteSequence()
+    {
+        return execSequence;
+    }
+
+    public boolean isInitialEntry()
+    {
+        return runSequence == 1;
+    }
+
+    /**
+     * Indicates whether or no if this is a first attempt at executing the dialog
+     *
+     * @return boolean True if the execution is for the first time
+     */
+    public boolean isInitialExecute()
+    {
+        return execSequence == 1;
+    }
+
+    /**
+     * Indicates whether or not if the dialog has been executed already
+     *
+     * @return boolean True if current exectuion is a duplicate one
+     */
+    public boolean isDuplicateExecute()
+    {
+        return execSequence > 1;
+    }
+
+    /**
+     * Returns the active mode of the dialog
+     *
+     * @return char Mode
+     */
+    public char getActiveMode()
+    {
+        return activeMode;
+    }
+
+    /**
+     *  Sets the active mode of the dialog
+     * @param mode
+     */
+    public void setActiveMode(char mode)
+    {
+        activeMode = mode;
+    }
+
+    /**
+     * Returns what the next mode of the dialog is
+     *
+     * @return char Mode
+     */
+    public char getNextMode()
+    {
+        return nextMode;
+    }
+
+    /**
+     * Set the next mode of the dialog
+     */
+    public void setNextMode(char mode)
+    {
+        nextMode = mode;
+    }
+    /**
+     * Indicates whether or not the dialog is in input mode
+     *
+     * @return boolean True if the dialog is in input mode
+     */
+    public boolean inInputMode()
+    {
+        return activeMode == DIALOGMODE_INPUT;
+    }
+
+    /**
+     * Indicates whether or not the dialog is in execution mode
+     *
+     * @return boolean True if the dialog is in execution mode
+     */
+    public boolean inExecuteMode()
+    {
+        return activeMode == DIALOGMODE_EXECUTE;
+    }
+
+    /**
+     * Return true if the "pending" button was pressed in the dialog.
+     *
+     * @return boolean
+     */
+    public boolean isPending()
+    {
+        return validationStage == VALSTAGE_IGNORE;
+    }
+
+    /**
+     *
+     */
+    public String getOriginalReferer()
+    {
+        return originalReferer;
+    }
+
+    /**
+     * Returns the <code>Dialog</code> object this context is associated with
+     *
+     * @return Dialog dialog object
+     */
+    public Dialog getDialog()
+    {
+        return dialog;
+    }
+
+    /**
+     * Returns the <code>DialogSkin</code> object the dialog is using for its display
+     *
+     * @return DialogSkin dialog skin
+     */
+    public DialogSkin getSkin()
+    {
+        return skin;
+    }
+
+    /**
+     * Returns the number of errors which occurred during validation
+     *
+     * @return int total error count
+     */
+    public int getErrorsCount()
+    {
+        return errorsCount;
+    }
+
+    public DialogDataCommands getDataCommands()
+    {
+        return dataCommands;
+    }
+
+    public DialogDebugFlags getDebugFlags()
+    {
+        return debugFlags;
+    }
+
+    public boolean addingData()
+    {
+        return dataCommands.flagIsSet(DialogDataCommands.ADD);
+    }
+
+    public boolean editingData()
+    {
+        return dataCommands.flagIsSet(DialogDataCommands.EDIT);
+    }
+
+    public boolean deletingData()
+    {
+        return dataCommands.flagIsSet(DialogDataCommands.DELETE);
+    }
+
+    public boolean confirmingData()
+    {
+        return dataCommands.flagIsSet(DialogDataCommands.CONFIRM);
+    }
+
+    public boolean printingData()
+    {
+        return dataCommands.flagIsSet(DialogDataCommands.PRINT);
+    }
+
+    /**
+     * Indicates whether or not validation has been performed for the dialog
+     *
+     * @return boolean True if validation has been done
+     */
+    public boolean validationPerformed()
+    {
+        return validationStage != VALSTAGE_NOT_PERFORMED ? true : false;
+    }
+
+    /**
+     * Returns the validation stage
+     *
+     * @return int
+     */
+    public int getValidationStage()
+    {
+        return validationStage;
+    }
+
+    /**
+     * Sets the validation stage
+     *
+     * @param value stage
+     */
+    public void setValidationStage(int value)
+    {
+        validationStage = value;
+    }
+
+    public boolean executeStageHandled()
+    {
+        return executeHandled;
+    }
+
+    public void setExecuteStageHandled(boolean value)
+    {
+        executeHandled = value;
+    }
+
+    /**
+     * Retrieves the HTTP request parameters that has been retained through the different dialog states
+     *
+     * @return String[] a string array of request parameters
+     */
+    public String[] getRetainRequestParams()
+    {
+        return retainReqParams;
+    }
+
+    /**
+     * Sets the HTTP request parameters to retain
+     *
+     * @param params HTTP request parameters
+     */
+    public void setRetainRequestParams(String[] params)
+    {
+        retainReqParams = params;
+    }
+
+    /**
+     * Returns a HTML string which contains hidden  form fields representing the dialog's information
+     */
+    public String getStateHiddens()
+    {
+        ServletRequest request = getRequest();
+
+        StringBuffer hiddens = new StringBuffer();
+        hiddens.append("<input type='hidden' name='" + dialog.getOriginalRefererParamName() + "' value='" + originalReferer + "'>\n");
+        hiddens.append("<input type='hidden' name='" + dialog.getTransactionIdParamName() + "' value='" + transactionId + "'>\n");
+        hiddens.append("<input type='hidden' name='" + dialog.getRunSequenceParamName() + "' value='" + (runSequence + 1) + "'>\n");
+        hiddens.append("<input type='hidden' name='" + dialog.getExecuteSequenceParamName() + "' value='" + execSequence + "'>\n");
+        hiddens.append("<input type='hidden' name='" + dialog.getActiveModeParamName() + "' value='" + nextMode + "'>\n");
+        //TODO: hiddens.append("<input type='hidden' name='" + dialog.PARAMNAME_DIALOGQNAME + "' value='" + (runSequence > 1 ? request.getParameter(Dialog.PARAMNAME_DIALOGQNAME) : request.getParameter(DialogManager.REQPARAMNAME_DIALOG)) + "'>\n");
+
+        String redirectUrlParamValue = (runSequence > 1 ? request.getParameter(dialog.getPostExecuteRedirectUrlParamName()) : request.getParameter(DialogContext.DEFAULT_REDIRECT_PARAM_NAME));
+        if(redirectUrlParamValue != null)
+            hiddens.append("<input type='hidden' name='" + dialog.getPostExecuteRedirectUrlParamName() + "' value='" + redirectUrlParamValue + "'>\n");
+
+        if(dataCommands.getFlags() != 0)
+            hiddens.append("<input type='hidden' name='" + dialog.getDataCmdParamName() + "' value='" + dataCommands.getFlagsText() + "'>\n");
+
+        if(debugFlags.getFlags() != 0)
+            hiddens.append("<input type='hidden' name='" + dialog.getDebugFlagsParamName() + "' value='" + debugFlags.getFlagsText() + "'>\n");
+
+        Set retainedParams = null;
+        if(retainReqParams != null)
+        {
+            retainedParams = new HashSet();
+            for(int i = 0; i < retainReqParams.length; i++)
+            {
+                String paramName = retainReqParams[i];
+                Object paramValue = request.getParameter(paramName);
+                if(paramValue == null)
+                    continue;
+
+                hiddens.append("<input type='hidden' name='");
+                hiddens.append(paramName);
+                hiddens.append("' value='");
+                hiddens.append(paramValue);
+                hiddens.append("'>\n");
+                retainedParams.add(paramName);
+            }
+        }
+        boolean retainedAnyParams = retainedParams != null;
+
+        if(dialog.retainRequestParams())
+        {
+            if(dialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS))
+            {
+                for(Enumeration e = request.getParameterNames(); e.hasMoreElements();)
+                {
+                    String paramName = (String) e.nextElement();
+                    if(paramName.startsWith(Dialog.PARAMNAME_DIALOGPREFIX) ||
+                            paramName.startsWith(Dialog.PARAMNAME_CONTROLPREFIX) ||
+                            (retainedAnyParams && retainedParams.contains(paramName)))
+                        continue;
+
+                    hiddens.append("<input type='hidden' name='");
+                    hiddens.append(paramName);
+                    hiddens.append("' value='");
+                    hiddens.append(request.getParameter(paramName));
+                    hiddens.append("'>\n");
+                }
+            }
+            else
+            {
+                String[] retainParams = dialog.getRetainParams();
+                int retainParamsCount = retainParams.length;
+
+                for(int i = 0; i < retainParamsCount; i++)
+                {
+                    String paramName = retainParams[i];
+                    if(retainedAnyParams && retainedParams.contains(paramName))
+                        continue;
+
+                    hiddens.append("<input type='hidden' name='");
+                    hiddens.append(paramName);
+                    hiddens.append("' value='");
+                    hiddens.append(request.getParameter(paramName));
+                    hiddens.append("'>\n");
+                }
+            }
+        }
+
+        return hiddens.toString();
+    }
+
+    /**
+     *  Return error messages that are not specific to a particular field (at the Dialog level)
+     */
+
+    public List getErrorMessages()
+    {
+        return dlgErrorMessages;
+    }
+
+    /**
+     *  Add error message that is not specific to a particular field (at the Dialog level)
+     */
+
+    public void addErrorMessage(String message)
+    {
+        if(dlgErrorMessages == null)
+            dlgErrorMessages = new ArrayList();
+
+        for(Iterator i = dlgErrorMessages.iterator(); i.hasNext();)
+        {
+            if(i.next().equals(message))
+                return;
+        }
+
+        dlgErrorMessages.add(message);
+        errorsCount++;
+    }
+
+    public void populateValuesFromStatement(String statementId)
+    {
+        populateValuesFromStatement(null, statementId, null);
+    }
+
+    public void populateValuesFromStatement(String statementId, Object[] params)
+    {
+        populateValuesFromStatement(null, statementId, params);
+    }
+
+    public void populateValuesFromStatement(String dataSourceId, String statementId, Object[] params)
+    {
+        throw new RuntimeException("Not implemented yet.");
+/*
+        try
+        {
+            ServletContext context = getServletContext();
+            StatementManager stmtMgr = StatementManagerFactory.getManager(context);
+            DatabaseContext dbContext = DatabaseContextFactory.getContext(getRequest(), context);
+            StatementInfo.ResultInfo ri = stmtMgr.execute(dbContext, this, dataSourceId, statementId, params);
+            dialogFieldStoreValueSource.setValue(this, ri.getResultSet(), ValueSource.RESULTSET_STORETYPE_SINGLEROWFORMFLD);
+            ri.close();
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException(e.toString());
+        }
+*/
+    }
+
+    public void populateValuesFromSql(String sql)
+    {
+        populateValuesFromSql(null, sql, null);
+    }
+
+    public void populateValuesFromSql(String sql, Object[] params)
+    {
+        populateValuesFromSql(null, sql, params);
+    }
+
+    public void populateValuesFromSql(String dataSourceId, String sql, Object[] params)
+    {
+        throw new RuntimeException("Not implemented yet.");
+/*
+        try
+        {
+            ServletContext context = getServletContext();
+            DatabaseContext dbContext = DatabaseContextFactory.getContext(getRequest(), context);
+            StatementInfo.ResultInfo ri = StatementManager.executeSql(dbContext, this, dataSourceId, sql, params);
+            dialogFieldStoreValueSource.setValue(this, ri.getResultSet(), ValueSource.RESULTSET_STORETYPE_SINGLEROWFORMFLD);
+            ri.close();
+        }
+        catch(Exception e)
+        {
+            LogManager.recordException(this.getClass(), "populateValuesFromSql", "[SQL: " + sql + "]", e);
+            throw new RuntimeException(
+                        ConfigurationManagerFactory.isProductionEnvironment(servletContext) ?
+                            "Error in populateValuesFromSql: please view '"+ LogManager.DEBUG_EXCEPTION +"' logger for details." :
+                            "Error in populateValuesFromSql: [" + sql + "] " + e.toString()
+                      );
+        }
+*/
+    }
+
+    public String getDebugHtml()
+    {
+        StringBuffer values = new StringBuffer();
+
+        for(Iterator i = fieldStates.statesByQualifiedName.values().iterator(); i.hasNext();)
+        {
+            DialogField.DialogFieldState state = (DialogField.DialogFieldState) i.next();
+            values.append("<tr valign=top><td>" + state.getField().getQualifiedName() + "</td><td>" + TextUtils.escapeHTML(state.getValue().getTextValue()) + "</td></tr>");
+        }
+
+        String XML = null;
+        try
+        {
+            //XML = getAsXml();
+            if(XML != null)
+                XML = TextUtils.escapeHTML(XML);
+        }
+        catch(Exception e)
+        {
+            StringWriter stack = new StringWriter();
+            e.printStackTrace(new PrintWriter(stack));
+            XML = e.toString() + stack.toString();
+        }
+
+        return "<table border=1 cellspacing=0 cellpadding=4>" +
+                "<tr><td><b>Dialog</b></td><td>" + dialog.getHtmlFormName() + "</td></tr>" +
+                "<tr><td><b>Run Sequence</b></td><td>" + runSequence + "</td></tr>" +
+                "<tr><td><b>Active/Next Mode</b></td><td>" + activeMode + " -> " + nextMode + "</td></tr>" +
+                "<tr><td><b>Validation Stage</b></td><td>" + validationStage + "</td></tr>" +
+                "<tr><td><b>Is Pending</b></td><td>" + isPending() + "</td></tr>" +
+                "<tr><td><b>Data Command</b></td><td>" + dataCommands + "</td></tr>" +
+                values.toString() +
+                "<tr><td><b>XML Representation</b></td><td><pre>" + XML + "</pre></td></tr>" +
+                "</table>";
+    }
+
+    /**
+     * Prints out all the field names and their respective values contained within the Dialog context
+     *
+     * @return String dialog context values string
+     */
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer(super.toString() + "\n[\n");
+        Set keySet = fieldStates.statesByQualifiedName.keySet();
+        Iterator keySetIterator = keySet.iterator();
+        while (keySetIterator.hasNext())
+        {
+            Object key = keySetIterator.next();
+            DialogField.DialogFieldState dfs = (DialogField.DialogFieldState) fieldStates.statesByQualifiedName.get(key);
+            sb.append(key + "(" + dfs.value.getClass() + ") = " + dfs.value + "\n");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+}

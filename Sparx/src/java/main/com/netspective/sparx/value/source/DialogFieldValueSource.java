@@ -39,53 +39,85 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.9 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogFieldValueSource.java,v 1.1 2003-05-05 21:25:32 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.value.source;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.io.File;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-import javax.servlet.ServletConfig;
+import java.util.List;
+import java.util.ArrayList;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.ApplicationManagerComponent;
-import com.netspective.sparx.ApplicationManager;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
-import com.netspective.commons.xdm.XdmComponentFactory;
+import javax.servlet.ServletRequest;
 
-public class ConsoleServlet extends NavigationControllerServlet
+import com.netspective.commons.value.source.AbstractValueSource;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.AbstractValue;
+import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.sparx.value.ServletValueContext;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.Dialog;
+
+public class DialogFieldValueSource extends AbstractValueSource
 {
-    protected Theme getTheme()
+    public static final String[] IDENTIFIERS = new String[] { "field", "dialog-field" };
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
+            "Provides access to a specific field of a dialog.",
+            new ValueSourceDocumentation.Parameter[]
+            {
+                new ValueSourceDocumentation.Parameter("field-name", true, null, null, "The name of the field.")
+            }
+    );
+
+    private String fieldName;
+    private ServletRequestParameterValueSource servletRequestParameterValueSource;
+
+    public static String[] getIdentifiers()
     {
-        return Themes.getInstance().getTheme("console");
+        return IDENTIFIERS;
     }
 
-    protected NavigationTree getNavigationTree(ApplicationManager am)
+    public static ValueSourceDocumentation getDocumentation()
     {
-        return am.getConsoleNavigationTree();
+        return DOCUMENTATION;
     }
 
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
+    public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
     {
-        NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
-        if(nc.isRedirectToAlternateChildRequired())
+        super.initialize(spec);
+        fieldName = spec.getParams();
+        servletRequestParameterValueSource = new ServletRequestParameterValueSource();
+        servletRequestParameterValueSource.initialize(new ValueSourceSpecification(Dialog.PARAMNAME_CONTROLPREFIX + fieldName));
+    }
+
+    public Value getPresentationValue(ValueContext vc)
+    {
+        return getValue(vc);
+    }
+
+    public Value getValue(final ValueContext vc)
+    {
+        if(vc instanceof DialogContext)
         {
-            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
-            return;
+            return ((DialogContext) vc).getFieldStates().getState(fieldName).getValue();
+        }
+        else
+        {
+            ServletRequest request = ((ServletValueContext) vc).getRequest();
+            DialogContext dc = (DialogContext) request.getAttribute(DialogContext.DIALOG_CONTEXT_ATTR_NAME);
+            if(dc != null)
+                return dc.getFieldStates().getState(fieldName).getValue();
+            else
+                return servletRequestParameterValueSource.getValue(vc);
         }
 
-        nc.setConsoleMode(true);
-        renderPage(nc);
+    }
+
+    public boolean hasValue(ValueContext vc)
+    {
+        Value value = getValue(vc);
+        return value.getTextValue() != null;
     }
 }

@@ -39,40 +39,33 @@
  */
 
 /**
- * $Id: Theme.java,v 1.6 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: DialogDebugFlags.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.form;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.io.InheritableFileResources;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
-public interface Theme
+public class DialogDebugFlags extends XdmBitmaskedFlagsAttribute
 {
-    public String getName();
+    /**
+     * If this debug flag is set, the execute mode will always be to dump the debug information and skip the execute
+     * portion of the dialog (hence showing only the input in a nicely formatted table).
+     */
+    public static final int SHOW_FIELD_DATA = 1;
 
-    public InheritableFileResources getResources(ValueContext vc);
+    public static final FlagDefn[] DEBUG_FLAG_DEFNS = new FlagDefn[]
+    {
+        new FlagDefn(DialogFlags.ACCESS_XDM, "SHOW_FIELD_DATA", SHOW_FIELD_DATA),
+    };
 
-    public ValueSource getResourcesPath();
+    public DialogDebugFlags()
+    {
+    }
 
-    public void setResourcesPath(ValueSource path);
-
-    public NavigationSkin getNavigationSkin();
-
-    public HtmlPanelSkin getPanelSkin();
-
-    public HtmlTabularReportSkin getReportSkin();
-
-    public DialogSkin getDialogSkin();
-
-    public DialogSkin getDialogSkin(String name);
-
-    public boolean isDefault();
-
-    public void setDefault(boolean defaultTheme);
+    public FlagDefn[] getFlagsDefns()
+    {
+        return DEBUG_FLAG_DEFNS;
+    }
 }
+

@@ -39,10 +39,13 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.3 2003-04-29 19:57:23 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.4 2003-05-05 21:25:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.SqlManager;
 import com.netspective.sparx.navigate.NavigationTreesManager;
@@ -55,12 +58,17 @@ import com.netspective.sparx.console.ConsoleManager;
 import com.netspective.sparx.console.ConsoleNavigationTree;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.Dialogs;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 
 public class ApplicationManager extends SqlManager implements NavigationTreesManager, ConsoleManager
 {
+    private static final Log log = LogFactory.getLog(ApplicationManager.class);
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
+    public static final String TEMPLATEELEMNAME_DIALOG_FIELD_TYPE = "dialog-field-type";
 
     protected static class PanelTypeTemplate extends TemplateProducer
     {
@@ -70,12 +78,23 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
         }
     }
 
+    protected static class DialogFieldTypeTemplate extends TemplateProducer
+    {
+        public DialogFieldTypeTemplate()
+        {
+            super(HtmlPanel.class.getName(), TEMPLATEELEMNAME_DIALOG_FIELD_TYPE, "name", "extends", true, false);
+        }
+    }
+
     static
     {
         templateProducers.add(new PanelTypeTemplate());
+        templateProducers.add(new DialogFieldTypeTemplate());
     }
 
     private NavigationTrees navigationTrees = new NavigationTrees();
+    private Dialogs dialogs = new Dialogs();
+    private DialogsPackage activeDialogsNameSpace;
 
     public ApplicationManager()
     {
@@ -100,7 +119,7 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
 
     public ConsoleNavigationTree getConsoleNavigationTree()
     {
-        return (ConsoleNavigationTree) getNavigationTree("ace");
+        return (ConsoleNavigationTree) getNavigationTree("console");
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
@@ -128,5 +147,46 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
     public NavigationTrees getNavigationTrees()
     {
         return navigationTrees;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public Dialogs getDialogs()
+    {
+        return dialogs;
+    }
+
+    public Dialog getDialog(final String name)
+    {
+        String actualName = Dialog.translateNameForMapKey(name);
+        Dialog dialog = dialogs.get(actualName);
+
+        if(dialog == null && log.isDebugEnabled())
+        {
+            log.debug("Unable to find query object '"+ name +"' as '"+ actualName +"'. Available: " + dialogs);
+            return null;
+        }
+        return dialog;
+    }
+
+    public Dialog createDialog()
+    {
+        return new Dialog();
+    }
+
+    public void addDialog(Dialog query)
+    {
+        dialogs.add(query);
+    }
+
+    public DialogsPackage createDialogs()
+    {
+        activeDialogsNameSpace = new DialogsPackage(getDialogs());
+        return activeDialogsNameSpace;
+    }
+
+    public void addDialogs(DialogsPackage pkg)
+    {
+        activeDialogsNameSpace = null;
     }
 }

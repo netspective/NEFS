@@ -39,40 +39,61 @@
  */
 
 /**
- * $Id: Theme.java,v 1.6 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: Dialogs.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.form;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.io.InheritableFileResources;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.HashSet;
 
-public interface Theme
+public class Dialogs
 {
-    public String getName();
+    private List dialogs = new ArrayList();
+    private Map byName = new HashMap();
+    private Set nameSpaceNames = new HashSet();
 
-    public InheritableFileResources getResources(ValueContext vc);
+    public Dialogs()
+    {
+    }
 
-    public ValueSource getResourcesPath();
+    public void add(Dialog dialog)
+    {
+        dialogs.add(dialog);
+        byName.put(dialog.getNameForMapKey(), dialog);
 
-    public void setResourcesPath(ValueSource path);
+		//TODO: Modify this to also use a method similar to getNameForMapKey() for case-insensitive namespaces
+		if (null != dialog.getNameSpace())
+            nameSpaceNames.add(dialog.getNameSpace().getNameSpaceId());
+    }
 
-    public NavigationSkin getNavigationSkin();
+    public Dialog get(int i)
+    {
+        return (Dialog) dialogs.get(i);
+    }
 
-    public HtmlPanelSkin getPanelSkin();
+    public Dialog get(String name)
+    {
+        return (Dialog) byName.get(Dialog.translateNameForMapKey(name));
+    }
 
-    public HtmlTabularReportSkin getReportSkin();
+    public Set getNames()
+    {
+        return byName.keySet();
+    }
 
-    public DialogSkin getDialogSkin();
+    public Set getNameSpaceNames()
+    {
+        return nameSpaceNames;
+    }
 
-    public DialogSkin getDialogSkin(String name);
+    public int size()
+    {
+        return dialogs.size();
+    }
 
-    public boolean isDefault();
-
-    public void setDefault(boolean defaultTheme);
 }

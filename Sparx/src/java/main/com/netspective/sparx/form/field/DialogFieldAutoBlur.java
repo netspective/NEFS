@@ -39,40 +39,37 @@
  */
 
 /**
- * $Id: Theme.java,v 1.6 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: DialogFieldAutoBlur.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.form.field;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.io.InheritableFileResources;
-
-public interface Theme
+public class DialogFieldAutoBlur
 {
-    public String getName();
+    private int length;
+    private String excludeExpr;
 
-    public InheritableFileResources getResources(ValueContext vc);
+    public DialogFieldAutoBlur()
+    {
+    }
 
-    public ValueSource getResourcesPath();
+    public String getExcludeExpr()
+    {
+        return excludeExpr;
+    }
 
-    public void setResourcesPath(ValueSource path);
+    public void setExcludeExpr(String excludeExpr)
+    {
+        this.excludeExpr = excludeExpr;
+    }
 
-    public NavigationSkin getNavigationSkin();
+    public int getLength()
+    {
+        return length;
+    }
 
-    public HtmlPanelSkin getPanelSkin();
-
-    public HtmlTabularReportSkin getReportSkin();
-
-    public DialogSkin getDialogSkin();
-
-    public DialogSkin getDialogSkin(String name);
-
-    public boolean isDefault();
-
-    public void setDefault(boolean defaultTheme);
+    public void setLength(int length)
+    {
+        this.length = length;
+    }
 }

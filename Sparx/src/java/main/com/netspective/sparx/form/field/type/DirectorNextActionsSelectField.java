@@ -39,40 +39,23 @@
  */
 
 /**
- * $Id: Theme.java,v 1.6 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: DirectorNextActionsSelectField.java,v 1.1 2003-05-05 21:25:31 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.form.field.type;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.io.InheritableFileResources;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.Dialog;
 
-public interface Theme
+public class DirectorNextActionsSelectField extends DialogField
 {
-    public String getName();
+    public DirectorNextActionsSelectField(Dialog owner)
+    {
+        super(owner);
+    }
 
-    public InheritableFileResources getResources(ValueContext vc);
-
-    public ValueSource getResourcesPath();
-
-    public void setResourcesPath(ValueSource path);
-
-    public NavigationSkin getNavigationSkin();
-
-    public HtmlPanelSkin getPanelSkin();
-
-    public HtmlTabularReportSkin getReportSkin();
-
-    public DialogSkin getDialogSkin();
-
-    public DialogSkin getDialogSkin(String name);
-
-    public boolean isDefault();
-
-    public void setDefault(boolean defaultTheme);
+    public DirectorNextActionsSelectField(DialogField parent)
+    {
+        super(parent);
+    }
 }
