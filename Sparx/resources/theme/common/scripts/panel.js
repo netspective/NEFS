@@ -146,6 +146,144 @@ function Browser_getControl_NotSupported(id)
     alert("browser.getControl() not supported");
 }
 
+// **************************************************************************
+// Server side communications manager
+// **************************************************************************
+
+function createXmlHttpRequest()
+{
+    var xmlHttp;
+    /*@cc_on @*/
+    /*@if (@_jscript_version >= 5)
+    // JScript gives us Conditional compilation, we can cope with old IE versions.
+    // and security blocked creation of the objects.
+     try {
+      xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+     } catch (e) {
+      try {
+       xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+      } catch (E) {
+       xmlHttp = false;
+      }
+     }
+    @else
+     xmlHttp = false;
+    @end @*/
+
+    // found an IE version of XMLHttp
+    if(xmlHttp)
+        return xmlHttp;
+
+    // found a Mozilla version
+    if (typeof XMLHttpRequest != 'undefined')
+        xmlHttp = new XMLHttpRequest();
+    else
+        xmlHttp = false;
+    return xmlHttp;
+}
+
+function HttpController()
+{
+    this.xmlHttp = createXmlHttpRequest();
+    if(! this.xmlHttp)
+        alert("Unable to create XMLHttpRequest");
+
+    this.sendMessage = HttpController_sendMessage;
+    this.get = HttpController_get;
+    this.sendSessionAttribute = HttpController_sendSessionAttribute;
+    this.sendSetSessionAttribute = HttpController_sendSetSessionAttribute;
+    this.sendAppendSessionAttribute = HttpController_sendAppendSessionAttribute;
+    this.sendRemoveSessionAttribute = HttpController_sendRemoveSessionAttribute;
+    this.callAuthenticatedUserClientService = HttpController_callAuthenticatedUserClientService;
+    return this;
+}
+
+/**
+ * Send out a message but don't worry about the message content (only whether a success or failure occurred
+ */
+function HttpController_sendMessage(url, setupXmlHttpCallback, statusOkCallback, statusNotFoundCallback, otherStatusCallback)
+{
+    this.xmlHttp.open("HEAD", url, true);
+    if(setupXmlHttpCallback != null) setupXmlHttpCallback(this.xmlHttp);
+    if(statusOkCallback != null)
+    {
+         this.xmlHttp.onreadystatechange = function()
+         {
+            if (this.xmlHttp.readyState==4)
+            {
+                if (this.xmlHttp.status == 200)
+                    statusOkCallback(this);
+                else if (xmlhttp.status == 404)
+                {
+                    if(statusNotFoundCallback != null)
+                        statusNotFoundCallback(this);
+                }
+                else
+                {
+                    if(otherStatusCallback != null)
+                        otherStatusCallback(xmlhttp.status, this);
+                }
+            }
+         }
+    }
+    this.xmlHttp.send(null);
+}
+
+/**
+ * Get the contents of a URL -- the callback is sent both the responseText and this object
+ */
+function HttpController_get(url, callback)
+{
+    this.xmlHttp.open("GET", url, true);
+    this.xmlHttp.onreadystatechange = function()
+    {
+        if (xmlHttp.readyState==4)
+            callback(this.xmlHttp.responseText, this);
+    }
+    this.xmlHttp.send(null);
+}
+
+function HttpController_sendSessionAttribute(command, varName, varValue)
+{
+    this.sendMessage("?service=HttpController.sendSessionAttribute",
+        function(xmlHttp)
+        {
+            xmlHttp.setRequestHeader("Sparx-Http-Controller", "sendSessionAttribute");
+            xmlHttp.setRequestHeader("Sparx-Http-Controller-sendSessionAttribute-command", command);
+            xmlHttp.setRequestHeader("Sparx-Http-Controller-sendSessionAttribute-varName", varName);
+            xmlHttp.setRequestHeader("Sparx-Http-Controller-sendSessionAttribute-varValue", varValue);
+        }
+    );
+}
+
+function HttpController_sendSetSessionAttribute(varName, varValue)
+{
+    this.sendSessionAttribute("set", varName, varValue);
+}
+
+function HttpController_sendAppendSessionAttribute(varName, varValue)
+{
+    this.sendSessionAttribute("append", varName, varValue);
+}
+
+function HttpController_sendRemoveSessionAttribute(varName, varValue)
+{
+    this.sendSessionAttribute("remove", varName, varValue);
+}
+
+function HttpController_callAuthenticatedUserClientService()
+{
+    var serviceArgs = arguments;
+    this.sendMessage("?service=HttpController.callAuthenticatedUserClientService",
+        function(xmlHttp)
+        {
+            xmlHttp.setRequestHeader("Sparx-Http-Controller", "callAuthenticatedUserClientService");
+            for(var i = 0; i < serviceArgs.length; i += 2)
+                xmlHttp.setRequestHeader("Sparx-Http-Controller-callAuthenticatedUserClientService-" + serviceArgs[i+0], serviceArgs[i+1]);
+        }
+    );
+}
+
 // -------------------------------------------------------------------------------------------------------------------
 // -- DHTML display/hide functions
 // -------------------------------------------------------------------------------------------------------------------

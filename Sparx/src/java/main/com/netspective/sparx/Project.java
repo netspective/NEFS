@@ -90,6 +90,7 @@ import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
 import com.netspective.sparx.navigate.NavigationTreesManager;
+import com.netspective.sparx.navigate.client.ClientServiceRequestHandler;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.panel.editor.PanelEditor;
 import com.netspective.sparx.panel.editor.PanelEditorContentElement;
@@ -236,7 +237,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private HtmlTabularReportDataSourceScrollStates scrollStates = new HtmlTabularReportDataSourceScrollStatesManager();
     private Set countLinesInFileExtn = new HashSet();
     private boolean ignoreCaseInFileExtn = true;
-
+    private Map clientServiceRequestHandlers = new HashMap();
 
     public Project()
     {
@@ -569,6 +570,18 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void addFreemarkerConfiguration(FreeMarkerConfigurationAdapter config)
     {
         FreeMarkerConfigurationAdapters.getInstance().addConfiguration(config);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public Map getClientServiceRequestHandlers()
+    {
+        return clientServiceRequestHandlers;
+    }
+
+    public void addClientServiceRequestHandler(ClientServiceRequestHandler requestHandler)
+    {
+        clientServiceRequestHandlers.put(requestHandler.getClientServiceRequestIdentifier(), requestHandler);
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

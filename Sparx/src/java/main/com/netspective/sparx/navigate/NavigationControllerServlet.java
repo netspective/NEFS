@@ -83,6 +83,9 @@ import com.netspective.sparx.ProjectEvent;
 import com.netspective.sparx.ProjectLifecyleListener;
 import com.netspective.sparx.ProjectManager;
 import com.netspective.sparx.ant.AntProject;
+import com.netspective.sparx.navigate.client.AuthenticatedUserDelegatedServiceHandler;
+import com.netspective.sparx.navigate.client.ClientServiceRequestHandler;
+import com.netspective.sparx.navigate.client.SessionAttributeServiceHandler;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.security.LoginDialogMode;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
@@ -102,6 +105,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private static final ThreadLocal REQUEST = new ThreadLocal();
     private static final ThreadLocal NAVIGATION_CONTEXT = new ThreadLocal();
 
+    public static final String CLIENT_SERVICE_REQUEST_HEADER_NAME = "Sparx-Http-Controller";
     public static final String REQATTRNAME_RENDER_START_TIME = NavigationControllerServlet.class.getName() + ".START_TIME";
     public static final String PROPNAME_INIT_COUNT = "SERVLET_INITIALIZATION_COUNT";
     public static final String REQPARAMNAME_COMMAND_ONLY = "command-only";
@@ -128,6 +132,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private boolean initCountWritten;
     private Map staticPagesRendered = new HashMap();
     private Configuration freeMarkerConfig;
+    private Map clientServiceRequestHandlers = new HashMap();
 
     public static ServletContext getThreadServletContext()
     {
@@ -190,6 +195,14 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             persistInitCount();
 
         freeMarkerConfig = FreeMarkerConfigurationAdapters.getInstance().constructWebAppConfiguration(getServletContext());
+
+        addClientServiceRequestHandler(new SessionAttributeServiceHandler());
+        addClientServiceRequestHandler(new AuthenticatedUserDelegatedServiceHandler());
+    }
+
+    public void addClientServiceRequestHandler(ClientServiceRequestHandler handler)
+    {
+        clientServiceRequestHandlers.put(handler.getClientServiceRequestIdentifier(), handler);
     }
 
     protected NavigationControllerServletOptions constructServletOptions(ServletConfig servletConfig)
@@ -613,7 +626,10 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     public Project getProject()
     {
         if(project == null || !isCacheComponents())
+        {
             project = getProjectComponent().getProject();
+            clientServiceRequestHandlers.putAll(project.getClientServiceRequestHandlers());
+        }
         return project;
     }
 
@@ -792,11 +808,40 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         // TODO: try and figure out why!
         httpServletRequest.getSession();
 
+        String clientServiceRequestIdentifier = httpServletRequest.getHeader(CLIENT_SERVICE_REQUEST_HEADER_NAME);
+        ClientServiceRequestHandler clientServiceRequestHandler = null;
+        if(clientServiceRequestIdentifier != null)
+        {
+            clientServiceRequestHandler = (ClientServiceRequestHandler) clientServiceRequestHandlers.get(clientServiceRequestIdentifier);
+            if(clientServiceRequestHandler != null)
+            {
+                if(!clientServiceRequestHandler.isNavigationContextRequiredForClientService())
+                {
+                    clientServiceRequestHandler.handleClientServiceRequest(null, httpServletRequest, httpServletResponse);
+                    return;
+                }
+
+                // if we get to here it means that a navigation context is required for the service so we will call the service below
+                // after computing the navigation context
+            }
+            else
+            {
+                log.error("Found a client service request handler header '" + CLIENT_SERVICE_REQUEST_HEADER_NAME + "' with value '" + clientServiceRequestIdentifier + "' but no handler class was found.");
+                return;
+            }
+        }
+
         setThreadServletContext(getServletContext());
         setThreadServlet(this);
         setThreadRequest(httpServletRequest);
 
         NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
+        if(clientServiceRequestHandler != null)
+        {
+            clientServiceRequestHandler.handleClientServiceRequest(nc, httpServletRequest, httpServletResponse);
+            return;
+        }
+
         if(nc.getActivePage() == null)
         {
             httpServletResponse.setContentType("text/html");
