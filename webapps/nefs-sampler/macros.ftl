@@ -30,6 +30,10 @@
 </#macro>
 
 <#macro nextPageLink>
-   <#local nextPage = vc.navigationContext.getNextPath()?default('')/>
+   <#local nextPage = vc.navigationContext.activePage.getNextPath()?default('')/>
    <#if nextPage != ''><p align=right><br><a href="${nextPage.getUrl(vc)}">${nextPage.getHeading(vc)}</a> &gt;&nbsp;</p></#if>
+</#macro>
+
+<#macro footer>
+    <@nextPageLink/>
 </#macro>

@@ -39,6 +39,7 @@
                     <li>Browse the <a href="${vc.consoleUrl}/manual">User's Manual</a>.
                 </ul>
                 </div>
+                <@footer/>
                 ]]>
             </body>
         </page>
@@ -64,6 +65,7 @@
                 Contents:
                 <@pageChildren/>
                 </div>
+                <@footer/>
                 ]]>
             </body>
             <!-- This page is for demonstrating text fields in a form -->
@@ -139,6 +141,7 @@
                 application components (and have fun!).
 
                 </div>
+                <@footer/>
                 ]]>
             </body>
         </page>
