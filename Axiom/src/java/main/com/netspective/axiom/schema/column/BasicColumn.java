@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.18 2003-11-07 17:31:17 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.19 2004-03-18 14:52:44 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -87,7 +87,9 @@ import com.netspective.commons.xml.NodeIdentifiers;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.validate.ValidationRulesCollection;
+import com.netspective.commons.validate.ValidationRule;
 import com.netspective.commons.value.AbstractValue;
+import com.netspective.commons.value.source.StaticValueSource;
 
 public class BasicColumn implements Column, TemplateProducerParent, TemplateConsumer
 {
@@ -373,7 +375,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public void addValidation(ValidationRules rules)
     {
-        // do nothing
+        // nothing to do here
     }
 
     public ColumnQueryDefnField createQueryDefnField(TableQueryDefinition owner)
@@ -415,6 +417,17 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
             ((BasicColumn) actualColumn).inheritForeignKeyPlaceholderColumn((ForeignKeyPlaceholderColumn) this);
 
             getTable().getColumns().replace(this, actualColumn);
+        }
+
+        // we want to make sure each of the rules have a valid caption
+        if(validationRules != null)
+        {
+            for(int i = 0; i < validationRules.size(); i++)
+            {
+                ValidationRule rule = validationRules.get(i);
+                if(rule.getCaption() == null)
+                    rule.setCaption(new StaticValueSource(getQualifiedName()));
+            }
         }
     }
 
