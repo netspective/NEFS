@@ -1,0 +1,66 @@
+package auto.dal.db.enum;
+
+
+public final class USStateType
+{
+    public final int ALABAMA = 0;
+    public final int ALASKA = 1;
+    public final int AMERICAN_SAMOA = 51;
+    public final int ARIZONA = 2;
+    public final int ARKANSAS = 3;
+    public final int CALIFORNIA = 4;
+    public final int COLORADO = 5;
+    public final int CONNECTICUT = 6;
+    public final int DELAWARE = 7;
+    public final int DISTRICT_OF_COLUMBIA = 8;
+    public final int FEDERATED_STATES_OF_MICRONESIA = 52;
+    public final int FLORIDA = 9;
+    public final int GEORGIA = 10;
+    public final int GUAM = 53;
+    public final int HAWAII = 11;
+    public final int IDAHO = 12;
+    public final int ILLINOIS = 13;
+    public final int INDIANA = 14;
+    public final int IOWA = 15;
+    public final int KANSAS = 16;
+    public final int KENTUCKY = 17;
+    public final int LOUISIANA = 18;
+    public final int MAINE = 19;
+    public final int MARSHALL_ISLANDS = 54;
+    public final int MARYLAND = 20;
+    public final int MASSACUSETTS = 21;
+    public final int MICHIGAN = 22;
+    public final int MINNESOTA = 23;
+    public final int MISSISSIPPI = 24;
+    public final int MISSOURI = 25;
+    public final int MONTANA = 26;
+    public final int NEBRASKA = 27;
+    public final int NEVADA = 28;
+    public final int NEW_HAMPSHIRE = 29;
+    public final int NEW_JERSEY = 30;
+    public final int NEW_MEXICO = 31;
+    public final int NEW_YORK = 32;
+    public final int NORTHERN_MARIANA_ISLANDS = 55;
+    public final int NORTH_CAROLINA = 33;
+    public final int NORTH_DAKOTA = 34;
+    public final int OHIO = 35;
+    public final int OKLAHOMA = 36;
+    public final int OREGON = 37;
+    public final int OTHER = 59;
+    public final int PALAU = 56;
+    public final int PENNSYLVANIA = 38;
+    public final int PUERTO_RICO = 57;
+    public final int RHODE_ISLAND = 39;
+    public final int SOUTH_CAROLINA = 40;
+    public final int SOUTH_DAKOTA = 41;
+    public final int TENNESSEE = 42;
+    public final int TEXAS = 43;
+    public final int UTAH = 44;
+    public final int VERMONT = 45;
+    public final int VIRGINIA = 46;
+    public final int VIRGIN_ISLANDS = 58;
+    public final int WASHINGTON = 47;
+    public final int WEST_VIRGINIA = 48;
+    public final int WISCONSIN = 49;
+    public final int WYOMING = 50;
+}
