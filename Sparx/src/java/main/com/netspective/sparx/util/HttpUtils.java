@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpUtils.java,v 1.1 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: HttpUtils.java,v 1.2 2003-04-08 17:59:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.util;
@@ -47,6 +47,7 @@ package com.netspective.sparx.util;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.sparx.value.HttpServletValueContext;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
@@ -147,5 +148,56 @@ public class HttpUtils
                     assignParamToInstance(req, schema, instance, paramName, null);
             }
         }
+    }
+
+    public static String appendParams(HttpServletValueContext vc, String url, String paramNames)
+    {
+        StringBuffer result = new StringBuffer(url);
+        boolean hasQueryChar = url.indexOf('?') >= 0;
+        HttpServletRequest req = vc.getHttpRequest();
+
+        if(paramNames.equals("*"))
+        {
+            int i = 0;
+            for(Enumeration e = req.getParameterNames(); e.hasMoreElements(); )
+            {
+                String paramName = (String) e.nextElement();
+                String paramValue = req.getParameter(paramName);
+                if(paramValue != null)
+                {
+                    if(i > 0 || hasQueryChar)
+                        result.append("&");
+                    else
+                        result.append("?");
+
+                    result.append(paramName);
+                    result.append("=");
+                    result.append(paramValue);
+                }
+                i++;
+            }
+        }
+        else
+        {
+            String[] retainParams = TextUtils.split(paramNames, ",", true);
+            for(int i = 0; i < retainParams.length; i++)
+            {
+                String paramName = retainParams[i];
+                String paramValue = req.getParameter(paramName);
+                if(paramValue != null)
+                {
+                    if(i > 0 || hasQueryChar)
+                        result.append("&");
+                    else
+                        result.append("?");
+
+                    result.append(paramName);
+                    result.append("=");
+                    result.append(paramValue);
+                }
+            }
+        }
+
+        return result.toString();
     }
 }

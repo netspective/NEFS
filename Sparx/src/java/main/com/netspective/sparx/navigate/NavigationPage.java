@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.9 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.10 2003-04-08 17:59:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -59,7 +59,6 @@ package com.netspective.sparx.navigate;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.util.HttpUtils;
@@ -69,7 +68,6 @@ import java.io.Writer;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.List;
-import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -403,57 +401,6 @@ public class NavigationPage extends NavigationPath
             return vs.getTextValue(vc);
     }
 
-    public static String appendParams(HttpServletValueContext vc, String url, String paramNames)
-    {
-        StringBuffer result = new StringBuffer(url);
-        boolean hasQueryChar = url.indexOf('?') >= 0;
-        HttpServletRequest req = vc.getHttpRequest();
-
-        if(paramNames.equals("*"))
-        {
-            int i = 0;
-            for(Enumeration e = req.getParameterNames(); e.hasMoreElements(); )
-            {
-                String paramName = (String) e.nextElement();
-                String paramValue = req.getParameter(paramName);
-                if(paramValue != null)
-                {
-                    if(i > 0 || hasQueryChar)
-                        result.append("&");
-                    else
-                        result.append("?");
-
-                    result.append(paramName);
-                    result.append("=");
-                    result.append(paramValue);
-                }
-                i++;
-            }
-        }
-        else
-        {
-            String[] retainParams = TextUtils.split(paramNames, ",", true);
-            for(int i = 0; i < retainParams.length; i++)
-            {
-                String paramName = retainParams[i];
-                String paramValue = req.getParameter(paramName);
-                if(paramValue != null)
-                {
-                    if(i > 0 || hasQueryChar)
-                        result.append("&");
-                    else
-                        result.append("?");
-
-                    result.append(paramName);
-                    result.append("=");
-                    result.append(paramValue);
-                }
-            }
-        }
-
-        return result.toString();
-    }
-
     public String getUrl(HttpServletValueContext vc)
     {
         String result;
@@ -468,7 +415,7 @@ public class NavigationPage extends NavigationPath
 
         ValueSource retainParamsVS = getRetainParams();
         if(retainParamsVS != null)
-            result = appendParams(vc, result, retainParamsVS.getTextValue(vc));
+            result = HttpUtils.appendParams(vc, result, retainParamsVS.getTextValue(vc));
 
         return result;
     }
@@ -531,6 +478,12 @@ public class NavigationPage extends NavigationPath
     public void setRetainParams(ValueSource retainParams)
     {
         this.retainParams = retainParams;
+    }
+
+    public void setAssignAndRetainParams(ValueSource params)
+    {
+        setAssignStateParams(params);
+        setRetainParams(params);
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/
