@@ -10,6 +10,7 @@
 				<permission name="edit_order"/>
 				<permission name="view_order"/>
 				<permission name="delete_order"/>
+				<permission name="test_order"/>
 			</permission>
 		</permission>
 
@@ -20,6 +21,7 @@
 			<permission name="normal-user">
 				<grant permission="/main/app/orders"/>
 				<revoke permission="/main/app/orders/delete_order"/>
+				<revoke permission="/main/app/orders/test_order"/>
 			</permission>
 		</permission>
 	</access-control-list>
