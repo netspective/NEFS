@@ -51,17 +51,17 @@
  */
 
 /**
- * @version $Id: NumberFieldsFormTest.java,v 1.3 2004-01-04 04:40:27 aye.thu Exp $
+ * @version $Id: NumberFieldsFormTest.java,v 1.4 2004-03-23 18:16:19 aye.thu Exp $
  */
 
 package app.test;
 
 import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebResponse;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
-
-import org.xml.sax.SAXException;
 
 public class NumberFieldsFormTest extends FormInputTest
 {
@@ -83,20 +83,34 @@ public class NumberFieldsFormTest extends FormInputTest
     public void testForm() throws IOException, SAXException
     {
         // verify all the default values
-        assertEquals("$123.45", form.getParameterValue("_dc.currencyField1"));
-        assertEquals("$123.45", form.getParameterValue("_dc.currencyField2"));
+        assertEquals("$-123456789.45", form.getParameterValue("_dc.currencyField1"));
+        assertEquals("-$123456789.4", form.getParameterValue("_dc.currencyField2"));
+        assertEquals("$123456789", form.getParameterValue("_dc.currencyField3"));
         assertEquals("800-123-4567", form.getParameterValue("_dc.phoneField1"));
         assertEquals("(800) 123-4567", form.getParameterValue("_dc.phoneField2"));
         assertEquals("12345", form.getParameterValue("_dc.zipField"));
         assertEquals("999-99-9999", form.getParameterValue("_dc.ssnField1"));
         assertEquals("999-99-9999", form.getParameterValue("_dc.ssnField2"));
 
-
         form.setParameter("_dc.integerField", "12345");
         form.setParameter("_dc.floatField", "12345");
         form.setParameter("_dc.currencyField1", "$-123.45");
-        form.setParameter("_dc.currencyField2", "-$123.45");
+        form.setParameter("_dc.currencyField2", "$-123.4");
+        form.setParameter("_dc.currencyField3", "$123456789.00");
         WebResponse response = form.submit();
+
+        // currencyField3 allows no decimals
+        WebLink errorlink = response.getLinkWith("Currency values must have the format $xxx.xx for positive " +
+                "values and -$xxx.xx for negative values. (decimals = 0)");
+        assertNotNull(errorlink);
+        // crrencyField2 allows one decimal and negative sign before the symbol
+        errorlink = response.getLinkWith("Currency values must have the format $xxx.xx for positive " +
+                "values and -$xxx.xx for negative values. (decimals = 1)");
+        assertNotNull(errorlink);
+
+        form.setParameter("_dc.currencyField2", "-$123.4");
+        form.setParameter("_dc.currencyField3", "$123456789");
+        response = form.submit();
 
         //  verify the first row header names
         String[][] fieldStates = response.getTableWithID(DIALOG_CONTEXT_DEBUG_PANEL).asText();
@@ -112,21 +126,23 @@ public class NumberFieldsFormTest extends FormInputTest
         assertEquals("float_field ", fieldStates[2][0]);
         assertEquals("currency_field1 ", fieldStates[3][0]);
         assertEquals("currency_field2 ", fieldStates[4][0]);
-        assertEquals("phone_field1 ", fieldStates[5][0]);
-        assertEquals("phone_field2 ", fieldStates[6][0]);
-        assertEquals("zip_field ", fieldStates[7][0]);
-        assertEquals("ssn_field1 ", fieldStates[8][0]);
-        assertEquals("ssn_field2 ", fieldStates[9][0]);
+        assertEquals("currency_field3 ", fieldStates[5][0]);
+        assertEquals("phone_field1 ", fieldStates[6][0]);
+        assertEquals("phone_field2 ", fieldStates[7][0]);
+        assertEquals("zip_field ", fieldStates[8][0]);
+        assertEquals("ssn_field1 ", fieldStates[9][0]);
+        assertEquals("ssn_field2 ", fieldStates[10][0]);
         // verify the fourth column to make sure all the values were submitted
         assertEquals("12345 ", fieldStates[1][4]);
         assertEquals("12345.0 ", fieldStates[2][4]);
         assertEquals("-123.45 ", fieldStates[3][4]);
-        assertEquals("-123.45 ", fieldStates[4][4]);
-        assertEquals("8001234567 ", fieldStates[5][4]);
+        assertEquals("-123.4 ", fieldStates[4][4]);
+        assertEquals("123456789 ", fieldStates[5][4]);
         assertEquals("8001234567 ", fieldStates[6][4]);
-        assertEquals("12345 ", fieldStates[7][4]);
-        assertEquals("999999999 ", fieldStates[8][4]);
-        assertEquals("999-99-9999 ", fieldStates[9][4]);
+        assertEquals("8001234567 ", fieldStates[7][4]);
+        assertEquals("12345 ", fieldStates[8][4]);
+        assertEquals("999999999 ", fieldStates[9][4]);
+        assertEquals("999-99-9999 ", fieldStates[10][4]);
 
     }
 }
