@@ -80,13 +80,13 @@ public class BasicDialogSkin extends StandardDialogSkin
             for(int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
-                if(!field.isVisible(dc))
+                if(!field.isAvailable(dc))
                     continue;
 
                 appendFieldHtml(dc, field, fieldsHtml, fieldsJSDefn, fieldErrorMsgs);
             }
 
-            if(director != null && director.isVisible(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
+            if(director != null && director.isAvailable(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
             {
                 fieldsHtml.append("<tr><td class=\"dialog-button-table\" colspan='2'>");
                 StringWriter directorHtml = new StringWriter();
@@ -107,7 +107,7 @@ public class BasicDialogSkin extends StandardDialogSkin
             for(int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
-                if(!field.isVisible(dc))
+                if(!field.isAvailable(dc))
                     continue;
 
                 DialogField.Flags flags = field.getFlags();
@@ -139,7 +139,7 @@ public class BasicDialogSkin extends StandardDialogSkin
             }
             fieldsHtml.append("</tr>");
 
-            if(director != null && director.isVisible(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
+            if(director != null && director.isAvailable(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
             {
                 fieldsHtml.append("<tr><td class=\"dialog-button-table\" colspan='" + dlgTableColSpan + "'>");
                 StringWriter directorHtml = new StringWriter();

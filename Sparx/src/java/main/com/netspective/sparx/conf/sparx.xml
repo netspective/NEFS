@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.6 2003-04-29 19:57:23 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.7 2003-05-07 03:39:17 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -17,5 +17,8 @@
     <register-command class="com.netspective.sparx.command.RedirectCommand"/>
 
     <panel-type name="html" class="com.netspective.sparx.panel.TemplateContentPanel"/>
+
+    <dialog-field-type name="text" class="com.netspective.sparx.form.field.type.TextField"/>
+    <dialog-field-type name="separator" class="com.netspective.sparx.form.field.type.SeparatorField"/>
 
 </xdm:container>

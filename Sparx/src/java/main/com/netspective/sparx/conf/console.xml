@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.28 2003-05-06 17:18:19 shahid.shah Exp $
+  * $Id: console.xml,v 1.29 2003-05-07 03:39:17 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -193,6 +193,8 @@
                     </panels>
                 </page>
             </page>
+            <page name="templating-engines" caption="Templating Engines"/>
+            <page name="dependencies" caption="Library Dependencies"/>
         </page>
 
         <page name="tools" caption="Tools"/>

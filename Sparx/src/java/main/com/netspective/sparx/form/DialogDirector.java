@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.2 2003-05-07 03:39:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -252,7 +252,7 @@ public class DialogDirector extends DialogField
 
         writer.write("<center>");
 
-        if(nextActionsField != null && nextActionsField.isVisible(dc))
+        if(nextActionsField != null && nextActionsField.isAvailable(dc))
         {
             //TODO: String caption = nextActionsField.getCaption(dc);
             String caption = null;

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.2 2003-05-06 14:52:14 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.3 2003-05-07 03:39:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -77,12 +77,17 @@ import com.netspective.sparx.form.DialogDataCommands;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
+import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.validate.ValidationRulesCollection;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.Template;
 
 /**
  * A <code>DialogField</code> object represents a data field of a form/dialog. It contains functionalities
@@ -91,15 +96,31 @@ import com.netspective.commons.validate.ValidationRulesCollection;
  * All dialog classes representing specialized  fields such as text fields, numerical fields, and phone fields subclass
  * the <code>DialogField</code> class.
  */
-public class DialogField
+public class DialogField implements TemplateConsumer
 {
     private static final Log log = LogFactory.getLog(DialogField.class);
+    public static final String ATTRNAME_TYPE = "type";
+    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
+    private static FieldTypeTemplateConsumerDefn fieldTypeConsumer = new FieldTypeTemplateConsumerDefn();
+
+    protected static class FieldTypeTemplateConsumerDefn extends TemplateConsumerDefn
+    {
+        public FieldTypeTemplateConsumerDefn()
+        {
+            super(null, ATTRNAME_TYPE, ATTRNAMES_SET_BEFORE_CONSUMING);
+        }
+
+        public String getNameSpaceId()
+        {
+            return DialogField.class.getName();
+        }
+    }
 
     public static final Flags.FlagDefn[] FLAG_DEFNS = new Flags.FlagDefn[]
     {
         new Flags.FlagDefn(Flags.ACCESS_XDM, "REQUIRED", Flags.REQUIRED),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "PRIMARY_KEY", Flags.PRIMARY_KEY),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "VISIBLE", Flags.VISIBLE),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "UNAVAILABLE", Flags.UNAVAILABLE),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "READ_ONLY", Flags.READ_ONLY),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "INITIAL_FOCUS", Flags.INITIAL_FOCUS),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "PERSIST", Flags.PERSIST),
@@ -112,7 +133,7 @@ public class DialogField
         new Flags.FlagDefn(Flags.ACCESS_XDM, "BROWSER_READONLY", Flags.BROWSER_READONLY),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "IDENTIFIER", Flags.IDENTIFIER),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "READONLY_HIDDEN_UNLESS_HAS_DATA", Flags.READONLY_HIDDEN_UNLESS_HAS_DATA),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "READONLY_INVISIBLE_UNLESS_HAS_DATA", Flags.READONLY_INVISIBLE_UNLESS_HAS_DATA),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "READONLY_UNAVAILABLE_UNLESS_HAS_DATA", Flags.READONLY_UNAVAILABLE_UNLESS_HAS_DATA),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "DOUBLE_ENTRY", Flags.DOUBLE_ENTRY),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "SCANNABLE", Flags.SCANNABLE),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "AUTO_BLUR", Flags.AUTO_BLUR),
@@ -120,15 +141,15 @@ public class DialogField
         new Flags.FlagDefn(Flags.ACCESS_XDM, "CREATE_ADJACENT_AREA_HIDDEN", Flags.CREATEADJACENTAREA_HIDDEN),
     };
 
-    public static final int[] CHILD_CARRY_FLAGS = new int[] { Flags.REQUIRED, Flags.VISIBLE, Flags.READ_ONLY, Flags.PERSIST, Flags.CREATE_ADJACENT_AREA, Flags.SHOW_CAPTION_AS_CHILD };
+    public static final int[] CHILD_CARRY_FLAGS = new int[] { Flags.REQUIRED, Flags.UNAVAILABLE, Flags.READ_ONLY, Flags.PERSIST, Flags.CREATE_ADJACENT_AREA, Flags.SHOW_CAPTION_AS_CHILD };
 
     public class Flags extends XdmBitmaskedFlagsAttribute
     {
         // all these values are also defined in dialog.js (make sure they are always in sync)
         public static final int REQUIRED = 1;
         public static final int PRIMARY_KEY = REQUIRED * 2;
-        public static final int VISIBLE = PRIMARY_KEY * 2;
-        public static final int READ_ONLY = VISIBLE * 2;
+        public static final int UNAVAILABLE = PRIMARY_KEY * 2;
+        public static final int READ_ONLY = UNAVAILABLE * 2;
         public static final int INITIAL_FOCUS = READ_ONLY * 2;
         public static final int PERSIST = INITIAL_FOCUS * 2;
         public static final int CREATE_ADJACENT_AREA = PERSIST * 2;
@@ -140,8 +161,8 @@ public class DialogField
         public static final int BROWSER_READONLY = COLUMN_BREAK_AFTER * 2;
         public static final int IDENTIFIER = BROWSER_READONLY * 2;
         public static final int READONLY_HIDDEN_UNLESS_HAS_DATA = IDENTIFIER * 2;
-        public static final int READONLY_INVISIBLE_UNLESS_HAS_DATA = READONLY_HIDDEN_UNLESS_HAS_DATA * 2;
-        public static final int DOUBLE_ENTRY = READONLY_INVISIBLE_UNLESS_HAS_DATA * 2;
+        public static final int READONLY_UNAVAILABLE_UNLESS_HAS_DATA = READONLY_HIDDEN_UNLESS_HAS_DATA * 2;
+        public static final int DOUBLE_ENTRY = READONLY_UNAVAILABLE_UNLESS_HAS_DATA * 2;
         public static final int SCANNABLE = DOUBLE_ENTRY * 2;
         public static final int AUTO_BLUR = SCANNABLE * 2;
         public static final int SUBMIT_ONBLUR = AUTO_BLUR * 2;
@@ -150,7 +171,6 @@ public class DialogField
 
         public Flags()
         {
-            setFlag(VISIBLE);
         }
 
         public FlagDefn[] getFlagsDefns()
@@ -214,6 +234,8 @@ public class DialogField
                     stateFlags.setFlag(Flags.READ_ONLY);
                     break;
             }
+
+            stateFlags.copy(flags);
         }
 
         public DialogFieldValue getValue()
@@ -283,6 +305,7 @@ public class DialogField
 	static public int fieldCounter = 0;
 	private boolean multi = false;
 
+    private List fieldTypes = new ArrayList();
     private Dialog owner;
 	private DialogField parent;
 	private String htmlFormControlId;
@@ -318,6 +341,21 @@ public class DialogField
     {
         this(parent.getOwner());
         this.parent = parent;
+    }
+
+    public TemplateConsumerDefn getTemplateConsumerDefn()
+    {
+        return fieldTypeConsumer;
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
+        fieldTypes.add(template.getTemplateName());
+    }
+
+    public List getFieldTypes()
+    {
+        return fieldTypes;
     }
 
     public Dialog getOwner()
@@ -694,6 +732,16 @@ public class DialogField
             throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
+    public DialogField createComposite()
+    {
+        return createField();
+    }
+
+    public DialogField createComposite(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        return createField(cls);
+    }
+
 	/**
 	 * Adds a child field.
 	 *
@@ -715,6 +763,11 @@ public class DialogField
 		if (qualifiedName != null)
 			field.setQualifiedName(qualifiedName + "." + field.getName());
 	}
+
+    public void addComposite(DialogField field)
+    {
+        addField(field);
+    }
 
 	/**
 	 * Gets a list of errors
@@ -827,13 +880,14 @@ public class DialogField
 	}
 
 	/**
-	 * Checks whether or not the field is visible. The check is done by seeing if the invisible flag, <code>Flags.INVISIBLE</code>
-	 * is set or not and by making sure each partner field of its' conditionals have a value or not.
+	 * Checks whether or not the field is available in the form. The check is done by seeing if the available flag,
+     * <code>Flags.UNAVAILABLE</code> is set or not and by making sure each partner field of its' conditionals have a
+     * value or not.
 	 *
 	 * @param dc dialog context
 	 * @return boolean True if the field is visible
 	 */
-	public boolean isVisible(DialogContext dc)
+	public boolean isAvailable(DialogContext dc)
 	{
 		if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA))
 		{
@@ -857,12 +911,12 @@ public class DialogField
         DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
         DialogField.Flags stateFlags = state.getStateFlags();
 
-        if (! stateFlags.flagIsSet(Flags.VISIBLE))
+        if (stateFlags.flagIsSet(Flags.UNAVAILABLE))
             return false;
 
         if (children == null && stateFlags.flagIsSet(Flags.READ_ONLY) &&
-            (stateFlags.flagIsSet(Flags.READONLY_INVISIBLE_UNLESS_HAS_DATA) ||
-            dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_INVISIBLE_UNLESS_HAVE_DATA)))
+            (stateFlags.flagIsSet(Flags.READONLY_UNAVAILABLE_UNLESS_HAS_DATA) ||
+            dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA)))
         {
             Object value = state.getValue().getValue();
             return value == null ? false : (value instanceof String ? (((String) value).length() == 0 ? false : true) : true);
@@ -957,7 +1011,7 @@ public class DialogField
         for(int i = 0; i < children.size(); i++)
         {
             DialogField field = children.get(i);
-			if (field.isVisible(dc) && field.needsValidation(dc))
+			if (field.isAvailable(dc) && field.needsValidation(dc))
 				validateFieldsCount++;
 		}
 
@@ -987,7 +1041,7 @@ public class DialogField
         for(int i = 0; i < children.size(); i++)
         {
             DialogField field = children.get(i);
-			if (field.isVisible(dc) && (!field.isValid(dc)))
+			if (field.isAvailable(dc) && (!field.isValid(dc)))
 				invalidFieldsCount++;
 		}
 		return invalidFieldsCount == 0 ? true : false;
@@ -1070,7 +1124,7 @@ public class DialogField
         for(int i = 0; i < children.size(); i++)
         {
             DialogField field = children.get(i);
-			if (field.isVisible(dc)) field.populateValue(dc, formatType);
+			if (field.isAvailable(dc)) field.populateValue(dc, formatType);
 		}
 	}
 
@@ -1103,7 +1157,7 @@ public class DialogField
 				if (o instanceof DialogFieldConditionalDisplay)
 				{
 					DialogFieldConditionalDisplay action = (DialogFieldConditionalDisplay) o;
-					if (action.getPartnerField().isVisible(dc))
+					if (action.getPartnerField().isAvailable(dc))
 						dcJs.append("field.dependentConditions[field.dependentConditions.length] = new DialogFieldConditionalDisplay(\"" + action.getSourceField().getQualifiedName()
 							+ "\", \"" + action.getPartnerField().getQualifiedName() + "\", \"" + action.getExpression() + "\");\n");
 				}

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.5 2003-05-06 17:18:19 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.6 2003-05-07 03:39:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -62,6 +62,7 @@ import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.DialogsManager;
+import com.netspective.sparx.form.field.DialogField;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 
@@ -83,7 +84,7 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
     {
         public DialogFieldTypeTemplate()
         {
-            super(HtmlPanel.class.getName(), TEMPLATEELEMNAME_DIALOG_FIELD_TYPE, "name", "extends", true, false);
+            super(DialogField.class.getName(), TEMPLATEELEMNAME_DIALOG_FIELD_TYPE, "name", "extends", true, false);
         }
     }
 

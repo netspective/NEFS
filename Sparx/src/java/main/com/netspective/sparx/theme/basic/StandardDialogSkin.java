@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.1 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.2 2003-05-07 03:39:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -328,7 +328,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
         for(int i = 0; i < children.size(); i++)
         {
             DialogField field = children.get(i);
-            if(field.isVisible(dc))
+            if(field.isAvailable(dc))
             {
                 if(field.isInputHidden(dc))
                     field.renderControlHtml(writer, dc);
@@ -418,7 +418,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             for(int i = 0; i < compChildren.size(); i++)
             {
                 DialogField field = compChildren.get(i);
-                if(field.isVisible(dc))
+                if(field.isAvailable(dc))
                 {
                     String caption = fieldNum < fieldCaptions.length ? fieldCaptions[fieldNum] : field.getCaption().getTextValue(dc);
 
@@ -455,7 +455,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             for(int i = 0; i < compChildren.size(); i++)
             {
                 DialogField field = compChildren.get(i);
-                if(field.isVisible(dc))
+                if(field.isAvailable(dc))
                 {
                     rowHtml.append("<td " + gridBodyCellAttrs + ">");
                     appendGridControlBasics(dc, field, rowHtml);
@@ -480,7 +480,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             if(colsCount == 0)
                 colsCount = rowField.getChildren().size();
 
-            if(rowField.isVisible(dc))
+            if(rowField.isAvailable(dc))
             {
                 StringBuffer messagesHtml = new StringBuffer();
                 boolean haveErrors = false;
@@ -688,13 +688,13 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             for(int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
-                if(!field.isVisible(dc))
+                if(!field.isAvailable(dc))
                     continue;
 
                 appendFieldHtml(dc, field, fieldsHtml, fieldsJSDefn, fieldErrorMsgs);
             }
 
-            if(director != null && director.isVisible(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
+            if(director != null && director.isAvailable(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
                 appendFieldHtml(dc, director, fieldsHtml, fieldsJSDefn, fieldErrorMsgs);
         }
         else
@@ -709,7 +709,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             for(int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
-                if(!field.isVisible(dc))
+                if(!field.isAvailable(dc))
                     continue;
 
                 DialogField.Flags flags = field.getFlags();
@@ -741,7 +741,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             }
             fieldsHtml.append("</tr>");
 
-            if(director != null && director.isVisible(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
+            if(director != null && director.isAvailable(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
             {
                 fieldsHtml.append("<tr><td colspan='" + dlgTableColSpan + "'><font " + controlAreaFontAttrs + ">");
                 StringWriter directorHtml = new StringWriter();

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: GridField.java,v 1.1 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: GridField.java,v 1.2 2003-05-07 03:39:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -109,7 +109,7 @@ public class GridField extends DialogField
             for(int i = 0; i < firstRowChildren.size(); i++)
             {
                 DialogField field = firstRowChildren.get(i);
-                if(field.isVisible(dc))
+                if(field.isAvailable(dc))
                     result[i] = field.getCaption().getTextValue(dc);
             }
         }

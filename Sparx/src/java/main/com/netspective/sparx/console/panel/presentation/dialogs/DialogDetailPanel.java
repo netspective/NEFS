@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogDetailPanel.java,v 1.1 2003-05-06 14:52:14 shahid.shah Exp $
+ * $Id: DialogDetailPanel.java,v 1.2 2003-05-07 03:39:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -49,6 +49,7 @@ import java.util.ArrayList;
 
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
@@ -60,6 +61,7 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
 {
     public static final String REQPARAMNAME_DIALOG = "selected-dialog-id";
     private static final ValueSource noDialogParamAvailSource = new StaticValueSource("No '"+ REQPARAMNAME_DIALOG +"' parameter provided.");
+    protected static final ValueSource noFields = new StaticValueSource("Dialog has no fields.");
 
     protected class SelectedDialog
     {
@@ -187,5 +189,112 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
     public SelectedDialog getSelectedDialog(HtmlTabularReportValueContext rc)
     {
         return new SelectedDialog(rc, rc.getHttpRequest().getParameter(REQPARAMNAME_DIALOG));
+    }
+
+    protected class DialogFieldsDataSource extends AbstractHtmlTabularReportDataSource
+    {
+        protected int activeRowIndex = -1;
+        protected int lastRowIndex;
+        protected DialogDetailPanel.FieldRow activeRow;
+        protected DialogDetailPanel.FieldRows fieldRows;
+        protected TabularReportDataSource.Hierarchy hierarchy = new ActiveHierarchy();
+
+        protected class ActiveHierarchy implements TabularReportDataSource.Hierarchy
+        {
+            public int getColumn()
+            {
+                return 0;
+            }
+
+            public int getLevel()
+            {
+                return activeRow.level;
+            }
+
+            public int getParentRow()
+            {
+                return activeRow.getParentRow() != null ? fieldRows.indexOf(activeRow.getParentRow()) : -1;
+            }
+        }
+
+        public boolean isHierarchical()
+        {
+            return true;
+        }
+
+        public TabularReportDataSource.Hierarchy getActiveHierarchy()
+        {
+            return hierarchy;
+        }
+
+        public DialogFieldsDataSource(HtmlTabularReportValueContext vc, DialogDetailPanel.SelectedDialog selectedDialog)
+        {
+            super(vc);
+            fieldRows = new DialogDetailPanel.FieldRows(selectedDialog.getDialog());
+            lastRowIndex = fieldRows.size() - 1;
+        }
+
+        public Object getActiveRowColumnData(int columnIndex, int flags)
+        {
+            DialogField activeField = activeRow.getField();
+
+            switch(columnIndex)
+            {
+                case 0:
+                    if(activeField != null)
+                        return activeField.getQualifiedName();
+                    else
+                        return activeRow.heading;
+
+                case 1:
+                    if(activeField != null)
+                        return activeField.getFieldTypes().size() > 0 ? activeField.getFieldTypes().get(0) : null;
+
+                case 2:
+                    if(activeField != null)
+                        return activeField.getHtmlFormControlId();
+
+                case 3:
+                    if(activeField != null)
+                        return activeField.getCaption() != ValueSource.NULL_VALUE_SOURCE ?
+                                activeField.getCaption().getSpecification() :
+                                null;
+
+                case 4:
+                    if(activeField != null)
+                        return activeField.getFlags().getFlagsText();
+
+                case 5:
+                    if(activeField != null)
+                        return activeField.getDefault() != null && activeField.getDefault() != ValueSource.NULL_VALUE_SOURCE ?
+                                activeField.getDefault().getSpecification() :
+                                null;
+
+                default:
+                    return null;
+            }
+        }
+
+        public boolean next()
+        {
+            if(activeRowIndex < lastRowIndex)
+            {
+                activeRowIndex++;
+                activeRow = fieldRows.get(activeRowIndex);
+                return true;
+            }
+
+            return false;
+        }
+
+        public int getActiveRowNumber()
+        {
+            return activeRowIndex + 1;
+        }
+
+        public ValueSource getNoDataFoundMessage()
+        {
+            return noFields;
+        }
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogFlags.java,v 1.2 2003-05-07 03:39:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -58,8 +58,8 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     public static final int ENCTYPE_MULTIPART_FORMDATA = HIDE_READONLY_HINTS * 2;
     public static final int HIDE_HEADING_IN_EXEC_MODE = ENCTYPE_MULTIPART_FORMDATA * 2;
     public static final int READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA = HIDE_HEADING_IN_EXEC_MODE * 2;
-    public static final int READONLY_FIELDS_INVISIBLE_UNLESS_HAVE_DATA = READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA * 2;
-    public static final int CUSTOM_START = READONLY_FIELDS_INVISIBLE_UNLESS_HAVE_DATA * 2;
+    public static final int READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA = READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA * 2;
+    public static final int CUSTOM_START = READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA * 2;
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
@@ -69,7 +69,7 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_PRIVATE, "ENCTYPE_MULTIPART_FORMDATA", ENCTYPE_MULTIPART_FORMDATA),
         new FlagDefn(DialogFlags.ACCESS_PRIVATE, "HIDE_HEADING_IN_EXEC_MODE", HIDE_HEADING_IN_EXEC_MODE),
         new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA", READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_INVISIBLE_UNLESS_HAVE_DATA", READONLY_FIELDS_INVISIBLE_UNLESS_HAVE_DATA)
+        new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA", READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA)
     };
 
     public DialogFlags()
@@ -84,14 +84,14 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     public void clearFlag(long flag)
     {
         super.clearFlag(flag);
-        //if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
+        //TODO: ??if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
         //    clearFlagRecursively(flag);
     }
 
     public void setFlag(long flag)
     {
         super.setFlag(flag);
-        //if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
+        //TODO: ??if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
         //    setFlagRecursively(flag);
     }
 }
