@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: UriAddressableInheritableFileResource.java,v 1.1 2003-08-23 16:05:16 shahid.shah Exp $
+ * $Id: UriAddressableInheritableFileResource.java,v 1.2 2003-08-23 17:23:34 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
@@ -54,14 +54,14 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.io.SingleUriAddressableFileLocator;
+import com.netspective.commons.io.UriAddressableUniqueFileLocator;
 import com.netspective.commons.io.UriAddressableFile;
 
 /**
  * A {@link com.netspective.commons.io.UriAddressableFileLocator} that uses files in a specified directory as the
  * source of resource.
  */
-public class UriAddressableInheritableFileResource extends SingleUriAddressableFileLocator
+public class UriAddressableInheritableFileResource extends UriAddressableUniqueFileLocator
 {
     private static final Log log = LogFactory.getLog(UriAddressableInheritableFileResource.class);
     private final Map cache = Collections.synchronizedMap(new HashMap());

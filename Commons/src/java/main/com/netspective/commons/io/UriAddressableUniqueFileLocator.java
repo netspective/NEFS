@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SingleUriAddressableFileLocator.java,v 1.1 2003-08-23 16:05:16 shahid.shah Exp $
+ * $Id: UriAddressableUniqueFileLocator.java,v 1.1 2003-08-23 17:23:34 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
@@ -61,9 +61,9 @@ import org.apache.commons.logging.LogFactory;
  * A {@link com.netspective.commons.io.UriAddressableFileLocator} that uses files in a specified directory as the
  * source of resource.
  */
-public class SingleUriAddressableFileLocator implements UriAddressableFileLocator
+public class UriAddressableUniqueFileLocator implements UriAddressableFileLocator
 {
-    private static final Log log = LogFactory.getLog(SingleUriAddressableFileLocator.class);
+    private static final Log log = LogFactory.getLog(UriAddressableUniqueFileLocator.class);
     protected static final boolean SEP_IS_SLASH = File.separatorChar == '/';
     private final Map cache = Collections.synchronizedMap(new HashMap());
     private final String rootUrl;
@@ -76,7 +76,7 @@ public class SingleUriAddressableFileLocator implements UriAddressableFileLocato
      * as the base directory for loading templates.
      * @param baseDir the base directory for loading templates
      */
-    public SingleUriAddressableFileLocator(final String rootUrl, final File baseDir, final boolean cacheLocations) throws IOException
+    public UriAddressableUniqueFileLocator(final String rootUrl, final File baseDir, final boolean cacheLocations) throws IOException
     {
         this.rootUrl = rootUrl;
         this.cacheLocations = cacheLocations;
