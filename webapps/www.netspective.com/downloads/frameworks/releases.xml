@@ -2,6 +2,152 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.1.3"/>
+        <change-log>
+            <summary>Major enhancements</summary>
+            <change-log-entry>Upgraded to Freemarker 2.3 Final Release.</change-log-entry>
+            <change-log-entry>
+                Implemented new FileSystemBrowser navigation page to allow any navigation area to become a file system browser. Files may be shown in-place or served to the end user.
+                This feature allows any navigation page to dynamically read files/folders and show them as links and allow users to download the files (securely if needed).
+            </change-log-entry>
+            <change-log-entry>
+                Added a new feature so that a &lt;report> panel tag in the &lt;query> tag could specify a column index and value source that should be checked to see if a row is marked "active". This is useful when showing a detail row of a series of records in report and highlighting a particular report. To use the new feature, just use the selected-row-column-specifier, selected-row-column-value, and selected-row-compare-value-as-text attributes of the QueryReportPanel
+            </change-log-entry>
+            <change-log-entry>
+                Added online help functionality for dialog fields and infrastructure for general online help features. At this time, a new "help" tag is supported in &lt;field> tags but that functionality will be extended later for dialogs, pages, reports, etc. To use this functionality, a &lt;help> tag (template processor) is created for any &lt;field> that requires it. Then, a "help" page is added to the navigation tree and can be handled by the "help" page handler like so:
+                <![CDATA[<pre>
+&lt;page name="help" hidden="yes"
+     title="Help"
+     handle-header="false"
+     handle-footer="false">
+  &lt;body-handler handler="help"/>
+&lt;/page></pre>
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                Added custom rendering capability to tabular report panels. Now, instead of having to create or modify skins to do basic custom processing of a HTML tabular report panel, the programmer can supply a template processor do do the custom rendering. The following is an example of a query with a presentation tag. Note the addition of the optional &lt;renderer data-type="formatted-matrix"> tag. The data type can be: sql-result-set, tabular-data-source, formatted-matrix, raw-matrix, and query-result-set. The most common usage will be either formatted-matrix where a variable called 'data' is a List implementation with all the rows. The data supplied in this case will be formatted using the &lt;column> formatting rules. The other commonly used type will be raw-matrix where the query is run and the data is supplied as an Object matrix as-is (no formatting is done). This allows complete and better control.
+                <![CDATA[<pre>
+&lt;query name="account-programs">
+  &lt;sql>select ... where x = ?&lt;/sql>
+  &lt;params>
+    &lt;param value="request:account-id"/>
+  &lt;/params>
+  &lt;presentation>
+    &lt;panel>
+      &lt;report>
+        &lt;column col-index="0" hidden="yes"/>
+        &lt;column col-index="1"
+              redirect="x/y?z=${0}"/>
+        &lt;column col-index="2"
+              heading="Comments"/>
+      &lt;/report>
+      &lt;renderer data-type="formatted-matrix">
+        &lt;body>
+        &lt;![CDATA[
+          &lt;#list data as row>
+            &lt;tr>
+              &lt;td class="report-column-even">${row[1]}&lt;/td>
+              &lt;td class="report-column-even">${row[2]}&lt;/td>
+            &lt;/tr>
+          &lt;/#list>
+        ]]&gt;
+        &lt;/body>
+      &lt;/renderer>
+    &lt;/panel>
+  &lt;/presentation>
+                </pre>]]>
+            </change-log-entry>
+            <change-log-entry>
+                	Added ability for DatabaseLoginAuthenticator to allow the password query to obtain the user and org names as well. Before this change, the password query was expected to have only one column, e.g. "select password from user_table where user_id = ?". Now, optionally, the query may be "select password, userId, userName, orgId, orgName from user_table where user_id = ?". Every item after the password is optional and if provided will fill in the AuthenticatedUser object automatically.
+            </change-log-entry>
+            <change-log-entry>
+                Created a new dialog and page for reverse engineering database schemas from existing databases. The new page is found under Console -> Database -> Schemas -> Reverse Engineer.
+            </change-log-entry>
+            <change-log-entry>
+                Refactored database connection assignment functionality for the dialog action class handlers. (1) Now, the database connection assignment after instance variables (field values) are assigned.
+                (2) The getDataSourceId() method that would provide a string data source id must be called String getDataSourceName() and is considered a value source spec (so programmers should escape ':' in the return value)
+                (3) A new method getDataSourceInfo() may be provided which returns one of the following types: List, String[], or Map. If a List or String[] is provided, then the 1st item is the driver class, second item is the conn url, followed by user name, password. If a Map is provided then key/value pairs must be provided. The inputs must match the DriverManagerConnectionProvider.DataSourceInfo.setInfo(Map) requirements.
+            </change-log-entry>
+            <change-log-entry>
+                In ActionDialogContext, Added new method to open a connection based on driver class and URL instead of just by a data source id.
+            </change-log-entry>
+            <change-log-entry>
+                Changed the errorPage.handlePage() call to errorPage.handlePageBody() to prevent infinite loops in case error pages throw their own exceptions when the body-affects-navigation flag is set to true.
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Added experimental support for conditional table templates using &lt;choose>, &lt;when>, &lt;otherwise>,
+                and &lt;if> blocks. They are used the same way they are in XSLT. Note that the &lt;when>, &lt;otherwise>,
+                and &lt;if> blocks may contain any number of table references or may contain nested choose/if blocks
+                as well. This new feature is not well tested but should work for most advanced cases. The _conditional
+                attribute in &lt;table> tags remains unchanged.
+                <pre>
+&lt;on-add-data>
+    ....
+    &lt;choose>
+        &lt;when test="expression">
+            &lt;table ...>
+        &lt;/when>
+        &lt;otherwise>
+            &lt;table ...>
+        &lt;/otherwise>
+    &lt;/when>
+    ....
+    &lt;if test="expression">
+        &lt;table ...>
+    &lt;/if>
+&lt;/on-add-data>
+            </pre>]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Commons" version="7.1.2"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                Added new getBooleanValue() method to the Value interface that can automatically do type conversion of a Value object into a boolean primitive.
+            </change-log-entry>
+            <change-log-entry>
+                Added new isConditionalExpressionTrue() and evaluateExpression() methods to the ValueContext interface. These two methods evaluate a JSTL-style expression (implemented by Jexl library) in the current value context and make the "environment" available to the expression by passing in a "vc" ValueContext variable. The reason these are useful in the ValueContext is that the expression context and expression instance may be cached and reused per user (thread-safe) if required.
+            </change-log-entry>
+            <change-log-entry>
+                Added experimental support for BSF scripting. Currently only dynamic value sources are scriptable (see Sampler app's forms-input.xml source for information) but support will be added for field and report conditionals, execution scripts for dialog actions, validations, and other useful places. This commit puts in the infrastructure and future commits will add further functionality.
+            </change-log-entry>
+            <change-log-entry>
+                In TextUtils, added a check to see if the first character in the generated identifier is a valid Java start character; if it's not, a _ is prepended so that something like "04_abc" (which is a compiler error) becomes "_04Abc" (which is a valid java identifier).
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Axiom" version="7.1.2"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                Added check to see if parameters in &lt;stored-procedure&gt; were defined, and if they weren't we call special code to just execute the SP and return NULL.
+                Prior to this change the StoredProcedure class always expected parameters (which was not always true).
+            </change-log-entry>
+            <change-log-entry>
+                Added new isPlaceBindComments() method into the DatabasePolicy interface. Now, the default when generating SQL such as insert, update where the bind parameters are generated there are no comments like /* 1 */ telling which bind parameter goes with which column. To turn that on, the SQL policy must specify setPlaceBindComments(true) in the constructor. Required for MS Access Database Policy.
+            </change-log-entry>
+            <change-log-entry>
+                Added check for override params in method Query.createExceptionMessage(ConnectionContext cc, Object[] overrideParams). If the overrride parameter is null the String literal "NULL' is appended to the text exception message for the given bind parameter.
+            </change-log-entry>
+            <change-log-entry>
+                Added two new flags called insert-managed-by-dbms and update-managed-by-dbms to the &lt;column&gt; tag. These flags are used to indicate that a column's insert and update values are managed ONLY by the dbms so no values should be passed for the column if these flags are set during inserts/updates.
+            </change-log-entry>
+            <change-log-entry>
+                Added new methods for setting data source information from a list, string array, or map in the Driver Manager Connection Provider.
+            </change-log-entry>
+            <change-log-entry>
+                Console no longer shows NPE on DataSources page when no data sources are defined.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Sparx" version="7.1.2"/>
         <change-log>
             <summary>Major enhancements</summary>
