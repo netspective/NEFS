@@ -39,11 +39,12 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.12 2004-04-12 22:36:07 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.13 2004-06-23 20:44:52 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
+import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public abstract class AbstractValue implements Value
 
     public String getTextValue()
     {
-        switch(listType)
+        switch (listType)
         {
             case VALUELISTTYPE_NONE:
                 return value != null ? value.toString() : null;
@@ -112,7 +113,7 @@ public abstract class AbstractValue implements Value
                 return value != null ? ((String[]) value)[0] : null;
 
             case VALUELISTTYPE_LIST:
-                if(value != null)
+                if (value != null)
                 {
                     List valueAsList = (List) value;
                     Object v = valueAsList.size() > 0 ? valueAsList.get(0) : null;
@@ -128,10 +129,10 @@ public abstract class AbstractValue implements Value
     public boolean getBooleanValue()
     {
         Object result = getValue();
-        if(result instanceof Boolean)
+        if (result instanceof Boolean)
             return ((Boolean) result).booleanValue();
 
-        if(result != null)
+        if (result != null)
             return TextUtils.toBoolean(result.toString());
 
         return false;
@@ -172,7 +173,7 @@ public abstract class AbstractValue implements Value
     public void appendText(String text)
     {
         String existing = getTextValue();
-        if(existing != null)
+        if (existing != null)
             setTextValue(existing + text);
         else
             setTextValue(text);
@@ -185,7 +186,9 @@ public abstract class AbstractValue implements Value
 
     /**
      * Performs a copy by reference, not a copy by value so be careful
+     *
      * @param value
+     *
      * @throws ValueException
      */
     public void copyValueByReference(Value value) throws ValueException
@@ -217,12 +220,12 @@ public abstract class AbstractValue implements Value
 
     public String[] getTextValues()
     {
-        switch(listType)
+        switch (listType)
         {
             case VALUELISTTYPE_NONE:
                 String text = getTextValue();
-                if(text != null)
-                    return new String[] { text };
+                if (text != null)
+                    return new String[]{text};
                 else
                     return null;
 
@@ -231,10 +234,10 @@ public abstract class AbstractValue implements Value
 
             case VALUELISTTYPE_LIST:
                 List list = (List) getValue();
-                if(list == null)
+                if (list == null)
                     return null;
                 String[] array = new String[list.size()];
-                for(int i = 0; i < list.size(); i++)
+                for (int i = 0; i < list.size(); i++)
                 {
                     Object item = list.get(i);
                     array[i] = item == null ? null : item.toString();
@@ -248,11 +251,11 @@ public abstract class AbstractValue implements Value
 
     public List getListValue()
     {
-        switch(listType)
+        switch (listType)
         {
             case VALUELISTTYPE_NONE:
                 String text = getTextValue();
-                if(text != null)
+                if (text != null)
                 {
                     List list = new ArrayList();
                     list.add(text);
@@ -263,10 +266,10 @@ public abstract class AbstractValue implements Value
 
             case VALUELISTTYPE_STRINGARRAY:
                 String[] array = (String[]) getValue();
-                if(array == null)
+                if (array == null)
                     return null;
                 List list = new ArrayList();
-                for(int i = 0; i < array.length; i++)
+                for (int i = 0; i < array.length; i++)
                     list.add(array[i]);
                 return list;
 
@@ -280,7 +283,7 @@ public abstract class AbstractValue implements Value
 
     public int size()
     {
-        switch(listType)
+        switch (listType)
         {
             case VALUELISTTYPE_NONE:
                 return hasValue() ? 1 : 0;
@@ -298,7 +301,8 @@ public abstract class AbstractValue implements Value
         }
     }
 
-    public boolean equals(Object o){
+    public boolean equals(Object o)
+    {
 
         AbstractValue valueObject;
 
@@ -317,10 +321,10 @@ public abstract class AbstractValue implements Value
         if (this.getValueHolderClass() != valueObject.getValueHolderClass())
             return false;
 
-        if ( this.value == null && valueObject.value == null)
+        if (this.value == null && valueObject.value == null)
             return true;
 
-        if ( (this.value == null && valueObject.value != null) || (this.value != null && valueObject.value == null) )
+        if ((this.value == null && valueObject.value != null) || (this.value != null && valueObject.value == null))
             return false;
 
         if (this.getListValueType() != valueObject.getListValueType())
@@ -357,20 +361,20 @@ public abstract class AbstractValue implements Value
     public void importFromXml(Element parent)
     {
         String valueType = parent.getAttribute("value-type");
-        if(valueType.equals("strings"))
+        if (valueType.equals("strings"))
         {
             NodeList valuesNodesList = parent.getElementsByTagName("values");
-            if(valuesNodesList.getLength() > 0)
+            if (valuesNodesList.getLength() > 0)
             {
                 NodeList valueNodesList = ((Element) valuesNodesList.item(0)).getElementsByTagName("value");
                 int valuesCount = valueNodesList.getLength();
-                if(valuesCount > 0)
+                if (valuesCount > 0)
                 {
                     String[] values = new String[valuesCount];
-                    for(int i = 0; i < valuesCount; i++)
+                    for (int i = 0; i < valuesCount; i++)
                     {
                         Element valueElem = (Element) valueNodesList.item(i);
-                        if(valueElem.getChildNodes().getLength() > 0)
+                        if (valueElem.getChildNodes().getLength() > 0)
                             values[i] = valueElem.getFirstChild().getNodeValue();
                     }
                     setValue(values);
@@ -380,10 +384,10 @@ public abstract class AbstractValue implements Value
         else
         {
             NodeList valueList = parent.getElementsByTagName("value");
-            if(valueList.getLength() > 0)
+            if (valueList.getLength() > 0)
             {
                 Element valueElem = (Element) valueList.item(0);
-                if(valueElem.getChildNodes().getLength() > 0)
+                if (valueElem.getChildNodes().getLength() > 0)
                     setTextValue(valueElem.getFirstChild().getNodeValue());
             }
         }
@@ -392,14 +396,14 @@ public abstract class AbstractValue implements Value
     public void exportToXml(Element parent)
     {
         Document doc = parent.getOwnerDocument();
-        if(isListValue())
+        if (isListValue())
         {
             parent.setAttribute("value-type", "strings");
             Element valuesElem = doc.createElement("values");
             String[] values = getTextValues();
-            if(values != null)
+            if (values != null)
             {
-                for(int i = 0; i < values.length; i++)
+                for (int i = 0; i < values.length; i++)
                 {
                     Element valueElem = doc.createElement("value");
                     valueElem.appendChild(doc.createTextNode(values[i]));
@@ -411,13 +415,33 @@ public abstract class AbstractValue implements Value
         else
         {
             String value = getTextValue();
-            if(value != null && value.length() > 0)
+            if (value != null && value.length() > 0)
             {
                 parent.setAttribute("value-type", "string");
                 Element valueElem = doc.createElement("value");
                 valueElem.appendChild(doc.createTextNode(value));
                 parent.appendChild(valueElem);
             }
+        }
+    }
+
+    public void appendAsUrlParamValue(String paramName, StringBuffer sb)
+    {
+        if (isListValue())
+        {
+            String[] values = getTextValues();
+            if (values != null)
+            {
+                for (int i = 0; i < values.length; i++)
+                {
+                    if (i > 0) sb.append("&");
+                    sb.append(paramName + "=" + URLEncoder.encode(values[i]));
+                }
+            }
+        }
+        else
+        {
+            sb.append(paramName + "=" + URLEncoder.encode(getTextValue()));
         }
     }
 

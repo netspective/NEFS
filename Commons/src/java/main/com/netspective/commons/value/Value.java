@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Value.java,v 1.7 2004-04-12 22:36:07 shahid.shah Exp $
+ * $Id: Value.java,v 1.8 2004-06-23 20:44:52 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -54,9 +54,9 @@ import com.netspective.commons.value.exception.ValueException;
 
 public interface Value
 {
-    public static final int VALUELISTTYPE_NONE        = 0;
+    public static final int VALUELISTTYPE_NONE = 0;
     public static final int VALUELISTTYPE_STRINGARRAY = 1;
-    public static final int VALUELISTTYPE_LIST        = 2;
+    public static final int VALUELISTTYPE_LIST = 2;
 
     /**
      * Return the class name of the actual value holder (Object, String, Integer, etc). All the values are variant, but
@@ -140,7 +140,9 @@ public interface Value
 
     /**
      * Copy the given Value by reference
+     *
      * @param value
+     *
      * @throws ValueException
      */
     public void copyValueByReference(Value value) throws ValueException;
@@ -177,4 +179,6 @@ public interface Value
     public void importFromXml(Element parent);
 
     public void exportToXml(Element parent);
+
+    public void appendAsUrlParamValue(String paramName, StringBuffer sb);
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PresentationValue.java,v 1.8 2004-04-12 22:36:07 shahid.shah Exp $
+ * $Id: PresentationValue.java,v 1.9 2004-06-23 20:44:52 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -107,7 +107,7 @@ public class PresentationValue implements Value
 
             public void setValue(String value)
             {
-                if(this.value != null)
+                if (this.value != null)
                     valueMap.remove(this.value);
                 this.value = value;
                 valueMap.put(value, this);
@@ -174,7 +174,7 @@ public class PresentationValue implements Value
 
     public Items getItems()
     {
-        if(value.isListValue())
+        if (value.isListValue())
             return (Items) value.getValue();
         else
         {
@@ -311,5 +311,10 @@ public class PresentationValue implements Value
     public void exportToXml(Element parent)
     {
         value.exportToXml(parent);
+    }
+
+    public void appendAsUrlParamValue(String paramName, StringBuffer sb)
+    {
+        value.appendAsUrlParamValue(paramName, sb);
     }
 }
