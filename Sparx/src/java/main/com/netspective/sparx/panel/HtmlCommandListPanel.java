@@ -7,6 +7,7 @@ import com.netspective.sparx.command.CommandList;
 import com.netspective.sparx.command.CommandListCommand;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandException;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  */
 public class HtmlCommandListPanel extends AbstractPanel
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(HtmlCommandListPanel.class);
 
     private CommandList list;

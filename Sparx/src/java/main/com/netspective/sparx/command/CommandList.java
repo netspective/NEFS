@@ -51,7 +51,7 @@
  */
 
 /**
- * @version $Id: CommandList.java,v 1.1 2003-12-03 22:38:46 aye.thu Exp $
+ * @version $Id: CommandList.java,v 1.2 2003-12-08 14:01:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -59,12 +59,14 @@ package com.netspective.sparx.command;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class CommandList
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
     /* list containing the command items */
     private List list = new ArrayList();
