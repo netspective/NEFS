@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpServletValueContext.java,v 1.7 2003-08-22 03:33:44 shahid.shah Exp $
+ * $Id: HttpServletValueContext.java,v 1.8 2003-11-08 23:11:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -94,5 +94,12 @@ public interface HttpServletValueContext extends ServletValueContext
     public DialogContext getDialogContext();
 
     public void setDialogContext(DialogContext dialogContext);
+
+    /**
+     * Take the given URL and ensure that the current page's retain params are added to it
+     * @param url The complete URL to use
+     * @return The given url plus any of our current page's retin params
+     */
+    public String constructAppUrl(String url);
 
 }
