@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.12 2003-12-10 04:18:52 aye.thu Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.13 2003-12-10 22:04:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -135,6 +135,9 @@ public class FreeMarkerConfigurationAdapters
         configuration.setSharedVariable("panel", new PanelTransform());
         configuration.setSharedVariable("statics", BeansWrapper.getDefaultInstance().getStaticModels());
         SyntaxHighlightTransform.registerTransforms(configuration);
+
+        // this is required temporarily to workaround the MRU cache bugs
+        configuration.setCacheStorage(new freemarker.cache.SoftCacheStorage());
     }
 
     public Configuration constructWebAppConfiguration(ServletContext servletContext)
