@@ -38,10 +38,6 @@
  * @author Shahid N. Shah
  */
 
-/**
- * $Id: NavigationPageBodyHandler.java,v 1.2 2003-10-24 03:25:54 shahid.shah Exp $
- */
-
 package com.netspective.sparx.navigate;
 
 import java.io.Writer;
@@ -50,7 +46,25 @@ import javax.servlet.ServletException;
 
 import com.netspective.commons.xml.template.TemplateConsumer;
 
+/**
+ * Interface for implementing custom design for the rendering of a page's body content. The rendering of page
+ * headers and footers are not included in this handler interface. Implementations of this class is
+ * recommended for cases when the built-in page body handlers such as <i>commands</i>, <i>templates</i>,
+ * and <i>includes</i> are not suitable.
+ *
+ * @version $Id: NavigationPageBodyHandler.java,v 1.3 2004-02-11 16:14:39 aye.thu Exp $
+ *
+ */
 public interface NavigationPageBodyHandler extends TemplateConsumer
 {
+    /**
+     * Method for generating the body of the page
+     *
+     * @param page              navigation page to which this handler belongs to
+     * @param writer            the writer object to write the page body to
+     * @param nc                current navigation context
+     * @throws ServletException
+     * @throws IOException
+     */
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException;
 }
