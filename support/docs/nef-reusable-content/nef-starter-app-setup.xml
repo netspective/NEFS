@@ -16,16 +16,73 @@
   </section>
 
   <section>
-    <title>Setting up the Starter Application</title>
+    <title>Setting up the Starter Application (Using Application
+    Server)</title>
 
-    <para>Copy the downloaded <filename>nefs-starter-empty.war</filename> file
-    to the <filename class="directory">webapps</filename> folder of your
-    servlet container (application server) and run (or restart) the
-    application server. This will create an Application Directory Structure
-    (see <xref linkend="nef-app-dir-structure" />), containing the necessary
-    NEF files and sub-folders, under the <filename
-    class="directory">webapps</filename> folder of the application
-    server.</para>
+    <section>
+      <title>Auto Deploying the Starter Application (Using Application
+      Server)</title>
+
+      <para>Copy the downloaded <filename>nefs-starter-empty.war</filename>
+      file to the <filename class="directory">webapps</filename> folder of
+      your servlet container (application server) and run (or restart) the
+      application server. This creates an Application Directory Structure (see
+      <xref linkend="nef-app-dir-structure" />), containing the necessary NEF
+      files and sub-folders, under the <filename
+      class="directory">webapps</filename> folder of the application
+      server.</para>
+    </section>
+
+    <section>
+      <title>Setting up the Starter Application Manually</title>
+
+      <para>Some servlet containers (application servers) may not auto deploy
+      the war files. In such cases you need to manually set up your starter
+      application using the following steps:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Create a new folder in the <filename
+          class="directory">webapps</filename> folder of your application
+          server. Change this folder's name to <filename
+          class="directory">nefs-starter-empty</filename> </para>
+
+          <figure>
+            <title>Creating a New Folder for NEFS Starter Application</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-starter-new-folder.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+
+        <listitem>
+          <para>Extract the contents of
+          <filename>nefs-starter-empty.war</filename> file into this newly
+          created folder. You may use any ZIP file extraction utility, such as
+          <ulink url="http://www.winzip.com/downwz.htm">WinZip</ulink> or
+          <ulink url="http://www.rarsoft.com/download.htm">WinRAR</ulink>, for
+          this purpose.</para>
+
+          <figure>
+            <title>Extracting nefs-starter-app.war File</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-extract-starter-app.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>This creates an Application Directory Structure (see <xref
+          linkend="nef-app-dir-structure" />), containing the necessary NEF
+          files and sub-folders, within the <filename
+          class="directory">nefs-starter-empty</filename> folder.</para>
+        </listitem>
+      </orderedlist>
+    </section>
   </section>
 
   <section>
