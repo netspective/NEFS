@@ -51,16 +51,15 @@
  */
 
 /**
- * @version $Id: GridFieldsFormTest.java,v 1.3 2004-01-04 04:40:27 aye.thu Exp $
+ * @version $Id: GridFieldsFormTest.java,v 1.4 2004-03-22 08:38:05 aye.thu Exp $
  */
 package app.test;
 
+import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebResponse;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-
-import com.meterware.httpunit.WebResponse;
-import com.meterware.httpunit.WebForm;
 
 
 public class GridFieldsFormTest extends FormInputTest
@@ -94,17 +93,18 @@ public class GridFieldsFormTest extends FormInputTest
         assertEquals("grid-01.row-01.integer_field_02 ", fieldStates[5][0]);
         assertEquals("grid-01.row-01.integer_field_03 ", fieldStates[6][0]);
         assertEquals("grid-01.row-01.integer_field_04 ", fieldStates[7][0]);
-        assertEquals("composite-01.text_field_01 ", fieldStates[16][0]);
-        assertEquals("composite-01.text_field_02 ", fieldStates[17][0]);
-        assertEquals("composite-01.text_field_03 ", fieldStates[18][0]);
+        assertEquals("composite-01 ", fieldStates[16][0]);
+        assertEquals("composite-01.text_field_01 ", fieldStates[17][0]);
+        assertEquals("composite-01.text_field_02 ", fieldStates[18][0]);
+        assertEquals("composite-01.text_field_03 ", fieldStates[19][0]);
 
         assertEquals("1 ", fieldStates[4][4]);
         assertEquals("2 ", fieldStates[5][4]);
         assertEquals("3 ", fieldStates[6][4]);
         assertEquals("4 ", fieldStates[7][4]);
-        assertEquals("default ", fieldStates[16][4]);
         assertEquals("default ", fieldStates[17][4]);
         assertEquals("default ", fieldStates[18][4]);
+        assertEquals("default ", fieldStates[19][4]);
 
     }
 
