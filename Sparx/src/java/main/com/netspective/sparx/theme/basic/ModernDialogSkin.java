@@ -65,7 +65,7 @@ import com.netspective.sparx.theme.Theme;
 
 /**
  * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.4 2004-08-15 02:27:29 shahid.shah Exp $
+ * @version $Id: ModernDialogSkin.java,v 1.5 2004-08-16 04:17:07 shahid.shah Exp $
  */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -1360,10 +1360,10 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
      */
     protected String generateFieldHint(DialogField field, DialogContext dc)
     {
-        StringBuffer hintHtml = new StringBuffer();
         String hint = field.getHint().getTextValue(dc);
         if(hint != null)
         {
+            StringBuffer hintHtml = new StringBuffer();
             DialogFlags dialogFlags = dc.getDialog().getDialogFlags();
             if((field.isReadOnly(dc) && dialogFlags.flagIsSet(DialogFlags.HIDE_READONLY_HINTS)))
             {
@@ -1379,9 +1379,9 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             {
                 hintHtml.append("<span id=\"" + field.getQualifiedName() + "_hint\" class=\"" + getFieldHintStyleClass() + "\">&nbsp;&nbsp;&nbsp;" + hint + "</span>");
             }
-
+            return hintHtml.toString();
         }
-        return hintHtml.toString();
+        return null;
     }
 
 
