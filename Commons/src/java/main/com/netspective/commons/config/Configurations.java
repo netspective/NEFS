@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: Configurations.java,v 1.1 2003-03-14 04:04:19 shahid.shah Exp $
+ * $Id: Configurations.java,v 1.2 2003-03-19 08:10:24 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.config;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -87,13 +88,26 @@ public class Configurations
     public void addConfiguration(Configuration config)
     {
         config.setManager(this);
+	    String configName = Property.getNameForMapKey(DEFAULT_CONFIG_NAME);
+
         if(config.getName() == null || DEFAULT_CONFIG_NAME.equalsIgnoreCase(config.getName()))
         {
             config.setName(DEFAULT_CONFIG_NAME);
             defaultConfig = config;
-            configurations.put(Property.getNameForMapKey(DEFAULT_CONFIG_NAME), config);
         }
         else
-            configurations.put(config.getNameForMapKey(), config);
+            configName = config.getNameForMapKey();
+
+        configurations.put(configName, config);
     }
+
+	public int size()
+	{
+		return configurations.size();
+	}
+
+	public Set getConfigurationNames()
+	{
+		return configurations.keySet();
+	}
 }
