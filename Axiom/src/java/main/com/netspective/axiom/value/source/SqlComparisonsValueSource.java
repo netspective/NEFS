@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: SqlComparisonsValueSource.java,v 1.1 2003-05-30 23:06:54 shahid.shah Exp $
+ * $Id: SqlComparisonsValueSource.java,v 1.2 2003-06-24 05:11:56 aye.thu Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -99,7 +99,10 @@ public class SqlComparisonsValueSource extends AbstractValueSource
 
         List comparisons = SqlComparisonFactory.getComparisonsList();
         for(int i = 0; i < comparisons.size(); i++)
-            items.addItem(((SqlComparison) comparisons.get(i)).getCaption());
+        {
+            SqlComparison sqlComparison = (SqlComparison) comparisons.get(i);
+            items.addItem(sqlComparison.getCaption(), sqlComparison.getName());
+        }
 
         return result;
     }
@@ -109,7 +112,7 @@ public class SqlComparisonsValueSource extends AbstractValueSource
         List result = new ArrayList();
         List comparisons = SqlComparisonFactory.getComparisonsList();
         for(int i = 0; i < comparisons.size(); i++)
-            result.add(((SqlComparison) comparisons.get(i)).getCaption());
+            result.add(((SqlComparison) comparisons.get(i)).getName());
 
         return new GenericValue(result);
     }
