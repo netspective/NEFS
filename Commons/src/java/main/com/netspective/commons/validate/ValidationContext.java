@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValidationContext.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: ValidationContext.java,v 1.2 2003-05-11 17:51:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
@@ -54,17 +54,17 @@ public interface ValidationContext
      * This scope refers to the entire content (not to a particular object in the context). When an error is added
      * without specifying a scope, it goes into this scope.
      */
-    public final String SCOPE_CONTEXT = "{context}";
+    public final String VALIDATIONSCOPE_ENTIRE_CONTEXT = "{context}";
 
-    public ValueContext getValueContext();
+    public ValueContext getValidationValueContext();
 
-    public void addError(Object scope, ValidationException exception);
-    public void addError(Object scope, String messageFormat, Object[] formatArgs);
-    public void addError(ValidationException exception);
-    public void addError(String messageFormat, Object[] formatArgs);
+    public void addValidationError(Object scope, ValidationException exception);
+    public void addValidationError(Object scope, String messageFormat, Object[] formatArgs);
+    public void addValidationError(ValidationException exception);
+    public void addValidationError(String messageFormat, Object[] formatArgs);
 
-    public List getErrorsForScope(Object scope);
-    public List getAllErrors();
+    public List getValidationErrorsForScope(Object scope);
+    public List getAllValidationErrors();
 
     public boolean isValid();
 }

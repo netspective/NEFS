@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CreditCardValueValidationRule.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: CreditCardValueValidationRule.java,v 1.2 2003-05-11 17:51:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -77,7 +77,7 @@ public class CreditCardValueValidationRule extends BasicValidationRule
         String cardNumber = value.getTextValue();
         if(cardNumber != null && !ValidationUtils.isCreditCard(cardNumber))
         {
-            vc.addError(value, getInvalidCardNumMessage(), new Object[] { getValueCaption(vc), cardNumber });
+            vc.addValidationError(value, getInvalidCardNumMessage(), new Object[] { getValueCaption(vc), cardNumber });
             return false;
         }
 

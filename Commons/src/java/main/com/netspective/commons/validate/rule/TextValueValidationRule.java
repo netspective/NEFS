@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextValueValidationRule.java,v 1.2 2003-03-23 04:44:03 shahid.shah Exp $
+ * $Id: TextValueValidationRule.java,v 1.3 2003-05-11 17:51:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -124,14 +124,14 @@ public class TextValueValidationRule extends BasicValidationRule
 
         if(!ValidationUtils.isInRange(text.length(), minLength, maxLength))
         {
-            vc.addError(value, getInvalidLengthMessage(),
+            vc.addValidationError(value, getInvalidLengthMessage(),
                                 new Object[] { getValueCaption(vc), new Integer(minLength), new Integer(maxLength) });
             return false;
         }
 
         if(regExpr != null && !ValidationUtils.matchRegexp(text, regExpr))
         {
-            vc.addError(value, getInvalidRegExMessage(), new Object[] { getValueCaption(vc), regExpr });
+            vc.addValidationError(value, getInvalidRegExMessage(), new Object[] { getValueCaption(vc), regExpr });
             return false;
         }
 

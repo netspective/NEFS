@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicValidationContext.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: BasicValidationContext.java,v 1.2 2003-05-11 17:51:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
@@ -62,7 +62,7 @@ public class BasicValidationContext implements ValidationContext
     public BasicValidationContext()
     {
         errorsByKey = new HashMap();
-        contextErrors = getErrorsForScope(SCOPE_CONTEXT);
+        contextErrors = getValidationErrorsForScope(VALIDATIONSCOPE_ENTIRE_CONTEXT);
         allErrors = new ArrayList();
     }
 
@@ -77,7 +77,7 @@ public class BasicValidationContext implements ValidationContext
         return valid;
     }
 
-    public List getErrorsForScope(Object scope)
+    public List getValidationErrorsForScope(Object scope)
     {
         List errors = (List) errorsByKey.get(scope);
         if(errors == null)
@@ -88,38 +88,38 @@ public class BasicValidationContext implements ValidationContext
         return errors;
     }
 
-    public List getAllErrors()
+    public List getAllValidationErrors()
     {
         return allErrors;
     }
 
-    public void addError(ValidationException exception)
+    public void addValidationError(ValidationException exception)
     {
         contextErrors.add(exception);
         allErrors.add(exception);
         valid = false;
     }
 
-    public void addError(Object key, ValidationException exception)
+    public void addValidationError(Object key, ValidationException exception)
     {
-        getErrorsForScope(key).add(exception);
+        getValidationErrorsForScope(key).add(exception);
         allErrors.add(exception);
         valid = false;
     }
 
-    public void addError(Object scope, String messageFormat, Object[] formatArgs)
+    public void addValidationError(Object scope, String messageFormat, Object[] formatArgs)
     {
         addError(scope, java.text.MessageFormat.format(messageFormat, formatArgs));
     }
 
-    public void addError(String messageFormat, Object[] formatArgs)
+    public void addValidationError(String messageFormat, Object[] formatArgs)
     {
         addError(java.text.MessageFormat.format(messageFormat, formatArgs));
     }
 
     public void addError(Object key, String message)
     {
-        getErrorsForScope(key).add(message);
+        getValidationErrorsForScope(key).add(message);
         allErrors.add(message);
         valid = false;
     }
@@ -131,7 +131,7 @@ public class BasicValidationContext implements ValidationContext
         valid = false;
     }
 
-    public ValueContext getValueContext()
+    public ValueContext getValidationValueContext()
     {
         return valueContext;
     }

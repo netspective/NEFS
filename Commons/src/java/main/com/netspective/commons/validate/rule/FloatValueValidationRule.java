@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FloatValueValidationRule.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: FloatValueValidationRule.java,v 1.2 2003-05-11 17:51:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -103,7 +103,7 @@ public class FloatValueValidationRule extends BasicValidationRule
         Integer intValue = (Integer) value.getValue();
         if(intValue != null && ! ValidationUtils.isInRange(intValue.intValue(), min, max))
         {
-            vc.addError(value, getInvalidRangeMessage(),
+            vc.addValidationError(value, getInvalidRangeMessage(),
                                 new Object[] { getValueCaption(vc), new Float(min), new Float(max) });
             return false;
         }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.6 2003-04-24 02:26:04 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.7 2003-05-11 17:51:30 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -276,7 +276,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         {
             if(isRequiredByApp() && ! value.hasValue())
             {
-                vc.addError(BasicColumn.this, "Column '"+ getQualifiedName() +"' is required but has no value.");
+                vc.addValidationError(BasicColumn.this, "Column '"+ getQualifiedName() +"' is required but has no value.");
                 return false;
             }
 

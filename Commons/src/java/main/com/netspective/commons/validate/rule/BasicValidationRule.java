@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicValidationRule.java,v 1.2 2003-05-10 18:13:36 shahid.shah Exp $
+ * $Id: BasicValidationRule.java,v 1.3 2003-05-11 17:51:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -107,7 +107,7 @@ public class BasicValidationRule implements ValidationRule
         Object ov = value.getValue();
         if(ov != null && ! ov.getClass().isAssignableFrom(type))
         {
-            vc.addError(value, getInvalidTypeMessage(),
+            vc.addValidationError(value, getInvalidTypeMessage(),
                                 new Object[] { getValueCaption(vc), type.getName(), ov.getClass().getName() });
             return false;
         }
@@ -117,7 +117,7 @@ public class BasicValidationRule implements ValidationRule
 
     public String getValueCaption(ValidationContext vc)
     {
-        return caption != null ? caption.getTextValue(vc.getValueContext()) : null;
+        return caption != null ? caption.getTextValue(vc.getValidationValueContext()) : null;
     }
 
     public boolean isValid(ValidationContext vc, Value value)

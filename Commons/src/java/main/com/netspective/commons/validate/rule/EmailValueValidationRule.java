@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EmailValueValidationRule.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: EmailValueValidationRule.java,v 1.2 2003-05-11 17:51:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -77,7 +77,7 @@ public class EmailValueValidationRule extends BasicValidationRule
         String emailAddress = value.getTextValue();
         if(emailAddress != null && !ValidationUtils.isEmail(emailAddress))
         {
-            vc.addError(value, getInvalidEmailAddrMessage(), new Object[] { getValueCaption(vc), emailAddress });
+            vc.addValidationError(value, getInvalidEmailAddrMessage(), new Object[] { getValueCaption(vc), emailAddress });
             return false;
         }
 

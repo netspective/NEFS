@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportHandler.java,v 1.4 2003-04-23 15:42:09 shahid.shah Exp $
+ * $Id: DataImportHandler.java,v 1.5 2003-05-11 17:51:30 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -235,7 +235,7 @@ public class DataImportHandler extends AbstractContentHandler
                 else
                 {
                     written = false;
-                    getParseContext().addErrors(vc.getAllErrors());
+                    getParseContext().addErrors(vc.getAllValidationErrors());
                 }
             }
         }
