@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.5 2003-08-17 00:24:55 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.6 2003-08-19 16:10:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -196,7 +196,7 @@ public class TableDialog extends Dialog
         {
             if(dc.addingData())
             {
-                dc.populateValuesFromRequestParamsAndAttrs();
+                DialogContextUtils.getInstance().populateFieldValuesFromRequestParamsAndAttrs(dc);
             }
             else if((dc.editingData() || dc.deletingData()))
             {
@@ -224,15 +224,7 @@ public class TableDialog extends Dialog
                             Row row = table.getRowByPrimaryKeys(cc, new Object[] { pkValue}, null);
                             if(row != null)
                             {
-                                ColumnValues values = row.getColumnValues();
-                                DialogContext.DialogFieldStates states = dc.getFieldStates();
-                                for(int i = 0; i < values.size(); i++)
-                                {
-                                    ColumnValue value = values.getByColumnIndex(i);
-                                    DialogField.State state = states.getState(value.getColumn().getName());
-                                    if(state != null)
-                                        state.getValue().setValue(value.getValue());
-                                }
+                                DialogContextUtils.getInstance().populateRowWithFieldValues(dc, row);
                                 ((TableDialogContext) dc).setPrimaryKeyValue(pkValue);
                             }
                             else if(! getDialogFlags().flagIsSet(TableDialogFlags.ALLOW_INSERT_IF_EDITPK_NOT_FOUND))
@@ -273,17 +265,7 @@ public class TableDialog extends Dialog
             return;
         }
 
-        Row row = table.createRow();
-        ColumnValues values = row.getColumnValues();
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
-        for(int i = 0; i < values.size(); i++)
-        {
-            ColumnValue value = values.getByColumnIndex(i);
-            DialogField.State state = states.getState(value.getColumn().getName());
-            if(state != null)
-                value.setValue(state.getValue().getValue());
-        }
-
+        Row row = DialogContextUtils.getInstance().createRowWithFieldValues(dc, getTable());
         try
         {
             switch((int) dc.getPerspectives().getFlags())

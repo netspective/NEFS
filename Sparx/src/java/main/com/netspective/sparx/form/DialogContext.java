@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.21 2003-08-08 00:58:42 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.22 2003-08-19 16:10:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -105,7 +105,6 @@ import com.netspective.sparx.command.AbstractHttpServletCommand;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.axiom.schema.Row;
 
 /**
  * A dialog context functions as the controller of the dialog, tracking and managing field state and field data.
@@ -1175,101 +1174,6 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         }
 
         return hiddens.toString();
-    }
-
-    /**
-     * Copy any request parameters or attributes that match field names in our dialog
-     */
-    public void populateValuesFromRequestParamsAndAttrs()
-    {
-        Map params = getRequest().getParameterMap();
-        Iterator i = params.entrySet().iterator();
-        while(i.hasNext())
-        {
-            Map.Entry entry = (Map.Entry) i.next();
-            String name = (String) entry.getKey();
-            DialogField.State state = fieldStates.getState(name, null);
-            if(state != null)
-            {
-                String[] values = (String[]) entry.getValue();
-                state.getValue().setValue(values);
-            }
-        }
-
-        Enumeration e = getRequest().getAttributeNames();
-        while(e.hasMoreElements())
-        {
-            String name = (String) e.nextElement();
-            DialogField.State state = fieldStates.getState(name, null);
-            if(state != null)
-                state.getValue().setValue(getRequest().getAttribute(name));
-        }
-    }
-
-    public void populateValuesFromStatement(String statementId)
-    {
-        populateValuesFromStatement(null, statementId, null);
-    }
-
-    public void populateValuesFromStatement(String statementId, Object[] params)
-    {
-        populateValuesFromStatement(null, statementId, params);
-    }
-
-    public void populateValuesFromStatement(String dataSourceId, String statementId, Object[] params)
-    {
-        throw new RuntimeException("Not implemented yet.");
-/*
-        TODO:
-        try
-        {
-            ServletContext context = getServletContext();
-            StatementManager stmtMgr = StatementManagerFactory.getManager(context);
-            DatabaseContext dbContext = DatabaseContextFactory.getContext(getRequest(), context);
-            StatementInfo.ResultInfo ri = stmtMgr.execute(dbContext, this, dataSourceId, statementId, params);
-            dialogFieldStoreValueSource.setValue(this, ri.getResultSet(), ValueSource.RESULTSET_STORETYPE_SINGLEROWFORMFLD);
-            ri.close();
-        }
-        catch(Exception e)
-        {
-            throw new RuntimeException(e.toString());
-        }
-*/
-    }
-
-    public void populateValuesFromSql(String sql)
-    {
-        populateValuesFromSql(null, sql, null);
-    }
-
-    public void populateValuesFromSql(String sql, Object[] params)
-    {
-        populateValuesFromSql(null, sql, params);
-    }
-
-    public void populateValuesFromSql(String dataSourceId, String sql, Object[] params)
-    {
-        throw new RuntimeException("Not implemented yet.");
-/*
-        try
-        {
-            TODO:
-            ServletContext context = getServletContext();
-            DatabaseContext dbContext = DatabaseContextFactory.getContext(getRequest(), context);
-            StatementInfo.ResultInfo ri = StatementManager.executeSql(dbContext, this, dataSourceId, sql, params);
-            dialogFieldStoreValueSource.setValue(this, ri.getResultSet(), ValueSource.RESULTSET_STORETYPE_SINGLEROWFORMFLD);
-            ri.close();
-        }
-        catch(Exception e)
-        {
-            LogManager.recordException(this.getClass(), "populateValuesFromSql", "[SQL: " + sql + "]", e);
-            throw new RuntimeException(
-                        ConfigurationManagerFactory.isProductionEnvironment(servletContext) ?
-                            "Error in populateValuesFromSql: please view '"+ LogManager.DEBUG_EXCEPTION +"' logger for details." :
-                            "Error in populateValuesFromSql: [" + sql + "] " + e.toString()
-                      );
-        }
-*/
     }
 
     public void renderDebugPanels(Writer writer) throws IOException
