@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.36 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: DialogField.java,v 1.37 2003-09-29 03:05:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -79,21 +79,22 @@ import com.netspective.sparx.form.DialogValidationContext;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.axiom.schema.Column;
 
 /**
  * A <code>DialogField</code> object represents a data field of a form/dialog. It contains functionalities
  * such as data validation rules, dynamic data binding, HTML rendering, and conditional logics.
  * It provides the default behavior and functionality for all types of dialog fields.
  * All dialog classes representing specialized  fields such as text fields, numerical fields, and phone fields subclass
- * the <code>DialogField</code> class.
+ * the <code>DialogField</code> class to create specialized behavior.
  */
 public class DialogField implements TemplateConsumer
 {
@@ -418,6 +419,8 @@ public class DialogField implements TemplateConsumer
     private DialogFieldScanEntry scanEntry;
     private DialogFieldAutoBlur autoBlur;
     private DialogFieldSubmitOnBlur submitOnBlur;
+    private String bindSchemaTableColumnNames;
+    private Column bindColumn;
     private DialogFieldValidations validationRules = constructValidationRules();
     private String requiredFieldMissingMessage = "{0} is required.";
     private String accessKey;
@@ -617,6 +620,16 @@ public class DialogField implements TemplateConsumer
     public DialogFieldPopup createPopup()
     {
         return new DialogFieldPopup();
+    }
+
+    public Column getBindColumn()
+    {
+        return bindColumn;
+    }
+
+    public void setBindColumn(String schemaTableColumnNames)
+    {
+        bindSchemaTableColumnNames = schemaTableColumnNames;
     }
 
 	/**
@@ -925,7 +938,7 @@ public class DialogField implements TemplateConsumer
 	 * Finalize the dialog field's contents: loops through each conditional action of the field to
 	 * assign partner fields and loops through each child field to finalize their contents.
 	 */
-	public void finalizeContents()
+	public synchronized void finalizeContents(NavigationContext nc)
 	{
         for(int i = 0; i < conditionalActions.size(); i++)
         {
@@ -938,16 +951,28 @@ public class DialogField implements TemplateConsumer
         }
 
 		if (children != null)
-		{
-			for(int i = 0; i < children.size(); i++)
-			{
-				DialogField field = children.get(i);
-				field.finalizeContents();
-			}
-		}
+			children.finalizeContents(nc);
 
 		if (flags.flagIsSet(DialogFieldFlags.DOUBLE_ENTRY))
 			this.setupDoubleEntry();
+
+        // if we're auto-binding then find a column in our dialog's bind-table with the same name as the field and bind it
+        if(getOwner().getDialogFlags().flagIsSet(DialogFlags.AUTO_BIND_FIELDS_TO_COLUMNS))
+            bindColumn = nc.getProject().getSchemas().getColumn(getName(), getOwner().getBindTable());
+
+        if(bindSchemaTableColumnNames != null)
+        {
+            bindColumn = nc.getProject().getSchemas().getColumn(bindSchemaTableColumnNames, getOwner().getBindTable());
+            if(bindColumn == null)
+                log.error("DialogField '"+ getQualifiedName() +"' tried to bind to table '"+ bindSchemaTableColumnNames +"' but it does not exist.");
+
+        }
+
+        if(bindColumn != null && bindColumn.isPrimaryKey())
+            getFlags().setFlag(DialogFieldFlags.PRIMARY_KEY);
+
+        if(requiresMultiPartEncoding())
+            getOwner().getDialogFlags().setFlag(DialogFlags.ENCTYPE_MULTIPART_FORMDATA);
 	}
 
 	public void setupDoubleEntry()
