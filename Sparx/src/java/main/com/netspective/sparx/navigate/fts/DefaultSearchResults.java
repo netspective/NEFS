@@ -34,7 +34,11 @@ package com.netspective.sparx.navigate.fts;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Query;
 
@@ -43,23 +47,46 @@ import com.netspective.sparx.navigate.ScrollableRowsState;
 
 public class DefaultSearchResults implements Serializable, FullTextSearchResults
 {
+    private static final Log log = LogFactory.getLog(DefaultSearchResults.class);
+
+    protected class AutoCloseTask extends TimerTask
+    {
+        public void run()
+        {
+            if(log.isDebugEnabled())
+                log.debug("Automatically closing " + this + " after " + autoCloseInactivityDuration + " milliseconds of inactivity.");
+            searchResultsManager.timeOut(DefaultSearchResults.this);
+        }
+    }
+
+    private final FullTextSearchResultsManager searchResultsManager;
     private final FullTextSearchPage searchPage;
     private final SearchExpression expression;
     private final Query query;
     private final SearchHits searchHits;
     private final ScrollableRowsState scrollState;
+    private final long creationTime = System.currentTimeMillis();
 
-    public DefaultSearchResults(final FullTextSearchPage searchPage, final SearchExpression expression, final Query query, final SearchHits searchHits, final int rowsPerPage)
+    private boolean valid = true;
+    private long lastAccessed = System.currentTimeMillis();
+    private long autoCloseInactivityDuration = 0;
+    private Timer autoCloseTimer;
+
+    public DefaultSearchResults(final FullTextSearchResultsManager searchResultsManager, final FullTextSearchPage searchPage, final SearchExpression expression,
+                                final Query query, final SearchHits searchHits, final int rowsPerPage, final long autoCloseInactivityDuration)
     {
+        this.searchResultsManager = searchResultsManager;
         this.searchPage = searchPage;
         this.expression = expression;
         this.query = query;
         this.searchHits = searchHits;
         this.scrollState = new DefaultScrollableRowState(searchHits.length(), rowsPerPage, 10);
+        setAutoCloseInactivityDuration(autoCloseInactivityDuration);
     }
 
     public String[][] getActivePageHitValues(String[] fieldNames) throws IOException
     {
+        recordActivity();
         final int startRow = scrollState.getScrollActivePageStartRow();
         final int endRow = scrollState.getScrollActivePageEndRow();
         String[][] hitsMatrix = new String[endRow - startRow][fieldNames.length];
@@ -77,31 +104,95 @@ public class DefaultSearchResults implements Serializable, FullTextSearchResults
 
     public String[][] getActivePageHitValues() throws IOException
     {
+        recordActivity();
         return getActivePageHitValues(searchPage.getRenderer().getHitsMatrixFieldNames());
     }
 
     public ScrollableRowsState getScrollState()
     {
+        recordActivity();
         return scrollState;
     }
 
     public SearchExpression getExpression()
     {
+        recordActivity();
         return expression;
     }
 
     public FullTextSearchPage getSearchPage()
     {
+        recordActivity();
         return searchPage;
     }
 
     public SearchHits getHits()
     {
+        recordActivity();
         return searchHits;
     }
 
     public Query getQuery()
     {
+        recordActivity();
         return query;
+    }
+
+    public long getCreationTime()
+    {
+        return creationTime;
+    }
+
+    public long getLastAccessed()
+    {
+        return lastAccessed;
+    }
+
+    public boolean isValid()
+    {
+        return valid;
+    }
+
+    public long getAutoCloseInactivityDuration()
+    {
+        return autoCloseInactivityDuration;
+    }
+
+    public void setAutoCloseInactivityDuration(long autoCloseInactivityDuration)
+    {
+        if(autoCloseTimer != null)
+            autoCloseTimer.cancel();
+
+        this.autoCloseInactivityDuration = autoCloseInactivityDuration;
+        scheduleAutoCloseCheck();
+    }
+
+    protected void recordActivity()
+    {
+        lastAccessed = System.currentTimeMillis();
+        if(autoCloseTimer != null)
+        {
+            if(log.isDebugEnabled())
+                log.debug("Activity recorded in " + this + ", resetting to auto close in " + autoCloseInactivityDuration + " milliseconds.");
+            scheduleAutoCloseCheck();
+        }
+    }
+
+    protected void scheduleAutoCloseCheck()
+    {
+        if(log.isDebugEnabled())
+            log.debug("Setting " + this + " to auto close in " + autoCloseInactivityDuration + " milliseconds.");
+
+        if(autoCloseTimer != null)
+        {
+            autoCloseTimer.cancel();
+            autoCloseTimer = null;
+        }
+
+        if(autoCloseInactivityDuration > 0)
+        {
+            autoCloseTimer = new Timer();
+            autoCloseTimer.schedule(new AutoCloseTask(), autoCloseInactivityDuration);
+        }
     }
 }

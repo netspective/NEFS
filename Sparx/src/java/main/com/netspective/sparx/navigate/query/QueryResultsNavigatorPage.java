@@ -46,7 +46,6 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
-import com.netspective.commons.activity.ActivityObserver;
 import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.Project;
@@ -63,15 +62,20 @@ public class QueryResultsNavigatorPage extends NavigationPage
     private Query query;
     private boolean valid;
     private String invalidMessage;
-    private QueryResultsStateManager stateManager;
     private int maxResultsPerPage = 25;
     private int resultSetTimeOutDuration = 30000; // 30 seconds of inactivity will close the result set automatically
     private ValueSource queryExecutionId; // how a unique query execution (parameters, etc) should be identified (should return text)
+    private String qrNavigatorStateTemplateVarName = "qrNavigatorState";
 
     public QueryResultsNavigatorPage(NavigationTree owner)
     {
         super(owner);
         getFlags().setFlag(Flags.BODY_AFFECTS_NAVIGATION); // because we can redirect advanced queries
+    }
+
+    public QueryResultsNavigatorStatesManager getQueryResultsNavigatorStatesManager()
+    {
+        return DefaultQueryResultsNavigatorStatesManager.getInstance();
     }
 
     public void finalizeContents()
@@ -106,12 +110,6 @@ public class QueryResultsNavigatorPage extends NavigationPage
             this.query = q;
         }
 
-        if(stateManager == null)
-        {
-            invalidMessage = "No state manager was provided.";
-            return;
-        }
-
         if(queryExecutionId == null)
         {
             invalidMessage = "No query execution identifier was provided.";
@@ -135,21 +133,6 @@ public class QueryResultsNavigatorPage extends NavigationPage
     {
         final Map templateVars = new HashMap();
         return templateVars;
-    }
-
-    public QueryResultsStateManager createStateManager()
-    {
-        return new QueryResultsSessionStateManager();
-    }
-
-    public void addStateManager(QueryResultsStateManager stateManager)
-    {
-        this.stateManager = stateManager;
-
-        // in case the state needs to change its result based on something that happens in the app it will
-        // implement that activity observer interface so we should register it.
-        if(stateManager instanceof ActivityObserver)
-            getOwner().getProject().addActivityObserver((ActivityObserver) stateManager);
     }
 
     public ValueSource getQueryExecutionId()
@@ -218,15 +201,25 @@ public class QueryResultsNavigatorPage extends NavigationPage
     public QueryResultsNavigatorState constructQueryResults(NavigationContext nc, String executionId) throws SQLException, NamingException
     {
         QueryResultSet qrs = getQuery().execute(nc, null, true);
-        return new DefaultQueryResultsNavigatorState(executionId, qrs, maxResultsPerPage, resultSetTimeOutDuration);
+        return new DefaultQueryResultsNavigatorState(getQueryResultsNavigatorStatesManager(), this, executionId, qrs, maxResultsPerPage, resultSetTimeOutDuration);
     }
 
     public Map createDefaultResultsBodyTemplateVars(NavigationContext nc, QueryResultsNavigatorState state) throws SQLException
     {
         if(state == null) return null;
         final HashMap results = new HashMap();
-        results.put("qrNavigatorState", state);
+        results.put(qrNavigatorStateTemplateVarName, state);
         return results;
+    }
+
+    public String getQrNavigatorStateTemplateVarName()
+    {
+        return qrNavigatorStateTemplateVarName;
+    }
+
+    public void setQrNavigatorStateTemplateVarName(String qrNavigatorStateTemplateVarName)
+    {
+        this.qrNavigatorStateTemplateVarName = qrNavigatorStateTemplateVarName;
     }
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
@@ -242,14 +235,18 @@ public class QueryResultsNavigatorPage extends NavigationPage
         try
         {
             final String executionId = queryExecutionId.getTextValue(nc);
-            final QueryResultsNavigatorState queryResults = stateManager.getQueryResultsNavigatorState(this, nc, executionId);
 
-            if(queryResults != null)
+            QueryResultsNavigatorState queryResults = getQueryResultsNavigatorStatesManager().getActiveUserQueryResults(this, nc, executionId);
+            if(queryResults == null)
             {
-                final String scrollToPage = request.getParameter(activeScrollPageParamName);
-                if(scrollToPage != null)
-                    queryResults.getScrollState().scrollToPage(Integer.parseInt(scrollToPage));
+                queryResults = constructQueryResults(nc, executionId);
+                if(queryResults.getScrollState().isScrollable())
+                    getQueryResultsNavigatorStatesManager().setActiveUserQueryResults(nc, queryResults);
             }
+
+            final String scrollToPage = request.getParameter(activeScrollPageParamName);
+            if(scrollToPage != null)
+                queryResults.getScrollState().scrollToPage(Integer.parseInt(scrollToPage));
 
             templateVars = createDefaultResultsBodyTemplateVars(nc, queryResults);
         }

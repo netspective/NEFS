@@ -30,39 +30,45 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package com.netspective.sparx.navigate.query;
+package com.netspective.sparx.navigate.fts;
 
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.netspective.axiom.sql.QueryResultSet;
-import com.netspective.sparx.navigate.ScrollableRowsState;
+import org.apache.commons.discovery.tools.DiscoverSingleton;
 
-public interface QueryResultsNavigatorState
+import com.netspective.sparx.navigate.NavigationContext;
+
+public class DefaultFullTextSearchResultsManager implements FullTextSearchResultsManager
 {
-    /**
-     * Get the unique identifier that indicates a specific execution of this query with specific parameters.
-     */
-    public String getExecutionIdentifer();
+    private static final FullTextSearchResultsManager instance = (FullTextSearchResultsManager) DiscoverSingleton.find(FullTextSearchResultsManager.class, DefaultFullTextSearchResultsManager.class.getName());
 
-    /**
-     * Ascertain whether the state is valid
-     *
-     * @return True if valid, false if it's timed out or automatically closed
-     */
-    public boolean isValid();
+    public static final FullTextSearchResultsManager getInstance()
+    {
+        return instance;
+    }
 
-    public QueryResultSet getQueryResultSet();
+    private Map searchResults = new HashMap();
 
-    public ScrollableRowsState getScrollState();
+    public FullTextSearchResults getActiveUserSearchResults(final FullTextSearchPage ftsPage, final NavigationContext nc)
+    {
+        final String key = ftsPage.getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
+        final FullTextSearchResults results = (FullTextSearchResults) searchResults.get(key);
+        System.out.println("search results retrieved: " + key + " " + results);
+        return results;
+    }
 
-    public Object[][] getActivePageColumnValues() throws SQLException;
+    public void setActiveUserSearchResults(final NavigationContext nc, final FullTextSearchResults results)
+    {
+        final String key = results.getSearchPage().getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
+        searchResults.put(key, results);
+        System.out.println("search results saved: " + key + " " + results);
+    }
 
-    public Object[][] getActivePageColumnValuesByColNames(String[] columnNames) throws SQLException;
-
-    public Object[][] getActivePageColumnValuesByColNumbers(int[] columnNumbers) throws SQLException;
-
-    public QueryResultsNavigatorPage getQueryResultsNavigatorPage();
-
-    public void close() throws SQLException;
+    public void timeOut(final FullTextSearchResults results)
+    {
+        // find the value and remove it
+        searchResults.values().remove(results);
+        System.out.println("search results timing out: " + results);
+    }
 }
-

@@ -41,7 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Collections;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -83,7 +82,6 @@ public class FullTextSearchPage extends NavigationPage
     }
 
     private String activeScrollPageParamName = "scroll-page";
-    private String activeUserSearchResultsSessAttrName = "active-search-results";
     private boolean valid; // is the search page valid?
     private File indexDirectory;
     private FileSearchPath indexDirectorySearchPath;
@@ -98,12 +96,18 @@ public class FullTextSearchPage extends NavigationPage
     private String[] allIndexedFieldNames;
     private Map fieldAttributes = new HashMap();
     private String[] advancedSearchFieldNames;
+    private int searchResultsTimeOutDuration = 30000; // 30 seconds of inactivity will close the results automatically
 
     public FullTextSearchPage(NavigationTree owner)
     {
         super(owner);
         setBodyType(new NavigationPageBodyType(NavigationPageBodyType.CUSTOM_HANDLER));
         getFlags().setFlag(Flags.BODY_AFFECTS_NAVIGATION); // because we can redirect advanced queries
+    }
+
+    public FullTextSearchResultsManager getSearchResultsManager()
+    {
+        return DefaultFullTextSearchResultsManager.getInstance();
     }
 
     public void finalizeContents()
@@ -170,6 +174,16 @@ public class FullTextSearchPage extends NavigationPage
         this.indexDirectory = indexDir;
     }
 
+    public int getSearchResultsTimeOutDuration()
+    {
+        return searchResultsTimeOutDuration;
+    }
+
+    public void setSearchResultsTimeOutDuration(int searchResultsTimeOutDuration)
+    {
+        this.searchResultsTimeOutDuration = searchResultsTimeOutDuration;
+    }
+
     public String getActiveScrollPageParamName()
     {
         return activeScrollPageParamName;
@@ -178,16 +192,6 @@ public class FullTextSearchPage extends NavigationPage
     public void setActiveScrollPageParamName(String activeScrollPageParamName)
     {
         this.activeScrollPageParamName = activeScrollPageParamName;
-    }
-
-    public String getActiveUserSearchResultsSessAttrName()
-    {
-        return activeUserSearchResultsSessAttrName;
-    }
-
-    public void setActiveUserSearchResultsSessAttrName(String activeUserSearchResultsSessAttrName)
-    {
-        this.activeUserSearchResultsSessAttrName = activeUserSearchResultsSessAttrName;
     }
 
     public IndexSearcher getIndexSearcher()
@@ -265,21 +269,11 @@ public class FullTextSearchPage extends NavigationPage
         return renderer;
     }
 
-    public FullTextSearchResults getActiveUserSearchResults(NavigationContext nc)
-    {
-        return (FullTextSearchResults) nc.getHttpRequest().getSession().getAttribute(activeUserSearchResultsSessAttrName);
-    }
-
-    public void setActiveUserSearchResults(NavigationContext nc, FullTextSearchResults searchResults)
-    {
-        nc.getHttpRequest().getSession().setAttribute(activeUserSearchResultsSessAttrName, searchResults);
-    }
-
     public Query parseQuery(NavigationContext nc, SearchExpression expression) throws ParseException
     {
         if(expression.isSearchWithinPreviousResults())
         {
-            final FullTextSearchResults searchResults = getActiveUserSearchResults(nc);
+            final FullTextSearchResults searchResults = getSearchResultsManager().getActiveUserSearchResults(this, nc);
             if(searchResults == null)
                 getLog().error("Attempting to search within a search but there is are no active search results");
             else
@@ -302,7 +296,7 @@ public class FullTextSearchPage extends NavigationPage
 
     public FullTextSearchResults constructSearchResults(NavigationContext nc, SearchExpression expression, Query query, SearchHits hits)
     {
-        return new DefaultSearchResults(this, expression, query, hits, maxResultsPerPage);
+        return new DefaultSearchResults(getSearchResultsManager(), this, expression, query, hits, maxResultsPerPage, searchResultsTimeOutDuration);
     }
 
     public Map getTermsByFields() throws IOException
@@ -365,20 +359,18 @@ public class FullTextSearchPage extends NavigationPage
             final String scrollToPage = request.getParameter(activeScrollPageParamName);
             if(scrollToPage != null)
             {
-                final FullTextSearchResults searchResults = getActiveUserSearchResults(nc);
+                final FullTextSearchResults searchResults = getSearchResultsManager().getActiveUserSearchResults(this, nc);
 
                 // if the search expression has not changed, reused the existing hits and go to another page
                 if(searchResults != null && expression.getExprText().equals(searchResults.getExpression().getExprText()))
                 {
-                    final String activePageParamValue = request.getParameter(activeScrollPageParamName);
-                    if(activePageParamValue != null)
-                        searchResults.getScrollState().scrollToPage(Integer.parseInt(activePageParamValue));
+                    searchResults.getScrollState().scrollToPage(Integer.parseInt(scrollToPage));
                     renderer.renderSearchResults(writer, nc, searchResults);
                     return;
                 }
 
                 // if we get to here it means that the search expression has changed or is null and we'll drop to the
-                // "normal" processing
+                // "normal" processing (we also get to here if the previous query timed out because of lack of use)
             }
 
             final Query query;
@@ -398,7 +390,12 @@ public class FullTextSearchPage extends NavigationPage
             nc.getProject().broadcastActivity(activity);
 
             if(searchResults.getScrollState().isScrollable())
-                setActiveUserSearchResults(nc, searchResults);
+                getSearchResultsManager().setActiveUserSearchResults(nc, searchResults);
+
+            // if the scrollToPage is not null and we get to this point it means we recreated the query because of a
+            // timeout so we need to get back to the page request in the new result set
+            if(scrollToPage != null)
+                searchResults.getScrollState().scrollToPage(Integer.parseInt(scrollToPage));
 
             renderer.renderSearchResults(writer, nc, searchResults);
         }

@@ -30,20 +30,33 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package com.netspective.sparx.navigate.query;
-
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
+package com.netspective.sparx.navigate.fts;
 
 import com.netspective.sparx.navigate.NavigationContext;
 
-/**
- * The state manager is responsible for the lifecycle of the query results that are being navigated in the
- * QueryResultsNavigatorPage. It is required to construct the state and when the state is no longer valid it must
- * close it properly to release any open connections.
- */
-public interface QueryResultsStateManager
+public interface FullTextSearchResultsManager
 {
-    public QueryResultsNavigatorState getQueryResultsNavigatorState(QueryResultsNavigatorPage page, NavigationContext nc, String executionId) throws SQLException, NamingException;
+    /**
+     * Get the current user's active search results for the active page.
+     *
+     * @param ftsPage the actual page for which we want to retrieve search results (may be different than active page)
+     * @param nc      The navigation context that provides the auth user, active page, and other state information
+     *
+     * @return Null if the user does not have an active search result, non-NULL for the active search results
+     */
+    public FullTextSearchResults getActiveUserSearchResults(FullTextSearchPage ftsPage, NavigationContext nc);
+
+    /**
+     * Store a new search results instance so that it can be later retrieved when running a pageable system.
+     *
+     * @param nc The navigation context that provides the auth user, active page, and other state information
+     */
+    public void setActiveUserSearchResults(NavigationContext nc, FullTextSearchResults results);
+
+    /**
+     * Timeout the given results and remove them from the manager (to allow closing, garbage collection)
+     *
+     * @param results The results being managed by this manager
+     */
+    public void timeOut(FullTextSearchResults results);
 }

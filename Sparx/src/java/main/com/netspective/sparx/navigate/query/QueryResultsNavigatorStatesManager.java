@@ -32,41 +32,31 @@
  */
 package com.netspective.sparx.navigate.query;
 
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
-import javax.servlet.http.HttpSession;
-
 import com.netspective.sparx.navigate.NavigationContext;
 
-/**
- * Holds the results of one invocation of any particular query navigator page. If another query with a different execution
- * id is passed in (meaning new parameters were probably used) then the old one is disposed and a new query is created.
- */
-public class QueryResultsSessionStateManager implements QueryResultsStateManager
+public interface QueryResultsNavigatorStatesManager
 {
-    public QueryResultsNavigatorState getQueryResultsNavigatorState(QueryResultsNavigatorPage page, NavigationContext nc, String executionId) throws SQLException, NamingException
-    {
-        final String sessAttrName = page.getQualifiedName() + "_active-query-results";
-        final HttpSession session = nc.getHttpRequest().getSession();
-        QueryResultsNavigatorState result = (QueryResultsNavigatorState) session.getAttribute(sessAttrName);
+    /**
+     * Get the current user's active query results for the active page.
+     *
+     * @param page the actual page for which we want to retrieve the results (may be different than active page)
+     * @param nc   The navigation context that provides the auth user, active page, and other state information
+     *
+     * @return Null if the user does not have an active query results, non-NULL for the active search results
+     */
+    public QueryResultsNavigatorState getActiveUserQueryResults(QueryResultsNavigatorPage page, NavigationContext nc, String executionId);
 
-        if(result != null)
-        {
-            // if the state has timed out or we're now starting a new execution of the same query (using different params),
-            // we want to get rid of it and create another one
-            if(!result.isValid() || !result.getExecutionIdentifer().equals(executionId))
-            {
-                session.removeAttribute(sessAttrName);
-                result = null;
-            }
-        }
+    /**
+     * Store a new state instance so that it can be later retrieved when running a pageable system.
+     *
+     * @param nc The navigation context that provides the auth user, active page, and other state information
+     */
+    public void setActiveUserQueryResults(NavigationContext nc, QueryResultsNavigatorState state);
 
-        if(result == null)
-        {
-            result = page.constructQueryResults(nc, executionId);
-            session.setAttribute(sessAttrName, result);
-        }
-        return result;
-    }
+    /**
+     * Timeout the given results and remove them from the manager (to allow closing, garbage collection)
+     *
+     * @param state The state being managed by this manager
+     */
+    public void timeOut(QueryResultsNavigatorState state);
 }

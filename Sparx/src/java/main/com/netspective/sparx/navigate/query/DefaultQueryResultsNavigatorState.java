@@ -38,9 +38,6 @@ import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
-
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,7 +46,7 @@ import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.sparx.navigate.DefaultScrollableRowState;
 import com.netspective.sparx.navigate.ScrollableRowsState;
 
-public class DefaultQueryResultsNavigatorState implements QueryResultsNavigatorState, Serializable, HttpSessionBindingListener
+public class DefaultQueryResultsNavigatorState implements QueryResultsNavigatorState, Serializable
 {
     private static final Log log = LogFactory.getLog(DefaultQueryResultsNavigatorState.class);
 
@@ -59,10 +56,13 @@ public class DefaultQueryResultsNavigatorState implements QueryResultsNavigatorS
         {
             if(log.isDebugEnabled())
                 log.debug("Automatically closing " + this + " after " + autoCloseInactivityDuration + " milliseconds of inactivity.");
-            close();
+
+            statesManager.timeOut(DefaultQueryResultsNavigatorState.this);
         }
     }
 
+    private final QueryResultsNavigatorStatesManager statesManager;
+    private final QueryResultsNavigatorPage page;
     private final String executionIdentifer;
     private final ResultSet resultSet;
     private final int columnCount;
@@ -75,8 +75,10 @@ public class DefaultQueryResultsNavigatorState implements QueryResultsNavigatorS
     private long autoCloseInactivityDuration = 0;
     private Timer autoCloseTimer;
 
-    public DefaultQueryResultsNavigatorState(String executionId, QueryResultSet queryResultSet, int maxRowsPerPage, long autoCloseInactivityDuration) throws SQLException
+    public DefaultQueryResultsNavigatorState(QueryResultsNavigatorStatesManager statesManager, QueryResultsNavigatorPage page, String executionId, QueryResultSet queryResultSet, int maxRowsPerPage, long autoCloseInactivityDuration) throws SQLException
     {
+        this.statesManager = statesManager;
+        this.page = page;
         this.executionIdentifer = executionId;
         this.resultSet = queryResultSet.getResultSet();
         this.columnCount = resultSet.getMetaData().getColumnCount();
@@ -87,6 +89,7 @@ public class DefaultQueryResultsNavigatorState implements QueryResultsNavigatorS
 
     public String getExecutionIdentifer()
     {
+        recordActivity();
         return executionIdentifer;
     }
 
@@ -261,13 +264,8 @@ public class DefaultQueryResultsNavigatorState implements QueryResultsNavigatorS
         }
     }
 
-    public void valueBound(HttpSessionBindingEvent event)
+    public QueryResultsNavigatorPage getQueryResultsNavigatorPage()
     {
-        // do nothing
-    }
-
-    public void valueUnbound(HttpSessionBindingEvent event)
-    {
-        close();
+        return page;
     }
 }

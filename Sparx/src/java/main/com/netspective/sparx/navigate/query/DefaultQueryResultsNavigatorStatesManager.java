@@ -33,27 +33,66 @@
 package com.netspective.sparx.navigate.query;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.naming.NamingException;
+import org.apache.commons.discovery.tools.DiscoverSingleton;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.navigate.NavigationContext;
 
-public class QueryResultsSharedStateManager implements QueryResultsStateManager
+public class DefaultQueryResultsNavigatorStatesManager implements QueryResultsNavigatorStatesManager
 {
-    private QueryResultsNavigatorState sharedResultsState;
+    private static final Log log = LogFactory.getLog(DefaultQueryResultsNavigatorStatesManager.class);
+    private static final QueryResultsNavigatorStatesManager instance = (QueryResultsNavigatorStatesManager) DiscoverSingleton.find(QueryResultsNavigatorStatesManager.class, DefaultQueryResultsNavigatorStatesManager.class.getName());
 
-    public QueryResultsNavigatorState getQueryResultsNavigatorState(QueryResultsNavigatorPage page, NavigationContext nc, String executionId) throws SQLException, NamingException
+    public static final QueryResultsNavigatorStatesManager getInstance()
     {
-        synchronized(sharedResultsState)
+        return instance;
+    }
+
+    private Map states = new HashMap();
+
+    public QueryResultsNavigatorState getActiveUserQueryResults(QueryResultsNavigatorPage page, NavigationContext nc, String executionId)
+    {
+        final String key = page.getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
+        QueryResultsNavigatorState state = (QueryResultsNavigatorState) states.get(key);
+
+        if(state != null)
         {
-            // if the state has timed out, we want to get rid of it and create another one
-            if(sharedResultsState != null && !sharedResultsState.isValid())
-                sharedResultsState = null;
-
-            if(sharedResultsState == null)
-                sharedResultsState = page.constructQueryResults(nc, executionId);
-
-            return sharedResultsState;
+            // if the state has timed out or we're now starting a new execution of the same query (using different params),
+            // we want to get rid of it and create another one
+            if(!state.getExecutionIdentifer().equals(executionId))
+            {
+                timeOut(state);
+                state = null;
+            }
         }
+
+        System.out.println("query results retrieved: " + key + " " + state);
+        return state;
+    }
+
+    public void setActiveUserQueryResults(NavigationContext nc, QueryResultsNavigatorState state)
+    {
+        final String key = state.getQueryResultsNavigatorPage().getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
+        states.put(key, state);
+        System.out.println("query results saved: " + key + " " + state);
+    }
+
+    public void timeOut(QueryResultsNavigatorState state)
+    {
+        // find the value and remove it
+        try
+        {
+            state.close();
+        }
+        catch(SQLException e)
+        {
+            log.error(e);
+        }
+        states.values().remove(state);
+        System.out.println("query results timing out: " + state);
     }
 }
