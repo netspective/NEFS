@@ -42,7 +42,7 @@
 
                 <tr><td class="report-column-${classSuffix}">
                     <#list 0..level as i>&nbsp;&nbsp;</#list>
-                    <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-folder-open.gif')}"/>
+                    <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-folder-active.gif')}"/>
                     <b>${activePath.file.name}</b>
                 </td></tr>
                 <#assign level = level + 1/>
