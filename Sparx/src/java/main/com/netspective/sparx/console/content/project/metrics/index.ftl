@@ -28,6 +28,10 @@
     </#macro>
 
     <@panel heading="Project Metrics">
+        <#assign projectFilesContext = vc.navigationContext.projectFileSystemContext/>
+        <#assign rootPathFile = projectFilesContext.rootPath.file/>
+        <#assign parentMetric = vc.projectComponent.metrics/>
+        <#assign value = vc.project.createFileSystemMetrics(parentMetric,rootPathFile)/>
         <table class="report" border="0" cellspacing="2" cellpadding="0">
             <@showMetric metric=vc.projectComponent.metrics/>
         </table>

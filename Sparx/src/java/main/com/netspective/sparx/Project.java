@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.40 2003-11-20 04:15:38 aye.thu Exp $
+ * $Id: Project.java,v 1.41 2003-11-24 05:27:58 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -50,6 +50,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Set;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -107,8 +109,13 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.product.NetspectiveComponent;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.MetricsGroup;
+import com.netspective.commons.metric.CountMetric;
+import com.netspective.commons.metric.FileTypeMetric;
+import com.netspective.commons.metric.AverageMetric;
+import com.netspective.commons.command.Commands;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
@@ -222,6 +229,9 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private Themes themes = new Themes();
     private ValueSource defaultDataSource;
     private HtmlTabularReportDataSourceScrollStates scrollStates = new HtmlTabularReportDataSourceScrollStatesManager();
+    private Set countLinesInFileExtn = new HashSet();
+    private boolean ignoreCaseInFileExtn = true;
+
 
     public Project()
     {
@@ -529,9 +539,88 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         getThemes().produceMetrics(mg);
         getNavigationTrees().produceMetrics(mg);
 
+        // include metrics about the value sources being used in the project
+        ValueSources.getInstance().produceMetrics(parent);
+        // include metrics about the commands being used in the project
+        Commands.getInstance().produceMetrics(parent);
+
         parent.addValueMetric("Lifecycle Listeners", Integer.toString(lifecycleListeners.size()));
         parent.addValueMetric("Ant Projects", Integer.toString(antProjects.size()));
         parent.addValueMetric("Login Managers", Integer.toString(loginManagers.size()));
+    }
+
+    /**
+     * Creates the various metric associated with the project files
+     * @param parentMetric
+     * @param path
+     */
+    public void createFileSystemMetrics(Metric parentMetric, File path)
+    {
+        Metric fsMetrics = parentMetric.addGroupMetric("Application Files");
+        Metric dirMetrics = fsMetrics.addGroupMetric("Folders");
+        Metric allFileMetrics = fsMetrics.addGroupMetric("Files");
+        allFileMetrics.setFlag(Metric.METRICFLAG_SUM_CHILDREN);
+        allFileMetrics.setFlag(Metric.METRICFLAG_SORT_CHILDREN);
+
+        FileTypeMetric codeFileMetrics = parentMetric.addFileTypeMetric("Code Files", true);
+        codeFileMetrics.setFlag(Metric.METRICFLAG_SUM_CHILDREN);
+        codeFileMetrics.setFlag(Metric.METRICFLAG_SORT_CHILDREN);
+
+        FileTypeMetric appFileMetrics = parentMetric.addFileTypeMetric("App Files", false);
+        appFileMetrics.setFlag(Metric.METRICFLAG_SUM_CHILDREN);
+        appFileMetrics.setFlag(Metric.METRICFLAG_SORT_CHILDREN);
+
+        calcFileSystemMetrics(path, 1, dirMetrics, allFileMetrics, codeFileMetrics, appFileMetrics);
+    }
+
+    public void calcFileSystemMetrics(File path, int depth, Metric dirMetrics, Metric allFileMetrics, FileTypeMetric codeFileMetrics, FileTypeMetric appFileMetrics)
+    {
+        CountMetric totalDirsMetric = dirMetrics.addCountMetric("Total folders");
+        AverageMetric avgEntriesMetric = dirMetrics.addAverageMetric("Average entries per folder");
+        AverageMetric avgDepthMetric = dirMetrics.addAverageMetric("Average Depth");
+        avgDepthMetric.incrementAverage(depth);
+
+        File[] entries = path.listFiles();
+        for(int i = 0; i < entries.length; i++)
+        {
+            File entry = entries[i];
+            if(entry.isDirectory())
+            {
+                totalDirsMetric.incrementCount();
+                File[] childEntries = entry.listFiles();
+                avgEntriesMetric.incrementAverage(childEntries.length);
+                calcFileSystemMetrics(entry, depth + 1, dirMetrics, allFileMetrics, codeFileMetrics, appFileMetrics);
+            }
+            else
+            {
+                String entryCaption = entry.getName();
+                String entryExtension = "(no extension)";
+                int extnIndex = entryCaption.lastIndexOf('.');
+                if(extnIndex > -1)
+                    entryExtension = entryCaption.substring(extnIndex);
+                if(ignoreCaseInFileExtn)
+                    entryExtension = entryExtension.toLowerCase();
+
+                CountMetric fileMetric = allFileMetrics.addCountMetric(entryExtension);
+                //fileMetric.setFlag(Metric.METRICFLAG_SHOW_PCT_OF_PARENT);
+                fileMetric.incrementCount();
+
+                if(countLinesInFileExtn.contains(entryExtension))
+                {
+                    FileTypeMetric ftMetric = (FileTypeMetric) codeFileMetrics.getChild(entryExtension);
+                    if(ftMetric == null)
+                        ftMetric = codeFileMetrics.addFileTypeMetric(entryExtension, true);
+                    ftMetric.incrementCount(entry);
+                }
+                else
+                {
+                    FileTypeMetric ftMetric = (FileTypeMetric) appFileMetrics.getChild(entryExtension);
+                    if(ftMetric == null)
+                        ftMetric = appFileMetrics.addFileTypeMetric(entryExtension, false);
+                    ftMetric.incrementCount(entry);
+                }
+            }
+        }
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
