@@ -75,15 +75,15 @@
     *********************************************************************
     -->
 	<context-param>
-	  <param-name>default-data-source</param-name>
-	  <param-value>jdbc/library</param-value>
+	  <param-name>com.netspective.sparx.sql.DEFAULT_DATA_SOURCE</param-name>
+	  <param-value>jdbc/default</param-value>
 	</context-param>
 
 	<resource-ref>
-	  <res-ref-name>jdbc/library</res-ref-name>
+	  <res-ref-name>jdbc/default</res-ref-name>
 	  <res-type>javax.sql.DataSource</res-type>
 	  <init-param driver-name="org.hsqldb.jdbcDriver"/>
-	  <init-param url="jdbc:hsqldb:c:\projects\webapps\library\WEB-INF\Database\library.hsqldb"/>
+	  <init-param url="jdbc:hsqldb:c:\projects\webapps\sparx-test-app-04\WEB-INF\hsqldb-data\medspective"/>
 	  <init-param user="sa"/>
 	  <init-param password=""/>
 	  <init-param max-connections="20"/>

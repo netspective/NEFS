@@ -18,16 +18,18 @@
 			</params>
 
 			<presentation>
-<report heading="Address">
-				<banner style="horizontal">
-					<item caption="Add" icon="nav-url-cmd:/claim,statement,insuranceAttribute.productAddress,-,-,detail,-,insuranceProductAttribute.address,add?product_id"/>
-				</banner>
-
-				<column heading=" " output="Edit" url="nav-url-cmd:/claim,statement,insuranceAttribute.productAddress,-,-,detail,-,insuranceProductAttribute.address,edit?product_id&amp;address_id=${0}"/>
-				<column heading="Address Type"/>
-				<column heading="City"/>
-				<column heading=" " output="Delete" url="nav-url-cmd:/claim,statement,insuranceAttribute.productAddress,-,-,detail,-,insuranceProductAttribute.address,delete?product_id&amp;address_id=${0}"/>
-			</report>
+<panel>
+<frame heading="Address"/>
+<banner style="horizontal">
+<action caption="Add" icon="nav-url-cmd:/claim,statement,insuranceAttribute.productAddress,-,-,detail,-,insuranceProductAttribute.address,add?product_id"/>
+</banner>
+<report>
+<column heading=" " output="Edit" command="redirect, "/>
+<column heading="Address Type"/>
+<column heading="City"/>
+<column heading=" " output="Delete" command="redirect, "/>
+</report>
+</panel>
 </presentation>
 		</query>
 
@@ -48,16 +50,18 @@
 			</params>
 
 			<presentation>
-<report heading="Contact Information">
-				<banner style="horizontal">
-					<item caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" url="nav-url-cmd:/claim,statement,insuranceAttribute.productContact,-,-,detail,-,insuranceProductAttribute.contact,add?product_id"/>
-				</banner>
-
-				<column heading=" " output="Edit" url="nav-url-cmd:/claim,statement,insuranceAttribute.productContact,-,-,detail,-,insuranceProductAttribute.contact,edit?product_id&amp;contact_id=${0}"/>
-				<column heading="Contact Type"/>
-				<column heading=" "/>
-				<column heading=" " output="Delete" url="nav-url-cmd:/claim,statement,insuranceAttribute.productContact,-,-,detail,-,insuranceProductAttribute.contact,delete??product_id&amp;contact_id=${0}"/>
-			</report>
+<panel>
+<frame heading="Contact Information"/>
+<banner style="horizontal">
+<action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/>
+</banner>
+<report>
+<column heading=" " output="Edit" command="redirect, "/>
+<column heading="Contact Type"/>
+<column heading=" "/>
+<column heading=" " output="Delete" command="redirect, "/>
+</report>
+</panel>
 </presentation>
 		</query>
 
@@ -75,14 +79,16 @@
 			</params>
 			
 			<presentation>
-<report heading="Insurance Product Profile">
-				<banner style="horizontal">
-					<item caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" url="nav-url-id:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProductAttribute.profile,edit?product_id&amp;org_id"/>
-				</banner>
-				
-				<column heading="Product ID" align="left"/>
-				<column heading="Name"/>
-			</report>
+<panel>
+<frame heading="Insurance Product Profile"/>
+<banner style="horizontal">
+<action caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/>
+</banner>
+<report>
+<column heading="Product ID" align="left"/>
+<column heading="Name"/>
+</report>
+</panel>
 </presentation>
 		</query>
 		
@@ -100,15 +106,17 @@
 			</params>
 			
 			<presentation>
-<report heading="Insurance Products">
-				<banner style="horizontal">
-					<item caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" url="nav-url-id:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,add?org_id"/>
-				</banner>
-				
-				<column heading="&amp;nbsp;" output="Edit" url="nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProductAttribute.profile,edit?product_id=${0}&amp;org_id"/>
-				<column heading="&amp;nbsp;" output="${1}" url="nav-url:/insurance/product/summary?product_id=${0}&amp;org_id"/>
-				<column heading="&amp;nbsp;" output="Delete" url="nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProductAttribute.profile,delete?product_id=${0}&amp;org_id"/>
-			</report>
+<panel>
+<frame heading="Insurance Products"/>
+<banner style="horizontal">
+<action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/>
+</banner>
+<report>
+<column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/>
+<column heading="&amp;nbsp;" output="${1}" command="redirect,&amp;nbsp;"/>
+<column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/>
+</report>
+</panel>
 </presentation>
 		</query>
 		
@@ -130,15 +138,17 @@
 			</params>
 			
 			<presentation>
-<report heading="Insurance Products">
-				<banner style="horizontal">
-					<item caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" url="nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,add?org_id"/>
-				</banner>
-				
-				<column heading="&amp;nbsp;" output="Edit" url="nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProductAttribute.profile,edit?product_id=${0}"/>
-				<column heading="&amp;nbsp;" output="${1}" url="nav-url:/insurance/product/summary?product_id=${0}"/>
-				<column heading="&amp;nbsp;" output="Delete" url="nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProductAttribute.profile,delete?product_id=${0}"/>
-			</report>
+<panel>
+<frame heading="Insurance Products"/>
+<banner style="horizontal">
+<action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/>
+</banner>
+<report>
+<column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/>
+<column heading="&amp;nbsp;" output="${1}" command="redirect,&amp;nbsp;"/>
+<column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/>
+</report>
+</panel>
 </presentation>
 		</query>
 		
@@ -158,15 +168,17 @@
 			</params>
 			
 			<presentation>
-<report heading="Insurance Plans">
-				<banner style="horizontal">
-					<item caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" url="nav-url-cmd:/claim,dialog,insurancePlan.main,add"/>
-				</banner>
-				
-				<column heading="&amp;nbsp;" output="Edit" url="nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,edit?plan_id=${0}"/>
-				<column heading="Plan" url="nav-url:/insurance/plan/summary?plan_id=${0}"/>
-				<column heading="&amp;nbsp;" output="Delete" url="nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,delete?plan_id=${0}"/>
-			</report>
+<panel>
+<frame heading="Insurance Plans"/>
+<banner style="horizontal">
+<action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/>
+</banner>
+<report>
+<column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/>
+<column heading="Plan" command="redirect,Plan"/>
+<column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/>
+</report>
+</panel>
 </presentation>
 		</query>
 
@@ -186,16 +198,17 @@
 			</params>
 			
 			<presentation>
-<report heading="Insurance Plans">
-				<banner style="horizontal">
-					
-					<item caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" url="nav-url-cmd:/claim,dialog,insurancePlan.main,add?product_id&amp;org_id"/>
-				</banner>
-				
-				<column heading="&amp;nbsp;" output="Edit" url="nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,edit?plan_id=${0}"/>
-				<column heading="Plan" url="nav-url:/insurance/plan/summary?plan_id=${0}"/>
-				<column heading="&amp;nbsp;" output="Delete" url="nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,delete?plan_id=${0}"/>
-			</report>
+<panel>
+<frame heading="Insurance Plans"/>
+<banner style="horizontal">
+<action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/>
+</banner>
+<report>
+<column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/>
+<column heading="Plan" command="redirect,Plan"/>
+<column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/>
+</report>
+</panel>
 </presentation>
 		</query>
 		
@@ -216,28 +229,33 @@
 			</params>
 
 			<presentation>
-<report heading="Address">
-				<record-add-caption>Add</record-add-caption>
-				<record-add-url>config-expr:${create-app-url:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,add</record-add-url>
-				<record-edit-url>config-expr:${create-app-url:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;address_id=${0}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,edit</record-edit-url>
-				<record-delete-url>config-expr:${create-app-url:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;address_id=${0}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,delete</record-delete-url>
-				<column index="0" display="no"/>
-				<column heading="Address Type"/>
-				<column heading="City"/>
-			</report>
+<panel>
+<frame heading="Address"/>
+<report>
+<record-add-caption>Add</record-add-caption>
+<record-add-url>config-expr:${create-app-url:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,add</record-add-url>
+<record-edit-url>config-expr:${create-app-url:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;address_id=${0}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,edit</record-edit-url>
+<record-delete-url>config-expr:${create-app-url:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;address_id=${0}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,delete</record-delete-url>
+<column col-index="0" hidden="yes"/>
+<column heading="Address Type"/>
+<column heading="City"/>
+</report>
+</panel>
 </presentation>
 
 			<presentation>
-<report heading="Address">
-				<banner style="horizontal">
-					<item caption="Add" icon="nav-url-cmd:/claim,statement,insuranceAttribute.planAddress,-,-,detail,-,insurancePlanAttribute.address,add?plan_id&amp;org_id"/>
-				</banner>
-
-				<column heading=" " output="Edit" url="nav-url-cmd:/claim,statement,insuranceAttribute.planAddress,-,-,detail,-,insurancePlanAttribute.address,edit?address_id=${0}&amp;plan_id&amp;org_id"/>
-				<column heading="Address Type"/>
-				<column heading="City"/>
-				<column heading=" " output="Delete" url="nav-url-cmd:/claim,statement,insuranceAttribute.planAddress,-,-,detail,-,insurancePlanAttribute.address,delete?plan_id&amp;org_id&amp;address_id=${0}"/>
-			</report>
+<panel>
+<frame heading="Address"/>
+<banner style="horizontal">
+<action caption="Add" icon="nav-url-cmd:/claim,statement,insuranceAttribute.planAddress,-,-,detail,-,insurancePlanAttribute.address,add?plan_id&amp;org_id"/>
+</banner>
+<report>
+<column heading=" " output="Edit" command="redirect, "/>
+<column heading="Address Type"/>
+<column heading="City"/>
+<column heading=" " output="Delete" command="redirect, "/>
+</report>
+</panel>
 </presentation>
 		</query>
 
@@ -258,16 +276,18 @@
 			</params>
 
 			<presentation>
-<report heading="Contact Information">
-				<banner style="horizontal">
-					<item caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" url="nav-url-cmd:/claim,statement,insuranceAttribute.planContact,-,-,detail,-,insurancePlanAttribute.contact,add?plan_id&amp;org_id"/>
-				</banner>
-
-				<column heading=" " output="Edit" url="nav-url-cmd:/claim,statement,insuranceAttribute.planContact,-,-,detail,-,insurancePlanAttribute.contact,edit?plan_id&amp;org_id&amp;contact_id=${0}"/>
-				<column heading="Contact Type"/>
-				<column heading=" "/>
-				<column heading=" " output="Delete" url="nav-url-cmd:/claim,statement,insuranceAttribute.planContact,-,-,detail,-,insurancePlanAttribute.contact,delete?plan_id&amp;org_id&amp;contact_id=${0}"/>
-			</report>
+<panel>
+<frame heading="Contact Information"/>
+<banner style="horizontal">
+<action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/>
+</banner>
+<report>
+<column heading=" " output="Edit" command="redirect, "/>
+<column heading="Contact Type"/>
+<column heading=" "/>
+<column heading=" " output="Delete" command="redirect, "/>
+</report>
+</panel>
 </presentation>
 		</query>
 
@@ -289,16 +309,18 @@
 			</params>
 			
 			<presentation>
-<report heading="Insurance Plans">
-				<banner style="horizontal">
-					<item caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" url="nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,edit?plan_id&amp;org_id"/>
-				</banner>
-				
-				<column heading="Plan ID" align="left"/>
-				<column display="no"/>
-				<column heading="Product" url="nav-url:/insurance/product/summary?product_id=${1}&amp;org_id"/>
-				<column heading="Plan"/>
-			</report>
+<panel>
+<frame heading="Insurance Plans"/>
+<banner style="horizontal">
+<action caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/>
+</banner>
+<report>
+<column heading="Plan ID" align="left"/>
+<column hidden="yes"/>
+<column heading="Product" command="redirect,Product"/>
+<column heading="Plan"/>
+</report>
+</panel>
 </presentation>
 		</query>
 	</queries>

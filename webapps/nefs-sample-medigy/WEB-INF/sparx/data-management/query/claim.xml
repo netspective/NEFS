@@ -38,26 +38,28 @@
 				Claim.billing_facility_id = BillingFacility.org_id
 				
 			<presentation>
-<report heading="All Claims">
-				<banner style="horizontal">
-					<item caption="Add" url="create-app-url:/transaction/claim.jsp?data_cmd=add"/>
-				</banner>
-				
-				<column heading="Claim ID" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit"/>
-				<column heading="Invoice ID" url="create-app-url:/invoice/attribute/profile.jsp?data_cmd=edit&amp;invoice_id=${1}"/>
-				<column heading="Batch ID"/>
-				<column heading="Claim Status"/>
-				<column display="no"/>
-				<column heading="Patient" url="nav-url:/person/summary?person_id=${4}"/>
-				<column display="no"/>
-				<column heading="Service Provider" url="nav-url:/person/summary?person_id=${6}"/>
-				<column display="no"/>
-				<column heading="Service Facility" url="nav-url:/org/summary?org_id=${8}"/>
-				<column display="no"/>
-				<column heading="Billing Provider" url="nav-url:/person/summary?person_id=${10}"/>
-				<column display="no"/>
-				<column heading="Billing Facility" url="nav-url:/org/summary?org_id=${12}"/>
-			</report>
+<panel>
+<frame heading="All Claims"/>
+<banner style="horizontal">
+<action caption="Add" command="redirect,"/>
+</banner>
+<report>
+<column heading="Claim ID" command="redirect,Claim ID"/>
+<column heading="Invoice ID" command="redirect,Invoice ID"/>
+<column heading="Batch ID"/>
+<column heading="Claim Status"/>
+<column hidden="yes"/>
+<column heading="Patient" command="redirect,Patient"/>
+<column hidden="yes"/>
+<column heading="Service Provider" command="redirect,Service Provider"/>
+<column hidden="yes"/>
+<column heading="Service Facility" command="redirect,Service Facility"/>
+<column hidden="yes"/>
+<column heading="Billing Provider" command="redirect,Billing Provider"/>
+<column hidden="yes"/>
+<column heading="Billing Facility" command="redirect,Billing Facility"/>
+</report>
+</panel>
 </presentation>
 		</query>
 		
@@ -98,25 +100,27 @@
 			</params>
 
 			<presentation>
-<report heading="All Claims">
-				<banner style="horizontal">
-					<item caption="Add" url="create-app-url:/transaction/claim.jsp?data_cmd=add"/>
-				</banner>
-				
-				<column heading="Claim ID" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit"/>
-				<column heading="Batch ID"/>
-				<column heading="Claim Status"/>
-				<column display="no"/>
-				<column heading="Patient" url="nav-url:/person/summary?person_id=${3}"/>
-				<column display="no"/>
-				<column heading="Service Provider" url="nav-url:/person/summary?person_id=${5}"/>
-				<column display="no"/>
-				<column heading="Service Facility" url="nav-url:/org/summary?org_id=${7}"/>
-				<column display="no"/>
-				<column heading="Billing Provider" url="nav-url:/person/summary?person_id=${9}"/>
-				<column display="no"/>
-				<column heading="Billing Facility" url="nav-url:/org/summary?org_id=${11}"/>
-			</report>
+<panel>
+<frame heading="All Claims"/>
+<banner style="horizontal">
+<action caption="Add" command="redirect,"/>
+</banner>
+<report>
+<column heading="Claim ID" command="redirect,Claim ID"/>
+<column heading="Batch ID"/>
+<column heading="Claim Status"/>
+<column hidden="yes"/>
+<column heading="Patient" command="redirect,Patient"/>
+<column hidden="yes"/>
+<column heading="Service Provider" command="redirect,Service Provider"/>
+<column hidden="yes"/>
+<column heading="Service Facility" command="redirect,Service Facility"/>
+<column hidden="yes"/>
+<column heading="Billing Provider" command="redirect,Billing Provider"/>
+<column hidden="yes"/>
+<column heading="Billing Facility" command="redirect,Billing Facility"/>
+</report>
+</panel>
 </presentation>
 		</query>
 
@@ -158,26 +162,28 @@
 			</params>
 
 			<presentation>
-<report heading="All Claims">
-				<banner style="horizontal">
-					<item caption="Add" url="create-app-url:/transaction/claim.jsp?data_cmd=add"/>
-				</banner>
-				
-				<column heading="Claim ID" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit"/>
-				<column heading="Invoice ID" url="create-app-url:/invoice/attribute/profile.jsp?data_cmd=edit&amp;invoice_id=${1}"/>
-				<column heading="Batch ID"/>
-				<column heading="Claim Status"/>
-				<column display="no"/>
-				<column heading="Patient" url="nav-url:/person/summary?person_id=${4}"/>
-				<column display="no"/>
-				<column heading="Service Provider" url="nav-url:/person/summary?person_id=${6}"/>
-				<column display="no"/>
-				<column heading="Service Facility" url="nav-url:/org/summary?org_id=${8}"/>
-				<column display="no"/>
-				<column heading="Billing Provider" url="nav-url:/person/summary?person_id=${10}"/>
-				<column display="no"/>
-				<column heading="Billing Facility" url="nav-url:/org/summary?org_id=${12}"/>
-			</report>
+<panel>
+<frame heading="All Claims"/>
+<banner style="horizontal">
+<action caption="Add" command="redirect,"/>
+</banner>
+<report>
+<column heading="Claim ID" command="redirect,Claim ID"/>
+<column heading="Invoice ID" command="redirect,Invoice ID"/>
+<column heading="Batch ID"/>
+<column heading="Claim Status"/>
+<column hidden="yes"/>
+<column heading="Patient" command="redirect,Patient"/>
+<column hidden="yes"/>
+<column heading="Service Provider" command="redirect,Service Provider"/>
+<column hidden="yes"/>
+<column heading="Service Facility" command="redirect,Service Facility"/>
+<column hidden="yes"/>
+<column heading="Billing Provider" command="redirect,Billing Provider"/>
+<column hidden="yes"/>
+<column heading="Billing Facility" command="redirect,Billing Facility"/>
+</report>
+</panel>
 </presentation>
 		</query>
 		

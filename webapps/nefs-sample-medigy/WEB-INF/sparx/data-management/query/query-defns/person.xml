@@ -59,16 +59,16 @@
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
 				<presentation>
+<panel>
 <report>
-					<column heading="Person ID"/>
-					<column heading="First Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Last Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Birth Date"/>
-					
-					<column heading="Gender"/>
-					
-					<column heading="Marital Status"/>
-				</report>
+<column heading="Person ID"/>
+<column heading="First Name" command="redirect,First Name"/>
+<column heading="Last Name" command="redirect,Last Name"/>
+<column heading="Birth Date"/>
+<column heading="Gender"/>
+<column heading="Marital Status"/>
+</report>
+</panel>
 </presentation>
 			</select>
 		</select-dialog>
@@ -106,16 +106,16 @@
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
 				<presentation>
+<panel>
 <report>
-					<column heading="Person ID"/>
-					<column heading="First Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Last Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Birth Date"/>
-					
-					<column heading="Gender"/>
-					
-					<column heading="Marital Status"/>
-				</report>
+<column heading="Person ID"/>
+<column heading="First Name" command="redirect,First Name"/>
+<column heading="Last Name" command="redirect,Last Name"/>
+<column heading="Birth Date"/>
+<column heading="Gender"/>
+<column heading="Marital Status"/>
+</report>
+</panel>
 </presentation>
 			</select>
 		</select-dialog>
@@ -153,16 +153,16 @@
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
 				<presentation>
+<panel>
 <report>
-					<column heading="Person ID"/>
-					<column heading="First Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Last Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Birth Date"/>
-					
-					<column heading="Gender"/>
-					
-					<column heading="Marital Status"/>
-				</report>
+<column heading="Person ID"/>
+<column heading="First Name" command="redirect,First Name"/>
+<column heading="Last Name" command="redirect,Last Name"/>
+<column heading="Birth Date"/>
+<column heading="Gender"/>
+<column heading="Marital Status"/>
+</report>
+</panel>
 </presentation>
 			</select>
 		</select-dialog>
@@ -202,16 +202,16 @@
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
 				<presentation>
+<panel>
 <report>
-					<column heading="Person ID"/>
-					<column heading="First Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Last Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Birth Date"/>
-					
-					<column heading="Gender"/>
-					
-					<column heading="Marital Status"/>
-				</report>
+<column heading="Person ID"/>
+<column heading="First Name" command="redirect,First Name"/>
+<column heading="Last Name" command="redirect,Last Name"/>
+<column heading="Birth Date"/>
+<column heading="Gender"/>
+<column heading="Marital Status"/>
+</report>
+</panel>
 </presentation>
 			</select>
 		</select-dialog>
@@ -249,16 +249,16 @@
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
 				<presentation>
+<panel>
 <report>
-					<column heading="Person ID"/>
-					<column heading="First Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Last Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Birth Date"/>
-					
-					<column heading="Gender"/>
-					
-					<column heading="Marital Status"/>
-				</report>
+<column heading="Person ID"/>
+<column heading="First Name" command="redirect,First Name"/>
+<column heading="Last Name" command="redirect,Last Name"/>
+<column heading="Birth Date"/>
+<column heading="Gender"/>
+<column heading="Marital Status"/>
+</report>
+</panel>
 </presentation>
 			</select>
 		</select-dialog>
@@ -296,16 +296,16 @@
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
 				<presentation>
+<panel>
 <report>
-					<column heading="Person ID"/>
-					<column heading="First Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Last Name" url="nav-url:/person/summary?person_id=${0}"/>
-					<column heading="Birth Date"/>
-					
-					<column heading="Gender"/>
-					
-					<column heading="Marital Status"/>
-				</report>
+<column heading="Person ID"/>
+<column heading="First Name" command="redirect,First Name"/>
+<column heading="Last Name" command="redirect,Last Name"/>
+<column heading="Birth Date"/>
+<column heading="Gender"/>
+<column heading="Marital Status"/>
+</report>
+</panel>
 </presentation>
 			</select>
 		</select-dialog>

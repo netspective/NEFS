@@ -5,7 +5,9 @@
 
 		<field name="org_name" caption="Name" join="Org" column="org_name">
 			<presentation>
+<panel>
 <report url="nav-url:/org/summary?org_id=${0}"/>
+</panel>
 </presentation>
 		</field>
 

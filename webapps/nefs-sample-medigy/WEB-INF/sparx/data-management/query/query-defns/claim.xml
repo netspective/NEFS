@@ -3,7 +3,9 @@
 	<query-defn name="searchClaims">
 		<field name="claim_id" caption="Claim ID" join="Claim" column="claim_id">
 			<presentation>
+<panel>
 <report url="nav-url:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.diag-proc-codes,add,component?claim_id=${0}"/>
+</panel>
 </presentation>
 		</field>
 

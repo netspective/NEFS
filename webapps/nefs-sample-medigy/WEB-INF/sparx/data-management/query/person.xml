@@ -101,18 +101,20 @@
 			</params>
 
 			<presentation>
-<report heading="Personal Profile">
-				<banner style="horizontal">
-					<item caption="Edit" url="nav-url-cmd:/person/summary,statement,personAttribute.profile,-,-,detail,-,personAttribute.personProfileTableDialog,edit"/>
-				</banner>
-
-				<column heading="Prefix"/>
-				<column heading="First Name"/>
-				<column heading="Middle Name"/>
-				<column heading="Last Name"/>
-				<column heading="Birth Date"/>
-				<column heading="Death Date"/>
-			</report>
+<panel>
+<frame heading="Personal Profile"/>
+<banner style="horizontal">
+<action caption="Edit" command="redirect,"/>
+</banner>
+<report>
+<column heading="Prefix"/>
+<column heading="First Name"/>
+<column heading="Middle Name"/>
+<column heading="Last Name"/>
+<column heading="Birth Date"/>
+<column heading="Death Date"/>
+</report>
+</panel>
 </presentation>
 		</query>
 

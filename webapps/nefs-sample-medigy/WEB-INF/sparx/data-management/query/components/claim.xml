@@ -38,26 +38,28 @@
 			</params>
 
 			<presentation>
-<report heading="All Claims">
-				<banner style="horizontal">
-					<item caption="Add" url="nav-url-cmd:/add/claim/claim,dialog,claim.claim,add"/>
-				</banner>
-				
-				<column heading="&amp;nbsp;" output="Edit" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit?claim_id=${0}"/>
-				<column display="no"/>
-				<column heading="Claim Status"/>
-				<column display="no"/>
-				<column heading="Patient" url="nav-url:/person/summary?person_id=${3}"/>
-				<column display="no"/>
-				<column heading="Service Provider" url="nav-url:/person/summary?person_id=${5}"/>
-				<column display="no"/>
-				<column heading="Service Facility" url="nav-url:/org/summary?org_id=${7}"/>
-				<column display="no"/>
-				<column display="no"/>
-				<column display="no"/>
-				<column display="no"/>
-				<column heading="&amp;nbsp;" output="Delete" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit?claim_id=${0}"/>
-			</report>
+<panel>
+<frame heading="All Claims"/>
+<banner style="horizontal">
+<action caption="Add" command="redirect,"/>
+</banner>
+<report>
+<column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/>
+<column hidden="yes"/>
+<column heading="Claim Status"/>
+<column hidden="yes"/>
+<column heading="Patient" command="redirect,Patient"/>
+<column hidden="yes"/>
+<column heading="Service Provider" command="redirect,Service Provider"/>
+<column hidden="yes"/>
+<column heading="Service Facility" command="redirect,Service Facility"/>
+<column hidden="yes"/>
+<column hidden="yes"/>
+<column hidden="yes"/>
+<column hidden="yes"/>
+<column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/>
+</report>
+</panel>
 </presentation>
 		</query>
 
@@ -99,27 +101,29 @@
 			</params>
 
 			<presentation>
-<report heading="All Claims">
-				<banner style="horizontal">
-					<item caption="Add" url="nav-url-cmd:/add/claim/claim,dialog,claim.claim,add"/>
-				</banner>
-				
-				<column heading="&amp;nbsp;" output="Edit" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit?claim_id=${0}"/>
-				<column display="no"/>
-				<column display="no"/>
-				<column heading="Claim Status"/>
-				<column display="no"/>
-				<column display="no"/>
-				<column display="no"/>
-				<column heading="Service Provider" url="nav-url:/person/summary?person_id=${6}"/>
-				<column display="no"/>
-				<column heading="Service Facility" url="nav-url:/org/summary?org_id=${7}"/>
-				<column display="no"/>
-				<column display="no"/>
-				<column display="no"/>
-				<column display="no"/>
-				<column heading="&amp;nbsp;" output="Delete" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit?claim_id=${0}"/>
-			</report>
+<panel>
+<frame heading="All Claims"/>
+<banner style="horizontal">
+<action caption="Add" command="redirect,"/>
+</banner>
+<report>
+<column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/>
+<column hidden="yes"/>
+<column hidden="yes"/>
+<column heading="Claim Status"/>
+<column hidden="yes"/>
+<column hidden="yes"/>
+<column hidden="yes"/>
+<column heading="Service Provider" command="redirect,Service Provider"/>
+<column hidden="yes"/>
+<column heading="Service Facility" command="redirect,Service Facility"/>
+<column hidden="yes"/>
+<column hidden="yes"/>
+<column hidden="yes"/>
+<column hidden="yes"/>
+<column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/>
+</report>
+</panel>
 </presentation>
 		</query>
 		
@@ -150,18 +154,20 @@
 			</params>
 
 			<presentation>
-<report heading="Claim Diagnoses and Procedures">
-				<banner style="horizontal">
-					<item caption="Add" url="nav-url-cmd:/claim/summary,statement,claimAttribute.diag-proc-codes,-,-,component,-,claimAttribute.diagproc,add"/>
-				</banner>
-				
-				<column heading="&amp;nbsp;" output="Edit" url="nav-url-cmd:/claim/summary,statement,claimAttribute.diag-proc-codes,-,-,component,-,claimAttribute.diagproc,edit?diagproc_id=${0}"/>
-				<column heading="Diag Code Type"/>
-				<column heading="Diag Code"/>
-				<column heading="Proc Code Type"/>
-				<column heading="Proc Code"/>
-				<column heading="&amp;nbsp;" output="Delete" url="nav-url-cmd:/claim/summary,statement,claimAttribute.diag-proc-codes,-,-,component,-,claimAttribute.diagproc,delete?diagproc_id=${0}"/>
-			</report>
+<panel>
+<frame heading="Claim Diagnoses and Procedures"/>
+<banner style="horizontal">
+<action caption="Add" command="redirect,"/>
+</banner>
+<report>
+<column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/>
+<column heading="Diag Code Type"/>
+<column heading="Diag Code"/>
+<column heading="Proc Code Type"/>
+<column heading="Proc Code"/>
+<column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/>
+</report>
+</panel>
 </presentation>
 		</query>
 		
