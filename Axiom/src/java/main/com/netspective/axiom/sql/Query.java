@@ -32,11 +32,14 @@
  */
 package com.netspective.axiom.sql;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.naming.NamingException;
 
@@ -48,6 +51,8 @@ import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.lang.ValueBeanFieldIndexTranslator;
+import com.netspective.commons.lang.ValueBeanGeneratorClassLoader;
 import com.netspective.commons.text.ExpressionText;
 import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
 import com.netspective.commons.value.ValueContext;
@@ -141,6 +146,38 @@ public class Query implements InputSourceLocatorListener
         }
     }
 
+    public class FieldIndexTranslator implements ValueBeanFieldIndexTranslator
+    {
+        private Map translation = new HashMap();
+
+        public FieldIndexTranslator()
+        {
+        }
+
+        public void setFieldNames(String fieldNames)
+        {
+            int num = 1;
+            StringTokenizer st = new StringTokenizer(fieldNames, ",");
+            while(st.hasMoreTokens())
+            {
+                translation.put(st.nextToken().trim(), new Integer(num));
+                num++;
+            }
+        }
+
+        public int getTranslatedIndex(String fieldName)
+        {
+            Integer i = (Integer) translation.get(fieldName);
+            if(i != null)
+                return i.intValue();
+            else
+            {
+                log.error("Query " + getQualifiedName() + " does not define index for " + valueBean + " field " + fieldName);
+                return 0;
+            }
+        }
+    }
+
     private InputSourceLocator inputSourceLocator;
     private Log log = LogFactory.getLog(Query.class);
     private QueriesNameSpace nameSpace;
@@ -148,6 +185,9 @@ public class Query implements InputSourceLocatorListener
     private ValueSource dataSourceId;
     private QueryDbmsSqlTexts sqlTexts = new QueryDbmsSqlTexts();
     private QueryExecutionLog execLog = new QueryExecutionLog();
+    private Class valueBean;
+    private ValueBeanGeneratorClassLoader valueBeanGenerator;
+    private ValueBeanFieldIndexTranslator valueBeanTranslator;
 
     public Query()
     {
@@ -216,6 +256,45 @@ public class Query implements InputSourceLocatorListener
     {
         this.queryName = name;
         log = LogFactory.getLog(getClass().getName() + "." + this.getQualifiedName());
+    }
+
+    public Class getValueBean()
+    {
+        return valueBean;
+    }
+
+    public void setValueBean(Class valueBean) throws IOException, ClassNotFoundException
+    {
+        if(!valueBean.isInterface())
+            throw new RuntimeException("Value bean " + valueBean + " is not an interface");
+
+        this.valueBean = valueBean;
+        this.valueBeanGenerator = ValueBeanGeneratorClassLoader.getInstance(valueBean.getName() + "Impl", new Class[]{
+            valueBean
+        });
+    }
+
+    public ValueBeanFieldIndexTranslator getValueBeanTranslator()
+    {
+        return valueBeanTranslator;
+    }
+
+    public ValueBeanFieldIndexTranslator createValueBeanFieldOrder()
+    {
+        return new FieldIndexTranslator();
+    }
+
+    public void addValueBeanFieldOrder(ValueBeanFieldIndexTranslator valueBeanTranslator)
+    {
+        this.valueBeanTranslator = valueBeanTranslator;
+    }
+
+    public Object constructValueBean() throws IllegalAccessException, InstantiationException
+    {
+        if(this.valueBeanGenerator == null)
+            return null;
+
+        return this.valueBeanGenerator.getGeneratedClass().newInstance();
     }
 
     public QueryParameters getParams()
