@@ -15,12 +15,13 @@
     <xdm:include file="data-management/schema/schema.xml"/>
 
     <!-- setup the data access layer Singleton to point to our schema -->
-    <listener class="app.Util"/>
-
+    <listener class="app.cts.Util"/>
+    <theme name="console" default="yes" class="com.netspective.sparx.theme.console.ConsoleTheme"
+        inherit-resources-from-themes="common"/>
 
     <login-manager name="app" default="yes">
         <login-authenticator class="com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator">
-            <authenticated-user-class>app.AppAuthenticatedUser</authenticated-user-class>
+            <authenticated-user-class>app.cts.AppAuthenticatedUser</authenticated-user-class>
             <password-query>
                 select
                     person_login.password
@@ -39,12 +40,13 @@
     </login-manager>
 
 
-    <navigation-tree name="app" default="yes">
+    <navigation-tree name="app" default="yes" >
         <page caption="Home" name="home" heading="Welcome to CTS" title="CTS - Clinical Trial Management System" default="yes">
             <!--page caption="Summary" name="summary" heading="authenticated-user:complete_sortable_name" title="Welcome to CTS" -->
-                <panels >
-                    <frame heading="Table Columns"/>
-                    <panel type="html">
+                <panels style="tabbed" height="350" width="400">
+                    <frame heading="Welcome to CTS"/>
+                    <panel  type="html" view="all" test="a" height="300">
+                        <frame heading="Welcome"/>
                         <body>
                             <![CDATA[
                             <div align="left" style="padding:10">
@@ -54,20 +56,40 @@
                             ]]>
                         </body>
                     </panel>
-                    <panel type="command" command="query,cts.active-studies-by-person,-,-,-,record-viewer-compressed" />
-                    <panel type="command" command="query,cts.active-orgs-by-person,-,-,-,record-editor-compressed" />
+                    <panel type="command"  command="query,cts.active-studies-by-person,-,-,-,record-viewer-compressed" >
+                        <frame heading="Studies"/>
+                    </panel>
+                    <panel type="command"  command="query,cts.active-orgs-by-person,-,-,-,record-editor-compressed" >
+                        <frame heading="Organizations"/>
+                    </panel>
                     <!--panel type="command" command="statement,person.user-journal-report,-,-,report"/>
                     <panel type="command" command="statement,person.user-activity-report,-,-,report"/-->
                 </panels>
             <!--/page-->
-            <page caption="Edit Profile" name="edit_profile" heading="Personal Information" title="CTS" command="dialog,cts.person-contact-info,edit">
+            <page caption="Personal Info" name="person_info" heading="Personal Information" title="CTS">
+                <panels>
+                    <panel type="html">
+                        <body>
+                        This is your personal information
+                        </body>
+                    </panel>
+                    <panel type="command" command="query,cts.user-info,-,-,-,detail-compressed"/>
+                </panels>
+                <page name="edit" caption="Edit Personal Info" command="dialog,subject.profile,edit"   hidden="yes"
+                    require-request-param="id" retain-params="id" />
+                <page name="change_password" caption="Change Password" command="dialog,subject.login_info,edit"   hidden="yes"
+                    require-request-param="person_id" retain-params="person_id" />
             </page>
 
 
-            <page caption="Contact Data" name="contact_info" heading="Contact Information" title="Contact Information">
+            <page caption="Contact Info" name="contact_info" heading="Contact Information" title="Contact Information">
                 <panels>
-                    <panel type="command" command="query,cts.user-info,-,-,-,detail-compressed" />
-                    <panel type="command" command="query,cts.contact-info,-,-,-,record-viewer" />
+                    <panel type="html">
+                        <body>
+                        The following are all the contact information available for the person.
+                        </body>
+                    </panel>
+                    <panel type="command" command="query,cts.contact-info,-,-,-,record-viewer" width="400"/>
                 </panels>
                 <page name="add" caption="Add Contact Info" command="dialog,cts.person-contact-info,add" hidden="yes"
                 require-request-param="person_id"  />
@@ -78,19 +100,22 @@
             </page>
             <page caption="Journal" name="journal" heading="Add Journal Entry" title="Add Journal Entry">
                 <panels>
-                    <!--panel type="command" command="dialog,person.journal" col-span="2"/-->
+                    <panel type="command" command="query,cts.get-notes-by-person-id,-,-,-,record-viewer-compressed" />
                 </panels>
+                <page caption="Add new journal entry" name="add" command="dialog,subject.journal,add" hidden="yes"/>
             </page>
             <page caption="Study" name="study" heading="Study Information" title="CTS - Clinical Trial Management System" hidden="yes">
                 <panels>
                     <panel type="command" command="query,cts.get-study-info-by-id,-,-,-,record-editor" />
                     <panel type="command" command="query,cts.get-related-orgs-by-study-id,-,-,-,record-editor" />
-                    <panel type="command" command="query,cts.get-related-persons-by-study-id,-,-,-,record-editor" />
+                    <panel type="command" command="query,cts.get-subjects-by-study-id,-,-,-,record-editor" />
+                    <panel type="command" command="query,cts.get-personnel-by-study-id,-,-,-,record-editor" />
                 </panels>
                 <page name="add" caption="Add Study" heading="Add a new study" title="CTS - Add Study" command="dialog,study.profile,add" hidden="yes"/>
                 <page name="edit" caption="Edit Study" heading="Edit study" title="CTS - Edit Study" command="dialog,study.profile,edit" hidden="yes"/>
                 <page name="delete" caption="Delete Study" heading="Edit study" title="CTS - Delete Study" command="dialog,study.profile,delete" hidden="yes"/>
-                <page name="add_person" caption="Add Study Person" heading="Create a new person" title="CTS - Add Study" command="dialog,study.profile,add" hidden="yes"/>
+                <page name="add_subject" caption="Create Subject" heading="Create a new subject" title="CTS - Create Study Subject"
+                    command="dialog,subject.profile,add" hidden="yes"/>
             </page>
             <page caption="Organization" name="org" heading="Organizations" title="CTS - Clinical Trial Management System">
                 <panels>
@@ -121,10 +146,12 @@
                 </body>
                 </panel>
             </panels>
+
             <page caption="Subjects" name="subjects" heading="Search for subjects" command="query-defn,org,-,searchDialog"/>
             <page caption="Doctors" name="doctors" heading="Search for doctors" command="query-defn,org,-,searchDialog"/>
             <page caption="Administrators" name="adminstrators" heading="Search for administrators" command="query-defn,org,-,searchDialog"/>
             <page caption="Organizations" name="organizations" heading="Search for organizations" command="query-defn,org,-,searchDialog"/>
+            <page name="search" caption="Studies" heading="Search for studies" title="CTS - Search Studies" default="yes" command="query-defn,study,-,searchDialog"/>
         </page>
 
         <!--page caption="Person" name="person" heading="CTS - Personnel Management Section" title="CTS - Clinical Trial Management System">

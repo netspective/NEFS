@@ -39,54 +39,91 @@
  */
 
 /**
- * $Id: StudyDialogInitialPopulateListener.java,v 1.2 2003-10-12 05:15:32 aye.thu Exp $
+ * $Id: PasswordDialogHandler.java,v 1.1 2003-10-12 05:15:32 aye.thu Exp $
  */
-package app.cts.form.study;
+package app.cts.form.person;
 
-import com.netspective.sparx.form.listener.DialogInitialPopulateListener;
+import com.netspective.sparx.form.handler.DialogExecuteDefaultHandler;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogContextUtils;
-import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.sql.QueryResultSet;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogValidationContext;
+import com.netspective.sparx.form.listener.DialogValidateListener;
+import com.netspective.axiom.ConnectionContext;
 
-import javax.naming.NamingException;
+import java.io.Writer;
+import java.io.IOException;
 import java.sql.SQLException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import auto.dcb.subject.LoginInfoContext;
+import auto.dal.db.dao.person.PersonLoginTable;
+import auto.dal.db.DataAccessLayer;
+import app.cts.AppAuthenticatedUser;
 
 /**
- * Class for handling initial population of the Study dialog fields
+ * Class for handling changing of a user's login password
  */
-public class StudyDialogInitialPopulateListener implements DialogInitialPopulateListener
+public class PasswordDialogHandler extends DialogExecuteDefaultHandler implements DialogValidateListener
 {
-    private static final Log log = LogFactory.getLog(StudyDialogInitialPopulateListener.class);
-
-    public void populateInitialDialogValues(DialogContext dc, int formatType)
+    public void validateDialog(DialogValidationContext dvc)
     {
-        if (dc.editingData() || dc.deletingData())
+        LoginInfoContext lic = new LoginInfoContext(dvc.getDialogContext());
+        String oldPassword = lic.getOldPasswordState().getValue().getTextValue();
+        String newPassword1 = lic.getNewPassword1State().getValue().getTextValue();
+        String newPassword2 = lic.getNewPassword2State().getValue().getTextValue();
+        AppAuthenticatedUser user = (AppAuthenticatedUser) dvc.getDialogContext().getAuthenticatedUser();
+        if (!oldPassword.equals(user.getEncryptedPassword()))
         {
-            String idParam = dc.getHttpRequest().getParameter("study_id");
-            if (idParam == null || idParam.length() == 0)
-                throw new RuntimeException("Study ID was not found in the request object.");
-            Query query = dc.getSqlManager().getQuery(auto.id.sql.query.Cts.GET_STUDY_INFO_BY_ID);
+            // the old password doesnt match up
+            dvc.addError("Old password value is not correct.");
+            return;
+        }
+
+        if (!newPassword1.equals(newPassword2))
+        {
+            // the old password doesnt match up
+            dvc.addError("The new password fields do not match up.");
+            return;
+        }
+    }
+
+    public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
+    {
+        LoginInfoContext lic = new LoginInfoContext(dc);
+        String newPassword = lic.getNewPassword1State().getValue().getTextValue();
+
+        PersonLoginTable plTable = DataAccessLayer.getInstance().getPersonTable().getPersonLoginTable();
+        ConnectionContext cc = null;
+        try
+        {
+            cc = dc.getConnection(null, true);
+            DataAccessLayer.getInstance().getPersonTable().getPersonLoginTable().getParentRecordsByPersonId()
+            //plTable.getRecordByPrimaryKey(cc, );
+
+        }
+        catch (Exception e)
+        {
             try
             {
-                QueryResultSet qrs = query.execute(dc, new Object[] { idParam }, false);
-                DialogContextUtils.getInstance().populateFieldValuesFromResultSet(dc, qrs);
-                qrs.close(true);
-                qrs = null;
+                if (cc != null)
+                    cc.rollbackAndClose();
             }
-            catch (NamingException e)
+            catch (Exception se)
             {
-                e.printStackTrace();
-                log.error("Failed to populate dialog", e);
+                se.printStackTrace();
+            }
+        }
+        finally
+        {
+            try
+            {
+                if (cc != null)
+                    cc.close();
             }
             catch (SQLException e)
             {
                 e.printStackTrace();
-                log.error("Failed to populate dialog", e);
             }
         }
+
     }
 }

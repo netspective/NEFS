@@ -35,162 +35,152 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
+ * @author Aye Thu
  */
 
 /**
- * $Id: OrgDialog.java,v 1.2 2003-10-12 05:15:32 aye.thu Exp $
+ * $Id: PersonContactDialog.java,v 1.1 2003-10-12 05:15:32 aye.thu Exp $
  */
-package app.cts.form;
+package app.cts.form.person;
 
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogContextUtils;
-import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.form.schema.TableDialog;
+import com.netspective.sparx.form.field.type.DateTimeField;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
+import com.netspective.axiom.sql.ResultSetUtils;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.commons.value.GenericValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.naming.NamingException;
 import java.sql.SQLException;
-import java.io.Writer;
+import java.util.Map;
 import java.io.IOException;
+import java.io.Writer;
 
 import auto.dal.db.DataAccessLayer;
-import auto.dal.db.dao.OrgTable;
-import auto.dal.db.dao.org.OrgAddressTable;
-import auto.dal.db.vo.impl.OrgVO;
-import auto.dal.db.vo.impl.OrgAddressVO;
+import auto.dal.db.vo.PersonContact;
+import auto.dal.db.vo.impl.PersonContactVO;
+import auto.dal.db.dao.person.PersonContactTable;
+import auto.dal.db.dao.PersonTable;
+import auto.dcb.cts.PersonContactInfoContext;
 import auto.id.sql.schema.db.enum.RecordStatus;
-import auto.dcb.org.ProfileContext;
+import app.cts.AppAuthenticatedUser;
+
 
 /**
- * Class for handling actions associated with the organization dialog
+ * Class for handling action of adding/updating/deleting contact information
  */
-public class OrgDialog extends TableDialog
+public class PersonContactDialog extends com.netspective.sparx.form.Dialog
 {
-    /**
-     * Populates the dialog fields
-     * @param dc
-     * @param formatType
-     */
     public void populateValues(DialogContext dc, int formatType)
     {
         super.populateValues(dc, formatType);
         if(dc.getAuthenticatedUser() == null)
             return;
-        if (dc.isInitialEntry() && (dc.editingData() || dc.deletingData()))
+
+        HttpServletRequest request = dc.getHttpRequest();
+        String idParam = request.getParameter("id");
+        if(dc.isInitialEntry() && (dc.editingData() || dc.deletingData()))
         {
-            String idParam = dc.getHttpRequest().getParameter("org_id");
-            Query query = dc.getSqlManager().getQuery(auto.id.sql.query.Cts.GET_ORG_INFO_BY_ID);
+            DialogContext.DialogFieldStates fieldStates = dc.getFieldStates();
+            Query query = dc.getSqlManager().getQuery(auto.id.sql.query.Cts.GET_CONTACT_INFO_BY_ID);
             try
             {
                 QueryResultSet qrs = query.execute(dc, new Object[] { idParam }, false);
-                DialogContextUtils.getInstance().populateFieldValuesFromResultSet(dc, qrs);
+                Map responses = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet());
+
+                fieldStates.getState("contactType.method_type").getValue().setValue(responses.get("method_type"));
+                fieldStates.getState("method_value").getValue().setValue(responses.get("method_value"));
                 qrs.close(true);
                 qrs = null;
             }
             catch (NamingException e)
             {
                 e.printStackTrace();
-                getLog().error("Failed to populate dialog", e);
             }
             catch (SQLException e)
             {
                 e.printStackTrace();
-                getLog().error("Failed to populate dialog", e);
             }
         }
     }
-    /**                                              TableDialog
-     * Executes the organization dialog
+
+    /**
+     *
      * @param writer
      * @param dc
-     * @throws java.io.IOException
-     * @throws com.netspective.sparx.form.DialogExecuteException
+     * @throws IOException
      */
-    /*
-    public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
+    public void execute(Writer writer, DialogContext dc) throws IOException
     {
         ConnectionContext cc = null;
-        ProfileContext pc = new ProfileContext(dc);
         try
         {
+            // get a connection from the default data source
             cc = dc.getConnection(null, true);
-            if (dc.addingData())
+             // get the dialog context bean specific to our dialog so we can retrieve values
+            PersonContactInfoContext pcic = new PersonContactInfoContext(dc);
+
+            // grab the singleton  data access object (DAO)
+            PersonTable personTable = DataAccessLayer.getInstance().getPersonTable();
+            PersonContactTable pcTable = personTable.getPersonContactTable();
+            try
             {
-                OrgTable orgTable = DataAccessLayer.getInstance().getOrgTable();
-                OrgTable.Record record = orgTable.createRecord();
-                OrgAddressTable orgAddressTable =  orgTable.getOrgAddressTable();
-                OrgAddressTable.Record addressRecord = orgAddressTable.createRecord();
+                if (dc.addingData())
+                {
+                    PersonContact pContact = new PersonContactVO();
+                    pContact.setRecStatId(new Integer(RecordStatus.ACTIVE));
+                    pContact.setMethodValue(pcic.getMethodValue().getTextValue());
+                    pContact.setMethodType(Integer.valueOf(pcic.getContactType_methodType().getTextValue()));
+                    String personId = (String) ((AppAuthenticatedUser) dc.getAuthenticatedUser()).getAttribute("person_id");
+                    pContact.setParentId(Long.valueOf(personId));
 
-                // create the org value object
-                OrgVO vo = new OrgVO();
-                vo.setOrgName(pc.getOrgName().getTextValue());
-                vo.setOrgCode(pc.getOrgCode().getTextValue());
-                vo.setOrgAbbrev(pc.getOrgAbbrev().getTextValue());
-                vo.setEmployees(Integer.valueOf(pc.getEmployees().getTextValue()));
-                vo.setRecStatId(new Integer(RecordStatus.ACTIVE));
-                vo.setTimeZone(pc.getTimeZone().getTextValue());
-                record.setValues(vo);
-
-
-
-                // create the address value object
-                OrgAddressVO addressVO = new OrgAddressVO();
-                addressVO.setAddressName("");
-                addressVO.setCity(pc.getCityStateZip_city().getTextValue());
-                addressVO.setZip(pc.getCityStateZip_zip().getTextValue());
-                addressVO.setState(pc.getCityStateZip_state().getTextValue());
-                addressVO.setLine1(pc.getLine1().getTextValue());
-                addressVO.setLine2(pc.getLine2().getTextValue());
-                addressVO.setRecStatId(new Integer(RecordStatus.ACTIVE));
+                    PersonContactTable.Record record = pcTable.createRecord();
+                    record.setValues(pContact);
+                    record.insert(cc);
+                    cc.getConnection().commit();
+                }
+                else if (dc.editingData())
+                {
+                    PersonContactTable.Record record = pcTable.getRecordByPrimaryKey(cc, pcic.getId().getTextValue());
+                    //DialogContextUtils.getInstance().populateRowWithFieldValues(dc, record.getRow());
+                    record.setMethodValue(pcic.getMethodValue());
+                    record.update(cc);
+                    cc.getConnection().commit();
+                }
+                else if (dc.deletingData())
+                {
+                    PersonContactTable.Record record = pcTable.getRecordByPrimaryKey(cc, pcic.getId().getTextValue());
+                    record.delete(cc);
+                    cc.getConnection().commit();
+                }
+            }
+            catch (SQLException se)
+            {
+                // failed to add/edit/delete record
+                se.printStackTrace();
+                getLog().error("Error in data perspective " + dc.getPerspectives(), se);
+                handlePostExecuteException(writer, dc, "Error in data perspective, rolling back.", se);
                 try
                 {
-                    // insert the org record
-                    record.insert(cc);
-                    // set the parent of the address value object and insert the record
-                    addressVO.setParentId(new Long(record.getOrgId().getIntValue()));
-                    addressRecord.setValues(addressVO);
-                    addressRecord.insert(cc);
-                    cc.getConnection().commit();
-                    getLog().info("Study added: id=" + record.getOrgId().getTextValue());
+                    cc.getConnection().rollback();
                 }
-                catch (NamingException e)
+                catch (Exception e)
                 {
-                    e.printStackTrace();
-                    getLog().error("Failed to insert row", e);
-                    handlePostExecuteException(writer, dc, "Failed to insert row.", e);
+                    handlePostExecuteException(writer, dc, "Unable to rollback after error", e);
                 }
-                catch (SQLException e)
-                {
-                    e.printStackTrace();
-                    getLog().error("Failed to insert row", e);
-                    handlePostExecuteException(writer, dc, "Failed to insert row.", e);
-                }
-            }
-            else if (dc.editingData())
-            {
-
-            }
-            else if (dc.deletingData())
-            {
-
+                return;
             }
             handlePostExecute(writer, dc);
+
         }
-        catch (SQLException e)
+        catch (Exception e)
         {
+            // failed to get a database connection
             e.printStackTrace();
-            getLog().error("Failed to get connection", e);
-            handlePostExecuteException(writer, dc, "Failed to get connection.", e);
-        }
-        catch (NamingException ne)
-        {
-            ne.printStackTrace();
-            getLog().error("Failed to get connection", ne);
-            handlePostExecuteException(writer, dc, "Failed to get connection.", ne);
+            handlePostExecuteException(writer, dc, "Unable to get connection", e);
         }
         finally
         {
@@ -201,10 +191,8 @@ public class OrgDialog extends TableDialog
             }
             catch (SQLException se)
             {
-                se.printStackTrace();
                 handlePostExecuteException(writer, dc, "Unable to close connection", se);
             }
         }
     }
-    */
 }

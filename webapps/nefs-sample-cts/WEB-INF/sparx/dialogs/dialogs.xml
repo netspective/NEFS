@@ -3,13 +3,15 @@
 
     <xdm:include file="org.xml"/>
     <dialogs package="cts">
-
+        <!--
+           This dialog is for adding/updating/deleting person contact information
+        -->
         <dialog name="person-contact-info" retain-params="*">
 			<frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="text" name="id" caption="ID" read-only="yes" default="request:id">
 				<conditional action="apply-flags" flags="unavailable" perspective="add"/>
 			</field>
-			<field type="composite" name="contactType" caption="Contact Type" >
+			<field type="composite" name="contactType" caption="Contact Type" required="yes">
 				<conditional action="apply-flags" flags="read_only" perspective="edit"/>	
 				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type">
 									
@@ -18,7 +20,8 @@
 					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
 				</field>
 			</field>
-			<field type="text" name="method_value" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
+            <on-execute class="app.cts.form.person.PersonContactDialog"/>
             <!--director>
                 <next-actions caption="Next Action\:" choices="text-list:a=x" display-single-action="yes"/>
                 <next-actions>
@@ -33,7 +36,10 @@
     </dialogs>
 
     <dialogs package="study">
-        <dialog name="profile" class="app.cts.form.StudyDialog">
+        <!--
+           This dialog is for adding/updating/deleting study profile information
+        -->
+        <dialog name="profile">
             <frame heading="Study Profile"/>
             <field type="separator" heading="Overview"/>
             <field type="text" name="study_id" caption="Study ID" default="request:study_id" hidden="yes"/>
@@ -64,13 +70,39 @@
             <field type="text" name="irb_number" caption="IRB Number" max-length="15" required="yes"/>
             <field type="date" name="irb_approval_date" caption="Approval Date"    format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
             <field type="date" name="irb_expiration_date" caption="Expiration Date" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
+
+            <!-- declare the classes that are handling the dialog -->
+            <on-execute class="app.cts.form.study.StudyDialogExecuteHandler"/>
+            <listener class="app.cts.form.study.StudyDialogInitialPopulateListener"/>
         </dialog>
     </dialogs>
 
-    <dialogs package="person.subject">
+    <dialogs package="subject">
+        <!--
+           This dialog is for adding/updating/deleting a subject's journal entry
+        -->
+        <dialog name="journal" bind-table="Person_Note" class="app.cts.form.person.JournalDialogHandler" hide-hints-until-focus="yes" auto-bind-fields-to-columns="yes">
+            <frame heading="Journal Entry"/>
+            <field type="text" caption="Subject ID" name="person_id" hidden="yes" default="authenticated-user:user-id"  bind-column="parent_id"/>
+            <field type="text" caption="Subject Name" name="name" read-only="yes" default="authenticated-user:complete_sortable_name" required="yes"/>
+            <field type="date-time" caption="Date/Time" name="date" hidden="no" default="now" read-only="yes" bind-column=""/>
+            <field type="memo" caption="Journal Entry" name="journal" required="yes" bind-column="notes"/>
+            <field type="integer" caption="Note Type ID" name="note_type_id" hidden="yes" default="0" bind-column="note_type_id" />
+        </dialog>
+
+        <dialog name="login_info" bind-table="person_login">
+            <frame heading="Login Information"/>
+            <field type="text" caption="Login ID" name="login_id" default="authenticated-user:user-id" read-only="yes" required="yes"/>
+            <field type="text" mask-entry="yes" caption="Old Password" name="old_password"  required="yes"/>
+            <field type="text" mask-entry="yes" caption="New Password" name="new_password1" required="yes"/>
+            <field type="text" mask-entry="yes" caption="Verify New Password" name="new_password2" required="yes"/>
+        </dialog>
+        <!--
+           This dialog is for adding/updating/deleting a subject's profile information
+        -->
         <dialog name="profile" hide-hints-until-focus="yes" bind-table="person" auto-bind-fields-to-columns="yes">
             <field type="integer" name="person_id" hidden="yes" default="request:person_id"/>
-            <field type="integer" name="person_type" hidden="yes"  default="schema-enum:"/>
+            <!--field type="integer" name="person_type" caption="Person Type" hidden="yes"  default="schema-enum:cts."/-->
             <field type="text" name="org_id" hidden="yes" default="request:org_id"/>
             <field type="text" name="study_id" hidden="yes" default="request:study_id"/>
 
@@ -102,7 +134,7 @@
                 <field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes"/>
                 <field type="zip-code" name="zip" caption="Zip Code" required="yes"/>
             </field>
-            <field type="text" name="country" caption="Country" size="16" default="USA"/>
+            <on-execute class="app.cts.form.person.SubjectDialogExecuteHandler"/>
             <!--
             <field type="separator" heading="Contact Methods"/>
             <field type="composite" name="primary_contact" >
