@@ -39,16 +39,24 @@
  */
 
 /**
- * $Id: AppNavigationPage.java,v 1.4 2004-03-03 20:20:00 aye.thu Exp $
+ * $Id: AppNavigationPage.java,v 1.5 2004-03-08 02:48:16 aye.thu Exp $
  */
 
 package app.navigate;
 
+import com.netspective.commons.command.Command;
 import com.netspective.commons.command.CommandException;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.command.PanelEditorCommand;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.navigate.NavigationPageBodyType;
 import com.netspective.sparx.navigate.NavigationTree;
+import com.netspective.sparx.panel.HtmlCommandPanel;
+import com.netspective.sparx.panel.HtmlPanels;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +65,8 @@ import java.io.Writer;
 
 public class AppNavigationPage extends NavigationPage
 {
+    private static final Log log = LogFactory.getLog(HtmlCommandPanel.class);
+
     public AppNavigationPage(NavigationTree owner)
     {
         super(owner);
@@ -70,18 +80,87 @@ public class AppNavigationPage extends NavigationPage
         {
             PanelEditorCommand command = new PanelEditorCommand();
             command.setParameters(commandSpec);
-            try
+            // verify that this command is configured to be in this pae
+            if (verifyPanelEditorInPage(nc, command))
             {
-                command.handleCommand(writer, nc, false);
+                try
+                {
+                    command.handleCommand(writer, nc, false);
+                }
+                catch (CommandException e)
+                {
+                    getLog().error("Command error in body", e);
+                    throw new ServletException(e);
+                }
+                return;
             }
-            catch (CommandException e)
+            else
             {
-                getLog().error("Command error in body", e);
-                throw new ServletException(e);
+                log.error("Request to execute a panel editor '" + command.getPanelEditorName() +"' that does not exist in page.");
             }
-            return;
+
         }
 
         super.handlePageBody(writer, nc);
+    }
+
+    /**
+     * Verify that the request panel editor does exist in the page
+     *
+     * @param nc
+     * @param peCommand
+     * @return
+     */
+    public boolean verifyPanelEditorInPage(NavigationContext nc, PanelEditorCommand peCommand)
+    {
+        boolean valid = false;
+        int bodyType = getBodyType().getValueIndex();
+        if (bodyType == NavigationPageBodyType.COMMAND)
+        {
+            ValueSource commandExpr = getCommandExpr();
+            if(commandExpr != null)
+            {
+                String commandText = commandExpr.getTextValue(nc);
+                if(commandText != null)
+                {
+                    try
+                    {
+                        Command command = Commands.getInstance().getCommand(commandText);
+                        if (command instanceof PanelEditorCommand)
+                        {
+                            String peName = ((PanelEditorCommand) command).getPanelEditorName();
+                            if (peCommand.getPanelEditorName().equals(peName))
+                                valid = true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        getLog().error("Command error in " + this.getClass().getName(), e);
+                    }
+                }
+            }
+        }
+        else if (bodyType == NavigationPageBodyType.PANEL)
+        {
+            // this is the layout panel defined for the page
+            HtmlPanels panels = getBodyPanel().getChildren();
+            for (int i = 0; i < panels.size(); i++)
+            {
+                if (panels.get(i) instanceof HtmlCommandPanel)
+                {
+                    Command command = ((HtmlCommandPanel)panels.get(i)).getCommand();
+                    if (command instanceof PanelEditorCommand)
+                    {
+                        String peName = ((PanelEditorCommand) command).getPanelEditorName();
+                        if (peCommand.getPanelEditorName().equals(peName))
+                        {
+                            valid = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return valid;
     }
 }
