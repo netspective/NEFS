@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.48 2003-11-19 17:27:03 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.49 2003-11-20 05:39:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -62,7 +62,6 @@ import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -151,8 +150,8 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     public static final String PARAMNAME_DIALOGPREFIX = "_d.";
     public static final String PARAMNAME_CONTROLPREFIX = "_dc.";
 
-    public static final String ATTRNAME_DIALOG_STATES = "dialog_states";
-    public static final String ATTRNAME_DIALOG_STATES_MAX_ENTRIES = "dialog_states_max_entries";
+    public static final String ATTRNAME_DIALOG_STATES = Dialog.class.getName() + ".STATES";
+    public static final String ATTRNAME_DIALOG_STATES_MAX_ENTRIES = Dialog.class.getName() + ".STATES.MAX_ENTRIES";
     public static final int    DIALOG_STATES_LRU_MAP_DEFAULT_MAX_SIZE = 16; // keep the last 32 dialog states in the session at any time
 
     public static final String PARAMNAME_DIALOG_STATE_ID = ".dialog_state_id";
