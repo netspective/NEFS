@@ -43,6 +43,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
@@ -55,6 +56,7 @@ import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.io.InputSourceTracker;
+import com.netspective.commons.io.PropertiesLoader;
 import com.netspective.commons.lang.ClassJavaDoc;
 import com.netspective.commons.lang.JavaDocs;
 import com.netspective.commons.lang.MethodJavaDoc;
@@ -2296,6 +2298,47 @@ public class XmlDataModelSchema
                             else
                                 log.error("Too many items in Locale constructor: " + value);
 
+                    }
+                }
+
+                public boolean isInherited()
+                {
+                    return !m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
+            };
+        }
+        else if(Properties.class.isAssignableFrom(arg))
+        {
+            return new AttributeSetter()
+            {
+                public void set(XdmParseContext pc, Object parent, String value)
+                        throws InvocationTargetException, IllegalAccessException, DataModelException
+                {
+                    final String[] options = TextUtils.getInstance().split(value, ",", true);
+                    final Properties properties;
+                    switch(options.length)
+                    {
+                        case 1:
+                            properties = PropertiesLoader.loadProperties(value, true);
+                            m.invoke(parent, new Properties[]{properties});
+                            break;
+
+                        case 2:
+                            properties = PropertiesLoader.loadProperties(value, options[1].equals("optional")
+                                                                                ? false : true);
+                            m.invoke(parent, new Properties[]{properties});
+                            break;
+
+                        default:
+                            if(pc != null)
+                                throw new DataModelException(pc, "Don't know how to get properties from PropertiesLoader: " + value);
+                            else
+                                log.error("Don't know how to get properties from PropertiesLoader:" + value);
                     }
                 }
 
