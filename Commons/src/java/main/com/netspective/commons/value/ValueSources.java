@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.13 2003-07-07 01:02:05 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.14 2003-08-06 04:51:22 aye.thu Exp $
  */
 
 package com.netspective.commons.value;
@@ -172,6 +172,11 @@ public class ValueSources implements MetricsProducer
         srcClassesSet.add(actualClass);
     }
 
+    /**
+     * Gets all the identifiers available for a value source class
+     * @param vsClass
+     * @return
+     */
     public String[] getValueSourceIdentifiers(Class vsClass)
     {
         Method getIdsMethod = null;
@@ -196,6 +201,32 @@ public class ValueSources implements MetricsProducer
         }
     }
 
+    /**
+     * Gets all available indentifiers for all registered value source classes
+     * @return a string array containing all the identifiers
+     */
+    public String[] getAllValueSourceIdentifiers()
+    {
+        String[] iArray = null;
+        if (srcClassesMap != null && srcClassesMap.size() > 0)
+        {
+            int i = 0;
+            Iterator iset = srcClassesMap.keySet().iterator();
+            iArray = new String[srcClassesMap.keySet().size()];
+            while (iset.hasNext())
+            {
+                iArray[i] = (String) iset.next();
+                i++;
+            }
+        }
+        return iArray;
+    }
+
+    /**
+     * Gets the documentation associated with a value source class
+     * @param vsClass
+     * @return the value source class documentation
+     */
     public ValueSourceDocumentation getValueSourceDocumentation(Class vsClass)
     {
         Method getDocsMethod = null;
