@@ -15,7 +15,102 @@
         <graphic fileref="./resources/images/nefs-learning-map.gif" />
       </screenshot></para>
 
-    <para>The <emphasis>quickest</emphasis> way to evaluate the NEFS is to
+    <para><table>
+        <title>NEFS Documentation</title>
+
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry align="center">Document</entry>
+
+              <entry align="center">Purpose</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry id="nefs-datasheet"><ulink
+              url="http://www.netspective.com/corp/resources/nefs-fact-sheet.pdf">NEFS
+              Data Sheet</ulink></entry>
+
+              <entry>The <emphasis>NEFS Data Sheet</emphasis> is a
+              comprehensive document containing details of the Netspective
+              Enterprise Frameworks. It provides a quick overview of the NEFS
+              architecture. Also, highlights the major features of each
+              framework.</entry>
+            </row>
+
+            <row>
+              <entry>Comparison Matrix</entry>
+
+              <entry>The <emphasis>NEFS Comparison Matrix</emphasis> provides
+              a comparative analysis of NEFS with various other
+              frameworks.</entry>
+            </row>
+
+            <row>
+              <entry id="nefs-white-paper">White Paper</entry>
+
+              <entry>The <emphasis>NEFS White Paper</emphasis> presents the
+              ideology behind NEFS and the technical details of its
+              frameworks, proposing NEFS as a feasible solution for faster
+              development of J2EE applications.</entry>
+            </row>
+
+            <row>
+              <entry id="nefs-getting-started-doc"><ulink
+              url="http://www.netspective.com/corp/resources/support/docs/nef-articles/getting-started.html">Getting
+              Started Doc</ulink></entry>
+
+              <entry>The <emphasis>NEFS Getting Started</emphasis> doc
+              provides instructions for how to evaluate the Netspective
+              Enterprise Frameworks Suite. It contains guidelines on how to
+              Sample NEF online as well as through your own application
+              server.</entry>
+            </row>
+
+            <row>
+              <entry id="nefs-sample-apps-tutorials"><ulink
+              url="http://www.netspective.com/corp/support/documentation">Sample
+              Apps Tutorials</ulink></entry>
+
+              <entry>Each of the NEFS Sample Apps comes with a tutorial. The
+              tutorials provide step-by-step instructions for how to build the
+              sample applications using NEFS.</entry>
+            </row>
+
+            <row>
+              <entry id="nefs-console-tour">Console Tour</entry>
+
+              <entry>The <emphasis>Console Tour</emphasis> is aimed at
+              familiarizing you with different sections of the Console. It
+              takes you through each section describing different subsections
+              and their usage.</entry>
+            </row>
+
+            <row>
+              <entry id="nefs-user-guide"><ulink
+              url="http://www.netspective.com/corp/resources/support/docs/nef-manual/index.html">NEFS
+              User's Manual</ulink></entry>
+
+              <entry>The <emphasis>NEFS User's Manual</emphasis> is the core
+              technical document for NEF. It is a complete technical reference
+              for all the frameworks. It provides instructions for how to use
+              the NEFS to build your own applications.</entry>
+            </row>
+
+            <row>
+              <entry id="nefs-xdm-tag-doc">XDM Tag Documentation</entry>
+
+              <entry>The <emphasis>XDM Tag Documentation</emphasis>,
+              accessible through the Console, serves as a reference doc for
+              the XDM tags that you will use to build your applications. It
+              lists all the XDM tags in an XML tree format describing their
+              attributes and child elements.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>The <emphasis>quickest</emphasis> way to evaluate the NEFS is to
     view all the documentation online and follow along with the online
     versions of the sample applications. Since all you need is a web browser,
     you can start learning about NEFS immediately. Because the applications
@@ -407,7 +502,7 @@
             url="http://localhost:8080/nefs-sampler">http://localhost:8080/nefs-sampler</ulink>
             to run the application or <ulink
             url="http://localhost:8080/nefs-sampler/console">http://localhost:8080/nefs-sampler/console</ulink>
-            to run the Hello Forms Console servlet.</para>
+            to run the Console servlet.</para>
           </listitem>
         </orderedlist>
       </section>
