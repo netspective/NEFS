@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Configuration.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: Configuration.java,v 1.2 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
@@ -59,19 +59,19 @@ public class Configuration extends Property implements XmlDataModelSchema.Custom
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
-    protected ConfigurationsManager manager;
+    protected Configurations manager;
     private Map allProperties = new HashMap();
 
     public Configuration()
     {
     }
 
-    public ConfigurationsManager getManager()
+    public Configurations getManager()
     {
         return manager;
     }
 
-    public void setManager(ConfigurationsManager manager)
+    public void setManager(Configurations manager)
     {
         this.manager = manager;
     }

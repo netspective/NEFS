@@ -39,80 +39,80 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.1 2003-03-14 03:56:08 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.2 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
-import com.netspective.commons.config.ConfigurationsManagerContainer;
 import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.config.Configurations;
 import com.netspective.commons.config.Configuration;
-import com.netspective.commons.acl.AccessControlListsManagerContainer;
 import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.acl.AccessControlLists;
 import com.netspective.commons.acl.AccessControlList;
 import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
 
-public class DefaultXdmComponentItems implements ConfigurationsManagerContainer, AccessControlListsManagerContainer
+public class DefaultXdmComponentItems implements ConfigurationsManager, AccessControlListsManager
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private AccessControlListsManager aclsManager;
-    private ConfigurationsManager configsManager;
+    private AccessControlLists aclsManager;
+    private Configurations configsManager;
 
     /* ------------------------------------------------------------------------------------------------------------- */
-    public ConfigurationsManager getConfigsManager()
+    public Configurations getConfigurations()
     {
         if(configsManager == null)
-            configsManager = new ConfigurationsManager();
+            configsManager = new Configurations();
         return configsManager;
     }
 
     public void addConfiguration(Configuration config)
     {
-        getConfigsManager().addConfiguration(config);
+        getConfigurations().addConfiguration(config);
     }
 
     public Configuration getDefaultConfiguration()
     {
-        return getConfigsManager().getConfiguration();
+        return getConfigurations().getConfiguration();
     }
 
     public Configuration getConfiguration(final String name)
     {
-        return getConfigsManager().getConfiguration(name);
+        return getConfigurations().getConfiguration(name);
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public AccessControlListsManager getAclsManager()
+    public AccessControlLists getAccessControlLists()
     {
         if(aclsManager == null)
-            aclsManager = new AccessControlListsManager();
+            aclsManager = new AccessControlLists();
         return aclsManager;
     }
 
     public AccessControlList createAccessControlList()
     {
-        return getAclsManager().createAccessControlList();
+        return getAccessControlLists().createAccessControlList();
     }
 
     public void addAccessControlList(AccessControlList acl)
     {
-        getAclsManager().addAccessControlList(acl);
+        getAccessControlLists().addAccessControlList(acl);
     }
 
     public AccessControlList getDefaultAccessControList()
     {
-        return getAclsManager().getAccessControlList();
+        return getAccessControlLists().getAccessControlList();
     }
 
     public AccessControlList getAccessControlList(final String name)
     {
-        return getAclsManager().getAccessControlList(name);
+        return getAccessControlLists().getAccessControlList(name);
     }
 
     public Permission getPermission(String name) throws PermissionNotFoundException
     {
-        return getAclsManager().getPermission(name);
+        return getAccessControlLists().getPermission(name);
     }
 }

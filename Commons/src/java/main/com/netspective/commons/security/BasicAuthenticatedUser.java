@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.2 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -52,7 +52,7 @@ import java.util.List;
 
 import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
-import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.acl.AccessControlLists;
 
 public class BasicAuthenticatedUser implements AuthenticatedUser
 {
@@ -112,7 +112,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         return userRoles;
     }
 
-    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException
+    public void setRoles(AccessControlLists aclsManager, String[] roles) throws PermissionNotFoundException
     {
         userRoles = roles;
         if(userRoles == null)
@@ -131,7 +131,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         }
     }
 
-    public void removeRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException
+    public void removeRoles(AccessControlLists aclsManager, String[] roles) throws PermissionNotFoundException
     {
         if(userRoles == null || userPermissions == null)
             return;
@@ -179,13 +179,13 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         }
     }
 
-    public void removeAllRoles(AccessControlListsManager aclsManager) throws PermissionNotFoundException
+    public void removeAllRoles(AccessControlLists aclsManager) throws PermissionNotFoundException
     {
         if(userRoles != null)
             removeRoles(aclsManager, userRoles);
     }
 
-    public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException
+    public boolean hasPermission(AccessControlLists aclsManager, String permissionName) throws PermissionNotFoundException
     {
         Permission perm = aclsManager.getPermission(permissionName);
         if(perm == null)
@@ -193,7 +193,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         return userPermissions.get(perm.getId());
     }
 
-    public boolean hasAnyPermission(AccessControlListsManager aclsManager, String[] permissionNames) throws PermissionNotFoundException
+    public boolean hasAnyPermission(AccessControlLists aclsManager, String[] permissionNames) throws PermissionNotFoundException
     {
         for(int i = 0; i < permissionNames.length; i++)
         {

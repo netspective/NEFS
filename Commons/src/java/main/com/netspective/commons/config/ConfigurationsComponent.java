@@ -39,18 +39,31 @@
  */
 
 /**
- * $Id: ConfigurationsManagerContainer.java,v 1.1 2003-03-14 03:37:54 shahid.shah Exp $
+ * $Id: ConfigurationsComponent.java,v 1.1 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
 
-public interface ConfigurationsManagerContainer
+import com.netspective.commons.xdm.DefaultXdmComponent;
+import com.netspective.commons.xdm.DefaultXdmComponentItems;
+
+public class ConfigurationsComponent extends DefaultXdmComponent
 {
-    ConfigurationsManager getConfigsManager();
+    private DefaultXdmComponentItems items;
 
-    void addConfiguration(Configuration config);
+    public DefaultXdmComponentItems createComponent()
+    {
+        items = new DefaultXdmComponentItems();
+        return items;
+    }
 
-    Configuration getDefaultConfiguration();
+    public void addComponent(DefaultXdmComponentItems manager)
+    {
+        // not required
+    }
 
-    Configuration getConfiguration(String name);
+    public DefaultXdmComponentItems getItems()
+    {
+        return items;
+    }
 }

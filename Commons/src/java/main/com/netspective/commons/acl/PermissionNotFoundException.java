@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PermissionNotFoundException.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: PermissionNotFoundException.java,v 1.2 2003-03-14 04:04:18 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -49,7 +49,7 @@ import com.netspective.commons.acl.AccessControlList;
 public class PermissionNotFoundException extends Exception
 {
     private AccessControlList accessControlList;
-    private AccessControlListsManager accessControlListsManager;
+    private AccessControlLists accessControlListsManager;
     private String name;
 
     public PermissionNotFoundException(AccessControlList acl, String name)
@@ -65,7 +65,7 @@ public class PermissionNotFoundException extends Exception
         this.name = name;
     }
 
-    public PermissionNotFoundException(String s, AccessControlListsManager aclManager, String name)
+    public PermissionNotFoundException(String s, AccessControlLists aclManager, String name)
     {
         super(s + ". Available: " + aclManager.getPermissionsByName().keySet());
         this.accessControlListsManager = aclManager;

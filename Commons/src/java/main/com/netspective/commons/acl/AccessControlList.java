@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlList.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: AccessControlList.java,v 1.2 2003-03-14 04:04:18 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -55,10 +55,10 @@ public class AccessControlList extends Permission
     public static final String ACLNAME_DEFAULT = "acl";
     public static final String NAME_SEPARATOR = "/";
 
-    private AccessControlListsManager manager;
+    private AccessControlLists manager;
     private Map permissionsByName = new HashMap();
 
-    public AccessControlList(AccessControlListsManager manager)
+    public AccessControlList(AccessControlLists manager)
     {
         setName(ACLNAME_DEFAULT);
         setManager(manager);
@@ -66,12 +66,12 @@ public class AccessControlList extends Permission
         registerPermission(this);
     }
 
-    public AccessControlListsManager getManager()
+    public AccessControlLists getManager()
     {
         return manager;
     }
 
-    protected void setManager(AccessControlListsManager manager)
+    protected void setManager(AccessControlLists manager)
     {
         this.manager = manager;
     }

@@ -39,111 +39,22 @@
  */
 
 /**
- * $Id: AccessControlListsManager.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
+ * $Id: AccessControlListsManager.java,v 1.3 2003-03-14 04:04:18 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
 
-import java.util.Map;
-import java.util.HashMap;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.acl.AccessControlList;
-
-public class AccessControlListsManager
+public interface AccessControlListsManager
 {
-    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private static final Log log = LogFactory.getLog(AccessControlListsManager.class);
+    public AccessControlLists getAccessControlLists();
 
-    private AccessControlList defaultAcl;
-    private Map permissionsByName = new HashMap();
-    private Map acls = new HashMap();
-    private int nextPermissionId = 0;
+    public AccessControlList createAccessControlList();
 
-    public AccessControlListsManager()
-    {
-    }
+    public void addAccessControlList(AccessControlList acl);
 
-    public Map getPermissionsByName()
-    {
-        return permissionsByName;
-    }
+    public AccessControlList getDefaultAccessControList();
 
-    public int getNextPermissionId()
-    {
-        return nextPermissionId;
-    }
+    public AccessControlList getAccessControlList(String name);
 
-    public void setNextPermissionId(int nextPermissionId)
-    {
-        this.nextPermissionId = nextPermissionId;
-    }
-
-    public int getHighestPermissionId()
-    {
-        return nextPermissionId;
-    }
-
-    public void registerPermission(Permission perm)
-    {
-        permissionsByName.put(perm.getQualifiedName(), perm);
-        nextPermissionId++;
-    }
-
-    public AccessControlList getAccessControlList()
-    {
-        return defaultAcl;
-    }
-
-    public AccessControlList getAccessControlList(final String name)
-    {
-        AccessControlList acl = (AccessControlList) acls.get(name);
-
-        if(acl == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find ACL object '"+ name +"'. Available: " + acls);
-            return null;
-        }
-
-        return acl;
-    }
-
-    public AccessControlList createAccessControlList()
-    {
-        return new AccessControlList(this);
-    }
-
-    public void addAccessControlList(AccessControlList acl)
-    {
-        if(acl.getName() == null || AccessControlList.ACLNAME_DEFAULT.equalsIgnoreCase(acl.getName()))
-        {
-            acl.setName(AccessControlList.ACLNAME_DEFAULT);
-            defaultAcl = acl;
-            acls.put(AccessControlList.ACLNAME_DEFAULT, acl);
-        }
-        else
-            acls.put(AccessControlList.ACLNAME_DEFAULT, acl);
-    }
-
-    public Permission getPermission(String name) throws PermissionNotFoundException
-    {
-        Permission result = (Permission) permissionsByName.get(name);
-        if(result == null)
-            throw new PermissionNotFoundException("Permission '"+ name +"' not found in ACL.", this, name);
-        else
-            return result;
-    }
-
-    public int permissionsCount()
-    {
-        return permissionsByName.size();
-    }
-
-    public int size()
-    {
-        return acls.size();
-    }
+    public Permission getPermission(String name) throws PermissionNotFoundException;
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConfigurationTest.java,v 1.3 2003-03-14 03:56:08 shahid.shah Exp $
+ * $Id: ConfigurationTest.java,v 1.4 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
@@ -96,10 +96,10 @@ public class ConfigurationTest extends TestCase
 
     public void testDefaultPropertiesValues() throws DataModelException
     {
-        ConfigurationsManagerComponent component = new ConfigurationsManagerComponent();
+        ConfigurationsComponent component = new ConfigurationsComponent();
         assertNotNull(component);
 
-        XmlDataModelSchema.getSchema(ConfigurationsManagerComponent.class);
+        XmlDataModelSchema.getSchema(ConfigurationsComponent.class);
         XdmParseContext pc = XdmParseContext.parse(component, TEST_CONFIGURATION_XML);
 
         if(pc.getErrors().size() != 0)
@@ -127,10 +127,10 @@ public class ConfigurationTest extends TestCase
 
     public void testNonDefaultPropertiesValues() throws DataModelException
     {
-        ConfigurationsManagerComponent component = new ConfigurationsManagerComponent();
+        ConfigurationsComponent component = new ConfigurationsComponent();
         assertNotNull(component);
 
-        XmlDataModelSchema.getSchema(ConfigurationsManagerComponent.class);
+        XmlDataModelSchema.getSchema(ConfigurationsComponent.class);
         XdmParseContext pc = XdmParseContext.parse(component, TEST_CONFIGURATION_XML);
 
         if(pc.getErrors().size() != 0)
@@ -138,7 +138,7 @@ public class ConfigurationTest extends TestCase
 
         assertTrue(pc.getErrors().size() == 0);
 
-        Configuration notDefaultConfig = component.getItems().getConfigsManager().getConfiguration("not-default");
+        Configuration notDefaultConfig = component.getItems().getConfigurations().getConfiguration("not-default");
         assertNotNull(notDefaultConfig);
 
         //notDefaultConfig.dumpProperties();
@@ -157,7 +157,7 @@ public class ConfigurationTest extends TestCase
 
     public void testConfigurationDtd() throws DataModelException
     {
-        ConfigurationsManagerComponent component = new ConfigurationsManagerComponent();
+        ConfigurationsComponent component = new ConfigurationsComponent();
         String dtd = new XmlDataModelDtd().getDtd(component);
         assertTrue(dtd != null);
 

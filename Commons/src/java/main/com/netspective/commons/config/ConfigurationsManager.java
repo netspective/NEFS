@@ -39,61 +39,18 @@
  */
 
 /**
- * $Id: ConfigurationsManager.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: ConfigurationsManager.java,v 1.2 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
 
-import java.util.Map;
-import java.util.HashMap;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.netspective.commons.xdm.XmlDataModelSchema;
-
-public class ConfigurationsManager
+public interface ConfigurationsManager
 {
-    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private static final Log log = LogFactory.getLog(ConfigurationsManager.class);
-    public static final String DEFAULT_CONFIG_NAME = "default";
+    public Configurations getConfigurations();
 
-    private Configuration defaultConfig;
-    private Map configurations = new HashMap();
+    public void addConfiguration(Configuration config);
 
-    public ConfigurationsManager()
-    {
-    }
+    public Configuration getDefaultConfiguration();
 
-    public Configuration getConfiguration()
-    {
-        return defaultConfig;
-    }
-
-    public Configuration getConfiguration(final String name)
-    {
-        String actualName = Property.getNameForMapKey(name);
-        Configuration config = (Configuration) configurations.get(actualName);
-
-        if(config == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find configuration object '"+ name +"' as '"+ actualName +"'. Available: " + configurations);
-            return null;
-        }
-
-        return config;
-    }
-
-    public void addConfiguration(Configuration config)
-    {
-        config.setManager(this);
-        if(config.getName() == null || DEFAULT_CONFIG_NAME.equalsIgnoreCase(config.getName()))
-        {
-            config.setName(DEFAULT_CONFIG_NAME);
-            defaultConfig = config;
-            configurations.put(Property.getNameForMapKey(DEFAULT_CONFIG_NAME), config);
-        }
-        else
-            configurations.put(config.getNameForMapKey(), config);
-    }
+    public Configuration getConfiguration(String name);
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: AuthenticatedUser.java,v 1.2 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -49,7 +49,7 @@ import java.util.BitSet;
 
 import com.netspective.commons.acl.AccessControlList;
 import com.netspective.commons.acl.PermissionNotFoundException;
-import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.acl.AccessControlLists;
 
 public interface AuthenticatedUser extends Principal
 {
@@ -65,15 +65,15 @@ public interface AuthenticatedUser extends Principal
 
     public String[] getUserRoles();
 
-    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException;
+    public void setRoles(AccessControlLists aclsManager, String[] roles) throws PermissionNotFoundException;
 
-    public void removeRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException;
+    public void removeRoles(AccessControlLists aclsManager, String[] roles) throws PermissionNotFoundException;
 
-    public void removeAllRoles(AccessControlListsManager aclsManager) throws PermissionNotFoundException;
+    public void removeAllRoles(AccessControlLists aclsManager) throws PermissionNotFoundException;
 
-    public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException;
+    public boolean hasPermission(AccessControlLists aclsManager, String permissionName) throws PermissionNotFoundException;
 
-    public boolean hasAnyPermission(AccessControlListsManager aclsManager, String[] permissionNames) throws PermissionNotFoundException;
+    public boolean hasAnyPermission(AccessControlLists aclsManager, String[] permissionNames) throws PermissionNotFoundException;
 
     public Object getAttribute(String attrName);
 

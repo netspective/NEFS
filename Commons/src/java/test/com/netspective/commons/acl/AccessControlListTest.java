@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.3 2003-03-14 03:56:08 shahid.shah Exp $
+ * $Id: AccessControlListTest.java,v 1.4 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -52,7 +52,7 @@ import junit.framework.TestCase;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.io.Resource;
-import com.netspective.commons.acl.AccessControlListsManagerComponent;
+import com.netspective.commons.acl.AccessControlListsComponent;
 
 public class AccessControlListTest extends TestCase
 {
@@ -60,9 +60,9 @@ public class AccessControlListTest extends TestCase
 
     public void testDataModelSchemaImportFromXmlValid() throws DataModelException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException
     {
-        AccessControlListsManagerComponent aclc =
-                (AccessControlListsManagerComponent) XdmComponentFactory.get(
-                        AccessControlListsManagerComponent.class,
+        AccessControlListsComponent aclc =
+                (AccessControlListsComponent) XdmComponentFactory.get(
+                        AccessControlListsComponent.class,
                         new Resource(AccessControlListTest.class, RESOURCE_NAME),
                         XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
@@ -70,8 +70,8 @@ public class AccessControlListTest extends TestCase
 
         aclc.printErrorsAndWarnings();
 
-        System.out.println(aclc.getItems().getAclsManager().size());
-        System.out.println(aclc.getItems().getAclsManager().getPermissionsByName().size());
+        System.out.println(aclc.getItems().getAccessControlLists().size());
+        System.out.println(aclc.getItems().getAccessControlLists().getPermissionsByName().size());
         System.out.println(aclc.getItems().getDefaultAccessControList());
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ImportConfigurationTask.java,v 1.3 2003-03-14 03:56:08 shahid.shah Exp $
+ * $Id: ImportConfigurationTask.java,v 1.4 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.ant;
@@ -50,16 +50,16 @@ import java.io.File;
 
 import org.apache.tools.ant.BuildException;
 
-import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.config.Configurations;
 import com.netspective.commons.config.Configuration;
 import com.netspective.commons.config.Property;
-import com.netspective.commons.config.ConfigurationsManagerComponent;
+import com.netspective.commons.config.ConfigurationsComponent;
 import com.netspective.commons.xdm.XdmComponentTask;
 
 public class ImportConfigurationTask extends XdmComponentTask
 {
     private File file;
-    private String configId = ConfigurationsManager.DEFAULT_CONFIG_NAME;
+    private String configId = Configurations.DEFAULT_CONFIG_NAME;
     private String prefix = "config.";
 
     public ImportConfigurationTask()
@@ -88,8 +88,8 @@ public class ImportConfigurationTask extends XdmComponentTask
         File simulatedPath = new File(project.getProperty("app.root.dir"));
         System.setProperty("com.netspective.sparx.util.value.ServletContextPathValue.simulate", simulatedPath.getAbsolutePath());
 
-        ConfigurationsManagerComponent component = (ConfigurationsManagerComponent) getComponent(ConfigurationsManagerComponent.class);
-        ConfigurationsManager manager = component.getItems().getConfigsManager();
+        ConfigurationsComponent component = (ConfigurationsComponent) getComponent(ConfigurationsComponent.class);
+        Configurations manager = component.getItems().getConfigurations();
 
         int imported = 0;
         Configuration config = manager.getConfiguration(configId);

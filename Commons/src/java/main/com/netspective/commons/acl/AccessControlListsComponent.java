@@ -39,22 +39,31 @@
  */
 
 /**
- * $Id: AccessControlListsManagerContainer.java,v 1.1 2003-03-14 03:37:54 shahid.shah Exp $
+ * $Id: AccessControlListsComponent.java,v 1.1 2003-03-14 04:04:18 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
 
-public interface AccessControlListsManagerContainer
+import com.netspective.commons.xdm.DefaultXdmComponent;
+import com.netspective.commons.xdm.DefaultXdmComponentItems;
+
+public class AccessControlListsComponent extends DefaultXdmComponent
 {
-    AccessControlListsManager getAclsManager();
+    private DefaultXdmComponentItems items;
 
-    AccessControlList createAccessControlList();
+    public DefaultXdmComponentItems createComponent()
+    {
+        items = new DefaultXdmComponentItems();
+        return items;
+    }
 
-    void addAccessControlList(AccessControlList acl);
+    public void addComponent(DefaultXdmComponentItems manager)
+    {
+        // not required
+    }
 
-    AccessControlList getDefaultAccessControList();
-
-    AccessControlList getAccessControlList(String name);
-
-    Permission getPermission(String name) throws PermissionNotFoundException;
+    public DefaultXdmComponentItems getItems()
+    {
+        return items;
+    }
 }

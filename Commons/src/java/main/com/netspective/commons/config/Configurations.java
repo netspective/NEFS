@@ -39,31 +39,61 @@
  */
 
 /**
- * $Id: AccessControlListsManagerComponent.java,v 1.3 2003-03-14 03:56:08 shahid.shah Exp $
+ * $Id: Configurations.java,v 1.1 2003-03-14 04:04:19 shahid.shah Exp $
  */
 
-package com.netspective.commons.acl;
+package com.netspective.commons.config;
 
-import com.netspective.commons.xdm.DefaultXdmComponent;
-import com.netspective.commons.xdm.DefaultXdmComponentItems;
+import java.util.Map;
+import java.util.HashMap;
 
-public class AccessControlListsManagerComponent extends DefaultXdmComponent
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.commons.xdm.XmlDataModelSchema;
+
+public class Configurations
 {
-    private DefaultXdmComponentItems items;
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+    private static final Log log = LogFactory.getLog(Configurations.class);
+    public static final String DEFAULT_CONFIG_NAME = "default";
 
-    public DefaultXdmComponentItems createComponent()
+    private Configuration defaultConfig;
+    private Map configurations = new HashMap();
+
+    public Configurations()
     {
-        items = new DefaultXdmComponentItems();
-        return items;
     }
 
-    public void addComponent(DefaultXdmComponentItems manager)
+    public Configuration getConfiguration()
     {
-        // not required
+        return defaultConfig;
     }
 
-    public DefaultXdmComponentItems getItems()
+    public Configuration getConfiguration(final String name)
     {
-        return items;
+        String actualName = Property.getNameForMapKey(name);
+        Configuration config = (Configuration) configurations.get(actualName);
+
+        if(config == null && log.isDebugEnabled())
+        {
+            log.debug("Unable to find configuration object '"+ name +"' as '"+ actualName +"'. Available: " + configurations);
+            return null;
+        }
+
+        return config;
+    }
+
+    public void addConfiguration(Configuration config)
+    {
+        config.setManager(this);
+        if(config.getName() == null || DEFAULT_CONFIG_NAME.equalsIgnoreCase(config.getName()))
+        {
+            config.setName(DEFAULT_CONFIG_NAME);
+            defaultConfig = config;
+            configurations.put(Property.getNameForMapKey(DEFAULT_CONFIG_NAME), config);
+        }
+        else
+            configurations.put(config.getNameForMapKey(), config);
     }
 }
