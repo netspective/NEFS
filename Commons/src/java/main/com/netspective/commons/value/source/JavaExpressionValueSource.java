@@ -39,38 +39,76 @@
  */
 
 /**
- * $Id: ValueSourceExpressionText.java,v 1.2 2003-10-26 19:07:44 shahid.shah Exp $
+ * $Id: JavaExpressionValueSource.java,v 1.1 2003-10-26 19:07:44 shahid.shah Exp $
  */
 
-package com.netspective.commons.text;
+package com.netspective.commons.value.source;
 
-import com.netspective.commons.value.ValueSources;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.jexl.JexlContext;
+import org.apache.commons.jexl.JexlHelper;
+import org.apache.commons.jexl.Expression;
+import org.apache.commons.jexl.ExpressionFactory;
+
 import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.exception.ValueSourceException;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.text.ExpressionTextException;
 
-public class ValueSourceExpressionText extends JavaExpressionText
+public class JavaExpressionValueSource extends AbstractValueSource
 {
-    public ValueSourceExpressionText()
+    public static final String[] IDENTIFIERS = new String[] { "java-expr", "java" };
+
+    public static String[] getIdentifiers()
     {
+        return IDENTIFIERS;
     }
 
-    public ValueSourceExpressionText(String staticExpr)
+    public Value getValue(ValueContext vc) throws ValueSourceException
     {
-        super(staticExpr);
-    }
+        Map vars = new HashMap();
+        vars.put("vc", vc);
 
-    protected String getReplacement(ValueContext vc, String entireText, String replaceToken)
-    {
-        ValueSource vs = null;
+        JexlContext jexlContext = JexlHelper.createContext();
+        jexlContext.setVars(vars);
+
+        Object o = null;
+        Expression e = null;
         try
         {
-            vs = ValueSources.getInstance().getValueSource(replaceToken, ValueSources.VSNOTFOUNDHANDLER_ERROR_VS);
+            e = ExpressionFactory.createExpression(getSpecification().getParams());
         }
-        catch (ValueSourceInitializeException e)
+        catch (Exception e1)
         {
-            vs = ValueSources.getInstance().createExceptionValueSource(e);
+            throw new ExpressionTextException("<"+ JavaExpressionValueSource.class +" creation exception: '"+ getSpecification().getParams() +"'. Scope variables: " + jexlContext.getVars(), e1);
         }
-        return vs != null ? vs.getTextValueOrBlank(vc) : super.getReplacement(vc, entireText, replaceToken);
+
+        try
+        {
+            o = e.evaluate(jexlContext);
+        }
+        catch (Exception e1)
+        {
+            throw new ExpressionTextException("<"+ JavaExpressionValueSource.class +" evaluation exception: '"+ getSpecification().getParams() +"'. Scope variables: " + jexlContext.getVars(), e1);
+        }
+
+        if(o != null)
+            return new GenericValue(o);
+        else
+            throw new ExpressionTextException("<"+ JavaExpressionValueSource.class +" NULL value exception: '"+ getSpecification().getParams() +"'. Scope variables: " + jexlContext.getVars());
+    }
+
+    public PresentationValue getPresentationValue(ValueContext vc)
+    {
+        return new PresentationValue(getValue(vc));
+    }
+
+    public boolean hasValue(ValueContext vc) throws ValueSourceException
+    {
+        return spec.getParams() != null;
     }
 }

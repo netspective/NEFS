@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.10 2003-10-20 04:13:03 aye.thu Exp $
+ * $Id: AbstractValue.java,v 1.11 2003-10-26 19:07:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -384,11 +384,14 @@ public abstract class AbstractValue implements Value
             parent.setAttribute("value-type", "strings");
             Element valuesElem = doc.createElement("values");
             String[] values = getTextValues();
-            for(int i = 0; i < values.length; i++)
+            if(values != null)
             {
-                Element valueElem = doc.createElement("value");
-                valueElem.appendChild(doc.createTextNode(values[i]));
-                valuesElem.appendChild(valueElem);
+                for(int i = 0; i < values.length; i++)
+                {
+                    Element valueElem = doc.createElement("value");
+                    valueElem.appendChild(doc.createTextNode(values[i]));
+                    valuesElem.appendChild(valueElem);
+                }
             }
             parent.appendChild(valuesElem);
         }
