@@ -17,6 +17,25 @@
     ** USER INTERFACE (PRESENTATION) DECLARATIONS                       **
     ********************************************************************** -->
 
+    <navigation-tree name="app" default="yes">
+        <page name="home" default="yes" caption="Hello" heading="Hello World!">
+            <body>
+                This is the 'Hello World' app. Click &lt;a href="next-steps">here&lt;/a> to see what's next.
+            </body>
+        </page>
+        <page name="next-steps" caption="Next Steps" heading="What's next?">
+            <body>
+                <![CDATA[<p>
+                <ul>
+                    <li>Click <a href="console">here</a> to see the console or
+                    <li>Click <a href="console/manual">here</a> to view the user's manual or
+                    <li>Open <code>${vc.projectComponent.inputSource.identifier}</code> to begin declaring your
+                        application components.
+                </ul>]]>
+            </body>
+        </page>
+    </navigation-tree>
+
     <dialogs package="test">
         <dialog name="DialogTest_01_A"  retain-params="*">
             <frame heading="Test String Fields"/>

@@ -7,4 +7,19 @@
     <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
 
+    <navigation-tree name="app" default="yes">
+        <page name="home" default="yes" caption="Home">
+            <body>
+                Welcome to the home page.
+                <![CDATA[<p>
+                <ul>
+                    <li>Click <a href="console">here</a> to see the console or
+                    <li>Click <a href="console/manual">here</a> to view the user's manual or
+                    <li>Open <code>${vc.projectComponent.inputSource.identifier}</code> to begin declaring your
+                        application components.
+                </ul>]]>
+            </body>
+        </page>
+    </navigation-tree>
+
 </project>

@@ -17,7 +17,7 @@
 	** USER INTERFACE (PRESENTATION) SPECIFICATIONS                     **
 	********************************************************************** -->
 
-    <navigation-tree name="library" default="yes">
+    <navigation-tree name="app" default="yes">
         <page name="home" default="yes" caption="Home">
             <body>
                 Welcome to the home page.
