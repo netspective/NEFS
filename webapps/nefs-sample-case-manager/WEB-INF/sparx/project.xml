@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+
+<component xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	<!--
+	**********************************************************************
+	** NETSPECTIVE FRAMEWORKS' RESOURCE FILES                           **
+	********************************************************************** -->
+
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+
+	<!--
+	**********************************************************************
+	** USER INTERFACE (PRESENTATION) SPECIFICATIONS                     **
+	********************************************************************** -->
+
+    <navigation-tree name="app" default="yes">
+        <page name="home" default="yes" caption="Home">
+            <body>
+                Welcome to the home page.
+            </body>
+        </page>
+        <page name="add" caption="Add Book" command="dialog,library.bookInfo,add"/>
+    </navigation-tree>
+
+    <!--
+    **********************************************************************
+    ** DATA MANAGEMENT STRUCTURE (SCHEMA) SPECIFICATIONS                **
+    ********************************************************************** -->
+
+    <schema name="db">
+        <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+
+        <!-- columns that should be included in all tables -->
+        <table-type name="Default">
+            <xdm:template-param name="recordStatusEnum" default="Record_Status"/>
+
+            <column name="cr_stamp" type="creation-stamp"/>
+            <column name="cr_person_id" lookupref="Person.system_id" descr="The user that created the record"/>
+            <column name="record_status_id" lookupref="${params.recordStatusEnum}" required="dbms" descr="The status of a row in the table">
+                <sql-ddl>
+                    <default dbms="ansi">0</default>
+                </sql-ddl>
+            </column>
+        </table-type>
+
+        <table name="Person" type="Default">
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The user's auto-generated id (internal identifier)"/>
+            <column name="person_id" unique="yes" type="email" descr="The user's e-mail address or other identifier"/>
+            <column name="name_first" type="text" required="yes" size="32" descr="User's first name"/>
+            <column name="name_last" type="text" required="yes" size="32" descr="User's last name"/>
+            <column name="password" type="text" descr="The user's password"/>
+
+            <accessor name="lookup">
+                <display fields="system_id, person_id, name_first, name_last"/>
+            </accessor>
+        </table>
+
+        <table name="Product" type="Default">
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The products's auto-generated id (internal identifier)"/>
+            <column name="product_id" unique="yes" type="text" size="64" descr="The product's name or other identifier"/>
+            <column name="parent" selfref="Product.system_id" descr="The product's parent if this product is a sub-component of another product"/>
+            <column name="caption" type="text" required="yes" size="200" descr="The product's brief caption"/>
+
+            <accessor name="lookup">
+                <display fields="system_id, product_id, caption"/>
+            </accessor>
+        </table>
+
+        <table name="Product_Version" type="Default">
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The version's auto-generated id (internal identifier)"/>
+            <column name="product_id" parentref="Product.system_id" descr="The product that this component belongs to"/>
+            <column name="version" unique="yes" type="text" size="64" descr="The product's version identifier"/>
+        </table>
+
+        <table name="Product_Milestone" type="Default">
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The milestone's auto-generated id (internal identifier)"/>
+            <column name="product_id" parentref="Product.system_id" descr="The product that this milestone belongs to"/>
+            <column name="milestone" unique="yes" type="text" size="64" descr="The product's milestone identifier"/>
+        </table>
+
+        <table name="Issue" type="Default">
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The issue's auto-generated id (internal identifier)"/>
+            <column name="product_id" parentref="Product.system_id" descr="The product that this issue belongs to"/>
+            <column name="version_id" lookupref="Product_Version.system_id" descr="The product version that this issue belongs to"/>
+            <column name="milestone_id" lookupref="Product_Milestone.system_id" descr="The product milestone that this issue belongs to"/>
+            <column name="overview" unique="yes" type="text" size="128" descr="A brief overview of the description"/>
+        </table>
+
+        <table name="Issue_Elaboration" type="Default">
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The elaboration's auto-generated id (internal identifier)"/>
+            <column name="issue_id" parentref="Issue.system_id" descr="The issue that is being elaborated"/>
+            <column name="elaboration_text" type="data-block" descr="The actual text of the elaboration"/>
+        </table>
+
+    </schema>
+
+</component>

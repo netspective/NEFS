@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE dal SYSTEM "db.dtd">
+
+<dal>
+    <!-- some default data so that the system has a user as soon as the database is created -->
+    <person ID="PERSONID">
+        <record-status-id>Active</record-status-id>
+        <person-id>aib029@netspective.com</person-id>
+        <name-first>AIB</name-first>
+        <name-last>Administrator</name-last>
+        <password>aib</password>
+    </person>
+
+    <product ID="PRODUCT_1">
+        <cr-person-id IDREF="PERSONID"/>
+        <record-status-id>Active</record-status-id>
+        <product-id>Test Product 029</product-id>
+        <caption>Test Product 002 Caption</caption>
+
+        <product-milestone ID="MILESTONE">
+            <cr-person-id IDREF="PERSONID"/>
+            <record-status-id>Active</record-status-id>
+            <milestone>M029</milestone>
+        </product-milestone>
+
+        <product-version ID="VERSION">
+            <cr-person-id IDREF="PERSONID"/>
+            <record-status-id>Active</record-status-id>
+            <version>V029</version>
+        </product-version>
+
+        <issue>
+            <cr-person-id IDREF="PERSONID"/>
+            <record-status-id>Active</record-status-id>
+            <version-id IDREF="VERSION"/>
+            <overview>This is an issue</overview>
+        </issue>
+
+        <issue>
+            <cr-person-id IDREF="PERSONID"/>
+            <record-status-id>Active</record-status-id>
+            <milestone-id IDREF="MILESTONE"/>
+            <overview>This is another issue</overview>
+        </issue>
+    </product>
+</dal>

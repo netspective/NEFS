@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ENTITY % boolean "(true | false | on | off | yes | no)">
+<!ENTITY % elements "dal">
+
+<!ELEMENT dal (person | product)*>
+
+<!ELEMENT person (cr-stamp | cr-person-id | record-status-id | system-id | person-id | name-first | name-last | password | dal:include)*>
+<!ATTLIST person
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-person-id CDATA #IMPLIED
+          record-status-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          name-first CDATA #IMPLIED
+          name-last CDATA #IMPLIED
+          password CDATA #IMPLIED>
+
+<!ELEMENT product (cr-stamp | cr-person-id | record-status-id | system-id | product-id | parent | caption | product-version | product-milestone | issue | dal:include)*>
+<!ATTLIST product
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-person-id CDATA #IMPLIED
+          record-status-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          product-id CDATA #IMPLIED
+          parent CDATA #IMPLIED
+          caption CDATA #IMPLIED>
+
+<!ELEMENT product-version (cr-stamp | cr-person-id | record-status-id | system-id | product-id | version | dal:include)*>
+<!ATTLIST product-version
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-person-id CDATA #IMPLIED
+          record-status-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          product-id CDATA #IMPLIED
+          version CDATA #IMPLIED>
+
+<!ELEMENT product-milestone (cr-stamp | cr-person-id | record-status-id | system-id | product-id | milestone | dal:include)*>
+<!ATTLIST product-milestone
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-person-id CDATA #IMPLIED
+          record-status-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          product-id CDATA #IMPLIED
+          milestone CDATA #IMPLIED>
+
+<!ELEMENT issue (cr-stamp | cr-person-id | record-status-id | system-id | product-id | version-id | milestone-id | overview | issue-elaboration | dal:include)*>
+<!ATTLIST issue
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-person-id CDATA #IMPLIED
+          record-status-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          product-id CDATA #IMPLIED
+          version-id CDATA #IMPLIED
+          milestone-id CDATA #IMPLIED
+          overview CDATA #IMPLIED>
+
+<!ELEMENT issue-elaboration (cr-stamp | cr-person-id | record-status-id | system-id | issue-id | elaboration-text | dal:include)*>
+<!ATTLIST issue-elaboration
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-person-id CDATA #IMPLIED
+          record-status-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          issue-id CDATA #IMPLIED
+          elaboration-text CDATA #IMPLIED>
+
+<!ELEMENT caption (#PCDATA)>
+<!ATTLIST caption IDREF CDATA #IMPLIED>
+
+<!ELEMENT cr-person-id (#PCDATA)>
+<!ATTLIST cr-person-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT cr-stamp (#PCDATA)>
+<!ATTLIST cr-stamp IDREF CDATA #IMPLIED>
+
+<!ELEMENT dal:include (#PCDATA)>
+<!ATTLIST dal:include IDREF CDATA #IMPLIED>
+
+<!ELEMENT elaboration-text (#PCDATA)>
+<!ATTLIST elaboration-text IDREF CDATA #IMPLIED>
+
+<!ELEMENT issue (#PCDATA)>
+<!ATTLIST issue IDREF CDATA #IMPLIED>
+
+<!ELEMENT issue-elaboration (#PCDATA)>
+<!ATTLIST issue-elaboration IDREF CDATA #IMPLIED>
+
+<!ELEMENT issue-id (#PCDATA)>
+<!ATTLIST issue-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT milestone (#PCDATA)>
+<!ATTLIST milestone IDREF CDATA #IMPLIED>
+
+<!ELEMENT milestone-id (#PCDATA)>
+<!ATTLIST milestone-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT name-first (#PCDATA)>
+<!ATTLIST name-first IDREF CDATA #IMPLIED>
+
+<!ELEMENT name-last (#PCDATA)>
+<!ATTLIST name-last IDREF CDATA #IMPLIED>
+
+<!ELEMENT overview (#PCDATA)>
+<!ATTLIST overview IDREF CDATA #IMPLIED>
+
+<!ELEMENT parent (#PCDATA)>
+<!ATTLIST parent IDREF CDATA #IMPLIED>
+
+<!ELEMENT password (#PCDATA)>
+<!ATTLIST password IDREF CDATA #IMPLIED>
+
+<!ELEMENT person-id (#PCDATA)>
+<!ATTLIST person-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT product-id (#PCDATA)>
+<!ATTLIST product-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT product-milestone (#PCDATA)>
+<!ATTLIST product-milestone IDREF CDATA #IMPLIED>
+
+<!ELEMENT product-version (#PCDATA)>
+<!ATTLIST product-version IDREF CDATA #IMPLIED>
+
+<!ELEMENT record-status-id (#PCDATA)>
+<!ATTLIST record-status-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT system-id (#PCDATA)>
+<!ATTLIST system-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT version (#PCDATA)>
+<!ATTLIST version IDREF CDATA #IMPLIED>
+
+<!ELEMENT version-id (#PCDATA)>
+<!ATTLIST version-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT dal:include EMPTY>
+<!ATTLIST dal:include
+          file CDATA #IMPLIED
+          template CDATA #IMPLIED
+          resource CDATA #IMPLIED
+          relative-to CDATA #IMPLIED>
