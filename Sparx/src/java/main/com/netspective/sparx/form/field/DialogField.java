@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.53 2004-06-01 04:14:12 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.54 2004-06-23 21:03:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -147,6 +147,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         private DialogFieldValue value = constructValueInstance();
         private String adjacentAreaValue;
         private DialogFieldFlags stateFlags;
+        private boolean loadedPersistentValue;
         private DialogContext dialogContext;
         private DialogField field;
 
@@ -199,6 +200,8 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             {
                 return State.this;
             }
+
+
         }
 
         /**
@@ -234,7 +237,10 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                     {
                         Cookie cookie = cookies[i];
                         if (cookie.getName().equals(getCookieName()))
+                        {
                             value.setTextValue(URLDecoder.decode(cookie.getValue()));
+                            setLoadedPersistentValue(true);
+                        }
                     }
                 }
             }
@@ -322,6 +328,16 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             this.adjacentAreaValue = adjacentAreaValue;
         }
 
+        public boolean isLoadedPersistentValue()
+        {
+            return loadedPersistentValue;
+        }
+
+        public void setLoadedPersistentValue(boolean loadedPersistentValue)
+        {
+            this.loadedPersistentValue = loadedPersistentValue;
+        }
+
         /**
          * Gets the state flags associated with the field
          *
@@ -404,6 +420,13 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                 value.exportToXml(fieldStateElem);
                 parent.appendChild(fieldStateElem);
             }
+        }
+
+        public void appendAsUrlParam(StringBuffer sb)
+        {
+            String fieldName = getQualifiedName();
+            if (fieldName != null)
+                value.appendAsUrlParamValue(getHtmlFormControlId(), sb);
         }
     }
 
@@ -1501,7 +1524,14 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         DialogFieldValue dfValue = state.getValue();
         String textValue = dfValue.getTextValue();
 
-        if (textValue == null)
+        if(state.isLoadedPersistentValue())
+        {
+            // if we loaded a value from a cookie but there is an override param, the param takes precedence
+            String overrideParam = dc.getRequest().getParameter(htmlFormControlId);
+            if(overrideParam != null)
+                textValue = overrideParam;
+        }
+        else if (textValue == null)
             textValue = dc.getRequest().getParameter(htmlFormControlId);
 
         if (dc.getDialogState().getRunSequence() == 1)
