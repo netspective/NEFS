@@ -52,20 +52,23 @@
 
 package com.netspective.sparx.panel;
 
-import com.netspective.sparx.Project;
-import com.netspective.commons.metric.MetricsProducer;
-import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.CountMetric;
-import com.netspective.commons.metric.AverageMetric;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.sparx.Project;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class RecordEditorPanels implements MetricsProducer
+/**
+ * Class for saving all the panel editors defined in the project
+ *
+ */
+public class PanelEditors implements MetricsProducer
 {
     private Project project;
     private List panels = new ArrayList();
@@ -73,7 +76,7 @@ public class RecordEditorPanels implements MetricsProducer
     private Map byNameSpace = new TreeMap();
     private Set nameSpaceNames = new TreeSet();
 
-    public RecordEditorPanels(Project project)
+    public PanelEditors(Project project)
     {
         this.project = project;
     }
@@ -88,7 +91,12 @@ public class RecordEditorPanels implements MetricsProducer
         return project;
     }
 
-    public void add(RecordEditorPanel panel)
+    /**
+     * Adds a panel editor
+     *
+     * @param panel
+     */
+    public void add(PanelEditor panel)
     {
         panels.add(panel);
         byName.put(panel.getNameForMapKey(), panel);
@@ -105,16 +113,27 @@ public class RecordEditorPanels implements MetricsProducer
 
     }
 
-    public RecordEditorPanel get(int i)
+    /**
+     * Gets a panel editor by its index
+     *
+     * @param i
+     * @return
+     */
+    public PanelEditor get(int i)
     {
-        return (RecordEditorPanel) panels.get(i);
+        return (PanelEditor) panels.get(i);
     }
 
-    public RecordEditorPanel get(String name)
+    /**
+     * Gets a panel editor by its name
+     *
+     * @param name
+     * @return
+     */
+    public PanelEditor get(String name)
     {
-        return (RecordEditorPanel) byName.get(RecordEditorPanel.translateNameForMapKey(name));
+        return (PanelEditor) byName.get(PanelEditor.translateNameForMapKey(name));
     }
-
 
     /**
      * Gets a subset of panels belonging to one name space
@@ -128,21 +147,42 @@ public class RecordEditorPanels implements MetricsProducer
         return null;
     }
 
-    public List getRecordManagerPanels()
+    /**
+     * Gets all the panel editors as a list
+     *
+     * @return      a list containing panel editors
+     */
+    public List getPanelEditors()
     {
         return panels;
     }
 
+    /**
+     * Gets all the names of the panel editors
+     *
+     * @return      a set containing all the names of the panel editors
+     */
     public Set getNames()
     {
         return byName.keySet();
     }
 
+    /**
+     * Gets all the namespaces of the panel editors (panel editor names are of the "pkg.name" format so
+     * this mehtod returns all the 'pkg' names)
+     *
+     * @return
+     */
     public Set getNameSpaceNames()
     {
         return nameSpaceNames;
     }
 
+    /**
+     * Gets the total of all the panel editors
+     *
+     * @return
+     */
     public int size()
     {
         return panels.size();
@@ -156,7 +196,7 @@ public class RecordEditorPanels implements MetricsProducer
     {
         CountMetric tpMetric = parent.addCountMetric("Total Packages");
         tpMetric.setSum(nameSpaceNames.size());
-        CountMetric tdMetric = parent.addCountMetric("Total Record Manager Panels");
+        CountMetric tdMetric = parent.addCountMetric("Total Panel Editors");
         tdMetric.setSum(panels.size());
 
     }

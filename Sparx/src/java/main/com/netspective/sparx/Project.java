@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.43 2004-03-01 07:09:55 aye.thu Exp $
+ * $Id: Project.java,v 1.44 2004-03-03 08:11:08 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -87,9 +87,9 @@ import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
 import com.netspective.sparx.navigate.NavigationTreesManager;
 import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.RecordEditorPanel;
-import com.netspective.sparx.panel.RecordEditorPanels;
-import com.netspective.sparx.panel.RecordEditorPanelsPackage;
+import com.netspective.sparx.panel.PanelEditor;
+import com.netspective.sparx.panel.PanelEditors;
+import com.netspective.sparx.panel.PanelEditorsPackage;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStatesManager;
@@ -225,9 +225,9 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private List lifecycleListeners = new ArrayList();
     private NavigationTrees navigationTrees = new NavigationTrees(this);
     private Dialogs dialogs = new Dialogs(this);
-    private RecordEditorPanels recordEditorPanels = new RecordEditorPanels(this);
+    private PanelEditors recordEditorPanels = new PanelEditors(this);
     private DialogsPackage activeDialogsNameSpace;
-    private RecordEditorPanelsPackage activeRecordEditorPanelsNameSpace;
+    private PanelEditorsPackage activeRecordEditorPanelsNameSpace;
     private AntProjects antProjects = new AntProjects();
     private HttpLoginManagers loginManagers = new HttpLoginManagers();
     private Themes themes = new Themes();
@@ -463,7 +463,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public RecordEditorPanels getRecordEditorPanels()
+    public PanelEditors getRecordEditorPanels()
     {
         return recordEditorPanels;
     }
@@ -473,10 +473,10 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         return recordEditorPanels.getByNameSpace(pkgName);
     }
 
-    public RecordEditorPanel getRecordEditorPanel(final String name)
+    public PanelEditor getRecordEditorPanel(final String name)
     {
-        String actualName = RecordEditorPanel.translateNameForMapKey(name);
-        RecordEditorPanel dialog = recordEditorPanels.get(actualName);
+        String actualName = PanelEditor.translateNameForMapKey(name);
+        PanelEditor dialog = recordEditorPanels.get(actualName);
 
         if(dialog == null && log.isDebugEnabled())
         {
@@ -486,13 +486,13 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         return dialog;
     }
 
-    public RecordEditorPanelsPackage createRecordEditorPanels()
+    public PanelEditorsPackage createRecordEditorPanels()
     {
-        activeRecordEditorPanelsNameSpace = new RecordEditorPanelsPackage(getRecordEditorPanels());
+        activeRecordEditorPanelsNameSpace = new PanelEditorsPackage(getRecordEditorPanels());
         return activeRecordEditorPanelsNameSpace;
     }
 
-    public void addRecordEditorPanels(RecordEditorPanelsPackage pkg)
+    public void addRecordEditorPanels(PanelEditorsPackage pkg)
     {
         activeRecordEditorPanelsNameSpace = null;
     }
