@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsForeignKeysPanel.java,v 1.2 2003-04-28 01:10:37 shahid.shah Exp $
+ * $Id: SchemaTableColumnsForeignKeysPanel.java,v 1.3 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
 import java.io.StringWriter;
@@ -54,6 +54,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
@@ -169,7 +170,9 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
                         try
                         {
                             dataVC.setPanelRenderFlags(HtmlPanel.RENDERFLAG_NOFRAME);
-                            dataVC.produceReport(sw, dataPanel.createDataSource(dataVC, fKeyTable));
+                            TabularReportDataSource ds = dataPanel.createDataSource(dataVC, fKeyTable);
+                            dataVC.produceReport(sw, ds);
+                            ds.close();
                         }
                         catch (IOException e)
                         {

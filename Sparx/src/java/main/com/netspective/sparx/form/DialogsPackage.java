@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsPackage.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogsPackage.java,v 1.2 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -97,7 +97,7 @@ package com.netspective.sparx.form;
  */
 
 /**
- * $Id: DialogsPackage.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogsPackage.java,v 1.2 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -116,9 +116,9 @@ public class DialogsPackage
     private Dialogs container;
     private String packageName;
 
-    public DialogsPackage(Dialogs queries)
+    public DialogsPackage(Dialogs dialogs)
     {
-        setContainer(queries);
+        setContainer(dialogs);
     }
     
     public Dialogs getContainer()
@@ -148,6 +148,7 @@ public class DialogsPackage
 
     public void addDialog(Dialog dialog)
     {
+        dialog.setNameSpace(this);
         container.add(dialog);
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogPanel.java,v 1.3 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: DialogsCatalogPanel.java,v 1.4 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -58,6 +58,7 @@ import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.RuntimeEnvironmentFlags;
 
 public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 {
@@ -100,18 +101,22 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
             super(vc);
             dialogs = appManager.getDialogs();
             this.selectedDialogName = selectedDialogName;
+            boolean doingFrameworkDeveploment = vc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT);
 
-            //TODO: this does not account for queries that are not contained within a namespace
+            //TODO: this does not account for dialogs that are not contained within a namespace
             Set sortedNamesSpaces = new TreeSet(dialogs.getNameSpaceNames());
             for(Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext(); )
             {
                 String nameSpaceId = (String) nsi.next();
+                if(nameSpaceId.startsWith("console") && ! doingFrameworkDeveploment)
+                    continue;
+
                 Set sortedDialogNamesInNameSpace = new TreeSet();
 
                 for(int i = 0; i < dialogs.size(); i++)
                 {
                     Dialog dialog = dialogs.get(i);
-                    if(nameSpaceId.equals(dialog.getNameSpace().getNameSpaceId()))
+                    if(dialog.getNameSpace() != null && nameSpaceId.equals(dialog.getNameSpace().getNameSpaceId()))
                     {
                         sortedDialogNamesInNameSpace.add(dialog.getQualifiedName());
                     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.8 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.9 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -60,6 +60,7 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 
 public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel implements HtmlTabularReportPanel
 {
@@ -76,7 +77,9 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
     {
         HtmlTabularReportValueContext vc = createContext(nc, theme.getReportSkin());
         vc.setPanelRenderFlags(flags);
-        vc.produceReport(writer, createDataSource(nc, vc));
+        TabularReportDataSource ds = createDataSource(nc, vc);
+        vc.produceReport(writer, ds);
+        ds.close();
     }
 
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
@@ -84,7 +87,9 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), theme.getReportSkin());
         vc.setDialogContext(dc);
         vc.setPanelRenderFlags(flags);
-        vc.produceReport(writer, createDataSource(dc.getNavigationContext(), vc));
+        TabularReportDataSource ds = createDataSource(dc.getNavigationContext(), vc);
+        vc.produceReport(writer, ds);
+        ds.close();
     }
 
     public class SimpleMessageDataSource extends AbstractHtmlTabularReportDataSource

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.8 2003-05-21 11:06:53 shahid.shah Exp $
+ * $Id: ReportTest.java,v 1.9 2003-05-25 17:28:56 shahid.shah Exp $
  */
 
 package com.netspective.commons.report;
@@ -246,7 +246,10 @@ public class ReportTest extends TestCase
 		expectedSw.write("25\t2,800\t5,305.3\t\n");
 
 		StringWriter sw = new StringWriter();
-		vc.produceReport(sw, new TestReportDataSource(vc));
+        TabularReportDataSource ds = new TestReportDataSource(vc);
+		vc.produceReport(sw, ds);
+        ds.close();
+
 		assertEquals(expectedSw.toString(), sw.toString());
 	}
 

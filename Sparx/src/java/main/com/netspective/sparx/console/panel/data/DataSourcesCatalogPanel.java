@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataSourcesCatalogPanel.java,v 1.1 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: DataSourcesCatalogPanel.java,v 1.2 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -67,11 +67,13 @@ import com.netspective.axiom.value.DatabaseConnValueContext;
 
 public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
 {
+    public static final String REQPARAMNAME_DATA_SOURCE = "selected-data-source";
     public static final HtmlTabularReport catalogReport = new BasicHtmlTabularReport();
     static
     {
         TabularReportColumn column = catalogReport.createColumn();
         column.setHeading(new StaticValueSource("Identifier"));
+        column.setCommand("redirect,explorer?"+ REQPARAMNAME_DATA_SOURCE +"=%{0}");
         catalogReport.addColumn(column);
 
         column = catalogReport.createColumn();
@@ -175,7 +177,10 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
             switch(columnIndex)
             {
                 case 0:
-                    return entry.getDataSourceId();
+                    if((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
+                        return entry.getDataSourceId();
+                    else
+                        return reportValueContext.getSkin().constructRedirect(reportValueContext, reportValueContext.getReport().getColumn(0).getCommand(), entry.getDataSourceId(), entry.getDataSourceId(), null);
 
                 case 1:
                     return ((HtmlTabularReportValueContext) reportValueContext).getDefaultDataSource().equals(entry.getDataSourceId()) ?

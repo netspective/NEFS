@@ -39,55 +39,97 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.12 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: ResinDataSourcePoolStatistics.java,v 1.1 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.console.panel.data;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
+import java.lang.reflect.Method;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.ApplicationManager;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
-import com.netspective.commons.RuntimeEnvironmentFlags;
+import javax.sql.DataSource;
 
-public class ConsoleServlet extends NavigationControllerServlet
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.axiom.ConnectionProviderEntryStatistics;
+import com.netspective.axiom.ConnectionProviderEntry;
+
+public class ResinDataSourcePoolStatistics implements ConnectionProviderEntryStatistics
 {
-    public static final String CONSOLE_ID = "console";
-    public static final String REQATTRNAME_INCONSOLE = "in-console";
-    public static final Boolean REQATTRVALUE_INCONSOLE = new Boolean(true);
+    private static final Log log = LogFactory.getLog(ResinDataSourcePoolStatistics.class);
 
-    protected Theme getTheme()
+    private ConnectionProviderEntry entry;
+    private Method activeConnsMethod;
+    private Method maxConnsMethod;
+    private Method totalConnsMethod;
+
+    public String getImplementationClassName()
     {
-        return Themes.getInstance().getTheme(CONSOLE_ID);
+        return "com.caucho.sql.DBPool";
     }
 
-    protected NavigationTree getNavigationTree(ApplicationManager am)
+    public int getActiveConnections()
     {
-        return am.getConsoleNavigationTree();
-    }
-
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
-    {
-        long startTime = System.currentTimeMillis();
-        httpServletRequest.setAttribute(REQATTRNAME_INCONSOLE, REQATTRVALUE_INCONSOLE);
-
-        NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
-        if(nc.isRedirectToAlternateChildRequired())
+        try
         {
-            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
-            return;
+            return ((Integer) activeConnsMethod.invoke(entry.getDataSource(), null)).intValue();
         }
+        catch (Exception e)
+        {
+            return -1;
+        }
+    }
 
-        renderPage(nc);
+    public ConnectionProviderEntry getConnectionProviderEntry()
+    {
+        return entry;
+    }
 
-        long renderTime = System.currentTimeMillis() - startTime;
-        httpServletResponse.getWriter().write("Render time: " + renderTime + " milliseconds");
+    public int getMaxConnections()
+    {
+        try
+        {
+            return ((Integer) maxConnsMethod.invoke(entry.getDataSource(), null)).intValue();
+        }
+        catch (Exception e)
+        {
+            return -1;
+        }
+    }
+
+    public int getTotalConnections()
+    {
+        try
+        {
+            return ((Integer) totalConnsMethod.invoke(entry.getDataSource(), null)).intValue();
+        }
+        catch (Exception e)
+        {
+            return -1;
+        }
+    }
+
+    public void setConnectionProviderEntry(ConnectionProviderEntry entry)
+    {
+        this.entry = entry;
+
+        if(entry != null)
+        {
+            DataSource ds = entry.getDataSource();
+            if(ds == null)
+                throw new RuntimeException("DataSource is NULL");
+
+            try
+            {
+                activeConnsMethod = ds.getClass().getMethod("getActiveConnections", null);
+                maxConnsMethod = ds.getClass().getMethod("getMaxConnections", null);
+                totalConnsMethod = ds.getClass().getMethod("getTotalConnections", null);
+            }
+            catch (Exception e)
+            {
+                throw new NestableRuntimeException(e);
+            }
+        }
     }
 }

@@ -39,13 +39,16 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.2 2003-05-23 02:18:41 shahid.shah Exp $
+ * $Id: QueryDialog.java,v 1.3 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
 
 import java.io.Writer;
 import java.io.IOException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsPackage;
@@ -55,21 +58,23 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.type.IntegerField;
-import com.netspective.sparx.form.field.type.PanelsField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.panel.HtmlLayoutPanel;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel;
 import com.netspective.sparx.console.panel.data.sql.QueryDetailPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.sql.Query;
+import com.netspective.sparx.command.HttpServletCommand;
 import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.axiom.sql.QueryParameters;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.command.CommandNotFoundException;
+import com.netspective.commons.command.CommandException;
 
 public class QueryDialog extends Dialog
 {
+    private static final Log log = LogFactory.getLog(QueryDialog.class);
+
     private Query query;
     private HtmlTabularReport report;
     private HtmlTabularReportSkin reportSkin;
@@ -97,11 +102,6 @@ public class QueryDialog extends Dialog
 
     public void createParamFields()
     {
-        PanelsField pfield = new PanelsField();
-        HtmlLayoutPanel panels = pfield.createPanels();
-        panels.addPanel(new QueryDbmsSqlTextsPanel());
-        addField(pfield);
-
         QueryParameters params = query.getParams();
         if(params != null)
         {
@@ -117,7 +117,7 @@ public class QueryDialog extends Dialog
         }
 
         DialogField field = new IntegerField();
-        field.setName("rows_per_page");
+        field.setName("rows-per-page");
         field.setCaption(new StaticValueSource("Rows per page"));
         field.setDefault(new StaticValueSource("10"));
         addField(field);
@@ -172,6 +172,20 @@ public class QueryDialog extends Dialog
 
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        query.getPresentation().getDefaultPanel().render(writer, dc, dc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+        try
+        {
+            HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand("query," + query.getQualifiedName());
+            command.handleCommand(writer, dc, false);
+        }
+        catch (CommandNotFoundException e)
+        {
+            log.error("Unable to find query command -- this should never happen.", e);
+            throw new DialogExecuteException(e);
+        }
+        catch (CommandException e)
+        {
+            log.error("Error executing query command.", e);
+            throw new DialogExecuteException(e);
+        }
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.4 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: QueryReportPanel.java,v 1.5 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -160,7 +160,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             }
             catch (Exception e)
             {
-                log.error("Unable to create report", e);
+                log.error("Unable to create report for query ", e);
                 throw new NestableRuntimeException(e);
             }
         }
@@ -182,6 +182,20 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         {
             super(vc);
             this.message = noDataMessage;
+        }
+
+        public void close()
+        {
+            super.close();
+            try
+            {
+                queryResultSet.close(true);
+            }
+            catch (SQLException e)
+            {
+                log.error("Unable to close result set", e);
+                throw new NestableRuntimeException(e);
+            }
         }
 
         public QueryResultSet getQueryResultSet()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.12 2003-05-17 17:51:30 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.13 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -58,6 +58,7 @@ import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.SqlManager;
 import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.ApplicationManagerComponent;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.DialogContext;
@@ -123,6 +124,9 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
             contextEnvFlags = constructEnvironmentFlags();
             contextEnvFlags.setValue(envFlagsText);
             context.setAttribute(CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS, contextEnvFlags);
+
+            if(request.getAttribute(ConsoleServlet.REQATTRNAME_INCONSOLE) != null)
+                contextEnvFlags.setFlag(RuntimeEnvironmentFlags.CONSOLE_MODE);
         }
         return contextEnvFlags;
     }

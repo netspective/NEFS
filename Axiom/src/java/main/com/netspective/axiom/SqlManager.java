@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.4 2003-05-16 20:32:56 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.5 2003-05-25 17:28:45 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -81,12 +81,20 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     private static final Log log = LogFactory.getLog(SqlManager.class);
 
     protected QueriesNameSpace activeNameSpace;
+    private QueriesNameSpace temporaryQueriesNameSpace;
     private Queries queries = constructQueries();
     private QueryDefinitions queryDefns = constructQueryDefinitions();
     private Schemas schemas = constructSchemas();
 
     public SqlManager()
     {
+        temporaryQueriesNameSpace = new QueriesPackage(queries);
+        temporaryQueriesNameSpace.setNameSpaceId("temporary");
+    }
+
+    public QueriesNameSpace getTemporaryQueriesNameSpace()
+    {
+        return temporaryQueriesNameSpace;
     }
 
     protected Queries constructQueries()

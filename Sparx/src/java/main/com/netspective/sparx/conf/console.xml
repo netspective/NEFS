@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.35 2003-05-24 20:28:36 shahid.shah Exp $
+  * $Id: console.xml,v 1.36 2003-05-25 17:30:09 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -84,8 +84,13 @@
                         <panel class="com.netspective.sparx.console.panel.data.sql.QueryParametersPanel"/>
                     </panels>
                 </page>
-				<page name="test" caption="Unit Test" retain-params="selected-query-id"/>
-
+				<page name="test" caption="Unit Test" retain-params="selected-query-id">
+                    <panels>
+                        <panel type="command" command="dynamic,simple-expr:query,${request:selected-query-id},default"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.QueryParametersPanel"/>
+                    </panels>
+                </page>
 	        </page>
 	        <page name="dynamic-query" caption="Dynamic Queries">
                 <page name="catalog" caption="Catalog" heading="Dynamic SQL Queries" retain-params="query-defn-source,selected-query-defn-id">
@@ -149,6 +154,11 @@
                 <page name="catalog" caption="Catalog">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.DataSourcesCatalogPanel"/>
+                    </panels>
+                </page>
+                <page name="explorer" caption="SQL Explorer">
+                    <panels>
+                        <panel type="command" command="dynamic,simple-expr:dialog,console.sql-editor"/>
                     </panels>
                 </page>
             </page>
@@ -216,11 +226,14 @@
     </navigation-tree>
 
     <dialogs package="console">
-        <dialog name="query-editor">
-            <!-- setup so that only DML/DQL can be restricted or that it can only run in development mode, etc -->
+        <dialog name="sql-editor" class="com.netspective.sparx.console.form.data.SqlEditorDialog">
+
+            <!-- TODO: setup so that only DML/DQL can be restricted or that it can only run in development mode, etc -->
+
             <frame heading="SQL Editor"/>
             <field name="data-source" type="select" caption="Data source" choices="data-sources:.*"/>
-            <field name="sql" type="memo" caption="SQL" rows="10" cols="90"/>
+            <field name="sql" type="memo" caption="SQL" rows="10" cols="60"/>
+            <field name="name" type="text" caption="Name"/>
             <field name="rows-per-page" type="integer" caption="Rows per page" default="25"/>
         </dialog>
     </dialogs>

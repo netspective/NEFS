@@ -39,55 +39,33 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.12 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: ConsoleDialog.java,v 1.1 2003-05-25 17:30:10 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.console.form;
 
+import java.io.Writer;
 import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.ApplicationManager;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 
-public class ConsoleServlet extends NavigationControllerServlet
+/**
+ * Base class for all dialogs that should execute only within a console. Provided for security reasons so that commands
+ * and other runtime executable code doesn't call privileged (console-time-only) code.
+ */
+public class ConsoleDialog extends Dialog
 {
-    public static final String CONSOLE_ID = "console";
-    public static final String REQATTRNAME_INCONSOLE = "in-console";
-    public static final Boolean REQATTRVALUE_INCONSOLE = new Boolean(true);
-
-    protected Theme getTheme()
+    protected void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
-        return Themes.getInstance().getTheme(CONSOLE_ID);
-    }
-
-    protected NavigationTree getNavigationTree(ApplicationManager am)
-    {
-        return am.getConsoleNavigationTree();
-    }
-
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
-    {
-        long startTime = System.currentTimeMillis();
-        httpServletRequest.setAttribute(REQATTRNAME_INCONSOLE, REQATTRVALUE_INCONSOLE);
-
-        NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
-        if(nc.isRedirectToAlternateChildRequired())
+        if(! dc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.CONSOLE_MODE))
         {
-            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
+            writer.write("This is a privileged form and may only execute within the Netspective Enterprise Console.");
             return;
         }
 
-        renderPage(nc);
-
-        long renderTime = System.currentTimeMillis() - startTime;
-        httpServletResponse.getWriter().write("Render time: " + renderTime + " milliseconds");
+        super.render(writer, dc, contextPreparedAlready);
     }
 }
