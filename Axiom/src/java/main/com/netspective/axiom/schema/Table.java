@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.4 2003-04-29 02:26:45 shahid.shah Exp $
+ * $Id: Table.java,v 1.5 2003-07-01 01:01:13 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -52,10 +52,12 @@ import javax.naming.NamingException;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
+import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.sql.QueryExecutionLog;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.commons.xml.template.TemplateProducer;
 
 public interface Table
 {
@@ -360,4 +362,6 @@ public interface Table
      * Gets the list of table types consumed by the table.
      */
     public List getTableTypes();
+
+    public TemplateProducer getPresentation();
 }

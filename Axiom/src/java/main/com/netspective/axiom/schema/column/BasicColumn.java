@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.11 2003-06-30 02:33:07 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.12 2003-07-01 01:00:35 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -289,6 +289,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     private Table table;
     private String name;
     private String abbrev;
+    private String caption;
     private String xmlNodeName;
     private List dataTypesConsumed = new ArrayList();
     private int requirement = RequirementEnumeratedAttribute.NOT_REQUIRED;
@@ -461,6 +462,16 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     public String getAbbrev()
     {
         return abbrev != null ? abbrev : name;
+    }
+
+    public String getCaption()
+    {
+        return caption == null ? TextUtils.sqlIdentifierToText(getName(), true) : caption;
+    }
+
+    public void setCaption(String caption)
+    {
+        this.caption = caption;
     }
 
     public String getQualifiedName()

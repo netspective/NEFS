@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.11 2003-06-28 00:47:06 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.12 2003-07-01 01:00:55 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -140,6 +140,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private Column parentColumn;
     private String name;
     private String abbrev;
+    private String caption;
     private String xmlNodeName;
     private List tableTypesConsumed = new ArrayList();
     private String description;
@@ -181,7 +182,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         return tableTypesConsumed;
     }
 
-    public TablePresentationTemplate getPresentation()
+    public TemplateProducer getPresentation()
     {
         if(presentation == null)
             presentation = new TablePresentationTemplate();
@@ -279,6 +280,16 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     public void setAbbrev(String abbrev)
     {
         this.abbrev = abbrev;
+    }
+
+    public String getCaption()
+    {
+        return caption == null ? TextUtils.sqlIdentifierToText(getName(), true) : caption;
+    }
+
+    public void setCaption(String caption)
+    {
+        this.caption = caption;
     }
 
     public String getDescription()
