@@ -33,26 +33,31 @@
         </path>
     </target>
 
-    <target name="chunked" depends="setup-project-properties">
-    	<delete dir="${manual.html.path}"/>
-    	<mkdir dir="${manual.html.path}"/>
-    	<mkdir dir="${manual.html.path}/resources"/>
-    	<copy todir="${manual.html.path}/resources">
-	    <fileset dir="${manual.resources.dir}"/>
-  	</copy>
-    	<copy todir="${manual.html.path}/images">
-	    <fileset dir="${docbook-xsl-redist.home}/images"/>
-  	</copy>
+    <target name="prepare-destination" depends="setup-project-properties">
+        <delete dir="${manual.html.path}"/>
+        <mkdir dir="${manual.html.path}"/>
+    </target>
 
-    <echo message="Creating chunked HTML output in ${manual.html.path}"/>
-    <xslt basedir="${manual.path}"
-          destdir="${manual.html.path}"
-          style="${docbook-xsl.home}/html/netspective-chunk.xsl"
-          force="yes" processor="trax" classpathref="project.class.path">
+    <target name="copy-resources" depends="setup-project-properties">
+        <mkdir dir="${manual.html.path}/resources"/>
+        <copy todir="${manual.html.path}/resources">
+            <fileset dir="${manual.resources.dir}"/>
+        </copy>
+        <copy todir="${manual.html.path}/images">
+            <fileset dir="${docbook-xsl-redist.home}/images"/>
+        </copy>
+    </target>
 
-        <include name="${manual.file-name}"/>
+    <target name="chunked" depends="prepare-destination,copy-resources">
+        <echo message="Creating chunked HTML output in ${manual.html.path}"/>
+        <xslt basedir="${manual.path}"
+            destdir="${manual.html.path}"
+            style="${docbook-xsl.home}/html/netspective-chunk.xsl"
+            force="yes" processor="trax" classpathref="project.class.path">
 
-    </xslt>
+            <include name="${manual.file-name}"/>
+
+        </xslt>
         <!--
 	<java classname="com.icl.saxon.StyleSheet"
 		      fork="yes"

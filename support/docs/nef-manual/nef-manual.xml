@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-10-31 16:48:47 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-01 02:59:32 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -1465,23 +1465,86 @@
       <section>
         <title>Defining the Presentation Layer</title>
 
-        <section>
-          <title>Navigation</title>
+        <para>The NEF helps manage many portions of the presentation layer.
+        You can simply declare a hierarchy of menus, menu items, captions,
+        headings, and NEF manages the rendering of navigation. Likewise, once
+        you define the rules for your forms like headings, fields, validation
+        criteria, and field placements NEF will manage everything for you.
+        And, all of the HTML generation is performed through delegated calls
+        to skins and themes so that you can control all aspects of your
+        application&#39;s appearance in one place instead of across dozens and
+        hundreds of pages.</para>
 
-          <para>Define your application&#39;s hierarchy (the &#34;main&#34;
-          menu, submenus, and so on). Consider each navigation item a
-          &#34;page&#34;. Also consider how navigation should occur from one
-          page to another so that appropriate workflows may be specified in
-          forms and pages.</para>
-        </section>
+        <mediaobjectco>
+          <imageobjectco>
+            <areaspec units="other">
+              <area coords="1" id="screen-app-generic-components-co-1" />
 
-        <section>
-          <title>Forms and Data Collection</title>
+              <area coords="2" id="screen-app-generic-components-co-2" />
 
-          <para>Define the manner in which data will be collected. This
-          includes what forms, fields, field types, validation, and other
-          related information might be required.</para>
-        </section>
+              <area coords="3" id="screen-app-generic-components-co-3" />
+
+              <area coords="4" id="screen-app-generic-components-co-4" />
+
+              <area coords="5" id="screen-app-generic-components-co-5" />
+
+              <area coords="6" id="screen-app-generic-components-co-6" />
+            </areaspec>
+
+            <imageobject>
+              <imagedata
+              fileref="./resources/images/screen-app-generic-components.gif" />
+            </imageobject>
+          </imageobjectco>
+        </mediaobjectco>
+
+        <calloutlist>
+          <callout arearefs="screen-app-generic-components-co-1">
+            <para>Consider how you want your application to be organized. The
+            default theme, called <emphasis>slate</emphasis>, is tabbed
+            interface so the top level menus become tabs and the second level
+            menus become buttons under their respective tabs. Other themes may
+            render differently (such as pull-down menus or a tree) but the
+            concepts are the same.</para>
+          </callout>
+
+          <callout arearefs="screen-app-generic-components-co-2">
+            <para>NEF understands the concept of an active page (or an active
+            tab/menu). You should consider this when you design your pages so
+            that you properly define which pages have particular components.
+            Of course, all navigation, selection, and rendering of the active
+            page is automatic.</para>
+          </callout>
+
+          <callout arearefs="screen-app-generic-components-co-3">
+            <para>NEF assigns unique identifiers, captions, headings, and
+            titles to each page automatically and the themes render them
+            consistently across all pages.</para>
+          </callout>
+
+          <callout arearefs="screen-app-generic-components-co-4">
+            <para>Consider the type of data you will collect using forms. In
+            NEF they are called input panels, dialogs, and forms (each term is
+            synonymous in most cases). Rendering of forms once you declare the
+            fields and validation criteria is handled by the themes and skins.
+            So you worry about the functionality and NEF manages the HTML.</para>
+          </callout>
+
+          <callout arearefs="screen-app-generic-components-co-5">
+            <para>Output panels like this may contain the output of SQL
+            queries, arbitrary HTML, execution results from a web service or
+            any other type of component. You should consider what you want to
+            show on the screens along with your forms (if anything).</para>
+          </callout>
+
+          <callout arearefs="screen-app-generic-components-co-6">
+            <para>You can collect data in multiple panels and show them on the
+            same screen. Each panel, by the way, is an independent object and
+            you can declare the component one time and use them on multiple
+            pages with different display contexts and they will be
+            consistently manageme</para>
+          </callout>
+        </calloutlist>
       </section>
 
       <section>
@@ -2400,7 +2463,7 @@ id="declare-security-acl-eg-7" />
 
             <callout arearefs="declare-security-acl-eg-6">
               <para>Each <sgmltag class="starttag">role</sgmltag> tag may
-              grant one or more permissions. </para>
+              grant one or more permissions.</para>
             </callout>
 
             <callout arearefs="declare-security-acl-eg-7">
@@ -2488,6 +2551,17 @@ id="declare-security-acl-eg-7" />
       declarations to execute customized business logic.</para>
 
       <section>
+        <title>Customization Styles</title>
+
+        <para>NEF supports code customization using either inheritance or
+        delegation. Although both methods are supported, the delegation model
+        is recommened to help ensure that changes in the NEF APIs do not
+        affect your code. Inheritance is used for large-scale customizations
+        and enhancing the framework itself while delegation is used to
+        implement listeners and event processing customizations.</para>
+      </section>
+
+      <section>
         <title>Customizing Presentation Layer Code</title>
 
         <para></para>
@@ -2571,7 +2645,7 @@ id="declare-security-acl-eg-7" />
 
         <programlisting>&#60;?xml version=&#34;1.0&#34;?&#62;
 
-&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62; <co
+&#60;<emphasis role="bold">project</emphasis> <emphasis role="bold">xmlns:xdm</emphasis>=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62; <co
 id="project-file-basic-eg-1" />
 
     &#60;xdm:include resource=&#34;com/netspective/commons/conf/commons.xml&#34;/&#62; <co
@@ -3399,16 +3473,24 @@ id="value-source-eg-5" /></programlisting>
 
       <para>NEF provides a series of scripts that, among other functions,
       allow you to compile your application, generate code, and upgrade NEF
-      libraries and components.</para>
+      libraries and components. All of the scripts are built to be executed in
+      the the industry-standard <ulink url="http://ant.apache.org">Apache Ant</ulink>
+      tool. Apache Ant is included in the NEF distribution.</para>
 
       <section>
-        <title>Executing Ant Scripts Through Console</title>
+        <title>Executing Ant Scripts through Console</title>
 
         <para></para>
       </section>
 
       <section>
         <title>Executing Ant Scripts From the Command Line</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Executing Ant Scripts from within your IDE</title>
 
         <para></para>
       </section>
