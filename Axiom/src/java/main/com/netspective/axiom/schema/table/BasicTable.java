@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.17 2003-10-17 15:58:03 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.18 2003-10-17 16:15:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -517,7 +517,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             }
             qrs.close(false);
         }
-        
+
         return resultRow;
     }
 
@@ -984,7 +984,9 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 { "_auto-map", "*" } });
 
             TemplateElement deleteDataTemplateElement = dialogTemplate.addChild("on-delete-data", null);
-            deleteDataTemplateElement.addChild(getSchema().getName() + "." + getXmlNodeName(), new String[][]{ { "_pk-value", "request:" + getPrimaryKeyColumns().getSole().getXmlNodeName() } });
+            deleteDataTemplateElement.addChild(getSchema().getName() + "." + getXmlNodeName(), new String[][]{
+                { "_pk-value", "request:" + getPrimaryKeyColumns().getSole().getXmlNodeName() },
+                { "_auto-map", "*" } });
         }
     }
 
