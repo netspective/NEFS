@@ -39,39 +39,37 @@
  */
 
 /**
- * $Id: SelectFieldChoicesPanel.java,v 1.5 2003-09-10 04:02:18 aye.thu Exp $
+ * $Id: SelectFieldChoicesPanel.java,v 1.6 2003-11-16 17:16:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Iterator;
-import java.io.StringReader;
+import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
-import com.netspective.sparx.console.panel.data.sql.QueryDetailPanel;
-import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.sql.DbmsSqlText;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
-import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.command.Command;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.console.panel.data.sql.QueryDetailPanel;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 
 public class SelectFieldChoicesPanel extends QueryDetailPanel
 {
@@ -86,6 +84,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
     {
         TabularReportColumn column = new GeneralColumn();
         column.setHeading(new StaticValueSource(CHOICE_ID_COLUMN_STRING));
+        column.getFlags().setFlag(GeneralColumn.Flags.HIDDEN);
         choicesReport.addColumn(column);
 
         column = new GeneralColumn();
