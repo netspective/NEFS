@@ -12,19 +12,19 @@
     *********************************************************************
     -->
 
-    <classpath id='c:\Projects\Frameworks\Commons\conf'/>
-    <classpath id='c:\Projects\Frameworks\Commons\lib\redist' library-dir='true'/>
-    <classpath id='c:\Projects\Frameworks\Axiom\lib\redist' library-dir='true'/>
-    <classpath id='c:\Projects\Frameworks\Sparx\lib\redist' library-dir='true'/>
-    <classpath id='c:\Projects\Frameworks\tools\idea\classes'/>
+    <classpath id='${app.docDir}/../../Commons/conf'/>
+    <classpath id='${app.docDir}/../../Commons/lib/redist' library-dir='true'/>
+    <classpath id='${app.docDir}/../../Axiom/lib/redist' library-dir='true'/>
+    <classpath id='${app.docDir}/../../Sparx/lib/redist' library-dir='true'/>
+    <classpath id='${app.docDir}/../../tools/idea/classes'/>
     <!-- these are added because of conf/*.xml resource files are here -->
-    <classpath id='c:\Projects\Frameworks\Commons\src\java\main' compile='false'/>
-    <classpath id='c:\Projects\Frameworks\Axiom\src\java\main' compile='false'/>
-    <classpath id='c:\Projects\Frameworks\Sparx\src\java\main' compile='false'/>
+    <classpath id='${app.docDir}/../../Commons/src/java/main' compile='false'/>
+    <classpath id='${app.docDir}/../../Axiom/src/java/main' compile='false'/>
+    <classpath id='${app.docDir}/../../Sparx/src/java/main' compile='false'/>
     <!-- needed to find java-doc-xml/* files -->
-    <classpath id='c:\Projects\Frameworks\Sparx'/>
+    <classpath id='${app.docDir}/../../Sparx'/>
 
-	<path-mapping url-pattern='/sparx/*' real-path='c:\Projects\Frameworks\Sparx\resources'/>
+	<path-mapping url-pattern='/sparx/*' real-path='${app.docDir}/../../Sparx/resources'/>
 
     <!--
     *********************************************************************
