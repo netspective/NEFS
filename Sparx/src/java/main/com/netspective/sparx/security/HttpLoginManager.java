@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.26 2004-08-08 22:55:16 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.27 2004-08-14 19:59:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -55,11 +55,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.security.AuthenticatedUserInitializationException;
 import com.netspective.commons.security.AuthenticatedUserLogoutType;
 import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.security.MutableAuthenticatedUser;
@@ -280,10 +282,10 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             loginAuthenticator.initAuthenticatedUser(this, ldc, authUser);
             return authUser;
         }
-        catch (Exception e)
+        catch (AuthenticatedUserInitializationException e)
         {
             log.error("Error creating authenticated user", e);
-            throw new RuntimeException("Error creating authenticated user: " + e.getMessage());
+            throw new NestableRuntimeException("Error creating authenticated user", e);            
         }
     }
 
