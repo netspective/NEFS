@@ -34,7 +34,11 @@ package com.netspective.commons.acl;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
@@ -149,6 +153,24 @@ public class Role
     public BitSet getPermissions()
     {
         return permissions;
+    }
+
+    public Set getPermissionNames()
+    {
+        final Set result = new TreeSet();
+        final Map aclPerms = owner.getPermissionsById();
+
+        for(Iterator i = aclPerms.entrySet().iterator(); i.hasNext();)
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+            int index = ((Integer) entry.getKey()).intValue();
+            String qualifiedName = ((Permission) entry.getValue()).getQualifiedName();
+
+            if(permissions.get(index))
+                result.add(qualifiedName);
+        }
+
+        return result;
     }
 
     public Role createRole()

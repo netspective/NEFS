@@ -51,6 +51,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     private String name;
     private String qualifiedName;
     private Map permissionsByName = new HashMap();
+    private Map permissionsById = new HashMap();
     private Map rolesByName = new HashMap();
     private List permissions = new ArrayList();
     private List roles = new ArrayList();
@@ -127,6 +128,11 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
         return permissionsByName;
     }
 
+    public Map getPermissionsById()
+    {
+        return permissionsById;
+    }
+
     /**
      * Gets a map of all roles including children
      */
@@ -194,6 +200,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     protected void registerPermission(Permission perm)
     {
         permissionsByName.put(perm.getQualifiedName(), perm);
+        permissionsById.put(new Integer(getHighestPermissionId()), perm);
         manager.registerPermission(perm);
     }
 
