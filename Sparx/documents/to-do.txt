@@ -7,13 +7,15 @@
 
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
 	- DONE but haven't been able to test this on OS X browsers. TODO: test on Win IE 6.
-	
+
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
 * Add execute, populate, and makeStateChanges interfaces that can be "registered" for dialogs -- to delegate these activities
+    - Add support for listeners in as many places in Sparx as makes sense -- e.g. for dialogs that don't want to be subclassed let them add DialogExecuteListener? DialogPopuplateListener? etc...
 
 * Add DHTML feature to Dialogs so that hints can optional only show up when a control is being edited (instead of all the time)
 	- DONE but the event is at onFocus and onBlur because onChange only occurred when you tabbed out of the field.
-	
+	- BUG: reported by Shahid -- hints now seem to be broken on dialogs that _don't_ request hints to be hidden until focus
+
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
 * Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
@@ -38,12 +40,10 @@
 * Integrate http://oss.metaparadigm.com/jmemprof/ open-source memory profiler intended for web application containers (like resin, tomcat, etc). Also take a look at the SUN HAT http://java.sun.com/people/billf/heap/.
 * Take a look at http://xmljs.sourceforge.net/ for JavaScript XML parsing and record set management
 * Take a look at http://www.duncanlamb.com/sdba/ for SDBA Revolution Instant Messaging Application Server and see if it's useful to create Sparx-based IM apps
-* Add support for listeners in as many places in Sparx as makes sense -- e.g. for dialogs that don't want to be subclassed let them add DialogExecuteListener? DialogPopuplateListener? etc...
 * Incorporate features from http://www.irongrid.com (IronEye SQL and IronEye Cache) into Console
 * Take a look at http://www.softwareplanner.com to see what kinds of features from there can be added to Console, Beacon
 * Ensure that all validation functionality is removed from fields and placed into validator objects so that they can be reused in Axiom
 * Used http://jakarta.apache.org/commons/fileupload/ to add file upload features
-* Add DHTML popup calendar from http://students.infoiasi.ro/~mishoo/site/calendar/cal.html.
 * Convert all ValueSource objects so their default points to ValueSource.NULL_VALUE_SOURCE -- this will eliminate many "if null" checks
 * Add Portlet API implementation for "output" panels (http://www-3.ibm.com/software/webservers/portal/library/InfoCenter/wps/wpspapi.html).
 * Add built-in wiki parsing for panels so any panel/page can parse and show Wiki content
@@ -54,7 +54,6 @@
 * Add a 'development tip of the day' feature to Console that would give general software development tips
 * Consider adding rich text editing field mode (for field.memo) for IE/Moz using examples at http://www.kevinroth.com/rte/demo.htm and http://www.bris.ac.uk/is/projects/cms/ttw/ttw.html
 * Consider using Jakarta Commons VFS (http://jakarta.apache.org/commons/sandbox/vfs/api.html) for panel body source locations so that they can be obtained from anywhere
-* Allow documentation panels in console which borrow ideas from Sparx 2.0 documentation (summary blocks, XSL, etc)
 * Add <panel-type>, <page-type> and other style page templates
 * Look at Struts' MessageResources class for creating an 'rb' (resource-bundle) value source for internationlization
 * Create Sparx demo using CD manager example in Sue Spielman's Struts book -- maybe other e.g.'s like that?
@@ -106,10 +105,6 @@ java.lang.NullPointerException
         at com.netspective.axiom.sql.dynamic.QueryDefinition.getNameForMapKey(QueryDefinition.java:128)
         at com.netspective.axiom.sql.collection.QueryDefinitionsCollection.add(QueryDefinitionsCollection.java:68)
         at com.netspective.axiom.SqlManager.addQueryDefn(SqlManager.java:229)
-        
-  	FIXED: Added a null check in static method translateNameForMapKey(). 
 
-
-
-
-
+  	FIXED: Added a null check in static method translateNameForMapKey().
+  	TODO: Give each query defn and query a default name like (queryDefnXX)
