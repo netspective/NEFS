@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<queries package="claimComponents">
-		<query name="get-claims-by-invoice">
+    <queries package="claimComponents">
+        <query name="get-claims-by-invoice">
 			select
 				claim_id,
 				batch_id,
@@ -32,15 +32,38 @@
 				Claim.service_facility_id = ServiceFacility.org_id and
 				Claim.billing_provider_id = BillingProvider.person_id and
 				Claim.billing_facility_id = BillingFacility.org_id
-				
-			<params>
-				<param value="request:invoice_id"/>
-			</params>
 
-			<presentation><panel><frame heading="All Claims"/><banner style="horizontal"><action caption="Add" command="redirect,"/></banner><report><column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/><column hidden="yes"/><column heading="Claim Status"/><column hidden="yes"/><column heading="Patient" command="redirect,Patient"/><column hidden="yes"/><column heading="Service Provider" command="redirect,Service Provider"/><column hidden="yes"/><column heading="Service Facility" command="redirect,Service Facility"/><column hidden="yes"/><column hidden="yes"/><column hidden="yes"/><column hidden="yes"/><column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:invoice_id"/>
+            </params>
 
-		<query name="get-claims-by-patient">
+            <presentation>
+                <panel>
+                    <frame heading="All Claims"/>
+                    <banner style="horizontal">
+                        <action caption="Add" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading="&amp;nbsp;" output="Edit" redirect=",&amp;nbsp;"/>
+                        <column hidden="yes"/>
+                        <column heading="Claim Status"/>
+                        <column hidden="yes"/>
+                        <column heading="Patient" redirect=",Patient"/>
+                        <column hidden="yes"/>
+                        <column heading="Service Provider" redirect=",Service Provider"/>
+                        <column hidden="yes"/>
+                        <column heading="Service Facility" redirect=",Service Facility"/>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column heading="&amp;nbsp;" output="Delete" redirect=",&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="get-claims-by-patient">
 			select
 				claim_id,
 				invoice_id,
@@ -72,15 +95,39 @@
 				Claim.service_facility_id = ServiceFacility.org_id and
 				Claim.billing_provider_id = BillingProvider.person_id and
 				Claim.billing_facility_id = BillingFacility.org_id
-				
-			<params>
-				<param value="request:person_id"/>
-			</params>
 
-			<presentation><panel><frame heading="All Claims"/><banner style="horizontal"><action caption="Add" command="redirect,"/></banner><report><column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/><column hidden="yes"/><column hidden="yes"/><column heading="Claim Status"/><column hidden="yes"/><column hidden="yes"/><column hidden="yes"/><column heading="Service Provider" command="redirect,Service Provider"/><column hidden="yes"/><column heading="Service Facility" command="redirect,Service Facility"/><column hidden="yes"/><column hidden="yes"/><column hidden="yes"/><column hidden="yes"/><column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/></report></panel></presentation>
-		</query>
-		
-		<query name="get-claim-diag-proc-codes">
+            <params>
+                <param value="request:person_id"/>
+            </params>
+
+            <presentation>
+                <panel>
+                    <frame heading="All Claims"/>
+                    <banner style="horizontal">
+                        <action caption="Add" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading="&amp;nbsp;" output="Edit" redirect=",&amp;nbsp;"/>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column heading="Claim Status"/>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column heading="Service Provider" redirect=",Service Provider"/>
+                        <column hidden="yes"/>
+                        <column heading="Service Facility" redirect=",Service Facility"/>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column heading="&amp;nbsp;" output="Delete" redirect=""/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="get-claim-diag-proc-codes">
 			select
 				Claim_DiagProc_Rel.system_id,
 				Claim_Diagnosis_Code_Type.caption,
@@ -100,14 +147,29 @@
 				Claim_DiagProc_Rel.procedure_id = Claim_Procedure.system_id and
 				Claim_Diagnosis.diag_code_type_id = Claim_Diagnosis_Code_Type.id and
 				Claim_Procedure.proc_code_type_id = Claim_Procedure_Code_Type.id
-				
-			<params>
-				<param value="request:claim_id"/>
-				<param value="request:claim_id"/>
-			</params>
 
-			<presentation><panel><frame heading="Claim Diagnoses and Procedures"/><banner style="horizontal"><action caption="Add" command="redirect,"/></banner><report><column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/><column heading="Diag Code Type"/><column heading="Diag Code"/><column heading="Proc Code Type"/><column heading="Proc Code"/><column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/></report></panel></presentation>
-		</query>
-		
-	</queries>
+            <params>
+                <param value="request:claim_id"/>
+                <param value="request:claim_id"/>
+            </params>
+
+            <presentation>
+                <panel>
+                    <frame heading="Claim Diagnoses and Procedures"/>
+                    <banner style="horizontal">
+                        <action caption="Add" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading="&amp;nbsp;" output="Edit" redirect=",&amp;nbsp;"/>
+                        <column heading="Diag Code Type"/>
+                        <column heading="Diag Code"/>
+                        <column heading="Proc Code Type"/>
+                        <column heading="Proc Code"/>
+                        <column heading="&amp;nbsp;" output="Delete" redirect=",&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+    </queries>
 </xdm:container>

@@ -1,53 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<query-defn name="searchClaims">
-		<field name="claim_id" caption="Claim ID" join="Claim" column="claim_id">
-			<presentation><panel><report url="nav-url:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.diag-proc-codes,add,component?claim_id=${0}"/></panel></presentation>
-		</field>
+    <query-defn name="searchClaims">
+        <field name="claim_id" caption="Claim ID" join="Claim" column="claim_id">
+            <presentation>
+                <panel>
+                    <report url="nav-url:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.diag-proc-codes,add,component?claim_id=${0}"/>
+                </panel>
+            </presentation>
+        </field>
 
-		<field name="claim_status_id" caption="Claim Status" join="ClaimStatus" column="id" column-expr="ClaimStatus.caption"/>
+        <field name="claim_status_id" caption="Claim Status" join="ClaimStatus" column="id" column-expr="ClaimStatus.caption"/>
 
-		<field name="patient_lastName" caption="Patient Last Name" join="ClaimPatient" column="name_last"/>
-		<field name="patient_firstName" caption="Patient First Name" join="ClaimPatient" column="name_first"/>
-		<field name="patient_id" caption="Patient ID" join="Claim" column="patient_id"/>
+        <field name="patient_lastName" caption="Patient Last Name" join="ClaimPatient" column="name_last"/>
+        <field name="patient_firstName" caption="Patient First Name" join="ClaimPatient" column="name_first"/>
+        <field name="patient_id" caption="Patient ID" join="Claim" column="patient_id"/>
 
-		<field name="servprov_lastName" caption="Service Provider Last Name" join="ClaimServiceProvider" column="name_last"/>
-		<field name="servprov_firstName" caption="Service Provider First Name" join="ClaimServiceProvider" column="name_first"/>
-		<field name="servprov_id" caption="Service Provider" join="Claim" column="service_provider_id"/>
-		
-		<field name="servfac_name" caption="Service Facility" join="ClaimServiceFacility" column="org_name"/>
-		<field name="servfac_id" caption="Service Facility" join="Claim" column="service_facility_id"/>
+        <field name="servprov_lastName" caption="Service Provider Last Name" join="ClaimServiceProvider" column="name_last"/>
+        <field name="servprov_firstName" caption="Service Provider First Name" join="ClaimServiceProvider" column="name_first"/>
+        <field name="servprov_id" caption="Service Provider" join="Claim" column="service_provider_id"/>
 
-		<join name="Claim" table="Claim"/>
-		<join name="ClaimStatus" table="Claim_Status_Type" condition="ClaimStatus.id = Claim.claim_status_id"/>
-		<join name="ClaimPatient" table="Person" condition="ClaimPatient.person_id = Claim.patient_id"/>
-		<join name="ClaimServiceProvider" table="Person" condition="ClaimServiceProvider.person_id = Claim.service_provider_id"/>
-		<join name="ClaimServiceFacility" table="Org" condition="ClaimServiceFacility.org_id = Claim.service_facility_id"/>
-		
-		<presentation><select-dialog name="searchClaimDialog"><frame heading="Search for Claims"/>
-			<field.text query-field="claim_id"/>
-			<field.select query-field="claim_status_id" choices="schema-enum:Claim_Status_Type" prepend-blank="yes"/>
-			<field.text query-field="patient_lastName"/>
-			<field.text query-field="patient_firstName"/>
-			<field.select query-field="servprov_id" choices="query:person.get-all-physicians" prepend-blank="yes"/>
-			<field.select query-field="servfac_id" choices="query:org.get-all-orgs" prepend-blank="yes"/>
-			
-			<select heading="Search Results">
-				<display field="claim_id"/>
-				<display field="claim_status_id"/>
-				<display field="patient_firstName"/>
-				<display field="patient_lastName"/>
-				<display field="servprov_firstName"/>
-				<display field="servprov_lastName"/>
-				<display field="servfac_name"/>
-				
-				<condition field="claim_id" allow-null="no" comparison="equals" value="form:claim_id" connector="and"/>
-				<condition field="claim_status_id" allow-null="no" comparison="equals" value="form:claim_status_id" connector="and"/>
-				<condition field="patient_lastName" allow-null="no" comparison="contains-ignore-case" value="form:patient_lastName" connector="and"/>
-				<condition field="patient_firstName" allow-null="no" comparison="contains-ignore-case" value="form:patient_firstName" connector="and"/>
-				<condition field="servprov_id" allow-null="no" comparison="equals" value="form:servprov_id" connector="and"/>
-				<condition field="servfac_id" allow-null="no" comparison="equals" value="form:servfac_id" connector="and"/>
-			</select>
-		</select-dialog></presentation>
-	</query-defn> 
+        <field name="servfac_name" caption="Service Facility" join="ClaimServiceFacility" column="org_name"/>
+        <field name="servfac_id" caption="Service Facility" join="Claim" column="service_facility_id"/>
+
+        <join name="Claim" table="Claim"/>
+        <join name="ClaimStatus" table="Claim_Status_Type" condition="ClaimStatus.id = Claim.claim_status_id"/>
+        <join name="ClaimPatient" table="Person" condition="ClaimPatient.person_id = Claim.patient_id"/>
+        <join name="ClaimServiceProvider" table="Person" condition="ClaimServiceProvider.person_id = Claim.service_provider_id"/>
+        <join name="ClaimServiceFacility" table="Org" condition="ClaimServiceFacility.org_id = Claim.service_facility_id"/>
+
+        <presentation>
+            <select-dialog name="searchClaimDialog">
+                <frame heading="Search for Claims"/>
+                <field type="text" name="claim_id"/>
+                <field type="select" name="claim_status_id" choices="schema-enum:Claim_Status_Type" prepend-blank="yes"/>
+                <field type="text" name="patient_lastName"/>
+                <field type="text" name="patient_firstName"/>
+                <field type="select" name="servprov_id" choices="query:person.get-all-physicians" prepend-blank="yes"/>
+                <field type="select" name="servfac_id" choices="query:org.get-all-orgs" prepend-blank="yes"/>
+
+                <select>
+                    <display field="claim_id"/>
+                    <display field="claim_status_id"/>
+                    <display field="patient_firstName"/>
+                    <display field="patient_lastName"/>
+                    <display field="servprov_firstName"/>
+                    <display field="servprov_lastName"/>
+                    <display field="servfac_name"/>
+
+                    <condition field="claim_id" allow-null="no" comparison="equals" value="field:claim_id" connector="and"/>
+                    <condition field="claim_status_id" allow-null="no" comparison="equals" value="field:claim_status_id" connector="and"/>
+                    <condition field="patient_lastName" allow-null="no" comparison="contains-ignore-case" value="field:patient_lastName" connector="and"/>
+                    <condition field="patient_firstName" allow-null="no" comparison="contains-ignore-case" value="field:patient_firstName" connector="and"/>
+                    <condition field="servprov_id" allow-null="no" comparison="equals" value="field:servprov_id" connector="and"/>
+                    <condition field="servfac_id" allow-null="no" comparison="equals" value="field:servfac_id" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID" align="left"/>
+                                <column heading="Status"/>
+                                <column heading="First Name"/>
+                                <column heading="Last Name"/>
+                                <column heading="Provider First Name"/>
+                                <column heading="Provider Last Name"/>
+                                <column heading="Facility"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+    </query-defn>
 </xdm:container>

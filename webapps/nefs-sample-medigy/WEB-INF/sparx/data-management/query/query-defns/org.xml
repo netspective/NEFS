@@ -1,132 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<query-defn name="searchOrgs">
-		<field name="org_id" caption="Org ID" join="Org" column="org_id"/>
+    <query-defn name="searchOrgs">
+        <field name="org_id" caption="Org ID" join="Org" column="org_id"/>
+        <field name="org_name" caption="Name" join="Org" column="org_name">
+            <presentation>
+                <panel>
+                    <report url="nav-url:/org/summary?org_id=${0}"/>
+                </panel>
+            </presentation>
+        </field>
+        <field name="org_type_id" caption="Org Type ID" join="OrgClassification" column="org_type_id"/>
 
-		<field name="org_name" caption="Name" join="Org" column="org_name">
-			<presentation><panel><report url="nav-url:/org/summary?org_id=${0}"/></panel></presentation>
-		</field>
+        <join name="Org" table="Org"/>
+        <join name="OrgClassification" table="Org_Classification" condition="Org.org_id = OrgClassification.org_id"/>
+        <join name="OrgType" table="Org_Type" condition="OrgClassification.org_type_id = OrgType.id"/>
 
-		
-		
-		<field name="org_type_id" caption="Org Type ID" join="OrgClassification" column="org_type_id"/>
-		
-		<join name="Org" table="Org"/>
-		<join name="OrgClassification" table="Org_Classification" condition="Org.org_id = OrgClassification.org_id"/>
-		<join name="OrgType" table="Org_Type" condition="OrgClassification.org_type_id = OrgType.id"/>
-		
-		<presentation><select-dialog name="searchDialog"><frame heading="Search for Organizations"/>
-			<field.text query-field="org_id"/>
-			<field.text query-field="org_name"/>
-			<field.select query-field="org_type_id" choices="schema-enum:Org_Type" prepend-blank="yes"/>
-			
-			<select heading="Search Results">
-				<display field="org_id"/>
-				<display field="org_name"/>
-				
-				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
-				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
-				<condition field="org_type_id" allow-null="no" comparison="equals" value="form:org_type_id" connector="and"/>
-			</select>
-		</select-dialog></presentation>
+        <presentation>
+            <select-dialog name="searchDialog">
+                <frame heading="Search for Organizations"/>
+                <field type="text" name="org_id"/>
+                <field type="text" name="org_name"/>
+                <field type="select" name="org_type_id" choices="schema-enum:Org_Type" prepend-blank="yes"/>
 
-		<presentation><select-dialog name="searchAncilliaryServiceDialog"><frame heading="Search for Anciliary Services"/>
-			<field.text query-field="org_id"/>
-			<field.text query-field="org_name"/>
-			
-			<select heading="Search Results">
-				<display field="org_id"/>
-				<display field="org_name"/>
-				
-				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
-				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
-				<condition field="org_type_id" allow-null="no" comparison="equals" value="9" connector="and"/>
-			</select>
-		</select-dialog></presentation>
+                <select>
+                    <display field="org_id"/>
+                    <display field="org_name"/>
 
-		<presentation><select-dialog name="searchAssociatedProviderDialog"><frame heading="Search for Associated Providers"/>
-			<field.text query-field="org_id"/>
-			<field.text query-field="org_name"/>
-			
-			<select heading="Search Results">
-				<display field="org_id"/>
-				<display field="org_name"/>
-				
-				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
-				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
-				<condition field="org_type_id" allow-null="no" comparison="equals" value="form:org_type_id" connector="and"/>
-			</select>
-		</select-dialog></presentation>
+                    <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
+                    <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
+                    <condition field="org_type_id" allow-null="no" comparison="equals" value="field:org_type_id" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID"/>
+                                <column heading="Name"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
 
-		<presentation><select-dialog name="searchDepartmentDialog"><frame heading="Search for Departments"/>
-			<field.text query-field="org_id"/>
-			<field.text query-field="org_name"/>
-			
-			<select heading="Search Results">
-				<display field="org_id"/>
-				<display field="org_name"/>
-				
-				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
-				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
-				<condition field="org_type_id" allow-null="no" comparison="equals" value="form:org_type_id" connector="and"/>
-			</select>
-		</select-dialog></presentation>
+        <presentation>
+            <select-dialog name="searchAncilliaryServiceDialog">
+                <frame heading="Search for Anciliary Services"/>
+                <field type="text" name="org_id"/>
+                <field type="text" name="org_name"/>
 
-		<presentation><select-dialog name="searchEmployerDialog"><frame heading="Search for Employers"/>
-			<field.text query-field="org_id"/>
-			<field.text query-field="org_name"/>
-			
-			<select heading="Search Results">
-				<display field="org_id"/>
-				<display field="org_name"/>
-				
-				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
-				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
-				<condition field="org_type_id" allow-null="no" comparison="equals" value="7" connector="and"/>
-			</select>
-		</select-dialog></presentation>
+                <select>
+                    <display field="org_id"/>
+                    <display field="org_name"/>
 
-		<presentation><select-dialog name="searchInsuranceDialog"><frame heading="Search for Insurance Organizations"/>
-			<field.text query-field="org_id"/>
-			<field.text query-field="org_name"/>
-			
-			<select heading="Search Results">
-				<display field="org_id"/>
-				<display field="org_name"/>
-				
-				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
-				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
-				<condition field="org_type_id" allow-null="no" comparison="equals" value="6" connector="and"/>
-			</select>
-		</select-dialog></presentation>
+                    <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
+                    <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
+                    <condition field="org_type_id" allow-null="no" comparison="equals" value="9" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID"/>
+                                <column heading="Name"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
 
-		<presentation><select-dialog name="searchIPADialog"><frame heading="Search for IPAs"/>
-			<field.text query-field="org_id"/>
-			<field.text query-field="org_name"/>
-			
-			<select heading="Search Results">
-				<display field="org_id"/>
-				<display field="org_name"/>
-				
-				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
-				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
-				<condition field="org_type_id" allow-null="no" comparison="equals" value="8" connector="and"/>
-			</select>
-		</select-dialog></presentation>
+        <presentation>
+            <select-dialog name="searchAssociatedProviderDialog">
+                <frame heading="Search for Associated Providers"/>
+                <field type="text" name="org_id"/>
+                <field type="text" name="org_name"/>
 
-		<presentation><select-dialog name="searchPharmacyDialog"><frame heading="Search for Pharmacies"/>
-			<field.text query-field="org_id"/>
-			<field.text query-field="org_name"/>
-			
-			<select heading="Search Results">
-				<display field="org_id"/>
-				<display field="org_name"/>
-				
-				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
-				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
-				<condition field="org_type_id" allow-null="no" comparison="equals" value="10" connector="and"/>
-			</select>
-		</select-dialog></presentation>
+                <select>
+                    <display field="org_id"/>
+                    <display field="org_name"/>
 
-	</query-defn>
+                    <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
+                    <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
+                    <condition field="org_type_id" allow-null="no" comparison="equals" value="field:org_type_id" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID"/>
+                                <column heading="Name"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+
+        <presentation>
+            <select-dialog name="searchDepartmentDialog">
+                <frame heading="Search for Departments"/>
+                <field type="text" name="org_id"/>
+                <field type="text" name="org_name"/>
+
+                <select>
+                    <display field="org_id"/>
+                    <display field="org_name"/>
+
+                    <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
+                    <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
+                    <condition field="org_type_id" allow-null="no" comparison="equals" value="field:org_type_id" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID"/>
+                                <column heading="Name"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+
+        <presentation>
+            <select-dialog name="searchEmployerDialog">
+                <frame heading="Search for Employers"/>
+                <field type="text" name="org_id"/>
+                <field type="text" name="org_name"/>
+
+                <select>
+                    <display field="org_id"/>
+                    <display field="org_name"/>
+
+                    <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
+                    <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
+                    <condition field="org_type_id" allow-null="no" comparison="equals" value="7" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID"/>
+                                <column heading="Name"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+
+        <presentation>
+            <select-dialog name="searchInsuranceDialog">
+                <frame heading="Search for Insurance Organizations"/>
+                <field type="text" name="org_id"/>
+                <field type="text" name="org_name"/>
+
+                <select>
+                    <display field="org_id"/>
+                    <display field="org_name"/>
+
+                    <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
+                    <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
+                    <condition field="org_type_id" allow-null="no" comparison="equals" value="6" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID"/>
+                                <column heading="Name"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+
+        <presentation>
+            <select-dialog name="searchIPADialog">
+                <frame heading="Search for IPAs"/>
+                <field type="text" name="org_id"/>
+                <field type="text" name="org_name"/>
+
+                <select>
+                    <display field="org_id"/>
+                    <display field="org_name"/>
+
+                    <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
+                    <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
+                    <condition field="org_type_id" allow-null="no" comparison="equals" value="8" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID"/>
+                                <column heading="Name"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+
+        <presentation>
+            <select-dialog name="searchPharmacyDialog">
+                <frame heading="Search for Pharmacies"/>
+                <field type="text" name="org_id"/>
+                <field type="text" name="org_name"/>
+
+                <select>
+                    <display field="org_id"/>
+                    <display field="org_name"/>
+
+                    <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
+                    <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
+                    <condition field="org_type_id" allow-null="no" comparison="equals" value="10" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID"/>
+                                <column heading="Name"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+
+    </query-defn>
 </xdm:container>

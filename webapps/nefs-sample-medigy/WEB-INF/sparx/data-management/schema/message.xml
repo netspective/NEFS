@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	<table name="Message" abbrev="Mesg" type="Default"><description>
+    <table name="Message" abbrev="Mesg" type="Default">
+        <description>
 			This table stores all information about messages that can be passed back and forth between
 			people in the application.  Conceptually, all messages are like e-mail messages and allow the same
 			types of functions i.e. To, Cc, Bcc, Fwd, Attachments etc.
-		</description><column name="message_id" type="guid32" primarykey="yes" descr="Unique Document ID for each message record stored in this table"/><column name="parent_id" parentref="Artifact.artifact_id" descr="The Artifact record that this record elaborates upon"/><column name="subject" type="text" size="512" descr="The subject of this message.  This will probably be shown to the user when displaying the 'list of messages'"/><column name="sender_id" lookupref="Person.person_id" descr="The sender of the message.  This can be only one person.  Since the message itself can have multiple recipients, those will be stored separately"/><column name="content" type="text" size="2048" descr="The actual content of the message"/></table>
-	
-	<table name="Message_Recipient" abbrev="MesgRecp" type="Default"><description>
+        </description>
+        <column name="message_id" type="guid32" primarykey="yes" descr="Unique Document ID for each message record stored in this table"/>
+        <column name="parent_id" parentref="Artifact.artifact_id" descr="The Artifact record that this record elaborates upon"/>
+        <column name="subject" type="text" size="512" descr="The subject of this message.  This will probably be shown to the user when displaying the 'list of messages'"/>
+        <column name="sender_id" lookupref="Person.person_id" descr="The sender of the message.  This can be only one person.  Since the message itself can have multiple recipients, those will be stored separately"/>
+        <column name="content" type="text" size="2048" descr="The actual content of the message"/>
+    </table>
+
+    <table name="Message_Recipient" abbrev="MesgRecp" type="Default">
+        <description>
 			This table stores all information about whom a particular message is going to.  It stores all the
 			To, Cc, and Bcc recipients.
-		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for each row"/><column name="message_id" parentref="Message.message_id" descr="The actual message that this recipient is meant to get"/><column name="recipient_type_id" lookupref="Message_Recipient_Type" descr="What type of recipient is this?  Application-level or Internet"/><column name="reception_type_id" lookupref="Message_Reception_Type" descr="What type of recipient is this?  To, Cc or Bcc?"/><column name="recipient_id" lookupref="Person.person_id" descr="The person to whom this message is going"/></table>
+        </description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for each row"/>
+        <column name="message_id" parentref="Message.message_id" descr="The actual message that this recipient is meant to get"/>
+        <column name="recipient_type_id" lookupref="Message_Recipient_Type" descr="What type of recipient is this?  Application-level or Internet"/>
+        <column name="reception_type_id" lookupref="Message_Reception_Type" descr="What type of recipient is this?  To, Cc or Bcc?"/>
+        <column name="recipient_id" lookupref="Person.person_id" descr="The person to whom this message is going"/>
+    </table>
 
-	<table name="Message_Attach" abbrev="MesgAtch" type="Default"><description>
+    <table name="Message_Attach" abbrev="MesgAtch" type="Default">
+        <description>
 			This table stores all information about file and message attachments associated with a message.
 			File attachments are used to associate Documents (already stored in the application) with a
 			message.  Message attachments are used to associate existing messages with a message - similar
 			to forwarding a message.
-		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for each row"/><column name="message_id" parentref="Message.message_id" descr="The actual message that this recipient is meant to get"/><column name="attachment_type_id" lookupref="Message_Attachment_Type" descr="What type of attachment is this?  File or Message?"/><column name="document_id" lookupref="Artifact.artifact_id" descr="A document that is attached to this message"/><column name="forwarded_id" lookupref="Message.message_id" descr="A pre-existing message that is attached to this message.  constraint: forwarded_id != message_id"/></table>
+        </description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for each row"/>
+        <column name="message_id" parentref="Message.message_id" descr="The actual message that this recipient is meant to get"/>
+        <column name="attachment_type_id" lookupref="Message_Attachment_Type" descr="What type of attachment is this?  File or Message?"/>
+        <column name="document_id" lookupref="Artifact.artifact_id" descr="A document that is attached to this message"/>
+        <column name="forwarded_id" lookupref="Message.message_id" descr="A pre-existing message that is attached to this message.  constraint: forwarded_id != message_id"/>
+    </table>
 
 </xdm:container>

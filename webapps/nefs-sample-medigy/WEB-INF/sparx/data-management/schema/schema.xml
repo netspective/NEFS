@@ -1,102 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-  <schema name="db">
-    <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
-    <xdm:include file="typedefs/action-table-types.xml"/>
-    <xdm:include file="typedefs/app-data-types.xml"/>
-    <xdm:include file="typedefs/catalog-table-types.xml"/>
-    <xdm:include file="typedefs/insurance-table-types.xml"/>
-    <xdm:include file="typedefs/invoice-table-types.xml"/>
-    <xdm:include file="typedefs/org-table-types.xml"/>
-    <xdm:include file="typedefs/person-table-types.xml"/>
-    <xdm:include file="typedefs/state-table-types.xml"/>
-    <xdm:include file="typedefs/table-types.xml"/>
-    <xdm:include file="typedefs/transaction-table-types.xml"/>
-    <xdm:include file="enums/action.xml"/>
-    <xdm:include file="enums/artifact.xml"/>
-    <xdm:include file="enums/catalog.xml"/>
-    <xdm:include file="enums/claim.xml"/>
-    <xdm:include file="enums/document.xml"/>
-    <xdm:include file="enums/financial.xml"/>
-    <xdm:include file="enums/insurance.xml"/>
-    <xdm:include file="enums/invoice.xml"/>
-    <xdm:include file="enums/medical.xml"/>
-    <xdm:include file="enums/message.xml"/>
-    <xdm:include file="enums/misc.xml"/>
-    <xdm:include file="enums/org.xml"/>
-    <xdm:include file="enums/person.xml"/>
-    <xdm:include file="enums/resource.xml"/>
-    <xdm:include file="enums/scheduling.xml"/>
-    <xdm:include file="enums/session.xml"/>
-    <xdm:include file="enums/staff.xml"/>
-    <xdm:include file="enums/transaction.xml"/>
-    <xdm:include file="action.xml"/>
-    <xdm:include file="artifact.xml"/>
-    <xdm:include file="catalog.xml"/>
-    <xdm:include file="claim.xml"/>
-    <xdm:include file="insurance.xml"/>
-    <xdm:include file="invoice.xml"/>
-    <xdm:include file="medical.xml"/>
-    <xdm:include file="message.xml"/>
-    <xdm:include file="org.xml"/>
-    <xdm:include file="person.xml"/>
-    <xdm:include file="resource.xml"/>
-    <xdm:include file="scheduling.xml"/>
-    <xdm:include file="transaction.xml"/>
-    <table name="Person_Session" abbrev="PerSess">
-      <description>
-			An active session of a user connected to the application
-		      </description>
-      <column name="session_id" type="guid32" primarykey="yes" descr="An application-generated unique session ID"/>
-      <column name="person_id" parentref="Person.person_id" required="yes" indexed="yes" descr="The ID of the person that owns the session"/>
-      <column name="org_id" lookupref="Org.org_id" descr="The organization (if any) from where session is being used"/>
-      <column name="remote_host" type="text" size="128" descr="Remote host information that should be stored for security purposes"/>
-      <column name="remote_addr" type="text" size="32" required="yes" descr="Remote address information that should be kept for security purposes"/>
-      <column name="first_access" type="stamp" required="yes" descr="The first known time the session was access/used"/>
-      <column name="last_access" type="stamp" required="yes" descr="The last known time the session was accessed/used"/>
-    </table>
-    <table name="PersonSession_Activity" abbrev="PerSessAct">
-      <description>All the activities undertaken by a user during a session</description>
-      <column name="session_id" parentref="Person_Session.session_id" indexed="yes" descr="The session ID for the activity"/>
-      <column name="activity_type" lookupref="Session_Activity_Type" required="yes" descr="The type of activity undertaken"/>
-      <column name="activity_stamp" indexed="yes" type="stamp" required="yes" descr="The date/time the activity was undertaken">
-        <sql-ddl>
-          <default dbms="oracle">sysdate</default>
-        </sql-ddl>
-        <value-defn>
-          <default dbms="hsqldb">curdate()</default>
-        </value-defn>
-      </column>
-      <column name="action_type" lookupref="Session_Action_Type" required="yes" descr="The type of action undertaken"/>
-      <column name="action_scope" type="text" size="48" descr="The general scope of the change (for showing a menu, etc) - like person, org, etc."/>
-      <column name="action_key" type="text" size="48" descr="The key for the record/thing that was the focus of the activity"/>
-      <column name="detail_level" type="integer" indexed="yes" descr="The level of detail (zero is highest level - for viewing/sorting purposes where user may only want to see 'high-level' activities)"/>
-      <column name="activity_data" type="text" size="1024" descr="Any activity-specific data (to show to end user)"/>
-    </table>
-    <table name="PersonSession_View_Count" abbrev="PerSessCnt">
-      <description>Count of all the activities undertaken by a user during a session</description>
-      <column name="session_id" parentref="Person_Session.session_id" indexed="yes" descr="The session ID for the activity"/>
-      <column name="view_init" type="stamp" required="yes" indexed="yes" descr="The date/time this record was first viewed">
-        <sql-ddl>
-          <default dbms="oracle">sysdate</default>
-        </sql-ddl>
-        <value-defn>
-          <default dbms="hsqldb">curdate()</default>
-        </value-defn>
-      </column>
-      <column name="view_latest" type="stamp" required="yes" descr="The date/time this record was most recently viewed">
-        <sql-ddl>
-          <default dbms="oracle">sysdate</default>
-        </sql-ddl>
-        <value-defn>
-          <default dbms="hsqldb">curdate()</default>
-        </value-defn>
-      </column>
-      <column name="view_scope" type="text" size="48" descr="This can be person, org, invoice, etc"/>
-      <column name="view_key" type="text" size="48" descr="The key for the record/thing that was the focus of the activity"/>
-      <column name="view_count" type="integer" descr="The number of times this same view_scope and view_key was viewed in this session"/>
-      <column name="view_caption" type="text" size="255" descr="The caption to show to the user for this view-type"/>
-      <column name="view_arl" type="text" size="255" descr="The arl to use for the user for this view-type"/>
-    </table>
-  </schema>
+    <schema name="db">
+        <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+        <xdm:include file="typedefs/app-data-types.xml"/>
+        <xdm:include file="typedefs/action-table-types.xml"/>
+        <xdm:include file="typedefs/catalog-table-types.xml"/>
+        <xdm:include file="typedefs/insurance-table-types.xml"/>
+        <xdm:include file="typedefs/invoice-table-types.xml"/>
+        <xdm:include file="typedefs/org-table-types.xml"/>
+        <xdm:include file="typedefs/person-table-types.xml"/>
+        <xdm:include file="typedefs/state-table-types.xml"/>
+        <xdm:include file="typedefs/table-types.xml"/>
+        <xdm:include file="typedefs/transaction-table-types.xml"/>
+        <xdm:include file="enums/action.xml"/>
+        <xdm:include file="enums/artifact.xml"/>
+        <xdm:include file="enums/catalog.xml"/>
+        <xdm:include file="enums/claim.xml"/>
+        <xdm:include file="enums/document.xml"/>
+        <xdm:include file="enums/financial.xml"/>
+        <xdm:include file="enums/insurance.xml"/>
+        <xdm:include file="enums/invoice.xml"/>
+        <xdm:include file="enums/medical.xml"/>
+        <xdm:include file="enums/message.xml"/>
+        <xdm:include file="enums/misc.xml"/>
+        <xdm:include file="enums/org.xml"/>
+        <xdm:include file="enums/person.xml"/>
+        <xdm:include file="enums/resource.xml"/>
+        <xdm:include file="enums/scheduling.xml"/>
+        <xdm:include file="enums/session.xml"/>
+        <xdm:include file="enums/staff.xml"/>
+        <xdm:include file="enums/transaction.xml"/>
+        <xdm:include file="action.xml"/>
+        <xdm:include file="person.xml"/>
+        <xdm:include file="scheduling.xml"/>
+        <xdm:include file="org.xml"/>
+        <xdm:include file="insurance.xml"/>
+        <xdm:include file="resource.xml"/>
+        <xdm:include file="invoice.xml"/>
+        <xdm:include file="claim.xml"/>
+        <xdm:include file="medical.xml"/>
+
+        <!--xdm:include file="artifact.xml"/>
+        <xdm:include file="catalog.xml"/>
+        <xdm:include file="message.xml"/>
+        <xdm:include file="transaction.xml"/-->
+        <table name="Person_Session" abbrev="PerSess">
+            <description>
+            An active session of a user connected to the application
+            </description>
+            <column name="session_id" type="guid32" primarykey="yes" descr="An application-generated unique session ID"/>
+            <column name="person_id" parentref="Person.person_id" required="yes" indexed="yes" descr="The ID of the person that owns the session"/>
+            <column name="org_id" lookupref="Org.org_id" descr="The organization (if any) from where session is being used"/>
+            <column name="remote_host" type="text" size="128" descr="Remote host information that should be stored for security purposes"/>
+            <column name="remote_addr" type="text" size="32" required="yes" descr="Remote address information that should be kept for security purposes"/>
+            <column name="first_access" type="stamp" required="yes" descr="The first known time the session was access/used"/>
+            <column name="last_access" type="stamp" required="yes" descr="The last known time the session was accessed/used"/>
+        </table>
+        <table name="PersonSession_Activity" abbrev="PerSessAct">
+            <description>All the activities undertaken by a user during a session</description>
+            <column name="session_id" parentref="Person_Session.session_id" indexed="yes" descr="The session ID for the activity"/>
+            <column name="activity_type" lookupref="Session_Activity_Type" required="yes" descr="The type of activity undertaken"/>
+            <column name="activity_stamp" indexed="yes" type="stamp" required="yes" descr="The date/time the activity was undertaken">
+                <sql-ddl>
+                    <default dbms="oracle">sysdate</default>
+                </sql-ddl>
+                <value-defn>
+                    <default dbms="hsqldb">curdate()</default>
+                </value-defn>
+            </column>
+            <column name="action_type" lookupref="Session_Action_Type" required="yes" descr="The type of action undertaken"/>
+            <column name="action_scope" type="text" size="48" descr="The general scope of the change (for showing a menu, etc) - like person, org, etc."/>
+            <column name="action_key" type="text" size="48" descr="The key for the record/thing that was the focus of the activity"/>
+            <column name="detail_level" type="integer" indexed="yes" descr="The level of detail (zero is highest level - for viewing/sorting purposes where user may only want to see 'high-level' activities)"/>
+            <column name="activity_data" type="text" size="1024" descr="Any activity-specific data (to show to end user)"/>
+        </table>
+        <table name="PersonSession_View_Count" abbrev="PerSessCnt">
+            <description>Count of all the activities undertaken by a user during a session</description>
+            <column name="session_id" parentref="Person_Session.session_id" indexed="yes" descr="The session ID for the activity"/>
+            <column name="view_init" type="stamp" required="yes" indexed="yes" descr="The date/time this record was first viewed">
+                <sql-ddl>
+                    <default dbms="oracle">sysdate</default>
+                </sql-ddl>
+                <value-defn>
+                    <default dbms="hsqldb">curdate()</default>
+                </value-defn>
+            </column>
+            <column name="view_latest" type="stamp" required="yes" descr="The date/time this record was most recently viewed">
+                <sql-ddl>
+                    <default dbms="oracle">sysdate</default>
+                </sql-ddl>
+                <value-defn>
+                    <default dbms="hsqldb">curdate()</default>
+                </value-defn>
+            </column>
+            <column name="view_scope" type="text" size="48" descr="This can be person, org, invoice, etc"/>
+            <column name="view_key" type="text" size="48" descr="The key for the record/thing that was the focus of the activity"/>
+            <column name="view_count" type="integer" descr="The number of times this same view_scope and view_key was viewed in this session"/>
+            <column name="view_caption" type="text" size="255" descr="The caption to show to the user for this view-type"/>
+            <column name="view_arl" type="text" size="255" descr="The arl to use for the user for this view-type"/>
+        </table>
+    </schema>
 </xdm:container>

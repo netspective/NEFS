@@ -1,26 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	<table name="Action" abbrev="Act" type="Default"><description>
+    <table name="Action" abbrev="Act" type="Default">
+        <description>
 			This table is a placeholder table which is used to establish a hierarchy between all action tables
-		</description></table>
+        </description>
+    </table>
 
-	<table name="Action_Patient_Comm" abbrev="ActPatComm" type="Communication_Action" xdm:param-actTypeEnum="Patient_Comm_Act_Type" xdm:param-actStatusEnum="Patient_Comm_Status_Type"><description>
+    <table name="Action_Patient_Comm" abbrev="ActPatComm" type="Communication_Action" xdm:param-actTypeEnum="Patient_Comm_Act_Type" xdm:param-actStatusEnum="Patient_Comm_Status_Type">
+        <description>
 			This table stores details of all communication actions between a patient and clinic
-		</description></table>
-	
-	<table name="Action_Diagnosis" abbrev="ActDiag" type="Clinical_Action" xdm:param-actTypeEnum="Diag_Term_Type"><description>
+        </description>
+    </table>
+
+    <table name="Action_Diagnosis" abbrev="ActDiag" type="Clinical_Action" xdm:param-actTypeEnum="Diag_Term_Type">
+        <description>
 			This table stores details of all actions where a physician makes a temporary or permanent diagnosis for a patient
-		</description><column name="diag_codetype_id" lookupref="Claim_Diagnosis_Code_Type" descr="The type of code that will be used to describe the diagnosis"/><column name="diag_code" type="text" size="32" descr="The code describing the diagnosis pronounced by the physician"/><column name="diagnosis" type="text" size="256" descr="The name of diagnosis pronounced by the physician (if the field above is left empty)"/></table>
+        </description>
+        <column name="diag_codetype_id" lookupref="Claim_Diagnosis_Code_Type" descr="The type of code that will be used to describe the diagnosis"/>
+        <column name="diag_code" type="text" size="32" descr="The code describing the diagnosis pronounced by the physician"/>
+        <column name="diagnosis" type="text" size="256" descr="The name of diagnosis pronounced by the physician (if the field above is left empty)"/>
+    </table>
 
-	<table name="Action_Directive" abbrev="ActDctv" type="Clinical_Action" xdm:param-actTypeEnum="Directive_Act_Type"><description>This table stores details of all actions where a directive was issued by a patient or physician</description><column name="issuer" type="text" size="64" descr="The person who issued this directive (if 'Other' chosen above)"/><column name="reason" type="text" size="256" descr="The reason why this directive was issued"/></table>
+    <table name="Action_Directive" abbrev="ActDctv" type="Clinical_Action" xdm:param-actTypeEnum="Directive_Act_Type">
+        <description>This table stores details of all actions where a directive was issued by a patient or physician</description>
+        <column name="issuer" type="text" size="64" descr="The person who issued this directive (if 'Other' chosen above)"/>
+        <column name="reason" type="text" size="256" descr="The reason why this directive was issued"/>
+    </table>
 
-	<table name="Action_Ins_Verify" abbrev="ActInsVfy" type="Action" xdm:param-actTypeEnum="Action_Type"><description> Insurance Verification Data (per Appointment).</description><column name="event_id" lookupref="Event.event_id" descr="The event_id of the Appointment"/><column name="person_id" lookupref="Person.person_id" required="yes" indexed="yes" descr="The ID of the patient"/><column name="effective_begin_date" type="date" descr="The effective start date of the Insurance"/><column name="deductible" type="currency" descr="Deductible amount"/><column name="deductible_met" type="currency" descr="The amount of deductible met"/><column name="ovcopay" type="currency" descr="Office Visit Copay amount"/><column name="labcopay" type="currency" descr="Lab Copay amount"/><column name="xraycopay" type="currency" descr="XRay Copay amount"/><column name="referral_required" type="boolean" descr="Whether or not referral is required"/><column name="sep_copay_xray" type="boolean" descr="Whether or not separate copay for X-ray"/><column name="lab" type="text" size="128" descr="The Lab Organization "/><column name="provider_id" lookupref="Person.person_id" descr="The Primary Care Physician"/><column name="coverage_req" type="text" size="128" descr="Coverage Required"/><column name="coverage_on" type="text" size="128" descr="Coverage on"/><column name="referral_or_precert" type="boolean" descr="Referral or Pre-Cert on Out Patient"/><column name="precert_phone" type="text" size="20" descr="Pre-Cert Phone"/><column name="annual_pe_ww" type="text" size="128" descr="Annual Physical Exam / Well Woman"/><column name="gyn_exam" type="text" size="128" descr="GYN Exam"/><column name="thin_prep_pap" type="text" size="128" descr="Thin Prep Pap Test"/><column name="depo_inj" type="text" size="128" descr="Depo Injection for Contraception"/><column name="iud" type="text" size="128" descr="IUD"/><column name="tubal_lig" type="text" size="128" descr="Tubal Ligament"/><column name="surgery" type="text" size="128" descr="Surgery"/><column name="flex_sig" type="text" size="128" descr="Flex-Sigmoidoscopy"/><column name="output_xray" type="text" size="128" descr="Output XRays/Procs"/><column name="mammogram" type="text" size="128" descr="Mammograms"/><column name="amniocenteses" type="text" size="128" descr="Amniocenteses"/><column name="pelvic_ultrasound" type="text" size="128" descr="Pelvic Ultrasound"/><column name="fertility_test" type="text" size="128" descr="Fertility Testing"/><column name="circumcision" type="text" size="128" descr="Circumcisions"/><column name="ins_rep_name" type="text" size="128" descr="Insurance Rep Name"/><column name="ins_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Insurance verification"/><column name="ins_verify_date" type="date" descr="Date of Insurance verification"/><column name="app_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Appointment verification"/><column name="app_verify_date" type="date" descr="Date of Appointment verification"/><column name="med_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Medical verification"/><column name="med_verify_date" type="date" descr="Date of Medical verification"/><column name="per_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Personal verification"/><column name="per_verify_date" type="date" descr="Date of Personal verification"/><column name="verify_action" type="text" size="64" descr="Action taken to verify appointment"/><column name="owner_org_id" lookupref="Org.org_id" required="yes" indexed="yes" descr="The organization which owns this record"/></table>
-	
-	<table name="Action_Provider_Comm" abbrev="ActPrvComm" type="Communication_Action" xdm:param-actTypeEnum="Provider_Comm_Act_Type" xdm:param-actStatusEnum="Provider_Comm_Status_Type"><description>This table stores details of all communication actions between two physicians</description></table>
+    <table name="Action_Ins_Verify" abbrev="ActInsVfy" type="Action" xdm:param-actTypeEnum="Action_Type">
+        <description> Insurance Verification Data (per Appointment).</description>
+        <column name="event_id" lookupref="Event.event_id" descr="The event_id of the Appointment"/>
+        <column name="person_id" lookupref="Person.person_id" required="yes" indexed="yes" descr="The ID of the patient"/>
+        <column name="effective_begin_date" type="date" descr="The effective start date of the Insurance"/>
+        <column name="deductible" type="currency" descr="Deductible amount"/>
+        <column name="deductible_met" type="currency" descr="The amount of deductible met"/>
+        <column name="ovcopay" type="currency" descr="Office Visit Copay amount"/>
+        <column name="labcopay" type="currency" descr="Lab Copay amount"/>
+        <column name="xraycopay" type="currency" descr="XRay Copay amount"/>
+        <column name="referral_required" type="boolean" descr="Whether or not referral is required"/>
+        <column name="sep_copay_xray" type="boolean" descr="Whether or not separate copay for X-ray"/>
+        <column name="lab" type="text" size="128" descr="The Lab Organization "/>
+        <column name="provider_id" lookupref="Person.person_id" descr="The Primary Care Physician"/>
+        <column name="coverage_req" type="text" size="128" descr="Coverage Required"/>
+        <column name="coverage_on" type="text" size="128" descr="Coverage on"/>
+        <column name="referral_or_precert" type="boolean" descr="Referral or Pre-Cert on Out Patient"/>
+        <column name="precert_phone" type="text" size="20" descr="Pre-Cert Phone"/>
+        <column name="annual_pe_ww" type="text" size="128" descr="Annual Physical Exam / Well Woman"/>
+        <column name="gyn_exam" type="text" size="128" descr="GYN Exam"/>
+        <column name="thin_prep_pap" type="text" size="128" descr="Thin Prep Pap Test"/>
+        <column name="depo_inj" type="text" size="128" descr="Depo Injection for Contraception"/>
+        <column name="iud" type="text" size="128" descr="IUD"/>
+        <column name="tubal_lig" type="text" size="128" descr="Tubal Ligament"/>
+        <column name="surgery" type="text" size="128" descr="Surgery"/>
+        <column name="flex_sig" type="text" size="128" descr="Flex-Sigmoidoscopy"/>
+        <column name="output_xray" type="text" size="128" descr="Output XRays/Procs"/>
+        <column name="mammogram" type="text" size="128" descr="Mammograms"/>
+        <column name="amniocenteses" type="text" size="128" descr="Amniocenteses"/>
+        <column name="pelvic_ultrasound" type="text" size="128" descr="Pelvic Ultrasound"/>
+        <column name="fertility_test" type="text" size="128" descr="Fertility Testing"/>
+        <column name="circumcision" type="text" size="128" descr="Circumcisions"/>
+        <column name="ins_rep_name" type="text" size="128" descr="Insurance Rep Name"/>
+        <column name="ins_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Insurance verification"/>
+        <column name="ins_verify_date" type="date" descr="Date of Insurance verification"/>
+        <column name="app_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Appointment verification"/>
+        <column name="app_verify_date" type="date" descr="Date of Appointment verification"/>
+        <column name="med_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Medical verification"/>
+        <column name="med_verify_date" type="date" descr="Date of Medical verification"/>
+        <column name="per_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Personal verification"/>
+        <column name="per_verify_date" type="date" descr="Date of Personal verification"/>
+        <column name="verify_action" type="text" size="64" descr="Action taken to verify appointment"/>
+        <column name="owner_org_id" lookupref="Org.org_id" required="yes" indexed="yes" descr="The organization which owns this record"/>
+    </table>
 
-	<table name="Action_Procedure" abbrev="ProcAct" type="Clinical_Action" xdm:param-actTypeEnum="Proc_Type"><description>This table stores details of all actions where a physician performs a procedure for a patient</description><column name="proc_codetype_id" lookupref="Claim_Procedure_Code_Type" descr="The type of code that will be used to describe the procedure"/><column name="proc_code" type="text" size="32" descr="The code describing the procedure performed by the physician"/><column name="procedure" type="text" size="256" descr="The name of procedure performed by the physician (if the field above is left empty)"/></table>
-	
-	<table name="Action_Visit" abbrev="VisitAct" type="Clinical_Action" xdm:param-actTypeEnum="Doctor_Visit_Type"><description>This table stores details of all actions where a patient visited a physician</description><column name="reason" type="text" size="256" descr="The reason why this visit took place"/></table>
+    <table name="Action_Provider_Comm" abbrev="ActPrvComm" type="Communication_Action" xdm:param-actTypeEnum="Provider_Comm_Act_Type" xdm:param-actStatusEnum="Provider_Comm_Status_Type">
+        <description>This table stores details of all communication actions between two physicians</description>
+    </table>
+
+    <table name="Action_Procedure" abbrev="ProcAct" type="Clinical_Action" xdm:param-actTypeEnum="Proc_Type">
+        <description>This table stores details of all actions where a physician performs a procedure for a patient</description>
+        <column name="proc_codetype_id" lookupref="Claim_Procedure_Code_Type" descr="The type of code that will be used to describe the procedure"/>
+        <column name="proc_code" type="text" size="32" descr="The code describing the procedure performed by the physician"/>
+        <column name="procedure" type="text" size="256" descr="The name of procedure performed by the physician (if the field above is left empty)"/>
+    </table>
+
+    <table name="Action_Visit" abbrev="VisitAct" type="Clinical_Action" xdm:param-actTypeEnum="Doctor_Visit_Type">
+        <description>This table stores details of all actions where a patient visited a physician</description>
+        <column name="reason" type="text" size="256" descr="The reason why this visit took place"/>
+    </table>
 
 </xdm:container>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<queries package="orgAttribute">
-		<query name="address">
+    <queries package="orgAttribute">
+        <query name="address">
 			select
 				system_id,
 				Contact_Address_Type.caption,
@@ -18,14 +18,27 @@
 				Org_Address.rec_stat_id = Record_Status.id and
 				Record_Status.caption = 'Active'
 
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			
-			<presentation><panel><frame heading="Address"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.address,orgAttribute.orgAddressTableDialog?parent_id=${request:org_id}</record-add-url><record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.address,orgAttribute.orgAddressTableDialog?parent_id=${request:org_id}&amp;address_id=${0}</record-edit-url><record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.address,orgAttribute.orgAddressTableDialog?parent_id=${request:org_id}&amp;address_id=${0}</record-delete-url><column col-index="0" hidden="yes"/><column heading="Address Type"/><column heading="City"/></report></panel></presentation>
-		</query>
-		
-		<query name="classification">
+            <params>
+                <param value="request:org_id"/>
+            </params>
+
+            <presentation>
+                <panel>
+                    <frame heading="Address"/>
+                    <report>
+                        <!--record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.address,orgAttribute.orgAddressTableDialog?parent_id=${request:org_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.address,orgAttribute.orgAddressTableDialog?parent_id=${request:org_id}&amp;address_id=${0}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.address,orgAttribute.orgAddressTableDialog?parent_id=${request:org_id}&amp;address_id=${0}</record-delete-url-->
+                        <column col-index="0" hidden="yes"/>
+                        <column heading="Address Type"/>
+                        <column heading="City"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="classification">
 			select
 				system_id,
 				Org_Type.caption
@@ -36,12 +49,24 @@
 				Org_Classification.org_id = ? and
 				Org_Classification.org_type_id = Org_Type.id
 
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			<presentation><panel><frame heading="Classification"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.classification,orgAttribute.orgClassificationTableDialog?parent_id=${request:org_id}</record-add-url><record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.classification,orgAttribute.orgClassificationTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-edit-url><record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.classification,orgAttribute.orgClassificationTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-delete-url><column hidden="yes"/><column heading="Classification"/></report></panel></presentation>
-		</query>
-		<query name="contact">
+            <params>
+                <param value="request:org_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Classification"/>
+                    <report>
+                        <!--record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.classification,orgAttribute.orgClassificationTableDialog?parent_id=${request:org_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.classification,orgAttribute.orgClassificationTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.classification,orgAttribute.orgClassificationTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-delete-url-->
+                        <column hidden="yes"/>
+                        <column heading="Classification"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="contact">
 			select
 				system_id,
 				Contact_Method_Type.caption,
@@ -53,13 +78,26 @@
 				Org_Contact.parent_id = ? and
 				Org_Contact.method_type = Contact_Method_Type.id
 
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			<presentation><panel><frame heading="Contact Information"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.contact,orgAttribute.orgContactTableDialog?parent_id=${request:org_id}</record-add-url><record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.contact,orgAttribute.orgContactTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-edit-url><record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.contact,orgAttribute.orgContactTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-delete-url><column hidden="yes"/><column heading="Contact Type"/><column heading="&amp;nbsp;"/></report></panel></presentation>
-		</query>
-		
-		<query name="identifier">
+            <params>
+                <param value="request:org_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Contact Information"/>
+                    <report>
+                        <!--record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.contact,orgAttribute.orgContactTableDialog?parent_id=${request:org_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.contact,orgAttribute.orgContactTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.contact,orgAttribute.orgContactTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-delete-url-->
+                        <column hidden="yes"/>
+                        <column heading="Contact Type"/>
+                        <column heading="&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="identifier">
 			select
 				system_id,
 				Org_Identifier_Type.caption,
@@ -71,13 +109,26 @@
 				Org_Identifier.org_id = ? and
 				Org_Identifier.identifier_type_id = Org_Identifier_Type.id
 
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			<presentation><panel><frame heading="Identifiers"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.identifier,orgAttribute.orgIdentifierTableDialog</record-add-url><record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.identifier,orgAttribute.orgIdentifierTableDialog?system_id=${0}</record-edit-url><record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.identifier,orgAttribute.orgIdentifierTableDialog?system_id=${0}</record-delete-url><column hidden="yes"/><column heading="Type"/><column heading="&amp;nbsp;"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:org_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Identifiers"/>
+                    <report>
+                        <!--record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.identifier,orgAttribute.orgIdentifierTableDialog</record-add-url>
+                        <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.identifier,orgAttribute.orgIdentifierTableDialog?system_id=${0}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.identifier,orgAttribute.orgIdentifierTableDialog?system_id=${0}</record-delete-url-->
+                        <column hidden="yes"/>
+                        <column heading="Type"/>
+                        <column heading="&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="insProduct">
+        <query name="insProduct">
 			select
 				product_id,
 				product_name
@@ -85,14 +136,26 @@
 				Ins_Product
 			where
 				Ins_Product.org_id = ?
-				
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			<presentation><panel><frame heading="Insurance Products"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,add?org_id=${request:org_id}</record-add-url><record-edit-url>nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,edit?product_id=${0}&amp;org_id=${request:org_id}</record-edit-url><record-delete-url>nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,delete?product_id=${0}&amp;org_id=${request:org_id}</record-delete-url><column hidden="yes"/><column heading="&amp;nbsp;"/></report></panel></presentation>
-		</query>
 
-		<query name="insPlan">
+            <params>
+                <param value="request:org_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Insurance Products"/>
+                    <report>
+                        <!--record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,add?org_id=${request:org_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,edit?product_id=${0}&amp;org_id=${request:org_id}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,delete?product_id=${0}&amp;org_id=${request:org_id}</record-delete-url-->
+                        <column hidden="yes"/>
+                        <column heading="&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="insPlan">
 			select
 				plan_id,
 				Ins_Product.product_name,
@@ -103,14 +166,27 @@
 			where
 				Ins_Product.org_id = ? and
 				Ins_Plan.product_id = Ins_Product.product_id
-				
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			<presentation><panel><frame heading="Insurance Plans"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/claim,dialog,insurancePlan.main,add?product_id=${request:product_id}&amp;org_id=${request:org_id}</record-add-url><record-edit-url>nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,edit?plan_id=${0}&amp;product_id=${request:product_id}&amp;org_id=${request:org_id}</record-edit-url><record-delete-url>nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,delete?plan_id=${0}&amp;product_id=${request:product_id}&amp;org_id=${request:org_id}</record-delete-url><column hidden="yes"/><column heading="Product"/><column heading="Plan" command="redirect,Plan"/></report></panel></presentation>
-		</query>
 
-		<query name="personidsrc">
+            <params>
+                <param value="request:org_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Insurance Plans"/>
+                    <report>
+                        <!--record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/claim,dialog,insurancePlan.main,add?product_id=${request:product_id}&amp;org_id=${request:org_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,edit?plan_id=${0}&amp;product_id=${request:product_id}&amp;org_id=${request:org_id}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,delete?plan_id=${0}&amp;product_id=${request:product_id}&amp;org_id=${request:org_id}</record-delete-url-->
+                        <column hidden="yes"/>
+                        <column heading="Product"/>
+                        <column heading="Plan" redirect="redirect,Plan"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="personidsrc">
 			select
 				system_id,
 				caption
@@ -119,13 +195,25 @@
 			where
 				org_id = ?
 
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			<presentation><panel><frame heading="Person ID Sources"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.personidsrc,orgAttribute.orgPersonIdSrcTableDialog</record-add-url><record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.personidsrc,orgAttribute.orgPersonIdSrcTableDialog?system_id=${0}</record-edit-url><record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.personidsrc,orgAttribute.orgPersonIdSrcTableDialog?system_id=${0}</record-delete-url><column hidden="yes"/><column heading="Source Type"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:org_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Person ID Sources"/>
+                    <report>
+                        <!--record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.personidsrc,orgAttribute.orgPersonIdSrcTableDialog</record-add-url>
+                        <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.personidsrc,orgAttribute.orgPersonIdSrcTableDialog?system_id=${0}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.personidsrc,orgAttribute.orgPersonIdSrcTableDialog?system_id=${0}</record-delete-url-->
+                        <column hidden="yes"/>
+                        <column heading="Source Type"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="relationship">
+        <query name="relationship">
 			select
 				system_id,
 				rel_org_id,
@@ -140,13 +228,27 @@
 				Org_Relationship.rel_entity_id = Org.org_id and
 				Org_Relationship.rel_type_id = Org_Relationship_Type.id
 
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			<presentation><panel><frame heading="Related Organizations"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.relationship,orgAttribute.orgRelationshipTableDialog?parent_id=${request:org_id}</record-add-url><record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.relationship,orgAttribute.orgRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-edit-url><record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.relationship,orgAttribute.orgRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-delete-url><column hidden="yes"/><column hidden="yes"/><column heading="Organization" command="redirect,Organization"/><column heading="Relationship"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:org_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Related Organizations"/>
+                    <report>
+                        <!--record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.relationship,orgAttribute.orgRelationshipTableDialog?parent_id=${request:org_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.relationship,orgAttribute.orgRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.relationship,orgAttribute.orgRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-delete-url-->
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column heading="Organization" redirect="redirect,Organization"/>
+                        <column heading="Relationship"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="profile">
+        <query name="profile">
 			select
 				org_id,
 				org_name,
@@ -161,10 +263,25 @@
 				HCFA1500_Service_Place_Type.id = Org.hcfa_servplace_id and
 				Org.org_id = ?
 
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			<presentation><panel><frame heading="Profile"/><banner style="horizontal"><action caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading="Org ID" align="left"/><column heading="Name"/><column heading="Org. Code"/><column heading="Abbreviation"/><column heading="Ticker"/><column heading="HCFA1500 Service Place"/></report></panel></presentation>
-		</query>
-	</queries>
+            <params>
+                <param value="request:org_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Profile"/>
+                    <banner style="horizontal">
+                        <action caption="Edit" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=""/>
+                    </banner>
+                    <report>
+                        <column heading="Org ID" align="left"/>
+                        <column heading="Name"/>
+                        <column heading="Org. Code"/>
+                        <column heading="Abbreviation"/>
+                        <column heading="Ticker"/>
+                        <column heading="HCFA1500 Service Place"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+    </queries>
 </xdm:container>

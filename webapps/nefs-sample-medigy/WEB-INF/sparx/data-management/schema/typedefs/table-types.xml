@@ -23,12 +23,12 @@
                 <default dbms="hsqldb">curdate()</default>
             </value-defn>
             <presentation>
-                <field.text hidden="yes" visible="no" size="36"/>
+                <field type="text" hidden="yes" visible="no" size="36"/>
             </presentation>
         </column>
         <column name="cr_sess_id" lookupref="Person_Session.session_id" descr="The session used to create a record.  The Person_Session table will contain all information relevant to the session including the person_id and org_id of the user to whom the session belongs">
             <presentation>
-                <field.text hidden="yes" size="36"/>
+                <field type="text" hidden="yes" size="36"/>
             </presentation>
         </column>
         <column name="rec_stat_id" lookupref="${params.recordStatusEnum}" required="yes" descr="The status of a row in the table">
@@ -36,7 +36,7 @@
             Column triggers, validation, and DAL information must now be placed in Java classes.
             <java-default/><!---->
             <presentation>
-                <field.select hidden="yes"/>
+                <field type="select" hidden="yes"/>
             </presentation>
         </column>
     </table-type>
@@ -47,7 +47,7 @@
         <column name="parent_id" parentref="${params.parentRef}" descr="Source ID for whom attribute is being defined"/>
         <column name="attribute_id" lookupref="${params.attributeValueEnum}" required="yes" descr="The value of the attribute for this source ID">
             <presentation>
-                <field.select caption="Attribute Type"/>
+                <field type="select" caption="Attribute Type"/>
             </presentation>
         </column>
     </table-type>
@@ -118,19 +118,19 @@
         </column>
         <column name="rel_entity_id" lookupref="${params.relatedEntity}" required="yes" descr="The ID of the entity this entry is related to">
             <presentation>
-                <field.select caption="${params.relatedEntityFieldCaption}" required="yes" choices="query:${params.relatedEntityFieldQuery}" style="popup"/>
+                <field type="select" caption="${params.relatedEntityFieldCaption}" required="yes" choices="query:${params.relatedEntityFieldQuery}" style="popup"/>
             </presentation>
         </column>
         <column name="rel_type_id" lookupref="${params.relationshipTypeEnum}" required="yes" descr="The type of relationship">
             <presentation>
-                <field.select caption="Relationship Type"/>
+                <field type="select" caption="Relationship Type"/>
             </presentation>
         </column>
         <column name="rel_type" type="text" size="64" descr="The type of relationship (if Other above)">
             <presentation>
-                <field.text caption="Other Relationship Type">
+                <field type="text" caption="Other Relationship Type">
                     <conditional action="display" partner="rel_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                </field>
             </presentation>
         </column>
         <column name="rel_begin" type="date" descr="Relationship start date/time">
@@ -204,7 +204,7 @@
         </column>
         <column name="address_name" indexed="yes" type="text" size="128" descr="The address name">
             <presentation>
-                <field.text caption="Address Label" size="32"/>
+                <field type="text" caption="Address Label" size="32"/>
             </presentation>
         </column>
         <column name="mailing" type="boolean" descr="True if this is the mailing address">
@@ -214,39 +214,39 @@
         </column>
         <column name="address_type_id" lookupref="Contact_Address_Type" descr="The type of address this is - allows storage of multiple addresses for the same party">
             <presentation>
-                <field.select caption="Address Type"/>
+                <field type="select" caption="Address Type"/>
             </presentation>
         </column>
         <column name="line1" type="text" size="256" descr="The first address line">
             <presentation>
-                <field.text caption="Line 1" required="yes" size="64"/>
+                <field type="text" caption="Line 1" required="yes" size="64"/>
             </presentation>
         </column>
         <column name="line2" type="text" size="256" descr="The second address line">
             <presentation>
-                <field.text caption="Line 2" size="64"/>
+                <field type="text" caption="Line 2" size="64"/>
             </presentation>
         </column>
         <column name="city" type="text" required="yes" size="128" descr="The city of the state">
             <presentation>
-                <field.text caption="City" size="16"/>
+                <field type="text" caption="City" size="16"/>
             </presentation>
         </column>
         <column name="county" type="text" size="128" descr="The county of the state">
             <presentation>
-                <field.text caption="County" size="16"/>
+                <field type="text" caption="County" size="16"/>
             </presentation>
         </column>
         <column name="state_id" lookupref="US_State_Type" descr="The state of the union">
             <presentation>
-                <field.select caption="State"/>
+                <field type="select" caption="State"/>
             </presentation>
         </column>
         <column name="state" type="text" size="128" descr="The state, if not in the union">
             <presentation>
-                <field.text caption="Other State" size="16">
+                <field type="text" caption="Other State" size="16">
                     <conditional action="display" partner="state_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                </field>
             </presentation>
         </column>
         <column name="zip" type="text" size="128" descr="The postal code (+4 format)">
@@ -256,7 +256,7 @@
         </column>
         <column name="country" type="text" size="128" descr="The country of the address">
             <presentation>
-                <field.text caption="Country" size="16"/>
+                <field type="text" caption="Country" size="16"/>
             </presentation>
         </column>
         <index name="${owner.abbrev}_unq" columns="parent_id,address_name" unique="yes"/>
@@ -311,39 +311,39 @@
         </column>
         <column name="method_type" indexed="yes" lookupref="Contact_Method_Type" descr="The contact method type">
             <presentation>
-                <field.select caption="Contact Type"/>
+                <field type="select" caption="Contact Type"/>
             </presentation>
         </column>
         <column name="method_name" indexed="yes" type="text" size="128" descr="The contact method name if other is chosen as method type">
             <presentation>
-                <field.text caption="Other Contact Type">
+                <field type="text" caption="Other Contact Type">
                     <conditional action="display" partner="method_type" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                </field>
             </presentation>
         </column>
         <column name="method_value" indexed="yes" type="text" size="255" descr="The contact method value (full telephone, e-mail address, URL, etc.)">
             <presentation>
-                <field.text caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+                <field type="text" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
             </presentation>
         </column>
         <column name="phone_cc" indexed="yes" type="text" size="16" descr="The country code if this is a separated phone number">
             <presentation>
-                <field.text caption="Country Code"/>
+                <field type="text" caption="Country Code"/>
             </presentation>
         </column>
         <column name="phone_ac" indexed="yes" type="integer" descr="The area code if this is a separated phone number">
             <presentation>
-                <field.text caption="Area Code"/>
+                <field type="text" caption="Area Code"/>
             </presentation>
         </column>
         <column name="phone_prefix" indexed="yes" type="integer" descr="The prefix code if this is a separated phone number">
             <presentation>
-                <field.text caption="Prefix"/>
+                <field type="text" caption="Prefix"/>
             </presentation>
         </column>
         <column name="phone_suffix" indexed="yes" type="integer" descr="The suffix code if this is a separated phone number">
             <presentation>
-                <field.text caption="Suffix"/>
+                <field type="text" caption="Suffix"/>
             </presentation>
         </column>
         <index name="${owner.abbrev}_unq" columns="parent_id,method_value" unique="yes"/>
@@ -370,12 +370,12 @@
         </column>
         <column name="event_type" lookupref="${params.eventTypeEnum}" descr="The type of event">
             <presentation>
-                <field.select caption="Event Type"/>
+                <field type="select" caption="Event Type"/>
             </presentation>
         </column>
         <column name="event_name" type="text" size="128" descr="The name of the event">
             <presentation>
-                <field.text caption="Other Event Type"/>
+                <field type="text" caption="Other Event Type"/>
             </presentation>
         </column>
         <column name="event_descr" type="text" size="4000" descr="The description of the event">
@@ -410,7 +410,7 @@
         </column>
         <column name="flag_id" lookupref="${params.flagTypeEnum}" descr="The flag type">
             <presentation>
-                <field.select caption="Flag Type"/>
+                <field type="select" caption="Flag Type"/>
             </presentation>
         </column>
     </table-type>
@@ -429,12 +429,12 @@
         </column>
         <column name="note_type_id" lookupref="${params.noteTypeEnum}" descr="The note type">
             <presentation>
-                <field.select caption="Note Type"/>
+                <field type="select" caption="Note Type"/>
             </presentation>
         </column>
         <column name="note_type" type="text" size="32" descr="The note type, if 'Other' above">
             <presentation>
-                <field.text caption="Other Note Type" size="16"/>
+                <field type="text" caption="Other Note Type" size="16"/>
             </presentation>
         </column>
         <column name="notes" type="text" size="1024" descr="The actual notes">

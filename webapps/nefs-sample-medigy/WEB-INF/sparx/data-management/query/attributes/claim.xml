@@ -38,7 +38,30 @@
 				<param value="request:claim_id"/>
 			</params>
 
-			<presentation><panel><frame heading="All Claims"/><banner style="horizontal"><action caption="Edit" command="redirect,"/></banner><report><column heading="Claim ID" align="left" command="redirect,Claim ID"/><column heading="Batch ID" align="left"/><column heading="Invoice ID" align="left"/><column heading="Claim Status"/><column hidden="yes"/><column heading="Patient" command="redirect,Patient"/><column hidden="yes"/><column heading="Service Provider" command="redirect,Service Provider"/><column hidden="yes"/><column heading="Service Facility" command="redirect,Service Facility"/><column hidden="yes"/><column heading="Billing Provider" command="redirect,Billing Provider"/><column hidden="yes"/><column heading="Billing Facility" command="redirect,Billing Facility"/></report></panel></presentation>
+			<presentation>
+                <panel>
+                    <frame heading="All Claims"/>
+                    <banner style="horizontal">
+                        <action caption="Edit" redirect=""/>
+                    </banner>
+                    <report>
+                        <column heading="Claim ID" align="left" redirect=""/>
+                        <column heading="Batch ID" align="left"/>
+                        <column heading="Invoice ID" align="left"/>
+                        <column heading="Claim Status"/>
+                        <column hidden="yes"/>
+                        <column heading="Patient" redirect="redirect,Patient"/>
+                        <column hidden="yes"/>
+                        <column heading="Service Provider" redirect="redirect"/>
+                        <column hidden="yes"/>
+                        <column heading="Service Facility" redirect="redirect,Service Facility"/>
+                        <column hidden="yes"/>
+                        <column heading="Billing Provider" redirect="redirect,Billing Provider"/>
+                        <column hidden="yes"/>
+                        <column heading="Billing Facility" redirect="redirect,Billing Facility"/>
+                    </report>
+                </panel>
+            </presentation>
 		</query>
 
 		<query name="diag-proc-codes">
@@ -67,7 +90,20 @@
 				<param value="request:claim_id"/>
 			</params>
 
-			<presentation><panel><frame heading="Claim Diagnoses and Procedures"/><banner style="horizontal"><action caption="Add" command="redirect,"/></banner><report><column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/><column heading="Diag Code Type"/><column heading="Diag Code"/><column heading="Proc Code Type"/><column heading="Proc Code"/><column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/></report></panel></presentation>
+			<presentation>
+                <panel>
+                    <frame heading="Claim Diagnoses and Procedures"/>
+                    <banner style="horizontal"><action caption="Add" redirect="redirect,"/></banner>
+                    <report>
+                        <column heading="&amp;nbsp;" output="Edit" redirect="redirect,&amp;nbsp;"/>
+                        <column heading="Diag Code Type"/>
+                        <column heading="Diag Code"/>
+                        <column heading="Proc Code Type"/>
+                        <column heading="Proc Code"/>
+                        <column heading="&amp;nbsp;" output="Delete" redirect="redirect,&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
 		</query>
 
 		<query name="get-diagnoses-by-claim">

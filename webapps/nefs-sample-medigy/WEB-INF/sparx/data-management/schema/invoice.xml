@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	<table name="Org_Inv_Visit" abbrev="OrgInvVis" type="Service_Invoice" xdm:param-parentActId="Action_Visit.act_id"><description>
+    <table name="Org_Inv_Visit" abbrev="OrgInvVis" type="Service_Invoice" xdm:param-parentActId="Action_Visit.act_id">
+        <description>
 			A bill for services rendered, usually associated with an appointment.  The invoice record will only store
 			information about an invoice.  All Claims related information (HCFA1500 etc) will be stored in the appropriate
 			claim record.
-		</description></table>
+        </description>
+    </table>
 
-	<table name="Visit_Line_Item" abbrev="VisLnItm" type="Invoice_Line_Item" xdm:param-parentInvoiceId="Org_Inv_Visit.invoice_id"><description>
+    <table name="Visit_Line_Item" abbrev="VisLnItm" type="Invoice_Line_Item" xdm:param-parentInvoiceId="Org_Inv_Visit.invoice_id">
+        <description>
 			This table holds line item information for each product invoice
 			in the system
-		</description></table>
-	
+        </description>
+    </table>
+
 </xdm:container>

@@ -26,24 +26,24 @@
         <column name="system_id" type="guid32" primarykey="yes" descr="The value associated with a single lookup"/>
         <column name="org_id" parentref="Org.org_id" descr="The organization that the lookup item belongs to">
             <presentation>
-                <field.select caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
+                <field type="select" caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-                </field.select>
+                </field>
             </presentation>
         </column>
         <column name="item_id" type="integer" required="yes" descr="The unique ID assigned by the organization">
             <presentation>
-                <field.integer caption="Item ID" size="8"/>
+                <field type="integer" caption="Item ID" size="8"/>
             </presentation>
         </column>
         <column name="caption" type="text" size="96" required="yes" descr="The name/text an end-user would see">
             <presentation>
-                <field.text caption="Caption" size="16"/>
+                <field type="text" caption="Caption" size="16"/>
             </presentation>
         </column>
         <column name="abbrev" type="text" size="32" unique="yes" descr="An abbreviated form of the caption">
             <presentation>
-                <field.text caption="Abbreviation" size="8"/>
+                <field type="text" caption="Abbreviation" size="8"/>
             </presentation>
         </column>
         <index name="${owner.abbrev}_unq" columns="org_id,item_id" unique="yes"/>

@@ -1,33 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<table-type name="Invoice" type="Default"><description>
+    <table-type name="Invoice" type="Default">
+        <description>
 			This is a placeholder table type used to group all
 			invoices in a hierarchy under an Org
-		</description><column name="invoice_id" type="guid32" primarykey="yes" descr="Unique ID for this invoice"/><column name="act_id" lookupref="${params.parentActId}" descr="The parent action that this invoice comes under"><presentation><field.text caption="Action ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/></presentation></column><column name="org_id" parentref="Org.org_id" descr="The organization which issued this invoice"><presentation><field.text caption="Invoice Issuer Org ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
-				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.text></presentation></column><column name="submitter_id" lookupref="Person.person_id" required="yes" descr="The person who is creating/submitting the invoice"><presentation><field.text caption="Invoice Submitter Person ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/></presentation></column><column name="target_id" lookupref="Person.person_id" required="yes" descr="The person who will receive the invoice.  This is also the person who would probably be responsible for paying it"><presentation><field.text caption="Invoice Receptor Person ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/></presentation></column><column name="invoice_num" type="text" size="64" descr="Org-specific Invoice number.  Could be used when printing invoices, etc"><presentation><field.text caption="Invoice Number"/></presentation></column><column name="invoice_stat_id" indexed="yes" lookupref="Invoice_Status_Type" descr="The current status of the invoice"><presentation><field.select caption="Invoice Status"/></presentation></column><column name="invoice_date" type="date" required="yes" descr="The Invoice date.  This could be different from the date it was created."><presentation><field.date caption="Invoice Date"/></presentation></column><column name="submit_date" type="date" descr="The date the invoice was submitted"><presentation><field.date caption="Invoice Submission Date"/></presentation></column></table-type>
+        </description>
+        <column name="invoice_id" type="guid32" primarykey="yes" descr="Unique ID for this invoice"/>
+        <column name="act_id" lookupref="${params.parentActId}" descr="The parent action that this invoice comes under">
+            <presentation>
+                <field type="text" caption="Action ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
+            </presentation>
+        </column>
+        <column name="org_id" parentref="Org.org_id" descr="The organization which issued this invoice">
+            <presentation>
+                <field type="text" caption="Invoice Issuer Org ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
+                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                </field>
+            </presentation>
+        </column>
+        <column name="submitter_id" lookupref="Person.person_id" required="yes" descr="The person who is creating/submitting the invoice">
+            <presentation>
+                <field type="text" caption="Invoice Submitter Person ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
+            </presentation>
+        </column>
+        <column name="target_id" lookupref="Person.person_id" required="yes" descr="The person who will receive the invoice.  This is also the person who would probably be responsible for paying it">
+            <presentation>
+                <field type="text" caption="Invoice Receptor Person ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
+            </presentation>
+        </column>
+        <column name="invoice_num" type="text" size="64" descr="Org-specific Invoice number.  Could be used when printing invoices, etc">
+            <presentation>
+                <field type="text" caption="Invoice Number"/>
+            </presentation>
+        </column>
+        <column name="invoice_stat_id" indexed="yes" lookupref="Invoice_Status_Type" descr="The current status of the invoice">
+            <presentation>
+                <field type="select" caption="Invoice Status"/>
+            </presentation>
+        </column>
+        <column name="invoice_date" type="date" required="yes" descr="The Invoice date.  This could be different from the date it was created.">
+            <presentation>
+                <field.date caption="Invoice Date"/>
+            </presentation>
+        </column>
+        <column name="submit_date" type="date" descr="The date the invoice was submitted">
+            <presentation>
+                <field.date caption="Invoice Submission Date"/>
+            </presentation>
+        </column>
+    </table-type>
 
-	<table-type name="Invoice_Line_Item" abbrev="InvLnItm" type="Default"><description>
+    <table-type name="Invoice_Line_Item" abbrev="InvLnItm" type="Default">
+        <description>
 			This tabletype stores information about a particular line item in
 			an invoice.  One Invoice can have multiple line items =&gt; there is
 			a one to many relationship between this tabletype and the Invoice
 			tabletype
-		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for this line item"/><column name="invoice_id" parentref="${params.parentInvoiceId}" descr="The invoice that is the parent of this line item"><presentation><field.text caption="Invoice ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
-				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.text></presentation></column></table-type>
+        </description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for this line item"/>
+        <column name="invoice_id" parentref="${params.parentInvoiceId}" descr="The invoice that is the parent of this line item">
+            <presentation>
+                <field type="text" caption="Invoice ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
+                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                </field>
+            </presentation>
+        </column>
+    </table-type>
 
-	<table-type name="Product_Invoice" abbrev="PrdInv" type="Invoice"><description>
+    <table-type name="Product_Invoice" abbrev="PrdInv" type="Invoice">
+        <description>
 			This is a placeholder table that will be used to define
 			a product invoice (i.e. an invoice for products sold).
 			This is different from a service invoice which details
 			services rendered.
-		</description></table-type>
-	
-	<table-type name="Service_Invoice" abbrev="SrvInv" type="Invoice"><description>
+        </description>
+    </table-type>
+
+    <table-type name="Service_Invoice" abbrev="SrvInv" type="Invoice">
+        <description>
 			A bill for services rendered, usually associated with an action.
 			The invoice record will only store information about an invoice
 			All Claims related information (HCFA1500 etc) will be stored in
 			the appropriate claim record.
-		</description></table-type>
+        </description>
+    </table-type>
 
 </xdm:container>

@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	<table-type name="Person_Attribute" type="Attribute"><xdm:template-param name="parentRef" default="Person.person_id"/></table-type>
+    <table-type name="Person_Attribute" type="Attribute">
+        <xdm:template-param name="parentRef" default="Person.person_id"/>
+    </table-type>
 
-	
 
-	<table-type name="Person_Relationship" type="Relationship"><xdm:template-param name="parentRef" default="Person.person_id"/><xdm:template-param name="relatedEntity" default="Person.person_id"/><xdm:template-param name="relatedEntityFieldCaption" default="Related Person ID"/><xdm:template-param name="relatedEntityFieldQuery" default="person.get-all-persons"/><xdm:template-param name="relationshipMapTablePackage" default="app.dal.table"/><xdm:template-param name="relationshipMapClassPrefix" default="PersonRelationshipMap"/><description>Basic information required for an entity that may be related to a person.</description></table-type>
+    <table-type name="Person_Relationship" type="Relationship">
+        <xdm:template-param name="parentRef" default="Person.person_id"/>
+        <xdm:template-param name="relatedEntity" default="Person.person_id"/>
+        <xdm:template-param name="relatedEntityFieldCaption" default="Related Person ID"/>
+        <xdm:template-param name="relatedEntityFieldQuery" default="person.get-all-persons"/>
+        <xdm:template-param name="relationshipMapTablePackage" default="app.dal.table"/>
+        <xdm:template-param name="relationshipMapClassPrefix" default="PersonRelationshipMap"/>
+        <description>Basic information required for an entity that may be related to a person.</description>
+    </table-type>
 
-	<table-type name="PersonOrg_Relationship" type="Org_Relationship"><xdm:template-param name="parentRef" default="Person.person_id"/><description>Basic information required for an entity that may be related to a person/org combination.</description></table-type>
-	
-	<table-type name="Person_Preference" type="Preference"><xdm:template-param name="parentRef" default="Person.person_id"/><description>
+    <table-type name="PersonOrg_Relationship" type="Org_Relationship">
+        <xdm:template-param name="parentRef" default="Person.person_id"/>
+        <description>Basic information required for an entity that may be related to a person/org combination.</description>
+    </table-type>
+
+    <table-type name="Person_Preference" type="Preference">
+        <xdm:template-param name="parentRef" default="Person.person_id"/>
+        <description>
 			This table allows a developer to store preferences for any Person record.  The general format is to store the equivalent
 			of an environment variable and its corresponding value as a string.  This can be enhanced later.
-		</description></table-type>
-	
-	<table-type name="Person_Log" type="Activity_Log"><xdm:template-param name="parentRef" default="Person.person_id"/><description>
+        </description>
+    </table-type>
+
+    <table-type name="Person_Log" type="Activity_Log">
+        <xdm:template-param name="parentRef" default="Person.person_id"/>
+        <description>
 			This table allows a developer to store information about any and all activity that occurs within a table.  This includes
 			everything from adding a record to updating it and deleting it and anything else that needs to be logged.
-		</description></table-type>
+        </description>
+    </table-type>
 
 </xdm:container>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<queries package="personAttribute">
-		<query name="address">
+    <queries package="personAttribute">
+        <query name="address">
 			select
 				system_id,
 				Contact_Address_Type.caption,
@@ -18,13 +18,26 @@
 				Person_Address.rec_stat_id = Record_Status.id and
 				Record_Status.caption = 'Active'
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-			<presentation><panel><frame heading="Address"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.address,personAttribute.personAddressTableDialog?parent_id=${request:person_id}</record-add-url><record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.address,personAttribute.personAddressTableDialog?system_id=${0}</record-edit-url><record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.address,personAttribute.personAddressTableDialog?system_id=${0}</record-delete-url><column hidden="yes"/><column heading="Address Type"/><column heading="City"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Address"/>
+                    <report>
+                        <record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.address,personAttribute.personAddressTableDialog?parent_id=${request:person_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.address,personAttribute.personAddressTableDialog?system_id=${0}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.address,personAttribute.personAddressTableDialog?system_id=${0}</record-delete-url>
+                        <column hidden="yes"/>
+                        <column heading="Address Type"/>
+                        <column heading="City"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="get-address-record">
+        <query name="get-address-record">
 			select
 				*
 			from
@@ -32,12 +45,12 @@
 			where
 				Person_Address.system_id = ?
 
-			<params>
-				<param value="request:parent_id"/>
-			</params>
-		</query>
+            <params>
+                <param value="request:parent_id"/>
+            </params>
+        </query>
 
-		<query name="classification">
+        <query name="classification">
 			select
 				system_id,
 				Org.org_code,
@@ -51,13 +64,26 @@
 				(Person_Classification.org_id = Org.org_id or Person_Classification.org_id = NULL) and
 				Person_Classification.person_type_id = Person_Type.id
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-			<presentation><panel><frame heading="Classification"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.classification,personAttribute.personClassificationTableDialog?parent_id=${request:person_id}</record-add-url><record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.classification,personAttribute.personClassificationTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-edit-url><record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.classification,personAttribute.personClassificationTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-delete-url><column hidden="yes"/><column heading="Org"/><column heading="Class"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Classification"/>
+                    <report>
+                        <record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.classification,personAttribute.personClassificationTableDialog?parent_id=${request:person_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.classification,personAttribute.personClassificationTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.classification,personAttribute.personClassificationTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-delete-url>
+                        <column hidden="yes"/>
+                        <column heading="Org"/>
+                        <column heading="Class"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="contact">
+        <query name="contact">
 			select
 				system_id,
 				Contact_Method_Type.caption,
@@ -69,13 +95,26 @@
 				Person_Contact.parent_id = ? and
 				Person_Contact.method_type = Contact_Method_Type.id
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-			<presentation><panel><frame heading="Contact Information"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.contact,personAttribute.personContactTableDialog?parent_id=${request:person_id}</record-add-url><record-edit-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.contact,personAttribute.personContactTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-edit-url><record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.contact,personAttribute.personContactTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-delete-url><column hidden="yes"/><column heading="Contact Type"/><column heading="&amp;nbsp;"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Contact Information"/>
+                    <report>
+                        <record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.contact,personAttribute.personContactTableDialog?parent_id=${request:person_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.contact,personAttribute.personContactTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.contact,personAttribute.personContactTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-delete-url>
+                        <column hidden="yes"/>
+                        <column heading="Contact Type"/>
+                        <column heading="&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="ethnicity">
+        <query name="ethnicity">
 			select
 				system_id,
 				Ethnicity_Type.caption
@@ -86,13 +125,25 @@
 				Person_Ethnicity.person_id = ? and
 				Person_Ethnicity.ethnicity_id = Ethnicity_Type.id
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-			<presentation><panel><frame heading="Ethnic Background"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.ethnicity,personAttribute.personEthnicityTableDialog</record-add-url><record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.ethnicity,personAttribute.personEthnicityTableDialog?system_id=${0}</record-edit-url><record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.ethnicity,personAttribute.personEthnicityTableDialog?system_id=${0}</record-delete-url><column hidden="yes"/><column heading="&amp;nbsp;"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Ethnic Background"/>
+                    <report>
+                        <record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.ethnicity,personAttribute.personEthnicityTableDialog</record-add-url>
+                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.ethnicity,personAttribute.personEthnicityTableDialog?system_id=${0}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.ethnicity,personAttribute.personEthnicityTableDialog?system_id=${0}</record-delete-url>
+                        <column hidden="yes"/>
+                        <column heading="&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="insurance">
+        <query name="insurance">
 			select
 				perIns.system_id,
 				insPol.person_id,
@@ -133,13 +184,29 @@
 				perIns.guar_rel_id = guarPerRel.system_id and
 				guarPerRel.rel_type = guarPerRelTy.id
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-			<presentation><panel><frame heading="Insurance"/><banner style="horizontal"><action caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column hidden="yes"/><column hidden="yes"/><column heading="Insured" command="redirect,Insured"/><column heading="Relationship" output="(${3})"/><column hidden="yes"/><column heading="Guarantor" command="redirect,Guarantor"/><column heading="Relationship" output="(${5})"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Insurance"/>
+                    <banner style="horizontal">
+                        <action caption="Edit" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=""/>
+                    </banner>
+                    <report>
+                        <column hidden="yes"/>
+                        <column hidden="yes"/>
+                        <column heading="Insured" redirect="redirect,Insured"/>
+                        <column heading="Relationship" output="(${3})"/>
+                        <column hidden="yes"/>
+                        <column heading="Guarantor" redirect="redirect,Guarantor"/>
+                        <column heading="Relationship" output="(${5})"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="language">
+        <query name="language">
 			select
 				system_id,
 				Language_Type.caption
@@ -150,13 +217,25 @@
 				Person_Language.person_id = ? and
 				Person_Language.language_id = Language_Type.id
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-			<presentation><panel><frame heading="Languages Spoken"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.language,personAttribute.personLanguageTableDialog</record-add-url><record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.language,personAttribute.personLanguageTableDialog?system_id=${0}</record-edit-url><record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.language,personAttribute.personLanguageTableDialog?system_id=${0}</record-delete-url><column hidden="yes"/><column heading="&amp;nbsp;"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Languages Spoken"/>
+                    <report>
+                        <record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.language,personAttribute.personLanguageTableDialog</record-add-url>
+                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.language,personAttribute.personLanguageTableDialog?system_id=${0}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.language,personAttribute.personLanguageTableDialog?system_id=${0}</record-delete-url>
+                        <column hidden="yes"/>
+                        <column heading="&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="relationship">
+        <query name="relationship">
 			select
 				system_id,
 				(Person.name_first || ' ' || Person.name_last),
@@ -170,13 +249,26 @@
 				Person_Relationship.rel_entity_id = Person.person_id and
 				Person_Relationship.rel_type_id = Person_Relationship_Type.id
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-			<presentation><panel><frame heading="Related Individuals"/><report><record-add-caption>Add</record-add-caption><record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.relationship,personAttribute.personRelationshipTableDialog?parent_id=${request:person_id}</record-add-url><record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.relationship,personAttribute.personRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:person_id}</record-edit-url><record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.relationship,personAttribute.personRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:person_id}</record-delete-url><column hidden="yes"/><column heading="Person"/><column heading="Relationship"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Related Individuals"/>
+                    <report>
+                        <record-add-caption>Add</record-add-caption>
+                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.relationship,personAttribute.personRelationshipTableDialog?parent_id=${request:person_id}</record-add-url>
+                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.relationship,personAttribute.personRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:person_id}</record-edit-url>
+                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.relationship,personAttribute.personRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:person_id}</record-delete-url>
+                        <column hidden="yes"/>
+                        <column heading="Person"/>
+                        <column heading="Relationship"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="profile">
+        <query name="profile">
 			select
 				person_id,
 				complete_name,
@@ -198,13 +290,31 @@
 				Person.gender_id = Gender_Type.id and
 				Person.marital_status_id = Marital_Status_Type.id
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-			<presentation><panel><frame heading="Profile"/><banner style="horizontal"><action caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading="Person ID" align="left"/><column heading="Full Name"/><column heading="Birth Date"/><column heading="SSN"/><column heading="Blood Type"/><column heading="Gender"/><column heading="Ethnicity"/><column heading="Language"/><column heading="Marital Status"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Profile"/>
+                    <banner style="horizontal">
+                        <action caption="Edit" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=""/>
+                    </banner>
+                    <report>
+                        <column heading="Person ID" align="left"/>
+                        <column heading="Full Name"/>
+                        <column heading="Birth Date"/>
+                        <column heading="SSN"/>
+                        <column heading="Blood Type"/>
+                        <column heading="Gender"/>
+                        <column heading="Ethnicity"/>
+                        <column heading="Language"/>
+                        <column heading="Marital Status"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="get-ethnicities-for-person">
+        <query name="get-ethnicities-for-person">
 			select
 				Ethnicity_Type.caption,
 				system_id
@@ -215,11 +325,11 @@
 				Person_Ethnicity.person_id = ? and
 				Person_Ethnicity.ethnicity_id = Ethnicity_Type.id
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-		</query>
-		<query name="get-languages-for-person">
+            <params>
+                <param value="request:person_id"/>
+            </params>
+        </query>
+        <query name="get-languages-for-person">
 			select
 				Language_Type.caption,
 				system_id
@@ -230,9 +340,9 @@
 				Person_Language.person_id = ? and
 				Person_Language.language_id = Language_Type.id
 
-			<params>
-				<param value="request:person_id"/>
-			</params>
-		</query>
-	</queries>
+            <params>
+                <param value="request:person_id"/>
+            </params>
+        </query>
+    </queries>
 </xdm:container>

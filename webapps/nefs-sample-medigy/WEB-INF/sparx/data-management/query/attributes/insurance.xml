@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<queries package="insuranceAttribute">
-		<query name="productAddress">
+    <queries package="insuranceAttribute">
+        <query name="productAddress">
 			select
 				system_id,
 				Contact_Address_Type.caption,
@@ -13,14 +13,27 @@
 				InsProduct_Address.parent_id = ? and
 				InsProduct_Address.address_type_id = Contact_Address_Type.id
 
-			<params>
-				<param value="request:product_id"/>
-			</params>
+            <params>
+                <param value="request:product_id"/>
+            </params>
 
-			<presentation><panel><frame heading="Address"/><banner style="horizontal"><action caption="Add" icon="nav-url-cmd:/claim,statement,insuranceAttribute.productAddress,-,-,detail,-,insuranceProductAttribute.address,add?product_id"/></banner><report><column heading=" " output="Edit" command="redirect, "/><column heading="Address Type"/><column heading="City"/><column heading=" " output="Delete" command="redirect, "/></report></panel></presentation>
-		</query>
+            <presentation>
+                <panel>
+                    <frame heading="Address"/>
+                    <banner style="horizontal">
+                        <!--action caption="Add" icon="nav-url-cmd:/claim,statement,insuranceAttribute.productAddress,-,-,detail,-,insuranceProductAttribute.address,add?product_id"/-->
+                    </banner>
+                    <report>
+                        <column heading=" " output="Edit" redirect="redirect, "/>
+                        <column heading="Address Type"/>
+                        <column heading="City"/>
+                        <column heading=" " output="Delete" redirect="redirect, "/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="productContact">
+        <query name="productContact">
 			select
 				system_id,
 				Contact_Method_Type.caption,
@@ -32,14 +45,27 @@
 				InsProduct_Contact.parent_id = ? and
 				InsProduct_Contact.method_type = Contact_Method_Type.id
 
-			<params>
-				<param value="request:product_id"/>
-			</params>
+            <params>
+                <param value="request:product_id"/>
+            </params>
 
-			<presentation><panel><frame heading="Contact Information"/><banner style="horizontal"><action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading=" " output="Edit" command="redirect, "/><column heading="Contact Type"/><column heading=" "/><column heading=" " output="Delete" command="redirect, "/></report></panel></presentation>
-		</query>
+            <presentation>
+                <panel>
+                    <frame heading="Contact Information"/>
+                    <banner style="horizontal">
+                        <action caption="Add" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading=" " output="Edit" redirect=", "/>
+                        <column heading="Contact Type"/>
+                        <column heading=" "/>
+                        <column heading=" " output="Delete" redirect=", "/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="productProfile">
+        <query name="productProfile">
 			select
 				product_id,
 				product_name
@@ -47,15 +73,26 @@
 				Ins_Product
 			where
 				Ins_Product.product_id = ?
-				
-			<params>
-				<param value="request:product_id"/>
-			</params>
-			
-			<presentation><panel><frame heading="Insurance Product Profile"/><banner style="horizontal"><action caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading="Product ID" align="left"/><column heading="Name"/></report></panel></presentation>
-		</query>
-		
-		<query name="products-by-org">
+
+            <params>
+                <param value="request:product_id"/>
+            </params>
+
+            <presentation>
+                <panel>
+                    <frame heading="Insurance Product Profile"/>
+                    <banner style="horizontal">
+                        <action caption="Edit" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading="Product ID" align="left"/>
+                        <column heading="Name"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="products-by-org">
 			select
 				product_id,
 				product_name
@@ -63,15 +100,27 @@
 				Ins_Product
 			where
 				Ins_Product.org_id = ?
-				
-			<params>
-				<param value="request:org_id"/>
-			</params>
-			
-			<presentation><panel><frame heading="Insurance Products"/><banner style="horizontal"><action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/><column heading="&amp;nbsp;" output="${1}" command="redirect,&amp;nbsp;"/><column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/></report></panel></presentation>
-		</query>
-		
-		<query name="products-by-planOrg">
+
+            <params>
+                <param value="request:org_id"/>
+            </params>
+
+            <presentation>
+                <panel>
+                    <frame heading="Insurance Products"/>
+                    <banner style="horizontal">
+                        <action caption="Add" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading="&amp;nbsp;" output="Edit" redirect=",&amp;nbsp;"/>
+                        <column heading="&amp;nbsp;" output="${1}" redirect=",&amp;nbsp;"/>
+                        <column heading="&amp;nbsp;" output="Delete" redirect=",&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="products-by-planOrg">
 			select
 				insPrdA.product_name,
 				insPrdA.product_id
@@ -83,15 +132,27 @@
 				insPln.plan_id = ? and
 				insPrdB.product_id = insPln.product_id and
 				insPrdA.org_id = insPrdB.org_id
-				
-			<params>
-				<param value="request:plan_id"/>
-			</params>
-			
-			<presentation><panel><frame heading="Insurance Products"/><banner style="horizontal"><action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/><column heading="&amp;nbsp;" output="${1}" command="redirect,&amp;nbsp;"/><column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/></report></panel></presentation>
-		</query>
-		
-		<query name="plan-siblings">
+
+            <params>
+                <param value="request:plan_id"/>
+            </params>
+
+            <presentation>
+                <panel>
+                    <frame heading="Insurance Products"/>
+                    <banner style="horizontal">
+                        <action caption="Add" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading="&amp;nbsp;" output="Edit" redirect=",&amp;nbsp;"/>
+                        <column heading="&amp;nbsp;" output="${1}" redirect=",&amp;nbsp;"/>
+                        <column heading="&amp;nbsp;" output="Delete" redirect=",&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="plan-siblings">
 			select
 				insPlnA.plan_id,
 				insPlnA.plan_name
@@ -102,14 +163,26 @@
 				insPlnB.plan_id = ? and
 				insPlnA.product_id = insPlnB.product_id
 
-			<params>
-				<param value="request:plan_id"/>
-			</params>
-			
-			<presentation><panel><frame heading="Insurance Plans"/><banner style="horizontal"><action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/><column heading="Plan" command="redirect,Plan"/><column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/></report></panel></presentation>
-		</query>
+            <params>
+                <param value="request:plan_id"/>
+            </params>
 
-		<query name="plans-by-product">
+            <presentation>
+                <panel>
+                    <frame heading="Insurance Plans"/>
+                    <banner style="horizontal">
+                        <action caption="Add" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading="&amp;nbsp;" output="Edit" redirect=",&amp;nbsp;"/>
+                        <column heading="Plan" redirect=",Plan"/>
+                        <column heading="&amp;nbsp;" output="Delete" redirect=",&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="plans-by-product">
 			select
 				plan_id,
 				plan_name
@@ -119,15 +192,27 @@
 			where
 				Ins_Plan.product_id = ? and
 				Ins_Plan.product_id = Ins_Product.product_id
-				
-			<params>
-				<param value="request:product_id"/>
-			</params>
-			
-			<presentation><panel><frame heading="Insurance Plans"/><banner style="horizontal"><action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading="&amp;nbsp;" output="Edit" command="redirect,&amp;nbsp;"/><column heading="Plan" command="redirect,Plan"/><column heading="&amp;nbsp;" output="Delete" command="redirect,&amp;nbsp;"/></report></panel></presentation>
-		</query>
-		
-		<query name="planAddress">
+
+            <params>
+                <param value="request:product_id"/>
+            </params>
+
+            <presentation>
+                <panel>
+                    <frame heading="Insurance Plans"/>
+                    <banner style="horizontal">
+                        <action caption="Add" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading="&amp;nbsp;" output="Edit" redirect=",&amp;nbsp;"/>
+                        <column heading="Plan" redirect=",Plan"/>
+                        <column heading="&amp;nbsp;" output="Delete" redirect=",&amp;nbsp;"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="planAddress">
 			select
 				system_id,
 				Contact_Address_Type.caption,
@@ -139,16 +224,42 @@
 				InsPlan_Address.parent_id = ? and
 				InsPlan_Address.address_type_id = Contact_Address_Type.id
 
-			<params>
-				<param value="request:plan_id"/>
-			</params>
+            <params>
+                <param value="request:plan_id"/>
+            </params>
 
-			<presentation><panel><frame heading="Address"/><report><record-add-caption>Add</record-add-caption><record-add-url>config-expr:${create-app-url:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,add</record-add-url><record-edit-url>config-expr:${create-app-url:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;address_id=${0}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,edit</record-edit-url><record-delete-url>config-expr:${create-app-url:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;address_id=${0}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,delete</record-delete-url><column col-index="0" hidden="yes"/><column heading="Address Type"/><column heading="City"/></report></panel></presentation>
+            <presentation>
+                <panel>
+                    <frame heading="Address"/>
+                    <report>
+                        <record-add-caption>Add</record-add-caption>
+                        <record-add-url>config-expr:${servlet-context-uri:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,add</record-add-url>
+                        <record-edit-url>config-expr:${servlet-context-uri:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;address_id=${0}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,edit</record-edit-url>
+                        <record-delete-url>config-expr:${servlet-context-uri:/insurance/plan/summary.jsp}?plan_id=${request:plan_id}&amp;parent_id=${request:plan_id}&amp;address_id=${0}&amp;cmd=statement,insuranceAttribute.planAddress,-,-,record-editor,-,insuranceAttribute.insurancePlanAddressTableDialog,delete</record-delete-url>
+                        <column col-index="0" hidden="yes"/>
+                        <column heading="Address Type"/>
+                        <column heading="City"/>
+                    </report>
+                </panel>
+            </presentation>
 
-			<presentation><panel><frame heading="Address"/><banner style="horizontal"><action caption="Add" icon="nav-url-cmd:/claim,statement,insuranceAttribute.planAddress,-,-,detail,-,insurancePlanAttribute.address,add?plan_id&amp;org_id"/></banner><report><column heading=" " output="Edit" command="redirect, "/><column heading="Address Type"/><column heading="City"/><column heading=" " output="Delete" command="redirect, "/></report></panel></presentation>
-		</query>
+            <presentation>
+                <panel>
+                    <frame heading="Address"/>
+                    <banner style="horizontal">
+                        <!--action caption="Add" icon="nav-url-cmd:/claim,statement,insuranceAttribute.planAddress,-,-,detail,-,insurancePlanAttribute.address,add?plan_id&amp;org_id"/-->
+                    </banner>
+                    <report>
+                        <column heading=" " output="Edit" redirect=", "/>
+                        <column heading="Address Type"/>
+                        <column heading="City"/>
+                        <column heading=" " output="Delete" redirect=", "/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="planContact">
+        <query name="planContact">
 			select
 				system_id,
 				Contact_Method_Type.caption,
@@ -160,14 +271,27 @@
 				InsPlan_Contact.parent_id = ? and
 				InsPlan_Contact.method_type = Contact_Method_Type.id
 
-			<params>
-				<param value="request:plan_id"/>
-			</params>
+            <params>
+                <param value="request:plan_id"/>
+            </params>
 
-			<presentation><panel><frame heading="Contact Information"/><banner style="horizontal"><action caption="Add" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading=" " output="Edit" command="redirect, "/><column heading="Contact Type"/><column heading=" "/><column heading=" " output="Delete" command="redirect, "/></report></panel></presentation>
-		</query>
+            <presentation>
+                <panel>
+                    <frame heading="Contact Information"/>
+                    <banner style="horizontal">
+                        <action caption="Add" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading=" " output="Edit" redirect=", "/>
+                        <column heading="Contact Type"/>
+                        <column heading=" "/>
+                        <column heading=" " output="Delete" redirect=", "/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
 
-		<query name="planProfile">
+        <query name="planProfile">
 			select
 				plan_id,
 				Ins_Product.product_id,
@@ -179,12 +303,25 @@
 			where
 				Ins_Plan.plan_id = ? and
 				Ins_Plan.product_id = Ins_Product.product_id
-				
-			<params>
-				<param value="request:plan_id"/>
-			</params>
-			
-			<presentation><panel><frame heading="Insurance Plans"/><banner style="horizontal"><action caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" command="redirect,"/></banner><report><column heading="Plan ID" align="left"/><column hidden="yes"/><column heading="Product" command="redirect,Product"/><column heading="Plan"/></report></panel></presentation>
-		</query>
-	</queries>
+
+            <params>
+                <param value="request:plan_id"/>
+            </params>
+
+            <presentation>
+                <panel>
+                    <frame heading="Insurance Plans"/>
+                    <banner style="horizontal">
+                        <action caption="Edit" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=","/>
+                    </banner>
+                    <report>
+                        <column heading="Plan ID" align="left"/>
+                        <column hidden="yes"/>
+                        <column heading="Product" redirect=",Product"/>
+                        <column heading="Plan"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+    </queries>
 </xdm:container>
