@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GetQueryResultsAsMatrixMethod.java,v 1.1 2003-08-30 19:15:48 shahid.shah Exp $
+ * $Id: GetQueryResultsAsMatrixMethod.java,v 1.2 2003-08-31 14:15:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -49,7 +49,6 @@ import java.util.List;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
-import freemarker.template.SimpleScalar;
 import freemarker.core.Environment;
 import freemarker.ext.beans.StringModel;
 import freemarker.ext.beans.BeansWrapper;
@@ -102,6 +101,8 @@ public class GetQueryResultsAsMatrixMethod implements TemplateMethodModel
                 matrix = ResultSetUtils.getInstance().getResultSetRowsAsMatrix(qrs.getResultSet());
                 qrs.close(true);
             }
+            if(matrix == null)
+                matrix = new Object[0][0];
             return BeansWrapper.getDefaultInstance().wrap(matrix);
         }
         catch (Exception e)
