@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.2 2003-03-14 03:38:17 shahid.shah Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.3 2003-03-16 21:39:28 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -58,6 +58,9 @@ import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.Value;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.Query;
@@ -118,6 +121,10 @@ public class SqlManagerQueryTest extends TestCase
         System.out.println(qds1.getQualifiedName());
         System.out.println(qds1.getSqlText(cc));
         System.out.println(component.getMetrics());
+
+        ValueSource vs = ValueSources.getInstance().getValueSource("data-sources:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+        Value value = vs.getValue(dbvc);
+        System.out.println(value.getListValue());
 
         String dtd = new XmlDataModelDtd().getDtd(component);
         assertTrue(dtd != null);
