@@ -112,6 +112,15 @@
             </library>
 
             <library>
+                <name>Jakarta Commons JXPath</name>
+                <version>1.1</version>
+                <class-path>commons-jxpath.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/commons/jxpath/"
+                        license="Apache Software License"
+                        license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
                 <name>Jenesis Source Code Generation Library</name>
                 <version>0.2.1</version>
                 <class-path>jenesis.jar</class-path>
