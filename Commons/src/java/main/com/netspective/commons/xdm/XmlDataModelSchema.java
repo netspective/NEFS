@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.22 2003-06-19 15:49:20 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.23 2003-06-22 04:50:58 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1017,7 +1017,7 @@ public class XmlDataModelSchema
                 }
                 catch (NoSuchMethodException nse)
                 {
-                    log.warn("Unable to create nestedCreator for " + name + " " + args[0] + ", registering type only without a creator.", nse);
+                    //log.warn("Unable to create nestedCreator for " + name + " " + args[0] + ", registering type only without a creator.", nse);
                     for(int pn = 0; pn < propNames.length; pn++)
                     {
                         if(propNames[pn].length() > 0)
