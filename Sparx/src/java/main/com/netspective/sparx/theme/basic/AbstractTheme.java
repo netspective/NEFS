@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.18 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: AbstractTheme.java,v 1.19 2003-08-31 03:12:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -73,19 +73,16 @@ public class AbstractTheme implements Theme
     private Map tabularReportSkins = new TreeMap();
     private Map panelSkins = new TreeMap();
     private Map dialogSkins = new TreeMap();
-    private NavigationSkin defaultNavigationSkin;
-    private HtmlPanelSkin tabbedPanelSkin;
-    private HtmlPanelSkin templatePanelSkin;
+    private NavigationSkin defaultNavigationSkin = constructDefaultNavigationSkin();
+    private HtmlPanelSkin tabbedPanelSkin = constructTabbedPanelSkin();;
+    private HtmlPanelSkin templatePanelSkin = constructTabbedPanelSkin();
     private HtmlTabularReportSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "default", "panel-output", "panel/output", false);
     private DialogSkin defaultDialogSkin = new StandardDialogSkin(this, "default", "panel-input", "panel/input", false);
-    private LoginDialogSkin defaulLoginDialogSkin = new LoginDialogSkin(this, "login", "panel-input", "panel/input", false);
+    private LoginDialogSkin defaulLoginDialogSkin = constructLoginDialogSkin();
     private String[] inheritResourcesFromThemes = new String[0];
 
     public AbstractTheme()
     {
-        defaultNavigationSkin = constructDefaultNavigationSkin();
-        tabbedPanelSkin = constructTabbedPanelSkin();
-        templatePanelSkin = constructTabbedPanelSkin();
     }
 
     public UriAddressableFileLocator getResourceLocator()
@@ -160,6 +157,11 @@ public class AbstractTheme implements Theme
     protected HtmlPanelSkin constructTabbedPanelSkin()
     {
         return new BasicHtmlPanelSkin(this, name, "panel-output", "panel/output", false);
+    }
+
+    protected LoginDialogSkin constructLoginDialogSkin()
+    {
+        return new LoginDialogSkin(this, "login", "panel-input", "panel/input", false);
     }
 
     public String getName()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleLoginDialogSkin.java,v 1.7 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: ConsoleLoginDialogSkin.java,v 1.8 2003-08-31 03:12:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -54,22 +54,11 @@ import com.netspective.sparx.panel.HtmlPanel;
 
 public class ConsoleLoginDialogSkin extends LoginDialogSkin
 {
-    private String loginImage = "login.gif";
-
     public ConsoleLoginDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
         super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
         setCaptionClass(" class=\"login-dialog-fields\"");
-    }
-
-    public String getLoginImage()
-    {
-        return loginImage;
-    }
-
-    public void setLoginImage(String loginImage)
-    {
-        this.loginImage = loginImage;
+        setLoginImage("login.gif");
     }
 
     public void renderContentsHtml(Writer writer, DialogContext dc, String dialogName, String actionURL, String encType, int dlgTableColSpan, StringBuffer errorMsgsHtml, StringBuffer fieldsHtml) throws IOException
