@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.17 2004-03-19 19:14:45 shahid.shah Exp $
+ * $Id: DialogFlags.java,v 1.18 2004-03-20 13:50:51 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form;
@@ -95,22 +95,22 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
-        new FlagDefn(DialogFlags.ACCESS_PRIVATE, "RETAIN_ALL_REQUEST_PARAMS", RETAIN_ALL_REQUEST_PARAMS),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_READONLY_HINTS", HIDE_READONLY_HINTS, "If set, all the hints of fields in this dialog will be hidden in read-only mode."),
+        new FlagDefn(DialogFlags.ACCESS_PRIVATE, "RETAIN_ALL_REQUEST_PARAMS", RETAIN_ALL_REQUEST_PARAMS, "If set, all the request parameters are retained for use in multiple invocations of this dialog during more than one request/response cycle."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_READONLY_HINTS", HIDE_READONLY_HINTS, "If set, all the hints of fields in this dialog are hidden in read-only mode."),
         new FlagDefn(DialogFlags.ACCESS_PRIVATE, "ENCTYPE_MULTIPART_FORMDATA", ENCTYPE_MULTIPART_FORMDATA),
-        new FlagDefn(DialogFlags.ACCESS_PRIVATE, "HIDE_HEADING_IN_EXEC_MODE", HIDE_HEADING_IN_EXEC_MODE),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA", READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA", READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_CLIENT_VALIDATION", DISABLE_CLIENT_VALIDATION, "If set, the client-side validation will be disabled."),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "TRANSLATE_ENTER_KEY_TO_TAB_KEY", TRANSLATE_ENTER_KEY_TO_TAB_KEY),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE", SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_CLIENT_KEYPRESS_FILTERS", DISABLE_CLIENT_KEYPRESS_FILTERS, "If set, the client-side keypress filters will be disabled."),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_HINTS_UNTIL_FOCUS", HIDE_HINTS_UNTIL_FOCUS, "If set, hides the field hints until the control receives focus."),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "RETAIN_INITIAL_STATE", RETAIN_INITIAL_STATE),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_AUTO_EXECUTE", DISABLE_AUTO_EXECUTE, "If set, the auto-execution capability for this dialog will be disabled (force input always)."),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_MULTIPLE_EXECUTES", ALLOW_MULTIPLE_EXECUTES, "If set, the dialog will be allowed to execute multiple times (using back button)."),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_PENDING_DATA", ALLOW_PENDING_DATA, "If set, the dialog will be allowed to have pending data."),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "GENERATE_DCB", GENERATE_DCB, "If set, dialog context bean will be generated for this particular dialog."),
+        new FlagDefn(DialogFlags.ACCESS_PRIVATE, "HIDE_HEADING_IN_EXEC_MODE", HIDE_HEADING_IN_EXEC_MODE, "If set, the heading for this dialog is hidden in dialog execution mode."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA", READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA, "If set, the read-only fields in this dialog are hidden when the field does not have a value. Field values are still available but the field is not visible."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA", READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA, "If set, the read-only fields in this dialog are made invislble when the field does not have a value. Field is not visible nor does it have any value associated with it."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_CLIENT_VALIDATION", DISABLE_CLIENT_VALIDATION, "If set, the client-side validation Javascripts associated with this dialog's fields are not executed on form submission."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "TRANSLATE_ENTER_KEY_TO_TAB_KEY", TRANSLATE_ENTER_KEY_TO_TAB_KEY, "If set, the enter key acts the same as the tab key (move to next control)."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE", SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE, "If set, a pop up message is shown when the user changes data on the form but leaves the form without pressing submit."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_CLIENT_KEYPRESS_FILTERS", DISABLE_CLIENT_KEYPRESS_FILTERS, "If set, it disables the built-in client-side keypress filters. Sparx has built-in capabilities to not allow certain keypressed in specific controls. For example, integer and float fields do not allow text so alphabetic keys are disabled."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_HINTS_UNTIL_FOCUS", HIDE_HINTS_UNTIL_FOCUS, "If set, it hides the field hints until the control receives focus.  The default behavior is to show hints with the controls regardless of the key focus."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "RETAIN_INITIAL_STATE", RETAIN_INITIAL_STATE, "If set, the initial data values of this dialog are tracked (as they were in the form before the user made any changes). Used when there is a need to get access to the original data and compare it to the final data for doing partial inserts or for doing something only if a value has changed."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_AUTO_EXECUTE", DISABLE_AUTO_EXECUTE, "If set, the auto-execution capability for this dialog is disabled.  This means input is always needed for dialog execution."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_MULTIPLE_EXECUTES", ALLOW_MULTIPLE_EXECUTES, "If set, the dialog is allowed to execute multiple times (using back button). Otherwise, an error message is displayed everytime this dialog is executed using back button."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_PENDING_DATA", ALLOW_PENDING_DATA, "If set, data is allowed to be entered in the dialog fields but server side validation is not performed. Client-side validation is performed normally."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "GENERATE_DCB", GENERATE_DCB, "If set, a dialog context bean is automatically generated for this dialog, whenever Ant build is run using generate-dialog-context-beans target."),
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_EXECUTE_WITH_CANCEL_BUTTON", ALLOW_EXECUTE_WITH_CANCEL_BUTTON, "If set, the cancel button will cause the form to be submitted and the dialog's execute method will be called. The default is to just send a JavaScript 'history.back()' event.")
     };
 
