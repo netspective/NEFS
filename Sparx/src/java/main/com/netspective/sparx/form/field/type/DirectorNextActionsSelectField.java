@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DirectorNextActionsSelectField.java,v 1.9 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: DirectorNextActionsSelectField.java,v 1.10 2003-11-13 20:42:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -61,11 +61,12 @@ import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogPerspectives;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldFlags;
 
-public class DirectorNextActionsSelectField extends SelectField
+public class DirectorNextActionsSelectField extends SelectField implements DialogNextActionProvider
 {
     public static final String DEFAULT_NAME = "director_next_actions";
 
@@ -122,15 +123,18 @@ public class DirectorNextActionsSelectField extends SelectField
      * user and the value is a URL which indicates where they want to go next. The URL can be either a String or
      * a ValueSource that can dynamically compute the next location based on the current location.
      */
-    public String getSelectedActionUrl(DialogContext dc)
+    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
     {
         String value = dc.getRequest().getParameter(getHtmlFormControlId());
         if (value == null)
-            return null;
+            return defaultUrl;
         ValueSource svs = ValueSources.getInstance().getValueSourceOrStatic(value);
         if (svs == null)
-            return null;
-        return svs.getTextValue(dc);
+            return defaultUrl;
+        String url = svs.getTextValue(dc);
+        if(url.equals("-"))
+            return defaultUrl;
+        return url;
     }
 
     public void makeStateChanges(DialogContext dc, int stage)

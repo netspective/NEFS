@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.47 2003-11-13 19:48:30 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.48 2003-11-13 20:42:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -760,7 +760,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
     {
-        return dialogNextActionUrl.getTextValue(dc);
+        return dialogNextActionUrl != null ? dialogNextActionUrl.getTextValue(dc) : defaultUrl;
     }
 
     /**

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.42 2003-11-13 19:25:12 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.43 2003-11-13 20:42:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -476,32 +476,40 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     }
 
     /**
-     * Gets the URL for the next action of the dialog after execution
-     * @param dc
-     * @param defaultUrl
-     * @return URL string
+     * Gets the URL for the next action of the dialog after execution. It searches for a next action URL using the
+     * following order (and uses the first one found)<p>
+     * <ol>
+     *   <li>The dialog director next actions field. If the director returns "-" as the URL, it means keep checking.</li>
+     *   <li>The dialog's next action provider delegated class (using Dialog.getNextActionProvider())</li>
+     *   <li>Active page next action provider delegated class (using dc.NavigationContext().getNextActionProvider)</li>
+     *   <li>The default url passed in</li>
+     * </ol>
+     * @param dc The dialog context for the dialog that just executed
+     * @param defaultUrl The URL to use if no specific next actions are provided
+     * @return URL string to use for the URL (to send in redirect)
      */
     public String getNextActionUrl(DialogContext dc, String defaultUrl)
     {
-        // first see if there is tree-wide next action provider
-        DialogNextActionProvider navNextActionProvider = dc.getNavigationContext().getDialogNextActionProvider();
-        if(navNextActionProvider != null)
-            return navNextActionProvider.getDialogNextActionUrl(dc, defaultUrl);
+        if(director != null && director.hasNextAction())
+        {
+            String url = director.getDialogNextActionUrl(dc, null);
+            if(url != null)
+                return url;
+
+            // if the url is null, it means that the director returned the default (NULL) and wants to let the
+            // the delegated callers handle it so we'll fall through to the rest of the providers below
+        }
 
         // see if we are delegating our next action call to another class
         if(nextActionProvider != null)
             return nextActionProvider.getDialogNextActionUrl(dc, defaultUrl);
 
-        // if we don't have a director we'll have to use the default
-        if(director == null)
-            return defaultUrl;
+        // first see if there is page-specific or tree-wide next action provider
+        DialogNextActionProvider navNextActionProvider = dc.getNavigationContext().getDialogNextActionProvider();
+        if(navNextActionProvider != null)
+            return navNextActionProvider.getDialogNextActionUrl(dc, defaultUrl);
 
-        // if we have a director then check to see if the director is supplying a next action
-        String result = director.getNextActionUrl(dc);
-        if(result == null || result.equals("-"))
-            return defaultUrl;
-
-        return result;
+        return defaultUrl;
     }
 
     /**

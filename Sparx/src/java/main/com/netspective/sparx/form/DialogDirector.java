@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.14 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.15 2003-11-13 20:42:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -65,10 +65,11 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.field.type.DirectorNextActionsSelectField;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class DialogDirector extends DialogField
+public class DialogDirector extends DialogField implements DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final String[] STYLE_ENUM_VALUES = new String[] { "data", "confirm", "acknowledge" };
@@ -238,14 +239,19 @@ public class DialogDirector extends DialogField
         this.nextActionsField = nextActionsField;
     }
 
+    public boolean hasNextAction()
+    {
+        return nextActionsField != null;
+    }
+
     /**
      * Gets the next action URL based on the selected next action item
      * @param dc
      * @return
      */
-    public String getNextActionUrl(DialogContext dc)
+    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
     {
-        return nextActionsField == null ? null : nextActionsField.getSelectedActionUrl(dc);
+        return nextActionsField == null ? defaultUrl : nextActionsField.getDialogNextActionUrl(dc, defaultUrl);
     }
 
     /**
