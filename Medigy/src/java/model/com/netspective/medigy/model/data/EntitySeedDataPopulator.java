@@ -45,52 +45,55 @@ import com.netspective.medigy.util.HibernateUtil;
 import org.hibernate.Session;
 
 import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 
 public class EntitySeedDataPopulator
 {
+    private Session session;
+    private Party globalParty;
 
-    public static void populateData()
+    public EntitySeedDataPopulator(final Session session)
     {
-        Session session = HibernateUtil.getSession();
+        this.session = session;
+    }
 
+    public void populateSeedData()
+    {
         HibernateUtil.beginTransaction();
-        Party globalParty = new Party("SYS_GLOBAL_PARTY");
+        globalParty = new Party("SYS_GLOBAL_PARTY");
         session.save(globalParty);
 
-        populatePartyRoleType(globalParty, session);
+        populatePartyRoleType();
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
     }
 
-    private static void populatePartyRoleType(Party globalParty, Session session)
+    protected void populatePartyRoleType()
     {
-        populatePartyRoleTypes(session, PartyRoleType.class, new String[] {"code", "label", "description", "party"},
-                new Object[][]
-                {
-                    {"P", "Prospect", "A sales prospect", globalParty},
-                    {"DIV", "Division", "", globalParty},
-                    {"OORG", "Other Organization Unit", "", globalParty},
-                    {"DEPT", "Department", "", globalParty},
-                    {"SORG", "Subsidiary", "", globalParty},
-                    {"PORG", "Parent Organization", "", globalParty},
-                    {"F", "Family Member", "", globalParty},
-                    {"C", "Contractor", "", globalParty},
-                    {"E", "Employee", "", globalParty}
-                }
+        populateEntity(session, PartyRoleType.class, new String[] {"code", "label", "description", "party"},
+            new Object[][]
+            {
+                {PartyRoleType.Cache.PROSPECT.getEntity().getCode(), PartyRoleType.Cache.PROSPECT.getEntity().getLabel(), PartyRoleType.Cache.PROSPECT.getEntity().getDescription(), globalParty},
+                {PartyRoleType.Cache.DIVISION.getEntity().getCode(), PartyRoleType.Cache.DIVISION.getEntity().getLabel(), PartyRoleType.Cache.DIVISION.getEntity().getDescription(), globalParty},
+                {PartyRoleType.Cache.OTHER_ORG_UNIT.getEntity().getCode(), PartyRoleType.Cache.OTHER_ORG_UNIT.getEntity().getLabel(), PartyRoleType.Cache.OTHER_ORG_UNIT.getEntity().getDescription(), globalParty},
+                {PartyRoleType.Cache.DEPARTMENT.getEntity().getCode(), PartyRoleType.Cache.DEPARTMENT.getEntity().getLabel(), PartyRoleType.Cache.DEPARTMENT.getEntity().getDescription(), globalParty},
+                {PartyRoleType.Cache.SUBSIDIARY.getEntity().getCode(), PartyRoleType.Cache.SUBSIDIARY.getEntity().getLabel(), PartyRoleType.Cache.SUBSIDIARY.getEntity().getDescription(), globalParty},
+                {PartyRoleType.Cache.PARENT_ORG.getEntity().getCode(), PartyRoleType.Cache.PARENT_ORG.getEntity().getLabel(), PartyRoleType.Cache.PARENT_ORG.getEntity().getDescription(), globalParty},
+                {PartyRoleType.Cache.FAMILY_MEMBER.getEntity().getCode(), PartyRoleType.Cache.FAMILY_MEMBER.getEntity().getLabel(), PartyRoleType.Cache.FAMILY_MEMBER.getEntity().getDescription(), globalParty},
+                {PartyRoleType.Cache.CONTRACTOR.getEntity().getCode(), PartyRoleType.Cache.CONTRACTOR.getEntity().getLabel(), PartyRoleType.Cache.CONTRACTOR.getEntity().getDescription(), globalParty},
+                {PartyRoleType.Cache.EMPLOYEE.getEntity().getCode(), PartyRoleType.Cache.EMPLOYEE.getEntity().getLabel(), PartyRoleType.Cache.EMPLOYEE.getEntity().getDescription(), globalParty},
+            }
         );
 
     }
 
-    public static void  populatePartyRoleTypes(Session session,
-                                               Class entityClass,
-                                               String[] propertyList,
-                                               Object[][] data)
+    protected void  populateEntity(final Session session,
+                               final Class entityClass,
+                               final String[] propertyList,
+                               final Object[][] data)
     {
         try
         {
@@ -116,23 +119,9 @@ public class EntitySeedDataPopulator
                 session.save(entityObject);
             }
         }
-        catch (InstantiationException e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
-        catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IntrospectionException e)
-        {
-            e.printStackTrace();
-        }
-        catch (InvocationTargetException e)
-        {
-            e.printStackTrace();
-        }
-
-
     }
 }
