@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.11 2003-04-29 19:57:24 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.12 2003-04-30 16:46:05 faisal.qureshi Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -217,7 +217,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                 {
                     HtmlPanel panel = children.get(i);
                     writer.write("<td>");
-                    writer.write("  <a id=\""+ panel.getIdentifier() +"_tab\" class=\"panel-tab-output\" href=\"javascript:ALL_PANELS.getPanel('"+ getIdentifier() +"').children.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">");
+                    writer.write("  <a id=\""+ panel.getIdentifier() +"_tab\" class=\"panel-tab-output\" href=\"javascript:ALL_PANELS.getPanel('"+ getIdentifier() +"').children.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">&nbsp;");
                     writer.write(      panel.getFrame().getHeading().getTextValue(vc));
                     writer.write("  </a></td>");
                 }

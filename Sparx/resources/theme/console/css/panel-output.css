@@ -24,7 +24,13 @@
 .panel-content-output     { border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }
 .panel-frame-table-action-output { background-color: white }
 
-.panel-tabs-output { color: #000000; font-size: 9px; font-family: Verdana; background-image: url(../images/panel/output/panel-tab-bg.gif); height: 19px; }
-.panel-tab-active-output { color: #FFFFFF; padding: 2px; cursor: hand; font-weight: bold; background: url(../images/level2/level2-backdrop.gif) repeat; margin-left: 3px; margin-right: 4px; padding-left: 5px; padding-right: 5px; text-decoration: none; }
-.panel-tab-output { padding: 2px; cursor: hand; margin-left: 3px; margin-right: 4px; text-decoration: none; }
-.panel-tab-output:hover { padding: 2px; cursor: hand; margin-left: 3px; margin-right: 4px; }
+.panel-tabs-output  { color: #000000; font-size: 9px; font-family: Verdana; background: url(../images/panel/output/panel-tab-bg.gif) repeat-x left bottom; height: 19px }
+.panel-tab-active-output  { color: #ffffff; font-weight: bold; text-decoration: none; background: url(../images/panel/output/panel-tab-active-bg.gif) repeat-x left bottom; margin-right: 4px; margin-left: 3px; padding-right: 5px; padding-left: 5px; border: solid 1px #a9a9a9; height: 15px; cursor: hand }
+.panel-tab-active-output:link { color: #900; font-weight: bold; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-tab-active-output:visited { color: #900; font-weight: bold; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-tab-active-output:hover { color: #900; font-weight: bold; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-tab-output  { text-decoration: none; margin-right: 4px; margin-left: 3px; padding: 2px; cursor: hand }
+.panel-tab-output:link { color: #8b0000; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-tab-output:visited { color: #8b0000; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-tab-output:active { color: #8b0000; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-tab-output:hover { color: black; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
