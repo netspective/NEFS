@@ -631,10 +631,12 @@
         database), generates the SQL DDL for the default schema, loads the SQL
         DDL (effectively creating the Hypersonic SQL database) and finally
         loads the 'starter' from XML files using Sparx import from XML
-        feature.</para>
+        feature. The Console displays differemt messages during the HSQL
+        database creation (as show below):</para>
 
-        <para>TODO: Insert image of DDL and DB creation msgs displayed in
-        Console (after resolution of issue with test data xml)</para>
+        <screenshot>
+          <graphic fileref="./resources/images/screen-console-create-hsql-db.gif" />
+        </screenshot>
 
         <note>
           <para>Please note that this target should be executed anytime the
@@ -750,15 +752,19 @@
         <guimenu>Data Management</guimenu> | <guisubmenu>Data
         Sources</guisubmenu> | <guimenuitem>SQL Explorer</guimenuitem> option
         in the Console. Enter a SQL query for the <literal>Book_Info</literal>
-        table in the SQL Editor and execute the query by clicking the
-        <command>OK </command>button.</para>
+        table in the SQL Editor.</para>
 
         <screenshot>
           <graphic fileref="./resources/images/screen-console-sql-explorer.gif" />
         </screenshot>
 
-        <para>TODO: result of unit test (after the error is resolved at my
-        end)</para>
+        <para>To execute the test query, click the <command>OK
+        </command>button. This displays the query result form (as shown
+        below):</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-console-db-test-result.gif" />
+        </screenshot>
       </section>
     </section>
 
@@ -805,7 +811,7 @@
         (<filename>project.xml</filename>)</para>
       </note>
 
-      <section>
+      <section id="section-declare-static-qry">
         <title>Declaring a Static Query</title>
 
         <para>The Books Application uses a simple join query to get
@@ -815,10 +821,11 @@
         <example>
           <title>Declaring a Static Query</title>
 
-          <programlisting>&lt;queries package="books"&gt; <co
+          <programlisting>&lt;<emphasis>queries</emphasis> package="books"&gt; <co
               id="declare-static-sql-tags-eg-1" />
 
- &lt;query name="get-all-books"&gt; <co id="declare-static-sql-tags-eg-2" />
+ &lt;<emphasis>query</emphasis> name="get-all-books"&gt; <co
+              id="declare-static-sql-tags-eg-2" />
   select id, name, author, book_type.caption, isbn <co
               id="declare-static-sql-tags-eg-3" />
          from book_info, book_type
@@ -832,16 +839,20 @@
               <para>All the static in Axiom must belong to a statement package
               represented by <sgmltag>queries</sgmltag> XML tag. The statement
               package is identified by its name (<literal>books</literal> in
-              the above example)</para>
+              the above example). You can define multiple packages within your
+              application's project.xml file.</para>
             </callout>
 
             <callout arearefs="declare-static-sql-tags-eg-2">
               <para>A static query is defined (with or without bind
               parameters) by using the <sgmltag>query</sgmltag> tag. Each
               query is identified by its name
-              (<literal>get-all-books</literal> in the above example)</para>
-
-              <para>TODO: Awaiting response to my query.</para>
+              (<literal>get-all-books</literal> in the above example). <note>
+                  <para>The namespace of a query is always
+                  <replaceable>queryPkg</replaceable>.<replaceable>queryName</replaceable>.
+                  This means you can have more than one queries with same name
+                  if each of them belongs to a different query package.</para>
+                </note></para>
             </callout>
 
             <callout arearefs="declare-static-sql-tags-eg-3">
@@ -860,6 +871,11 @@
       <section>
         <title>Presenting the Results of a Static Query</title>
 
+        <para>The next step is to define the customized way of displaying the
+        result of your <literal>get-all-books</literal> query.</para>
+
+        <para></para>
+
         <example>
           <title>Presenting the Results of a Static Query</title>
 
@@ -870,21 +886,23 @@
          from book_info, book_type
          where genre = book_type.id
 
-  &lt;presentation&gt; <co id="declare-pres-tags-eg-1" />
-    &lt;panel name="main" height="300"&gt; <co id="declare-pres-tags-eg-2" />
-        &lt;frame heading="static:All available books"/&gt; <co
+  &lt;<emphasis>presentation</emphasis>&gt; <co id="declare-pres-tags-eg-1" />
+    &lt;<emphasis>panel</emphasis> name="main" height="300"&gt; <co
+              id="declare-pres-tags-eg-2" />
+        &lt;<emphasis>frame</emphasis> heading="<emphasis>static:All available books</emphasis>"/&gt; <co
               id="declare-pres-tags-eg-3" />
-        &lt;report&gt; <co id="declare-pres-tags-eg-4" />
-                &lt;actions&gt; <co id="declare-pres-tags-eg-5" />
-                    &lt;action type="add" caption="Add Book" redirect="page-id:/add"/&gt; <co
-              id="declare-static-sql-tags-eg-6" />
-                    &lt;action type="edit" redirect="page-id:/edit?id=${0}"/&gt; <co
-              id="declare-static-sql-tags-eg-7" />
-                    &lt;action type="delete" redirect="page-id:/delete?id=${0}"/&gt; <co
-              id="declare-static-sql-tags-eg-8" />
+        &lt;<emphasis>report</emphasis>&gt; <co id="declare-pres-tags-eg-4" />
+                &lt;<emphasis>actions</emphasis>&gt; <co
+              id="declare-pres-tags-eg-5" />
+                    &lt;<emphasis>action</emphasis> <emphasis>type="add"</emphasis> caption="Add Book" redirect="page-id:/add"/&gt; <co
+              id="declare-pres-tags-eg-6" />
+                    &lt;action type="<emphasis><literal>edit</literal></emphasis>" <emphasis>redirect</emphasis>="page-id:/edit?id=${0}"/&gt; <co
+              id="declare-pres-tags-eg-7" />
+                    &lt;action type="<emphasis>delete</emphasis>" redirect="page-id:/delete?id=${0}"/&gt; <co
+              id="declare-pres-tags-eg-8" />
                 &lt;/actions&gt;
                 &lt;column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/&gt; <co
-              id="declare-static-sql-tags-eg-9" />
+              id="declare-pres-tags-eg-9" />
                 &lt;column heading="Name" /&gt;
                 &lt;column heading="Author"/&gt;
                 &lt;column heading="Genre"/&gt;
@@ -896,33 +914,424 @@
 
 &lt;/queries&gt;</programlisting>
 
-          <para></para>
+          <calloutlist>
+            <callout arearefs="declare-pres-tags-eg-1">
+              <para>Each <sgmltag>query</sgmltag> tag contains a
+              <sgmltag>presentation </sgmltag>tag associated with it. This tag
+              defines presentation aspects of the query.</para>
+            </callout>
+
+            <callout arearefs="declare-pres-tags-eg-2">
+              <para>The panel tag is used to display a panel of given height.
+              This panel serves as a container for the displayed query
+              result.</para>
+            </callout>
+
+            <callout arearefs="declare-pres-tags-eg-3">
+              <para>The frame tag defines a frame to be drawn around the query
+              result. The heading attribute is assigned a value using static
+              value source.</para>
+            </callout>
+
+            <callout arearefs="declare-pres-tags-eg-4">
+              <para>A report is a way to customize the output of a SQL
+              statement on the page.</para>
+
+              <note>
+                <para>Each SQL statement may have any number of
+                <sgmltag>report</sgmltag> tags as necessary. That way, a
+                single statement can be viewed differently depending upon what
+                context it’s being called in.</para>
+              </note>
+            </callout>
+
+            <callout arearefs="declare-pres-tags-eg-5">
+              <para>You can declare a set of actions for your query's result.
+              This is done using the <sgmltag>actions</sgmltag> tag. These
+              actions provide a way to perform different functions on the
+              displayed query result. Sparx has pre-defined action types for
+              performing add, edit and delete operations on the selected
+              record within your query result.</para>
+            </callout>
+
+            <callout arearefs="declare-pres-tags-eg-6">
+              <para>The action tag is used to define individual actions
+              (<literal>add</literal> in this case). The
+              <sgmltag>action</sgmltag> tag may specify a <sgmltag
+              class="attribute">redirect</sgmltag> attribute to automatically
+              redirect to another page whenever it is chosen. The name of the
+              redirect page is supplied using the <sgmltag>page-id</sgmltag>
+              value source.</para>
+            </callout>
+
+            <callout arearefs="declare-pres-tags-eg-7">
+              <para>Declaring <literal>edit</literal> action. You may also
+              supply parameters and their values within the redirect URL
+              (selected record's <literal>id</literal> field in this
+              case).</para>
+            </callout>
+
+            <callout arearefs="declare-pres-tags-eg-8">
+              <para>Declaring the <literal>delete</literal> action with
+              redirect attribute pointing to the <literal>delete</literal>
+              page.</para>
+            </callout>
+
+            <callout arearefs="declare-pres-tags-eg-9">
+              <para>Every SQL report contains <sgmltag>column</sgmltag> tags
+              that are used to customize the appearance of a particular column
+              or, more accurately, a particular field. You may also specify a
+              redirect page URL (<literal>edit</literal> page in this
+              case).</para>
+            </callout>
+          </calloutlist>
         </example>
       </section>
 
       <section>
         <title>Unit Testing a Static SQL</title>
 
-        <para></para>
+        <para>To test your newly defined static query, go to the <guimenu>Data
+        Management</guimenu> | <guisubmenu>Static Queries</guisubmenu> section
+        in the Console. This displays all the Static SQL statements defined in
+        your <filename>project.xml</filename> file.</para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/screen-console-static-queries.gif" />
+          </screenshot></para>
+
+        <para>Click on the <literal>get-all-books</literal> query to see the
+        SQL statement.</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-console--static-qry-doc.gif" />
+        </screenshot>
+
+        <para>Click on the <guimenuitem>Unit Test</guimenuitem> option in the
+        left menu bar. The unit test page is displayed containing a
+        form/dialog for specifying the number of record rows to be displayed
+        per page. By default, the number of records displayed per page is 10
+        records per page. Enter the new value in this field if you want to
+        change the number of records displayed per page. Click the
+        <command>OK</command> button. The query is executed and its result is
+        displayed (as shown below).</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-console-static-qry-unit-test.gif" />
+        </screenshot>
       </section>
 
       <section>
-        <title>Declaring a Dynamic Query (Query Definition)</title>
+        <title id="section-declare-dynamic-qry">Declaring a Dynamic Query
+        (Query Definition)</title>
 
-        <para></para>
-      </section>
+        <para>Query definitions are one of the most powerful features that
+        Sparx provides developers. Using query definitions a developer wields
+        extreme flexibility and power with an ease rivaled by few, if any,
+        other components of Sparx.</para>
 
-      <section>
-        <title>Presenting the Results of a Dynamic Query (Query
-        Definition)</title>
+        <para>The Books Application will make use of the following query
+        definition:</para>
 
-        <para></para>
+        <example>
+          <title>Declaring a Dynamic Query (query Definition)</title>
+
+          <programlisting>&lt;<emphasis>query-defn</emphasis> name="books"&gt; <co
+              id="declare-qry-defn-tags-eg-1" />
+   &lt;<emphasis>field</emphasis> name="book_id" caption="Book ID" <emphasis>join</emphasis>="BookInfo" column="id"/&gt; <co
+              id="declare-qry-defn-tags-eg-2" />
+   &lt;field name="name" caption="Name" join="BookInfo" column="name"/&gt; 
+   &lt;field name="author" caption="Author" join="BookInfo" column="author"/&gt;
+   &lt;field <emphasis>name="genre_id"</emphasis> caption="Genre ID" join="BookInfo" <emphasis>column="genre"</emphasis>/&gt; <co
+              id="declare-qry-defn-tags-eg-3" />
+   &lt;field name="genre_caption" caption="Genre" join="BookType" column="caption"/&gt;
+   &lt;field name="isbn" caption="ISBN" join="BookInfo" column="isbn"/&gt;
+
+   &lt;join name="BookInfo" table="book_info"/&gt; 
+   <emphasis>&lt;join name="BookType" table="book_type" condition="BookType.id = BookInfo.genre"/&gt;</emphasis> <co
+              id="declare-qry-defn-tags-eg-4" />
+
+&lt;/query-defn&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-qry-defn-tags-eg-1">
+              <para>All query definitions are declared using the
+              <sgmltag>query-defn</sgmltag> tag and are uniquely identified
+              with a name (<literal>books</literal> in this case).</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-tags-eg-2">
+              <para>Each query definition contains one ore more
+              <sgmltag>field</sgmltag> tags that declare the selectable
+              fields. The <sgmltag>field</sgmltag> tags are specified so that
+              Axiom knows what fields the user should be allowed to select.
+              Query definition fields may come from a mix of tables so long as
+              they have appropriately defined <sgmltag>join</sgmltag>
+              attribute values. The value of the <sgmltag>join</sgmltag>
+              attribute is a reference to a <sgmltag>join</sgmltag> tag later
+              on in the query definition (<literal>BookInfo</literal> and
+              <literal>bookType</literal> in this case).</para>
+
+              <note>
+                <para>In the context of the final SQL statement that Sparx
+                generates, the field tags become a part of the select clause.
+                i.e. the part of a select statement that determines which
+                fields need to be returned.</para>
+              </note>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-tags-eg-3">
+              <para>The <sgmltag>column</sgmltag> attribute of <sgmltag>field
+              </sgmltag>tag contains the field name (<literal>name</literal>
+              in this case) as defined in the schema table
+              (<literal>Book_Info</literal> in this case). The
+              <sgmltag>name</sgmltag> attribute is used to define a different
+              name for the schema table field (<literal>genre_id</literal> and
+              <literal>genre</literal>, respectively, in this case).</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-tags-eg-4">
+              <para>The <sgmltag>join</sgmltag> tag is used to let the query
+              definition know of the list of tables and joins. This is
+              necessary to be able to get all the fields that are a part of
+              the query definition. Each <sgmltag>join</sgmltag> tag is
+              uniquely identified through its name. The
+              <sgmltag>table</sgmltag> attribute contains the schema table
+              name whereas the <sgmltag>condition</sgmltag> attribute defines
+              the join condition.</para>
+
+              <note>
+                <para>In the context of the final SQL statement that Sparx
+                generates, the join tags become a part of the where clause to
+                signify the relationships between tables (if any
+                exists).</para>
+              </note>
+            </callout>
+          </calloutlist>
+        </example>
+
+        <para>After defining the basic join on Books Application tables, the
+        next step is to define the search dialog and the presentation of the
+        search result. This is handled through the use of
+        <sgmltag>presentation</sgmltag> tag and its child tags.</para>
+
+        <example>
+          <title>Declaring the Search Dialog and Query Result
+          Presentation</title>
+
+          <programlisting>&lt;query-defn name="books"&gt;
+
+ &lt;<emphasis>presentation</emphasis>&gt; <co
+              id="declare-qry-defn-pres-tags-eg-1" />
+   &lt;<emphasis>select-dialog</emphasis> name="searchBooksDialog" <emphasis>allow-debug</emphasis>="yes" <co
+              id="declare-qry-defn-pres-tags-eg-2" />
+                  <emphasis>hide-output-dests</emphasis>="no" <emphasis>hide-readonly-hints</emphasis>="yes" &gt; <co
+              id="declare-qry-defn-pres-tags-eg-3" /><emphasis>     
+                  </emphasis> 
+     &lt;<emphasis>frame</emphasis> heading="Search for Books" /&gt; <co
+              id="declare-qry-defn-pres-tags-eg-4" />
+     &lt;field type="text" name="book_id" caption="Book ID" /&gt;
+     &lt;field type="text" name="name" caption="Book Name"/&gt;
+     &lt;field type="text" name="author" caption="Author"/&gt;
+     &lt;field type="text" name="isbn" caption="ISBN"/&gt;
+     &lt;<emphasis>field</emphasis> type="select" style="list" name="genre" 
+                          caption="Genre" choices="<emphasis>schema-enum:Book_Type</emphasis>"/&gt; <co
+              id="declare-qry-defn-pres-tags-eg-5" />
+
+     &lt;<emphasis>select</emphasis> name="test"&gt; <co
+              id="declare-qry-defn-pres-tags-eg-6" />
+        &lt;display field="book_id"/&gt; 
+        &lt;display field="name"/&gt;
+        &lt;display field="author"/&gt;
+        &lt;<emphasis>display</emphasis> field="genre_caption"/&gt; <co
+              id="declare-qry-defn-pres-tags-eg-7" />
+        &lt;display field="isbn"/&gt;<emphasis>
+
+        &lt;condition field="book_id" allow-null="no" comparison="equals" </emphasis><co
+              id="declare-qry-defn-pres-tags-eg-8" />
+                   <emphasis>value</emphasis>="field" <emphasis>connector</emphasis>="and"/&gt; <co
+              id="declare-qry-defn-pres-tags-eg-9" />
+        &lt;condition field="name" allow-null="no" comparison="starts-with" value="field:name" connector="and"/&gt;
+        &lt;condition field="author" allow-null="no" comparison="equals" value="field:author" connector="and"/&gt;
+        &lt;condition field="genre_id" allow-null="no" comparison="equals" value="field:genre" connector="and"/&gt;
+
+        &lt;<emphasis>presentation</emphasis>&gt; <co
+              id="declare-qry-defn-pres-tags-eg-10" />
+           &lt;<emphasis>panel</emphasis> name="report"&gt; 
+              &lt;frame heading="static:Book Search Results"/&gt;
+                &lt;<emphasis>report</emphasis>&gt; <co
+              id="declare-qry-defn-pres-tags-eg-11" />
+                   &lt;<emphasis>column</emphasis> heading="ID" format="plain" <emphasis>redirect</emphasis>="page-id:/edit?id=${0}"/&gt; <co
+              id="declare-qry-defn-pres-tags-eg-12" />
+                   &lt;column heading="Name" /&gt;
+                   &lt;column heading="Author"/&gt;
+                   &lt;column heading="Genre"/&gt;
+                   &lt;column heading="ISBN"/&gt;
+                &lt;/report&gt;
+             &lt;/panel&gt;
+        &lt;/presentation&gt;
+     &lt;/select&gt;
+   &lt;/select-dialog&gt;
+ &lt;/presentation&gt;
+&lt;/query-defn&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-qry-defn-pres-tags-eg-1">
+              <para>The search dialog and search field results are declared
+              under a <sgmltag>presentation</sgmltag> tag in the
+              <sgmltag>query-defn</sgmltag> hierarchy.</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-2">
+              <para>The <sgmltag>select-dialog</sgmltag> tag is essentially a
+              dialog embedded inside a query definition. The purpose of this
+              dialog is to provide a user interface for the query definition.
+              Each select-dialog is uniquely identified through its
+              name.</para>
+
+              <note>
+                <para>One query definition can have multiple
+                <sgmltag>select-dialogs</sgmltag> declarations.</para>
+              </note>
+
+              <para>The <sgmltag>allow-debug</sgmltag> attribute of
+              <sgmltag>select-dialog</sgmltag> tag is used to specify the
+              query debug option. If it is set to "<literal>yes</literal>" (as
+              in this example), a debug check box is displayed. When this
+              checkbox is checked and the dialog is submitted, the generated
+              SQL with its bind parameters is displayed for debugging purposes
+              instead of execution of the generated SQL</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-3">
+              <para>The <sgmltag>hide-output-dests</sgmltag> attribute is used
+              to give the user several output options: HTML output (pageable
+              report and row count per page), CSV output format, tab delimited
+              format. This is done by setting the value of this attribute to
+              "no". The <sgmltag>hide-readonly-hints</sgmltag> attribute is
+              used to show or hide the field hints (as is the case in this
+              example).</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-4">
+              <para>The <sgmltag>frame</sgmltag> tag is used to draw a frame,
+              with appropriate heading, around the search dialog.</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-5">
+              <para>The first part of a <sgmltag>select-dialog</sgmltag> is a
+              declaration of all the fields (and their corresponding UI
+              representations) that the <sgmltag>select-dialog</sgmltag> will
+              use for user input. Each field has associated
+              <sgmltag>name</sgmltag> and <sgmltag>caption</sgmltag>
+              attributes. The <literal>genre</literal> field is declared to be
+              a "<sgmltag>select</sgmltag>". The choices for this field are
+              populated with the values from <literal>Book_Type</literal>
+              table using <sgmltag>schema-enum</sgmltag> value source.</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-6">
+              <para>The second part of a <sgmltag>select-dialog</sgmltag> is a
+              select section which has two parts in itself. The
+              <sgmltag>select</sgmltag> component is what determines which of
+              the select-dialog’s declared fields are actually displayed in
+              the dialog for this select-dialog. It also determines how each
+              field will be interpreted by the query definition engine once
+              the dialog is submitted. The select tag is uniquely identified
+              through its name (<literal>test</literal> in this case).</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-7">
+              <para>The <sgmltag>display</sgmltag> tags have one attribute,
+              <sgmltag>field</sgmltag>, which points to the name of a field
+              declared in the main query definition.</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-8">
+              <para>The <sgmltag>condition</sgmltag> tags determine how the
+              data input from the <sgmltag>select-dialog</sgmltag> will be
+              interpreted by the query definition engine. Basically, it
+              defines the search criteria.</para>
+
+              <para>Each condition tag represents a condition on a field
+              specified by the <sgmltag>field</sgmltag> attribute. The
+              <sgmltag>allow-null</sgmltag> attribute of the
+              <sgmltag>condition</sgmltag> tag determines the behavior of the
+              query definition engine if this field is left empty when the
+              dialog is submitted. The value of this attribute is set to
+              “<literal>no</literal>” in this case. That is why the select
+              generated will omit the field if the corresponding dialog field
+              happens to be empty. The <sgmltag>comparison</sgmltag> attribute
+              of the <sgmltag>condition</sgmltag> tag describes the relational
+              operator to use ("<emphasis>equals</emphasis>" in this
+              case).</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-9">
+              <para>The <sgmltag>value</sgmltag> attribute of the
+              <sgmltag>condition</sgmltag> tag describes the field from the
+              main query definition (<literal>book_id</literal> in this case)
+              with which this <sgmltag>select-dialog</sgmltag> field
+              (<literal>book_id</literal> in this case) is to be compared. The
+              select-dialog field is mentioned using the
+              <sgmltag>field</sgmltag> value source.</para>
+
+              <para>The <sgmltag>connector</sgmltag> attribute determines how
+              many field criteria each record in the database has to match
+              before it is selected. In this example, all the fields have a
+              connector value of “<sgmltag>and</sgmltag>” thus specifying that
+              a record would have to match all the field criteria to be
+              selected in the final result.</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-10">
+              <para>The result of this dynamically generated and executed
+              query can be configured in different ways using
+              <sgmltag>presentation</sgmltag> tag hierarchy.</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-11">
+              <para>The <sgmltag>report</sgmltag> tag customizes the displayed
+              query result fields.</para>
+            </callout>
+
+            <callout arearefs="declare-qry-defn-pres-tags-eg-12">
+              <para>Each <sgmltag>report</sgmltag> tag contains
+              <sgmltag>column</sgmltag> tags to customize the display of
+              individual query result fields. You may also provide a redirect
+              URL which a column through the <sgmltag>redirect</sgmltag>
+              attribute. In this example, the <literal>ID</literal> field of
+              the book record in the displayed result points to the
+              <literal>Edit Book</literal> page. Clicking on this link will
+              open the <literal>Edit Book</literal> page with the dialog
+              fields populated with the selected book's information.</para>
+            </callout>
+          </calloutlist>
+        </example>
       </section>
 
       <section>
         <title>Unit Testing a Query Definition</title>
 
-        <para></para>
+        <para>To test your newly defined static query, go to the <guimenu>Data
+        Management</guimenu> | <guisubmenu>Dynamic Queries</guisubmenu>
+        section in the Console. This displays all the Dynamic SQL statements
+        defined in your <filename>project.xml</filename> file.</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-console--dynamic-queries.gif" />
+        </screenshot>
+
+        <para>Click on the <literal>books</literal> query to see the details
+        of the query in a tabular form.</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-console--dynamic-qry-doc.gif" />
+        </screenshot>
+
+        <para>Click on the <guimenuitem>Unit Test</guimenuitem> option in the
+        left menu bar. [TODO: When the Dynamic Query Unit Test option is
+        available]</para>
       </section>
     </section>
   </section>
@@ -930,90 +1339,381 @@
   <section>
     <title>Creating the Presentation Layer</title>
 
-    <para></para>
+    <para>The presentation layer of your Books Application comprises the
+    following pages:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Home Page</para>
+      </listitem>
+
+      <listitem>
+        <para>Add Books Page</para>
+      </listitem>
+
+      <listitem>
+        <para>Edit Books Page</para>
+      </listitem>
+
+      <listitem>
+        <para>Delete Books Page</para>
+      </listitem>
+
+      <listitem>
+        <para>Search Books Page</para>
+      </listitem>
+
+      <listitem>
+        <para>Console Page</para>
+      </listitem>
+
+      <listitem>
+        <para>NEFS Sample Apps Home Page</para>
+      </listitem>
+    </itemizedlist>
 
     <section>
       <title>Creating the Home Page</title>
 
-      <para></para>
+      <para>Your Books Application Home page will display list of all the
+      books. It will also provide Edit and Delete options for each of the
+      displayed books.</para>
 
-      <section>
-        <title>Unit Testing the Home Page</title>
+      <para>Sparx handles the pages that an end user sees and the transfer of
+      control from one page to another using URIs and URLs. This is called
+      <literal>navigation</literal>. Once declared using XML, Sparx can
+      automatically manage the visual and operational end-user control of the
+      navigation from one area of your application to another. You simply
+      define the rules for what happens when a user visits a page and Sparx
+      takes care of the rest.</para>
 
-        <para></para>
-      </section>
+      <para>Following is the XML declaration for your Books Application
+      navigation:</para>
+
+      <example>
+        <title>Creating "Home" Page</title>
+
+        <programlisting>&lt;project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt;
+...
+ &lt;<emphasis>navigation-tree</emphasis> name="app" <emphasis>default="yes"</emphasis>&gt; <co
+            id="declare-nav-tags-eg-1" />
+        &lt;<emphasis>page</emphasis> name="home" <emphasis>default="yes"</emphasis> caption="Home" <co
+            id="declare-nav-tags-eg-2" />
+              <emphasis>command="query,books.get-all-books,-,-,-,record-editor-compressed"</emphasis>/&gt; <co
+            id="declare-nav-tags-eg-3" />
+ &lt;/navigation-tree&gt;
+...</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-nav-tags-eg-1">
+            <para>The <sgmltag>navigation-tree</sgmltag> tag starts out the
+            definition and appears as a child of the
+            <sgmltag>project</sgmltag> tag. Each tree has a
+            <sgmltag>name</sgmltag> (<literal>app</literal> in this case). The
+            <sgmltag>name</sgmltag> attribute is required and must be unique
+            across all navigation trees. The <sgmltag>caption</sgmltag>
+            attribute is a value source and is always required. A tree may be
+            marked with <sgmltag class="attribute">default</sgmltag>=<sgmltag
+            class="attvalue">yes</sgmltag> if it is to be the default tree.
+            Which tree is actually used by the application may be specfied as
+            a servet parameter or chosen dynamically at runtime based on some
+            processing rules. There is only one instance of each navigation
+            tree that you define and the definition is shared across all users
+            and threads.</para>
+
+            <note>
+              <para>You may declare as many navigation trees as your
+              application needs.</para>
+            </note>
+          </callout>
+
+          <callout arearefs="declare-nav-tags-eg-2">
+            <para>The <sgmltag>page</sgmltag> tag begins a definition of a
+            single page and appears under the
+            <sgmltag>navigation-tree</sgmltag> tag. Each page has a
+            <sgmltag>name</sgmltag> (<literal>home</literal> in this case).
+            The <sgmltag>name</sgmltag> attribute is required and must be
+            unique within the navigation tree in which it is defined. A tree
+            may be marked with <sgmltag
+            class="attribute">default</sgmltag>=<sgmltag
+            class="attvalue">yes</sgmltag> if it is to be the default tree.
+            Which page is actually used by the application may be specfied as
+            a servlet parameter or chosen dynamically at runtime based on some
+            processing rules. There is only one instance of each page that you
+            define and the definition is shared across all users and
+            threads.</para>
+
+            <note>
+              <para>You may declare as many pages under a navigation-tree as
+              your application needs.</para>
+            </note>
+          </callout>
+
+          <callout arearefs="declare-nav-tags-eg-3">
+            <para>The page <sgmltag>command</sgmltag> attribute calls
+            <methodname>execute</methodname>() on an instance of the
+            <interfacename>com.netspective.sparx.command.Command</interfacename>
+            interface and includes the content of the execution as the content
+            of the page. The command attribute in this example executes the
+            <sgmltag>query</sgmltag> <literal>get-all-books</literal> from the
+            query package named <literal>books</literal> (see <xref
+            linkend="section-declare-static-qry" />). It also specifies one of
+            the pre-defined report skins
+            (<sgmltag>record-editor-compressed</sgmltag> in this case) for the
+            displayed report.</para>
+          </callout>
+        </calloutlist>
+      </example>
     </section>
 
     <section>
-      <title>Creating the Add Books Page</title>
+      <title>Creating the Add Book Page</title>
 
-      <para></para>
+      <para>The next step is to create a page for adding books information to
+      your database. This is achieved through the following XML
+      declaration:</para>
 
-      <section>
-        <title>Unit Testing the Add Books Page</title>
+      <example>
+        <title>Creating "Add Book" Page</title>
 
-        <para></para>
-      </section>
+        <programlisting>&lt;navigation-tree name="app" default="yes"&gt; 
+    &lt;page name="add" caption="Add Book" <emphasis>command="dialog,schema.db.Book_Info,add"</emphasis>/&gt; <co
+            id="declare-page-tags-eg-1" />
+&lt;navigation-tree&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-page-tags-eg-1">
+            <para>The <sgmltag>page</sgmltag> tag in the example code defines
+            Books Application's <literal>Add Book</literal> page. The
+            <sgmltag>command</sgmltag> attribute in this example displays and
+            executes a dialog box for <literal>Book Info</literal> table using
+            the "<sgmltag>add</sgmltag>" perspective.</para>
+          </callout>
+        </calloutlist>
+      </example>
     </section>
 
     <section>
       <title>Creating the Edit Book Page</title>
 
-      <para></para>
+      <para>Your books application requires a way to edit the book information
+      already stored in the database. For that, you will need an <literal>Edit
+      Book</literal> page. This is achieved through the following XML
+      declaration::</para>
 
-      <section>
-        <title>Unit Testing the Edit Book Page</title>
+      <example>
+        <title>Creating "Edit Book" Page</title>
 
-        <para></para>
-      </section>
+        <programlisting>&lt;navigation-tree name="app" default="yes"&gt;         
+    &lt;page name="edit" caption="Edit Book" command="dialog,schema.db.Book_Info,<emphasis>edit</emphasis>" <co
+            id="declare-edit-page-eg-1" />
+          require-request-param="id" <co id="declare-edit-page-eg-2" />
+          retain-params="id"&gt; <co id="declare-edit-page-eg-3" />
+        &lt;missing-params-body&gt; <co id="declare-edit-page-eg-4" />
+          Please choose a book to edit from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;. 
+        &lt;/missing-params-body&gt;
+    &lt;/page&gt;
+&lt;/navigation-tree&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-edit-page-eg-1">
+            <para>The <sgmltag>page</sgmltag> tag declares the <literal>Edit
+            Book</literal> page. The <sgmltag>command</sgmltag> attribute
+            displays and execute a dialog box for <literal>Book Info
+            </literal>table using the "<sgmltag>edit</sgmltag>"
+            perspective.</para>
+          </callout>
+
+          <callout arearefs="declare-edit-page-eg-2">
+            <para>The <sgmltag>require-request-parameter</sgmltag> attribute
+            specifies <varname>id</varname> as the required request parameter.
+            The <varname>id</varname> parameter contains unique identifier for
+            the book record that is being edited.</para>
+          </callout>
+
+          <callout arearefs="declare-edit-page-eg-3">
+            <para>The <sgmltag>retain-params</sgmltag> attribute allows you to
+            carry parameters from one page to another. In this example, the
+            "id" parameter's value will be sent to anothe page (tab) when that
+            tab/page is clicked.</para>
+          </callout>
+
+          <callout arearefs="declare-edit-page-eg-4">
+            <para>The <sgmltag>missing-params-body</sgmltag> tag is used to
+            optionally produce automatic error message when required request
+            parameter <varname>('id'</varname> in this case) is not
+            provided.</para>
+          </callout>
+        </calloutlist>
+      </example>
     </section>
 
     <section>
       <title>Creating the Delete Book Page</title>
 
-      <para></para>
+      <para>The Delete Book page is declared through the following XML:</para>
 
-      <section>
-        <title>Unit Testing the Delete Book Page</title>
+      <example>
+        <title>Creating "Delete Book" Page</title>
 
-        <para></para>
-      </section>
+        <programlisting>&lt;navigation-tree name="app" default="yes"&gt;         
+    &lt;page name="delete" caption="Delete Book" command="dialog,schema.db.Book_Info,<emphasis>delete</emphasis>" <co
+            id="declare-delete-page-eg-1" />
+          require-request-param="id" <co id="declare-delete-page-eg-2" />
+          retain-params="id"&gt; <co id="declare-delete-page-eg-3" />
+        &lt;missing-params-body&gt; <co id="declare-delete-page-eg-4" />
+           Please choose a book to delete from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;.
+        &lt;/missing-params-body&gt;
+    &lt;/page&gt;
+&lt;/navigation-tree&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-delete-page-eg-1">
+            <para>The <sgmltag>page</sgmltag> tag declares the <literal>Delete
+            Book</literal> page. The <sgmltag>command</sgmltag> attribute
+            displays and execute a dialog box for <literal>Book Info</literal>
+            table using the "<sgmltag>delete</sgmltag>" perspective.</para>
+          </callout>
+
+          <callout arearefs="declare-delete-page-eg-2">
+            <para>The <sgmltag>require-request-parameter</sgmltag> attribute
+            specifies <varname>id</varname> as the required request parameter.
+            The <varname>id</varname> parameter contains unique identifier for
+            the book record that is being deleted.</para>
+          </callout>
+
+          <callout arearefs="declare-delete-page-eg-3">
+            <para>The <sgmltag>retain-params</sgmltag> attribute allows you to
+            carry parameters from one page to another. In this example, the
+            "id" parameter's value will be sent to anothe page (tab) when that
+            tab/page is clicked.</para>
+          </callout>
+
+          <callout arearefs="declare-delete-page-eg-4">
+            <para>The missing-params-body tag is used to optionally produce
+            automatic error message when required request parameter
+            <varname>('id'</varname> in this case) is not provided.</para>
+          </callout>
+        </calloutlist>
+      </example>
     </section>
 
     <section>
       <title>Creating the Search Books Page</title>
 
-      <para></para>
+      <para>The Books Application has, at the moment, most of the
+      functionality originally intended for it. The only bit of functionality
+      that is left is that of being able to search for books matching any
+      criteria the user chooses. For a small collection, the result of the
+      <literal>get-all-books</literal> query is small enough to browse
+      manually for the information pertaining to a book. For larger numbers of
+      books, the power of a query definition can come in very handy to search
+      the database for all books matching any criteria specified by the end
+      user.</para>
 
-      <section>
-        <title>Unit Testing the Search Books Page</title>
+      <para>The following XML declaration defines the <literal>Search
+      Books</literal> page:</para>
 
-        <para></para>
-      </section>
+      <example>
+        <title>Creating "Search Books" Page</title>
+
+        <programlisting>&lt;navigation-tree name="app" default="yes"&gt;         
+   &lt;page name="search" caption="Search Books" command="query-defn,books,test,searchBooksDialog"/&gt; <co
+            id="declare-qry-defn-use-eg-1" />
+&lt;/navigation-tree&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-qry-defn-use-eg-1">
+            <para>The page tag is used to declare the <literal>Search
+            Books</literal> page. The command attribute uses the "query-defn"
+            value source to display the search dialog and the query results.
+            The example declaration specifies the
+            <sgmltag>query-defn</sgmltag> named <literal>books</literal>. The
+            select statement being used for creating the search criteria is
+            <literal>test</literal> while the customization of query result is
+            done by the <sgmltag>select-dialog</sgmltag> named
+            <literal>searchBooksDialog</literal>.</para>
+          </callout>
+        </calloutlist>
+      </example>
     </section>
 
     <section>
       <title>Creating the Console Page</title>
 
-      <para></para>
+      <para>Like every other Sparx application, your Books Application also
+      has an associated Console. You may provide the access to this Console
+      using the following XML declaration:</para>
 
-      <section>
-        <title>Unit Testing the Console Page</title>
+      <example>
+        <title>Linking to the Books Application Console</title>
 
-        <para></para>
-      </section>
+        <programlisting>&lt;navigation-tree name="app" default="yes"&gt;  
+   &lt;page name="console" caption="Console" redirect="servlet-context-uri:/console"/&gt; <co
+            id="declare-console-eg-1" />
+&lt;/navigation-tree&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-console-eg-1">
+            <para>The <sgmltag>page</sgmltag> tag declares <literal>Cosole
+            </literal>page for the <literal>Books Application</literal>. The
+            <sgmltag>redirect</sgmltag> attribute is set (using the
+            <sgmltag>servlet-context-uri</sgmltag> value source) to
+            automatically redirect to the application Console.</para>
+          </callout>
+        </calloutlist>
+      </example>
     </section>
 
     <section>
       <title>Creating the Sample Apps Home Page</title>
 
-      <para></para>
+      <para>As a last step to the creation of your Books Application, you will
+      add a Sample Apps Home page using the following XML declaration:</para>
 
-      <section>
-        <title>Unit Testing the Sample Apps Home Page</title>
+      <example>
+        <title>Creating Sample Apps Home Page for Books Application</title>
 
-        <para></para>
-      </section>
+        <programlisting>&lt;navigation-tree name="app" default="yes"&gt;  
+   &lt;page name="sample-apps-home" caption="Sample Apps Home" <co
+            id="declare-nefs-sample-apps-eg-1" />
+                                 redirect="<emphasis>netspective-url:nefs-sample-apps-home</emphasis>"/&gt; 
+&lt;/navigation-tree&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-nefs-sample-apps-eg-1">
+            <para>The <sgmltag>page</sgmltag> tag declares the <literal>Sample
+            Apps Home </literal>page. The <sgmltag>redirect</sgmltag>
+            attribute specifies the URL of the Netspective <literal>Sample
+            Apps</literal> page using the <sgmltag>netspective-url</sgmltag>
+            value source.</para>
+          </callout>
+        </calloutlist>
+      </example>
+    </section>
+
+    <section>
+      <title>Testing the Books Application</title>
+
+      <para>Congratulations! The Books Application is complete. Now you should
+      open up your browser window and go to the Library’s main page . You
+      should see a list of all the books that are already a part of the
+      database. Try adding a few more, editing some and deleting a few. Also
+      try searching for books by genre or name or any other field for that
+      matter.</para>
+
+      <para>TODO: Images of all the UI dialogs</para>
+    </section>
+
+    <section>
+      <title>Conclusion</title>
+
+      <para>Your first Sparx application that does something meaningful is
+      complete and you have gone through the shallowest parts of almost
+      everything Sparx has to offer. You can now continue to improve the Books
+      Application with newer ideas, delving deeper into Sparx or you can start
+      a new application and use what you learned here to see how fast you can
+      have a running system.</para>
     </section>
   </section>
 
