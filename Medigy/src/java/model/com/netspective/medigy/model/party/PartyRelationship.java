@@ -41,6 +41,7 @@ package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
 import com.netspective.medigy.reference.type.PartyRelationshipType;
+import com.netspective.medigy.reference.type.PriorityType;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -51,6 +52,9 @@ import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
 import javax.ejb.OneToOne;
 import javax.ejb.Table;
+import javax.ejb.OneToMany;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "Party_Relationship")
@@ -62,8 +66,9 @@ public class PartyRelationship extends AbstractDateDurationEntity
     private String comment;
     private PartyRole partyRole;
     private PartyRelationshipType relationshipType;
-    private PartyRelationshipStatus relationshipStatus;
-    private PartyRelationshipPriority partyRelationshipPriority;
+    private PriorityType priorityType;
+
+    private Set<CommunicationEvent> communicationEvents = new HashSet<CommunicationEvent>();
 
     public PartyRelationship()
     {
@@ -127,26 +132,26 @@ public class PartyRelationship extends AbstractDateDurationEntity
     }
 
     @OneToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name = "priority_id")
+    public PriorityType getPriority()
+    {
+        return priorityType;
+    }
+
+    protected void setPriority(final PriorityType priorityType)
+    {
+        this.priorityType = priorityType;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "party_rel_id")
-    public PartyRelationshipStatus getRelationshipStatus()
+    public Set<CommunicationEvent> getCommunicationEvents()
     {
-        return relationshipStatus;
+        return communicationEvents;
     }
 
-    protected void setRelationshipStatus(final PartyRelationshipStatus relationshipStatus)
+    public void setCommunicationEvents(final Set<CommunicationEvent> communicationEvents)
     {
-        this.relationshipStatus = relationshipStatus;
-    }
-
-    @OneToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_rel_id")
-    public PartyRelationshipPriority getPriority()
-    {
-        return partyRelationshipPriority;
-    }
-
-    protected void setPriority(final PartyRelationshipPriority partyRelationshipPriority)
-    {
-        this.partyRelationshipPriority = partyRelationshipPriority;
+        this.communicationEvents = communicationEvents;
     }
 }
