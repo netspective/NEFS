@@ -33,6 +33,7 @@
 package com.netspective.sparx.navigate.fts;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Hits;
@@ -40,7 +41,7 @@ import org.apache.lucene.search.Query;
 
 import com.netspective.sparx.navigate.fts.SearchHitsRenderer.SearchExpression;
 
-public class DefaultSearchResults implements FullTextSearchResults
+public class DefaultSearchResults implements Serializable, FullTextSearchResults
 {
     private final FullTextSearchPage searchPage;
     private final SearchExpression expression;
@@ -163,12 +164,19 @@ public class DefaultSearchResults implements FullTextSearchResults
 
     public int getScrollPagesRangeStartPage()
     {
-        return scrollTotalPages < scrollPagesRangeSize ? 1 : (scrollActivePage / scrollPagesRangeSize);
+        if(scrollTotalPages < scrollPagesRangeSize)
+            return 1;
+
+        int result = scrollActivePage - scrollPagesRangeSize;
+        return result > 0 ? result : 1;
     }
 
     public int getScrollPagesRangeEndPage()
     {
-        return scrollTotalPages < scrollPagesRangeSize
-               ? scrollTotalPages : ((scrollActivePage / scrollPagesRangeSize) + 1);
+        if(scrollTotalPages < scrollPagesRangeSize)
+            return scrollTotalPages;
+
+        int result = scrollActivePage + scrollPagesRangeSize;
+        return result <= scrollTotalPages ? result : scrollTotalPages;
     }
 }
