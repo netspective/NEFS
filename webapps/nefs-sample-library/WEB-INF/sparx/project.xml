@@ -211,16 +211,16 @@
             <field type="static" name="static_field2" default="Checkbox checked!">
                 <!--conditional action="display" partner="checkbox_field" js-expr="control.checked == true"/-->
             </field>
-            <field type="text" name="text_field_1" caption="Text Field" size="50" hint="Invisible when ADD" default="I guess the data command is not 'add'">
-                <conditional action="apply-flag" flag="invisible" data-cmd="add"/>
+            <field type="text" name="text_field_1" caption="Text Field" size="50" hint="Unavailable when ADD" default="I guess the data command is not 'add'">
+                <conditional action="apply-flag" flag="unavailable" data-cmd="add"/>
             </field>
             <field type="select" name="select_field" caption="Select Field" style="combo"
                 choices="Choice 1=Choice 1's value;Choice 2=Choice 2's value;Choice 3=Choice 3's value" default="Choice 1's value">
-                <conditional action="apply-flag" flag="invisible" data-cmd="add"/>
+                <conditional action="apply-flag" flag="unavailable" data-cmd="add"/>
             </field>
             <field type="static" name="static_field_4" default="The data command is not 'add' or 'edit'">
-                <conditional action="apply-flag" flag="invisible" data-cmd="add"/>
-                <conditional action="apply-flag" flag="invisible" data-cmd="edit"/>
+                <conditional action="apply-flag" flag="unavailable" data-cmd="add"/>
+                <conditional action="apply-flag" flag="unavailable" data-cmd="edit"/>
             </field>
         </dialog>
         <!--dialog name="DialogTest_11" retain-params="*">
