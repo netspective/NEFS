@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EncryptParameterValueSource.java,v 1.1 2003-08-20 04:04:38 shahid.shah Exp $
+ * $Id: EncryptParameterValueSource.java,v 1.2 2003-08-24 18:45:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -111,7 +111,6 @@ public class EncryptParameterValueSource extends AbstractValueSource
 
             public String getTextValue()
             {
-                System.out.println("Retrieving " + text + " using " + key + " " + SimpleSymmetricEncryptor.encrypt(key, text));
                 return SimpleSymmetricEncryptor.encrypt(key, text);
             }
         };

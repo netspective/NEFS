@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EncryptedParametersRequestWrapper.java,v 1.1 2003-08-20 04:06:11 shahid.shah Exp $
+ * $Id: EncryptedParametersRequestWrapper.java,v 1.2 2003-08-24 18:45:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -73,10 +73,7 @@ public class EncryptedParametersRequestWrapper extends HttpServletRequestWrapper
     {
         String encrValue = super.getParameter("_ep." + s);
         if(encrValue != null)
-        {
-            System.out.println("looking for " + "_ep." + s + " found " + encrValue);
             return SimpleSymmetricEncryptor.decrypt(encryptionKey, encrValue);
-        }
 
         return super.getParameter(s);
     }
