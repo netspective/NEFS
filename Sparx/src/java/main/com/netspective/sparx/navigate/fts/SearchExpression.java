@@ -32,43 +32,16 @@
  */
 package com.netspective.sparx.navigate.fts;
 
-import java.io.IOException;
-
-import org.apache.lucene.search.Query;
-
-public interface FullTextSearchResults
+public interface SearchExpression
 {
-    public SearchExpression getExpression();
+    public String getExprText();
 
-    public Query getQuery();
+    public String getExprTextURLEncoded();
 
-    public SearchHits getHits();
+    public boolean isEmptyExpression();
 
-    public String[][] getActivePageHitValues(String[] fieldNames) throws IOException;
+    public boolean isSearchWithinPreviousResults();
 
-    public FullTextSearchPage getSearchPage();
-
-    public int getScrollTotalRows();
-
-    public int getScrollTotalPages();
-
-    public int getScrollRowsPerPage();
-
-    public int getScrollActivePage();
-
-    public int getScrollActivePageStartRow();
-
-    public int getScrollActivePageEndRow();
-
-    public boolean scrollToPage(int page);
-
-    public boolean isScrollable();
-
-    public int getScrollPagesRangeSize();
-
-    public int getScrollPagesRangeStartPage();
-
-    public int getScrollPagesRangeEndPage();
-
+    public String getRewrittenExpressionRedirectParams();
 }
 

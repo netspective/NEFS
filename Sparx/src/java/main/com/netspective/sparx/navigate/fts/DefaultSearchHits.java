@@ -33,42 +33,44 @@
 package com.netspective.sparx.navigate.fts;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.lucene.search.Query;
+import org.apache.lucene.document.Document;
 
-public interface FullTextSearchResults
+public class DefaultSearchHits implements SearchHits
 {
-    public SearchExpression getExpression();
+    public class Hit
+    {
+        private Document document;
+        private float score;
 
-    public Query getQuery();
+        public Hit(Document document, float score)
+        {
+            this.document = document;
+            this.score = score;
+        }
+    }
 
-    public SearchHits getHits();
+    private List documents = new ArrayList();
 
-    public String[][] getActivePageHitValues(String[] fieldNames) throws IOException;
+    public Document getDoc(int n) throws IOException
+    {
+        return ((Hit) documents.get(n)).document;
+    }
 
-    public FullTextSearchPage getSearchPage();
+    public int length()
+    {
+        return documents.size();
+    }
 
-    public int getScrollTotalRows();
+    public float score(int n) throws IOException
+    {
+        return ((Hit) documents.get(n)).score;
+    }
 
-    public int getScrollTotalPages();
-
-    public int getScrollRowsPerPage();
-
-    public int getScrollActivePage();
-
-    public int getScrollActivePageStartRow();
-
-    public int getScrollActivePageEndRow();
-
-    public boolean scrollToPage(int page);
-
-    public boolean isScrollable();
-
-    public int getScrollPagesRangeSize();
-
-    public int getScrollPagesRangeStartPage();
-
-    public int getScrollPagesRangeEndPage();
-
+    public void add(Document doc, float score)
+    {
+        documents.add(new Hit(doc, score));
+    }
 }
-

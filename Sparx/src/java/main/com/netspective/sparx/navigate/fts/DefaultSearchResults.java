@@ -36,31 +36,28 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
-
-import com.netspective.sparx.navigate.fts.SearchHitsRenderer.SearchExpression;
 
 public class DefaultSearchResults implements Serializable, FullTextSearchResults
 {
     private final FullTextSearchPage searchPage;
     private final SearchExpression expression;
     private final Query query;
-    private final Hits hits;
+    private final SearchHits searchHits;
     private final int scrollTotalRows;
     private final int scrollRowsPerPage;
     private final int scrollTotalPages;
     private final int scrollPagesRangeSize;  // number of scrollable pages to show in the page navigation screen
     private int scrollActivePage;
 
-    public DefaultSearchResults(FullTextSearchPage searchPage, SearchExpression expression, Query query, Hits hits, int rowsPerPage)
+    public DefaultSearchResults(final FullTextSearchPage searchPage, final SearchExpression expression, final Query query, final SearchHits searchHits, final int rowsPerPage)
     {
         this.searchPage = searchPage;
         this.expression = expression;
         this.query = query;
-        this.hits = hits;
+        this.searchHits = searchHits;
 
-        this.scrollTotalRows = hits.length();
+        this.scrollTotalRows = searchHits.length();
         this.scrollActivePage = 1;
         this.scrollRowsPerPage = rowsPerPage;
         this.scrollPagesRangeSize = 10;
@@ -75,7 +72,7 @@ public class DefaultSearchResults implements Serializable, FullTextSearchResults
         String[][] hitsMatrix = new String[endRow - startRow][fieldNames.length];
         for(int i = startRow; i < endRow; i++)
         {
-            Document doc = hits.doc(i);
+            Document doc = searchHits.getDoc(i);
             String[] row = hitsMatrix[i - startRow];
             for(int j = 0; j < fieldNames.length; j++)
             {
@@ -108,9 +105,9 @@ public class DefaultSearchResults implements Serializable, FullTextSearchResults
         return searchPage;
     }
 
-    public Hits getHits()
+    public SearchHits getHits()
     {
-        return hits;
+        return searchHits;
     }
 
     public Query getQuery()

@@ -42,19 +42,6 @@ import com.netspective.sparx.navigate.NavigationContext;
 
 public interface SearchHitsRenderer
 {
-    public interface SearchExpression
-    {
-        public String getExprText();
-
-        public String getExprTextURLEncoded();
-
-        public boolean isEmptyExpression();
-
-        public boolean isSearchWithinPreviousResults();
-
-        public String getRewrittenExpressionRedirectParams();
-    }
-
     /**
      * The search expression that has been entered by the user
      */

@@ -34,41 +34,13 @@ package com.netspective.sparx.navigate.fts;
 
 import java.io.IOException;
 
-import org.apache.lucene.search.Query;
+import org.apache.lucene.document.Document;
 
-public interface FullTextSearchResults
+public interface SearchHits
 {
-    public SearchExpression getExpression();
+    public Document getDoc(int n) throws IOException;
 
-    public Query getQuery();
+    public int length();
 
-    public SearchHits getHits();
-
-    public String[][] getActivePageHitValues(String[] fieldNames) throws IOException;
-
-    public FullTextSearchPage getSearchPage();
-
-    public int getScrollTotalRows();
-
-    public int getScrollTotalPages();
-
-    public int getScrollRowsPerPage();
-
-    public int getScrollActivePage();
-
-    public int getScrollActivePageStartRow();
-
-    public int getScrollActivePageEndRow();
-
-    public boolean scrollToPage(int page);
-
-    public boolean isScrollable();
-
-    public int getScrollPagesRangeSize();
-
-    public int getScrollPagesRangeStartPage();
-
-    public int getScrollPagesRangeEndPage();
-
+    public float score(int n) throws IOException;
 }
-

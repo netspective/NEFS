@@ -61,7 +61,6 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationPageBodyType;
 import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.fts.SearchHitsRenderer.SearchExpression;
 
 public class FullTextSearchPage extends NavigationPage
 {
@@ -236,7 +235,13 @@ public class FullTextSearchPage extends NavigationPage
         return QueryParser.parse(expression.getExprText(), defaultSearchFieldName, analyzer);
     }
 
-    public FullTextSearchResults constructSearchResults(NavigationContext nc, SearchExpression expression, Query query, Hits hits)
+    protected SearchHits search(NavigationContext nc, final Query query) throws IOException
+    {
+        final Hits hits = indexSearcher.search(query);
+        return new LuceneSearchHitsWrapper(hits);
+    }
+
+    public FullTextSearchResults constructSearchResults(NavigationContext nc, SearchExpression expression, Query query, SearchHits hits)
     {
         return new DefaultSearchResults(this, expression, query, hits, maxResultsPerPage);
     }
@@ -280,8 +285,6 @@ public class FullTextSearchPage extends NavigationPage
             if(redirectParams != null)
             {
                 final String url = getUrl(nc);
-                System.out.println(url);
-                System.out.println((url.indexOf('?') >= 0 ? "&" : "?") + redirectParams);
                 nc.getHttpResponse().sendRedirect(url + (url.indexOf('?') >= 0 ? "&" : "?") + redirectParams);
                 return;
             }
@@ -324,7 +327,7 @@ public class FullTextSearchPage extends NavigationPage
                 return;
             }
 
-            final Hits hits = indexSearcher.search(query);
+            final SearchHits hits = search(nc, query);
             final FullTextSearchResults searchResults = constructSearchResults(nc, expression, query, hits);
             FullTextSearchResultsActivity activity = new FullTextSearchResultsActivity(nc, searchResults);
             nc.getProject().broadcastActivity(activity);
