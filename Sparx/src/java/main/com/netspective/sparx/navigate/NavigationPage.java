@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.51 2003-11-19 15:30:00 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.52 2003-11-21 19:32:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -164,7 +164,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
         public Flags()
         {
-            setFlag(REQUIRE_LOGIN | HANDLE_META_DATA | HANDLE_HEADER | HANDLE_FOOTER | ALLOW_PAGE_CMD_PARAM | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
+            setFlag(REQUIRE_LOGIN | HANDLE_META_DATA | HANDLE_HEADER | HANDLE_FOOTER | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
         }
 
         public FlagDefn[] getFlagsDefns()
@@ -231,6 +231,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private TemplateProcessor missingParamsBodyTemplate;
     private ValueSource baseAttributes;
     private Command bodyCommand;
+    private ValueSource bodyCommandExpr;
     private List pageTypesConsumed = new ArrayList();
     private List customHandlers = new ArrayList();
     private List enterListeners = new ArrayList();
@@ -880,6 +881,18 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             getFlags().setFlag(Flags.BODY_AFFECTS_NAVIGATION);
     }
 
+    public ValueSource getCommandExpr()
+    {
+        return bodyCommandExpr;
+    }
+
+    public void setCommandExpr(ValueSource bodyCommandExpr)
+    {
+        this.bodyCommandExpr = bodyCommandExpr;
+        getBodyType().setValue(NavigationPageBodyType.COMMAND);
+        getFlags().setFlag(Flags.BODY_AFFECTS_NAVIGATION); // just to be safe, buffer the output in case it will be a dialog when evaluated
+    }
+
     public String getPageFlagsParamName()
     {
         return pageFlagsParamName;
@@ -1051,6 +1064,28 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 break;
 
             case NavigationPageBodyType.COMMAND:
+                ValueSource commandExpr = getCommandExpr();
+                if(commandExpr != null)
+                {
+                    String commandText = commandExpr.getTextValue(nc);
+                    if(commandText != null)
+                    {
+                        try
+                        {
+                            HttpServletCommand httpCommand = (HttpServletCommand) Commands.getInstance().getCommand(commandText);
+                            httpCommand.handleCommand(writer, nc, false);
+                            return;
+                        }
+                        catch (Exception e)
+                        {
+                            getLog().error("Command error in " + this.getClass().getName(), e);
+                            throw new ServletException(e);
+                        }
+                    }
+                }
+
+                // if we get to here, we don't have an expression or the expression returned null so see if we have static
+                // command supplied
                 try
                 {
                     ((HttpServletCommand) getCommand()).handleCommand(writer, nc, false);
