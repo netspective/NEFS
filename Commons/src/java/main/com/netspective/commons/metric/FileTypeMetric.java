@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FileTypeMetric.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: FileTypeMetric.java,v 1.2 2003-10-07 01:35:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.metric;
@@ -68,7 +68,7 @@ public class FileTypeMetric extends Metric
 
     public FileTypeMetric(Metric root, String name, boolean isCode)
     {
-        super(root, name);
+        super(root.getLevel()+1, root, name);
         this.isCode = isCode;
     }
 

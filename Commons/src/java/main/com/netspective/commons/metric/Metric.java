@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Metric.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: Metric.java,v 1.2 2003-10-07 01:35:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.metric;
@@ -63,13 +63,15 @@ public abstract class Metric
 
     private Metrics owner;
     private Metric parent;
+    private int level;
     private String name;
     private List children;
     private Map childMap;
     private long flags;
 
-    public Metric(Metric parent, String name)
+    public Metric(int level, Metric parent, String name)
     {
+        this.level = level;
         setParent(parent);
         this.name = name;
     }
@@ -77,6 +79,11 @@ public abstract class Metric
     protected void setOwner(Metrics owner)
     {
         this.owner = owner;
+    }
+
+    public int getLevel()
+    {
+        return level;
     }
 
     public Metrics getOwner()

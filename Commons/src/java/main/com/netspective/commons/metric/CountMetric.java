@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CountMetric.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: CountMetric.java,v 1.2 2003-10-07 01:35:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.metric;
@@ -59,7 +59,7 @@ public class CountMetric extends Metric
 
     public CountMetric(Metric parent, String name)
     {
-        super(parent, name);
+        super(parent.getLevel()+1, parent, name);
     }
 
     public String getFormattedValue()
