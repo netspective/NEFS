@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationPageBodyHandler.java,v 1.1 2003-08-14 14:23:30 shahid.shah Exp $
+ * $Id: NavigationPageBodyHandler.java,v 1.2 2003-10-24 03:25:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -48,7 +48,9 @@ import java.io.Writer;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
-public interface NavigationPageBodyHandler
+import com.netspective.commons.xml.template.TemplateConsumer;
+
+public interface NavigationPageBodyHandler extends TemplateConsumer
 {
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException;
 }
