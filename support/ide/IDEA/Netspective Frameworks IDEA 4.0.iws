@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4" relativePaths="true">
+  <component name="AspectsView" />
+  <component name="BookmarkManager" />
+  <component name="CheckinPanelState" />
+  <component name="Commander">
+    <leftPanel />
+    <rightPanel />
+    <splitter proportion="0.5" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="COMPILE_IN_BACKGROUND" value="false" />
+    <option name="AUTO_SHOW_ERRORS_IN_EDITOR" value="true" />
+  </component>
+  <component name="Cvs2Configuration">
+    <option name="ON_FILE_ADDING" value="0" />
+    <option name="ON_FILE_REMOVING" value="0" />
+    <option name="PRUNE_EMPTY_DIRECTORIES" value="true" />
+    <option name="SHOW_UPDATE_OPTIONS" value="true" />
+    <option name="SHOW_ADD_OPTIONS" value="true" />
+    <option name="SHOW_REMOVE_OPTIONS" value="true" />
+    <option name="MERGING_MODE" value="0" />
+    <option name="MERGE_WITH_BRANCH1_NAME" value="HEAD" />
+    <option name="MERGE_WITH_BRANCH2_NAME" value="HEAD" />
+    <option name="RESET_STICKY" value="false" />
+    <option name="CREATE_NEW_DIRECTORIES" value="true" />
+    <option name="DEFAULT_TEXT_FILE_SUBSTITUTION" value="kv" />
+    <option name="PROCESS_UNKNOWN_FILES" value="false" />
+    <option name="PROCESS_DELETED_FILES" value="false" />
+    <option name="SHOW_EDIT_DIALOG" value="true" />
+    <option name="RESERVED_EDIT" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <option name="SHOW_CHECKOUT_OPTIONS" value="true" />
+    <option name="CHECKOUT_DATE_OR_REVISION_SETTINGS">
+      <value>
+        <option name="BRANCH" value="" />
+        <option name="DATE" value="" />
+        <option name="USE_BRANCH" value="false" />
+        <option name="USE_DATE" value="false" />
+      </value>
+    </option>
+    <option name="UPDATE_DATE_OR_REVISION_SETTINGS">
+      <value>
+        <option name="BRANCH" value="" />
+        <option name="DATE" value="" />
+        <option name="USE_BRANCH" value="false" />
+        <option name="USE_DATE" value="false" />
+      </value>
+    </option>
+    <option name="SHOW_CHANGES_REVISION_SETTINGS">
+      <value>
+        <option name="BRANCH" value="" />
+        <option name="DATE" value="" />
+        <option name="USE_BRANCH" value="false" />
+        <option name="USE_DATE" value="false" />
+      </value>
+    </option>
+    <option name="SHOW_OUTPUT" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="ADD_WATCH_INDEX" value="0" />
+    <option name="REMOVE_WATCH_INDEX" value="0" />
+    <option name="UPDATE_KEYWORD_SUBSTITUTION" />
+    <option name="MAKE_NEW_FILES_READONLY" value="false" />
+    <option name="PUT_FOCUS_INTO_COMMENT" value="false" />
+    <option name="SHOW_CHECKIN_OPTIONS" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented usage of the simple attempts message in addition to providing a body. Prior to this change the message could be set but it was not being displayed." />
+    <option name="SAVE_LAST_COMMIT_MESSAGE" value="true" />
+    <option name="CHECKIN_DIALOG_SPLITTER_PROPORTION" value="0.8" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_FILE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DebuggerManager">
+    <line_breakpoints />
+    <exception_breakpoints>
+      <breakpoint_any>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="SUSPEND_VM" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="LOG_MESSAGE" value="" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+      </breakpoint_any>
+    </exception_breakpoints>
+    <field_breakpoints />
+    <method_breakpoints />
+  </component>
+  <component name="ErrorTreeViewConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="HIDE_WARNINGS" value="false" />
+  </component>
+  <component name="FileEditorManager" split-orientation="vertical" split-proportion="0.5">
+    <first-group selected-file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/navigate/NavigationControllerServlet.java">
+      <entry file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/console/content/project/value-sources/catalog.ftl" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="2" column="70" selection-start="86" selection-end="98" vertical-scroll-proportion="0.038043477">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/../../../Commons/src/java/main/com/netspective/commons/value/ValueSources.java" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="392" column="16" selection-start="14874" selection-end="14874" vertical-scroll-proportion="0.38586956">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/../../../Commons/src/java/main/com/netspective/commons/value/ValueSource.java" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="95" column="5" selection-start="5100" selection-end="5100" vertical-scroll-proportion="0.4769022">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/header.ftl" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="92" column="50" selection-start="4300" selection-end="4300" vertical-scroll-proportion="0.3423913">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/console/content/data-management/open-connections.ftl" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="17" column="0" selection-start="875" selection-end="875" vertical-scroll-proportion="0.32336956">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/navigate/NavigationControllerServlet.java" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="329" column="61" selection-start="14784" selection-end="14784" vertical-scroll-proportion="0.41847825">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/support/docs/index.ftl" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="14" column="59" selection-start="738" selection-end="738" vertical-scroll-proportion="0.26630434">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/index.ftl" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+    </first-group>
+    <second-group />
+  </component>
+  <component name="HierarchyBrowserManager">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="SORT_ALPHABETICALLY" value="false" />
+    <option name="HIDE_CLASSES_WHERE_METHOD_NOT_IMPLEMENTED" value="false" />
+  </component>
+  <component name="InspectionManager">
+    <option name="AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="SPLITTER_PROPORTION" value="0.5" />
+    <profile name="Default" />
+  </component>
+  <component name="J2EEProjectPane">
+    <expanded_node url="" module="NEFS Sampler" type="J2EEModule" />
+  </component>
+  <component name="PackagesPane">
+    <expanded_node url="com" module="NEFS" type="package" />
+    <expanded_node url="" module="NEFS" type="module" />
+    <expanded_node url="com.netspective" module="NEFS" type="package" />
+  </component>
+  <component name="ProjectPane">
+    <expanded_node url="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/WEB-INF" module="NEFS" type="directory" />
+    <expanded_node url="file://$PROJECT_DIR$/../.." module="NEFS" type="directory" />
+    <expanded_node url="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/support" module="NEFS" type="directory" />
+    <expanded_node url="file://$PROJECT_DIR$/simpleUML Plug-in Diagrams" module="NEFS" type="directory" />
+    <expanded_node url="file://$PROJECT_DIR$" module="NEFS" type="directory" />
+    <expanded_node url="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/support/docs" module="NEFS" type="directory" />
+    <expanded_node url="file://$PROJECT_DIR$/.." module="NEFS" type="directory" />
+    <expanded_node url="file://$PROJECT_DIR$/../../.." module="NEFS" type="directory" />
+    <expanded_node url="" module="NEFS" type="module" />
+    <expanded_node url="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/WEB-INF/sparx" module="NEFS" type="directory" />
+    <expanded_node url="file://$PROJECT_DIR$/../../../webapps" module="NEFS" type="directory" />
+    <expanded_node url="file://$PROJECT_DIR$/../../../webapps/www.netspective.com" module="NEFS" type="directory" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <showStructure PackagesPane="false" ProjectPane="false" J2EEPane="false" />
+      <autoscrollToSource />
+    </navigator>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToClass.includeJavaFiles" value="false" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+  </component>
+  <component name="RunManager">
+    <activeType name="JUnit" />
+    <configuration name="&lt;template&gt;" type="Application" default="true" selected="false">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <module name="" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="JUnit" default="true" selected="false">
+      <module name="" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="Remote" default="true" selected="false">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <module name="" />
+      <WebServerIntegration name="" />
+      <Host>localhost</Host>
+      <Port>5050</Port>
+      <LaunchServer>true</LaunchServer>
+    </configuration>
+    <configuration name="&lt;template&gt;" type="WebLogic Instance" default="true" selected="false">
+      <setting name="WEBLOGIC_INSTANCE_CONFIGURATION_NAME" value="" />
+    </configuration>
+    <configuration name="Commons Test Suite" type="JUnit" default="false" selected="false">
+      <module name="NEFS" />
+      <option name="PACKAGE_NAME" value="com.netspective.commons" />
+      <option name="MAIN_CLASS_NAME" value="com.netspective.commons.Suite" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="C:\Projects\Frameworks\support\ide\IDEA" />
+      <option name="ADDITIONAL_CLASS_PATH">
+        <value>
+          <Item type="Marker" value="" />
+        </value>
+      </option>
+    </configuration>
+    <configuration name="Axiom Test Suite" type="JUnit" default="false" selected="true">
+      <module name="NEFS" />
+      <option name="PACKAGE_NAME" value="com.netspective.axiom" />
+      <option name="MAIN_CLASS_NAME" value="com.netspective.axiom.Suite" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="C:\Projects\Frameworks\support\ide\IDEA" />
+      <option name="ADDITIONAL_CLASS_PATH">
+        <value>
+          <Item type="Marker" value="" />
+        </value>
+      </option>
+    </configuration>
+  </component>
+  <component name="SelectInManager" />
+  <component name="StarteamConfiguration">
+    <option name="SERVER" value="" />
+    <option name="PORT" value="49201" />
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="PROJECT" value="" />
+    <option name="VIEW" value="" />
+    <option name="ALTERNATIVE_WORKING_PATH" value="" />
+    <option name="PUT_FOCUS_INTO_COMMENT" value="false" />
+    <option name="SHOW_CHECKIN_OPTIONS" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <option name="SAVE_LAST_COMMIT_MESSAGE" value="true" />
+    <option name="CHECKIN_DIALOG_SPLITTER_PROPORTION" value="0.8" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_FILE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+  </component>
+  <component name="StructureViewFactory">
+    <option name="SORT_MODE" value="0" />
+    <option name="GROUP_INHERITED" value="true" />
+    <option name="AUTOSCROLL_MODE" value="true" />
+    <option name="SHOW_FIELDS" value="true" />
+    <option name="AUTOSCROLL_FROM_SOURCE" value="false" />
+    <option name="GROUP_GETTERS_AND_SETTERS" value="true" />
+    <option name="SHOW_INHERITED" value="false" />
+    <option name="HIDE_NOT_PUBLIC" value="false" />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="12" y="5" width="1155" height="947" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="9" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="8" />
+      <window_info id="Log4jMonitor" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.35788113" order="0" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="true" internal_type="docked" type="docked" visible="true" weight="0.29827744" order="0" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.32965687" order="2" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24977127" order="1" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.3298969" order="10" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.39948454" order="7" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="1" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.32945737" order="3" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
+      <window_info id="CVS File View" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="3" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="5" />
+      <window_info id="simpleUML" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.32945737" order="11" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
+      <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="3" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="1" />
+      <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="4" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="6" />
+    </layout>
+  </component>
+  <component name="VCS.FileViewConfiguration">
+    <option name="SELECTED_STATUSES" value="DEFAULT" />
+    <option name="SELECTED_COLUMNS" value="DEFAULT" />
+    <option name="SHOW_FILTERS" value="true" />
+    <option name="CUSTOMIZE_VIEW" value="true" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ACTIVE_VCS_NAME" value="CVS" />
+  </component>
+  <component name="VssConfiguration">
+    <CheckoutOptions>
+      <option name="COMMENT" value="" />
+      <option name="DO_NOT_GET_LATEST_VERSION" value="false" />
+      <option name="REPLACE_WRITABLE" value="false" />
+      <option name="RECURSIVE" value="false" />
+    </CheckoutOptions>
+    <CheckinOptions>
+      <option name="COMMENT" value="" />
+      <option name="KEEP_CHECKED_OUT" value="false" />
+      <option name="RECURSIVE" value="false" />
+    </CheckinOptions>
+    <AddOptions>
+      <option name="COMMENT" value="" />
+      <option name="STORE_ONLY_LATEST_VERSION" value="false" />
+      <option name="CHECK_OUT_IMMEDIATELY" value="false" />
+      <option name="FILE_TYPE" value="0" />
+    </AddOptions>
+    <UndocheckoutOptions>
+      <option name="MAKE_WRITABLE" value="false" />
+      <option name="REPLACE_LOCAL_COPY" value="0" />
+      <option name="RECURSIVE" value="false" />
+    </UndocheckoutOptions>
+    <GetOptions>
+      <option name="REPLACE_WRITABLE" value="0" />
+      <option name="MAKE_WRITABLE" value="false" />
+      <option name="RECURSIVE" value="false" />
+    </GetOptions>
+    <option name="CLIENT_PATH" value="" />
+    <option name="SRCSAFEINI_PATH" value="" />
+    <option name="USER_NAME" value="" />
+    <option name="PWD" value="" />
+    <option name="SHOW_CHECKOUT_OPTIONS" value="true" />
+    <option name="SHOW_ADD_OPTIONS" value="true" />
+    <option name="VSS_IS_INITIALIZED" value="false" />
+    <option name="SHOW_UNDOCHECKOUT_OPTIONS" value="true" />
+    <option name="SHOW_DIFF_OPTIONS" value="true" />
+    <option name="SHOW_GET_OPTIONS" value="true" />
+    <option name="REUSE_LAST_COMMENT" value="false" />
+    <option name="PUT_FOCUS_INTO_COMMENT" value="false" />
+    <option name="SHOW_CHECKIN_OPTIONS" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <option name="SAVE_LAST_COMMIT_MESSAGE" value="true" />
+    <option name="CHECKIN_DIALOG_SPLITTER_PROPORTION" value="0.8" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_FILE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+    <buildFile url="file://$PROJECT_DIR$/../../../tools/build.xml">
+      <runInBackground value="false" />
+      <viewClosedWhenNoErrors value="false" />
+      <treeView value="true" />
+      <verbose value="true" />
+    </buildFile>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../../../webapps/nefs-sample-books/WEB-INF/sparx/project.dtd">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="993" column="86" selection-start="73732" selection-end="73732" vertical-scroll-proportion="-4.110951">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../docs/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="75" selection-start="1248" selection-end="1248" vertical-scroll-proportion="0.46604526">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/WEB-INF/sparx/project.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/WEB-INF/sparx/main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="219" column="48" selection-start="12787" selection-end="12792" vertical-scroll-proportion="0.38586956">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/template/freemarker/FreeMarkerConfigurationAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="13" selection-start="4855" selection-end="4855" vertical-scroll-proportion="0.9320905">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/form/handler/DialogExecuteFreemarkerTemplateHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="8" selection-start="4075" selection-end="4075" vertical-scroll-proportion="0.46604526">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/template/freemarker/FreeMarkerTemplateProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="98" column="90" selection-start="4646" selection-end="4646" vertical-scroll-proportion="0.7038044">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/console/content/project/value-sources/catalog.ftl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="70" selection-start="86" selection-end="98" vertical-scroll-proportion="0.038043477">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Commons/src/java/main/com/netspective/commons/value/ValueSources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="392" column="16" selection-start="14874" selection-end="14874" vertical-scroll-proportion="0.38586956">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Commons/src/java/main/com/netspective/commons/value/ValueSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="95" column="5" selection-start="5100" selection-end="5100" vertical-scroll-proportion="0.4769022">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/header.ftl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="50" selection-start="4300" selection-end="4300" vertical-scroll-proportion="0.3423913">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/console/content/data-management/open-connections.ftl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="0" selection-start="875" selection-end="875" vertical-scroll-proportion="0.32336956">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Sparx/src/java/main/com/netspective/sparx/navigate/NavigationControllerServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="329" column="61" selection-start="14784" selection-end="14784" vertical-scroll-proportion="0.41847825">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/index.ftl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../webapps/www.netspective.com/support/docs/index.ftl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="59" selection-start="738" selection-end="738" vertical-scroll-proportion="0.26630434">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="simpleUML.DiagramSettingsWorkspace" />
+  <component name="simpleUML.UMLToolWindowPlugin">
+    <General>
+      <option name="birdViewUpdateDelay" value="2000" />
+      <option name="knownFile0" value="file://$PROJECT_DIR$/simpleUML Plug-in Diagrams/ProjectManager.suml" />
+      <option name="defaultFileLocation" value="file://$PROJECT_DIR$/simpleUML Plug-in Diagrams" />
+      <option name="knownFile1" value="file://$PROJECT_DIR$/simpleUML Plug-in Diagrams/Sparx.suml" />
+    </General>
+    <Classdiagram>
+      <option name="diagramTitleFont" value="SansSerif,1,12" />
+      <option name="diagramFont" value="SansSerif,0,10" />
+      <option name="defaultFieldsExpanded" value="false" />
+      <option name="defaultContructorsExpanded" value="false" />
+      <option name="defaultMethodsExpanded" value="false" />
+      <option name="showParameters" value="true" />
+      <option name="showTooltip" value="true" />
+      <option name="showReturnValues" value="true" />
+      <option name="longModifier" value="true" />
+      <option name="implementsBehaviour" value="1" />
+      <option name="extendsBehaviour" value="1" />
+      <option name="compartmentBehaviour" value="1" />
+      <option name="interfaceBackgroundColor" value="-6494306" />
+      <option name="abstractClassBackgroundColor" value="-1580132" />
+      <option name="classBackgroundColor" value="-6508057" />
+      <option name="diagramBackgroundColor" value="-1" />
+      <option name="useAntialiasedConnectors" value="true" />
+      <option name="quickSourceLinkColor" value="-16776961" />
+      <option name="quickDiagramLinkColor" value="-8454144" />
+      <option name="drawDecorations" value="false" />
+      <option name="hideFieldList" value="" />
+      <option name="showFieldList" value="" />
+      <option name="hideConstructorList" value="" />
+      <option name="showConstructorList" value="" />
+      <option name="hideMethodList" value="" />
+      <option name="showMethodList" value="" />
+      <option name="minimumFigureSize" value="0,0" />
+    </Classdiagram>
+    <Dependencydiagram>
+      <option name="diagramTitleFont" value="SansSerif,1,12" />
+      <option name="diagramFont" value="SansSerif,0,10" />
+      <option name="diagramBackgroundColor" value="-1" />
+      <option name="useAntialiasedConnectors" value="true" />
+      <option name="packageNameCompressionLevel" value="0" />
+    </Dependencydiagram>
+    <Packagediagram>
+      <option name="diagramTitleFont" value="SansSerif,0,12" />
+      <option name="diagramFont" value="SansSerif,0,10" />
+      <option name="packageBackgroundColor" value="-4144960" />
+      <option name="diagramBackgroundColor" value="-1" />
+      <option name="useAntialiasedConnectors" value="true" />
+      <option name="packageNameCompressionLevel" value="2" />
+    </Packagediagram>
+  </component>
+</project>
+

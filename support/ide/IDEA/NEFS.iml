@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4" relativePaths="false">
+  <component name="ModuleRootManager" />
+  <component name="NewModuleRootManager">
+    <output url="file://C:/Projects/Frameworks/support/ide/classes/main" />
+    <exclude-output />
+    <output-test url="file://C:/Projects/Frameworks/support/ide/classes/test" />
+    <content url="file://C:/Projects/Frameworks">
+      <sourceFolder url="file://C:/Projects/Frameworks/Axiom/src/java/main" isTestSource="false" />
+      <sourceFolder url="file://C:/Projects/Frameworks/Axiom/src/java/test" isTestSource="true" />
+      <sourceFolder url="file://C:/Projects/Frameworks/Commons/src/java/main" isTestSource="false" />
+      <sourceFolder url="file://C:/Projects/Frameworks/Commons/src/java/test" isTestSource="true" />
+      <sourceFolder url="file://C:/Projects/Frameworks/Junxion/src/java/main" isTestSource="false" />
+      <sourceFolder url="file://C:/Projects/Frameworks/Junxion/src/java/test" isTestSource="true" />
+      <sourceFolder url="file://C:/Projects/Frameworks/Sparx/src/java/main" isTestSource="false" />
+      <sourceFolder url="file://C:/Projects/Frameworks/Sparx/src/java/test" isTestSource="true" />
+      <excludeFolder url="file://C:/Projects/Frameworks/WEB-INF" />
+      <excludeFolder url="file://C:/Projects/Frameworks/support/docs/lib/redist" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://C:/Projects/Frameworks/Commons/src/java/test" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Axiom Redistributables" level="project" />
+    <orderEntry type="library" name="Commons Redistributables" level="project" />
+    <orderEntry type="library" name="Sparx Redistributables" level="project" />
+  </component>
+</module>
+
