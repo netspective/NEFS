@@ -39,110 +39,51 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.5 2003-06-13 23:50:00 shahid.shah Exp $
+ * $Id: TemplateExistsMethod.java,v 1.1 2003-06-13 23:50:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import freemarker.template.Configuration;
-import freemarker.cache.FileTemplateLoader;
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.MultiTemplateLoader;
-import freemarker.cache.TemplateLoader;
+import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
+import freemarker.core.Environment;
+import freemarker.ext.beans.BeansWrapper;
 
-public class FreeMarkerConfigurationAdapter
+public class TemplateExistsMethod implements TemplateMethodModel
 {
-    private Configuration configuration;
-    private boolean defaultAdapter;
-    private String name;
-    private File baseDir;
-    private Class baseClass;
+    private static final Log log = LogFactory.getLog(TemplateExistsMethod.class);
 
-    public FreeMarkerConfigurationAdapter()
+    public TemplateModel exec(List args) throws TemplateModelException
     {
-    }
-
-    public boolean isDefault()
-    {
-        return defaultAdapter;
-    }
-
-    public void setDefault(boolean defaultAdapter)
-    {
-        this.defaultAdapter = defaultAdapter;
-        if(defaultAdapter)
-            Configuration.setDefaultConfiguration(configuration);
-    }
-
-    public Configuration getConfiguration()
-    {
-        if(configuration == null)
+        if (args.size() != 1)
         {
-            configuration = new Configuration();
-            configuration.setTemplateLoader(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
-            configuration.setSharedVariable("templateExists", new TemplateExistsMethod());
-            SyntaxHighlightTransform.registerTransforms(configuration);
+            throw new TemplateModelException("Wrong arguments: expect name of template to check existence.");
         }
-        return configuration;
-    }
 
-    protected void updateConfiguration()
-    {
-        List tmplLoaders = new ArrayList();
-        tmplLoaders.add(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
-
+        Environment env = Environment.getCurrentEnvironment();
+        boolean found = false;
         try
         {
-            if(baseDir != null)
-                tmplLoaders.add(new FileTemplateLoader(baseDir));
+            found = env.getConfiguration().getTemplate((String) args.get(0)) != null;
+        }
+        catch (FileNotFoundException e)
+        {
+            found = false;
         }
         catch (IOException e)
         {
-            throw new NestableRuntimeException(e);
+            log.error("Unable to check template existence.", e);
+            found = false;
         }
 
-        if(baseClass != null)
-            tmplLoaders.add(new ClassTemplateLoader(baseClass));
-
-        getConfiguration().setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()])));
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public File getBaseDir()
-    {
-        return baseDir;
-    }
-
-    public void setBaseDir(File baseDir)
-    {
-        this.baseDir = baseDir;
-        updateConfiguration();
-    }
-
-    public Class getBaseClass()
-    {
-        return baseClass;
-    }
-
-    public void setBaseClass(Class baseClass)
-    {
-        this.baseClass = baseClass;
-        updateConfiguration();
+        return BeansWrapper.getDefaultInstance().wrap(new Boolean(found));
     }
 }

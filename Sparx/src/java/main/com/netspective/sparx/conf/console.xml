@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.45 2003-06-13 02:19:49 shahid.shah Exp $
+  * $Id: console.xml,v 1.46 2003-06-13 23:50:00 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -34,6 +34,10 @@
                         <frame heading="Configuration Overview"/>
                         <body config="console" source="console-page-content:app-overview.ftl"/>
                     </panel>
+                    <panel type="html">
+                        <frame heading="Overview of Features"/>
+                        <body config="console" source="content/sibling-summaries.ftl"/>
+                    </panel>
                 </panels>
 
                 <panel class="com.netspective.sparx.console.panel.LibrariesPanel"/>
@@ -62,6 +66,9 @@
 	        <page name="dialog" caption="Dialogs" retain-params="selected-dialog-id">
                 <panels>
                     <panel type="console-page-summary"/>
+                    <panel type="console-children-summaries">
+                        <frame heading="Dialog Features"/>
+                    </panel>
                 </panels>
 
 				<page name="catalog" caption="Catalog">
