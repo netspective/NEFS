@@ -40,7 +40,10 @@ public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
     public static final int DEVELOPMENT = ANT_BUILD * 2;
     public static final int TESTING = DEVELOPMENT * 2;
     public static final int TRAINING = TESTING * 2;
-    public static final int PRODUCTION = TRAINING * 2;
+    public static final int STAGING = TRAINING * 2;
+    public static final int PRODUCTION = STAGING * 2;
+    public static final int SERVER = PRODUCTION * 2;
+    public static final int WORKSTATION = SERVER * 2;
     public static final int DEMONSTRATION = PRODUCTION * 2;
 
     /**
@@ -52,7 +55,6 @@ public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
     /**
      * Checks whether the current environment is running in "framework debugging" mode (where the framework
      * itself it being development, as opposed to an application using the framework).
-     * Netspective Enterprise Console.
      */
     public static final int FRAMEWORK_DEVELOPMENT = UNDERGOING_MAINTENANCE * 2;
 
@@ -62,8 +64,11 @@ public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "DEVELOPMENT", DEVELOPMENT),
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "TESTING", TESTING),
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "TRAINING", TRAINING),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "STAGING", STAGING),
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "PRODUCTION", PRODUCTION),
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "DEMONSTRATION", DEMONSTRATION),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "SERVER", SERVER),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "WORKSTATION", WORKSTATION),
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "UNDERGOING_MAINTENANCE", UNDERGOING_MAINTENANCE),
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "FRAMEWORK_DEVELOPMENT", FRAMEWORK_DEVELOPMENT),
     };
@@ -95,6 +100,21 @@ public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
     public boolean isProductionOrTraining()
     {
         return flagIsSet(PRODUCTION | TRAINING);
+    }
+
+    public boolean isProductionOrStaging()
+    {
+        return flagIsSet(PRODUCTION | STAGING);
+    }
+
+    public boolean isProductionOrTrainingOrStaging()
+    {
+        return flagIsSet(PRODUCTION | TRAINING | STAGING);
+    }
+
+    public boolean isStaging()
+    {
+        return flagIsSet(STAGING);
     }
 
     public boolean isProduction()
