@@ -78,12 +78,27 @@ public class NavigationTree implements TemplateProducerParent
     private TemplateProducers templateProducers;
     private int maxLevel = -1;
     private boolean defaultTree;
+    private boolean contentsFinalized;
 
     public NavigationTree()
     {
         root = constructRoot();
         root.setOwner(this);
         root.setName("");
+    }
+
+    /**
+     * Called each time a navigation context is contructed -- this method should set a flag so that it's not called
+     * multiple times.
+     */
+    public void finalizeContents(NavigationContext nc)
+    {
+        if(contentsFinalized) return;
+
+        if(root != null)
+            root.finalizeContents(nc);
+
+        contentsFinalized = true;
     }
 
     public boolean isDefaultTree()

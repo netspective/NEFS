@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.4 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.5 2003-07-09 13:12:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -120,6 +120,12 @@ public class NavigationPath
     public NavigationPath()
     {
         flags = createFlags();
+    }
+
+    public void finalizeContents(NavigationContext nc)
+    {
+        for(int i = 0; i < childrenList.size(); i++)
+            ((NavigationPath) childrenList.get(i)).finalizeContents(nc);
     }
 
     public State constructState()

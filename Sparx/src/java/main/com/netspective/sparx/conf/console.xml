@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.69 2003-07-08 02:30:09 shahid.shah Exp $
+  * $Id: console.xml,v 1.70 2003-07-09 13:12:00 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -40,7 +40,7 @@
             <page name="input-source" caption="Source" heading="Sparx Project Input Source File and Dependencies">
                 <body config="console" source="console-page-content:../input-source.ftl"/>
             </page>
-	        <page name="build" caption="Ant Build" heading="Execute Ant Build Target" command="dialog,console.ant-build"/>
+	        <page name="build" caption="Ant Build" heading="Execute Ant Build Target" class="com.netspective.sparx.console.page.project.AntBuildProjectsPage"/>
             <page name="commands" caption="Commands">
                 <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="selected-command">
                     <body config="console" source="console-page-content:../catalog.ftl"/>

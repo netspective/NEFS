@@ -39,50 +39,39 @@
  */
 
 /**
- * $Id: AntProject.java,v 1.2 2003-07-09 13:11:59 shahid.shah Exp $
+ * $Id: AntBuildProjectsPage.java,v 1.1 2003-07-09 13:12:00 shahid.shah Exp $
  */
 
-package com.netspective.sparx.ant;
+package com.netspective.sparx.console.page.project;
 
-import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.console.ConsoleServletPage;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.ant.AntProjects;
+import com.netspective.sparx.ant.AntProject;
 
-public class AntProject
+public class AntBuildProjectsPage extends ConsoleServletPage
 {
-    private String id;
-    private ValueSource file;
-    private boolean defaultProject;
-
-    public AntProject()
+    public void finalizeContents(NavigationContext nc)
     {
+        super.finalizeContents(nc);
+        syncronize(nc);
     }
 
-    public String getId()
+    public void syncronize(NavigationContext nc)
     {
-        return id;
-    }
+        removeAllChildren();
 
-    public void setId(String id)
-    {
-        this.id = id;
-    }
+        AntProjects antProjects = nc.getProject().getAntProjects();
+        for(int i = 0; i < antProjects.size(); i++)
+        {
+            AntProject antProject = antProjects.getByIndex(i);
+            AntProjectPage page = new AntProjectPage();
+            page.setAntProject(antProject);
+            page.setName(antProject.getId());
+            appendChild(page);
 
-    public ValueSource getFile()
-    {
-        return file;
-    }
-
-    public void setFile(ValueSource file)
-    {
-        this.file = file;
-    }
-
-    public boolean isDefault()
-    {
-        return defaultProject;
-    }
-
-    public void setDefault(boolean defaultProject)
-    {
-        this.defaultProject = defaultProject;
+            if(antProject.isDefault())
+                page.setDefault(true);
+        }
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.9 2003-07-08 14:25:51 shahid.shah Exp $
+ * $Id: Project.java,v 1.10 2003-07-09 13:11:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -389,7 +389,8 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
                 for(int j = 0; j < fields.size(); j++)
                 {
                     DialogField field = fields.get(j);
-                    constants.put(getFormPackage(field), field.getQualifiedName());
+                    if(field.getQualifiedName() != null)
+                        constants.put(getFormPackage(field), field.getQualifiedName());
                 }
             }
         }

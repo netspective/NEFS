@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.18 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.19 2003-07-09 13:12:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -770,6 +770,7 @@ public class Dialog extends AbstractPanel
         code.append("import com.netspective.sparx.form.field.type.*;\n\n");
         code.append("public class " + className + "Context\n");
         code.append("{\n");
+        code.append("    public static final String DIALOG_ID = \""+ getQualifiedName() +"\";\n");
         code.append("    private DialogContext dialogContext;\n");
         code.append("    private DialogContext.DialogFieldStates fieldStates;\n\n");
         code.append("    public "+ className +"Context(DialogContext dc)\n");

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.10 2003-07-03 00:42:44 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.11 2003-07-09 13:12:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -83,6 +83,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     {
         super(aContext, aServlet, aRequest, aResponse);
 
+        // in case the tree needs to do some stuff with its content
+        ownerTree.finalizeContents(this);
+
         this.ownerTree = ownerTree;
         this.skin = skin;
         activePathFindResults = ownerTree.findPath(activePathId);
@@ -90,6 +93,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         maxLevel = ownerTree.getMaxLevel();
 
         NavigationPage firstDescendantWithBody = findFirstMemberWithBody(activePage);
+
         if(firstDescendantWithBody != null)
         {
             if(firstDescendantWithBody != activePage || (activePathId == null || activePathId.equals("/")))

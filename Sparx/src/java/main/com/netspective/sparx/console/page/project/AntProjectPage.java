@@ -39,50 +39,46 @@
  */
 
 /**
- * $Id: AntProject.java,v 1.2 2003-07-09 13:11:59 shahid.shah Exp $
+ * $Id: AntProjectPage.java,v 1.1 2003-07-09 13:12:00 shahid.shah Exp $
  */
 
-package com.netspective.sparx.ant;
+package com.netspective.sparx.console.page.project;
 
-import com.netspective.commons.value.ValueSource;
+import java.io.Writer;
+import java.io.IOException;
 
-public class AntProject
+import javax.servlet.ServletException;
+
+import com.netspective.sparx.console.ConsoleServletPage;
+import com.netspective.sparx.console.form.AntBuildDialog;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.ant.AntProject;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.panel.HtmlPanel;
+
+public class AntProjectPage extends ConsoleServletPage
 {
-    private String id;
-    private ValueSource file;
-    private boolean defaultProject;
+    private AntProject antProject;
 
-    public AntProject()
+    public AntProjectPage()
     {
+        getFlags().setFlag(Flags.HAS_BODY);
     }
 
-    public String getId()
+    public AntProject getAntProject()
     {
-        return id;
+        return antProject;
     }
 
-    public void setId(String id)
+    public void setAntProject(AntProject antProject)
     {
-        this.id = id;
+        this.antProject = antProject;
     }
 
-    public ValueSource getFile()
+    public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        return file;
-    }
-
-    public void setFile(ValueSource file)
-    {
-        this.file = file;
-    }
-
-    public boolean isDefault()
-    {
-        return defaultProject;
-    }
-
-    public void setDefault(boolean defaultProject)
-    {
-        this.defaultProject = defaultProject;
+        nc.getRequest().setAttribute(AntBuildDialog.REQATTRPARAMNAME_ANT_PROJECT_ID, antProject.getId());
+        Dialog dialog = nc.getProject().getDialog("console.ant-build");
+        dialog.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
     }
 }

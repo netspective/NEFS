@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.25 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.26 2003-07-09 13:12:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -1368,6 +1368,9 @@ public class DialogField implements TemplateConsumer
 
 		String memberName = mi.getMemberName();
 		String fieldName = mi.getFieldName();
+
+        if(memberName == null || fieldName == null)
+            return mi;
 
         String fieldClassName = this.getClass().getName().replace('$', '.');
         String stateClassName = getStateClass().getName().replace('$', '.');
