@@ -39,12 +39,10 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.9 2003-11-14 18:09:23 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.10 2003-11-14 19:44:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
-
-import org.apache.oro.text.perl.Perl5Util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,6 +54,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.oro.text.perl.Perl5Util;
+
 public class TextUtils
 {
     public static final String[] BOOLEAN_CHOICES = new String[]
@@ -65,7 +65,6 @@ public class TextUtils
         "on", "off",
         "1", "0"
     };
-
 
     /**
      * Return the name of the given cls that is different from the relativeTo class. Basically, this chops off the
