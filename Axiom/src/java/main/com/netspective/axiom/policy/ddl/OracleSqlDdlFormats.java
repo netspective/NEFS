@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: OracleSqlDdlFormats.java,v 1.5 2004-08-10 16:15:32 shahid.shah Exp $
+ * $Id: OracleSqlDdlFormats.java,v 1.6 2004-08-11 19:42:41 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -60,5 +60,6 @@ public class OracleSqlDdlFormats extends AnsiSqlDdlFormats
         setColumnCommentClauseFormat("COMMENT ON COLUMN ${column.qualifiedName} IS " +
                 "${textUtils.createLiteral(column.descr, \"'\", \"'\", \"''\", true, true, " +
                 "\"'No descr provided.'\")}");
+        setCreatePrimaryKeyIndex(false);        
     }
 }
