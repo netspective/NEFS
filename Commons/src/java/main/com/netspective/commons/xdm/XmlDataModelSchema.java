@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.7 2003-04-01 01:45:33 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.8 2003-04-01 13:08:36 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -238,6 +238,9 @@ public class XmlDataModelSchema
 
         public void addAliases(String primaryName, String[] alternateNames)
         {
+	        if (null == alternateNames)
+		        return;
+
             Set altNames = new HashSet();
             for(int i = 0; i < alternateNames.length; i++)
                 altNames.add(alternateNames[i]);
@@ -251,6 +254,9 @@ public class XmlDataModelSchema
 
         public void addAliases(String primaryName, Set alternateNames)
         {
+	        if (null == alternateNames)
+	            return;
+
             Set set = (Set) aliases.get(primaryName);
             if(set == null)
                 aliases.put(primaryName, alternateNames);
@@ -1160,6 +1166,43 @@ public class XmlDataModelSchema
         {
             return (String[]) aliases.toArray(new String[aliases.size()]);
         }
+
+	    /**
+	     * Returns a string representation of the object. In general, the
+	     * <code>toString</code> method returns a string that
+	     * "textually represents" this object. The result should
+	     * be a concise but informative representation that is easy for a
+	     * person to read.
+	     * It is recommended that all subclasses override this method.
+	     * <p>
+	     * The <code>toString</code> method for class <code>Object</code>
+	     * returns a string consisting of the name of the class of which the
+	     * object is an instance, the at-sign character `<code>@</code>', and
+	     * the unsigned hexadecimal representation of the hash code of the
+	     * object. In other words, this method returns a string equal to the
+	     * value of:
+	     * <blockquote>
+	     * <pre>
+	     * getClass().getName() + '@' + Integer.toHexString(hashCode())
+	     * </pre></blockquote>
+	     *
+	     * @return  a string representation of the object.
+	     */
+	    public String toString () {
+		    String output = primaryName + ": [";
+		    String[] aliases = getAllNames();
+
+            for (int i = 0; i < aliases.length; i ++)
+            {
+	            if (0 != i)
+		            output += ", ";
+
+	            output += aliases[i];
+	        }
+
+		    output += "]";
+		    return output;
+	    }
     }
 
     private String[] getPropertyNames(String methodName, String prefix)
