@@ -51,51 +51,51 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.35 2004-02-24 22:01:44 aye.thu Exp $
+ * $Id: DialogContext.java,v 1.36 2004-03-02 07:42:38 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.command.AbstractHttpServletCommand;
+import com.netspective.sparx.console.panel.presentation.HttpRequestParametersPanel;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextAttributesPanel;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesClassesPanel;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesPanel;
+import com.netspective.sparx.form.field.DialogFieldStates;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.HtmlLayoutPanel;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlPanelActionStates;
+import com.netspective.sparx.panel.HtmlPanelValueContext;
+import com.netspective.sparx.panel.HtmlPanelsStyleEnumeratedAttribute;
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
+import com.netspective.sparx.value.source.DialogFieldValueSource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Element;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import com.netspective.sparx.value.BasicDbHttpServletValueContext;
-import com.netspective.sparx.value.source.DialogFieldValueSource;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.form.field.DialogFieldStates;
-import com.netspective.sparx.panel.HtmlLayoutPanel;
-import com.netspective.sparx.panel.HtmlPanelsStyleEnumeratedAttribute;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.HtmlPanelValueContext;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextAttributesPanel;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesPanel;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesClassesPanel;
-import com.netspective.sparx.console.panel.presentation.HttpRequestParametersPanel;
-import com.netspective.sparx.command.AbstractHttpServletCommand;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.text.TextUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A dialog context functions as the controller of the dialog, tracking and managing field state and field data.
@@ -186,6 +186,12 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     public void setRedirectAfterExecute(boolean redirectAfterExecute)
     {
         this.redirectAfterExecute = redirectAfterExecute;
+    }
+
+    public HtmlPanelActionStates getPanelActionStates()
+    {
+        // TODO: currently this does not support states for panel actions
+        return null;
     }
 
     /**
