@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.27 2003-10-19 17:05:32 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.28 2003-10-19 23:13:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -204,6 +204,8 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
     protected void executAntBuild(ServletConfig servletConfig, File buildFile, String target) throws ServletException
     {
+        log.debug("Executing Ant build " + buildFile + " target " + target);
+
         org.apache.tools.ant.Project antProject = AntProject.getConfiguredProject(buildFile);
         antProject.setProperty("app.home", servletConfig.getServletContext().getRealPath("/"));
         antProject.setProperty("app.init-count", Long.toString(getInitializationCount()));
@@ -246,7 +248,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         catch (Exception e)
         {
             exceptionThrown = e;
-            e.printStackTrace();
         }
 
         if(exceptionThrown != null)
