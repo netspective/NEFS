@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.12 2003-08-07 03:45:57 aye.thu Exp $
+ * $Id: DialogDirector.java,v 1.13 2003-11-05 05:27:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -115,6 +115,10 @@ public class DialogDirector extends DialogField
         return style;
     }
 
+    /**
+     * Sets the style for the dialog director. Currently available styles are data, confirm, and acknowledge.
+     * @param style
+     */
     public void setStyle(DialogDirectorStyle style)
     {
         this.style = style;
@@ -141,6 +145,10 @@ public class DialogDirector extends DialogField
         return cancelActionUrl;
     }
 
+    /**
+     * Sets the cancel action URl
+     * @param cancelActionUrl
+     */
     public void setCancelActionUrl(ValueSource cancelActionUrl)
     {
         this.cancelActionUrl = cancelActionUrl;
@@ -151,6 +159,10 @@ public class DialogDirector extends DialogField
         return cancelCaption;
     }
 
+    /**
+     * Sets the cancel action caption
+     * @param cancelCaption
+     */
     public void setCancelCaption(ValueSource cancelCaption)
     {
         this.cancelCaption = cancelCaption;
@@ -161,6 +173,10 @@ public class DialogDirector extends DialogField
         return pendingActionUrl;
     }
 
+    /**
+     * Sets the pending URL
+     * @param pendingActionUrl
+     */
     public void setPendingActionUrl(ValueSource pendingActionUrl)
     {
         this.pendingActionUrl = pendingActionUrl;
@@ -171,6 +187,10 @@ public class DialogDirector extends DialogField
         return pendingCaption;
     }
 
+    /**
+     * Sets the caption for the submit button during pending stage
+     * @param pendingCaption
+     */
     public void setPendingCaption(ValueSource pendingCaption)
     {
         this.pendingCaption = pendingCaption;
@@ -181,6 +201,10 @@ public class DialogDirector extends DialogField
         return submitActionUrl;
     }
 
+    /**
+     * Sets the URL for the submit button
+     * @param submitActionUrl
+     */
     public void setSubmitActionUrl(ValueSource submitActionUrl)
     {
         this.submitActionUrl = submitActionUrl;
@@ -191,6 +215,10 @@ public class DialogDirector extends DialogField
         return submitCaption;
     }
 
+    /**
+     * Sets the caption for the submit button
+     * @param submitCaption
+     */
     public void setSubmitCaption(ValueSource submitCaption)
     {
         this.submitCaption = submitCaption;
@@ -201,16 +229,29 @@ public class DialogDirector extends DialogField
         return nextActionsField;
     }
 
+    /**
+     * Sets the select field used for showing the next actions
+     * @param nextActionsField
+     */
     public void setNextActionsField(DirectorNextActionsSelectField nextActionsField)
     {
         this.nextActionsField = nextActionsField;
     }
 
+    /**
+     * Gets the next action URL based on the selected next action item
+     * @param dc
+     * @return
+     */
     public String getNextActionUrl(DialogContext dc)
     {
         return nextActionsField == null ? null : nextActionsField.getSelectedActionUrl(dc);
     }
 
+    /**
+     * Adds a next action item
+     * @param nextActionsField
+     */
     public void addNextActions(DirectorNextActionsSelectField nextActionsField)
     {
         this.nextActionsField = nextActionsField;
@@ -224,6 +265,12 @@ public class DialogDirector extends DialogField
             nextActionsField.makeStateChanges(dc, stage);
     }
 
+    /**
+     * Produces the HTML for the action buttons of the dialog
+     * @param writer    the Writer object associated with the response buffer
+     * @param dc        dialog context
+     * @throws IOException
+     */
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
         Dialog dialog = dc.getDialog();
