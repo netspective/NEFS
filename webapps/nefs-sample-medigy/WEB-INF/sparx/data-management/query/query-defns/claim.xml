@@ -31,12 +31,12 @@
         <presentation>
             <select-dialog name="searchClaimDialog">
                 <frame heading="Search for Claims"/>
-                <field type="text" name="claim_id"/>
-                <field type="select" name="claim_status_id" choices="schema-enum:Claim_Status_Type" prepend-blank="yes"/>
-                <field type="text" name="patient_lastName"/>
-                <field type="text" name="patient_firstName"/>
-                <field type="select" name="servprov_id" choices="query:person.get-all-physicians" prepend-blank="yes"/>
-                <field type="select" name="servfac_id" choices="query:org.get-all-orgs" prepend-blank="yes"/>
+                <field type="text" name="claim_id" caption="Claim ID"/>
+                <field type="select" name="claim_status_id" caption="Claim Status" choices="schema-enum:Claim_Status_Type" prepend-blank="yes"/>
+                <field type="text" name="patient_lastName" caption="Patient Last Name"/>
+                <field type="text" name="patient_firstName" caption="Patient First Name"/>
+                <field type="select" name="servprov_id" caption="Physician" choices="query:person.get-all-physicians" prepend-blank="yes"/>
+                <field type="select" name="servfac_id" caption="Facility" choices="query:org.get-all-orgs" prepend-blank="yes"/>
 
                 <select>
                     <display field="claim_id"/>

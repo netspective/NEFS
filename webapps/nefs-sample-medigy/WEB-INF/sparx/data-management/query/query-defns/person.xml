@@ -29,24 +29,22 @@
         <presentation>
             <select-dialog name="searchPersonDialog">
                 <frame heading="Search for People"/>
-                <field type="text" name="person_id"/>
-                <field type="text" name="name_first"/>
-                <field type="text" name="name_last"/>
-                <field type="text" name="birth_date"/>
-                <field type="select" name="class" choices="schema-enum:Person_Type" prepend-blank="yes"/>
-                <field type="select" name="gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
-                <field type="select" name="ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
-                <field type="select" name="language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
-                <field type="select" name="marital_status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
+                <field type="text" name="person_id" caption="Person ID"/>
+                <field type="text" name="name_first" caption="First Name"/>
+                <field type="text" name="name_last" caption="Last Name"/>
+                <field type="text" name="birth_date" caption="Birth Date"/>
+                <field type="select" name="class" caption="Person Type" choices="schema-enum:Person_Type" prepend-blank="yes"/>
+                <field type="select" name="gender" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
+                <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
+                <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
+                <field type="select" name="marital_status" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
 
                 <select distinct="yes">
                     <display field="person_id"/>
                     <display field="name_first"/>
                     <display field="name_last"/>
                     <display field="birth_date"/>
-
                     <display field="gender"/>
-
                     <display field="marital_status"/>
 
                     <condition field="person_id" allow-null="no" comparison="equals" value="field:person_id" connector="and"/>
@@ -79,14 +77,14 @@
         <presentation>
             <select-dialog name="searchPatientDialog">
                 <frame heading="Search for Patients"/>
-                <field type="text" name="person_id"/>
-                <field type="text" name="name_first"/>
-                <field type="text" name="name_last"/>
-                <field type="text" name="birth_date"/>
-                <field type="select" name="gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
-                <field type="select" name="ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
-                <field type="select" name="language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
-                <field type="select" name="marital_status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
+                <field type="text" name="person_id" caption="Person ID"/>
+                <field type="text" name="name_first" caption="First Name"/>
+                <field type="text" name="name_last" caption="Last Name"/>
+                <field type="text" name="birth_date" caption="Birth Date"/>
+                <field type="select" name="gender" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
+                <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
+                <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
+                <field type="select" name="marital_status" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
 
                 <select>
                     <display field="person_id"/>
@@ -126,14 +124,14 @@
         <presentation>
             <select-dialog name="searchPhysicianDialog">
                 <frame heading="Search for Physicians"/>
-                <field type="text" name="person_id"/>
-                <field type="text" name="name_first"/>
-                <field type="text" name="name_last"/>
-                <field type="text" name="birth_date"/>
-                <field type="select" name="gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
-                <field type="select" name="ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
-                <field type="select" name="language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
-                <field type="select" name="marital_status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
+                <field type="text" name="person_id" caption="Person ID"/>
+                <field type="text" name="name_first" caption="First Name"/>
+                <field type="text" name="name_last" caption="Last Name"/>
+                <field type="text" name="birth_date" caption="Birth Date"/>
+                <field type="select" name="gender" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
+                <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
+                <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
+                <field type="select" name="marital_status" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
 
                 <select>
                     <display field="person_id"/>
@@ -175,15 +173,14 @@
         <presentation>
             <select-dialog name="searchNurseDialog">
                 <frame heading="Search for Nurses"/>
-                <field type="text" name="person_id"/>
-                <field type="text" name="name_first"/>
-                <field type="text" name="name_last"/>
-                <field type="text" name="birth_date"/>
-                <field type="select" name="gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
-                <field type="select" name="ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
-                <field type="select" name="language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
-                <field type="select" name="marital_status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
-
+                <field type="text" name="person_id" caption="Person ID"/>
+                <field type="text" name="name_first" caption="First Name"/>
+                <field type="text" name="name_last" caption="Last Name"/>
+                <field type="text" name="birth_date" caption="Birth Date"/>
+                <field type="select" name="gender" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
+                <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
+                <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
+                <field type="select" name="marital_status" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
                 <select>
                     <display field="person_id"/>
                     <display field="name_first"/>
@@ -226,14 +223,14 @@
         <presentation>
             <select-dialog name="searchStaffDialog">
                 <frame heading="Search for Staff"/>
-                <field type="text" name="person_id"/>
-                <field type="text" name="name_first"/>
-                <field type="text" name="name_last"/>
-                <field type="text" name="birth_date"/>
-                <field type="select" name="gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
-                <field type="select" name="ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
-                <field type="select" name="language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
-                <field type="select" name="marital_status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
+                <field type="text" name="person_id" caption="Person ID"/>
+                <field type="text" name="name_first" caption="First Name"/>
+                <field type="text" name="name_last" caption="Last Name"/>
+                <field type="text" name="birth_date" caption="Birth Date"/>
+                <field type="select" name="gender" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
+                <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
+                <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
+                <field type="select" name="marital_status" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
 
                 <select>
                     <display field="person_id"/>
@@ -275,14 +272,14 @@
         <presentation>
             <select-dialog name="searchReferringDoctorDialog">
                 <frame heading="Search for Referring Doctors"/>
-                <field type="text" name="person_id"/>
-                <field type="text" name="name_first"/>
-                <field type="text" name="name_last"/>
-                <field type="text" name="birth_date"/>
-                <field type="select" name="gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
-                <field type="select" name="ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
-                <field type="select" name="language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
-                <field type="select" name="marital_status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
+                <field type="text" name="person_id" caption="Person ID"/>
+                <field type="text" name="name_first" caption="First Name"/>
+                <field type="text" name="name_last" caption="Last Name"/>
+                <field type="text" name="birth_date" caption="Birth Date"/>
+                <field type="select" name="gender" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
+                <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
+                <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
+                <field type="select" name="marital_status" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
 
                 <select>
                     <display field="person_id"/>

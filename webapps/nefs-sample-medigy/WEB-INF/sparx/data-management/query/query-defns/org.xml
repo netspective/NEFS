@@ -9,6 +9,9 @@
                 </panel>
             </presentation>
         </field>
+        <field name="org_abbrev" caption="Abbrev" join="Org" column="org_abbrev"/>
+        <field name="ticker_symbol" caption="Ticker Symbol" join="Org" column="ticker_symbol"/>
+        <field name="sic_code" caption="Sic Code" join="Org" column="sic_code"/>
         <field name="org_type_id" caption="Org Type ID" join="OrgClassification" column="org_type_id"/>
 
         <join name="Org" table="Org"/>
@@ -17,15 +20,17 @@
 
         <presentation>
             <select-dialog name="searchDialog">
-                <frame heading="Search for Organizations"/>
-                <field type="text" name="org_id"/>
-                <field type="text" name="org_name"/>
-                <field type="select" name="org_type_id" choices="schema-enum:Org_Type" prepend-blank="yes"/>
+                <frame heading="static:Search for Organizations"/>
+                <field type="text" name="org_id" caption="Org ID"/>
+                <field type="text" name="org_name" caption="Name"/>
+                <field type="select" name="org_type_id" choices="schema-enum:Org_Type" prepend-blank="yes" caption="Type"/>
 
                 <select>
                     <display field="org_id"/>
                     <display field="org_name"/>
-
+                    <display field="org_abbrev"/>
+                    <display field="ticker_symbol"/>
+                    <display field="sic_code"/>
                     <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
                     <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
                     <condition field="org_type_id" allow-null="no" comparison="equals" value="field:org_type_id" connector="and"/>
@@ -35,6 +40,9 @@
                             <report>
                                 <column heading="ID"/>
                                 <column heading="Name"/>
+                                <column heading="Abbrev"/>
+                                <column heading="Ticker Symbol"/>
+                                <column heading="Sic Code"/>
                             </report>
                         </panel>
                     </presentation>
@@ -45,13 +53,13 @@
         <presentation>
             <select-dialog name="searchAncilliaryServiceDialog">
                 <frame heading="Search for Anciliary Services"/>
-                <field type="text" name="org_id"/>
-                <field type="text" name="org_name"/>
+                <field type="text" name="org_id" caption="Org ID"/>
+                <field type="text" name="org_name" caption="Name"/>
 
                 <select>
                     <display field="org_id"/>
                     <display field="org_name"/>
-
+                    <display field="org_abbrev"/>
                     <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
                     <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
                     <condition field="org_type_id" allow-null="no" comparison="equals" value="9" connector="and"/>
@@ -61,6 +69,7 @@
                             <report>
                                 <column heading="ID"/>
                                 <column heading="Name"/>
+                                <column heading="Abbrev"/>
                             </report>
                         </panel>
                     </presentation>
@@ -71,13 +80,13 @@
         <presentation>
             <select-dialog name="searchAssociatedProviderDialog">
                 <frame heading="Search for Associated Providers"/>
-                <field type="text" name="org_id"/>
-                <field type="text" name="org_name"/>
+                <field type="text" name="org_id" caption="Org ID"/>
+                <field type="text" name="org_name" caption="Name"/>
 
                 <select>
                     <display field="org_id"/>
                     <display field="org_name"/>
-
+                    <display field="org_abbrev"/>
                     <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
                     <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
                     <condition field="org_type_id" allow-null="no" comparison="equals" value="field:org_type_id" connector="and"/>
@@ -87,6 +96,7 @@
                             <report>
                                 <column heading="ID"/>
                                 <column heading="Name"/>
+                                <column heading="Abbrev"/>
                             </report>
                         </panel>
                     </presentation>
@@ -97,13 +107,13 @@
         <presentation>
             <select-dialog name="searchDepartmentDialog">
                 <frame heading="Search for Departments"/>
-                <field type="text" name="org_id"/>
-                <field type="text" name="org_name"/>
+                <field type="text" name="org_id" caption="Org ID"/>
+                <field type="text" name="org_name" caption="Name"/>
 
                 <select>
                     <display field="org_id"/>
                     <display field="org_name"/>
-
+                    <display field="org_abbrev"/>
                     <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
                     <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
                     <condition field="org_type_id" allow-null="no" comparison="equals" value="field:org_type_id" connector="and"/>
@@ -113,6 +123,7 @@
                             <report>
                                 <column heading="ID"/>
                                 <column heading="Name"/>
+                                <column heading="Abbrev"/>
                             </report>
                         </panel>
                     </presentation>
@@ -123,13 +134,13 @@
         <presentation>
             <select-dialog name="searchEmployerDialog">
                 <frame heading="Search for Employers"/>
-                <field type="text" name="org_id"/>
-                <field type="text" name="org_name"/>
+                <field type="text" name="org_id" caption="Org ID"/>
+                <field type="text" name="org_name" caption="Name"/>
 
                 <select>
                     <display field="org_id"/>
                     <display field="org_name"/>
-
+                    <display field="org_abbrev"/>
                     <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
                     <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
                     <condition field="org_type_id" allow-null="no" comparison="equals" value="7" connector="and"/>
@@ -139,6 +150,7 @@
                             <report>
                                 <column heading="ID"/>
                                 <column heading="Name"/>
+                                <column heading="Abbrev"/>
                             </report>
                         </panel>
                     </presentation>
@@ -149,13 +161,13 @@
         <presentation>
             <select-dialog name="searchInsuranceDialog">
                 <frame heading="Search for Insurance Organizations"/>
-                <field type="text" name="org_id"/>
-                <field type="text" name="org_name"/>
+                <field type="text" name="org_id" caption="Org ID"/>
+                <field type="text" name="org_name" caption="Name"/>
 
                 <select>
                     <display field="org_id"/>
                     <display field="org_name"/>
-
+                    <display field="org_abbrev"/>
                     <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
                     <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
                     <condition field="org_type_id" allow-null="no" comparison="equals" value="6" connector="and"/>
@@ -165,6 +177,7 @@
                             <report>
                                 <column heading="ID"/>
                                 <column heading="Name"/>
+                                <column heading="Abbrev"/>
                             </report>
                         </panel>
                     </presentation>
@@ -175,13 +188,13 @@
         <presentation>
             <select-dialog name="searchIPADialog">
                 <frame heading="Search for IPAs"/>
-                <field type="text" name="org_id"/>
-                <field type="text" name="org_name"/>
+                <field type="text" name="org_id" caption="Org ID"/>
+                <field type="text" name="org_name" caption="Name"/>
 
                 <select>
                     <display field="org_id"/>
                     <display field="org_name"/>
-
+                    <display field="org_abbrev"/>
                     <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
                     <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
                     <condition field="org_type_id" allow-null="no" comparison="equals" value="8" connector="and"/>
@@ -191,6 +204,7 @@
                             <report>
                                 <column heading="ID"/>
                                 <column heading="Name"/>
+                                <column heading="Abbrev"/>
                             </report>
                         </panel>
                     </presentation>
@@ -201,13 +215,13 @@
         <presentation>
             <select-dialog name="searchPharmacyDialog">
                 <frame heading="Search for Pharmacies"/>
-                <field type="text" name="org_id"/>
-                <field type="text" name="org_name"/>
+                <field type="text" name="org_id" caption="Org ID"/>
+                <field type="text" name="org_name" caption="Name"/>
 
                 <select>
                     <display field="org_id"/>
                     <display field="org_name"/>
-
+                    <display field="org_abbrev"/>
                     <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
                     <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
                     <condition field="org_type_id" allow-null="no" comparison="equals" value="10" connector="and"/>
@@ -217,6 +231,7 @@
                             <report>
                                 <column heading="ID"/>
                                 <column heading="Name"/>
+                                <column heading="Abbrev"/>
                             </report>
                         </panel>
                     </presentation>
