@@ -111,7 +111,7 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
             return null;
 
         final FullTextSearchPage searchPage = (FullTextSearchPage) nc.getActivePage();
-        final String defaultFieldName = searchPage.getDefaultAdvancedSearchFieldName();
+        final String[] defaultFieldNames = searchPage.getDefaultAdvancedSearchFieldNames();
 
         final String allWordsParamValue = request.getParameter("all");
         final String exactPhraseParamValue = request.getParameter("phrase");
@@ -121,19 +121,19 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
 
         if(allWordsParamValue != null && allWordsParamValue.trim().length() > 0)
         {
-            Query query = getAllWordsQuery(nc, defaultFieldName, allWordsParamValue);
+            Query query = getAllWordsQuery(nc, defaultFieldNames, allWordsParamValue);
             advancedQuery.add(query, true, false);
         }
 
         if(exactPhraseParamValue != null && exactPhraseParamValue.trim().length() > 0)
         {
-            Query query = getExactPhraseQuery(nc, defaultFieldName, exactPhraseParamValue);
+            Query query = getExactPhraseQuery(nc, defaultFieldNames, exactPhraseParamValue);
             advancedQuery.add(query, true, false);
         }
 
         if(atLeastOneWordParamValue != null && atLeastOneWordParamValue.trim().length() > 0)
         {
-            Query query = getAtLeastOneWordQuery(nc, defaultFieldName, atLeastOneWordParamValue);
+            Query query = getAtLeastOneWordQuery(nc, defaultFieldNames, atLeastOneWordParamValue);
             advancedQuery.add(query, true, false);
         }
 
@@ -183,36 +183,52 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
         return fieldQuery;
     }
 
-    protected Query getAtLeastOneWordQuery(final NavigationContext nc, final String defaultFieldName, final String atLeastOneWordParamValue)
+    protected Query getAtLeastOneWordQuery(final NavigationContext nc, final String[] defaultFieldNames, final String atLeastOneWordParamValue)
     {
-        String[] words = TextUtils.getInstance().split(atLeastOneWordParamValue, " ", true);
-        if(words.length == 1)
-            return new TermQuery(new Term(defaultFieldName, words[0]));
-        else
+        final BooleanQuery atLeastOneWordQuery = new BooleanQuery();
+        for (int i = 0; i < defaultFieldNames.length; i++)
         {
-            BooleanQuery wordGroup = new BooleanQuery();
-            for(int i = 0; i < words.length; i++)
-                wordGroup.add(new TermQuery(new Term(defaultFieldName, words[i])), false, false);
-            return wordGroup;
+            String[] words = TextUtils.getInstance().split(atLeastOneWordParamValue, " ", true);
+            if(words.length == 1)
+                atLeastOneWordQuery.add(new TermQuery(new Term(defaultFieldNames[i], words[0])),false,false);
+            else
+            {
+                BooleanQuery wordGroup = new BooleanQuery();
+                for(int j = 0; j < words.length; j++)
+                    wordGroup.add(new TermQuery(new Term(defaultFieldNames[i], words[j])), false, false);
+                atLeastOneWordQuery.add(wordGroup,false,false);
+            }
         }
+        return atLeastOneWordQuery;
     }
 
-    protected Query getExactPhraseQuery(final NavigationContext nc, final String defaultFieldName, final String exactPhraseParamValue)
+    protected Query getExactPhraseQuery(final NavigationContext nc, final String[] defaultFieldNames, final String exactPhraseParamValue)
     {
+        final BooleanQuery exactPhraseQuery = new BooleanQuery();
+        for (int i = 0; i < defaultFieldNames.length; i++)
+        {
         final PhraseQuery phraseQuery = new PhraseQuery();
         final String[] words = TextUtils.getInstance().split(exactPhraseParamValue, " ", true);
-        for(int i = 0; i < words.length; i++)
-            phraseQuery.add(new Term(defaultFieldName, words[i]));
-        return phraseQuery;
+        for(int j = 0; j < words.length; j++)
+            phraseQuery.add(new Term(defaultFieldNames[i], words[j]));
+        exactPhraseQuery.add(phraseQuery, false,false);
+        }
+        return exactPhraseQuery;
     }
 
-    protected Query getAllWordsQuery(final NavigationContext nc, final String defaultFieldName, final String allWordsParamValue)
+
+    protected Query getAllWordsQuery(final NavigationContext nc, final String[] defaultFieldNames, final String allWordsParamValue)
     {
+        final BooleanQuery allWordsQuery = new BooleanQuery();
+        for (int i = 0; i < defaultFieldNames.length; i++)
+        {
         final BooleanQuery booleanQuery = new BooleanQuery();
         final String[] words = TextUtils.getInstance().split(allWordsParamValue, " ", true);
-        for(int i = 0; i < words.length; i++)
-            booleanQuery.add(new TermQuery(new Term(defaultFieldName, words[i])), true, false);
-        return booleanQuery;
+        for(int j = 0; j < words.length; j++)
+            booleanQuery.add(new TermQuery(new Term(defaultFieldNames[i], words[j])), true, false);
+        allWordsQuery.add(booleanQuery,false,false);
+        }
+        return allWordsQuery;
     }
 
     public SearchExpression getSearchExpression(final NavigationContext nc)

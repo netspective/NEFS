@@ -89,7 +89,7 @@ public class FullTextSearchPage extends NavigationPage
     private IndexSearcher indexSearcher;
     private Analyzer analyzer = new StandardAnalyzer();
     private String defaultSearchFieldName;
-    private String defaultAdvancedSearchFieldName;
+    private String[] defaultAdvancedSearchFieldNames;
     private SearchHitsRenderer renderer;
     private int maxResultsPerPage = 25;
     private int totalDocsInIndex = 0;
@@ -244,14 +244,14 @@ public class FullTextSearchPage extends NavigationPage
         this.defaultSearchFieldName = defaultSearchFieldName;
     }
 
-    public String getDefaultAdvancedSearchFieldName()
+    public String[] getDefaultAdvancedSearchFieldNames()
     {
-        return defaultAdvancedSearchFieldName;
+        return defaultAdvancedSearchFieldNames;
     }
 
-    public void setDefaultAdvancedSearchFieldName(String defaultAdvancedSearchFieldName)
+    public void setDefaultAdvancedSearchFieldNames(String[] defaultAdvancedSearchFieldNames)
     {
-        this.defaultAdvancedSearchFieldName = defaultAdvancedSearchFieldName;
+        this.defaultAdvancedSearchFieldNames = defaultAdvancedSearchFieldNames;
     }
 
     public Analyzer getAnalyzer()
