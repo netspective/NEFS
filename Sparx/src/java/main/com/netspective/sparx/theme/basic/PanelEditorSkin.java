@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelEditorSkin.java,v 1.3 2004-03-05 18:45:57 aye.thu Exp $
+ * $Id: PanelEditorSkin.java,v 1.4 2004-03-12 06:54:51 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -170,8 +170,8 @@ public class PanelEditorSkin extends RecordEditorReportSkin
             for (int i=0; i < actions.size(); i++)
             {
                 HtmlPanelAction item = actions.get(i);
-               HtmlPanelAction.State state = actionStates.getState(item);
-               if (state != null &&  state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
+                HtmlPanelAction.State state = actionStates.getState(item);
+                if (state != null &&  state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
                    continue;
 
                 if (displayedItems == 0)
@@ -254,7 +254,7 @@ public class PanelEditorSkin extends RecordEditorReportSkin
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/panel-editor-action-edit.gif") + "\" " +
-                "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+                "alt=\"\" height=\"7\" width=\"7\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
@@ -283,7 +283,7 @@ public class PanelEditorSkin extends RecordEditorReportSkin
             ValueSource redirect = reportAction.getRedirect();
             Theme theme = getTheme();
 
-            String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/panel-editor-action-delete.gif") + "\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+            String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/panel-editor-action-delete.gif") + "\" alt=\"\" height=\"7\" width=\"7\" border=\"0\">";
             String deleteRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             deleteRecordUrl = report.replaceOutputPatterns(rc, ds, deleteRecordUrl);
 

@@ -39,48 +39,41 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.1 2004-03-11 13:09:26 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.2 2004-03-12 06:53:14 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
 
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.Project;
-import com.netspective.sparx.panel.editor.PanelEditorContentElement;
-import com.netspective.sparx.panel.AbstractPanel;
-import com.netspective.sparx.panel.HtmlPanelValueContext;
-import com.netspective.sparx.panel.HtmlPanelActionStates;
-import com.netspective.sparx.panel.HtmlPanelAction;
-import com.netspective.sparx.panel.QueryReportPanel;
-import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.sparx.panel.HtmlPanelActions;
-import com.netspective.sparx.util.HttpUtils;
-import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.command.PanelEditorCommand;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.sql.Query;
-import com.netspective.commons.xml.template.TemplateCatalog;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.Template;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.sparx.panel.AbstractPanel;
+import com.netspective.sparx.panel.BasicHtmlPanelValueContext;
+import com.netspective.sparx.panel.HtmlPanelAction;
+import com.netspective.sparx.panel.HtmlPanelActionStates;
+import com.netspective.sparx.panel.HtmlPanelActions;
+import com.netspective.sparx.panel.HtmlPanelBanner;
+import com.netspective.sparx.panel.HtmlPanelFrame;
+import com.netspective.sparx.panel.HtmlPanelSkin;
+import com.netspective.sparx.panel.HtmlPanelValueContext;
+import com.netspective.sparx.theme.Theme;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.io.Writer;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for custom panel editors. This class is meant to be EXTENDED to create new panel editor types. This does not
@@ -90,6 +83,7 @@ import java.lang.reflect.Constructor;
  */
 public class PanelEditor extends AbstractPanel
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     protected static final Log log = LogFactory.getLog(PanelEditor.class);
     public static final String PANEL_RECORD_EDIT_ACTION     = "Edit";
     public static final String PANEL_CONTENT_ADD_ACTION      = "Add";
@@ -199,6 +193,11 @@ public class PanelEditor extends AbstractPanel
     public Map getElementsAsMap()
     {
         return elements;
+    }
+
+    public PanelEditorContentElement getElement(String name)
+    {
+        return (PanelEditorContentElement) elements.get(name);
     }
 
     /**
@@ -435,7 +434,7 @@ public class PanelEditor extends AbstractPanel
      */
     public void initialize()
     {
-        //createPanelBannerActions(nc);
+        createPanelBannerActions();
         createPanelFrameActions();
         initialized = true;
     }
@@ -506,18 +505,38 @@ public class PanelEditor extends AbstractPanel
                 throw new RuntimeException("Record editor panel '" + getQualifiedName() + "' requires the request " +
                         "parameter '" + getRequireRequestParam() + "'.");
         }
+        if (!isInitialized())
+            initialize();
         int mode = state.getCurrentMode();
-        String activeElement = state.getActiveElement();
+        BasicHtmlPanelValueContext pvc = new BasicHtmlPanelValueContext(nc, this);
 
+        // only when the mode is in DISPLAY mode, the panel editor is displayed
+        HtmlPanelSkin skin = null;
+        if (mode != PanelEditor.MODE_DISPLAY && mode != PanelEditor.MODE_MANAGE)
+        {
+            skin = nc.getActiveTheme().getTemplateSkin("panel-editor-compressed");
+            pvc.setPanelRenderFlags(RENDERFLAG_NOFRAME | RENDERFLAG_HIDE_FRAME_HEADING);
+
+        }
+        else
+        {
+            skin = nc.getActiveTheme().getTemplateSkin("panel-editor-full");
+        }
+        preparePanelActionStates(nc, pvc, mode);
+
+        skin.renderPanelRegistration(writer, pvc);
+        skin.renderFrameBegin(writer, pvc);
+
+        String activeElement = state.getActiveElement();
         StringWriter activeWriter = new StringWriter();
         StringWriter inactiveWriter = new StringWriter();
         PanelEditorContentElement[] elements = getElementsAsArray();
         for (int i=0; i < elements.length; i++)
         {
             if (activeElement != null && elements[i].getName().equals(activeElement))
-                elements[i].renderElement(activeWriter, state);
+                elements[i].renderElement(activeWriter, nc, state, true);
             else
-                elements[i].renderElement(inactiveWriter, state);
+                elements[i].renderElement(inactiveWriter, nc, state, false);
         }
 
         if (activeWriter.getBuffer().length() > 0)
@@ -528,29 +547,28 @@ public class PanelEditor extends AbstractPanel
         {
             writer.write(inactiveWriter.getBuffer().toString());
         }
-    }
+        skin.renderFrameEnd(writer, pvc);
 
+    }
 
     /**
      * Calculate and process the state of the all the panel actions based on current context
      *
      * @param nc                current navigation context
      * @param vc                current report panel context
-     * @param panelRecordCount  total number of records being displayed
      * @param mode              panel mode
      */
-    public void preparePanelActionStates(NavigationContext nc, HtmlPanelValueContext vc, int panelRecordCount, int mode)
+    public void preparePanelActionStates(NavigationContext nc, HtmlPanelValueContext vc, int mode)
     {
         HtmlPanelActionStates actionStates = vc.getPanelActionStates();
-        /*
         if (mode == MODE_DISPLAY)
         {
-            actionStates.getState(PANEL_RECORD_DONE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
-            if (panelRecordCount > 0)
-                actionStates.getState(PANEL_CONTENT_ADD_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
-            actionStates.getState(PANEL_CONTENT_DELETE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
-            if (panelRecordCount <= 0)
-                actionStates.getState(PANEL_CONTENT_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+            actionStates.getState("Done").getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+            PanelEditorContentElement[] elements = getElementsAsArray();
+            for (int i=0; i < elements.length; i++)
+            {
+                actionStates.getState("Add " + elements[i].getCaption()).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+            }
         }
         else if (mode == MODE_ADD || mode == MODE_EDIT || mode == MODE_DELETE)
         {
@@ -560,9 +578,13 @@ public class PanelEditor extends AbstractPanel
         {
             actionStates.getState(PANEL_CONTENT_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
         }
-        */
+
     }
 
+    /**
+     * Creates the frame actions for the panel editor. They are MANAGE, DONE.
+     *
+     */
     public void createPanelFrameActions()
     {
         HtmlPanelFrame frame = getFrame();
@@ -578,17 +600,6 @@ public class PanelEditor extends AbstractPanel
         manageAction.setRedirect(new RedirectValueSource(manageUrl));
         actions.add(manageAction);
 
-        PanelEditorContentElement[] elements = getElementsAsArray();
-        for (int i = 0; i < elements.length; i++)
-        {
-            String addUrl = generatePanelActionUrl(PanelEditor.MODE_ADD);
-            addUrl = elements[i].appendElementInfoToUrl(addUrl, PanelEditor.MODE_ADD);
-            HtmlPanelAction addAction = frame.createAction();
-            addAction.setCaption(new StaticValueSource("Add " + elements[i].getCaption()));
-            addAction.setRedirect(new RedirectValueSource(addUrl));
-            actions.add(addAction);
-
-        }
         String doneUrl = generatePanelActionUrl(PanelEditor.MODE_DISPLAY);
         HtmlPanelAction doneAction = frame.createAction();
         doneAction.setCaption(new StaticValueSource("Done"));
@@ -596,6 +607,30 @@ public class PanelEditor extends AbstractPanel
         actions.add(doneAction);
         frame.setActions(actions);
     }
+
+    public void createPanelBannerActions()
+    {
+        // Calculate what to display in the banner
+        if (getBanner() == null)
+            setBanner(new HtmlPanelBanner());
+
+        HtmlPanelBanner banner = getBanner();
+        HtmlPanelActions actions = new HtmlPanelActions();
+
+        PanelEditorContentElement[] elements = getElementsAsArray();
+        for (int i=0; i < elements.length; i++)
+        {
+            HtmlPanelAction addAction = banner.createAction();
+            PanelEditorContentElement element = elements[i];
+            String addUrl = generatePanelActionUrl(PanelEditor.MODE_ADD);
+            addUrl = element.appendElementInfoToUrl(addUrl, PanelEditor.MODE_ADD);
+            addAction.setCaption(new StaticValueSource("Add " + element.getCaption()));
+            addAction.setRedirect(new RedirectValueSource(addUrl));
+            actions.add(addAction);
+        }
+        banner.setActions(actions);
+    }
+
 
     /**
      * Check to see if all the actions needed for the  panel edito have been ADDED. The

@@ -39,20 +39,21 @@
  */
 
 /**
- * $Id: PanelEditorContentElement.java,v 1.1 2004-03-11 13:09:26 aye.thu Exp $
+ * $Id: PanelEditorContentElement.java,v 1.2 2004-03-12 06:53:14 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.HtmlLayoutPanel;
+import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.Template;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.HtmlLayoutPanel;
 
+import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base content element for a panel editor
@@ -168,7 +169,7 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
      * @param writer
      * @param state
      */
-    public void renderElement(Writer writer, PanelEditorState state)
+    public void renderElement(Writer writer, NavigationContext nc, PanelEditorState state, boolean active) throws IOException
     {
 
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTheme.java,v 1.10 2004-03-05 18:47:10 aye.thu Exp $
+ * $Id: BasicTheme.java,v 1.11 2004-03-12 06:52:41 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -57,8 +57,8 @@ public class BasicTheme extends AbstractTheme
         addReportSkin(new RecordManagerReportSkin(this, "record-manager-compressed", "panel-output", "panel/output", false));
         addReportSkin(new RecordEditorReportSkin(this, "record-editor", "panel-output", "panel/output", true));
         addReportSkin(new RecordEditorReportSkin(this, "record-editor-compressed", "panel-output", "panel/output", false));
-        addReportSkin(new PanelEditorSkin(this, "panel-editor", "panel-editor", "panel/output", true));
-        addReportSkin(new PanelEditorSkin(this, "panel-editor-compressed", "panel-editor", "panel/output", false));
+        addReportSkin(new ReportPanelEditorContentSkin(this, "panel-editor", "panel-editor", "panel/output", true));
+        addReportSkin(new ReportPanelEditorContentSkin(this, "panel-editor-compressed", "panel-editor", "panel/output", false));
 
         addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail", "panel-output", "panel/output", true, 1, true));
         addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail-compressed", "panel-output", "panel/output", false, 1, true));
@@ -75,6 +75,8 @@ public class BasicTheme extends AbstractTheme
 
         addPanelSkin(new BasicHtmlPanelSkin(this, "tabbed-compressed", "panel-output", "panel/output", false));
         addPanelSkin(new BasicHtmlPanelSkin(this, "tabbed-full", "panel-output", "panel/output", true));
+        addPanelSkin(new PanelEditorSkin(this, "panel-editor-compressed", "panel-editor", "panel/output", false));
+        addPanelSkin(new PanelEditorSkin(this, "panel-editor-full", "panel-editor", "panel/output", true));
 
     }
 

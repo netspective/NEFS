@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.55 2004-03-07 02:51:17 aye.thu Exp $
+ * $Id: Dialog.java,v 1.56 2004-03-12 06:54:23 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -93,8 +93,8 @@ import com.netspective.sparx.form.listener.DialogValidateListener;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.panel.HtmlInputPanel;
-import com.netspective.sparx.panel.PanelEditor;
-import com.netspective.sparx.panel.PanelEditorState;
+import com.netspective.sparx.panel.editor.PanelEditor;
+import com.netspective.sparx.panel.editor.PanelEditorState;
 import com.netspective.sparx.theme.Theme;
 import org.apache.commons.collections.LRUMap;
 import org.apache.commons.lang.exception.NestableRuntimeException;

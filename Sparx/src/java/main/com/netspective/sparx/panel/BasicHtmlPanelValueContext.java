@@ -39,11 +39,12 @@
  */
 
 /**
- * $Id: BasicHtmlPanelValueContext.java,v 1.4 2004-03-02 07:38:48 aye.thu Exp $
+ * $Id: BasicHtmlPanelValueContext.java,v 1.5 2004-03-12 06:53:14 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
 import javax.servlet.Servlet;
@@ -54,11 +55,31 @@ public class BasicHtmlPanelValueContext extends BasicDbHttpServletValueContext i
 {
     private HtmlPanel panel;
     private int panelRenderFlags;
+    private HtmlPanelActionStates panelActionStates = new HtmlPanelActionStates(this);
+
+    public BasicHtmlPanelValueContext(NavigationContext nc, HtmlPanel panel)
+    {
+        this(nc.getServlet(), nc.getRequest(), nc.getResponse(), panel);
+        setNavigationContext(nc);
+    }
 
     public BasicHtmlPanelValueContext(Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel)
     {
         super(servlet, request, response);
         this.panel = panel;
+
+        HtmlPanelActions bannerActions = panel.getBanner().getActions();
+        HtmlPanelActions frameActions = panel.getFrame().getActions();
+        for (int k = 0; k < bannerActions.size(); k++)
+        {
+            HtmlPanelAction.State state = bannerActions.get(k).constructStateInstance(this);
+            panelActionStates.addState(state);
+        }
+        for (int j = 0; j < frameActions.size(); j++)
+        {
+            HtmlPanelAction.State state = frameActions.get(j).constructStateInstance(this);
+            panelActionStates.addState(state);
+        }
     }
 
     public HtmlPanel getPanel()
@@ -83,7 +104,6 @@ public class BasicHtmlPanelValueContext extends BasicDbHttpServletValueContext i
 
     public HtmlPanelActionStates getPanelActionStates()
     {
-        // TODO: currently this does not support states for panel actions
-        return null;
+        return panelActionStates;
     }
 }

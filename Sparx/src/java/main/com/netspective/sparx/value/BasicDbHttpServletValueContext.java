@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.53 2004-03-09 04:13:50 aye.thu Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.54 2004-03-12 06:54:05 aye.thu Exp $
  */
 
 package com.netspective.sparx.value;
@@ -66,8 +66,8 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationControllerServletOptions;
 import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.panel.PanelEditor;
-import com.netspective.sparx.panel.PanelEditorState;
+import com.netspective.sparx.panel.editor.PanelEditor;
+import com.netspective.sparx.panel.editor.PanelEditorState;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.util.HttpUtils;

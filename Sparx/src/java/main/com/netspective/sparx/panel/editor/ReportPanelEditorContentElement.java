@@ -39,41 +39,41 @@
  */
 
 /**
- * $Id: ReportPanelEditorContentElement.java,v 1.1 2004-03-11 13:09:26 aye.thu Exp $
+ * $Id: ReportPanelEditorContentElement.java,v 1.2 2004-03-12 06:52:50 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
 
-import com.netspective.sparx.sql.Query;
-import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.DialogState;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.QueryReportPanel;
-import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.sparx.panel.HtmlPanelActions;
-import com.netspective.sparx.panel.HtmlPanelAction;
-import com.netspective.sparx.panel.HtmlPanelBanner;
-import com.netspective.sparx.panel.HtmlPanelValueContext;
-import com.netspective.sparx.panel.HtmlPanelActionStates;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlReportActions;
-import com.netspective.sparx.report.tabular.HtmlReportAction;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.command.DialogCommand;
-import com.netspective.sparx.command.PanelEditorCommand;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.source.RedirectValueSource;
-
-import java.io.Writer;
-import java.io.IOException;
-
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.command.DialogCommand;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogState;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlPanelAction;
+import com.netspective.sparx.panel.HtmlPanelActionStates;
+import com.netspective.sparx.panel.HtmlPanelActions;
+import com.netspective.sparx.panel.HtmlPanelBanner;
+import com.netspective.sparx.panel.HtmlPanelFrame;
+import com.netspective.sparx.panel.HtmlPanelValueContext;
+import com.netspective.sparx.panel.QueryReportPanel;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlReportAction;
+import com.netspective.sparx.report.tabular.HtmlReportActions;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.sql.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.StringTokenizer;
 
 /**
  * Content item for report type panel editors
@@ -221,6 +221,15 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     public Query getQuery()
     {
         return query;
+    }
+
+    public static String getPkValueFromState(PanelEditorState state)
+    {
+        System.out.println(state.getActiveElementInfo());
+        StringTokenizer st = new StringTokenizer(state.getActiveElementInfo());
+        if (st.hasMoreTokens())
+            return st.nextToken();
+        return null;
     }
 
     /**
@@ -382,8 +391,9 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         if (!isInitialized())
             initialize();
         QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
+        qrp.setScrollable(true);
         HtmlTabularReportValueContext context = qrp.createContext(nc, skin);
-        //context.setPanelRenderFlags(flags);
+        context.setPanelRenderFlags(HtmlPanel.RENDERFLAG_NOFRAME);
 
         TabularReportDataSource dataRoot = qrp.createDataSource(nc);
         int totalRows = dataRoot.getTotalRows();
@@ -402,20 +412,31 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
             // record action was defined so we need to display the requested display mode
             DialogContext dc = dialog.createContext(nc, nc.getActiveTheme().getDefaultDialogSkin());
             dc.addRetainRequestParams(DialogCommand.DIALOG_COMMAND_RETAIN_PARAMS);
-
+            dc.getHttpRequest().setAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE, state);
+            
+            dc.setPanelRenderFlags(HtmlPanel.RENDERFLAG_HIDE_FRAME_HEADING | HtmlPanel.RENDERFLAG_NOFRAME);
             dialog.prepareContext(dc);
-
-            writer.write("<td class=\"panel-editor-dialog\">");
+            writer.write("<table cellpadding=\"2\"><tr>");
             try
             {
+                writer.write("<td valign=\"top\">");
                 dialog.render(writer, dc, true);
+                writer.write("</td>");
             }
             catch (DialogExecuteException dee)
             {
                 log.error("Failed to render dialog of element '" + getName() + "' in panel editor '" + getParent().getQualifiedName() + "'.");
                 throw new RuntimeException("Failed to render dialog of element '" + getName() + "' in panel editor '" + getParent().getQualifiedName() + "'.");
             }
+            writer.write("<td valign=\"top\">");
+            context.setPanelRenderFlags(HtmlPanel.RENDERFLAG_HIDE_FRAME_HEADING | HtmlPanel.RENDERFLAG_NOFRAME);
+            qrp.render(writer, context, dataRoot);
+            writer.write("</td>");
+            writer.write("</tr></table>");
         }
-        qrp.render(writer, context, dataRoot);
+        else
+        {
+            qrp.render(writer, context, dataRoot);
+        }
     }
 }

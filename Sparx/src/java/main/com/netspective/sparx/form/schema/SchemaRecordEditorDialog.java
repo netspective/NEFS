@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.21 2004-03-11 13:13:20 aye.thu Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.22 2004-03-12 06:52:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -87,6 +87,7 @@ import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.panel.editor.PanelEditor;
 import com.netspective.sparx.panel.editor.PanelEditorState;
+import com.netspective.sparx.panel.editor.ReportPanelEditorContentElement;
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
@@ -237,7 +238,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 if (request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE) != null)
                 {
                     PanelEditorState state = (PanelEditorState) request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
-                    //primaryKeyValueSpec =  state.getActiveElement();
+                    primaryKeyValueSpec = ReportPanelEditorContentElement.getPkValueFromState(state);
                 }
                 else
                 {
