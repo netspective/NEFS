@@ -103,7 +103,7 @@ import org.apache.commons.lang.exception.NestableException;
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
  *
- * @version $Id: NavigationPage.java,v 1.60 2004-02-11 18:49:46 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.61 2004-02-25 20:52:20 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -269,6 +269,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private ValueSource title;
     private ValueSource heading;
     private ValueSource subHeading;
+    private ValueSource summary;
+    private ValueSource description;
     private ValueSource retainParams;
     private ValueSource assignStateParams;
     private List requireRequestParams = new ArrayList();
@@ -831,6 +833,26 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public void setTitle(ValueSource title)
     {
         this.title = title;
+    }
+
+    public ValueSource getSummary()
+    {
+        return summary;
+    }
+
+    public void setSummary(ValueSource summary)
+    {
+        this.summary = summary;
+    }
+
+    public ValueSource getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(ValueSource description)
+    {
+        this.description = description;
     }
 
     public ValueSource getRedirect()
