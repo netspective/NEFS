@@ -484,20 +484,65 @@
     *********************************************************************
     -->
 
-    <!-- TODO: need to implement the class and template -->
+    <table-type name="Entity_Hierarchy" class="com.netspective.axiom.schema.table.type.EntityHierarchyTable">
+        <xdm:template-param name="hierTypeTable" required="yes"/>
+        <xdm:template-param name="entityRef" required="yes"/>
+
+        <xdm:template-param name="hierTypeIdColName" default="hier_type_id"/>
+        <xdm:template-param name="primaryIdColName" default="primary_id"/>
+        <xdm:template-param name="relatedIdColName" default="related_id"/>
+        <xdm:template-param name="hierDistanceColName" default="rel_distance"/>
+        <xdm:template-param name="uniqueHierIndexName" default="hier_unq"/>
+
+        <description>
+            This table is used to store a mapping of the hierarchy of a single entity with respect to other entities
+            of the same type. For example, it can keep track of parent/child and ancestor/descendent hiearchies for
+            person, org, or other entities.
+        </description>
+
+        <column name="${params.hierTypeIdColName}" lookup-ref="${params.hierTypeTable}" indexed="yes" required="yes" descr="The relationship type."/>
+        <column name="${params.primaryIdColName}" parent-ref="${params.entityRef}" indexed="yes" required="yes" descr="The owner of the relationship row this entry was created for"/>
+        <column name="${params.relatedIdColName}" lookup-ref="${params.entityRef}" indexed="yes" required="yes" descr="The relationship row this entry was created for"/>
+        <column name="${params.hierDistanceColName}" type="long-integer" indexed="yes" descr="The distance from which the related item is related by rel_type_id (used by ancestor, descentant)"/>
+
+        <!-- make sure a relationship record remains unique -->
+        <index name="${owner.abbrev}_${params.uniqueHierIndexName}" unique="yes" columns="${params.hierTypeIdColName},${params.primaryIdColName},${params.relatedIdColName}"/>
+
+        <!-- required for the RelationshipMapTable class so that it knows the columns it is working with -->
+        <hier-type-id-col-name>${params.hierTypeIdColName}</hier-type-id-col-name>
+        <primary-id-col-name>${params.primaryIdColName}</primary-id-col-name>
+        <related-id-col-name>${params.relatedIdColName}</related-id-col-name>
+        <hier-distance-col-name>${params.hierDistanceColName}</hier-distance-col-name>
+        <unique-hier-index-name>${owner.abbrev}_${params.uniqueHierIndexName}</unique-hier-index-name>
+    </table-type>
+
+    <table-type name="Entity_Hierarchy_Type" type="Enumeration">
+        <!-- if any of the enum IDs change here the corresponding constants must be modified in
+             the com.netspective.axiom.schema.table.type.RelationshipMapTable source code -->
+        <enumerations>
+            <enum id="0">Parent</enum> <!-- signifies that the primary id is a parent of the related id -->
+            <enum id="1">Ancestor</enum> <!-- signifies that the primary id is an ancestor of the related id (distance column tells how far, 0 is same as parent) -->
+        </enumerations>
+    </table-type>
+
+    <table-type name="Entity_Hierarchy_Status" type="Status">
+        <!-- nothing here yet, just a placeholder for later enhancements -->
+    </table-type>
 
     <table-type name="Relationship_Map" class="com.netspective.axiom.schema.table.type.RelationshipMapTable">
+        <xdm:template-param name="relationshipTypeIdColName" default="rel_type_id"/>
         <xdm:template-param name="relationshipTypeTable" required="yes"/>
         <xdm:template-param name="primaryIdColName" default="primary_item_id"/>
         <xdm:template-param name="relatedIdColName" default="related_item_id"/>
         <xdm:template-param name="primaryIdParentRef" required="yes"/>
         <xdm:template-param name="relatedIdLookupRef" required="yes"/>
+        <xdm:template-param name="uniqueRelationshipIndexName" default="rel_unq"/>
 
         <description>
-            This table type is used to store a mapping between relationships and their
+            This table is used to store a mapping between relationships and their
             corresponding inverse relationship.  Its primary function is to ease the
             creation of an automated relationship field which will be able to update
-            itself _and_ the record of the other half of the relationship.
+            itself and the record of the other half of the relationship.
             Thus, if a relationship exists between two organizations such that
             Org A is a child of Org B, when it comes time to insert that record,
             an intelligent relationship field will automatically determine that if
@@ -507,95 +552,30 @@
             as well.
         </description>
 
-        <!-- it's crucial (because of the Java-code backing this table) that these be the last 3 columns in the table,
-             which means that if you add any columns it should be to the beginning of this group -->
-        <column name="rel_type_id" lookup-ref="${params.relationshipTypeTable}" indexed="yes" descr="The relationship type."/>
-        <column name="${params.primaryIdColName}" parent-ref="${params.primaryIdParentRef}" descr="The owner of the relationship row this entry was created for"/>
-        <column name="${params.relatedIdColName}" lookup-ref="${params.relatedIdLookupRef}" descr="The relationship row this entry was created for"/>
+        <column name="${params.relationshipTypeIdColName}" lookup-ref="${params.relationshipTypeTable}" indexed="yes" required="yes" descr="The relationship type."/>
+        <column name="${params.primaryIdColName}" parent-ref="${params.primaryIdParentRef}" indexed="yes" required="yes" descr="The owner of the relationship row this entry was created for"/>
+        <column name="${params.relatedIdColName}" lookup-ref="${params.relatedIdLookupRef}" indexed="yes" required="yes" descr="The relationship row this entry was created for"/>
+
+        <!-- make sure a relationship record remains unique -->
+        <index name="${owner.abbrev}_${params.uniqueRelationshipIndexName}" unique="yes" columns="${params.relationshipTypeIdColName},${params.primaryIdColName},${params.relatedIdColName}"/>
 
         <!-- required for the RelationshipMapTable class so that it knows the columns it is working with -->
+        <relationship-type-id-col-name>${params.relationshipTypeIdColName}</relationship-type-id-col-name>
         <primary-id-col-name>${params.primaryIdColName}</primary-id-col-name>
         <related-id-col-name>${params.relatedIdColName}</related-id-col-name>
+        <unique-relationship-index-name>${owner.abbrev}_${params.uniqueRelationshipIndexName}</unique-relationship-index-name>
     </table-type>
 
     <table-type name="Relationship_Type" type="Enumeration">
+        <!-- if any of the enum IDs change here the corresponding constants must be modified in
+             the com.netspective.axiom.schema.table.type.RelationshipMapTable source code -->
         <enumerations>
-            <enum id="9990">Hierarchy: Self</enum>
-            <enum id="9991">Hierarchy: Parent</enum>
-            <enum id="9992">Hierarchy: Child</enum>
-            <enum id="9993">Hierarchy: Ancestor</enum>
-            <enum id="9994">Hierarchy: Descendent</enum>
-            <enum id="9995">Hierarchy: Sibling</enum>
+            <enum id="0">Child</enum> <!-- primaryIdColName's ref is a child of relatedIdColName's ref -->
         </enumerations>
     </table-type>
 
     <table-type name="Relationship_Status" type="Status">
         <!-- nothing here yet, just a placeholder for later enhancements -->
-    </table-type>
-
-    <!--
-    *********************************************************************
-    ** Attribute tables and enumerations
-    *********************************************************************
-    -->
-
-    <table-type name="Entity_Attribute_Category_Type" type="Enumeration">
-
-    </table-type>
-
-    <table-type name="Entity_Attribute_Type" type="Enumeration">
-        <enumerations>
-            <enum>Text</enum>
-            <enum>Integer</enum>
-            <enum>Float</enum>
-            <enum>Date</enum>
-            <enum>Duration</enum>
-        </enumerations>
-    </table-type>
-
-    <table-type name="Entity_Attribute">
-        <xdm:template-param name="parentIdColName" default="parent_id"/>
-        <xdm:template-param name="parentRef" required="yes"/>
-        <xdm:template-param name="categoryTypeLookupRef" required="yes"/>
-        <xdm:template-param name="attributeTypeLookupRef" required="yes"/>
-
-        <column name="${params.parentIdColName}" parent-ref="${params.parentRef}" descr="Reference to the parent of this attribute"/>
-        <column name="attr_category_id" lookup-ref="${params.categoryTypeLookupRef}" descr="The attribute category"/>
-        <column name="attr_type_id" lookup-ref="${params.attributeTypeLookupRef}" descr="The attribute category"/>
-        <column name="attr_label" type="text" size="255" descr="The attribute's label (caption, name, etc.)"/>
-        <column name="attr_value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
-        <column name="attr_value_text" type="text" size="4096" descr="The attribute's text value (actual value may be in a type-specific table but this column has the text representation for display to the user)">
-            <table name="${owner.name}_Text" abbrev="${owner.abbrev}Txt">
-                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
-                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
-                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
-                <column name="text_value" type="text" size="4096" descr="The text value"/>
-            </table>
-            <table name="${owner.name}_Integer" abbrev="${owner.abbrev}Int">
-                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
-                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
-                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
-                <column name="integer_value" type="integer" descr="The integral value"/>
-            </table>
-            <table name="${owner.name}_Float" abbrev="${owner.abbrev}Fl">
-                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
-                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
-                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
-                <column name="float_value" type="float" descr="The floating-point value"/>
-            </table>
-            <table name="${owner.name}_Date" abbrev="${owner.abbrev}Dt">
-                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
-                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
-                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
-                <column name="date_value" type="date" descr="The date value"/>
-            </table>
-            <table name="${owner.name}_Duration" abbrev="${owner.abbrev}Du">
-                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
-                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
-                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
-                <column name="date" type="duration"/>
-            </table>
-        </column>
     </table-type>
 
 </xdm:container>

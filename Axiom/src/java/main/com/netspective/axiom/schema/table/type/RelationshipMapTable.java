@@ -38,8 +38,10 @@ import com.netspective.axiom.schema.table.BasicTable;
 
 public class RelationshipMapTable extends BasicTable
 {
+    private String relationshipTypeIdColName;
     private String primaryIdColName;
     private String relatedIdColName;
+    private String uniqueRelationshipIndexName;
 
     public RelationshipMapTable(Column parentColumn)
     {
@@ -69,5 +71,25 @@ public class RelationshipMapTable extends BasicTable
     public void setRelatedIdColName(String relatedIdColName)
     {
         this.relatedIdColName = relatedIdColName;
+    }
+
+    public String getRelationshipTypeIdColName()
+    {
+        return relationshipTypeIdColName;
+    }
+
+    public void setRelationshipTypeIdColName(String relationshipTypeIdColName)
+    {
+        this.relationshipTypeIdColName = relationshipTypeIdColName;
+    }
+
+    public String getUniqueRelationshipIndexName()
+    {
+        return uniqueRelationshipIndexName;
+    }
+
+    public void setUniqueRelationshipIndexName(String uniqueRelationshipIndexName)
+    {
+        this.uniqueRelationshipIndexName = uniqueRelationshipIndexName;
     }
 }

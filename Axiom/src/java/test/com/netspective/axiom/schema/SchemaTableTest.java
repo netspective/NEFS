@@ -45,8 +45,10 @@ import com.netspective.axiom.TestUtils;
 import com.netspective.axiom.schema.column.ColumnsCollection;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TablesCollection;
+import com.netspective.axiom.schema.table.type.EntityHierarchyTable;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.schema.table.type.EnumerationTableRows;
+import com.netspective.axiom.schema.table.type.RelationshipMapTable;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
@@ -274,18 +276,73 @@ public class SchemaTableTest extends TestCase
         table.getQueryDefinition().setOwner(table);
     }
 
-    /*TODO:  Need to figure out how to test BasicTable.TablePresentationTemplate
-    public void testTablePresentationTemplate()
+    public int createEntity1RowAndChildren(ConnectionContext cc, Table entity1Table, EntityHierarchyTable entity1HierarchyTable,
+                                           Object parentId, String namePrefix, int createChildrenCount, int maxDepth, int atDepth) throws SQLException, NamingException
     {
-        BasicTable table = (BasicTable) populatedSchema.getTables().getByName("Test_Three");
-        try
-        {
-            table.getPresentation().getTemplateName(null,null,null,null);
-        }
-        catch (SAXException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
-        }
-    }*/
+        int result = 0;
 
+        if(atDepth > maxDepth)
+            return result;
+
+        for(int i = 0; i < createChildrenCount; i++)
+        {
+            final Row entity1Row = entity1Table.createRow();
+            final ColumnValues entity1ColumnValues = entity1Row.getColumnValues();
+            final String entityName = namePrefix + i;
+            entity1ColumnValues.getByName("name").setValue(entityName);
+            entity1Table.insert(cc, entity1Row);
+
+            // we've inserted an entity record so keep track
+            result++;
+
+            final Object entity1IdValue = entity1ColumnValues.getByName("entity_1_id").getValue();
+            if(parentId != null)
+            {
+                final Row hierChildRow = entity1HierarchyTable.createRow();
+                final ColumnValues entity1HierColumnValues = hierChildRow.getColumnValues();
+                entity1HierColumnValues.getByName("hier_type_id").setValue(EntityHierarchyTable.RELTYPEID_OBJ_HIERARCHY_PARENT);
+                entity1HierColumnValues.getByName("primary_id").setValue(parentId);
+                entity1HierColumnValues.getByName("related_id").setValue(entity1IdValue);
+                entity1HierarchyTable.insert(cc, hierChildRow);
+            }
+
+            result = result + createEntity1RowAndChildren(cc, entity1Table, entity1HierarchyTable, entity1IdValue, entityName + ".",
+                                                          createChildrenCount, maxDepth, atDepth + 1);
+        }
+
+        return result;
+    }
+
+    public void testHierarchyTables() throws SQLException, NamingException
+    {
+        Table entity1Table = populatedSchema.getTables().getByName("Entity_1");
+        Table entity2Table = populatedSchema.getTables().getByName("Entity_2");
+        EntityHierarchyTable entity1HierarchyTable = (EntityHierarchyTable) populatedSchema.getTables().getByName("Entity_1_Hierarchy");
+        RelationshipMapTable entity12RelationshipTable = (RelationshipMapTable) populatedSchema.getTables().getByName("Entity_1_2_Relationship");
+
+        assertNotNull(entity1Table);
+        assertNotNull(entity2Table);
+        assertNotNull(entity1HierarchyTable);
+        assertNotNull(entity12RelationshipTable);
+
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+
+        final int entity1RowsCreateCount = 5;
+        final int created = createEntity1RowAndChildren(cc, entity1Table, entity1HierarchyTable, null, "Entity 1.",
+                                                        entity1RowsCreateCount, 3, 0);
+
+        cc.commitAndClose();
+
+        cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+
+/*
+        assertNotNull(entity1HierarchyTable.getHierarchyRow(cc, EntityHierarchyTable.RELTYPEID_OBJ_HIERARCHY_PARENT, entity1IdValue, entity2IdValue));
+        assertNotNull(entity12RelationshipTable.getRelationshipRow(cc, RelationshipMapTable.RELTYPEID_OBJ_HIERARCHY_CHILD, entity1IdValue, entity2IdValue));
+*/
+
+        cc.close();
+    }
 }

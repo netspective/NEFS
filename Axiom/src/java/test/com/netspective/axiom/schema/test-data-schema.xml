@@ -112,5 +112,31 @@
             </enumerations>
         </table>
 
+        <table name="Entity_1">
+            <column name="entity_1_id" primary-key="yes" type="auto-inc" descr="The primary key"/>
+            <column name="name" type="text" descr="The name of the entity"/>
+        </table>
+
+        <table name="Entity_2">
+            <column name="entity_2_id" primary-key="yes" type="auto-inc" descr="The primary key"/>
+            <column name="name" type="text" descr="The name of the entity"/>
+        </table>
+
+        <table name="Entity_1_Hierarchy_Type" type="Entity_Hierarchy_Type"/>
+
+        <table name="Entity_1_Hierarchy" type="Entity_Hierarchy"
+            xdm:param-hierTypeTable="Entity_1_Hierarchy_Type"
+            xdm:param-entityRef="Entity_1"/>
+
+        <table name="Entity_1_2_Relationship_Type" type="Relationship_Type"/>
+
+        <table name="Entity_1_2_Relationship" type="Relationship_Map"
+            xdm:param-relationshipTypeIdColName="rel_type_id"
+            xdm:param-relationshipTypeTable="Entity_1_2_Relationship_Type"
+            xdm:param-primaryIdColName="entity_1_id"
+            xdm:param-relatedIdColName="entity_2_id"
+            xdm:param-primaryIdParentRef="Entity_1"
+            xdm:param-relatedIdLookupRef="Entity_2"/>
+
     </schema>
 </component>
