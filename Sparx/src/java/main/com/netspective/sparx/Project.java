@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: Project.java,v 1.7 2003-07-05 02:11:43 shahid.shah Exp $
+ * $Id: Project.java,v 1.8 2003-07-08 14:21:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,11 +55,8 @@ import org.xml.sax.SAXException;
 
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionProviderEntryStatistics;
-import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
-import com.netspective.axiom.sql.dynamic.QueryDefinitions;
-import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
 import com.netspective.sparx.navigate.NavigationTreesManager;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
@@ -74,6 +73,7 @@ import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
+import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.sql.QueriesPackage;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
@@ -84,7 +84,9 @@ import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateContentHandler;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
 import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.text.TextUtils;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
@@ -330,5 +332,90 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void addRegisterFreemarkerConfiguration(FreeMarkerConfigurationAdapter config)
     {
         FreeMarkerConfigurationAdapters.getInstance().addConfiguration(config);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    protected class PresentationIdentifierConstantsGenerator
+    {
+        public static final String DELIM = ".";
+        private String rootPackage = "pres";
+        private String formPackage = "pres.form";
+
+        public PresentationIdentifierConstantsGenerator()
+        {
+        }
+
+        public PresentationIdentifierConstantsGenerator(String root, String formPackage)
+        {
+            this.rootPackage = root;
+            this.formPackage = formPackage;
+        }
+
+        public String getFormPackage(Dialog dialog)
+        {
+            return this.formPackage + DELIM + dialog.getQualifiedName();
+        }
+
+        public String getFormPackage(DialogField dialogField)
+        {
+            return getFormPackage(dialogField.getOwner()) + DELIM + dialogField.getQualifiedName();
+        }
+
+        public void setFormPackage(String queries)
+        {
+            this.formPackage = queries;
+        }
+
+        public String getRootPackage()
+        {
+            return rootPackage;
+        }
+
+        public void setRootPackage(String rootPackage)
+        {
+            this.rootPackage = rootPackage;
+        }
+
+        public void defineConstants(Map constants, Dialogs dialogs)
+        {
+            for(int i = 0; i < dialogs.size(); i++)
+            {
+                Dialog dialog = dialogs.get(i);
+                if(dialog.getQualifiedName().startsWith("console"))
+                    continue;
+
+                constants.put(getFormPackage(dialog), dialog.getQualifiedName());
+                DialogFields fields = dialog.getFields();
+                for(int j = 0; j < fields.size(); j++)
+                {
+                    DialogField field = fields.get(j);
+                    constants.put(getFormPackage(field), field.getQualifiedName());
+                }
+            }
+        }
+
+        public Map createConstants()
+        {
+            Map constants = new HashMap();
+            defineConstants(constants, dialogs);
+            return constants;
+        }
+    }
+
+    protected PresentationIdentifierConstantsGenerator getPresentationIdentifiersConstantsDecls()
+    {
+        return new PresentationIdentifierConstantsGenerator();
+    }
+
+    public void generateIdentifiersConstants(File rootPath, String rootPkgAndClassName) throws IOException
+    {
+        super.generateIdentifiersConstants(rootPath, rootPkgAndClassName);
+
+        XdmIdentifierConstantsGenerator xicg =
+                new XdmIdentifierConstantsGenerator(rootPath,
+                                                    rootPkgAndClassName,
+                                                    getPresentationIdentifiersConstantsDecls().createConstants());
+        xicg.generateCode();
     }
 }
