@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.42 2003-10-20 22:21:49 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.43 2003-10-26 19:08:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -935,7 +935,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             DialogField partnerField = owner.getFields().getByQualifiedName(action.getPartnerFieldName());
             if (partnerField != null)
                 action.setPartnerField(partnerField);
-            else
+            else if(action.isPartnerRequired())
                 log.error("Unknown partner supplied for conditional action " + action.getSourceField().getQualifiedName());
         }
 

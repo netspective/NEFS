@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.11 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: SelectField.java,v 1.12 2003-10-26 19:08:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -75,6 +75,7 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.value.source.StaticListValueSource;
 
 public class SelectField extends TextField
 {
@@ -319,6 +320,18 @@ public class SelectField extends TextField
     public void setChoices(ValueSource choices)
     {
         this.choices = choices;
+    }
+
+    public SelectFieldChoicesValueSource.Items createItems()
+    {
+        SelectFieldChoicesValueSource sv = new SelectFieldChoicesValueSource();
+        setChoices(sv);
+        return sv.getItems();
+    }
+
+    public void addItems(SelectFieldChoicesValueSource.Items items)
+    {
+        // do nothing since we already set our choices to a static choice
     }
 
     public boolean isMulti()
