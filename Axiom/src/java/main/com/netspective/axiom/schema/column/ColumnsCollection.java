@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ColumnsCollection.java,v 1.3 2003-06-26 05:02:45 roque.hernandez Exp $
+ * $Id: ColumnsCollection.java,v 1.4 2003-11-04 16:31:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -81,6 +81,16 @@ public class ColumnsCollection implements Columns
         {
             Column column = get(i);
             column.finishConstruction();
+
+            if(column.isUnique())
+            {
+                Table table = column.getTable();
+                Index index = table.createIndex(column);
+                index.setName("UNQ_" + table.getAbbrev() + "_" + column.getName());
+                index.setColumns(column.getName());
+                index.setUnique(true);
+                table.addIndex(index);
+            }
 
             if(column.isIndexed())
             {
