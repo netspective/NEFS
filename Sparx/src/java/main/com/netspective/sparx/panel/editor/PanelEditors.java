@@ -50,7 +50,7 @@
  * @author Aye Thu
  */
 
-package com.netspective.sparx.panel;
+package com.netspective.sparx.panel.editor;
 
 import com.netspective.commons.metric.CountMetric;
 import com.netspective.commons.metric.Metric;
@@ -129,7 +129,7 @@ public class PanelEditors implements MetricsProducer
      */
     public PanelEditor get(String name)
     {
-        return (PanelEditor) byName.get(ReportPanelEditor.translateNameForMapKey(name));
+        return (PanelEditor) byName.get(PanelEditor.translateNameForMapKey(name));
     }
 
     /**

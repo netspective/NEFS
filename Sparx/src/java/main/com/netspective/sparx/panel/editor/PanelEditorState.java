@@ -39,10 +39,10 @@
  */
 
 /**
- * $Id: PanelEditorState.java,v 1.1 2004-03-07 02:54:05 aye.thu Exp $
+ * $Id: PanelEditorState.java,v 1.1 2004-03-11 13:09:26 aye.thu Exp $
  */
 
-package com.netspective.sparx.panel;
+package com.netspective.sparx.panel.editor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,6 +53,8 @@ import java.net.UnknownHostException;
 
 import com.netspective.commons.text.GloballyUniqueIdentifier;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.editor.PanelEditor;
 
 /**
  * State class for containing context specific information for rendering a panel editor
@@ -62,12 +64,29 @@ public class PanelEditorState implements Serializable
 {
     private static final Log log = LogFactory.getLog(PanelEditorState.class);
 
+    /* the name of the associated panel editor */
     private String panelEditorName;
+    /* current mode */
     private int currentMode;
+    /* previous mode */
     private int previousMode;
+    /* record key */
     private String recordKey;
+    /* state unique identifier */
     private String identifier;
+    /* whether or not the panel editor is within a special custom panel editor group */
+    private boolean grouped;
+    /* list of panel editors that belong to the same group */
+    private String[] groupSiblings;
 
+    private String activeElement;
+
+    private String activeElementInfo;
+
+    /**
+     *
+     * @param panelEditorName   name of the panel editor associated with the state
+     */
     public PanelEditorState(String panelEditorName)
     {
         this.panelEditorName = panelEditorName;
@@ -83,6 +102,36 @@ public class PanelEditorState implements Serializable
         {
             identifier = Integer.toString(hashCode());
         }
+    }
+
+    public String getActiveElement()
+    {
+        return activeElement;
+    }
+
+    /**
+     * Sets the name of the content element that is currently active
+     *
+     * @param activeElement
+     */
+    public void setActiveElement(String activeElement)
+    {
+        this.activeElement = activeElement;
+    }
+
+    public void initialize(NavigationContext nc)
+    {
+
+    }
+
+    public boolean isGrouped()
+    {
+        return grouped;
+    }
+
+    public void setGrouped(boolean grouped)
+    {
+        this.grouped = grouped;
     }
 
     public String getIdentifier()
@@ -130,11 +179,22 @@ public class PanelEditorState implements Serializable
         return PanelEditor.calculateNextModeUrl(dc, panelEditorName, currentMode, previousMode, recordKey);
     }
 
+    public String getActiveElementInfo()
+    {
+        return activeElementInfo;
+    }
+
+    public void setActiveElementInfo(String activeElementInfo)
+    {
+        this.activeElementInfo = activeElementInfo;
+    }
+
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
         sb.append("PanelEdiorState id = " + getIdentifier() + ", ");
         sb.append("panel editor = " + getPanelEditorName() + ", ");
+        sb.append("active element = " + getActiveElement() + ", ");
         sb.append("mode = " + getCurrentMode() + ", ");
         sb.append("previous mode = " + getPreviousMode() + ", ");
         sb.append("key = " + getRecordKey());

@@ -4,7 +4,7 @@
  * Date: Feb 28, 2004
  * Time: 11:15:31 PM
  */
-package com.netspective.sparx.panel;
+package com.netspective.sparx.panel.editor;
 
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -12,6 +12,8 @@ import com.netspective.sparx.form.DialogsNameSpace;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.sql.QueriesPackage;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.panel.editor.PanelEditor;
+import com.netspective.sparx.panel.editor.PanelEditors;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
@@ -92,16 +94,6 @@ public class PanelEditorsPackage
         return new PanelEditor(container.getProject(), this);
     }
 
-    public PanelEditor createPanelEditor(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        if(PanelEditor.class.isAssignableFrom(cls))
-        {
-            Constructor c = cls.getConstructor(new Class[] { Project.class, PanelEditorsPackage.class });
-            return (PanelEditor) c.newInstance(new Object[] { container.getProject(), this });
-        }
-        else
-            throw new RuntimeException("Don't know what to do with with class: " + cls);
-    }
 
     public void addPanelEditor(PanelEditor panel)
     {

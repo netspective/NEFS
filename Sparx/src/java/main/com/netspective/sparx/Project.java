@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.46 2004-03-06 17:19:59 aye.thu Exp $
+ * $Id: Project.java,v 1.47 2004-03-11 13:10:32 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -87,9 +87,10 @@ import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
 import com.netspective.sparx.navigate.NavigationTreesManager;
 import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.PanelEditor;
-import com.netspective.sparx.panel.PanelEditors;
-import com.netspective.sparx.panel.PanelEditorsPackage;
+import com.netspective.sparx.panel.editor.PanelEditor;
+import com.netspective.sparx.panel.editor.PanelEditorContentElement;
+import com.netspective.sparx.panel.editor.PanelEditors;
+import com.netspective.sparx.panel.editor.PanelEditorsPackage;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStatesManager;
@@ -130,23 +131,23 @@ import java.util.Set;
 public class Project extends SqlManager implements NavigationTreesManager, ConsoleManager, DialogsManager, XmlDataModelSchema.ConstructionFinalizeListener, LoginManagersManager
 {
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
-    public static final String TEMPLATEELEMNAME_PANEL_EDITOR_TYPE = "panel-editor-type";
     public static final String TEMPLATEELEMNAME_DIALOG_TYPE = "dialog-type";
     public static final String TEMPLATEELEMNAME_DIALOG_EXECUTE_HANDLER = "dialog-execute-handler";
     public static final String TEMPLATEELEMNAME_PAGE_BODY_HANDLER = "page-body-handler";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_TYPE = "dialog-field-type";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_CONDITIONAL_ACTION_TYPE = "dialog-field-conditional-action";
     public static final String TEMPLATEELEMNAME_NAVIGATION_PAGE_CONDITIONAL_ACTION_TYPE = "navigation-page-conditional-action";
+    public static final String TEMPLATEELEMNAME_PANEL_EDITOR_CONTENT_ELEMENT_TYPE = "panel-editor-content-element";
 
     private static final Log log = LogFactory.getLog(Project.class);
     private static final PanelTypeTemplate PANEL_TYPES = new PanelTypeTemplate();
-    private static final PanelEditorTypeTemplate PANEL_EDITOR_TYPES = new PanelEditorTypeTemplate();
     private static final DialogTypeTemplate DIALOG_TYPES = new DialogTypeTemplate();
     private static final DialogExecuteHandlerTemplate DIALOG_EXECUTE_HANDLERS = new DialogExecuteHandlerTemplate();
     private static final NavigationPageBodyHandlerTemplate PAGE_BODY_HANDLERS = new NavigationPageBodyHandlerTemplate();
     private static final DialogFieldTypeTemplate FIELD_TYPES = new DialogFieldTypeTemplate();
     private static final DialogFieldConditionalActionTemplate FIELD_CONDITIONAL_ACTIONS = new DialogFieldConditionalActionTemplate();
     private static final NavigationConditionalActionTemplate PAGE_CONDITIONAL_ACTIONS = new NavigationConditionalActionTemplate();
+    private static final PanelEditorContentElementTypeTemplate PANEL_EDITOR_CONTENT_ELEMENTS = new PanelEditorContentElementTypeTemplate();
 
     protected static class PanelTypeTemplate extends TemplateProducer
     {
@@ -156,11 +157,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         }
     }
 
-    protected static class PanelEditorTypeTemplate extends TemplateProducer
+    protected static class PanelEditorContentElementTypeTemplate extends TemplateProducer
     {
-        public PanelEditorTypeTemplate()
+        public PanelEditorContentElementTypeTemplate()
         {
-            super(PanelEditor.class.getName(), TEMPLATEELEMNAME_PANEL_EDITOR_TYPE, "name", "extends", true, false);
+            super(PanelEditorContentElement.class.getName(), TEMPLATEELEMNAME_PANEL_EDITOR_CONTENT_ELEMENT_TYPE, "name", "extends", true, false);
         }
     }
 
@@ -216,12 +217,12 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     {
         NetspectiveComponent.getInstance().registerProduct(com.netspective.sparx.ProductRelease.PRODUCT_RELEASE);
         templateProducers.add(PANEL_TYPES);
-        templateProducers.add(PANEL_EDITOR_TYPES);
         templateProducers.add(DIALOG_TYPES);
         templateProducers.add(DIALOG_EXECUTE_HANDLERS);
         templateProducers.add(PAGE_BODY_HANDLERS);
         templateProducers.add(FIELD_TYPES);
         templateProducers.add(FIELD_CONDITIONAL_ACTIONS);
+        templateProducers.add(PANEL_EDITOR_CONTENT_ELEMENTS);
         templateProducers.add(PAGE_CONDITIONAL_ACTIONS);
 
         // since we're subclassing these items, tell XDM about it so that auto documentation works on subclasses items instead of parent class items
@@ -308,11 +309,6 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public PanelTypeTemplate getPanelTypes()
     {
         return PANEL_TYPES;
-    }
-
-    public PanelEditorTypeTemplate getPanelEditorTypes()
-    {
-        return PANEL_EDITOR_TYPES;
     }
 
     public DialogFieldConditionalActionTemplate getFieldConditionalActions()

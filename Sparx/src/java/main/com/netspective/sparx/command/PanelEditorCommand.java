@@ -55,15 +55,11 @@ package com.netspective.sparx.command;
 import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.CommandException;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.PanelEditor;
-import com.netspective.sparx.panel.PanelEditorState;
-import com.netspective.sparx.panel.ReportPanelEditor;
-import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.panel.editor.PanelEditor;
+import com.netspective.sparx.panel.editor.PanelEditorState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.StringTokenizer;
@@ -72,7 +68,7 @@ import java.util.StringTokenizer;
  * Class for handling the record-editor-panel command
  *
  *
- * @version $Id: PanelEditorCommand.java,v 1.7 2004-03-07 02:56:57 aye.thu Exp $
+ * @version $Id: PanelEditorCommand.java,v 1.8 2004-03-11 13:10:10 aye.thu Exp $
  */
 public class PanelEditorCommand extends AbstractHttpServletCommand
 {
@@ -87,9 +83,10 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
             new CommandDocumentation.Parameter[]
             {
                 new CommandDocumentation.Parameter("panel-editor-name", true, "The fully qualified name of the panel editor (package-name.panel-name)."),
-                new CommandDocumentation.Parameter("panel-editor-mode", false, "The mode to display for the panel editor."),
-                new CommandDocumentation.Parameter("record-key", false, "The primary key of the selected record in the panel editor."),
+                new CommandDocumentation.Parameter("current-mode", false, "The mode to display for the panel editor."),
                 new CommandDocumentation.Parameter("previous-mode", false, "The optional previous mode of the panel editor."),
+                new CommandDocumentation.Parameter("active-element-name", false, "The name of the element that is currently active."),
+                new CommandDocumentation.Parameter("element-info", false, "The primary key of the selected record in the panel editor."),
             }
     );
 
@@ -106,11 +103,13 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
     /* the name of the record editor panel */
     private String panelEditorName;
     /* primary key to be used when the panel editor is in EDIT or DELETE mode */
-    private String recordKey;
+    private String activeElementInfo;
     /* the action to perform */
     private String panelMode;
     /* previous mode */
     private String previousPanelMode;
+    /* currently active element */
+    private String activeElement;
 
     /**
      * Sole constructor
@@ -132,9 +131,12 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
         sb.append(delim);
         sb.append(panelMode);
         sb.append(delim);
-        sb.append(recordKey);
-        sb.append(delim);
         sb.append(previousPanelMode);
+        sb.append(delim);
+        sb.append(activeElement);
+        sb.append(delim);
+        sb.append(activeElementInfo);
+
 
         return sb.toString();
     }
@@ -151,9 +153,12 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
         if (params.hasMoreTokens())
             panelMode = params.nextToken();
         if (params.hasMoreTokens())
-            recordKey = params.nextToken();
-        if (params.hasMoreTokens())
             previousPanelMode = params.nextToken();
+        if (params.hasMoreTokens())
+            activeElement = params.nextToken();
+        if (params.hasMoreTokens())
+            activeElementInfo = params.nextToken();
+
     }
 
     public String getPanelEditorName()
@@ -171,9 +176,14 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
         return previousPanelMode;
     }
 
-    public String getRecordKey()
+    public String getActiveElementInfo()
     {
-        return recordKey;
+        return activeElementInfo;
+    }
+
+    public String getActiveElement()
+    {
+        return activeElement;
     }
 
     /**
@@ -192,21 +202,23 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
         {
              throw new RuntimeException("Record editor panel '"+ getPanelEditorName() + "' not found in "+ this +".");
         }
-        Theme theme = nc.getActiveTheme();
         // set the state object for the panel editor
-        PanelEditorState panelState = ePanel.constructPanelEditorState();
-        int mode = PanelEditor.validatePanelEditorMode(panelMode, recordKey);
+        PanelEditorState panelState = ePanel.constructPanelEditorState(nc);
+
+        // translate the panel mode
+        int mode = PanelEditor.validatePanelEditorMode(panelMode, activeElementInfo);
         if (mode == PanelEditor.UNKNOWN_MODE)
             throw new RuntimeException("Requested mode '" + panelMode + "'  for panel editor '"+ getPanelEditorName() + "' is invalid.");
 
+        // set the verified panel mode
         panelState.setCurrentMode(mode);
-        if (recordKey != null)
-            panelState.setRecordKey(recordKey);
-        panelState.setPreviousMode(PanelEditor.translatePanelEditorMode(previousPanelMode));
-
-        HttpServletRequest request = nc.getHttpRequest();
-        request.setAttribute(ReportPanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE, panelState);
-        ePanel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+        if (activeElement != null)
+            panelState.setActiveElement(activeElement);
+        if (activeElementInfo != null)
+            panelState.setActiveElementInfo(activeElementInfo);
+        if (previousPanelMode != null)
+            panelState.setPreviousMode(PanelEditor.translateMode(previousPanelMode));
+        ePanel.render(writer, nc, panelState);
 
     }
 

@@ -53,62 +53,64 @@
 
 package com.netspective.sparx.navigate;
 
+import com.netspective.commons.command.Command;
+import com.netspective.commons.command.CommandException;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.template.TemplateProcessor;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.Template;
-import com.netspective.commons.command.Commands;
-import com.netspective.commons.command.CommandException;
-import com.netspective.commons.command.Command;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.sparx.value.HttpServletValueContext;
-import com.netspective.sparx.panel.HtmlLayoutPanel;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.AbstractPanel;
-import com.netspective.sparx.util.HttpUtils;
-import com.netspective.sparx.util.AlternateOutputDestServletResponse;
-import com.netspective.commons.template.TemplateProcessor;
-import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.sparx.command.AbstractHttpServletCommand;
 import com.netspective.sparx.command.HttpServletCommand;
-import com.netspective.sparx.navigate.listener.NavigationPathListener;
+import com.netspective.sparx.command.PanelEditorCommand;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
+import com.netspective.sparx.navigate.handler.NavigationPageBodyDefaultHandler;
 import com.netspective.sparx.navigate.listener.NavigationPageEnterListener;
 import com.netspective.sparx.navigate.listener.NavigationPageExitListener;
-import com.netspective.sparx.navigate.handler.NavigationPageBodyDefaultHandler;
+import com.netspective.sparx.navigate.listener.NavigationPathListener;
+import com.netspective.sparx.panel.AbstractPanel;
+import com.netspective.sparx.panel.HtmlCommandPanel;
+import com.netspective.sparx.panel.HtmlLayoutPanel;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlPanels;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-import com.netspective.sparx.form.handler.DialogNextActionProvider;
-import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.util.AlternateOutputDestServletResponse;
+import com.netspective.sparx.util.HttpUtils;
+import com.netspective.sparx.value.HttpServletValueContext;
+import org.apache.commons.lang.exception.NestableException;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
-import javax.servlet.ServletException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.exception.NestableException;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
  *
- * @version $Id: NavigationPage.java,v 1.61 2004-02-25 20:52:20 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.62 2004-03-11 13:14:04 aye.thu Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 17];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 19];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
@@ -136,6 +138,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 14] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "DEBUG_REQUEST", Flags.DEBUG_REQUEST);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 15] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "BODY_AFFECTS_NAVIGATION", Flags.BODY_AFFECTS_NAVIGATION);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 16] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_VIEW_SOURCE", Flags.ALLOW_VIEW_SOURCE);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 17] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PANEL_EDITING", Flags.ALLOW_PANEL_EDITING);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 18] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "VALIDATE_PANEL_EDITOR_IN_PAGE", Flags.VALIDATE_PANEL_EDITOR_IN_PAGE);
     }
 
     protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
@@ -174,11 +178,14 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public static final int DEBUG_REQUEST = HANDLE_FOOTER * 2;
         public static final int BODY_AFFECTS_NAVIGATION = DEBUG_REQUEST * 2;
         public static final int ALLOW_VIEW_SOURCE = BODY_AFFECTS_NAVIGATION * 2;
-        public static final int START_CUSTOM = ALLOW_VIEW_SOURCE * 2;
+        public static final int ALLOW_PANEL_EDITING = ALLOW_VIEW_SOURCE * 2;
+        public static final int VALIDATE_PANEL_EDITOR_IN_PAGE = ALLOW_PANEL_EDITING * 2;
+        public static final int START_CUSTOM = VALIDATE_PANEL_EDITOR_IN_PAGE * 2;
 
         public Flags()
         {
-            setFlag(REQUIRE_LOGIN | HANDLE_META_DATA | HANDLE_HEADER | HANDLE_FOOTER | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
+            setFlag(REQUIRE_LOGIN | HANDLE_META_DATA | HANDLE_HEADER | HANDLE_FOOTER | INHERIT_RETAIN_PARAMS |
+                    INHERIT_ASSIGN_STATE_PARAMS | ALLOW_PANEL_EDITING | VALIDATE_PANEL_EDITOR_IN_PAGE);
         }
 
         public FlagDefn[] getFlagsDefns()
@@ -1215,7 +1222,32 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         // see if dynamic commands should be allowed
-        ServletRequest request = nc.getRequest();
+        HttpServletRequest request = nc.getHttpRequest();
+        String panelEditorCommandSpec = request.getParameter(PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME);
+        if (panelEditorCommandSpec != null && getFlags().flagIsSet(Flags.ALLOW_PANEL_EDITING))
+        {
+            PanelEditorCommand command = new PanelEditorCommand();
+            command.setParameters(panelEditorCommandSpec);
+            Object panelEditorSource = null;
+            // verify that this command is configured to be in this pae
+            if (!getFlags().flagIsSet(Flags.VALIDATE_PANEL_EDITOR_IN_PAGE) || verifyPanelEditorInPage(nc, command))
+            {
+                try
+                {
+                    command.handleCommand(writer, nc, false);
+                }
+                catch (CommandException e)
+                {
+                    getLog().error("Command error in body", e);
+                    throw new ServletException(e);
+                }
+                return;
+            }
+            else
+            {
+                getLog().error("Request to execute a panel editor '" + command.getPanelEditorName() +"' that does not exist in page.");
+            }
+        }
 
         if(getFlags().flagIsSet(Flags.ALLOW_PAGE_CMD_PARAM))
         {
@@ -1471,5 +1503,71 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             writer.write("<p>");
             AbstractPanel.renderXdmObjectViewSource(writer, nc, getQualifiedNameIncludingTreeId() + " Page XDM Code", this.getClass(), getQualifiedNameIncludingTreeId(), getInputSourceLocator());
         }
+    }
+
+    /**
+     * Verify that the request panel editor requested for display does exist in the page. This method returns an
+     * object which is either a PanelEditorCommand or a PanelEditorGroup. This is done so that the page can decide
+     * whether or not to display only one panel editor or one panel editor and its siblings from the group.  The returned
+     * panel editor command object is the one that was passed in and the panel editor group is the first group which
+     * has the command as a child.
+     *
+     * @param nc            current navigation context
+     * @param peCommand     requested panel editor command
+     * @return              True if the panel editor does exist
+     */
+    public boolean verifyPanelEditorInPage(NavigationContext nc, PanelEditorCommand peCommand)
+    {
+        boolean valid = false;
+        int bodyType = getBodyType().getValueIndex();
+        String panelEditorName = peCommand.getPanelEditorName();
+        if (bodyType == NavigationPageBodyType.COMMAND)
+        {
+            ValueSource commandExpr = getCommandExpr();
+            if(commandExpr != null)
+            {
+                String commandText = commandExpr.getTextValue(nc);
+                if(commandText != null)
+                {
+                    try
+                    {
+                        Command command = Commands.getInstance().getCommand(commandText);
+                        if (command instanceof PanelEditorCommand)
+                        {
+                            String peName = ((PanelEditorCommand) command).getPanelEditorName();
+                            if (panelEditorName.equals(peName))
+                                return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        getLog().error("Command error in " + this.getClass().getName(), e);
+                    }
+                }
+            }
+        }
+        else if (bodyType == NavigationPageBodyType.PANEL)
+        {
+            // this is the layout panel defined for the page
+            HtmlPanels panels = getBodyPanel().getChildren();
+            HtmlPanel panel = null;
+            for (int i = 0; i < panels.size(); i++)
+            {
+                panel = panels.get(i);
+                if (panel instanceof HtmlCommandPanel)
+                {
+                    Command command = ((HtmlCommandPanel)panel).getCommand();
+                    if (command instanceof PanelEditorCommand)
+                    {
+                        String peName = ((PanelEditorCommand) command).getPanelEditorName();
+                        if (panelEditorName.equals(peName))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

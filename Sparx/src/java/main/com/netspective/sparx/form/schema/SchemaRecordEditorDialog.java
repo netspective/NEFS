@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.20 2004-03-07 02:57:50 aye.thu Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.21 2004-03-11 13:13:20 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -85,8 +85,8 @@ import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.handler.DialogExecuteHandlers;
-import com.netspective.sparx.panel.PanelEditorState;
-import com.netspective.sparx.panel.ReportPanelEditor;
+import com.netspective.sparx.panel.editor.PanelEditor;
+import com.netspective.sparx.panel.editor.PanelEditorState;
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
@@ -234,10 +234,10 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
             {
                 HttpServletRequest request = dialogContext.getHttpRequest();
-                if (request.getAttribute(ReportPanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE) != null)
+                if (request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE) != null)
                 {
-                    PanelEditorState state = (PanelEditorState) request.getAttribute(ReportPanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
-                    primaryKeyValueSpec =  state.getRecordKey();
+                    PanelEditorState state = (PanelEditorState) request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
+                    //primaryKeyValueSpec =  state.getActiveElement();
                 }
                 else
                 {

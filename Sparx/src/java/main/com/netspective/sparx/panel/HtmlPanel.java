@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.15 2004-02-23 19:22:53 aye.thu Exp $
+ * $Id: HtmlPanel.java,v 1.16 2004-03-11 13:09:26 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -53,6 +53,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
 public interface HtmlPanel extends TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
 {

@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.77 2004-03-07 02:55:44 aye.thu Exp $
+  * $Id: sparx.xml,v 1.78 2004-03-11 13:15:20 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -49,7 +49,7 @@
     <panel-type name="command" class="com.netspective.sparx.panel.HtmlCommandPanel"/>
     <panel-type name="command-list" class="com.netspective.sparx.panel.HtmlCommandListPanel"/>
 
-    <panel-editor-type name="report" class="com.netspective.sparx.panel.ReportPanelEditor"/>
+    <panel-editor-content-element name="report" class="com.netspective.sparx.panel.editor.ReportPanelEditorContentElement"/>
 
     <dialog-field-type name="composite" class="com.netspective.sparx.form.field.DialogField"/>
     <dialog-field-type name="text" class="com.netspective.sparx.form.field.type.TextField"/>
