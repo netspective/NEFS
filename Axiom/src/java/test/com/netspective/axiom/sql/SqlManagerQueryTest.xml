@@ -7,10 +7,12 @@
     <queries package="test">
 
         <query name="statement-0">
+            <sql dbms="oracle">
             select * from test
             where column_a = 1
               and column_b = 2
               and column_c = 'this'
+            </sql>
         </query>
 
         <query name="statement-1">
