@@ -77,10 +77,10 @@ div.panel-layout-column   { padding: 3px 0px 3px 0px; }
 
 /* styles for the banner of a panel */
 td.panel-editor-banner           { color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; padding-top: 4px; padding-right: 4px; border-right: 1px solid #696969; border-left: 1px solid #696969 }
-td.panel-editor-banner a         { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; border-bottom: 1px solid #696969; padding: 0px 3px 0px 3px; margin: 0px 3px 0px 3px}
-td.panel-editor-banner a:link    { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; }
-td.panel-editor-banner a:hover   { border-left: 1px solid #696969; border-bottom: 1px solid #dcdcdc; border-top: 1px solid #696969; border-right: 1px solid #dcdcdc; color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; background: #dddddd}
-td.panel-editor-banner a:visited { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; }
+td.panel-editor-banner a         { color: #696969; font-size: 8pt; font-family: Tahoma, Arial; text-decoration: none; text-align: left; padding: 0px 3px 0px 3px; margin: 0px 3px 0px 3px}
+td.panel-editor-banner a:link    { color: #696969; font-size: 8pt; font-family: Tahoma, Arial; text-decoration: none; text-align: left; }
+td.panel-editor-banner a:hover   { color: black; font-size: 8pt; font-family: Tahoma, Arial; text-decoration: none; text-align: left; }
+td.panel-editor-banner a:visited { color: #696969; font-size: 8pt; font-family: Tahoma, Arial; text-decoration: none; text-align: left; }
 .panel-editor-banner-footer      { color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; background-color: #f1eeee; text-align: left; padding-left: 3px; border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }
 
 .panel-editor-content     { border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }

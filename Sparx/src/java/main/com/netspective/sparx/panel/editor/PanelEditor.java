@@ -112,6 +112,11 @@ public class PanelEditor extends AbstractPanel
     private String requireRequestParam = null;
     /* child elements for content */
     private Map elements = new HashMap();
+
+    /* whether or not the add action should always be shown or only when in Manage mode */
+    private boolean showManageButton;
+
+    /* whether or not the add action should always be shown or only when in Manage mode */
     private boolean alwaysShowAddAction;
 
     public PanelEditor(Project project)
@@ -208,6 +213,16 @@ public class PanelEditor extends AbstractPanel
     public void setAlwaysShowAddAction(boolean alwaysShowAddAction)
     {
         this.alwaysShowAddAction = alwaysShowAddAction;
+    }
+
+    public boolean isShowManageButton()
+    {
+        return showManageButton;
+    }
+
+    public void setShowManageButton(boolean showManageButton)
+    {
+        this.showManageButton = showManageButton;
     }
 
     /**
@@ -572,10 +587,13 @@ public class PanelEditor extends AbstractPanel
         HtmlPanelActions actions = new HtmlPanelActions();
         HtmlPanelAction manageAction = frame.createAction();
 
-        String manageUrl = generatePanelActionUrl(PanelEditor.MODE_MANAGE);
-        manageAction.setCaption(new StaticValueSource("Manage"));
-        manageAction.setRedirect(new RedirectValueSource(manageUrl));
-        actions.add(manageAction);
+        if(showManageButton)
+        {
+            String manageUrl = generatePanelActionUrl(PanelEditor.MODE_MANAGE);
+            manageAction.setCaption(new StaticValueSource("Manage"));
+            manageAction.setRedirect(new RedirectValueSource(manageUrl));
+            actions.add(manageAction);
+        }
 
         String doneUrl = generatePanelActionUrl(PanelEditor.MODE_DISPLAY);
         HtmlPanelAction doneAction = frame.createAction();

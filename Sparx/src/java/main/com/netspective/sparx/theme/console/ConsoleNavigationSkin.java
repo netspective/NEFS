@@ -33,6 +33,7 @@
 package com.netspective.sparx.theme.console;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
@@ -58,6 +59,8 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 {
     static public final String HEADING_ACTION_IMAGE = "action-icon";
 
+    private boolean renderPageIconsWithHeading = true;
+    private boolean renderSidebarAsAnchors;
     private int sidebarWidth = 125;
     private boolean showAuthenticatedUser = true;
     private boolean showErrorHeader;
@@ -65,6 +68,26 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     public ConsoleNavigationSkin(Theme theme, String name)
     {
         super(theme, name);
+    }
+
+    public boolean isRenderSidebarAsAnchors()
+    {
+        return renderSidebarAsAnchors;
+    }
+
+    public void setRenderSidebarAsAnchors(boolean renderSidebarAsAnchors)
+    {
+        this.renderSidebarAsAnchors = renderSidebarAsAnchors;
+    }
+
+    public boolean isRenderPageIconsWithHeading()
+    {
+        return renderPageIconsWithHeading;
+    }
+
+    public void setRenderPageIconsWithHeading(boolean renderPageIconsWithHeading)
+    {
+        this.renderPageIconsWithHeading = renderPageIconsWithHeading;
     }
 
     public int getSidebarWidth()
@@ -124,15 +147,15 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/syntax-highlight.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/jscalendar-0.9.6/calendar-win2k-1.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/docbook.css") + "\" type=\"text/css\">\n");
-        if (activePage.getCustomCssFile() != null)
+        if(activePage.getCustomCssFile() != null)
             writer.write("	<link rel=\"stylesheet\" href=\"" + activePage.getCustomCssFile().getTextValue(nc) + "\" type=\"text/css\">\n");
 
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/panel.js") + "\" language=\"JavaScript1.1\"></script>\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/dialog.js") + "\" language=\"JavaScript1.2\"></script>\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/popup.js") + "\" language=\"JavaScript1.2\"></script>\n");
 
-        if (activePage.getCustomJsFile() != null)
-            writer.write("  <script src=\""+ activePage.getCustomJsFile().getTextValue(nc) + "\" language=\"JavaScript1.2\"></script>\n");
+        if(activePage.getCustomJsFile() != null)
+            writer.write("  <script src=\"" + activePage.getCustomJsFile().getTextValue(nc) + "\" language=\"JavaScript1.2\"></script>\n");
         writer.write("</head>\n");
     }
 
@@ -314,6 +337,34 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("<!-- Level Two Ends -->");
     }
 
+    public void renderPageMenusLevelThreeAsVerticalAnchors(Writer writer, NavigationContext nc) throws IOException
+    {
+        NavigationPath activePath = nc.getActivePage();
+        if(activePath == null)
+            return;
+
+        if(activePath.getLevel() > 2)
+        {
+            final List ancestorsList = activePath.getAncestorsList();
+            if(ancestorsList.size() > 2)
+            {
+                NavigationPath level3Root = (NavigationPath) ancestorsList.get(2);
+                List activePathChildren = level3Root.getChildrenList();
+                if(activePath.getMaxChildLevel() > 2 && activePathChildren.size() > 0)
+                {
+                    StringWriter sw = new StringWriter();
+                    int rendered = renderVerticalCssMenus(sw, nc, activePathChildren, true);
+                    if(rendered > 1)
+                    {
+                        writer.write("      <td class=\"level-3-vertical-menu-container\" align=\"left\" valign=\"top\">\n");
+                        writer.write(sw.toString());
+                        writer.write("      </td>\n");
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * @param writer
      * @param nc
@@ -322,6 +373,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     public void renderPageMenusLevelThree(Writer writer, NavigationContext nc) throws IOException
     {
+        if(renderSidebarAsAnchors)
+        {
+            renderPageMenusLevelThreeAsVerticalAnchors(writer, nc);
+            return;
+        }
+
         NavigationPath activePath = nc.getActivePage();
         if(activePath == null)
             return;
@@ -427,9 +484,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         if(!heading.equals("-"))
         {
-            String pageHeadingImageUrl = theme.getResourceUrl("/images/page-icons" + (page != null
-                                                                                      ? (page.getQualifiedName() + "/page-heading.gif")
-                                                                                      : "/page-heading.gif"));
+            String pageHeadingImageUrl = renderPageIconsWithHeading ? theme.getResourceUrl("/images/page-icons" + (page != null
+                                                                                                                   ? (page.getQualifiedName() + "/page-heading.gif")
+                                                                                                                   : "/page-heading.gif"))
+                                         : null;
 
             writer.write("<!-- Page Header Begins -->\n");
             writer.write("<table class=\"page-heading-table\" height=\"36\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
@@ -437,8 +495,9 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             writer.write("        <td align=\"left\" valign=\"middle\">\n");
             writer.write("            <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
             writer.write("                <tr>\n");
-            writer.write("                    <td align=\"right\" class=\"page-heading-icon\"><img class=\"page-icon\" src=\"" +
-                         pageHeadingImageUrl + "\" alt=\"\" height=\"22\" width=\"22\" border=\"0\"></td>\n");
+            if(pageHeadingImageUrl != null)
+                writer.write("                    <td align=\"right\" class=\"page-heading-icon\"><img class=\"page-icon\" src=\"" +
+                             pageHeadingImageUrl + "\" alt=\"\" height=\"22\" width=\"22\" border=\"0\"></td>\n");
             writer.write("                    <td class=\"page-heading\">" + heading + "</td>\n");
             writer.write("                </tr>\n");
             writer.write("            </table>\n");
@@ -636,6 +695,51 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.append("</tr>\n");
         writer.append("</table>\n");
         return writer.toString();
+    }
+
+    public int renderVerticalCssMenus(Writer writer, NavigationContext nc, List children, boolean root) throws IOException
+    {
+        if(children.size() == 0)
+            return 0;
+
+        if(root)
+            writer.write("<table class='vertical-menu-root' cellspacing=0>");
+        else
+            writer.write("<table class='vertical-menu' cellspacing=0>");
+
+        int rendered = 0;
+        for(int i = 0; i < children.size(); i++)
+        {
+            NavigationPage activePage = (NavigationPage) children.get(i);
+            final NavigationPage.Flags flags = (NavigationPage.Flags) activePage.getFlags();
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && !activePage.isInActivePath(nc));
+            if(hidden)
+                continue;
+
+            boolean activePathSelected = activePage == nc.getActivePage();
+            boolean activePathLeaf = activePage.getChildrenList().size() == 0;
+            final String className =
+                    root ? (activePathSelected ? "menu-root-active" : "menu-root") :
+                    activePathLeaf ?
+                    (activePathSelected ? "menu-leaf-active" : "menu-leaf") :
+                    (activePathSelected ? "menu-active" : "menu");
+
+            writer.write("<tr valign=top class='" + className + "'><td class='" + className + "-prefix'>&nbsp;</td><td class='" + className + "'>");
+            if(flags.isRejectFocus())
+                writer.write(activePage.getCaption(nc));
+            else
+            {
+                writer.write("<a href='" + activePage.getUrl(nc) + "' class='" + className + "'>");
+                writer.write(activePage.getCaption(nc));
+                writer.write("</a>");
+            }
+            rendered += renderVerticalCssMenus(writer, nc, activePage.getChildrenList(), false);
+            writer.write("</td><td class='" + className + "-suffix'>&nbsp;</td></tr>");
+
+            rendered++;
+        }
+        writer.write("</table>");
+        return rendered;
     }
 
     /**

@@ -70,7 +70,7 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
             ValueSource redirect = deleteReportActions[0].getRedirect();
             Theme theme = getTheme();
 
-            String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-delete.gif") + "\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+            String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-delete.gif") + "\" alt=\"\" border=\"0\">";
             String deleteRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             deleteRecordUrl = report.replaceOutputPatterns(rc, ds, deleteRecordUrl);
 
@@ -106,7 +106,7 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-edit.gif") + "\" " +
-                           "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+                           "alt=\"\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
