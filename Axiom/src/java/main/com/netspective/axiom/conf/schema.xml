@@ -23,6 +23,7 @@
             <define dbms="ansi" xdm:replace-template-expressions="no">varchar(${column.getSize()})</define>
             <define dbms="mssql" xdm:replace-template-expressions="no">varchar(${column.getSize()})</define>
         </sql-ddl>
+        <jdbc-type>VARCHAR</jdbc-type>
         <presentation>
             <field name="${column.getName()}" type="text" caption="${column.getCaption()}" max-length="${column.getSize()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
@@ -33,6 +34,7 @@
             <define dbms="ansi" xdm:replace-template-expressions="no">float</define>
             <define dbms="oracle" xdm:replace-template-expressions="no">number(20,6)</define>
         </sql-ddl>
+        <jdbc-type>FLOAT</jdbc-type>
         <presentation>
             <field name="${column.getName()}" type="float" size="16" min="0.0" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
@@ -43,6 +45,7 @@
             <define dbms="ansi" xdm:replace-template-expressions="no">integer</define>
             <define dbms="oracle" xdm:replace-template-expressions="no">number(8)</define>
         </sql-ddl>
+        <jdbc-type>INTEGER</jdbc-type>
         <presentation>
             <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="99999999" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
@@ -53,6 +56,7 @@
             <define dbms="ansi" xdm:replace-template-expressions="no">smallint</define>
             <define dbms="oracle" xdm:replace-template-expressions="no">number(4)</define>
         </sql-ddl>
+        <jdbc-type>SMALLINT</jdbc-type>
         <presentation>
             <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="9999" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
@@ -63,6 +67,7 @@
             <define dbms="ansi" xdm:replace-template-expressions="no">integer</define>
             <define dbms="oracle" xdm:replace-template-expressions="no">number(16)</define>
         </sql-ddl>
+        <jdbc-type>LONG</jdbc-type>
         <presentation>
             <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
@@ -75,6 +80,7 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">bit</define>
             <define dbms="hsqldb" xdm:replace-template-expressions="no">bit</define>
         </sql-ddl>
+        <jdbc-type>BOOLEAN</jdbc-type>
         <presentation>
             <field name="${column.getName()}" type="boolean" style="radio" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
@@ -87,6 +93,15 @@
             <define dbms="hsqldb" xdm:replace-template-expressions="no">object</define>
             <define dbms="postgres" xdm:replace-template-expressions="no">bytea</define>
         </sql-ddl>
+        <jdbc-type>CLOB</jdbc-type>
+    </data-type>
+
+    <data-type name="xmltype" class="com.netspective.axiom.schema.column.type.DataBlockColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">text</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">xmltype</define>
+        </sql-ddl>
+        <jdbc-type>CLOB</jdbc-type>
     </data-type>
 
     <!-- ***************************************************************************
@@ -98,6 +113,7 @@
             <define dbms="ansi" xdm:replace-template-expressions="no">date</define>
             <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
         </sql-ddl>
+        <jdbc-type>DATE</jdbc-type>
         <presentation>
             <field name="${column.getName()}" type="date" size="16" format="MM-dd-yyyy" min="01-01-1900" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
