@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.21 2003-10-05 03:40:27 shahid.shah Exp $
+ * $Id: AbstractTheme.java,v 1.22 2003-10-13 03:10:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -60,12 +60,15 @@ import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.form.DialogSkin;
 import com.netspective.commons.io.UriAddressableFileLocator;
 import com.netspective.commons.io.UriAddressableFile;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
-public class AbstractTheme implements Theme
+public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocatorListener
 {
     private static final Log log = LogFactory.getLog(AbstractTheme.class);
 
+    private InputSourceLocator inputSourceLocator;
     private String name;
     private UriAddressableFileLocator resourceLocator;
     private boolean defaultTheme;
@@ -83,6 +86,16 @@ public class AbstractTheme implements Theme
 
     public AbstractTheme()
     {
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     public UriAddressableFileLocator getResourceLocator()
@@ -167,6 +180,11 @@ public class AbstractTheme implements Theme
         }
 
         return defaultUrl;
+    }
+
+    public String[] getInheritResourcesFromThemes()
+    {
+        return inheritResourcesFromThemes;
     }
 
     public void setInheritResourcesFromThemes(String delimitedThemeNames)

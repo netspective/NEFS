@@ -48,7 +48,7 @@
  * OF SUCH DAMAGES.
  *
  * @author Shahid N. Shah
- * $Id: HtmlSingleRowReportPanelSkin.java,v 1.6 2003-09-15 03:58:35 aye.thu Exp $
+ * $Id: HtmlSingleRowReportPanelSkin.java,v 1.7 2003-10-13 03:10:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -75,7 +75,7 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
         public static final int SKIP_NULL_COLUMNS = BasicHtmlTabularReportPanelSkin.Flags.STARTCUSTOM;
         public static final int STARTCUSTOM = SKIP_NULL_COLUMNS * 2;
 
-        public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[BasicHtmlTabularReportPanelSkin.Flags.FLAGDEFNS.length + 2];
+        public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[BasicHtmlTabularReportPanelSkin.Flags.FLAGDEFNS.length + 1];
 
         static
         {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ThemesPage.java,v 1.2 2003-08-22 03:33:44 shahid.shah Exp $
+ * $Id: ThemesPage.java,v 1.3 2003-10-13 03:10:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -55,6 +55,8 @@ import javax.servlet.ServletException;
 import com.netspective.sparx.console.ConsoleServletPage;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
+import com.netspective.commons.value.ValueSources;
 
 public class ThemesPage extends ConsoleServletPage
 {
@@ -68,12 +70,12 @@ public class ThemesPage extends ConsoleServletPage
         Map themes = nc.getProject().getThemes().getThemesByName();
 
         if(children.size() != themes.size())
-            syncronize(nc);
+            synchronize(nc);
 
         return true;
     }
 
-    public void syncronize(NavigationContext nc)
+    public void synchronize(NavigationContext nc)
     {
         removeAllChildren();
 
@@ -86,13 +88,19 @@ public class ThemesPage extends ConsoleServletPage
             String name = theme.getName();
             page.setTheme(theme);
             page.setName(name != null ? name : "default");
+            if(name.equalsIgnoreCase("sampler"))
+                page.setDefault(true);
+            FreeMarkerTemplateProcessor templateProcessor = new FreeMarkerTemplateProcessor();
+            templateProcessor.setConfig("console");
+            templateProcessor.setSource(ValueSources.getInstance().getValueSource(ValueSources.createSpecification("console-page-content:../inspector.ftl"), ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION));
+            page.addBody(templateProcessor);
             appendChild(page);
         }
     }
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        syncronize(nc);
-        writer.write("here");
+        synchronize(nc);
+        super.handlePageBody(writer, nc);
     }
 }

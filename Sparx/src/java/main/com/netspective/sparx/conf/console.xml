@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.104 2003-10-12 20:01:14 shahid.shah Exp $
+  * $Id: console.xml,v 1.105 2003-10-13 03:10:26 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -139,7 +139,9 @@
 	        </page>
 
             <page name="reports" caption="Reports"/>
-	        <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
+	        <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage">
+                <body config="console" source="console-page-content:catalog.ftl"/>
+            </page>
             <page name="template-engines" caption="Template Engines"/>
         </page>
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.41 2003-10-11 14:40:12 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.42 2003-10-13 03:10:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -78,6 +78,7 @@ import com.netspective.sparx.command.HttpServletCommand;
 import com.netspective.sparx.navigate.listener.NavigationPathListener;
 import com.netspective.sparx.navigate.listener.NavigationPageEnterListener;
 import com.netspective.sparx.navigate.listener.NavigationPageExitListener;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -728,7 +729,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     public TemplateProcessor createBody()
     {
-        return new com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor();
+        return new FreeMarkerTemplateProcessor();
     }
 
     public void addBody(TemplateProcessor templateProcessor)

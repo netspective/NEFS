@@ -39,19 +39,13 @@
  */
 
 /**
- * $Id: ThemePage.java,v 1.1 2003-03-24 13:28:02 shahid.shah Exp $
+ * $Id: ThemePage.java,v 1.2 2003-10-13 03:10:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
 
-import java.io.Writer;
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.console.ConsoleServletPage;
-import com.netspective.sparx.navigate.NavigationContext;
 
 public class ThemePage extends ConsoleServletPage
 {
@@ -65,10 +59,5 @@ public class ThemePage extends ConsoleServletPage
     public void setTheme(Theme theme)
     {
         this.theme = theme;
-    }
-
-    public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
-    {
-        writer.write(theme.getName());
     }
 }
