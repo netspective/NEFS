@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServletOptions.java,v 1.3 2003-09-02 21:35:54 shahid.shah Exp $
+ * $Id: NavigationControllerServletOptions.java,v 1.4 2003-09-13 01:07:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -48,6 +48,8 @@ import java.util.Properties;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.cli.Options;
@@ -118,6 +120,15 @@ public class NavigationControllerServletOptions
         HelpFormatter formatter = new HelpFormatter();
         formatter.defaultWidth = 120;
         formatter.printHelp(getClass().getName(), servletOptions);
+    }
+
+    public String getHelp()
+    {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(printWriter, 90, "com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS Init Parameter", "Class: " + getClass().getName(), servletOptions, 3, 0, "");
+        return stringWriter.getBuffer().toString();
     }
 
     public void initOptions()

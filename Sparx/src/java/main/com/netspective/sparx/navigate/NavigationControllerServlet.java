@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.25 2003-08-31 15:57:18 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.26 2003-09-13 01:07:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -52,11 +52,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -96,10 +92,16 @@ import com.netspective.commons.text.TextUtils;
 public class NavigationControllerServlet extends HttpServlet implements RuntimeEnvironment, ProjectManager
 {
     private static final Log log = LogFactory.getLog(NavigationControllerServlet.class);
+    private static final Set allControllerServlets = Collections.synchronizedSet(new HashSet());
 
     public static final String REQATTRNAME_RENDER_START_TIME = NavigationControllerServlet.class.getName() + ".START_TIME";
     public static final String PROPNAME_INIT_COUNT = "SERVLET_INITIALIZATION_COUNT";
     public static final String REQPARAMNAME_COMMAND_ONLY = "command-only";
+
+    public static Set getAllControllerServlets()
+    {
+        return allControllerServlets;
+    }
 
     private NavigationControllerServletOptions servletOptions;
     private String projectSourceFileName;
@@ -119,6 +121,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
+        allControllerServlets.add(this);
         super.init(servletConfig);
 
         servletOptions = constructServletOptions(servletConfig);
