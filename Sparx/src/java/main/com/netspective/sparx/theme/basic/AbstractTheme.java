@@ -39,31 +39,34 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.23 2003-12-03 22:40:01 aye.thu Exp $
+ * $Id: AbstractTheme.java,v 1.24 2004-02-16 04:38:39 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.io.IOException;
-
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.io.UriAddressableFileLocator;
-import com.netspective.commons.io.UriAddressableFile;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.io.UriAddressableFile;
+import com.netspective.commons.io.UriAddressableFileLocator;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.sparx.form.DialogSkin;
+import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.sparx.panel.HtmlPanelSkin;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.theme.Theme;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+/**
+ * A Theme is defined as a logical collection of the look and feel of various framework components such as pages,
+ * reports, and dialogs. This abstract class defines some of the default skins for these components.
+ */
 public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocatorListener
 {
     private static final Log log = LogFactory.getLog(AbstractTheme.class);
@@ -85,10 +88,18 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     private String[] inheritResourcesFromThemes = new String[0];
     private HtmlListPanelSkin listPanelSkin = constructListPanelSkin();
 
+    /**
+     * Sole constructor
+     */
     public AbstractTheme()
     {
     }
 
+    /**
+     * Gets the input source locator
+     *
+     * @return the input source locator
+     */
     public InputSourceLocator getInputSourceLocator()
     {
         return inputSourceLocator;
@@ -99,6 +110,11 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         this.inputSourceLocator = inputSourceLocator;
     }
 
+    /**
+     * Gets the resource locator
+     *
+     * @return   the resource locator
+     */
     public UriAddressableFileLocator getResourceLocator()
     {
         return resourceLocator;
@@ -109,6 +125,13 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         this.resourceLocator = locator;
     }
 
+    /**
+     * Constructs a  URL for the resource by prepending the theme's name to the relative URL.
+     *
+     * @param themeName     the name of the theme
+     * @param relativeUrl   the relative URL of the resource with respect to the theme's location
+     * @return
+     */
     protected String getResourceUrlWithThemePrefix(final String themeName, final String relativeUrl)
     {
         StringBuffer themeRelativeUrlBuf = new StringBuffer("theme/");
@@ -119,6 +142,12 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         return themeRelativeUrlBuf.toString();
     }
 
+    /**
+     * Gets the URL of the resource  related to the theme
+     *
+     * @param relativeUrl
+     * @return
+     */
     public String getResourceUrl(final String relativeUrl)
     {
         String themeRelativeUrl = getResourceUrlWithThemePrefix(name, relativeUrl);
@@ -152,6 +181,13 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         return themeRelativeUrl;
     }
 
+    /**
+     * Gets the URL of the resource related to the theme
+     *
+     * @param relativeUrl       the relative URL of the resource
+     * @param defaultUrl        the URL to use if the resource is not located using the relative URL
+     * @return                  the resource's URL
+     */
     public String getResourceUrl(final String relativeUrl, final String defaultUrl)
     {
         if(resourceLocator == null)
@@ -183,11 +219,21 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         return defaultUrl;
     }
 
+    /**
+     * Gets an array of resources inherited from other themese
+     *
+     * @return  array of resources
+     */
     public String[] getInheritResourcesFromThemes()
     {
         return inheritResourcesFromThemes;
     }
 
+    /**
+     * Sets the resources inherited from other themes
+     *
+     * @param delimitedThemeNames       A comma delimited string of resources
+     */
     public void setInheritResourcesFromThemes(String delimitedThemeNames)
     {
         List themeNamesList = new ArrayList();
@@ -214,6 +260,11 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         return new HtmlListPanelSkin(this, "list-panel", "panel-output", "panel/output", false);
     }
 
+    /**
+     * Gets the name of the theme
+     *
+     * @return  theme name
+     */
     public String getName()
     {
         return name;
@@ -224,66 +275,135 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         this.name = name;
     }
 
+    /**
+     * Gets the default navigation skin
+     *
+     * @return  default navigation skin
+     */
     public NavigationSkin getDefaultNavigationSkin()
     {
         return defaultNavigationSkin;
     }
 
+    /**
+     * Gets a theme navigation skin by its name
+     *
+     * @param name      navigation skin name
+     * @return          navigation skin
+     */
     public NavigationSkin getNavigationSkin(String name)
     {
         return (NavigationSkin) navigationSkins.get(name);
     }
 
+    /**
+     * Returns the default report skin
+     *
+     * @return      html tabular report skin
+     */
     public HtmlTabularReportSkin createReportSkin()
     {
         return defaultReportSkin;
     }
 
+    /**
+     * Creates a new dialog skin
+     *
+     * @return    new dialog skin
+     */
     public DialogSkin createDialogSkin()
     {
         return new StandardDialogSkin(this, "default", "panel-output", "panel/output", false);
     }
 
+    /**
+     * Gets a tabbed html panel skin
+     *
+     * @return
+     */
     public HtmlPanelSkin getTabbedPanelSkin()
     {
         return constructTabbedPanelSkin();
     }
 
+    /**
+     * Gets a template panel skin
+     *
+     * @return
+     */
     public HtmlPanelSkin getTemplatePanelSkin()
     {
         return templatePanelSkin;
     }
 
+    /**
+     * Gets a template skin by its name
+     *
+     * @param name      skin name
+     * @return          template skin
+     */
     public HtmlPanelSkin getTemplateSkin(String name)
     {
         return (HtmlPanelSkin) panelSkins.get(name);
     }
 
+    /**
+     * Gets the default report skin
+     *
+     * @return  html report skin
+     */
     public HtmlTabularReportSkin getDefaultReportSkin()
     {
         return defaultReportSkin;
     }
 
+    /**
+     * Gets a report skin by its name
+     *
+     * @param name      report skin name
+     * @return          report skin
+     */
     public HtmlTabularReportSkin getReportSkin(String name)
     {
         return (HtmlTabularReportSkin) tabularReportSkins.get(name);
     }
 
+    /**
+     * Gets the login dialog skin
+     *
+     * @return
+     */
     public LoginDialogSkin getLoginDialogSkin()
     {
         return defaulLoginDialogSkin;
     }
 
+    /**
+     * Gets the default dialog skin
+     *
+     * @return  default dialog skin
+     */
     public DialogSkin getDefaultDialogSkin()
     {
         return defaultDialogSkin;
     }
 
+    /**
+     * Gets a dialog skin by its name
+     *
+     * @param name      dialog skin name
+     * @return          dialog skin
+     */
     public DialogSkin getDialogSkin(String name)
     {
         return (DialogSkin) dialogSkins.get(name);
     }
 
+    /**
+     * Adds a dialog skin
+     *
+     * @param skin      dialog skin
+     */
     public void addDialogSkin(DialogSkin skin)
     {
         skin.setTheme(this);
@@ -292,11 +412,22 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
             defaultDialogSkin = skin;
     }
 
+    /**
+     * Creates a new navigation skin. This class implementation returns a null.
+     *
+     * @return
+     */
     public NavigationSkin createNavigationSkin()
     {
         return null;
     }
 
+    /**
+     * Adds a new navigation skin and also sets the default navigation skin if the passed in skin
+     * is configured to be the default one.
+     *
+     * @param skin      navigation skin
+     */
     public void addNavigationSkin(NavigationSkin skin)
     {
         skin.setTheme(this);
@@ -305,12 +436,22 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
             defaultNavigationSkin = skin;
     }
 
+    /**
+     * Adds a html panel skin
+     *
+     * @param skin      panel skin
+     */
     public void addPanelSkin(HtmlPanelSkin skin)
     {
         skin.setTheme(this);
         panelSkins.put(skin.getName(), skin);
     }
 
+    /**
+     * Adds a report skin and sets the default report skin if the passed in skin is configured to be the default one.
+     *
+     * @param skin      report skin
+     */
     public void addReportSkin(HtmlTabularReportSkin skin)
     {
         skin.setTheme(this);
@@ -319,6 +460,11 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
             defaultReportSkin = skin;
     }
 
+    /**
+     * Gets a map of dialog skins of the theme
+     *
+     * @return      dialog skins
+     */
     public Map getDialogSkins()
     {
         return dialogSkins;
@@ -339,11 +485,21 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         return tabularReportSkins;
     }
 
+    /**
+     * Checks to see if the theme is the default one
+     *
+     * @return      True if the theme is the default one
+     */
     public boolean isDefault()
     {
         return defaultTheme;
     }
 
+    /**
+     * Sets the default flag of the theme
+     *
+     * @param defaultTheme
+     */
     public void setDefault(boolean defaultTheme)
     {
         this.defaultTheme = defaultTheme;
