@@ -37,7 +37,7 @@
  *
  * @author Shahid N. Shah
 
- * $Id: NavigationConditionalApplyFlag.java,v 1.2 2003-08-14 13:00:26 shahid.shah Exp $
+ * $Id: NavigationConditionalApplyFlag.java,v 1.3 2003-08-14 13:05:30 shahid.shah Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -122,6 +122,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     public NavigationPage.Flags createFlags()
     {
+        //TODO: why is this not using the parent page that it belongs to -- why creating a new flags object?
         return new NavigationPage().new Flags();
     }
 
@@ -260,6 +261,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
         */
         if(status)
         {
+            //TODO: check to see if our flags should overwrite the other flags or only update them
             nc.getState(this.getPath()).getFlags().setFlag(flags.getFlags());
         }
     }
