@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.22 2003-06-02 19:29:39 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.23 2003-06-09 06:50:03 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -66,5 +66,8 @@
                   invalid-reg-ex-message="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
         </validation>
     </dialog-field-type>
+
+     <dialog-field-conditional-action name="apply-flag" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag"/>
+
 
 </xdm:container>
