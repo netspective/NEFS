@@ -45,8 +45,8 @@
 .menu-level-1-active:visited   { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-1-active-end      { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; background: url(../images/level1/level1tab-active-cap.gif) no-repeat right bottom }
 .menu-level-1-active-start   { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; background: url(../images/level1/level1tab-active-cap.gif) no-repeat right bottom }
-.menu-level-1:link     { color: #808080; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
-.menu-level-1:visited     { color: #808080; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-1:link      { color: #c00; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-1:visited      { color: #c00; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-1:hover    { color: #000; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-1-tab-gap { border-bottom: 1px solid black }
 .menu-level-3-table-active { background: url(../images/level3/level3-menu-active.gif) no-repeat right top; padding-bottom: 9px; width: 104px; height: 30px }

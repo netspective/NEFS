@@ -1,28 +1,43 @@
-.panel-input        { background-color: #009 }
+input.panel-input       { background-color: white }
 
-.panel-input-frame-heading  { color: #fff0f5; font-weight: bold; font-size: 10px; font-family: Tahoma; background: url(../images/panel/input/frame-heading.gif) no-repeat left top; text-transform: uppercase; padding: 1px 8px 3px }
+.panel-input-frame-heading   { color: #000; font-weight: bold; font-size: 10px; font-family: Tahoma; background-image: url(../images/panel/input/frame-heading.gif); text-transform: uppercase; padding-top: 2px }
 
-.panel-input-frame-heading-action-left-blank  { background: url(../images/panel/input/frame-heading-action-left.gif) no-repeat; width: 17px; height: 19px }
-.panel-input-frame-heading-action-right-blank  { background: url(../images/panel/input/frame-heading-action-right.gif) no-repeat; width: 17px; height: 19px }
-.panel-input-frame-heading-action-collapse  { background: url(../images/panel/input/frame-heading-action-up.gif) no-repeat; width: 17px; height: 19px }
-.panel-input-frame-heading-action-expand  { background: url(../images/panel/input/frame-heading-action-down.gif) no-repeat; width: 17px; height: 19px }
+.panel-input-frame-heading-action-left-blank   { background: url(../images/panel/input/frame-heading-action-left.gif) no-repeat left top; width: 17px; height: 19px }
+.panel-input-frame-heading-action-right-blank   { background: url(../images/panel/input/frame-heading-action-right.gif) no-repeat right top; height: 19px }
+.panel-input-frame-heading-action-collapse   { background: url(../images/panel/input/frame-heading-action-up.gif) no-repeat; width: 22px; height: 19px; cursor: hand; }
+.panel-input-frame-heading-action-expand  { background: url(../images/panel/input/frame-heading-action-down.gif) no-repeat; width: 22px; height: 19px; cursor: hand; }
 .panel-input-frame-heading-action-drag { background: url(../images/panel/input/frame-heading-action-drag.gif) no-repeat; width: 17px; height: 19px }
-.panel-input-frame-action-search { background: url(../images/panel/input/frame-action-search.gif) no-repeat; width: 17px; height: 14px }
+.panel-input-frame-action-search  { background: #800000 url(../images/panel/input/frame-action-search.gif) no-repeat; width: 17px; height: 14px }
 .panel-input-frame-action-add { background: url(../images/panel/input/frame-action-add.gif) no-repeat; width: 17px; height: 14px }
+.panel-input-frame-action-item  { background: url(../images/panel/input/frame-action-add.gif) no-repeat left top; width: 18px; height: 19px }
 .panel-input-frame-mid { background-image: url(../images/panel/input/mid.gif); width: 100%; height: 19px }
 .panel-input-frame-end-cap { background: url(../images/panel/input/end-cap.gif) no-repeat left top; width: 2px; height: 19px }
 
-.panel-input-frame-action       { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase; width: 100% }
-.panel-input-frame-action-box  { background-color: #f1eeee; text-transform: uppercase; padding-top: 1px; border-top: 1px solid #999; border-right: 1px solid #999 }
-.panel-input-frame-action-box:hover  { background-color: #a9a9a9; text-transform: uppercase; padding-top: 1px; border-top: 1px solid #999; border-right: 1px solid #999 }
-.panel-input-frame-action:link    { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
-.panel-input-frame-action:visited    { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
-.panel-input-frame-action:hover       { color: #009; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
+.panel-input-frame-action         { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
+.panel-input-frame-action:link { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
+.panel-input-frame-action:visited { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
+.panel-input-frame-action:hover { color: black; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
+.panel-input-frame-action-box   { background-image: url(../images/panel/input/frame-action-mid.gif); text-transform: uppercase; padding-top: 1px }
+.panel-input-banner      { color: #696969; font-size: 11px; font-family: Verdana; text-decoration: none; background-image: url(../images/panel/input/banner-pattern.gif); text-align: left; padding-top: 4px; padding-left: 3px; border-right: 1px solid #36c; border-left: 1px solid #36c }
+.panel-input-banner-footer      { color: #696969; font-size: 11px; font-family: Verdana; text-decoration: none; background-image: url(../images/panel/input/banner-pattern.gif); text-align: left; padding-left: 3px; border-right: 1px solid #36c; border-bottom: 1px solid #36c; border-left: 1px solid #36c }
 
-.panel-input-banner        { color: #009; font-weight: bold; font-size: 12px; font-family: Verdana; text-decoration: none; text-align: left; padding-top: 4px; padding-left: 3px; border-top: 1px solid #009; border-right: 1px solid #009; border-left: 1px solid #009 }
-.panel-input-banner-footer       { color: #009; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; text-align: left; padding-left: 3px; border-right: 1px solid #009; border-bottom: 1px solid #009; border-left: 1px solid #009 }
+.panel-input-content      { background-image: url(../images/panel/input/banner-pattern.gif); border-right: 1px solid #36c; border-bottom: 1px solid #36c; border-left: 1px solid #36c }
+.panel-input-frame-table-action { background-color: white }
 
-.panel-input-content        { background-image: url(../images/panel/input/banner-pattern.gif); border: solid 1px #009 }
+.panel-input-tabs  { color: #000000; font-size: 9px; font-family: Verdana; background: url(../images/panel/input/panel-tab-bg.gif) repeat-x left bottom; height: 19px }
+.panel-input-tab-active   { color: #ffffff; font-weight: bold; text-decoration: none; background: url(../images/panel/input/panel-tab-active-bg.gif) repeat-x left bottom; margin-right: 4px; margin-left: 3px; padding-right: 5px; padding-left: 5px; border: solid 1px #36c; height: 15px; cursor: hand  }
+.panel-input-tab-active:link { color: #900; font-weight: bold; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-input-tab-active:visited { color: #900; font-weight: bold; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-input-tab-active:hover { color: #900; font-weight: bold; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-input-tab  { text-decoration: none; margin-right: 4px; margin-left: 3px; padding: 2px; cursor: hand }
+.panel-input-tab:link { color: #8b0000; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-input-tab:visited { color: #8b0000; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-input-tab:active { color: #8b0000; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
+.panel-input-tab:hover { color: black; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
+
+.panel-input-tree-collapse  { background: url(../images/panel/input/tree-collapse.gif) no-repeat; width: 10px; cursor: hand; }
+.panel-input-tree-expand  { background: url(../images/panel/input/tree-expand.gif) no-repeat; width: 10px; cursor: hand; }
+.panel-input-tree-leaf  { background: url(../images/panel/input/tree-leaf.gif) no-repeat; width: 10px; }
 
 
 .panel-input-login         { background-color: black }
