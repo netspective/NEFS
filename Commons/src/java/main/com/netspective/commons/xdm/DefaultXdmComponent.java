@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponent.java,v 1.5 2003-08-24 18:37:15 shahid.shah Exp $
+ * $Id: DefaultXdmComponent.java,v 1.6 2003-08-31 14:04:38 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -149,6 +149,21 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
                     System.out.println(error.toString());
             }
         }
+    }
+
+    public boolean hasErrors()
+    {
+        return errors.size() > 0;
+    }
+
+    public boolean hasWarnings()
+    {
+        return warnings.size() > 0;
+    }
+
+    public boolean hasErrorsOrWarnings()
+    {
+        return errors.size() > 0 || warnings.size() > 0;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
