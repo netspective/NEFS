@@ -39,17 +39,130 @@
  */
 
 /**
- * $Id: StoredProcedure.java,v 1.1 2003-10-31 03:37:54 aye.thu Exp $
+ * $Id: StoredProcedure.java,v 1.2 2003-11-07 05:15:59 aye.thu Exp $
  */
 package com.netspective.sparx.sql;
 
 import com.netspective.sparx.Project;
+import com.netspective.sparx.form.sql.QueryDialog;
+import com.netspective.sparx.panel.StoredProcedureReportPanel;
+import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.axiom.sql.StoredProceduresNameSpace;
+import com.netspective.commons.value.source.StaticValueSource;
 
+import java.util.Map;
+import java.util.HashMap;
+
+/**
+ * Class for handling the &lt;stored-procedure&gt; entry defined in the project.
+ * It extends the <code>com.netspective.axiom.sql.StoredProcedure</code> by providing reporting
+ * functionalities.
+ *
+ */
 public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 {
+
+    /**
+     * Child class for handling the presentation aspects of the stored query
+     */
+    public class Presentation
+    {
+        private Map reportPanels = new HashMap();
+        private StoredProcedureReportPanel defaultPanel;
+
+        /**
+         * Creates a display report panel for the query
+         * @return
+         */
+        public StoredProcedureReportPanel createPanel()
+        {
+            StoredProcedureReportPanel result = new StoredProcedureReportPanel();
+            result.setStoredProcedure(StoredProcedure.this);
+            return result;
+        }
+
+        /**
+         * Creates a dialog for the stored procedure input
+         * @return
+         */
+        /*
+        public QueryDialog createDialog()
+        {
+            StoredProcedureDialog result = new StoredProcedureDialog(getProject());
+            result.setName("query-" + StoredProcedure.this.getQualifiedName());
+            result.getFrame().setHeading(new StaticValueSource("Query: " + StoredProcedure.this.getQualifiedName()));
+            result.setStored(StoredProcedure.this);
+            return result;
+        }
+        */
+
+        /**
+         * Adds a display report panel for the stored procedure. Multiple report panels representing different presentations
+         * of the results of the stored procedure can be added.
+         * @param panel
+         */
+        public void addPanel(StoredProcedureReportPanel panel)
+        {
+            if(reportPanels.size() == 0 || panel.isDefaultPanel())
+                defaultPanel = panel;
+            reportPanels.put(panel.getName(), panel);
+        }
+
+        /**
+         * Gets the default report panel for the stored procedure. Usually the default panel is the one that is defined without
+         * a name associated with it.
+         * @return
+         */
+        public StoredProcedureReportPanel getDefaultPanel()
+        {
+            if(defaultPanel == null)
+            {
+                defaultPanel = new StoredProcedureReportPanel();
+                defaultPanel.setStoredProcedure(StoredProcedure.this);
+                defaultPanel.setFrame(new HtmlPanelFrame());
+            }
+            return defaultPanel;
+        }
+        /**
+         * Gets the report panel
+         * @param name  report panel name
+         * @return      report panel object
+         */
+        public StoredProcedureReportPanel getPanel(String name)
+        {
+            return (StoredProcedureReportPanel) reportPanels.get(name);
+        }
+
+        /**
+         * Gets a map of all the report panels of this stored procedure
+         * @return
+         */
+        public Map getPanels()
+        {
+            return reportPanels;
+        }
+
+        /**
+         * Sets the default report panel for this stored procedure
+         * @param defaultPanel
+         */
+        public void setDefaultPanel(StoredProcedureReportPanel defaultPanel)
+        {
+            this.defaultPanel = defaultPanel;
+        }
+
+        /**
+         * Gets the number of report panels for this stored procedure
+         * @return
+         */
+        public int size()
+        {
+            return reportPanels.size();
+        }
+
+    }
     private Project project;
-    //private StoredProcedure.Presentation presentation = new StoredProcedure.Presentation();
+    private StoredProcedure.Presentation presentation = new StoredProcedure.Presentation();
 
     public StoredProcedure(Project project)
     {
@@ -65,6 +178,33 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
     public Project getProject()
     {
         return project;
+    }
+
+/**
+     * Gets the Presentation object of this stored procedure.
+     * @return
+     */
+    public Presentation getPresentation()
+    {
+        return presentation;
+    }
+
+    /**
+     * Returns the Presentation object of this stored procedure. This is used by XDM.
+     * @return
+     */
+    public Presentation createPresentation()
+    {
+        return presentation;
+    }
+
+    /**
+     * Empty method. This  method is needed so XDM knows that "presentation" is a valid XML child
+     * @param presentation
+     */
+    public void addPresentation(Presentation presentation)
+    {
+        // do nothing, but this method is needed so XDM knows that "presentation" is a valid XML child
     }
 
 }
