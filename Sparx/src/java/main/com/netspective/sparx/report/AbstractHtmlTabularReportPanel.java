@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.4 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.5 2003-04-02 23:57:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report;
@@ -50,6 +50,7 @@ import java.io.IOException;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.panel.HtmlPanels;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 
 public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
 {

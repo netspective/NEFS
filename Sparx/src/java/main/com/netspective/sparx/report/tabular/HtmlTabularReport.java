@@ -51,21 +51,22 @@
  */
  
 /**
- * $Id: TabularReport.java,v 1.1 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: HtmlTabularReport.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
-import com.netspective.sparx.report.tabular.TabularReportBanner;
-import com.netspective.sparx.report.tabular.TabularReportFrame;
+import com.netspective.sparx.report.tabular.HtmlTabularReportBanner;
+import com.netspective.sparx.report.tabular.HtmlTabularReportFrame;
+import com.netspective.commons.report.tabular.TabularReport;
 
-public interface TabularReport extends com.netspective.commons.report.tabular.TabularReport
+public interface HtmlTabularReport extends TabularReport
 {
-    public TabularReportFrame getFrame();
+    public HtmlTabularReportFrame getFrame();
 
-    public void setFrame(TabularReportFrame rf);
+    public void setFrame(HtmlTabularReportFrame rf);
 
-    public TabularReportBanner getBanner();
+    public HtmlTabularReportBanner getBanner();
 
-    public void setBanner(TabularReportBanner value);
+    public void setBanner(HtmlTabularReportBanner value);
 }

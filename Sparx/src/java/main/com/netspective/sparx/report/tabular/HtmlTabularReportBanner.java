@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: TabularReportBanner.java,v 1.1 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: HtmlTabularReportBanner.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -62,15 +62,15 @@ import java.util.ArrayList;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
-import com.netspective.sparx.report.tabular.TabularReportAction;
-import com.netspective.sparx.report.tabular.TabularReportActions;
+import com.netspective.sparx.report.tabular.HtmlTabularReportAction;
+import com.netspective.sparx.report.tabular.HtmlTabularReportActions;
 
-public class TabularReportBanner
+public class HtmlTabularReportBanner
 {
-    private TabularReportActions actions = new TabularReportActions();
+    private HtmlTabularReportActions actions = new HtmlTabularReportActions();
     private ValueSource content;
 
-    public TabularReportBanner()
+    public HtmlTabularReportBanner()
     {
     }
 
@@ -84,17 +84,17 @@ public class TabularReportBanner
         this.content = content;
     }
 
-    public TabularReportActions getActions()
+    public HtmlTabularReportActions getActions()
     {
         return actions;
     }
 
-    public TabularReportAction createAction()
+    public HtmlTabularReportAction createAction()
     {
-        return new TabularReportAction();
+        return new HtmlTabularReportAction();
     }
 
-    public void addAction(TabularReportAction item)
+    public void addAction(HtmlTabularReportAction item)
     {
         actions.add(item);
     }

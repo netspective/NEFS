@@ -5,7 +5,7 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportSkin;
 
 /**

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.7 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.8 2003-04-02 23:57:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -53,8 +53,8 @@ import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportException;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.TabularReport;
-import com.netspective.sparx.report.tabular.BasicTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -65,7 +65,7 @@ import com.netspective.commons.io.FileTracker;
 
 public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
 {
-    private static final TabularReport report = new BasicTabularReport();
+    private static final HtmlTabularReport report = new BasicHtmlTabularReport();
 
     static
     {
@@ -91,7 +91,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
         return new UsageReportDataSource();
     }
 
-    public TabularReport getReport(NavigationContext nc)
+    public HtmlTabularReport getReport(NavigationContext nc)
     {
         return report;
     }

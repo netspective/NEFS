@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportActions.java,v 1.1 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: HtmlTabularReportActions.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -48,9 +48,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
-import com.netspective.sparx.report.tabular.TabularReportAction;
+import com.netspective.sparx.report.tabular.HtmlTabularReportAction;
 
-public class TabularReportActions
+public class HtmlTabularReportActions
 {
     public static class Style extends XdmEnumeratedAttribute
     {
@@ -75,16 +75,16 @@ public class TabularReportActions
     private List actions = new ArrayList();
     private Style style = new Style(Style.HORIZONTAL);
 
-    public TabularReportActions()
+    public HtmlTabularReportActions()
     {
     }
 
-    public TabularReportAction get(int i)
+    public HtmlTabularReportAction get(int i)
     {
-        return (TabularReportAction) actions.get(i);
+        return (HtmlTabularReportAction) actions.get(i);
     }
 
-    public void add(TabularReportAction action)
+    public void add(HtmlTabularReportAction action)
     {
         actions.add(action);
     }

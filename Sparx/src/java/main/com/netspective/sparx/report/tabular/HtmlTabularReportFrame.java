@@ -51,17 +51,17 @@
  */
 
 /**
- * $Id: TabularReportFrame.java,v 1.1 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: HtmlTabularReportFrame.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.sparx.report.tabular.TabularReportAction;
-import com.netspective.sparx.report.tabular.TabularReportActions;
+import com.netspective.sparx.report.tabular.HtmlTabularReportAction;
+import com.netspective.sparx.report.tabular.HtmlTabularReportActions;
 
-public class TabularReportFrame
+public class HtmlTabularReportFrame
 {
     public static class Flags extends XdmBitmaskedFlagsAttribute
     {
@@ -92,9 +92,9 @@ public class TabularReportFrame
     private ValueSource footing;
     private ValueSource allowSelect;
     private Flags flags = new Flags();
-    private TabularReportActions actions = new TabularReportActions();
+    private HtmlTabularReportActions actions = new HtmlTabularReportActions();
 
-    public TabularReportFrame()
+    public HtmlTabularReportFrame()
     {
     }
 
@@ -146,17 +146,17 @@ public class TabularReportFrame
         flags.updateFlag(Flags.HAS_FOOTING, footing != null);
     }
 
-    public TabularReportActions getActions()
+    public HtmlTabularReportActions getActions()
     {
         return actions;
     }
 
-    public TabularReportAction createAction()
+    public HtmlTabularReportAction createAction()
     {
-        return new TabularReportAction();
+        return new HtmlTabularReportAction();
     }
 
-    public void addAction(TabularReportAction item)
+    public void addAction(HtmlTabularReportAction item)
     {
         actions.add(item);
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.2 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.3 2003-04-02 23:57:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -66,16 +66,16 @@ import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.ReportHttpServletValueContext;
-import com.netspective.sparx.report.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.TabularReport;
-import com.netspective.sparx.report.tabular.BasicTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 
 public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 {
     private static final Log log = LogFactory.getLog(XdmSchemaStructurePanel.class);
     public static final String REQPARAMNAME_SHOW_CLASS_DETAIL = "xdm-class";
-    private static final TabularReport structureReport = new BasicTabularReport();
-    private static final TabularReport detailReport = new BasicTabularReport();
+    private static final HtmlTabularReport structureReport = new BasicHtmlTabularReport();
+    private static final HtmlTabularReport detailReport = new BasicHtmlTabularReport();
 
     static
     {
@@ -322,7 +322,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             return new StructureDataSource(structureRows);
     }
 
-    public TabularReport getReport(NavigationContext nc)
+    public HtmlTabularReport getReport(NavigationContext nc)
     {
         return view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL ? detailReport : structureReport;
     }

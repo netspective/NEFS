@@ -51,60 +51,60 @@
  */
 
 /**
- * $Id: BasicTabularReport.java,v 1.1 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReport.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
-import com.netspective.sparx.report.tabular.TabularReportBanner;
-import com.netspective.sparx.report.tabular.TabularReportFrame;
+import com.netspective.sparx.report.tabular.HtmlTabularReportBanner;
+import com.netspective.sparx.report.tabular.HtmlTabularReportFrame;
 import com.netspective.commons.report.tabular.AbstractTabularReport;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
-public class BasicTabularReport extends AbstractTabularReport implements TabularReport, XmlDataModelSchema.ConstructionFinalizeListener
+public class BasicHtmlTabularReport extends AbstractTabularReport implements HtmlTabularReport, XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
-    private TabularReportFrame frame;
-    private TabularReportBanner banner;
+    private HtmlTabularReportFrame frame;
+    private HtmlTabularReportBanner banner;
 
-    public BasicTabularReport()
+    public BasicHtmlTabularReport()
     {
         frame = createFrame();
         banner = createBanner();
     }
 
-    public TabularReportFrame getFrame()
+    public HtmlTabularReportFrame getFrame()
     {
         return frame;
     }
 
-    public void setFrame(TabularReportFrame rf)
+    public void setFrame(HtmlTabularReportFrame rf)
     {
         frame = rf;
     }
 
-    public TabularReportBanner getBanner()
+    public HtmlTabularReportBanner getBanner()
     {
         return banner;
     }
 
-    public void setBanner(TabularReportBanner value)
+    public void setBanner(HtmlTabularReportBanner value)
     {
         banner = value;
     }
 
-    public TabularReportFrame createFrame()
+    public HtmlTabularReportFrame createFrame()
     {
         if(frame == null)
-            frame = new TabularReportFrame();
+            frame = new HtmlTabularReportFrame();
         return frame;
     }
 
-    public TabularReportBanner createBanner()
+    public HtmlTabularReportBanner createBanner()
     {
         if(banner == null)
-            banner = new TabularReportBanner();
+            banner = new HtmlTabularReportBanner();
         return banner;
     }
 }

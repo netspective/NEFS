@@ -39,10 +39,10 @@
  */
 
 /**
- * $Id: HtmlTabularReportSkin.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: HtmlTabularReportSkin.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report;
+package com.netspective.sparx.report.tabular;
 
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.commons.report.tabular.TabularReportSkin;

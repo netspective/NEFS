@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportAction.java,v 1.1 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: HtmlTabularReportAction.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -50,13 +50,13 @@ import com.netspective.commons.command.Command;
 import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.command.Commands;
 
-public class TabularReportAction
+public class HtmlTabularReportAction
 {
     private ValueSource icon;
     private ValueSource caption;
     private ValueSource hint;
     private ValueSource command;
-    private TabularReportActions children = new TabularReportActions();
+    private HtmlTabularReportActions children = new HtmlTabularReportActions();
 
     public ValueSource getCaption()
     {
@@ -110,32 +110,32 @@ public class TabularReportAction
         this.command = command;
     }
 
-    public TabularReportActions.Style getStyle()
+    public HtmlTabularReportActions.Style getStyle()
     {
         return children.getStyle();
     }
 
-    public void setStyle(TabularReportActions.Style style)
+    public void setStyle(HtmlTabularReportActions.Style style)
     {
         children.setStyle(style);
     }
 
-    public TabularReportActions getChildren()
+    public HtmlTabularReportActions getChildren()
     {
         return children;
     }
 
-    public void setChildren(TabularReportActions children)
+    public void setChildren(HtmlTabularReportActions children)
     {
         this.children = children;
     }
 
-    public TabularReportAction createAction()
+    public HtmlTabularReportAction createAction()
     {
-        return new TabularReportAction();
+        return new HtmlTabularReportAction();
     }
 
-    public void addAction(TabularReportAction item)
+    public void addAction(HtmlTabularReportAction item)
     {
         children.add(item);
     }

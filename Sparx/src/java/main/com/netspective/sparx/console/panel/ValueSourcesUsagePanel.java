@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesUsagePanel.java,v 1.6 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: ValueSourcesUsagePanel.java,v 1.7 2003-04-02 23:57:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -48,8 +48,8 @@ import java.util.Map;
 import java.util.Iterator;
 
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.BasicTabularReport;
-import com.netspective.sparx.report.tabular.TabularReport;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
@@ -61,7 +61,7 @@ import com.netspective.commons.value.ValueSource;
 
 public class ValueSourcesUsagePanel extends AbstractHtmlTabularReportPanel
 {
-    public static final TabularReport usageReport = new BasicTabularReport();
+    public static final HtmlTabularReport usageReport = new BasicHtmlTabularReport();
 
     static
     {
@@ -87,7 +87,7 @@ public class ValueSourcesUsagePanel extends AbstractHtmlTabularReportPanel
         return new UsageReportDataSource();
     }
 
-    public TabularReport getReport(NavigationContext nc)
+    public HtmlTabularReport getReport(NavigationContext nc)
     {
         return usageReport;
     }

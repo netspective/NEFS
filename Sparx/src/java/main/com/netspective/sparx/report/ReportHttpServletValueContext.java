@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: ReportHttpServletValueContext.java,v 1.2 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: ReportHttpServletValueContext.java,v 1.3 2003-04-02 23:57:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report;
@@ -69,8 +69,8 @@ import javax.servlet.ServletResponse;
 import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
 import com.netspective.commons.report.tabular.TabularReportContextListener;
 import com.netspective.commons.report.tabular.TabularReportColumns;
-import com.netspective.sparx.report.tabular.TabularReportFrame;
-import com.netspective.sparx.report.tabular.TabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportFrame;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.commons.report.tabular.TabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
@@ -82,14 +82,14 @@ public class ReportHttpServletValueContext extends BasicDbHttpServletValueContex
 
     private List listeners = new ArrayList();
     private TabularReportColumnState[] states;
-    private TabularReport reportDefn;
+    private HtmlTabularReport reportDefn;
     private int calcsCount;
     private int visibleColsCount;
     private TabularReportSkin skin;
     private int rowCurrent, rowStart, rowEnd;
     private long frameFlags;
 
-    public ReportHttpServletValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response, TabularReport reportDefn, TabularReportSkin skin)
+    public ReportHttpServletValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response, HtmlTabularReport reportDefn, TabularReportSkin skin)
     {
         super(context, servlet, request, response);
         this.reportDefn = reportDefn;
@@ -119,25 +119,13 @@ public class ReportHttpServletValueContext extends BasicDbHttpServletValueContex
             states[i] = state;
         }
 
-        TabularReportFrame frame = reportDefn.getFrame();
+        HtmlTabularReportFrame frame = reportDefn.getFrame();
         frameFlags = frame != null ? frame.getFlags().getFlags() : 0;
     }
 
     public boolean isMinimized()
     {
-        return (frameFlags & TabularReportFrame.Flags.IS_COLLAPSED) != 0;
-    }
-
-    /**
-     * Returns a string useful for displaying a unique Id for this DialogContext
-     * in a log or monitor file.
-     */
-    public String getLogId()
-    {
-        String result = reportDefn.toString();
-        if(result == null)
-            return Integer.toString(reportDefn.getColumns().size());
-        return result;
+        return (frameFlags & HtmlTabularReportFrame.Flags.IS_COLLAPSED) != 0;
     }
 
     public List getListeners()
