@@ -99,6 +99,7 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
         }
     }
 
+    private String redirectorPageId;
     private EntityRedirectorPage redirectorPage;
     private int entitySubtypeId;
     private String entitySubtypeName;
@@ -108,6 +109,20 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
         super(owner);
         setHeading(new EntityPageHeadingValueSource());
         getFlags().setFlag(Flags.HIDDEN_UNLESS_ACTIVE);
+    }
+
+    public void finalizeContents()
+    {
+        super.finalizeContents();
+
+        // in case redirector page target is not defined before this entity page, try now while we're finalizing
+        // contents because the entire tree should be loaded at this time
+        if(redirectorPage == null && redirectorPageId != null)
+        {
+            setEntityRedirectorPageId(redirectorPageId);
+            if(redirectorPage == null)
+                throw new RuntimeException("Redirector page with id '" + redirectorPageId + "' not found.");
+        }
     }
 
     public NavigationPath.State constructState()
@@ -169,12 +184,13 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
 
     public void setEntityRedirectorPageId(String redirectPageId)
     {
-        redirectorPage = (EntityRedirectorPage) getOwner().findPath(redirectPageId).getMatchedPath();
-        if(redirectorPage == null)
-            throw new RuntimeException("Redirector page with id '" + redirectPageId + "' not found.");
-
-        setRequireRequestParam(redirectorPage.getEntityIdRequestParamName());
-        setRetainParams(new StaticValueSource(redirectorPage.getEntityIdRequestParamName()));
+        this.redirectorPageId = redirectPageId;
+        this.redirectorPage = (EntityRedirectorPage) getOwner().findPath(redirectPageId).getMatchedPath();
+        if(redirectorPage != null)
+        {
+            setRequireRequestParam(redirectorPage.getEntityIdRequestParamName());
+            setRetainParams(new StaticValueSource(redirectorPage.getEntityIdRequestParamName()));
+        }
     }
 
     public boolean isValid(NavigationContext nc)
