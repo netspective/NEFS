@@ -143,6 +143,10 @@
             <default dbms="oracle">SYSTIMESTAMP</default>
             <default dbms="hsqldb">'now'</default>
         </sql-ddl>
+        <value-defn>
+            <default dbms="hsqldb">now()</default>
+            <default dbms="oracle">SYSTIMESTAMP</default>
+        </value-defn>
     </data-type>
 
     <data-type name="update-stamp" type="date-time" class="com.netspective.axiom.schema.column.type.UpdateStampColumn"/>
