@@ -3,7 +3,7 @@
 ** programmers.                                                             **
 ******************************************************************************
 
-$Id: README.TXT,v 1.3 2003-08-03 17:20:45 shahid.shah Exp $
+$Id: README.TXT,v 1.4 2003-08-03 17:25:44 shahid.shah Exp $
 
 Standard IDE and App Server
 ------------------------------------------------------------------------------
@@ -28,7 +28,8 @@ Default location on development boxes
 
 Note: All defaults assume development work is being done on a Win32 platform
       but everything will work on OS X, Linux, and UNIX as well. Just follow
-      the instructions below in "First-time only steps".
+      the instructions below in "First-time only steps". If you are using
+      OS X, Linux, or UNIX use $HOME/projects/Frameworks as NEFS_HOME.
 
 Note: There is a default resin configuration file called
       NEFS_HOME/webapps/resin-2.x.conf available for your use. This
