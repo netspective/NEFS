@@ -65,7 +65,7 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordEditorReportSkin.java,v 1.5 2003-08-01 05:51:51 aye.thu Exp $
+ * $Id: RecordEditorReportSkin.java,v 1.6 2003-08-15 05:17:30 aye.thu Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -99,7 +99,7 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
             String label = "<img src=\"" + imgPath + "/content-action-delete.gif\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String deleteRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
 
-            writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
+            writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
             writer.write(deleteRecordUrl);
             writer.write("</td>");
 
@@ -116,6 +116,7 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
      */
     public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
     {
+        super.produceDataRowDecoratorPrepend(writer, rc, ds, rowData, isOddRow);
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
         if (actions == null)
@@ -134,26 +135,32 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
                 "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
 
-            writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
+            writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
             writer.write(editRecordUrl);
             writer.write("</td>");
         }
     }
 
+    /**
+     * Gets the additional number of columns to append after the data columns
+     * @param rc
+     * @return
+     */
     protected int getRowDecoratorAppendColsCount(HtmlTabularReportValueContext rc)
     {
+        int cols = super.getRowDecoratorAppendColsCount(rc);
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
         if (actions == null)
         {
             // no actions are defined in the report so return 0
-            return 0;
+            return cols;
         }
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_DELETE));
         if (reportAction != null)
-            return 1;
+            return cols+1;
         else
-            return 0;
+            return cols;
 
     }
 
@@ -164,18 +171,19 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
      */
     protected int getRowDecoratorPrependColsCount(HtmlTabularReportValueContext rc)
     {
+        int cols = super.getRowDecoratorPrependColsCount(rc);
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
         if (actions == null)
         {
             // no actions are defined in the report so return 0
-            return 0;
+            return cols;
         }
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
         if (reportAction != null)
-            return 1;
+            return cols+1;
         else
-            return 0;
+            return cols;
     }
 
 }
