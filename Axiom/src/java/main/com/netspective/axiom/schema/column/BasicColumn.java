@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.15 2003-10-17 15:58:03 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.16 2003-10-20 22:17:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -444,6 +444,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         setUnique(column.isUnique());
         getSqlDdl().merge(column.getSqlDdl());
         getValidationRules().merge(column.getValidationRules());
+        presentation = (ColumnPresentationTemplate) column.getPresentation();
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
