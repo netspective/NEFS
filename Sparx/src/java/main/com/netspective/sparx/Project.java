@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.34 2003-10-31 03:38:07 aye.thu Exp $
+ * $Id: Project.java,v 1.35 2003-11-03 16:27:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.Iterator;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -68,6 +69,8 @@ import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
 import com.netspective.sparx.navigate.NavigationConditionalAction;
 import com.netspective.sparx.navigate.NavigationPageBodyHandler;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.sparx.theme.basic.AbstractTheme;
@@ -528,8 +531,10 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     protected class PresentationIdentifierConstantsGenerator
     {
         public static final String DELIM = ".";
+        public static final char DELIM_CH = '.';
         private String rootPackage = "pres";
         private String formPackage = "pres.form";
+        private String navigationPackage = "pres.navigation";
 
         public PresentationIdentifierConstantsGenerator()
         {
@@ -551,6 +556,16 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
             return getFormPackage(dialogField.getOwner()) + DELIM + dialogField.getQualifiedName();
         }
 
+        public String getNavigationPackage(NavigationTree tree)
+        {
+            return this.navigationPackage + DELIM + tree.getName();
+        }
+
+        public String getNavigationPackage(NavigationPath path)
+        {
+            return getNavigationPackage(path.getOwner()) + path.getQualifiedName().replace('/', DELIM_CH);
+        }
+
         public void setFormPackage(String queries)
         {
             this.formPackage = queries;
@@ -564,6 +579,31 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         public void setRootPackage(String rootPackage)
         {
             this.rootPackage = rootPackage;
+        }
+
+        public void defineConstants(Map constants, NavigationPath navigationPath)
+        {
+            List children = navigationPath.getChildrenList();
+            for(int i = 0; i < children.size(); i++)
+            {
+                NavigationPath path = (NavigationPath) children.get(i);
+                if(path.getQualifiedName() != null)
+                    constants.put(getNavigationPackage(path), path.getQualifiedName());
+                defineConstants(constants, path);
+            }
+        }
+
+        public void defineConstants(Map constants, NavigationTrees navigationTrees)
+        {
+            for(Iterator i = navigationTrees.getTrees().values().iterator(); i.hasNext(); )
+            {
+                NavigationTree tree = (NavigationTree) i.next();
+                if(tree.getName().startsWith(ConsoleServlet.CONSOLE_ID))
+                    continue;
+
+                constants.put(getNavigationPackage(tree), tree.getName());
+                defineConstants(constants, tree.getRoot());
+            }
         }
 
         public void defineConstants(Map constants, Dialogs dialogs)
@@ -588,6 +628,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         public Map createConstants()
         {
             Map constants = new HashMap();
+            defineConstants(constants, navigationTrees);
             defineConstants(constants, dialogs);
             return constants;
         }
