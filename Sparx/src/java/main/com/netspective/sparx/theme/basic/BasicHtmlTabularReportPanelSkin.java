@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.15 2003-07-11 05:29:03 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.16 2003-07-11 15:05:09 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -278,9 +278,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             else
                 writer.write("<tr>");
 
-            Object[] rowData = new Object[dataColsCount];
-            for(int i = 1; i <= dataColsCount; i++)
-                rowData[i - 1] = columns.get(i);
+
 
             produceDataRowDecoratorPrepend(writer, rc, ds, isOddRow);
             for(int i = 0; i < dataColsCount; i++)
