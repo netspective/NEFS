@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialogContext.java,v 1.7 2004-07-14 19:05:34 shahid.shah Exp $
+ * $Id: LoginDialogContext.java,v 1.8 2004-07-18 16:35:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -62,8 +62,8 @@ public class LoginDialogContext extends DialogContext
     {
         super.initialize(nc, aDialog, aSkin);
         LoginDialog loginDialog = (LoginDialog) aDialog;
-        DialogField.State passwordField = getFieldStates().getState(loginDialog.getPasswordFieldName());
-        hasEncryptedPassword = passwordField.getField().getClientEncryption() != null;
+        DialogField.State passwordField = getFieldStates().getState(loginDialog.getPasswordFieldName(), null);
+        hasEncryptedPassword = passwordField == null ? false : (passwordField.getField().getClientEncryption() != null);
     }
 
     public LoginDialog getLoginDialog()
