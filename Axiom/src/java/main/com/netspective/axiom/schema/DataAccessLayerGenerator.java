@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.12 2003-08-31 03:08:23 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.13 2003-09-23 04:25:06 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -902,6 +902,41 @@ public class DataAccessLayerGenerator
             recordInnerClassValueObjectAccessorMethod.newReturn().setExpression(vm.newFree("valueObject"));
         }
 
+        /**
+         * Gets the class object of a primitive type that is related to the passed in Class (e.g. int is the primitive
+         * related to Integere class)
+         */
+        private Class getRelatedPrimitiveClass(Class mainClass)
+        {
+            String className = mainClass.getName();
+            if (className.equals("java.lang.Integer"))
+                return int.class;
+            else if (className.equals("java.lang.Float"))
+                return float.class;
+            else if (className.equals("java.lang.Long"))
+                return long.class;
+            else
+                return null;
+        }
+
+        /**
+         * Returns the method string for converting the object into its representative primitive value
+         * @param primitiveClassName
+         * @return
+         */
+        private String getPrimitiveToClassMethodName(String primitiveClassName)
+        {
+            String conversionString = null;
+            if (primitiveClassName.equals("int"))
+                conversionString = "intValue()";
+            else if (primitiveClassName.equals("long"))
+                conversionString = "longValue()";
+            else if (primitiveClassName.equals("float"))
+                conversionString = "floatValue()";
+
+            return conversionString;
+        }
+
         public void generateValueObjects() throws IOException
         {
             valueObjectInterface = valueInterfaceUnit.newInterface(valueInterfaceName);
@@ -944,6 +979,49 @@ public class DataAccessLayerGenerator
                 abstractMethod = valueObjectInterface.newMethod(vm.newType(Type.VOID), "set" + methodSuffix);
                 abstractMethod.addParameter(valueHolderValueType, fieldName);
                 abstractMethod.setAccess(Access.PUBLIC);
+
+                // generate setters and getters for primitive types
+                Class primitiveClass = getRelatedPrimitiveClass(valueHolderClass);
+                if (primitiveClass != null)
+                {
+                    String primitiveClassName = primitiveClass.getName();
+                    Type primitiveValueHolderValueType = vm.newType(primitiveClassName);
+                    ClassMethod pMethod = valueObjectClass.newMethod(primitiveValueHolderValueType, "get" + methodSuffix +
+                            primitiveClassName.substring(0,1).toUpperCase() + primitiveClassName.substring(1));
+                    pMethod.setAccess(Access.PUBLIC);
+                    pMethod.newReturn().setExpression(vm.newFree("get" + methodSuffix +
+                            primitiveClassName.substring(0,1).toUpperCase() + primitiveClassName.substring(1) + "(-1)"));
+
+                    // create a getter method with the default value to return if the value object itself is null.
+                    pMethod = valueObjectClass.newMethod(primitiveValueHolderValueType, "get" + methodSuffix +
+                            primitiveClassName.substring(0,1).toUpperCase() + primitiveClassName.substring(1));
+                    pMethod.addParameter(primitiveValueHolderValueType, "defaultValue");
+                    pMethod.setAccess(Access.PUBLIC);
+                    String conversionString = getPrimitiveToClassMethodName(primitiveClassName);
+                    pMethod.newReturn().setExpression(vm.newFree(fieldName + " != null ? " + fieldName + "." + conversionString + " : defaultValue"));
+
+                    pMethod = valueObjectClass.newMethod(vm.newType(Type.VOID), "set" + methodSuffix +
+                            primitiveClassName.substring(0,1).toUpperCase() + primitiveClassName.substring(1));
+                    pMethod.addParameter(primitiveValueHolderValueType, fieldName);
+                    pMethod.setAccess(Access.PUBLIC);
+                    pMethod.newStmt(vm.newFree("this." + fieldName + " = new "+ valueInstClassName+ "(" + fieldName+ ")"));
+
+                    // generate the interface methods
+                    AbstractMethod primitiveAbstractMethod = valueObjectInterface.newMethod(primitiveValueHolderValueType, "get" + methodSuffix +
+                            primitiveClassName.substring(0,1).toUpperCase() + primitiveClassName.substring(1));
+                    primitiveAbstractMethod.setAccess(Access.PUBLIC);
+
+                    primitiveAbstractMethod = valueObjectInterface.newMethod(primitiveValueHolderValueType, "get" + methodSuffix +
+                            primitiveClassName.substring(0,1).toUpperCase() + primitiveClassName.substring(1));
+                    primitiveAbstractMethod.addParameter(primitiveValueHolderValueType, "defaultValue");
+                    primitiveAbstractMethod.setAccess(Access.PUBLIC);
+
+                    primitiveAbstractMethod = valueObjectInterface.newMethod(vm.newType(Type.VOID), "set" + methodSuffix +
+                            primitiveClassName.substring(0,1).toUpperCase() + primitiveClassName.substring(1));
+                    primitiveAbstractMethod.addParameter(primitiveValueHolderValueType, fieldName);
+                    primitiveAbstractMethod.setAccess(Access.PUBLIC);
+
+                }
             }
         }
 
