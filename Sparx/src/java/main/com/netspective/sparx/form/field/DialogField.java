@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.34 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.35 2003-09-09 05:23:27 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -122,11 +122,12 @@ public class DialogField implements TemplateConsumer
                         DialogFieldFlags.PERSIST, DialogFieldFlags.CREATE_ADJACENT_AREA, DialogFieldFlags.SHOW_CAPTION_AS_CHILD };
 
 
+    // TODO: Create an abstract State class which will be extended by all field state classes to force them to construct their own state flag objects
     public class State
     {
         private DialogFieldValue value = constructValueInstance();
         private String adjacentAreaValue;
-        private DialogFieldFlags stateFlags = new DialogFieldFlags(this);
+        private DialogFieldFlags stateFlags;
         private DialogContext dialogContext;
 
         public class BasicStateValue extends GenericValue implements DialogFieldValue
@@ -183,6 +184,18 @@ public class DialogField implements TemplateConsumer
         public State(DialogContext dc)
         {
             this.dialogContext = dc;
+            initialize(dc);
+        }
+
+        /**
+         * Initializes the state object by copying field flag values and setting additional flags based
+         * on dialog perspectives. Also sets the state value based on cookies if the 'persist' flag is set.
+         * @param dc
+         */
+        public void initialize(DialogContext dc)
+        {
+            // create a new flags instance
+            stateFlags = constructFlagInstance();
             stateFlags.copy(getFlags());
 
             if(dc.getRunSequence() == 1 && stateFlags.flagIsSet(DialogFieldFlags.PERSIST))
@@ -216,36 +229,84 @@ public class DialogField implements TemplateConsumer
             }
         }
 
+        /**
+         * Constructs a DialogFieldVale object
+         * @return
+         */
         public DialogFieldValue constructValueInstance()
         {
             return new BasicStateValue();
         }
 
+        /**
+         * Constructs a flag object for the state. Extending classes that have their own Flag class
+         * <b>MUST</b> overwrite this method to create the flag object
+         * @return
+         */
+        public DialogFieldFlags constructFlagInstance()
+        {
+            return new DialogFieldFlags(this);
+        }
+
+        /**
+         * Creates the flags object associated with the field state. Extending classes that have their own Flag class
+         * <b>MUST</b> overwrite this method to create the flag object. This method is called by the initialize() method
+         * during object construction.
+         */
+        public void createStateFlags()
+        {
+            stateFlags = new DialogFieldFlags(this);
+        }
+
+        /**
+         * Gets the dialog context
+         * @return
+         */
         public DialogContext getDialogContext()
         {
             return dialogContext;
         }
 
+        /**
+         * Checks to see if the field value is required
+         * @return
+         */
         public boolean hasRequiredValue()
         {
             return value.hasValue();
         }
 
+        /**
+         * Gets the dialog field value
+         * @return
+         */
         public DialogFieldValue getValue()
         {
             return value;
         }
 
+        /**
+         * Gets the field's adjacent area's value
+         * @return
+         */
         public String getAdjacentAreaValue()
         {
             return adjacentAreaValue;
         }
 
+        /**
+         * Sets the adjacent area's value
+         * @param adjacentAreaValue
+         */
         public void setAdjacentAreaValue(String adjacentAreaValue)
         {
             this.adjacentAreaValue = adjacentAreaValue;
         }
 
+        /**
+         * Gets the state flags associated with the field
+         * @return
+         */
         public DialogFieldFlags getStateFlags()
         {
             return stateFlags;
@@ -256,9 +317,12 @@ public class DialogField implements TemplateConsumer
             return DialogField.this;
         }
 
+        /**
+         * Sets a cookie when the 'persist' flag is set and the field has a value in it
+         */
         public void persistValue()
         {
-            if(stateFlags.flagIsSet(DialogFieldFlags.PERSIST) && value.hasValue())
+            if(getStateFlags().flagIsSet(DialogFieldFlags.PERSIST) && value.hasValue())
             {
                 Cookie cookie = new Cookie(getCookieName(), URLEncoder.encode(value.getTextValue()));
                 cookie.setMaxAge(60 * 60 * 24 * 365); // 1 year
@@ -275,6 +339,10 @@ public class DialogField implements TemplateConsumer
             return value;
         }
 
+        /**
+         * Imports the field's related information from an XML element
+         * @param fieldStateElem
+         */
         public void importFromXml(Element fieldStateElem)
         {
             String fieldName = fieldStateElem.getAttribute("name");
@@ -289,6 +357,10 @@ public class DialogField implements TemplateConsumer
             value.importFromXml(fieldStateElem);
         }
 
+        /**
+         * Exports the field's related information as an XML element
+         * @param parent
+         */
         public void exportToXml(Element parent)
         {
             Document doc = parent.getOwnerDocument();
@@ -306,6 +378,11 @@ public class DialogField implements TemplateConsumer
         }
     }
 
+    /**
+     * Translates the passed in name into lower case values
+     * @param name
+     * @return
+     */
     public static final String translateFieldNameForMapKey(final String name)
     {
         return name.toLowerCase();
