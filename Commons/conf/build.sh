@@ -1,27 +1,82 @@
 #!/bin/sh
 #@echo off
 
-#REM $Id: build.sh,v 1.1 2003-07-14 14:01:18 erich.oliphant Exp $
+#$Id: build.sh,v 1.2 2003-08-01 15:40:38 shahid.shah Exp $
 
-#REM **************************************************************************
-#REM ** This script should be be run from the PROJECT_HOME\conf directory.   **
-#REM ** It is basically a "launcher" for Ant and the actual work is done in  **
-#REM ** the build.xml file.                                                  **
-#REM **************************************************************************
+#**************************************************************************
+#** This script should be be run from the PROJECT_HOME\conf directory.   **
+#** It is basically a "launcher" for Ant and the actual work is done in  **
+#** the build.xml file.                                                  **
+#**************************************************************************
 
-#if "%JAVA_HOME%" == "" echo Error: JAVA_HOME environment variable is not set. && goto end
-#if "%NS_COMMONS_HOME%" == "" set NS_COMMONS_HOME=..\
-NS_COMMONS_HOME=../
-#if "%NS_COMMONS_REDIST_LIB%" == "" set NS_COMMONS_REDIST_LIB=%NS_COMMONS_HOME%\lib\redist
-NS_COMMONS_REDIST_LIB=$NS_COMMONS_HOME/lib/redist
+#--------------------------------------------------------------------------
+#-- Locate the Java home
+#--------------------------------------------------------------------------
 
-#if "%JAVACMD%" == "" set JAVACMD=%JAVA_HOME%\bin\java
-#if not exist "%JAVACMD%.exe" echo Error: "%JAVACMD%.exe" not found - check JAVA_HOME && goto end
-JAVACMD=$JAVA_HOME/bin/java
+if [ -n "$JAVA_HOME" ] ; then
+  if [ -f "$JAVA_HOME/lib/tools.jar" ] ; then
+    CLASSPATH=$CLASSPATH:$JAVA_HOME/lib/tools.jar
+  fi
+ 
+  if [ -f "$JAVA_HOME/lib/classes.zip" ] ; then
+    CLASSPATH=$CLASSPATH:$JAVA_HOME/lib/classes.zip
+  fi
+else
+  echo "Warning: JAVA_HOME environment variable not set."
+  echo "  If build fails because sun.* classes could not be found"
+  echo "  you will need to set the JAVA_HOME environment variable"
+  echo "  to the installation directory of java."
+fi
 
-#if exist "%JAVA_HOME%/lib/tools.jar" set JAVACP=%JAVA_HOME%\lib\tools.jar
-#if exist "%JAVA_HOME%/lib/classes.zip" set JAVACP=%JAVACP%;%JAVA_HOME%\lib\classes.zip
-JAVACP=$JAVA_HOME/lib/tools.jar
-JAVACP=$JAVACP:$JAVA_HOME/lib/classes.zip
-$JAVACMD -classpath $NS_COMMONS_REDIST_LIB/ant.jar:$NS_COMMONS_REDIST_LIB/ant-optional.jar:$NS_COMMONS_REDIST_LIB/junit.jar:$NS_COMMONS_REDIST_LIB/clover.jar:$NS_COMMONS_REDIST_LIB/xerces.jar:$JAVACP org.apache.tools.ant.Main $1 $2 $3 $4 $5 $6 $7 $8 $9
+#--------------------------------------------------------------------------
+#-- Locate the Java compiler
+#--------------------------------------------------------------------------
+
+# IBM's JDK on AIX uses strange locations for the executables:
+# JAVA_HOME/jre/sh for java and rmid
+# JAVA_HOME/sh for javac and rmic
+if [ -z "$JAVAC" ] ; then
+  if [ -n "$JAVA_HOME"  ] ; then
+    if [ -x "$JAVA_HOME/sh/javac" ] ; then 
+      JAVAC=${JAVA_HOME}/sh/javac;
+    else
+      JAVAC=${JAVA_HOME}/bin/javac;
+    fi
+  else
+    JAVAC=javac
+  fi
+fi
+if [ -z "$JAVACMD" ] ; then 
+  if [ -n "$JAVA_HOME"  ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then 
+      JAVACMD=$JAVA_HOME/jre/sh/java
+    else
+      JAVACMD=$JAVA_HOME/bin/java
+    fi
+  else
+    JAVACMD=java
+  fi
+fi
+ 
+if [ ! -x "$JAVACMD" ] ; then
+  echo "Error: JAVA_HOME is not defined correctly."
+  echo "  We cannot execute $JAVACMD"
+  exit
+fi
+
+#--------------------------------------------------------------------------
+#-- Setup the Netspective Enterprise Frameworks Suite (NEFS) locations
+#--------------------------------------------------------------------------
+
+if [ -n "$NEFS_HOME" ] ; then
+  NEFS_HOME=../..
+fi
+
+if [ -n "$NEFS_COMMONS_HOME" ] ; then
+  NEFS_HOME=$NEFS_HOME/Commons
+fi
+
+NEFS_COMMONS_REDIST_LIB=$NEFS_COMMONS_HOME/lib/redist
+
+$JAVACMD -classpath $NEFS_COMMONS_REDIST_LIB/ant.jar:$NEFS_COMMONS_REDIST_LIB/ant-optional.jar:$NEFS_COMMONS_REDIST_LIB/junit.jar:$NEFS_COMMONS_REDIST_LIB/clover.jar:$NEFS_COMMONS_REDIST_LIB/xerces.jar:$CLASSPATH org.apache.tools.ant.Main $1 $2 $3 $4 $5 $6 $7 $8 $9
 
