@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.22 2003-10-13 03:10:27 shahid.shah Exp $
+ * $Id: AbstractTheme.java,v 1.23 2003-12-03 22:40:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -83,6 +83,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     private DialogSkin defaultDialogSkin = new StandardDialogSkin(this, "default", "panel-input", "panel/input", false);
     private LoginDialogSkin defaulLoginDialogSkin = constructLoginDialogSkin();
     private String[] inheritResourcesFromThemes = new String[0];
+    private HtmlListPanelSkin listPanelSkin = constructListPanelSkin();
 
     public AbstractTheme()
     {
@@ -206,6 +207,11 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     protected LoginDialogSkin constructLoginDialogSkin()
     {
         return new LoginDialogSkin(this, "login", "panel-input", "panel/input", false);
+    }
+
+    protected HtmlListPanelSkin constructListPanelSkin()
+    {
+        return new HtmlListPanelSkin(this, "list-panel", "panel-output", "panel/output", false);
     }
 
     public String getName()
@@ -341,5 +347,10 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     public void setDefault(boolean defaultTheme)
     {
         this.defaultTheme = defaultTheme;
+    }
+
+    public HtmlListPanelSkin getListPanelSkin()
+    {
+        return listPanelSkin;
     }
 }

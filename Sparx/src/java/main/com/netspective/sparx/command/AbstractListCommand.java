@@ -35,76 +35,67 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
+ * @author Aye Thu
  */
 
 /**
- * $Id: Theme.java,v 1.16 2003-12-03 22:40:01 aye.thu Exp $
+ * @version $Id: AbstractListCommand.java,v 1.1 2003-12-03 22:38:46 aye.thu Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.command;
 
-import java.util.Map;
-
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
+import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.basic.HtmlListPanelSkin;
-import com.netspective.commons.io.UriAddressableFileLocator;
+import com.netspective.commons.command.CommandException;
+import com.netspective.commons.value.PresentationValue;
 
-public interface Theme
+import java.io.Writer;
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public abstract class AbstractListCommand extends AbstractHttpServletCommand
 {
-    public String getName();
+    private static final Log log = LogFactory.getLog(AbstractListCommand.class);
 
-    public UriAddressableFileLocator getResourceLocator();
+    private String activeListItem;
+    private List listItems;
 
-    public void setWebResourceLocator(UriAddressableFileLocator locator);
+    public abstract PresentationValue.Items getItems();
 
-    public String getResourceUrl(String relativeUrl);
+    /**
+     * Renders the list items
+     * @param writer
+     * @param nc
+     */
+    protected void renderListItems(Writer writer, NavigationContext nc) throws IOException
+    {
+        Theme theme = nc.getActiveTheme();
+        HtmlListPanelSkin skin = theme.getListPanelSkin();
+        skin.renderHtml(writer, nc, getItems());
+    }
 
-    public String getResourceUrl(String relativeUrl, String defaultUrl);
+    /**
+     * Handles the command
+     * @param writer
+     * @param nc
+     * @param unitTest
+     * @throws CommandException
+     * @throws IOException
+     */
+    public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
+    {
+        if (activeListItem != null && activeListItem.length() > 0)
+        {
 
-    public void addNavigationSkin(NavigationSkin skin);
-
-    public Map getNavigationSkins();
-
-    public NavigationSkin getDefaultNavigationSkin();
-
-    public NavigationSkin getNavigationSkin(String name);
-
-    public void addPanelSkin(HtmlPanelSkin skin);
-
-    public Map getPanelSkins();
-
-    public HtmlPanelSkin getTabbedPanelSkin();
-
-    public HtmlPanelSkin getTemplatePanelSkin();
-
-    public HtmlPanelSkin getTemplateSkin(String name);
-
-    public void addReportSkin(HtmlTabularReportSkin skin);
-
-    public Map getReportSkins();
-
-    public HtmlTabularReportSkin getDefaultReportSkin();
-
-    public HtmlTabularReportSkin getReportSkin(String name);
-
-    public void addDialogSkin(DialogSkin skin);
-
-    public Map getDialogSkins();
-
-    public LoginDialogSkin getLoginDialogSkin();
-
-    public DialogSkin getDefaultDialogSkin();
-
-    public DialogSkin getDialogSkin(String name);
-
-    public boolean isDefault();
-
-    public void setDefault(boolean defaultTheme);
-
-    public HtmlListPanelSkin getListPanelSkin();
+        }
+        else
+        {
+            renderListItems(writer, nc);
+        }
+    }
 }
