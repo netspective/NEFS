@@ -73,6 +73,7 @@ public class NavigationTree implements TemplateProducerParent
 
     private String name;
     private NavigationPage root;
+    private NavigationPage homePage;
     private Map pagesByQualifiedName = new HashMap();
     private TemplateProducers templateProducers;
     private int maxLevel = -1;
@@ -144,7 +145,15 @@ public class NavigationTree implements TemplateProducerParent
     {
         root.addPage(page);
         if(page.isDefaultChildOfParent())
+        {
             pagesByQualifiedName.put("/", page);
+            homePage = page;
+        }
+    }
+
+    public NavigationPage getHomePage()
+    {
+        return homePage;
     }
 
     public int getMaxLevel()

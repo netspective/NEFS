@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.51 2003-06-19 14:26:21 shahid.shah Exp $
+  * $Id: console.xml,v 1.52 2003-06-19 23:15:56 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -28,7 +28,7 @@
     </panel-type>
 
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
-        <page name="project" caption="Project" heading="Project Home" default="yes">
+        <page name="home" caption="Home" heading="Console Home" default="yes">
             <panels style="horizontal">
                 <panels style="vertical">
                     <panel type="html">
@@ -52,13 +52,21 @@
                     </panel>
                 </panels>
             </panels>
+        </page>
+        <page name="project" caption="Project" heading="Project Home">
 
-            <page name="project-source" caption="Project Source" heading="Sparx Project File">
+            <panels>
+                <panel type="console-page-summary"/>
+                <panel type="html">
+                    <frame heading="Sparx Project Source"/>
+                    <body config="console" source="console-page-content:documentation.ftl"/>
+                </panel>
+            </panels>
+
+            <page name="input-source" caption="Input Source">
                 <panels>
-                    <panel type="console-page-summary"/>
-                    <panel type="html">
-                        <frame heading="Sparx Project XML Tags"/>
-                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    <panel class="com.netspective.sparx.console.panel.framework.XdmComponentsPanel">
+                        <frame heading="Sparx Project Input Source File and Dependencies"/>
                     </panel>
                 </panels>
             </page>
@@ -69,7 +77,7 @@
 	        <page name="configuration" caption="Configuration Properties">
 	            <page name="servlet" caption="Servlet Config"/>
 	            <page name="application" caption="App Config">
-                    <body config="console" source="content/project/app-overview.ftl"/>
+                    <body config="console" source="content/home/app-overview.ftl"/>
                 </page>
             </page>
 	        <page name="access-control" caption="Access Control"/>

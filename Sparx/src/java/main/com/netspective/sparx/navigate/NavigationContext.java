@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.7 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.8 2003-06-19 23:15:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -92,7 +92,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         NavigationPage firstDescendantWithBody = findFirstMemberWithBody(activePage);
         if(firstDescendantWithBody != null)
         {
-            if(firstDescendantWithBody != activePage)
+            if(firstDescendantWithBody != activePage || (activePathId == null || activePathId.equals("/")))
                 redirectToAlternateChildRequired = true;
             activePage = firstDescendantWithBody;
         }
