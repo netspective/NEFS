@@ -24,15 +24,6 @@
                     unique customizations.
                 </summary>
 
-                <page name="features" caption="Features" tag-line="Features that Jump-start Development">
-                    <summary>
-                        Stop cobbling together solutions from disparate open-source and commercial providers. Our Java
-                        Frameworks contain everything you need in one integrated suite where everything is guaranteed to
-                        work great together. And, when something doesn't work, help is only a phone call or e-mail away.
-                    </summary>
-                    <body source="products/frameworks/features.ftl"/>
-                </page>
-
                 <page name="what-nefs-does" caption="What does NEFS do?" tag-line="The Secret Sauce: Declare More, Code Less">
                     <summary>
                         If you find J2EE app development to be difficult, you're using the wrong ingredients in your
@@ -49,6 +40,15 @@
                         need the NEFS.
                     </summary>
                     <body source="products/frameworks/why-you-need-nefs.ftl"/>
+                </page>
+
+                <page name="features" caption="Features" tag-line="Features that Jump-start Development">
+                    <summary>
+                        Stop cobbling together solutions from disparate open-source and commercial providers. Our Java
+                        Frameworks contain everything you need in one integrated suite where everything is guaranteed to
+                        work great together. And, when something doesn't work, help is only a phone call or e-mail away.
+                    </summary>
+                    <body source="products/frameworks/features.ftl"/>
                 </page>
 
                 <page name="architecture" caption="Architecture" tag-line="An Architecture you're Already Familiar with">
