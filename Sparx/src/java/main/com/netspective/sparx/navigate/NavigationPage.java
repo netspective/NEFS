@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.42 2003-10-13 03:10:27 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.43 2003-10-24 03:26:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -67,6 +67,7 @@ import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.text.Transform;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
@@ -78,6 +79,7 @@ import com.netspective.sparx.command.HttpServletCommand;
 import com.netspective.sparx.navigate.listener.NavigationPathListener;
 import com.netspective.sparx.navigate.listener.NavigationPageEnterListener;
 import com.netspective.sparx.navigate.listener.NavigationPageExitListener;
+import com.netspective.sparx.navigate.handler.NavigationPageBodyDefaultHandler;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
 import java.io.IOException;
@@ -706,7 +708,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     public NavigationPageBodyHandler createBodyHandler()
     {
-        return new NavigationPageDefaultCustomBodyHandler();
+        return new NavigationPageBodyDefaultHandler();
     }
 
     public void addBodyHandler(NavigationPageBodyHandler handler)
