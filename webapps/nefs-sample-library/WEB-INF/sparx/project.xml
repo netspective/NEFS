@@ -137,9 +137,9 @@
                     <!--action caption="Frame action" hint="This is a hint" style="horizontal" command="redirect,yahoo.com"/-->
                     <report>
                         <actions>
-                            <action type="add" caption="Add Book" redirect="servlet-context-uri:/add"/>
-                            <action type="edit" redirect="servlet-context-uri:/edit?id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
-                            <action type="delete" redirect="servlet-context-uri:/delete?id=${0}"/>
+                            <action type="add" caption="Add Book" redirect="page-id:/add"/>
+                            <action type="edit" redirect="page-id:/edit?id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="page-id:/delete?id=${0}"/>
                             <action type="select" caption="Process selected rows" title="Process the selected rows"
                                 redirect="servlet-context-uri:/yahoo.com"/>
                         </actions>
