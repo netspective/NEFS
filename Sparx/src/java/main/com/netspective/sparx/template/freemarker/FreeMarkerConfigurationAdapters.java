@@ -123,6 +123,7 @@ public class FreeMarkerConfigurationAdapters
         configuration.setSharedVariable("getQueryResultsSingleRowAsMap", new GetQueryResultsSingleRowAsMapMethod());
         configuration.setSharedVariable("getFileContentsSyntaxHighlighted", new GetFileContentsSyntaxHighlightedMethod());
         configuration.setSharedVariable("panel", new PanelTransform());
+        configuration.setSharedVariable("command", new CommandTransform());
         configuration.setSharedVariable("statics", BeansWrapper.getDefaultInstance().getStaticModels());
         SyntaxHighlightTransform.registerTransforms(configuration);
     }
