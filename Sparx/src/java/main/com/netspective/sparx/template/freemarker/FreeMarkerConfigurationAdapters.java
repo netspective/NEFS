@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.7 2003-08-31 15:29:14 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.8 2003-10-05 03:40:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -130,6 +130,7 @@ public class FreeMarkerConfigurationAdapters
         configuration.setSharedVariable("executeCommand", new ExecuteCommandMethod());
         configuration.setSharedVariable("getQueryResultSet", new GetQueryResultSetMethod());
         configuration.setSharedVariable("getQueryResultsAsMatrix", new GetQueryResultsAsMatrixMethod());
+        configuration.setSharedVariable("getFileContentsSyntaxHighlighted", new GetFileContentsSyntaxHighlightedMethod());
         configuration.setSharedVariable("panel", new PanelTransform());
         configuration.setSharedVariable("statics", BeansWrapper.getDefaultInstance().getStaticModels());
     }

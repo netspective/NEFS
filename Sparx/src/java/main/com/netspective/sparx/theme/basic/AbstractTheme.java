@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.20 2003-09-13 23:05:52 shahid.shah Exp $
+ * $Id: AbstractTheme.java,v 1.21 2003-10-05 03:40:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -136,6 +136,37 @@ public class AbstractTheme implements Theme
 
         if(log.isWarnEnabled()) log.warn("Resource '"+ themeRelativeUrl +"' not located in resource locator " + resourceLocator);
         return themeRelativeUrl;
+    }
+
+    public String getResourceUrl(final String relativeUrl, final String defaultUrl)
+    {
+        if(resourceLocator == null)
+        {
+            System.err.println("No resource locator set for theme " + this);
+            return defaultUrl;
+        }
+
+        try
+        {
+            String themeRelativeUrl = getResourceUrlWithThemePrefix(name, relativeUrl);
+
+            UriAddressableFile resource = resourceLocator.findUriAddressableFile(themeRelativeUrl);
+            if(resource != null)
+                return resource.getUrl();
+
+            for(int i = 0; i < inheritResourcesFromThemes.length; i++)
+            {
+                resource = resourceLocator.findUriAddressableFile(getResourceUrlWithThemePrefix(inheritResourcesFromThemes[i], relativeUrl));
+                if(resource != null)
+                    return resource.getUrl();
+            }
+        }
+        catch (IOException e)
+        {
+            return defaultUrl;
+        }
+
+        return defaultUrl;
     }
 
     public void setInheritResourcesFromThemes(String delimitedThemeNames)

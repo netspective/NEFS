@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.95 2003-09-13 23:04:32 shahid.shah Exp $
+  * $Id: console.xml,v 1.96 2003-10-05 03:40:27 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -76,7 +76,9 @@
                 <page name="acl" caption="ACLs"/>
                 <page name="login-managers" caption="Login Managers"/>
             </page>
-            <page name="documents" caption="Documents"/>
+            <page name="files" caption="Project Files">
+                <body config="console" source="console-page-content:index.ftl"/>
+            </page>
         </page>
 
         <page name="presentation" caption="Presentation" heading="Presentation Layer">

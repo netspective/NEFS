@@ -51,13 +51,14 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.17 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.18 2003-10-05 03:40:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.io.File;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletResponse;
@@ -238,5 +239,15 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     public NavigationContext getNavigationContext()
     {
         return this;
+    }
+
+    public FileSystemContext getFileSystemContext(File rootPath, String rootCaption)
+    {
+        return new FileSystemContext(getRootUrl(), rootPath, rootCaption, activePathFindResults.getUnmatchedPath());
+    }
+
+    public FileSystemContext getProjectFileSystemContext()
+    {
+        return getFileSystemContext(new File(getServlet().getServletConfig().getServletContext().getRealPath("/")), "Project");
     }
 }

@@ -39,69 +39,51 @@
  */
 
 /**
- * $Id: Theme.java,v 1.15 2003-10-05 03:40:27 shahid.shah Exp $
+ * $Id: GetFileContentsSyntaxHighlightedMethod.java,v 1.1 2003-10-05 03:40:27 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.template.freemarker;
 
-import java.util.Map;
+import java.util.List;
+import java.io.File;
+import java.io.StringWriter;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
-import com.netspective.commons.io.UriAddressableFileLocator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-public interface Theme
+import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
+import freemarker.template.SimpleScalar;
+
+import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
+
+public class GetFileContentsSyntaxHighlightedMethod implements TemplateMethodModel
 {
-    public String getName();
+    private static final Log log = LogFactory.getLog(GetFileContentsSyntaxHighlightedMethod.class);
 
-    public UriAddressableFileLocator getResourceLocator();
+    public TemplateModel exec(List args) throws TemplateModelException
+    {
+        if (args.size() != 1)
+        {
+            throw new TemplateModelException("Wrong arguments: expect file name to prepare syntax highlighted output.");
+        }
 
-    public void setWebResourceLocator(UriAddressableFileLocator locator);
-
-    public String getResourceUrl(String relativeUrl);
-
-    public String getResourceUrl(String relativeUrl, String defaultUrl);
-
-    public void addNavigationSkin(NavigationSkin skin);
-
-    public Map getNavigationSkins();
-
-    public NavigationSkin getDefaultNavigationSkin();
-
-    public NavigationSkin getNavigationSkin(String name);
-
-    public void addPanelSkin(HtmlPanelSkin skin);
-
-    public Map getPanelSkins();
-
-    public HtmlPanelSkin getTabbedPanelSkin();
-
-    public HtmlPanelSkin getTemplatePanelSkin();
-
-    public HtmlPanelSkin getTemplateSkin(String name);
-
-    public void addReportSkin(HtmlTabularReportSkin skin);
-
-    public Map getReportSkins();
-
-    public HtmlTabularReportSkin getDefaultReportSkin();
-
-    public HtmlTabularReportSkin getReportSkin(String name);
-
-    public void addDialogSkin(DialogSkin skin);
-
-    public Map getDialogSkins();
-
-    public LoginDialogSkin getLoginDialogSkin();
-
-    public DialogSkin getDefaultDialogSkin();
-
-    public DialogSkin getDialogSkin(String name);
-
-    public boolean isDefault();
-
-    public void setDefault(boolean defaultTheme);
+        File file = new File((String) args.get(0));
+        StringWriter output = new StringWriter();
+        try
+        {
+            HtmlSyntaxHighlightPanel.emitHtml(file, output);
+            String outputHtml = output.toString();
+            if(outputHtml.length() == 0)
+                return new SimpleScalar("Unable to display " + file + ": type of file not understood.");
+            else
+                return new SimpleScalar(output.toString());
+        }
+        catch (Exception e)
+        {
+            log.error("Error occurred", e);
+            return new SimpleScalar("Unable to syntax highlight " + file + "<p>"+ e);
+        }
+    }
 }
