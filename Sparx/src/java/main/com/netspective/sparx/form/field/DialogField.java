@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.28 2003-07-29 21:11:05 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.29 2003-08-01 21:28:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -483,6 +483,7 @@ public class DialogField implements TemplateConsumer
     private DialogFieldSubmitOnBlur submitOnBlur;
     private DialogFieldValidations validationRules = constructValidationRules();
     private String requiredFieldMissingMessage = "{0} is required.";
+    private String accessKey;
 
     public DialogField()
     {
@@ -680,6 +681,24 @@ public class DialogField implements TemplateConsumer
         State fieldState = dc.getFieldStates().getState(parent != null ? parent : this);
         dc.getValidationContext().addValidationError(fieldState.getValidationContextScope(), message, null);
 	}
+
+    /**
+     * Get the keyboard shortcut key for the field
+     * @return
+     */
+    public String getAccessKey()
+    {
+        return accessKey;
+    }
+
+    /**
+     * Set the keyboard shortcut key for the field
+     * @param accessKey
+     */
+    public void setAccessKey(String accessKey)
+    {
+        this.accessKey = accessKey;
+    }
 
 	/**
 	 * Gets the parent dialog field
@@ -1099,7 +1118,7 @@ public class DialogField implements TemplateConsumer
 	{
         DialogField.State state = dc.getFieldStates().getState(this);
 		String value = state.getValue().getTextValue();
-		return "<input type='hidden' name='" + getHtmlFormControlId() + "' value=\"" + (value != null ? TextUtils.escapeHTML(value) : "") + "\">";
+		return "<input type='hidden' id=\"" + getHtmlFormControlId() + "\" name='" + getHtmlFormControlId() + "' value=\"" + (value != null ? TextUtils.escapeHTML(value) : "") + "\">";
 	}
 
 	public void renderControlHtml(Writer writer, DialogContext dc) throws IOException

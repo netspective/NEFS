@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: MemoField.java,v 1.2 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: MemoField.java,v 1.3 2003-08-01 21:29:40 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -146,7 +146,7 @@ public class MemoField extends TextField
         else
         {
             writer.write(
-                    "<textarea maxlength=\"" + getMaxLength() + "\" name=\"" + id + "\" rows=\"" + rows + "\" cols=\"" + cols + "\" wrap=\"" +
+                    "<textarea maxlength=\"" + getMaxLength() + "\" id=\"" + id + "\" name=\"" + id + "\" rows=\"" + rows + "\" cols=\"" + cols + "\" wrap=\"" +
                     wordWrap.getValue() + "\"" + (isRequired(dc) ? " class=\"" + dc.getSkin().getControlAreaRequiredStyleClass()+ "\" " : " ") +
                     dc.getSkin().getDefaultControlAttrs() +
                     ">" + (value != null ? TextUtils.escapeHTML(value) : "") + "</textarea>");

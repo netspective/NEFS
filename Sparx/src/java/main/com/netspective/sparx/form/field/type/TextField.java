@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.16 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: TextField.java,v 1.17 2003-08-01 21:29:17 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -363,19 +363,19 @@ public class TextField extends DialogField
         else if(isBrowserReadOnly(dc))
         {
             className = dc.getSkin().getControlAreaReadonlyStyleClass();
-            writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" readonly value=\"" +
+            writer.write("<input type=\"text\" id=\"" + getHtmlFormControlId() + "\" name=\"" + getHtmlFormControlId() + "\" readonly value=\"" +
                     textValue + "\" maxlength=\"" + textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle +
                     " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
         }
         else if(!stateFlags.flagIsSet(Flags.MASK_ENTRY))
         {
-            writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
+            writer.write("<input type=\"text\" id=\"" + getHtmlFormControlId() + "\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
                     textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle + " class=\"" + className + "\" " +
                     dc.getSkin().getDefaultControlAttrs() + ">");
         }
         else
         {
-            writer.write("<input type=\"password\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
+            writer.write("<input type=\"password\" id=\"" + getHtmlFormControlId() + "\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
                     textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle + " class=\"" + className + "\" " +
                     dc.getSkin().getDefaultControlAttrs() + ">");
         }
