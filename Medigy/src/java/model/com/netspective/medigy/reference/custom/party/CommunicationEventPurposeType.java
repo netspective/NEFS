@@ -40,19 +40,16 @@
 package com.netspective.medigy.reference.custom.party;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
-import com.netspective.medigy.model.common.EntitySeedDataProvider;
-import com.netspective.medigy.model.common.EntitySeedData;
 
-import javax.ejb.Entity;
-import javax.ejb.Id;
-import javax.ejb.GeneratorType;
-import javax.ejb.Table;
 import javax.ejb.Column;
-import javax.ejb.Transient;
+import javax.ejb.Entity;
+import javax.ejb.GeneratorType;
+import javax.ejb.Id;
+import javax.ejb.Table;
 
 @Entity
 @Table(name = "Comm_Event_Purpose_Type")
-public class CommunicationEventPurposeType extends AbstractCustomReferenceEntity implements EntitySeedDataProvider
+public class CommunicationEventPurposeType extends AbstractCustomReferenceEntity
 {
 
     @Id(generate = GeneratorType.AUTO)
@@ -66,13 +63,4 @@ public class CommunicationEventPurposeType extends AbstractCustomReferenceEntity
     {
         super.setSystemId(id);
     }
-
-    @Transient
-    public EntitySeedData getEntitySeedData()
-    {
-        return createSeedData(new CustomSeedData[]{
-            new CustomSeedData("I", "Initial Sales Call", "")
-        });
-    }
-
 }
