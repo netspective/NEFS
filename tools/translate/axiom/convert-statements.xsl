@@ -115,7 +115,10 @@
     <xsl:template match="select-dialog">
         <presentation>
             <xsl:copy>
-                <xsl:copy-of select="attribute::*[. != '']"/>
+                <xsl:copy-of select="attribute::*[. != '' and name() != 'heading']"/>
+                <xsl:if test="@heading">
+                    <frame><xsl:attribute name="heading"><xsl:value-of select="@heading"/></xsl:attribute></frame>
+                </xsl:if>
                 <xsl:apply-templates/>
             </xsl:copy>
         </presentation>
@@ -144,12 +147,12 @@
         </xdm:include>
     </xsl:template>
 
-    <!-- the new root tag is <component>, not <xaf> -->
+    <!-- the new root tag is <project>, not <xaf> -->
     <xsl:template match="xaf">
-        <component>
+        <xdm:container>
             <xsl:copy-of select="attribute::*[. != '']"/>
             <xsl:apply-templates/>
-        </component>
+        </xdm:container>
     </xsl:template>
 
 </xsl:stylesheet>

@@ -250,14 +250,12 @@
     </xsl:template>
 
     <xsl:template match="schema">
-        <component>
-            <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
-
+        <xdm:container>
             <xsl:copy>
                 <xsl:copy-of select="attribute::*[. != '']"/>
                 <xsl:apply-templates/>
             </xsl:copy>
-        </component>
+        </xdm:container>
     </xsl:template>
 
 </xsl:stylesheet>

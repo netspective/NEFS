@@ -2,94 +2,89 @@
 
 <project name="convert" default="convert-all">
 
-    <property environment="env"/>
+    <property name="sparx2.framework.home.path" value="c:/Projects/Sparx"/>
+    <property name="sparx2.app.home.path" value="c:/Projects/webapps/medspective"/>
+    <property name="sparx7.app.home.path" value="c:/Projects/webapps/sparx-test-app-04"/>
 
     <target name="init">
-        <property name="sparx2.home.path" value="c:/Projects/Sparx"/>
-        <property name="app.home.path" value="c:/Projects/webapps/medspective"/>
-        <property name="sparx7.testapp04.home.path" value="c:/Projects/webapps/sparx-test-app-04"/>
+        <property name="sparx2.framework.web-shared-path" value="${sparx2.framework.home.path}/web-shared"/>
+        <property name="sparx2.framework.resources-path" value="${sparx2.framework.web-shared-path}/resources"/>
+        <property name="sparx2.framework.templates-path" value="${sparx2.framework.web-shared-path}/templates"/>
 
-        <property name="sparx2-web-shared-path" value="${sparx2.home.path}/web-shared"/>
-        <property name="sparx2-resources-path" value="${sparx2-web-shared-path}/resources"/>
-        <property name="sparx2-templates-path" value="${sparx2-web-shared-path}/templates"/>
+        <property name="sparx2.app.WEB-INF.path" value="${sparx2.app.home.path}/WEB-INF"/>
+        <property name="sparx2.app.WEB-INF.schema.path" value="${sparx2.app.WEB-INF.path}/schema"/>
+        <property name="sparx2.app.WEB-INF.sql.path" value="${sparx2.app.WEB-INF.path}/sql"/>
 
-        <property name="app.WEB-INF.path" value="${app.home.path}/WEB-INF"/>
-        <property name="app.WEB-INF.schema.path" value="${app.WEB-INF.path}/schema"/>
-        <property name="app.WEB-INF.sql.path" value="${app.WEB-INF.path}/sql"/>
+        <property name="sparx7.app.WEB-INF.path" value="${sparx7.app.home.path}/WEB-INF"/>
+        <property name="sparx7.app.WEB-INF.sparx.path" value="${sparx7.app.home.path}/WEB-INF/sparx"/>
+        <property name="sparx7.app.WEB-INF.schema.path" value="${sparx7.app.WEB-INF.sparx.path}/data-management/schema"/>
+        <property name="sparx7.app.WEB-INF.sql.path" value="${sparx7.app.WEB-INF.sparx.path}/data-management/query"/>
 
-        <property name="staging-root-dir" value="staging-area"/>
-
-        <property name="schema-staging-dir" value="${staging-root-dir}/schema"/>
-        <property name="schema-final-dir" value="dal/test-data"/>
-
-        <property name="statements-staging-dir" value="${staging-root-dir}/sql"/>
-        <property name="statements-final-dir" value="${sparx7.testapp04.home.path}/WEB-INF/sparx/data-management/query"/>
+        <property name="sparx7.staging.root.path" value="${sparx7.app.WEB-INF.sparx.path}/sparx2-translation-staging-area"/>
+        <property name="sparx7.staging.schema.path" value="${sparx7.staging.root.path}/schema"/>
+        <property name="sparx7.staging.statements.path" value="${sparx7.staging.root.path}/query"/>
 
         <echo message="Basedir is '${basedir}'"/>
-        <echo message="Sparx 2.0 home path is '${sparx2.home.path}'"/>
-        <echo message="Sparx 2.0 resources path is '${sparx2-resources-path}'"/>
-        <echo message="Application home path is '${app.home.path}'"/>
-        <echo message="Application WEB-INF path is '${app.WEB-INF.path}'"/>
+        <echo message="Sparx 2.3 framework home path is '${sparx2.framework.home.path}'"/>
+        <echo message="Sparx 2.3 framework resources path is '${sparx2.framework.resources-path}'"/>
+        <echo message="Sparx 2.3 home path is '${sparx2.app.home.path}'"/>
+        <echo message="Sparx 7.0 home path is '${sparx7.app.home.path}'"/>
     </target>
 
     <target name="clean" depends="init">
-        <delete dir="${staging-root-dir}"/>
-        <delete dir="${schema-final-dir}"/>
-        <delete dir="${statements-final-dir}"/>
+        <delete dir="${sparx7.staging.root.path}"/>
     </target>
 
     <target name="convert-schema-doc" depends="init">
-        <delete dir="schema-staging-dir"/>
-        <delete dir="schema-final-dir"/>
+        <delete dir="sparx7.staging.schema.path"/>
 
         <!-- copy all the schema files into the staging directory -->
-        <copy todir="${schema-staging-dir}">
-            <fileset dir="${app.WEB-INF.schema.path}">
+        <copy todir="${sparx7.staging.schema.path}">
+            <fileset dir="${sparx2.app.WEB-INF.schema.path}">
                 <include name="**/*.xml"/>
             </fileset>
         </copy>
 
         <!-- replace <p> HTML tag with escaped version (used in descriptions)  -->
-        <replace dir="${schema-staging-dir}" token="&lt;p&gt;" value="&amp;lt;p&amp;gt;">
+        <replace dir="${sparx7.staging.schema.path}" token="&lt;p&gt;" value="&amp;lt;p&amp;gt;">
             <include name="**/*.xml"/>
         </replace>
 
         <!-- replace </p> HTML tag with escaped version (used in descriptions) -->
-        <replace dir="${schema-staging-dir}" token="&lt;/p&gt;" value="&amp;lt;/p&amp;gt;">
+        <replace dir="${sparx7.staging.schema.path}" token="&lt;/p&gt;" value="&amp;lt;/p&amp;gt;">
             <include name="**/*.xml"/>
         </replace>
 
-        <xslt basedir="${schema-staging-dir}" destdir="${schema-final-dir}"
-              extension=".xml" style="dal/convert-schema-doc-include.xsl" force="yes" processor="trax">
+        <xslt basedir="${sparx7.staging.schema.path}" destdir="${sparx7.app.WEB-INF.schema.path}"
+              extension=".xml" style="${basedir}/axiom/convert-schema-doc-include.xsl" force="yes" processor="trax">
             <include name="**/*.xml"/>
             <exclude name="schema.xml"/>
         </xslt>
 
-        <xslt basedir="${schema-staging-dir}" destdir="${schema-final-dir}"
-              extension=".xml" style="dal/convert-schema-doc.xsl" force="yes" processor="trax">
+        <xslt basedir="${sparx7.staging.schema.path}" destdir="${sparx7.app.WEB-INF.schema.path}"
+              extension=".xml" style="${basedir}/axiom/convert-schema-doc.xsl" force="yes" processor="trax">
             <include name="schema.xml"/>
         </xslt>
     </target>
 
     <target name="convert-statements" depends="init">
-        <delete dir="statements-staging-dir"/>
-        <delete dir="statements-final-dir"/>
+        <delete dir="sparx7.staging.statements.path"/>
 
         <!-- copy all the statements files into the staging directory -->
-        <copy todir="${statements-staging-dir}">
-            <fileset dir="${app.WEB-INF.sql.path}">
+        <copy todir="${sparx7.staging.statements.path}">
+            <fileset dir="${sparx2.app.WEB-INF.sql.path}">
                 <include name="**/*.xml"/>
             </fileset>
         </copy>
 
-        <xslt basedir="${statements-staging-dir}" destdir="${statements-final-dir}"
-              extension=".xml" style="sql/convert-statements-include.xsl" force="yes" processor="trax">
+        <xslt basedir="${sparx7.staging.statements.path}" destdir="${sparx7.app.WEB-INF.sql.path}"
+              extension=".xml" style="${basedir}/axiom/convert-statements-include.xsl" force="yes" processor="trax">
             <include name="**/*.xml"/>
             <exclude name="statements.xml"/>
         </xslt>
 
-        <xslt basedir="${statements-staging-dir}" destdir="${statements-final-dir}"
-              extension=".xml" style="sql/convert-statements.xsl" force="yes" processor="trax">
+        <xslt basedir="${sparx7.staging.statements.path}" destdir="${sparx7.app.WEB-INF.sql.path}"
+              extension=".xml" style="${basedir}/axiom/convert-statements.xsl" force="yes" processor="trax">
             <include name="statements.xml"/>
         </xslt>
     </target>
