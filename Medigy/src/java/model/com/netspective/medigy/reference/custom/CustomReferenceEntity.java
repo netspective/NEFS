@@ -46,4 +46,5 @@ package com.netspective.medigy.reference.custom;
 public interface CustomReferenceEntity
 {
     public Long getSystemId();
+    public String getCode();
 }
