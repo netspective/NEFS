@@ -79,9 +79,14 @@
             <enum>Mrs.</enum>
         </enumerations>
     </table>
-
     <table name="Person_Type" abbrev="PerTy" type="Enumeration">
         <enumerations>
+            <enum abbrev="PI">Principal Investigator</enum>
+            <enum abbrev="CPM">Clinical Program Manager</enum>
+            <enum abbrev="CCRA">Certified Clinician Research Associate</enum>
+            <enum abbrev="CCRC">Certified Clinical Research Coordinator</enum>
+            <enum abbrev="CCRP">Certified Clinical Research Professional</enum>
+
             <enum>Patient</enum>
             <enum>Physician</enum>
             <enum>Physician Extender (direct billing)</enum>

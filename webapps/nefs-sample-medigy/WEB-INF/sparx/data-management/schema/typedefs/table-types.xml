@@ -112,7 +112,8 @@
         <xdm:template-param name="relationshipMapRowPackage" default="app.dal.domain.row"/>
         <xdm:template-param name="relationshipMapRowsPackage" default="app.dal.domain.rows"/>
         <description>Basic information required for almost any relationship.</description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <!--column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/-->
+        <column name="system_id" type="auto-inc" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="parent_id" parentref="${params.parentRef}" descr="Source ID for the entity for which this relationship is being defined">
             <presentation>
                 <field.guid32 required="yes">

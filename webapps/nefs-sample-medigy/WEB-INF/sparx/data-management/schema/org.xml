@@ -99,7 +99,6 @@
             </dialog>
         </presentation-->
     </table>
-
     <table name="Org_Address" abbrev="OrgAdr" type="Physical_Address" xdm:param-parentRef="Org.org_id">
         <!--presentation>
             <dialog name="orgAddressTableDialog" retain-params="parent_id,org_id">
@@ -401,7 +400,7 @@
     </table>
 
     <table name="Org_Relationship_Status" abbrev="ORelSt" type="Relationship_Status"/>
-
+    
     <table name="Org_Relationship" abbrev="OrgRel" type="Org_Relationship" xdm:param-recordStatusEnum="Org_Relationship_Status" xdm:param-relationshipTypeEnum="Org_Relationship_Type" xdm:param-relatedEntityFieldQuery="org.get-all-orgs" xdm:param-relatedEntityFieldCaption="Related Org">
         <description>The relationship between two organizations.</description>
         <!--presentation>
