@@ -1,6 +1,6 @@
 <#macro screenShot name>
-    <p align="center"><a href="${resourcesPath}/images/products/frameworks/suite/screen-shots/control/${name}.gif" target="nefs-control-screen-shot"
-       ><img src="${resourcesPath}/images/products/frameworks/suite/screen-shots/control/${name}-preview.gif" border=0></a></p>
+    <p align="center"><a href="${resourcesPath}/images/products/frameworks/suite/screen-shots/console/${name}.gif" target="nefs-control-screen-shot"
+       ><img src="${resourcesPath}/images/products/frameworks/suite/screen-shots/console/${name}-preview.gif" border=0></a></p>
 </#macro>
 
 Bundled with the NEFS is the Netspective Enterprise Console (NEC). The browser-based interface displays all of your
