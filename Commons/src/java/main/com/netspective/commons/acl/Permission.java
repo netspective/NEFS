@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Permission.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: Permission.java,v 1.2 2003-03-18 07:36:51 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.acl;
@@ -125,10 +125,15 @@ public class Permission
 
     public String getQualifiedName()
     {
-        return qualifiedName != null ? qualifiedName :
-                (parent != null ?
-                    (parent.getQualifiedName() + AccessControlList.NAME_SEPARATOR + getName()) :
-                    (AccessControlList.NAME_SEPARATOR + getName()));
+	    String qName = AccessControlList.NAME_SEPARATOR + getName();
+
+	    if (null == qualifiedName && null != parent)
+			qName = parent.getQualifiedName() + qName;
+
+		if (null == qualifiedName)
+			setQualifiedName(qName);
+
+	    return qualifiedName;
     }
 
     public void setQualifiedName(String qualifiedName)

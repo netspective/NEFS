@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlList.java,v 1.2 2003-03-14 04:04:18 shahid.shah Exp $
+ * $Id: AccessControlList.java,v 1.3 2003-03-18 07:36:51 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.acl;
@@ -63,7 +63,6 @@ public class AccessControlList extends Permission
         setName(ACLNAME_DEFAULT);
         setManager(manager);
         setId(getOwner().getHighestPermissionId());
-        registerPermission(this);
     }
 
     public AccessControlLists getManager()
