@@ -39,36 +39,69 @@
  */
 
 /**
- * $Id: PermissionReferences.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: RoleOrPermissionReference.java,v 1.1 2003-03-20 22:38:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.BitSet;
 
-import com.netspective.commons.acl.PermissionReference;
+import com.netspective.commons.acl.AccessControlList;
+import com.netspective.commons.acl.Permission;
+import com.netspective.commons.acl.PermissionNotFoundException;
 
-public class PermissionReferences
+public class RoleOrPermissionReference
 {
-    private List references = new ArrayList();
+    private AccessControlList accessControlList;
+    private String permission;
+    private String role;
 
-    public PermissionReferences()
+    public RoleOrPermissionReference(AccessControlList accessControlList)
     {
+        this.accessControlList = accessControlList;
     }
 
-    public void add(PermissionReference ref)
+    public AccessControlList getAccessControlList()
     {
-        references.add(ref);
+        return accessControlList;
     }
 
-    public PermissionReference get(int i)
+    public BitSet getPermissions() throws PermissionNotFoundException, RoleNotFoundException
     {
-        return (PermissionReference) references.get(i);
+        BitSet result = null;
+        if(permission != null)
+            result = getPermission().getChildPermissions();
+        if(role != null)
+        {
+            if(result == null)
+                result = getRole().getPermissions();
+            else
+                result.or(getRole().getPermissions());
+        }
+        return result;
     }
 
-    public int size()
+    public void setPermission(String permission)
     {
-        return references.size();
+        this.permission = permission;
+        if(! permission.startsWith(AccessControlList.NAME_SEPARATOR))
+            permission += accessControlList.getQualifiedName() + AccessControlList.NAME_SEPARATOR;
+    }
+
+    public Permission getPermission() throws PermissionNotFoundException
+    {
+        return accessControlList.getPermission(permission);
+    }
+
+    public void setRole(String role)
+    {
+        this.role = role;
+        if(! role.startsWith(AccessControlList.NAME_SEPARATOR))
+            role += accessControlList.getQualifiedName() + AccessControlList.NAME_SEPARATOR;
+    }
+
+    public Role getRole() throws RoleNotFoundException
+    {
+        return accessControlList.getRole(role);
     }
 }

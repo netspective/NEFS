@@ -13,15 +13,15 @@
 			</permission>
 		</permission>
 
-		<permission name="role">
-			<permission name="super-user">
+		<role name="role">
+			<role name="super-user">
 				<grant permission="/acl/app/orders"/>
-			</permission>
-			<permission name="normal-user">
+			</role>
+			<role name="normal-user">
 				<grant permission="/acl/app/orders"/>
 				<revoke permission="/acl/app/orders/delete_order"/>
-			</permission>
-		</permission>
+			</role>
+		</role>
 	</access-control-list>
 
 	<access-control-list name="acl_two">
@@ -33,15 +33,15 @@
 			</permission>
 		</permission>
 
-		<permission name="role">
-			<permission name="super-user">
+		<role name="role">
+			<role name="super-user">
 				<grant permission="/acl_two/app/orders"/>
-			</permission>
-			<permission name="normal-user">
+			</role>
+			<role name="normal-user">
 				<grant permission="/acl_two/app/orders"/>
 				<revoke permission="/acl_two/app/orders/delete_order"/>
-			</permission>
-		</permission>
+			</role>
+		</role>
 	</access-control-list>
 
 	<access-control-list name="acl_three">
@@ -53,13 +53,13 @@
 			</permission>
 		</permission>
 
-		<permission name="role">
-			<permission name="read-only-user">
+		<role name="role">
+			<role name="read-only-user">
 				<grant permission="/acl_three/app/orders"/>
 				<revoke permission="/acl_three/app/orders/delete_order"/>
 				<revoke permission="/acl_three/app/orders/edit_order"/>
-			</permission>
-		</permission>
+			</role>
+		</role>
 	</access-control-list>
 
 </component>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.3 2003-03-20 14:55:34 shahid.shah Exp $
+ * $Id: AuthenticatedUser.java,v 1.4 2003-03-20 22:38:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -49,6 +49,7 @@ import java.util.BitSet;
 
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.acl.RoleNotFoundException;
 
 public interface AuthenticatedUser extends Principal
 {
@@ -66,13 +67,11 @@ public interface AuthenticatedUser extends Principal
 
     public BitSet getUserPermissions();
 
-    public String[] getUserRoles();
+    public String[] getUserRoleNames();
 
-    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException;
+    public void setPermissions(AccessControlListsManager aclsManager, String[] permissions) throws PermissionNotFoundException;
 
-    public void removeRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException;
-
-    public void removeAllRoles(AccessControlListsManager aclsManager) throws PermissionNotFoundException;
+    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws RoleNotFoundException;
 
     public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException;
 

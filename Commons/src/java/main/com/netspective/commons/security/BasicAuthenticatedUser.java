@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.5 2003-03-20 20:54:19 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.6 2003-03-20 22:38:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -53,12 +53,15 @@ import java.util.List;
 import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.acl.Role;
+import com.netspective.commons.acl.RoleNotFoundException;
 
 public class BasicAuthenticatedUser implements AuthenticatedUser
 {
     private String userName;
     private String userId;
-    private String[] userRoles;
+    private String[] userRoleNames;
+    private String[] userPermissionNames;
     private BitSet userPermissions;
     private String userOrgName;
     private String userOrgId;
@@ -131,9 +134,9 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         return userPermissions;
     }
 
-    public String[] getUserRoles()
+    public String[] getUserRoleNames()
     {
-        return userRoles;
+        return userRoleNames;
     }
 
     public BitSet createPermissionsBitSet(AccessControlListsManager aclsManager)
@@ -141,88 +144,36 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         return new BitSet(aclsManager.getAccessControlLists().getHighestPermissionId());
     }
 
-    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException
+    public void setPermissions(AccessControlListsManager aclsManager, String[] permissions) throws PermissionNotFoundException
     {
-        userRoles = roles;
-        if(userRoles == null)
+        userPermissionNames = permissions;
+        userPermissions = null;
+        if(userPermissionNames == null)
             return;
 
-        if(userPermissions == null)
-            userPermissions = createPermissionsBitSet(aclsManager);
-
-        for(int i = 0; i < userRoles.length; i++)
+        userPermissions = createPermissionsBitSet(aclsManager);
+        for(int i = 0; i < permissions.length; i++)
         {
-            String roleName = roles[i];
-            Permission role = aclsManager.getPermission(roleName);
-            if(role == null)
-                throw new RuntimeException("Role '" + roleName + "' does not exist in ACL.");
-            userPermissions.or(role.getChildPermissions());
+            String permName = permissions[i];
+            Permission permission = aclsManager.getPermission(permName);
+            userPermissions.or(permission.getChildPermissions());
         }
     }
 
-    //TODO: public void addRoles(AccessControlListsManager aclsManager, String[] roles) - to add roles
-
-    public void removeRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException
+    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws RoleNotFoundException
     {
-        if(userRoles == null || userPermissions == null)
+        userRoleNames = roles;
+        userPermissions = null;
+        if(userRoleNames == null)
             return;
 
-        // Check to make sure all roles are valid ...
+        userPermissions = createPermissionsBitSet(aclsManager);
         for(int i = 0; i < roles.length; i++)
         {
-            Permission role = aclsManager.getPermission(roles[i]);
-            if(role == null)
-                throw new RuntimeException("Role '" + roles[i] + "' does not exist in ACL.");
+            String roleName = roles[i];
+            Role role = aclsManager.getRole(roleName);
+            userPermissions.or(role.getPermissions());
         }
-
-	    // Clear all permissions until the shakeup is complete...
-        userPermissions = createPermissionsBitSet(aclsManager);
-
-        if(roles == userRoles)
-        {
-            // if we're removing all the current user roles, it's a special case
-            // because we're probably coming from the removeAllRoles method
-            userRoles = null;
-        }
-        else
-        {
-            // loop through the current user roles and track the ones we're keeping
-            // so that we can hang on to them in userRoles
-            List keepRoles = new ArrayList();
-            for(int i = 0; i < userRoles.length; i++)
-            {
-                String checkRole = userRoles[i];
-                boolean removingRole = false;
-                for(int j = 0; j < roles.length; j++)
-                {
-                    if(checkRole.equals(roles[j]))
-                    {
-                        removingRole = true;
-                        break;
-                    }
-                }
-                if(!removingRole)
-                    keepRoles.add(checkRole);
-            }
-
-            if(keepRoles.size() > 0)
-                userRoles = (String[]) keepRoles.toArray(new String[keepRoles.size()]);
-            else
-                userRoles = null;
-
-			// Recalculate all the permissions for the roles left after the shakeup
-			for (int i = 0; i < userRoles.length; i ++)
-			{
-				Permission role = aclsManager.getPermission(userRoles[i]);
-				userPermissions.or(role.getChildPermissions());
-			}
-        }
-    }
-
-    public void removeAllRoles(AccessControlListsManager aclsManager) throws PermissionNotFoundException
-    {
-        if(userRoles != null)
-            removeRoles(aclsManager, userRoles);
     }
 
     public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException

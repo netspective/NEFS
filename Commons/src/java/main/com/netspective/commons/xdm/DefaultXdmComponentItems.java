@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.4 2003-03-16 16:26:09 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.5 2003-03-20 22:38:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -52,6 +52,8 @@ import com.netspective.commons.acl.AccessControlLists;
 import com.netspective.commons.acl.AccessControlList;
 import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
+import com.netspective.commons.acl.Role;
+import com.netspective.commons.acl.RoleNotFoundException;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 
@@ -122,5 +124,10 @@ public class DefaultXdmComponentItems implements ConfigurationsManager, AccessCo
     public Permission getPermission(String name) throws PermissionNotFoundException
     {
         return getAccessControlLists().getPermission(name);
+    }
+
+    public Role getRole(String name) throws RoleNotFoundException
+    {
+        return getAccessControlLists().getRole(name);
     }
 }

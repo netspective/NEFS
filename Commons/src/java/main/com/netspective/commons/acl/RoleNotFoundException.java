@@ -39,24 +39,46 @@
  */
 
 /**
- * $Id: AccessControlListsManager.java,v 1.5 2003-03-20 22:38:15 shahid.shah Exp $
+ * $Id: RoleNotFoundException.java,v 1.1 2003-03-20 22:38:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
 
-public interface AccessControlListsManager
+import com.netspective.commons.acl.AccessControlList;
+
+public class RoleNotFoundException extends Exception
 {
-    public AccessControlLists getAccessControlLists();
+    private AccessControlList accessControlList;
+    private AccessControlLists accessControlListsManager;
+    private String name;
 
-    public AccessControlList createAccessControlList();
+    public RoleNotFoundException(AccessControlList acl, String name)
+    {
+        this.accessControlList = acl;
+        this.name = name;
+    }
 
-    public void addAccessControlList(AccessControlList acl);
+    public RoleNotFoundException(String s, AccessControlList acl, String name)
+    {
+        super(s + ". Available: " + acl.getRolesByName().keySet());
+        this.accessControlList = acl;
+        this.name = name;
+    }
 
-    public AccessControlList getDefaultAccessControlList();
+    public RoleNotFoundException(String s, AccessControlLists aclManager, String name)
+    {
+        super(s + ". Available: " + aclManager.getRolesByName().keySet());
+        this.accessControlListsManager = aclManager;
+        this.name = name;
+    }
 
-    public AccessControlList getAccessControlList(String name);
+    public AccessControlList getAccessControlList()
+    {
+        return accessControlList;
+    }
 
-    public Permission getPermission(String name) throws PermissionNotFoundException;
-
-    public Role getRole(String name) throws RoleNotFoundException;
+    public String getReference()
+    {
+        return name;
+    }
 }

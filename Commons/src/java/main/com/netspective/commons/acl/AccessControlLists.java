@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlLists.java,v 1.2 2003-03-16 16:14:32 shahbaz.javeed Exp $
+ * $Id: AccessControlLists.java,v 1.3 2003-03-20 22:38:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -61,8 +61,10 @@ public class AccessControlLists
 
     private AccessControlList defaultAcl;
     private Map permissionsByName = new HashMap();
+    private Map rolesByName = new HashMap();
     private Map acls = new HashMap();
     private int nextPermissionId = 0;
+    private int nextRoleId = 0;
 
     public AccessControlLists()
     {
@@ -71,6 +73,11 @@ public class AccessControlLists
     public Map getPermissionsByName()
     {
         return permissionsByName;
+    }
+
+    public Map getRolesByName()
+    {
+        return rolesByName;
     }
 
     public int getNextPermissionId()
@@ -88,10 +95,31 @@ public class AccessControlLists
         return nextPermissionId;
     }
 
+    public int getNextRoleId()
+    {
+        return nextRoleId;
+    }
+
+    public void setNextRoleId(int nextRoleId)
+    {
+        this.nextRoleId = nextRoleId;
+    }
+
+    public int getHighestRoleId()
+    {
+        return nextRoleId;
+    }
+
     public void registerPermission(Permission perm)
     {
         permissionsByName.put(perm.getQualifiedName(), perm);
         nextPermissionId++;
+    }
+
+    public void registerRole(Role role)
+    {
+        rolesByName.put(role.getQualifiedName(), role);
+        nextRoleId++;
     }
 
     public AccessControlList getAccessControlList()
@@ -132,7 +160,16 @@ public class AccessControlLists
     {
         Permission result = (Permission) permissionsByName.get(name);
         if(result == null)
-            throw new PermissionNotFoundException("Permission '"+ name +"' not found in ACL.", this, name);
+            throw new PermissionNotFoundException("Permission '"+ name +"' not found in ACL", this, name);
+        else
+            return result;
+    }
+
+    public Role getRole(String name) throws RoleNotFoundException
+    {
+        Role result = (Role) rolesByName.get(name);
+        if(result == null)
+            throw new RoleNotFoundException("Role '"+ name +"' not found in ACL", this, name);
         else
             return result;
     }
@@ -140,6 +177,11 @@ public class AccessControlLists
     public int permissionsCount()
     {
         return permissionsByName.size();
+    }
+
+    public int rolesCount()
+    {
+        return rolesByName.size();
     }
 
     public int size()

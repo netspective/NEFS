@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Permission.java,v 1.3 2003-03-20 22:38:15 shahid.shah Exp $
+ * $Id: Role.java,v 1.1 2003-03-20 22:38:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -51,33 +51,35 @@ import java.util.ArrayList;
 import com.netspective.commons.acl.AccessControlList;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
-public class Permission
+public class Role
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
     private AccessControlList owner;
-    private Permission parent;
+    private Role parent;
     private int id = -1;
     private String name;
     private String qualifiedName;
-    private BitSet childPermissions = new BitSet();
+    private BitSet permissions = new BitSet();
     private List children = new ArrayList();
+    private RoleOrPermissionReferences grants;
+    private RoleOrPermissionReferences revokes;
 
-    public Permission(AccessControlList owner)
+    public Role(AccessControlList owner)
     {
         setOwner(owner);
-        setId(getOwner().getHighestPermissionId());
+        setId(getOwner().getHighestRoleId());
     }
 
-    public Permission(Permission parent)
+    public Role(Role parent)
     {
         setParent(parent);
-        setId(getOwner().getHighestPermissionId());
+        setId(getOwner().getHighestRoleId());
     }
 
-    public void unionChildPermissions(Permission perm)
+    public void unionChildPermissions(Role role)
     {
-        childPermissions.or(perm.getChildPermissions());
+        permissions.or(role.getPermissions());
         if(getParent() != null) getParent().unionChildPermissions(this);
     }
 
@@ -91,13 +93,13 @@ public class Permission
         return owner;
     }
 
-    protected void setParent(Permission parent)
+    protected void setParent(Role parent)
     {
         this.parent = parent;
         if(parent != null) setOwner(parent.getOwner());
     }
 
-    public Permission getParent()
+    public Role getParent()
     {
         return parent;
     }
@@ -110,7 +112,7 @@ public class Permission
     protected void setId(int id)
     {
         this.id = id;
-        childPermissions.set(id);
+        permissions.set(id);
     }
 
     public String getName()
@@ -143,28 +145,60 @@ public class Permission
         this.qualifiedName = qualifiedName;
     }
 
-    public BitSet getChildPermissions()
+    public BitSet getPermissions()
     {
-        return childPermissions;
+        return permissions;
     }
 
-    public Permission createPermission()
+    public Role createRole()
     {
-        return new Permission(this);
+        return new Role(this);
     }
 
-    public void addPermission(Permission childPerm)
+    public void addRole(Role childRole)
     {
-        children.add(childPerm);
-        unionChildPermissions(childPerm);
-        getOwner().registerPermission(childPerm);
-        childPermissions.set(childPerm.getId());
+        children.add(childRole);
+        unionChildPermissions(childRole);
+        getOwner().registerRole(childRole);
+
+        if(permissions == null)
+            permissions = childRole.getPermissions();
+        else
+            permissions.or(childRole.getPermissions());
+    }
+
+    public RoleOrPermissionReference createGrant()
+    {
+        return new RoleOrPermissionReference(getOwner());
+    }
+
+    public void addGrant(RoleOrPermissionReference grant) throws PermissionNotFoundException, RoleNotFoundException
+    {
+        if(grants == null)
+            grants = new RoleOrPermissionReferences();
+        permissions.or(grant.getPermissions());
+        grants.add(grant);
+        if(parent != null) parent.addGrant(grant);
+    }
+
+    public RoleOrPermissionReference createRevoke()
+    {
+        return new RoleOrPermissionReference(getOwner());
+    }
+
+    public void addRevoke(RoleOrPermissionReference revoke) throws PermissionNotFoundException, RoleNotFoundException
+    {
+        if(revokes == null)
+            revokes = new RoleOrPermissionReferences();
+        permissions.andNot(revoke.getPermissions());
+        revokes.add(revoke);
+        if(parent != null) parent.addRevoke(revoke);
     }
 
     protected int getAncestorsCount()
     {
         int result = 0;
-        Permission parent = getParent();
+        Role parent = getParent();
         while(parent != null)
         {
             result++;
@@ -185,12 +219,12 @@ public class Permission
         sb.append(" = ");
         sb.append(getId());
         sb.append(" ");
-        sb.append(childPermissions);
+        sb.append(permissions);
         sb.append("\n");
 
         for(int i = 0; i < children.size(); i++)
         {
-            Permission perm = (Permission) children.get(i);
+            Role perm = (Role) children.get(i);
             sb.append(perm.toString());
         }
 

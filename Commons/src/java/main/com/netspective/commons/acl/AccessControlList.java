@@ -39,30 +39,36 @@
  */
 
 /**
- * $Id: AccessControlList.java,v 1.3 2003-03-18 07:36:51 shahbaz.javeed Exp $
+ * $Id: AccessControlList.java,v 1.4 2003-03-20 22:38:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
-public class AccessControlList extends Permission
+public class AccessControlList
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String ACLNAME_DEFAULT = "acl";
     public static final String NAME_SEPARATOR = "/";
 
     private AccessControlLists manager;
+    private String name;
+    private String qualifiedName;
     private Map permissionsByName = new HashMap();
+    private Map rolesByName = new HashMap();
+    private List permissions = new ArrayList();
+    private List roles = new ArrayList();
 
     public AccessControlList(AccessControlLists manager)
     {
         setName(ACLNAME_DEFAULT);
         setManager(manager);
-        setId(getOwner().getHighestPermissionId());
     }
 
     public AccessControlLists getManager()
@@ -75,9 +81,40 @@ public class AccessControlList extends Permission
         this.manager = manager;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getQualifiedName()
+    {
+		if (null == qualifiedName)
+        {
+            String qName = AccessControlList.NAME_SEPARATOR + getName();
+			setQualifiedName(qName);
+        }
+
+	    return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName)
+    {
+        this.qualifiedName = qualifiedName;
+    }
+
     protected Map getPermissionsByName()
     {
         return permissionsByName;
+    }
+
+    protected Map getRolesByName()
+    {
+        return rolesByName;
     }
 
     public AccessControlList getOwner()
@@ -90,10 +127,43 @@ public class AccessControlList extends Permission
         return manager.getHighestPermissionId();
     }
 
+    public int getHighestRoleId()
+    {
+        return manager.getHighestRoleId();
+    }
+
     public void registerPermission(Permission perm)
     {
         permissionsByName.put(perm.getQualifiedName(), perm);
         manager.registerPermission(perm);
+    }
+
+    public void registerRole(Role role)
+    {
+        rolesByName.put(role.getQualifiedName(), role);
+        manager.registerRole(role);
+    }
+
+    public Permission createPermission()
+    {
+        return new Permission(this);
+    }
+
+    public void addPermission(Permission perm)
+    {
+        permissions.add(perm);
+        registerPermission(perm);
+    }
+
+    public Role createRole()
+    {
+        return new Role(this);
+    }
+
+    public void addRole(Role role)
+    {
+        roles.add(role);
+        registerRole(role);
     }
 
     public Permission getPermission(String name) throws PermissionNotFoundException
@@ -103,5 +173,26 @@ public class AccessControlList extends Permission
             throw new PermissionNotFoundException("Permission '"+ name +"' not found in ACL.", getOwner(), name);
         else
             return result;
+    }
+
+    public Role getRole(String name) throws RoleNotFoundException
+    {
+        Role result = (Role) rolesByName.get(name);
+        if(result == null)
+            throw new RoleNotFoundException("Role '"+ name +"' not found in ACL.", getOwner(), name);
+        else
+            return result;
+    }
+
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Permissions:\n");
+        for(int i = 0; i < permissions.size(); i++)
+            sb.append(permissions.get(i));
+        sb.append("Roles:\n");
+        for(int i = 0; i < roles.size(); i++)
+            sb.append(roles.get(i));
+        return sb.toString();
     }
 }

@@ -39,39 +39,36 @@
  */
 
 /**
- * $Id: PermissionReference.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: RoleOrPermissionReferences.java,v 1.1 2003-03-20 22:38:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
 
-import com.netspective.commons.acl.AccessControlList;
-import com.netspective.commons.acl.Permission;
-import com.netspective.commons.acl.PermissionNotFoundException;
+import java.util.List;
+import java.util.ArrayList;
 
-public class PermissionReference
+import com.netspective.commons.acl.RoleOrPermissionReference;
+
+public class RoleOrPermissionReferences
 {
-    private AccessControlList accessControlList;
-    private String permission;
+    private List references = new ArrayList();
 
-    public PermissionReference(AccessControlList accessControlList)
+    public RoleOrPermissionReferences()
     {
-        this.accessControlList = accessControlList;
     }
 
-    public AccessControlList getAccessControlList()
+    public void add(RoleOrPermissionReference ref)
     {
-        return accessControlList;
+        references.add(ref);
     }
 
-    public void setPermission(String permission)
+    public RoleOrPermissionReference get(int i)
     {
-        this.permission = permission;
-        if(! permission.startsWith(AccessControlList.NAME_SEPARATOR))
-            permission += accessControlList.getQualifiedName() + AccessControlList.NAME_SEPARATOR;
+        return (RoleOrPermissionReference) references.get(i);
     }
 
-    public Permission getPermission() throws PermissionNotFoundException
+    public int size()
     {
-        return accessControlList.getPermission(permission);
+        return references.size();
     }
 }

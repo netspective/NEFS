@@ -14,16 +14,16 @@
 			</permission>
 		</permission>
 
-		<permission name="role">
-			<permission name="super-user">
+		<role name="role">
+			<role name="super-user">
 				<grant permission="/main/app/orders"/>
-			</permission>
-			<permission name="normal-user">
+			</role>
+			<role name="normal-user">
 				<grant permission="/main/app/orders"/>
 				<revoke permission="/main/app/orders/delete_order"/>
 				<revoke permission="/main/app/orders/test_order"/>
-			</permission>
-		</permission>
+			</role>
+		</role>
 	</access-control-list>
 
 </component>

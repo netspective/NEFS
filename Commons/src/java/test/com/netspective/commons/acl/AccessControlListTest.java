@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.8 2003-03-20 20:42:39 shahbaz.javeed Exp $
+ * $Id: AccessControlListTest.java,v 1.9 2003-03-20 22:38:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -78,7 +78,7 @@ public class AccessControlListTest extends TestCase
 	 * @throws IllegalAccessException
 	 * @throws IOException
 	 */
-    public void testSingleACLDataModelSchemaImportFromXmlValid() throws PermissionNotFoundException, DataModelException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException
+    public void testSingleACLDataModelSchemaImportFromXmlValid() throws PermissionNotFoundException, DataModelException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, RoleNotFoundException
     {
         AccessControlListsComponent aclc =
                 (AccessControlListsComponent) XdmComponentFactory.get(
@@ -100,28 +100,33 @@ public class AccessControlListTest extends TestCase
 		// Verify the defaultAcl and the acl named "acl" are the same
 	    AccessControlList defaultAcl = aclm.getDefaultAccessControlList();
 	    AccessControlList aclAcl = aclm.getAccessControlList("acl");
+
+        System.out.println(defaultAcl.toString());
+
 		assertNotNull("Expected: Non-Null Default ACL, Found: null", defaultAcl);
 		assertNotNull("Expected: Non-Null Default ACL, Found: null", aclAcl);
 	    assertEquals("Expected: ACL with name 'acl', Found: ACL with name " + defaultAcl.getName(), aclAcl, defaultAcl);
 
-		// Verify exactly _eleven_ permissions were loaded in this acl
+		// Verify number of permissions
 		Map aclPermissions = defaultAcl.getPermissionsByName();
-		assertEquals("Expected: Total permissions = 10, Found: Total permissions = " + aclPermissions.size(), 10, aclPermissions.size());
+		assertEquals("Expected: Total permissions = 7, Found: Total permissions = " + aclPermissions.size(), 7, aclPermissions.size());
 
-		// Verify the index of the /acl/role/normal-user permission is 10
-		Permission normalUser = defaultAcl.getPermission("/acl/role/normal-user");
-		assertEquals("Expected: Id for /acl/role/normal-user = 9, Found: " + normalUser.getId(), 9, normalUser.getId());
+        // Verify number of roles
+        Map aclRoles = defaultAcl.getRolesByName();
+        assertEquals("Expected: Total roles = 3, Found: Total roles = " + aclRoles.size(), 3, aclRoles.size());
+
+		// Verify the index of the /acl/role/normal-user permission is 2
+		Role normalUser = defaultAcl.getRole("/acl/role/normal-user");
+		assertEquals("Expected: Id for /acl/role/normal-user = 2, Found: " + normalUser.getId(), 2, normalUser.getId());
 
 		// Verify the set of permissions for /acl/role/normal-user are exactly what we expect
-		BitSet normalUserPermissionSet = normalUser.getChildPermissions();
+		BitSet normalUserPermissionSet = normalUser.getPermissions();
 		BitSet expectedPermissionSet = new BitSet(11);
 		expectedPermissionSet.set(1);
 		expectedPermissionSet.set(2);
 		expectedPermissionSet.set(3);
 		expectedPermissionSet.set(4);
 		expectedPermissionSet.set(5);
-		expectedPermissionSet.set(9);
-		assertEquals("Expected: Permissions for /acl/role/normal-user = " + expectedPermissionSet + ", Found: " + normalUserPermissionSet, expectedPermissionSet, normalUserPermissionSet);
 		assertEquals("Expected: Permissions for /acl/role/normal-user = " + expectedPermissionSet + ", Found: " + normalUserPermissionSet, expectedPermissionSet, normalUserPermissionSet);
 
         aclc.printErrorsAndWarnings();
@@ -430,7 +435,7 @@ public class AccessControlListTest extends TestCase
 	    assertNull(userThree.getAttribute("pi"));
     }
 
-	public void testAuthenticatedUsersPermissions() throws DataModelException, InvocationTargetException, InstantiationException, NoSuchMethodException, IllegalAccessException, IOException, PermissionNotFoundException
+	public void testAuthenticatedUsersPermissions() throws DataModelException, InvocationTargetException, InstantiationException, NoSuchMethodException, IllegalAccessException, IOException, PermissionNotFoundException, RoleNotFoundException
 	{
 		AccessControlListsComponent aclc =
 		        (AccessControlListsComponent) XdmComponentFactory.get(
@@ -454,11 +459,11 @@ public class AccessControlListTest extends TestCase
 	    AuthenticatedUser userTwo = new BasicAuthenticatedUser("Administrator", "admin", "Administrative Services, Inc.", "admin-org");
 
 		// Experiment with AuthenticatedUsers and Roles/Permissions
-        assertNull(userTwo.getUserRoles());
+        assertNull(userTwo.getUserRoleNames());
 
 		String[] userTwoRoles = { "/acl/role/normal-user" };
 		userTwo.setRoles(aclm, userTwoRoles);
-		assertEquals(userTwoRoles, userTwo.getUserRoles());
+		assertEquals(userTwoRoles, userTwo.getUserRoleNames());
 
 		Permission normalUser = defaultAcl.getPermission("/acl/role/normal-user");
 		assertEquals(9, normalUser.getId());
@@ -474,14 +479,16 @@ public class AccessControlListTest extends TestCase
 		assertEquals(normalUser.getChildPermissions(), userTwo.getUserPermissions());
 		assertEquals(aclNormalUserPermissionSet, userTwo.getUserPermissions());
 
+        //SHAHBAZ: I've taken out the "removeRoles" methods from Authenticated user
+        /*
 		userTwo.removeRoles(aclm, userTwoRoles);
-		assertEquals(null, userTwo.getUserRoles());
-		assertEquals(null, userTwo.getUserRoles());
+		assertEquals(null, userTwo.getUserRoleNames());
+		assertEquals(null, userTwo.getUserRoleNames());
 
 		userTwo.setRoles(aclm, userTwoRoles);
 		userTwo.removeAllRoles(aclm);
-		assertEquals(null, userTwo.getUserRoles());
-		assertEquals(null, userTwo.getUserRoles());
+		assertEquals(null, userTwo.getUserRoleNames());
+		assertEquals(null, userTwo.getUserRoleNames());
 
 		userTwo.setRoles(aclm, userTwoRoles);
 		assertTrue(userTwo.hasAnyPermission(aclm, new String[] { "/acl/app/orders/create_order", "/acl/app/orders/view_order", "/acl/app/orders/edit_order" }));
@@ -497,11 +504,12 @@ public class AccessControlListTest extends TestCase
 
 		userTwo.removeRoles(aclm, new String[] { "/acl/role/super-user" });
 		expectedPermissionSet = normalUser.getChildPermissions();
-		assertEquals("/acl/role/normal-user", userTwo.getUserRoles()[0]);
+		assertEquals("/acl/role/normal-user", userTwo.getUserRoleNames()[0]);
 		assertEquals(expectedPermissionSet, userTwo.getUserPermissions());
+        */
 	}
 
-	public void testAuthenticatedUsersPermissionErrors() throws DataModelException, InvocationTargetException, InstantiationException, NoSuchMethodException, IllegalAccessException, IOException, PermissionNotFoundException
+	public void testAuthenticatedUsersPermissionErrors() throws DataModelException, InvocationTargetException, InstantiationException, NoSuchMethodException, IllegalAccessException, IOException, PermissionNotFoundException, RoleNotFoundException
 	{
 		AccessControlListsComponent aclc =
 		        (AccessControlListsComponent) XdmComponentFactory.get(
@@ -523,14 +531,14 @@ public class AccessControlListTest extends TestCase
 	    AuthenticatedUser userTwo = new BasicAuthenticatedUser("Administrator", "admin", "Administrative Services, Inc.", "admin-org");
 
 		// Experiment with AuthenticatedUsers and Roles/Permissions
-        assertNull(userTwo.getUserRoles());
+        assertNull(userTwo.getUserRoleNames());
 
 		boolean exceptionThrown = true;
 
 		try {
 			userTwo.setRoles(aclm, new String[] { "/acl/role/invalid-user" });
 			exceptionThrown = false;
-		} catch (PermissionNotFoundException e) {
+		} catch (RoleNotFoundException e) {
 			assertTrue(exceptionThrown);
 		}
 
@@ -538,9 +546,9 @@ public class AccessControlListTest extends TestCase
 
 		String[] userTwoRoles = { "/acl/role/normal-user" };
 		userTwo.setRoles(aclm, userTwoRoles);
-		assertEquals(userTwoRoles, userTwo.getUserRoles());
+		assertEquals(userTwoRoles, userTwo.getUserRoleNames());
 
-		Permission normalUser = defaultAcl.getPermission("/acl/role/normal-user");
+		Role normalUser = defaultAcl.getRole("/acl/role/normal-user");
 //		BitSet aclNormalUserPermissionSet = normalUser.getChildPermissions();
 		BitSet aclNormalUserPermissionSet = new BitSet(24);
 		aclNormalUserPermissionSet.set(1);
@@ -550,12 +558,14 @@ public class AccessControlListTest extends TestCase
 		aclNormalUserPermissionSet.set(5);
 		aclNormalUserPermissionSet.set(9);
 
-		assertEquals(aclNormalUserPermissionSet, normalUser.getChildPermissions());
+		assertEquals(aclNormalUserPermissionSet, normalUser.getPermissions());
 
-		assertEquals(normalUser.getChildPermissions(), userTwo.getUserPermissions());
+		assertEquals(normalUser.getPermissions(), userTwo.getUserPermissions());
 		System.out.println(defaultAcl);
 		assertEquals(aclNormalUserPermissionSet, userTwo.getUserPermissions());
 
+        //SHAHBAZ: I've taken out the "removeRoles" methods from Authenticated user
+        /*
 		try {
 			userTwo.removeRoles(aclm, new String[] { "/acl/role/invalid-user" });
 			exceptionThrown = false;
@@ -566,13 +576,14 @@ public class AccessControlListTest extends TestCase
 		assertTrue(exceptionThrown);
 
 		userTwo.removeRoles(aclm, userTwoRoles);
-		assertEquals(null, userTwo.getUserRoles());
-		assertEquals(null, userTwo.getUserRoles());
+		assertEquals(null, userTwo.getUserRoleNames());
+		assertEquals(null, userTwo.getUserRoleNames());
 
 		userTwo.setRoles(aclm, userTwoRoles);
 		userTwo.removeAllRoles(aclm);
-		assertEquals(null, userTwo.getUserRoles());
-		assertEquals(null, userTwo.getUserRoles());
+		assertEquals(null, userTwo.getUserRoleNames());
+		assertEquals(null, userTwo.getUserRoleNames());
+        */
 
 		userTwo.setRoles(aclm, userTwoRoles);
 		assertTrue(userTwo.hasAnyPermission(aclm, new String[] { "/acl/app/orders/create_order", "/acl/app/orders/view_order", "/acl/app/orders/edit_order" }));
