@@ -28,7 +28,7 @@
 
     <!--
     **********************************************************************
-    ** DATA MANAGEMENT STRUCTURE (SCHEMA) SPECIFICATIONS                **
+    ** RELATIONAL DATA STRUCTURE (SCHEMA) SPECIFICATIONS                **
     ********************************************************************** -->
 
     <schema name="db">
