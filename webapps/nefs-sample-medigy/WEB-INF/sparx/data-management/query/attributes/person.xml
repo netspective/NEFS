@@ -98,10 +98,6 @@
                 <panel>
                     <frame heading="Contact Information"/>
                     <report>
-                        <record-add-caption>Add</record-add-caption>
-                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.contact,personAttribute.personContactTableDialog?parent_id=${request:person_id}</record-add-url>
-                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.contact,personAttribute.personContactTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-edit-url>
-                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.contact,personAttribute.personContactTableDialog?parent_id=${request:person_id}&amp;system_id=${0}</record-delete-url>
                         <column hidden="yes"/>
                         <column heading="Contact Type"/>
                         <column heading="&amp;nbsp;"/>
@@ -128,12 +124,8 @@
                 <panel>
                     <frame heading="Ethnic Background"/>
                     <report>
-                        <record-add-caption>Add</record-add-caption>
-                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.ethnicity,personAttribute.personEthnicityTableDialog</record-add-url>
-                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.ethnicity,personAttribute.personEthnicityTableDialog?system_id=${0}</record-edit-url>
-                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.ethnicity,personAttribute.personEthnicityTableDialog?system_id=${0}</record-delete-url>
                         <column hidden="yes"/>
-                        <column heading="&amp;nbsp;"/>
+                        <column heading="Ethnicity"/>
                     </report>
                 </panel>
             </presentation>
@@ -235,15 +227,19 @@
 			select
 				system_id,
 				(Person.name_first || ' ' || Person.name_last),
-				Person_Relationship_Type.caption
+				Person_Relationship_Type.caption,
+                Person_Contact.method_name || ': ' || Person_Contact.method_value
 			from
 				Person,
 				Person_Relationship,
-				Person_Relationship_Type
+				Person_Relationship_Type,
+                Person_Contact
 			where
 				Person_Relationship.parent_id = ? and
 				Person_Relationship.rel_entity_id = Person.person_id and
-				Person_Relationship.rel_type_id = Person_Relationship_Type.id
+				Person_Relationship.rel_type_id = Person_Relationship_Type.id and
+                Person_Contact.parent_id =  Person.person_id and
+                Person_Relationship_Type.caption = 'Emergency Contact'
 
             <params>
                 <param value="request:person_id"/>
@@ -252,13 +248,10 @@
                 <panel>
                     <frame heading="Related Individuals"/>
                     <report>
-                        <record-add-caption>Add</record-add-caption>
-                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.relationship,personAttribute.personRelationshipTableDialog?parent_id=${request:person_id}</record-add-url>
-                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.relationship,personAttribute.personRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:person_id}</record-edit-url>
-                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.relationship,personAttribute.personRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:person_id}</record-delete-url>
                         <column hidden="yes"/>
                         <column heading="Person"/>
                         <column heading="Relationship"/>
+                        <column heading="Value"/>
                     </report>
                 </panel>
             </presentation>
@@ -340,5 +333,6 @@
                 <param value="request:person_id"/>
             </params>
         </query>
+        
     </queries>
 </xdm:container>

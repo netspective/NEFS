@@ -3,7 +3,7 @@
 	<xdm:include file="templates/org.xml"/>
 
 	<dialogs package="org">
-		<dialog type="schema-record-editor" name="main">
+		<dialog type="schema-record-editor" name="main" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Main Organization"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.classification-information"/>
@@ -52,26 +52,26 @@
             </on-add-data>
 		</dialog>
 
-		<dialog type="schema-record-editor" name="associatedProvider" generate-dcb="yes">
-            <frame heading="create-dialog-perspective-heading:Associated Provider Organization"/>
+		<dialog type="schema-record-editor" name="hospital" generate-dcb="yes">
+            <frame heading="create-dialog-perspective-heading:Hospital"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.contact-information"/>
 			<xdm:include template="org.identification-information"/>
 			<xdm:include template="org.service-information"/>
             <!--listener class="app.form.org.AssociatedProviderDialog"/-->
             <on-add-data>
-                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
-                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
-                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
-                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
-                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
-                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
-                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org org-name="field:profile.org_name" org-code="field:profile.org_code" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="static:Hospital"/>
+                <org-address address_name="static:Main Address" line1="field:address.line1" line2="field:address.line2" zip="field:address.zip"
+                    city="field:address.city" state_id="field:address.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:contact.phone"
+                    _condition="vc.getFieldStates().getState('contact.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:contact.fax"
+                    _condition="vc.getFieldStates().getState('contact.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:contact.email"
+                    _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:contact.website"
+                    _condition="vc.getFieldStates().getState('contact.website').getValue().hasValue()"/>
                 </org>
             </on-add-data>
 		</dialog>
@@ -84,18 +84,24 @@
 			<xdm:include template="org.service-information"/>
             <!--listener class="app.form.org.PharmacyDialog"/-->
             <on-add-data>
-                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
-                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
-                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
-                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
-                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
-                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
-                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org org-name="field:profile.org_name" org-code="field:profile.org_code" org-abbrev="field:profile.org_abbrev" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="static:Pharmacy" org-type="static:Pharmacy"/>
+                <org-address address_name="static:Main Address" line1="field:address.line1" line2="field:address.line2" zip="field:address.zip"
+                    city="field:address.city" state_id="field:address.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:contact.phone"
+                    _condition="vc.getFieldStates().getState('contact.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:contact.fax"
+                    _condition="vc.getFieldStates().getState('contact.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:contact.email"
+                    _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:contact.website"
+                    _condition="vc.getFieldStates().getState('contact.website').getValue().hasValue()"/>
+                <org-identifier identifier="field:identification.clia_id" identifier-type-id="static:CLIA ID" identifier-type="static:CLIA ID"
+                    _condition="vc.getFieldStates().getState('identification.clia_id').getValue().hasValue()"/>
+                <org-identifier identifier="field:identification.medicaid_id" identifier-type-id="static:Medicaid ID" identifier-type="static:Medicaid ID"
+                    _condition="vc.getFieldStates().getState('identification.medicaid_id').getValue().hasValue()"/>
+                <org-identifier identifier="field:identification.medicare_id" identifier-type-id="static:Medicare ID" identifier-type="static:Medicare ID"
+                    _condition="vc.getFieldStates().getState('identification.medicare_id').getValue().hasValue()"/>
                 </org>
             </on-add-data>
 		</dialog>
@@ -128,18 +134,18 @@
 			<xdm:include template="org.contact-information"/>
             <!--listener class="app.form.org.InsuranceDialog"/-->
             <on-add-data>
-                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
-                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
-                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
-                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
-                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
-                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
-                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org org-name="field:profile.org_name" org-code="field:profile.org_code" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="static:Insurance" org-type="static:Insurance"/>
+                <org-address address_name="static:Main Address" line1="field:address.line1" line2="field:address.line2" zip="field:address.zip"
+                    city="field:address.city" state_id="field:address.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:contact.phone"
+                    _condition="vc.getFieldStates().getState('contact.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:contact.fax"
+                    _condition="vc.getFieldStates().getState('contact.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:contact.email"
+                    _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:contact.website"
+                    _condition="vc.getFieldStates().getState('contact.website').getValue().hasValue()"/>
                 </org>
             </on-add-data>
 		</dialog>
@@ -150,18 +156,18 @@
 			<xdm:include template="org.contact-information"/>
             <!--listener class="app.form.org.IPADialog"/-->
             <on-add-data>
-                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
-                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
-                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
-                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
-                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
-                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
-                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org org-name="field:profile.org_name" org-code="field:profile.org_code" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="static:IPA"/>
+                <org-address address_name="static:Main Address" line1="field:address.line1" line2="field:address.line2" zip="field:address.zip"
+                    city="field:address.city" state_id="field:address.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:contact.phone"
+                    _condition="vc.getFieldStates().getState('contact.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:contact.fax"
+                    _condition="vc.getFieldStates().getState('contact.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:contact.email"
+                    _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:contact.website"
+                    _condition="vc.getFieldStates().getState('contact.website').getValue().hasValue()"/>
                 </org>
             </on-add-data>
 		</dialog>
@@ -172,18 +178,18 @@
 			<xdm:include template="org.contact-information"/>
             <!--listener class="app.form.org.AncilliaryServiceDialog"/-->
             <on-add-data>
-                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
-                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
-                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
-                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
-                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
-                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
-                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
-                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
-                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org org-name="field:profile.org_name" org-code="field:profile.org_code" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="static:Ancilliary Service"/>
+                <org-address address_name="static:Main Address" line1="field:address.line1" line2="field:address.line2" zip="field:address.zip"
+                    city="field:address.city" state_id="field:address.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:contact.phone"
+                    _condition="vc.getFieldStates().getState('contact.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:contact.fax"
+                    _condition="vc.getFieldStates().getState('contact.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:contact.email"
+                    _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:contact.website"
+                    _condition="vc.getFieldStates().getState('contact.website').getValue().hasValue()"/>
                 </org>
             </on-add-data>
 		</dialog>

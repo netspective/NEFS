@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-
-
     <table-type name="State" type="Enumeration">
         <enumerations>
             <enum id="0" abbrev="P">Past</enum>
@@ -187,7 +185,7 @@
         <column name="system_id" type="address-id" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/>
         <column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The owner of the address">
             <presentation>
-                <field type="guid32" name="${column.name}" required="yes">
+                <field type="guid32" name="${column.name}" hidden="yes" required="yes">
                     <conditional action="apply-flags" hidden="yes" perspective="add"/>
                 </field>
             </presentation>

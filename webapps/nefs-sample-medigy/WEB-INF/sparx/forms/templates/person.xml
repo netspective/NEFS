@@ -243,7 +243,7 @@
        This is just to add the primary license info when creating the physician.
     -->
     <xdm:template name="physician.license">
-        <section name="licenses" caption="Primary License Information" column-break-after="yes">
+        <section name="licenses" caption="License Information" column-break-after="yes">
             <field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
             <field type="text" name="license_name" caption="License Name" size="35">
                 <conditional action="display" partner-field-name="licenses.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>

@@ -51,11 +51,14 @@
             <authenticated-user-class>app.AppAuthenticatedUser</authenticated-user-class>
             <password-query>
                 select
-                    person_login.password
+                    person_login.password,
+                    person.person_id,
+                    person.complete_name
                 from
-                    person_login
+                    person_login, person
                 where
-                    person_login.user_id = ?
+                    person_login.user_id = ? and
+                    person_login.person_id = person.person_id
             </password-query>
         </login-authenticator>
 
@@ -85,7 +88,17 @@
         <page-type name="top-level" type="container">
         </page-type>
 
-        <page type="top-level" name="home" caption="Home" default="yes"/>
+        <page type="top-level" name="home" caption="Home" default="yes">
+            <body>
+            <![CDATA[
+            <div align="left" style="padding:10;width: 400px">
+                <b>${vc.authenticatedUser.userId} </b>: Welcome to the Netspective Medigy Clinical Application. This is your personal home page
+                and here you view messages/announcements .
+                <p/>
+            </div>
+            ]]>
+            </body>
+        </page>
 
         <!-- Actions -->
 		<page type="top-level" name="search" caption="Search" reject-focus="yes">
@@ -114,25 +127,51 @@
 		</page>
 
         <page type="top-level" name="add" caption="Add">
+            <summary>In this section, you can add different types of personnels, organizations and various claims. </summary>
 			<page type="container" name="person" caption="Person">
-                <page type="default" name="patient" caption="Patients" command="dialog,person.patient,add"/>
-                <page type="default" name="physician" caption="Physician/Providers" command="dialog,person.physician,add"/>
-                <page type="default" name="referring-doctor" caption="Referring Doctors" command="dialog,person.referringDoctor,add"/>
-                <page type="default" name="nurse" caption="Nurses" command="dialog,person.nurse,add"/>
-                <page type="default" name="staff" caption="Staff Members" command="dialog,person.staff,add"/>
+                <summary>
+                    In this section, you can add/create patients, physicians, nurses, and other staff.
+                </summary>
+                <page type="default" name="patient" caption="Patients" command="dialog,person.patient,add">
+                    <summary>Here you can create a patient record with his or her personal information such as demographics, contact information, responsible party, and insurance data.</summary>
+                </page>
+                <page type="default" name="physician" caption="Physician/Providers" command="dialog,person.physician,add">
+                    <summary>Create a physician record containing personal profile, professional license, and contact information. </summary>
+                </page>
+                <!--page type="default" name="referring-doctor" caption="Referring Doctors" command="dialog,person.referringDoctor,add"/-->
+                <page type="default" name="nurse" caption="Nurses" command="dialog,person.nurse,add">
+                    <summary>Create a nurse </summary>
+                </page>
+                <page type="default" name="staff" caption="Staff Members" command="dialog,person.staff,add">
+                    <summary>Create a staff member</summary>
+                </page>
             </page>
 
 			<page type="container" name="org" caption="Organization">
+                <summary>In this section, you can add different type of organizations such as pharmacies, insurance companies, and employers.</summary>
                 <page type="default" name="org" caption="Organization" command="dialog,org.main,add"/>
                 <page type="default" name="department" caption="Department" command="dialog,org.department,add"/>
-                <page type="default" name="associated-provider" caption="Associated Providers" command="dialog,org.associatedProvider,add"/>
-                <page type="default" name="pharmacy" caption="Pharmacy" command="dialog,org.pharmacy,add"/>
-                <page type="default" name="employer" caption="Employer" command="dialog,org.employer,add"/>
-                <page type="default" name="insurance" caption="Insurance" command="dialog,org.insurance,add"/>
-                <page type="default" name="ipa" caption="IPA" command="dialog,org.ipa,add"/>
-                <page type="default" name="ancilliary-service" caption="Anciliary Service" command="dialog,org.ancilliaryService,add"/>
+                <page type="default" name="hospital" caption="Hospital" command="dialog,org.hospital,add"/>
+                <page type="default" name="pharmacy" caption="Pharmacy" command="dialog,org.pharmacy,add">
+                    <summary>Create a Pharmacy</summary>
+                </page>
+                <page type="default" name="employer" caption="Employer" command="dialog,org.employer,add">
+                    <summary>Create an Employer organization record entry.</summary>
+                </page>
+                <page type="default" name="insurance" caption="Insurance" command="dialog,org.insurance,add">
+                    <summary>Create an Insurance organization record entry.</summary>
+                </page>
+                <page type="default" name="ipa" caption="IPA" command="dialog,org.ipa,add">
+                    <summary>Create an IPA organization. </summary>
+                    </page>
+                <page type="default" name="ancilliary-service" caption="Anciliary Service" command="dialog,org.ancilliaryService,add">
+                    <summary>
+                    Create an Ancilliary Service organization.
+                    </summary>
+                </page>
             </page>
             <page name="claim" caption="Accouting/Billing" command="dialog,claim.claim,add">
+                <summary>In this section, you can handle various activities associated with accounting and billing.</summary>
                 <page type="default" name="claim" caption="Claim" command="dialog,claim.claim,add"/>
             </page>
 		</page>
@@ -157,16 +196,20 @@
             <body>Unknown page subtype for page ${vc.activePage.class.name}, id = ${vc.activeState.entitySubtypeId}, name = ${vc.activeState.entitySubtypeName?default('null')}.</body>
         </page>
 
+        <page type="entity-redirector" class="app.navigate.entity.org.OrgRedirectorPage" name="org" caption="Org Entity Redirector" hidden="yes">
+            <entity-subtype schema-enum="db.Org_Type,HOSPITAL" redirect="page-id:/hospital"/>
+            <entity-subtype schema-enum="db.Org_Type,INSURANCE" redirect="page-id:/insurance"/>
+
+            <body>Unknown page subtype for page ${vc.activePage.class.name}, id = ${vc.activeState.entitySubtypeId}, name = ${vc.activeState.entitySubtypeName?default('null')}.</body>    
+        </page>
+
         <page type="entity" name="patient" class="app.navigate.entity.person.PatientPage" hidden-unless-active="yes" caption="Patient" retain-params="person_id">
             <page name="summary" caption="Summary">
                 <panels style="two-columns-stacked">
-                    <!--panel type="command" command="query,personAttribute.profile,-,-,-,detail" /-->
                     <panel type="command" command="panel-editor,personAttribute.contact"/>
-                    <!--panel type="command" command="query,personAttribute.language,-,-,-,record-editor"/-->
-                    <!--panel type="command" command="query,personAttribute.classification,-,-,-,record-editor"/-->
-                    <panel type="command" command="query,personAttribute.insurance,-,-,-,record-editor" />
-                    <!--panel type="command" command="query,personAttribute.ethnicity,-,-,-,record-editor"/-->
                     <panel type="command" command="panel-editor,personAttribute.family-contacts"/>
+                    <panel type="command" command="query,personAttribute.insurance,-,-,-,record-editor" />
+
                     <panel type="command" command="panel-editor,personAttribute.emergency-contacts"/>
                     <panel type="command" command="panel-editor,personAttribute.allergies"/>
                     <panel type="command" command="panel-editor,personAttribute.medications"/>
@@ -187,13 +230,28 @@
                     <panel type="command" command="panel-editor,personAttribute.classification"/>
                     <panel type="command" command="panel-editor,personAttribute.contact"/>
                     <panel type="command" command="panel-editor,personAttribute.relationship"/>
+                    <panel type="command" command="panel-editor,personAttribute.licenses"/>
                 </panels>
             </page>
             <page name="associate" caption="Associate"/>
             <page name="documents" caption="Documents"/>
         </page>
 
-        <page type="entity" name="org" hidden-unless-active="yes" caption="Organization" retain-params="org_id" >
+        <!-- INSURANCE COMPANY -->
+        <page type="entity" name="insurance" hidden-unless-active="yes" class="app.navigate.entity.org.InsurancePage" caption="Insurance" retain-params="org_id" >
+            <page type="entity-view" name="summary" caption="Summary" require-request-param="org_id" retain-params="org_id">
+                <panels style="two-columns-stacked">
+                    <panel type="command" command="query,orgAttribute.profile,-,-,-,detail" />
+                    <panel type="command" command="panel-editor,orgAttribute.contact"/>
+                    <panel type="command" command="panel-editor,orgAttribute.identifier"/>
+                    <panel type="command" command="query,orgAttribute.classification,-,-,-,record-viewer" />
+                    <!--panel type="command" command="query,orgAttribute.contact,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,orgAttribute.personidsrc,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,orgAttribute.relationship,-,-,-,record-viewer"/-->
+                </panels>
+            </page>
+        </page>
+        <!--page type="entity" name="org" hidden-unless-active="yes" caption="Organization" retain-params="org_id" >
             <page type="entity-view" name="summary" caption="Summary" require-request-param="org_id">
                 <panels style="two-columns">
                     <panel type="command" command="query,orgAttribute.profile,-,-,-,detail" />
@@ -210,9 +268,9 @@
             <page type="entity-view" name="personnel" caption="Personnel"/>
             <page type="entity-view" name="catalog" caption="Catalog"/>
             <page type="entity-view" name="account" caption="Account"/>
-            <!--page name="addInsPlan" hidden="yes" caption="Insurance Plan" redirect="page-id:/claim,dialog,insurancePlan.main,add?org_id=${request:org_id}"/-->
-            <!--page name="addInsProduct" hidden="yes" caption="Insurance Product" redirect="page-id:/claim,query,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,edit?org_id=${request:org_id}"/-->
-        </page>
+            <page name="addInsPlan" hidden="yes" caption="Insurance Plan" redirect="page-id:/claim,dialog,insurancePlan.main,add?org_id=${request:org_id}"/>
+            <page name="addInsProduct" hidden="yes" caption="Insurance Product" redirect="page-id:/claim,query,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,edit?org_id=${request:org_id}"/>
+        </page-->
         <page type="entity" name="claim"  hidden="yes" require-request-param="claim_id">                                                                                                                                                                                                P
             <page type="entity-view" name="summary" caption="Summary" command="query,claimAttribute.profile,-,-,-,detail"/>
             <page type="entity-view" name="hcfa1500" caption="HCFA 1500" command="query,claimAttribute.profile,-,-,-,detail"/>

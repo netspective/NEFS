@@ -271,7 +271,25 @@
                 <field type="text" name="duration" caption="Duration"/>
             </section>
             <field type="memo" name="notes" caption="Notes" />
+        </dialog>
 
+        <dialog type="schema-record-editor" name="license" retain-params="*">
+            <frame heading="create-dialog-perspective-heading: License"/>
+            <field type="integer" name="system_id" caption="" hidden="yes"/>
+            <field type="text" name="person_id" caption="Person ID" hidden="no" default="request:person_id"/>
+            <xdm:include template="physician.license"/>
+            <on-add-data>
+                <staff-license expiration-date="field:licenses.expiration_date" license-type-id="field:licenses.license_type_id"
+                            license_num="field:licenses.license_number" rec-stat-id="static:Active" person_id="field:person_id"/>
+            </on-add-data>
+            <on-edit-data>
+                <staff-license system_id="field:system_id" expiration-date="field:licenses.expiration_date" license-type-id="field:licenses.license_type_id"
+                            license_num="field:licenses.license_number" rec-stat-id="static:Active" />
+            </on-edit-data>
+            <on-delete-data>
+                <staff-license system_id="field:system_id" expiration-date="field:licenses.expiration_date" license-type-id="field:licenses.license_type_id"
+                            license_num="field:licenses.license_number" rec-stat-id="static:Active" person_id="field:person_id"/>
+            </on-delete-data>
         </dialog>
 
 	</dialogs>

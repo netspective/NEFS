@@ -170,14 +170,14 @@
                     <display field="org_abbrev"/>
                     <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
                     <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
-                    <condition field="org_type_id" allow-null="no" comparison="equals" value="6" connector="and"/>
+                    <condition field="org_type_id" allow-null="no" comparison="equals" value="schema-enum:Org_Type,INSURANCE" connector="and"/>
                     <presentation>
                         <panel>
                             <frame heading="Search Results"/>
                             <report>
                                 <column heading="ID"/>
-                                <column heading="Name"/>
-                                <column heading="Abbrev"/>
+                                <column heading="Name"   redirect="page-id:/org/summary?org_id=${0}"/>
+                                <column heading="Abbrev" redirect="page-id:/org/summary?org_id=${0}"/>
                             </report>
                         </panel>
                     </presentation>

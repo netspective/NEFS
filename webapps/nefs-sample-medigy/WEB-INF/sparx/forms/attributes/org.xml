@@ -3,35 +3,38 @@
 	<xdm:include file="templates/org.xml"/>
 
 	<dialogs package="orgAttribute">
-		<dialog name="address" retain-params="org_id">
+        <dialog name="address"  retain-params="*" generate-dcb="yes" type="schema-record-editor">
             <frame heading="create-dialog-perspective-heading:Address"/>
-			<field type="integer" name="system_id" caption="" hidden="yes"/>
-			<field type="integer" name="parent_id" caption="Org ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flags"/>
-			</field>
+            <field type="text" name="system_id" caption="" hidden="yes"/>
+            <field type="text" name="parent_id" caption="Org ID" required="yes" default="request:org_id" hidden="yes"/>
 
-			<field type="separator" heading="Address Classification"/>
-			<field type="text" name="address_name" caption="Address Label" size="32"/>
-			<field type="boolean" name="mailing" caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/>
-			<field type="select" name="address_type_id" caption="Address Type" choices="schema-enum:Contact_Address_Type" required="yes"/>
+            <field type="separator" heading="Address Classification"/>
+            <field type="text" name="address_name" caption="Address Label" size="32"/>
+            <field type="boolean" name="mailing" caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/>
+            <field type="select" name="address_type_id" caption="Address Type" choices="schema-enum:Contact_Address_Type"/>
 
-			<field type="separator" heading="Address Data"/>
-			<field type="text" name="line1" caption="Line 1" required="yes" size="64"/>
-			<field type="text" name="line2" caption="Line 2" size="64"/>
-			<field type="text" name="city" caption="City" required="yes" size="16"/>
-			<field type="text" name="county" caption="County" size="16"/>
-			<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes"/>
-			<field type="zip-code" name="zip" caption="Zip Code"/>
-			<field type="text" name="country" caption="Country" size="16"/>
-            <director>
-                <next-actions caption="Next Action ">
-                    <items>
-                        <item value="page-id:/org/summary" caption="Summary"/>
-                    </items>
-                </next-actions>
-            </director>
-            <!--listener class="app.form.org.attribute.AddressDialog"/-->
-		</dialog>
+            <field type="separator" heading="Address Data"/>
+            <field type="text" name="line1" caption="Line 1" size="64"/>
+            <field type="text" name="line2" caption="Line 2" size="64"/>
+            <field type="text" name="city" caption="City" size="16"/>
+            <field type="text" name="county" caption="County" size="16"/>
+            <field type="select" name="state" caption="State" choices="schema-enum:US_State_Type"/>
+            <field type="zip-code" name="zip" caption="Zip Code"/>
+            <field type="text" name="country" caption="Country" size="16"/>
+
+            <on-add-data>
+                <org-address parent_id="parent_id" line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
+                    state_id="state" rec-stat-id="static:Active"/>
+            </on-add-data>
+            <on-edit-data>
+                <org-address line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
+                    state_id="state" rec-stat-id="static:Active"/>
+            </on-edit-data>
+            <on-delete-data>
+                <org-address parent_id="parent_id" line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
+                    state_id="state" rec-stat-id="static:Active"/>
+            </on-delete-data>
+        </dialog>
 
 		
 

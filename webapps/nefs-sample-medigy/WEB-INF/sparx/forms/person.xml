@@ -35,8 +35,8 @@
             <director>
                 <next-actions caption="Next Action\:" display-single-action="yes">
                     <items>
-                        <item>Add another patient</item>
-                        <item>Go to patient's home page</item>
+                        <item value="page-id:/add/person/patient">Add another patient</item>
+                        <item value="page-id:/patient/summary">Go to patient's home page</item>
                     </items>
                 </next-actions>
             </director>
@@ -133,9 +133,9 @@
             <!--listener class="app.form.person.attribute.PatientDialog" /-->
             <on-add-data>
                 <person name_last="field:profile.name_last" name_first="field:profile.name_first" name_middle="field:profile.name_middle"
-                    name_suffix="field:profile.name_suffix" ssn="field:demographics.ssn" marital_status_id="field:demographics.marital_status_id"
-                    blood_type_id="field:demographics.blood_type_id" gender_id="field:demographics.gender_id" ethnicity_id="field:demographics.ethnicity_id"
-                    language_id="field:demographics.language_id" rec_stat_id="static:Active" birth_date="field:demographics.birth_date">
+                    name_suffix="field:profile.name_suffix" ssn="field:demographics.ssn"
+                    gender_id="field:demographics.gender_id" ethnicity_id="field:demographics.ethnicity_id"
+                    language_id="field:demographics.language_id" rec_stat_id="static:Active" >
 
                     <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business"
                         method-value="contact.work_phone"
@@ -149,6 +149,8 @@
                     <person-classification rec-stat-id="static:Active" person-type-id="static:Patient"/>
                     <person-ethnicity _loop-column="ethnicity-id" ethnicity-id="field:demographics.ethnicity_id" rec-stat-id="static:Active"/>
                     <person-language _loop-column="language-id" language-id="field:demographics.language_id" rec-stat-id="static:Active"/>
+                    <staff-license expiration-date="field:licenses.expiration_date" license-type-id="field:licenses.license_type_id"
+                        license_num="licenses.license_number" rec-stat-id="static:Active" />
                 </person>
             </on-add-data>
             <on-edit-data>

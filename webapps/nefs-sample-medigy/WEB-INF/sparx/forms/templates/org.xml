@@ -5,19 +5,18 @@
 		<xdm:template name="org.org-profile">
 			<field type="integer" name="org_id" caption="" hidden="yes"/>
             <!-- a parent organization SHOULD not be a required item? -->
-			<field type="select" name="parent_org_id" caption="Parent Org ID" choices="query:org.get-all-orgs" prepend-blank="yes" required="no"/>
-			<field type="separator" heading="Organization Profile"/>
-			<field type="text" name="org_name" caption="Name" required="yes" size="32"/>
-			<field type="text" name="org_code" caption="Org Code" required="yes" size="16"/>
-			<field type="text" name="org_abbrev" caption="Abbreviated Name" size="16"/>
-
-			<field type="text" name="ticker_symbol" caption="Ticker Symbol" size="16"/>
-			<field type="text" name="sic_code" caption="SIC Code" size="16"/>
-
-			<field type="select" name="fiscal_year_month_id" caption="Start of Fiscal Year" prepend-blank="yes" choices="schema-enum:Month_Of_Year"/>
-			<field type="text" name="time_zone" caption="Time Zone of Organization Location" size="16" hint="The following fields should be filled with times in this timezone"/>
-			<field type="time" name="business_start_time" caption="Start of Business Day"/>
-			<field type="time" name="business_end_time" caption="End of Business Day"/>
+			<!--field type="select" name="parent_org_id" caption="Parent Org ID" choices="query:org.get-all-orgs" prepend-blank="yes" required="no"/-->
+			<section name="profile" caption="Profile">
+                <field type="text" name="org_name" caption="Name" required="yes" size="32"/>
+                <field type="text" name="org_code" caption="Code" required="yes" size="16"/>
+                <field type="text" name="org_abbrev" caption="Abbreviated Name" size="16"/>
+                <!--field type="text" name="ticker_symbol" caption="Ticker Symbol" size="16"/>
+                <field type="text" name="sic_code" caption="SIC Code" size="16"/>
+                <field type="select" name="fiscal_year_month_id" caption="Start of Fiscal Year" prepend-blank="yes" choices="schema-enum:Month_Of_Year"/>
+                <field type="text" name="time_zone" caption="Time Zone of Organization Location" size="16" hint="The following fields should be filled with times in this timezone"/>
+                <field type="time" name="business_start_time" caption="Start of Business Day"/>
+                <field type="time" name="business_end_time" caption="End of Business Day"/-->
+            </section>
 		</xdm:template>
 
 	    <xdm:template name="org.classification-information">
@@ -27,53 +26,47 @@
 		</xdm:template>
 
 		<xdm:template name="org.contact-information">
-			<field type="separator" heading="Contact Information"/>
-
-			<field type="text" name="line1" caption="Mailing Address" required="yes" size="64"/>
-			<field type="text" name="line2" caption="Line 2" size="64"/>
-			<composite name="cityStateZip" caption="*">
-				<field type="text" name="city" caption="City" required="yes" size="16"/>
-				<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes" required="yes"/>
-				<field type="zip-code" name="zip" caption="Zip Code"/>
-			</composite>
-			<field type="text" name="country" caption="Country" size="16"/>
-
-			<composite name="primary" caption="*">
-				<field type="phone" name="phone" caption="Telephone"/>
-				<field type="phone" name="fax" caption="Fax"/>
-			</composite>
-
-			<composite name="billing" caption="*">
-				<field type="text" name="contact" caption="Billing Contact"/>
-				<field type="phone" name="phone" caption="Phone"/>
-			</composite>
-
-            <field type="e-mail" name="email" caption="E-Mail"/>
-			<field type="text" name="website" caption="Web Site"/>
+			<section name="address" caption="Address Information">
+                <field type="text" name="line1" caption="Mailing Address" required="yes" size="32"/>
+                <field type="text" name="line2" caption="Line 2" size="32"/>
+                <field type="text" name="city" caption="City" required="yes" size="16"/>
+                <field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes" required="yes"/>
+                <field type="zip-code" name="zip" caption="Zip Code"/>
+                <!--field type="text" name="country" caption="Country" size="16"/-->
+            </section>
+            <section name="contact" caption="Contact Information">
+                <field type="phone" name="phone" caption="Telephone"/>
+                <field type="phone" name="fax" caption="Fax"/>
+                <field type="e-mail" name="email" caption="E-Mail"/>
+                <field type="text" name="website" caption="Web Site"/>
+            </section>
 		</xdm:template>
 
 		<xdm:template name="org.demographic-information">
-			<field type="separator" heading="Demographic Information"/>
+			<section name="demographic" caption="Demographic Information">
 			<field type="select" name="ownership_id" caption="Ownership Type" prepend-blank="yes" choices="schema-enum:Org_Ownership_Type"/>
 			<field type="select" name="org_level_id" caption="Organization Type" prepend-blank="yes" choices="schema-enum:Org_Level_Type"/>
 			<field type="text" name="employees" caption="Approx. Employees" size="16" max-length="7"/>
+            </section>
 		</xdm:template>
 
 		<xdm:template name="org.identification-information">
-			<field type="separator" heading="Identification Information"/>
-			<field type="text" name="tax_id" caption="Tax ID" size="16"/>
-			<field type="text" name="employer_id" caption="Employer ID" size="16"/>
-			<field type="text" name="state_id" caption="State ID" size="16"/>
-			<field type="text" name="medicaid_id" caption="Medicaid ID" size="16"/>
-			<field type="text" name="medicare_id" caption="Medicare ID" size="16"/>
-			<field type="text" name="workers_comp_id" caption="Workers Comp. ID" size="16"/>
-			<field type="text" name="bcbs_id" caption="Blue Cross/Blue Shield ID" size="16"/>
-			<field type="text" name="clia_id" caption="CLIA ID" size="16"/>
+			<section name="identification" caption="Identification Information" column-break-before="yes">
+                <field type="text" name="tax_id" caption="Tax ID" size="16"/>
+                <field type="text" name="employer_id" caption="Employer ID" size="16"/>
+                <field type="text" name="state_id" caption="State ID" size="16"/>
+                <field type="text" name="medicaid_id" caption="Medicaid ID" size="16"/>
+                <field type="text" name="medicare_id" caption="Medicare ID" size="16"/>
+                <field type="text" name="workers_comp_id" caption="Workers Comp. ID" size="16"/>
+                <field type="text" name="bcbs_id" caption="Blue Cross/Blue Shield ID" size="16"/>
+                <field type="text" name="clia_id" caption="CLIA ID" size="16"/>   <!-- Clinical Laboratory Improvement Amendments -->
+            </section>
 		</xdm:template>
 
 		<xdm:template name="org.service-information">
-			<field type="separator" heading="Service Information"/>
+			<section name="service-info" caption="Service Information">
 			<field type="select" name="hcfa_servplace_id" caption="HCFA Service Place Type" prepend-blank="yes" choices="schema-enum:HCFA1500_Service_Place_Type"/>
+            </section>
 		</xdm:template>
 	
 </xdm:container>

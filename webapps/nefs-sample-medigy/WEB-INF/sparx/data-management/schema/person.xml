@@ -68,7 +68,7 @@
                 <field type="select" caption="Blood Type"/>
             </presentation>
         </column>
-        <column name="birth_date" type="date-of-birth" descr="Date of Birth"/>
+        <column name="birth_date" type="date-of-birth" descr="Date of Birth" />
         <column name="death_date" type="date-of-death" descr="Date of Death"/>
         <column name="age" type="age" descr="Actual age (only required if date_of_birth is NULL or not known)"/>
         <!--
@@ -110,30 +110,24 @@
     </table>
 
     <table name="Person_Address" abbrev="PerAddr" type="Physical_Address" xdm:param-parentRef="Person.person_id">
-        <!--presentation>
-            <dialog name="personAddressTableDialog" retain-params="parent_id,person_id">
-                <field.table-column column="cr_sess_id"/>
-                <field.table-column column="cr_stamp"/>
-                <field.table-column column="rec_stat_id"/>
-                <field.table-column column="system_id"/>
-                <field.table-column column="parent_id" caption="Person ID"/>
-
-                <field.separator heading="Address Classification"/>
-                <field.table-column column="address_name"/>
-                <field.table-column column="mailing"/>
-                <field.table-column column="address_type_id"/>
-
-                <field.separator heading="Address Data"/>
-                <field.table-column column="line1"/>
-                <field.table-column column="line2"/>
-                <field.table-column column="city"/>
-                <field.table-column column="county"/>
-                <field.table-column column="state_id"/>
-                <field.table-column column="state" hint="The state, if not within the USA/Canada"/>
-                <field.table-column column="zip"/>
-                <field.table-column column="country"/>
+        <presentation>
+            <dialog name="${table.name}" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog" retain-params="system_id,person_id">
+                <frame heading="create-dialog-perspective-heading:Address"/>
+                <data-type-presentation columns="*"/>
+                <on-add-data>
+                    <person-address parent_id="parent_id" line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
+                        state_id="state" rec-stat-id="static:Active"/>
+                </on-add-data>
+                <on-edit-data>
+                    <person-address line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
+                        state_id="state" />
+                </on-edit-data>
+                <on-delete-data>
+                    <person-address parent_id="parent_id" line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
+                        state_id="state" />
+                </on-delete-data>
             </dialog>
-        </presentation-->
+        </presentation>
     </table>
 
     <table name="Person_Note" abbrev="PerNote" type="Note" xdm:param-parentRef="Person.person_id" xdm:param-noteTypeEnum="Person_Note_Type">
@@ -182,9 +176,18 @@
             </presentation>
         </column>
         <presentation>
-            <dialog name="${table.name}" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog" retain-params="person_id,person_id">
+            <dialog name="${table.name}" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog" retain-params="parent_id,person_id">
                 <frame heading="create-dialog-perspective-heading:Classification"/>
                 <data-type-presentation columns="*"/>
+                <on-add-data>
+                    <person-classification person_type_id="person_type_id" person_id="parent_id" org_id="org_id"  rec-stat-id="static:Active"/>
+                </on-add-data>
+                <on-edit-data>
+                    <person-classification person_type_id="person_type_id" person_id="parent_id" org_id="org_id"/>
+                </on-edit-data>
+                <on-delete-data>
+                    <person-classification person_type_id="person_type_id" person_id="parent_id" org_id="org_id"/>
+                </on-delete-data>
             </dialog>
         </presentation>
     </table>
