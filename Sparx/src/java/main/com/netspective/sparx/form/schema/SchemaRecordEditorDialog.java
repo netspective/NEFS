@@ -39,24 +39,10 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.28 2004-04-13 21:02:15 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.29 2004-04-20 13:11:38 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.schema;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicies;
@@ -102,6 +88,18 @@ import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.panel.editor.PanelEditor;
 import com.netspective.sparx.panel.editor.PanelEditorState;
 import com.netspective.sparx.panel.editor.ReportPanelEditorContentElement;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
+
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.Writer;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SchemaRecordEditorDialog extends Dialog implements TemplateProducerParent
 {
@@ -831,7 +829,13 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         else if (vs instanceof SqlExpressionValueSource)
             setColumnSqlExpression(columnValue, vs, sredc);
         else
-            columnValue.setTextValue(vs.getTextValue(sredc));
+        {
+            Value fieldValue = vs.getValue(sredc);
+            if(fieldValue.getValueHolderClass() == columnValue.getValueHolderClass())
+                columnValue.copyValueByReference(fieldValue);
+            else
+                columnValue.setTextValue(vs.getTextValue(sredc));
+        }
     }
 
     public void addDataUsingTemplate(SchemaRecordEditorDialogContext sredc) throws SQLException
@@ -1272,7 +1276,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     {
         if (dc.executeStageHandled())
             return;
-
+        System.out.println("HEY!!!");
         SchemaRecordEditorDialogContext sredc = ((SchemaRecordEditorDialogContext) dc);
 
         ConnectionContext cc;
