@@ -39,83 +39,85 @@
  */
 
 /**
- * $Id: Project.java,v 1.42 2003-12-08 05:14:20 aye.thu Exp $
+ * $Id: Project.java,v 1.43 2004-03-01 07:09:55 aye.thu Exp $
  */
 
 package com.netspective.sparx;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.Iterator;
-import java.util.HashSet;
-import java.util.Set;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.xml.sax.SAXException;
-
-import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionProviderEntryStatistics;
+import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.StoredProceduresNameSpace;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
-import com.netspective.sparx.navigate.NavigationTreesManager;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.NavigationTrees;
-import com.netspective.sparx.navigate.NavigationConditionalAction;
-import com.netspective.sparx.navigate.NavigationPageBodyHandler;
-import com.netspective.sparx.navigate.NavigationPath;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
-import com.netspective.sparx.theme.basic.AbstractTheme;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.lang.ClassPath;
+import com.netspective.commons.metric.AverageMetric;
+import com.netspective.commons.metric.CountMetric;
+import com.netspective.commons.metric.FileTypeMetric;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.MetricsGroup;
+import com.netspective.commons.product.NetspectiveComponent;
+import com.netspective.commons.report.tabular.TabularReport;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xml.template.TemplateContentHandler;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.sparx.ant.AntProject;
+import com.netspective.sparx.ant.AntProjects;
 import com.netspective.sparx.console.ConsoleManager;
 import com.netspective.sparx.console.ConsoleNavigationTree;
 import com.netspective.sparx.console.ConsoleServlet;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStatesManager;
-import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.DialogsManager;
-import com.netspective.sparx.form.handler.DialogExecuteHandler;
+import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogFields;
-import com.netspective.sparx.sql.QueriesPackage;
-import com.netspective.sparx.sql.StoredProceduresPackage;
-import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
-import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
-import com.netspective.sparx.ant.AntProjects;
-import com.netspective.sparx.ant.AntProject;
+import com.netspective.sparx.form.handler.DialogExecuteHandler;
+import com.netspective.sparx.navigate.NavigationConditionalAction;
+import com.netspective.sparx.navigate.NavigationPageBodyHandler;
+import com.netspective.sparx.navigate.NavigationPath;
+import com.netspective.sparx.navigate.NavigationTree;
+import com.netspective.sparx.navigate.NavigationTrees;
+import com.netspective.sparx.navigate.NavigationTreesManager;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.RecordEditorPanel;
+import com.netspective.sparx.panel.RecordEditorPanels;
+import com.netspective.sparx.panel.RecordEditorPanelsPackage;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStatesManager;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.security.HttpLoginManagers;
 import com.netspective.sparx.security.LoginManagersManager;
-import com.netspective.commons.report.tabular.TabularReport;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateContentHandler;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.lang.ClassPath;
-import com.netspective.commons.product.NetspectiveComponent;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.metric.Metric;
-import com.netspective.commons.metric.MetricsGroup;
-import com.netspective.commons.metric.CountMetric;
-import com.netspective.commons.metric.FileTypeMetric;
-import com.netspective.commons.metric.AverageMetric;
-import com.netspective.commons.command.Commands;
+import com.netspective.sparx.sql.QueriesPackage;
+import com.netspective.sparx.sql.StoredProceduresPackage;
+import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
+import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.theme.Themes;
+import com.netspective.sparx.theme.basic.AbstractTheme;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
@@ -223,7 +225,9 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private List lifecycleListeners = new ArrayList();
     private NavigationTrees navigationTrees = new NavigationTrees(this);
     private Dialogs dialogs = new Dialogs(this);
+    private RecordEditorPanels recordEditorPanels = new RecordEditorPanels(this);
     private DialogsPackage activeDialogsNameSpace;
+    private RecordEditorPanelsPackage activeRecordEditorPanelsNameSpace;
     private AntProjects antProjects = new AntProjects();
     private HttpLoginManagers loginManagers = new HttpLoginManagers();
     private Themes themes = new Themes();
@@ -458,6 +462,42 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
+
+    public RecordEditorPanels getRecordEditorPanels()
+    {
+        return recordEditorPanels;
+    }
+
+    public List getRecordEditorPanels(String pkgName)
+    {
+        return recordEditorPanels.getByNameSpace(pkgName);
+    }
+
+    public RecordEditorPanel getRecordEditorPanel(final String name)
+    {
+        String actualName = RecordEditorPanel.translateNameForMapKey(name);
+        RecordEditorPanel dialog = recordEditorPanels.get(actualName);
+
+        if(dialog == null && log.isDebugEnabled())
+        {
+            log.debug("Unable to find record editor panel '"+ name +"' as '"+ actualName +"'. Available: " + recordEditorPanels);
+            return null;
+        }
+        return dialog;
+    }
+
+    public RecordEditorPanelsPackage createRecordEditorPanels()
+    {
+        activeRecordEditorPanelsNameSpace = new RecordEditorPanelsPackage(getRecordEditorPanels());
+        return activeRecordEditorPanelsNameSpace;
+    }
+
+    public void addRecordEditorPanels(RecordEditorPanelsPackage pkg)
+    {
+        activeRecordEditorPanelsNameSpace = null;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
 
     public Dialogs getDialogs()
     {

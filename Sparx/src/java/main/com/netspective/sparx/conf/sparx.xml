@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.73 2004-01-07 02:46:34 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.74 2004-03-01 07:10:31 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -30,6 +30,7 @@
     <command class="com.netspective.sparx.command.ListValueSourceCommand"/>
     <command class="com.netspective.sparx.command.CommandListCommand"/>
     <command class="com.netspective.sparx.command.DialogListCommand"/>
+    <command class="com.netspective.sparx.command.RecordEditorCommand"/>
 
     <connection-provider-entry-statistics class="com.netspective.sparx.console.util.ResinDataSourcePoolStatistics"/>
     <connection-provider-entry-statistics class="com.netspective.sparx.console.util.JakartaCommonsDbcpDataSourcePoolStatistics"/>

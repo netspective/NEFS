@@ -44,6 +44,37 @@
     </theme>
     <!--
        ======================================
+       Application record editor panels
+       ======================================
+    -->
+    <record-editor-panels package="personAttribute">
+        <record-editor-panel name="contact" dialogs="personAttribute.contact">
+            <query>
+                select
+				system_id,
+				Contact_Method_Type.caption "Method",
+				method_value "Value"
+                from
+                    Person_Contact,
+                    Contact_Method_Type
+                where
+                    Person_Contact.parent_id = ? and
+                    Person_Contact.method_type = Contact_Method_Type.id
+                <params>
+                    <param value="request:person_id"/>
+                </params>
+                <presentation>
+                    <panel>
+                        <frame heading="Contact Information"/>
+                    </panel>
+                </presentation>
+            </query>
+        </record-editor-panel>
+    </record-editor-panels>
+
+
+    <!--
+       ======================================
        Application theme setting
        ======================================
     -->
@@ -136,13 +167,13 @@
             <page name="summary" caption="Summary">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
-                    <panel type="command" command="query,personAttribute.address,-,-,-,record-viewer"/>
-                    <panel type="command" command="query,personAttribute.language,-,-,-,record-viewer"/>
-                    <panel type="command" command="query,personAttribute.classification,-,-,-,record-viewer"/>
-                    <panel type="command" command="query,personAttribute.insurance,-,-,-,record-viewer" />
-                    <panel type="command" command="query,personAttribute.contact,-,-,-,record-viewer"/>
-                    <panel type="command" command="query,personAttribute.ethnicity,-,-,-,record-viewer"/>
-                    <panel type="command" command="query,personAttribute.relationship,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.address,-,-,-,record-editor"/>
+                    <panel type="command" command="query,personAttribute.language,-,-,-,record-editor"/>
+                    <panel type="command" command="query,personAttribute.classification,-,-,-,record-editor"/>
+                    <panel type="command" command="query,personAttribute.insurance,-,-,-,record-editor" />
+                    <panel type="command" command="query,personAttribute.contact,-,-,-,record-editor"/>
+                    <panel type="command" command="query,personAttribute.ethnicity,-,-,-,record-editor"/>
+                    <panel type="command" command="query,personAttribute.relationship,-,-,-,record-editor"/>
                 </panels>
             </page>
             <page name="chart" caption="Chart"/>
@@ -157,10 +188,10 @@
             <page name="summary" caption="Summary">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
-                    <panel type="command" command="query,personAttribute.address,-,-,-,record-viewer"/>
-                    <panel type="command" command="query,personAttribute.classification,-,-,-,record-viewer"/>
-                    <panel type="command" command="query,personAttribute.contact,-,-,-,record-viewer"/>
-                    <panel type="command" command="query,personAttribute.relationship,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.address,-,-,-,record-editor"/>
+                    <panel type="command" command="query,personAttribute.classification,-,-,-,record-editor"/>
+                    <panel type="command" command="record-editor-panel,personAttribute.contact,personAttribute.contact,-"/>
+                    <panel type="command" command="query,personAttribute.relationship,-,-,-,record-editor"/>
                 </panels>
             </page>
             <page name="associate" caption="Associate"/>

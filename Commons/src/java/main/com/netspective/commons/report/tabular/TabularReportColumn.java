@@ -51,22 +51,21 @@
  */
 
 /**
- * $Id: TabularReportColumn.java,v 1.6 2003-09-10 04:06:12 aye.thu Exp $
+ * $Id: TabularReportColumn.java,v 1.7 2004-03-01 07:13:46 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular;
 
-import java.text.Format;
-import java.util.List;
-
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.RedirectValueSource;
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
-import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
-import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.CommandNotFoundException;
+import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+
+import java.text.Format;
+import java.util.List;
 
 public interface TabularReportColumn
 {
@@ -136,6 +135,8 @@ public interface TabularReportColumn
     public int getDataType();
 
     public void setDataType(int value);
+
+    public boolean isColIndexSet();
 
     public int getColIndex();
 
