@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportValueContext.java,v 1.10 2004-03-07 02:52:31 aye.thu Exp $
+ * $Id: HtmlTabularReportValueContext.java,v 1.11 2004-06-23 20:56:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -151,7 +151,7 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
         }
         for (int k = 0; k < reportActions.size(); k++)
         {
-            HtmlPanelAction.State state = reportActions.get(k).constructStateInstance(this);
+            HtmlPanelAction.State state = reportActions.getByIndex(k).constructStateInstance(this);
             panelActionStates.addState(state);
         }
     }
