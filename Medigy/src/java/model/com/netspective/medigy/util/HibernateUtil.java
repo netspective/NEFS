@@ -43,15 +43,19 @@
  */
 package com.netspective.medigy.util;
 
-import com.netspective.medigy.model.data.EntitySeedDataPopulator;
 import com.netspective.medigy.reference.CachedReferenceEntity;
 import com.netspective.medigy.reference.ReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.model.party.Party;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Expression;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.NestableRuntimeException;
 
@@ -62,6 +66,7 @@ public class HibernateUtil
 {
     private static final Log log = LogFactory.getLog(HibernateUtil.class);
     private static SessionFactory sessionFactory;
+    private static Party sysGlobalParty;
     private static final ThreadLocal<Session> threadSession = new ThreadLocal<Session>();
     private static final ThreadLocal<Transaction> threadTransaction = new ThreadLocal<Transaction>();
 
@@ -169,7 +174,7 @@ public class HibernateUtil
             final Object id = entity.getTypeId();
             if(id == null)
             {
-                log.warn(entity + " id is NULL: unable to map to one of " + cache);
+                log.error(entity + " id is NULL: unable to map to one of " + cache);
                 continue;
             }
 
@@ -179,7 +184,7 @@ public class HibernateUtil
                 {
                     final ReferenceEntity record = c.getEntity();
                     if(record != null)
-                        log.warn(c.getClass().getName() + " enum '" + c + "' is bound to multiple rows.");
+                        log.error(c.getClass().getName() + " enum '" + c + "' is bound to multiple rows.");
                     else
                         c.setEntity(entity);
                     break;
@@ -190,7 +195,7 @@ public class HibernateUtil
         for(final CachedReferenceEntity c : cache)
         {
             if(c.getEntity() == null)
-                log.warn(c.getClass().getName() + " enum '" + c + "' was not bound to a database row.");
+                log.error(c.getClass().getName() + " enum '" + c + "' was not bound to a database row.");
         }
     }
 
@@ -200,10 +205,65 @@ public class HibernateUtil
             initReferenceEntityCache(entry.getKey(), (CachedReferenceEntity[]) entry.getValue().getEnumConstants());
     }
 
-    public static void initCustomReferenceEntityCaches(final Map<Class, Class> customReferenceEntitiesAndCachesMap)
+    public static void initCustomReferenceEntityCaches(final Map<Class, Class> referenceEntitiesAndCachesMap)
     {
-        EntitySeedDataPopulator populator = new EntitySeedDataPopulator(getSession());
-        populator.populateSeedData();
+        for(final Map.Entry<Class, Class> entry : referenceEntitiesAndCachesMap.entrySet())
+            initCustomReferenceEntityCache(entry.getKey(), (CachedCustomReferenceEntity[]) entry.getValue().getEnumConstants());
+    }
+
+    public static void initCustomReferenceEntityCache(final Class aClass, final CachedCustomReferenceEntity[] cache)
+    {
+        initSystemGlobalPartyEntity();
+
+        final List list = getSession().createCriteria(aClass).list();
+        for(final Object i : list)
+        {
+            final CustomReferenceEntity entity = (CustomReferenceEntity) i;
+            final Object code = entity.getCode();
+            if(code == null)
+            {
+                log.error(entity + " code is NULL: unable to map to one of " + cache);
+                continue;
+            }
+
+            for(final CachedCustomReferenceEntity c : cache)
+            {
+                if(code.equals(c.getCode()))
+                {
+                    final CustomReferenceEntity record = c.getEntity();
+                    if(record != null)
+                        log.error(c.getClass().getName() + " enum '" + c + "' is bound to multiple rows.");
+                    else
+                        c.setEntity(entity);
+                    break;
+                }
+            }
+        }
+
+        for(final CachedCustomReferenceEntity c : cache)
+        {
+            if(c.getEntity() == null)
+                log.error(c.getClass().getName() + " enum '" + c + "' was not bound to a database row.");
+        }
+
+    }
+
+    private static void initSystemGlobalPartyEntity()
+    {
+        final Criteria criteria = getSession().createCriteria(Party.class);
+        criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
+        sysGlobalParty = (Party) criteria.uniqueResult();
+        if (sysGlobalParty == null)
+            log.error("The " + Party.SYS_GLOBAL_PARTY_NAME + " entity MUST exist before trying to " +
+                    "access related built-in custom reference entities.");
+
+    }
+
+    public static Party getSystemGlobalParty()
+    {
+        if (sysGlobalParty == null)
+            initSystemGlobalPartyEntity();
+        return sysGlobalParty;
     }
 
 }
