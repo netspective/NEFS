@@ -102,6 +102,12 @@
                      elaborate functionality."
         },
 
+        { 'id': "nefs-sample-petstore", 'name': "Petstore", 'allowTryOnline': true, 'allowDownload': true,
+          'descr' : "The Petstore application demonstrates how to create an online Petstore complete with login and
+                     shopping cart. This example is a NEFS-specific version of the same Petstore application that is
+                     described by the Sun J2EE Blueprints."
+        },
+
         { 'id': "nefs-sample-cts", 'name': "Clinical Trials Management System", 'allowTryOnline': true, 'allowDownload': true,
           'descr' : "The Clinical Trials Management System (CTS) sample application demonstrates real-world usage of Commons, Axiom,
                      and Sparx. CTS provides the ability to manage patients, studies, sites, and coordinators for
