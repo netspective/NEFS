@@ -41,26 +41,25 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsForeignKeysPanel.java,v 1.5 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: SchemaTableColumnsForeignKeysPanel.java,v 1.6 2004-07-25 21:12:53 shahid.shah Exp $
  */
 
-import java.io.StringWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.ForeignKey;
+import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 
 public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
 {
@@ -141,13 +140,13 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
                     switch(fKey.getType())
                     {
                         case ForeignKey.FKEYTYPE_LOOKUP:
-                            return "Lookup";
+                            return "Lookup" + (fKey.isLogical() ? " (logical)" : "");
 
                         case ForeignKey.FKEYTYPE_PARENT:
-                            return "Parent";
+                            return "Parent" + (fKey.isLogical() ? " (logical)" : "");
 
                         case ForeignKey.FKEYTYPE_SELF:
-                            return "Self";
+                            return "Self" + (fKey.isLogical() ? " (logical)" : "");
 
                         default:
                             return null;

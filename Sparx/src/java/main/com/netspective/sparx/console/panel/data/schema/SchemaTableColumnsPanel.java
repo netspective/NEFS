@@ -39,33 +39,33 @@
  */
 
 /**
- * $Id: SchemaTableColumnsPanel.java,v 1.12 2003-08-22 14:34:07 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPanel.java,v 1.13 2004-07-25 21:12:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.Columns;
+import com.netspective.axiom.schema.ForeignKey;
+import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.sql.DbmsSqlTexts;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.theme.Theme;
 
 public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
 {
@@ -191,18 +191,19 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
                         content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/indexed.gif") + "\" title=\"Column is indexed\"> ");
                     if(column.getForeignKey() != null)
                     {
+                        boolean isLogical = column.getForeignKey().isLogical();
                         switch(column.getForeignKey().getType())
                         {
                             case ForeignKey.FKEYTYPE_PARENT:
-                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/parent-ref-key.gif") + "\" title=\"Child-key reference\"> ");
+                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/parent-ref-key.gif") + "\" title=\"Child-key reference"+ (isLogical ?" (logical)" : "") +"\"> ");
                                 break;
 
                             case ForeignKey.FKEYTYPE_SELF:
-                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/self-ref-key.gif") + "\" title=\"Self reference\"> ");
+                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/self-ref-key.gif") + "\" title=\"Self reference"+ (isLogical ?" (logical)" : "") +"\"> ");
                                 break;
 
                             default:
-                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/foreign-key.gif") + "\" title=\"Foreign key reference\"> ");
+                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/foreign-key.gif") + "\" title=\"Foreign key reference"+ (isLogical ?" (logical)" : "") +"\"> ");
                         }
                     }
                     if(column.getDependentForeignKeys() != null && column.getDependentForeignKeys().size() > 0)
