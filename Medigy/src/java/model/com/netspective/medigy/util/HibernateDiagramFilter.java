@@ -1,10 +1,8 @@
 package com.netspective.medigy.util;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
@@ -63,19 +61,20 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
             return;
         }
 
-        for (Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext();)
+        // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
+        if (generator.isParentRelationship(foreignKey))
         {
-            final Collection coll = (Collection) colls.next();
-            if (coll.isOneToMany())
+            if (showClassStructure)
             {
-                // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
-                if (foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
-                {
-                    edge.setArrowHead("crow");
-                    edge.setArrowSize("2");
-                    return;
-                }
+                edge.setArrowHead("odiamond");
+                edge.getAttributes().put("arrowtail", "normal");
             }
+            else
+            {
+                edge.setArrowSize("2");
+                edge.setArrowHead("crow");
+            }
+            return;
         }
     }
 

@@ -43,6 +43,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.Mapping;
+import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
@@ -216,6 +217,22 @@ public class HibernateDiagramGenerator
         PersistentClass sourceClass = getClassForTable(foreignKey.getTable());
         PersistentClass refClass = getClassForTable(foreignKey.getReferencedTable());
         return refClass.getMappedClass().isAssignableFrom(sourceClass.getMappedClass());
+    }
+
+    public boolean isParentRelationship(final ForeignKey foreignKey)
+    {
+        for (Iterator colls = getConfiguration().getCollectionMappings(); colls.hasNext();)
+        {
+            final Collection coll = (Collection) colls.next();
+            if (coll.isOneToMany())
+            {
+                // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
+                if (foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /*-- Accessors and Mutators for access to private fields --------------------------------------------------------*/

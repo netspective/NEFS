@@ -39,7 +39,6 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
-import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
@@ -76,7 +75,11 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
                                          final ForeignKey partOfForeignKey,
                                          final String indent) throws SQLException, NamingException
     {
-        final String extraAttrs = partOfPrimaryKey != null ? " BGCOLOR=\"gray90\"" : "";
+        final String extraAttrs = partOfPrimaryKey != null
+                ? " BGCOLOR=\"gray90\""
+                :
+                (partOfForeignKey != null && generator.isParentRelationship(partOfForeignKey)
+                ? (" BGCOLOR=\"beige\"") : "");
         final StringBuffer result = new StringBuffer(indent + "<TR>\n");
         result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + "\"" + extraAttrs + ">" + column.getName() + "</TD>\n");
 
@@ -190,17 +193,9 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
         if (filter.isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
             return foreignKey.getReferencedTable().getName();
 
-        for (Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext();)
-        {
-            final Collection coll = (Collection) colls.next();
-            if (coll.isOneToMany())
-            {
-                // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
-                //System.out.println(coll.getOwner().getTable().getName() + " -> " + coll.getCollectionTable().getName());
-                if (foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
-                    return foreignKey.getReferencedTable().getName();
-            }
-        }
+        // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
+        if (generator.isParentRelationship(foreignKey))
+            return foreignKey.getReferencedTable().getName();
 
         return filter.isIncludeEdgePort(generator, foreignKey, true) ? (foreignKey.getTable().getName() + ":" + (showConstraints
                 ? (foreignKey.getColumn(0).getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX)
@@ -214,17 +209,9 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
         if (filter.isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
             return foreignKey.getTable().getName();
 
-        for (Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext();)
-        {
-            final Collection coll = (Collection) colls.next();
-            if (coll.isOneToMany())
-            {
-                // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
-                //System.out.println(coll.getOwner().getTable().getName() + " -> " + coll.getCollectionTable().getName());
-                if (foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
-                    return foreignKey.getTable().getName();
-            }
-        }
+        // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
+        if (generator.isParentRelationship(foreignKey))
+            return foreignKey.getTable().getName();
 
         return filter.isIncludeEdgePort(generator, foreignKey, false) ?
                 (foreignKey.getReferencedTable().getName() + ":" + foreignKey.getReferencedTable().getPrimaryKey().getColumn(0).getName()) :
