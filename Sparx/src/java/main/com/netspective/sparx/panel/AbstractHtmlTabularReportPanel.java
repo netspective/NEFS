@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.16 2003-07-12 02:15:05 aye.thu Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.17 2003-08-01 05:56:36 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -70,22 +70,23 @@ import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState
 
 public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel implements HtmlTabularReportPanel
 {
-    private boolean scrollable;
-    private int scrollRowsPerPage = 25;
-    private String reportSkin;
+    private boolean scrollable;         // indicates if the report is pageable
+    private boolean selectable;         // indicates if the report is selectable
+    private int scrollRowsPerPage = 25; // the rows per page count when the report is pageable
+    private String reportSkin;          // the skin to use to display the report
 
     public AbstractHtmlTabularReportPanel()
     {
     }
 
-    public String getReportSkin()
+    public boolean isSelectable()
     {
-        return reportSkin;
+        return selectable;
     }
 
-    public void setReportSkin(String reportSkin)
+    public void setSelectable(boolean selectable)
     {
-        this.reportSkin = reportSkin;
+        this.selectable = selectable;
     }
 
     public boolean isScrollable()
@@ -107,6 +108,18 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
     {
         this.scrollRowsPerPage = scrollRowsPerPage;
     }
+
+    public String getReportSkin()
+    {
+        return reportSkin;
+    }
+
+    public void setReportSkin(String reportSkin)
+    {
+        this.reportSkin = reportSkin;
+    }
+
+
 
     public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
     {
@@ -139,6 +152,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
     {
         if(isScrollable())
         {
+            // TODO: Need to add handling of selection of report rows
             HtmlTabularReportDataSourceScrollStates scrollStates = HtmlTabularReportDataSourceScrollStates.getInstance();
             HtmlTabularReportDataSourceScrollState scrollState = scrollStates.getScrollStateByDialogTransactionId(dc);
             HtmlTabularReportValueContext vc = null;
@@ -194,7 +208,9 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         }
         else
         {
-            HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), reportSkin != null ? theme.getReportSkin(reportSkin) : theme.getDefaultReportSkin());
+            // not scrollable
+            HtmlTabularReportValueContext vc = null;
+            vc = createContext(dc.getNavigationContext(), reportSkin != null ? theme.getReportSkin(reportSkin) : theme.getDefaultReportSkin());
             vc.setDialogContext(dc);
             vc.setPanelRenderFlags(flags);
             TabularReportDataSource ds = createDataSource(dc.getNavigationContext());
