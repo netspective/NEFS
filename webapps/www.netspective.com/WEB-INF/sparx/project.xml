@@ -7,7 +7,7 @@
     <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
 
-    <theme name="survey" default="yes" class="app.AppTheme" inherit-resources-from-themes="slate,common"/>
+    <theme name="netspective-site" default="yes" class="app.AppTheme" inherit-resources-from-themes="console,common"/>
 
     <navigation-tree name="app" default="yes">
         <page class="app.AppPage" name="home" default="yes" caption="Home">

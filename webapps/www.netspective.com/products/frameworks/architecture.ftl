@@ -33,19 +33,24 @@
 
     <h1>Why you need the NEFS</h1>
     <h2>Your app is too important to experiment with right now.</h2>
-    NEFS gels with your current tools by adding on an extensive library of pre-built and well-tested e-business functionality and database components and services.
+    NEFS gels with your current tools by adding on an extensive library of pre-built and well-tested e-business
+    functionality and database components and services.
 
     <h2>You don't have time to learn the intricacies of J2EE.</h2>
-    With NEFS you can opt to use XML to code in a simpler declarative style instead of a programmatic style. As you get comfortable with J2EE you can also automatically generate your own Java.
+    With NEFS you can opt to use XML to code in a simpler declarative style instead of a programmatic style.
+    As you get comfortable with J2EE you can also automatically generate your own Java.
 
     <h2>You want a toolset that takes your app development from A to Z.</h2>
-    Automate the generation of navigation, forms, validations, static/dynamic SQL, unit testing, statistics, security, documentation and more.
+    Automate the generation of navigation, forms, validations, static/dynamic SQL, unit testing, statistics, security,
+    documentation and more.
 
     <h2>You're short on help but still need more expert development.</h2>
-    NEFS generates for you and automatically maintaines process artifacts like unit tests and documentation that would've taken weeks of back and forth development time.
+    NEFS generates for you and automatically maintaines process artifacts like unit tests and documentation that
+    would've taken weeks of back and forth development time.
 
     <h2>You want to customize without giving up consistency.</h2>
-    NEFS allows you to tweak your application and re-use those components on other projects by providing built-in metrics, an administration console, and performance statistics.
+    NEFS allows you to tweak your application and re-use those components on other projects by providing built-in
+    metrics, an administration console, and performance statistics.
 
     <h1>Key NEFS Architecture Features</h1>
     <ul class="check-list">

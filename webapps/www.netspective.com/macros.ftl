@@ -1,3 +1,5 @@
+<#include "console/content/library.ftl"/>
+
 <#macro childMenus parentPage level=2>
 
     <#list parentPage.childrenList as childPage>
