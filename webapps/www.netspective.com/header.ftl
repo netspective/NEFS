@@ -90,7 +90,7 @@ function preloadImages() {
 			<span class="disclaimer">
 				<table cellpadding="0" cellspacing="0" border="0" width="600">
 					<tbody><tr>
-						<td><a href="${vc.servletRootUrl}"><img border="0" alt="" height="48" width="171" src="${resourcesPath}/images/header/netspective.gif"></a></td>
+						<td><a href="${servletPath}/"><img border="0" alt="" height="48" width="171" src="${resourcesPath}/images/header/netspective.gif"></a></td>
 						<td>
 							<table cellpadding="0" cellspacing="0" border="0">
 								<tbody><tr>
