@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.11 2003-05-24 20:28:14 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.12 2003-07-05 19:19:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -121,7 +121,7 @@ public class ValueSources implements MetricsProducer
 
     protected Map createSourceClassesMap()
     {
-        return new HashMap();
+        return new TreeMap();
     }
 
     protected Set createSourceClassesSet()
@@ -217,6 +217,21 @@ public class ValueSources implements MetricsProducer
             log.error("Error executing method " + VSMETHODNAME_GETDOCUMENTATION + " in value source " + vsClass.getName(), e);
             return null;
         }
+    }
+
+    public Set getValueSourceAliases(String identifier)
+    {
+        Set result = new TreeSet();
+        Class cls = (Class) getValueSourceClassesMap().get(identifier);
+        if(cls != null)
+        {
+            String[] identifiers = getValueSourceIdentifiers(cls);
+            for(int i = 0; i < identifiers.length; i++)
+                if(! identifiers[i].equals(identifier))
+                    result.add(identifiers[i]);
+        }
+
+        return result;
     }
 
     public final void assertValueContextInstance(Class expected, ValueContext vc, ValueSource vs) throws UnexpectedValueContextException

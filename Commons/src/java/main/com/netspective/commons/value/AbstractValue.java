@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.5 2003-06-26 04:54:09 roque.hernandez Exp $
+ * $Id: AbstractValue.java,v 1.6 2003-07-05 19:19:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -110,7 +110,8 @@ public abstract class AbstractValue implements Value
             case VALUELISTTYPE_LIST:
                 if(value != null)
                 {
-                    Object v = ((List) value).get(0);
+                    List valueAsList = (List) value;
+                    Object v = valueAsList.size() > 0 ? valueAsList.get(0) : null;
                     return v != null ? v.toString() : null;
                 }
                 return null;
