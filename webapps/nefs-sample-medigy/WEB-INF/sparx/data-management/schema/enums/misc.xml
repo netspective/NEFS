@@ -1,17 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	
 
-	<table name="Table_Activity_Type" abbrev="TblActTy" type="Enumeration"><enumerations><enum>Unknown</enum><enum>Add</enum><enum>Update</enum><enum>Delete</enum><enum>Other</enum></enumerations></table>
+    <table name="Table_Activity_Type" abbrev="TblActTy" type="Enumeration">
+        <enumerations>
+            <enum>Unknown</enum>
+            <enum>Add</enum>
+            <enum>Update</enum>
+            <enum>Delete</enum>
+            <enum>Other</enum>
+        </enumerations>
+    </table>
 
-	<table name="Field_Change_Type" abbrev="FldChgTy" type="Enumeration"><enumerations><enum>Creation</enum><enum>Addition</enum><enum>Modification</enum><enum>Deletion</enum></enumerations></table>
+    <table name="Field_Change_Type" abbrev="FldChgTy" type="Enumeration">
+        <enumerations>
+            <enum>Creation</enum>
+            <enum>Addition</enum>
+            <enum>Modification</enum>
+            <enum>Deletion</enum>
+        </enumerations>
+    </table>
 
-	<table name="Measurement_Unit_Type" abbrev="MeasUnitTy" type="Enumeration"><enumerations><enum>Unspecified</enum><enum>milligrams</enum><enum>milliliters</enum><enum>units</enum></enumerations></table>
-	
-	<table name="Month_Of_Year" abbrev="Months" type="Enumeration"><enumerations><enum abbrev="Jan">January</enum><enum abbrev="Feb">February</enum><enum abbrev="Mar">March</enum><enum abbrev="Apr">April</enum><enum abbrev="May">May</enum><enum abbrev="Jun">June</enum><enum abbrev="Jul">July</enum><enum abbrev="Aug">August</enum><enum abbrev="Sep">September</enum><enum abbrev="Oct">October</enum><enum abbrev="Nov">November</enum><enum abbrev="Dec">December</enum></enumerations></table>
+    <table name="Measurement_Unit_Type" abbrev="MeasUnitTy" type="Enumeration">
+        <enumerations>
+            <enum>Unspecified</enum>
+            <enum>milligrams</enum>
+            <enum>milliliters</enum>
+            <enum>units</enum>
+        </enumerations>
+    </table>
 
-	<table name="Session_Status_Type" abbrev="SesStatTy" type="Enumeration"><enumerations><enum>Active</enum><enum>Inactive (User Normal Logout)</enum><enum>Inactive (User Forced Logout)</enum><enum>Inactive (System Forced Logout)</enum><enum>Inactive (Timeout)</enum></enumerations></table>
-	
-	<table name="US_State_Type" abbrev="USStates" type="Enumeration"><enumerations><enum abbrev="AL">Alabama</enum><enum abbrev="AK">Alaska</enum><enum abbrev="AZ">Arizona</enum><enum abbrev="AR">Arkansas</enum><enum abbrev="CA">California</enum><enum abbrev="CO">Colorado</enum><enum abbrev="CT">Connecticut</enum><enum abbrev="DE">Delaware</enum><enum abbrev="DC">District of Columbia</enum><enum abbrev="FL">Florida</enum><enum abbrev="GA">Georgia</enum><enum abbrev="HI">Hawaii</enum><enum abbrev="ID">Idaho</enum><enum abbrev="IL">Illinois</enum><enum abbrev="IN">Indiana</enum><enum abbrev="IA">Iowa</enum><enum abbrev="KS">Kansas</enum><enum abbrev="KY">Kentucky</enum><enum abbrev="LA">Louisiana</enum><enum abbrev="ME">Maine</enum><enum abbrev="MD">Maryland</enum><enum abbrev="MA">Massacusetts</enum><enum abbrev="MI">Michigan</enum><enum abbrev="MN">Minnesota</enum><enum abbrev="MS">Mississippi</enum><enum abbrev="MO">Missouri</enum><enum abbrev="MT">Montana</enum><enum abbrev="NE">Nebraska</enum><enum abbrev="NV">Nevada</enum><enum abbrev="NH">New Hampshire</enum><enum abbrev="NJ">New Jersey</enum><enum abbrev="NM">New Mexico</enum><enum abbrev="NY">New York</enum><enum abbrev="NC">North Carolina</enum><enum abbrev="ND">North Dakota</enum><enum abbrev="OH">Ohio</enum><enum abbrev="OK">Oklahoma</enum><enum abbrev="OR">Oregon</enum><enum abbrev="PA">Pennsylvania</enum><enum abbrev="RI">Rhode Island</enum><enum abbrev="SC">South Carolina</enum><enum abbrev="SD">South Dakota</enum><enum abbrev="TN">Tennessee</enum><enum abbrev="TX">Texas</enum><enum abbrev="UT">Utah</enum><enum abbrev="VT">Vermont</enum><enum abbrev="VA">Virginia</enum><enum abbrev="WA">Washington</enum><enum abbrev="WV">West Virginia</enum><enum abbrev="WI">Wisconsin</enum><enum abbrev="WY">Wyoming</enum><enum abbrev="A_S">American Samoa</enum><enum abbrev="F_S_M">Federated States of Micronesia</enum><enum abbrev="GUAM">Guam</enum><enum abbrev="M_I">Marshall Islands</enum><enum abbrev="N_M_I">Northern Mariana Islands</enum><enum abbrev="PALAU">Palau</enum><enum abbrev="P_R">Puerto Rico</enum><enum abbrev="V_I">Virgin Islands</enum><enum abbrev="XX">Other</enum></enumerations></table>
+    <table name="Month_Of_Year" abbrev="Months" type="Enumeration">
+        <enumerations>
+            <enum abbrev="Jan">January</enum>
+            <enum abbrev="Feb">February</enum>
+            <enum abbrev="Mar">March</enum>
+            <enum abbrev="Apr">April</enum>
+            <enum abbrev="May">May</enum>
+            <enum abbrev="Jun">June</enum>
+            <enum abbrev="Jul">July</enum>
+            <enum abbrev="Aug">August</enum>
+            <enum abbrev="Sep">September</enum>
+            <enum abbrev="Oct">October</enum>
+            <enum abbrev="Nov">November</enum>
+            <enum abbrev="Dec">December</enum>
+        </enumerations>
+    </table>
+
+    <table name="Session_Status_Type" abbrev="SesStatTy" type="Enumeration">
+        <enumerations>
+            <enum>Active</enum>
+            <enum>Inactive (User Normal Logout)</enum>
+            <enum>Inactive (User Forced Logout)</enum>
+            <enum>Inactive (System Forced Logout)</enum>
+            <enum>Inactive (Timeout)</enum>
+        </enumerations>
+    </table>
+
+    <table name="US_State_Type" abbrev="USStates" type="Enumeration">
+        <enumerations>
+            <enum abbrev="AL">Alabama</enum>
+            <enum abbrev="AK">Alaska</enum>
+            <enum abbrev="AZ">Arizona</enum>
+            <enum abbrev="AR">Arkansas</enum>
+            <enum abbrev="CA">California</enum>
+            <enum abbrev="CO">Colorado</enum>
+            <enum abbrev="CT">Connecticut</enum>
+            <enum abbrev="DE">Delaware</enum>
+            <enum abbrev="DC">District of Columbia</enum>
+            <enum abbrev="FL">Florida</enum>
+            <enum abbrev="GA">Georgia</enum>
+            <enum abbrev="HI">Hawaii</enum>
+            <enum abbrev="ID">Idaho</enum>
+            <enum abbrev="IL">Illinois</enum>
+            <enum abbrev="IN">Indiana</enum>
+            <enum abbrev="IA">Iowa</enum>
+            <enum abbrev="KS">Kansas</enum>
+            <enum abbrev="KY">Kentucky</enum>
+            <enum abbrev="LA">Louisiana</enum>
+            <enum abbrev="ME">Maine</enum>
+            <enum abbrev="MD">Maryland</enum>
+            <enum abbrev="MA">Massacusetts</enum>
+            <enum abbrev="MI">Michigan</enum>
+            <enum abbrev="MN">Minnesota</enum>
+            <enum abbrev="MS">Mississippi</enum>
+            <enum abbrev="MO">Missouri</enum>
+            <enum abbrev="MT">Montana</enum>
+            <enum abbrev="NE">Nebraska</enum>
+            <enum abbrev="NV">Nevada</enum>
+            <enum abbrev="NH">New Hampshire</enum>
+            <enum abbrev="NJ">New Jersey</enum>
+            <enum abbrev="NM">New Mexico</enum>
+            <enum abbrev="NY">New York</enum>
+            <enum abbrev="NC">North Carolina</enum>
+            <enum abbrev="ND">North Dakota</enum>
+            <enum abbrev="OH">Ohio</enum>
+            <enum abbrev="OK">Oklahoma</enum>
+            <enum abbrev="OR">Oregon</enum>
+            <enum abbrev="PA">Pennsylvania</enum>
+            <enum abbrev="RI">Rhode Island</enum>
+            <enum abbrev="SC">South Carolina</enum>
+            <enum abbrev="SD">South Dakota</enum>
+            <enum abbrev="TN">Tennessee</enum>
+            <enum abbrev="TX">Texas</enum>
+            <enum abbrev="UT">Utah</enum>
+            <enum abbrev="VT">Vermont</enum>
+            <enum abbrev="VA">Virginia</enum>
+            <enum abbrev="WA">Washington</enum>
+            <enum abbrev="WV">West Virginia</enum>
+            <enum abbrev="WI">Wisconsin</enum>
+            <enum abbrev="WY">Wyoming</enum>
+            <enum abbrev="A_S">American Samoa</enum>
+            <enum abbrev="F_S_M">Federated States of Micronesia</enum>
+            <enum abbrev="GUAM">Guam</enum>
+            <enum abbrev="M_I">Marshall Islands</enum>
+            <enum abbrev="N_M_I">Northern Mariana Islands</enum>
+            <enum abbrev="PALAU">Palau</enum>
+            <enum abbrev="P_R">Puerto Rico</enum>
+            <enum abbrev="V_I">Virgin Islands</enum>
+            <enum abbrev="XX">Other</enum>
+        </enumerations>
+    </table>
 </xdm:container>

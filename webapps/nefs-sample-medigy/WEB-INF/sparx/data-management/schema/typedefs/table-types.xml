@@ -1,126 +1,448 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	
 
-	
+    <table-type name="State" type="Enumeration">
+        <enumerations>
+            <enum id="0" abbrev="P">Past</enum>
+            <enum id="1" abbrev="C">Current</enum>
+        </enumerations>
+    </table-type>
 
-	<table-type name="State" type="Enumeration"><enumerations><enum id="0" abbrev="P">Past</enum><enum id="1" abbrev="C">Current</enum></enumerations></table-type>
+    <table name="Record_Status" abbrev="RecStatus" type="Status"/>
 
-	<table name="Record_Status" abbrev="RecStatus" type="Status"/>
+    <table name="Record_State" abbrev="RecState" type="State"/>
 
-	<table name="Record_State" abbrev="RecState" type="State"/>
+    <table-type name="Default">
+        <xdm:template-param name="recordStatusEnum" default="Record_Status"/>
+        <column name="cr_stamp" type="creation-stamp" required="dbms" descr="Date/time record was created">
+            <sql-ddl>
+                <default dbms="oracle">sysdate</default>
+            </sql-ddl>
+            <value-defn>
+                <default dbms="hsqldb">curdate()</default>
+            </value-defn>
+            <presentation>
+                <field.text hidden="yes" visible="no" size="36"/>
+            </presentation>
+        </column>
+        <column name="cr_sess_id" lookupref="Person_Session.session_id" descr="The session used to create a record.  The Person_Session table will contain all information relevant to the session including the person_id and org_id of the user to whom the session belongs">
+            <presentation>
+                <field.text hidden="yes" size="36"/>
+            </presentation>
+        </column>
+        <column name="rec_stat_id" lookupref="${params.recordStatusEnum}" required="yes" descr="The status of a row in the table">
+            AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;java-default&gt; is no longer used in Axiom.
+            Column triggers, validation, and DAL information must now be placed in Java classes.
+            <java-default/><!---->
+            <presentation>
+                <field.select hidden="yes"/>
+            </presentation>
+        </column>
+    </table-type>
 
-	<table-type name="Default"><xdm:template-param name="recordStatusEnum" default="Record_Status"/><column name="cr_stamp" type="creation-stamp" required="dbms" descr="Date/time record was created"><sql-ddl><default dbms="oracle">sysdate</default></sql-ddl><value-defn><default dbms="hsqldb">curdate()</default></value-defn><presentation><field.text hidden="yes" visible="no" size="36"/></presentation></column><column name="cr_sess_id" lookupref="Person_Session.session_id" descr="The session used to create a record.  The Person_Session table will contain all information relevant to the session including the person_id and org_id of the user to whom the session belongs"><presentation><field.text hidden="yes" size="36"/></presentation></column><column name="rec_stat_id" lookupref="${params.recordStatusEnum}" required="yes" descr="The status of a row in the table">
-                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;java-default&gt; is no longer used in Axiom.
-                Column triggers, validation, and DAL information must now be placed in Java classes.
-                <java-default/><!----><presentation><field.select hidden="yes"/></presentation></column></table-type>
+    <table-type name="Attribute" abbrev="Attr" type="Default">
+        <description>Basic information required for almost any attribute associated with a Person or Org.</description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="parent_id" parentref="${params.parentRef}" descr="Source ID for whom attribute is being defined"/>
+        <column name="attribute_id" lookupref="${params.attributeValueEnum}" required="yes" descr="The value of the attribute for this source ID">
+            <presentation>
+                <field.select caption="Attribute Type"/>
+            </presentation>
+        </column>
+    </table-type>
 
-	<table-type name="Attribute" abbrev="Attr" type="Default"><description>Basic information required for almost any attribute associated with a Person or Org.</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="parent_id" parentref="${params.parentRef}" descr="Source ID for whom attribute is being defined"/><column name="attribute_id" lookupref="${params.attributeValueEnum}" required="yes" descr="The value of the attribute for this source ID"><presentation><field.select caption="Attribute Type"/></presentation></column></table-type>
-	
-	<table-type name="Preference" abbrev="Pref" type="Default"><description>
-			This table allows a developer to store preferences for any Person record.  The general format is to store the equivalent
-			of an environment variable and its corresponding value as a string.  This can be enhanced later.
-		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique system ID for any given row"/><column name="parent_id" parentref="${params.parentRef}" descr="The unique ID of the record for which a preference is being stored."/><column name="pref_name" type="text" size="256" descr="The name of this preference variable"/><column name="pref_value" type="text" size="512" descr="The value of this preference variable"/><index name="${owner.abbrev}_unq" columns="parent_id,pref_name" unique="yes"/></table-type>
-	
-	<table-type name="Activity_Log" type="default"><description>
-			This table allows a developer to store information about any and all activity that occurs within a table.  This includes
-			everything from adding a record to updating it and deleting it and anything else that needs to be logged.
-		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique system ID for any given row"/><column name="parent_id" parentref="${params.parentRef}" descr="The unique ID of the record for which activity is stored"/><column name="table_name" type="text" size="64" descr="The table in which a record was added, updated or deleted"/><column name="activity_type_id" lookupref="Table_Activity_Type" descr="The type of activity"/><column name="activity_type" type="text" size="64" descr="The type of activity, if 'Other' chosen above"/></table-type>
+    <table-type name="Preference" abbrev="Pref" type="Default">
+        <description>
+            This table allows a developer to store preferences for any Person record.  The general format is to store the equivalent
+            of an environment variable and its corresponding value as a string.  This can be enhanced later.
+        </description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique system ID for any given row"/>
+        <column name="parent_id" parentref="${params.parentRef}" descr="The unique ID of the record for which a preference is being stored."/>
+        <column name="pref_name" type="text" size="256" descr="The name of this preference variable"/>
+        <column name="pref_value" type="text" size="512" descr="The value of this preference variable"/>
+        <index name="${owner.abbrev}_unq" columns="parent_id,pref_name" unique="yes"/>
+    </table-type>
 
-	
+    <table-type name="Activity_Log" type="default">
+        <description>
+            This table allows a developer to store information about any and all activity that occurs within a table.  This includes
+            everything from adding a record to updating it and deleting it and anything else that needs to be logged.
+        </description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique system ID for any given row"/>
+        <column name="parent_id" parentref="${params.parentRef}" descr="The unique ID of the record for which activity is stored"/>
+        <column name="table_name" type="text" size="64" descr="The table in which a record was added, updated or deleted"/>
+        <column name="activity_type_id" lookupref="Table_Activity_Type" descr="The type of activity"/>
+        <column name="activity_type" type="text" size="64" descr="The type of activity, if 'Other' chosen above"/>
+    </table-type>
 
-	<table-type name="Relationship_Map" type="Default"><description>
-			&lt;p&gt;This table type is used to store a mapping between relationships and their
-			corresponding inverse relationship.  Its primary function is to ease the
-			creation of an automated relationship field which will be able to update
-			itself _and_ the record of the other half of the relationship.&lt;/p&gt;
-			
-			&lt;p&gt;Thus, if a relationship exists between two organizations such that
-			Org A is a child of Org B, when it comes time to insert that record,
-			an intelligent relationship field will automatically determine that if
-			Org A is a child of Org B, then Org B must be a parent of Org A and
-			will create both those relationships.  Similarly, when it comes time
-			to update a relationship, it will update the corresponding relationship
-			as well.&lt;/p&gt;
-		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="rel_type_id" lookupref="${params.relationshipTypeTable}" descr="The relationship for which an inverse is declared.  This should be a lookup to a table of type Relationship_Type."/><column name="inv_rel_type_id" lookupref="${params.relationshipTypeTable}" descr="The inverse of the relationship stored in the rel_type_id field"/>
-                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;java-dal-accessor&gt; is no longer used in Axiom.
-                <java-dal-accessor name="getRelationshipMapRowsByRelTypeId" type="equality"/><!----></table-type>
 
-	<table-type name="Relationship_Type" type="Enumeration"/>
+    <table-type name="Relationship_Map" type="Default">
+        <description>
+            &lt;p&gt;This table type is used to store a mapping between relationships and their
+            corresponding inverse relationship.  Its primary function is to ease the
+            creation of an automated relationship field which will be able to update
+            itself _and_ the record of the other half of the relationship.&lt;/p&gt;
 
-	<table-type name="Relationship_Status" type="Status"/>
+            &lt;p&gt;Thus, if a relationship exists between two organizations such that
+            Org A is a child of Org B, when it comes time to insert that record,
+            an intelligent relationship field will automatically determine that if
+            Org A is a child of Org B, then Org B must be a parent of Org A and
+            will create both those relationships.  Similarly, when it comes time
+            to update a relationship, it will update the corresponding relationship
+            as well.&lt;/p&gt;
+        </description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="rel_type_id" lookupref="${params.relationshipTypeTable}" descr="The relationship for which an inverse is declared.  This should be a lookup to a table of type Relationship_Type."/>
+        <column name="inv_rel_type_id" lookupref="${params.relationshipTypeTable}" descr="The inverse of the relationship stored in the rel_type_id field"/>
+        AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;java-dal-accessor&gt; is no longer used in Axiom.
+        <java-dal-accessor name="getRelationshipMapRowsByRelTypeId" type="equality"/><!---->
+    </table-type>
 
-	<table-type name="Relationship" type="Default"><xdm:template-param name="relationshipMapTablePackage" default="app.dal.table"/><xdm:template-param name="relationshipMapRowPackage" default="app.dal.domain.row"/><xdm:template-param name="relationshipMapRowsPackage" default="app.dal.domain.rows"/><description>Basic information required for almost any relationship.</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="parent_id" parentref="${params.parentRef}" descr="Source ID for the entity for which this relationship is being defined"><presentation><field.guid32 required="yes">
-				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.guid32></presentation></column><column name="rel_entity_id" lookupref="${params.relatedEntity}" required="yes" descr="The ID of the entity this entry is related to"><presentation><field.select caption="${params.relatedEntityFieldCaption}" required="yes" choices="query:${params.relatedEntityFieldQuery}" style="popup"/></presentation></column><column name="rel_type_id" lookupref="${params.relationshipTypeEnum}" required="yes" descr="The type of relationship"><presentation><field.select caption="Relationship Type"/></presentation></column><column name="rel_type" type="text" size="64" descr="The type of relationship (if Other above)"><presentation><field.text caption="Other Relationship Type">
-				<conditional action="display" partner="rel_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-			</field.text></presentation></column><column name="rel_begin" type="date" descr="Relationship start date/time"><presentation><field.date caption="Begin Date"/></presentation></column><column name="rel_end" type="date" descr="Relationship end date/time"><presentation><field.date caption="End Date"/></presentation></column><column name="rel_descr" type="text" size="1024" descr="Any extra description required for relationship"><presentation><field.memo caption="Description"/></presentation></column>
-                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;trigger&gt; is no longer used in Axiom.
-                Table triggers must now be placed in Java classes.
-                <trigger type="dal-row-java" time="after" event="insert"/><!----></table-type>
+    <table-type name="Relationship_Type" type="Enumeration"/>
 
-	
+    <table-type name="Relationship_Status" type="Status"/>
 
-	
+    <table-type name="Relationship" type="Default">
+        <xdm:template-param name="relationshipMapTablePackage" default="app.dal.table"/>
+        <xdm:template-param name="relationshipMapRowPackage" default="app.dal.domain.row"/>
+        <xdm:template-param name="relationshipMapRowsPackage" default="app.dal.domain.rows"/>
+        <description>Basic information required for almost any relationship.</description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="parent_id" parentref="${params.parentRef}" descr="Source ID for the entity for which this relationship is being defined">
+            <presentation>
+                <field.guid32 required="yes">
+                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                </field.guid32>
+            </presentation>
+        </column>
+        <column name="rel_entity_id" lookupref="${params.relatedEntity}" required="yes" descr="The ID of the entity this entry is related to">
+            <presentation>
+                <field.select caption="${params.relatedEntityFieldCaption}" required="yes" choices="query:${params.relatedEntityFieldQuery}" style="popup"/>
+            </presentation>
+        </column>
+        <column name="rel_type_id" lookupref="${params.relationshipTypeEnum}" required="yes" descr="The type of relationship">
+            <presentation>
+                <field.select caption="Relationship Type"/>
+            </presentation>
+        </column>
+        <column name="rel_type" type="text" size="64" descr="The type of relationship (if Other above)">
+            <presentation>
+                <field.text caption="Other Relationship Type">
+                    <conditional action="display" partner="rel_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+                </field.text>
+            </presentation>
+        </column>
+        <column name="rel_begin" type="date" descr="Relationship start date/time">
+            <presentation>
+                <field.date caption="Begin Date"/>
+            </presentation>
+        </column>
+        <column name="rel_end" type="date" descr="Relationship end date/time">
+            <presentation>
+                <field.date caption="End Date"/>
+            </presentation>
+        </column>
+        <column name="rel_descr" type="text" size="1024" descr="Any extra description required for relationship">
+            <presentation>
+                <field.memo caption="Description"/>
+            </presentation>
+        </column>
+        AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;trigger&gt; is no longer used in Axiom.
+        Table triggers must now be placed in Java classes.
+        <trigger type="dal-row-java" time="after" event="insert"/><!---->
+    </table-type>
 
-	
 
-	
+    <table name="Contact_Method_Type" abbrev="CntMthTy" type="Enumeration">
+        <enumerations>
+            <enum>Telephone: Assistant</enum>
+            <enum>Telephone: Business</enum>
+            <enum>Telephone: Callback</enum>
+            <enum>Telephone: Car</enum>
+            <enum>Telephone: Company</enum>
+            <enum>Telephone: Home</enum>
+            <enum>Telephone: Home 2</enum>
+            <enum>Telephone: ISDN</enum>
+            <enum>Telephone: Mobile</enum>
+            <enum>Telephone: Other</enum>
+            <enum>Telephone: Work</enum>
+            <enum>Fax: Business</enum>
+            <enum>Fax: Home</enum>
+            <enum>Fax: Other</enum>
+            <enum>Pager</enum>
+            <enum>Radio</enum>
+            <enum>Telex</enum>
+            <enum>TTY/TDD</enum>
+            <enum>Email: Business</enum>
+            <enum>Email: Home</enum>
+            <enum>Email: Other</enum>
+            <enum>Email: Primary</enum>
+            <enum>URL</enum>
+        </enumerations>
+    </table>
 
-	
+    <table name="Contact_Address_Type" abbrev="CntAdrTy" type="Enumeration">
+        <enumerations>
+            <enum>Primary</enum>
+            <enum>Secondary</enum>
+            <enum>Alternate</enum>
+            <enum>Billing</enum>
+            <enum>Other</enum>
+        </enumerations>
+    </table>
 
-	
+    <table-type name="Physical_Address" type="Default">
+        <description>An address of a member of a certain entity, such as a person or org.</description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/>
+        <column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The owner of the address">
+            <presentation>
+                <field.guid32 required="yes">
+                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                </field.guid32>
+            </presentation>
+        </column>
+        <column name="address_name" indexed="yes" type="text" size="128" descr="The address name">
+            <presentation>
+                <field.text caption="Address Label" size="32"/>
+            </presentation>
+        </column>
+        <column name="mailing" type="boolean" descr="True if this is the mailing address">
+            <presentation>
+                <field.boolean caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/>
+            </presentation>
+        </column>
+        <column name="address_type_id" lookupref="Contact_Address_Type" descr="The type of address this is - allows storage of multiple addresses for the same party">
+            <presentation>
+                <field.select caption="Address Type"/>
+            </presentation>
+        </column>
+        <column name="line1" type="text" size="256" descr="The first address line">
+            <presentation>
+                <field.text caption="Line 1" required="yes" size="64"/>
+            </presentation>
+        </column>
+        <column name="line2" type="text" size="256" descr="The second address line">
+            <presentation>
+                <field.text caption="Line 2" size="64"/>
+            </presentation>
+        </column>
+        <column name="city" type="text" required="yes" size="128" descr="The city of the state">
+            <presentation>
+                <field.text caption="City" size="16"/>
+            </presentation>
+        </column>
+        <column name="county" type="text" size="128" descr="The county of the state">
+            <presentation>
+                <field.text caption="County" size="16"/>
+            </presentation>
+        </column>
+        <column name="state_id" lookupref="US_State_Type" descr="The state of the union">
+            <presentation>
+                <field.select caption="State"/>
+            </presentation>
+        </column>
+        <column name="state" type="text" size="128" descr="The state, if not in the union">
+            <presentation>
+                <field.text caption="Other State" size="16">
+                    <conditional action="display" partner="state_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+                </field.text>
+            </presentation>
+        </column>
+        <column name="zip" type="text" size="128" descr="The postal code (+4 format)">
+            <presentation>
+                <field.zip caption="Zip Code"/>
+            </presentation>
+        </column>
+        <column name="country" type="text" size="128" descr="The country of the address">
+            <presentation>
+                <field.text caption="Country" size="16"/>
+            </presentation>
+        </column>
+        <index name="${owner.abbrev}_unq" columns="parent_id,address_name" unique="yes"/>
+    </table-type>
 
-	<table name="Contact_Method_Type" abbrev="CntMthTy" type="Enumeration"><enumerations><enum>Telephone: Assistant</enum><enum>Telephone: Business</enum><enum>Telephone: Callback</enum><enum>Telephone: Car</enum><enum>Telephone: Company</enum><enum>Telephone: Home</enum><enum>Telephone: Home 2</enum><enum>Telephone: ISDN</enum><enum>Telephone: Mobile</enum><enum>Telephone: Other</enum><enum>Telephone: Work</enum><enum>Fax: Business</enum><enum>Fax: Home</enum><enum>Fax: Other</enum><enum>Pager</enum><enum>Radio</enum><enum>Telex</enum><enum>TTY/TDD</enum><enum>Email: Business</enum><enum>Email: Home</enum><enum>Email: Other</enum><enum>Email: Primary</enum><enum>URL</enum></enumerations></table>
+    <table name="Contact_Telephone_Type" abbrev="CntTelTy" type="Enumeration">
+        <enumerations>
+            <enum>Assistant</enum>
+            <enum>Business</enum>
+            <enum>Business 2</enum>
+            <enum>Business Fax</enum>
+            <enum>Callback</enum>
+            <enum>Car</enum>
+            <enum>Company</enum>
+            <enum>Home</enum>
+            <enum>Home 2</enum>
+            <enum>Home Fax</enum>
+            <enum>ISDN</enum>
+            <enum>Mobile</enum>
+            <enum>Other Fax</enum>
+            <enum>Pager</enum>
+            <enum>Primary</enum>
+            <enum>Radio</enum>
+            <enum>Telex</enum>
+            <enum>TTY/TDD</enum>
+            <enum>Other</enum>
+        </enumerations>
+    </table>
 
-	<table name="Contact_Address_Type" abbrev="CntAdrTy" type="Enumeration"><enumerations><enum>Primary</enum><enum>Secondary</enum><enum>Alternate</enum><enum>Billing</enum><enum>Other</enum></enumerations></table>
+    <table name="Contact_Email_Type" abbrev="CntEMTy" type="Enumeration">
+        <enumerations>
+            <enum>Business</enum>
+            <enum>Home</enum>
+            <enum>Other</enum>
+            <enum>Primary</enum>
+        </enumerations>
+    </table>
 
-	<table-type name="Physical_Address" type="Default"><description>An address of a member of a certain entity, such as a person or org.</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/><column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The owner of the address"><presentation><field.guid32 required="yes">
-				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.guid32></presentation></column><column name="address_name" indexed="yes" type="text" size="128" descr="The address name"><presentation><field.text caption="Address Label" size="32"/></presentation></column><column name="mailing" type="boolean" descr="True if this is the mailing address"><presentation><field.boolean caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/></presentation></column><column name="address_type_id" lookupref="Contact_Address_Type" descr="The type of address this is - allows storage of multiple addresses for the same party"><presentation><field.select caption="Address Type"/></presentation></column><column name="line1" type="text" size="256" descr="The first address line"><presentation><field.text caption="Line 1" required="yes" size="64"/></presentation></column><column name="line2" type="text" size="256" descr="The second address line"><presentation><field.text caption="Line 2" size="64"/></presentation></column><column name="city" type="text" required="yes" size="128" descr="The city of the state"><presentation><field.text caption="City" size="16"/></presentation></column><column name="county" type="text" size="128" descr="The county of the state"><presentation><field.text caption="County" size="16"/></presentation></column><column name="state_id" lookupref="US_State_Type" descr="The state of the union"><presentation><field.select caption="State"/></presentation></column><column name="state" type="text" size="128" descr="The state, if not in the union"><presentation><field.text caption="Other State" size="16">
-				<conditional action="display" partner="state_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-			</field.text></presentation></column><column name="zip" type="text" size="128" descr="The postal code (+4 format)"><presentation><field.zip caption="Zip Code"/></presentation></column><column name="country" type="text" size="128" descr="The country of the address"><presentation><field.text caption="Country" size="16"/></presentation></column><index name="${owner.abbrev}_unq" columns="parent_id,address_name" unique="yes"/></table-type>
+    <table-type name="Contact_Method" type="Default">
+        <description>
+            A contact method of a member of a certain entity, such as a person or org. Phone numbers may be stored
+            as simple text (in method_value) or as simple text and parsed values (in phone_*). If parsed values are
+            stored, the complete phone number should still be stored in method_value for performance reasons.
+        </description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/>
+        <column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The owner of the contact method">
+            <presentation>
+                <field.guid32 hidden="yes" required="yes">
+                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                </field.guid32>
+            </presentation>
+        </column>
+        <column name="method_type" indexed="yes" lookupref="Contact_Method_Type" descr="The contact method type">
+            <presentation>
+                <field.select caption="Contact Type"/>
+            </presentation>
+        </column>
+        <column name="method_name" indexed="yes" type="text" size="128" descr="The contact method name if other is chosen as method type">
+            <presentation>
+                <field.text caption="Other Contact Type">
+                    <conditional action="display" partner="method_type" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+                </field.text>
+            </presentation>
+        </column>
+        <column name="method_value" indexed="yes" type="text" size="255" descr="The contact method value (full telephone, e-mail address, URL, etc.)">
+            <presentation>
+                <field.text caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+            </presentation>
+        </column>
+        <column name="phone_cc" indexed="yes" type="text" size="16" descr="The country code if this is a separated phone number">
+            <presentation>
+                <field.text caption="Country Code"/>
+            </presentation>
+        </column>
+        <column name="phone_ac" indexed="yes" type="integer" descr="The area code if this is a separated phone number">
+            <presentation>
+                <field.text caption="Area Code"/>
+            </presentation>
+        </column>
+        <column name="phone_prefix" indexed="yes" type="integer" descr="The prefix code if this is a separated phone number">
+            <presentation>
+                <field.text caption="Prefix"/>
+            </presentation>
+        </column>
+        <column name="phone_suffix" indexed="yes" type="integer" descr="The suffix code if this is a separated phone number">
+            <presentation>
+                <field.text caption="Suffix"/>
+            </presentation>
+        </column>
+        <index name="${owner.abbrev}_unq" columns="parent_id,method_value" unique="yes"/>
+    </table-type>
 
-	<table name="Contact_Telephone_Type" abbrev="CntTelTy" type="Enumeration"><enumerations><enum>Assistant</enum><enum>Business</enum><enum>Business 2</enum><enum>Business Fax</enum><enum>Callback</enum><enum>Car</enum><enum>Company</enum><enum>Home</enum><enum>Home 2</enum><enum>Home Fax</enum><enum>ISDN</enum><enum>Mobile</enum><enum>Other Fax</enum><enum>Pager</enum><enum>Primary</enum><enum>Radio</enum><enum>Telex</enum><enum>TTY/TDD</enum><enum>Other</enum></enumerations></table>
 
-	<table name="Contact_Email_Type" abbrev="CntEMTy" type="Enumeration"><enumerations><enum>Business</enum><enum>Home</enum><enum>Other</enum><enum>Primary</enum></enumerations></table>
+    <table-type name="Event_Status" type="Status"/>
 
-	<table-type name="Contact_Method" type="Default"><description>
-			A contact method of a member of a certain entity, such as a person or org. Phone numbers may be stored
-			as simple text (in method_value) or as simple text and parsed values (in phone_*). If parsed values are
-			stored, the complete phone number should still be stored in method_value for performance reasons.
-		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/><column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The owner of the contact method"><presentation><field.guid32 hidden="yes" required="yes">
-				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.guid32></presentation></column><column name="method_type" indexed="yes" lookupref="Contact_Method_Type" descr="The contact method type"><presentation><field.select caption="Contact Type"/></presentation></column><column name="method_name" indexed="yes" type="text" size="128" descr="The contact method name if other is chosen as method type"><presentation><field.text caption="Other Contact Type">
-				<conditional action="display" partner="method_type" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-			</field.text></presentation></column><column name="method_value" indexed="yes" type="text" size="255" descr="The contact method value (full telephone, e-mail address, URL, etc.)"><presentation><field.text caption="Contact Information" hint="Enter the contact number, email address or other information here."/></presentation></column><column name="phone_cc" indexed="yes" type="text" size="16" descr="The country code if this is a separated phone number"><presentation><field.text caption="Country Code"/></presentation></column><column name="phone_ac" indexed="yes" type="integer" descr="The area code if this is a separated phone number"><presentation><field.text caption="Area Code"/></presentation></column><column name="phone_prefix" indexed="yes" type="integer" descr="The prefix code if this is a separated phone number"><presentation><field.text caption="Prefix"/></presentation></column><column name="phone_suffix" indexed="yes" type="integer" descr="The suffix code if this is a separated phone number"><presentation><field.text caption="Suffix"/></presentation></column><index name="${owner.abbrev}_unq" columns="parent_id,method_value" unique="yes"/></table-type>
+    <table-type name="Event_Type" type="Enumeration"/>
 
-	
+    <table-type name="Event" type="Default">
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="parent_id" parentref="${params.parentRef}" descr="Source parent ID">
+            <presentation>
+                <field.guid32 hidden="yes" required="yes"/>
+            </presentation>
+        </column>
+        <column name="parent_event_id" selfref="${table.getAttribute(&quot;name&quot;)}.system_id" descr="If this event was generated by another event">
+            <presentation>
+                <field.guid32 required="yes">
+                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                </field.guid32>
+            </presentation>
+        </column>
+        <column name="event_type" lookupref="${params.eventTypeEnum}" descr="The type of event">
+            <presentation>
+                <field.select caption="Event Type"/>
+            </presentation>
+        </column>
+        <column name="event_name" type="text" size="128" descr="The name of the event">
+            <presentation>
+                <field.text caption="Other Event Type"/>
+            </presentation>
+        </column>
+        <column name="event_descr" type="text" size="4000" descr="The description of the event">
+            <presentation>
+                <field.memo caption="Description"/>
+            </presentation>
+        </column>
+        <column name="event_begin" type="date" descr="The start date/time of the event">
+            <presentation>
+                <field.date caption="Event Begin Date"/>
+            </presentation>
+        </column>
+        <column name="event_end" type="date" descr="The end date/time of the event">
+            <presentation>
+                <field.date caption="Event End Date"/>
+            </presentation>
+        </column>
+    </table-type>
 
-	<table-type name="Event_Status" type="Status"/>
+    <table-type name="Flag_Type" type="Enumeration"/>
 
-	<table-type name="Event_Type" type="Enumeration"/>
+    <table-type name="Flag_Status" type="Status"/>
 
-	<table-type name="Event" type="Default"><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="parent_id" parentref="${params.parentRef}" descr="Source parent ID"><presentation><field.guid32 hidden="yes" required="yes"/></presentation></column><column name="parent_event_id" selfref="${table.getAttribute(&quot;name&quot;)}.system_id" descr="If this event was generated by another event"><presentation><field.guid32 required="yes">
-				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.guid32></presentation></column><column name="event_type" lookupref="${params.eventTypeEnum}" descr="The type of event"><presentation><field.select caption="Event Type"/></presentation></column><column name="event_name" type="text" size="128" descr="The name of the event"><presentation><field.text caption="Other Event Type"/></presentation></column><column name="event_descr" type="text" size="4000" descr="The description of the event"><presentation><field.memo caption="Description"/></presentation></column><column name="event_begin" type="date" descr="The start date/time of the event"><presentation><field.date caption="Event Begin Date"/></presentation></column><column name="event_end" type="date" descr="The end date/time of the event"><presentation><field.date caption="Event End Date"/></presentation></column></table-type>
+    <table-type name="Flag" type="Default">
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="parent_id" parentref="${params.parentRef}" descr="Source ID">
+            <presentation>
+                <field.guid32 required="yes">
+                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                </field.guid32>
+            </presentation>
+        </column>
+        <column name="flag_id" lookupref="${params.flagTypeEnum}" descr="The flag type">
+            <presentation>
+                <field.select caption="Flag Type"/>
+            </presentation>
+        </column>
+    </table-type>
 
-	<table-type name="Flag_Type" type="Enumeration"/>
 
-	<table-type name="Flag_Status" type="Status"/>
+    <table-type name="Note_Type" type="Enumeration"/>
 
-	<table-type name="Flag" type="Default"><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="parent_id" parentref="${params.parentRef}" descr="Source ID"><presentation><field.guid32 required="yes">
-				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.guid32></presentation></column><column name="flag_id" lookupref="${params.flagTypeEnum}" descr="The flag type"><presentation><field.select caption="Flag Type"/></presentation></column></table-type>
-
-	
-
-	<table-type name="Note_Type" type="Enumeration"/>
-
-	<table-type name="Note" type="Default"><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="parent_id" parentref="${params.parentRef}" descr="Source ID"><presentation><field.guid32 required="yes">
-				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.guid32></presentation></column><column name="note_type_id" lookupref="${params.noteTypeEnum}" descr="The note type"><presentation><field.select caption="Note Type"/></presentation></column><column name="note_type" type="text" size="32" descr="The note type, if 'Other' above"><presentation><field.text caption="Other Note Type" size="16"/></presentation></column><column name="notes" type="text" size="1024" descr="The actual notes"><presentation><field.memo caption="Note Details"/></presentation></column></table-type>
+    <table-type name="Note" type="Default">
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="parent_id" parentref="${params.parentRef}" descr="Source ID">
+            <presentation>
+                <field.guid32 required="yes">
+                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                </field.guid32>
+            </presentation>
+        </column>
+        <column name="note_type_id" lookupref="${params.noteTypeEnum}" descr="The note type">
+            <presentation>
+                <field.select caption="Note Type"/>
+            </presentation>
+        </column>
+        <column name="note_type" type="text" size="32" descr="The note type, if 'Other' above">
+            <presentation>
+                <field.text caption="Other Note Type" size="16"/>
+            </presentation>
+        </column>
+        <column name="notes" type="text" size="1024" descr="The actual notes">
+            <presentation>
+                <field.memo caption="Note Details"/>
+            </presentation>
+        </column>
+    </table-type>
 
 
 </xdm:container>
