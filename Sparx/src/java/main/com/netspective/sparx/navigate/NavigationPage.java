@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.26 2003-08-05 17:11:44 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.27 2003-08-05 17:41:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -66,7 +66,6 @@ import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Command;
-import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
@@ -92,22 +91,24 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final Log log = LogFactory.getLog(NavigationPage.class);
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 7];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 9];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
-    public static final String PARAMNAME_POPUP = "popup";
-    public static final String PARAMNAME_PRINT = "print";
+    public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
 
     static
     {
         for(int i = 0; i < NavigationPath.FLAG_DEFNS.length; i++)
             FLAG_DEFNS[i] = NavigationPath.FLAG_DEFNS[i];
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "REJECT_FOCUS", Flags.REJECT_FOCUS);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD_PARAM", Flags.ALLOW_PAGE_CMD_PARAM);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 5] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_RETAIN_PARAMS", Flags.INHERIT_RETAIN_PARAMS);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 6] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_ASSIGN_STATE_PARAMS", Flags.INHERIT_ASSIGN_STATE_PARAMS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD_PARAM", Flags.ALLOW_PAGE_CMD_PARAM);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_RETAIN_PARAMS", Flags.INHERIT_RETAIN_PARAMS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 5] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_ASSIGN_STATE_PARAMS", Flags.INHERIT_ASSIGN_STATE_PARAMS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 6] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "POPUP", Flags.IS_POPUP_MODE);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 7] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "PRINT", Flags.IS_PRINT_MODE);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 8] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SERVICE", Flags.IS_SERVICE_MODE);
     }
 
     protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
@@ -131,7 +132,10 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         public static final int HAS_CONDITIONAL_ACTIONS = ALLOW_PAGE_CMD_PARAM * 2;
         public static final int INHERIT_RETAIN_PARAMS = HAS_CONDITIONAL_ACTIONS * 2;
         public static final int INHERIT_ASSIGN_STATE_PARAMS = INHERIT_RETAIN_PARAMS * 2;
-        public static final int START_CUSTOM = INHERIT_ASSIGN_STATE_PARAMS * 2;
+        public static final int IS_POPUP_MODE = INHERIT_ASSIGN_STATE_PARAMS * 2;
+        public static final int IS_PRINT_MODE = IS_POPUP_MODE * 2;
+        public static final int IS_SERVICE_MODE = IS_PRINT_MODE * 2;
+        public static final int START_CUSTOM = IS_SERVICE_MODE * 2;
 
         public Flags()
         {
@@ -165,8 +169,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     private TemplateConsumerDefn templateConsumer;
     private NavigationPageBodyType bodyType = new NavigationPageBodyType(NavigationPageBodyType.NONE);
-    private String popupModeParamName = PARAMNAME_POPUP;
-    private String printModeParamName = PARAMNAME_PRINT;
+    private String pageFlagsParamName = PARAMNAME_PAGE_FLAGS;
     private ValueSource caption;
     private ValueSource title;
     private ValueSource heading;
@@ -302,19 +305,9 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     public void makeStateChanges(NavigationContext nc)
     {
-        String popupParamValue = nc.getRequest().getParameter(getPopupModeParamName());
-        if(popupParamValue != null)
-        {
-            boolean isPopup = TextUtils.toBoolean(popupParamValue);
-            nc.setPopupMode(isPopup);
-        }
-
-        String printParamValue = nc.getRequest().getParameter(getPrintModeParamName());
-        if(printParamValue != null)
-        {
-            boolean isPrint = TextUtils.toBoolean(printParamValue);
-            nc.setPrintMode(isPrint);
-        }
+        String pageFlagsParamValue = nc.getRequest().getParameter(getPageFlagsParamName());
+        if(pageFlagsParamValue != null)
+            nc.getActiveState().getFlags().setValue(pageFlagsParamValue, false);
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/
@@ -580,24 +573,14 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         getBodyType().setValue(NavigationPageBodyType.COMMAND);
     }
 
-    public String getPopupModeParamName()
+    public String getPageFlagsParamName()
     {
-        return popupModeParamName;
+        return pageFlagsParamName;
     }
 
-    public void setPopupModeParamName(String popupModeParamName)
+    public void setPageFlagsParamName(String pageFlagsParamName)
     {
-        this.popupModeParamName = popupModeParamName;
-    }
-
-    public String getPrintModeParamName()
-    {
-        return printModeParamName;
-    }
-
-    public void setPrintModeParamName(String printModeParamName)
-    {
-        this.printModeParamName = printModeParamName;
+        this.pageFlagsParamName = pageFlagsParamName;
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/

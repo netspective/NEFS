@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.17 2003-08-05 17:11:44 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.18 2003-08-05 17:41:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -455,7 +455,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
      */
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException
     {
-        if (nc.isPopupMode())
+        if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))
             return;
 
         renderPageMasthead(writer, nc);
@@ -559,7 +559,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
      */
     public void renderPageFooter(Writer writer, NavigationContext nc) throws IOException
     {
-        if (nc.isPopupMode())
+        if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))
             return;
 
         writer.write("            </td>");

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.13 2003-08-05 17:11:44 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.14 2003-08-05 17:41:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -76,8 +76,6 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     private String pageTitle;
     private String pageHeading;
     private String pageSubheading;
-    private boolean popupMode;
-    private boolean isPrintMode;
     private Map navigationStates = new HashMap();
     private int maxLevel = 0;
 
@@ -225,25 +223,4 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     {
         return this;
     }
-
-    public boolean isPopupMode()
-    {
-        return popupMode;
-    }
-
-    public void setPopupMode(boolean popup)
-    {
-        this.popupMode = popup;
-    }
-
-    public boolean isPrintMode()
-    {
-        return isPrintMode;
-    }
-
-    public void setPrintMode(boolean print)
-    {
-        this.isPrintMode = print;
-    }
-
 }
