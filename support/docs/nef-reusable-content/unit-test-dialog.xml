@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section>
+  <title>Dialogs</title>
+
+  <para>Each dialog may be unit tested inside Console to ensure that user
+  requirements are being met and allowing analysts or end users to start
+  reviewing a running application quickly and without programmers writing test
+  harnesses. As soon as the XML is completed, the test harness is
+  automatically created and may be executed by anyone with access to
+  Console.</para>
+
+  <para><figure>
+      <title>Automatically Generated Unit Test for a Dialog</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="./resources/images/screen-console-dialog-unit-test-small.gif" />
+        </imageobject>
+      </mediaobject>
+    </figure></para>
+</section>

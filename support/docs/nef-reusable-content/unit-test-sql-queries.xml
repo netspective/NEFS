@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section>
+  <title>SQL Queries</title>
+
+  <para>Each SQL statement may be unit tested inside Console to ensure that
+  user requirements are being met. As soon as the XML is completed, the test
+  harness is automatically created and may be executed by anyone with access
+  to Console. The statement, along with any reports/views can be tested
+  without creating any additional code.</para>
+
+  <para></para>
+
+  <table frame="none">
+    <title>Automatically Generate Unit Test Harness for SQL Queries</title>
+
+    <tgroup cols="2">
+      <tbody>
+        <row>
+          <entry><mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-unittest-sql-small.gif" />
+              </imageobject>
+            </mediaobject></entry>
+
+          <entry><mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-ut-result-sql-small.gif" />
+              </imageobject>
+            </mediaobject></entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+</section>
