@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultsValueSource.java,v 1.5 2003-05-30 23:06:54 shahid.shah Exp $
+ * $Id: QueryResultsValueSource.java,v 1.6 2003-06-20 05:13:46 aye.thu Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -476,7 +476,7 @@ public class QueryResultsValueSource extends AbstractValueSource
         result.append(", query-id: " + queryId);
         result.append(", result-style: " + resultStyle + " ("+ RESULT_STYLE_NAMES[resultStyle] +")");
         result.append(", cache-timeout: " + cacheTimeoutMillis);
-        result.append(", params: " + params.length);
+        result.append(", params: " + (params != null ? Integer.toString(params.length) : "null"));
         return result.toString();
     }
 }
