@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.22 2003-07-11 20:53:16 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.23 2003-07-20 19:44:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -268,7 +268,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         {
             String envFlagsText = context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS);
             if(envFlagsText == null)
-                throw new RuntimeException("No environment flags specified. Check '"+ INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS +"' servlet context init parameter.");
+                envFlagsText = "DEVELOPMENT | FRAMEWORK_DEVELOPMENT";
             try
             {
                 contextEnvFlags = (RuntimeEnvironmentFlags) discoverClass.newInstance(RuntimeEnvironmentFlags.class, RuntimeEnvironmentFlags.class.getName());
