@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.15 2003-09-06 16:43:32 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.16 2003-10-26 14:27:32 aye.thu Exp $
  */
 
 package com.netspective.axiom;
@@ -52,11 +52,14 @@ import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.axiom.sql.Queries;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.Query;
+import com.netspective.axiom.sql.QueryResultSet;
+import com.netspective.axiom.sql.ResultSetUtils;
 import com.netspective.axiom.sql.collection.QueriesCollection;
 import com.netspective.axiom.sql.collection.QueriesPackage;
 import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
+import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.MetricsProducer;
 import com.netspective.commons.product.NetspectiveComponent;
@@ -67,11 +70,13 @@ import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.naming.NamingException;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.sql.SQLException;
 
 public class SqlManager extends DefaultXdmComponentItems implements MetricsProducer
 {
@@ -147,6 +152,35 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
         }
         return query;
     }
+
+    public Object[][] executeQueryAndGetMatrix(ConnectionContext cc, String queryName, Object[] bindParams, boolean closeConnection) throws NamingException, SQLException
+    {
+        Object[][] ret = null;
+        Query query = getQuery(queryName);
+        if (query != null)
+        {
+            QueryResultSet queryResultSet = query.execute(cc, bindParams, false);
+            ret = ResultSetUtils.getInstance().getResultSetRowsAsMatrix(queryResultSet.getResultSet());
+            queryResultSet.close(closeConnection);
+            cc.close();
+        }
+        return ret;
+    }
+
+    public Map[] executeQueryAndGetMapArray(ConnectionContext cc, String queryName, Object[] bindParams, boolean closeConnection) throws NamingException, SQLException
+    {
+        Map[] ret = null;
+        Query query = getQuery(queryName);
+        if (query != null)
+        {
+            QueryResultSet queryResultSet = query.execute(cc, bindParams, false);
+            ret = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(queryResultSet.getResultSet());
+            queryResultSet.close(closeConnection);
+            cc.close();
+        }
+        return ret;
+    }
+
 
     public Query createQuery()
     {
