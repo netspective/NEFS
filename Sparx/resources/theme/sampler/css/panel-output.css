@@ -1,6 +1,6 @@
 .panel-output       { background-color: white }
 
-.panel-output-frame-heading   { color: #000; font-weight: bold; font-size: 10px; font-family: Tahoma; background-image: url(../images/panel/output/frame-heading.gif); text-transform: uppercase; padding-top: 2px }
+.panel-output-frame-heading   { color: #000; font-weight: bold; font-size: 10px; font-family: Tahoma, Arial; background-image: url(../images/panel/output/frame-heading.gif); text-transform: uppercase; padding-top: 2px }
 
 .panel-output-frame-heading-action-left-blank   { background: url(../images/panel/output/frame-heading-action-left.gif) no-repeat left top; width: 17px; height: 19px }
 .panel-output-frame-heading-action-right-blank   { background: url(../images/panel/output/frame-heading-action-right.gif) no-repeat right top; height: 19px }
@@ -57,7 +57,7 @@ table.panel-layout-table div  { padding: 3px; width: auto }
 
 .panel-editor       { background-color: white }
 
-.panel-editor-frame-heading   { color: #000; font-weight: bold; font-size: 10px; font-family: Tahoma; background-image: url(../images/panel/output/frame-heading.gif); text-transform: uppercase; padding-top: 2px }
+.panel-editor-frame-heading   { color: #000; font-weight: bold; font-size: 10px; font-family: Tahoma, Arial; background-image: url(../images/panel/output/frame-heading.gif); text-transform: uppercase; padding-top: 2px }
 
 .panel-editor-frame-heading-action-left-blank   { background: url(../images/panel/output/frame-heading-action-left.gif) no-repeat left top; width: 17px; height: 19px }
 .panel-editor-frame-heading-action-right-blank   { background: url(../images/panel/output/frame-heading-action-right.gif) no-repeat right top; height: 19px }
@@ -71,11 +71,11 @@ table.panel-layout-table div  { padding: 3px; width: auto }
 .panel-editor-frame-end-cap { background: url(../images/panel/output/end-cap.gif) no-repeat left top; width: 2px; height: 19px }
 .panel-editor-frame-begin-cap { background: url(../images/panel/output/begin-cap.gif) no-repeat left top; width: 2px; height: 19px }
 
-.panel-editor-frame-action         { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
-.panel-editor-frame-action:link { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
-.panel-editor-frame-action:visited { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
-.panel-editor-frame-action:hover { color: black; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
-.panel-editor-frame-action-box   { background-image: url(../images/panel/output/frame-action-mid.gif); text-transform: uppercase; padding-top: 1px }
+.panel-editor-frame-action         { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma, Arial; text-decoration: none; text-transform: uppercase }
+.panel-editor-frame-action:link { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma, Arial; text-decoration: none; text-transform: uppercase }
+.panel-editor-frame-action:visited { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma, Arial; text-decoration: none; text-transform: uppercase }
+.panel-editor-frame-action:hover { color: black; font-weight: normal; font-size: 9px; font-family: Tahoma, Arial; text-decoration: none; text-transform: uppercase }
+.panel-editor-frame-action-box   { background-image: url(../images/panel/output/mid.gif);text-transform: uppercase; padding-top: 0px; vertical-align: top; min-width: 100px; text-align: right;}
 
 /* styles for the banner of a panel */
 td.panel-editor-banner           { color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: right; padding-top: 4px; padding-right: 4px; border-right: 1px solid #696969; border-left: 1px solid #696969 }
@@ -105,5 +105,5 @@ td.panel-editor-banner a:visited { color: #696969; font-size: 9px; font-family: 
 
 
 table.panel-editor-table { width: 100%; padding: 3px }
-table.panel-editor-table td.panel-editor-dialog    { width: auto; padding: 0px 5px 0px 5px}
-table.panel-editor-table td.panel-editor-report    { width: auto; padding: 0px 5px 0px 5px}
+table.panel-editor-table td.panel-editor-dialog    { text-align: left; padding: 0px 5px 0px 10px}
+.panel-editor-report    { text-align: left;padding: 0px 5px 0px 10px}
