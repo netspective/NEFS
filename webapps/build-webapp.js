@@ -42,7 +42,7 @@ function addPathToClassPath(classPath, path)
 
 var PATH_DELIM = ";"
 var shell = WScript.CreateObject("WScript.Shell");
-var env   = shell.Environment;
+var env   = shell.Environment("PROCESS");  //  Make sure to get ALL the environment variables; system, user, and volatile.  DJB 2003-Dec-05
 var fso   = new ActiveXObject("Scripting.FileSystemObject");
 var args  = WScript.arguments;
 
