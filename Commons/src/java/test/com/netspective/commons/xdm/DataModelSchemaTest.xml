@@ -11,6 +11,15 @@
          in the attribute above -->
     <root-attr-1>root-attr-1-text</root-attr-1>
 
+	<test-boolean>yes</test-boolean>
+	<path-separator-char>:</path-separator-char>
+	<test-byte>96</test-byte>
+	<test-short>128</test-short>
+    <test-long>1234567890</test-long>
+	<test-float>3.1415926535</test-float>
+	<test-double>3.1415926535897932384626433</test-double>
+	<test-file>DataModelSchemaTest.xml</test-file>
+
     <xdm:include file="DataModelSchemaTest-include.xml"/>
 
     <nested1 text="TestText1" integer="1" boolean="yes">

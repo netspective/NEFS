@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: DataModelSchemaTest.java,v 1.3 2003-03-29 13:00:26 shahid.shah Exp $
+ * $Id: DataModelSchemaTest.java,v 1.4 2003-03-29 19:14:00 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.xdm;
 
 import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.InvocationTargetException;
@@ -112,6 +113,16 @@ public class DataModelSchemaTest extends TestCase
         private boolean encounteredCustom1;
         private boolean finalizedConstruction;
 
+		private boolean testBoolean;
+	    private char pathSeparatorChar;
+	    private byte testByte;
+	    private short testShort;
+	    private long testLong;
+	    private float testFloat;
+	    private double testDouble;
+	    private Class testClass;
+	    private File testFile;
+
         public RootTest()
         {
         }
@@ -146,6 +157,78 @@ public class DataModelSchemaTest extends TestCase
         {
             this.attr1 = attr1;
         }
+
+	    public boolean getTestBoolean () {
+		    return testBoolean;
+	    }
+
+	    public void setTestBoolean (boolean testBoolean) {
+		    this.testBoolean = testBoolean;
+	    }
+
+	    public char getPathSeparatorChar () {
+		    return pathSeparatorChar;
+	    }
+
+	    public void setPathSeparatorChar (char pathSeparatorChar) {
+		    this.pathSeparatorChar = pathSeparatorChar;
+	    }
+
+	    public byte getTestByte () {
+		    return testByte;
+	    }
+
+	    public void setTestByte (byte testByte) {
+		    this.testByte = testByte;
+	    }
+
+	    public short getTestShort () {
+		    return testShort;
+	    }
+
+	    public void setTestShort (short testShort) {
+		    this.testShort = testShort;
+	    }
+
+	    public long getTestLong () {
+		    return testLong;
+	    }
+
+	    public void setTestLong (long testLong) {
+		    this.testLong = testLong;
+	    }
+
+	    public float getTestFloat () {
+		    return testFloat;
+	    }
+
+	    public void setTestFloat (float testFloat) {
+		    this.testFloat = testFloat;
+	    }
+
+	    public double getTestDouble () {
+		    return testDouble;
+	    }
+
+	    public void setTestDouble (double testDouble) {
+		    this.testDouble = testDouble;
+	    }
+
+	    public Class getTestClass () {
+		    return testClass;
+	    }
+
+	    public void setTestClass (Class testClass) {
+		    this.testClass = testClass;
+	    }
+
+	    public File getTestFile () {
+		    return testFile;
+	    }
+
+	    public void setTestFile (File testFile) {
+		    this.testFile = testFile;
+	    }
 
         public int getInteger()
         {
@@ -337,6 +420,20 @@ public class DataModelSchemaTest extends TestCase
         assertNotNull(dmt.getInputSource());
 
         assertEquals("root-attr-1-text", dmt.getRoot().getRootAttr1());
+
+	    assertTrue(dmt.getRoot().getTestBoolean());
+	    assertEquals(':', dmt.getRoot().getPathSeparatorChar());
+	    assertEquals(96, dmt.getRoot().getTestByte());
+	    assertEquals(128, dmt.getRoot().getTestShort());
+	    assertEquals(1234567890, dmt.getRoot().getTestLong());
+	    assertTrue(Math.abs(3.1415926535 - dmt.getRoot().getTestFloat()) < 0.000001);
+	    assertTrue(Math.abs(3.1415926535897932384626433 - dmt.getRoot().getTestDouble()) < 0.00000000001);
+	    assertNotNull(dmt.getRoot().getTestFile());
+	    assertTrue(dmt.getRoot().getTestFile().exists());
+	    assertEquals("DataModelSchemaTest.xml", dmt.getRoot().getTestFile().getName());
+
+
+
         assertTrue(dmt.getRoot().encounteredCustom1);
         assertTrue(dmt.getRoot().finalizedConstruction);
         assertTrue(dmt.getRoot().getPcData() != null);
