@@ -5,7 +5,7 @@
  ******************************************************************************
 -->
 <#macro projectFile>
-    <code>${vc.applicationManagerComponent.inputSource.identifier}</code>
+    <code>${vc.projectComponent.inputSource.identifier}</code>
 </#macro>
 
 <!--

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.12 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.13 2003-06-26 16:05:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -52,7 +52,7 @@ import javax.servlet.ServletException;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.ApplicationManager;
+import com.netspective.sparx.Project;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.RuntimeEnvironmentFlags;
@@ -68,9 +68,9 @@ public class ConsoleServlet extends NavigationControllerServlet
         return Themes.getInstance().getTheme(CONSOLE_ID);
     }
 
-    protected NavigationTree getNavigationTree(ApplicationManager am)
+    protected NavigationTree getNavigationTree(Project project)
     {
-        return am.getConsoleNavigationTree();
+        return project.getConsoleNavigationTree();
     }
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException

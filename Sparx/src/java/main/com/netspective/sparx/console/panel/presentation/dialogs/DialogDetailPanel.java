@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogDetailPanel.java,v 1.6 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: DialogDetailPanel.java,v 1.7 2003-06-26 16:05:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -230,7 +230,7 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
 
     public SelectedDialog getSelectedDialog(NavigationContext nc)
     {
-        return new SelectedDialog(nc.getApplicationManager().getDialogs(), nc.getHttpRequest().getParameter(REQPARAMNAME_DIALOG));
+        return new SelectedDialog(nc.getProject().getDialogs(), nc.getHttpRequest().getParameter(REQPARAMNAME_DIALOG));
     }
 
     protected class DialogFieldsDataSource extends AbstractHtmlTabularReportDataSource

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogPanel.java,v 1.5 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: DialogsCatalogPanel.java,v 1.6 2003-06-26 16:05:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -100,7 +100,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
         public DialogsCatalogDataSource(NavigationContext nc, String selectedDialogName)
         {
             super();
-            dialogs = nc.getApplicationManager().getDialogs();
+            dialogs = nc.getProject().getDialogs();
             this.selectedDialogName = selectedDialogName;
             boolean doingFrameworkDeveploment = nc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT);
 

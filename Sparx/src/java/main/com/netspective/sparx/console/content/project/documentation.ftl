@@ -10,5 +10,5 @@
     <p>
     Your application's Sparx Project Input Source is <a href="project/input-source"><@projectFile/></a>.
     <p>
-    <@xdmStructure className="com.netspective.sparx.ApplicationManager" heading="Sparx Project Source Tags Overview" expandFlagAliases='no'/>
+    <@xdmStructure className="com.netspective.sparx.Project" heading="Sparx Project Source Tags Overview" expandFlagAliases='no'/>
 </div>

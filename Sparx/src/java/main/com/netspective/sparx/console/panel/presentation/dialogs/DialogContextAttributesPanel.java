@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextAttributesPanel.java,v 1.4 2003-06-12 14:36:08 shahid.shah Exp $
+ * $Id: DialogContextAttributesPanel.java,v 1.5 2003-06-26 16:05:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -84,7 +84,7 @@ public class DialogContextAttributesPanel extends DialogDetailPanel
 
         public DialogContextSelectedDialog(DialogContext dc)
         {
-            super(dc.getApplicationManager().getDialogs(), null);
+            super(dc.getProject().getDialogs(), null);
             setDialogContext(dc);
             setDialog(dc.getDialog());
             setDialogName(dc.getDialog().getName());

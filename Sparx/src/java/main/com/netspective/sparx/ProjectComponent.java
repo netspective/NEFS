@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManagerComponent.java,v 1.1 2003-03-24 13:28:00 shahid.shah Exp $
+ * $Id: ProjectComponent.java,v 1.1 2003-06-26 16:05:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -52,39 +52,39 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.metric.MetricsGroup;
 import com.netspective.commons.metric.Metric;
 
-public class ApplicationManagerComponent extends DefaultXdmComponent
+public class ProjectComponent extends DefaultXdmComponent
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private ApplicationManager manager;
+    private Project project;
 
-    public ApplicationManagerComponent()
+    public ProjectComponent()
     {
     }
 
-    public ApplicationManager createComponent()
+    public Project createProject()
     {
-        return new ApplicationManager();
+        return new Project();
     }
 
-    public void addComponent(ApplicationManager manager)
+    public void addProject(Project manager)
     {
-        this.manager = manager;
+        this.project = manager;
     }
 
-    public ApplicationManager getManager()
+    public Project getProject()
     {
-        return manager;
+        return project;
     }
 
     public void produceMetrics(Metric parent)
     {
         super.produceMetrics(parent);
-        MetricsGroup managerMetrics = parent.addGroupMetric("Sparx");
-        manager.produceMetrics(managerMetrics);
+        MetricsGroup managerMetrics = parent.addGroupMetric("Project");
+        project.produceMetrics(managerMetrics);
     }
 
     public void generateIdentifiersConstants(File rootPath, String rootPkgAndClassName) throws IOException
     {
-        manager.generateIdentifiersConstants(rootPath, rootPkgAndClassName);
+        project.generateIdentifiersConstants(rootPath, rootPkgAndClassName);
     }
 }

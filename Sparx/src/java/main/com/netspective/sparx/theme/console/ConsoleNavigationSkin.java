@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.13 2003-06-20 20:52:51 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.14 2003-06-26 16:05:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -178,7 +178,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             writer.write("		</table>\n");
             writer.write("	</td>\n");
 
-            int errorsCount = nc.getApplicationManagerComponent().getErrors().size();
+            int errorsCount = nc.getProjectComponent().getErrors().size();
             boolean haveErrors = errorsCount > 0;
 
             writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");

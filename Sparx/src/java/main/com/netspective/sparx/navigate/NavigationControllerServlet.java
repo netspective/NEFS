@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.4 2003-06-20 20:52:51 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.5 2003-06-26 16:05:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -56,7 +56,7 @@ import javax.servlet.ServletConfig;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.ApplicationManager;
+import com.netspective.sparx.Project;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
@@ -80,27 +80,27 @@ public class NavigationControllerServlet extends HttpServlet
         return Themes.getInstance().getDefaultTheme();
     }
 
-    protected NavigationTree getNavigationTree(ApplicationManager am)
+    protected NavigationTree getNavigationTree(Project project)
     {
-        return am.getDefaultNavigationTree();
+        return project.getDefaultNavigationTree();
     }
 
-    protected ApplicationManager getApplicationManager() throws ServletException
+    protected Project getProject() throws ServletException
     {
-        return BasicDbHttpServletValueContext.getApplicationManagerComponent(getServletContext()).getManager();
+        return BasicDbHttpServletValueContext.getProjectComponent(getServletContext()).getProject();
     }
 
     protected NavigationContext createNavigationContext(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
-        ApplicationManager am = getApplicationManager();
+        Project project = getProject();
 
         Theme theme = getTheme();
         httpServletRequest.setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_THEME, theme);
 
-        NavigationTree tree = getNavigationTree(am);
+        NavigationTree tree = getNavigationTree(project);
 
         if(tree == null)
-            throw new ServletException("Navigation tree not found. Available: " + am.getNavigationTrees());
+            throw new ServletException("Navigation tree not found. Available: " + project.getNavigationTrees());
 
         String activePageId = httpServletRequest.getPathInfo();
         if(activePageId == null)

@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.60 2003-06-25 03:15:20 shahid.shah Exp $
+  * $Id: console.xml,v 1.61 2003-06-26 16:05:57 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -25,6 +25,10 @@
 
     <panel-type name="console-sibling-summaries" extends="html">
         <body config="console" source="content/sibling-summaries.ftl"/>
+    </panel-type>
+
+    <panel-type name="xdm-doc" extends="html">
+        <body config="console" source="content/xdm-doc.ftl"/>
     </panel-type>
 
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
@@ -97,6 +101,9 @@
                 <panel type="console-page-summary"/>
                 <panel type="console-children-summaries">
                     <frame heading="Project Module Overview"/>
+                </panel>
+                <panel type="xdm-doc" xdm-class="com.netspective.sparx.Project">
+                    <frame heading="Sparx Project Source"/>
                 </panel>
                 <panel type="html">
                     <frame heading="Sparx Project Source"/>

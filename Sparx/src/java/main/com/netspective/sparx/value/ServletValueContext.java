@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletValueContext.java,v 1.3 2003-06-06 22:58:47 shahid.shah Exp $
+ * $Id: ServletValueContext.java,v 1.4 2003-06-26 16:05:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -52,7 +52,7 @@ import javax.servlet.ServletContext;
 import freemarker.template.Configuration;
 
 import com.netspective.commons.value.ValueContext;
-import com.netspective.sparx.ApplicationManager;
+import com.netspective.sparx.Project;
 
 public interface ServletValueContext extends ValueContext
 {
@@ -84,7 +84,7 @@ public interface ServletValueContext extends ValueContext
     /**
      * Retreive the default application manager (components).
      */
-    public ApplicationManager getApplicationManager();
+    public Project getProject();
 
     String getApplicationName();
 }

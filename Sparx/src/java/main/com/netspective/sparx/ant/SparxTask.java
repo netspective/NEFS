@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SparxTask.java,v 1.1 2003-05-19 00:58:56 shahid.shah Exp $
+ * $Id: SparxTask.java,v 1.2 2003-06-26 16:05:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -49,17 +49,17 @@ import org.apache.tools.ant.BuildException;
 import com.netspective.axiom.ant.AxiomTask;
 import com.netspective.axiom.SqlManager;
 import com.netspective.commons.xdm.XdmComponent;
-import com.netspective.sparx.ApplicationManagerComponent;
+import com.netspective.sparx.ProjectComponent;
 
 public class SparxTask extends AxiomTask
 {
     public XdmComponent getComponent()
     {
-        return getComponent(ApplicationManagerComponent.class);
+        return getComponent(ProjectComponent.class);
     }
 
     public SqlManager getSqlManager() throws BuildException
     {
-        return ((ApplicationManagerComponent) getComponent()).getManager();
+        return ((ProjectComponent) getComponent()).getProject();
     }
 }

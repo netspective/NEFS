@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextFieldStatesClassesPanel.java,v 1.2 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: DialogContextFieldStatesClassesPanel.java,v 1.3 2003-06-26 16:05:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -90,7 +90,7 @@ public class DialogContextFieldStatesClassesPanel extends DialogDetailPanel
 
         public DialogContextSelectedDialog(DialogContext dc)
         {
-            super(dc.getApplicationManager().getDialogs(), null);
+            super(dc.getProject().getDialogs(), null);
             setDialog(dc.getDialog());
             setDialogName(dc.getDialog().getName());
             setDataSource(new DialogContextFieldStatesPanelDataSource(this));

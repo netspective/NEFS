@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.1 2003-05-31 22:26:23 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.2 2003-06-26 16:05:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.framework;
@@ -337,7 +337,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        List structureRows = createStructureRows(dataModel == null ? nc.getApplicationManagerComponent() : dataModel);
+        List structureRows = createStructureRows(dataModel == null ? nc.getProjectComponent() : dataModel);
         StructureRow selectedRow = getSelectedStructureRow(nc, structureRows);
 
         switch(view.getValueIndex())

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.18 2003-06-20 20:52:52 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.19 2003-06-26 16:05:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -60,8 +60,8 @@ import freemarker.template.Configuration;
 
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.SqlManager;
-import com.netspective.sparx.ApplicationManager;
-import com.netspective.sparx.ApplicationManagerComponent;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.ProjectComponent;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.navigate.NavigationContext;
@@ -241,22 +241,22 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public ConfigurationsManager getConfigurationsManager()
     {
-        return getApplicationManager();
+        return getProject();
     }
 
     public AccessControlListsManager getAccessControlListsManager()
     {
-        return getApplicationManager();
+        return getProject();
     }
 
     public SqlManager getSqlManager()
     {
-        return getApplicationManager();
+        return getProject();
     }
 
     public DialogsManager getDialogsManager()
     {
-        return getApplicationManager();
+        return getProject();
     }
 
     public final static RuntimeEnvironmentFlags getEnvironmentFlags(ServletContext context)
@@ -309,7 +309,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return result;
     }
 
-    public final static ApplicationManagerComponent getApplicationManagerComponent(ServletContext context)
+    public final static ProjectComponent getProjectComponent(ServletContext context)
     {
         try
         {
@@ -317,11 +317,11 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
             if(getEnvironmentFlags(context).flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
                 compFlags |= XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
 
-            // never store the ApplicationManagerComponent instance since it may change if it needs to be reloaded
+            // never store the ProjectComponent instance since it may change if it needs to be reloaded
             // (always use the factory get() method)
-            ApplicationManagerComponent amComponent =
-                (ApplicationManagerComponent) XdmComponentFactory.get(
-                        ApplicationManagerComponent.class, getProjectFileName(context), compFlags);
+            ProjectComponent amComponent =
+                (ProjectComponent) XdmComponentFactory.get(
+                        ProjectComponent.class, getProjectFileName(context), compFlags);
 
             for(int i = 0; i < amComponent.getErrors().size(); i++)
                 System.err.println(amComponent.getErrors().get(i));
@@ -336,7 +336,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         }
     }
 
-    public ApplicationManagerComponent getApplicationManagerComponent()
+    public ProjectComponent getProjectComponent()
     {
         try
         {
@@ -344,11 +344,11 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
             if(getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
                 compFlags |= XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
 
-            // never store the ApplicationManagerComponent instance since it may change if it needs to be reloaded
+            // never store the ProjectComponent instance since it may change if it needs to be reloaded
             // (always use the factory get() method)
-            ApplicationManagerComponent amComponent =
-                (ApplicationManagerComponent) XdmComponentFactory.get(
-                        ApplicationManagerComponent.class, getProjectFileName(context), compFlags);
+            ProjectComponent amComponent =
+                (ProjectComponent) XdmComponentFactory.get(
+                        ProjectComponent.class, getProjectFileName(context), compFlags);
 
             for(int i = 0; i < amComponent.getErrors().size(); i++)
                 System.err.println(amComponent.getErrors().get(i));
@@ -363,9 +363,9 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         }
     }
 
-    public ApplicationManager getApplicationManager()
+    public Project getProject()
     {
-        return getApplicationManagerComponent().getManager();
+        return getProjectComponent().getProject();
     }
 
     public String getApplicationName()
