@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.14 2004-03-16 22:01:03 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.15 2004-06-06 23:36:02 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -365,6 +365,10 @@ public class TextUtils
         StringBuffer identifier = new StringBuffer();
         char ch = xml.charAt(0);
         identifier.append(ucaseInitial ? Character.toUpperCase(ch) : Character.toLowerCase(ch));
+
+        // if the first character is not a valid Java identifier start character, then prefix with underscore which is valid
+        if(! Character.isJavaIdentifierStart(identifier.charAt(0)))
+            identifier.insert(0, '_');
 
         boolean uCase = false;
         for(int i = 1; i < xml.length(); i++)
