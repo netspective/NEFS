@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
-"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+<!ENTITY __unit-test-dialog__du3y9xaa SYSTEM "../nef-reusable-content/unit-test-dialog.xml">
+<!ENTITY __unit-test-sql-queries__du3u5ck7 SYSTEM "../nef-reusable-content/unit-test-sql-queries.xml">
+<!ENTITY __unit-test-datasource__du3uglw0 SYSTEM "../nef-reusable-content/unit-test-datasource.xml">
+]>
 <article>
   <title>NEFS Enterprise Console Tour</title>
 
@@ -693,113 +697,11 @@
         </figure></para>
     </section>
 
-    <section>
-      <title>Dialogs</title>
+    &__unit-test-dialog__du3y9xaa;
 
-      <para>Each dialog may be unit tested inside Console to ensure that user
-      requirements are being met and allowing analysts or end users to start
-      reviewing a running application quickly and without programmers writing
-      test harnesses. As soon as the XML is completed, the test harness is
-      automatically created and may be executed by anyone with access to
-      Console.</para>
+    &__unit-test-sql-queries__du3u5ck7;
 
-      <para><figure>
-          <title>Automatically Generated Unit Test for a Dialog</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="./resources/images/screen-console-dialog-unit-test-small.gif" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-    </section>
-
-    <section>
-      <title>SQL Queries</title>
-
-      <para>Each SQL statement may be unit tested inside Console to ensure
-      that user requirements are being met. As soon as the XML is completed,
-      the test harness is automatically created and may be executed by anyone
-      with access to Console. The statement, along with any reports/views can
-      be tested without creating any additional code.</para>
-
-      <para><table frame="none">
-          <title>Automatically Generate Unit Test Harness for SQL
-          Queries</title>
-
-          <tgroup cols="2">
-            <tbody>
-              <row>
-                <entry><mediaobject>
-                    <imageobject>
-                      <imagedata fileref="./resources/images/screen-console-unittest-sql-small.gif" />
-                    </imageobject>
-                  </mediaobject></entry>
-
-                <entry><mediaobject>
-                    <imageobject>
-                      <imagedata fileref="./resources/images/screen-console-ut-result-sql-small.gif" />
-                    </imageobject>
-                  </mediaobject></entry>
-              </row>
-            </tbody>
-          </tgroup>
-        </table></para>
-    </section>
-
-    <section>
-      <title>Data Sources</title>
-
-      <para>NEFS provides XML tags for definition of your data sources. You
-      can either use the default data source or define your own data source.
-      All the data sources, defined by the Axiom tag, are automatically
-      documented and managed by the Console. You can view your data source(s)
-      through this Data Sources Catalog.</para>
-
-      <para><figure>
-          <title>Data Sources Catalog</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="./resources/images/screen-console-datasource-small.gif" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-
-      <section>
-        <title>SQL Explorer</title>
-
-        <para>You can use the SQL Explorer within the Console to unit test
-        tables within your schema. Now you do not require any other database
-        management tool to manage your database tables. Your database
-        programmers spend time working on the tables and schema elements
-        significant to your application instead of writing test cases for
-        them. Also, you can test your DB tables without using any specific
-        database tool.</para>
-
-        <para><table frame="none">
-            <title>Unit Test the Database Tables using SQL Explorer</title>
-
-            <tgroup cols="2">
-              <tbody>
-                <row>
-                  <entry><mediaobject>
-                      <imageobject>
-                        <imagedata fileref="./resources/images/screen-console-sql-explorer-small.gif" />
-                      </imageobject>
-                    </mediaobject></entry>
-
-                  <entry><mediaobject>
-                      <imageobject>
-                        <imagedata fileref="./resources/images/screen-console-db-test-result-small.gif" />
-                      </imageobject>
-                    </mediaobject></entry>
-                </row>
-              </tbody>
-            </tgroup>
-          </table></para>
-      </section>
-    </section>
+    &__unit-test-datasource__du3uglw0;
   </section>
 
   <section>
