@@ -46,7 +46,7 @@
         </page>
         <page name="search" caption="Search Books" command="query-defn,library,test,searchBooksDialog"/>
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
-        <page name="sampler" caption="Sampler" redirect="../nefs-sampler"/>
+        <page name="sampler" caption="Sampler" redirect="vs-expr:${servlet-context-uri:server-root}/nefs-sampler"/>
     </navigation-tree>
 
     <dialogs package="library">
