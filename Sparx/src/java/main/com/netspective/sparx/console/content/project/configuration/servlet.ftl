@@ -11,7 +11,8 @@
     <div class="textbox">
     Server: <code>${servletContext.serverInfo}</code><br>
     Servlet Context: <code>${servletContext.servletContextName}</code><br>
-    Servlet Context Path: <code>${servletContext.getRealPath('')}</code><br>
+    Servlet Context Path: <code>${vc.getConsoleFileBrowserLink(servletContext.getRealPath(''), false)}</code><br>
+    Servlet Context Descriptor: <@webXmlFile/><br>
     Servlet Context Class: <code>${servletContext.class.name}</code><br>
     </div>
     <@reportTable headings=["Init Param", "Value"] data=initParams/>

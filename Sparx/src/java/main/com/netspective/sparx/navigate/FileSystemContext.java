@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: FileSystemContext.java,v 1.1 2003-10-05 03:40:27 shahid.shah Exp $
+ * $Id: FileSystemContext.java,v 1.2 2003-10-08 21:14:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -74,7 +74,7 @@ public class FileSystemContext implements FilenameFilter
     public FileSystemContext(String aRootURI, File rootPathFile, String aRootCaption, String aRelativePathStr)
     {
         rootURI = aRootURI;
-        rootPath = new FileSystemEntry(null, rootPathFile);
+        rootPath = new FileSystemEntry(0, null, rootPathFile);
         rootPath.setEntryCaption(aRootCaption);
         setRelativePath(aRelativePathStr);
     }
@@ -121,7 +121,7 @@ public class FileSystemContext implements FilenameFilter
             relativePathStr = null;
 
         if(relativePathStr != null)
-            activePath = new FileSystemEntry(rootPath, new File(rootPath.getFile().getAbsolutePath() + rootPath.getFile().separator + relativePathStr));
+            activePath = new FileSystemEntry(0, rootPath, new File(rootPath.getFile().getAbsolutePath() + rootPath.getFile().separator + relativePathStr));
         else
             activePath = rootPath;
     }
@@ -130,60 +130,5 @@ public class FileSystemContext implements FilenameFilter
     public boolean accept(File dir, String name)
     {
         return true;
-    }
-
-    public void addXML(Element fsElem, FilenameFilter filter)
-    {
-        Document doc = fsElem.getOwnerDocument();
-
-        Element pathElem = (Element) fsElem.appendChild(doc.createElement("path"));
-        pathElem.setAttribute("caption", activePath.getEntryCaption());
-        pathElem.setAttribute("url", activePath.getEntryURI());
-        pathElem.setAttribute("path", activePath.getFile().getAbsolutePath());
-
-        Element parents = (Element) pathElem.appendChild(doc.createElement("parents"));
-        ArrayList parentList = activePath.getParents();
-        if(parentList != null)
-        {
-            Iterator i = parentList.iterator();
-            int level = 1;
-            while(i.hasNext())
-            {
-                FileSystemEntry entry = (FileSystemEntry) i.next();
-                Element parent = (Element) parents.appendChild(doc.createElement("parent"));
-                parent.setAttribute("level", new Integer(level).toString());
-                parent.setAttribute("caption", entry.getEntryCaption());
-                parent.setAttribute("url", rootURI + entry.getEntryURI());
-                parent.setAttribute("path", entry.getFile().getAbsolutePath());
-                parent.setAttribute("isroot", new Boolean(entry.isRoot()).toString());
-                parent.setAttribute("islast", new Boolean(!i.hasNext()).toString());
-
-                level++;
-            }
-        }
-
-        Element folders = (Element) pathElem.appendChild(doc.createElement("folders"));
-        Element files = (Element) pathElem.appendChild(doc.createElement("files"));
-
-        File[] entries = activePath.getFile().listFiles(filter);
-        if(entries != null)
-        {
-            for(int i = 0; i < entries.length; i++)
-            {
-                FileSystemEntry entry = new FileSystemEntry(rootPath, entries[i]);
-                Element entryElem = null;
-                if(entry.getFile().isDirectory())
-                    entryElem = (Element) folders.appendChild(doc.createElement("folder"));
-                else
-                {
-                    entryElem = (Element) files.appendChild(doc.createElement("file"));
-                    entryElem.setAttribute("type", entry.getEntryType());
-                }
-                entryElem.setAttribute("caption", entry.getEntryCaption());
-                entryElem.setAttribute("type", entry.getEntryType());
-                entryElem.setAttribute("url", rootURI + entry.getEntryURI());
-                entryElem.setAttribute("path", entry.getFile().getAbsolutePath());
-            }
-        }
     }
 }

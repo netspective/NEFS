@@ -14,7 +14,11 @@
  ******************************************************************************
 -->
 <#macro projectFile>
-    <code>${vc.projectComponent.inputSource.identifier}</code>
+    <code>${vc.getConsoleFileBrowserLink(vc.projectComponent.inputSource.identifier, true)}</code>
+</#macro>
+
+<#macro webXmlFile>
+    <code>${vc.getConsoleFileBrowserLink(vc.servlet.servletContext.getRealPath('/WEB-INF/web.xml'), true)}</code>
 </#macro>
 
 <!--

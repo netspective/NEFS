@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.38 2003-09-15 02:34:46 roque.hernandez Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.39 2003-10-08 21:14:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
 
 import java.sql.SQLException;
+import java.io.File;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServlet;
@@ -321,6 +322,52 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public final String getConsoleUrl()
     {
         return rootUrl + "/console";
+    }
+
+    public final String getConsoleFileBrowserLink(String absolutePath, boolean showRelative)
+    {
+        if(showRelative)
+        {
+            String servletContextPath = servlet.getServletConfig().getServletContext().getRealPath("");
+            if(absolutePath.startsWith(servletContextPath))
+                return getConsoleFileBrowserLinkShowAlt(absolutePath, absolutePath.substring(servletContextPath.length()));
+        }
+
+        return getConsoleFileBrowserLinkShowAlt(absolutePath, null);
+    }
+
+    public final String getConsoleFileBrowserLinkShowAlt(String absolutePath, String showAltPath)
+    {
+        String servletContextPath = servlet.getServletConfig().getServletContext().getRealPath("");
+        if(absolutePath.startsWith(servletContextPath))
+        {
+            String relativePath = absolutePath.substring(servletContextPath.length());
+            StringBuffer result = new StringBuffer();
+            result.append("<a href=\"");
+            result.append(getConsoleUrl());
+            result.append("/project/files/");
+            result.append(relativePath);
+            result.append("\">");
+            if(showAltPath != null)
+            {
+                result.append("<span title=\"");
+                result.append(absolutePath);
+                result.append("\">");
+                result.append(showAltPath);
+                result.append("</span>");
+            }
+            else
+                result.append(absolutePath);
+            result.append("</a>");
+            return result.toString();
+        }
+        else
+        {
+            if(showAltPath != null)
+                return showAltPath;
+            else
+                return absolutePath;
+        }
     }
 
     public final String getServerRootUrl()

@@ -16,7 +16,7 @@
         <tr>
             <td class="report-column-even">Input Source and Dependencies</td>
             <td class="report-column-even">
-                ${getInputSourceDependencies(vc.projectComponent.inputSource.identifier)}
+                ${getInputSourceDependencies()}
             </td>
         </tr>
         <tr>

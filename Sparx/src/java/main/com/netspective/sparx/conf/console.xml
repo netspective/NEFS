@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.98 2003-10-07 21:01:03 shahid.shah Exp $
+  * $Id: console.xml,v 1.99 2003-10-08 21:14:26 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -79,8 +79,11 @@
                     <body config="console" source="console-page-content:../login-managers.ftl"/>
                 </page>
             </page>
+            <page name="folders" caption="Project Folders">
+                <body config="console" source="console-page-content:../folders.ftl"/>
+            </page>
             <page name="files" caption="Project Files">
-                <body config="console" source="console-page-content:index.ftl"/>
+                <body config="console" source="console-page-content:../files.ftl"/>
             </page>
         </page>
 

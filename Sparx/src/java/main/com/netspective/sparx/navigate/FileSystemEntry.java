@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: FileSystemEntry.java,v 1.1 2003-10-05 03:40:27 shahid.shah Exp $
+ * $Id: FileSystemEntry.java,v 1.2 2003-10-08 21:14:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -71,6 +71,7 @@ public class FileSystemEntry
     public static final String ROOT_URI = "/";
     public static final String DEFAULT_CONTENT_TYPE = "application/octet-stream";
 
+    private int level;
     private File file;
     private FileSystemEntry rootPath;
     private String entryCaption;
@@ -78,8 +79,9 @@ public class FileSystemEntry
     private String entryURI = ROOT_URI;
     private String contentType = DEFAULT_CONTENT_TYPE;
 
-    public FileSystemEntry(FileSystemEntry aRootPath, File file)
+    public FileSystemEntry(int level, FileSystemEntry aRootPath, File file)
     {
+        this.level = level;
         this.file = file;
         rootPath = aRootPath;
         entryCaption = file.getName().replace('_', ' ');
@@ -98,6 +100,11 @@ public class FileSystemEntry
             String absPath = file.getAbsolutePath();
             entryURI = absPath.substring(rootPath.file.getAbsolutePath().length()).replace('\\', '/');
         }
+    }
+
+    public int getLevel()
+    {
+        return level;
     }
 
     public File getFile()
@@ -152,6 +159,7 @@ public class FileSystemEntry
             return result;
 
         String rootPathStr = rootPath.file.getAbsolutePath();
+        int parentLevel = level - 1;
         File parent = file.getParentFile();
         while(parent != null)
         {
@@ -163,9 +171,10 @@ public class FileSystemEntry
             }
             else
             {
-                result.add(0, new FileSystemEntry(isRootPath ? null : rootPath, parent));
+                result.add(0, new FileSystemEntry(parentLevel, isRootPath ? null : rootPath, parent));
                 parent = parent.getParentFile();
             }
+            parentLevel--;
         }
 
         return result;
@@ -178,7 +187,7 @@ public class FileSystemEntry
         for(int i = 0; i < children.length; i++)
         {
             File child = children[i];
-            result.add(new FileSystemEntry(rootPath, child));
+            result.add(new FileSystemEntry(level+1, rootPath, child));
         }
         return result;
     }

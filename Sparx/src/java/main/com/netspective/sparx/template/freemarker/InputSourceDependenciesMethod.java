@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: InputSourceDependenciesMethod.java,v 1.2 2003-08-17 00:10:52 shahid.shah Exp $
+ * $Id: InputSourceDependenciesMethod.java,v 1.3 2003-10-08 21:14:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -50,35 +50,43 @@ import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.SimpleScalar;
+import freemarker.core.Environment;
+import freemarker.ext.beans.StringModel;
 
 import com.netspective.commons.io.FileTracker;
 import com.netspective.commons.io.InputSourceTracker;
 import com.netspective.commons.xdm.XdmComponent;
-import com.netspective.commons.xdm.XdmComponentFactory;
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
 public class InputSourceDependenciesMethod implements TemplateMethodModel
 {
     public TemplateModel exec(List args) throws TemplateModelException
     {
-        if (args.size() != 1)
-            throw new TemplateModelException("Wrong arguments: expect instance of XdmComponent.");
+        Environment env = Environment.getCurrentEnvironment();
+        StringModel model = null;
+        try
+        {
+            model = (freemarker.ext.beans.StringModel) env.getDataModel().get("vc");
+        }
+        catch (TemplateModelException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+        }
 
-        String fileName = (String) args.get(0);
-        XdmComponent component = XdmComponentFactory.getCachedComponent(fileName, XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
-        if(component == null)
-            return new SimpleScalar("Unable to find '"+ fileName +"' in the factory cache.");
+        BasicDbHttpServletValueContext vc = (BasicDbHttpServletValueContext) model.getWrappedObject();
 
+        XdmComponent component = vc.getProjectComponent();
         StringBuffer sb = new StringBuffer();
         InputSourceTracker ist = component.getInputSource();
         if(ist instanceof FileTracker)
-            sb.append(getHtml(ist));
+            sb.append(getHtml(vc, ist));
         else
             sb.append("<code>" + ist.getIdentifier() + "</code> (Dependencies: " + ist.getDependenciesCount() + ")");
 
         return new SimpleScalar(sb.toString());
     }
 
-    public String getHtml(InputSourceTracker inputSourceTracker)
+    public String getHtml(BasicDbHttpServletValueContext vc, InputSourceTracker inputSourceTracker)
     {
         StringBuffer src = new StringBuffer();
 
@@ -87,9 +95,9 @@ public class InputSourceDependenciesMethod implements TemplateMethodModel
         String thisPath = inputSourceTracker.getIdentifier();
 
         if(thisPath.startsWith(parentPath))
-            src.append("." + thisPath.substring(parentPath.length()));
+            src.append("." + vc.getConsoleFileBrowserLinkShowAlt(thisPath, thisPath.substring(parentPath.length())));
         else
-            src.append(inputSourceTracker.getIdentifier());
+            src.append(vc.getConsoleFileBrowserLink(thisPath, false));
 
         if(inputSourceTracker.getDependenciesCount() > 0)
             src.append(" (Dependencies: " + inputSourceTracker.getDependenciesCount() + ")");
@@ -98,7 +106,7 @@ public class InputSourceDependenciesMethod implements TemplateMethodModel
         {
             src.append("<ul>");
             for(int i = 0; i < preProcs.size(); i++)
-                src.append("<li>"+ getHtml((InputSourceTracker) preProcs.get(i)) +" (pre-processors)</li>");
+                src.append("<li>"+ getHtml(vc, (InputSourceTracker) preProcs.get(i)) +" (pre-processors)</li>");
             src.append("</ul>");
         }
 
@@ -107,7 +115,7 @@ public class InputSourceDependenciesMethod implements TemplateMethodModel
         {
             src.append("<ul>");
             for(int i = 0; i < dependencies.size(); i++)
-                src.append("<li>"+ getHtml((InputSourceTracker) dependencies.get(i)) +"</li>");
+                src.append("<li>"+ getHtml(vc, (InputSourceTracker) dependencies.get(i)) +"</li>");
             src.append("</ul>");
         }
 

@@ -2,8 +2,8 @@
 
 <div class="textbox">
 
-The standard Sparx project file is located at <code>/WEB-INF/sparx/project.xml</code>. If you would like to change
-the default Sparx project file, simply define a servlet context init parameter in <code>WEB-INF/web.xml</code> with
+The standard Frameworks project file is located at <@projectFile/>. If you would like to change
+the location of the default project file, simply define a servlet context init parameter in <@webXmlFile/> with
 the appropriate alternate location.
 <p>
 Example:
@@ -11,8 +11,8 @@ Example:
 <web-app>
   ...
     <context-param>
-      <param-name>com.netspective.sparx.PROJECT_FILE_NAME</param-name>
-      <param-value>/WEB-INF/sparx/project.xml</param-value>
+      <param-name> com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
+      <param-value>--project=/WEB-INF/other/path/project.xml</param-value>
     </context-param>
   ...
 </web-app>

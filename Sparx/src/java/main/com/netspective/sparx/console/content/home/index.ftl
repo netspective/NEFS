@@ -8,10 +8,10 @@
                         headings = ["Property", "Value"]
                         data=[
                           ["Application Id", "<code>${vc.servlet.servletContext.servletContextName}</code>"],
-                          ["Application Home", "<code>${vc.servlet.servletContext.getRealPath('')}</code>"],
-                          ["<a href='project/project-source'>Sparx Project Source</a>", "<code>${vc.projectComponent.inputSource.identifier}</code>"],
+                          ["Application Home", "<code>${vc.getConsoleFileBrowserLink(vc.servlet.servletContext.getRealPath(''), false)}</code>"],
+                          ["<a href='project/project-source'>Sparx Project Source</a>", "<code>${vc.getConsoleFileBrowserLink(vc.projectComponent.inputSource.identifier, true)}</code>"],
                           ["<a href='manual/project/runtime-environment'>Runtime Environment</a>", "<code>${vc.runtimeEnvironmentFlags.flagsText}</code>"],
-                          ["<a href='project/configuration/servlet'>Deployment Descriptor</a>", "<code>${vc.servlet.servletContext.getRealPath('WEB-INF/web.xml')}</code>"]
+                          ["<a href='project/configuration/servlet'>Deployment Descriptor</a>", "<code>${vc.getConsoleFileBrowserLink(vc.servlet.servletContext.getRealPath('WEB-INF/web.xml'), true)}</code>"]
                           ]/>
             </@panel>
             <p>
@@ -58,7 +58,7 @@
                         <li>Use the Console's built-in security model.
                         <li>Use Servlet filters that can be wrapped around the ConsoleServlet to provide a custom authentication scheme.
                         <li>Disable the ConsoleServlet completely by commenting it out in the application's
-                        <a href="application/configuration/servlet">J2EE Servlet Deployment Descriptor</a> file).
+                        <a href="project/configuration/servlet">J2EE Servlet Deployment Descriptor</a> file).
                     </ul>
                 </div>
             </@panel>

@@ -37,7 +37,7 @@
                                     <#if parent.name = ''>${activeTreeName}<#else>${parent.name}</#if>
                                 </a>
                                 <#else>
-                                    <a href="."><#if parent.name = ''>${activeTreeName}<#else>${parent.name}</#if></a>
+                                    <a href=".."><#if parent.name = ''>${activeTreeName}<#else>${parent.name}</#if></a>
                                 </#if>
                                 </nobr>
                             </td>
@@ -63,7 +63,11 @@
                         <nobr>
                         <#list 0..level as i>&nbsp;&nbsp;</#list>
                         <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-default.gif')}"/>
-                        <a href="${vc.request.requestURI}/${child.name}">${child.name}</a>
+                        <#if vc.request.requestURI?ends_with('/')>
+                            <a href="${vc.request.requestURI}${child.name}">${child.name}</a>
+                        <#else>
+                            <a href="${vc.request.requestURI}/${child.name}">${child.name}</a>
+                        </#if>
                         </nobr>
                         </td></tr>
                         <#if classSuffix = 'odd'><#assign classSuffix='even'/><#else><#assign classSuffix='odd'/></#if>
