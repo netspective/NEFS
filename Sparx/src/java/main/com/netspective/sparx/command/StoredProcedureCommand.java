@@ -78,7 +78,7 @@ import java.io.IOException;
 /**
  * Command for executing a stored procedure and producing a report returned from the stored procedure as a result set
  * @author Aye Thu
- * @version $Id: StoredProcedureCommand.java,v 1.1 2003-11-07 05:16:17 aye.thu Exp $
+ * @version $Id: StoredProcedureCommand.java,v 1.2 2003-11-12 04:36:21 aye.thu Exp $
  */
 public class StoredProcedureCommand extends AbstractHttpServletCommand
 {
@@ -90,9 +90,9 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
             "Displays the results of a result set returned from the execution of a stored procedure.",
             new CommandDocumentation.Parameter[]
             {
-                new CommandDocumentation.Parameter("stored-procedure-name", true, "The fully qualified name of the stored procedure (package-name.stored-procedur-name)."),
+                new CommandDocumentation.Parameter("stored-procedure-name", true, "The fully qualified name of the stored procedure (package-name.stored-procedure-name)."),
 
-                new CommandDocumentation.Parameter("report-id", false, "The name of a specific report element in the query declaration or '-' for the default report-id."),
+                new CommandDocumentation.Parameter("report-id", false, "The name of a specific report panel element in the stored procedure call declaration or '-' for the default report panel."),
                 new CommandDocumentation.Parameter("rows-per-page", false, "-", "The number of rows per page to display ('-' means single page, any other number means a pageable report."),
                 new SkinParameter(),
                 new CommandDocumentation.Parameter("url-formats", false, "The url-formats parameter is one or more "+
@@ -219,7 +219,7 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
     }
 
     /**
-     * Gets the query dialog associated with the query
+     * Gets the query dialog associated with the stored procedure call
      * @param writer
      * @param sqlManager
      * @param theme
@@ -247,7 +247,7 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
 
 
     /**
-     * Gets the report panel associated with the stored procedure
+     * Gets the report panel associated with the stored procedure call
      * @param writer
      * @param sqlManager
      * @param theme
@@ -264,20 +264,16 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
         }
         StoredProcedureReportPanel result = null;
         if (reportId != null)
-        {
             result = storedProc.getPresentation().getPanel(reportId);
-        }
 
         if (result == null)
-        {
             result = storedProc.getPresentation().getDefaultPanel();
-        }
         result.setReportSkin(reportSkinName);
         return result;
     }
 
     /**
-     * Handles the stored procedure command executed from a dialog context
+     * Handles the stored procedure call command executed from a dialog context
      * @param writer
      * @param dc
      * @param unitTest
@@ -296,7 +292,7 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
     }
 
     /**
-     * Handles the stored procedure command executed from a navigation context such as from a navigation page
+     * Handles the stored procedure call command executed from a navigation context such as from a navigation page
      * @param writer            Writer object associated with the response buffer
      * @param nc                the navigation context in which the command was executed
      * @param unitTest          flag indicating if this execution is for a unit test
