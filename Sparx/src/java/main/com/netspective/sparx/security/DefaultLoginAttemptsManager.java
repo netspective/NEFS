@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultLoginAttemptsManager.java,v 1.4 2003-11-19 02:27:32 shahid.shah Exp $
+ * $Id: DefaultLoginAttemptsManager.java,v 1.5 2004-02-15 21:21:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -141,6 +141,8 @@ public class DefaultLoginAttemptsManager implements HttpLoginAttemptsManager
     {
         if(denialBody != null)
             denialBody.process(writer, loginDialogContext.getNavigationContext(), null);
+        else if(maxLoginAttemptsExceededMessage != null)
+            writer.write(maxLoginAttemptsExceededMessage.getTextValue(loginDialogContext));
         else
             writer.write("<p>&nbsp;<p>&nbsp;<p>&nbsp;<p>&nbsp;<center>You have exceeded your maximum login attempts.</center>");
     }
