@@ -49,7 +49,7 @@
  *
  * @author Shahid N. Shah
  *
- * $Id: NavigationConditionalAction.java,v 1.1 2003-08-11 07:12:44 aye.thu Exp $
+ * $Id: NavigationConditionalAction.java,v 1.2 2003-08-19 17:08:32 shahid.shah Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -141,5 +141,10 @@ public class NavigationConditionalAction implements TemplateConsumer
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public void execute(NavigationContext nc)
+    {
+
     }
 }

@@ -37,7 +37,7 @@
  *
  * @author Shahid N. Shah
 
- * $Id: NavigationConditionalApplyFlag.java,v 1.4 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: NavigationConditionalApplyFlag.java,v 1.5 2003-08-19 17:08:32 shahid.shah Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -198,7 +198,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
      *
      * @param nc
      */
-    public void applyFlags(NavigationContext nc)
+    public void execute(NavigationContext nc)
     {
         boolean status = true;
 
