@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.65 2003-11-07 17:45:51 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.66 2003-11-10 23:02:28 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -11,6 +11,7 @@
     <value-source class="com.netspective.sparx.value.source.ServletContextFileValueSource"/>
     <value-source class="com.netspective.sparx.value.source.ServletContextUriValueSource"/>
     <value-source class="com.netspective.sparx.value.source.ServletRequestParameterValueSource"/>
+     <value-source class="com.netspective.sparx.value.source.ServletRequestAttributeValueSource"/>
     <value-source class="com.netspective.sparx.value.source.HttpServletSessionAttributeValueSource"/>
     <value-source class="com.netspective.sparx.value.source.DialogPerspectiveExprValueSource"/>
     <value-source class="com.netspective.sparx.value.source.DialogFieldValueSource"/>
@@ -23,6 +24,7 @@
     <command class="com.netspective.sparx.command.DialogCommand"/>
     <command class="com.netspective.sparx.command.ValueSourceCommand"/>
     <command class="com.netspective.sparx.command.QueryCommand"/>
+    <command class="com.netspective.sparx.command.StoredProcedureCommand"/>
     <command class="com.netspective.sparx.command.QueryDefnCommand"/>
     <command class="com.netspective.sparx.command.ListValueSourceCommand"/>
 
