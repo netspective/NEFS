@@ -39,22 +39,22 @@
  */
 
 /**
- * $Id: PanelEditorState.java,v 1.1 2004-03-11 13:09:26 aye.thu Exp $
+ * $Id: PanelEditorState.java,v 1.2 2004-03-15 05:12:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
 
+import com.netspective.commons.text.GloballyUniqueIdentifier;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.navigate.NavigationContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.net.UnknownHostException;
-
-import com.netspective.commons.text.GloballyUniqueIdentifier;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.editor.PanelEditor;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * State class for containing context specific information for rendering a panel editor
@@ -78,10 +78,13 @@ public class PanelEditorState implements Serializable
     private boolean grouped;
     /* list of panel editors that belong to the same group */
     private String[] groupSiblings;
-
+    /* current active element */
     private String activeElement;
-
+    /* information that is specfiic to the active element's content type */
     private String activeElementInfo;
+    /* list to keep track of state of child elements of the panel editor */
+    private Map childStates = new HashMap();
+
 
     /**
      *
@@ -102,6 +105,16 @@ public class PanelEditorState implements Serializable
         {
             identifier = Integer.toString(hashCode());
         }
+    }
+
+    public void addElementState(PanelEditorContentElement.PanelEditorContentState childState)
+    {
+        childStates.put(childState.getElementName(), childState);
+    }
+
+    public  PanelEditorContentElement.PanelEditorContentState getElementState(String elementName)
+    {
+        return (PanelEditorContentElement.PanelEditorContentState) childStates.get(elementName);
     }
 
     public String getActiveElement()

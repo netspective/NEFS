@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.4 2004-03-14 06:08:59 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.5 2004-03-15 05:12:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
@@ -515,7 +515,7 @@ public class PanelEditor extends AbstractPanel
             skin = nc.getActiveTheme().getTemplateSkin("panel-editor-full");
         }
         */
-        preparePanelActionStates(nc, pvc, mode);
+
         nc.getHttpRequest().setAttribute(PREV_MODE_REQ_ATTRIBUTE, translateModeToString(state.getCurrentMode()));
 
         String activeElement = state.getActiveElement();
@@ -535,6 +535,8 @@ public class PanelEditor extends AbstractPanel
                 elements[i].renderDisplayContent(inactiveWriter, nc, state);
             }
         }
+        preparePanelActionStates(nc, pvc, state, mode);
+
         if (activeElement != null)
             writer.write("<div class=\"panel-editor-active-content\">" + activeEditorWriter.getBuffer().toString() + "</div>");
 
@@ -554,7 +556,7 @@ public class PanelEditor extends AbstractPanel
      * @param vc                current report panel context
      * @param mode              panel mode
      */
-    public void preparePanelActionStates(NavigationContext nc, HtmlPanelValueContext vc, int mode)
+    public void preparePanelActionStates(NavigationContext nc, HtmlPanelValueContext vc, PanelEditorState state, int mode)
     {
         HtmlPanelActionStates actionStates = vc.getPanelActionStates();
         if (mode == MODE_DISPLAY)
@@ -565,7 +567,10 @@ public class PanelEditor extends AbstractPanel
             for (int i=0; i < elements.length; i++)
             {
                 caption = elements[i].getCaption();
-                actionStates.getState("Add " + (caption != null ? caption : "")).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+                PanelEditorContentElement.PanelEditorContentState elementState = state.getElementState(elements[i].getName());
+                // hide the ADD action only if there is content in the content element
+                if (!elementState.isEmptyContent())
+                    actionStates.getState("Add " + (caption != null ? caption : "")).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             }
         }
         else if (mode == MODE_ADD || mode == MODE_EDIT || mode == MODE_DELETE)

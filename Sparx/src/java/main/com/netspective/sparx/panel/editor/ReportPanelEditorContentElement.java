@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportPanelEditorContentElement.java,v 1.4 2004-03-14 06:08:59 aye.thu Exp $
+ * $Id: ReportPanelEditorContentElement.java,v 1.5 2004-03-15 05:12:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
@@ -453,6 +453,10 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
             context.setPanelRenderFlags(HtmlPanel.RENDERFLAG_NOFRAME);
 
         int totalRows = dataRoot.getTotalRows();
+        PanelEditorContentState elementState = constructStateObject();
+        if (totalRows == 0)
+            elementState.setEmptyContent(true);
+        state.addElementState(elementState);
         // process the context to calculate the states of the panel actions
         prepareQueryReportState(nc, context, totalRows, mode);
         qrp.render(writer, context, dataRoot);
