@@ -39,16 +39,24 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.11 2003-09-14 05:32:02 shahid.shah Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.12 2003-09-14 17:01:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 
 public abstract class AbstractTabularReportDataSource implements TabularReportDataSource
 {
+    private static final Log log = LogFactory.getLog(AbstractTabularReportDataSource.class);
+
     //TODO: this does not handle non-scrollable data sources yet -- need to implement by using brute-force method
     //      that will just go to the beginning of data source and use next() to scroll down to given row like Sparx 2.x
     public class ScrollState implements TabularReportDataSourceScrollState
@@ -107,19 +115,6 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
         {
             haveMoreRows = false;
             reachedEndOnce = true;
-        }
-
-        /**
-         * Close the datasource
-         */
-        public void close()
-        {
-            AbstractTabularReportDataSource.this.close();
-        }
-
-        public void timeOut() // called implicity if user who is using it timeOuts (session destroyed -- should just close)
-        {
-            close();
         }
 
         /**
@@ -231,26 +226,34 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
             setActivePage(getTotalPages());
         }
 
-        public long getCreationTime()
+        public void close()
         {
-            return creationTime;
+            AbstractTabularReportDataSource.this.close();
         }
 
-        public long getLastAccessTime()
+        public boolean isClosed()
         {
-            return lastAccessed;
+            return AbstractTabularReportDataSource.this.isClosed();
         }
+    }
 
-        public long getInactivityTime()
+    protected class AutoCloseTask extends TimerTask
+    {
+        public void run()
         {
-            return lastAccessed - creationTime;
+            if(log.isDebugEnabled())
+                log.debug("Automatically closing " + this + " after " + autoCloseInactivityDuration + " milliseconds of inactivity.");
+            close();
         }
     }
 
     private static ValueSource defaultNoDataFoundMsg = new StaticValueSource("No data available.");
+    private boolean closed;
     protected TabularReportValueContext reportValueContext;
-    protected long creationTime = System.currentTimeMillis();
-    protected long lastAccessed = System.currentTimeMillis();
+    private long creationTime = System.currentTimeMillis();
+    private long lastAccessed = System.currentTimeMillis();
+    private long autoCloseInactivityDuration = 0;
+    private Timer autoCloseTimer;
 
     public AbstractTabularReportDataSource()
     {
@@ -269,6 +272,12 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
     public void recordActivity()
     {
         lastAccessed = System.currentTimeMillis();
+        if(autoCloseTimer != null)
+        {
+            if(log.isDebugEnabled())
+                log.debug("Activity recorded in " + this + ", resetting to auto close in " + autoCloseInactivityDuration + " milliseconds.");
+            scheduleAutoCloseCheck();
+        }
     }
 
     public abstract boolean hasMoreRows();
@@ -323,8 +332,46 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
         return defaultNoDataFoundMsg;
     }
 
+    public void setAutoClose(long autoCloseInactivityDuration)
+    {
+        this.autoCloseInactivityDuration = autoCloseInactivityDuration;
+        scheduleAutoCloseCheck();
+    }
+
+    protected void scheduleAutoCloseCheck()
+    {
+        if(log.isDebugEnabled())
+            log.debug("Setting " + this + " to auto close in " + autoCloseInactivityDuration + " milliseconds.");
+
+        if(autoCloseTimer != null)
+        {
+            autoCloseTimer.cancel();
+            autoCloseTimer = null;
+        }
+
+        if(autoCloseInactivityDuration > 0)
+        {
+            autoCloseTimer = new Timer();
+            autoCloseTimer.schedule(new AutoCloseTask(), autoCloseInactivityDuration);
+        }
+    }
+
     public void close()
     {
+        if(log.isDebugEnabled())
+            log.debug("Closing " + this + ".");
+
+        if(autoCloseTimer != null)
+        {
+            autoCloseTimer.cancel();
+            autoCloseTimer = null;
+        }
+        closed = true;
+    }
+
+    public boolean isClosed()
+    {
+        return closed;
     }
 
     public boolean isActive(long timeOut)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportDataSource.java,v 1.8 2003-05-30 23:08:01 shahid.shah Exp $
+ * $Id: TabularReportDataSource.java,v 1.9 2003-09-14 17:01:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -77,9 +77,21 @@ public interface TabularReportDataSource
     public TabularReportDataSourceScrollState createScrollState(String identifier);
 
     /**
+     * Set the data source to automatically close after a set amount of time
+     * @param autoCloseInactivityDuration Number of milliseconds of inactivity that should retire this datasource
+     */
+    public void setAutoClose(long autoCloseInactivityDuration);
+
+    /**
      * Close the data source and release all allocated resources immediately.
      */
     public void close();
+
+    /**
+     * Determines whether the data source is already closed
+     * @return True if close() was already called, false otherwise
+     */
+    public boolean isClosed();
 
     /**
      * Cycle to next row in the data source -- this will be called even for the first row (the first call should
