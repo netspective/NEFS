@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.2 2003-06-06 23:10:53 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.3 2003-06-06 23:14:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -48,6 +48,13 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
+
+import freemarker.template.Configuration;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
+import freemarker.cache.WebappTemplateLoader;
+
+import com.netspective.sparx.value.ServletValueContext;
 
 public class FreeMarkerConfigurationAdapters
 {
@@ -96,6 +103,16 @@ public class FreeMarkerConfigurationAdapters
     public FreeMarkerConfigurationAdapter getConfiguration(String name)
     {
         return (FreeMarkerConfigurationAdapter) configs.get(name);
+    }
+
+    public Configuration constructWebAppConfiguration(ServletValueContext vc)
+    {
+        Configuration result = new Configuration();
+        result.setTemplateLoader(new MultiTemplateLoader(new TemplateLoader[] {
+                stringTemplateLoader,
+                new WebappTemplateLoader(vc.getServletContext())
+            }));
+        return result;
     }
 
     public int size()
