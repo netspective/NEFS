@@ -38,7 +38,6 @@
         <root type="simple" url="jar://$PROJECT_DIR$/../../Commons/lib/redist/xalan.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/../../Commons/lib/redist/xerces.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/../../Commons/lib/redist/xml-apis.jar!/" />
-        <root type="simple" url="file://$PROJECT_DIR$/../../Junxion/conf" />
         <root type="simple" url="file://$PROJECT_DIR$/../../Commons/conf" />
         <root type="simple" url="file://$PROJECT_DIR$/../../Commons/src/java/test" />
         <root type="simple" url="jar://$PROJECT_DIR$/../../Sparx/lib/redist/servlet.jar!/" />
@@ -48,6 +47,8 @@
         <root type="simple" url="jar://$PROJECT_DIR$/../../Commons/lib/redist/jenesis.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/../../Sparx/lib/redist/syntax.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/../../Sparx/lib/redist/freemarker.jar!/" />
+        <root type="simple" url="file://$PROJECT_DIR$/../../Commons/src/java/main" />
+        <root type="simple" url="file://$PROJECT_DIR$/../../Sparx/src/java/main" />
       </root>
     </classPath>
     <excludePath>
@@ -88,7 +89,7 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="AntConfiguration">
-    <buildFile url="file://$PROJECT_DIR$/../../Axiom/src/java/test/com/netspective/axiom/convert-sparx-2.xml">
+    <buildFile url="file://$PROJECT_DIR$/../translate/convert-sparx-2.xml">
       <useEmacsModeOutput value="true" />
       <useCustomJdk value="false" />
       <treeView value="true" />
@@ -98,24 +99,6 @@
       <includeParser value="true" />
       <maximumHeapSize value="128" />
       <viewClosedWhenNoErrors value="false" />
-    </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/../../Axiom/src/java/test/com/netspective/axiom/ant/build.xml">
-      <useEmacsModeOutput value="true" />
-      <useCustomJdk value="false" />
-      <treeView value="true" />
-      <useJavaw value="true" />
-      <verbose value="true" />
-      <includeProjectClasspath value="true" />
-      <includeParser value="true" />
-      <maximumHeapSize value="256" />
-      <viewClosedWhenNoErrors value="false" />
-      <targetFilters>
-        <filter targetName="setup-properties" isVisible="false" />
-        <filter targetName="init" isVisible="false" />
-        <filter targetName="generate-id-constants" isVisible="false" />
-        <filter targetName="generate-ddl" isVisible="false" />
-        <filter targetName="create-database" isVisible="false" />
-      </targetFilters>
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/copy-resources.xml">
       <useEmacsModeOutput value="true" />
