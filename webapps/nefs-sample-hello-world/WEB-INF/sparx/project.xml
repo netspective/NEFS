@@ -36,6 +36,14 @@
                 invalid-reg-ex-message="Invalid email format."/-->
             <field name="email_field" type="e-mail" caption="Email" hint="Email field"/>
             <field name="masked_field" type="text" caption="Masked Field" mask-entry="yes" hint="e.g password"/>
+			<field name="properties" type="html" caption="HTML Template Field">
+				<body>
+					<![CDATA[
+					<div class='textbox'>
+					This is a FreeMarker template inside a dialog (1 + 1 = ${1 + 1}).
+					</div>]]>
+				</body>
+			</field>
             <director submit-caption="Submit" style="acknowledge"/>
         </dialog>
         <dialog name="DialogTest_01_B" retain-params="*">
