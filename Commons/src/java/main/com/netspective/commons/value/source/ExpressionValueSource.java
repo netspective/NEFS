@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ExpressionValueSource.java,v 1.3 2003-05-13 19:51:51 shahid.shah Exp $
+ * $Id: ExpressionValueSource.java,v 1.4 2003-10-01 03:35:19 aye.thu Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -63,7 +63,7 @@ public class ExpressionValueSource extends AbstractValueSource
     public Value getValue(ValueContext vc) throws ValueSourceException
     {
         ValueSourceExpressionText vset = new ValueSourceExpressionText();
-        return new GenericValue(vset.getFinalText(vc, spec.getParams()));
+        return new GenericValue(spec.isValid() ? vset.getFinalText(vc, spec.getParams()) : spec.getSpecificationText());
     }
 
     public PresentationValue getPresentationValue(ValueContext vc)
