@@ -163,5 +163,160 @@
                 </query>
             </element>
         </panel-editor>
+
+        <panel-editor  name="emergency-contacts"  require-request-param="person_id">
+            <frame heading="Emergency Contacts"/>
+            <element type="report" name="emergency-contacts" caption="Emergency Contacts" dialog-ref="personAttribute.contactPerson" pk-column-index="0">
+                <query>
+                    select
+                    system_id,
+                    (Person.name_first || ' ' || Person.name_last),
+                    Person_Relationship_Type.caption,
+                    Person_Contact.method_name ,
+                    Person_Contact.method_value
+                from
+                    Person,
+                    Person_Relationship,
+                    Person_Relationship_Type,
+                    Person_Contact
+                where
+                    Person_Relationship.parent_id = ? and
+                    Person_Relationship.rel_entity_id = Person.person_id and
+                    Person_Relationship.rel_type_id = Person_Relationship_Type.id and
+                    Person_Contact.parent_id =  Person.person_id and
+                    Person_Relationship_Type.caption = 'Emergency Contact'
+                <params>
+                    <param value="request:person_id"/>
+                </params>
+                <presentation>
+                    <panel no-data-msg="No emergency contacts found.">
+                        <frame heading="Emergency Contacts"/>
+                        <report>
+                            <column hidden="yes"/>
+                            <column heading="Person"/>
+                            <column heading="Relationship"/>
+                            <column heading="Contact"/>
+                            <column heading="Value"/>
+                        </report>
+                    </panel>
+                </presentation>
+                </query>
+            </element>
+        </panel-editor>
+        <panel-editor name="family-contacts"  require-request-param="person_id">
+            <frame heading="Family Contacts"/>
+            <element type="report" name="family-contacts" caption="Family Contacts" dialog-ref="personAttribute.contactPerson" pk-column-index="0">
+                <query>
+                    select
+                    system_id,
+                    (Person.name_first || ' ' || Person.name_last),
+                    Person_Relationship_Type.caption,
+                    Person_Contact.method_name ,
+                    Person_Contact.method_value
+                from
+                    Person,
+                    Person_Relationship,
+                    Person_Relationship_Type,
+                    Person_Contact
+                where
+                    Person_Relationship.parent_id = ? and
+                    Person_Relationship.rel_entity_id = Person.person_id and
+                    Person_Relationship.rel_type_id = Person_Relationship_Type.id and
+                    Person_Contact.parent_id =  Person.person_id and
+                    Person_Relationship_Type.caption in ('Father', 'Mother')
+                <params>
+                    <param value="request:person_id"/>
+                </params>
+                <presentation>
+                    <panel no-data-msg="No family contacts found.">
+                        <frame heading="Family Contacts"/>
+                        <report>
+                            <column hidden="yes"/>
+                            <column heading="Person"/>
+                            <column heading="Relationship"/>
+                            <column heading="Contact"/>
+                            <column heading="Value"/>
+                        </report>
+                    </panel>
+                </presentation>
+                </query>
+
+            </element>
+        </panel-editor>
+        <panel-editor name="allergies" require-request-param="person_id">
+            <frame heading="Allergies"/>
+            <element type="report" caption="Allergies" dialog-ref="personAttribute.indication" pk-column-index="0">
+                <query>
+                    select
+                        system_id,
+                        indication_type,
+                        indication
+                    from
+                        person_indication_type,
+                        patient_indication
+                    where
+                        patient_indication.person_id = ? and
+                        patient_indication.indication_type_id = person_indication_type.id and
+                        person_indication_type.id in (1, 2, 3)
+                    <params>
+                        <param value="request:person_id"/>
+                    </params>
+                    <presentation>
+                    <panel no-data-msg="No allergies found.">
+                        <frame heading="Allergies"/>
+                        <report>
+                            <column hidden="yes"/>
+                            <column heading="Type"/>
+                            <column heading="Indication"/>
+                        </report>
+                    </panel>
+                </presentation>
+                </query>
+            </element>
+        </panel-editor>
+
+        <panel-editor name="medications" require-request-param="person_id">
+            <frame heading="Medications"/>
+            <element type="report" caption="Medications" dialog-ref="personAttribute.medication" pk-column-index="0">
+                <query>
+                    select
+                        patient_medication.system_id,
+                        medication_record_type.caption,
+                        patient_medication.dose,
+                        patient_medication.frequency,
+                        patient_medication.pharmacy_name,
+                        patient_medication.num_refills,
+                        patient_medication.quantity,
+                        patient_medication.ongoing
+
+                    from
+                        patient_medication,
+                        medication_record_type
+
+                    where
+                        patient_medication.patient_id = ? and
+                        patient_medication.record_type = medication_record_type.id
+
+                    <params>
+                        <param value="request:person_id"/>
+                    </params>
+                    <presentation>
+                    <panel no-data-msg="No medications found.">
+                        <frame heading="Medications"/>
+                        <report>
+                            <column hidden="yes"/>
+                            <column heading="Type"/>
+                            <column heading="Dose"/>
+                            <column heading="Frequency"/>
+                            <column heading="Pharmacy Name"/>
+                            <column heading="Refills"/>
+                            <column heading="Refill Quantity"/>
+                            <column heading="Ongoing?"/>
+                        </report>
+                    </panel>
+                </presentation>
+                </query>
+            </element>
+        </panel-editor>
     </panel-editors>
 </xdm:container>

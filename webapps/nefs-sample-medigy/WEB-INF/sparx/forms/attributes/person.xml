@@ -160,7 +160,7 @@
 		
 
 		<dialog name="relationship" retain-params="person_id">
-<frame heading="create-dialog-perspective-heading:Personal Relationship"/>
+            <frame heading="create-dialog-perspective-heading:Personal Relationship"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
@@ -180,14 +180,99 @@
             <director>
                 <next-actions caption="Next Action ">
                     <items>
-<item value="page-id:/person/summary" caption="Summary"/>
-</items>
+                        <item value="page-id:/person/summary" caption="Summary"/>
+                    </items>
                 </next-actions>
             </director>
             <!--listener class="app.form.person.attribute.RelationshipDialog"/-->
 		</dialog>
-		
 
+        <dialog type="schema-record-editor" name="contactPerson"  retain-params="*" >
+            <frame heading="create-dialog-perspective-heading: Contact Person"/>
+            <field type="text" name="parent_id" caption="Person ID" hidden="no" default="request:person_id"/>
+
+            <xdm:include template="person.personal-profile"/>
+            <section name="relationship" caption="Relationship">
+                <field type="select" name="rel_type_id" caption="Type" choices="schema-enum:Person_Relationship_Type" required="yes"/>
+                <field type="text" name="rel_descr" caption="Other Relationship Type" hint="Describe the relationship type">
+                    <conditional action="display" partner-field-name="relationship.rel_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
+            </section>
+            <section name="contact" caption="Contact Information">
+                <field type="phone" name="work_phone" caption="Work Phone" size="25"/>
+                <field type="phone" name="home_phone" caption="Home Phone" size="25"/>
+                <field type="e-mail" name="email" caption="Email" size="25"/>
+            </section>
+
+            <on-add-data>
+                <person name_last="field:profile.name_last" name_first="field:profile.name_first" name_middle="field:profile.name_middle"
+                    name_suffix="field:profile.name_suffix" rec-stat-id="static:Active" >
+                    <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business"
+                            method-value="contact.work_phone" method-name="static:Telephone: Business"
+                            _condition="vc.getFieldStates().getState('contact.work_phone').getValue().hasValue()"/>
+                    <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Home"
+                            method-value="contact.home_phone" method-name="static:Telephone: Home"
+                            _condition="vc.getFieldStates().getState('contact.home_phone').getValue().hasValue()"/>
+                    <person-contact rec-stat-id="static:Active" method-type="static:Email: Business"
+                        method-value="contact.email"
+                         _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
+                    <person-classification rec-stat-id="static:Active" person-type-id="static:Patient"/>
+                </person>
+                <person-relationship parent_id="field:parent_id" rel_entity_id="record-editor-added-row-pk:0" rel_type_id="field:relationship.rel_type_id" rec-stat-id="static:Active"
+                        rel-descr="field:relationship.rel_descr"/>
+                <person-relationship parent_id="field:parent_id" rel_entity_id="record-editor-added-row-pk:0" rel_type_id="static:Emergency Contact" rec-stat-id="static:Active" />
+            </on-add-data>
+            <on-edit-data>
+                <person name_last="field:profile.name_last" name_first="field:profile.name_first" name_middle="field:profile.name_middle"
+                    name_suffix="field:profile.name_suffix" rec-stat-id="static:Active" />
+            </on-edit-data>
+            <on-delete-data>
+                <person _pk-value="request:person_id" _auto-map="*" />
+            </on-delete-data>
+        </dialog>
+
+        <dialog type="schema-record-editor" name="indication"  retain-params="*" >
+            <frame heading="create-dialog-perspective-heading: Indication"/>
+            <field type="text" name="person_id" caption="Person ID" hidden="no" default="request:person_id"/>
+            <field type="select" name="indication_type_id" caption="Indication Type" choices="schema-enum:Person_Indication_Type"
+                prepend-blank="yes" required="yes"/>
+
+            <field type="memo" name="indication" caption="Indication" required="yes"/>
+            <on-add-data>
+                <patient-indication _auto-map="*" indication_type="field:indication_type_id" rec-stat-id="static:Active"/>
+            </on-add-data>
+            <on-edit-data>
+                <patient-indication _auto-map="*" rec-stat-id="static:Active"/>
+            </on-edit-data>
+            <on-delete-data>
+                <patient-indication _auto-map="*" rec-stat-id="static:Active"/>
+            </on-delete-data>
+        </dialog>
+
+        <dialog type="schema-record-editor" name="medication"  retain-params="*" >
+            <frame heading="create-dialog-perspective-heading: Medication"/>
+            <section name="" caption="General Information">
+                <field type="text" name="person_id" caption="Person ID" hidden="yes" default="request:person_id"/>
+                <field type="select" name="med_id" caption="Medication" choices="query:orgAttribute.get-all-medications"
+                    prepend-blank="yes" required="yes"/>
+                <field type="select" name="prescriber_id" caption="Prescriber" choices="" prepend-blank="yes"/>
+                <field type="select" name="pharmacy_id" caption="Pharmacy" choices="" prepend-blank="yes"/>
+                <field type="boolean" name="allow_generic" caption="Allow Generic?" default="yes"/>
+            </section>
+            <section name="dosage" caption="Dosage">
+                <field type="composite"  />
+                <field type="text" name="first_dose" caption="First Dose"/>
+                <field type="text" name="dose" caption="Dose"/>
+                <field type="text" name="frequency" caption="Frequency"/>
+                <field type="text" name="num_refills" caption="Refills"/>
+            </section>
+            <section name="timePeriod" caption="Medication Period">
+                <field type="duration" name="duration" caption="Start/End Date"/>
+                <field type="text" name="duration" caption="Duration"/>
+            </section>
+            <field type="memo" name="notes" caption="Notes" />
+
+        </dialog>
 
 	</dialogs>
 </xdm:container>
