@@ -5,7 +5,7 @@
   <title>NEFS Enterprise Console Tour</title>
 
   <section>
-    <title>Netsepctive Enterprise Console</title>
+    <title>Netspective Enterprise Console</title>
 
     <para>The NEF and all application components built with it can be viewed
     with the <emphasis>Netspective Enterprise Console</emphasis>
@@ -800,12 +800,6 @@
           </table></para>
       </section>
     </section>
-
-    <section>
-      <title>Dynamic Queries</title>
-
-      <para>TODO: The option is not available at the moment.</para>
-    </section>
   </section>
 
   <section>
@@ -826,7 +820,7 @@
     developers open connections but may forget to close them. The Open
     Connections page within the Console displays open database connections and
     their location in the code. Using this facility you can easily debug and
-    remove the possible orphan database connections. </para>
+    remove the possible orphan database connections.</para>
   </section>
 
   <section>
@@ -894,7 +888,7 @@
     objects, etc), and XML import/export.</para>
 
     <section>
-      <title>DAL Generation</title>
+      <title>Data Access Layer (DAL) Generation</title>
 
       <para>Sparx generates database-independent Java Object-relational
       classes for an entire schema, automating the majority of SQL calls by
