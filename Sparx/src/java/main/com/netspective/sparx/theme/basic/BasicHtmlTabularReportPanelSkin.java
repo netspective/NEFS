@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.29 2003-11-18 04:51:34 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.30 2004-02-04 23:20:03 min-gu.lee Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -236,7 +236,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         {
             for (int k=0; k < prependColCount; k++)
             {
-                 writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
+                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">&nbsp;&nbsp;</th>");
             }
         }
         for(int i = 0; i < dataColsCount; i++)
@@ -253,17 +253,17 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
                     colHeading += sortDescImgTag;
 
-                writer.write("        <td class=\"report-column-heading\" nowrap>" + colHeading  + "</td>");
+                writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">" + colHeading  + "</th>");
             }
             else
-                writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
+                writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">&nbsp;&nbsp;</th>");
         }
         int appendColCount = getRowDecoratorAppendColsCount(rc);
         if (appendColCount > 0)
         {
             for (int k=0; k < appendColCount; k++)
             {
-                 writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
+                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">&nbsp;&nbsp;</th>");
             }
         }
         writer.write("</tr>");
