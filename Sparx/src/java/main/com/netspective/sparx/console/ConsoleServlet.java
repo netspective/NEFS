@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.4 2003-04-06 15:18:29 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.5 2003-04-10 01:27:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -59,7 +59,6 @@ import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.xdm.XdmComponentFactory;
-import com.netspective.commons.lang.ClassPath;
 
 public class ConsoleServlet extends HttpServlet
 {
@@ -90,7 +89,7 @@ public class ConsoleServlet extends HttpServlet
     {
         ApplicationManager pm = getPresentationManager();
 
-        Theme defaultTheme = Themes.getInstance().getDefaultTheme();
+        Theme defaultTheme = Themes.getInstance().getTheme("console");
         ConsoleNavigationTree tree = pm.getConsoleNavigationTree();
 
         if(tree == null)

@@ -39,17 +39,18 @@
  */
 
 /**
- * $Id: BasicTheme.java,v 1.2 2003-04-10 01:27:17 shahid.shah Exp $
+ * $Id: ConsoleTheme.java,v 1.1 2003-04-10 01:27:18 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme.basic;
+package com.netspective.sparx.theme.console;
 
+import com.netspective.sparx.theme.basic.BasicTheme;
 import com.netspective.sparx.navigate.NavigationSkin;
 
-public class BasicTheme extends AbstractTheme
+public class ConsoleTheme extends BasicTheme
 {
     protected NavigationSkin constructNavigationSkin()
     {
-        return new BasicTabbedNavigationSkin(this);
+        return new ConsoleNavigationSkin(this);
     }
 }

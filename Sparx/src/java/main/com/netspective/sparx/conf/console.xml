@@ -3,11 +3,13 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.15 2003-04-09 16:57:57 shahid.shah Exp $
+  * $Id: console.xml,v 1.16 2003-04-10 01:27:17 shahid.shah Exp $
   *****************************************************************************************
 -->
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
 
     <navigation-tree name="ace" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" default="yes" sub-heading="trying something here">

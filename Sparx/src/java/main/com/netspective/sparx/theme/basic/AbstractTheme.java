@@ -20,11 +20,17 @@ public class AbstractTheme implements Theme
     private ValueSource path;
     private InheritableFileResources resources;
     private boolean defaultTheme;
-    private NavigationSkin navigationSkin = new BasicTabbedNavigationSkin(this);
+    private NavigationSkin navigationSkin;
     private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel/output", false);
 
     public AbstractTheme()
     {
+        navigationSkin = constructNavigationSkin();
+    }
+
+    protected NavigationSkin constructNavigationSkin()
+    {
+        return null;
     }
 
     public String getName()
