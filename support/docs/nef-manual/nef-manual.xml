@@ -11,7 +11,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.1 ($Date: 2004-05-21 03:42:57 $)</releaseinfo>
+    <releaseinfo>Release 7.1 ($Date: 2004-05-24 02:33:48 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until May 25, 2004 when it's
     expected to be completed. Check back daily until then because material is
@@ -2545,7 +2545,11 @@
       <section>
         <title>Generating Presentation Layer Code</title>
 
-        <para>TODO: documentation coming soon...</para>
+        <para>Generate user interface pages, forms, fields using simple XML
+        tags and get fully functional theme- and skin-based HTML output
+        automatically. Sparx generates HTML for XDM tags using the powerful
+        FreeMarker template engine. Declare the presentation in XML and
+        FreeMarker will process and transform it into HTML.</para>
       </section>
 
       <section>
@@ -2597,13 +2601,21 @@
       <section>
         <title>Customizing Presentation Layer Code</title>
 
-        <para>TODO: documentation coming soon...</para>
+        <para>Use either Java inheritace or implementation to create a custom
+        presentation layer. Extend a concrete Sparx NavigationSkin class or
+        implement the NavigationSkin interface to generate your HTML. Create
+        custom CSS for the presentation skin or javascript to add
+        functionality to the client tier. </para>
       </section>
 
       <section>
         <title>Customizing Data Management Layer Code</title>
 
-        <para>TODO: documentation coming soon...</para>
+        <para>Use Java class inheritance to create custom data management.
+        Extend the Axiom AnsiDataBasePolicy class or implement the
+        DatabbasePolicy interface to enable data access code to remain
+        independent of its physical environment. Isolate platform- and data
+        source-dependent behavior within a single component. </para>
       </section>
 
       <section>
@@ -2615,7 +2627,7 @@
         control decision making. Custom Login Managers that provide
         authentication types such as certificate-based identity and
         authentication or Kerberos password-based identity and authentication
-        can be created using Java inheritance. </para>
+        can be created using Java inheritance.</para>
       </section>
     </section>
 
@@ -4063,14 +4075,22 @@
             <para>On Win32 type build and on UNIX type sh build.sh</para>
           </step>
         </procedure>
-
-        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Executing Ant Scripts from within your IDE</title>
 
         <para>TODO: documentation coming soon...</para>
+
+        <para>Using Intellij IDEA, open the Ant tool window by pressing the
+        Ant Build tool window button. The Ant tool window consists of an Ant
+        Target View and a toolbar. The Ant Target View shows available Ant
+        scripts and targets in a tree-like structure. In the toolbar, choose
+        the Add new Ant script button. Choose the Properties option in the
+        toolbar. Uncheck the Inlcude XML parser option in the Additional
+        Classpath Pane. Use the Add button in the Additional Classpath Pane to
+        include the resources needed to compile your project. (ex. jars
+        provided by NEFS, Servlet jar, etc.).</para>
       </section>
 
       <section>
