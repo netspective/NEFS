@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-01 02:59:32 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-03 01:20:36 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -137,6 +137,12 @@
             documentation, unit tests, functional specifications, and
             requirements traceability maps just by using XML tags and the NEF
             API.</para>
+          </listitem>
+
+          <listitem>
+            <para>Combine multiple &#34;sub-applications&#34; into a main
+            application context -- share common themes, skins, navigation,
+            security, and sessions across multiple applications.</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -748,6 +754,21 @@
         versus Y (<literal>appY/console</literal>) you will only see
         components for the appropriate application.</para>
 
+        <note>
+          <para>The Enterprise Console is an excellent example of one of
+          NEF&#39;s features called <emphasis>mulitiple sub-applications</emphasis>.
+          It means that a primary application (in this case your custom app)
+          can host and co-exist with other shared sub-applications that may be
+          related. The sub-application scheme uses the standard servlet
+          context mapping scheme of the URI paths used by servlet containers.
+          Each sub-application is merely another servlet and can share (if it
+          needs to) the main-application&#39;s themes, skins, and descriptors
+          or may use it&#39;s own. For example, although the Console is a
+          sub-application of your custom application, it has its own
+          navigation tree, its own theme and skins but it knows about the
+          objects in your application and may manipulate and use them.</para>
+        </note>
+
         <section>
           <title>Console Login</title>
 
@@ -983,6 +1004,30 @@
 
         <listitem>
           <para>Apache Tomcat</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>NEF has been tested on and requires one of the web browsers:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Microsoft Internet Explorer 4.0 or above</para>
+        </listitem>
+
+        <listitem>
+          <para>Mozilla 1.0 or above include Firebird</para>
+        </listitem>
+
+        <listitem>
+          <para>Opera 6.0 or above</para>
+        </listitem>
+
+        <listitem>
+          <para>Apple Safari</para>
+        </listitem>
+
+        <listitem>
+          <para>Most other modern web browsers</para>
         </listitem>
       </itemizedlist>
     </section>
