@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: CurrencyField.java,v 1.4 2003-05-15 21:34:46 shahid.shah Exp $
+ * $Id: CurrencyField.java,v 1.5 2003-06-16 06:39:37 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -68,6 +68,10 @@ import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.commons.value.exception.ValueException;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
+/**
+ * NOTE: JSDK 1.4 and above supports the java.util.Currency class. Right now, we're not using it
+ * but we might want to use it.
+ */
 public class CurrencyField extends TextField
 {
     public static class NegativePosLocation extends XdmEnumeratedAttribute
@@ -105,6 +109,11 @@ public class CurrencyField extends TextField
                 return isValid() ? super.getTextValue() : getInvalidText();
             }
 
+            /**
+             *
+             * @param value the value passed here should have been verified already using either the display pattern or the submit pattern
+             * @throws ValueException
+             */
             public void setTextValue(String value) throws ValueException
             {
                 if(value == null || value.length() == 0)
@@ -115,10 +124,23 @@ public class CurrencyField extends TextField
 
                 try
                 {
-                    Number number = format.parse(value);
-                    setValue(new Double(number.doubleValue()));
+                    // NumberFormat's parse() method can be used if the 'value' was already in the Locale's format.
+                    // e.g. English in US Locale dictates that a currency value format is in $123.11 for
+                    // positive values and ($123.11) for negative values.   So, the following values -$123.11, $-123.11,
+                    // 123.11, and -123.11 will not work and will throw a ParseException.
+                    //Number number = format.parse(value);
+                    if (value.indexOf(currencySymbol) >= 0)
+                    {
+                        // display value can contain the currency symbol
+                        setValue(value);
+                    }
+                    else
+                    {
+                        // submit value does not contain the currency symbol
+                        setValue(new Double(value));
+                    }
                 }
-                catch (ParseException e)
+                catch (Exception e)
                 {
                     setInvalidText(value);
                     invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in currency format ("+ e.getMessage() +").");
