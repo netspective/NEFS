@@ -965,16 +965,17 @@
 
             <programlisting>&lt;project&gt;
 ...
- &lt;dialog type="exec-sample" name="inc-html" loop="prepend" allow-multiple-executes<emphasis>="yes"</emphasis>&gt;
+ &lt;dialog type="exec-sample" name="inc-html" loop="prepend" 
+                            allow-multiple-executes<emphasis>="yes"</emphasis>&gt;
     <emphasis>&lt;loop-separator&gt;&amp;lt;hr size=1&amp;gt;&amp;lt;p&amp;gt;&lt;/loop-separator&gt;</emphasis> <co
                 id="declare-include-url-eg-1" />
     &lt;frame heading="Get contents of URL"/&gt;
     &lt;field type="text" name="url" caption="URL" size="60" required="yes" 
            default="http\://www.yahoo.com"&gt;
-        &lt;hint&gt;
-            Please provide a complete URL such as http\://www.google.com.&amp;lt;br&amp;gt;
-            This form will read the contents of the URL and show it below.
-        &lt;/hint&gt;
+     &lt;hint&gt;
+       Please provide a complete URL such as http\://www.google.com.&amp;lt;br&amp;gt;
+       This form will read the contents of the URL and show it below.
+     &lt;/hint&gt;
     &lt;/field&gt;
 
     &lt;on-execute <emphasis>handler="include"</emphasis>&gt; <co
@@ -1219,10 +1220,10 @@
 ...
  &lt;dialog type="exec-sample" name="exec-panels" allow-multiple-executes="yes"&gt;
     &lt;frame heading="Panels Handler Example"/&gt;
-    &lt;field type="text" name="local-include" caption="Include local" required="yes" 
-                       size="60" default="/jsp/panel-inc-test.jsp"/&gt;
-    &lt;field type="text" name="remote-include" caption="Command 2" required="yes" 
-                       size="60" default="http\://www.yahoo.com"/&gt;
+    &lt;field type="text" name="local-include" caption="Include local" 
+           required="yes" size="60" default="/jsp/panel-inc-test.jsp"/&gt;
+    &lt;field type="text" name="remote-include" caption="Command 2" 
+           required="yes" size="60" default="http\://www.yahoo.com"/&gt;
 
     &lt;on-execute <emphasis>handler="panels"</emphasis> <emphasis>style="two-columns"</emphasis>&gt; <co
                 id="declare-panels-eg-1" />
@@ -1322,8 +1323,8 @@
                                                      allow-multiple-executes="yes"&gt;
   &lt;frame heading="XSLT Handler Example"/&gt;    
    &lt;field type="select" name="style-sheet-file" caption="Style sheet File" 
-                                                     required="yes" 
-          <emphasis>choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"</emphasis>/&gt; <co
+          required="yes" <emphasis>
+          choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"</emphasis>/&gt; <co
                 id="declare-transform-bean-eg-1" />
 
   &lt;on-execute <emphasis>handler="style-sheet"</emphasis>&gt; <co
@@ -1418,7 +1419,8 @@
 
             <programlisting>&lt;project&gt;
 ...
- &lt;dialog type="exec-sample" name="transform-xslt-file" loop="prepend" allow-multiple-executes="yes"&gt;
+ &lt;dialog type="exec-sample" name="transform-xslt-file" loop="prepend" 
+                                                       allow-multiple-executes="yes"&gt;
     &lt;frame heading="XSLT Handler Example"/&gt;
     &lt;field type="select" name="source-file" caption="Source File" required="yes" 
            choices="filesystem-entries:servlet-context-path:/form/exec,\.x[sm]l$,yes"/&gt;

@@ -174,11 +174,9 @@
 
           <programlisting>&lt;project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt;
 ...
-
 &lt;<emphasis>connection-provider</emphasis> <emphasis>
                  class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider"</emphasis>&gt; <co
               id="declare-conn-provider-tags-eg-1" />
-
  &lt;<emphasis>data-source</emphasis> name="<emphasis>jdbc/default</emphasis>"&gt; <co
               id="declare-conn-provider-tags-eg-2" />
   &lt;<emphasis>driver-class</emphasis>&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; <co
@@ -192,7 +190,6 @@
   &lt;<emphasis>password</emphasis>&gt;&lt;/password&gt; <co
               id="declare-conn-provider-tags-eg-6" />
  &lt;/data-source&gt;
-
 &lt;/connection-provider&gt;</programlisting>
         </example><calloutlist>
           <callout arearefs="declare-conn-provider-tags-eg-1">
@@ -714,20 +711,20 @@
     &lt;/xsl:template&gt;
 
     &lt;xsl:template name="iterate-one"&gt; <co id="declare-test-db-xsl-eg-5" />
-        &lt;xsl:param name="x"/&gt; 
+      &lt;xsl:param name="x"/&gt; 
 
-        &lt;book-info&gt; <co id="declare-test-db-xsl-eg-6" />
-            &lt;xsl:attribute name="id"&gt;BOOK_&lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt; 
-            &lt;xsl:attribute name="name"&gt;Book &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
-            &lt;xsl:attribute name="author"&gt;Author &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
-            &lt;xsl:attribute name="genre"&gt;Science Fiction&lt;/xsl:attribute&gt;
-            &lt;xsl:attribute name="isbn"&gt;ISBN &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
-        &lt;/book-info&gt;
+      &lt;book-info&gt; <co id="declare-test-db-xsl-eg-6" />
+       &lt;xsl:attribute name="id"&gt;BOOK_&lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt; 
+       &lt;xsl:attribute name="name"&gt;Book &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
+       &lt;xsl:attribute name="author"&gt;Author &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
+       &lt;xsl:attribute name="genre"&gt;Science Fiction&lt;/xsl:attribute&gt;
+       &lt;xsl:attribute name="isbn"&gt;ISBN &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
+      &lt;/book-info&gt;
 
-        &lt;xsl:if test="$x &gt; 1"&gt; <co id="declare-test-db-xsl-eg-7" />
-            &lt;xsl:call-template name="iterate-one"&gt;
-                &lt;xsl:with-param name="x" select="$x - 1"/&gt;
-            &lt;/xsl:call-template&gt;
+      &lt;xsl:if test="$x &gt; 1"&gt; <co id="declare-test-db-xsl-eg-7" />
+         &lt;xsl:call-template name="iterate-one"&gt;
+             &lt;xsl:with-param name="x" select="$x - 1"/&gt;
+         &lt;/xsl:call-template&gt;
         &lt;/xsl:if&gt;
     &lt;/xsl:template&gt;
 
@@ -862,6 +859,8 @@
         <para>To execute the test query, click the <command>OK
         </command>button. This displays the query result form (as shown
         below):</para>
+
+        <para></para>
 
         <screenshot>
           <graphic fileref="./resources/images/screen-console-db-test-result.gif" />
@@ -1066,8 +1065,8 @@
             <callout arearefs="declare-pres-tags-eg-7">
               <para>Declaring <literal>edit</literal> action. You may also
               supply parameters and their values within the redirect URL
-              (selected record's <literal>id</literal> field in this case).
-              </para>
+              (selected record's <literal>id</literal> field in this
+              case).</para>
 
               <para>Any ${XXX} specifies a dynamic replacement. Usually, value
               sources are used within the brackets but when the dynamic
@@ -1122,7 +1121,9 @@
         records per page. Enter the new value in this field if you want to
         change the number of records displayed per page. Click the
         <command>OK</command> button. The query is executed and its result is
-        displayed (as shown below).</para>
+        displayed (as shown below):</para>
+
+        <para></para>
 
         <screenshot>
           <graphic fileref="./resources/images/screen-console-static-qry-unit-test.gif" />
@@ -1273,17 +1274,17 @@
         &lt;<emphasis>presentation</emphasis>&gt; <co
               id="declare-qry-defn-pres-tags-eg-8" />
            &lt;<emphasis>panel</emphasis> name="report"&gt; 
-              &lt;frame heading="static:Book Search Results"/&gt;
-                &lt;<emphasis>report</emphasis>&gt; <co
+            &lt;frame heading="static:Book Search Results"/&gt;
+             &lt;<emphasis>report</emphasis>&gt; <co
               id="declare-qry-defn-pres-tags-eg-9" />
-                   &lt;<emphasis>column</emphasis> heading="ID" format="plain" <emphasis>redirect</emphasis>="page-id:/edit?id=${0}"/&gt; <co
+               &lt;<emphasis>column</emphasis> heading="ID" format="plain" <emphasis>redirect</emphasis>="page-id:/edit?id=${0}"/&gt; <co
               id="declare-qry-defn-pres-tags-eg-10" />
-                   &lt;column heading="Name" /&gt;
-                   &lt;column heading="Author"/&gt;
-                   &lt;column heading="Genre"/&gt;
-                   &lt;column heading="ISBN"/&gt;
-                &lt;/report&gt;
-             &lt;/panel&gt;
+               &lt;column heading="Name" /&gt;
+               &lt;column heading="Author"/&gt;
+               &lt;column heading="Genre"/&gt;
+               &lt;column heading="ISBN"/&gt;
+             &lt;/report&gt;
+           &lt;/panel&gt;
         &lt;/presentation&gt;
      &lt;/select&gt;
    &lt;/select-dialog&gt;
@@ -1673,13 +1674,14 @@
         <title>Creating "Delete Book" Page</title>
 
         <programlisting>&lt;navigation-tree name="app" default="yes"&gt;         
-    &lt;page name="delete" caption="Delete Book" command="dialog,schema.db.Book_Info,<emphasis>delete</emphasis>" <co
+    &lt;page name="delete" caption="Delete Book" 
+                        command="dialog,schema.db.Book_Info,<emphasis>delete</emphasis>" <co
             id="declare-delete-page-eg-1" />
           require-request-param="id" <co id="declare-delete-page-eg-2" />
           retain-params="id"&gt; <co id="declare-delete-page-eg-3" />
-        &lt;missing-params-body&gt; <co id="declare-delete-page-eg-4" />
-           Please choose a book to delete from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;.
-        &lt;/missing-params-body&gt;
+     &lt;missing-params-body&gt; <co id="declare-delete-page-eg-4" />
+        Please choose a book to delete from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;.
+     &lt;/missing-params-body&gt;
     &lt;/page&gt;
 &lt;/navigation-tree&gt;</programlisting>
 
@@ -1955,6 +1957,8 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
       <para>Try editing the record of the book. Select the book from the list
       by clicking on its name. The Edit Book page is displayed containing the
       selected book's information.</para>
+
+      <para></para>
 
       <screenshot>
         <graphic fileref="./resources/images/screen-books-app-edit.gif" />

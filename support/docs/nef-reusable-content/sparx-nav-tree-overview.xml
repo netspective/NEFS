@@ -32,7 +32,8 @@
             id="declare-nav-eg-2" />
         &lt;<emphasis>body</emphasis>&gt; <co id="declare-nav-eg-3" />
             &lt;![CDATA[
-            This is the 'Hello World' app. Click &lt;a href="next-steps"&gt;here&lt;/a&gt; to see what's next.
+            This is the 'Hello World' app. Click &lt;a href="next-steps"&gt;here&lt;/a&gt; 
+            to see what's next.
             ]]&gt;
         &lt;/body&gt;
     &lt;/page&gt;
@@ -44,12 +45,15 @@
 
     &lt;page name="some-stuff" caption="Panels instead of Body"&gt;
         &lt;<emphasis>panels</emphasis>&gt; <co id="declare-nav-eg-5" />
-             &lt;panel type="command" command="query,org.get-sponsor-info-by-id,-,-,-,detail-compressed"/&gt;
-             &lt;panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,report-compressed" /&gt;
+             &lt;panel type="command" 
+                   command="query,org.get-sponsor-info-by-id,-,-,-,detail-compressed"/&gt;
+             &lt;panel type="command" 
+                   command="query,org.get-org-addresses-by-id,-,-,-,report-compressed"/&gt;
         &lt;/panels&gt;
     &lt;/page&gt;
 
-    &lt;page name="sampler" caption="Sampler" <emphasis>redirect</emphasis>="vs-expr:${netspective-url:sampler}"/&gt; <co
+    &lt;page name="sampler" caption="Sampler" <emphasis>
+                         redirect</emphasis>="vs-expr:${netspective-url:sampler}"/&gt; <co
             id="declare-nav-eg-6" />
     &lt;page name="sampler" caption="Sampler" <emphasis>include</emphasis>="/some/file.jsp"/&gt; <co
             id="declare-nav-eg-7" />
@@ -62,7 +66,7 @@
           require-request-param="id" retain-params="id"&gt;
         &lt;<emphasis>missing-params-body</emphasis>&gt; <co
             id="declare-nav-eg-10" />
-           Please choose a book to edit from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;.
+         Please choose a book to edit from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;.
         &lt;/missing-params-body&gt;
     &lt;/page&gt;
 &lt;/navigation-tree&gt;</programlisting>
