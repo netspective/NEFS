@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.8 2003-08-08 00:52:20 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.9 2003-08-17 00:05:17 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -220,5 +220,17 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
     public void setRemembered(boolean isRemembered)
     {
         this.isRemembered = isRemembered;
+    }
+
+    public void registerLogin()
+    {
+    }
+
+    public void registerLogout()
+    {
+    }
+
+    public void registerTimeOut()
+    {
     }
 }

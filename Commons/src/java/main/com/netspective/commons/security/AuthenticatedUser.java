@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.6 2003-08-08 00:52:20 shahid.shah Exp $
+ * $Id: AuthenticatedUser.java,v 1.7 2003-08-17 00:05:17 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -88,4 +88,10 @@ public interface AuthenticatedUser extends Principal
     public void setRemembered(boolean isRemembered);
 
     public boolean isRemembered();
+
+    public void registerLogin();
+
+    public void registerLogout();
+
+    public void registerTimeOut();
 }
