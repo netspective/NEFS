@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: RiskResponseDialog.java,v 1.6 2003-09-01 03:24:44 shahid.shah Exp $
+ * $Id: RiskResponseDialog.java,v 1.7 2003-10-14 21:26:02 terry.mayfield Exp $
  */
 
 package app;
@@ -108,7 +108,7 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
     public void populateValues(DialogContext dc, int formatType)
     {
         super.populateValues(dc, formatType);
-        if(dc.getAuthenticatedUser() == null)
+        if(dc.getAuthenticatedUser() == null || dc.isInConsole())
             return;
 
         if(dc.isInitialEntry())
