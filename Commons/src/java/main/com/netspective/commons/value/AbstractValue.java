@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.7 2003-07-29 20:31:08 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.8 2003-08-19 04:59:16 aye.thu Exp $
  */
 
 package com.netspective.commons.value;
@@ -163,6 +163,16 @@ public abstract class AbstractValue implements Value
     public void setValue(Object value) throws ValueException
     {
         this.value = value;
+    }
+
+    /**
+     * Performs a copy by reference, not a copy by value so be careful
+     * @param value
+     * @throws ValueException
+     */
+    public void copyValueByReference(Value value) throws ValueException
+    {
+        setValue(value.getValue());
     }
 
     public void setValue(String[] value)

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.8 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.9 2003-08-19 05:01:37 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -321,6 +321,6 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         }
 
         if (status && conditionalValueSource != null)
-            dc.getFieldStates().getState(getSourceField()).getValue().setValue(valueSource.getValue(dc));
+            dc.getFieldStates().getState(getSourceField()).getValue().copyValueByReference(valueSource.getValue(dc));
     }
 }

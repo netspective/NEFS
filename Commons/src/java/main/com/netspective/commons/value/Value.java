@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Value.java,v 1.4 2003-07-29 20:31:08 shahid.shah Exp $
+ * $Id: Value.java,v 1.5 2003-08-19 04:59:30 aye.thu Exp $
  */
 
 package com.netspective.commons.value;
@@ -127,6 +127,13 @@ public interface Value
      */
     public void setValue(Object value) throws ValueException;
 
+    /**
+     * Copy the given Value by reference
+     * @param value
+     * @throws ValueException
+     */
+    public void copyValueByReference(Value value) throws ValueException;
+
     public void setValue(String[] value);
 
     public void setValue(List value);
@@ -159,5 +166,4 @@ public interface Value
     public void importFromXml(Element parent);
 
     public void exportToXml(Element parent);
-
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PresentationValue.java,v 1.4 2003-07-29 20:31:08 shahid.shah Exp $
+ * $Id: PresentationValue.java,v 1.5 2003-08-19 04:58:44 aye.thu Exp $
  */
 
 package com.netspective.commons.value;
@@ -269,6 +269,11 @@ public class PresentationValue implements Value
     public void setValue(Object value) throws ValueException
     {
         this.value.setValue(value);
+    }
+
+    public void copyValueByReference(Value value) throws ValueException
+    {
+        this.value.copyValueByReference(value);
     }
 
     public void setValue(List value)
