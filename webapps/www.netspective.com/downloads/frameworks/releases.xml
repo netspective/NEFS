@@ -2,6 +2,40 @@
 
 <netspective>
     <release>
+        <product name="Commons" version="7.1.1"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                Added new reset() method to the ValidationContext interface that allows resetting the validation
+                context to its initial state (valid with no errors). Useful if there is a need to clear the context.
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Added a new ESCAPE_HTML flag to the &lt;column&gt; tag so that if it is a GeneralColumn and flag is set,
+                then any HTML provided as part of the column data will be escaped automatically. Usage:
+                &gt;column ... escape-html="yes"/&gt;.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Sparx" version="7.1.1"/>
+        <change-log>
+            <summary>Minor enhancement</summary>
+            <change-log-entry>
+                <![CDATA[
+                Changed the HTML generated for the Calendar popup in the DateTime field. The previous version had a '#'
+                in the anchor (<a href='#' onclick="showCalendar(...)">). Because of the '#' in the href whenever the
+                calendar was shown it was scrolling the screen to the top of the page, which was an undesirable effect.
+                Now the generated popup uses a <span> tag instead of the <a> tag and won't touch the active scroll
+                location.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Commons" version="7.1.0"/>
         <change-log>
             <summary>Minor bug fix, enhancements, and code roll-up</summary>
