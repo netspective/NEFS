@@ -301,6 +301,7 @@ var SELECTSTYLE_POPUP      = 6;
 var DATE_DTTYPE_DATEONLY = 0;
 var DATE_DTTYPE_TIMEONLY = 1;
 var DATE_DTTYPE_BOTH     = 2;
+var DATE_DTTYPE_MONTH_YEAR_ONLY = 3;
 
 function DialogField(type, id, name, qualifiedName, caption, flags)
 {
@@ -1506,6 +1507,12 @@ function DateField_valueChanged(field, control)
 		var result = formatTime(field, control);
 		return result;
 	}
+	else if (field.dateDataType == DATE_DTTYPE_MONTH_YEAR_ONLY)
+	{
+	    var result = formatMonthYearDate(field, control, field.dateItemDelim, field.dateStrictYear);
+		control.value = result[1];
+		return result[0];
+	}
 	return true;
 }
 
@@ -1841,6 +1848,67 @@ function formatTime(field, control)
 		control.value = newTime;
 	}
 	return testTime(field, control);
+}
+
+
+function formatMonthYearDate(field, control, delim, strictYear)
+{
+    var formattedDate;
+    if (delim == null)
+        delim = "/";
+
+    var today = new Date();
+    var currentYear = today.getFullYear().toString();
+    var fmtMessage = "Date must be in correct format: MM" + delim + "YYYY'";
+
+    // matches 2 or 4 digit years
+    var yearMatchExpr = "(\\d{4}|\\d{2})";
+    if (strictYear)
+        yearMatchExpr = "(\\d{4})";
+
+    var regEx = new RegExp("(\\d{1,2})(" + delim + ")?" + yearMatchExpr);
+    var m = regEx.exec(control.value);
+    if (m != null)
+    {
+        // remember that the first index is the whole value!
+        if (m.length == 3)
+        {
+            // make sure the month is valid
+            var month = parseInt(m[1]);
+            var year = parseInt(m[2]);
+
+            if ( (month < 1) || (month > 12) )
+            {
+                field.alertMessage(control, "Month value must be between 1 and 12");
+                return [false,control.value];
+            }
+            // if the year entered was a 2-digit year convert it to a four digit one
+            if (m[2].length == 2)
+                m[2] = currentYear.substring(0,2) + m[2];
+            formattedDate = m[1] + delim + m[2];
+        }
+        else
+        {
+            var month = parseInt(m[1]);
+            var year = parseInt(m[2]);
+            if ( (month < 1) || (month > 12) )
+            {
+                field.alertMessage(control, "Month value must be between 1 and 12");
+                return [false,control.value];
+            }
+            if (m[3].length == 2)
+                m[3] = currentYear.substring(0,2) + m[3];
+            formattedDate = m[1] + delim + m[3];
+        }
+        //control.value = formattedDate;
+
+    }
+    else
+    {
+        field.alertMessage(control, fmtMessage);
+        return [false,control.value];
+    }
+    return [true,formattedDate];
 }
 
 function formatDate(field, control, delim, strictYear)
