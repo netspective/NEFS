@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: StaticValueSource.java,v 1.3 2003-05-06 16:02:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -70,7 +70,8 @@ public class StaticValueSource extends AbstractValueSource
 
     public StaticValueSource(String staticValue)
     {
-        this.staticValue = new GenericValue(staticValue);
+        ValueSourceSpecification spec = new ValueSourceSpecification("static:" + staticValue);
+        initialize(spec);
     }
 
     public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
