@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.10 2003-08-28 00:40:55 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.11 2003-08-28 14:46:07 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -62,6 +62,7 @@ import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.schema.column.BasicColumn;
+import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.QueryResultSet;
@@ -869,7 +870,16 @@ public class DataAccessLayerGenerator
                 method.isFinal(true);
                 method.newStmt(vm.newFree("get"+ methodSuffix +"().copyValueByReference(value)"));
 
-                recordInnerClassValueObjectAccessorMethod.newStmt(vm.newFree("valueObject.set" + methodSuffix + "(("+ valueInstance.getValueHolderClass().getName() +") values.getByColumnIndex(" + constantId + ").getValue())"));
+
+                if(column instanceof AutoIncColumn)
+                {
+                    // auto incs will be longs in some database, integers in others so we need to check for both
+                    recordInnerClassValueObjectAccessorMethod.newStmt(vm.newFree("Object autoInc" + methodSuffix + "Value = values.getByColumnIndex(" + constantId + ").getValue()"));
+                    recordInnerClassValueObjectAccessorMethod.newStmt(vm.newFree("valueObject.set" + methodSuffix + "(autoInc" + methodSuffix + "Value instanceof Integer ? new Long(((Integer) autoInc" + methodSuffix + "Value).intValue()) : (Long) autoInc" + methodSuffix + "Value)"));
+                }
+                else
+                    recordInnerClassValueObjectAccessorMethod.newStmt(vm.newFree("valueObject.set" + methodSuffix + "(("+ valueInstance.getValueHolderClass().getName() +") values.getByColumnIndex(" + constantId + ").getValue())"));
+
                 recordInnerClassValueObjectMutatorMethod.newStmt(vm.newFree("values.getByColumnIndex(" + constantId + ").setValue(valueObject.get" + methodSuffix + "())"));
             }
 
