@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TestUtils.java,v 1.3 2003-06-11 02:40:40 roque.hernandez Exp $
+ * $Id: TestUtils.java,v 1.4 2003-06-11 23:24:38 roque.hernandez Exp $
  */
 
 package com.netspective.axiom;
@@ -104,14 +104,25 @@ public class TestUtils {
       ConnectionProviderEntry entry = connProvider.getDataSourceEntry(connProviderId);
 
       if (entry == null || reCreateDb)
-         setupDb(connProviderId);
+         setupDb(connProviderId, true, true);
+
+      return connProvider;
+   }
+
+   static public DriverManagerConnectionProvider getConnProvider(String connProviderId, boolean createDb, boolean loadData){
+
+
+      ConnectionProviderEntry entry = connProvider.getDataSourceEntry(connProviderId);
+
+      if (entry == null)
+         setupDb(connProviderId, createDb, loadData);
 
       return connProvider;
    }
 
 
 
-   static public void setupDb(String connProviderId) {
+   static public void setupDb(String connProviderId, boolean createDb, boolean loadData) {
 
       String classDir = connProviderId.replace('.', '/');
 
@@ -146,6 +157,9 @@ public class TestUtils {
       SqlManager manager = task.getSqlManager();
       task.generateDdlFiles(manager);
 
+      if (!createDb)
+        return;
+
 
       SQLExec sqlExec = new SQLExec();
       target.addTask(sqlExec);
@@ -175,6 +189,9 @@ public class TestUtils {
       //task.generateDalFiles(manager);
       //System.out.println("TASK: dal");
       //System.out.println("destDir: " + "C:/Projects/Frameworks/Axiom/src/java/test");
+
+      if (!loadData)
+        return;
 
       task.setImport(new File(rootPath + "/" + dataImportFile));
       task.setGenImportDtd(new File(rootPath + dataImportDtdFile));
