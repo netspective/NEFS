@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.13 2003-08-24 18:35:02 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.14 2003-10-16 14:35:58 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -112,10 +112,6 @@ public class DefaultValueContext implements ValueContext
     public AuthenticatedUser getAuthenticatedUser()
     {
         return null;
-    }
-
-    public void setAuthenticatedUser(AuthenticatedUser user)
-    {
     }
 
     public Object getAttribute(String attributeId)

@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import com.netspective.commons.security.BasicAuthenticatedUser;
 
 /**
- * $Id: DefaultValueContextTest.java,v 1.3 2003-08-24 18:37:41 shahid.shah Exp $
+ * $Id: DefaultValueContextTest.java,v 1.4 2003-10-16 14:35:58 shahid.shah Exp $
  */
 public class DefaultValueContextTest extends TestCase
 {
@@ -20,8 +20,6 @@ public class DefaultValueContextTest extends TestCase
 		assertTrue(vc.getCreationTime() < currTime);
 
 		// Currently unimplemented?
-		assertNull(vc.getAuthenticatedUser());
-        vc.setAuthenticatedUser(new BasicAuthenticatedUser());
 		assertNull(vc.getAuthenticatedUser());
 
 		assertNull(vc.getContextLocation());
