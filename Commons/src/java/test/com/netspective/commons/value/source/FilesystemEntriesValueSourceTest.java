@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSourceTest.java,v 1.3 2003-03-23 16:49:03 shahbaz.javeed Exp $
+ * $Id: FilesystemEntriesValueSourceTest.java,v 1.4 2003-05-13 22:12:57 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -52,6 +52,7 @@ import junit.framework.TestCase;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
+import com.netspective.commons.value.PresentationValue;
 
 public class FilesystemEntriesValueSourceTest extends TestCase
 {
@@ -74,22 +75,23 @@ public class FilesystemEntriesValueSourceTest extends TestCase
 	    assertNotNull(vs.getTextValueOrBlank(null));
 
 		String[] theValue = value.getTextValues();
-	    List altValue = fsVS.getPresentationValue(null).getListValue();
+		PresentationValue.Items altValueItems = fsVS.getPresentationValue(null).getItems();
 
-		assertEquals(theValue.length, altValue.size());
+		assertEquals(theValue.length, altValueItems.size());
 	    assertFalse(fsVS.isPathInSelection());
-	    for (int i = 0; i < theValue.length; i ++)
-	        assertFalse(altValue.contains(theValue[i]));
+	    for (int i = 0; i < theValue.length; i ++) {
+			assertFalse(altValueItems.contains(theValue[i]));
+		}
 
 		fsVS.setIncludePathInSelection(true);
-	    List altValueWithPath = fsVS.getPresentationValue(null).getListValue();
+		PresentationValue.Items altValueItemsWithPath = fsVS.getPresentationValue(null).getItems();
 
-	    assertEquals(theValue.length, altValueWithPath.size());
+		assertEquals(theValue.length, altValueItemsWithPath.size());
 	    assertTrue(fsVS.isPathInSelection());
 	    for (int i = 0; i < theValue.length; i ++)
 	    {
-	        assertEquals(theValue[i], ((String[]) altValueWithPath.get(i))[1]);
-		    assertEquals(altValue.get(i), ((String[]) altValueWithPath.get(i))[0]);
+			assertEquals(theValue[i], altValueItemsWithPath.getItem(i).getValue());
+			assertEquals(altValueItems.getItem(i).getValue(), altValueItemsWithPath.getItem(i).getCaption());
 	    }
 
 	    // Try the same tests with a filter...
@@ -98,24 +100,21 @@ public class FilesystemEntriesValueSourceTest extends TestCase
 	    assertEquals("/[sS]/", fsVS.getFilter());
 	    assertTrue(fsVS.isPathInSelection());
 
-	    List filterValue = fsVS.getPresentationValue(null).getListValue();
-	    assertTrue(filterValue.size() <= altValue.size());
+        PresentationValue.Items filterValueItems = fsVS.getPresentationValue(null).getItems();
+		assertTrue(filterValueItems.size() <= altValueItems.size());
 
 	    List altValueWithPathList  = new ArrayList();
-	    for (int i = 0; i < altValueWithPath.size(); i ++)
-		    altValueWithPathList.add(((String[]) altValueWithPath.get(i))[1]);
+		for (int i = 0; i < altValueItemsWithPath.size(); i ++)
+			altValueWithPathList.add(altValueItemsWithPath.getItem(i).getValue());
 
-	    assertEquals(altValueWithPath.size(), altValueWithPathList.size());
+		assertEquals(altValueItemsWithPath.size(), altValueWithPathList.size());
 
-	    for (int i = 0; i < filterValue.size(); i ++)
-		    assertTrue(altValueWithPathList.contains(((String[]) filterValue.get(i))[1]));
+	    for (int i = 0; i < filterValueItems.size(); i ++)
+		    assertTrue(altValueWithPathList.contains(filterValueItems.getItem(i).getValue()));
 
 
 
         vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath + ",exe$", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
         value = vs.getValue(null);
-//        System.out.println(value.getTextValue());
-//        System.out.println(value.getTextValues());
-//        System.out.println(value.getListValue());
     }
 }
