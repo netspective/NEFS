@@ -32,7 +32,7 @@
       </listitem>
 
       <listitem>
-        <para><ulink url="http://www.jetbrains.com">JetBrains IDEA 3.0.3 or
+        <para><ulink url="http://www.jetbrains.com">JetBrains IDEA 4.0 or
         above</ulink> for Java IDE (optional) or you can use the supplied Ant
         build scripts</para>
       </listitem>
@@ -67,7 +67,7 @@
       </listitem>
 
       <listitem>
-        <para><filename class="directory">NEFS_HOME/ide</filename> for all
+        <para><filename class="directory">NEFS_HOME/support/ide</filename> for all
         IDE-related files</para>
       </listitem>
 
@@ -152,10 +152,7 @@
   </sect1>
 
   <sect1>
-    <title>Compilation of Modules</title>
-
-    <sect2>
-      <title>If you're using JDK 1.4</title>
+        <title>Special Compilation Note for JDK 1.4</title>
 
       <orderedlist>
         <listitem>
@@ -175,25 +172,29 @@
         </listitem>
 
         <listitem>
-          <para>Copy the <filename>xalan.jar</filename> file into the
-          previously mentioned folder.</para>
+          <para>Copy the <filename>xalan.jar</filename> file into
+          <filename
+          class="directory">JAVA_HOME/jre/lib/endorsed</filename>.</para>
         </listitem>
       </orderedlist>
-    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Compilation of Modules</title>
 
     <sect2>
-      <title>If you're compiling with Intellij IDEA</title>
+      <title>If you're compiling with Intellij IDEA 4.0</title>
 
       <orderedlist>
         <listitem>
           <para>Open <acronym>IDEA</acronym> using
-          <filename><filename>NEFS_HOME/tools/idea/Netspective
-          Frameworks.ipr</filename></filename> project file.</para>
+          <filename><filename>NEFS_HOME/support/ide/IDEA/Netspective
+          Frameworks IDEA 4.0.ipr</filename></filename> project file.</para>
         </listitem>
 
         <listitem>
           <para>In IDEA, open <guimenuitem>File</guimenuitem> |
-          <guimenuitem>Project Properties</guimenuitem> and make sure that the
+          <guimenuitem>Settings</guimenuitem> and make sure that the
           output directory points to <filename
           class="directory">NEFS_HOME/support/ide/classes/main</filename>.</para>
         </listitem>
@@ -202,13 +203,42 @@
           <para>Compile full project using <guimenuitem>Build</guimenuitem> |
           <guimenuitem>Rebuild Project</guimenuitem> (this will put classes in
           <filename
-          class="directory">NEFS_HOME/support/ide/classes/main</filename>)</para>
+          class="directory">NEFS_HOME/support/ide/classes/main</filename>).</para>
         </listitem>
       </orderedlist>
     </sect2>
 
+          <sect2>
+            <title>If you're compiling with another IDE (Eclipse, JBuilder, etc)</title>
+
+            <orderedlist>
+              <listitem>
+                <para>Create a project file NEFS_HOME as the project root.</para>
+              </listitem>
+
+              <listitem>
+                <para>Make sure that all the JAR files in <filename
+                class="directory">NEFS_HOME/Commons/lib/redist</filename>, <filename
+                class="directory">NEFS_HOME/Axiom/lib/redist</filename>, and
+                <filename class="directory">NEFS_HOME/Sparx/lib/redist</filename> are in the CLASSPATH.
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>Make sure that the compiled classes end up in
+                <filename class="directory">NEFS_HOME/support/ide/classes/main</filename>).
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>Compile full project.</para>
+              </listitem>
+            </orderedlist>
+          </sect2>
+
+
     <sect2>
-      <title>If you compiled with Ant</title>
+      <title>If you're compiling with Ant (Command Line tool)</title>
 
       <orderedlist>
         <listitem>
@@ -261,7 +291,7 @@
     ensure that the proper paths are supplied. </para>
 
     <sect2>
-      <title>If you compiled using Intellij IDEA</title>
+      <title>If you compiled using and IDE (IDEA, Eclipse, JBuilder, etc)</title>
 
       <itemizedlist>
         <listitem>
