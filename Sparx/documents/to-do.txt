@@ -12,6 +12,7 @@
 	- DONE but the event is at onFocus and onBlur because onChange only occurred when you tabbed out of the field.
 	- BUG: reported by Shahid -- hints now seem to be broken on dialogs that _don't_ request hints to be hidden until focus
 
+* Need to conduct detailed memory leak analysis, performance testing, stress/load testing (see http://www.pushtotest.com)
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
@@ -24,28 +25,27 @@
 * Add "concurrent users" into console (all people currently logged in, perhaps total time spent doing stuff, etc)
 * Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
 * Add capability for HTTP request parameters to be automatically populate into beans for dialog context liks Struts does (general plumbing for this already available in NavigationPage)
+* Ensure that all validation functionality is removed from fields and placed into validator objects so that they can be reused in Axiom
 * Add feature to hide/disable submit buttons once the submit button is pressed (in case it takes time to submit something) -- perhaps replace button with "please wait..."
 * Create a 16x16 Console icon that will appear in browser window tabs and URL address line
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
 
+* Create "Define, Declare, Test, Customize, Deploy" tutorials
+* Add ability for child element tag documentation to be retrieved from createXXX, addXXX, or class javadoc in that order (right now only class definition javadoc is used).
+* Add documentation capability to TemplateProducers and TemplateConsumers so that those documentation resources may be displayed in Console.
 
 * Check out http://just4log.sourceforge.net/ features and incorporate them into Console
 * Consider how to integrate http://jbpm.org/ (BPM) into Sparx
 * Check out http://www.jmyra.com features and incorporate them into Console
 * Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
 * Use http://erw.dsi.unimi.it/ (ERW) to help explain Axiom and its features, benefits, etc.
-* Create "Define, Declare, Test, Customize, Deploy" tutorials
 * Use http://informa.sourceforge.net/ RSS library to setup RSS panels that can connect to RSS channels via URLs or files
-* Add documentation capability to TemplateProducers and TemplateConsumers so that those documentation resources may be displayed in Console.
-* Add ability for child element tag documentation to be retrieved from createXXX, addXXX, or class javadoc in that order (right now only class definition javadoc is used).
-* Need to conduct detailed memory leak analysis, performance testing, stress/load testing (see http://www.pushtotest.com)
 * Integrate http://oss.metaparadigm.com/jmemprof/ open-source memory profiler intended for web application containers (like resin, tomcat, etc). Also take a look at the SUN HAT http://java.sun.com/people/billf/heap/.
 * Take a look at http://xmljs.sourceforge.net/ for JavaScript XML parsing and record set management
 * Take a look at http://www.duncanlamb.com/sdba/ for SDBA Revolution Instant Messaging Application Server and see if it's useful to create Sparx-based IM apps
 * Incorporate features from http://www.irongrid.com (IronEye SQL and IronEye Cache) into Console
 * Take a look at http://www.softwareplanner.com to see what kinds of features from there can be added to Console, Beacon
-* Ensure that all validation functionality is removed from fields and placed into validator objects so that they can be reused in Axiom
-* Used http://jakarta.apache.org/commons/fileupload/ to add file upload features
+* Use http://jakarta.apache.org/commons/fileupload/ to add file upload features
 * Convert all ValueSource objects so their default points to ValueSource.NULL_VALUE_SOURCE -- this will eliminate many "if null" checks
 * Add Portlet API implementation for "output" panels (http://www-3.ibm.com/software/webservers/portal/library/InfoCenter/wps/wpspapi.html).
 * Add built-in wiki parsing for panels so any panel/page can parse and show Wiki content
@@ -53,7 +53,6 @@
 * Add a 'development tip of the day' feature to Console that would give general software development tips
 * Consider adding rich text editing field mode (for field.memo) for IE/Moz using examples at http://www.kevinroth.com/rte/demo.htm and http://www.bris.ac.uk/is/projects/cms/ttw/ttw.html
 * Consider using Jakarta Commons VFS (http://jakarta.apache.org/commons/sandbox/vfs/api.html) for panel body source locations so that they can be obtained from anywhere
-* Add <panel-type>, <page-type> and other style page templates
 * Look at Struts' MessageResources class for creating an 'rb' (resource-bundle) value source for internationlization
 * Create Sparx demo using CD manager example in Sue Spielman's Struts book -- maybe other e.g.'s like that?
 * Allow navigation trees and other tags to be "open" -- meaning if they're defined more than once their definitions are extended not replaced.
