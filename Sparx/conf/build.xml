@@ -11,17 +11,6 @@ Setup instructions:
     <property environment="env"/>
     <property file="build.properties"/>
 
-    <target name="check-java-home">
-        <condition property="java.home.exists">
-            <or>
-                <available file="${env.JAVA_HOME}/bin/javac"/>
-                <available file="${env.JAVA_HOME}/bin/javac.exe"/>
-            </or>
-        </condition>
-        <fail message="JAVA_HOME is not set to a valid JDK directory." unless="java.home.exists"/>
-        <echo message="JAVA_HOME is ${env.JAVA_HOME}"/>
-    </target>
-
     <target name="setup-project-properties">
         <buildnumber file="build.number"/>
 
@@ -100,7 +89,7 @@ Setup instructions:
             classpathref="project.class.path"/>
     </target>
 
-    <target name="init" depends="check-java-home,init-build-dir,compile-generate-build-log-class-task">
+    <target name="init" depends="init-build-dir,compile-generate-build-log-class-task">
 
         <taskdef name="gblc" classname="${GenerateBuildLogClassTask-class-name}" classpath="${project.build.main.classes.dir}" classpathref="project.class.path"/>
         <gblc
