@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.50 2003-12-12 17:20:38 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.51 2003-12-22 08:34:56 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -1082,6 +1082,8 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
                 membersCode.append(mi.getCode());
                 membersCode.append("\n");
             }
+            if (field instanceof GridField || field instanceof CompositeField)
+                continue;
             DialogFields childrenFields = field.getChildren();
             if (childrenFields != null && childrenFields.size() > 0)
             {
