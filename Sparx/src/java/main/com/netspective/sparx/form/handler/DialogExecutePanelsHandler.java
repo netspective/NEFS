@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecutePanelsHandler.java,v 1.1 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: DialogExecutePanelsHandler.java,v 1.2 2003-11-16 01:41:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -56,8 +56,9 @@ import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateConsumer;
 
-public class DialogExecutePanelsHandler extends HtmlLayoutPanel implements DialogExecuteHandler
+public class DialogExecutePanelsHandler extends HtmlLayoutPanel implements DialogExecuteHandler, TemplateConsumer
 {
     private static final Log log = LogFactory.getLog(DialogExecutePanelsHandler.class);
 

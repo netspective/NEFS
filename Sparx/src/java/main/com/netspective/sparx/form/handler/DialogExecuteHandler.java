@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteHandler.java,v 1.1 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: DialogExecuteHandler.java,v 1.2 2003-11-16 01:41:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -52,7 +52,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.listener.DialogListener;
 
-public interface DialogExecuteHandler extends TemplateConsumer, DialogListener
+public interface DialogExecuteHandler extends DialogListener
 {
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException;
 }

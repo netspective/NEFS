@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteDefaultHandler.java,v 1.1 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: DialogExecuteDefaultHandler.java,v 1.2 2003-11-16 01:41:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -52,18 +52,16 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.command.HttpServletCommand;
-import com.netspective.commons.command.Command;
-import com.netspective.commons.command.CommandException;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateConsumer;
 
 /**
  * This class serves as the default template so that the Dialog.createOnExecute() method has a concrete class
  * to return to the XDM. This class may be used to extend child classes from, though since it has the template
  * consumer definition method implementations.
  */
-public class DialogExecuteDefaultHandler implements DialogExecuteHandler
+public class DialogExecuteDefaultHandler implements DialogExecuteHandler, TemplateConsumer
 {
     private static final Log log = LogFactory.getLog(DialogExecuteDefaultHandler.class);
 

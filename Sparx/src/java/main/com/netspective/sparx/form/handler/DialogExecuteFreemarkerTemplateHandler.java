@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteFreemarkerTemplateHandler.java,v 1.1 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: DialogExecuteFreemarkerTemplateHandler.java,v 1.2 2003-11-16 01:41:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -55,8 +55,9 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateConsumer;
 
-public class DialogExecuteFreemarkerTemplateHandler extends FreeMarkerTemplateProcessor implements DialogExecuteHandler
+public class DialogExecuteFreemarkerTemplateHandler extends FreeMarkerTemplateProcessor implements DialogExecuteHandler, TemplateConsumer
 {
     private static final Log log = LogFactory.getLog(DialogExecuteFreemarkerTemplateHandler.class);
 
