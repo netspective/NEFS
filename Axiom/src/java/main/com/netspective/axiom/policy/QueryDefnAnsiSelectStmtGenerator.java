@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnAnsiSelectStmtGenerator.java,v 1.3 2003-08-30 19:15:28 shahid.shah Exp $
+ * $Id: QueryDefnAnsiSelectStmtGenerator.java,v 1.4 2003-09-29 01:54:16 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -77,7 +77,6 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
     private List fromClauseComments = new ArrayList();
     private List whereJoinClause = new ArrayList();
     private List bindParams = new ArrayList();
-    private String whereClauseSql;
 
     protected QueryDefnAnsiSelectStmtGenerator(DatabasePolicy policy, QueryDefnSelect select)
     {
@@ -275,7 +274,6 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
         }
 
         // save this because some callers might need just the where clause
-        this.whereClauseSql = whereClauseSql.toString();
         sql.append(whereClauseSql);
 
         QueryDefnFields groupBys = select.getGroupByFields();
