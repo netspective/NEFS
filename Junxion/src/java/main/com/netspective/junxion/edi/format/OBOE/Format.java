@@ -39,17 +39,14 @@
  */
 
 /**
- * $Id: Format.java,v 1.1 2003-03-13 18:37:21 shahid.shah Exp $
+ * $Id: Format.java,v 1.2 2003-11-07 17:51:39 shahid.shah Exp $
  */
 
 package com.netspective.junxion.edi.format.OBOE;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.XmlDataModel;
+import com.netspective.commons.xml.template.TemplateCatalog;
 
 public class Format implements XmlDataModel
 {
@@ -57,6 +54,7 @@ public class Format implements XmlDataModel
      * The root element of an OBOE EDI ANSI format
      */
     private TransactionSet transactionSet;
+    private TemplateCatalog templateCatalog = new TemplateCatalog();
 
     /**
      * The root tag for an OBOE XML file is <transactionSet>
@@ -77,5 +75,10 @@ public class Format implements XmlDataModel
     public void setTransactionSet(TransactionSet transactionSet)
     {
         this.transactionSet = transactionSet;
+    }
+
+    public TemplateCatalog getTemplateCatalog()
+    {
+        return templateCatalog;
     }
 }
