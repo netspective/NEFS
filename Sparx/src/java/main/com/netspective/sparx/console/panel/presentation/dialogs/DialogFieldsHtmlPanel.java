@@ -62,10 +62,6 @@ public class DialogFieldsHtmlPanel extends DialogDetailPanel
         column = new GeneralColumn();
         column.setHeading(new StaticValueSource("MultiPart"));
         dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Cookie Name"));
-        dialogFieldsReport.addColumn(column);
     }
 
     public DialogFieldsHtmlPanel()
@@ -108,10 +104,6 @@ public class DialogFieldsHtmlPanel extends DialogDetailPanel
                 case 3:
                     if(activeField != null)
                         return activeField.requiresMultiPartEncoding() ? "Yes" : null;
-
-                case 4:
-                    if(activeField != null)
-                        return activeField.getCookieName();
 
                 default:
                     return null;

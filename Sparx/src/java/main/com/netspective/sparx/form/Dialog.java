@@ -67,7 +67,6 @@ import com.netspective.sparx.form.field.type.CompositeField;
 import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SectionField;
 import com.netspective.sparx.form.field.type.SeparatorField;
-import com.netspective.sparx.form.field.type.GridFieldRow;
 import com.netspective.sparx.form.handler.DialogExecuteDefaultHandler;
 import com.netspective.sparx.form.handler.DialogExecuteHandler;
 import com.netspective.sparx.form.handler.DialogExecuteHandlerTemplateConsumer;
@@ -177,6 +176,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     private DialogNextActionProvider nextActionProvider;
     private boolean redirectAfterExecute = true;
     private ValueSource multipleExecErrorMessage = new StaticValueSource("Multiple executions of this dialog are not allowed.");
+    private String cookieName;
 
     private boolean haveInitialPopulateForDisplayListeners;
     private boolean haveInitialPopulateForSubmitListeners;
@@ -200,7 +200,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     private List validationListeners = new ArrayList();
 
     /**
-     * Creates an empty dialog object. 
+     * Creates an empty dialog object.
      */
     public Dialog()
     {
@@ -360,6 +360,27 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     {
         this.dialogFlags = dialogFlags;
     }
+
+    /**
+     * Gets the cookie name used to store client-persistent field values
+     *
+     * @return String cookie name
+     */
+    public String getCookieName()
+    {
+        return cookieName == null ? getQualifiedName() : cookieName;
+    }
+
+    /**
+     * Sets the cookie name used to store client-persistent field values
+     *
+     * @param name cookie name for this dialog
+     */
+    public void setCookieName(String name)
+    {
+        cookieName = name;
+    }
+
 
     /**
      * Gets the loop style for the dialog. By default, it is set to append.
@@ -1224,7 +1245,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         // validated and the dialog is ready for execution
         if(dc.getDialogState().isInExecuteMode())
         {
-            dc.persistValues();
+            dc.persistValuesToBrowser();
             populateValues(dc, DialogField.SUBMIT_FORMAT);
         }
     }

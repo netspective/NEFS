@@ -32,6 +32,7 @@
  */
 package com.netspective.sparx.form;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -41,10 +42,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
@@ -60,6 +65,7 @@ import org.xml.sax.SAXException;
 
 import com.netspective.commons.activity.Activity;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.text.UrlQueryStringParser;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.command.AbstractHttpServletCommand;
@@ -67,6 +73,7 @@ import com.netspective.sparx.console.panel.presentation.HttpRequestParametersPan
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextAttributesPanel;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesClassesPanel;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesPanel;
+import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
@@ -136,6 +143,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     private boolean redirectAfterExecute;
     private boolean autoExecuteRequested;
     private boolean autoExecuted;
+    private Map cookieValues;
 
     public DialogContext()
     {
@@ -242,6 +250,68 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         nc.setDialogContext(this);
     }
 
+    public String getClientPersistentValue(DialogField field)
+    {
+        if(cookieValues == null)
+        {
+            cookieValues = new HashMap();
+            final Cookie[] cookies = getHttpRequest().getCookies();
+            if(cookies != null)
+            {
+                for(int i = 0; i < cookies.length; i++)
+                {
+                    final Cookie cookie = cookies[i];
+                    final String cookieName = getDialog().getCookieName();
+                    if(cookie.getName().equals(cookieName))
+                    {
+                        try
+                        {
+                            UrlQueryStringParser parser = new UrlQueryStringParser(new ByteArrayInputStream(cookie.getValue().getBytes()));
+                            cookieValues = parser.parseArgs();
+                        }
+                        catch(IOException e)
+                        {
+                            getDialog().getLog().error(e);
+                        }
+                    }
+                }
+            }
+        }
+
+        if(cookieValues != null)
+            return (String) cookieValues.get(field.getQualifiedName());
+        else
+            return null;
+    }
+
+    public void setClientPersistentValue(DialogField field, String value)
+    {
+        cookieValues.put(field.getQualifiedName(), value);
+    }
+
+    public void persistValuesToBrowser()
+    {
+        // clear the current cookie values -- the fieldStates.persistValues() will make calls to setClientPersistentValue() to set them
+        cookieValues = new HashMap();
+
+        fieldStates.persistValues();
+
+        if(cookieValues == null)
+            return;
+
+        StringBuffer cookieValue = new StringBuffer();
+        for(Iterator i = cookieValues.entrySet().iterator(); i.hasNext();)
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+            if(cookieValue.length() > 0)
+                cookieValue.append("&");
+            cookieValue.append(entry.getKey() + "=" + URLEncoder.encode(entry.getValue().toString()));
+        }
+        Cookie cookie = new Cookie(getDialog().getCookieName(), cookieValue.toString());
+        cookie.setMaxAge(60 * 60 * 24 * 365); // 1 year
+        getHttpResponse().addCookie(cookie);
+    }
+
     /**
      * Checks to see if the cancel button was pressed for dialog submittal
      *
@@ -263,11 +333,6 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     public DialogValidationContext getValidationContext()
     {
         return validationContext;
-    }
-
-    public void persistValues()
-    {
-        fieldStates.persistValues();
     }
 
     public boolean isRedirectDisabled()

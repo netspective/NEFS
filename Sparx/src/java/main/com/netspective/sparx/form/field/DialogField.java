@@ -36,13 +36,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.servlet.http.Cookie;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -205,18 +201,11 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
             if(stateFlags.flagIsSet(DialogFieldFlags.PERSIST) && dc.getDialogState().isInLoadPersistentFieldDataMode())
             {
-                Cookie[] cookies = dc.getHttpRequest().getCookies();
-                if(cookies != null)
+                final String clientPersistentValue = dc.getClientPersistentValue(DialogField.this);
+                if(clientPersistentValue != null)
                 {
-                    for(int i = 0; i < cookies.length; i++)
-                    {
-                        Cookie cookie = cookies[i];
-                        if(cookie.getName().equals(getCookieName()))
-                        {
-                            value.setTextValue(URLDecoder.decode(cookie.getValue()));
-                            setLoadedPersistentValue(true);
-                        }
-                    }
+                    value.setTextValue(clientPersistentValue);
+                    setLoadedPersistentValue(true);
                 }
             }
 
@@ -323,11 +312,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         public void persistValue()
         {
             if(getStateFlags().flagIsSet(DialogFieldFlags.PERSIST) && value.hasValue())
-            {
-                Cookie cookie = new Cookie(getCookieName(), URLEncoder.encode(value.getTextValue()));
-                cookie.setMaxAge(60 * 60 * 24 * 365); // 1 year
-                dialogContext.getHttpResponse().addCookie(cookie);
-            }
+                dialogContext.setClientPersistentValue(DialogField.this, value.getTextValue());
         }
 
         /**
@@ -412,7 +397,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     private ValueSource defaultValue = ValueSource.NULL_VALUE_SOURCE;
     private ValueSource hint = ValueSource.NULL_VALUE_SOURCE;
     private HtmlHelpPanel helpPanel;
-    private String cookieName;
     private DialogFields children;
     private DialogFieldConditionalActions conditionalActions = new DialogFieldConditionalActions();
     private DialogFieldConditionalActions dependentConditions = new DialogFieldConditionalActions();
@@ -877,28 +861,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     }
 
     /**
-     * Gets the cookie name associated with the dialog
-     *
-     * @return String cookie name
-     */
-    public String getCookieName()
-    {
-        return cookieName == null
-               ? (Dialog.PARAMNAME_CONTROLPREFIX + getOwner().getQualifiedName() + "." + getQualifiedName())
-               : cookieName;
-    }
-
-    /**
-     * Sets the cookie name associated with this dialog field.
-     *
-     * @param name cookie name for this dialog field
-     */
-    public void setCookieName(String name)
-    {
-        cookieName = name;
-    }
-
-    /**
      * Gets the caption of the dialog as a single value source
      *
      * @return ValueSource
@@ -1076,7 +1038,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             if(partnerField != null)
                 action.setPartnerField(partnerField);
             else if(action.isPartnerRequired())
-                log.error("Unknown partner '"+ action.getPartnerFieldName() +"' supplied for dialog field '" + action.getSourceField().getQualifiedName() + "' conditional action.");
+                log.error("Unknown partner '" + action.getPartnerFieldName() + "' supplied for dialog field '" + action.getSourceField().getQualifiedName() + "' conditional action.");
         }
 
         if(children != null)
@@ -1632,11 +1594,11 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         if(flags.flagIsSet(DialogFieldFlags.SUBMIT_ONBLUR))
         {
             sb.append("field.submitOnBlur = true;\n");
-            if (submitOnBlur != null)
+            if(submitOnBlur != null)
             {
-                if (submitOnBlur.getPartner() != null)
+                if(submitOnBlur.getPartner() != null)
                     sb.append("field.submitOnBlurPartnerField = '" + submitOnBlur.getPartner() + "';\n");
-                if (submitOnBlur.getCustomScript() != null && submitOnBlur.getCustomScript().length() > 0)
+                if(submitOnBlur.getCustomScript() != null && submitOnBlur.getCustomScript().length() > 0)
                     sb.append("field.submitOnBlurCustomScript = new Function(\"field\", \"control\", \"" + submitOnBlur.getCustomScript() + "\");\n");
                 else
                     sb.append("field.submitOnBlurCustomScript = '';\n");
