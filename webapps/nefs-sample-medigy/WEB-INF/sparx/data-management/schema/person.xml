@@ -10,7 +10,7 @@
                 <field type="select" caption="Name Prefix"/>
             </presentation>
         </column>
-        <column name="name_prefix" type="alternate-to-lookup" size="16">
+        <column name="name_prefix" type="text" size="16">
             <presentation>
                 <field type="text" caption="Other Name Prefix">
                     <conditional action="display" partner="name_prefix_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>

@@ -121,6 +121,7 @@
     <data-type name="person-identifier-id" type="guid32"/>
     <data-type name="person-login-id" type="guid32"/>
     <data-type name="person-role-id" type="guid32"/>
+    <data-type name="patient-referral-id" type="guid32"/>
 
     <data-type name="staff-benefit-id" type="guid32"/>
     <data-type name="staff-license-id" type="guid32"/>

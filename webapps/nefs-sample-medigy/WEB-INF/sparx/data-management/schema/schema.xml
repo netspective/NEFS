@@ -17,9 +17,10 @@
             </presentation>
         </table-type>
 
-        <xdm:include file="typedefs/app-data-types.xml"/>
         <xdm:include file="typedefs/action-table-types.xml"/>
+        <xdm:include file="typedefs/app-data-types.xml"/>
         <xdm:include file="typedefs/catalog-table-types.xml"/>
+        <xdm:include file="typedefs/health-common.xml"/>
         <xdm:include file="typedefs/insurance-table-types.xml"/>
         <xdm:include file="typedefs/invoice-table-types.xml"/>
         <xdm:include file="typedefs/org-table-types.xml"/>

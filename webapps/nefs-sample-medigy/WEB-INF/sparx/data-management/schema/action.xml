@@ -18,7 +18,7 @@
 			This table stores details of all actions where a physician makes a temporary or permanent diagnosis for a patient
         </description>
         <column name="diag_codetype_id" lookupref="Claim_Diagnosis_Code_Type" descr="The type of code that will be used to describe the diagnosis"/>
-        <column name="diag_code" type="diagnosis-code" size="32" descr="The code describing the diagnosis pronounced by the physician"/>
+        <column name="diag_code" type="claim-diagnosis-code" size="32" descr="The code describing the diagnosis pronounced by the physician"/>
         <column name="diagnosis" type="text" size="256" descr="The name of diagnosis pronounced by the physician (if the field above is left empty)"/>
     </table>
 
@@ -80,7 +80,7 @@
     <table name="Action_Procedure" abbrev="ProcAct" type="Clinical_Action" xdm:param-actTypeEnum="Proc_Type">
         <description>This table stores details of all actions where a physician performs a procedure for a patient</description>
         <column name="proc_codetype_id" lookupref="Claim_Procedure_Code_Type" descr="The type of code that will be used to describe the procedure"/>
-        <column name="proc_code" type="procedure-code" size="32" descr="The code describing the procedure performed by the physician"/>
+        <column name="proc_code" type="claim-procedure-code" size="32" descr="The code describing the procedure performed by the physician"/>
         <column name="procedure" type="text" size="256" descr="The name of procedure performed by the physician (if the field above is left empty)"/>
     </table>
 
