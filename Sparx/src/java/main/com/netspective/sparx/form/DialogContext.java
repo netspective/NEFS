@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.5 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.6 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -87,6 +87,7 @@ import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextAttributesPanel;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesPanel;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesClassesPanel;
+import com.netspective.sparx.console.panel.presentation.HttpRequestParametersPanel;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
@@ -1119,13 +1120,9 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         debugPanels.setStyle(new HtmlPanelsStyleEnumeratedAttribute(HtmlPanelsStyleEnumeratedAttribute.TABBED));
         debugPanels.getFrame().setFooting(new StaticValueSource("NOTE: You need to add override Dialog.execute(Writer, DialogContext)."));
 
-        DialogContextAttributesPanel attrsPanel = new DialogContextAttributesPanel();
-        debugPanels.addPanel(attrsPanel);
-
-        DialogContextFieldStatesPanel valuesPanel = new DialogContextFieldStatesPanel();
-        debugPanels.addPanel(valuesPanel);
-
-        DialogContextFieldStatesClassesPanel classesPanel = new DialogContextFieldStatesClassesPanel();
-        debugPanels.addPanel(classesPanel);
+        debugPanels.addPanel(new DialogContextAttributesPanel());
+        debugPanels.addPanel(new DialogContextFieldStatesPanel());
+        debugPanels.addPanel(new DialogContextFieldStatesClassesPanel());
+        debugPanels.addPanel(new HttpRequestParametersPanel());
     }
 }

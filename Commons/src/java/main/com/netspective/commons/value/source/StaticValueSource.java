@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticValueSource.java,v 1.5 2003-05-13 02:12:21 shahid.shah Exp $
+ * $Id: StaticValueSource.java,v 1.6 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -51,6 +51,7 @@ import com.netspective.commons.value.exception.ValueSourceException;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
 
 public class StaticValueSource extends AbstractValueSource
 {
@@ -94,9 +95,9 @@ public class StaticValueSource extends AbstractValueSource
         return staticValue;
     }
 
-    public Value getPresentationValue(ValueContext vc)
+    public PresentationValue getPresentationValue(ValueContext vc)
     {
-        return staticValue;
+        return new PresentationValue(staticValue);
     }
 
     public boolean hasValue(ValueContext vc) throws ValueSourceException

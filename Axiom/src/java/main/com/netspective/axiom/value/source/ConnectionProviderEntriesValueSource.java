@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConnectionProviderEntriesValueSource.java,v 1.2 2003-05-09 01:23:43 shahid.shah Exp $
+ * $Id: ConnectionProviderEntriesValueSource.java,v 1.3 2003-05-13 19:51:41 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -58,6 +58,7 @@ import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.source.AbstractValueSource;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.axiom.value.DatabaseConnValueContext;
@@ -146,9 +147,25 @@ public class ConnectionProviderEntriesValueSource extends AbstractValueSource
         return new GenericValue(entriesSelected);
     }
 
-    public Value getPresentationValue(ValueContext vc)
+    public PresentationValue getPresentationValue(ValueContext vc)
     {
-        return getValue(vc);
+        ValueSources.getInstance().assertValueContextInstance(DatabaseConnValueContext.class, vc, this);
+        DatabaseConnValueContext dbcvc = (DatabaseConnValueContext) vc;
+
+        ConnectionProvider cp = dbcvc.getConnectionProvider();
+        ConnectionProviderEntries entries = cp.getDataSourceEntries();
+
+        PresentationValue result = new PresentationValue();
+        PresentationValue.Items items = result.createItems();
+        for(Iterator i = entries.entrySet().iterator(); i.hasNext(); )
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+            String dataSourceId = (String) entry.getKey();
+            if(perlUtil.match(filter, dataSourceId))
+                items.addItem(dataSourceId);
+        }
+
+        return result;
     }
 
     public boolean hasValue(ValueContext vc)

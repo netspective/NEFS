@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: GridField.java,v 1.3 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: GridField.java,v 1.4 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -60,7 +60,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.commons.value.ValueSource;
@@ -69,14 +68,8 @@ public class GridField extends DialogField
 {
     private ValueSource captions;
 
-    public GridField(Dialog owner)
+    public GridField()
     {
-        super(owner);
-    }
-
-    public GridField(DialogField parent)
-    {
-        super(parent);
     }
 
     public ValueSource getCaptions()
@@ -91,7 +84,7 @@ public class GridField extends DialogField
 
     public GridFieldRow createRow()
     {
-        return new GridFieldRow(this);
+        return new GridFieldRow();
     }
 
     public void addRow(GridFieldRow row)

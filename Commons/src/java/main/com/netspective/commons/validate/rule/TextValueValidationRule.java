@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextValueValidationRule.java,v 1.3 2003-05-11 17:51:42 shahid.shah Exp $
+ * $Id: TextValueValidationRule.java,v 1.4 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -119,7 +119,7 @@ public class TextValueValidationRule extends BasicValidationRule
     public boolean isValid(ValidationContext vc, Value value)
     {
         String text = value.getTextValue();
-        if(text == null)
+        if(text == null || text.length() == 0)
             return true;
 
         if(!ValidationUtils.isInRange(text.length(), minLength, maxLength))

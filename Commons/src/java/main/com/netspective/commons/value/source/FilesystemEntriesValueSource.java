@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSource.java,v 1.4 2003-05-09 01:23:35 shahid.shah Exp $
+ * $Id: FilesystemEntriesValueSource.java,v 1.5 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -59,6 +59,7 @@ import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.text.TextUtils;
 
@@ -187,11 +188,13 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
         return new GenericValue(filesSelected);
     }
 
-    public Value getPresentationValue(ValueContext vc)
+    public PresentationValue getPresentationValue(ValueContext vc)
     {
+        PresentationValue result = new PresentationValue();
+        PresentationValue.Items items = result.createItems();
+
         File rootPath = new File(rootPathValue.getValue(vc).getTextValue());
         String[] allFilesInPath = rootPath.list(this);
-        List filesSelected = new ArrayList();
 
         if(allFilesInPath != null && allFilesInPath.length > 0)
         {
@@ -201,7 +204,7 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
                 {
                     // a string will mean that both the presentation (what to show to user) and the value (what to
                     // store as a value) will be the same
-                    filesSelected.add(allFilesInPath[f]);
+                    items.addItem(allFilesInPath[f]);
                 }
             }
             else
@@ -211,12 +214,12 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
                     // a string[] will mean that both the presentation (what to show to user) and the value (what to
                     // store as a value) will be different
                     File file = new File(rootPath, allFilesInPath[f]);
-                    filesSelected.add(new String[] { file.getName(), file.getAbsolutePath() });
+                    items.addItem(file.getName(), file.getAbsolutePath());
                 }
             }
         }
 
-        return new GenericValue(filesSelected);
+        return result;
     }
 
     public boolean hasValue(ValueContext vc)

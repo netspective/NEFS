@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BooleanField.java,v 1.1 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: BooleanField.java,v 1.2 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -61,27 +61,89 @@ import java.io.Writer;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogContextMemberInfo;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.exception.ValueException;
-import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
 public class BooleanField extends DialogField
 {
+    public static class Choices extends XdmEnumeratedAttribute
+    {
+        public static final int YESNO = 0;
+        public static final int TRUEFALSE = 1;
+        public static final int ONOFF = 2;
+
+        public static final String[] TEXT_TYPE_VALUES = new String[] { "yesno", "truefalse", "onoff" };
+        public static final ValueSource[] TEXT_CHOICES = new ValueSource[] {
+                new StaticValueSource("No"),
+                new StaticValueSource("Yes"),
+                new StaticValueSource("False"),
+                new StaticValueSource("True"),
+                new StaticValueSource("Off"),
+                new StaticValueSource("On")
+            };
+
+        public Choices()
+        {
+        }
+
+        public Choices(int valueIndex)
+        {
+            super(valueIndex);
+        }
+
+        public String[] getValues()
+        {
+            return TEXT_TYPE_VALUES;
+        }
+    }
+
+    public static class Style extends XdmEnumeratedAttribute
+    {
+        public static final int RADIO = 0;
+        public static final int CHECK = 1;
+        public static final int CHECKALONE = 2;
+        public static final int COMBO = 3;
+
+        public static final String[] STYLE_VALUES = new String[] { "radio", "check", "check-alone", "combo" };
+
+        public Style()
+        {
+        }
+
+        public Style(int valueIndex)
+        {
+            super(valueIndex);
+        }
+
+        public String[] getValues()
+        {
+            return STYLE_VALUES;
+        }
+    }
+
     public class BooleanFieldState extends State
     {
         public class BooleanFieldValue extends BasicStateValue
         {
+            public BooleanFieldValue()
+            {
+            }
+
             public Class getValueHolderClass()
             {
-                return Boolean.class;
+                return Integer.class;
             }
 
             public void setTextValue(String value) throws ValueException
             {
-                setValue(value == null ? null : (new Boolean(TextUtils.toBoolean(value))));
+                if(value == null || value.length() == 0)
+                    setValue(new Integer(-1));
+                else
+                    setValue(new Integer(value));
             }
         }
 
@@ -96,26 +158,16 @@ public class BooleanField extends DialogField
         }
     }
 
-    private BooleanFieldStyle style = new BooleanFieldStyle(BooleanFieldStyle.RADIO);
-    private BooleanFieldChoices choices;
+    private Style style = new Style(Style.RADIO);
+    private Choices choices;
+    private ValueSource checkLabel = ValueSource.NULL_VALUE_SOURCE;
     private ValueSource trueText;
     private ValueSource falseText;
     private ValueSource noneText;
 
-    public BooleanField(Dialog owner)
+    public BooleanField()
     {
-        super(owner);
-    }
-
-    public BooleanField(DialogField parent)
-    {
-        super(parent);
-    }
-
-    public void initialize()
-    {
-        super.initialize();
-        setChoices(new BooleanFieldChoices(BooleanFieldChoices.YESNO));
+        setChoices(new Choices(Choices.YESNO));
     }
 
     public DialogField.State constructStateInstance(DialogContext dc)
@@ -123,17 +175,17 @@ public class BooleanField extends DialogField
         return new BooleanFieldState(dc);
     }
 
-    public BooleanFieldChoices getChoices()
+    public Choices getChoices()
     {
         return choices;
     }
 
-    public void setChoices(BooleanFieldChoices choices)
+    public void setChoices(Choices choices)
     {
         this.choices = choices;
         int choicesTextIndex = choices.getValueIndex() * 2;
-        setFalseText(BooleanFieldChoices.TEXT_CHOICES[choicesTextIndex]);
-        setTrueText(BooleanFieldChoices.TEXT_CHOICES[choicesTextIndex+1]);
+        setFalseText(Choices.TEXT_CHOICES[choicesTextIndex]);
+        setTrueText(Choices.TEXT_CHOICES[choicesTextIndex+1]);
     }
 
     public ValueSource getFalseText()
@@ -156,13 +208,12 @@ public class BooleanField extends DialogField
         this.noneText = noneText;
     }
 
-
-    public BooleanFieldStyle getStyle()
+    public Style getStyle()
     {
         return style;
     }
 
-    public void setStyle(BooleanFieldStyle style)
+    public void setStyle(Style style)
     {
         this.style = style;
     }
@@ -175,6 +226,16 @@ public class BooleanField extends DialogField
     public void setTrueText(ValueSource trueText)
     {
         this.trueText = trueText;
+    }
+
+    public ValueSource getCheckLabel()
+    {
+        return checkLabel != ValueSource.NULL_VALUE_SOURCE ? checkLabel : getCaption();
+    }
+
+    public void setCheckLabel(ValueSource checkLabel)
+    {
+        this.checkLabel = checkLabel;
     }
 
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
@@ -190,15 +251,14 @@ public class BooleanField extends DialogField
         String noneTextStr = noneText != null ? noneText.getTextValue(dc) : null;
 
         BooleanFieldState.BooleanFieldValue dfvalue = (BooleanFieldState.BooleanFieldValue) dc.getFieldStates().getState(this).getValue();
-        Boolean bValue = (Boolean) dfvalue.getValue();
-        boolean value = bValue == null ? false : bValue.booleanValue();
-        String strValue = bValue == null ? "" : bValue.toString();
-        String boolValueCaption = bValue == null ? "" : (value ? trueTextStr : falseTextStr);
+        int value = ((Integer) dfvalue.getValue()).intValue();
+        String strValue = value == -1 ? "" : Integer.toString(value);
+        String boolValueCaption = value == -1 ? "" : (value == 1 ? trueTextStr : falseTextStr);
 
         if(isReadOnly(dc))
         {
             if (this.noneText == null) {
-                writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value='" + (strValue != null ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" + (value ? trueTextStr : falseTextStr) + "</span>");
+                writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value='" + (strValue != null ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" + (value == 1 ? trueTextStr : falseTextStr) + "</span>");
             } else {
                 writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value='" +
                         (strValue != null ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" +
@@ -212,7 +272,7 @@ public class BooleanField extends DialogField
         String defaultControlAttrs = dc.getSkin().getDefaultControlAttrs();
         switch(style.getValueIndex())
         {
-            case BooleanFieldStyle.RADIO:
+            case Style.RADIO:
                 if (noneTextStr != null)
                 {
                     String[] val = { "" , "" , "" };
@@ -225,24 +285,24 @@ public class BooleanField extends DialogField
                 else
                 {
                     writer.write(
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + (value ? "" : "checked ") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + (value ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr>");
+                        "<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + (value == 0 ? "" : "checked ") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
+                        "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + (value == 1 ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr>");
                 }
                 break;
 
-            case BooleanFieldStyle.CHECK:
-                writer.write("<nobr><input type='checkbox' name='" + id + "' id='" + id + "' value='1' " + (value ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "'>" + super.getCaption().getTextValue(dc) + "</label></nobr>");
+            case Style.CHECK:
+                writer.write("<nobr><input type='checkbox' name='" + id + "' id='" + id + "' value='1' " + (value == 1 ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "'>" + getCheckLabel().getTextValue(dc) + "</label></nobr>");
                 break;
 
-            case BooleanFieldStyle.CHECKALONE:
-                writer.write("<input type='checkbox' name='" + id + "' value='1' " + (value ? "checked " : "") + defaultControlAttrs + "> ");
+            case Style.CHECKALONE:
+                writer.write("<input type='checkbox' name='" + id + "' value='1' " + (value == 1 ? "checked " : "") + defaultControlAttrs + "> ");
                 break;
 
-            case BooleanFieldStyle.COMBO:
+            case Style.COMBO:
                 writer.write(
                         "<select name='" + id + "' " + defaultControlAttrs + ">" +
-                        "<option " + (value ? "" : "selected") + " value='0'>" + falseTextStr + "</option>" +
-                        "<option " + (value ? "selected" : "") + " value='1'>" + trueTextStr + "</option>" +
+                        "<option " + (value == 0 ? "" : "selected") + " value='0'>" + falseTextStr + "</option>" +
+                        "<option " + (value == 1 ? "selected" : "") + " value='1'>" + trueTextStr + "</option>" +
                         "</select>");
                 break;
 

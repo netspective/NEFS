@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSource.java,v 1.4 2003-05-13 02:12:21 shahid.shah Exp $
+ * $Id: ValueSource.java,v 1.5 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -91,7 +91,15 @@ public interface ValueSource
      * will be what the user should be shown and the second entry per item
      * will be what should be stored in the database.
      */
-    public Value getPresentationValue(ValueContext vc);
+    public PresentationValue getPresentationValue(ValueContext vc);
+
+    /**
+     * Returns the caption associated with a particular presentation value.
+     * Uses the getPresentationValue(ValueContext) method to obtain the captions
+     * and values, then searches for the value, and returns the caption matching
+     * the given value. Returns null if not found.
+     */
+    public PresentationValue.Items.Item getPresentationItem(ValueContext vc, String value);
 
     /**
      * Simple wrapper method that basically does and optimized version of the following:

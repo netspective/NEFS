@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Value.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: Value.java,v 1.3 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -126,6 +126,10 @@ public interface Value
      */
     public void setValue(Object value) throws ValueException;
 
+    public void setValue(String[] value);
+
+    public void setValue(List value);
+
     /**
      * Sets the value from a result set
      */
@@ -150,4 +154,5 @@ public interface Value
      * Get the contents of this value as a list
      */
     public List getListValue();
+
 }

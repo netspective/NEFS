@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: CurrencyField.java,v 1.1 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: CurrencyField.java,v 1.2 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -62,14 +62,35 @@ import java.text.ParseException;
 import java.util.Locale;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.commons.value.exception.ValueException;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
 public class CurrencyField extends TextField
 {
+    public static class NegativePosLocation extends XdmEnumeratedAttribute
+    {
+        public static final String[] VALUES = new String[] { "before-symbol", "after-symbol" };
+        public static final int BEFORE_SYMBOL = 0;
+        public static final int AFTER_SYMBOL = 1;
+
+        public NegativePosLocation()
+        {
+        }
+
+        public NegativePosLocation(int valueIndex)
+        {
+            super(valueIndex);
+        }
+
+        public String[] getValues()
+        {
+            return VALUES;
+        }
+    }
+
     public class CurrencyFieldState extends State
     {
         public class CurrencyFieldValue extends BasicStateValue
@@ -86,7 +107,7 @@ public class CurrencyField extends TextField
 
             public void setTextValue(String value) throws ValueException
             {
-                if(value == null)
+                if(value == null || value.length() == 0)
                 {
                     super.setTextValue(value);
                     return;
@@ -100,7 +121,7 @@ public class CurrencyField extends TextField
                 catch (ParseException e)
                 {
                     setInvalidText(value);
-                    invalidate(getDialogContext(), getCaption().getTextValue(getDialogContext()) + " requires a value in currency format ("+ e.getMessage() +").");
+                    invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in currency format ("+ e.getMessage() +").");
                 }
             }
         }
@@ -121,18 +142,13 @@ public class CurrencyField extends TextField
     private String currencySymbol;
     private char decimalSymbol;
     private int decimalsRequired = -1;
-    private CurrencyFieldNegativePosLocation negativePos = new CurrencyFieldNegativePosLocation(CurrencyFieldNegativePosLocation.BEFORE_SYMBOL);
+    private NegativePosLocation negativePos = new NegativePosLocation(NegativePosLocation.BEFORE_SYMBOL);
 
-    public CurrencyField(Dialog owner)
+    public CurrencyField()
     {
-        super(owner);
-        System.out.println("CONS1" + locale);
-    }
-
-    public CurrencyField(DialogField parent)
-    {
-        super(parent);
-        System.out.println("CONS2" + locale);
+        setDecimalsRequired(2);
+        setLocale(Locale.getDefault());
+        setNegativePos(new NegativePosLocation(NegativePosLocation.BEFORE_SYMBOL));
     }
 
     public DialogField.State constructStateInstance(DialogContext dc)
@@ -140,23 +156,10 @@ public class CurrencyField extends TextField
         return new CurrencyFieldState(dc);
     }
 
-    public void initialize()
-    {
-        System.out.println("INIT" + locale);
-        System.out.println("INIT" + negativePos);
-        System.out.println("INIT" + decimalsRequired);
-        super.initialize();
-        setDecimalsRequired(2);
-        setLocale(Locale.getDefault());
-        setNegativePos(new CurrencyFieldNegativePosLocation(CurrencyFieldNegativePosLocation.BEFORE_SYMBOL));
-    }
-
     protected void setupPatterns()
     {
         if(decimalsRequired < 0)
             setDecimalsRequired(0);
-
-        System.out.println(locale);
 
         format = NumberFormat.getCurrencyInstance(locale);
         if(decimalsRequired >= 0)
@@ -175,7 +178,7 @@ public class CurrencyField extends TextField
         else
             decimalExpr = "";
 
-        if(negativePos == null || negativePos.getValueIndex() == CurrencyFieldNegativePosLocation.BEFORE_SYMBOL)
+        if(negativePos == null || negativePos.getValueIndex() == NegativePosLocation.BEFORE_SYMBOL)
         {
             setRegExpr("/^([-])?([\\" + currencySymbol + "])?([\\d]+)" + decimalExpr + "$/");
             setDisplayPattern("s/^([-])?([\\" + currencySymbol +
@@ -186,7 +189,7 @@ public class CurrencyField extends TextField
                     currencySymbol + "xxx.xx for positive values and " +
                     "-" + currencySymbol + "xxx.xx for negative values.");
         }
-        else if(negativePos.getValueIndex() == CurrencyFieldNegativePosLocation.AFTER_SYMBOL)
+        else if(negativePos.getValueIndex() == NegativePosLocation.AFTER_SYMBOL)
         {
             setRegExpr("/^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$/");
             setDisplayPattern("s/" + "^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$/\\" + currencySymbol + "$2$3/g");
@@ -225,12 +228,12 @@ public class CurrencyField extends TextField
         setupPatterns();
     }
 
-    public CurrencyFieldNegativePosLocation getNegativePos()
+    public NegativePosLocation getNegativePos()
     {
         return negativePos;
     }
 
-    public void setNegativePos(CurrencyFieldNegativePosLocation negativePos)
+    public void setNegativePos(NegativePosLocation negativePos)
     {
         this.negativePos = negativePos;
         setupPatterns();

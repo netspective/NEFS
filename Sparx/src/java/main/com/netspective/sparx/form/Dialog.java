@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.7 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.8 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -60,8 +60,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
 
 import javax.servlet.ServletContext;
 
@@ -406,12 +404,13 @@ public class Dialog extends AbstractPanel
 
     public DialogDirector createDirector()
     {
-        return new DialogDirector(this);
+        return new DialogDirector();
     }
 
     public void addDirector(DialogDirector value)
     {
         director = value;
+        value.setOwner(this);
     }
 
     public ValueSource getIncludeJSFile()
@@ -436,18 +435,7 @@ public class Dialog extends AbstractPanel
 
     public DialogField createField()
     {
-        return new DialogField(this);
-    }
-
-    public DialogField createField(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        if(DialogField.class.isAssignableFrom(cls))
-        {
-            Constructor c = cls.getConstructor(new Class[] { Dialog.class });
-            return (DialogField) c.newInstance(new Object[] { this });
-        }
-        else
-            throw new RuntimeException("Don't know what to do with with class: " + cls);
+        return new DialogField();
     }
 
     /**
@@ -458,22 +446,12 @@ public class Dialog extends AbstractPanel
     public void addField(DialogField field)
     {
         fields.add(field);
+        field.setOwner(this);
     }
 
     public CompositeField createComposite()
     {
-        return new CompositeField(this);
-    }
-
-    public CompositeField createComposite(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        if(CompositeField.class.isAssignableFrom(cls))
-        {
-            Constructor c = cls.getConstructor(new Class[] { Dialog.class });
-            return (CompositeField) c.newInstance(new Object[] { this });
-        }
-        else
-            throw new RuntimeException("Don't know what to do with with class: " + cls);
+        return new CompositeField();
     }
 
     public void addComposite(CompositeField field)
@@ -483,18 +461,7 @@ public class Dialog extends AbstractPanel
 
     public SeparatorField createSeparator()
     {
-        return new SeparatorField(this);
-    }
-
-    public SeparatorField createSeparator(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        if(SeparatorField.class.isAssignableFrom(cls))
-        {
-            Constructor c = cls.getConstructor(new Class[] { Dialog.class });
-            return (SeparatorField) c.newInstance(new Object[] { this });
-        }
-        else
-            throw new RuntimeException("Don't know what to do with with class: " + cls);
+        return new SeparatorField();
     }
 
     public void addSeparator(SeparatorField field)
@@ -504,18 +471,7 @@ public class Dialog extends AbstractPanel
 
     public GridField createGrid()
     {
-        return new GridField(this);
-    }
-
-    public GridField createGrid(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        if(GridField.class.isAssignableFrom(cls))
-        {
-            Constructor c = cls.getConstructor(new Class[] { Dialog.class });
-            return (GridField) c.newInstance(new Object[] { this });
-        }
-        else
-            throw new RuntimeException("Don't know what to do with with class: " + cls);
+        return new GridField();
     }
 
     public void addGrid(GridField field)

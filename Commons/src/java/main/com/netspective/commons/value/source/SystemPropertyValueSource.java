@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SystemPropertyValueSource.java,v 1.2 2003-05-09 01:23:35 shahid.shah Exp $
+ * $Id: SystemPropertyValueSource.java,v 1.3 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -56,6 +56,7 @@ import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.text.GloballyUniqueIdentifier;
@@ -110,9 +111,9 @@ public class SystemPropertyValueSource extends AbstractValueSource
             return new GenericValue(System.getProperty(propertyName));
     }
 
-    public Value getPresentationValue(ValueContext vc)
+    public PresentationValue getPresentationValue(ValueContext vc)
     {
-        return getValue(vc);
+        return new PresentationValue(getValue(vc));
     }
 
     public boolean hasValue(ValueContext vc)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GridFieldRow.java,v 1.1 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: GridFieldRow.java,v 1.2 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -49,13 +49,7 @@ import com.netspective.sparx.form.Dialog;
 
 public class GridFieldRow extends DialogField
 {
-    public GridFieldRow(Dialog owner)
+    public GridFieldRow()
     {
-        super(owner);
-    }
-
-    public GridFieldRow(DialogField parent)
-    {
-        super(parent);
     }
 }

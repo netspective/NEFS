@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GlobabllyUniqueIdValueSourceTest.java,v 1.2 2003-03-21 13:54:46 shahbaz.javeed Exp $
+ * $Id: GlobabllyUniqueIdValueSourceTest.java,v 1.3 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -115,6 +115,5 @@ public class GlobabllyUniqueIdValueSourceTest extends TestCase
 	    // Statistical assertions for uniqueness of generated guids...
 	    assertTrue(maxMalformedGuids >= malformedGuids);
 	    assertTrue(minUniqueGuids >= uniqueGuids.size());
-
     }
 }

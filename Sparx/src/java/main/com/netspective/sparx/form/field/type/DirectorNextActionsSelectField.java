@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DirectorNextActionsSelectField.java,v 1.2 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: DirectorNextActionsSelectField.java,v 1.3 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -61,13 +61,7 @@ import com.netspective.sparx.form.field.DialogField;
 
 public class DirectorNextActionsSelectField extends DialogField
 {
-    public DirectorNextActionsSelectField(Dialog owner)
+    public DirectorNextActionsSelectField()
     {
-        super(owner);
-    }
-
-    public DirectorNextActionsSelectField(DialogField parent)
-    {
-        super(parent);
     }
 }

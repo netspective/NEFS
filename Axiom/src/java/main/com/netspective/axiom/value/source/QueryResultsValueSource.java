@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultsValueSource.java,v 1.2 2003-05-09 01:23:43 shahid.shah Exp $
+ * $Id: QueryResultsValueSource.java,v 1.3 2003-05-13 19:51:41 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -69,6 +69,7 @@ import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.CachedValue;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.xdm.exception.DataModelException;
@@ -372,21 +373,23 @@ public class QueryResultsValueSource extends AbstractValueSource
                     break;
 
                 case RESULTSTYLE_PRESENTATION:
+                    PresentationValue pValue = new PresentationValue();
+                    PresentationValue.Items items = pValue.createItems();
                     rsmd = rs.getMetaData();
                     rows = new ArrayList();
                     switch(rsmd.getColumnCount())
                     {
                         case 1:
                             while(rs.next())
-                                rows.add(rs.getString(1));
+                                items.addItem(rs.getString(1));
                             break;
 
                         default:
                             while(rs.next())
-                                rows.add(new String[] { rs.getString(1), rs.getString(2) });
+                                items.addItem(rs.getString(1), rs.getString(2));
                             break;
                     }
-                    value = new GenericValue(rows);
+                    value = pValue;
                     break;
 
                 default:
@@ -439,7 +442,7 @@ public class QueryResultsValueSource extends AbstractValueSource
             return getQueryResults(vc, resultStyle);
     }
 
-    public Value getPresentationValue(ValueContext vc)
+    public PresentationValue getPresentationValue(ValueContext vc)
     {
         if(cacheTimeoutMillis > 0)
         {
@@ -448,17 +451,17 @@ public class QueryResultsValueSource extends AbstractValueSource
             if(cv != null)
             {
                 if(cv.isValid())
-                    return cv.getValue();
+                    return (PresentationValue) cv.getValue();
                 else
                     cachedPresentationValues.remove(cacheKey);
             }
 
-            Value value = getQueryResults(vc, RESULTSTYLE_PRESENTATION);
+            PresentationValue value = (PresentationValue) getQueryResults(vc, RESULTSTYLE_PRESENTATION);
             cachedPresentationValues.put(cacheKey, new CachedValue(value, cacheTimeoutMillis));
             return value;
         }
         else
-            return getQueryResults(vc, RESULTSTYLE_PRESENTATION);
+            return (PresentationValue) getQueryResults(vc, RESULTSTYLE_PRESENTATION);
     }
 
     public boolean hasValue(ValueContext vc)

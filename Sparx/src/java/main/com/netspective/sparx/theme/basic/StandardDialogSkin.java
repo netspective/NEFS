@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.5 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.6 2003-05-13 19:52:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -67,6 +67,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.netspective.sparx.form.DialogSkin;
 import com.netspective.sparx.form.DialogContext;
@@ -85,6 +87,7 @@ import com.netspective.commons.validate.ValidationContext;
 
 public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
+    private static final Log log = LogFactory.getLog(StandardDialogSkin.class);
     static public final String FIELDROW_PREFIX = "_dfr.";
     static public final String GRIDHEADROW_PREFIX = "_dghr.";
     static public final String GRIDFIELDROW_PREFIX = "_dgfr.";
@@ -526,7 +529,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         DialogFieldPopup popup = field.getPopup();
         if(popup == null)
             return null;
-        String expression = "new DialogFieldPopup('" + dc.getDialog().getName() + "', '" + field.getQualifiedName() +
+        String expression = "new DialogFieldPopup('" + dc.getDialog().getHtmlFormName() + "', '" + field.getQualifiedName() +
                 "', '" + popup.getAction().getTextValueOrBlank(dc) + "', '" + popup.getWindowClass() + "', " + popup.isCloseAfterSelect() +
                 ", " + popup.isAllowMulti();
         String[] fillFields = popup.getFill();
@@ -840,8 +843,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(dflags.flagIsSet(DialogFlags.DISABLE_CLIENT_KEYPRESS_FILTERS))
             writer.write("<script>ENABLE_KEYPRESS_FILTERS = flase;</script>");
 
-        String dialogName = dialog.getName();
-
+        String dialogName = dialog.getHtmlFormName();
         String encType = dialog.getDialogFlags().flagIsSet(DialogFlags.ENCTYPE_MULTIPART_FORMDATA) ? "enctype=\"multipart/form-data\"" : "";
 
         String actionURL = null;

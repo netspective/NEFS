@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.7 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: TextField.java,v 1.8 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -61,7 +61,6 @@ import com.netspective.commons.validate.rule.TextValueValidationRule;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogContextMemberInfo;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValidations;
 import com.netspective.sparx.form.field.DialogFieldValue;
@@ -140,16 +139,8 @@ public class TextField extends DialogField
     private String formatPattern;
     private TextValueValidationRule textValidationRule;
 
-    public TextField(Dialog owner)
+    public TextField()
     {
-        super(owner);
-        initialize();
-    }
-
-    public TextField(DialogField parent)
-    {
-        super(parent);
-        initialize();
     }
 
     public DialogField.State constructStateInstance(DialogContext dc)

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: SeparatorField.java,v 1.1 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: SeparatorField.java,v 1.2 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -94,14 +94,8 @@ public class SeparatorField extends DialogField
     protected ValueSource heading = ValueSource.NULL_VALUE_SOURCE;
     protected ValueSource banner;
 
-    public SeparatorField(Dialog owner)
+    public SeparatorField()
     {
-        super(owner);
-    }
-
-    public SeparatorField(DialogField parent)
-    {
-        super(parent);
     }
 
     public ValueSource getBanner()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletRequestParameterValueSource.java,v 1.2 2003-05-09 01:22:20 shahid.shah Exp $
+ * $Id: ServletRequestParameterValueSource.java,v 1.3 2003-05-13 19:52:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -53,6 +53,7 @@ import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.value.AbstractValue;
+import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.sparx.value.ServletValueContext;
 
@@ -85,9 +86,9 @@ public class ServletRequestParameterValueSource extends AbstractValueSource
         parameterName = spec.getParams();
     }
 
-    public Value getPresentationValue(ValueContext vc)
+    public PresentationValue getPresentationValue(ValueContext vc)
     {
-        return getValue(vc);
+        return new PresentationValue(getValue(vc));
     }
 
     public Value getValue(final ValueContext vc)

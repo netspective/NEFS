@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.9 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.10 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -59,8 +59,6 @@ package com.netspective.sparx.form.field;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
@@ -136,7 +134,7 @@ public class DialogField implements TemplateConsumer
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "SCANNABLE", Flags.SCANNABLE),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "AUTO_BLUR", Flags.AUTO_BLUR),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "SUBMIT_ONBLUR", Flags.SUBMIT_ONBLUR),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "CREATE_ADJACENT_AREA_HIDDEN", Flags.CREATEADJACENTAREA_HIDDEN),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "CREATE_ADJACENT_AREA_HIDDEN", Flags.CREATE_ADJACENT_AREA_HIDDEN),
     };
 
     public static final int[] CHILD_CARRY_FLAGS = new int[] { Flags.REQUIRED, Flags.UNAVAILABLE, Flags.READ_ONLY, Flags.PERSIST, Flags.CREATE_ADJACENT_AREA, Flags.SHOW_CAPTION_AS_CHILD };
@@ -164,8 +162,8 @@ public class DialogField implements TemplateConsumer
         public static final int SCANNABLE = DOUBLE_ENTRY * 2;
         public static final int AUTO_BLUR = SCANNABLE * 2;
         public static final int SUBMIT_ONBLUR = AUTO_BLUR * 2;
-        public static final int CREATEADJACENTAREA_HIDDEN = SUBMIT_ONBLUR * 2;
-        public static final int START_CUSTOM = CREATEADJACENTAREA_HIDDEN * 2; // all DialogField "children" will use this
+        public static final int CREATE_ADJACENT_AREA_HIDDEN = SUBMIT_ONBLUR * 2;
+        public static final int START_CUSTOM = CREATE_ADJACENT_AREA_HIDDEN * 2; // all DialogField "children" will use this
 
         public Flags()
         {
@@ -311,6 +309,11 @@ public class DialogField implements TemplateConsumer
             return adjacentAreaValue;
         }
 
+        public void setAdjacentAreaValue(String adjacentAreaValue)
+        {
+            this.adjacentAreaValue = adjacentAreaValue;
+        }
+
         public Flags getStateFlags()
         {
             return stateFlags;
@@ -362,6 +365,7 @@ public class DialogField implements TemplateConsumer
 	private String name;
 	private String qualifiedName;
 	private ValueSource caption = ValueSource.NULL_VALUE_SOURCE;
+	private ValueSource errorCaption = ValueSource.NULL_VALUE_SOURCE;
     private ValueSource defaultValue = ValueSource.NULL_VALUE_SOURCE;
     private ValueSource hint = ValueSource.NULL_VALUE_SOURCE;
 	private String cookieName;
@@ -369,7 +373,7 @@ public class DialogField implements TemplateConsumer
 	private List conditionalActions;
 	private List dependentConditions;
 	private List clientJavascripts;
-	private Flags flags;
+	private Flags flags = createFlags();
 	private DialogFieldPopup popup;
     private DialogFieldScanEntry scanEntry;
     private DialogFieldAutoBlur autoBlur;
@@ -377,19 +381,8 @@ public class DialogField implements TemplateConsumer
     private DialogFieldValidations validationRules = constructValidationRules();
     private String requiredFieldMissingMessage = "{0} is required.";
 
-	/**
-	 * Creates a dialog field
-	 */
-	public DialogField(Dialog owner)
-	{
-        this.owner = owner;
-        initialize();
-	}
-
-    public DialogField(DialogField parent)
+    public DialogField()
     {
-        this(parent.getOwner());
-        this.parent = parent;
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
@@ -412,10 +405,9 @@ public class DialogField implements TemplateConsumer
         return owner;
     }
 
-    public void initialize()
+    public void setOwner(Dialog owner)
     {
-        defaultValue = null;
-        flags = createFlags();
+        this.owner = owner;
     }
 
     public State constructStateInstance(DialogContext dc)
@@ -559,6 +551,7 @@ public class DialogField implements TemplateConsumer
 	public void setParent(DialogField newParent)
 	{
 		parent = newParent;
+        setOwner(parent.getOwner());
 	}
 
 	/**
@@ -685,6 +678,18 @@ public class DialogField implements TemplateConsumer
         validationRules.updateCaptions();
 	}
 
+    public ValueSource getErrorCaption()
+    {
+        return errorCaption != ValueSource.NULL_VALUE_SOURCE ?
+                errorCaption : getCaption();
+    }
+
+    public void setErrorCaption(ValueSource errorCaption)
+    {
+        this.errorCaption = errorCaption;
+        validationRules.updateCaptions();
+    }
+
 	/**
 	 * Gets the hint string associated with the dialog field
 	 *
@@ -737,28 +742,12 @@ public class DialogField implements TemplateConsumer
 
     public DialogField createField()
     {
-        return new DialogField(this);
-    }
-
-    public DialogField createField(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        if(DialogField.class.isAssignableFrom(cls))
-        {
-            Constructor c = cls.getConstructor(new Class[] { DialogField.class });
-            return (DialogField) c.newInstance(new Object[] { this });
-        }
-        else
-            throw new RuntimeException("Don't know what to do with with class: " + cls);
+        return new DialogField();
     }
 
     public DialogField createComposite()
     {
         return createField();
-    }
-
-    public DialogField createComposite(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        return createField(cls);
     }
 
 	/**
@@ -776,6 +765,7 @@ public class DialogField implements TemplateConsumer
 		}
 
 		if (children == null) children = new DialogFields(this);
+        field.setParent(this);
 		children.add(field);
 
 		field.setParent(this);
@@ -1050,7 +1040,7 @@ public class DialogField implements TemplateConsumer
         {
             if(! fieldState.hasRequiredValue())
             {
-                dvc.addValidationError(fieldState.getValidationContextScope(), getRequiredFieldMissingMessage(), new Object[] { getCaption().getTextValue(dc) });
+                dvc.addValidationError(fieldState.getValidationContextScope(), getRequiredFieldMissingMessage(), new Object[] { getErrorCaption().getTextValue(dc) });
                 return;
             }
         }

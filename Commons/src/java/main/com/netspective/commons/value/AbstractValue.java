@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.3 2003-05-05 21:21:17 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.4 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -195,7 +195,7 @@ public abstract class AbstractValue implements Value
                     return null;
 
             case VALUELISTTYPE_STRINGARRAY:
-                return (String[]) value;
+                return (String[]) getValue();
 
             case VALUELISTTYPE_LIST:
                 List list = (List) getValue();
@@ -239,10 +239,30 @@ public abstract class AbstractValue implements Value
                 return list;
 
             case VALUELISTTYPE_LIST:
-                return (List) value;
+                return (List) getValue();
 
             default:
                 return null;
+        }
+    }
+
+    public int size()
+    {
+        switch(listType)
+        {
+            case VALUELISTTYPE_NONE:
+                return hasValue() ? 1 : 0;
+
+            case VALUELISTTYPE_STRINGARRAY:
+                String[] array = (String[]) getValue();
+                return array == null ? 0 : array.length;
+
+            case VALUELISTTYPE_LIST:
+                List list = (List) getValue();
+                return list == null ? 0 : list.size();
+
+            default:
+                return 0;
         }
     }
 

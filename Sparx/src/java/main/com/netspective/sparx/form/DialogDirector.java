@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.3 2003-05-10 18:14:22 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.4 2003-05-13 19:52:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -98,19 +98,8 @@ public class DialogDirector extends DialogField
     private DialogDirectorStyle style;
     private DirectorNextActionsSelectField nextActionsField;
 
-    public DialogDirector(Dialog owner)
+    public DialogDirector()
     {
-        super(owner);
-    }
-
-    public DialogDirector(DialogField parent)
-    {
-        super(parent);
-    }
-
-    public void initialize()
-    {
-        super.initialize();
         setName("director");
         setSubmitCaption(ValueSources.getInstance().getValueSourceOrStatic("   OK   "));
         setCancelCaption(ValueSources.getInstance().getValueSourceOrStatic(" Cancel "));

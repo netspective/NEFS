@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticListValueSource.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: StaticListValueSource.java,v 1.2 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -47,10 +47,11 @@ package com.netspective.commons.value.source;
 import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.Value;
 import com.netspective.commons.text.TextUtils;
 
-public class StaticListValueSource extends StaticValueSource
+public class StaticListValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[] { "text-list", "strings" };
 
@@ -59,6 +60,8 @@ public class StaticListValueSource extends StaticValueSource
         return IDENTIFIERS;
     }
 
+    private PresentationValue staticValue = new PresentationValue();
+
     public StaticListValueSource()
     {
         super();
@@ -66,18 +69,52 @@ public class StaticListValueSource extends StaticValueSource
 
     public StaticListValueSource(String[] staticValues)
     {
-        this.staticValue = new GenericValue(staticValues);
+        PresentationValue.Items items = staticValue.createItems();
+        if(staticValues != null)
+        {
+            for(int i = 0; i < staticValues.length; i++)
+                items.addItem(staticValues[i]);
+        }
     }
 
     public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
     {
         super.initialize(spec);
         String pi = spec.getProcessingInstructions();
-        this.staticValue = new GenericValue(TextUtils.split(spec.getParams(), pi != null ? pi : ",", false));
+        String[] textItems = TextUtils.split(spec.getParams(), pi != null ? pi.substring(0, 0) : ",", false);
+        PresentationValue.Items items = staticValue.createItems();
+        if(textItems != null && textItems.length > 0)
+        {
+            char valueCaptionDelim = pi != null ? (pi.length() > 1 ? pi.charAt(1) : '=') : '=';
+            for(int i = 0; i < textItems.length; i++)
+            {
+                String item = textItems[i];
+                int valueCaptionDelimPos = item.indexOf(valueCaptionDelim);
+                if(valueCaptionDelimPos > 0)
+                    items.addItem(item.substring(0, valueCaptionDelimPos), item.substring(valueCaptionDelimPos+1));
+                else
+                    items.addItem(item);
+            }
+        }
     }
 
     public String[] getTextValues(ValueContext vc)
     {
-        return staticValue != null ? staticValue.getTextValues() : null;
+        return staticValue.getTextValues();
+    }
+
+    public PresentationValue getPresentationValue(ValueContext vc)
+    {
+        return staticValue;
+    }
+
+    public Value getValue(ValueContext vc)
+    {
+        return staticValue;
+    }
+
+    public boolean hasValue(ValueContext vc)
+    {
+        return staticValue.hasValue();
     }
 }

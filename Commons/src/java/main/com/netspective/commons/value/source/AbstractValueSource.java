@@ -39,17 +39,19 @@
  */
 
 /**
- * $Id: AbstractValueSource.java,v 1.4 2003-04-06 03:57:44 shahid.shah Exp $
+ * $Id: AbstractValueSource.java,v 1.5 2003-05-13 19:51:51 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
 
+import java.util.List;
+
 import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.PresentationValue;
 
 abstract public class AbstractValueSource implements ValueSource
 {
@@ -91,6 +93,15 @@ abstract public class AbstractValueSource implements ValueSource
     {
         Value value = getValue(vc);
         return value != null ? value.getTextValues() : null;
+    }
+
+    public PresentationValue.Items.Item getPresentationItem(ValueContext vc, String value)
+    {
+        PresentationValue pValue = getPresentationValue(vc);
+        if(pValue.isListValue())
+            return pValue.getItems().getItemWithValue(value);
+
+        return null;
     }
 
     public String toString()
