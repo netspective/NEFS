@@ -164,9 +164,15 @@
         </copy>
     </target>
 
-    <target name="nefs.prepare-starter-ITE-resources-and-web-app-libs" depends="nefs.init" description="Prepare all test applications for integration testing environment (ITE).">
+    <target name="nefs.prepare-starter-ITE-resources-and-web-app-libs" depends="nefs.init" description="Prepare starter app for integration testing environment (ITE/WAR staging).">
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="${nefs.starter.empty-app.name}"/>
+        </antcall>
+    </target>
+
+    <target name="nefs.prepare-www-ITE-resources-and-web-app-libs" depends="nefs.init" description="Prepare www app for integration testing environment (ITE/WAR staging).">
+        <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="${www.app.name}"/>
         </antcall>
     </target>
 
@@ -217,9 +223,15 @@
         <delete file="${specific.test-app-path}/${nefs.app.execution-properties.file}"/>
     </target>
 
-    <target name="nefs.prepare-starter-SDE-resources-and-web-app-libs" depends="nefs.init" description="Removes the APP_ROOT/nefs and APP_ROOT/WEB-INF/lib folders for a specific (provided via parameter) test app. Used to ensure that items don't conflict when doing framework development.">
+    <target name="nefs.prepare-starter-SDE-resources-and-web-app-libs" depends="nefs.init" description="Removes the APP_ROOT/nefs and APP_ROOT/WEB-INF/lib folders for the starter app. Used to ensure that items don't conflict when doing framework development.">
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="${nefs.starter.empty-app.name}"/>
+        </antcall>
+    </target>
+
+    <target name="nefs.prepare-www-SDE-resources-and-web-app-libs" depends="nefs.init" description="Removes the APP_ROOT/nefs and APP_ROOT/WEB-INF/lib folders for the www app. Used to ensure that items don't conflict when doing framework development.">
+        <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="${www.app.name}"/>
         </antcall>
     </target>
 
