@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.10 2003-06-12 14:36:09 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.11 2003-06-20 05:23:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -252,8 +252,7 @@ public class DialogDirector extends DialogField
 
         if(nextActionsField != null && nextActionsField.isAvailable(dc))
         {
-            //TODO: String caption = nextActionsField.getCaption(dc);
-            String caption = null;
+            String caption = nextActionsField.getCaption().getTextValue(dc);
             if(caption != null && !nextActionsField.isInputHidden(dc))
                 writer.write(caption);
 
