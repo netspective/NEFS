@@ -63,10 +63,6 @@ import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.theme.Theme;
 
-/**
- * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.5 2004-08-16 04:17:07 shahid.shah Exp $
- */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
     public static final String SKIN_NAME = "modern";
@@ -594,7 +590,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     public void renderCompositeControlsHtml(Writer writer, DialogContext dc, DialogField parentField) throws IOException
     {
         DialogFields children = parentField.getChildren();
-        writer.write("<table id=\"" + parentField.getHtmlFormControlId() + "\" class='dialog-fields-no-arrow'><tr>");
+        writer.write("<table id=\"" + parentField.getHtmlFormControlId() + "\" class='dialog-field-composite-block'><tr>");
         // loop through all the children field
         for(int i = 0; i < children.size(); i++)
         {
@@ -613,7 +609,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                     //if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE))
                     //    writer.write("<br/>");
 
-                    writer.write("<td>");
+                    writer.write("<td class='dialog-field-composite-item'>");
                     //check to see if the caption of the child field should be shown
                     boolean showCaption = field.showCaptionAsChild();
                     if(showCaption)
@@ -1495,13 +1491,9 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                     if(generated.length() > 0)
                         generated.append(" / ");
                     if(childField.isRequired(dc))
-                        generated.append("<label for=\"" + field.getHtmlFormControlId() + "\" class=\"" + getCaptionRequiredStyleClass() + "\">" + childCaption + (endsWithPunctuation(caption)
-                                                                                                                                                                   ? ""
-                                                                                                                                                                   : ":") + "</label>");
+                        generated.append("<label for=\"" + field.getHtmlFormControlId() + "\" class=\"" + getCaptionRequiredStyleClass() + "\">" + childCaption + "</label>");
                     else
-                        generated.append("<label for=\"" + field.getHtmlFormControlId() + "\" class=\"" + getCaptionStyleClass() + "\">" + childCaption + (endsWithPunctuation(caption)
-                                                                                                                                                           ? ""
-                                                                                                                                                           : ":") + "</label>");
+                        generated.append("<label for=\"" + field.getHtmlFormControlId() + "\" class=\"" + getCaptionStyleClass() + "\">" + childCaption + "</label>");
                 }
             }
             caption = generated.toString();
@@ -1518,11 +1510,11 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             if(caption != null)
             {
                 if(field.isRequired(dc))
-                    caption = "<label class=\"" + getCaptionRequiredStyleClass() + "\" for=\"" + field.getHtmlFormControlId() + "\">" + caption +
-                              (endsWithPunctuation(caption) ? "" : ":") + "</label>";
+                    caption = "<label class=\"" + getCaptionRequiredStyleClass() + "\" for=\"" + field.getHtmlFormControlId() + "\">" + caption
+                              + "</label>";
                 else
                     caption = "<label class=\"" + getCaptionStyleClass() + "\" for=\"" + field.getHtmlFormControlId() + "\">" +
-                              (caption != null ? caption + (endsWithPunctuation(caption) ? "" : ":") : "") + "</label>";
+                              (caption != null ? caption : "") + "</label>";
             }
         }
 

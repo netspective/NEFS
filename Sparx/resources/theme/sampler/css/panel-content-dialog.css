@@ -63,17 +63,16 @@ textarea {  font-size: 8pt; font-family: tahoma; overflow: auto}
 table.dialog      { background-color: #F9F9F9; font: normal 8pt Tahoma, Arial, Sans Serif; padding: 5px }
 
 /* field block styles */
-table.dialog tr.dialog-field-block           { color: #333;    font: normal 8pt Tahoma, Arial, Sans Serif; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; }
-table.dialog tr.dialog-field-block td.dialog-field-caption           { padding: 3px 3px 3px 4px; width: auto; text-align: right; vertical-align: top }
+table.dialog tr.dialog-field-block           { color: #333;    font: normal 8pt Tahoma, Arial, Sans Serif; text-align: left; vertical-align: middle; }
+table.dialog tr.dialog-field-block td.dialog-field-caption           { padding: 3px 3px 3px 4px; width: auto; text-align: right; vertical-align: top; }
 table.dialog tr.dialog-field-block td.dialog-field-caption-required  { padding: 3px 3px 3px 4px; width: auto; text-align: right }
 
-
-table.dialog tr.dialog-field-block-errors    { color: #cc0000; font: normal 8pt Tahoma, Arial, Sans Serif; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; }
+table.dialog tr.dialog-field-block-errors    { color: #cc0000; font: normal 8pt Tahoma, Arial, Sans Serif; text-align: left; vertical-align: middle; }
 table.dialog tr.dialog-field-block-errors td { padding: 3px 3px 3px 10px; }
 
 /* these are the spans around the captions and inputs. The style settings should only enforce the font and text alignment with no block properties */
-table.dialog label.dialog-field-caption           { color: #333;    font: normal 8pt Tahoma, Arial, Sans Serif; text-align: right; vertical-align: middle;  }
-table.dialog label.dialog-field-caption-required  { color: #000000; font: bold   8pt Tahoma, Arial, Sans Serif; text-align: right; vertical-align: middle; }
+table.dialog label.dialog-field-caption           { color: #333;    font: normal 8pt Tahoma, Arial, Sans Serif; text-align: right; vertical-align: middle; background: url(../images/panel/input/content-separator.gif) no-repeat right center; padding-right: 7px; }
+table.dialog label.dialog-field-caption-required  { color: #000000; font: bold   8pt Tahoma, Arial, Sans Serif; text-align: right; vertical-align: middle; background: url(../images/panel/input/content-separator.gif) no-repeat right center; padding-right: 7px; }
 table.dialog label.dialog-field-caption-required:before  { content: '*'; color: red}
 table.dialog span.dialog-field-hint              { color: #696969; font: 8pt Tahoma, Arial, Sans Serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top }
 table.dialog span.dialog-field-hint-hidden       { color: #696969; font: 8pt Tahoma, Arial, Sans Serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top; display: none; }
@@ -108,13 +107,16 @@ table.dialog span.dialog-field-input table.dialog-field-select-options td { padd
 table.dialog span.dialog-field-input table.dialog-field-select-options label           { color: #000; font: normal 8pt Tahoma, Arial, Sans Serif; width: auto }
 table.dialog span.dialog-field-input-required table.dialog-field-select-options label  { color: #000; font: normal 8pt Tahoma, Arial, Sans Serif; width: auto }
 
-
 /* separator field styles */
 table.dialog tr.dialog-field-separator-block     { background-color: #f1eeee; text-align: left; vertical-align: bottom; }
 table.dialog tr.dialog-field-separator-block td  { padding: 5px 4px 1px 5px; border-style: solid; border-width: 1px; border-color: #c0c0c0 #808080 #808080 #c0c0c0; width: auto}
 table.dialog tr.dialog-field-separator-block td a         { color: #696969; font: bold small-caps 14px Verdana, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
 table.dialog tr.dialog-field-separator-block td a:link    { color: #696969; font: bold small-caps 14px Verdana, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
 table.dialog tr.dialog-field-separator-block td a:hover   { color: #696969; font: bold small-caps 14px Verdana, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
+
+/* composite styles */
+table.dialog table.dialog-field-composite-block  { }
+table.dialog table.dialog-field-composite-block td.dialog-field-composite-item  { padding: 0px; margins: 0px; }
 
 /* grid styles */
 table.dialog span.dialog-field-grid-row-caption              { color: #000; font: normal 8pt Tahoma, Arial, Sans Serif; }
