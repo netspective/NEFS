@@ -78,7 +78,7 @@
           'descr' : "The Sampler gives you an idea of how easy it is to build J2EE web applications using the powerful
                      building blocks provided by our Java Frameworks. It includes various examples of creating forms and
                      input fields, performing a variety of different data validations, and executing forms to provide end-user functionality.",
-	  'tutorialUrl' : resourcesPath + '/support/docs/nef-articles/nefs-sampler-tutorial.html',
+	      'tutorialUrl' : resourcesPath + '/support/docs/nef-articles/nefs-sampler-tutorial.html',
           'tutorialName' : 'NEFS Sampler App Tutorial',
           'tutorialDescr' : 'Provides a tour of NEFS Sampler Application.'                     
         },
@@ -96,6 +96,7 @@
                      custom search criteria. This application demonstrates how to create basic forms, perform validations, create
                      tables, generate DDL, construct dynamic SQL, and other NEFS functionality.",
           'tutorialUrl' : resourcesPath + '/support/docs/nef-articles/books-app-tutorial.html',
+          'tutorialPDF' : resourcesPath + '/books-app-tutorial.pdf',
           'tutorialName' : 'Books Sample App Tutorial',
           'tutorialDescr' : 'Provides step by step instructions for how to build the Books sample application using NEFS.'
         },

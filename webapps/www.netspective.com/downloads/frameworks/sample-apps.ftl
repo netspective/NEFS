@@ -20,7 +20,10 @@ adding to the app. In essence, you're getting the sample app and the NEFS evalua
         <td>
             <a href="${vc.rootUrl}/resources/downloads/${app.id}.war">${app.name}.war</a>
             <#if app.tutorialUrl?exists>
-                <br><br><a href="${app.tutorialUrl}" title="${app.tutorialDescr}">Tutorial</a>
+                <br><br>Tutorial (<a href="${app.tutorialUrl}" title="Online (HTML) Version of Tutorial">HTML</a>)
+                <#if app.tutorialPDF?exists>
+                (<a href="${app.tutorialPDF}" title="PDF Version of Tutorial">PDF</a>)
+                </#if>
             </#if>
         </td>
         <td>${app.descr}</td>

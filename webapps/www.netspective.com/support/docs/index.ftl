@@ -28,7 +28,12 @@
     <#list sampleApps as app>
     <#if app.tutorialUrl?exists>
     <tr>
-        <td><a href="${app.tutorialUrl}">${app.tutorialName}</a></td>
+        <td>
+            ${app.tutorialName} (<a href="${app.tutorialUrl}" title="Online (HTML) Version of Tutorial">HTML</a>)
+            <#if app.tutorialPDF?exists>
+            (<a href="${app.tutorialPDF}" title="PDF Version of Tutorial">PDF</a>)
+            </#if>
+        </td>
         <td>${app.tutorialDescr}</td>
     </tr>
     </#if>
