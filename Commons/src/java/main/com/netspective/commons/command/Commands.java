@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Commands.java,v 1.7 2003-07-12 03:39:24 shahid.shah Exp $
+ * $Id: Commands.java,v 1.8 2003-11-16 16:11:10 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
@@ -175,7 +175,7 @@ public class Commands implements MetricsProducer
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public Command getCommand(String name, String params)
+    public Command getCommand(String name, String params) throws CommandCreationException
     {
         Class ccClass = (Class) srcClassesMap.get(name);
         if(ccClass != null)
@@ -189,7 +189,7 @@ public class Commands implements MetricsProducer
             catch (Exception e)
             {
                 log.error("Error instantiating command " + name + " with params " + params, e);
-                return null;
+                throw new CommandCreationException(e, name, params);
             }
         }
         else
