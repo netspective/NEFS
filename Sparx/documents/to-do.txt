@@ -6,6 +6,7 @@
 * [IMPORTANT] review http://www.javapractices.com/index.cjp "Servlets and JSPs" section best practices to ensure we're not missing anything major (especially http://www.javapractices.com/Topic137.cjp)
 * [IMPORTANT] verify that console dialogs do not run outside of console (app shouldn't run them -- for security)
 
+* Add password change, user registration, unregistration, etc to login manager. Also add capability for NavigationPage to set a flag that would allow "unsecured" pages.
 * Add amount of available/total memory available on Console home page (see http://www.javapractices.com/Topic83.cjp pattern)
 * Run ChangeLog on local CVS repository in NBCS to make sure all changes are propogated to Sparx 7.0 from NBCS Sparx 2.3 branch.
 * Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
