@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameter.java,v 1.4 2003-06-26 06:59:55 aye.thu Exp $
+ * $Id: QueryParameter.java,v 1.5 2003-06-30 15:30:48 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -52,6 +52,7 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.axiom.ConnectionContext;
 
@@ -76,7 +77,7 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
         setParent(parent);
     }
 
-    public void finalizeConstruction() throws DataModelException
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
         if(value == null)
         {

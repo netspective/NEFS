@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AbstractTabularReport.java,v 1.3 2003-04-04 20:12:12 shahid.shah Exp $
+ * $Id: AbstractTabularReport.java,v 1.4 2003-06-30 15:31:30 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -68,6 +68,7 @@ import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
 
 public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.ConstructionFinalizeListener
@@ -140,7 +141,7 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
         columns.add(column);
     }
 
-    public void finalizeConstruction() throws DataModelException
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
         // if a record add caption/url was provided but no banner was created, go ahead and generate a banner automatically
         // banners are automatically hidden by record-viewer and shown by record-editor skins

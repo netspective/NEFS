@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.7 2003-06-28 00:47:06 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.8 2003-06-30 15:28:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -69,6 +69,7 @@ import com.netspective.axiom.schema.table.TablesCollection;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducer;
@@ -147,7 +148,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
      * the other methods "completeConstruction" so they are not called automatically by the DataModelSchema. We want to
      * do all construction finalization in this method only.
      */
-    public void finalizeConstruction() throws DataModelException
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
         getTables().finishConstruction();
     }

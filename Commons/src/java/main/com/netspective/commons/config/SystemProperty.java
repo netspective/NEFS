@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: SystemProperty.java,v 1.1 2003-04-02 14:48:16 shahid.shah Exp $
+ * $Id: SystemProperty.java,v 1.2 2003-06-30 15:31:22 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
 
 public class SystemProperty implements XmlDataModelSchema.ConstructionFinalizeListener
@@ -82,7 +83,7 @@ public class SystemProperty implements XmlDataModelSchema.ConstructionFinalizeLi
         property.appendPropertyValueText(text);
     }
 
-    public void finalizeConstruction() throws DataModelException
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
         register();
     }
