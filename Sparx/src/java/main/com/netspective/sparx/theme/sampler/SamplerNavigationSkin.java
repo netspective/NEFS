@@ -117,10 +117,12 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
 
         Object orgId = null;
         String orgName = null;
+        String orgLabel = null;
         if(authOrg != null)
         {
             orgId = authOrg.getOrgId();
             orgName = authOrg.getOrgName();
+            orgLabel = authOrg.getOrgLabel();
         }
 
         Theme theme = getTheme();
@@ -159,8 +161,8 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
             writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
             writer.write("			<tr>\n");
             writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-            writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Org&nbsp;</span></td>\n");
-            writer.write("				<td nowrap><a class=\"active-user\" href=\"" + activeUserOrgHref.getTextValue(nc) + "\" title=\"Org ID is '" + orgId + "'\">&nbsp;&nbsp;" + orgName + "</a></td>\n");
+            writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;" + orgLabel + "&nbsp;</span></td>\n");
+            writer.write("				<td nowrap><a class=\"active-user\" href=\"" + activeUserOrgHref.getTextValue(nc) + "\" title=\"" + orgLabel + " ID is '" + orgId + "'\">&nbsp;&nbsp;" + orgName + "</a></td>\n");
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
             writer.write("	</td>\n");
