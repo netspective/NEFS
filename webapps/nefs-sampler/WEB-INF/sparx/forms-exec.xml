@@ -214,4 +214,30 @@
         </dialog>
     </dialogs>
 
+    <dialogs package="form.exec.action">
+        <dialog type="action" name="exec1a" redirect-after-execute="no" allow-view-source="yes">
+            <frame heading="Action Execute Sample 1a"/>
+            <field type="text" name="full-name" caption="Full Name" required="yes"/>
+
+            <action class="app.form.exec.action.SampleExecuteAction"/>
+        </dialog>
+
+        <dialog type="action" name="exec1b" redirect-after-execute="no" allow-view-source="yes">
+            <frame heading="Action Execute Sample 1b"/>
+            <field type="text" name="full-name" caption="Full Name" required="yes"/>
+            <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
+
+            <action class="app.form.exec.action.SampleExecuteAction"/>
+        </dialog>
+
+        <dialog type="action" name="validate" redirect-after-execute="no" allow-view-source="yes">
+            <frame heading="Delegation Validate Sample"/>
+            <field type="text" name="full-name" caption="Full Name" required="yes"/>
+            <field type="date" name="birth-date" caption="Birth Date" required="yes" max="today"/>
+            <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
+
+            <action class="app.form.exec.action.SampleValidateAction"/>
+        </dialog>
+    </dialogs>
+
 </xdm:container>

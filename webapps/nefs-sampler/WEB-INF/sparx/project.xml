@@ -289,6 +289,44 @@
                 </error-page>
             </page>
 
+            <page type="container" name="action" caption="Action">
+                <summary>
+                    <![CDATA[
+                    This page demonstrates the <i>action</i> model for defining custom logic or action for
+                    execution of a dialog. This model is probably the best model for most types of customization because
+                    <i>action</i> classes may be written as standard Java beans with no reference to the Sparx framework
+                    packages. Inversion of Control (IoC) using Java reflection is used to analyze the bean and use
+                    setXXX() style calls to the action class to set the dialog's fields values in a type-safe manner.
+                    Then, once all the field values are set, a simple execute() method is called giving the action class
+                    a chance to perform some process. After execution, the action class can either delegate the next
+                    action processing back to the framework or provide a framework-independent way of providing the next
+                    action's URL (like through workflow analysis).
+                    ]]>
+                </summary>
+                <page name="exec1a" caption="Exec 1 A" heading="Execute Sample 1 A" command="dialog,form.exec.action.exec1a">
+                    <summary>
+                    <![CDATA[
+                    This page contains a dialog which has a custom action class that provides a simple mesage about the full name.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="exec1b" caption="Exec 1 B" heading="Execute Sample 1 B" command="dialog,form.exec.action.exec1b">
+                    <summary>
+                    <![CDATA[
+                    This page contains a dialog which has a custom action class that provides a simple message about the full name and age.
+                    ]]>
+                    </summary>
+                </page>
+                <page name="validate" caption="Validation" heading="Validation Sample" command="dialog,form.exec.action.validate">
+                    <summary>
+                    <![CDATA[
+                    This page contains a dialog which has a custom action class that overrides the default validation, and execution
+                    behaviors of the dialog.
+                    ]]>
+                    </summary>
+                </page>
+            </page>
+
             <page type="container" name="inheritance" caption="Inheritance">
                 <summary>
                     <![CDATA[
