@@ -11,7 +11,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.1 ($Date: 2004-05-24 02:33:48 $)</releaseinfo>
+    <releaseinfo>Release 7.1 ($Date: 2004-05-26 04:20:54 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until May 25, 2004 when it's
     expected to be completed. Check back daily until then because material is
@@ -2605,7 +2605,7 @@
         presentation layer. Extend a concrete Sparx NavigationSkin class or
         implement the NavigationSkin interface to generate your HTML. Create
         custom CSS for the presentation skin or javascript to add
-        functionality to the client tier. </para>
+        functionality to the client tier.</para>
       </section>
 
       <section>
@@ -2615,7 +2615,7 @@
         Extend the Axiom AnsiDataBasePolicy class or implement the
         DatabbasePolicy interface to enable data access code to remain
         independent of its physical environment. Isolate platform- and data
-        source-dependent behavior within a single component. </para>
+        source-dependent behavior within a single component.</para>
       </section>
 
       <section>
@@ -6914,30 +6914,185 @@ public class Test1  extends com.netspective.sparx.form.Dialog
   <chapter>
     <title>Project Security Declarations</title>
 
-    <para>TODO: documentation coming soon...</para>
+    <para>Ensuring that users actually are who they claim to be and are able
+    to carry out the action they requested is a large part of computer
+    security. NEFS provides the capabilities to manage application security
+    using simple XML tags. Developers determine what forms of authentication
+    will be used in the application security policy then declare the Login
+    Managers, Authenticated Users and Personalization, Access Control Lists,
+    Role-based Navigation Trees, and Role- and permission-based Forms and
+    Fields. </para>
 
     <section>
       <title>Login Managers</title>
 
-      <para>TODO: documentation coming soon...</para>
+      <para>To set up your login managers, you need to have an authenticated
+      user class and a method of authorizing your users. This is accomplished
+      by using the <sgmltag>login-manager</sgmltag> tag in the Project File
+      (<filename>project.xml</filename>).<example>
+          <title>Setting up the Login Manager, Authenticator, Authenticated
+          User, and Login Dialog for Medigy Application</title>
+
+          <programlisting>&lt;project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt;
+...
+&lt;login-manager name="app" default="yes"&gt; <co
+              id="declare-conn-provider-tags-eg-1" />
+  &lt;login-authenticator class="com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator"&gt; <co
+              id="declare-conn-provider-tags-eg-2" />
+    &lt;authenticated-user-class&gt;app.AppAuthenticatedUser&lt;/authenticated-user-class&gt; <co
+              id="declare-conn-provider-tags-eg-3" />
+    &lt;password-query&gt;<co id="declare-conn-provider-tags-eg-4" />
+        select
+            person_login.password
+        from
+            person_login
+        where
+            person_login.user_id = ?
+    &lt;/password-query&gt; 
+  &lt;/login-authenticator&gt; 
+  &lt;login-dialog retain-params="*"&gt; <co
+              id="declare-conn-provider-tags-eg-1" />
+    &lt;frame heading="Welcome to Medigy"/&gt;
+    &lt;field name="user-id" type="text" caption="Login ID" required="yes" persist="yes" initial-focus="yes"/&gt;
+    &lt;field name="password" type="text" caption="Password" mask-entry="yes" required="yes"/&gt;
+  &lt;/login-dialog&gt;
+&lt;/login-manager&gt;</programlisting>
+        </example><calloutlist>
+          <callout arearefs="declare-conn-provider-tags-eg-1">
+            <para>A <sgmltag>login-manager</sgmltag> tag is used to declare
+            the security features used to access your application. <note>
+                <para>Note that multiple login-managers can be used by your
+                application though only one should be declared as the
+                default.</para>
+              </note></para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>The <sgmltag>login-authenticator</sgmltag> tag is used to
+            provide the driver to be used for the specified database. Use the
+            Sparx <sgmltag>DatabaseLoginAuthenticator</sgmltag> to check
+            credentials in a database table or extend
+            <sgmltag>AbstractLoginAuthenticator</sgmltag> for your own custom
+            implementation.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>The <sgmltag>authenticated-user-class</sgmltag> tag is used
+            to define the authenticated user. </para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>The <sgmltag>password-query</sgmltag> tag is used to define
+            the query statement that verifies the subject's existence.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>The <sgmltag>login-dialog</sgmltag> tag defines a login form
+            which allows users to access the application. The example code
+            specifies user-id and password fields.</para>
+          </callout>
+        </calloutlist></para>
     </section>
 
     <section>
       <title>Authenticated Users and Personalization</title>
 
-      <para>TODO: documentation coming soon...</para>
+      <para>User Java inheritance to extend the Sparx
+      <sgmltag>HttpSessionAuthenticatedUser</sgmltag> to define an
+      authenticated user that is bound to a session and encapsulates the
+      subject's principles. Personalize the implementation to meet your
+      needs.</para>
     </section>
 
     <section>
       <title>Access Control Lists</title>
 
-      <para>TODO: documentation coming soon...</para>
+      <para>Principal A may have access to portion T of your application,
+      principal B may not. NEFS discretionary access control provides
+      developers a mechanism to maintain a list of permissions in an access
+      control list. </para>
+
+      <para><example>
+          <title>Setting up the Access Control List for CTS
+          Application</title>
+
+          <programlisting>&lt;project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt;
+...
+&lt;access-control-list name="acl"&gt; <co
+              id="declare-conn-provider-tags-eg-1" />
+  &lt;permission name="app"&gt; <co id="declare-conn-provider-tags-eg-2" />
+    &lt;permission name="org"&gt; 
+      &lt;permission name="sponsor"&gt;
+        &lt;permission name="view"/&gt; 
+        &lt;permission name="create"/&gt;
+        &lt;permission name="update"/&gt;
+        &lt;permission name="delete"/&gt;
+      &lt;/permission&gt;
+    &lt;/permission&gt; 
+  &lt;/permission&gt;
+  ...
+&lt;/access-control-list&gt;</programlisting>
+        </example><calloutlist>
+          <callout arearefs="declare-conn-provider-tags-eg-1">
+            <para>A <sgmltag>access-control-list</sgmltag> tag is used to
+            declare the security declarations for your application. </para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>The <sgmltag>permission</sgmltag> tag is used to grant a
+            privelege to resources in your application. The permission tag may
+            have zero or more sub-tags for organizing resource types and pr.
+            </para>
+          </callout>
+        </calloutlist></para>
     </section>
 
     <section>
       <title>Role-based Navigation Trees</title>
 
-      <para>TODO: documentation coming soon...</para>
+      <para>A particular usage role can be associated with a collection of
+      users. For example, an super-user role may be assigned to administrators
+      of the system. Roles are mapped to a principal, the principal involved
+      with a particular role-sensitive operation is compared with the
+      principal name extracted from the role. This method is used to determine
+      whether the operation is permitted to proceed. </para>
+
+      <para><example>
+          <title>Setting up the Roles for CTS Application</title>
+
+          <programlisting>&lt;project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt;
+...
+&lt;access-control-list name="acl"&gt; 
+  &lt;role name="role"&gt; <co id="declare-conn-provider-tags-eg-1" />
+    &lt;role name="super-user"&gt;
+      &lt;grant permission="/acl/app/org"/&gt; <co
+              id="declare-conn-provider-tags-eg-1" />
+      &lt;grant permission="/acl/app/person"/&gt;
+      &lt;grant permission="/acl/app/study"/&gt;
+    &lt;/role&gt;
+    &lt;role name="subject"&gt;
+      &lt;grant permission="/acl/app/org/site/view"/&gt;
+      &lt;grant permission="/acl/app/org/sponsor/view"/&gt;
+      &lt;grant permission="/acl/app/study/view"/&gt;
+    &lt;/role&gt;
+    &lt;role name="physician"&gt;
+      &lt;grant permission="/acl/app/org/site/view"/&gt;
+      &lt;grant permission="/acl/app/org/sponsor/view"/&gt;
+      &lt;grant permission="/acl/app/study/view"/&gt;
+    &lt;/role&gt;
+  &lt;/role&gt;
+&lt;/access-control-list&gt;</programlisting>
+        </example><calloutlist>
+          <callout arearefs="declare-conn-provider-tags-eg-1">
+            <para>A <sgmltag>role</sgmltag> tag is used to declare role-based
+            access control for your application.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>The <sgmltag>grant</sgmltag> tag is used to provide a
+            permission to access a domain. </para>
+          </callout>
+        </calloutlist></para>
     </section>
 
     <section>
