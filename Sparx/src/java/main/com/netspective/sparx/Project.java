@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.17 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: Project.java,v 1.18 2003-08-15 02:10:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -94,6 +94,7 @@ import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.lang.ClassPath;
+import com.netspective.commons.product.NetspectiveComponent;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
@@ -170,6 +171,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     static
     {
+        NetspectiveComponent.getInstance().registerProduct(com.netspective.sparx.ProductRelease.PRODUCT_RELEASE);
         templateProducers.add(PANEL_TYPES);
         templateProducers.add(DIALOG_TYPES);
         templateProducers.add(DIALOG_EXECUTE_HANDLERS);

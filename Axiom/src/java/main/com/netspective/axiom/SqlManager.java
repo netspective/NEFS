@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.9 2003-07-08 14:16:25 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.10 2003-08-15 02:09:28 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -58,6 +58,7 @@ import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
 import com.netspective.commons.xdm.DefaultXdmComponentItems;
 import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.product.NetspectiveComponent;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.sql.collection.QueriesCollection;
@@ -83,6 +84,11 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
     public static final String PREFIX_CUSTOM = "custom.";
     public static final String PREFIX_SCHEMA = "schema.";
+
+    static
+    {
+        NetspectiveComponent.getInstance().registerProduct(com.netspective.commons.ProductRelease.PRODUCT_RELEASE);
+    }
 
     protected QueriesNameSpace activeNameSpace;
     private QueriesNameSpace temporaryQueriesNameSpace;

@@ -39,13 +39,12 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.4 2003-08-15 01:54:03 shahid.shah Exp $
+ * $Id: ProductRelease.java,v 1.5 2003-08-15 02:10:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
 
 import com.netspective.commons.Product;
-import com.netspective.commons.product.NetspectiveComponent;
 
 public class ProductRelease implements Product
 {
@@ -60,7 +59,6 @@ public class ProductRelease implements Product
 
     public ProductRelease()
     {
-        NetspectiveComponent.getInstance().registerProduct(this);
     }
 
     public String getProductId()

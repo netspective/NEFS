@@ -1,10 +1,5 @@
 <#include "*/library.ftl">
 
-<!-- call these so that they register themselves -->
-<#assign commons = statics["com.netspective.commons.ProductRelease"].PRODUCT_RELEASE/>
-<#assign axiom = statics["com.netspective.axiom.ProductRelease"].PRODUCT_RELEASE/>
-<#assign sparx = statics["com.netspective.sparx.ProductRelease"].PRODUCT_RELEASE/>
-
 <#assign factory = statics["com.netspective.commons.product.NetspectiveComponent"].getInstance()/>
 <#assign allLibDependencies = factory.netspective.allLibraryDependencies/>
 <#assign catalog = []/>
