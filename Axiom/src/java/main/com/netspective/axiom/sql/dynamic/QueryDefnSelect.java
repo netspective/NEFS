@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSelect.java,v 1.6 2003-06-25 06:57:01 aye.thu Exp $
+ * $Id: QueryDefnSelect.java,v 1.7 2003-06-25 06:58:05 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -125,7 +125,6 @@ public class QueryDefnSelect extends Query
 
     public void addGroupBy(QueryDefnFieldReference fieldRef) throws QueryDefinitionException
     {
-        System.out.println("Add Group By");
         if(fieldRef.isMulti())
         {
             QueryDefnFields fields = fieldRef.findFieldsInstances();
@@ -157,7 +156,6 @@ public class QueryDefnSelect extends Query
 
     public void addOrderBy(QueryDefnSortFieldReference field)
     {
-        System.out.println("Add Order By");
         orderByFieldRefs.add(field);
         if(field.isStatic())
             isDirty = true;
@@ -179,7 +177,6 @@ public class QueryDefnSelect extends Query
 
     public void addDisplay(QueryDefnFieldReference fieldRef) throws QueryDefinitionException
     {
-        System.out.println("Add Display");
         if(fieldRef.isMulti())
         {
             QueryDefnFields fields = fieldRef.findFieldsInstances();
@@ -229,7 +226,6 @@ public class QueryDefnSelect extends Query
 
     public void addCondition(QueryDefnCondition condition)
     {
-        System.out.println("Add Condition");
         if(condition.removeIfValueIsNull())
             alwaysDirty = true;
 
