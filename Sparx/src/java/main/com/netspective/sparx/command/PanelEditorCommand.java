@@ -54,9 +54,6 @@ package com.netspective.sparx.command;
 
 import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.CommandException;
-import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogState;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlPanel;
@@ -73,21 +70,21 @@ import java.util.StringTokenizer;
  * Class for handling the record-editor-panel command
  *
  *
- * @version $Id: PanelEditorCommand.java,v 1.1 2004-03-03 08:23:39 aye.thu Exp $
+ * @version $Id: PanelEditorCommand.java,v 1.2 2004-03-03 16:01:22 aye.thu Exp $
  */
 public class PanelEditorCommand extends AbstractHttpServletCommand
 {
     private static final Log log = LogFactory.getLog(PanelEditorCommand.class);
 
 
-    public static final String RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME = "record-editor";
-    public static final String[] IDENTIFIERS = new String[] { "record-editor-panel" };
+    public static final String PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME = "panel-editor";
+    public static final String[] IDENTIFIERS = new String[] { "panel-editor" };
 
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation(
-            "Displays the result of a SQL query with the ability to edit/delete the displayed records and also to add additional records.",
+            "Allows automatic add, delete, and edit functionality to records in a report panel.",
             new CommandDocumentation.Parameter[]
             {
-                new CommandDocumentation.Parameter("record-editor-panel-name", true, "The fully qualified name of the record editor panel (package-name.panel-name)."),
+                new CommandDocumentation.Parameter("panel-editor-name", true, "The fully qualified name of the panel editor (package-name.panel-name)."),
                 new CommandDocumentation.Parameter("command-action", false, "The action to perform for the selected record."),
                 new CommandDocumentation.Parameter("record-key", false, "The primary key of the selected record."),
             }
