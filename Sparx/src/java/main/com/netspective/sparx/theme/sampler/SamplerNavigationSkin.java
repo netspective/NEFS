@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SamplerNavigationSkin.java,v 1.1 2004-05-11 12:22:47 shahid.shah Exp $
+ * $Id: SamplerNavigationSkin.java,v 1.2 2004-06-28 04:10:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.sampler;
@@ -92,8 +92,8 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
         String orgId = null;
         if (authUser instanceof AuthenticatedOrgUser)
         {
-            orgName = ((AuthenticatedOrgUser) authUser).getUserOrgId();
-            orgId = ((AuthenticatedOrgUser) authUser).getUserOrgName();
+            orgId = ((AuthenticatedOrgUser) authUser).getUserOrgId();
+            orgName = ((AuthenticatedOrgUser) authUser).getUserOrgName();
         }
 
         Theme theme = getTheme();
