@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.50 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.51 2004-01-08 14:10:35 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -54,6 +54,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.Servlet;
+import javax.servlet.ServletException;
 import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
@@ -96,7 +97,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public static final String CONTEXTATTRNAME_FREEMARKER_CONFIG = "freemarker-config";
     public static final String INITPARAMNAME_DEFAULT_DATA_SRC_ID = "com.netspective.sparx.DEFAULT_DATA_SOURCE";
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
-    public static final String REQATTRNAME_ACTIVE_LOGIN_MANAGER = "sparx-active-login-manager";
     public static final String REQATTRNAME_SHARED_CONN_CONTEXT = "sparx-shared-cc.";
     public static final String SESSATTRNAME_SHARED_CONN_CONTEXT = "sparx-shared-cc.";
 
@@ -515,7 +515,15 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public HttpLoginManager getActiveLoginManager()
     {
-        return (HttpLoginManager) request.getAttribute(REQATTRNAME_ACTIVE_LOGIN_MANAGER);
+        try
+        {
+            return ((NavigationControllerServlet) servlet).getLoginManager();
+        }
+        catch (ServletException e)
+        {
+            log.error(e);
+            return null;
+        }
     }
 
     public Configuration getFreeMarkerConfiguration()

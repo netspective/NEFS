@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.39 2003-12-22 13:10:59 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.40 2004-01-08 14:10:35 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -678,7 +678,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             LoginDialogMode loginDialogMode = LoginDialogMode.ACCESS_ALLOWED;
             if(loginManager != null)
             {
-                nc.getRequest().setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_LOGIN_MANAGER, loginManager);
                 loginDialogMode = loginManager.getLoginDialogMode(nc);
 
                 // if we're getting input or we're denying login it means that the presentation is complete (HTML is already on the screen)
