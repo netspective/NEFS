@@ -119,7 +119,19 @@
                         </panel>
                     </panels>
                 </page>
-                <page name="exec-handlers" caption="Exec Handlers"/>
+                <page name="exec-handlers" caption="Exec Handlers">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Dialog Execute Handler Detail"/>
+                            <body config="console" source="console-page-content:detail.ftl"/>
+                        </panel>
+                        <panel type="html">
+                            <frame heading="Available Dialog Execute Handlers"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
 		        <page name="perspectives" caption="Perspectives">
                     <panels>
                         <panel type="console-page-summary"/>

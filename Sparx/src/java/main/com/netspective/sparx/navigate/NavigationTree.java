@@ -119,6 +119,11 @@ public class NavigationTree implements TemplateProducerParent
         contentsFinalized = true;
     }
 
+    public int size()
+    {
+        return root.size();
+    }
+
     public boolean isDefaultTree()
     {
         return defaultTree;
@@ -298,22 +303,28 @@ public class NavigationTree implements TemplateProducerParent
          * Returns a String array that contains the portions of the path that could not be matched.
          * @return String[]  Array of unmatched path items
          */
-        public String[] unmatchedPathItems()
+        public String[] getUnmatchedPathItems()
         {
             return unmatchedItems;
         }
 
+        public boolean hasUnmatchedPathItems()
+        {
+            return unmatchedItems != null;
+        }
+
         /**
-         * Returns a concatenated String of all of the elements of unmatchedPathItems with a "/" as a path separator.
+         * Returns a concatenated String of all of the elements of getUnmatchedPathItems with a "/" as a path separator.
+         * @param startItem the item number to start with
          * @return String  Full unmatched path
          */
-        public String getUnmatchedPath()
+        public String getUnmatchedPath(int startItem)
         {
             if (unmatchedItems == null || unmatchedItems.length == 0)
                 return null;
 
             StringBuffer result = new StringBuffer();
-            for (int i = 0; i < unmatchedItems.length; i++)
+            for (int i = startItem; i < unmatchedItems.length; i++)
             {
                 result.append(NavigationPath.PATH_SEPARATOR);
                 result.append(unmatchedItems[i]);

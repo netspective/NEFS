@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.18 2003-10-05 03:40:27 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.19 2003-10-07 01:38:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -243,7 +243,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public FileSystemContext getFileSystemContext(File rootPath, String rootCaption)
     {
-        return new FileSystemContext(getRootUrl(), rootPath, rootCaption, activePathFindResults.getUnmatchedPath());
+        return new FileSystemContext(getRootUrl(), rootPath, rootCaption, activePathFindResults.getUnmatchedPath(0));
     }
 
     public FileSystemContext getProjectFileSystemContext()

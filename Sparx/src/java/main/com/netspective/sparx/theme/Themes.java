@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Themes.java,v 1.6 2003-09-13 23:04:52 shahid.shah Exp $
+ * $Id: Themes.java,v 1.7 2003-10-07 01:38:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -117,5 +117,10 @@ public class Themes
         }
 
         return result;
+    }
+
+    public int size()
+    {
+        return themesByName.size();
     }
 }

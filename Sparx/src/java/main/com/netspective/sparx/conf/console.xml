@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.96 2003-10-05 03:40:27 shahid.shah Exp $
+  * $Id: console.xml,v 1.97 2003-10-07 01:38:54 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -62,12 +62,13 @@
                     <body config="console" source="console-page-content:../documentation.ftl"/>
                 </page>
             </page>
-	        <page name="metrics" caption="Metrics"/>
+	        <page name="metrics" caption="Metrics">
+                <body config="console" source="console-page-content:index.ftl"/>
+            </page>
 	        <page name="configuration" caption="Configuration">
 	            <page name="servlet" caption="Servlet Config">
                     <body config="console" source="console-page-content:../servlet.ftl"/>
                 </page>
-	            <page name="application" caption="App Config"/>
 	            <page name="class-path" caption="Class Path">
                     <body config="console" source="console-page-content:../class-path.ftl"/>
                 </page>
@@ -84,8 +85,12 @@
         <page name="presentation" caption="Presentation" heading="Presentation Layer">
 
 	        <page name="navigation" caption="Navigation">
-                <page name="catalog" caption="Catalog"/>
-                <page name="test" caption="Unit Test"/>
+                <page name="catalog" caption="Catalog">
+                    <body config="console" source="console-page-content:../catalog.ftl"/>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Navigation Tree Documentation">
+                    <body config="console" source="console-page-content:../documentation.ftl"/>
+                </page>
 	        </page>
 
 	        <page name="dialogs" default="yes" caption="Dialogs" retain-params="selected-dialog-id">
@@ -99,7 +104,7 @@
                     <body config="console" source="console-page-content:../documentation.ftl"/>
                 </page>
                 <page name="field-types" caption="Field Types" redirect="../../manual/presentation/dialogs/controls"/>
-                <page name="dialog-execute-handlers" caption="Handlers" heading="Dialog Execute Handlers"/>
+                <page name="dialog-execute-handlers" caption="Handlers" redirect="../../manual/presentation/dialogs/exec-handlers"/>
 	        </page>
 
             <page name="reports" caption="Reports"/>
@@ -240,6 +245,8 @@
                     </panel>
                 </panels>
             </page>
+
+            <page name="templates" caption="XDM Templates Catalog"/>
         </page>
     </navigation-tree>
 

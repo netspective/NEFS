@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationTrees.java,v 1.3 2003-08-17 00:16:33 shahid.shah Exp $
+ * $Id: NavigationTrees.java,v 1.4 2003-10-07 01:38:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -62,6 +62,11 @@ public class NavigationTrees
 
     public NavigationTrees()
     {
+    }
+
+    public Map getTrees()
+    {
+        return trees;
     }
 
     public NavigationTree getNavigationTree(final String name)

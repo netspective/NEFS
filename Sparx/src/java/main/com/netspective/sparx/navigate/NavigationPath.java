@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.9 2003-08-20 22:38:52 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.10 2003-10-07 01:38:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -120,6 +120,15 @@ public class NavigationPath
     public NavigationPath()
     {
         flags = createFlags();
+    }
+
+    public int size()
+    {
+        int result = 1; // start with self
+        for(int i = 0; i < childrenList.size(); i++)
+            result += ((NavigationPath) childrenList.get(i)).size();
+
+        return result;
     }
 
     public NavigationPathListener createListener()

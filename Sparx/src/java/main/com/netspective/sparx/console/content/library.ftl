@@ -219,6 +219,7 @@
             <td class="report-column-heading">Name</td>
             <td class="report-column-heading">Class</td>
             <td class="report-column-heading">Text</td>
+            <td class="report-column-heading">Template</td>
         </tr>
 
     <#list childElements as childDetail>
@@ -249,9 +250,26 @@
             <td class="report-column-${classSuffix}">
                 <#if getXmlDataModelSchema(childDetail.elemType.name).supportsCharacters()>Yes<#else>&nbsp;</#if>
             </td>
+            <td class="report-column-${classSuffix}">
+                <#if childDetail.isTemplateConsumer()>Consumer<#else>&nbsp;</#if>
+                <#if childDetail.isTemplateProducer()>
+                    <#assign templates = childDetail.templateProducer.instancesMap?default('-')/>
+                    <#if templates != '-'>
+                    <select>
+                        <#list templates as template>
+                        <option><${template.templateName}</option>
+                        </#list>
+                    </select>
+                    <#else>
+                        Producer
+                    </#if>
+                <#else>
+                    &nbsp;
+                </#if>
+            </td>
         </tr>
         <tr>
-            <td class="report-column-${classSuffix}" colspan=3>
+            <td class="report-column-${classSuffix}" colspan=4>
                 <font color=#999999>${childDetail.javaDoc.description?default('&nbsp;')}</font>
             </td>
         </tr>
