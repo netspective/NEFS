@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.6 2003-08-30 19:16:36 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.7 2003-10-15 15:28:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -736,7 +736,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             Column column = value.getColumn();
             Object bindValue = value.getValueForSqlBindParam();
 
-            if(column instanceof GeneratedValueColumn)
+            if(execute && (column instanceof GeneratedValueColumn))
             {
                 GeneratedValueColumn generator = (GeneratedValueColumn) column;
                 generators[i] = generator;
