@@ -76,6 +76,22 @@
 	<servlet>
 		<servlet-name>NetspectiveConsole</servlet-name>
 		<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
+        <init-param>
+            <param-name>secure</param-name>
+            <param-value>yes</param-value> <!-- set to "no" if console should not require login -->
+        </init-param>
+        <init-param>
+            <param-name>login-user-id</param-name>
+            <param-value>console</param-value>
+        </init-param>
+        <init-param>
+            <param-name>login-password</param-name> <!-- if you use this parameter then the encrypted one is not required -->
+            <param-value>console</param-value>
+        </init-param>
+        <init-param>
+            <param-name>login-password-encrypted</param-name> <!-- if you provide an encrypted password, it takes precedence over unencrypted -->
+            <param-value>NCbHq1WqkpfDY</param-value> <!-- run "java com.netspective.commons.security.Crypt NC <password>" to generate encrypted password -->
+        </init-param>
 	</servlet>
 
 	<servlet-mapping>
