@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="convert" default="convert-all">
+
+    <property environment="env"/>
+
+    <target name="init">
+        <property name="sparx2.home.path" value="c:/Projects/Sparx"/>
+        <property name="app.home.path" value="c:/Projects/webapps/medspective"/>
+
+        <property name="sparx2-web-shared-path" value="${sparx2.home.path}/web-shared"/>
+        <property name="sparx2-resources-path" value="${sparx2-web-shared-path}/resources"/>
+        <property name="sparx2-templates-path" value="${sparx2-web-shared-path}/templates"/>
+
+        <property name="app.WEB-INF.path" value="${app.home.path}/WEB-INF"/>
+        <property name="app.WEB-INF.schema.path" value="${app.WEB-INF.path}/schema"/>
+        <property name="app.WEB-INF.sql.path" value="${app.WEB-INF.path}/sql"/>
+
+        <property name="staging-root-dir" value="staging-area"/>
+
+        <property name="schema-staging-dir" value="${staging-root-dir}/schema"/>
+        <property name="schema-final-dir" value="dal/test-data"/>
+
+        <property name="statements-staging-dir" value="${staging-root-dir}/sql"/>
+        <property name="statements-final-dir" value="sql/test-data"/>
+
+        <echo message="Basedir is '${basedir}'"/>
+        <echo message="Sparx 2.0 home path is '${sparx2.home.path}'"/>
+        <echo message="Sparx 2.0 resources path is '${sparx2-resources-path}'"/>
+        <echo message="Application home path is '${app.home.path}'"/>
+        <echo message="Application WEB-INF path is '${app.WEB-INF.path}'"/>
+    </target>
+
+    <target name="clean" depends="init">
+        <delete dir="${staging-root-dir}"/>
+        <delete dir="${schema-final-dir}"/>
+        <delete dir="${statements-final-dir}"/>
+    </target>
+
+    <target name="convert-schema-doc" depends="init">
+        <delete dir="schema-staging-dir"/>
+        <delete dir="schema-final-dir"/>
+
+        <!-- copy all the schema files into the staging directory -->
+        <copy todir="${schema-staging-dir}">
+            <fileset dir="${app.WEB-INF.schema.path}">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+
+        <!-- replace <p> HTML tag with escaped version (used in descriptions)  -->
+        <replace dir="${schema-staging-dir}" token="&lt;p&gt;" value="&amp;lt;p&amp;gt;">
+            <include name="**/*.xml"/>
+        </replace>
+
+        <!-- replace </p> HTML tag with escaped version (used in descriptions) -->
+        <replace dir="${schema-staging-dir}" token="&lt;/p&gt;" value="&amp;lt;/p&amp;gt;">
+            <include name="**/*.xml"/>
+        </replace>
+
+        <xslt basedir="${schema-staging-dir}" destdir="${schema-final-dir}"
+              extension=".xml" style="dal/convert-schema-doc-include.xsl" force="yes" processor="trax">
+            <include name="**/*.xml"/>
+            <exclude name="schema.xml"/>
+        </xslt>
+
+        <xslt basedir="${schema-staging-dir}" destdir="${schema-final-dir}"
+              extension=".xml" style="dal/convert-schema-doc.xsl" force="yes" processor="trax">
+            <include name="schema.xml"/>
+        </xslt>
+    </target>
+
+    <target name="convert-statements" depends="init">
+        <delete dir="statements-staging-dir"/>
+        <delete dir="statements-final-dir"/>
+
+        <!-- copy all the statements files into the staging directory -->
+        <copy todir="${statements-staging-dir}">
+            <fileset dir="${app.WEB-INF.sql.path}">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+
+        <xslt basedir="${statements-staging-dir}" destdir="${statements-final-dir}"
+              extension=".xml" style="sql/convert-statements-include.xsl" force="yes" processor="trax">
+            <include name="**/*.xml"/>
+            <exclude name="statements.xml"/>
+        </xslt>
+
+        <xslt basedir="${statements-staging-dir}" destdir="${statements-final-dir}"
+              extension=".xml" style="sql/convert-statements.xsl" force="yes" processor="trax">
+            <include name="statements.xml"/>
+        </xslt>
+    </target>
+
+    <target name="convert-all" depends="convert-schema-doc,convert-statements"/>
+</project>

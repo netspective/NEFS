@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ===================================================================
+
+Setup instructions:
+    Before running an Ant build, you must
+     - set the JAVA_HOME environment variable to the JDK root directory
+-->
+
+<project default="all">
+
+    <property environment="env"/>
+    <property file="build.properties"/>
+
+    <target name="check-java-home">
+        <condition property="java.home.exists">
+            <or>
+                <available file="${env.JAVA_HOME}/bin/javac"/>
+                <available file="${env.JAVA_HOME}/bin/javac.exe"/>
+            </or>
+        </condition>
+        <fail message="JAVA_HOME is not set to a valid JDK directory." unless="java.home.exists"/>
+        <echo message="JAVA_HOME is ${env.JAVA_HOME}"/>
+    </target>
+
+    <target name="setup-project-properties">
+        <buildnumber file="build.number"/>
+
+        <property name="project.conf.home" value="${project.home}/conf"/>
+        <property name="project.resources.home" value="${project.home}/resources"/>
+        <property name="project.src.main.home" value="${project.home}/src/java/main"/>
+        <property name="project.src.test.home" value="${project.home}/src/java/test"/>
+
+        <property name="project.change-log.name" value="change-log"/>
+        <property name="project.build.log.class.package" value="${project.package.base}"/>
+        <property name="project.build.log.class.name" value="BuildLog"/>
+
+        <property name="project.build.dir" value="${project.home}/build"/>
+        <property name="project.build.main.classes.dir" value="${project.build.dir}/classes/main"/>
+        <property name="project.build.test.classes.dir" value="${project.build.dir}/classes/test"/>
+        <property name="project.lib.dir" value="${project.home}/lib"/>
+        <property name="project.lib.redist.dir" value="${project.lib.dir}/redist"/>
+
+        <property name="commons.home" value="../../Commons"/>
+        <property name="commons.lib.dir" value="${commons.home}/lib"/>
+        <property name="commons.lib.redist.dir" value="${commons.lib.dir}/redist"/>
+
+        <path id="project.class.path">
+            <fileset dir="${commons.lib.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${project.lib.redist.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+
+        <property name="GenerateBuildLogClassTask-class-name" value="com.netspective.commons.ant.GenerateBuildLogClassTask"/>
+        <property name="ClassPathTask-class-name" value="com.netspective.commons.ant.ClassPathTask"/>
+
+        <available property="GenerateBuildLogClassTask-available" classname="${GenerateBuildLogClassTask-class-name}"/>
+        <available property="ClassPathTask-available" classname="${ClassPathTask-class-name}"/>
+    </target>
+
+    <target name="init-build-dir" depends="setup-project-properties">
+        <delete dir="${project.build.dir}"/>
+        <mkdir dir="${project.build.dir}"/>
+        <mkdir dir="${project.build.main.classes.dir}"/>
+        <mkdir dir="${project.build.test.classes.dir}"/>
+    </target>
+
+    <target name="compile-class-path-utility" depends="init-build-dir" unless="ClassPathTask-available">
+        <javac srcdir="${project.src.main.home}/${project.package.base.dir}" destdir="${project.build.main.classes.dir}"
+            includes="lang/ClassPath.java,ant/ClassPathTask.java"
+            debug="on" optimize="true" deprecation="on"
+            classpathref="project.class.path"/>
+    </target>
+
+    <target name="compile-generate-build-log-class-task" depends="init-build-dir,compile-class-path-utility" unless="GenerateBuildLogClassTask-available">
+        <javac srcdir="${project.src.main.home}/${project.package.base.dir}" destdir="${project.build.main.classes.dir}"
+            includes="ant/GenerateBuildLogClassTask.java"
+            debug="on" optimize="true" deprecation="on"
+            classpathref="project.class.path"/>
+    </target>
+
+    <target name="init" depends="check-java-home,init-build-dir,compile-generate-build-log-class-task">
+
+        <taskdef name="gblc" classname="${GenerateBuildLogClassTask-class-name}" classpath="${project.build.main.classes.dir}" classpathref="project.class.path"/>
+        <gblc
+            file="${project.src.main.home}/${project.package.base.dir}/${project.build.log.class.name}.java"
+            package="${project.build.log.class.package}" class="${project.build.log.class.name}"/>
+        <echo message="Built on ${project.build.log.property.date} (host=${project.build.log.property.host.name}; ip=${project.build.log.property.host.ip})"/>
+
+        <!-- Compile the ProductRelease and other Ant utility class -->
+        <javac srcdir="${project.src.main.home}/${project.package.base.dir}" destdir="${project.build.main.classes.dir}"
+            includes="BuildLog.java,Product.java,ProductRelease.java,ant/ProductReleaseTask.java"
+            debug="on" optimize="true" deprecation="on" classpathref="project.class.path"/>
+
+        <!-- put the build configuration items into the properties -->
+        <taskdef name="pr" classname="com.netspective.commons.ant.ProductReleaseTask" classpath="${project.build.main.classes.dir}" classpathref="project.class.path"/>
+        <pr/>
+
+        <!-- show the current class path and optimize it -->
+        <taskdef name="cp" classname="${ClassPathTask-class-name}" classpath="${project.build.main.classes.dir}" classpathref="project.class.path"/>
+        <cp listall="yes" additionalref="project.class.path"/>
+
+        <!-- get version-specific information into the jar name -->
+        <property name="project.output.name" value="${project.build.config.property.output.item.prefix}"/>
+        <property name="project.output.jar-name" value="${project.build.config.property.output.item.prefix}.jar"/>
+        <property name="project.output.versioned.jar-name" value="${project.build.config.property.output.item.version.prefix}.jar"/>
+
+        <echo message="Project ${project.build.config.property.product.name} (${project.build.config.property.product.id} ${project.build.config.property.version.complete}) initialized."/>
+        <!-- <echoproperties destfile="${project.conf.home}/${project.build.config.property.output.item.version-and-build.prefix}-build.properties"/> -->
+    </target>
+
+    <!-- ==================== Compile targets  ======================= -->
+
+    <target name="compile-main" depends="init">
+        <javac srcdir="${project.src.main.home}" destdir="${project.build.main.classes.dir}"
+            debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
+        </javac>
+    </target>
+
+    <target name="compile-test" depends="compile-main">
+        <javac srcdir="${project.src.test.home}" destdir="${project.build.test.classes.dir}"
+            debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
+            <classpath>
+            	<pathelement location="${project.build.main.classes.dir}"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- ==================== Test targets  ======================= -->
+
+    <target name="test" depends="compile-test">
+        <junit filtertrace="yes">
+            <classpath>
+                <pathelement path="${project.class.path}"/>
+                <pathelement location="${project.build.main.classes.dir}"/>
+                <pathelement location="${project.build.test.classes.dir}"/>
+            </classpath>
+
+            <formatter type="plain" usefile="false"/>
+
+            <test name="${project.package.base}.Suite"/>
+        </junit>
+    </target>
+
+    <!-- ==================== Kitting targets  ======================= -->
+
+    <target name="jar" depends="compile-main">
+
+        <!-- create the version-specific jar -->
+        <jar jarfile="${project.lib.dir}/${project.output.versioned.jar-name}" basedir="${project.build.main.classes.dir}">
+            <include name="**/*"/>
+        </jar>
+
+        <!-- copy the latest jar (for people who don't care about the version) -->
+        <copy file="${project.lib.dir}/${project.output.versioned.jar-name}" tofile="${project.lib.dir}/${project.output.jar-name}"/>
+
+    </target>
+
+    <!-- ==================== Administrative targets  ======================= -->
+
+    <target name="clean" depends="init">
+        <delete dir="${project.build.dir}"/>
+    </target>
+
+    <target name="all" depends="init,compile-main,jar"/>
+
+    <target name="change-log" depends="init">
+        <property name="change-log.dest.file" value="${project.home}/${project.change-log.name}.xml"/>
+        <cvschangelog dir="${project.home}" destfile="${change-log.dest.file}"/>
+        <style in="${change-log.dest.file}" out="${project.home}/${project.change-log.name}.xml.html" style="${project.resources.dir}/xslt/change-log.xsl">
+            <param name="title" expression="${project.build.config.property.product.name} ChangeLog"/>
+            <param name="module" expression="${project.build.config.property.product.id}"/>
+        </style>
+    </target>
+
+    <!-- =============================== Help =============================== -->
+
+    <target name="targets">
+        <echo message="The following targets are available:"/>
+        <echo message="  all           Clean, compile and then create JAR"/>
+        <echo message="  clean         Clean build and jar directories"/>
+        <echo message="  jar           Create JAR"/>
+        <echo message="  compile       Compile Sparx"/>
+        <echo message="  change-log    Generate change-log.html"/>
+    </target>
+</project>

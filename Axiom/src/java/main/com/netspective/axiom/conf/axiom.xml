@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ****************************************************************************************
+     * Axiom standard configuration file (designed to be included in other Axiom XDM files. *
+     **************************************************************************************** -->
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <!-- this configuration file may contain "standard" tags like the following:
+
+    <register-database-policy class="my.own.DatabasePolicy"/>
+
+    -->
+
+</xdm:container>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ****************************************************************************
+     * Generic axiom-types.xml file designed to be included by all Axiom Schema *
+     * documents.                                                               *
+     *                                                                          *
+     * The <define> tags may contain java expressions (like ${xyz}) that may    *
+     * refer to the following variables:                                        *
+     *   'this': refers to the <define> where the 'dbms' value is available.    *
+     *   'column': refers to the <column> object instance where all of the      *
+     *             column's members are available for use.                      *
+     **************************************************************************** -->
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <!-- ***************************************************************************
+         * Basic text, integral, and boolean data-types                            *
+         *************************************************************************** -->
+
+    <data-type name="text" class="com.netspective.axiom.schema.column.type.TextColumn">
+        <size>32</size>
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">varchar(${column.getSize()})</define>
+            <define dbms="mssql" xdm:replace-template-expressions="no">varchar(${column.getSize()})</define>
+        </sql-ddl>
+        <presentation>
+            <field.text size="20"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="float" class="com.netspective.axiom.schema.column.type.FloatColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">float</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">number(20,6)</define>
+        </sql-ddl>
+        <presentation>
+            <field.float size="16" min="0.0"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="integer" class="com.netspective.axiom.schema.column.type.IntegerColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">integer</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">number(8)</define>
+        </sql-ddl>
+        <presentation>
+            <field.integer size="16" min="0" max="99999999"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="small-int" class="com.netspective.axiom.schema.column.type.ShortIntegerColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">smallint</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">number(4)</define>
+        </sql-ddl>
+        <presentation>
+            <field.integer size="16" min="0" max="9999"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="long-integer" class="com.netspective.axiom.schema.column.type.LongIntegerColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">integer</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">number(16)</define>
+        </sql-ddl>
+        <presentation>
+            <field.integer size="16" min="0"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="boolean" class="com.netspective.axiom.schema.column.type.BooleanColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">boolean</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">number(1)</define>
+            <define dbms="mssql" xdm:replace-template-expressions="no">bit</define>
+            <define dbms="hsqldb" xdm:replace-template-expressions="no">bit</define>
+        </sql-ddl>
+        <presentation>
+            <field.boolean size="16" style="radio"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="data-block" class="com.netspective.axiom.schema.column.type.DataBlockColumn">
+        <sql-ddl>
+            <define dbms="oracle" xdm:replace-template-expressions="no">clob</define>
+            <define dbms="mssql" xdm:replace-template-expressions="no">text</define>
+            <define dbms="hsqldb" xdm:replace-template-expressions="no">object</define>
+            <define dbms="postgres" xdm:replace-template-expressions="no">bytea</define>
+        </sql-ddl>
+    </data-type>
+
+    <!-- ***************************************************************************
+         * Basic date/time/datetime and range data-types                           *
+         *************************************************************************** -->
+
+    <data-type name="date" class="com.netspective.axiom.schema.column.type.DateColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">date</define>
+            <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
+        </sql-ddl>
+        <presentation>
+            <field.date size="16" format="MM-dd-yyyy" min="01-01-1900"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="date-time" class="com.netspective.axiom.schema.column.type.DateTimeColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">date</define>
+            <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
+            <define dbms="postgres" xdm:replace-template-expressions="no">timestamp</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">timestamp</define>
+        </sql-ddl>
+        <presentation>
+            <field.datetime size="16" format="MM-dd-yyyy H:mm" min="01-01-1900 00:00"/>
+        </presentation>
+    </data-type>
+
+    <!-- alias for date-time -->
+    <data-type name="stamp" type="date-time"/>
+
+    <data-type name="time" class="com.netspective.axiom.schema.column.type.TimeColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">date</define>
+            <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
+        </sql-ddl>
+        <presentation>
+            <field.time size="16" format="H:mm" min="00:00"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="duration">
+        <xdm:template-param name="name" required="yes" copy-attribute="name"/>
+
+        <composite>
+            <column name="${params.name}_begin_date" type="date" descr="${params.name} beginning date"/>
+            <column name="${params.name}_end_date" type="date" descr="${params.name} ending date"/>
+        </composite>
+    </data-type>
+
+    <data-type name="date-time-range">
+        <xdm:template-param name="name" required="yes" copy-attribute="name"/>
+
+        <composite>
+            <column name="${params.name}_begin_stamp" type="date-time"/>
+            <column name="${params.name}_end_stamp" type="date-time"/>
+        </composite>
+    </data-type>
+
+    <!-- alias for date-time-range -->
+    <data-type name="stamp-range" type="date-time-range"/>
+
+    <!-- ***************************************************************************
+         * Auto-generated data-types useful as primary keys                        *
+         *************************************************************************** -->
+
+    <data-type name="auto-inc" type="long-integer" class="com.netspective.axiom.schema.column.type.AutoIncColumn">
+        <sql-ddl>
+            <define dbms="mssql" xdm:replace-template-expressions="no">integer IDENTITY</define>
+            <define dbms="hsqldb" xdm:replace-template-expressions="no">integer IDENTITY</define>
+            <define-ref dbms="mssql" xdm:replace-template-expressions="no">integer</define-ref>
+            <define-ref dbms="hsqldb" xdm:replace-template-expressions="no">integer</define-ref>
+        </sql-ddl>
+        <presentation>
+            <field.integer size="16" min="0"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="guid-text" class="com.netspective.axiom.schema.column.type.GuidTextColumn">
+        <validation>
+            <rule class="com.netspective.commons.validate.rule.TextValueValidationRule" min-length="36" max-length="36"/>
+        </validation>
+        <size>36</size>
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">varchar(${column.getSize()})</define>
+        </sql-ddl>
+        <presentation>
+            <field.guid32>
+                <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+            </field.guid32>
+        </presentation>
+    </data-type>
+
+    <data-type name="guid32" type="guid-text" class="com.netspective.axiom.schema.column.type.GuidColumn">
+        <presentation>
+            <field.guid32/>
+        </presentation>
+    </data-type>
+
+    <!-- ***************************************************************************
+         * Set data-types                                                          *
+         *************************************************************************** -->
+
+    <data-type name="text-set" type="text" class="com.netspective.axiom.schema.column.type.TextSetColumn">
+        <xdm:template-param name="name" copy-attribute="name" required="yes"/>
+        <xdm:template-param name="abbrev" copy-attribute="abbrev,name" required="yes"/>
+
+        <size>255</size>
+        <table name="${owner.table.abbrev}_${params.name}_Set" abbrev="${owner.table.abbrev}${params.abbrev}St">
+            <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
+            <column name="parent_id" parentref="${owner.table.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
+            <column name="value_index" type="integer" descr="The ordinal value (index) of the text or null if not important"/>
+            <column name="value_text" type="text" size="32" descr="The actual text value"/>
+        </table>
+    </data-type>
+
+    <data-type name="enum-set" type="text" class="com.netspective.axiom.schema.column.type.EnumSetColumn">
+        <xdm:template-param name="name" copy-attribute="name"/>
+        <xdm:template-param name="abbrev" copy-attribute="abbrev,name" required="yes"/>
+        <xdm:template-param name="enumerationTable" required="yes"/>
+
+        <size>255</size>
+        <table name="${owner.table.abbrev}_${params.name}_Set" abbrev="${owner.table.abbrev}${params.abbrev}St">
+            <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
+            <column name="parent_id" parentref="${owner.table.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
+            <column name="enum_index" type="integer" descr="The ordinal value (index) of the enumeration or null if not important"/>
+            <column name="enum_value" lookupref="${params.enumerationTable}" descr="The value of the enumeration item"/>
+        </table>
+    </data-type>
+
+    <!-- ***************************************************************************
+         * Generic non-industry-specific application data-types                    *
+         *************************************************************************** -->
+
+    <data-type name="currency" class="com.netspective.axiom.schema.column.type.CurrencyColumn">
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">float</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">number(12,2)</define>
+            <define dbms="mssql" xdm:replace-template-expressions="no">money</define>
+            <define dbms="postgres" xdm:replace-template-expressions="no">numeric(12,2)</define>
+        </sql-ddl>
+        <presentation>
+            <field.currency size="16"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="percentage" type="float">
+        <validation>
+            <rule class="com.netspective.commons.validate.rule.PercentageValueValidationRule"/>
+        </validation>
+        <presentation>
+            <field.float size="16" min="0.0" max="100.0"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="email" type="text">
+        <size>96</size>
+        <validation>
+            <rule class="com.netspective.commons.validate.rule.EmailValueValidationRule"/>
+        </validation>
+        <presentation>
+            <field.email size="20"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="credit-card" type="text">
+        <size>19</size>
+        <validation>
+            <rule class="com.netspective.commons.validate.rule.CreditCardValueValidationRule"/>
+        </validation>
+    </data-type>
+
+    <data-type name="lookup-with-freeform">
+        <xdm:template-param name="name" required="yes" copy-attribute="name"/>
+        <xdm:template-param name="size" required="yes" copy-attribute="size"/>
+        <xdm:template-param name="caption" required="yes" copy-attribute="caption"/>
+        <xdm:template-param name="descr" required="yes" copy-attribute="descr"/>
+        <xdm:template-param name="enumerationTable" required="yes"/>
+
+        <composite>
+            <column name="${params.name}_id" lookupref="${params.enumerationTable}" caption="${params.caption}" descr="${params.descr}">
+                <presentation>
+                    <field.select caption="${params.caption}"/>
+                </presentation>
+            </column>
+            <column name="${params.name}" type="text" size="${params.size}" caption="${params.caption}" descr="${params.descr} (if 'Other' chosen above)">
+                <presentation>
+                    <field.text caption="Other ${params.caption}" size="16">
+                        <conditional action="display" partner="${params.name}_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+                    </field.text>
+                </presentation>
+            </column>
+        </composite>
+    </data-type>
+
+    <!-- ***************************************************************************
+         * Standard table types and tables                                         *
+         *************************************************************************** -->
+
+    <data-type name="enumeration-id" type="integer" class="com.netspective.axiom.schema.column.type.EnumerationIdColumn"/>
+
+    <table-type name="Enumeration" class="com.netspective.axiom.schema.table.type.EnumerationTable">
+        <xdm:template-param name="capsize" default="96"/>
+        <xdm:template-param name="abbrevsize" default="32"/>
+
+        <column name="id" type="enumeration-id" primarykey="yes" descr="The value associated with a single enum"/>
+        <column name="caption" type="text" size="${params.capsize}" required="yes" descr="The name/text an end-user would see"/>
+        <column name="abbrev" type="text" size="${params.abbrevsize}" unique="yes" descr="An abbreviated form of the caption"/>
+    </table-type>
+
+    <table name="Lookup_Result_Type" abbrev="LkResTy" type="Enumeration">
+        <enumerations>
+            <enum>ID</enum>
+            <enum>Caption</enum>
+            <enum>Abbreviation</enum>
+        </enumerations>
+    </table>
+
+    <table-type name="Lookup" type="Enumeration">
+        <column name="group_name" type="text" size="32" descr="The group to which the lookup item belongs"/>
+        <column name="sort_seq" type="integer" descr="The sorting sequence within the group (if sorting differently than the ID or Caption"/>
+        <column name="result" lookupref="Lookup_Result_Type" descr="The type of result after a lookup (the value that should be used for the lookup -- the id or caption or abbreviation)"/>
+    </table-type>
+
+    <table-type name="Status" type="Enumeration">
+        <enumerations>
+            <enum id="0" abbrev="I">Inactive</enum>
+            <enum id="1" abbrev="A">Active</enum>
+            <enum id="99" abbrev="U">Unknown</enum>
+        </enumerations>
+    </table-type>
+
+    <!--
+    *********************************************************************
+    ** Relationship Tables and Enumerations
+    *********************************************************************
+    -->
+
+    <table-type name="Relationship_Map" class="com.netspective.axiom.schema.table.type.RelationshipMapTable">
+        <description>
+            <p>This table type is used to store a mapping between relationships and their
+            corresponding inverse relationship.  Its primary function is to ease the
+            creation of an automated relationship field which will be able to update
+            itself _and_ the record of the other half of the relationship.</p>
+
+            <p>Thus, if a relationship exists between two organizations such that
+            Org A is a child of Org B, when it comes time to insert that record,
+            an intelligent relationship field will automatically determine that if
+            Org A is a child of Org B, then Org B must be a parent of Org A and
+            will create both those relationships.  Similarly, when it comes time
+            to update a relationship, it will update the corresponding relationship
+            as well.</p>
+        </description>
+        <column name="system_id" type="auto-inc" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="owner_id" lookup-ref="${params.relationshipOwnerTable}" descr="The owner of the relationship row this entry was created for"/>
+        <column name="parent_id" parent-ref="${params.relationshipTable}" descr="The relationship row this entry was created for"/>
+        <column name="rel_type_id" lookup-ref="${params.relationshipTypeTable}" indexed="yes" descr="The relationship for which an inverse is declared.  This should be a lookup to a table of type Relationship_Type."/>
+    </table-type>
+
+    <table-type name="Relationship_Type" type="Enumeration">
+        <enumerations>
+            <enum id="9990">Hierarchy - Self</enum>
+            <enum id="9991">Hierarchy - Child</enum>
+            <enum id="9992">Hierarchy - Ancestor</enum>
+            <enum id="9993">Hierarchy - Descendent</enum>
+            <enum id="9994">Hierarchy - Parent</enum>
+            <enum id="9995">Hierarchy - Sibling</enum>
+        </enumerations>
+    </table-type>
+
+    <table-type name="Relationship_Status" type="Status">
+        <!-- nothing here yet, just a placeholder for later enhancements -->
+    </table-type>
+
+</xdm:container>

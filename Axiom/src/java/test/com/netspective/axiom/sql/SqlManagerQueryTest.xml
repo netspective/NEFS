@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+
+<component xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+
+    <queries package="test">
+
+        <query name="statement-0">
+            select * from test
+            where column_a = 1
+              and column_b = 2
+              and column_c = 'this'
+        </query>
+
+        <query name="statement-1">
+            select * from test
+            where column_a = ?
+              and column_b in (${param-list:1})
+              and column_c = 'this'
+
+            <params>
+                <param name="column_a" value="text:abc"/>
+                <param name="column_b" values="strings:abc,def,ghi,jkl"/>
+            </params>
+        </query>
+
+    </queries>
+
+    <query name="statement-2">
+        select * from test
+        where column_a = ?
+          and column_b = ?
+          and column_c = 'this'
+
+        <params>
+            <param name="column_a" value="text:abc"/>
+            <param name="column_b" value="text:def" index="7" sql-type="integer" java-type="java.lang.Integer"/>
+        </params>
+    </query>
+
+    <query-defn name="query-defn-1">
+        <field name='field_01' join="join_01" column="column_01"/>
+        <field name='field_02' caption="Test Field 02 Caption" join="join_02" column="column_02"/>
+        <field name='field_03' caption="Test Field 03 Caption" column="column_03"/>
+        <field name='field_04' caption="Test Field 04 Caption" column="column_04"/>
+        <field name='field_05' caption="Test Field 05 Caption" column="column_05"/>
+
+        <join name='join_01'/>
+        <join name='join_02' table="Table_02" imply-join="join_03"/>
+        <join name='join_03' table="Table_03" imply-join="join_04"/>
+        <join name='join_04' table="Table_04"/>
+        <join name='join_05' table="Table_05" auto-include="yes"/>
+
+        <select name="query-select-1">
+            <display field="field_01"/>
+            <display field="field_02"/>
+            <display field="field_03"/>
+
+
+        </select>
+    </query-defn>
+
+</component>
