@@ -4,7 +4,7 @@ that its cost is easy to justify. The price is usually insignificant compared to
 to write even a single complex form.
 
 <h1>Netspective Enterprise Frameworks Suite License Options</h1>
-<table class="report">
+<table class="data-table">
     <tr>
         <th>Option</th>
         <th>Price</th>
@@ -86,7 +86,7 @@ to write even a single complex form.
 
 
 <h1>Definitions</h1>
-<table class="report">
+<table class="data-table">
     <tr>
         <th>Term</th>
         <th>Description</th>
