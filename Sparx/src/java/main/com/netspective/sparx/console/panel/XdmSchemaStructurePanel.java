@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.3 2003-04-02 23:57:33 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.4 2003-04-03 12:46:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -65,7 +65,7 @@ import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.ReportHttpServletValueContext;
+import com.netspective.sparx.report.tabular.HtmlTabularReportHttpServletValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
@@ -280,9 +280,9 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         return true;
     }
 
-    public ReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
+    public HtmlTabularReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
     {
-        ReportHttpServletValueContext vc = new ReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(nc), skin);
+        HtmlTabularReportHttpServletValueContext vc = new HtmlTabularReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(nc), skin);
         if(view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.TREE && vc.getReport() == structureReport)
         {
             TabularReportColumnState[] states = vc.getStates();

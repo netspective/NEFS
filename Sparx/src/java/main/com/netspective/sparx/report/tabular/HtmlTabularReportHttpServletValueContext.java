@@ -51,10 +51,10 @@
  */
  
 /**
- * $Id: ReportHttpServletValueContext.java,v 1.3 2003-04-02 23:57:33 shahid.shah Exp $
+ * $Id: HtmlTabularReportHttpServletValueContext.java,v 1.1 2003-04-03 12:46:10 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report;
+package com.netspective.sparx.report.tabular;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -76,7 +76,7 @@ import com.netspective.commons.report.tabular.TabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 
-public class ReportHttpServletValueContext extends BasicDbHttpServletValueContext implements com.netspective.commons.report.tabular.TabularReportValueContext
+public class HtmlTabularReportHttpServletValueContext extends BasicDbHttpServletValueContext implements com.netspective.commons.report.tabular.TabularReportValueContext
 {
     static public final String REQUESTATTRNAME_LISTENER = "ReportContext.DefaultListener";
 
@@ -89,7 +89,7 @@ public class ReportHttpServletValueContext extends BasicDbHttpServletValueContex
     private int rowCurrent, rowStart, rowEnd;
     private long frameFlags;
 
-    public ReportHttpServletValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response, HtmlTabularReport reportDefn, TabularReportSkin skin)
+    public HtmlTabularReportHttpServletValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response, HtmlTabularReport reportDefn, TabularReportSkin skin)
     {
         super(context, servlet, request, response);
         this.reportDefn = reportDefn;

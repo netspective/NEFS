@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: ReportColumnFactory.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: ReportColumnFactory.java,v 1.3 2003-04-03 12:45:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -75,7 +75,6 @@ import com.netspective.commons.value.source.StaticValueSource;
 
 public class ReportColumnFactory
 {
-    static private Map columnClasses = new HashMap();
     static private Map formats = new HashMap();
 
     static
@@ -90,10 +89,6 @@ public class ReportColumnFactory
         formats.put("date", DateFormat.getDateInstance());
         formats.put("datetime", DateFormat.getDateTimeInstance());
         formats.put("time", DateFormat.getInstance());
-
-        columnClasses.put("default", GeneralColumn.class);
-        columnClasses.put("numeric", NumericColumn.class);
-        columnClasses.put("decimal", DecimalColumn.class);
     }
 
     public static TabularReportColumn createReportColumn(ResultSetMetaData rsmd, int resultSetColIndex) throws SQLException

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.5 2003-04-02 23:57:33 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.6 2003-04-03 12:46:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report;
@@ -51,6 +51,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.panel.HtmlPanels;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.HtmlTabularReportHttpServletValueContext;
 
 public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
 {
@@ -64,9 +65,9 @@ public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularRepor
         return false;
     }
 
-    public ReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
+    public HtmlTabularReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
     {
-        return new ReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(nc), skin);
+        return new HtmlTabularReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(nc), skin);
     }
 
     public void render(Writer writer, NavigationContext nc) throws IOException

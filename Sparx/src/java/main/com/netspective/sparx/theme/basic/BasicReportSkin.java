@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicReportSkin.java,v 1.7 2003-04-02 23:57:34 shahid.shah Exp $
+ * $Id: BasicReportSkin.java,v 1.8 2003-04-03 12:46:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -70,7 +70,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportAction;
 import com.netspective.sparx.report.tabular.HtmlTabularReportActions;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.report.ReportHttpServletValueContext;
+import com.netspective.sparx.report.tabular.HtmlTabularReportHttpServletValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.lang.ClassPath;
@@ -154,8 +154,8 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
 
         if(actions != null && actions.size() > 0)
         {
-            Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
-            String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
+            Theme theme = ((HtmlTabularReportHttpServletValueContext) rc).getActiveTheme();
+            String imgPath = ((HtmlTabularReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
 
             int colCount = 0;
 
@@ -211,8 +211,8 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
     {
         HtmlTabularReportFrame frame = ((HtmlTabularReport) rc.getReport()).getFrame();
 
-        Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
-        String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
+        Theme theme = ((HtmlTabularReportHttpServletValueContext) rc).getActiveTheme();
+        String imgPath = ((HtmlTabularReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
 
         writer.write("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap ");
         if(flagIsSet(HTMLFLAG_FULL_WIDTH))
@@ -234,7 +234,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
                 writer.write("        <tr>\n");
                 if (frame.getFlags().flagIsSet(HtmlTabularReportFrame.Flags.ALLOW_COLLAPSE))
                 {
-                    if (rc.isMinimized())
+                    if (((HtmlTabularReportHttpServletValueContext) rc).isMinimized())
                         writer.write("            <td class=\"panel-frame-heading-action-expand-output\"   align=\"left\" valign=\"middle\" nowrap width=\"17\">" +
                             "<img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"></td>");
                     else
@@ -418,8 +418,8 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
         TabularReportColumnState[] states = rc.getStates();
         int dataColsCount = columns.size();
 
-        Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
-        String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
+        Theme theme = ((HtmlTabularReportHttpServletValueContext) rc).getActiveTheme();
+        String imgPath = ((HtmlTabularReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
 
         String sortAscImgTag = " <img src=\""+ imgPath + "/column-sort-ascending.gif\" border=0>";
         String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";
@@ -465,8 +465,8 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
         // get the first row (heading)
         if(!ds.next()) return;
 
-        Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
-        String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
+        Theme theme = ((HtmlTabularReportHttpServletValueContext) rc).getActiveTheme();
+        String imgPath = ((HtmlTabularReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
 
         String sortAscImgTag = " <img src=\""+ imgPath + "/column-sort-ascending.gif\" border=0>";
         String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: BasicTabularReportValueContext.java,v 1.3 2003-04-02 23:58:16 shahid.shah Exp $
+ * $Id: BasicTabularReportValueContext.java,v 1.4 2003-04-03 12:45:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -103,11 +103,6 @@ public class BasicTabularReportValueContext extends DefaultValueContext implemen
                 calcsCount++;
             states[i] = state;
         }
-    }
-
-    public boolean isMinimized()
-    {
-        return false;
     }
 
     public List getListeners()
