@@ -43,32 +43,40 @@
  */
 package com.netspective.medigy.model.person;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.reference.type.MaritalStatusType;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
 import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
-import javax.ejb.Id;
+import javax.ejb.Inheritance;
+import javax.ejb.InheritanceJoinColumn;
+import javax.ejb.InheritanceType;
 import javax.ejb.JoinColumn;
 import javax.ejb.OneToMany;
+import javax.ejb.OneToOne;
 import javax.ejb.Transient;
-
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.type.MaritalStatusType;
-import com.netspective.medigy.reference.type.MaritalStatusType;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
-public class Person extends AbstractTopLevelEntity
+@Inheritance(strategy=InheritanceType.JOINED)
+@InheritanceJoinColumn(name="partyId")
+public class Person extends Party
 {
-    private Long personId;
+    //private Long personId;
 
     private String firstName;
     private String lastName;
     private String middleName;
+    private String suffix;
+    private Date birthDate;
+    private String ssn;
+
+    private Gender gender = new Gender();
 
     private Set<ContactMechanism> contactMechanisms = new HashSet<ContactMechanism>();
     private Set<MaritalStatus> maritalStatuses = new HashSet<MaritalStatus>();
@@ -77,15 +85,21 @@ public class Person extends AbstractTopLevelEntity
     {
     }
 
-    @Id(generate=GeneratorType.AUTO)
+    @Transient
+    public String getPartyName()
+    {
+        return getFullName();
+    }
+
+    @Transient
     public Long getPersonId()
     {
-        return personId;
+        return super.getPartyId();
     }
 
     protected void setPersonId(final Long personId)
     {
-        this.personId = personId;
+        super.setPartyId(personId);
     }
 
     @Column(length = 128, nullable = false)
@@ -119,6 +133,17 @@ public class Person extends AbstractTopLevelEntity
     public void setMiddleName(final String middleName)
     {
         this.middleName = middleName;
+    }
+
+    @Column(name="suffix", length=5)
+    public String getSuffix()
+    {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix)
+    {
+        this.suffix = suffix;
     }
 
     @Transient
@@ -157,8 +182,41 @@ public class Person extends AbstractTopLevelEntity
         return sb.toString();
     }
 
+    @Column()
+    public Date getBirthDate()
+    {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate)
+    {
+        this.birthDate = birthDate;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "partyId")
+    public Gender getGender()
+    {
+        return gender;
+    }
+
+    protected void setGender(final Gender gender)
+    {
+        this.gender = gender;
+    }
+    @Column(name="ssn", length=9)
+    public String getSsn()
+    {
+        return ssn;
+    }
+
+    public void setSsn(String ssn)
+    {
+        this.ssn = ssn;
+    }
+
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "partyId")
     public Set<ContactMechanism> getContactMechanisms()
     {
         return contactMechanisms;
@@ -182,7 +240,7 @@ public class Person extends AbstractTopLevelEntity
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "partyId")
     public Set<MaritalStatus> getMaritalStatuses()
     {
         return maritalStatuses;
@@ -196,11 +254,14 @@ public class Person extends AbstractTopLevelEntity
 
     public String toString()
     {
-        return "Person{" +
-                "identifier=" + personId +
+        return "person{" +
+                "identifier=" + getPersonId() +
                 ", lastName='" + lastName + "'" +
                 ", firstName='" + firstName + "'" +
                 ", middleName='" + middleName + "'" +
+                ", suffix=" + suffix + "'" +
+                ", ssn=" + ssn + "'" +
+                ", gender='" + gender + "'" +
                 ", maritalStatuses=" + maritalStatuses +
                 ", contactMechanisms=" + contactMechanisms +
                 "}";

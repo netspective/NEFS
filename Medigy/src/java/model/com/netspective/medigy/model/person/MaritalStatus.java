@@ -43,7 +43,9 @@
  */
 package com.netspective.medigy.model.person;
 
-import java.util.Date;
+import com.netspective.medigy.model.common.AbstractEntity;
+import com.netspective.medigy.model.common.EffectiveDates;
+import com.netspective.medigy.reference.type.MaritalStatusType;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -54,12 +56,7 @@ import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
 import javax.ejb.Table;
 import javax.ejb.Transient;
-
-import com.netspective.medigy.model.common.AbstractEntity;
-import com.netspective.medigy.model.common.EffectiveDates;
-import com.netspective.medigy.reference.type.MaritalStatusType;
-import com.netspective.medigy.reference.type.MaritalStatusType;
-import com.netspective.medigy.reference.type.MaritalStatusType;
+import java.util.Date;
 
 @Entity
 @Table(name = "Person_Mar_Stat")
@@ -90,7 +87,7 @@ public class MaritalStatus extends AbstractEntity implements Comparable
     }
 
     @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "partyId")
     public Person getPerson()
     {
         return person;
