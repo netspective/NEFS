@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.45 2003-11-09 19:35:52 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.46 2003-11-13 19:25:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -80,6 +80,7 @@ import com.netspective.sparx.navigate.listener.NavigationPageEnterListener;
 import com.netspective.sparx.navigate.listener.NavigationPageExitListener;
 import com.netspective.sparx.navigate.handler.NavigationPageBodyDefaultHandler;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -229,6 +230,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private List customHandlers = new ArrayList();
     private List enterListeners = new ArrayList();
     private List exitListeners = new ArrayList();
+    private DialogNextActionProvider dialogNextActionProvider;
 
     public NavigationPage()
     {
@@ -293,6 +295,26 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public NavigationPath.State constructState()
     {
         return new State();
+    }
+
+    /* -------------------------------------------------------------------------------------------------------------*/
+
+    public void finalizeContents()
+    {
+        super.finalizeContents();
+
+        if(dialogNextActionProvider == null)
+        {
+            NavigationPage parent = (NavigationPage) getParent();
+            while(parent != null && dialogNextActionProvider == null)
+            {
+                dialogNextActionProvider = parent.getDialogNextActionProvider();
+                parent = (NavigationPage) parent.getParent();
+            }
+
+            if(dialogNextActionProvider == null)
+                dialogNextActionProvider = getOwner().getDialogNextActionProvider();
+        }
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/
@@ -718,6 +740,27 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public void setPageFlagsParamName(String pageFlagsParamName)
     {
         this.pageFlagsParamName = pageFlagsParamName;
+    }
+
+    /* -------------------------------------------------------------------------------------------------------------*/
+
+    /**
+     * Gets the next action provider for this particular page. The next action represents the action to be performed
+     * after dialog execution.
+     * @return
+     */
+    public DialogNextActionProvider getDialogNextActionProvider()
+    {
+        return dialogNextActionProvider;
+    }
+
+    /**
+     * Sets the next action provider for all dialogs executed by this navigation tree and all children
+     * @param nextActionProvider
+     */
+    public void addDialogNextActionProvider(DialogNextActionProvider nextActionProvider)
+    {
+        dialogNextActionProvider = nextActionProvider;
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.41 2003-11-13 17:26:26 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.42 2003-11-13 19:25:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -484,7 +484,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     public String getNextActionUrl(DialogContext dc, String defaultUrl)
     {
         // first see if there is tree-wide next action provider
-        DialogNextActionProvider navNextActionProvider = dc.getNavigationContext().getOwnerTree().getDialogNextActionProvider();
+        DialogNextActionProvider navNextActionProvider = dc.getNavigationContext().getDialogNextActionProvider();
         if(navNextActionProvider != null)
             return navNextActionProvider.getDialogNextActionUrl(dc, defaultUrl);
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.21 2003-10-22 15:33:28 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.22 2003-11-13 19:25:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -66,6 +66,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.Servlet;
 
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
 
 public class NavigationContext extends BasicDbHttpServletValueContext
 {
@@ -143,6 +145,11 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     public NavigationTree.FindResults getActivePathFindResults()
     {
         return activePathFindResults;
+    }
+
+    public DialogNextActionProvider getDialogNextActionProvider()
+    {
+        return activePage.getDialogNextActionProvider();
     }
 
     public NavigationPage getActivePage()
