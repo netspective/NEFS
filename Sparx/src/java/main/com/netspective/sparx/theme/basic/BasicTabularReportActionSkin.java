@@ -51,12 +51,14 @@
  */
 
 /**
- * $Id: BasicTabularReportActionSkin.java,v 1.1 2004-06-23 15:07:58 aye.thu Exp $
+ * $Id: BasicTabularReportActionSkin.java,v 1.2 2004-06-23 15:13:50 aye.thu Exp $
  */
 package com.netspective.sparx.theme.basic;
 
 import java.io.IOException;
 import java.io.Writer;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
@@ -73,6 +75,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.navigate.NavigationContext;
 
 /**
  * Custom skin class for producing a single page report with checkboxes associated with each row and a
@@ -296,5 +299,17 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
             }
             writer.write("</tr>\n");
         }
+    }
+
+    /**
+     * Gets the "selected items" that were submitted in the request as a parameter.
+     *
+     * @param nc    current navigation context
+     * @return      array of selected values
+     */
+    public static String[] getSelectedItems(NavigationContext nc)
+    {
+        HttpServletRequest request = nc.getHttpRequest();
+        return request.getParameterValues("selectedItemList");
     }
 }
