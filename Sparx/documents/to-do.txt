@@ -4,10 +4,16 @@
 * Create a 16x16 Console icon that will appear in browser window tabs and URL address line
 * In DialogFieldConditionalAction is 'name' attribute needed anymore? If not, remove it. Also, move partner-field-name out of main class into subclasses that need them? It would make auto-documentation easier.
 * Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
+
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
+	- DONE but haven't been able to test this on OS X browsers. TODO: test on Win IE 6.
+	
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
 * Add execute, populate, and makeStateChanges interfaces that can be "registered" for dialogs -- to delegate these activities
+
 * Add DHTML feature to Dialogs so that hints can optional only show up when a control is being edited (instead of all the time)
+	- DONE but the event is at onFocus and onBlur because onChange only occurred when you tabbed out of the field.
+	
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
 * Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
@@ -100,6 +106,8 @@ java.lang.NullPointerException
         at com.netspective.axiom.sql.dynamic.QueryDefinition.getNameForMapKey(QueryDefinition.java:128)
         at com.netspective.axiom.sql.collection.QueryDefinitionsCollection.add(QueryDefinitionsCollection.java:68)
         at com.netspective.axiom.SqlManager.addQueryDefn(SqlManager.java:229)
+        
+  	FIXED: Added a null check in static method translateNameForMapKey(). 
 
 
 
