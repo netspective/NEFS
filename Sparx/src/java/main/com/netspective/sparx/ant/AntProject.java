@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntProject.java,v 1.4 2003-09-02 17:15:31 roque.hernandez Exp $
+ * $Id: AntProject.java,v 1.5 2003-10-11 14:37:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -68,6 +68,7 @@ public class AntProject
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
     private String id;
+    private String caption;
     private ValueSource file;
     private boolean defaultProject;
     private AntBuildDialog antDialog;
@@ -86,6 +87,21 @@ public class AntProject
     public void setId(String id)
     {
         this.id = id;
+    }
+
+    public String getCaption()
+    {
+        return caption;
+    }
+
+    public String getCaptionOrId()
+    {
+        return caption == null ? getId() : caption;
+    }
+
+    public void setCaption(String caption)
+    {
+        this.caption = caption;
     }
 
     public ValueSource getFile()
