@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSourceTest.java,v 1.5 2003-11-08 18:30:45 shahid.shah Exp $
+ * $Id: FilesystemEntriesValueSourceTest.java,v 1.6 2003-11-08 18:48:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -53,6 +53,7 @@ import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.ValueSourceSpecification;
 
 public class FilesystemEntriesValueSourceTest extends TestCase
 {
@@ -65,18 +66,21 @@ public class FilesystemEntriesValueSourceTest extends TestCase
         String rootPath = null;
         for(int i = 0; i < roots.length; i++)
         {
-            rootPath = roots[0].getAbsolutePath();
+            rootPath = roots[i].getAbsolutePath();
             if(new File(rootPath).exists())
                 break;
         }
-        assertTrue(new File(rootPath).exists());
+        assertTrue(rootPath + " does not seem to exist.", new File(rootPath).exists());
+
+        String unescapedRootPath = rootPath;
+        rootPath = ValueSourceSpecification.escapeFirstDelim(rootPath);
 
         ValueSource vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath, ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
 	    FilesystemEntriesValueSource fsVS = new FilesystemEntriesValueSource();
 	    fsVS.setRootPath(rootPath);
         Value value = vs.getValue(null);
 
-	    assertEquals(rootPath, fsVS.getRootPath().getTextValue(null));
+	    assertEquals(unescapedRootPath, fsVS.getRootPath().getTextValue(null));
 		// Verify the presence of the default filter...
 	    assertEquals("/.*/", fsVS.getFilter());
 	    assertTrue(0 < vs.getTextValues(null).length);
