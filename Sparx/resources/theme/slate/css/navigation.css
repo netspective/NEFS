@@ -1,5 +1,6 @@
 .active-user:link    { color: white; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
 .active-user        { color: #696969; font-size: 9px; font-family: Tahoma; text-decoration: none; background: #a9a9a9 url(../images/active-user/active-user-separator.gif) no-repeat left center; text-align: left; text-transform: uppercase; border-right: 1px solid #c0c0c0; height: 11px }
+.active-user-heading { color: #696969; font-size: 9px; font-family: Tahoma; text-decoration: none; text-align: left }
 .active-user-table { background-color: #333; height: 20px }
 .active-user-anchor    { background: #b22222 url(../images/active-user/anchor.gif) no-repeat left center; width: 10px; height: 11px }
 .active-user:visited    { color: white; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
