@@ -3,7 +3,6 @@
 <style>
     @import url(${vc.rootUrl}/resources/sampler.css);
 </style>
-<link rel="stylesheet" href="${vc.rootUrl}/resources/sampler.css" type="text/css">
 <#macro childSummary parentPage>
     <#list parentPage.childrenList as childPage>
         <#if ! childPage.flags.hidden>
