@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <dal>
 
-	<org ID="ORG_0" org-code="MEDS" org-name="Medspective Inc." rec-stat-id="Active" ownership-id="Private" fiscal-year-month-id="January" org-level-id="Company"
+	<org ID="ORG 0" org-code="MEDS" org-name="Medspective Inc." rec-stat-id="Active" ownership-id="Private" fiscal-year-month-id="January" org-level-id="Company"
         hcfa-servplace-id="Office">
 		<org-personid-src-type ID="SSN" rec-stat-id="Active" item-id="1" caption="SSN" abbrev="ssn"/>
 		<org-personid-src-type ID="LICENSE" rec-stat-id="Active" item-id="2" caption="License Number" abbrev="lic"/>
@@ -10,25 +10,74 @@
 			role-name="Front Desk"/>
 	</org>
 
-	<person name-first="Medspective" name-last="Administrator" rec-stat-id="Active" gender-id="Male"
-		marital-status-id="Unknown"
-		language-id="English"
-		ethnicity-id="Unknown">
-		<personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_0"/>
-		<person-login rec-stat-id="Active" user-id="admin" password="password" login-status="Active"/>
+    <org ID="ORG 1" org-name="AETNA" org-code="AETNA" org-abbrev="ORG" rec-stat-id="Active" time-zone="EST" employees="1000"
+        org-level-id="Company">
+		<org-address address-name="Location 1" zip="22038" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Main Road"
+            city="Fairfax" state-id="Virginia" county="Fairfax"/>
+		<org-classification rec-stat-id="Active" org-type-id="Insurance"/>
+		<org-contact rec-stat-id="Active" method-type="telephone: Business" method-value="532-5512" phone-ac="703"/>
+		<org-contact rec-stat-id="Active" method-type="telephone: Company" method-value="585-5574" phone-ac="703"/>
+		<org-industry rec-stat-id="Active" industry-type-id="Healthcare" />
+	</org>
+    <org ID="ORG 2" org-name="Acme Hospital" org-code="ACMEH" org-abbrev="ACME HOS" rec-stat-id="Active" time-zone="EST" employees="100">
+        <org-classification rec-stat-id="Active" org-type-id="Hospital"/>
+        <org-address address-name="Location 1" zip="11111" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Acme Road" city="Acme City" state-id="California" />
+		<org-contact rec-stat-id="Active" method-type="telephone: Business" method-value="532-5512" phone-ac="703"/>
+		<org-contact rec-stat-id="Active" method-type="telephone: Company" method-value="585-5574" phone-ac="703"/>
+	</org>
+	<org ID="ORG 3" org-name="Stanford University Medical Center" org-code="SUMC" org-abbrev="STFD" rec-stat-id="Active" time-zone="PST" employees="300">
+		<org-classification rec-stat-id="Active" org-type-id="Clinic"/>
+        <org-address address-name="Location 1" zip="11111" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Acme Road" city="Acme City" state-id="California" />
+		<org-contact rec-stat-id="Active" method-type="telephone: Business" method-value="532-5512" phone-ac="703"/>
+		<org-contact rec-stat-id="Active" method-type="telephone: Company" method-value="585-5574" phone-ac="703"/>
+	</org>
+
+    <person ID="PERSON 0" name-first="Medigy" name-last="Administrator" short-name="Medigy Administrator" simple-name="Medigy Administrator"
+        short-sortable-name="Administrator, Medigy" complete-name="Medigy Administrator" complete-sortable-name="Administrator, Medigy"
+        gender-id="Male" ssn="123-45-6789"  marital-status-id="Single"
+        blood-type-id="Unknown" rec-stat-id="Active" >
+        <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG 0"/>
+        <person-login rec-stat-id="Active" user-id="admin" password="password" login-status="Active"/>
+    </person>
+    <person ID="PERSON 1" name-first="Mary" name-last="Carpenter" short-name="Mary Carpenter" simple-name="Mary Carpenter"
+        short-sortable-name="Carpenter, Mary" complete-name="Mary Carpenter" complete-sortable-name="Carpenter, Mary"
+        gender-id="Female" ssn="111-22-3333"  marital-status-id="Single"
+        blood-type-id="Unknown" rec-stat-id="Active" >
+        <person-contact rec-stat-id="Active" method-type="Telephone: Business" method-value="111-1234" phone-ac="704"/>
+        <person-address address-name="Home" zip="12345" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Acme Street" city="Jackson" state-id="Ohio" />
+        <!--personorg-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:ORG 3"/-->
+        <person-login rec-stat-id="Active" user-id="person1" password="letmein" quantity="100" login-status="Inactive"/>
+        <person-classification person-type-id="Physician" person-type="Physician" rec-stat-id="Active" org-id="IDREF:ORG 0"/>
+	</person>
+    <person ID="PERSON 2" name-first="Michael" name-last="Gabriel" short-name="Michael Gabriel" simple-name="Michael Gabriel"
+        short-sortable-name="Gabriel, Michael" complete-name="Michael Gabriel" complete-sortable-name="Gabriel, Michael"
+        gender-id="Male" ssn="123-22-1111"  marital-status-id="Single"
+        blood-type-id="Unknown" rec-stat-id="Active" >
+        <person-contact rec-stat-id="Active" method-type="Telephone: Home" method-value="432-1234" phone-ac="222"/>
+        <person-address address-name="Home" zip="22012" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="3301 Lothian Street" city="Merrifield" state-id="Virginia" />
+        <!--personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/-->
+        <person-login rec-stat-id="Active" user-id="person2" password="letmein" quantity="100" login-status="Inactive"/>
+        <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active" org-id="IDREF:ORG 2"/>
+	</person>
+    <person ID="PERSON 3" name-first="John" name-last="Doe" short-name="John Doe" simple-name="John Doe"
+        short-sortable-name="Doe, John" complete-name="John Doe" complete-sortable-name="Doe, John"
+        gender-id="Male" ssn="111-22-1111"  marital-status-id="Single"
+        blood-type-id="Unknown" rec-stat-id="Active" >
+        <person-contact rec-stat-id="Active" method-type="Telephone: Home" method-value="111-1234" phone-ac="222"/>
+        <person-address address-name="Home" zip="22012" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="111 Acme Street" city="Charlottesville" state-id="Virginia" />
+        <!--personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/-->
+        <person-login rec-stat-id="Active" user-id="person3" password="letmein" quantity="100" login-status="Inactive"/>
+        <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active" org-id="IDREF:ORG 2"/>
+	</person>
+    <person ID="PERSON 4" name-first="John" name-last="Carpenter" short-name="John Carpenter" simple-name="John Carpenter"
+        short-sortable-name="Carpenter, John" complete-name="John Carpenter" complete-sortable-name="Carpenter, John"
+        gender-id="Male" ssn="111-22-1111"  marital-status-id="Single"
+        blood-type-id="Unknown" rec-stat-id="Active" >
+        <person-contact rec-stat-id="Active" method-type="Telephone: Business" method-value="123-1234" phone-ac="704"/>
+        <person-address address-name="Home" zip="12345" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="22 Warner Street" city="Acme" state-id="Ohio" />
+        <!--personorg-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:ORG 3"/-->
+        <person-login rec-stat-id="Active" user-id="person4" password="letmein" quantity="100" login-status="Inactive"/>
+        <person-classification person-type-id="Physician" person-type="Physician" rec-stat-id="Active" org-id="IDREF:ORG 0"/>
 	</person>
 
-
-    <org ID="ORG_1" org-code="AETNA" org-name="AETNA" org-abbrev="ORG" rec-stat-id="Active" ownership-id="Public" fiscal-year-month-id="January" org-level-id="Company"
-        hcfa-servplace-id="Office" time-zone="EST" ticker-symbol="MST" employees="1000">
-        <org-address address-name="Main" rec-status-id="Active" mailing="true" address-type-id="Primary" line1="123 Main Road"  city="fairfax" state-id="Virginia"
-            county="Fairfax" zip="22033"/>
-        <org-classification org-type-id="0" rec-stat-id="Active"/>
-        <org-contact rec-stat-id="Active" method-type="Telephone: Business" method-value="532-5512" phone-ac="703"/>
-		<org-personid-src-type ID="SSN" rec-stat-id="Active" item-id="1" caption="SSN" abbrev="ssn"/>
-		<org-personid-src-type ID="LICENSE" rec-stat-id="Active" item-id="2" caption="License Number" abbrev="lic"/>
-		<org-role-declaration ID="SECURITY" rec-stat-id="Active" role-type-id="Security Role (used for authorization)" role-name="Admin"/>
-		<org-role-declaration ID="FUNCTIONAL" rec-stat-id="Active" role-type-id="Functional Role (used for business rules processing)"
-			role-name="Front Desk"/>
-	</org>
 </dal>

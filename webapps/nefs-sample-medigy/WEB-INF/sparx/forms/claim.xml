@@ -25,9 +25,11 @@
 				</field>
 			</composite>
 			
-			<composite name="servprov" caption="Service Provider/Facility">
-				<field type="select" name="provider_id" caption="" choices="query:person.get-all-physicians" required="yes"/>
-				<field type="select" name="facility_id" caption="" choices="query:org.get-all-orgs" required="yes"/>
+			<composite name="servprov" caption="Service Provider/Facility" >
+				<field type="select" name="provider_id" caption="" choices="query:person.get-all-physicians"
+                    required="yes" prepend-blank="yes"/>
+				<field type="select" name="facility_id" caption="" choices="query:org.get-all-orgs" required="yes"
+                    prepend-blank="yes"/>
 			</composite>
 
 			<composite name="billprov" caption="Billing Provider/Facility">
