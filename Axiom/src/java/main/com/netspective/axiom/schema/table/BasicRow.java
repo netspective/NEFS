@@ -39,14 +39,12 @@
  */
 
 /**
- * $Id: BasicRow.java,v 1.4 2003-06-26 05:00:26 roque.hernandez Exp $
+ * $Id: BasicRow.java,v 1.5 2003-10-15 15:31:50 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
 
-import java.sql.SQLException;
 import java.lang.reflect.InvocationTargetException;
-import javax.naming.NamingException;
 
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Row;
