@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.16 2003-10-20 22:17:59 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.17 2003-10-29 13:26:31 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -63,10 +63,12 @@ import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.column.ForeignKeyPlaceholderColumn;
+import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.schema.Rows;
 import com.netspective.axiom.schema.Columns;
+import com.netspective.axiom.schema.GeneratedValueColumn;
 import com.netspective.axiom.schema.constraint.BasicTableColumnReference;
 import com.netspective.axiom.schema.constraint.BasicForeignKey;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
@@ -826,9 +828,16 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
                     {
                         boolean changedAttrs = false;
                         AttributesImpl attrs = new AttributesImpl(elem.getAttributes());
-                        if(isPrimaryKey() && (attrs.getIndex("primary-key") == -1 && attrs.getIndex("primarykey") == -1))
+                        if(isPrimaryKey() &&
+                                (attrs.getIndex("primary-key") == -1 && attrs.getIndex("primarykey") == -1 &&
+                                 attrs.getIndex("primary-key-generated") == -1 && attrs.getIndex("primarykeygenerated") == -1))
                         {
-                            attrs.addAttribute(null, null, "primary-key", "CDATA", "yes");
+                            if(this instanceof GeneratedValueColumn)
+                                attrs.addAttribute(null, null, "primary-key-generated", "CDATA", "yes");
+                            else
+                                attrs.addAttribute(null, null, "primary-key", "CDATA", "yes");
+                            if(attrs.getIndex("required") == -1) // unless required is being overidden, make the primary key field required
+                                attrs.addAttribute(null, null, "required", "CDATA", "yes");
                             changedAttrs = true;
                         }
 
