@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultsValueSource.java,v 1.8 2003-11-12 12:45:31 shahid.shah Exp $
+ * $Id: QueryResultsValueSource.java,v 1.9 2003-12-04 09:04:17 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -202,9 +202,9 @@ public class QueryResultsValueSource extends AbstractValueSource
                         resultStyle = i;
                         break;
                     }
-                    if(resultStyle == -1)
-                        throw new ValueSourceInitializeException("Invalid style '"+ styleText +"' specified", this, spec);
                 }
+                if(resultStyle == -1)
+                    throw new ValueSourceInitializeException("Invalid style '"+ styleText +"' specified", this, spec);
             }
         }
 
