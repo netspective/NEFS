@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultsValueSource.java,v 1.7 2003-08-15 05:49:38 aye.thu Exp $
+ * $Id: QueryResultsValueSource.java,v 1.8 2003-11-12 12:45:31 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -292,7 +292,18 @@ public class QueryResultsValueSource extends AbstractValueSource
 
         Query query = sqlManager.getQuery(queryId);
         if(query == null)
-            throw new RuntimeException("Unable to locate Query '"+ queryId +"' in SQL Manager '"+ sqlManager +"' in " + this);
+        {
+            log.error("Unable to locate Query '"+ queryId +"' in SQL Manager '"+ sqlManager +"' in " + this + ". Available: " + sqlManager.getQueries().getNames());
+            if(style == RESULTSTYLE_PRESENTATION)
+            {
+                PresentationValue pValue = new PresentationValue();
+                PresentationValue.Items items = pValue.createItems();
+                items.addItem("Unable to find query " + queryId);
+                return pValue;
+            }
+            else
+                return new GenericValue("Unable to find query " + queryId);
+        }
 
         String dataSourceIdText = dataSourceId != null ? dataSourceId.getTextValue(vc) : null;
         QueryResultSet qrs = null;
