@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.64 2003-11-02 17:29:06 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.65 2003-11-07 17:45:51 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -117,6 +117,8 @@
     <navigation-page-conditional-action name="apply-flags" class="com.netspective.sparx.navigate.NavigationConditionalApplyFlag"/>
 
     <dialog-field-type name="ant-build-property" class="com.netspective.sparx.ant.AntBuildDialogPropertyField"/>
+
+    <dialog-type name="schema-record-editor" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog"/>
 
     <dialog-type name="ant-build" class="com.netspective.sparx.ant.AntBuildDialog">
         <frame heading="Ant Build"/>
