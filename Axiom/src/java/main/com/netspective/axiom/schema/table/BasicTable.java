@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.9 2003-05-24 20:27:57 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.10 2003-06-26 04:58:19 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -461,7 +461,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public Row getRowByPrimaryKeys(ConnectionContext cc, PrimaryKeyColumnValues values, Row row) throws NamingException, SQLException
     {
-        return getRowByPrimaryKeys(cc, row.getPrimaryKeyValues().getValuesForSqlBindParams(), row);
+        return getRowByPrimaryKeys(cc, values.getValuesForSqlBindParams(), row);
     }
 
     public Row getRowByPrimaryKeys(ConnectionContext cc, Object[] pkValues, Row row) throws NamingException, SQLException
@@ -478,8 +478,9 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 if (resultRow == null) resultRow = createRow();
                 resultRow.getColumnValues().populateValues(rs, ColumnValues.RESULTSETROWNUM_SINGLEROW);
             }
+            qrs.close(false);
         }
-        qrs.close(false);
+        
         return resultRow;
     }
 
