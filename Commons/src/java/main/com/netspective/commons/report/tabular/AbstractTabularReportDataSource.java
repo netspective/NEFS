@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.8 2003-06-26 07:02:12 aye.thu Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.9 2003-06-28 06:01:59 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -71,37 +71,65 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
             reachedEndOnce = false;
         }
 
+        /**
+         * Gets the report object associated with the scroll state
+         * @return
+         */
         public TabularReport getReport()
         {
             return report;
         }
 
+        /**
+         * Sets the report object associated with the scroll state
+         * @param report
+         */
         public void setReport(TabularReport report)
         {
             this.report = report;
         }
 
+        /**
+         * Keeps track of the number of rows that has been viewed before reaching the end of the resultset
+         * @param rowsProcessed
+         */
         public void accumulateRowsProcessed(int rowsProcessed)
         {
             if(! reachedEndOnce)
                 this.rowsProcessed += rowsProcessed;
         }
 
+        /**
+         * Sets the flags to indicate that the end of the result set has been reached and there are no more rows
+         * available
+         */
         public void setNoMoreRows()
         {
             haveMoreRows = false;
             reachedEndOnce = true;
         }
+
+        /**
+         * Close the datasource
+         */
         public void close()
         {
             AbstractTabularReportDataSource.this.close();
         }
 
+        /**
+         * Get the currently viewed active page number
+         * @return
+         */
         public int getActivePage()
         {
             return activePage;
         }
 
+        /**
+         * Gets the datasource object associated with the scroll state
+         * @return   TabularReportDataSource
+         */
         public TabularReportDataSource getDataSource()
         {
             return AbstractTabularReportDataSource.this;
@@ -117,21 +145,38 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
             this.identifier = identifier;
         }
 
+        /**
+         * Gets the number of rows per page for display
+         * @return
+         */
         public int getRowsPerPage()
         {
             return rowsPerPage;
         }
 
+        /**
+         * Gets the number of rows already processed
+         * @return
+         */
         public int getRowsProcessed()
         {
             return rowsProcessed;
         }
 
+        /**
+         * Gets the total number of rows
+         * @return
+         */
         public int getTotalPages()
         {
             return totalPages;
         }
 
+        /**
+         * Sets the active page within the scroll state and calculates the current row number within the
+         * result set
+         * @param page
+         */
         public void setActivePage(int page)
         {
             recordActivity();
@@ -141,26 +186,41 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
             AbstractTabularReportDataSource.this.setActiveRow(activePageRowStart);
         }
 
+        /**
+         * Sets the rows per page for the scroll state and calculates the total number of pages for the scroll state
+         * based on the total number of rows in the result set.
+         * @param rowsPerPage
+         */
         public void setRowsPerPage(int rowsPerPage)
         {
             this.rowsPerPage = rowsPerPage;
-
+            // get the total number of rows in the result set
             int totalRows = AbstractTabularReportDataSource.this.getTotalRows();
-            this.totalPages = totalRows / rowsPerPage;
-            if((totalPages * rowsPerPage) < totalRows)
-                totalPages++;
+            // calculate the total number of pages
+            this.totalPages = (totalRows % rowsPerPage == 0) ? (totalRows / rowsPerPage) : ((totalRows / rowsPerPage) + 1);
+
         }
 
+        /**
+         * Recalculates the active page number using the delta value
+         * @param delta
+         */
         public void setPageDelta(int delta)
         {
             setActivePage(getActivePage() + delta);
         }
 
+        /**
+         * Sets the active page to the first page
+         */
         public void setPageFirst()
         {
-            setActivePage(0);
+            setActivePage(1);
         }
 
+        /**
+         * Sets the active page to the last page number
+         */
         public void setPageLast()
         {
             setActivePage(getTotalPages());
