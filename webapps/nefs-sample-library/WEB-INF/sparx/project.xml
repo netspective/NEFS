@@ -40,14 +40,20 @@
                 <panel type="command" command="dialog,library.book-info,add" />
             </panels>
         </page>
-        <page name="edit" caption="Edit Book" command="dialog,library.book-info,edit">
+        <page name="edit" caption="Edit Book" command="dialog,library.book-info,edit" require-request-param="id">
+            <missing-params-body>
+               Please choose a book to edit from the &lt;a href='home'&gt; books list&lt;/a&gt;.
+            </missing-params-body>
         </page>
-        <page name="delete" caption="Delete Book" command="dialog,library.book-info,delete">
+        <page name="delete" caption="Delete Book" command="dialog,library.book-info,delete"  require-request-param="id">
+            <missing-params-body>
+               Please choose a book to delete from the &lt;a href='home'&gt; books list&lt;/a&gt;.
+            </missing-params-body>
         </page>
         <page name="search" caption="Search Books" command="query-defn,library,test,searchBooksDialog"/>
         <page name="console" caption="Console" redirect="console"/>
     </navigation-tree>
-    
+
     <dialogs package="library">
         <dialog name="book-info" retain-params="*" hide-hints-until-focus="yes" class="app.form.BookDialog">
             <frame heading="create-dialog-perspective-heading:Book"/>
