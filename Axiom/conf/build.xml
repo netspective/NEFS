@@ -53,6 +53,9 @@ Setup instructions:
             <fileset dir="${project.lib.redist.dir}">
                 <include name="**/*.jar"/>
             </fileset>
+
+            <!-- this needs to be in the classpath because test cases have resources that need to be located -->
+            <pathelement location="${project.src.test.home}"/>
         </path>
 
         <property name="GenerateBuildLogClassTask-class-name" value="com.netspective.commons.ant.GenerateBuildLogClassTask"/>
@@ -114,11 +117,17 @@ Setup instructions:
     </target>
 
     <!-- ==================== Compile targets  ======================= -->
-
     <target name="compile-main" depends="init">
         <javac srcdir="${project.src.main.home}" destdir="${project.build.main.classes.dir}"
             debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
         </javac>
+        <copy todir="${project.build.main.classes.dir}">
+            <fileset dir="${project.src.main.home}">
+                <include name="**/*.xml"/>
+                <include name="**/*.xsl"/>
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="compile-test" depends="compile-main">
@@ -133,9 +142,9 @@ Setup instructions:
     <!-- ==================== Test targets  ======================= -->
 
     <target name="test" depends="compile-test">
-        <junit filtertrace="yes">
+        <junit filtertrace="yes" fork="true">
             <classpath>
-                <pathelement path="${project.class.path}"/>
+                <path refid="project.class.path"/>
                 <pathelement location="${project.build.main.classes.dir}"/>
                 <pathelement location="${project.build.test.classes.dir}"/>
             </classpath>
@@ -222,9 +231,9 @@ Setup instructions:
 	</target>
 
 	<target name="clover-test" depends="clover-compile-test">
-	    <junit filtertrace="yes">
+	    <junit filtertrace="yes" fork="yes">
 	        <classpath>
-	            <pathelement path="${project.class.path}"/>
+	            <path refid="project.class.path"/>
 	            <pathelement location="${project.build.main.classes.dir}"/>
 	            <pathelement location="${project.build.test.classes.dir}"/>
 	        </classpath>
