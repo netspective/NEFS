@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NetspectiveUrlValueSource.java,v 1.3 2003-12-18 01:17:56 shahid.shah Exp $
+ * $Id: NetspectiveUrlValueSource.java,v 1.4 2003-12-18 01:27:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -125,26 +125,34 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
                 vc);
 
+        final String wwwPublicContextUri = "http://www.netspective.com/corp";
         final String[] wwwContextNames = new String[] { "corp", "www.netspective.com" };
 
         final HttpServletRequest request = svc.getHttpRequest();
         final File contextPath = new File(svc.getServlet().getServletConfig().getServletContext().getRealPath("/"));
 
-        String wwwContextName = null;
         boolean isInWWW = false;
         for(int i = 0; i < wwwContextNames.length; i++)
         {
             if(contextPath.getAbsolutePath().endsWith(wwwContextNames[i]))
             {
                 isInWWW = true;
-                wwwContextName = wwwContextNames[i];
+                break;
             }
         }
 
-        final String wwwPublicContextUri = "http://www.netspective.com/corp";
-        final String wwwLocalContextUri = request.getContextPath() + "/../" + wwwContextName;
+        String wwwLocalContextUri = null;
+        boolean wwwIsLocal = false;
+        for(int i = 0; i < wwwContextNames.length; i++)
+        {
+            if(new File(contextPath.getParentFile(), wwwContextNames[i]).exists())
+            {
+                wwwIsLocal = true;
+                wwwLocalContextUri = request.getContextPath() + "/../" + wwwContextNames[i];
+                break;
+            }
+        }
 
-        final boolean wwwIsLocal = new File(contextPath.getParentFile(), wwwContextName).exists();
         final String wwwContextUrl = isInWWW ? request.getContextPath() : (wwwIsLocal ? wwwLocalContextUri : wwwPublicContextUri);
 
         switch(type)
