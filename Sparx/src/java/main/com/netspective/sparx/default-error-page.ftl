@@ -89,7 +89,7 @@
         <tr>
             <td class="heading">Exception Message:</td>
             <td>
-                <b><code>${vc.navigationContext.errorPageException.getMessage()}</code></b>
+                <b><code>${vc.navigationContext.errorPageException.getMessage()?default("Message unavailable.")}</code></b>
             </td>
         </tr>
 
