@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Column.java,v 1.8 2003-11-07 17:31:16 shahid.shah Exp $
+ * $Id: Column.java,v 1.9 2004-04-05 14:03:31 zahara.khan Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -57,6 +57,10 @@ import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateElement;
 import com.netspective.commons.xml.template.TemplateConsumer;
 
+/**
+ * Class for handling the column of database table.  Provides functionality for
+ * declaring database table columns, their validation rules and foreign key dependencies.
+ */
 public interface Column extends TemplateConsumer
 {
     /**
@@ -110,16 +114,22 @@ public interface Column extends TemplateConsumer
 
     /**
      * Sets the name of the column as it appears in the database
+     *
+     * @param value column name
      */
     public void setName(String value);
 
     /**
-     * Sets the name of the column the name of the column suitable for use as an XML node name
+     * Sets the name of the column the name of the column suitable for use as an XML node name.
+     *
+     * @param value name of column suitable for use as an XML node name
      */
     public void setXmlNodeName(String value);
 
     /**
      * Sets the abbreviated form of the column name.
+     *
+     * @param abbrev abbreviated form of column name
      */
     public void setAbbrev(String abbrev);
 
@@ -131,7 +141,8 @@ public interface Column extends TemplateConsumer
 
     /**
      * Sets the friendly form of the column name suitable for displaying to the user.
-     * @param caption The caption to show the end user in place of the column name.
+     *
+     * @param caption caption to show the end user in place of the column name.
      */
     public void setCaption(String caption);
 
@@ -143,7 +154,8 @@ public interface Column extends TemplateConsumer
     public int getIndexInRow();
 
     /**
-     * Sets the index of the column in the row (as an array)
+     * Sets the index of the column in the row (as an array).
+     *
      * @param value the index of the column in the row
      */
     public void setIndexInRow(int value);
@@ -157,6 +169,8 @@ public interface Column extends TemplateConsumer
 
     /**
      * Sets the description of this column.
+     *
+     * @param value description for this column
      */
     public void setDescr(String value);
 
@@ -212,7 +226,7 @@ public interface Column extends TemplateConsumer
 
     /**
      * Sets the class that should be used to create a ForeignKey to this column.
-     * @see Column#getForeignKeyReferenceeClass
+     * @see Column#sgetForeignKeyReferenceeClass
      */
     public void setForeignKeyReferenceeClass(Class cls);
 
@@ -233,7 +247,7 @@ public interface Column extends TemplateConsumer
     public void setParentRef(String reference);
 
     /**
-     * Sets this column's foreign key as a self-ref foreign key
+     * Sets this column's foreign key as a self-ref foreign key.
      */
     public void setSelfRef(String reference);
 
@@ -269,6 +283,8 @@ public interface Column extends TemplateConsumer
 
     /**
      * Sets the size of this column.
+     *
+     * @param value column size
      */
     public void setSize(int value);
 
@@ -295,9 +311,20 @@ public interface Column extends TemplateConsumer
     public void setIndexed(boolean flag);
 
     public boolean isPrimaryKey();
+
+    /**
+     * Sets this column as the primary key for the table.
+     *
+     * @param flag If <code>true</code>, the column is set as the primary key for the table.
+     */
     public void setPrimaryKey(boolean flag);
 
     public boolean isUnique();
+    /**
+     * Sets whether or not this column represents unique field.
+     *
+     * @param flag If <code>true</code>, this column is set as a unique field.
+     */
     public void setUnique(boolean flag);
 
     public boolean isRequiredByApp();

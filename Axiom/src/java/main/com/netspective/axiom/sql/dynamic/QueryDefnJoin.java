@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnJoin.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryDefnJoin.java,v 1.2 2004-04-05 14:05:13 zahara.khan Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -51,6 +51,14 @@ import java.util.StringTokenizer;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnJoinNotFoundException;
 
+/**
+ * Class for handling the join conditions defined within a query-defn using &lt;join&gt; tag.
+ * Join tag is used to let the query definition know of the list of tables and joins.
+ * This is necessary to be able to get all the fields that are a part of the query
+ * definition.  In the context of the final SQL statement that Sparx generates,
+ * the join tags become a part of the where clause to signify the relationships
+ * between tables (if any exists).
+ */
 public class QueryDefnJoin
 {
     private QueryDefinition owner;
@@ -112,11 +120,21 @@ public class QueryDefnJoin
         return autoInclude;
     }
 
+    /**
+     * Sets the name to be used to uniquely identify a join.
+     *
+     * @param name unique name of the join
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Sets the schema table name to be used in this join.
+     *
+     * @param tableName schema table name
+     */
     public void setTable(String tableName)
     {
         this.tableName = tableName;
@@ -127,6 +145,11 @@ public class QueryDefnJoin
         this.fromClauseExpr = fromClauseExpr;
     }
 
+    /**
+     * Defines the join condition.
+     *
+     * @param condition string containing the join condition
+     */
     public void setCondition(String condition)
     {
         this.condition = condition;

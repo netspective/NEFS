@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.12 2003-12-04 09:06:45 roque.hernandez Exp $
+ * $Id: Table.java,v 1.13 2004-04-05 14:03:31 zahara.khan Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -60,6 +60,10 @@ import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateConsumer;
 
+/**
+ * Class handling the schema tables as defined by &lt;table&gt; tag.  Provides funtionality
+ * for creating and managing table structures, defining indexes and triggers
+ */
 public interface Table extends QueriesNameSpace, TemplateConsumer
 {
     /**
@@ -114,6 +118,8 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Sets the name of the table as it appears in the database.
+     *
+     * @param value table name
      */
     public void setName(String value);
 
@@ -124,6 +130,8 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Sets the name of the table suitable for use as an XML node/element.
+     *
+     * @param value name of table suitable for use as XML node/element
      */
     public void setXmlNodeName(String value);
 
@@ -134,6 +142,8 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Sets the abbreviated form of the table name.
+     *
+     * @param abbrev abbreviated form of the table name
      */
     public void setAbbrev(String abbrev);
 
@@ -145,6 +155,7 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Sets the friendly form of the column name suitable for displaying to the user.
+     *
      * @param caption The caption to show the end user in place of the column name.
      */
     public void setCaption(String caption);
@@ -158,6 +169,8 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Sets the description of this table.
+     *
+     * @param value description for the table
      */
     public void setDescription(String value);
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnCondition.java,v 1.3 2004-04-01 15:51:45 zahara.khan Exp $
+ * $Id: QueryDefnCondition.java,v 1.4 2004-04-05 14:05:13 zahara.khan Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -121,6 +121,13 @@ public class QueryDefnCondition
         return field;
     }
 
+    /**
+     * Defines the select-dialog field on which the condition is being defined
+     * using &lt;condition&gt; tag.
+     *
+     * @param fieldName name of the conditional field
+     * @throws QueryDefnFieldNotFoundException
+     */
     public void setField(String fieldName) throws QueryDefnFieldNotFoundException
     {
         field = owner.getFields().get(fieldName);
@@ -158,7 +165,8 @@ public class QueryDefnCondition
      * Set the field of the main query definition with which this select-dialog
      * field is to be compared.
      *
-     * @param value
+     * @param value value source object containing the main query-defn field with which
+     *              this select-dialog fields is to be compared
      */
     public void setValue(ValueSource value)
     {
@@ -170,6 +178,14 @@ public class QueryDefnCondition
         return QueryDefnCondition.CONNECTOR_SQL[connector];
     }
 
+    /**
+     * Defines how many field criteria each record in the database has to match
+     * before it is selected. For example, if all the conditional fields (defined by
+     * &lt;condition&gt; tags) have a connector value of <cide>and</code>, a record
+     * would have to match all these field criteria to be selected in the final result.
+     *
+     * @param connector connector for this conditional field
+     */
     public void setConnector(QueryDefnConditionConnectorEnumeratedAttribute connector)
     {
         this.connector = connector.getValueIndex();

@@ -39,13 +39,16 @@
  */
 
 /**
- * $Id: QueryDefnFieldReference.java,v 1.2 2003-06-21 21:40:43 shahid.shah Exp $
+ * $Id: QueryDefnFieldReference.java,v 1.3 2004-04-05 14:05:13 zahara.khan Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
 
 import com.netspective.commons.text.TextUtils;
 
+/**
+ * Class for handling display fields used within group-by clauses of query-defn.
+ */
 public class QueryDefnFieldReference
 {
     private QueryDefinition queryDefn;
@@ -62,11 +65,23 @@ public class QueryDefnFieldReference
         return fieldName;
     }
 
+    /**
+     * Sets reference to a field declared in the main query definition.  This field
+     * can be used in the group-by clauses.
+     *
+     * @param fieldName field name
+     */
     public void setField(String fieldName)
     {
         this.fieldName = fieldName;
     }
 
+    /**
+     * Sets reference to multiple fields declared in the main query definition.  These fields
+     * can be used in the group-by clauses.
+     *
+     * @param fieldName field names
+     */
     public void setFields(String fieldName)
     {
         this.fieldName = fieldName;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSortFieldReference.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: QueryDefnSortFieldReference.java,v 1.2 2004-04-05 14:05:13 zahara.khan Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -49,6 +49,9 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 
+/**
+ * Class for handling the order-by clause in a query definition.
+ */
 public class QueryDefnSortFieldReference
 {
     static public final String MULTIFIELD_SORT_DELIM = ",";
@@ -73,6 +76,14 @@ public class QueryDefnSortFieldReference
         return fieldNameValue;
     }
 
+    /**
+     * Sets reference to a field declared in the main query definition to be used
+     * in the order-by clause.
+     *
+     * @param value value source containing the order by field
+     *
+     * @throws QueryDefnFieldNotFoundException
+     */
     public void setField(ValueSource value) throws QueryDefnFieldNotFoundException
     {
         fieldNameValue = value;

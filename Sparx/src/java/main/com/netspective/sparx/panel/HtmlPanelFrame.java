@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlPanelFrame.java,v 1.8 2004-03-25 15:15:30 zahara.khan Exp $
+ * $Id: HtmlPanelFrame.java,v 1.9 2004-04-05 14:06:44 zahara.khan Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -77,7 +77,7 @@ public class HtmlPanelFrame
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_HEADING", HAS_HEADING, "If set, the frame has a heading."),
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_HEADING_EXTRA", HAS_HEADING_EXTRA),
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_FOOTING", HAS_FOOTING, "If set, the frame has a footer"),
-            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_SELECTABLE", IS_SELECTABLE),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_SELECTABLE", IS_SELECTABLE, "If set, it enables selection of multiple rows from the report for passing onto another page for further processing.  Used internally by a report skin called selectable-report.  When this skin is used, the displayed report contains an additional column prepended to each row. This column contains a checkbox for selection of the whole row. The report also contains a link (or button) to navigate to another page/servlet.  All the selected row(s) are passed along with the request."),
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "ALLOW_COLLAPSE", ALLOW_COLLAPSE, "If set, the frame is collapsable.  The user may collapse/restore the frame by using a collapse/restore button provided in the frame."),
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_COLLAPSED", IS_COLLAPSED, "If set, the frame is collapsed.  Otherwise, the frame and its contents are displayed."),
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "HIDE_HEADING", HIDE_HEADING, "If set, the frame heading is not displayer.")
@@ -114,6 +114,12 @@ public class HtmlPanelFrame
         return allowSelect;
     }
 
+    /**
+     * Used by <code>selectable-report</code> skin to allow selection of multiple
+     * rows from the report for passing it onto another page for further processing.
+     *
+     * @param vs value source object containing the value for allow-select option
+     */
     public void setAllowSelect(ValueSource vs)
     {
         allowSelect = vs;

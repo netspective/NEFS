@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnField.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryDefnField.java,v 1.2 2004-04-05 14:05:13 zahara.khan Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -48,6 +48,9 @@ import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnJoinNotFoundException;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
+/**
+ * Class handling the Selectable Fields, in a Query-Definition, as defined by &lt;field&gt; tag.
+ */
 public class QueryDefnField
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
@@ -148,16 +151,33 @@ public class QueryDefnField
         return joinDefn;
     }
 
+    /**
+     * Used to define a different name for the schema table field (column) that is
+     * being used as a selectable field.
+     *
+     * @param name new name string for the schema table field (column)
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Sets the caption for a query-defn selectable field.
+     *
+     * @param caption caption for the field as displayed in the select dialog
+     */
     public void setCaption(String caption)
     {
         this.caption = caption;
     }
 
+    /**
+     * Sets the field name, for a query-defn selectable field, as it is defined
+     * in the schema table.
+     *
+     * @param columnName
+     */
     public void setColumn(String columnName)
     {
         this.column = columnName;
@@ -183,6 +203,11 @@ public class QueryDefnField
         this.orderByClauseExpr = orderByClauseExpr;
     }
 
+    /**
+     * Sets a reference to a join tag which is defined later in the query-defn.
+     *
+     * @param join name of a join tag defined within a query-defn
+     */
     public void setJoin(String join)
     {
         this.join = join;
