@@ -1483,12 +1483,18 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         StringBuffer expression = null;
         for(int i = 0; i < popup.length; i++)
         {
+            final DialogFieldPopup activePopup = popup[i];
+
+            // if the field is read only we won't show it
+            if(activePopup.isHideIfReadOnly() && dc.getFieldStates().getState(field).getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY))
+                continue;
+
             expression = new StringBuffer("new DialogFieldPopup('" + dc.getDialog().getHtmlFormName() + "', '" + field.getQualifiedName() +
-                                          "', '" + popup[i].getAction().getTextValueOrBlank(dc) + "', '" + popup[i].getWindowClass() + "', " + popup[i].isCloseAfterSelect() +
-                                          ", " + popup[i].isAllowMulti() + ", ");
+                                          "', '" + activePopup.getAction().getTextValueOrBlank(dc) + "', '" + activePopup.getWindowClass() + "', " + activePopup.isCloseAfterSelect() +
+                                          ", " + activePopup.isAllowMulti() + ", ");
 
             StringBuffer tmpBuffer = new StringBuffer();
-            String[] fillFields = popup[i].getFill();
+            String[] fillFields = activePopup.getFill();
             if(fillFields != null && fillFields.length > 0)
             {
                 tmpBuffer.append("new Array(");
@@ -1501,7 +1507,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             expression.append(tmpBuffer.toString() + ", ");
 
             tmpBuffer = new StringBuffer();
-            String[] extractFields = popup[i].getExtract();
+            String[] extractFields = activePopup.getExtract();
             // append the list of extract fields if they exist
             if(extractFields != null && extractFields.length > 0)
             {
@@ -1517,20 +1523,20 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             expression.append(tmpBuffer.toString() + ", ");
 
             // append evaluation script
-            if(popup[i].getPreActionScript() != null)
-                expression.append("'" + popup[i].getPreActionScript() + "'");
+            if(activePopup.getPreActionScript() != null)
+                expression.append("'" + activePopup.getPreActionScript() + "'");
             else
                 expression.append("null");
             expression.append(")");
 
-            if(popup[i].getStyle().getValueIndex() == DialogFieldPopup.Style.TEXT)
+            if(activePopup.getStyle().getValueIndex() == DialogFieldPopup.Style.TEXT)
             {
                 html.append("&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression +
-                            ";return false;\">" + popup[i].getStyleText().getTextValue(dc) + "</a>&nbsp;");
+                            ";return false;\">" + activePopup.getStyleText().getTextValue(dc) + "</a>&nbsp;");
             }
             else
             {
-                String imageUrl = popup[i].getImageSrc().getTextValue(dc);
+                String imageUrl = activePopup.getImageSrc().getTextValue(dc);
                 if(imageUrl == null)
                     imageUrl = getTheme().getResourceUrl("/images/panel/input/content-popup.gif");
                 html.append("&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression +

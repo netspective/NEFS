@@ -50,6 +50,7 @@ public class DialogFieldPopup
     private String[] fill = null;                   // fields that will be filled with values from the popup
     private boolean allowMulti = false;             // flag to indicate whether or not multiple records can be selected
     private boolean closeAfterSelect = true;        // flag to indicate whether or not the popup window should be closed afterwards
+    private boolean hideIfReadOnly = true;          // flag to indicate whether the popup should be shown if the field is readonly
     private String[] extract = null;                // these are the fields whose values will be appended to the popup's URL
     private Style displayStyle = new Style(Style.IMAGE); // display style for the popup action
     private ValueSource displayStyleText = null;    // text caption to display when the popup style is TEXT or BUTTON
@@ -136,6 +137,16 @@ public class DialogFieldPopup
     public void setCloseAfterSelect(boolean closeAfterSelect)
     {
         this.closeAfterSelect = closeAfterSelect;
+    }
+
+    public boolean isHideIfReadOnly()
+    {
+        return hideIfReadOnly;
+    }
+
+    public void setHideIfReadOnly(boolean hideIfReadOnly)
+    {
+        this.hideIfReadOnly = hideIfReadOnly;
     }
 
     public ValueSource getImageSrc()
