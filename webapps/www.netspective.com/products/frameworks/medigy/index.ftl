@@ -1,10 +1,10 @@
 Using Medigy, healthcare IT groups can finally stop building applications from scratch each time and leverage existing
-talent, databases, and components to reduce time to market, improve quality, and cut costs.
+talent, databases, and components to reduce time-to-market, improve quality, and cut costs.
 
 <h1>Why Medigy?</h1>
-Developing and delivering healthcare applications is a time-consuming, complex, and costly endeavor.
-IT groups in healthcare organizations are struggling with competing demands from clinical users, business users, and
-financial users. Healthcare applications demand high quality, easy accessibility, good privacy, excellent security,
+Developing and delivering healthcare applications is a time-consuming, complex and costly endeavor.
+IT groups in healthcare organizations are struggling with competing demands from clinical users, business users and
+financial users. Healthcare applications demand high quality, easy accessibility, good privacy, excellent security
 and simplified user interfaces all at a low price point. Most organizations opt for commercial-off-the-shelf (COTS)
 solutions but find out that customization and new applications remain a necessity to keep up with competitive and
 cost-cutting measures.
