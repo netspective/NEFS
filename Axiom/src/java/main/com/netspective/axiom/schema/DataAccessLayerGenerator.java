@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.11 2003-08-28 14:46:07 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.12 2003-08-31 03:08:23 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -668,6 +668,22 @@ public class DataAccessLayerGenerator
             method.addThrows("SQLException");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             method.newStmt(vm.newFree("table.delete(cc, row)"));
+
+            method = recordInnerClass.newMethod(vm.newType(Type.BOOLEAN), "dataChangedInStorage");
+            method.setAccess(Access.PUBLIC);
+            method.isFinal(true);
+            method.addThrows("NamingException");
+            method.addThrows("SQLException");
+            method.addParameter(vm.newType("ConnectionContext"), "cc");
+            method.newReturn().setExpression(vm.newFree("table.dataChangedInStorage(cc, row)"));
+
+            method = recordInnerClass.newMethod(vm.newType(Type.VOID), "refresh");
+            method.setAccess(Access.PUBLIC);
+            method.isFinal(true);
+            method.addThrows("NamingException");
+            method.addThrows("SQLException");
+            method.addParameter(vm.newType("ConnectionContext"), "cc");
+            method.newStmt(vm.newFree("table.refreshData(cc, row)"));
 
             Type valueObjectIntefaceType = vm.newType(valueInterfaceUnit.getNamespace().getName() + '.' + valueInterfaceName);
 

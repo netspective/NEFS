@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.15 2003-08-30 19:15:29 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.16 2003-08-31 03:08:24 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -73,6 +73,7 @@ import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.Index;
 import com.netspective.axiom.schema.Indexes;
 import com.netspective.axiom.schema.TableHierarchyReference;
+import com.netspective.axiom.schema.TableRowTrigger;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.schema.column.ColumnsCollection;
 import com.netspective.axiom.schema.column.PrimaryKeyColumnsCollection;
@@ -155,6 +156,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private TablePresentationTemplate presentation;
     private TemplateProducers templateProducers;
     private TemplateConsumerDefn templateConsumer;
+    private TableRowTrigger[] triggers = new TableRowTrigger[0];
 
     static public String translateTableNameForMapKey(String name)
     {
@@ -579,6 +581,9 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void insert(ConnectionContext cc, Row row) throws SQLException
     {
+        for(int i = 0; i < triggers.length; i++)
+            triggers[i].beforeTableRowInsert(cc, row);
+
         try
         {
             cc.getDatabasePolicy().insertValues(cc, DatabasePolicy.DMLFLAG_EXECUTE | DatabasePolicy.DMLFLAG_USE_BIND_PARAMS, row.getColumnValues(), row);
@@ -588,6 +593,10 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             log.error("Error while inserting row " + row, e);
             throw new SQLException(e.getMessage());
         }
+
+        for(int i = 0; i < triggers.length; i++)
+            triggers[i].afterTableRowInsert(cc, row);
+
     }
 
     public void update(ConnectionContext cc, Row row) throws SQLException
@@ -597,6 +606,9 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void update(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws SQLException
     {
+        for(int i = 0; i < triggers.length; i++)
+            triggers[i].beforeTableRowUpdate(cc, row);
+
         try
         {
             cc.getDatabasePolicy().updateValues(cc, DatabasePolicy.DMLFLAG_EXECUTE | DatabasePolicy.DMLFLAG_USE_BIND_PARAMS, row.getColumnValues(), row, whereCond, whereCondBindParams);
@@ -606,6 +618,9 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             log.error("Error while updating row " + row + " whereCond " + whereCond, e);
             throw new SQLException(e.getMessage());
         }
+
+        for(int i = 0; i < triggers.length; i++)
+            triggers[i].afterTableRowUpdate(cc, row);
     }
 
     public void delete(ConnectionContext cc, Row row) throws SQLException
@@ -615,6 +630,9 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void delete(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws SQLException
     {
+        for(int i = 0; i < triggers.length; i++)
+            triggers[i].beforeTableRowDelete(cc, row);
+
         try
         {
             cc.getDatabasePolicy().deleteValues(cc, DatabasePolicy.DMLFLAG_EXECUTE | DatabasePolicy.DMLFLAG_USE_BIND_PARAMS, row.getColumnValues(), row, whereCond, whereCondBindParams);
@@ -624,6 +642,18 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             log.error("Error deleting row " + row + " whereCond " + whereCond, e);
             throw new SQLException(e.getMessage());
         }
+
+        for(int i = 0; i < triggers.length; i++)
+            triggers[i].afterTableRowDelete(cc, row);
+    }
+
+    public void addTrigger(TableRowTrigger trigger)
+    {
+        TableRowTrigger[] result = new TableRowTrigger[triggers.length + 1];
+        for(int i = 0; i < triggers.length; i++)
+            result[i] = triggers[i];
+        result[triggers.length] = trigger;
+        triggers = result;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

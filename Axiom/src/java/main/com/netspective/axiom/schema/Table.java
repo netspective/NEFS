@@ -39,20 +39,18 @@
  */
 
 /**
- * $Id: Table.java,v 1.7 2003-08-28 00:42:01 shahid.shah Exp $
+ * $Id: Table.java,v 1.8 2003-08-31 03:08:23 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
 import java.sql.SQLException;
 import java.lang.reflect.InvocationTargetException;
-import java.io.IOException;
 import java.util.List;
 import javax.naming.NamingException;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
-import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.sql.QueryExecutionLog;
 import com.netspective.axiom.sql.QueriesNameSpace;
@@ -367,6 +365,12 @@ public interface Table extends QueriesNameSpace
      * Delete the given Row in the database using the primary key of the row that is provided.
      */
     public void delete(ConnectionContext cc, Row row) throws SQLException;
+
+    /**
+     * Add callbacks for trigger events
+     * @param trigger The class that should be called when trigger events occur
+     */
+    public void addTrigger(TableRowTrigger trigger);
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
