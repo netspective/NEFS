@@ -39,10 +39,24 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.25 2004-04-12 18:06:13 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.26 2004-04-12 22:24:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicies;
@@ -63,8 +77,6 @@ import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.value.source.SqlExpressionValueSource;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.text.ExpressionTextException;
-import com.netspective.commons.text.JavaExpressionText;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
@@ -90,26 +102,6 @@ import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.panel.editor.PanelEditor;
 import com.netspective.sparx.panel.editor.PanelEditorState;
 import com.netspective.sparx.panel.editor.ReportPanelEditorContentElement;
-
-import org.apache.commons.jexl.Expression;
-import org.apache.commons.jexl.ExpressionFactory;
-import org.apache.commons.jexl.JexlContext;
-import org.apache.commons.jexl.JexlHelper;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
-
-import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class SchemaRecordEditorDialog extends Dialog implements TemplateProducerParent
 {
@@ -723,7 +715,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         for (int k = 0; k < insertCount; k++)
         {
-            Row activeRow = null;
+            Row activeRow;
             // find the connector from the child table to the parent table if one is available
             Columns parentKeyCols = table.getForeignKeyColumns(ForeignKey.FKEYTYPE_PARENT);
             if (parentKeyCols.size() == 1 && parentRow != null)
@@ -765,7 +757,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                     continue;
                 }
 
-                if (loopColumnName != null && loopColumnName.equals(columnName))
+                if (loopColumnName != null && loopColumnName.equals(columnName) && loopColumnValues != null)
                     columnValue.setTextValue(loopColumnValues[k]);
                 else
                     assignColumnValue(sredc, columnValue, columnTextValue);
@@ -850,9 +842,12 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
 
         if (primaryKeyValueSource == null)
+        {
             sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[]{
                 table.getName()
             });
+            return;
+        }
 
         final Value primaryKeyValue = primaryKeyValueSource.getValue(sredc);
         if (primaryKeyValue == null)
@@ -974,9 +969,12 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
         if (primaryKeyValueSource == null)
+        {
             sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0}.", new Object[]{
                 table.getName()
             });
+            return;
+        }
 
         final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
         Row activeRow = table.getRowByPrimaryKeys(sredc.getActiveConnectionContext(), new Object[]{primaryKeyValue}, null);
@@ -1068,8 +1066,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public boolean duplicateRecordOnUniqueColumnExists(SchemaRecordEditorDialogContext sredc) throws NamingException, SQLException
     {
         boolean duplicateFound = false;
-
-        List templateInstances = null;
+        List templateInstances;
 
         if (sredc.editingData())
         {
@@ -1119,7 +1116,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                     {   //Iterate through all of the columns in the index
                         Column column = indexColumns.get(k);
                         String columnTextValue = templateAttributes.getValue(column.getName());
-                        String columnValue = null;
+                        String columnValue;
                         // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
                         ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
                         if (vs == null)
@@ -1134,7 +1131,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                         params.add(columnValue);
                     }
 
-                    QueryDefnSelect indexAccessor = null;
+                    QueryDefnSelect indexAccessor;
                     indexAccessor = table.getAccessorByIndexEquality(index);
 
                     QueryResultSet results = indexAccessor.execute(sredc.getActiveConnectionContext(), params.toArray(), false);
@@ -1246,7 +1243,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         SchemaRecordEditorDialogContext sredc = ((SchemaRecordEditorDialogContext) dc);
 
-        ConnectionContext cc = null;
+        ConnectionContext cc;
         DialogExecuteHandlers handlers = getExecuteHandlers();
         try
         {
