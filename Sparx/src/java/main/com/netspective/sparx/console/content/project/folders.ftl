@@ -1,7 +1,8 @@
 <#include "*/library.ftl"/>
 
-<#macro showSelfDescendants activePath classSuffix fileTypesToCount>
+<#macro showSelfDescendants activePath fileTypesToCount rowClassSuffix='even'>
     <#assign children = activePath.children/>
+    <#if rowClassSuffix = 'odd'><#assign classSuffix='even'/><#else><#assign classSuffix='odd'/></#if>
 
     <tr>
     <td class="report-column-${classSuffix}">
@@ -36,8 +37,7 @@
         <#if child.file.name = 'CVS'><#assign include=false/></#if>
 
         <#if include && child.file.isDirectory()>
-            <#if classSuffix = 'odd'><#assign nextClassSuffix='even'/><#else><#assign nextClassSuffix='odd'/></#if>
-            <@showSelfDescendants activePath=child classSuffix=nextClassSuffix fileTypesToCount=fileTypesToCount/>
+            <@showSelfDescendants activePath=child rowClassSuffix=classSuffix fileTypesToCount=fileTypesToCount/>
         </#if>
     </#list>
 </#macro>
@@ -58,7 +58,7 @@
                     <td class="report-column-heading">*.${fileType}</td>
                 </#list>
             </tr>
-            <@showSelfDescendants activePath=projectFilesContext.activePath classSuffix='odd' fileTypesToCount=allFileTypes/>
+            <@showSelfDescendants activePath=projectFilesContext.activePath fileTypesToCount=allFileTypes/>
         </table>
     </#if>
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.10 2003-10-07 01:38:54 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.11 2003-10-09 18:19:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -216,6 +216,11 @@ public class NavigationPath
         }
 
 	    return qualifiedName;
+    }
+
+    public String getQualifiedNameIncludingTreeId()
+    {
+        return "/" + owner.getName() + getQualifiedName();
     }
 
     public void setQualifiedName(String qName)
@@ -469,7 +474,7 @@ public class NavigationPath
         this.defaultChild = defaultChild;
     }
 
-    public boolean isDefaultChildOfParent()
+    public boolean isDefault()
     {
         return defaultChildOfParent;
     }

@@ -11,7 +11,7 @@
         <#else>
             <#assign isDefault='&nbsp;'>
         </#if>
-        <#assign catalog = catalog + [[ "<a href='documentation/${tree.name}'>${tree.name}</a>", tree.size(), getClassReference(tree.class.name), isDefault ]]/>
+        <#assign catalog = catalog + [[ "<a href='tree/${tree.name}'>${tree.name}</a>", tree.size(), getClassReference(tree.class.name), isDefault ]]/>
     </#if>
 </#list>
 

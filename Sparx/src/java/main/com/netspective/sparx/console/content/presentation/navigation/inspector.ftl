@@ -32,13 +32,7 @@
                                 <nobr>
                                 <#list 0..level as i>&nbsp;&nbsp;</#list>
                                 <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-folder-open.gif')}"/>
-                                <#if ancestorIndex gt 0>
-                                <a href="<#list 1..ancestorIndex as i><#if i lt ancestorIndex>../<#else>..</#if></#list>">
-                                    <#if parent.name = ''>${activeTreeName}<#else>${parent.name}</#if>
-                                </a>
-                                <#else>
-                                    <a href=".."><#if parent.name = ''>${activeTreeName}<#else>${parent.name}</#if></a>
-                                </#if>
+                                <a href="${vc.consoleUrl}/presentation/navigation/inspector${parent.qualifiedNameIncludingTreeId}"><#if parent.name = ''>${activeTreeName}<#else>${parent.name}</#if></a>
                                 </nobr>
                             </td>
                         </tr>

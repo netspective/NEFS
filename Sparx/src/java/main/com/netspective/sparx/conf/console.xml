@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.99 2003-10-08 21:14:26 shahid.shah Exp $
+  * $Id: console.xml,v 1.100 2003-10-09 18:19:26 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -93,8 +93,11 @@
                 <page name="catalog" caption="Catalog">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
                 </page>
-                <page name="documentation" caption="Documentation" heading="Navigation Tree Documentation">
-                    <body config="console" source="console-page-content:../documentation.ftl"/>
+                <page name="tree" caption="Tree" heading="Navigation Tree">
+                    <body config="console" source="console-page-content:../tree.ftl"/>
+                </page>
+                <page name="inspector" caption="Page Inspector" heading="Navigation Page Inspector">
+                    <body config="console" source="console-page-content:../inspector.ftl"/>
                 </page>
 	        </page>
 

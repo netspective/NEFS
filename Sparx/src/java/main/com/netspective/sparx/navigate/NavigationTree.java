@@ -182,7 +182,7 @@ public class NavigationTree implements TemplateProducerParent
     public void addPage(NavigationPage page)
     {
         root.addPage(page);
-        if(page.isDefaultChildOfParent())
+        if(page.isDefault())
         {
             pagesByQualifiedName.put("/", page);
             homePage = page;
