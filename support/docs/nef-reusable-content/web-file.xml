@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section>
+  <title>web.xml</title>
+
+  <para>This file, which is a requirement of the Java Servlet
+  Specification<footnote>
+      <para>You can get a copy of the Java Servlet Specification directly from
+      Sun Microsystems' web site at the following URL: <ulink
+      url="http://java.sun.com/products/servelet/download.html">http://java.sun.com/products/servelet/download.html</ulink></para>
+    </footnote>, contains information specific to the application server under
+  which the application si running. As an example, it might contain a mapping
+  of URLs to specific servlets that should handle those URLs. It might also
+  contain references to data sources (i.e. database handles) referenced in the
+  main application server's configuration. For application servers that run
+  according to a standards compliant servlet specification, this file is
+  necessary.</para>
+</section>
