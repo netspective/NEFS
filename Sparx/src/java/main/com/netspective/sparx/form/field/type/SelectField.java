@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.17 2004-01-06 19:52:33 shahid.shah Exp $
+ * $Id: SelectField.java,v 1.18 2004-01-27 04:01:51 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -156,8 +156,15 @@ public class SelectField extends TextField
         public class SelectFieldValue extends BasicStateValue
         {
             private PresentationValue.Items choices;
-            private PresentationValue.Items.Item selectedChoice;
 
+            public SelectFieldValue()
+            {
+                super();
+            }
+            /**
+             * Checks to see if there are values in the field
+             * @return
+             */
             public boolean hasValue()
             {
                 if(isMulti())
@@ -169,16 +176,20 @@ public class SelectField extends TextField
                 }
             }
 
+            /**
+             * Gets all the choices available in the field.
+             * @return
+             */
             public PresentationValue.Items getChoices()
             {
                 return choices;
             }
 
-            public PresentationValue.Items.Item getSelectedChoice()
-            {
-                return selectedChoice;
-            }
-
+            /**
+             * Calculates the selected items in the field.
+             *
+             * @param choices   Available choices in the field
+             */
             public void calcSelections(PresentationValue.Items choices)
             {
                 this.choices = choices;
@@ -209,7 +220,6 @@ public class SelectField extends TextField
                         if(item != null)
                         {
                             item.setFlags(PRESENTATIONITEMFLAG_IS_SELECTED);
-                            selectedChoice = item;
                         }
                     }
                 }
