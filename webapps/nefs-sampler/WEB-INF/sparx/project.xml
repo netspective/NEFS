@@ -352,15 +352,46 @@
             </page>
         </page>
 
-        <page name="test-acl" caption="Access Control" heading="Access Control" command="dialog,form.acl.role">
-            <!--summary>
+        <page name="acl" type="top-level" caption="Access Control">
+            <summary>
                 <![CDATA[
                 This module is for demonstrating how the <i>Access Control</i> feature can be used. This feature
                 is for setting up roles and capabilities to handle controlling access to various parts of an application.
                 An application user can be assigned a role which will control whether or not the user can access a page,
                 a report, a dialog, or even a field.
                 ]]>
-            </summary-->
+            </summary>
+            <page name="change-role" caption="Change Role" command="dialog,form.acl.role">
+                <summary>
+                    <![CDATA[
+                    This page is for changing a <i>Role</i> assigned to the user.
+                    ]]>
+                </summary>
+            </page>
+            <page name="test-acl1" caption="Test 1" heading="Test has-permissions">
+                <summary>
+                     <![CDATA[
+                    This page is hidden when the user has the following permission: <code>/acl/app/forms/execution </code>
+                    ]]>
+                </summary>
+                <conditional action="apply-flags" hidden="yes" has-permissions="/acl/app/forms/execution"/>
+            </page>
+            <page name="test-acl2" caption="Test 2" heading="Test lack-permissions">
+                <summary>
+                    <![CDATA[
+                    This page is hidden when the user lacks the following permission: <code>/acl/app/forms/execution</code>
+                    ]]>
+                </summary>
+                <conditional action="apply-flags" hidden="yes" lack-permissions="/acl/app/forms/execution"/>
+            </page>
+            <page name="test-acl3" caption="Test 3" heading="Test lack-permissions">
+                <summary>
+                    <![CDATA[
+                    This page is hidden when the user lacks the following permission: <code>/acl/app/forms</code>
+                    ]]>
+                </summary>
+                <conditional action="apply-flags" hidden="yes" lack-permissions="/acl/app/forms"/>
+            </page>
         </page>
 
         <!--
@@ -393,7 +424,7 @@
 
     <!--
     **********************************************************************
-    ** SAMPLE SECURITY DECLARATIONS                                            **
+    ** SAMPLE SECURITY DECLARATIONS                                     **
     **********************************************************************
     -->
 
@@ -421,6 +452,7 @@
 
         <role name="role">
             <role name="super-user">
+                <role name="role"/>
                 <grant permission="/acl/app/forms"/>
                 <grant permission="/acl/app/console"/>                
             </role>
@@ -430,5 +462,21 @@
             </role>
         </role>
     </access-control-list>
+
+    <!--
+    **********************************************************************
+    ** LOGIN DIALOG                                                     **
+    **********************************************************************
+    -->
+    <login-manager name="app" default="yes">
+          <login-authenticator class="com.netspective.sparx.security.simulate.SimulatedLoginAuthenticator"/>
+
+          <login-dialog class="com.netspective.sparx.security.simulate.SimulatedLoginDialog">
+              <user-id>MyUserName</user-id>
+              <password>MyPassword</password>
+              <user-roles>/acl/role/super-user</user-roles>
+              <!-- other settings can be provided too, see source code -->
+          </login-dialog>
+      </login-manager>
 
 </project>
