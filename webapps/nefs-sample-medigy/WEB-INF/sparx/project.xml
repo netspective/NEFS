@@ -154,10 +154,9 @@
         </page>
 
         <page type="entity" name="physician" class="app.navigate.entity.person.PhysicianPage" hidden="yes" retain-params="person_id">
-            <page name="summary" caption="Summary" require-request-param="person_id">
+            <page name="summary" caption="Summary" require-request-param="person_id" retain-params="person_id">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
-                    <panel type="command" command="panel-editor,personAttribute.address"/>
                     <panel type="command" command="panel-editor,personAttribute.classification"/>
                     <panel type="command" command="panel-editor,personAttribute.contact"/>
                     <panel type="command" command="panel-editor,personAttribute.relationship"/>
