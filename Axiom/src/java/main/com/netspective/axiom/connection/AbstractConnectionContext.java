@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.18 2004-04-27 04:05:00 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.19 2004-04-27 20:09:56 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -65,6 +65,9 @@ import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.script.Script;
+import com.netspective.commons.script.ScriptContext;
+import com.netspective.commons.script.ScriptException;
 import com.netspective.commons.script.ScriptsManager;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.text.TextUtils;
@@ -299,5 +302,10 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     public ScriptsManager getScriptsManager()
     {
         return dbvc.getScriptsManager();
+    }
+
+    public ScriptContext getScriptContext(Script script) throws ScriptException
+    {
+        return dbvc.getScriptContext(script);
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.16 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.17 2004-04-27 20:10:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -48,8 +48,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.bsf.BSFEngine;
-import org.apache.bsf.BSFManager;
 import org.apache.commons.discovery.tools.DiscoverClass;
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
@@ -61,7 +59,6 @@ import org.apache.commons.logging.LogFactory;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
-import com.netspective.commons.script.DefaultScriptContext;
 import com.netspective.commons.script.Script;
 import com.netspective.commons.script.ScriptContext;
 import com.netspective.commons.script.ScriptException;
@@ -70,7 +67,7 @@ import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.text.GloballyUniqueIdentifier;
 import com.netspective.commons.text.TextUtils;
 
-public class DefaultValueContext implements ValueContext, ScriptContext, ScriptContext.Initializer
+public class DefaultValueContext implements ValueContext
 {
     private static final Log log = LogFactory.getLog(DefaultValueContext.class);
     protected static DiscoverClass discoverClass = new DiscoverClass();
@@ -80,37 +77,26 @@ public class DefaultValueContext implements ValueContext, ScriptContext, ScriptC
     private long creationTime;
     private RuntimeEnvironmentFlags environmentFlags;
     private JexlContext jexlContext;
-    private ScriptContext scriptContext;
+    private Map scriptContexts;
 
     public DefaultValueContext()
     {
         this.creationTime = System.currentTimeMillis();
     }
 
-    public void initializeScriptContext(ScriptContext sc) throws ScriptException
+    public ScriptContext getScriptContext(Script script) throws ScriptException
     {
-        sc.registerBean("vc", this);
-    }
+        if(scriptContexts == null)
+            scriptContexts = new HashMap();
 
-    public void registerBean(String variableName, Object instance) throws ScriptException
-    {
-        if(scriptContext == null)
-            scriptContext = new DefaultScriptContext(this);
-        scriptContext.registerBean(variableName, instance);
-    }
+        ScriptContext result = (ScriptContext) scriptContexts.get(script.getQualifiedName());
+        if(result == null)
+        {
+            result = script.createScriptContext();
+            scriptContexts.put(script.getQualifiedName(), result);
+        }
 
-    public BSFManager getBSFManager() throws ScriptException
-    {
-        if(scriptContext == null)
-            scriptContext = new DefaultScriptContext(this);
-        return scriptContext.getBSFManager();
-    }
-
-    public BSFEngine getBSFEngine(Script script) throws ScriptException
-    {
-        if(scriptContext == null)
-            scriptContext = new DefaultScriptContext(this);
-        return scriptContext.getBSFEngine(script);
+        return result;
     }
 
     public RuntimeEnvironmentFlags getRuntimeEnvironmentFlags()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BeanScript.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
+ * $Id: BeanScript.java,v 1.2 2004-04-27 20:10:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.script;
@@ -53,6 +53,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueContext;
 
 public class BeanScript implements Script
 {
@@ -149,7 +150,11 @@ public class BeanScript implements Script
 
     public Object callFunction(ScriptContext scriptContext, Object className, String methodName, Object[] params) throws ScriptException
     {
-        BSFEngine bsfEngine = scriptContext.getBSFEngine(this);
+        DefaultScriptContext dsc = (DefaultScriptContext) scriptContext;
+        if(!dsc.isExecuted())
+            execute(scriptContext);
+
+        BSFEngine bsfEngine = scriptContext.getBSFEngine();
         try
         {
             return bsfEngine.call(className, methodName, params);
@@ -163,7 +168,7 @@ public class BeanScript implements Script
 
     public Object evaluateAsExpression(ScriptContext scriptContext) throws ScriptException
     {
-        BSFEngine bsfEngine = scriptContext.getBSFEngine(this);
+        BSFEngine bsfEngine = scriptContext.getBSFEngine();
         try
         {
             return bsfEngine.eval("(java)", 1, 1, getScript());
@@ -177,15 +182,37 @@ public class BeanScript implements Script
 
     public void execute(ScriptContext scriptContext) throws ScriptException
     {
-        BSFEngine bsfEngine = scriptContext.getBSFEngine(this);
+        DefaultScriptContext dsc = (DefaultScriptContext) scriptContext;
+        BSFEngine bsfEngine = scriptContext.getBSFEngine();
         try
         {
             bsfEngine.exec("(java)", 1, 1, getScript());
+            dsc.setExecuted(true);
         }
         catch (BSFException e)
         {
             log.error("Error executing script: " + getScript() + " language " + getLanguage(), e);
             throw new ScriptException(e);
         }
+    }
+
+    public Object callFunction(ValueContext vc, Object className, String methodName, Object[] params) throws ScriptException
+    {
+        return callFunction(vc.getScriptContext(this), className, methodName, params);
+    }
+
+    public Object evaluateAsExpression(ValueContext vc) throws ScriptException
+    {
+        return evaluateAsExpression(vc.getScriptContext(this));
+    }
+
+    public void execute(ValueContext vc) throws ScriptException
+    {
+        execute(vc.getScriptContext(this));
+    }
+
+    public ScriptContext createScriptContext() throws ScriptException
+    {
+        return new DefaultScriptContext(this);
     }
 }

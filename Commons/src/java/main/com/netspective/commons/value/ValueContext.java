@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueContext.java,v 1.9 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: ValueContext.java,v 1.10 2004-04-27 20:10:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -50,6 +50,9 @@ import java.util.Map;
 import com.netspective.commons.RuntimeEnvironment;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.script.Script;
+import com.netspective.commons.script.ScriptContext;
+import com.netspective.commons.script.ScriptException;
 import com.netspective.commons.script.ScriptsManager;
 import com.netspective.commons.security.AuthenticatedUser;
 
@@ -128,4 +131,11 @@ public interface ValueContext extends RuntimeEnvironment
      * @return The object returned by the expression
      */
     public Object evaluateExpression(String expr, Map vars);
+
+    /**
+     * Either create or return a previously created context to run the given script in this ValueContext
+     * @param script The script for which to create the context
+     * @return The ScriptContext that can be used to run this script for the given script
+     */
+    public ScriptContext getScriptContext(Script script) throws ScriptException;
 }

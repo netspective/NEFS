@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BeanScriptValueSource.java,v 1.1 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: ScriptValueSource.java,v 1.1 2004-04-27 20:10:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -49,7 +49,6 @@ import java.util.List;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import com.netspective.commons.script.Script;
-import com.netspective.commons.script.ScriptContext;
 import com.netspective.commons.script.ScriptException;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.GenericValue;
@@ -60,7 +59,7 @@ import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 
-public class BeanScriptValueSource extends AbstractValueSource
+public class ScriptValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[] { "script"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
@@ -85,7 +84,7 @@ public class BeanScriptValueSource extends AbstractValueSource
 
     private String scriptName;
 
-    public BeanScriptValueSource()
+    public ScriptValueSource()
     {
     }
 
@@ -107,18 +106,10 @@ public class BeanScriptValueSource extends AbstractValueSource
             throw new RuntimeException("Script '"+ scriptName +"' not found in " + this + ". Available: " +
                                        vc.getScriptsManager().getScriptNames());
 
-        String scriptExecutionId = hashCode() + "_" + scriptName;
-        Object result = null;
-
+        Object result;
         try
         {
-            ScriptContext sc = ((ScriptContext) vc);
-            if(vc.getAttribute(scriptExecutionId) == null)
-            {
-                script.execute(sc);
-                vc.setAttribute(scriptExecutionId, new Boolean(true));
-            }
-            result = script.callFunction(sc, null, method, params);
+            result = script.callFunction(vc, null, method, params);
         }
         catch (ScriptException e)
         {
@@ -130,7 +121,7 @@ public class BeanScriptValueSource extends AbstractValueSource
 
     public PresentationValue getPresentationValue(ValueContext vc)
     {
-        Object result = null;
+        Object result;
         try
         {
             result = callFunctionInScript(vc, "getPresentationValue", new Object[] { vc });
@@ -177,7 +168,7 @@ public class BeanScriptValueSource extends AbstractValueSource
 
     public boolean hasValue(ValueContext vc)
     {
-        Object result = null;
+        Object result;
         try
         {
             result = callFunctionInScript(vc, "hasValue", new Object[] { vc });

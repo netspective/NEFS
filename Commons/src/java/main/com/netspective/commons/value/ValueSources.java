@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.20 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.21 2004-04-27 20:10:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -66,12 +66,12 @@ import com.netspective.commons.metric.MetricsProducer;
 import com.netspective.commons.value.exception.UnexpectedValueContextException;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.exception.ValueSourceNotFoundException;
-import com.netspective.commons.value.source.BeanScriptValueSource;
 import com.netspective.commons.value.source.ExceptionValueSource;
 import com.netspective.commons.value.source.FilesystemEntriesValueSource;
 import com.netspective.commons.value.source.GloballyUniqueIdValueSource;
 import com.netspective.commons.value.source.JavaExpressionValueSource;
 import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.ScriptValueSource;
 import com.netspective.commons.value.source.StaticListValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.source.SystemPropertyValueSource;
@@ -152,7 +152,7 @@ public class ValueSources implements MetricsProducer
         registerValueSource(StaticListValueSource.class);
         registerValueSource(SystemPropertyValueSource.class);
         registerValueSource(RedirectValueSource.class);
-        registerValueSource(BeanScriptValueSource.class);
+        registerValueSource(ScriptValueSource.class);
     }
 
     public Map getValueSourceClassesMap()

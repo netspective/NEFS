@@ -39,13 +39,10 @@
  */
 
 /**
- * $Id: DefaultScriptContext.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
+ * $Id: DefaultScriptContext.java,v 1.2 2004-04-27 20:10:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.script;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFException;
@@ -56,13 +53,28 @@ import org.apache.commons.logging.LogFactory;
 public class DefaultScriptContext implements ScriptContext
 {
     private static final Log log = LogFactory.getLog(DefaultScriptContext.class);
-    private Initializer initializer;
+    private Script script;
     private BSFManager bsfManager = new BSFManager();
-    private Map engines = new HashMap();
+    private BSFEngine bsfEngine;
+    private boolean executed;
 
-    public DefaultScriptContext(Initializer initializer)
+    public DefaultScriptContext(Script script) throws ScriptException
     {
-        this.initializer = initializer;
+        this.script = script;
+        try
+        {
+            this.bsfEngine = bsfManager.loadScriptingEngine(script.getLanguage());
+        }
+        catch (BSFException e)
+        {
+            log.error(e);
+            throw new ScriptException(e);
+        }
+    }
+
+    public Script getScript()
+    {
+        return script;
     }
 
     public BSFManager getBSFManager()
@@ -75,27 +87,18 @@ public class DefaultScriptContext implements ScriptContext
         this.bsfManager.registerBean(variableName, instance);
     }
 
-    public BSFEngine getBSFEngine(Script script) throws ScriptException
+    public BSFEngine getBSFEngine() throws ScriptException
     {
-        String language = script.getLanguage();
-        BSFEngine result = (BSFEngine) engines.get(language);
-        if(result == null)
-        {
-            try
-            {
-                result = bsfManager.loadScriptingEngine(language);
-            }
-            catch (BSFException e)
-            {
-                log.error(e);
-                throw new ScriptException(e);
-            }
-            if(initializer != null)
-                initializer.initializeScriptContext(this);
+        return bsfEngine;
+    }
 
-            engines.put(language, result);
-        }
+    public boolean isExecuted()
+    {
+        return executed;
+    }
 
-        return result;
+    public void setExecuted(boolean executed)
+    {
+        this.executed = executed;
     }
 }

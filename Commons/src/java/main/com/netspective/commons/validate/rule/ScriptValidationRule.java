@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BeanScriptValidationRule.java,v 1.1 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: ScriptValidationRule.java,v 1.1 2004-04-27 20:10:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -57,12 +57,12 @@ import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
 
-public class BeanScriptValidationRule extends BasicValidationRule implements XmlDataModelSchema.ConstructionFinalizeListener
+public class ScriptValidationRule extends BasicValidationRule implements XmlDataModelSchema.ConstructionFinalizeListener
 {
     private String scriptName;
     private Script script;
 
-    public BeanScriptValidationRule()
+    public ScriptValidationRule()
     {
     }
 
@@ -105,9 +105,8 @@ public class BeanScriptValidationRule extends BasicValidationRule implements Xml
         Object result;
         try
         {
-            ScriptContext sc = (ScriptContext) vc;
-            sc.registerBean("value", value);
-            result = activeScript.evaluateAsExpression(sc);
+            ScriptContext sc = vc.getValidationValueContext().getScriptContext(activeScript);
+            result = activeScript.callFunction(sc, null, "isValid", new Object[] { vc, value });
         }
         catch (ScriptException e)
         {

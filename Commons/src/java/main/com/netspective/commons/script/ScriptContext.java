@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScriptContext.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
+ * $Id: ScriptContext.java,v 1.2 2004-04-27 20:10:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.script;
@@ -49,12 +49,8 @@ import org.apache.bsf.BSFManager;
 
 public interface ScriptContext
 {
+    public Script getScript();
     public BSFManager getBSFManager() throws ScriptException;
-    public BSFEngine getBSFEngine(Script script) throws ScriptException;
+    public BSFEngine getBSFEngine() throws ScriptException;
     public void registerBean(String variableName, Object instance) throws ScriptException;
-
-    public interface Initializer
-    {
-        public void initializeScriptContext(ScriptContext sc) throws ScriptException;
-    }
 }

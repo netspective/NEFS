@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: Script.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
+ * $Id: Script.java,v 1.2 2004-04-27 20:10:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.script;
+
+import com.netspective.commons.value.ValueContext;
 
 public interface Script
 {
@@ -56,4 +58,10 @@ public interface Script
     public Object evaluateAsExpression(ScriptContext scriptContext) throws ScriptException;
     public void execute(ScriptContext scriptContext) throws ScriptException;
     public Object callFunction(ScriptContext scriptContext, Object className, String methodName, Object[] params) throws ScriptException;
+
+    public Object evaluateAsExpression(ValueContext vc) throws ScriptException;
+    public void execute(ValueContext vc) throws ScriptException;
+    public Object callFunction(ValueContext vc, Object className, String methodName, Object[] params) throws ScriptException;
+
+    public ScriptContext createScriptContext() throws ScriptException;
 }
