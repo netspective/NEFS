@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.31 2003-10-30 13:27:37 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.32 2003-10-31 00:51:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -325,7 +325,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
      *   - APP_ROOT/resources/sparx (will only exist if user is overriding any defaults)
      *   - APP_ROOT/sparx (will exist in ITE mode when sparx directory is inside application)
      *   - [CLASS_PATH]/Sparx/resources (only useful during development in SDE, not production since it won't be found)
-     * TODO: this method is _not_ thread-safe because two requests could call the method at the same time
+     * TODO: this method is _not_ thread-safe because two requests could call the method at the same time FIX IT
      * @throws ServletException
      */
     protected UriAddressableFileLocator getResourceLocator(HttpServletRequest request) throws ServletException
@@ -336,8 +336,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         ServletContext servletContext = getServletContext();
         try
         {
-            String sparxUrl = "/sparx";
-
             String[] webAppLocations = TextUtils.split(servletOptions.getSparxResourceLocators(), ",", false);
             List locators = new ArrayList();
             for(int i = 0; i < webAppLocations.length; i++)
@@ -345,12 +343,13 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                 String webAppRelativePath = webAppLocations[i];
                 File webAppPhysicalDir = new File(servletContext.getRealPath(webAppRelativePath));
                 if(webAppPhysicalDir.exists() && webAppPhysicalDir.isDirectory())
-                    locators.add(new UriAddressableInheritableFileResource(request.getContextPath() + sparxUrl, webAppPhysicalDir, isCacheComponents()));
+                    locators.add(new UriAddressableInheritableFileResource(request.getContextPath() + webAppRelativePath, webAppPhysicalDir, isCacheComponents()));
             }
 
+            // this will only match the SDE development environment
             FileFind.FileFindResults ffResults = FileFind.findInClasspath("Sparx/resources", FileFind.FINDINPATHFLAG_DEFAULT);
             if(ffResults.isFileFound() && ffResults.getFoundFile().isDirectory())
-                locators.add(new UriAddressableInheritableFileResource(request.getContextPath() + sparxUrl, ffResults.getFoundFile(), isCacheComponents()));
+                locators.add(new UriAddressableInheritableFileResource(request.getContextPath() + "/sparx", ffResults.getFoundFile(), isCacheComponents()));
 
             if(log.isDebugEnabled())
             {
@@ -359,7 +358,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             }
 
             if(locators.size() == 0)
-                System.err.println("Unable to register any web resource locators (/resources/sparx and /sparx were not found).");
+                System.err.println("Unable to register any web resource locators ("+ TextUtils.join(webAppLocations, ", ") +" were not found).");
 
             resourceLocator = new MultipleUriAddressableFileLocators((UriAddressableFileLocator[]) locators.toArray(new UriAddressableFileLocator[locators.size()]), isCacheComponents());
             return resourceLocator;
