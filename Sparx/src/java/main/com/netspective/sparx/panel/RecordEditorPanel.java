@@ -50,31 +50,43 @@
  * @author Aye Thu
  */
 
+/**
+ * $Id: RecordEditorPanel.java,v 1.2 2004-03-01 18:50:04 aye.thu Exp $
+ */
+
 package com.netspective.sparx.panel;
 
-import com.netspective.axiom.sql.Query;
-import com.netspective.sparx.sql.QueryDefinition;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.sparx.Project;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationConditionalAction;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlReportAction;
+import com.netspective.sparx.report.tabular.HtmlReportActions;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.Project;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xml.template.TemplateCatalog;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.sparx.sql.Query;
+import com.netspective.sparx.sql.QueryDefinition;
+import com.netspective.sparx.theme.Theme;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.io.IOException;
+import java.io.Writer;
 
 public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements TemplateConsumer
 {
+    private static final Log log = LogFactory.getLog(RecordEditorPanel.class);
+
     public static final String DEFAULT_REPORT_SKIN = "";
     public static final String DEFAULT_QUERY_NAME = "records-query";
 
     public static final String ATTRNAME_TYPE = "record-editor-panel";
-    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name", "dialogs" };
+    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name", "dialog" };
     private static RecordEditorPanel.RecordEditorTemplateConsumerDefn recordEditorPanelConsumer = new RecordEditorPanel.RecordEditorTemplateConsumerDefn();
 
     static
@@ -102,15 +114,14 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
     private Query query;
     /* query definition associated with this panel */
     private QueryDefinition queryDef;
-    /* list of dialogs associated with this panel for record creation/edition/deletion */
-    private List dialogList = new ArrayList();
     /* default dialog to use for record editing */
     private Dialog defaultDialog;
     /* the package that the panel belongs to */
     private RecordEditorPanelsPackage nameSpace;
     /* name of the panel */
     private String name;
-
+    /* */
+    private boolean actionsPrepared = false;
 
     public RecordEditorPanel(Project project)
     {
@@ -196,39 +207,20 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
     }
 
     /**
-     * Sets the list of dialog names available for the record editor panel
-     *
-     * @param dialogs   comma separated string of dialog names
-     */
-    public void setDialogs(String dialogs)
-    {
-        StringTokenizer tokenizer = new StringTokenizer(dialogs);
-        while (tokenizer.hasMoreTokens())
-        {
-            Dialog dialog = this.project.getDialog(tokenizer.nextToken());
-            if (dialog != null)
-                dialogList.add(dialog);
-        }
-    }
-
-    /**
-     * Gets the list of dialogs declared for record managing
-     *
-     * @return  a list of dialogs
-     */
-    public List getDialogList()
-    {
-        return dialogList;
-    }
-
-    /**
-     * Adds a dialog to the list of dialogs
+     * Set the dialog name available for the record editor panel
      *
      * @param dialog
      */
-    public void addDialog(Dialog dialog)
+    public void setDialog(String dialog)
     {
-        dialogList.add(dialog);
+        defaultDialog = this.project.getDialog(dialog);
+        if (defaultDialog == null)
+            log.error("Unknown dialog '" + dialog + "'.");
+    }
+
+    public Dialog getDialog()
+    {
+        return defaultDialog;
     }
 
     /**
@@ -252,15 +244,20 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
     }
 
     /**
+     * Creates a query object
      *
-     *
-     * @return
+     * @return          query
      */
     public Query createQuery()
     {
         return new com.netspective.sparx.sql.Query(project);
     }
 
+    /**
+     * Adds a query object
+     *
+     * @param query     query
+     */
     public void addQuery(Query query)
     {
         this.query = query;
@@ -297,4 +294,86 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
     {
         return name != null ? name.toUpperCase() : null;
     }
+
+    /**
+     * Generates the URL string for the associated actions
+     *
+     * @param actionType    type of record action
+     * @return              url string used to construct a redirect value source
+     */
+    public String generateRecordActionUrl(NavigationContext nc, int actionType)
+    {
+        String url = "?";
+        String existingUrlParams = nc.getHttpRequest().getQueryString();
+        if (existingUrlParams != null)
+            url = url + existingUrlParams + "&";
+        if (actionType == HtmlReportAction.Type.RECORD_EDIT)
+             url = url + "cmd=record-editor-panel," + this.getQualifiedName() + ",edit,${0}";
+        else if (actionType == HtmlReportAction.Type.RECORD_DELETE)
+            url = url + "cmd=record-editor-panel," + this.getQualifiedName() + ",delete,${0}";
+
+        return url;
+    }
+
+    /**
+     *
+     * @param nc
+     */
+    public void prepareRecordActionUrls(NavigationContext nc)
+    {
+        QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
+        if (qrp == null)
+        {
+            qrp = new QueryReportPanel();
+            qrp.setQuery(getQuery());
+            qrp.setFrame(new HtmlPanelFrame());
+            qrp.setDefault(true);
+            getQuery().getPresentation().setDefaultPanel(qrp);
+        }
+
+        BasicHtmlTabularReport report = (BasicHtmlTabularReport) qrp.getReport();
+        if (report == null)
+        {
+            report = new BasicHtmlTabularReport();
+            qrp.addReport(report);
+        }
+        if (report.getActions() == null)
+        {
+            HtmlReportActions actions = new HtmlReportActions();
+            HtmlReportAction editAction = actions.createAction();
+            editAction.setTitle(new StaticValueSource("Edit"));
+            editAction.setRedirect(new RedirectValueSource(generateRecordActionUrl(nc, HtmlReportAction.Type.RECORD_EDIT)));
+            editAction.setType(new HtmlReportAction.Type(HtmlReportAction.Type.RECORD_EDIT));
+
+            HtmlReportAction deleteAction = actions.createAction();
+            deleteAction.setTitle(new StaticValueSource("Delete"));
+            deleteAction.setRedirect(new RedirectValueSource(generateRecordActionUrl(nc, HtmlReportAction.Type.RECORD_DELETE)));
+            deleteAction.setType(new HtmlReportAction.Type(HtmlReportAction.Type.RECORD_DELETE));
+            actions.addAction(editAction);
+            actions.addAction(deleteAction);
+            report.addActions(actions);
+        }
+        qrp.setReportSkin("record-editor");
+    }
+
+    /**
+     * Renders the record editor panel
+     *
+     * @param nc
+     */
+    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
+    {
+        // handle the basic display mode first
+        com.netspective.sparx.sql.Query query = (com.netspective.sparx.sql.Query) getQuery();
+        if(query == null)
+        {
+            throw new RuntimeException("Query not found in "+ this +".");
+        }
+        if (!actionsPrepared)
+            prepareRecordActionUrls(nc);
+        QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
+        qrp.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+    }
+
+
 }
