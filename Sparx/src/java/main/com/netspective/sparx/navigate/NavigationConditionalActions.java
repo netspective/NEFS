@@ -56,32 +56,61 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * $Id: NavigationConditionalActions.java,v 1.1 2003-08-11 07:12:44 aye.thu Exp $
+ * List class to save navigation conditional actions defined for a page
+ *
+ * @version $Id: NavigationConditionalActions.java,v 1.2 2004-02-10 16:37:44 aye.thu Exp $
  */
 public class NavigationConditionalActions
 {
     private List actions = new ArrayList();
 
+    /**
+     * Gets all the conditional actions as a list
+     *
+     * @return
+     */
     public List getActions()
     {
         return actions;
     }
 
+    /**
+     * Sets all the conditional actions
+     *
+     * @param actions   list of conditional actions
+     */
     public void setActions(List actions)
     {
         this.actions = actions;
     }
 
+    /**
+     * Adds a conditional action to the list
+     *
+     * @param action
+     */
     public void addAction(NavigationConditionalAction action)
     {
         actions.add(action);
     }
 
+    /**
+     * Gets a conditional action based on its index
+     *
+     * @param index
+     * @return
+     */
     public NavigationConditionalAction getAction(int index)
     {
         return (NavigationConditionalAction) actions.get(index);
     }
 
+
+    /**
+     * Gets the total count of navigation conditional actions
+     *
+     * @return
+     */
     public int size()
     {
         return actions.size();

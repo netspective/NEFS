@@ -55,7 +55,9 @@ package com.netspective.sparx.navigate;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
 /**
- * $Id: NavigationPathFlags.java,v 1.1 2003-08-11 07:12:44 aye.thu Exp $
+ * Flag class for navigation path items
+ *
+ * @version $Id: NavigationPathFlags.java,v 1.2 2004-02-10 16:39:13 aye.thu Exp $
  */
 public class NavigationPathFlags extends XdmBitmaskedFlagsAttribute
 {
