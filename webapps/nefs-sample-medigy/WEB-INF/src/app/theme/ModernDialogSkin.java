@@ -65,6 +65,7 @@ import com.netspective.sparx.form.field.DialogFieldPopup;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.CompositeField;
 import com.netspective.sparx.form.field.type.GridField;
+import com.netspective.sparx.form.field.type.SectionField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.theme.Theme;
@@ -85,7 +86,7 @@ import java.util.Map;
  *
  *
  * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.6 2004-03-06 17:11:29 aye.thu Exp $
+ * @version $Id: ModernDialogSkin.java,v 1.7 2004-03-22 08:04:59 aye.thu Exp $
  */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -683,8 +684,6 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
      */
     public void renderCompositeControlsHtml(Writer writer, DialogContext dc, DialogField parentField) throws IOException
     {
-        StringBuffer sb = new StringBuffer();
-
         DialogFields children = parentField.getChildren();
         writer.write("<span class='dialog-fields-no-arrow'>");
         // loop through all the children field
@@ -726,6 +725,63 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             }
         }
         writer.write("</span>");
+    }
+
+    /**
+     * Render the Section field's contents
+     *
+     * @param writer
+     * @param dc
+     * @param parentField
+     * @throws IOException
+     */
+    public void renderSectionControlsHtml(Writer writer, DialogContext dc, DialogField parentField, List fieldErrorMsgs) throws IOException
+    {
+        DialogFields children = parentField.getChildren();
+        StringWriter hiddenWriter = new StringWriter();
+        writer.write("<table class=\"dialog-section-field\">\n");
+        int displayedColCount = 0;
+        for(int i = 0; i < children.size(); i++)
+        {
+            DialogField field = children.get(i);
+            if(field.isAvailable(dc))
+            {
+                if(field.isInputHidden(dc))
+                {
+                    // render the hidden field
+                    field.renderControlHtml(hiddenWriter, dc);
+                }
+                else
+                {
+                    if (displayedColCount == 0)
+                        writer.write("<tr>\n");
+                    // render the field
+                    String captionHtml = generateFieldCaption(field, dc);
+                    String controlHtml = generateFieldControl(field, dc);
+                    String messagesHtml = generateFieldErrorMessage(field, dc, fieldErrorMsgs);
+                    String hintHtml = generateFieldHint(field, dc);
+                    writer.write("<td>");
+                    writer.write(captionHtml + "<br/>" + controlHtml);
+                    writer.write(hintHtml != null ? "<br/>"+  hintHtml : "");
+                    // now append the error message html on the next row
+                    //if (errorHtml != null && errorHtml.length() > 0)
+                    //    fieldsHtml.append("<tr><td><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  errorHtml + "</span></td></tr>\n");
+                    writer.write("</td>\n");
+                    displayedColCount++;
+                    if (displayedColCount == ((SectionField)parentField).getDisplayColumns())
+                    {
+                        writer.write("</tr>\n");
+                        displayedColCount = 0;
+                    }
+                }
+            }
+        }
+        if (displayedColCount != 0)
+        {
+            writer.write("<td colspan=\"" + (4- displayedColCount) + "\">&nbsp;</td></tr>");
+        }
+        writer.write("</table>\n");
+        writer.write(hiddenWriter.getBuffer().toString());
     }
 
     /**
@@ -937,6 +993,20 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 		    fieldsJSDefn.append(field.getJavaScriptDefn(dc));
     }
 
+    public void appendSectionFieldHtml(DialogContext dc, DialogField field, StringBuffer fieldsHtml, StringBuffer fieldsJSDefn, List fieldErrorMsgs) throws IOException
+    {
+        // if the section field is hidden, then all the children must be hidden too
+        StringWriter writer = new StringWriter();
+        renderSectionControlsHtml(writer, dc, field, fieldErrorMsgs);
+        String idHtml = generateFieldBlockId(field);
+        //fieldsHtml.append("<tr" + getFieldBlockStyleClass() != null ? (" class=\"" + getFieldBlockStyleClass() + "\">\n") : ">\n" +
+        //                "<td>\n" + writer.getBuffer().toString() + "</td></tr>\n");
+        fieldsHtml.append("<tr class=\"" +  getFieldBlockStyleClass() + "\">\n<td>\n" + writer.getBuffer().toString() + "</td></tr>\n");
+
+        if (field.getName() != null)
+		    fieldsJSDefn.append(field.getJavaScriptDefn(dc));
+    }
+
     /**
      * Appends the HTML for the separator field to the buffer
      *
@@ -980,6 +1050,11 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             StringWriter writer = new StringWriter();
             renderSeparatorHtml(writer, dc, (SeparatorField)field);
             fieldsHtml.append(writer);
+            return;
+        }
+        else if (field instanceof SectionField)
+        {
+            appendSectionFieldHtml(dc, field, fieldsHtml, fieldsJSDefn, fieldErrorMsgs);
             return;
         }
 
@@ -1503,9 +1578,9 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                     if(generated.length() > 0)
                         generated.append(" / ");
                     if (childField.isRequired(dc))
-                        generated.append("<span class=\"" + getCaptionRequiredStyleClass() + "\">" + childCaption + (endsWithPunctuation(caption) ? "" : ":") +"</span>");
+                        generated.append("<label for=\"" + field.getHtmlFormControlId() +"\" class=\"" + getCaptionRequiredStyleClass() + "\">" + childCaption + (endsWithPunctuation(caption) ? "" : ":") +"</label>");
                     else
-                        generated.append("<span class=\"" + getCaptionStyleClass() + "\">" + childCaption + (endsWithPunctuation(caption) ? "" : ":") + "</span>");
+                        generated.append("<label for=\"" + field.getHtmlFormControlId() +"\" class=\"" + getCaptionStyleClass() + "\">" + childCaption + (endsWithPunctuation(caption) ? "" : ":") + "</label>");
                 }
             }
             caption = generated.toString();
@@ -1521,11 +1596,11 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             if(getCaptionSuffix() != null && caption != null && caption.length() > 0) caption += getCaptionSuffix();
 
             if(caption != null && field.isRequired(dc))
-                caption = "<span class=\"" + getCaptionRequiredStyleClass() + "\">" +caption +
-                        (endsWithPunctuation(caption) ? "" : ":") + "</span>";
+                caption = "<label class=\"" + getCaptionRequiredStyleClass() + "\" for=\"" + field.getHtmlFormControlId() + "\">" +caption +
+                        (endsWithPunctuation(caption) ? "" : ":") + "</label>";
             else
-                caption = "<span class=\"" + getCaptionStyleClass() + "\">" +
-                        (caption != null ? caption + (endsWithPunctuation(caption) ? "" : ":") : "") + "</span>";
+                caption = "<label class=\"" + getCaptionStyleClass() + "\" for=\"" + field.getHtmlFormControlId() + "\">" +
+                        (caption != null ? caption + (endsWithPunctuation(caption) ? "" : ":") : "") + "</label>";
         }
 
         return caption;
