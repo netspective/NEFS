@@ -41,9 +41,58 @@
 /*
  * Copyright (c) 2005 Your Corporation. All Rights Reserved.
  */
-package com.netspective.medigy.model.common;
+package com.netspective.medigy.reference.type;
 
-public enum DataEncryptionType
+import javax.ejb.Entity;
+import javax.ejb.Table;
+
+import com.netspective.medigy.reference.AbstractReferenceEntity;
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
+
+@Entity
+@Table(name = "Data_Encryption_Type")
+public class DataEncryptionType extends AbstractReferenceEntity
 {
-    NONE
+    public enum Cache implements CachedReferenceEntity
+    {
+        UNENCRYPTED("U", "Unencrypted", "Data is not encrypted");
+
+        private final String code;
+        private final String label;
+        private final String description;
+        private DataEncryptionType entity;
+
+        private Cache(final String code, final String label, final String description)
+        {
+            this.code = code;
+            this.label = label;
+            this.description = description;
+        }
+
+        public String getId()
+        {
+            return code;
+        }
+
+        public String getLabel()
+        {
+            return label;
+        }
+
+        public String getDescription()
+        {
+            return description;
+        }
+
+        public DataEncryptionType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final ReferenceEntity entity)
+        {
+            this.entity = (DataEncryptionType) entity;
+        }
+    }
 }

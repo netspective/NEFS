@@ -43,14 +43,16 @@
  */
 package com.netspective.medigy.reference.custom.party;
 
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
-import com.netspective.medigy.model.common.DataEncryptionType;
-
+import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
+import javax.ejb.JoinColumn;
+import javax.ejb.OneToOne;
 import javax.ejb.Table;
-import javax.ejb.Column;
+
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.type.DataEncryptionType;
 
 @Entity
 @Table(name = "Party_Identifier_Type")
@@ -63,7 +65,8 @@ public class PartyIdentifierType extends AbstractCustomReferenceEntity
     {
     }
 
-    @Column(nullable = false)
+    @OneToOne
+    @JoinColumn(name = "encryption_type_id", nullable = false)
     public DataEncryptionType getEncryptionType()
     {
         return encryptionType;

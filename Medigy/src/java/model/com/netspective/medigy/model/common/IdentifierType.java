@@ -52,6 +52,8 @@ import javax.ejb.Inheritance;
 import javax.ejb.InheritanceType;
 import javax.ejb.Table;
 
+import com.netspective.medigy.reference.type.DataEncryptionType;
+
 @Entity
 @Table(name = "Identifier_Type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE, discriminatorType = DiscriminatorType.CHAR, discriminatorValue = "A")

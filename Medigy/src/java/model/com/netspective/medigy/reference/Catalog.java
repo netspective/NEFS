@@ -44,6 +44,7 @@
 package com.netspective.medigy.reference;
 
 import com.netspective.medigy.reference.type.ContactMechanismType;
+import com.netspective.medigy.reference.type.DataEncryptionType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.reference.type.PriorityType;
@@ -58,5 +59,6 @@ public interface Catalog
         ContactMechanismType.class,
         PartyFacilityRoleType.class,
         PriorityType.class,
+        DataEncryptionType.class,
     };
 }
