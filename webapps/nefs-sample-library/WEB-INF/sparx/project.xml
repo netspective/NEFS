@@ -18,15 +18,38 @@
 	********************************************************************** -->
 
     <navigation-tree name="app" default="yes">
-        <page name="home" default="yes" caption="Home">
-            <body>
+        <page name="home" default="yes" caption="Home" >
+            <!--body>
                 Welcome to the home page.
-            </body>
+            </body-->
+            <panels>
+                <panel type="command" command="query,library.get-all-books,-,-,-,record-editor"/>
+            </panels>
         </page>
+
         <page name="add" caption="Add Book" command="dialog,library.book-info,add">
-            <conditional action="apply-flags" hidden="yes" has-value="request:abc"/>
+            <!--conditional action="apply-flags" hidden="yes" has-value="request:abc"/-->
+            <panels>
+                <panel type="command" command="dialog,library.book-info,add" />
+            </panels>
         </page>
+        <page name="edit" caption="Edit Book" command="dialog,library.book-info,edit">
+        </page>
+        <page name="delete" caption="Delete Book" command="dialog,library.book-info,delete">
+        </page>
+        <page name="search" caption="Search Books" command="query-defn,library,test,searchBooksDialog"/>
     </navigation-tree>
+    
+    <dialogs package="library">
+        <dialog name="book-info" retain-params="*" hide-hints-until-focus="yes" >
+            <frame heading="create-dialog-perspective-heading:Book"/>
+            <field type="text" name="id" caption="Book ID"/>
+            <field type="text" name="title" caption="Title" />
+            <field type="text" name="author" caption="Author"/>
+            <field type="select" name="genre" caption="Genre" choices="query:library.get-book-genre-list"/>
+            <field type="text" name="isbn" caption="ISBN"/>
+        </dialog>
+    </dialogs>
 
 	<!--
 	**********************************************************************
@@ -71,9 +94,9 @@
                     <!--action caption="Frame action" hint="This is a hint" style="horizontal" command="redirect,yahoo.com"/-->
                     <report>
                         <actions>
-                            <action type="add" caption="Add Book" command="redirect,yahoo.com"/>
-                            <action type="edit" command="redirect,yahoo.com"/>
-                            <action type="delete" command="redirect,yahoo.com"/>
+                            <action type="add" caption="Add Book" command="redirect,add,true"/>
+                            <action type="edit" command="redirect,edit,true"/>
+                            <action type="delete" command="redirect,delete,true"/>
                             <action type="select" caption="Process selected rows" title="Process the selected rows" command="redirect,yahoo.com"/>
                         </actions>
                         <column heading="ID" format="plain"/>
@@ -112,7 +135,7 @@
 
     </queries>
 
-    <query-defn>
+    <query-defn name="library">
         <field name="book_id" caption="Book ID" join="BookInfo" column="id"/>
         <field name="name" caption="Name" join="BookInfo" column="name"/>
         <field name="author" caption="Author" join="BookInfo" column="author"/>
@@ -124,14 +147,13 @@
 		<join name="BookType" table="book_type" condition="book_type.id = book_info.genre"/>
 
         <presentation>
-
             <select-dialog name="searchBooksDialog"  allow-debug="yes" hide-output-dests="yes" hide-readonly-hints="yes" >
                 <frame heading="Search for Books" />
                 <field type="text" name="book_id" caption="Book ID" />
                 <field type="text" name="name" caption="Book Name"/>
                 <field type="text" name="author" caption="Author"/>
                 <field type="text" name="isbn" caption="ISBN"/>
-                <field type="select" style="list" name="genre" caption="Genre" choices="query:get-book-genre-list"/>
+                <field type="select" style="list" name="genre" caption="Genre" choices="query:library.get-book-genre-list"/>
                 <select name="test">
                     <display field="book_id"/>
                     <display field="name"/>
