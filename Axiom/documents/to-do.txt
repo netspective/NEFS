@@ -1,4 +1,6 @@
-* Use the Axiom/documents/sample-graphviz-schema-code.dot GraphViz dot example file to beef up dot graph generation from Schemas.
+* In schema manager, improve automatically generated table Query Definitions with more features such a foreign key references, parent references, etc.
+* Complete optimistic locking of an object/row using a Timestamp or Integer column. When conflicts occur, throw an ObjectHasChanged exception.
+* Try and catch required, maxlength, and other DAL exceptions prior to the values getting to the JDBC driver (add additional validation rules).
 * Add capability to create <data> tags within <table> tags to supply DDL-time data (like <enumerations> except generic).
 * Add capability to store the data-types (domain names and descriptions) to columns so that DBDDs can pick them up (all inherited data-types).
 * Add capability to store the table-type (table inheritance) to tables so that DBDDs can pick them up (all inherited table-types).
@@ -12,10 +14,7 @@
 * Add flag to Query class that would allow usage of normal Statements with SQL injection instead of just prepared statements with bind parameters.
 * Allow <query> tags to be added under <schema> that would simply allow the <schema> to act as a namespace.
 * Add result set iterator (paging) base classes from Sparx.
-* In schema manager, improve automatically generated table Query Definitions with more features such a foreign key references, parent references, etc.
-* Complete optimistic locking of an object/row using a Timestamp or Integer column. When conflicts occur, throw an ObjectHasChanged exception.
 * Add timeouts and auto-refresh logic to DAL objects so that Rows can re-read themselves after a period of time (useful for caching data).
-* Try and catch required, maxlength, and other DAL exceptions prior to the values getting to the JDBC driver (add additional validation rules).
 * Add column-level or row-level encryption and support for searching encrypted columns.
 * Allow inserts/updates/deletes to use Rows as well as Row so that multiple records can be built into rows and then inserted/updated at once.
 * Add support for "Axiom Auto-inc" column where column key value is generated using the design pattern in Java Enterprise Best Practices.
@@ -25,7 +24,6 @@
 * Add DAL-style java class generation for static queries.
 * Create pluggable cacheable ResultSets with configurable timeouts.
 * Add SchemaDoc totals (tables, columns, etc) to the application Metrics.
-* Come up with a better name for SchemaDoc and stick to it.
 * For each getXXXByYYY() method add an existsXXXWithYYY() method to check for simple existence.
 * Add more features to the bulk upload/download via XML (like updates/deletes, exporting to XML, etc).
 * Add Supertype/Subtype tables like http://jrf.sourceforge.net/advancedTopics.html#SubtypeTables.
@@ -36,3 +34,5 @@
 * Review http://db.apache.org/ojb/index.html to see if OJB has any applicability to Axiom.
 * Add feature to maintain object identity (multiple lookups on a given table with same primary key should return one and the same object)
 * Add CSV, Tab-delimited, and other text import/export formats with full support for validation, auto-key generation, etc
+* Use the Axiom/documents/sample-graphviz-schema-code.dot GraphViz dot example file to beef up dot graph generation from Schemas.
+* Come up with a better name for SchemaDoc and stick to it.
