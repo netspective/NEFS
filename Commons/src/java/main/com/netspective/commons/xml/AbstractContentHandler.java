@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.2 2003-03-23 04:44:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -194,8 +194,19 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
                 resource = new Resource((Class) relativeTo, resourceName);
             else if(relativeTo instanceof ClassLoader)
                 resource = new Resource((ClassLoader) relativeTo, resourceName);
+            else if(relativeTo instanceof String)
+            {
+                try
+                {
+                    resource = new Resource(Class.forName((String) relativeTo), resourceName);
+                }
+                catch (ClassNotFoundException e)
+                {
+                    throw new ContentHandlerException(parseContext, "The result of '"+ NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO +"' attribute expression '"+ relativeTo +"' in <"+ nodeIdentifiers.getIncludeElementName()  +"> ("+ relativeToExpr +") must be either a Class or a ClassLoader.");
+                }
+            }
             else if(relativeToExpr != null)
-                throw new ContentHandlerException(parseContext, "The result of '"+ NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO +"' attribute expression '"+ relativeTo +"' in <"+ nodeIdentifiers.getIncludeElementName()  +"> must be either a Class or a ClassLoader.");
+                throw new ContentHandlerException(parseContext, "The result of '"+ NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO +"' attribute expression '"+ relativeTo +"' in <"+ nodeIdentifiers.getIncludeElementName()  +"> ("+ relativeToExpr +") must be either a Class or a ClassLoader.");
             else
                 resource = new Resource(activeEntry.getClass(), resourceName);
 

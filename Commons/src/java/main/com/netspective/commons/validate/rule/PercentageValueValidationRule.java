@@ -39,13 +39,12 @@
  */
 
 /**
- * $Id: PercentageValueValidationRule.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: PercentageValueValidationRule.java,v 1.2 2003-03-23 04:44:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
 
 import com.netspective.commons.value.ValueSource;
-
 
 public class PercentageValueValidationRule extends FloatValueValidationRule
 {

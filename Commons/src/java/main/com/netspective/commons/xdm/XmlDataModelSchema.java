@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.2 2003-03-13 22:35:53 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.3 2003-03-23 04:44:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1004,9 +1004,7 @@ public class XmlDataModelSchema
                 public void set(XdmParseContext pc, Object parent, String value)
                         throws InvocationTargetException, IllegalAccessException
                 {
-                    ValueSource vs = null;
-                    vs = ValueSources.getInstance().getValueSource(value, ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-                    m.invoke(parent, new ValueSource[]{ vs });
+                    m.invoke(parent, new ValueSource[]{ ValueSources.getInstance().getValueSourceOrStatic(value) });
                 }
             };
         }

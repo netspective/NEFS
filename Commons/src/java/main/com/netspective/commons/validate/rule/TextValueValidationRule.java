@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextValueValidationRule.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: TextValueValidationRule.java,v 1.2 2003-03-23 04:44:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -52,7 +52,7 @@ import com.netspective.commons.validate.ValidationUtils;
 public class TextValueValidationRule extends BasicValidationRule
 {
     private String invalidLengthMessage = "{0} must have a length between {1} and {2}.";
-    private String invalidRegExMessage = "{0} match the format '{1}'.";
+    private String invalidRegExMessage = "{0} must match the format '{1}'.";
     private int minLength = 0;
     private int maxLength = Integer.MAX_VALUE;
     private String regExpr;
