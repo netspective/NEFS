@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.11 2003-10-30 05:12:27 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.12 2003-11-07 17:37:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -71,8 +71,6 @@ import com.netspective.commons.io.InputSourceLocator;
 public abstract class AbstractContentHandler implements TemplateContentHandler
 {
     private static final Log log = LogFactory.getLog(AbstractContentHandler.class);
-
-    protected static final TemplateCatalog templateCatalog = new TemplateCatalog();
 
     private NodeIdentifiers nodeIdentifiers;
     private ParseContext parseContext;
@@ -131,7 +129,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public TemplateCatalog getTemplatCatalog()
     {
-        return templateCatalog;
+        return parseContext.getTemplateCatalog();
     }
 
     public TemplateProducer getDynamicTemplatesProducer()
@@ -144,7 +142,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public void addDynamicTemplate(Template template)
     {
-        templateCatalog.registerTemplate(getDynamicTemplatesProducer(), Integer.toString(template.hashCode()), template);
+        parseContext.getTemplateCatalog().registerTemplate(getDynamicTemplatesProducer(), Integer.toString(template.hashCode()), template);
     }
 
     public ContentHandlerNodeStackEntry getActiveNodeEntry()
@@ -238,7 +236,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
         {
             log.trace("Including template '"+ templateName + "'.");
 
-            Template template = templateCatalog.getTemplate(nodeIdentifiers.getGenericTemplateProducer(), templateName);
+            Template template = parseContext.getTemplateCatalog().getTemplate(nodeIdentifiers.getGenericTemplateProducer(), templateName);
             if(template == null)
                 throw new SAXParseException("Generic template '"+ templateName +"' was not found in the active document.", parseContext.getLocator());
             template.applyChildren(template.createApplyContext(this, nodeIdentifiers.getIncludeElementName(), attrs));
@@ -315,8 +313,8 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
                 throw new SAXParseException("Template must have a '"+ NodeIdentifiers.ATTRNAME_GENERIC_TEMPLATE_NAME +"' attribute in <"+ elementName +"> ", parseContext.getLocator());
 
             InputSourceLocator inputSourceLocator = new InputSourceLocator(getParseContext().getInputSrcTracker(), getParseContext().getLocator().getLineNumber());
-            Template template = new Template(templateName, this, inputSourceLocator, templateCatalog, nodeIdentifiers.getGenericTemplateProducer(), url, localName, qName, attributes);
-            templateCatalog.registerTemplate(nodeIdentifiers.getGenericTemplateProducer(), templateName, template);
+            Template template = new Template(templateName, this, inputSourceLocator, parseContext.getTemplateCatalog(), nodeIdentifiers.getGenericTemplateProducer(), url, localName, qName, attributes);
+            parseContext.getTemplateCatalog().registerTemplate(nodeIdentifiers.getGenericTemplateProducer(), templateName, template);
             templateDefnStack.push(template);
             return true;
         }

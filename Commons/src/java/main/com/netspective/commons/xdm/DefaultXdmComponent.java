@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponent.java,v 1.6 2003-08-31 14:04:38 shahid.shah Exp $
+ * $Id: DefaultXdmComponent.java,v 1.7 2003-11-07 17:37:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -56,6 +56,7 @@ import com.netspective.commons.metric.Metrics;
 import com.netspective.commons.metric.MetricsGroup;
 import com.netspective.commons.metric.MetricsProducer;
 import com.netspective.commons.metric.Metric;
+import com.netspective.commons.xml.template.TemplateCatalog;
 
 public abstract class DefaultXdmComponent implements XdmComponent, MetricsProducer
 {
@@ -64,6 +65,7 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
     private List errors = new ArrayList();
     private List warnings = new ArrayList();
     private Metrics metrics;
+    private TemplateCatalog templateCatalog = new TemplateCatalog();
     private long loadDuration; // time it took to load/parse
 
     /* ------------------------------------------------------------------------------------------------------------- */
@@ -121,6 +123,13 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
     public InputSourceTracker getInputSource()
     {
         return inputSource;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public TemplateCatalog getTemplateCatalog()
+    {
+        return templateCatalog;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ParseContext.java,v 1.7 2003-08-17 00:07:05 shahid.shah Exp $
+ * $Id: ParseContext.java,v 1.8 2003-11-07 17:37:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -87,6 +87,7 @@ import com.netspective.commons.io.Resource;
 import com.netspective.commons.io.FileTracker;
 import com.netspective.commons.io.InputSourceTracker;
 import com.netspective.commons.io.URLTracker;
+import com.netspective.commons.xml.template.TemplateCatalog;
 
 public class ParseContext
 {
@@ -108,6 +109,7 @@ public class ParseContext
         TRANSFORM_OPTIONS.addOption(resourceOption);
     }
 
+    private TemplateCatalog templateCatalog;
     private ParseContext parentPC;
     private String sourceText;
     private File sourceFile;
@@ -170,6 +172,19 @@ public class ParseContext
     public void setParentSrcTracker(InputSourceTracker parentSrcTracker)
     {
         this.parentSrcTracker = parentSrcTracker;
+    }
+
+    public TemplateCatalog getTemplateCatalog()
+    {
+        if(templateCatalog == null && parentPC != null)
+            return parentPC.getTemplateCatalog();
+
+        return templateCatalog;
+    }
+
+    public void setTemplateCatalog(TemplateCatalog templateCatalog)
+    {
+        this.templateCatalog = templateCatalog;
     }
 
     public String getTransformInstruction()

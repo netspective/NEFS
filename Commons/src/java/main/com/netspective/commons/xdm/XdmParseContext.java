@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmParseContext.java,v 1.3 2003-04-05 18:02:45 shahid.shah Exp $
+ * $Id: XdmParseContext.java,v 1.4 2003-11-07 17:37:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -138,6 +138,7 @@ public class XdmParseContext extends ParseContext
         try
         {
             pc = new XdmParseContext(null, srcFile);
+            pc.setTemplateCatalog(dm.getTemplateCatalog());
             pc.parse(dm);
             return pc;
         }
@@ -170,6 +171,7 @@ public class XdmParseContext extends ParseContext
         try
         {
             pc = new XdmParseContext(null, text);
+            pc.setTemplateCatalog(dm.getTemplateCatalog());
             pc.parse(dm);
             return pc;
         }
@@ -202,6 +204,7 @@ public class XdmParseContext extends ParseContext
         try
         {
             pc = new XdmParseContext(null, resource);
+            pc.setTemplateCatalog(dm.getTemplateCatalog());
             pc.parse(dm);
             return pc;
         }
@@ -234,6 +237,7 @@ public class XdmParseContext extends ParseContext
         try
         {
             pc = new XdmParseContext(null, jarFile, jarFileEntry);
+            pc.setTemplateCatalog(dm.getTemplateCatalog());
             pc.parse(dm);
             return pc;
         }

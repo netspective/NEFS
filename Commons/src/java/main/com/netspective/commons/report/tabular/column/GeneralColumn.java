@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.12 2003-10-01 15:21:01 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.13 2003-11-07 17:37:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -75,6 +75,7 @@ import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandNotFoundException;
@@ -89,6 +90,11 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     public static final String CTYPE_ATTRNAME_TYPE = "type";
     public static final String[] CTYPE_ATTRNAMES_SET_BEFORE_CONSUMING = null;
     public static final ColumnTypeTemplateConsumerDefn templateConsumer = new ColumnTypeTemplateConsumerDefn();
+
+    static
+    {
+        TemplateCatalog.registerConsumerDefnForClass(templateConsumer, GeneralColumn.class, true, true);
+    }
 
     protected static class ColumnTypeTemplateConsumerDefn extends TemplateConsumerDefn
     {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateProducers.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: TemplateProducers.java,v 1.2 2003-11-07 17:37:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -65,7 +65,7 @@ public class TemplateProducers
         producersByElemName.put(producer.getElementName(), producer);
     }
 
-    public TemplateProducer get(int i)
+    public TemplateProducer getByIndex(int i)
     {
         return (TemplateProducer) producers.get(i);
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.37 2003-11-02 17:25:43 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.38 2003-11-07 17:37:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -887,6 +887,10 @@ public class XmlDataModelSchema
         return bean;
     }
 
+    public boolean isTemplateConsumer()
+    {
+        return TemplateConsumer.class.isAssignableFrom(bean);
+    }
     public Object createInstance() throws IllegalAccessException, InstantiationException
     {
         return bean.newInstance();

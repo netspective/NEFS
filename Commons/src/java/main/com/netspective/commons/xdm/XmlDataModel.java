@@ -39,11 +39,14 @@
  */
 
 /**
- * $Id: XmlDataModel.java,v 1.1 2003-03-13 18:33:13 shahid.shah Exp $
+ * $Id: XmlDataModel.java,v 1.2 2003-11-07 17:37:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
+import com.netspective.commons.xml.template.TemplateCatalog;
+
 public interface XmlDataModel
 {
+    public TemplateCatalog getTemplateCatalog();
 }
