@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.5 2003-04-23 15:41:52 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.6 2003-06-20 21:09:04 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -69,7 +69,6 @@ import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateElement;
 import com.netspective.commons.xml.template.TemplateText;
 import com.netspective.commons.io.Resource;
-import com.netspective.commons.io.FileTracker;
 
 public abstract class AbstractContentHandler implements TemplateContentHandler
 {
