@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlDdlGenerator.java,v 1.2 2004-08-09 20:28:52 shahid.shah Exp $
+ * $Id: SqlDdlGenerator.java,v 1.3 2004-08-12 00:21:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -53,6 +53,6 @@ import com.netspective.axiom.value.DatabasePolicyValueContext;
 
 public interface SqlDdlGenerator
 {
-    public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects) throws IOException;
-    public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects) throws IOException;
+    public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects, boolean createAbbreviationsMapCommentBlock) throws IOException;
+    public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects, boolean createAbbreviationsMapCommentBlock) throws IOException;
 }

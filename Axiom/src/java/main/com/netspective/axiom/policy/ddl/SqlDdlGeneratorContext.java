@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlDdlGeneratorContext.java,v 1.2 2004-08-09 20:28:52 shahid.shah Exp $
+ * $Id: SqlDdlGeneratorContext.java,v 1.3 2004-08-12 00:21:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -66,16 +66,19 @@ public class SqlDdlGeneratorContext
     private Schema schema;
     private boolean dropObjectsFirst;
     private boolean createCommentObjects;
+    private boolean createAbbreviationsMapCommentBlock;
     private Set visitedTables = new HashSet();
     private Set delayedConstraints = new HashSet();
 
-    public SqlDdlGeneratorContext(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropObjectsFirst, boolean createCommentObjects)
+    public SqlDdlGeneratorContext(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropObjectsFirst,
+                                  boolean createCommentObjects, boolean createAbbreviationsMapCommentBlock)
     {
         this.writer = writer;
         this.valueContext = vc;
         this.schema = schema;
         this.dropObjectsFirst = dropObjectsFirst;
         this.createCommentObjects = createCommentObjects;
+        this.createAbbreviationsMapCommentBlock = createAbbreviationsMapCommentBlock;
     }
 
     public Writer getWriter()
@@ -119,6 +122,11 @@ public class SqlDdlGeneratorContext
     public boolean isCreateCommentObjects()
     {
         return createCommentObjects;
+    }
+
+    public boolean isCreateAbbreviationsMapCommentBlock()
+    {
+        return createAbbreviationsMapCommentBlock;
     }
 
     public Set getVisitedTables()

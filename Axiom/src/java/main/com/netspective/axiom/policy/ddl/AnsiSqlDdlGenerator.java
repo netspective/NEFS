@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlGenerator.java,v 1.7 2004-08-11 02:07:59 shahid.shah Exp $
+ * $Id: AnsiSqlDdlGenerator.java,v 1.8 2004-08-12 00:21:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -48,10 +48,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -89,12 +92,12 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
     {
     }
 
-    public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects) throws IOException
+    public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects, boolean createAbbreviationsMapCommentBlock) throws IOException
     {
         Writer writer = new FileWriter(output);
         try
         {
-            generateSqlDdl(writer, vc, schema, dropFirst, createCommentObjects);
+            generateSqlDdl(writer, vc, schema, dropFirst, createCommentObjects, createAbbreviationsMapCommentBlock);
         }
         finally
         {
@@ -102,9 +105,9 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         }
     }
 
-    public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects) throws IOException
+    public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects, boolean createAbbreviationsMapCommentBlock) throws IOException
     {
-        SqlDdlGeneratorContext gc = new SqlDdlGeneratorContext(writer, vc, schema, dropFirst, createCommentObjects);
+        SqlDdlGeneratorContext gc = new SqlDdlGeneratorContext(writer, vc, schema, dropFirst, createCommentObjects, createAbbreviationsMapCommentBlock);
         renderSqlDdlSchemaScript(gc);
     }
 
@@ -114,6 +117,9 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         Writer writer = gc.getWriter();
         SqlDdlFormats ddlFormats = gc.getSqlDdlFormats();
         Tables tablesWithData = new TablesCollection();
+
+        if(gc.isCreateAbbreviationsMapCommentBlock())
+            renderSqlDdlAbbreviationsCommentBlock(gc);
 
         Tables tables = gc.getSchema().getTables();
         for(int i = 0; i < tables.size(); i++)
@@ -193,6 +199,125 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                     log.error(e.getMessage(), e);
                 }
             }
+        }
+    }
+
+    public void renderSqlDdlAbbreviationsCommentBlock(SqlDdlGeneratorContext gc) throws IOException
+    {
+        Map tablesSortedByAbbrev = new TreeMap();
+        int maxTableAbbrevWidth = 0;
+
+        Map columnsSortedByAbbrev = new TreeMap();
+        int maxColumnAbbrevWidth = 0;
+
+        Tables tables = gc.getSchema().getTables();
+        for(int t = 0; t < tables.size(); t++)
+        {
+            Table table = tables.get(t);
+            final String tableAbbrev = table.getAbbrev();
+            if(! tableAbbrev.equals(table.getName()))
+            {
+                if(tableAbbrev.length() > maxTableAbbrevWidth)
+                    maxTableAbbrevWidth = tableAbbrev.length();
+
+                if(tablesSortedByAbbrev.containsKey(tableAbbrev))
+                {
+                    List dupes = null;
+                    if(tablesSortedByAbbrev.get(tableAbbrev) instanceof List)
+                        dupes = (List) tablesSortedByAbbrev.get(tableAbbrev);
+                    else
+                    {
+                        dupes = new ArrayList();
+                        dupes.add(((Table) tablesSortedByAbbrev.get(tableAbbrev)).getName());
+                    }
+                    dupes.add(table.getName());
+                    tablesSortedByAbbrev.put(tableAbbrev, dupes);
+                }
+                else
+                    tablesSortedByAbbrev.put(tableAbbrev, table);
+            }
+
+            Columns columns = table.getColumns();
+            for(int c = 0; c < columns.size(); c++)
+            {
+                Column column = columns.get(c);
+                final String colAbbrev = column.getAbbrev();
+                if(! colAbbrev.equals(column.getName()))
+                {
+                    final String qualifiedColAbbrev = tableAbbrev + "." + colAbbrev;
+                    if(qualifiedColAbbrev.length() > maxColumnAbbrevWidth)
+                        maxColumnAbbrevWidth = qualifiedColAbbrev.length();
+
+                    if(columnsSortedByAbbrev.containsKey(qualifiedColAbbrev))
+                    {
+                        List dupes = null;
+                        if(columnsSortedByAbbrev.get(qualifiedColAbbrev) instanceof List)
+                            dupes = (List) columnsSortedByAbbrev.get(qualifiedColAbbrev);
+                        else
+                        {
+                            dupes = new ArrayList();
+                            dupes.add(((Column) columnsSortedByAbbrev.get(qualifiedColAbbrev)).getQualifiedName());
+                        }
+                        dupes.add(column.getQualifiedName());
+                        columnsSortedByAbbrev.put(qualifiedColAbbrev, dupes);
+                    }
+                    else
+                        columnsSortedByAbbrev.put(qualifiedColAbbrev, column);
+                }
+            }
+        }
+
+        TextUtils textUtils = TextUtils.getInstance();
+
+        Writer writer = gc.getWriter();
+        if(tablesSortedByAbbrev.size() > 0)
+        {
+            writer.write("/*\n");
+            writer.write("   Some table names have been abbreviated in constraint and/or index names.\n");
+            writer.write("   ========================================================================\n");
+
+            for(Iterator i = tablesSortedByAbbrev.entrySet().iterator(); i.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) i.next();
+                boolean dupes = entry.getValue() instanceof List;
+
+                if(dupes)
+                    writer.write(">>>");
+                else
+                    writer.write("   ");
+                writer.write(textUtils.pad(entry.getKey().toString(), maxTableAbbrevWidth + 1, " "));
+                if(dupes)
+                    writer.write("DUPLICATES: " + entry.getValue());
+                else
+                    writer.write(((Table) entry.getValue()).getName());
+                writer.write("\n");
+            }
+            writer.write("*/\n\n");
+        }
+
+        if(tablesSortedByAbbrev.size() > 0)
+        {
+            writer.write("/*\n");
+            writer.write("   Some column names have been abbreviated in constraint and/or index names.\n");
+            writer.write("   =========================================================================\n");
+
+            for(Iterator i = columnsSortedByAbbrev.entrySet().iterator(); i.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) i.next();
+                boolean dupes = entry.getValue() instanceof List;
+
+                if(dupes)
+                    writer.write(">>>");
+                else
+                    writer.write("   ");
+                writer.write(textUtils.pad(entry.getKey().toString(), maxColumnAbbrevWidth + 1, " "));
+                if(dupes)
+                    writer.write("DUPLICATES: " + entry.getValue());
+                else
+                    writer.write(((Column) entry.getValue()).getQualifiedName());
+                writer.write("\n");
+            }
+            writer.write("*/\n\n");
         }
     }
 
@@ -440,6 +565,8 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
 
                 writer.write(" /* ");
                 writer.write(textUtils.getRelativeClassName(BasicColumn.class, column.getClass()));
+                if(! column.getAbbrev().equals(column.getName()))
+                    writer.write(", Abbrev '" + column.getAbbrev() + "'");
                 writer.write(" */");
 
                 writer.write("\n");

@@ -39,38 +39,38 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.13 2004-08-11 04:14:14 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.14 2004-08-12 00:21:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.FileWriter;
-import java.util.List;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 
-import com.netspective.commons.ant.XdmComponentTask;
-import com.netspective.commons.xdm.XmlDataModelDtd;
-import com.netspective.commons.xdm.XdmComponent;
-import com.netspective.axiom.SqlManagerComponent;
-import com.netspective.axiom.DatabasePolicy;
-import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.DatabasePolicy;
 import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.SqlManagerComponent;
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.transport.DataImportDtd;
 import com.netspective.axiom.schema.transport.DataImportParseContext;
 import com.netspective.axiom.schema.transport.TableImportStatistic;
-import com.netspective.axiom.value.DatabasePolicyValueContext;
+import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.value.BasicDatabasePolicyValueContext;
 import com.netspective.axiom.value.DatabaseConnValueContext;
-import com.netspective.axiom.value.BasicDatabaseConnValueContext;
+import com.netspective.axiom.value.DatabasePolicyValueContext;
+import com.netspective.commons.ant.XdmComponentTask;
+import com.netspective.commons.xdm.XdmComponent;
+import com.netspective.commons.xdm.XmlDataModelDtd;
 
 public class AxiomTask extends XdmComponentTask
 {
@@ -81,6 +81,7 @@ public class AxiomTask extends XdmComponentTask
     private String fileExtn;
     private boolean createDdlDropSql;
     private boolean createDdlCommentObjects;
+    private boolean createAbbreviationsMapCommentBlock;
     private File importFile;
     private File graphVizErdFile;
     private File dtdFile;
@@ -99,6 +100,7 @@ public class AxiomTask extends XdmComponentTask
         fileExtn = null;
         createDdlDropSql = false;
         createDdlCommentObjects = true;
+        createAbbreviationsMapCommentBlock = true;
         importFile = null;
         graphVizErdFile = null;
         dsInfo = null;
@@ -497,6 +499,16 @@ public class AxiomTask extends XdmComponentTask
         this.createDdlCommentObjects = createDdlCommentObjects;
     }
 
+    public boolean isCreateAbbreviationsMapCommentBlock()
+    {
+        return createAbbreviationsMapCommentBlock;
+    }
+
+    public void setCreateAbbreviationsMapCommentBlock(boolean createAbbreviationsMapCommentBlock)
+    {
+        this.createAbbreviationsMapCommentBlock = createAbbreviationsMapCommentBlock;
+    }
+
     public void generateDdlFiles(SqlManager sqlManager)
     {
         if(getDestDir() == null)
@@ -517,7 +529,7 @@ public class AxiomTask extends XdmComponentTask
             File ddlFile = new File(getDestDir(), schema.getName() + "-" + policy.getDbmsIdentifier() + getFileExtn(".sql"));
             try
             {
-                policy.getDdlGenerator().generateSqlDdl(ddlFile, vc, schema, createDdlDropSql, createDdlCommentObjects);
+                policy.getDdlGenerator().generateSqlDdl(ddlFile, vc, schema, createDdlDropSql, createDdlCommentObjects, createAbbreviationsMapCommentBlock);
             }
             catch (Exception e)
             {
