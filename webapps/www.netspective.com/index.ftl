@@ -108,6 +108,20 @@
         </td>
 
     </tr>
+
+    <tr>
+        <td><img src="${resourcesPath}/images/home/home_38.gif" width="600" height="12" alt=""></td>
+    </tr>
+
+    <tr>
+        <td class="body-content" valign="top" width="556" style="padding-left: 10px; padding-right: 10px; border: 1px solid #999999; font-family: trebuchet ms, arial; font-size: 9pt;">
+        <font color="#666666" style="font-size: 9pt;">
+            <font style="font-size:10pt"><b>Jump-start your app development</b></font>
+            <br>Declare input fields, page navigation and validation criteria in simple XML files. Define database schema into XML and generate SQL DDL and type-safe table-based DAOs. Use NEFS' Security Service to automatically generate all the important application security features. Customize framework using standard Java extension mechanisms.
+        </font>
+        </td>
+    </tr>
+
     <tr>
         <td><img src="${resourcesPath}/images/home/home_38.gif" width="600" height="12" alt=""></td>
     </tr>
@@ -120,6 +134,7 @@
         </font>
         </td>
     </tr>
+
     <tr>
         <td><img src="${resourcesPath}/images/home/home_38.gif" width="600" height="12" alt=""></td>
     </tr>
