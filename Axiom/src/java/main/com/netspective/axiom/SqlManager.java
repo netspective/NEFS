@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.11 2003-08-15 02:16:07 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.12 2003-08-28 00:39:31 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -257,7 +257,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
     public Schema createSchema()
     {
-        return new BasicSchema();
+        return new BasicSchema(this);
     }
 
     public void addSchema(Schema schema)
