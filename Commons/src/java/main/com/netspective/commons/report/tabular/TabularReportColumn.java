@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TabularReportColumn.java,v 1.7 2004-03-01 07:13:46 aye.thu Exp $
+ * $Id: TabularReportColumn.java,v 1.8 2004-03-20 22:25:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -163,6 +163,8 @@ public interface TabularReportColumn
     public void setAlign(AlignStyle value);
 
     public Flags getFlags();
+
+    public void setFlags(Flags flags);
 
     public String getCalcCmd();
 
