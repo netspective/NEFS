@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.33 2003-10-27 18:41:53 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.34 2003-11-19 15:30:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -65,14 +65,12 @@ import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationPathFlags;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.ProjectComponent;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedOrgUser;
-import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.value.ValueSource;
 
 import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -233,6 +231,10 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
     public void renderPageMasthead(Writer writer, NavigationContext nc) throws IOException
     {
         writer.write("<body leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\" topmargin=\"0\" onload=\"initializeBody()\">\n");
+
+        ValueSource baseAttrs = nc.getActivePage().getBaseAttributes();
+        if(baseAttrs != null)
+            writer.write("<base "+ baseAttrs.getTextValue(nc) +"></base>");
 
         renderAuthenticatedUser(writer, nc);
         Theme theme = getTheme();

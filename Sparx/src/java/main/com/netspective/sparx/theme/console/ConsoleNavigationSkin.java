@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.39 2003-10-28 12:27:28 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.40 2003-11-19 15:30:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -67,6 +67,7 @@ import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.ProjectComponent;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.value.ValueSource;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServlet;
@@ -237,6 +238,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     public void renderPageMasthead(Writer writer, NavigationContext nc) throws IOException
     {
         writer.write("<body leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\" topmargin=\"0\" onload=\"initializeBody()\">\n");
+
+        ValueSource baseAttrs = nc.getActivePage().getBaseAttributes();
+        if(baseAttrs != null)
+            writer.write("<base "+ baseAttrs.getTextValue(nc) +"></base>");
 
         if(isShowAuthenticatedUser())
             renderAuthenticatedUser(writer, nc);
