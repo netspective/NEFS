@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.6 2003-04-23 15:42:09 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.7 2003-04-26 17:24:52 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -301,6 +301,19 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             Column column = columns.get(i);
             ForeignKey fkey = column.getForeignKey();
             if(fkey != null && fkey.getType() == fkeyType)
+                result.add(column);
+        }
+        return result;
+    }
+
+    public Columns getForeignKeyColumns()
+    {
+        Columns result = new ColumnsCollection();
+        for(int i = 0; i < columns.size(); i++)
+        {
+            Column column = columns.get(i);
+            ForeignKey fkey = column.getForeignKey();
+            if(fkey != null)
                 result.add(column);
         }
         return result;

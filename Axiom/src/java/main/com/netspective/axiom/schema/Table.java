@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
+ * $Id: Table.java,v 1.3 2003-04-26 17:24:52 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -177,6 +177,12 @@ public interface Table
      * @param fkeyType One of the constants defined in the ForeignKey class
      */
     public Columns getForeignKeyColumns(int fkeyType);
+
+    /**
+     * Returns all the columns that are foreign key references.
+     * @return
+     */
+    public Columns getForeignKeyColumns();
 
     /**
      * Return the columns that refer to other tables as parents
