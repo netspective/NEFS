@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.44 2003-10-27 18:41:52 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.45 2003-11-09 19:35:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -706,6 +706,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     {
         this.bodyCommand = command;
         getBodyType().setValue(NavigationPageBodyType.COMMAND);
+        if(command instanceof HttpServletCommand && ((HttpServletCommand) command).isAbleToAffectNavigation())
+            getFlags().setFlag(Flags.BODY_AFFECTS_NAVIGATION);
     }
 
     public String getPageFlagsParamName()
@@ -912,13 +914,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             StringWriter body = new StringWriter();
             handlePageBody(body, nc);
 
-            if(flags.flagIsSet(Flags.HANDLE_META_DATA))
-                handlePageMetaData(writer, nc);
-            if(flags.flagIsSet(Flags.HANDLE_HEADER))
-                handlePageHeader(writer, nc);
-            writer.write(body.getBuffer().toString());
-            if(flags.flagIsSet(Flags.HANDLE_FOOTER))
-                handlePageFooter(writer, nc);
+            if(! nc.isRedirected())
+            {
+                if(flags.flagIsSet(Flags.HANDLE_META_DATA))
+                    handlePageMetaData(writer, nc);
+                if(flags.flagIsSet(Flags.HANDLE_HEADER))
+                    handlePageHeader(writer, nc);
+                writer.write(body.getBuffer().toString());
+                if(flags.flagIsSet(Flags.HANDLE_FOOTER))
+                    handlePageFooter(writer, nc);
+            }
 
             // try and do an early GC if possible
             body = null;
