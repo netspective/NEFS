@@ -51,13 +51,15 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.14 2003-07-11 20:53:15 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.15 2003-07-29 20:32:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -67,13 +69,24 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Element;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.value.source.DialogFieldValueSource;
@@ -249,6 +262,33 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             {
                 for(int i = 0; i < children.size(); i++)
                     clearStateFlag(children.get(i), flag);
+            }
+        }
+
+        public void importFromXml(Element parent)
+        {
+            NodeList children = parent.getChildNodes();
+            for(int n = 0; n < children.getLength(); n++)
+            {
+                Node node = children.item(n);
+                if(node.getNodeName().equals("field-state"))
+                {
+                    Element fieldElem = (Element) node;
+                    String fieldName = fieldElem.getAttribute("name");
+                    DialogField.State state = getState(fieldName);
+                    if(state != null)
+                        state.importFromXml(fieldElem);
+                }
+            }
+        }
+
+        public void exportToXml(Element parent)
+        {
+            Iterator i = statesByQualifiedName.values().iterator();
+            while(i.hasNext())
+            {
+                DialogField.State state = (DialogField.State) i.next();
+                state.exportToXml(parent);
             }
         }
 
@@ -504,26 +544,13 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
      *
      * @param parent dialog context element's parent
      */
-    /* TODO: implement this
     public void importFromXml(Element parent)
     {
         NodeList dcList = parent.getElementsByTagName("dialog-context");
         if(dcList.getLength() > 0)
         {
             Element dcElem = (Element) dcList.item(0);
-            NodeList children = dcElem.getChildNodes();
-            for(int n = 0; n < children.getLength(); n++)
-            {
-                Node node = children.item(n);
-                if(node.getNodeName().equals("field"))
-                {
-                    Element fieldElem = (Element) node;
-                    String fieldName = fieldElem.getAttribute("name");
-                    DialogFieldState state = (DialogFieldState) fieldStates.get(fieldName);
-                    if(state != null)
-                        state.importFromXml(fieldElem);
-                }
-            }
+            fieldStates.importFromXml(dcElem);
         }
     }
 
@@ -561,11 +588,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         Element dcElem = parent.getOwnerDocument().createElement("dialog-context");
         dcElem.setAttribute("name", dialog.getName());
         dcElem.setAttribute("transaction", transactionId);
-        for(Iterator i = fieldStates.values().iterator(); i.hasNext();)
-        {
-            DialogFieldState state = (DialogFieldState) i.next();
-            state.exportToXml(dcElem);
-        }
+        fieldStates.exportToXml(dcElem);
 
         Set retainedParams = null;
         if(retainReqParams != null)
@@ -631,7 +654,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.newDocument();
-        Element root = doc.createElement("xaf");
+        Element root = doc.createElement("sparx");
         doc.appendChild(root);
 
         exportToXml(doc.getDocumentElement());
@@ -658,7 +681,6 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
         return os.toString();
     }
-    */
 
     /**
      * Calculate what the next state or stage of the dialog should be.
@@ -1103,6 +1125,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     {
         throw new RuntimeException("Not implemented yet.");
 /*
+        TODO:
         try
         {
             ServletContext context = getServletContext();
@@ -1135,6 +1158,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 /*
         try
         {
+            TODO:
             ServletContext context = getServletContext();
             DatabaseContext dbContext = DatabaseContextFactory.getContext(getRequest(), context);
             StatementInfo.ResultInfo ri = StatementManager.executeSql(dbContext, this, dataSourceId, sql, params);

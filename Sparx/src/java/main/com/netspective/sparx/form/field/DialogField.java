@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.26 2003-07-09 13:12:00 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.27 2003-07-29 20:32:49 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -67,6 +67,9 @@ import javax.servlet.http.Cookie;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Document;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.Dialog;
@@ -411,6 +414,36 @@ public class DialogField implements TemplateConsumer
         public Object getValidationContextScope()
         {
             return value;
+        }
+
+        public void importFromXml(Element fieldStateElem)
+        {
+            String fieldName = fieldStateElem.getAttribute("name");
+            if(fieldName == null)
+                return;
+            if(fieldName != getQualifiedName())
+                throw new RuntimeException("Attempting to assign field state for '"+ fieldName +"' into '"+ getQualifiedName() +"'.");
+            getStateFlags().setValue(fieldStateElem.getAttribute("flags"));
+            setAdjacentAreaValue(fieldStateElem.getAttribute("adjacent-area-value"));
+            value.importFromXml(fieldStateElem);
+        }
+
+        public void exportToXml(Element parent)
+        {
+            Document doc = parent.getOwnerDocument();
+            Element fieldStateElem = doc.createElement("field-state");
+            String fieldName = getQualifiedName();
+            if(fieldName != null)
+            {
+                fieldStateElem.setAttribute("name", getQualifiedName());
+                String flagsText = getStateFlags().getFlagsText();
+                if(flagsText != null && flagsText.length() > 0)
+                    fieldStateElem.setAttribute("flags", flagsText);
+                if(adjacentAreaValue != null && adjacentAreaValue.length() > 0)
+                    fieldStateElem.setAttribute("adjacent-area-value", adjacentAreaValue);
+                value.exportToXml(fieldStateElem);
+                parent.appendChild(fieldStateElem);
+            }
         }
     }
 
