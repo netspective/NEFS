@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.13 2003-07-02 13:57:15 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.14 2003-08-28 00:42:01 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -78,6 +78,8 @@ import com.netspective.axiom.schema.column.ColumnsCollection;
 import com.netspective.axiom.schema.column.PrimaryKeyColumnsCollection;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.QueryExecutionLog;
+import com.netspective.axiom.sql.Query;
+import com.netspective.axiom.sql.Queries;
 import com.netspective.axiom.sql.dynamic.QueryDefnCondition;
 import com.netspective.axiom.sql.dynamic.SqlComparisonEnumeratedAttribute;
 import com.netspective.axiom.sql.dynamic.QueryDefnConditionConnectorEnumeratedAttribute;
@@ -93,6 +95,7 @@ import com.netspective.axiom.DatabasePolicy;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xml.template.*;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.validate.ValidationUtils;
 
 public class BasicTable implements Table, TemplateProducerParent, TemplateConsumer
 {
@@ -211,6 +214,26 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 throw new RuntimeException("Unable to find table '"+ hierarchyRef.getParent() +"' for '"+ getName() +"' parent hierarchy");
             parentTable.registerChildTable(this);
         }
+    }
+
+    public Queries getContainer()
+    {
+        return getSchema().getSqlManager().getQueries(); // we're storing queries in the global queries list
+    }
+
+    public String getNameSpaceId()
+    {
+        return getSchema().getName() + "." + getName();  // our namespace is the schema.tableName
+    }
+
+    public void setContainer(Queries container)
+    {
+        // we're storing queries in the global queries list so we ignore this
+    }
+
+    public void setNameSpaceId(String identifier)
+    {
+        // our namespace is the schema.tableName so we ignore this
     }
 
     public boolean isApplicationTable()
@@ -841,6 +864,20 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
+    public Query createQuery()
+    {
+        Query result = getSchema().getSqlManager().createQuery();
+        result.setNameSpace(this);
+        return result;
+    }
+
+    public void addQuery(Query query)
+    {
+        getSchema().getSqlManager().addQuery(query);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
     protected void copyTableDialogTemplate(Template dialogsPackageTemplate, TemplateElement elem, Map jexlVars)
     {
         TemplateElement dialogTemplate = dialogsPackageTemplate.addCopyOfChildAndReplaceExpressions(elem, jexlVars, false);
@@ -853,11 +890,25 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 TemplateElement dialogChildElem = (TemplateElement) dialogChildNode;
                 if(dialogChildElem.getElementName().equals("data-type-presentation"))
                 {
-                    Columns columns = getColumns();
-                    for(int c = 0; c < columns.size(); c++)
+                    String colsFilterRegEx = dialogChildElem.getAttributes().getValue("columns");
+                    if(colsFilterRegEx == null || colsFilterRegEx.length() == 0 || colsFilterRegEx.equals("*"))
                     {
-                        Column column = columns.get(c);
-                        column.addTableDialogTemplates(dialogTemplate, jexlVars);
+                        Columns columns = getColumns();
+                        for(int c = 0; c < columns.size(); c++)
+                        {
+                            Column column = columns.get(c);
+                            column.addTableDialogTemplates(dialogTemplate, jexlVars);
+                        }
+                    }
+                    else
+                    {
+                        Columns columns = getColumns();
+                        for(int c = 0; c < columns.size(); c++)
+                        {
+                            Column column = columns.get(c);
+                            ValidationUtils.matchRegexp(column.getName(), colsFilterRegEx);
+                            column.addTableDialogTemplates(dialogTemplate, jexlVars);
+                        }
                     }
                 }
                 else

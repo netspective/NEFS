@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.10 2003-07-19 00:34:54 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.11 2003-08-28 00:42:01 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -70,6 +70,7 @@ import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TablesCollection;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
+import com.netspective.axiom.SqlManager;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
@@ -91,6 +92,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
         XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
     }
 
+    private SqlManager sqlManager;
     private String name = "schema" + (counter++);
     private String xmlNodeName;
     private Tables tables = new TablesCollection();
@@ -99,8 +101,19 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     private TemplateProducers templateProducers;
     private Schema.TableTree structure;
 
-    public BasicSchema()
+    public BasicSchema(SqlManager sqlManager)
     {
+        setSqlManager(sqlManager);
+    }
+
+    public SqlManager getSqlManager()
+    {
+        return sqlManager;
+    }
+
+    public void setSqlManager(SqlManager sqlManager)
+    {
+        this.sqlManager = sqlManager;
     }
 
     public String getPresentationTemplatesNameSpaceId()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.6 2003-07-02 13:57:15 shahid.shah Exp $
+ * $Id: Table.java,v 1.7 2003-08-28 00:42:01 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -55,12 +55,13 @@ import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.sql.QueryExecutionLog;
+import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.Template;
 
-public interface Table
+public interface Table extends QueriesNameSpace
 {
     /**
      * Returns the schema that owns this table.

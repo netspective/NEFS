@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: Schema.java,v 1.2 2003-04-09 16:57:37 shahid.shah Exp $
+ * $Id: Schema.java,v 1.3 2003-08-28 00:42:01 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
+import com.netspective.axiom.sql.QueriesNameSpace;
+import com.netspective.axiom.SqlManager;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -64,6 +66,9 @@ public interface Schema
 
     public void setName(String name);
     public void setXmlNodeName(String xmlNodeName);
+
+    public SqlManager getSqlManager();
+    public void setSqlManager(SqlManager manager);
 
     /**
      * Factory method to construct a new table instance in this schema.
