@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<project default="manual.chunked">
+<project default="all-docs">
 
     <target name="setup-project-properties">
 
