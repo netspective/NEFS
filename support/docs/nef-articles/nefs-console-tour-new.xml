@@ -82,18 +82,6 @@
   </section>
 
   <section>
-    <title>Project Documentation</title>
-
-    <para>Console provides a centralized location for all project
-    documentation for any application. Instead of storing application code and
-    programmer documentation separately, Console brings tag documentation,
-    javadocs, and other project documents into a single easily accessible
-    place. Managers will no longer need to hunt for documents.</para>
-
-    <para></para>
-  </section>
-
-  <section>
     <title>Automatic Implementation Documentation</title>
 
     <para>The Console provides a centralized location for all project
@@ -110,10 +98,13 @@
       (using the XML definitions and XSLT stylesheets) all the pages,
       forms/dialogs, sql statements, schema objects, and other programming
       artifacts. The HTML based design documentation and functional specs help
-      your team visualiza various application components. Also, using simple
-      stylesheets developers can create docbook or MS word versions of their
-      application components (navigation, validation, dialogs, fields,
-      etc).</para>
+      your team visualiza various application components. </para>
+
+      <para><note>
+          <para>Also, using simple stylesheets developers can create docbook
+          or MS word versions of their application components (navigation,
+          validation, dialogs, fields, etc).</para>
+        </note></para>
     </section>
 
     <section>
@@ -283,7 +274,7 @@
         <para></para>
 
         <para><figure>
-            <title>Viewing Built-in and Custom Table Types</title>
+            <title>View Built-in and Custom Table Types</title>
 
             <mediaobject>
               <imageobject>
@@ -349,13 +340,13 @@
                 <row>
                   <entry><mediaobject>
                       <imageobject>
-                        <imagedata fileref="./resources/images/screen-console-qry-defn-catalog-small.gif" />
+                        <imagedata fileref="./resources/images/screen-console-qry-defn-doc-small.gif" />
                       </imageobject>
                     </mediaobject></entry>
 
                   <entry><mediaobject>
                       <imageobject>
-                        <imagedata fileref="./resources/images/screen-console-qry-defn-doc-small.gif" />
+                        <imagedata fileref="./resources/images/screen-console-qry-defn-catalog-small.gif" />
                       </imageobject>
                     </mediaobject></entry>
                 </row>
@@ -373,7 +364,67 @@
         All the built-in and custom commands can be viewed through the
         Commands catalog in the Console.</para>
 
-        <para></para>
+        <para><figure>
+            <title>Commands Catalog for Built-in and Custom Commands</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-command-section-small.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>The full documentation for each command is also available
+        automatically through the Console. </para>
+
+        <para><figure>
+            <title>Command Documentation</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-cmd-doc-small.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </section>
+
+      <section>
+        <title>Value Sources</title>
+
+        <para>Value Sources allow dynamic data to be included in XML without
+        creating a programming language inside XML They allow common business
+        logic and business values to be stored in shareable instance and then
+        used either in XML or Java files where necessary. </para>
+
+        <para>The NEF ships with many built-in value sources and you can
+        create as many value sources as you need on your own. You can view a
+        list of all of the value sources available to your project (including
+        all built-in value sources and your own custom value sources) through
+        the Value Sources Catalog within the Console.</para>
+
+        <para><figure>
+            <title>Value Sources Catalog for Built-in and Custom Value
+            Sources</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-vs-doc-small.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>The full documentation for each value source is automatically
+        available through the Console. </para>
+
+        <para><figure>
+            <title>Value Source Documentation</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-vs-doc.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
       </section>
     </section>
   </section>
@@ -400,7 +451,46 @@
     <para>Many servlet-context variables are also visible within Console,
     including the current execution mode (Production, Testing, or
     Development). The NEFS supports multiple runtime environments to support
-    different phases of development.</para>
+    different phases of development. Now you can easily access the full
+    configuration details from a central console application. The availability
+    of complete configuration information greatly helps in the debugging
+    process. </para>
+
+    <para><table frame="none">
+        <title>Easy Management of Configuration Parameters</title>
+
+        <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry><mediaobject>
+                  <imageobject>
+                    <imagedata fileref="./resources/images/screen-console-servlet-config-small.gif" />
+                  </imageobject>
+                </mediaobject></entry>
+
+              <entry><mediaobject>
+                  <imageobject>
+                    <imagedata fileref="./resources/images/screen-console-runtime-env-small.gif" />
+                  </imageobject>
+                </mediaobject></entry>
+            </row>
+
+            <row>
+              <entry><mediaobject>
+                  <imageobject>
+                    <imagedata fileref="./resources/images/screen-console-classpath-small.gif" />
+                  </imageobject>
+                </mediaobject></entry>
+
+              <entry><mediaobject>
+                  <imageobject>
+                    <imagedata fileref="./resources/images/screen-console-dependencies-small.gif" />
+                  </imageobject>
+                </mediaobject></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></para>
   </section>
 
   <section>
@@ -487,6 +577,47 @@
           </tgroup>
         </table></para>
     </section>
+
+    <section>
+      <title>Custom Dialog Types and Field Types</title>
+
+      <para>A Sparx dialog is a container/manager object consisting of data
+      fields that provide the flexibility to create customized forms for data
+      processing. Sparx provides different types of dialogs to be used for
+      different purposes. For example, Schema-Record-Editor dialogs are used
+      for editing the records of a database table. You can also define your
+      own dialog types which are automatically documented through the
+      Console.</para>
+
+      <para><figure>
+          <title>Customization through Dialog Types</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-dialog-type.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>They also provide the ability to create new fields or modify
+      existing ones. These fields are similar to HTML fields but are far more
+      powerful because they can format and validate themselves according to
+      rules that you declare. </para>
+
+      <para>Sparx comes with lots of pre-defined field types. The Console
+      always displays all of the available field types (including all built-in
+      field types and any custom field types you register).</para>
+
+      <para><figure>
+          <title>Customize Dialogs using Custom Field Types</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-field-types-small.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </section>
   </section>
 
   <section>
@@ -498,14 +629,12 @@
     the forms and statements. No servlets, or JSPs need to be written for
     basic testing of forms, validations, and SQL statements. This provides the
     ability to quickly test things "<emphasis>in container</emphasis>" without
-    requiring any extra effort from the development team.</para>
-
-    <para><important>
+    requiring any extra effort from the development team.<note>
         <para>The testing is done using the same classloader, classpaths, and
         other container (app server) configurations as the ones used by the
         application. So problems related to the container are easier to
         find.</para>
-      </important></para>
+      </note></para>
 
     <para>Once initial testing is completed and requirements are solidified,
     the forms and statements can be aggregated to create interactive
@@ -515,14 +644,37 @@
     <section>
       <title>Commands</title>
 
-      <para></para>
+      <para>Each command may be unit tested inside the Console before using in
+      the integrated application.</para>
+
+      <para><figure>
+          <title>Automatically Generated Unit Test for a Built-in or Custom
+          Command</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-cmd-unit-test-small.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </section>
 
     <section>
       <title>Value Sources</title>
 
-      <para>Provides dynamic access to common business logic and may be
-      considered a business rules library.</para>
+      <para>Each value source may be unit tested inside the Console before
+      using in the integrated application.</para>
+
+      <para><figure>
+          <title>Automatically Generated Unit Test for a Built-in or Custom
+          Value Source</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-vs-unit-test-small.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </section>
 
     <section>
@@ -535,9 +687,15 @@
       automatically created and may be executed by anyone with access to
       Console.</para>
 
-      <para><screenshot>
-          <graphic fileref="./resources/images/screen-console-dialog-unit-test-small.gif" />
-        </screenshot></para>
+      <para><figure>
+          <title>Automatically Generated Unit Test for a Dialog</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-dialog-unit-test-small.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </section>
 
     <section>
@@ -581,7 +739,7 @@
     </section>
 
     <section>
-      <title>Query Definitions</title>
+      <title>Dynamic Queries</title>
 
       <para></para>
     </section>
@@ -670,18 +828,33 @@
   <section>
     <title>Reverse Engineering the Existing Database</title>
 
-    <para></para>
+    <para>The Console provides a facility to reverse engineer a schema from an
+    existing JDBC data source into Axiom's schema XML.</para>
+
+    <para><figure>
+        <title>Reverse Engineer an Existing Database</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="./resources/images/screen-console-reverse-engr-small.gif" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </section>
 
   <section>
     <title>Automated Code Generation</title>
 
-    <para>HTML, SQL DDL/DML and client/server side script generation</para>
+    <para>Once declared, the schema descriptor supports completely automatic
+    generation of SQL DML (insert/updates/removes), SQL DDL (create tables,
+    objects, etc), and XML import/export.</para>
+
+    <para>HTML, client/server side script generation</para>
 
     <section>
       <title>DAL Generation</title>
 
-      <para>Automatically denerates a complete Java O-R map to every table in
+      <para>Automatically generates a complete Java O-R map to every table in
       the schema.</para>
     </section>
 
@@ -896,7 +1069,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="./resources/images/screen-books-app-console.gif" />
+            <imagedata fileref="./resources/images/screen-books-app-console-small.gif" />
           </imageobject>
         </mediaobject>
       </figure></para>
