@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListsManager.java,v 1.3 2003-03-14 04:04:18 shahid.shah Exp $
+ * $Id: AccessControlListsManager.java,v 1.4 2003-03-16 16:14:32 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.acl;
@@ -52,7 +52,7 @@ public interface AccessControlListsManager
 
     public void addAccessControlList(AccessControlList acl);
 
-    public AccessControlList getDefaultAccessControList();
+    public AccessControlList getDefaultAccessControlList();
 
     public AccessControlList getAccessControlList(String name);
 

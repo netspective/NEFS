@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: AccessControlLists.java,v 1.1 2003-03-14 04:04:18 shahid.shah Exp $
+ * $Id: AccessControlLists.java,v 1.2 2003-03-16 16:14:32 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.acl;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -122,10 +123,9 @@ public class AccessControlLists
         {
             acl.setName(AccessControlList.ACLNAME_DEFAULT);
             defaultAcl = acl;
-            acls.put(AccessControlList.ACLNAME_DEFAULT, acl);
         }
-        else
-            acls.put(AccessControlList.ACLNAME_DEFAULT, acl);
+
+		acls.put(acl.getName(), acl);
     }
 
     public Permission getPermission(String name) throws PermissionNotFoundException
@@ -146,4 +146,9 @@ public class AccessControlLists
     {
         return acls.size();
     }
+
+	public Set getAccessControlListNames()
+	{
+		return acls.keySet();
+	}
 }
