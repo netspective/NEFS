@@ -39,10 +39,15 @@
  */
 
 /**
- * $Id: NavigationErrorPage.java,v 1.2 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: NavigationErrorPage.java,v 1.3 2004-04-22 02:07:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
+
+import java.io.Writer;
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 
 import com.netspective.commons.lang.ClassMap;
 
@@ -92,5 +97,23 @@ public class NavigationErrorPage extends NavigationPage
     public boolean canHandle(Class exceptionClass, boolean checkSuperClasses)
     {
         return exceptionsMap.get(exceptionClass, checkSuperClasses) != null;
+    }
+
+    /**
+     * Render the normal page body (just like any other page) but be sure to trap all exceptions so that
+     * we don't end up in an infinite loop.
+     */
+    public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
+    {
+        try
+        {
+            super.handlePageBody(writer, nc);
+        }
+        catch (Exception e)
+        {
+            getLog().error("Exception encountered within an error page -- bad programming practice", e);
+            // make sure not to rethrow any exceptions because the NavigationPage may get stuck in an
+            // infinite loop if the error page itself throws any exceptions
+        }
     }
 }
