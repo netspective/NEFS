@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlServerDatabasePolicy.java,v 1.4 2003-12-03 01:40:29 shahid.shah Exp $
+ * $Id: SqlServerDatabasePolicy.java,v 1.5 2003-12-15 20:12:42 dan.bron Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -61,6 +61,7 @@ public class SqlServerDatabasePolicy extends AnsiDatabasePolicy
 
             // don't do on delete cascade because SQL Server 2000 is very strict about paths to cascade
             setFkeyConstraintTableClauseFormat("CONSTRAINT ${fkey.constraintName} FOREIGN KEY (${fkey.sourceColumns.getOnlyNames(', ')}) REFERENCES ${fkey.referencedColumns.first.table.name} (${fkey.referencedColumns.getOnlyNames(', ')})");
+            setFkeyConstraintAlterTableStatementFormat("ALTER TABLE ${fkey.sourceColumns.first.table.name} ADD " + getFkeyConstraintTableClauseFormat());
         }
     }
 
