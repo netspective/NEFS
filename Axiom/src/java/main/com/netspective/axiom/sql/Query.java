@@ -52,8 +52,11 @@ import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XmlDataModelSchema.InputSourceLocatorListener;
+import com.netspective.commons.io.InputSourceTracker;
+import com.netspective.commons.io.InputSourceLocator;
 
-public class Query
+public class Query implements InputSourceLocatorListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
     public static final String LISTPARAM_PREFIX = "param-list:";
@@ -139,6 +142,7 @@ public class Query
         }
     }
 
+    private InputSourceLocator inputSourceLocator;
     private Log log = LogFactory.getLog(Query.class);
     private QueriesNameSpace nameSpace;
     private String queryName;
@@ -157,6 +161,16 @@ public class Query
         queryNumber++;
         setNameSpace(nameSpace);
         setName(this.getClass().getName() + "-" + queryNumber);
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator locator)
+    {
+        this.inputSourceLocator = locator;
     }
 
     public Log getLog()

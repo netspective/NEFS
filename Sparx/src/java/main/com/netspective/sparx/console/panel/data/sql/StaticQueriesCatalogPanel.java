@@ -42,6 +42,7 @@ import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.sql.Queries;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryExecutionLog;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
@@ -102,6 +103,10 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
         column = new NumericColumn();
         column.setHeading(new StaticValueSource("Fail"));
         catalogReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Source"));
+        catalogReport.addColumn(column);
     }
 
     public StaticQueriesCatalogPanel()
@@ -111,7 +116,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        return new CatalogDataSource(nc.getSqlManager(), nc.getHttpRequest().getParameter(QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY));
+        return new CatalogDataSource(nc, nc.getSqlManager(), nc.getHttpRequest().getParameter(QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY));
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -121,6 +126,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
     public class CatalogDataSource extends AbstractHtmlTabularReportDataSource
     {
+        private NavigationContext nc;
         private Queries queries;
         private Query activeRowQuery;
         private String selectedQueryName;
@@ -148,9 +154,10 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
-        public CatalogDataSource(SqlManager sqlManager, String selectedQueryName)
+        public CatalogDataSource(NavigationContext nc, SqlManager sqlManager, String selectedQueryName)
         {
             super();
+            this.nc = nc;
             queries = sqlManager.getQueries();
             this.selectedQueryName = selectedQueryName;
 
@@ -288,6 +295,13 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
                         case 9:
                             return stats.averageBindParamsTime > 0 ? new Integer(stats.totalFailed) : null;
                     }
+
+                case 10:
+                    final InputSourceLocator inputSourceLocator = activeRowQuery.getInputSourceLocator();
+                    if(inputSourceLocator != null)
+                        return "<code>" + nc.getConsoleFileBrowserLink(inputSourceLocator.getInputSourceTracker().getIdentifier(), true) + inputSourceLocator.getLineNumbersText() + "</code>";
+                    else
+                        return "&nbsp;";
 
                 default:
                     return null;
