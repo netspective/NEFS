@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.29 2003-08-31 23:03:38 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.30 2003-10-19 16:55:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -126,6 +126,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         // get all the CSS files associated with this theme/style combination
         Theme theme = getTheme();
 
+        writer.write("	<link rel=\"SHORTCUT ICON\" href=\"" + theme.getResourceUrl("/images/favicon.ico") + "\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/general.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/navigation.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-input.css") + "\" type=\"text/css\">\n");
