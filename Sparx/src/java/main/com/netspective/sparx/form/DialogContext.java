@@ -691,9 +691,11 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
             if(dialog.isValid(this))
             {
-                state.setExecuteMode();
+                state.setExecuteMode(true);
                 autoExecuted = autoExecuteRequested;
             }
+            else
+                state.setExecuteMode(false);
         }
 
         dialog.makeStateChanges(this, STATECALCSTAGE_AFTER_VALIDATION);

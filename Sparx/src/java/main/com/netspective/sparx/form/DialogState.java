@@ -157,10 +157,10 @@ public class DialogState implements Serializable
         return executeMode;
     }
 
-    public void setExecuteMode()
+    public void setExecuteMode(boolean isInExecMode)
     {
-        executeMode = true;
-        incExecSequence();
+        executeMode = isInExecMode;
+        if(isInExecMode) incExecSequence();
     }
 
     /**
