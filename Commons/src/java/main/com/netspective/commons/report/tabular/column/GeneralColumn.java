@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.7 2003-04-03 18:40:22 shahbaz.javeed Exp $
+ * $Id: GeneralColumn.java,v 1.8 2003-04-04 20:12:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -104,7 +104,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     private Format formatter;
     private String outputPattern;
     private int width;
-    private long flags;
+    private Flags flags;
     private String breakHeader;
     private List conditionals;
     private NumberFormat generalNumberFmt = NumberFormat.getNumberInstance();
@@ -112,6 +112,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     public GeneralColumn()
     {
         setColIndex(-1);
+        flags = createFlags();
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
@@ -182,10 +183,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     public void setUrl(ValueSource url)
     {
         this.url = url;
-        if(url != null)
-            setFlag(COLFLAG_WRAPURL);
-        else
-            clearFlag(COLFLAG_WRAPURL);
+        getFlags().updateFlag(Flags.WRAP_URL, url != null);
     }
 
     public ValueSource getUrlAnchorAttrs()
@@ -196,10 +194,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     public void setUrlAnchorAttrs(ValueSource urlAnchorAttrs)
     {
         this.urlAnchorAttrs = urlAnchorAttrs;
-        if(urlAnchorAttrs != null)
-            setFlag(COLFLAG_HAVEANCHORATTRS);
-        else
-            clearFlag(COLFLAG_HAVEANCHORATTRS);
+        getFlags().updateFlag(Flags.HAVE_ANCHOR_ATTRS, urlAnchorAttrs != null);
     }
 
     public final int getWidth()
@@ -222,29 +217,19 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         align = value.getValueIndex();
     }
 
-    public final long getFlags()
+    public Flags createFlags()
+    {
+        return new Flags();
+    }
+
+    public Flags getFlags()
     {
         return flags;
     }
 
-    public final boolean flagIsSet(long flag)
+    public void setFlags(Flags flags)
     {
-        return (flags & flag) == 0 ? false : true;
-    }
-
-    public final void setFlag(long flag)
-    {
-        flags |= flag;
-    }
-
-    public final void clearFlag(long flag)
-    {
-        flags &= ~flag;
-    }
-
-    public final void updateFlag(long flag, boolean set)
-    {
-        if(set) flags |= flag; else flags &= ~flag;
+        this.flags.copy(flags);
     }
 
     public final String getCalcCmd()
@@ -280,13 +265,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     public final void setOutput(String value)
     {
         outputPattern = value;
-        if(outputPattern != null)
-        {
-            outputPattern = value;
-            setFlag(COLFLAG_HASOUTPUTPATTERN);
-        }
-        else
-            clearFlag(COLFLAG_HASOUTPUTPATTERN);
+        getFlags().updateFlag(Flags.HAS_OUTPUT_PATTERN, outputPattern != null);
     }
 
     public String resolvePattern(String srcStr)
@@ -297,7 +276,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         if(findLoc == -1)
             return srcStr;
 
-        setFlag(COLFLAG_HASPLACEHOLDERS);
+        getFlags().setFlag(Flags.HAS_PLACEHOLDERS);
 
         String replacedIn = srcStr;
         String replaceWith = PLACEHOLDER_OPEN + colIndex + PLACEHOLDER_CLOSE;
@@ -372,30 +351,6 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         conditionals.add(state);
     }
 
-    public void setAllowSort(boolean flag)
-    {
-        if(flag)
-            setFlag(TabularReportColumn.COLFLAG_SORT_ALLOWED);
-        else
-            clearFlag(TabularReportColumn.COLFLAG_SORT_ALLOWED);
-    }
-
-    public void setWordWrap(boolean flag)
-    {
-        if(flag)
-            setFlag(TabularReportColumn.COLFLAG_NOWORDBREAKS);
-        else
-            clearFlag(TabularReportColumn.COLFLAG_NOWORDBREAKS);
-    }
-
-    public void setDisplay(boolean flag)
-    {
-        if(flag)
-            setFlag(TabularReportColumn.COLFLAG_HIDDEN);
-        else
-            clearFlag(TabularReportColumn.COLFLAG_HIDDEN);
-    }
-
     public void finalizeContents(TabularReport report)
     {
     }
@@ -410,7 +365,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         protected TabularReportValueContext rc;
         protected String heading;
         protected ColumnDataCalculator calc;
-        protected long flags;
+        protected Flags flags;
         protected String outputFormat;
         protected String url;
         protected String urlAnchorAttrs;
@@ -431,23 +386,23 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
                     throw new RuntimeException("Unable to find calc '"+ calcCmd +"' in column " + getHeading());
             }
 
-            flags = GeneralColumn.this.getFlags();
+            flags = (Flags) GeneralColumn.this.getFlags().cloneFlags();
 
-            if((flags & TabularReportColumn.COLFLAG_HIDDEN) == 0)
+            if(! flags.flagIsSet(Flags.HIDDEN))
             {
-                if(flagIsSet(TabularReportColumn.COLFLAG_HASOUTPUTPATTERN))
+                if(flags.flagIsSet(Flags.HAS_OUTPUT_PATTERN))
                     outputFormat = resolvePattern(GeneralColumn.this.getOutput());
 
-                if(flagIsSet(TabularReportColumn.COLFLAG_WRAPURL))
+                if(flags.flagIsSet(Flags.WRAP_URL))
                     url = resolvePattern(GeneralColumn.this.getUrl().getValue(rc).getTextValue());
 
-                if(flagIsSet(TabularReportColumn.COLFLAG_HAVEANCHORATTRS))
+                if(flags.flagIsSet(Flags.HAVE_ANCHOR_ATTRS))
                     urlAnchorAttrs = resolvePattern(GeneralColumn.this.getUrlAnchorAttrs().getValue(rc).getTextValue());
                 else
                     urlAnchorAttrs = "";
             }
 
-            if(flagIsSet(TabularReportColumn.COLFLAG_HAVECONDITIONALS))
+            if(flags.flagIsSet(Flags.HAVE_CONDITIONALS))
             {
                 List conditionals = getConditionals();
                 for(int i = 0; i < conditionals.size(); i++)
@@ -457,12 +412,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 
         public final boolean isVisible()
         {
-            return (flags & TabularReportColumn.COLFLAG_HIDDEN) == 0 ? true : false;
-        }
-
-        public final boolean isHidden()
-        {
-            return (flags & TabularReportColumn.COLFLAG_HIDDEN) == 0 ? false : true;
+            return ! flags.flagIsSet(Flags.HIDDEN);
         }
 
         public final boolean haveCalc()
@@ -475,29 +425,9 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             return calc;
         }
 
-        public final long getFlags()
+        public final TabularReportColumn.Flags getFlags()
         {
             return flags;
-        }
-
-        public final boolean flagIsSet(long flag)
-        {
-            return (flags & flag) == 0 ? false : true;
-        }
-
-        public final void setFlag(long flag)
-        {
-            flags |= flag;
-        }
-
-        public final void clearFlag(long flag)
-        {
-            flags &= ~flag;
-        }
-
-        public final void updateFlag(long flag, boolean set)
-        {
-            if(set) flags |= flag; else flags &= ~flag;
         }
 
         public final String getHeading()
@@ -534,7 +464,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
                     break;
             }
 
-            if(flagIsSet(COLFLAG_NOWORDBREAKS))
+            if(flags.flagIsSet(Flags.PREVENT_WORD_WRAP))
                 style.append(" white-space: nowrap;");
 
             return style.toString();
@@ -556,12 +486,12 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 
             if(value != null)
             {
-                setFlag(TabularReportColumn.COLFLAG_WRAPURL);
+                flags.setFlag(Flags.WRAP_URL);
                 url = resolvePattern(value);
             }
             else
             {
-				clearFlag(TabularReportColumn.COLFLAG_WRAPURL);
+				flags.clearFlag(Flags.WRAP_URL);
                 url = null;
             }
         }
@@ -571,12 +501,12 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             urlAnchorAttrs = value;
             if(value != null)
             {
-                setFlag(TabularReportColumn.COLFLAG_HAVEANCHORATTRS);
+                flags.setFlag(Flags.HAVE_ANCHOR_ATTRS);
                 urlAnchorAttrs = resolvePattern(value);
             }
             else
             {
-	            clearFlag(TabularReportColumn.COLFLAG_HAVEANCHORATTRS);
+	            flags.clearFlag(Flags.HAVE_ANCHOR_ATTRS);
                 urlAnchorAttrs = "";
             }
 

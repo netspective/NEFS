@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextReportSkin.java,v 1.4 2003-04-04 17:14:23 shahbaz.javeed Exp $
+ * $Id: TextReportSkin.java,v 1.5 2003-04-04 20:12:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -191,7 +191,7 @@ public class TextReportSkin implements TabularReportSkin
                     continue;
 
                 String data =
-                        state.flagIsSet(TabularReportColumn.COLFLAG_HASOUTPUTPATTERN) ?
+                        state.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN) ?
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
 

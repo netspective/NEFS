@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.5 2003-04-04 17:15:28 shahbaz.javeed Exp $
+ * $Id: ReportTest.java,v 1.6 2003-04-04 20:12:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.report;
@@ -50,14 +50,12 @@ import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.text.TextUtils;
 import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.text.Format;
 import java.text.DecimalFormat;
 
 public class ReportTest extends TestCase
@@ -193,14 +191,13 @@ public class ReportTest extends TestCase
 
 		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
 		TabularReportValueContext vc = new BasicTabularReportValueContext(report, skin);
-		BasicTabularReportValueContext bvc = (BasicTabularReportValueContext) vc;
 
         assertEquals(0, vc.getListeners().size());
 		assertEquals(report, vc.getReport());
 		assertEquals(skin, vc.getSkin());
 
 		assertEquals(4, vc.getVisibleColsCount());
-		vc.getState(3).setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+		vc.getState(3).getFlags().setFlag(TabularReportColumn.Flags.HIDDEN);
 		assertEquals(4, vc.getVisibleColsCount());
 
 		StringWriter expectedSw = new StringWriter();
@@ -247,8 +244,6 @@ public class ReportTest extends TestCase
 		TabularReportColumns columns = vc.getColumns();
 		assertEquals(4, columns.size());
 
-		System.out.println();
-
 		String[] colHeading = new String[] { "Column A", "Column B", "Column C", "Column D" };
 		for (int i = 0; i < columns.size(); i ++)
 		{
@@ -294,7 +289,7 @@ public class ReportTest extends TestCase
 			// Tests that apply to the non-output columns only ...
 			if (3 > i)
 			{
-				assertEquals(0, column.getFlags());
+				assertEquals(0, column.getFlags().getFlags());
 				assertNull(column.getOutput());
 			}
 
@@ -331,8 +326,8 @@ public class ReportTest extends TestCase
 			// Tests that apply to the output column only ...
 			if (3 == i)
 			{
-				assertEquals(TabularReportColumn.COLFLAG_HASOUTPUTPATTERN, column.getFlags());
 				assertEquals("${0} ${1} ${2}", column.getOutput());
+                assertEquals(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN, column.getFlags().getFlags());
 			}
 
 //			System.out.println("Column #" + i);
@@ -386,16 +381,16 @@ public class ReportTest extends TestCase
 				assertTrue(trcState[i].haveCalc());
 				assertNotNull(trcState[i].getCalc());
 
-				assertEquals(0, trcState[i].getFlags());
-				assertFalse(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
-				trcState[i].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
-				assertTrue(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
-				trcState[i].clearFlag(TabularReportColumn.COLFLAG_HIDDEN);
-				assertFalse(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
-				trcState[i].updateFlag(TabularReportColumn.COLFLAG_HIDDEN, true);
-				assertTrue(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
-				trcState[i].updateFlag(TabularReportColumn.COLFLAG_HIDDEN, false);
-				assertFalse(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
+				assertEquals(0, trcState[i].getFlags().getFlags());
+				assertFalse(trcState[i].getFlags().flagIsSet(TabularReportColumn.Flags.HIDDEN));
+				trcState[i].getFlags().setFlag(TabularReportColumn.Flags.HIDDEN);
+				assertTrue(trcState[i].getFlags().flagIsSet(TabularReportColumn.Flags.HIDDEN));
+				trcState[i].getFlags().clearFlag(TabularReportColumn.Flags.HIDDEN);
+				assertFalse(trcState[i].getFlags().flagIsSet(TabularReportColumn.Flags.HIDDEN));
+				trcState[i].getFlags().updateFlag(TabularReportColumn.Flags.HIDDEN, true);
+				assertTrue(trcState[i].getFlags().flagIsSet(TabularReportColumn.Flags.HIDDEN));
+				trcState[i].getFlags().updateFlag(TabularReportColumn.Flags.HIDDEN, false);
+				assertFalse(trcState[i].getFlags().flagIsSet(TabularReportColumn.Flags.HIDDEN));
 
 				assertNull(trcState[i].getOutputFormat());
 			}

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AbstractTabularReport.java,v 1.2 2003-04-03 14:07:25 shahid.shah Exp $
+ * $Id: AbstractTabularReport.java,v 1.3 2003-04-04 20:12:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -124,7 +124,7 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
             TabularReportColumn colDefn = columns.getColumn(c);
             colDefn.finalizeContents(this);
 
-            if(colDefn.flagIsSet(TabularReportColumn.COLFLAG_HASPLACEHOLDERS))
+            if(colDefn.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_PLACEHOLDERS))
                 flags.setFlag(Flags.HAS_PLACE_HOLDERS);
         }
     }

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: TabularReportColumnConditionalApplyFlag.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: TabularReportColumnConditionalApplyFlag.java,v 1.2 2003-04-04 20:12:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -74,7 +74,6 @@ public class TabularReportColumnConditionalApplyFlag implements TabularReportCol
 
     static
     {
-        flagValueMap.put("hidden", new Long(TabularReportColumn.COLFLAG_HIDDEN));
     }
 
     public TabularReportColumnConditionalApplyFlag()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportColumnState.java,v 1.2 2003-03-28 04:13:08 shahid.shah Exp $
+ * $Id: TabularReportColumnState.java,v 1.3 2003-04-04 20:12:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -52,11 +52,7 @@ public interface TabularReportColumnState
     public boolean haveCalc();
     public ColumnDataCalculator getCalc();
 
-    public long getFlags();
-    public boolean flagIsSet(long flag);
-    public void setFlag(long flag);
-    public void clearFlag(long flag);
-    public void updateFlag(long flag, boolean set);
+    public TabularReportColumn.Flags getFlags();
 
     public String getHeading();
     public String getOutputFormat();

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TabularReportColumn.java,v 1.3 2003-03-31 20:16:25 shahid.shah Exp $
+ * $Id: TabularReportColumn.java,v 1.4 2003-04-04 20:12:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -61,22 +61,45 @@ import java.util.List;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
 import com.netspective.commons.report.tabular.TabularReport;
 
 public interface TabularReportColumn
 {
-    static public final long COLFLAG_HIDDEN = 1;
-    static public final long COLFLAG_HASPLACEHOLDERS = COLFLAG_HIDDEN * 2;
-    static public final long COLFLAG_HASOUTPUTPATTERN = COLFLAG_HASPLACEHOLDERS * 2;
-    static public final long COLFLAG_WRAPURL = COLFLAG_HASOUTPUTPATTERN * 2;
-    static public final long COLFLAG_HAVEANCHORATTRS = COLFLAG_WRAPURL * 2;
-    static public final long COLFLAG_HAVECONDITIONALS = COLFLAG_HAVEANCHORATTRS * 2;
-    static public final long COLFLAG_NOWORDBREAKS = COLFLAG_HAVECONDITIONALS * 2;
-    static public final long COLFLAG_SORT_ALLOWED = COLFLAG_NOWORDBREAKS * 2;
-    static public final long COLFLAG_SORTED_ASCENDING = COLFLAG_SORT_ALLOWED * 2;
-    static public final long COLFLAG_SORTED_DESCENDING = COLFLAG_SORTED_ASCENDING * 2;
-    static public final long COLFLAG_CUSTOMSTART = COLFLAG_SORTED_DESCENDING * 2;
+    public static final Flags.FlagDefn[] FLAG_DEFNS = new Flags.FlagDefn[]
+    {
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN),
+        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_PLACEHOLDERS", Flags.HAS_PLACEHOLDERS),
+        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_OUTPUT_PATTERN", Flags.HAS_OUTPUT_PATTERN),
+        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "WRAP_URL", Flags.WRAP_URL),
+        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAVE_ANCHOR_ATTRS", Flags.HAVE_ANCHOR_ATTRS),
+        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAVE_CONDITIONALS", Flags.HAVE_CONDITIONALS),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "PREVENT_WORD_WRAP", Flags.PREVENT_WORD_WRAP),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "ALLOW_SORT", Flags.ALLOW_SORT),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "SORTED_ASCENDING", Flags.SORTED_ASCENDING),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "SORTED_DESCENDING", Flags.SORTED_DESCENDING)
+    };
+
+    public class Flags extends XdmBitmaskedFlagsAttribute
+    {
+        public static final int HIDDEN = 1;
+        public static final int HAS_PLACEHOLDERS = HIDDEN * 2;
+        public static final int HAS_OUTPUT_PATTERN = HAS_PLACEHOLDERS * 2;
+        public static final int WRAP_URL = HAS_OUTPUT_PATTERN * 2;
+        public static final int HAVE_ANCHOR_ATTRS = WRAP_URL * 2;
+        public static final int HAVE_CONDITIONALS = HAVE_ANCHOR_ATTRS * 2;
+        public static final int PREVENT_WORD_WRAP = HAVE_CONDITIONALS * 2;
+        public static final int ALLOW_SORT = PREVENT_WORD_WRAP * 2;
+        public static final int SORTED_ASCENDING = ALLOW_SORT * 2;
+        public static final int SORTED_DESCENDING = SORTED_ASCENDING * 2;
+        public static final int START_CUSTOM = SORTED_DESCENDING * 2;
+
+        public FlagDefn[] getFlagsDefns()
+        {
+            return FLAG_DEFNS;
+        }
+    }
 
     static public final int GETDATAFLAGS_DEFAULT = 0;
     static public final int GETDATAFLAG_DO_CALC = 1;
@@ -141,15 +164,7 @@ public interface TabularReportColumn
 
     public void setAlign(AlignStyle value);
 
-    public long getFlags();
-
-    public boolean flagIsSet(long flag);
-
-    public void setFlag(long flag);
-
-    public void clearFlag(long flag);
-
-    public void updateFlag(long flag, boolean set);
+    public Flags getFlags();
 
     public String getCalcCmd();
 
@@ -166,8 +181,6 @@ public interface TabularReportColumn
     public void setOutput(String value);
 
     public String resolvePattern(String srcStr);
-
-    public void setWordWrap(boolean wrap);
 
     public String getBreak();
 
