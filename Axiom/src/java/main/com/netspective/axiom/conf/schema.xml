@@ -328,7 +328,7 @@
 
         <column name="id" type="enumeration-id" primarykey="yes" descr="The value associated with a single enum"/>
         <column name="caption" type="text" size="${params.capsize}" required="yes" descr="The name/text an end-user would see"/>
-        <column name="abbrev" type="text" size="${params.abbrevsize}" unique="yes" descr="An abbreviated form of the caption"/>
+        <column name="abbrev" type="text" size="${params.abbrevsize}" descr="An abbreviated form of the caption"/>
     </table-type>
 
     <!-- ************************************************************************** -->
