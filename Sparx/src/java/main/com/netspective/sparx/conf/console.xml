@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.31 2003-05-10 16:50:00 shahid.shah Exp $
+  * $Id: console.xml,v 1.32 2003-05-10 18:14:22 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -54,6 +54,7 @@
                             <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogAttributesPanel"/>
                             <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsPanel"/>
                             <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsHtmlPanel"/>
+                            <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsValidationPanel"/>
                         </panels>
                         <panel type="command" command="dynamic,simple-expr:dialog,${request:selected-dialog-id}"/>
                     </panels>

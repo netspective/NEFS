@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.4 2003-05-10 16:50:01 shahid.shah Exp $
+ * $Id: TextField.java,v 1.5 2003-05-10 18:14:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -124,11 +124,33 @@ public class TextField extends DialogField
         initialize();
     }
 
-    public void initialize()
+    public ValidationRules constructValidationRules()
     {
+        ValidationRules rules = super.constructValidationRules();
         textValidationRule = new TextValueValidationRule();
         textValidationRule.setMinLength(0);
         textValidationRule.setMaxLength(255);
+        rules.addRule(textValidationRule);
+        return rules;
+    }
+
+    public void addValidation(ValidationRules rules)
+    {
+        super.addValidation(rules);
+
+        // hang onto the text validation rule since we're going to need it for javascript definition and rendering
+        boolean found = false;
+        for(int i = 0; i < rules.size(); i++)
+        {
+            if(rules.get(i) instanceof TextValueValidationRule)
+            {
+                if(found)
+                    throw new RuntimeException("Multiple text validation rules not allowed.");
+
+                textValidationRule = (TextValueValidationRule) rules.get(i);
+                found = true;
+            }
+        }
     }
 
     public DialogField.Flags createFlags()
@@ -164,26 +186,6 @@ public class TextField extends DialogField
     public void setFormatPattern(String formatPattern)
     {
         this.formatPattern = formatPattern;
-    }
-
-    public void addValidation(ValidationRules rules)
-    {
-        super.addValidation(rules);
-
-        // hang onto the text validation rule since we're going to need it for javascript definition and rendering
-        for(int i = 0; i < rules.size(); i++)
-        {
-            if(rules.get(i) instanceof TextValueValidationRule)
-            {
-                textValidationRule = (TextValueValidationRule) rules.get(i);
-                return;
-            }
-        }
-
-        textValidationRule = new TextValueValidationRule();
-        textValidationRule.setCaption(getCaption());
-        textValidationRule.setMinLength(0);
-        textValidationRule.setMaxLength(0);
     }
 
     /**

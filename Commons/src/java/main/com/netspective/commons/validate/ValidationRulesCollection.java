@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValidationRulesCollection.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: ValidationRulesCollection.java,v 1.2 2003-05-10 18:13:36 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
@@ -63,13 +63,14 @@ public class ValidationRulesCollection implements ValidationRules
 
     public void addRule(ValidationRule rule)
     {
+        rules.remove(rule); // if another rule with the same ID or instance is already in the list, remove it
         rules.add(rule);
     }
 
     public void merge(ValidationRules rules)
     {
         for(int i = 0; i < rules.size(); i++)
-            this.rules.add(rules.get(i));
+            addRule(rules.get(i));
     }
 
     public ValidationRule get(int i)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.12 2003-04-07 17:11:45 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.13 2003-05-10 18:13:36 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -374,6 +374,11 @@ public class XmlDataModelSchema
         return attributeSetters;
     }
 
+    public Map getAttributeAccessors()
+    {
+        return attributeAccessors;
+    }
+
     public Map getAttributeSetterMethods()
     {
         return attributeSetterMethods;
@@ -625,6 +630,7 @@ public class XmlDataModelSchema
         AttributeSetter as = (AttributeSetter) attributeSetters.get(attributeName);
         if (as == null && (withinCustom || ! hasCustom))
         {
+            // see if we're trying to set a named flag
             for(Iterator i = flagsAttributeAccessors.entrySet().iterator(); i.hasNext(); )
             {
                 Map.Entry entry = (Map.Entry) i.next();

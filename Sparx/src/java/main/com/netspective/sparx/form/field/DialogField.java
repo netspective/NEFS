@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.5 2003-05-10 16:50:01 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.6 2003-05-10 18:14:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -351,7 +351,7 @@ public class DialogField implements TemplateConsumer
     private DialogFieldScanEntry scanEntry;
     private DialogFieldAutoBlur autoBlur;
     private DialogFieldSubmitOnBlur submitOnBlur;
-    private ValidationRules validationRules;
+    private ValidationRules validationRules = constructValidationRules();
 
 	/**
 	 * Creates a dialog field
@@ -359,7 +359,7 @@ public class DialogField implements TemplateConsumer
 	public DialogField(Dialog owner)
 	{
         this.owner = owner;
-        intialize();
+        initialize();
 	}
 
     public DialogField(DialogField parent)
@@ -388,7 +388,7 @@ public class DialogField implements TemplateConsumer
         return owner;
     }
 
-    public void intialize()
+    public void initialize()
     {
         defaultValue = null;
         flags = createFlags();
@@ -404,29 +404,24 @@ public class DialogField implements TemplateConsumer
         return new State(dc);
     }
 
-    public void initValidationRules(ValidationRules rules)
+    public ValidationRules constructValidationRules()
     {
-        // empty here, but may be overridden by children
+        return new ValidationRulesCollection();
     }
 
     public ValidationRules getValidationRules()
     {
-        if(validationRules == null)
-        {
-            validationRules = new ValidationRulesCollection();
-            initValidationRules(validationRules);
-        }
         return validationRules;
     }
 
     public ValidationRules createValidation()
     {
-        return getValidationRules();
+        return validationRules;
     }
 
     public void addValidation(ValidationRules rules)
     {
-        // do nothing
+        // do nothing but keep method because XDM needs to know rules are allowed
     }
 
     public Flags createFlags()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValidationRule.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: ValidationRule.java,v 1.2 2003-05-10 18:13:36 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
@@ -48,6 +48,9 @@ import com.netspective.commons.value.Value;
 
 public interface ValidationRule
 {
+    public String getName();
+    public void setName(String name);
+
     /**
      * Return the value identifier for the purposes of including in a validation message.
      */

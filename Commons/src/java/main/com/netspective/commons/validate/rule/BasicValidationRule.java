@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicValidationRule.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: BasicValidationRule.java,v 1.2 2003-05-10 18:13:36 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -51,6 +51,7 @@ import com.netspective.commons.validate.ValidationContext;
 
 public class BasicValidationRule implements ValidationRule
 {
+    private String name = this.getClass().getName();
     private ValueSource caption;
     private String invalidTypeMessage = "{0} has an invalid type: expected {1}, found {2}.";
 
@@ -61,6 +62,24 @@ public class BasicValidationRule implements ValidationRule
     public BasicValidationRule(ValueSource caption)
     {
         this.caption = caption;
+    }
+
+    public boolean equals(Object obj)
+    {
+        if(super.equals(obj))
+            return true;
+
+        return name.equals(((ValidationRule) obj).getName());
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public ValueSource getCaption()
