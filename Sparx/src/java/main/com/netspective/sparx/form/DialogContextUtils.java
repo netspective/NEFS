@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextUtils.java,v 1.3 2003-10-10 20:30:19 aye.thu Exp $
+ * $Id: DialogContextUtils.java,v 1.4 2003-10-14 14:47:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -334,6 +334,16 @@ public class DialogContextUtils
     {
         populateColumnValuesWithFieldValues(dc, row.getColumnValues());
         return row;
+    }
+
+    public void populateColumnValueWithFieldValue(DialogContext dc, ColumnValue columnValue, String fieldName)
+    {
+        DialogContext.DialogFieldStates states = dc.getFieldStates();
+        DialogField.State state = states.getState(fieldName);
+        if(state != null)
+            columnValue.copyValueByReference(state.getValue());
+        else
+            dc.getDialog().getLog().error("Unable to find fieldName '"+ fieldName +"' to populate column value with.");
     }
 
     public ColumnValues populateColumnValuesWithFieldValues(DialogContext dc, ColumnValues columnValues)
