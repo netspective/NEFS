@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.12 2003-07-10 00:52:09 shahid.shah Exp $
+ * $Id: HtmlPanel.java,v 1.13 2003-11-08 03:30:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -50,8 +50,9 @@ import java.io.Writer;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.commons.xml.template.TemplateConsumer;
 
-public interface HtmlPanel
+public interface HtmlPanel extends TemplateConsumer
 {
     public final int RENDERFLAG_NOFRAME = 1;
     public final int RENDERFLAGS_DEFAULT = 0;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.19 2003-10-20 04:44:58 aye.thu Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.20 2003-11-08 03:30:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -51,6 +51,8 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.Template;
 
 public class HtmlLayoutPanel implements HtmlPanel
 {
@@ -73,6 +75,15 @@ public class HtmlLayoutPanel implements HtmlPanel
         frame = createFrame();
         banner = createBanner();
         banner = createBanner();
+    }
+
+    public TemplateConsumerDefn getTemplateConsumerDefn()
+    {
+        return AbstractHtmlTabularReportPanel.templateConsumer;
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
     }
 
     public String getPanelIdentifier()
