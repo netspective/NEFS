@@ -1,3 +1,4 @@
+* In XDM Options, when ignore, required, etc attributes are provided perform runtime validation to make sure the name provided actually matches an attribute or nested element (emit warning otherwise)
 * Use sample at http://www.sapia-oss.org/projects/utils/confix/home.html to document XDM (Confix is almost identical to XDM except it doesn't support Templates)
 * Use sample at http://www.sapia-oss.org/projects/vlad/home.html to document validation subsystem (Vlad is similar to Commons validation)
 * In all validators, convert validation errors messages to use Value Sources

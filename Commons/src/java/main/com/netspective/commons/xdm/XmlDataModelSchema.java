@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.19 2003-06-18 19:57:11 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.20 2003-06-19 03:09:58 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -508,6 +508,8 @@ public class XmlDataModelSchema
 
     public class AttributeDetail
     {
+        private static final String ATTRNAME_CLASS = "class";
+
         private String attrName;
         private Class attrType;
         private String primaryFlagsAttrName;
@@ -517,9 +519,18 @@ public class XmlDataModelSchema
 
         public AttributeDetail(String name) throws DataModelException
         {
-            this.attrName = name;
-            this.attrType = getAttributeType(name);
-            this.required = getOptions().getRequiredAttributes().contains(name);
+            if(name.equals(ATTRNAME_CLASS))
+            {
+                this.attrName = name;
+                this.attrType = Class.class;
+                this.required = false;
+            }
+            else
+            {
+                this.attrName = name;
+                this.attrType = getAttributeType(name);
+                this.required = getOptions().getRequiredAttributes().contains(name);
+            }
         }
 
         public AttributeDetail(String name, XdmBitmaskedFlagsAttribute flags)
@@ -547,6 +558,9 @@ public class XmlDataModelSchema
 
         public String getDescription()
         {
+            if(attrName.equals(ATTRNAME_CLASS))
+                return "Override the class used for this instance with an appropriate subclass.";
+
             if(isFlagAlias())
                 return JavaDocXmlDocuments.getInstance().getMethodDescription(getBean(), "set"+ TextUtils.xmlTextToJavaIdentifier(primaryFlagsAttrName, true));
             else
@@ -680,6 +694,7 @@ public class XmlDataModelSchema
 
         Set sortedChildPropertyNames = new TreeSet(getAttributes());
         sortedChildPropertyNames.addAll(flagSetterAliases.keySet());
+        sortedChildPropertyNames.add(AttributeDetail.ATTRNAME_CLASS);
         Iterator iterator = sortedChildPropertyNames.iterator();
         while (iterator.hasNext())
         {
