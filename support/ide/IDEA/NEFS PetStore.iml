@@ -30,7 +30,7 @@
     <setting name="RUN_JASPER_VALIDATION" value="false" />
   </component>
   <component name="WebModuleProperties">
-    <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/WEB-INF/web.xml" version="2.3" />
+    <deploymentDescriptor name="web.xml" url="file://C:/Projects/Frameworks/webapps/nefs-sample-petstore/WEB-INF/web.xml" version="2.3" />
     <webroots />
     <orderEntriesWatcher>
       <pairs>
@@ -113,7 +113,7 @@
         </value>
       </info>
     </order-entry-info>
-    <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/WEB-INF/web.xml" version="2.3" />
+    <deploymentDescriptor name="web.xml" url="file://C:/Projects/Frameworks/webapps/nefs-sample-petstore/WEB-INF/web.xml" version="2.3" />
   </component>
 </module>
 
