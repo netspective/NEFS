@@ -6,7 +6,7 @@
             </div>
         </td>
         <td valign="top" width="350">
-            <a href="frameworks/sparx">SPARX Application Platform</a>
+            <a href="sparx">SPARX Application Platform</a>
             <br/>
             <b>Create</b> rich web-based user interfaces that are easier to use but just as sophisticated as desktop-based applications.
             <ul class="check-list-in-body">
@@ -26,7 +26,7 @@
             </div>
         </td>
         <td class="bodycopy" valign="top" width="350">
-            <a href="frameworks/axiom">AXIOM Data Service</a>
+            <a href="axiom">AXIOM Data Service</a>
             <br/>
             <b>Connect</b> to multiple data sources simultaneously and allow modern web-based applications to consume legacy data.
             <ul class="check-list-in-body">
@@ -47,7 +47,7 @@
 
         </td>
         <td class="bodycopy" valign="top" width="350">
-            <a href="frameworks/commons">COMMONS Core Library</a>
+            <a href="commons">COMMONS Core Library</a>
             <br/>
             <b>Protect</b> web-based applications using rock-solid role-based access control.
             <ul class="check-list-in-body">
@@ -67,7 +67,7 @@
         </td>
         <td class="bodycopy" valign="top" width="350">
             <b>Complement</b> and enhance your existing tools, like
-            <a href="(EmptyReference!)">Struts</a>, with
+            <a href="sparx/simplify-struts">Struts</a>, with
             Java libraries that:
 
             <ul class="check-list-in-body">
