@@ -39,52 +39,112 @@
  */
 
 /**
- * $Id: ServletValueContext.java,v 1.3 2003-06-06 22:58:47 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapter.java,v 1.1 2003-06-06 22:58:46 shahid.shah Exp $
  */
 
-package com.netspective.sparx.value;
+package com.netspective.sparx.template.freemarker;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import freemarker.template.Configuration;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
 
-import com.netspective.commons.value.ValueContext;
-import com.netspective.sparx.ApplicationManager;
-
-public interface ServletValueContext extends ValueContext
+public class FreeMarkerConfigurationAdapter
 {
-    /**
-     * Retrieve the active servlet (page scope).
-     */
-    public Servlet getServlet();
+    private Configuration configuration = new Configuration();
+    private StringTemplateLoader stringTemplateLoader;
+    private boolean defaultAdapter;
+    private String name;
+    private File baseDir;
+    private Class baseClass;
 
-    /**
-     * Retrieve the active servlet request (request scope).
-     */
-    public ServletRequest getRequest();
+    public FreeMarkerConfigurationAdapter(StringTemplateLoader stringTemplateLoader)
+    {
+        this.stringTemplateLoader = stringTemplateLoader;
+        configuration.setTemplateLoader(stringTemplateLoader);
+    }
 
-    /**
-     * Retrieve the active servlet response.
-     */
-    public ServletResponse getResponse();
+    public boolean isDefault()
+    {
+        return defaultAdapter;
+    }
 
-    /**
-     * Retrieve the active servlet context (application scope).
-     */
-    public ServletContext getServletContext();
+    public void setDefault(boolean defaultAdapter)
+    {
+        this.defaultAdapter = defaultAdapter;
+        if(defaultAdapter)
+            Configuration.setDefaultConfiguration(configuration);
+    }
 
-    /**
-     * Retrieve the freemark configuration object for the active servlet
-     */
-    public Configuration getFreeMarkerConfiguration();
+    public Configuration getConfiguration()
+    {
+        return configuration;
+    }
 
-    /**
-     * Retreive the default application manager (components).
-     */
-    public ApplicationManager getApplicationManager();
+    public StringTemplateLoader getStringTemplateLoader()
+    {
+        return stringTemplateLoader;
+    }
 
-    String getApplicationName();
+    protected void updateConfiguration()
+    {
+        List tmplLoaders = new ArrayList();
+        if(stringTemplateLoader != null)
+            tmplLoaders.add(stringTemplateLoader);
+
+        if(baseClass != null)
+            tmplLoaders.add(new ClassTemplateLoader(baseClass));
+
+        try
+        {
+            if(baseDir != null)
+                tmplLoaders.add(new FileTemplateLoader(baseDir));
+        }
+        catch (IOException e)
+        {
+            throw new NestableRuntimeException(e);
+        }
+
+        configuration.setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()])));
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public File getBaseDir()
+    {
+        return baseDir;
+    }
+
+    public void setBaseDir(File baseDir)
+    {
+        this.baseDir = baseDir;
+        updateConfiguration();
+    }
+
+    public Class getBaseClass()
+    {
+        return baseClass;
+    }
+
+    public void setBaseClass(Class baseClass)
+    {
+        this.baseClass = baseClass;
+        updateConfiguration();
+    }
 }

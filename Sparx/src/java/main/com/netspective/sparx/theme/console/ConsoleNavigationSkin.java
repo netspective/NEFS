@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.11 2003-06-02 01:41:45 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.12 2003-06-06 22:58:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -186,7 +186,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                     "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
             writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;App&nbsp;</span></td>\n");
             writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getServletContext().getServletContextName() + "\">&nbsp;&nbsp;" +
-                    nc.getServletContext().getServletContextName() +"</a></td>\n");
+                    nc.getServletContext().getServletContextName() +" ("+ nc.getServletContext().getServerInfo() +")</a></td>\n");
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.6 2003-06-01 21:47:10 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.7 2003-06-06 22:58:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -55,13 +55,10 @@ import org.apache.commons.logging.LogFactory;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.ext.beans.BeansWrapper;
-import freemarker.cache.MultiTemplateLoader;
-import freemarker.cache.TemplateLoader;
-import freemarker.cache.ClassTemplateLoader;
 
 import com.netspective.sparx.template.AbstractTemplateProcessor;
 import com.netspective.sparx.template.TemplateProcessorException;
-import com.netspective.sparx.ApplicationManager;
+import com.netspective.sparx.value.ServletValueContext;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
@@ -69,27 +66,28 @@ import com.netspective.commons.value.ValueContext;
 public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
 {
     private static final Log log = LogFactory.getLog(FreeMarkerTemplateProcessor.class);
-    private static final StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();
-    private static final MultiTemplateLoader multiTemplateLoader =
-            new MultiTemplateLoader(
-                    new TemplateLoader[]
-                    {
-                        stringTemplateLoader,
-                        new ClassTemplateLoader(ApplicationManager.class),
-                    });
 
-    private static final Configuration fmConfig = Configuration.getDefaultConfiguration();
-
-    static
-    {
-        fmConfig.setTemplateLoader(multiTemplateLoader);
-        fmConfig.setTemplateUpdateDelay(2);
-    }
-
+    private FreeMarkerConfigurationAdapter fmConfigAdapter;
+    private String configName;
     private ValueSource source;
 
     public FreeMarkerTemplateProcessor()
     {
+    }
+
+    public String getConfig()
+    {
+        return configName;
+    }
+
+    public void setConfig(String config)
+    {
+        this.configName = config;
+        FreeMarkerConfigurationAdapter adapter = FreeMarkerConfigurationAdapters.getInstance().getConfiguration(config);
+        if(adapter == null)
+            throw new RuntimeException("FreeMarkerConfigurationAdapter '"+ config +"' not found.");
+        else
+            fmConfigAdapter = adapter;
     }
 
     public ValueSource getSource()
@@ -106,11 +104,20 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
     {
         super.finalizeConstruction();
         if(source == null)
-            stringTemplateLoader.addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
+        {
+            StringTemplateLoader stl = fmConfigAdapter == null ?
+                    FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader() :
+                    fmConfigAdapter.getStringTemplateLoader();
+            stl.addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
+        }
     }
 
     public void process(Writer writer, ValueContext vc) throws IOException, TemplateProcessorException
     {
+        Configuration fmConfig = fmConfigAdapter == null ?
+                ((ServletValueContext) vc).getFreeMarkerConfiguration() :
+                fmConfigAdapter.getConfiguration();
+
         Map vars = new HashMap();
         try
         {

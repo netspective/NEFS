@@ -9,5 +9,6 @@
             following <a href="application/runtime-environment">Runtime Environment Flags</a>:
             <font color="darkred"><code>${vc.environmentFlags}</code></font>.
         </li>
+        <li>Your Application Server is <code>${vc.servletContext.serverInfo}</code>.
     </ul>
 </div>

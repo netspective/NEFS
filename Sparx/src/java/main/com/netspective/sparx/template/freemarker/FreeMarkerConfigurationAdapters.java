@@ -39,52 +39,74 @@
  */
 
 /**
- * $Id: ServletValueContext.java,v 1.3 2003-06-06 22:58:47 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.1 2003-06-06 22:58:46 shahid.shah Exp $
  */
 
-package com.netspective.sparx.value;
+package com.netspective.sparx.template.freemarker;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.ServletContext;
+import java.util.Map;
+import java.util.HashMap;
 
-import freemarker.template.Configuration;
+import org.apache.commons.discovery.tools.DiscoverSingleton;
 
-import com.netspective.commons.value.ValueContext;
 import com.netspective.sparx.ApplicationManager;
 
-public interface ServletValueContext extends ValueContext
+public class FreeMarkerConfigurationAdapters
 {
-    /**
-     * Retrieve the active servlet (page scope).
-     */
-    public Servlet getServlet();
+    private static final FreeMarkerConfigurationAdapters INSTANCE = (FreeMarkerConfigurationAdapters) DiscoverSingleton.find(FreeMarkerConfigurationAdapters.class, FreeMarkerConfigurationAdapters.class.getName());
 
-    /**
-     * Retrieve the active servlet request (request scope).
-     */
-    public ServletRequest getRequest();
+    private StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();
+    private Map configs = new HashMap();
+    private FreeMarkerConfigurationAdapter defaultAdapter;
 
-    /**
-     * Retrieve the active servlet response.
-     */
-    public ServletResponse getResponse();
+    public static FreeMarkerConfigurationAdapters getInstance()
+    {
+        return INSTANCE;
+    }
 
-    /**
-     * Retrieve the active servlet context (application scope).
-     */
-    public ServletContext getServletContext();
+    public FreeMarkerConfigurationAdapters()
+    {
+        FreeMarkerConfigurationAdapter adapter = new FreeMarkerConfigurationAdapter(stringTemplateLoader);
+        adapter.setName("default");
+        adapter.setDefault(true);
+        adapter.setBaseClass(ApplicationManager.class);
+        addConfiguration(adapter);
+    }
 
-    /**
-     * Retrieve the freemark configuration object for the active servlet
-     */
-    public Configuration getFreeMarkerConfiguration();
+    public StringTemplateLoader getStringTemplateLoader()
+    {
+        return stringTemplateLoader;
+    }
 
-    /**
-     * Retreive the default application manager (components).
-     */
-    public ApplicationManager getApplicationManager();
+    public FreeMarkerConfigurationAdapter getDefaultAdapter()
+    {
+        return defaultAdapter;
+    }
 
-    String getApplicationName();
+    public void setDefaultAdapter(FreeMarkerConfigurationAdapter defaultAdapter)
+    {
+        this.defaultAdapter = defaultAdapter;
+    }
+
+    public FreeMarkerConfigurationAdapter createConfigurationAdapter()
+    {
+        return new FreeMarkerConfigurationAdapter(stringTemplateLoader);
+    }
+
+    public void addConfiguration(FreeMarkerConfigurationAdapter adapter)
+    {
+        configs.put(adapter.getName(), adapter);
+        if(adapter.isDefault())
+            setDefaultAdapter(adapter);
+    }
+
+    public FreeMarkerConfigurationAdapter getConfiguration(String name)
+    {
+        return (FreeMarkerConfigurationAdapter) configs.get(name);
+    }
+
+    public int size()
+    {
+        return configs.size();
+    }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.13 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.14 2003-06-06 22:58:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -53,6 +53,9 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
+
+import freemarker.template.Configuration;
+import freemarker.cache.WebappTemplateLoader;
 
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.SqlManager;
@@ -80,6 +83,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public static final String INITPARAMNAME_ROOT_CONF_FILE = "com.netspective.sparx.CONF_FILE_NAME";
     public static final String CONTEXTATTRNAME_ROOT_CONF_FILE = INITPARAMNAME_ROOT_CONF_FILE;
 
+    public static final String CONTEXTATTRNAME_FREEMARKER_CONFIG = "freemarker-config";
     public static final String INITPARAMNAME_DEFAULT_DATA_SRC_ID = "com.netspective.sparx.DEFAULT_DATA_SOURCE";
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
 
@@ -351,5 +355,17 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public Theme getActiveTheme()
     {
         return (Theme) request.getAttribute(REQATTRNAME_ACTIVE_THEME);
+    }
+
+    public Configuration getFreeMarkerConfiguration()
+    {
+        Configuration result = (Configuration) context.getAttribute(CONTEXTATTRNAME_FREEMARKER_CONFIG);
+        if(result == null)
+        {
+            result = new Configuration();
+            result.setTemplateLoader(new WebappTemplateLoader(context));
+            context.setAttribute(CONTEXTATTRNAME_FREEMARKER_CONFIG, result);
+        }
+        return result;
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.8 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.9 2003-06-06 22:58:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -67,6 +67,8 @@ import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.sql.QueriesPackage;
+import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
+import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 
@@ -218,5 +220,22 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
     public void addDialogs(DialogsPackage pkg)
     {
         activeDialogsNameSpace = null;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public FreeMarkerConfigurationAdapter getFreemarkerConfiguration(String name)
+    {
+        return FreeMarkerConfigurationAdapters.getInstance().getConfiguration(name);
+    }
+
+    public FreeMarkerConfigurationAdapter createRegisterFreemarkerConfiguration()
+    {
+        return FreeMarkerConfigurationAdapters.getInstance().createConfigurationAdapter();
+    }
+
+    public void addRegisterFreemarkerConfiguration(FreeMarkerConfigurationAdapter config)
+    {
+        FreeMarkerConfigurationAdapters.getInstance().addConfiguration(config);
     }
 }
