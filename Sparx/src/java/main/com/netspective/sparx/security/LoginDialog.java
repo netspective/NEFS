@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialog.java,v 1.6 2003-10-19 17:05:32 shahid.shah Exp $
+ * $Id: LoginDialog.java,v 1.7 2004-02-15 21:20:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -66,7 +66,6 @@ public class LoginDialog extends Dialog
     private String userIdFieldName = DEFAULT_USERID_FIELD_NAME;
     private String passwordFieldName = DEFAULT_PASSWORD_FIELD_NAME;
     private String rememberIdFieldName = DEFAULT_REMEMBER_ID_FIELD_NAME;
-    private int maximumAttempts = 3;
 
     public LoginDialog(HttpLoginManager loginManager)
     {
@@ -134,16 +133,6 @@ public class LoginDialog extends Dialog
     public void setRememberIdFieldName(String rememberIdFieldName)
     {
         this.rememberIdFieldName = rememberIdFieldName;
-    }
-
-    public int getMaximumAttempts()
-    {
-        return maximumAttempts;
-    }
-
-    public void setMaximumAttempts(int maximumAttempts)
-    {
-        this.maximumAttempts = maximumAttempts;
     }
 
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
