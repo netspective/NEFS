@@ -39,6 +39,8 @@
  */
 package com.netspective.medigy.model.common;
 
+import com.netspective.medigy.model.party.PartyContactMechanism;
+
 import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.InheritanceJoinColumn;
@@ -47,8 +49,8 @@ import javax.ejb.Inheritance;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-@InheritanceJoinColumn(name="contact_mech_id")
-public class PostalAddress extends ContactMechanism
+@InheritanceJoinColumn(name="party_contact_mech_id")
+public class PostalAddress extends PartyContactMechanism
 {
     private String address1;
     private String address2;
