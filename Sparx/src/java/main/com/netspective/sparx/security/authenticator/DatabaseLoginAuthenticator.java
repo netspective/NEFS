@@ -33,6 +33,9 @@
 package com.netspective.sparx.security.authenticator;
 
 import java.util.Map;
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,6 +63,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     private Query primaryOrgQuery;      // the query to get the user's primary organization
     private Query orgsQuery;            // the query to get the user's supplementary organizations
     private boolean passwordEncrypted;  // true if the password is encrypted
+    private boolean showErrorsToUser;   // true if exceptions should be shown to the user
 
     private static final String ATTRNAME_PASSWORD_QUERY_RESULTS = "PASSWORD_QUERY_RESULTS";
     private static final String ATTRNAME_PRIMARY_ORG_QUERY_RESULTS = "PRIMARY_ORG_QUERY_RESULTS";
@@ -83,37 +87,64 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
             return false;
         }
 
+        QueryResultSet qrs = null;
         try
         {
-            QueryResultSet qrs = passwordQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
+            qrs = passwordQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
             if(qrs == null)
+            {
+                log.error("Unable to execute the password query, the query returned a NULL QueryResultSet.");
+                if(showErrorsToUser) ldc.getValidationContext().addError("Unable to execute the password query.");
                 return false;
-
-            Map passwordQueryResultRow = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet(), true);
-            Object loginPasswordObj = passwordQueryResultRow.get(passwordQueryPasswordColumnLabel);
-            ldc.setAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS, passwordQueryResultRow);
-            qrs.close(true);
-
-            // make sure the password doesn't stay in the map as it's passed around the system
-            passwordQueryResultRow.remove(passwordQueryPasswordColumnLabel);
-
-            if(loginPasswordObj == null)
-                return false;
-
-            String loginPasswordText = loginPasswordObj.toString();
-            // if the password is not encrypted in the database, then encrypt it now because we deal with encrypted passwords internally
-            if(!passwordEncrypted)
-                loginPasswordText = ldc.encryptPlainTextPassword(loginPasswordText);
-
-            // now we check if this is a valid user
-            if(!loginPasswordText.equals(ldc.getPasswordInput(!ldc.hasEncryptedPassword())))
-                return false;
+            }
         }
-        catch(Exception e)
+        catch(NamingException e) { log.error(e); return false; }
+        catch(SQLException e) { log.error(e); return false; }
+
+        Map passwordQueryResultRow;
+        Object loginPasswordObj;
+        try
         {
-            log.error("Error validating login", e);
+            passwordQueryResultRow = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet(), true);
+            loginPasswordObj = passwordQueryResultRow.get(passwordQueryPasswordColumnLabel);
+            ldc.setAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS, passwordQueryResultRow);
+        }
+        catch(SQLException e)
+        {
+            log.error(e);
+            if(showErrorsToUser)
+                ldc.getValidationContext().addError("A SQL occurred while attempting to authenticate: " + e.getMessage());
             return false;
         }
+        finally
+        {
+            try
+            {
+                qrs.close(true);
+            }
+            catch(SQLException e)
+            {
+                log.error(e);
+                if(showErrorsToUser)
+                    ldc.getValidationContext().addError("A SQL occurred while closing the connection: " + e.getMessage());
+                return false;
+            }
+        }
+
+        // make sure the password doesn't stay in the map as it's passed around the system
+        passwordQueryResultRow.remove(passwordQueryPasswordColumnLabel);
+
+        if(loginPasswordObj == null)
+            return false;
+
+        String loginPasswordText = loginPasswordObj.toString();
+        // if the password is not encrypted in the database, then encrypt it now because we deal with encrypted passwords internally
+        if(!passwordEncrypted)
+            loginPasswordText = ldc.encryptPlainTextPassword(loginPasswordText);
+
+        // now we check if this is a valid user
+        if(!loginPasswordText.equals(ldc.getPasswordInput(!ldc.hasEncryptedPassword())))
+            return false;
 
         return true;
     }
@@ -237,6 +268,16 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     public void setPasswordEncrypted(boolean passwordEncrypted)
     {
         this.passwordEncrypted = passwordEncrypted;
+    }
+
+    public boolean isShowErrorsToUser()
+    {
+        return showErrorsToUser;
+    }
+
+    public void setShowErrorsToUser(boolean showErrorsToUser)
+    {
+        this.showErrorsToUser = showErrorsToUser;
     }
 
     public Query getPasswordQuery()
