@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.39 2003-10-08 21:14:26 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.40 2003-10-14 21:23:34 terry.mayfield Exp $
  */
 
 package com.netspective.sparx.value;
@@ -66,6 +66,7 @@ import com.netspective.axiom.ConnectionContext;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.ProjectComponent;
 import com.netspective.sparx.ProjectManager;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.connection.HttpSessionBindableTransactionConnectionContext;
 import com.netspective.sparx.connection.HttpSessionBindableAutoCommitConnectionContext;
 import com.netspective.sparx.security.HttpLoginManager;
@@ -256,6 +257,11 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public Servlet getServlet()
     {
         return servlet;
+    }
+
+    public boolean isInConsole()
+    {
+        return servlet instanceof ConsoleServlet;
     }
 
     public AuthenticatedUser getAuthenticatedUser()
