@@ -1,26 +1,29 @@
 <h1>The Sparx Application Platform</h1>
 Because Sparx comes out-of-the-box with skinable navigation systems, auto validated forms and works on any modern
-browswer that supports HTML and CSS, it takes under 30 minutes to fully prototype your J2EE applications and prep them
-for <a href="${servletPath}/products/frameworks/axiom">Axiom's</a> data bindings and <a href="${servletPath}/products/frameworks/commons">Commons'</a> security authenticators. By starting your development process with Sparx, the bulk of your application's
-presentation code is geneerated for you giving you more time to focus on any customization you may have.
+browswer that supports HTML and CSS, it takes hours instead of days to fully prototype your J2EE applications and prep
+them for <a href="${servletPath}/products/frameworks/axiom">Axiom's</a> data bindings and
+<a href="${servletPath}/products/frameworks/commons">Commons'</a> security authenticators. By starting your development
+process with Sparx, the bulk of your application's presentation code is generated for you giving you more time to focus
+on any customization you may have.
 
 <ul class="check-list">
     <li>Just declare your input fields, page navigation and validation criteria in simple XML files and let Sparx
         generate all HTML, error trapping, and Java code for you.</li>
-    <li>Create entire application mockups, including navigation and data entry, without expert programmers.</li>
+    <li>Create working prototypes, including navigation and data entry, without expert programmers.</li>
     <li>Once your prototypes are complete, drop in the business rules and application logic using standard Java and
-        you'll be able to complete entire application functions in minutes instead of hours and days.</li>
+        you'll be able to complete entire application functions in days instead of weeks.</li>
 </ul>
 
-<h1>Object-oriented Pages and Forms</h1>
+<h1>Object-oriented Pages and Forms Increase Reuse</h1>
 In Sparx, every page and every form (including validation rules, field types, and conditions) are full objects that
 are cached using instance pooling.
 <ul class="check-list">
     <li>You can have hierachies of pages that inherit common behaviors (like headers, footers, and meta-data) or delegate
         their content based on object-oriented principles.
     <li>You can create base form classes that perform common actions and extend them
-        using standard Java inheritance and delegation.
-    <li>You can new create field types that inherit behavior from other fields and validation rules that can be reused.
+        using standard Java inheritance and delegation for specific application requirements. You can even reuse forms
+        and validation rules across projects.
+    <li>You can create new field types that inherit behavior from other fields and validation rules that can be reused.
 </ul>
 
 <h1>Effortless MVC with Advanced Page Navigation and Workflow</h1>
@@ -29,19 +32,25 @@ design pattern.
 
 <ul class="check-list">
     <li>Use simple tags like <code>&lt;navigation-tree&gt;</code> and <code>&lt;page&gt;</code> to define all navigation
-        rules in XML. Create sophisticated layouts that automatically generate HTML without you writing any Java code.
-    <li>Create multiple navigation trees and conditional pages that a personalized to individual users or roles or
+        rules in XML. Create sophisticated layouts that automatically generate HTML without writing any Java code.
+    <li>Create multiple navigation trees and conditional pages that are personalized to individual users or roles or
         act differently based on who their ancestor and parent pages happen to be.
+    <li>Leverage the <code>&lt;error-page&gt;</code> tagjav to declaratively handle strongly-typed Exceptions wherever
+        they are thrown.
 </ul>
 
-<h1>Get Sophisticated Forms Managementent and Data Validation</h1>
-Sparx provides a dialog (forms) state machine implementation that eliminates your burden of HTML generation, field
-population, and data validation.
+<h1>Sophisticated Forms Managementent and Data Validation</h1>
+Sparx generates HTML forms supporting keyboard navigation, the ability to stop the user from submitting a form more than once,
+sub-form validation, composition and generation of the HTML output with fields displayed as fully accessible or in
+read-only mode, generation of Javascript field-related functions, and automatic capitalization of the text of a field.
 <ul class="check-list">
     <li>You declare the data entry rules using simple <code>&lt;dialog&gt;</code>, <code>&lt;field&gt;</code>, and
         <code>&lt;validation&gt;</code> tags and Sparx does the rest.
     <li>Full support for client-side validation, server-side validation, and client-side conditional logic without
         server-side roundtrips is included.
+    <li>A plug-in system is provided for creating your own fields and validation classes and plugging them into the Sparx
+        system.
+
 </ul>
 
 <h1>Switch UI Looks and Feel Without Code Changes</h1>
@@ -65,7 +74,7 @@ use what you're using today.
 A special form class, called the <code>SchemaRecordEditorDialog</code> is provided to support zero-Java CRUD operations
 for record management. If you need to insert/update/delete data to/from your favorite database you can do so simply by
 declaring XML-based rules and not require a single line of Java. But, customizations are always welcome so you can use
-standard java extension mechanisms like inheritance or delegation.
+standard Java extension mechanisms like inheritance or delegation.
 
 <h1>Use the Built-in Report Writer or your Favorite Reporting Engine</h1>
 Most web based applications have a need for a basic report writer. Sparx includes a fully functional report writer that

@@ -88,12 +88,10 @@
 <ul class="check-list-in-body">
     <li>Runs on any Servlet or J2EE-based app server like Tomcat, WebLogic, WebSphere, JRun, Oracle AS, and Resin
     <li>Integrates perfectly with other frameworks like Struts
-    <li>Thin-client and GUI development
-    <li>Works with any IDE, editor, studio apps
     <li>EJBs fully supported but not required
     <li>Native J2EE API always available
     <li>Low learning curve
-    <li>APIs for both junior-level and senior-level programmers
+    <li>APIs for both novice and expert programmers
     <li>Full source code available
     <li>Easy ability to version-control components and apps
     <li>Runs on any operating system that Java runs on

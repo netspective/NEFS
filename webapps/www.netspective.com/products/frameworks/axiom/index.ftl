@@ -18,7 +18,7 @@ and dynamic SQL by using just a few simple lines of XML. Even legacy data can be
 Instead of storing dynamic and static SQL in <code>.java</code> files, Axiom encourages separating SQL from Java code
 by providing XML-based storage of simple or complex SQL.
 
-<ul class="check-list-in-body">
+<ul class="check-list">
     <li>By externalizing the SQL, you can optimize and modify SQL without changing Java code or recompiling.
     <li>SQL in XML supports bind parameters and prevents security errors introduced by SQL injection in Java code.
     <li>Zero-Java SQL reporting allows you to define SQL, bind parameters, and report formats in XML so that you can
@@ -49,7 +49,7 @@ structured XML instead of flat ASCII files. If your schema has parent/child or o
 XML will automatically map to those structures with no Java code.
 
 <h1>Connect to Multiple Data Sources</h1>
-Any SQL you write can connection to multiple data sources simulataneously. This is useful if you have the same or
+Any SQL you write can connect to multiple data sources simulataneously. This is useful if you have the same or
 different SQL code that needs to be run on multiple, cross-vendor, databases at the same time within the same application.
 
 <h1>Isolate Vendor-specific Database Functionality</h1>
@@ -60,8 +60,8 @@ Axiom to execute a DAO it will automatically select the proper SQL based on whic
 <h1>Leave Connection Pooling to Axiom or your App Server</h1>
 Axiom supports its own internal JNDI-based connection pools or can delegate connection pooling to your application
 server. Using the internal connection pool still allows statistics gathering and finding connection leaks but keeps
-your application app-server-neutral. However, a single configuration option allows you to use your app server's or your
-own connection pool.
+your application app-server-neutral. However, a single configuration option allows you to use your app server's or you
+can use the SPI-based plug-in architecture to use your own connection pooling system.
 
 <h1>Overview of Axiom Tags</h1>
 Axiom defines and processes numerous, very high-level, tags that you use to declare data management

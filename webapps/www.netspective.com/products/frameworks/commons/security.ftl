@@ -17,6 +17,10 @@ top of it.
     <li>Because all NEFS security is declarative, you can generate reports of application components that are not secured properly.
 </ul>
 
+<h1>Supports User Lockouts</h1>
+If your application has rules for locking a user out after a specified number of invalid login attempts, you can turn on the feature
+without any Java code. You may provide plug-in classes that will be called when lockouts occur.
+
 <h1>Overview of Commons Security Service Tags</h1>
 Commons defines and processes numerous, very high-level, tags that you use to declare security
 components. <p>

@@ -41,7 +41,7 @@
                     <page name="why-you-need-it" caption="Why use it" heading="Get the Job Done with NEFS">
                         <summary>
                             If your development team has already mastered all the J2EE APIs, you probably don't need our Java
-                            Frameworks. In case you live in the real world, though, you probably need the NEFS.
+                            Frameworks. In case you live in the real world, though, you need the NEFS.
                         </summary>
                         <body source="products/frameworks/suite/why-you-need-it.ftl"/>
                     </page>
