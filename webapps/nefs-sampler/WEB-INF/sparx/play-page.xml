@@ -8,7 +8,7 @@
     it does not have a <navigation-tree> as its parent (because the parent navigation-tree is in project.xml)
     ============================================================================================================
     -->
-    <page class="app.AppPage" name="play" caption="Play" allow-view-source="yes">
+    <page type="top-level" name="play" caption="Play" allow-view-source="yes">
         <body>
             <![CDATA[
             <#include "*/macros.ftl"/>

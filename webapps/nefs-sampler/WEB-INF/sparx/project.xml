@@ -17,63 +17,46 @@
     -->
     <default-theme>sampler</default-theme>
 
+    <!-- a special template processor that will just show a table of contents for its children
+         * we set xdm:replace-template-expressions to no so that ${xxx} variables aren't handled by XDM (since they
+           are freemarker variables). -->
+    <template-processor-type name="container" extends="freemarker" xdm:replace-template-expressions="no">
+        <![CDATA[
+        <#include "*/macros.ftl"/>
+        <div class="textbox">
+        ${vc.navigationContext.activePage.summary?default("No summary available for ${vc.navigationContext.activePage.qualifiedNameIncludingTreeId}. Please supply one using &lt;summary&gt; tag.")}
+        <p>
+        <@pageChildren/>
+        </div>
+        <@footer/>
+        ]]>
+    </template-processor-type>
+
     <!--
        ===================================================================
        This is the navigation tree structure defined for the application.
        ===================================================================
     -->
     <navigation-tree name="app" default="yes">
-        <page class="app.AppPage" name="home" default="yes" caption="Home" allow-view-source="yes">
-            <summary>
-                This is the home page.
-            </summary>
-            <body>
-                <![CDATA[
-                <#include "*/macros.ftl"/>
-                <div style="font-size: 12px; padding: 5px">
-                Welcome to the Home page of the Netspective Enterprise Framework (NEF) Sampler application. The purpose of this application is to
-                give you an idea of how simple and easy it is to built J2EE web applications using the powerful building blocks provided
-                by the Framework. These building blocks provide simplicity but as you learn more about them, you will see that
-                flexibility and extensibility are also a part of their attributes.
+        <page-type name="container">
+            <body type="container"/>
+        </page-type>
 
-                <p>
+        <page-type name="top-level" type="container" class="app.AppPage">
+            <allow-view-source>yes</allow-view-source>
+        </page-type>
 
-                <i>If you're asked to log into Console, use 'console' for both user id and password.</i>
-                <ul>
-                    <li>Edit the NEFS <@projectFile/> file to begin declaring your application components.
-                    <li>Open the <a href="${vc.consoleUrl}?_dc.userId=console&_dc.password=console">Console</a> for this application.
-                    <li>Browse the <a href="${vc.consoleUrl}/manual">User's Manual</a>.
-                </ul>
-                </div>
-                <@footer/>
-                ]]>
-            </body>
+        <page type="top-level" name="home" default="yes" caption="Home">
+            <summary>Introduction to the NEFS Sampler</summary>
+            <body source="home.ftl"/>
         </page>
-        <page class="app.AppPage" name="forms-input" caption="Forms Input" allow-view-source="yes">
+        <page type="top-level" name="forms-input" caption="Forms Input">
             <summary>
-                <![CDATA[
-                This section contains brief information about how <b>forms</b> are created and handled in NEF.
-                There are several examples that demonstrate how quick and easy it is to set up forms to accept input values
-                for web applications.
-                ]]>
+                This module contains samples that demonstrate how forms and input fields are created in Sparx.
+                There are many examples that show how quick and easy it is to set up forms to accept input values
+                and automatically validate them.
             </summary>
-            <body>
-                <![CDATA[
-                <#include "*/macros.ftl"/>
-                <div class="textbox">
-                ${vc.navigationContext.activePage.summary}
-                <br/>
-                <br/>
-                On a side note the terms <i>dialog</i> and <i>form</i> will be used
-                interchangeably in this section. The examples below contain forms that have various types of
-                built-in fields available for immediate use:
-                <p/>
-                Contents:
-                <@pageChildren/>
-                </div>
-                <@footer/>
-                ]]>
-            </body>
+
             <!-- This page is for demonstrating text fields in a form -->
             <page name="text-fields" caption="Text">
                 <summary>
@@ -135,15 +118,23 @@
             </page>
         </page>
 
-        <page class="app.AppPage" name="forms-exec" caption="Forms Execution" allow-view-source="yes">
+        <page type="top-level" name="forms-exec" caption="Forms Execution">
+            <summary>
+                This module contains samples that demonstrate how forms are executed in Sparx. While the Forms Input
+                module described how to create forms and fields, this module deals with how to perform actions based
+                on already validated input. Numerous examples delve into how to perform custom validation and execute
+                dialog handlers based on existing Sparx functionality or creating your own through inheritance and
+                delegation.
+            </summary>
+
             <page name="director" caption="Director" command="dialog,form.exec.director-next-action"/>
-            <page name="template" caption="Templates">
+            <page type="container" name="template" caption="Templates">
                 <page name="body-xml" caption="Body in XML" heading="Get data, execute template body in project.xml" command="dialog,form.exec.template.body-xml"/>
                 <page name="body-file" caption="Body in File" heading="Get data, execute template body in separate file" command="dialog,form.exec.template.body-file"/>
                 <page name="inc-jsp" caption="Include JSP" heading="Get data, process using JSP include" command="dialog,form.exec.template.inc-jsp"/>
             </page>
 
-            <page name="handler" caption="Handlers">
+            <page type="container" name="handler" caption="Handlers">
                 <page name="inc-html" caption="Include URL" heading="Get URL, process using HTML include of an external page" command="dialog,form.exec.handler.inc-html"/>
                 <page name="send-mail" caption="Send Mail" heading="Send an e-mail" command="dialog,form.exec.handler.send-mail"/>
                 <page name="exec-cmd" caption="Exec Command" heading="Execute a Command" command="dialog,form.exec.handler.exec-cmd"/>
@@ -159,13 +150,13 @@
                 </error-page>
             </page>
 
-            <page name="inheritance" caption="Inheritance">
+            <page type="container" name="inheritance" caption="Inheritance">
                 <page name="exec1a" caption="Exec 1 A" heading="Execute Sample 1 A" command="dialog,form.exec.inheritance.exec1a"/>
                 <page name="exec1b" caption="Exec 1 B" heading="Execute Sample 1 B" command="dialog,form.exec.inheritance.exec1b"/>
                 <page name="validate" caption="Validation" heading="Validation Sample" command="dialog,form.exec.inheritance.validate"/>
             </page>
 
-            <page name="delegation" caption="Delegation">
+            <page type="container" name="delegation" caption="Delegation">
                 <page name="exec1a" caption="Exec 1 A" heading="Execute Sample 1 A" command="dialog,form.exec.delegation.exec1a"/>
                 <page name="exec1b" caption="Exec 1 B" heading="Execute Sample 1 B" command="dialog,form.exec.delegation.exec1b"/>
                 <page name="validate" caption="Validation" heading="Validation Sample" command="dialog,form.exec.delegation.validate"/>
@@ -189,7 +180,7 @@
 
         <xdm:include file="play-page.xml"/>
 
-        <page class="app.AppPage" name="sitemap" caption="Sitemap" allow-view-source="yes">
+        <page type="top-level" name="sitemap" caption="Sitemap">
             <body source="sitemap.ftl"/>
         </page>
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>

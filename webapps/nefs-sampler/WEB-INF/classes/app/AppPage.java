@@ -39,20 +39,22 @@
  */
 
 /**
- * $Id: AppPage.java,v 1.1 2003-12-10 23:07:07 shahid.shah Exp $
+ * $Id: AppPage.java,v 1.2 2003-12-13 17:36:59 shahid.shah Exp $
  */
 
 package app;
 
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationPath;
+import com.netspective.sparx.navigate.NavigationTree;
 
 public class AppPage extends NavigationPage
 {
     private String summary;
 
-    public AppPage()
+    public AppPage(NavigationTree owner)
     {
+        super(owner);
     }
 
     public NavigationPath getPrimaryAncestor()

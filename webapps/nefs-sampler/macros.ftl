@@ -19,13 +19,13 @@
     </#list>
 </#macro>
 
-<#macro pageChildren>
+<#macro pageChildren page=vc.navigationContext.activePage>
     <table class="page-children">
         <tr>
             <th>Page</th>
             <th>Purpose</th>
         </tr>
-        <@childSummary parentPage=vc.navigationContext.activePage/>
+        <@childSummary parentPage=page/>
     </table>
 </#macro>
 

@@ -17,7 +17,7 @@
     <dialogs package="form.input">
 
         <dialog type="input-sample" name="text-fields" hide-hints-until-focus="yes">
-            <frame heading="Test Text Fields"/>
+            <frame heading="Sample Text Fields"/>
             <field name="text_field_required" type="text" caption="Text Required" required="yes"
                                               hint="This text field is always required"/>
             <field name="text_field_hidden" type="text" hidden="yes" default="request:id"/>
@@ -36,7 +36,7 @@
         </dialog>
 
         <dialog type="input-sample" name="memo-and-html-fields">
-            <frame heading="Test Memo and HTML Fields"/>
+            <frame heading="Sample Memo and HTML Fields"/>
             <field type="memo" name="memo_field_01" caption="Memo Field" default="A fox jumped over the fence" max-length="10"
                 hint="Max length is 5 characters"/>
             <field name="html" type="html" caption="HTML Template Field">
@@ -60,7 +60,7 @@
         </dialog>
 
         <dialog type="input-sample" name="numeric-fields">
-            <frame heading="Test Numeric Fields"/>
+            <frame heading="Sample Numeric Fields"/>
             <field type="integer" name="integer_field" caption="Integer Field" hint="Integer field" persist="yes"/>
             <field type="float" name="float_field" caption="Float Field" hint="Float field"/>
             <field type="currency" name="currency_field1" caption="Currency" decimals-required="2" default="123.45"
@@ -75,7 +75,7 @@
         </dialog>
 
         <dialog type="input-sample" name="date-fields">
-            <frame heading="Test Date/Time Fields"/>
+            <frame heading="Sample Date/Time Fields"/>
             <field type="duration" name="duration_field" caption="Duration Field" begin-min-value="10/20/1900" end-max-value="today" hint="Format is MM/dd/yyyy"/>
             <field type="date" name="date_field_strict" caption="Date (Strict Year)" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"
                 default="today" hint="Format is MM-dd-yyyy"/>
@@ -88,7 +88,7 @@
         </dialog>
 
         <dialog type="input-sample" name="boolean-fields">
-            <frame heading="Test Boolean Fields"/>
+            <frame heading="Sample Boolean Fields"/>
             <field type="boolean" name="bool_field_radio" caption="Boolean Field (Radio)" style="radio"/>
             <field type="boolean" name="bool_field_alone" caption="Boolean Field (Alone)" style="check-alone"/>
             <field type="boolean" name="bool_field_combo" caption="Boolean Field (Combo)" style="combo"/>
@@ -101,7 +101,7 @@
                  while the '=' is used for value assignment.
         -->
         <dialog type="input-sample" name="select-fields">
-            <frame heading="Test Select Fields"/>
+            <frame heading="Sample Select Fields"/>
             <field type="separator" heading="Select Fields"/>
             <field type="select" name="sel_field_combo" caption="Select Field (Combo)" style="combo"
                 choices="text-list:Choice 1=A'S;Choice 2=B;Choice 3=C" persist="true"
@@ -136,7 +136,7 @@
         </dialog>
 
         <dialog type="input-sample" name="grid-and-composite-fields">
-            <frame heading="Test Grid and Composite Field"/>
+            <frame heading="Sample Grid and Composite Field"/>
             <field type="separator" heading="Grid" />
             <grid name="grid-01" caption="Grid Test">
                 <row name="row-01" caption="Row 1">
@@ -163,7 +163,7 @@
         </dialog>
 
         <dialog type="input-sample" name="conditional-fields">
-            <frame heading="Test Conditionals"/>
+            <frame heading="Sample Conditionals"/>
             <field type="html">
                 <body>
                     <![CDATA[
@@ -191,7 +191,7 @@
         </dialog>
 
         <dialog type="input-sample" name="popup-fields">
-            <frame heading="Test Popup"/>
+            <frame heading="Sample Popup"/>
             <field type="select" name="sel_field_list" caption="Select Field" style="combo"
                 prepend-blank="yes" choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
             <field type="text" name="text_field" caption="Text Field" read-only="browser" default="None at this moment"
@@ -202,7 +202,7 @@
 
         <!-- Dialog for testing data perspective conditionals -->
         <dialog type="input-sample" name="data-perspective-conditionals">
-            <frame heading="Test Data Perspective Conditionals"/>
+            <frame heading="Sample Data Perspective Conditionals"/>
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
             <field type="static" name="static_field2" default="Checkbox checked!" hint="Hidden static field">
                 <conditional action="display" partner-field-name="checkbox_field" expression="control.checked == true"/>
@@ -223,7 +223,7 @@
 
         <!-- Dialog for testing binding query data to fields -->
         <dialog type="input-sample" name="data-binding">
-            <frame heading="Test Data Binding"/>
+            <frame heading="Sample Data Binding"/>
             <field type="text" name="text_field" caption="Text Field" default="query:org.name-only,-,-,request:org_id"
                 hint="The parameter is being provided in the value source"/>
             <field type="select" name="select_field_01" caption="Combo Field showing Query Columns" style="combo"
@@ -238,7 +238,7 @@
 
         <!-- Dialog for testing pending data -->
         <dialog type="input-sample" name="pending-data" allow-pending-data="yes">
-            <frame  heading="Test Pending Data" />
+            <frame  heading="Sample Pending Data" />
 			<field type="separator" heading="Text Fields"/>
 			<field type="text" name="text_field_hidden" hidden="yes" default="request:id"/>
 			<field type="static" name="static_field" caption="Test " default="Static Field's Value"/>
@@ -262,17 +262,17 @@
 
         <!-- Dialog for testing uploading files -->
         <dialog type="input-sample" name="upload-data">
-            <frame heading="Test Upload Data"/>
+            <frame heading="Sample Upload Data"/>
             <field type="text" name="text_field_required" caption="Text Required" hint="Text field required" required="yes"/>
             <field type="file" name="file" caption="File" required="yes"/>
         </dialog>
 
         <!-- Dialog for testing custom client side javascripts -->
         <dialog type="input-sample" name="client-side-scripts">
-            <frame heading="Test Client Side JavaScript"/>
+            <frame heading="Sample Client Side JavaScript"/>
             <client-js href="servlet-context-path:/resources/scripts/test1.js"/>
             <client-js href="servlet-context-path:/resources/scripts/test2.js"/>
-            <frame heading="Test Custom Javascript"/>
+            <frame heading="Sample Custom Javascript"/>
             <field type="float" name="float_field" caption="Float">
                 <client-js event="is-valid" type="extends" js-expr="return testValid(field, control);"/>
                 <client-js event="value-changed" type="extends" js-expr="return testNum(field, control);"/>
@@ -295,13 +295,13 @@
 
         <!-- Dialog for testing "command" field -->
         <dialog type="input-sample" name="command-fields">
-            <frame heading="Test Command Fields"/>
+            <frame heading="Sample Command Fields"/>
             <field type="command" name="command_field" caption="Command Field" command="list,reference|text-list:Value1=Value 1;Value2=Value 2;Value3=Value 3"/>
         </dialog>
 
         <!-- Dialog for testing hidden fields -->
         <dialog type="input-sample" name="hidden-fields">
-            <frame heading="Test Hidden Fields"/>
+            <frame heading="Sample Hidden Fields"/>
             <field type="memo" name="memo_field" caption="Memo Field" default="There are two hidden fields\: text_field_hidden and select_field_hidden"/>
             <field type="text" name="text_field" caption="Text Field" default="Text Field's entry"/>
             <field type="select" name="select_field" caption="Select Field" style="combo"
