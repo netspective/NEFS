@@ -9,34 +9,56 @@
         <pathconvert targetos="unix" property="app.home" refid="app.home.path"/>
     </target>
 
-    <target name=".init" depends=".init-app-path" description="Private target that performs intialization for all tasks. This target is designed for use as a dependent, not to be called directly.">
+    <target name=".init-app-name" unless="app.name" description="If app.name property is not passed in, set the application name to the name of the app's root directory.">
+        <basename property="app.name" file="${app.home}"/>
+    </target>
+
+    <target name=".init" depends=".init-app-path,.init-app-name" description="Private target that performs intialization for all tasks. This target is designed for use as a dependent, not to be called directly.">
         <taskdef name="sparx" classname="com.netspective.sparx.ant.SparxTask"/>
 
         <property name="app.WEB-INF.path" value="${app.home}/WEB-INF"/>
         <property name="app.WEB-INF.classes.path" value="${app.WEB-INF.path}/classes"/>
+        <property name="app.WEB-INF.lib.path" value="${app.WEB-INF.path}/lib"/>
         <available file="${app.WEB-INF.classes.path}" type="dir" property="app.WEB-INF.classes.path.exists"/>
+
+        <property name="app.auto.jar-name" value="${app.name}-auto.jar"/>
 
         <property name="app.sparx.project.home" value="${app.WEB-INF.path}/sparx"/>
         <property name="app.sparx.project.file" value="${app.sparx.project.home}/project.xml"/>
 
+        <property name="app.documents.home" value="${app.WEB-INF.path}/documents"/>
+        <property name="app.documents.javadoc.home" value="${app.documents.home}/javadoc"/>
+
         <property name="app.database.home" value="${app.WEB-INF.path}/database"/>
         <property name="app.database.defn.path" value="${app.database.home}/defn"/>
+
+        <path id="project.class.path">
+            <pathelement path="classes"/>
+            <fileset dir="${app.WEB-INF.lib.path}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
 
         <sparx action="get-default-schema-name" projectFile="${app.sparx.project.file}" property="app.database.default-schema-name"/>
     </target>
 
     <target name="show-properties" depends=".init" description="Displays the properties that will be used by all the targets. Mainly used for debugging.">
         <echo message="app.home = '${app.home}'"/>
+        <echo message="app.name = '${app.name}'"/>
         <echo message="app.WEB-INF.path = '${app.WEB-INF.path}'"/>
         <echo message="app.WEB-INF.classes.path = '${app.WEB-INF.classes.path}'"/>
+        <echo message="app.WEB-INF.lib.path = '${app.WEB-INF.lib.path}'"/>
+        <echo message="app.auto.jar-name = '${app.auto.jar-name}'"/>
         <echo message="app.sparx.project.home = '${app.sparx.project.home}'"/>
         <echo message="app.sparx.project.file = '${app.sparx.project.file}'"/>
+        <echo message="app.documents.home = '${app.documents.home}'"/>
+        <echo message="app.documents.javadoc.home = '${app.documents.javadoc.home}'"/>
         <echo message="app.database.home = '${app.database.home}'"/>
         <echo message="app.database.default-schema-name = '${app.database.default-schema-name}'"/>
     </target>
 
     <target name="compile" depends=".init" if="app.WEB-INF.classes.path.exists" description="Compiles all the Java source files in WEB-INF/classes.">
-        <javac srcdir="${app.WEB-INF.classes.path}" deprecation="on"/>
+        <javac srcdir="${app.WEB-INF.classes.path}" deprecation="on" classpathref="project.class.path"/>
     </target>
 
     <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants. This target will delete the WEB-INF/classes/app/auto/id directory first before generating identifiers.">
@@ -82,7 +104,32 @@
                graphVizDot="${app.database.defn.path}/${app.database.default-schema-name}-erd.dot"/>
     </target>
 
-    <target name="generate-all" depends="generate-id-constants,generate-dialog-context-beans,generate-sql-ddl,generate-data-access-layer,generate-import-data-dtd,generate-graphviz-erd" description="Generates everything."/>
+    <target name="generate-auto-classes" depends="generate-id-constants,generate-dialog-context-beans,generate-data-access-layer" description="Generates only the classes in the auto package."/>
+
+    <target name="generate-java-doc" depends="generate-auto-classes" description="Generates the javadocs for all the classes in WEB-INF/classes">
+        <mkdir dir="${app.documents.javadoc.home}"/>
+        <javadoc packagenames="app.*,auto.*"
+             destdir="${app.documents.javadoc.home}"
+             classpathref="project.class.path"
+             author="true" version="true" use="true"
+             windowtitle="${app.name} Class Documentation"
+             doctitle="${app.name} Class Documentation"
+             bottom="Copyright &#169; 2003 Netspective. All Rights Reserved.">
+             <sourcepath>
+                 <pathelement path="${app.WEB-INF.classes.path}"/>
+             </sourcepath>
+        </javadoc>
+    </target>
+
+    <target name="generate-auto-classes-and-jar" depends="generate-auto-classes" description="Generates only the classes in the auto package and puts them into a JAR file called WEB-INF/lib/[appName]-auto.jar">
+        <property name="dest" value="${app.WEB-INF.lib.path}/${app.auto.jar-name}"/>
+        <delete file="${dest}"/>
+        <jar jarfile="${dest}" basedir="${app.WEB-INF.classes.path}">
+            <include name="**/*.class"/>
+        </jar>
+    </target>
+
+    <target name="generate-all" depends="generate-auto-classes,generate-sql-ddl,generate-import-data-dtd,generate-graphviz-erd" description="Generates everything."/>
 
     <target name="create-database-hsqldb" depends="generate-data-access-layer,generate-import-data-dtd,generate-graphviz-erd" description="Erases the existing default datasource (Hypersonic database), generates the SQL DDL for the default schema, loads the SQL DDL (effectively creating the Hypersonic SQL database), and finally loads the 'starter' from XML files using Sparx import from XML feature. This target should be executed anytime the default schema is modified.">
         <property name="app.database.instance.path" value="${app.database.home}/instance"/>
