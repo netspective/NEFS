@@ -1,60 +1,52 @@
-tr.dialog-field-block           { color: #333;    font-weight: normal; font-size: 12px; font-family: Tahoma; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; padding: 7px 7px 7px 5px }
-tr.dialog-field-block-errors    { color: #cc0000; font-weight: normal; font-size: 12px; font-family: Tahoma; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; padding: 7px 7px 7px 5px }
-span.dialog-field-caption       { color: #333;    font-weight: normal; font-size: 12px; font-family: Tahoma; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; padding: 7px 7px 7px 5px }
-span.dialog-field-caption-required
-                                { color: #000000; font-weight: bold; font-size: 12px; font-family: Tahoma; padding-left: 3px; border: solid 0px #009; width: auto }
-span.dialog-field-hint          { color: #696969; font-size: 10px; font-family: Tahoma; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top }
-span.dialog-field-hint-hidden   { color: #696969; font-size: 10px; font-family: Tahoma; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top; display: none;  }
+/* field block styles */
+tr.dialog-field-block           { color: #333;    font: normal 12px Verdana, Arial; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; }
+tr.dialog-field-block td        { padding: 3px 3px 3px 10px }
 
-.dialog-field-errors            { color: red; font-size: 10px; font-family: Tahoma; }
-.dialog-field-errors a          { color: red; font-size: 10px; font-family: Tahoma; }
-.dialog-field-errors a:link     { color: red; font-size: 10px; font-family: Tahoma; }
-.dialog-field-errors a:hover    { color: red; font-size: 10px; font-family: Tahoma; }
-.dialog-field-errors a:visited  { color: red; font-size: 10px; font-family: Tahoma; }
+tr.dialog-field-block-errors    { color: #cc0000; font: normal 12px Verdana, Arial; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; }
+tr.dialog-field-block-errors td { padding: 3px 3px 3px 10px }
 
-.dialog-field-input         { color: #000; font-family: Tahoma; padding-left: 3px; border: solid 0px #009; width: auto }
-.dialog-field-input-required
-                            { color: #000; font: normal 12px Tahoma; background: white url(../../../../../sparx/theme/sampler/images/panel/input/content-required.gif) no-repeat right top;  padding: 0px 0px 0px 1px; width: auto }
+/* these are the spans around the captions and inputs. The style settings should only enforce the font and text alignment with no block properties */
+span.dialog-field-caption           { color: #333;    font: normal 12px georgia, serif; text-align: left; vertical-align: middle; }
+span.dialog-field-caption-required  { color: #000000; font: bold   12px georgia, serif; width: auto }
+span.dialog-field-hint              { color: #696969; font: normal 10px georgia, serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top }
+span.dialog-field-hint-hidden       { color: #696969; font: normal 10px georgia, serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top; display: none;  }
+span.dialog-field-input             { color: #000; font: normal 12px Verdana, Arial; width: auto }
+span.dialog-field-input-required    { color: #000; font: normal 12px Verdana, Arial; background: white url(../../../../../sparx/theme/sampler/images/panel/input/content-required.gif) no-repeat right top; width: auto }
+span.dialog-field-errors            { color: red; font-size: 10px; font-family: Tahoma; }
+span.dialog-field-errors a          { color: red; font-size: 10px; font-family: Tahoma; }
+span.dialog-field-errors a:link     { color: red; font-size: 10px; font-family: Tahoma; }
+span.dialog-field-errors a:hover    { color: red; font-size: 10px; font-family: Tahoma; }
+span.dialog-field-errors a:visited  { color: red; font-size: 10px; font-family: Tahoma; }
 
-.dialog-grid-column-caption
-                            { color: #000; font-weight: normal; font-family: Tahoma; font-size: 12px }
-.dialog-grid-column-caption-required
-                            { color: #000; font-weight: bold; font-family: Tahoma; font-size: 12px; }
+/* separator field styles */
+tr.dialog-field-separator-block     { background-color: #f1eeee; text-align: left; vertical-align: bottom; }
+tr.dialog-field-separator-block td  { padding: 5px 4px 1px 5px; border-style: solid; border-width: 1px; border-color: #c0c0c0 #808080 #808080 #c0c0c0; width: auto}
+tr.dialog-field-separator-block td a         { color: #696969; font: bold small-caps 14px georgia, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
+tr.dialog-field-separator-block td a:link    { color: #696969; font: bold small-caps 14px georgia, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
+tr.dialog-field-separator-block td a:hover   { color: #696969; font: bold small-caps 14px georgia, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
 
-.dialog-fields-separator    { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; border-style: solid; border-width: 1px; border-color: #c0c0c0 #808080 #808080 #c0c0c0; width: auto }
-.dialog-fields-separator-link
-                            { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
-.dialog-fields-separator-link:hover
-                            { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
+/* grid styles */
+span.dialog-field-grid-row-caption              { color: #000; font: normal 12px georgia, serif; }
+span.dialog-field-grid-column-caption           { color: #000; font: normal 12px georgia, serif; }
+span.dialog-field-grid-column-caption-required  { color: #000; font: bold   12px georgia, serif; }
 
-.dialog-button:link    { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none; padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
-.dialog-button:visited { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none;padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
-.dialog-button:active  { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none;padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
-.dialog-button         { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none; background-color: #dcdcdc; text-transform: uppercase; padding: 1px 3px; border: solid 1px #009;    }
+
+/* buttons styles */
+tr.dialog-buttons-block     { font: normal 10px georgia, normal; text-align: left; }
+tr.dialog-buttons-block td  { padding: 7px 7px 10px 5px }
+input.dialog-button         { color: #333; font: normal 10px Verdana; text-decoration: none; background-color: #dcdcdc; text-transform: uppercase; padding: 1px 3px; border: solid 1px #009;    }
+
+/*
+ * ==================================================
+ * OLD STYLES: need to check if they are still needed
+ * ================================================== 
+ */
+.dialog-button:link    { color: #333; font: normal 10px Verdana; text-decoration: none; padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
+.dialog-button:visited { color: #333; font: normal 10px Verdana; text-decoration: none; padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
+.dialog-button:active  { color: #333; font: normal 10px Verdana; text-decoration: none; padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
 .dialog-button:hover   { color: white; background-color: #009;}
-.dialog-button-table   { font-size: 12px; text-align: left; padding: 7px 7px 7px 5px }
 
-.dialog-fields           { color: #333; font-weight: normal; font-size: 12px; font-family: Tahoma; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: right; vertical-align: middle; padding: 7px 7px 7px 5px }
-.dialog-fields-no-arrow  { color: #333; font-weight: normal; font-size: 12px; font-family: Tahoma; text-align: right; vertical-align: middle; padding: 7px 7px 7px 5px; display:block; text-align:left}
-.dialog-entry            { color: #333; font-weight: normal; font-size: 12px; font-family: Tahoma; padding-right: 7px; padding-left: 7px; width: auto }
-.dialog-fields-header    { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 15px 4px 1px 10px; border-style: solid; border-width: 1px; border-color: #c0c0c0 #808080 #808080 #c0c0c0; width: auto }
-.dialog-fields-separator { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; border-style: solid; border-width: 1px; border-color: #c0c0c0 #808080 #808080 #c0c0c0; width: auto }
-.dialog-fields-separator-link { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
-.dialog-fields-separator-link:hover   { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
-
-
-.dialog-input-required              { color: #000; font-family: Tahoma; background: white url(../images/panel/input/content-required.gif) no-repeat right top; padding-left: 3px; border: solid 1px #009; width: auto }
-.dialog-input          { color: #000; font-family: Tahoma; padding-left: 3px; border: solid 1px #009; width: auto }
-.dialog-select         { color: black; font-family: Tahoma; border: solid 1px #009 }
-
-.dialog-fields-hint-table { padding-left: 7px; width: auto; height: 12px }
-.dialog-fields-hint { color: #696969; font-size: 10px; font-family: Tahoma; background: url(../images/panel/input/hint-indicator.gif) no-repeat left top }
-.dialog-fields-hint-hidden { display: none; color: #696969; font-size: 10px; font-family: Tahoma; background: url(../images/panel/input/hint-indicator.gif) no-repeat left top }
-
-.dialog-fields-errors { color: red; font-size: 10px; font-family: Tahoma; }
 .accesskey { text-decoration: underline;}
-
-
 .login-dialog-fields            { color: white; font-weight: normal; font-size: 12px; font-family: Tahoma; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: right; vertical-align: middle; padding: 7px 7px 7px 5px }
 .login-dialog-fields-header      { background: url(../images/login/nec.gif) no-repeat left center; width: 100% }
 .login-dialog-button  { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none; background-color: #dcdcdc; text-transform: uppercase; padding: 1px 3px; border: solid 1px black }
