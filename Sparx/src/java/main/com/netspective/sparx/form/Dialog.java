@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.31 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: Dialog.java,v 1.32 2003-09-15 03:47:59 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -910,9 +910,35 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
                         }
                     }
                 }
-
                 membersCode.append(mi.getCode());
                 membersCode.append("\n");
+            }
+            DialogFields childrenFields = field.getChildren();
+            if (childrenFields != null && childrenFields.size() > 0)
+            {
+                for (int j=0; j < childrenFields.size() ; j++)
+                {
+                    DialogField child = childrenFields.get(j);
+                    DialogContextBeanMemberInfo miChild = child.getDialogContextBeanMemberInfo();
+                    if(mi != null)
+                    {
+                        String[] importModules = miChild.getImportModules();
+                        if(importModules != null)
+                        {
+                            for(int m = 0; m < importModules.length; m++)
+                            {
+                                String module = importModules[m];
+                                if(!modulesImported.contains(module))
+                                {
+                                    modulesImported.add(module);
+                                    importsCode.append("import " + module + ";\n");
+                                }
+                            }
+                        }
+                        membersCode.append(miChild.getCode());
+                        membersCode.append("\n");
+                    }
+                }
             }
         }
 
