@@ -1,5 +1,7 @@
 package com.netspective.sparx.report.tabular;
 
+import com.netspective.commons.xdm.XmlDataModelSchema;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,10 +11,12 @@ import java.util.Map;
  * Class for html report actions
  *
  * @author aye
- * $Id: HtmlReportActions.java,v 1.2 2003-07-12 02:14:08 aye.thu Exp $
+ * $Id: HtmlReportActions.java,v 1.3 2003-09-02 17:15:54 roque.hernandez Exp $
  */
 public class HtmlReportActions
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
     private List actions = new ArrayList();
     private Map actionsMap =  new HashMap();
 

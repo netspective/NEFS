@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntProject.java,v 1.3 2003-07-12 03:31:46 shahid.shah Exp $
+ * $Id: AntProject.java,v 1.4 2003-09-02 17:15:31 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -61,9 +61,12 @@ import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.AbstractValue;
 import com.netspective.commons.value.source.AbstractValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class AntProject
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
     private String id;
     private ValueSource file;
     private boolean defaultProject;
