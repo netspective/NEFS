@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.5 2003-06-25 07:08:33 aye.thu Exp $
+ * $Id: QueryBuilderDialog.java,v 1.6 2003-06-25 15:14:00 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -387,8 +387,7 @@ public class QueryBuilderDialog extends Dialog
             for(int i = 0; i < maxConditions; i++)
             {
                 // this will also set the flags of all children fields
-                //states.getState("condition_" + i).getStateFlags().setFlag(flag);
-                states.getState("condition_" + i).setStateFlags(flag);
+                states.getState("condition_" + i).getStateFlags().setFlag(flag);
             }
         }
         else
