@@ -39,13 +39,12 @@
  */
 
 /**
- * $Id: RuntimeEnvironmentFlags.java,v 1.2 2003-05-24 20:34:05 shahid.shah Exp $
+ * $Id: RuntimeEnvironmentFlags.java,v 1.3 2003-06-11 03:05:31 shahid.shah Exp $
  */
 
 package com.netspective.commons;
 
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.sparx.form.DialogFlags;
 
 public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
 {
