@@ -40,34 +40,35 @@
 
 package com.netspective.axiom.sql;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.commons.lang.StringUtils;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.text.ExpressionText;
-import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.axiom.DatabasePolicies;
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.value.DatabaseConnValueContext;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Map;
 
 import javax.naming.NamingException;
-import java.util.Map;
-import java.util.ArrayList;
-import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.DatabaseMetaData;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.value.DatabaseConnValueContext;
+import com.netspective.commons.text.ExpressionText;
+import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 /**
  * Class for handling stored procedure calls
  *
  * @author Aye Thu
- * @version $Id: StoredProcedure.java,v 1.9 2004-01-15 20:00:46 aye.thu Exp $
+ * @version $Id: StoredProcedure.java,v 1.10 2004-06-18 22:20:21 shahid.shah Exp $
  */
 public class StoredProcedure
 {
@@ -355,7 +356,7 @@ public class StoredProcedure
                 short  dbColumnRadix          = rs.getShort(11);
                 String dbColumnRemarks        = rs.getString(13);
                 // Interpret the return type (readable for humans)
-                String procReturn = null;
+                String procReturn;
                 switch(dbColumnReturn)
                 {
                     case DatabaseMetaData.procedureColumnIn:
@@ -474,6 +475,7 @@ public class StoredProcedure
 
         Connection conn = null;
         CallableStatement stmt = null;
+        boolean closeConnection = true;
         try
         {
             getMetaData(cc);
@@ -485,16 +487,22 @@ public class StoredProcedure
                 stmt = conn.prepareCall(sql);
 
             if(parameters != null)
-                parameters.apply(cc, stmt, overrideIndexes, overrideValues);
-            stmt.execute();
-            parameters.extract(cc, stmt);
-            StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
-            if (rsParameter != null)
             {
-                return (QueryResultSet) rsParameter.getExtractedValue(cc.getDatabaseValueContext());
+                parameters.apply(cc, stmt, overrideIndexes, overrideValues);
+                stmt.execute();
+                parameters.extract(cc, stmt);
+                StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
+                if (rsParameter != null)
+                {
+                    closeConnection = false;
+                    return (QueryResultSet) rsParameter.getExtractedValue(cc.getDatabaseValueContext());
+                }
+                else
+                    return null;
             }
             else
             {
+                stmt.execute();
                 return null;
             }
         }
@@ -505,14 +513,9 @@ public class StoredProcedure
         }
         finally
         {
-            // TODO: we should close the connection if the OUT parameters don't include result sets
-            /*
+            if(stmt != null) stmt.close();
             if (conn != null && closeConnection)
-            {
-                stmt.close();
                 conn.close();
-            }
-            */
         }
     }
 
@@ -530,8 +533,8 @@ public class StoredProcedure
     protected int[] batchExecute(ConnectionContext cc) throws SQLException, NamingException
     {
         // TODO: This method NEEDS to be tested!
-        Connection conn = null;
-        CallableStatement stmt = null;
+        Connection conn;
+        CallableStatement stmt;
 
         conn = cc.getConnection();
         String sql = StringUtils.strip(getSqlText(cc));
@@ -563,6 +566,7 @@ public class StoredProcedure
         QueryExecutionLogEntry logEntry = execLog.createNewEntry(cc, this.getQualifiedName());
         Connection conn = null;
         CallableStatement stmt = null;
+        boolean closeConnection = true;
         try
         {
             logEntry.registerGetConnectionBegin();
@@ -577,21 +581,29 @@ public class StoredProcedure
             logEntry.registerBindParamsBegin();
 
             if(parameters != null)
-                parameters.apply(cc, stmt, overrideIndexes, overrideValues);
-            logEntry.registerBindParamsEnd();
-
-            logEntry.registerExecSqlBegin();
-            stmt.execute();
-            logEntry.registerExecSqlEndSuccess();
-            parameters.extract(cc, stmt);
-            StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
-            if (rsParameter != null)
             {
-                Value val = rsParameter.getValue().getValue(cc.getDatabaseValueContext());
-                return (QueryResultSet) val.getValue();
+                parameters.apply(cc, stmt, overrideIndexes, overrideValues);
+                logEntry.registerBindParamsEnd();
+
+                logEntry.registerExecSqlBegin();
+                stmt.execute();
+                logEntry.registerExecSqlEndSuccess();
+                parameters.extract(cc, stmt);
+                StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
+                if (rsParameter != null)
+                {
+                    closeConnection = false;
+                    Value val = rsParameter.getValue().getValue(cc.getDatabaseValueContext());
+                    return (QueryResultSet) val.getValue();
+                }
+                else
+                    return null;
             }
             else
             {
+                logEntry.registerExecSqlBegin();
+                stmt.execute();
+                logEntry.registerExecSqlEndSuccess();
                 return null;
             }
         }
@@ -603,14 +615,9 @@ public class StoredProcedure
         }
         finally
         {
-            // TODO: we should close the connection if the OUT parameters don't include result sets
-            /*
+            if(stmt != null) stmt.close();
             if (conn != null && closeConnection)
-            {
-                stmt.close();
                 conn.close();
-            }
-            */
         }
     }
 
