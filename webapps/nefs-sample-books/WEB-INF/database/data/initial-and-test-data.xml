@@ -4,7 +4,7 @@
 
 <!DOCTYPE dal SYSTEM "../defn/db-import.dtd">
 
-<dal>
+<dal xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer">
     <book-info
         id="test-001" name="Book 001"
         author="Smith, James R." genre="Science Fiction" isbn="test001"/>
@@ -14,5 +14,11 @@
         author="Jones, Rober. J." genre="Mystery" isbn="test002"/>
 
     <generate-book-info-records count="100"/>
+
+<!-- examples of how to import using CSV files or entries -->
+<!--
+    <book-info dal:csv="test-cvs-01,CSV Book 01,&quot;Shah, Shahid N.&quot;,Mystery,ISBNCSV01"/>
+    <book-info dal:csv-file="initial-and-test-data.csv"/>
+-->
 </dal>
 
