@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmParseContext.java,v 1.4 2003-11-07 17:37:49 shahid.shah Exp $
+ * $Id: XdmParseContext.java,v 1.5 2003-11-08 13:57:01 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -140,6 +140,7 @@ public class XdmParseContext extends ParseContext
             pc = new XdmParseContext(null, srcFile);
             pc.setTemplateCatalog(dm.getTemplateCatalog());
             pc.parse(dm);
+            pc.setTemplateCatalog(null); // free explicitly other will cause memory leak because the template catalog is not owned by the PC
             return pc;
         }
         catch (TransformProcessingInstructionEncounteredException exc)
@@ -173,6 +174,7 @@ public class XdmParseContext extends ParseContext
             pc = new XdmParseContext(null, text);
             pc.setTemplateCatalog(dm.getTemplateCatalog());
             pc.parse(dm);
+            pc.setTemplateCatalog(null); // free explicitly other will cause memory leak because the template catalog is not owned by the PC
             return pc;
         }
         catch (TransformProcessingInstructionEncounteredException exc)
@@ -206,6 +208,7 @@ public class XdmParseContext extends ParseContext
             pc = new XdmParseContext(null, resource);
             pc.setTemplateCatalog(dm.getTemplateCatalog());
             pc.parse(dm);
+            pc.setTemplateCatalog(null); // free explicitly other will cause memory leak because the template catalog is not owned by the PC
             return pc;
         }
         catch (TransformProcessingInstructionEncounteredException exc)
@@ -239,6 +242,7 @@ public class XdmParseContext extends ParseContext
             pc = new XdmParseContext(null, jarFile, jarFileEntry);
             pc.setTemplateCatalog(dm.getTemplateCatalog());
             pc.parse(dm);
+            pc.setTemplateCatalog(null); // free explicitly other will cause memory leak because the template catalog is not owned by the PC
             return pc;
         }
         catch (TransformProcessingInstructionEncounteredException exc)
