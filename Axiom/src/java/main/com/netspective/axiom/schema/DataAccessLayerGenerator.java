@@ -58,6 +58,7 @@ import org.inxar.jenesis.ClassField;
 import org.inxar.jenesis.ClassMethod;
 import org.inxar.jenesis.Comment;
 import org.inxar.jenesis.CompilationUnit;
+import org.inxar.jenesis.Constant;
 import org.inxar.jenesis.Expression;
 import org.inxar.jenesis.Freeform;
 import org.inxar.jenesis.InnerClass;
@@ -69,8 +70,15 @@ import org.inxar.jenesis.VirtualMachine;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
+import com.netspective.axiom.schema.table.BasicRow;
+import com.netspective.axiom.schema.table.BasicRows;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
+import com.netspective.axiom.schema.table.type.EntityVariantRecordTable;
+import com.netspective.axiom.schema.table.type.EntityVariantRecordTableRow;
+import com.netspective.axiom.schema.table.type.EntityVariantRecordTypeTable;
+import com.netspective.axiom.schema.table.type.EntityVariantRecordTypeTableRow;
+import com.netspective.axiom.schema.table.type.EntityVariantRecordTypeTableRows;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.table.type.EnumerationTableRows;
@@ -93,6 +101,7 @@ public class DataAccessLayerGenerator
     private CompilationUnit rootUnit;
     private CompilationUnit modelsUnit;
     private CompilationUnit enumsUnit;
+    private CompilationUnit varRecTypesUnit;
     private CompilationUnit valueObjectUnit;
     private PackageClass rootClass;
     private ClassMethod rootClassChildrenAssignmentBlock;
@@ -226,6 +235,9 @@ public class DataAccessLayerGenerator
         enumsUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
         enumsUnit.setNamespace(rootNameSpace + ".enum");
 
+        varRecTypesUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+        varRecTypesUnit.setNamespace(rootNameSpace + ".variant");
+
         valueObjectUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
         valueObjectUnit.setNamespace(rootNameSpace + ".vo");
 
@@ -248,6 +260,14 @@ public class DataAccessLayerGenerator
             Table table = tables.get(i);
             if(table instanceof EnumerationTable)
                 generate((EnumerationTable) table);
+        }
+
+        tables = structure.getSchema().getTables();
+        for(int i = 0; i < tables.size(); i++)
+        {
+            Table table = tables.get(i);
+            if(table instanceof EntityVariantRecordTypeTable)
+                generate((EntityVariantRecordTypeTable) table);
         }
 
         rootUnit.encode();
@@ -298,6 +318,47 @@ public class DataAccessLayerGenerator
             }
 
             enumUnit.encode();
+        }
+    }
+
+    public void generate(EntityVariantRecordTypeTable varRecTypeTable) throws IOException
+    {
+        EntityVariantRecordTypeTableRows rows = varRecTypeTable.getTypes();
+        if(rows != null && rows.size() > 0)
+        {
+            CompilationUnit varRecTypeUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+            varRecTypeUnit.setNamespace(varRecTypesUnit.getNamespace().getName());
+
+            Interface varRecTypeInterface = varRecTypeUnit.newInterface(TextUtils.getInstance().xmlTextToJavaIdentifier(varRecTypeTable.getName(), true));
+            varRecTypeInterface.setAccess(Access.PUBLIC);
+
+            for(int r = 0; r < rows.size(); r++)
+            {
+                EntityVariantRecordTypeTableRow row = (EntityVariantRecordTypeTableRow) rows.getRow(r);
+
+                Constant constant = varRecTypeInterface.newConstant(vm.newType(Type.INT), row.getJavaConstant() + "_ID");
+                constant.setAccess(Access.PUBLIC);
+                constant.isFinal(true);
+                constant.isStatic(true);
+                constant.setExpression(vm.newFree(row.getIdAsInteger().toString()));
+
+                constant = varRecTypeInterface.newConstant(vm.newType("String"), row.getJavaConstant() + "_NAME");
+                constant.setAccess(Access.PUBLIC);
+                constant.isFinal(true);
+                constant.isStatic(true);
+                constant.setExpression(vm.newString(row.getName()));
+
+                if(row.isJavaClassAvailable())
+                {
+                    constant = varRecTypeInterface.newConstant(vm.newType("Class"), row.getJavaConstant() + "_CLASS");
+                    constant.setAccess(Access.PUBLIC);
+                    constant.isFinal(true);
+                    constant.isStatic(true);
+                    constant.setExpression(vm.newFree(row.getJavaClassName() + ".class"));
+                }
+            }
+
+            varRecTypeUnit.encode();
         }
     }
 
@@ -648,7 +709,14 @@ public class DataAccessLayerGenerator
             recordInnerClass.isFinal(true);
             recordInnerClass.setAccess(Access.PUBLIC);
 
-            ClassField field = recordInnerClass.newField(vm.newType("Row"), "row");
+            Row tempRowInstance = node.getTable().createRow();
+            String rowClassName = tempRowInstance.getClass().getName();
+
+            ClassField field = null;
+            if(!rowClassName.equals(BasicRow.class.getName()))
+                field = recordInnerClass.newField(vm.newType(rowClassName), "row");
+            else
+                field = recordInnerClass.newField(vm.newType("Row"), "row");
             field.setAccess(Access.PRIVATE);
 
             field = recordInnerClass.newField(vm.newType("ColumnValues"), "values");
@@ -658,7 +726,12 @@ public class DataAccessLayerGenerator
             constructor.setAccess(Access.PUBLIC);
             constructor.addParameter(vm.newType("Row"), "row");
             constructor.newStmt(vm.newFree("if(row.getTable() != table) throw new ClassCastException(\"Attempting to assign row from table \"+ row.getTable().getName() +\" to \"+ this.getClass().getName() +\" (expecting a row from table \"+ table.getName() +\").\")"));
-            constructor.newStmt(vm.newAssign(vm.newVar("this.row"), vm.newVar("row")));
+
+            if(!rowClassName.equals(BasicRows.class.getName()))
+                constructor.newStmt(vm.newAssign(vm.newVar("this.row"), vm.newVar(" (" + rowClassName + ") row")));
+            else
+                constructor.newStmt(vm.newAssign(vm.newVar("this.row"), vm.newVar("row")));
+
             constructor.newStmt(vm.newAssign(vm.newVar("this.values"), vm.newVar("row.getColumnValues()")));
 
             ClassMethod method = recordInnerClass.newMethod(vm.newType("String"), "toString");
@@ -666,7 +739,10 @@ public class DataAccessLayerGenerator
             method.isFinal(true);
             method.newStmt(vm.newFree("return row.toString()"));
 
-            method = recordInnerClass.newMethod(vm.newType("Row"), "getRow");
+            if(!rowClassName.equals(BasicRow.class.getName()))
+                method = recordInnerClass.newMethod(vm.newType(rowClassName), "getRow");
+            else
+                method = recordInnerClass.newMethod(vm.newType("Row"), "getRow");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
             method.newReturn().setExpression(vm.newVar("row"));
@@ -677,6 +753,14 @@ public class DataAccessLayerGenerator
             method.addThrows("SQLException");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             method.newStmt(vm.newFree("table.insert(cc, row)"));
+
+            method = recordInnerClass.newMethod(vm.newType(Type.VOID), "insertOrUpdateIfDuplicateRowFound");
+            method.setAccess(Access.PUBLIC);
+            method.isFinal(true);
+            method.addThrows("NamingException");
+            method.addThrows("SQLException");
+            method.addParameter(vm.newType("ConnectionContext"), "cc");
+            method.newStmt(vm.newFree("table.insertOrUpdateIfDuplicateRowFound(cc, row)"));
 
             method = recordInnerClass.newMethod(vm.newType(Type.VOID), "update");
             method.setAccess(Access.PUBLIC);
@@ -774,7 +858,14 @@ public class DataAccessLayerGenerator
             recordsInnerClass.isFinal(true);
             recordsInnerClass.setAccess(Access.PUBLIC);
 
-            ClassField field = recordsInnerClass.newField(vm.newType("Rows"), "rows");
+            Rows tempRowsInstance = node.getTable().createRows();
+            String rowsClassName = tempRowsInstance.getClass().getName();
+
+            ClassField field = null;
+            if(!rowsClassName.equals(BasicRows.class.getName()))
+                field = recordsInnerClass.newField(vm.newType(rowsClassName), "rows");
+            else
+                field = recordsInnerClass.newField(vm.newType("Rows"), "rows");
             field.setAccess(Access.PRIVATE);
 
             field = recordsInnerClass.newField(vm.newArray("Record", 1), "cache");
@@ -783,7 +874,12 @@ public class DataAccessLayerGenerator
             org.inxar.jenesis.Constructor constructor = recordsInnerClass.newConstructor();
             constructor.setAccess(Access.PUBLIC);
             constructor.addParameter(vm.newType("Rows"), "rows");
-            constructor.newStmt(vm.newAssign(vm.newVar("this.rows"), vm.newVar("rows")));
+
+            if(!rowsClassName.equals(BasicRows.class.getName()))
+                constructor.newStmt(vm.newAssign(vm.newVar("this.rows"), vm.newVar(" (" + rowsClassName + ") rows")));
+            else
+                constructor.newStmt(vm.newAssign(vm.newVar("this.rows"), vm.newVar("rows")));
+
             constructor.newStmt(vm.newAssign(vm.newVar("this.cache"), vm.newFree("new Record[rows.size()]")));
 
             if(node.getParentForeignKey() != null)
@@ -826,6 +922,46 @@ public class DataAccessLayerGenerator
             Freeform forLoop = vm.newFree("for(int i = 0; i < cache.length; i++)");
             forLoop.write("get(i).delete(cc)");
             method.newStmt(forLoop);
+
+            if(node.getTable() instanceof EntityVariantRecordTable)
+            {
+                final EntityVariantRecordTable evrTable = (EntityVariantRecordTable) node.getTable();
+                final EntityVariantRecordTableRow evrTableRow = (EntityVariantRecordTableRow) evrTable.createRow();
+                final EntityVariantRecordTypeTable evrtTable = (EntityVariantRecordTypeTable) evrTable.getTypeIdColumn().getEntityVariantRecordTypeTable();
+
+                String constantsInterface = varRecTypesUnit.getNamespace().getName() + "." + TextUtils.getInstance().xmlTextToJavaIdentifier(evrtTable.getName(), true);
+                recordsInnerClass.addImplements(constantsInterface);
+
+                final EntityVariantRecordTypeTableRows types = evrtTable.getTypes();
+                for(int i = 0; i < types.size(); i++)
+                {
+                    EntityVariantRecordTypeTableRow evrttRow = (EntityVariantRecordTypeTableRow) types.getRow(i);
+                    if(evrttRow.isJavaClassAvailable())
+                    {
+                        final String javaClassName = evrttRow.getJavaClassName();
+                        method = recordsInnerClass.newMethod(vm.newType(javaClassName), "get" + TextUtils.getInstance().xmlTextToJavaIdentifier(evrttRow.getName(), true));
+                        method.addParameter(vm.newType(javaClassName), "valueIfException");
+                        method.setAccess(Access.PUBLIC);
+                        method.isFinal(true);
+                        method.newStmt(vm.newFree("return (" + javaClassName + ") rows.getVariantValueByTypeName(" + evrttRow.getJavaConstant() + "_NAME, valueIfException)"));
+
+                        method = recordsInnerClass.newMethod(vm.newType(javaClassName), "get" + TextUtils.getInstance().xmlTextToJavaIdentifier(evrttRow.getName(), true));
+                        method.setAccess(Access.PUBLIC);
+                        method.isFinal(true);
+                        method.newStmt(vm.newFree("return (" + javaClassName + ") rows.getVariantValueByTypeName(" + evrttRow.getJavaConstant() + "_NAME, null)"));
+
+                        method = recordsInnerClass.newMethod(vm.newType(evrTableRow.getClass().getName()), "get" + TextUtils.getInstance().xmlTextToJavaIdentifier(evrttRow.getName(), true) + "Row");
+                        method.setAccess(Access.PUBLIC);
+                        method.isFinal(true);
+                        method.newStmt(vm.newFree("return (" + evrTableRow.getClass().getName() + ") rows.getRowByTypeName(" + evrttRow.getJavaConstant() + "_NAME)"));
+                    }
+                }
+
+                method = recordsInnerClass.newMethod(vm.newType(Map.class.getName()), "createNameValueMap");
+                method.setAccess(Access.PUBLIC);
+                method.isFinal(true);
+                method.newStmt(vm.newFree("return rows.createNameValueMap()"));
+            }
 
             if(node.hasChildren())
             {

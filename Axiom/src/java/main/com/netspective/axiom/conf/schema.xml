@@ -643,4 +643,72 @@
         <!-- nothing here yet, just a placeholder for later enhancements -->
     </table-type>
 
+    <!--
+    *********************************************************************
+    ** Variant records manager
+    *********************************************************************
+    -->
+
+    <data-type name="entity-variant-record-type-id" type="integer" class="com.netspective.axiom.schema.column.type.EntityVariantRecordTypeIdColumn">
+        <foreign-key-referencee-class>com.netspective.axiom.schema.column.type.EntityVariantRecordTypeIdRefColumn</foreign-key-referencee-class>
+    </data-type>
+
+    <data-type name="entity-variant-record-value" type="text" class="com.netspective.axiom.schema.column.type.EntityVariantRecordValueColumn">
+        <size>1024</size>
+    </data-type>
+
+    <table-type name="Entity_Variant_Record_Type" class="com.netspective.axiom.schema.table.type.EntityVariantRecordTypeTable">
+        <xdm:template-param name="tableDescr" required="yes"/>
+        <xdm:template-param name="variantColNamePrefix" required="yes"/>
+
+        <xdm:template-param name="variantTypeNameSize" default="256"/>
+        <xdm:template-param name="variantClassNameSize" default="256"/>
+        <xdm:template-param name="variantDescrSize" default="512"/>
+        <xdm:template-param name="variantDefaultValueSize" default="512"/>
+
+        <description>${params.tableDescr}</description>
+
+        <column name="${params.variantColNamePrefix}_type_id" type="entity-variant-record-type-id" primary-key="yes" descr="The identifier of the ${params.variantColNamePrefix} type"/>
+        <column name="${params.variantColNamePrefix}_type_name" type="text" size="${params.variantTypeNameSize}" required="yes" descr="The name of the ${params.variantColNamePrefix} type"/>
+        <column name="${params.variantColNamePrefix}_type_java_class" type="text" size="${params.variantClassNameSize}" required="yes" descr="The application's class that will handle the value of the ${params.variantColNamePrefix} type in Java"/>
+        <column name="${params.variantColNamePrefix}_type_default" type="text" size="${params.variantDefaultValueSize}" descr="The default value of a record of ${params.variantColNamePrefix} type that has a NULL value"/>
+        <column name="${params.variantColNamePrefix}_type_descr" type="text" size="${params.variantDescrSize}" descr="The description of the ${params.variantColNamePrefix} type"/>
+
+        <!-- required for the EntityVariantRecordTypeTable class so that it knows the columns it is working with -->
+        <type-id-col-name>${params.variantColNamePrefix}_type_id</type-id-col-name>
+        <type-name-col-name>${params.variantColNamePrefix}_type_name</type-name-col-name>
+        <type-java-class-col-name>${params.variantColNamePrefix}_type_java_class</type-java-class-col-name>
+        <type-default-col-name>${params.variantColNamePrefix}_type_default</type-default-col-name>
+        <type-descr-col-name>${params.variantColNamePrefix}_type_descr</type-descr-col-name>
+
+        <!-- Tables that use this type can define data elements like this (similar to enumerations)
+        <types>
+            <type XXX_type_name="Foo" XXX_type_java_class="java.lang.String"/>
+            <type XXX_type_name="Bar" XXX_type_java_class="java.lang.Boolean"/>
+            <type id="abc" XXX_type_name="Foo" XXX_type_java_class="java.lang.String[]"/> [id is optional]
+        </types>
+        -->
+    </table-type>
+
+    <table-type name="Entity_Variant_Record" class="com.netspective.axiom.schema.table.type.EntityVariantRecordTable">
+        <xdm:template-param name="tableDescr" required="yes"/>
+        <xdm:template-param name="variantColNamePrefix" required="yes"/>
+        <xdm:template-param name="variantTypeTable" required="yes"/>
+        <xdm:template-param name="entityRefColName" required="yes"/>
+        <xdm:template-param name="entityRef" required="yes"/>
+
+        <xdm:template-param name="variantValueType" default="entity-variant-record-value"/>
+
+        <description>${params.tableDescr}</description>
+
+        <column name="${params.entityRefColName}" parent-ref="${params.entityRef}" indexed="yes" required="yes" descr="The ${params.entityRef} to which the ${params.variantColNamePrefix} belongs."/>
+        <column name="${params.variantColNamePrefix}_type_id" lookup-ref="${params.variantTypeTable}" required="yes" descr="The ${params.variantColNamePrefix} type"/>
+        <column name="${params.variantColNamePrefix}_value" type="${params.variantValueType}" descr="The value of the ${params.variantColNamePrefix} (in a format that the associated class can use it)"/>
+
+        <!-- required for the EntityVariantRecordTable class so that it knows the columns it is working with -->
+        <entity-id-col-name>${params.entityRefColName}</entity-id-col-name>
+        <type-id-col-name>${params.variantColNamePrefix}_type_id</type-id-col-name>
+        <value-col-name>${params.variantColNamePrefix}_value</value-col-name>
+    </table-type>
+
 </xdm:container>
