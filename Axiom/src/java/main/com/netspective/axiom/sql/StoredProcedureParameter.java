@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.5 2003-11-03 22:50:47 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.6 2003-11-06 00:04:01 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -57,6 +57,7 @@ import java.sql.SQLException;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Array;
+import java.sql.ResultSet;
 
 /**
  * Class representing an in or out parameter of a callable statement object
@@ -94,8 +95,9 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     private StoredProcedureParameters parent;
     private String name;
     private ValueSource value;
-    private int sqlType = Types.VARCHAR;
-    private Class javaType = String.class;
+    //private int sqlType = Types.VARCHAR;
+    //private Class javaType = String.class;
+    private QueryParameterType paramType;
     private int index;
     private Type type;
 
@@ -104,28 +106,29 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         setParent(parent);
     }
 
-    public int getSqlTypeCode()
-    {
-        return sqlType;
-    }
-
-    public void setSqlTypeCode(int type)
-    {
-        this.sqlType = type;
-    }
-
+    /**
+     * Sets the type of value the parameter will contain
+     * @param sqlType
+     */
     public void setSqlType(QueryParameterTypeEnumeratedAttribute sqlType)
     {
         String paramTypeName = sqlType.getValue();
         if(paramTypeName != null)
         {
-            QueryParameterType type = QueryParameterType.get(paramTypeName);
+            paramType = QueryParameterType.get(paramTypeName);
             if(type == null)
                 throw new RuntimeException("param type '" + paramTypeName + "' is invalid for param '"+
                         getName() +"' in stored procedure '" + parent.getProcedure().getQualifiedName() + "'");
-            setSqlTypeCode(type.getJdbcType());
-            setJavaType(type.getJavaClass());
         }
+    }
+
+    /**
+     * Gets the parameter's value type object
+     * @return
+     */
+    public QueryParameterType getSqlType()
+    {
+        return paramType;
     }
 
     /**
@@ -185,9 +188,10 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         int paramNum = vac.getNextParamNum();
 
         Value sv = value.getValue(cc);
+        int jdbcType = getSqlType().getJdbcType();
         if (getType().getValueIndex() == Type.IN || getType().getValueIndex() == Type.IN_OUT)
         {
-            switch (sqlType)
+            switch (jdbcType)
             {
                 case Types.VARCHAR:
                     stmt.setObject(paramNum, value.getTextValue(cc));
@@ -213,8 +217,8 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         }
         if (getType().getValueIndex() == Type.OUT || getType().getValueIndex() == Type.IN_OUT)
         {
-            // sqlType MUST be of java.sql.Types value always!
-            stmt.registerOutParameter(paramNum, sqlType);
+            // jdbcType MUST be of java.sql.Types value always!
+            stmt.registerOutParameter(paramNum, jdbcType);
         }
     }
 
@@ -241,7 +245,10 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
             return;
 
         int index = this.getIndex();
-        switch (sqlType)
+        QueryParameterType paramType = getSqlType();
+        int jdbcType = paramType.getJdbcType();
+
+        switch (jdbcType)
         {
             case Types.VARCHAR:
                 value.getValue(cc).setTextValue(stmt.getString(index));
@@ -304,8 +311,8 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                 value.getValue(cc).setValue(stmt.getBigDecimal(index));
                 break;
             case java.sql.Types.OTHER:
-                 value.getValue(cc).setValue(stmt.getObject(index));
-                 break;
+                value.getValue(cc).setValue(stmt.getObject(index));
+                break;
             case java.sql.Types.REAL:
                 value.getValue(cc).setValue(new Float(stmt.getFloat(index)));
                 break;
@@ -346,22 +353,23 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     public void retrieve(StoredProcedureParameters.ValueRetrieveContext vrc, ConnectionContext cc) throws SQLException
     {
         // TODO: This needs to be tested.. no checking for stored procedure situation yet
-        if(sqlType != Types.ARRAY)
+        int jdbcType = getSqlType().getJdbcType();
+        if(jdbcType != Types.ARRAY)
         {
-            if(sqlType == Types.VARCHAR)
+            if(jdbcType == Types.VARCHAR)
             {
-                vrc.addInOutValue(value != null ? value.getTextValue(cc) : null, sqlType, type);
+                vrc.addInOutValue(value != null ? value.getTextValue(cc) : null, jdbcType, type);
             }
             else
             {
-                switch(sqlType)
+                switch(jdbcType)
                 {
                     case Types.INTEGER:
-                        vrc.addInOutValue(value != null ? new Integer(value.getValue(cc).getIntValue()) : null, sqlType, type);
+                        vrc.addInOutValue(value != null ? new Integer(value.getValue(cc).getIntValue()) : null, jdbcType, type);
                         break;
 
                     case Types.DOUBLE:
-                        vrc.addInOutValue(value != null ? new Double(value.getValue(cc).getDoubleValue()) : null, sqlType, type);
+                        vrc.addInOutValue(value != null ? new Double(value.getValue(cc).getDoubleValue()) : null, jdbcType, type);
                         break;
                 }
             }
@@ -434,23 +442,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         this.parent = parent;
     }
 
-    /**
-     * Gets the equivalent Java type
-     * @return
-     */
-    public Class getJavaType()
-    {
-        return javaType;
-    }
-
-    /**
-     * Sets the equivalent Java type
-     * @param javaType
-     */
-    public void setJavaType(Class javaType)
-    {
-        this.javaType = javaType;
-    }
 
     /**
      * Gets the dynamic value for this parameter
@@ -472,7 +463,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     public boolean isListType()
     {
-        return sqlType == Types.ARRAY;
+        return paramType != null  && paramType.getJdbcType() == Types.ARRAY ? true : false;
     }
 
     /**
@@ -484,7 +475,8 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     public void appendBindText(StringBuffer text, ValueContext vc, String terminator)
     {
         text.append("["+ index +"]");
-        if(sqlType != Types.ARRAY)
+        int jdbcType = getSqlType().getJdbcType();
+        if(jdbcType != Types.ARRAY)
         {
             Object ov = value.getValue(vc);
             text.append(value.getSpecification().getSpecificationText());
@@ -493,9 +485,9 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
             text.append(" (java: ");
             text.append(ov != null ? ov.getClass().getName() : "<NULL>");
             text.append(", sql: ");
-            text.append(sqlType);
+            text.append(jdbcType);
             text.append(", ");
-            text.append(QueryParameterType.get(sqlType));
+            text.append(QueryParameterType.get(jdbcType));
             text.append(")");
         }
         else

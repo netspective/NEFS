@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSet.java,v 1.5 2003-08-30 16:39:02 shahid.shah Exp $
+ * $Id: QueryResultSet.java,v 1.6 2003-11-06 00:04:01 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -62,6 +62,7 @@ import com.netspective.commons.value.source.StaticValueSource;
 public class QueryResultSet
 {
     private Query query;
+    private StoredProcedure sp;
     private ConnectionContext cc;
     private boolean executStmtResult;
     private ResultSet resultSet;
@@ -81,13 +82,51 @@ public class QueryResultSet
         this.executionLogEntry = executionLogEntry;
     }
 
+    /**
+     * Creates a wrapper class to handle the <code>ResultSet</code> object returned
+     * by the stored procedure.
+     *
+     * @param sp
+     * @param cc
+     * @param resultSet
+     */
+    public QueryResultSet(StoredProcedure sp, ConnectionContext cc, ResultSet resultSet)
+    {
+        this.cc = cc;
+        this.resultSet = resultSet;
+        this.sp = sp;
+
+        // executeQuery() method does not return a boolean value
+        this.executStmtResult = true;
+    }
+
+    /**
+     * Creates a wrapper class to handle the <code>ResultSet</code> object returned
+     * by the stored procedure.
+     *
+     * @param sp
+     * @param cc
+     * @param resultSet
+     * @param executionLogEntry
+     */
+    public QueryResultSet(StoredProcedure sp, ConnectionContext cc, ResultSet resultSet,
+                          QueryExecutionLogEntry executionLogEntry)
+    {
+        this(sp, cc, resultSet);
+        this.executionLogEntry = executionLogEntry;
+    }
+
+
     public ConnectionContext getConnectionContext()
     {
         return cc;
     }
 
     /**
-     * Retrieves the boolean result returned from javax.jdbc.sql.Statement.execute() method
+     * Retrieves the boolean result returned from javax.jdbc.sql.Statement.execute() method.
+     * For stored procedure executions, this returns TRUE always.
+     *
+     * @return
      */
     public boolean getExecutStmtResult()
     {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameterType.java,v 1.3 2003-10-31 23:39:25 aye.thu Exp $
+ * $Id: QueryParameterType.java,v 1.4 2003-11-06 00:04:01 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -50,6 +50,7 @@ import java.sql.Types;
 import java.sql.Clob;
 import java.sql.Date;
 import java.sql.Blob;
+import java.sql.ResultSet;
 
 public class QueryParameterType
 {
@@ -80,6 +81,7 @@ public class QueryParameterType
         add("blob", Types.BLOB, Blob.class);
         add("smallint", Types.SMALLINT, Byte.class);
         add("bigint", Types.BIGINT, Long.class);
+        add("resultset", Types.OTHER, ResultSet.class);
     }
 
     public final static void add(QueryParameterType type)
