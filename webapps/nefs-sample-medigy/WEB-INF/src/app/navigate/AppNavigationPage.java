@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: AppNavigationPage.java,v 1.2 2004-03-02 07:34:29 aye.thu Exp $
+ * $Id: AppNavigationPage.java,v 1.3 2004-03-03 15:57:33 aye.thu Exp $
  */
 
 package app.navigate;
 
 import com.netspective.commons.command.CommandException;
-import com.netspective.sparx.command.RecordEditorCommand;
+import com.netspective.sparx.command.PanelEditorCommand;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationTree;
@@ -65,10 +65,10 @@ public class AppNavigationPage extends NavigationPage
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         HttpServletRequest request = nc.getHttpRequest();
-        String commandSpec = request.getParameter(RecordEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME);
+        String commandSpec = request.getParameter(PanelEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME);
         if (commandSpec != null)
         {
-            RecordEditorCommand command = new RecordEditorCommand();
+            PanelEditorCommand command = new PanelEditorCommand();
             command.setParameters(commandSpec);
             try
             {
