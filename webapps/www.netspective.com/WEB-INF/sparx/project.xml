@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+
+<project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+
+    <theme name="survey" default="yes" class="app.AppTheme" inherit-resources-from-themes="slate,common"/>
+
+    <navigation-tree name="app" default="yes">
+        <page class="app.AppPage" name="home" default="yes" caption="Home">
+            <body source="index.ftl"/>
+        </page>
+
+        <page class="app.AppPage" name="products" caption="Products">
+            <body source="index.ftl"/>
+
+            <page name="frameworks" caption="Frameworks" tag-line="Developing J2EE Applications Gets Easy">
+                <body source="index.ftl"/>
+
+                <page name="features" caption="Features">
+                    <body source="index.ftl"/>
+                </page>
+
+                <page name="architecture" caption="Architecture">
+                    <body source="index.ftl"/>
+                </page>
+
+                <page name="sparx" caption="Application Platform">
+                    <body source="index.ftl"/>
+                </page>
+
+                <page name="axiom" caption="Data Service">
+                    <body source="index.ftl"/>
+                </page>
+
+                <page name="commons" caption="Core Library">
+                    <body source="index.ftl"/>
+                </page>
+
+                <page name="console" caption="Enterprise Console">
+                    <body source="index.ftl"/>
+                </page>
+            </page>
+
+            <page name="web-services" caption="Web Services">
+                <body source="index.ftl"/>
+            </page>
+
+            <page name="struts" caption="Enhancing Struts">
+                <body source="index.ftl"/>
+            </page>
+        </page>
+
+        <page class="app.AppPage" name="buy" caption="Buy">
+            <body source="index.ftl"/>
+        </page>
+
+        <page class="app.AppPage" name="services" caption="Services">
+            <body source="index.ftl"/>
+        </page>
+
+        <page class="app.AppPage" name="support" caption="Support">
+            <body source="index.ftl"/>
+        </page>
+
+        <page class="app.AppPage" name="company" caption="Company">
+            <body source="index.ftl"/>
+        </page>
+    </navigation-tree>
+
+</project>
