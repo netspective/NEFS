@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.3 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: QueryDialog.java,v 1.4 2003-06-30 02:38:44 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
 
 import java.io.Writer;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,21 +57,36 @@ import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogSkin;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.type.IntegerField;
+import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDestination;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
+import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
 import com.netspective.sparx.console.panel.data.sql.QueryDetailPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.sql.Query;
 import com.netspective.sparx.command.HttpServletCommand;
+import com.netspective.sparx.panel.QueryReportPanel;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.theme.Theme;
 import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.axiom.sql.QueryParameters;
+import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.command.CommandException;
+
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 public class QueryDialog extends Dialog
 {
@@ -83,11 +100,14 @@ public class QueryDialog extends Dialog
 
     public QueryDialog()
     {
+        super();
+        createNavigatorField();
     }
 
     public QueryDialog(DialogsPackage pkg)
     {
         super(pkg);
+        createNavigatorField();
     }
 
     public Query getQuery()
@@ -98,6 +118,14 @@ public class QueryDialog extends Dialog
     public void setQuery(Query query)
     {
         this.query = query;
+    }
+
+    /**
+     * Create the result set navigator buttons
+     */
+    public void createNavigatorField()
+    {
+        addField(new DataSourceNavigatorButtonsField());
     }
 
     public void createParamFields()
@@ -127,6 +155,7 @@ public class QueryDialog extends Dialog
     {
         DialogContext dc = super.createContext(nc, skin);
         dc.getRequest().setAttribute(QueryDetailPanel.REQPARAMNAME_QUERY, query.getQualifiedName());
+        dc.getDialog().getDialogFlags().setFlag(DialogFlags.HIDE_HEADING_IN_EXEC_MODE);
         return dc;
     }
 
@@ -170,8 +199,90 @@ public class QueryDialog extends Dialog
         this.urlFormats = urlFormats;
     }
 
+    public void renderReport(Writer writer, DialogContext dc, HtmlTabularReportSkin reportSkin) throws IOException, QueryDefinitionException
+    {
+        QueryReportPanel reportPanel = null;
+
+        HtmlTabularReportDataSourceScrollStates scrollStatesManager = HtmlTabularReportDataSourceScrollStates.getInstance();
+        HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
+
+        /*
+            If the state is not found, then we have not executed at all yet;
+            if the state is found and it's the initial execution then it means
+            that the user has pressed the "back" button -- which means we
+            should reset the state management.
+         */
+        if(scrollStateById == null || (scrollStateById != null && dc.isInitialExecute()))
+        {
+            // if our transaction does not have a scroll state, but there is an active scroll state available, then it
+            // means that we need to close the previous one and remove the attribute so that the connection can be
+            // closed and returned to the pool
+            HtmlTabularReportDataSourceScrollState activeScrollState = scrollStatesManager.getActiveScrollState(dc);
+
+            if(activeScrollState != null && ! getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
+                scrollStatesManager.removeActiveState(dc, activeScrollState);
+
+            reportPanel = new QueryReportPanel();
+            reportPanel.setQuery(query);
+            reportPanel.setScrollable(true);
+            reportPanel.setScrollRowsPerPage(this.getRowsPerPage());
+
+        }
+        else
+        {
+            reportPanel = (QueryReportPanel) scrollStateById.getPanel();
+        }
+        reportPanel.render(writer, dc, dc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+        //destination.render(reportPanel, reportSkin);
+    }
+
+    /**
+     * Initiates state changes to each individual field of the dialog
+     * @param dc
+     * @param stage
+     */
+    public void makeStateChanges(DialogContext dc, int stage)
+    {
+
+        DialogContext.DialogFieldStates states = dc.getFieldStates();
+
+        if(dc.inExecuteMode() && stage == DialogContext.STATECALCSTAGE_FINAL)
+        {
+
+            DialogFields fields = getFields();
+            for(int i = 0; i < fields.size(); i++)
+            {
+                DialogField field = fields.get(i);
+                field.makeStateChanges(dc, stage);
+                states.getState(field).getStateFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+            }
+
+            // Hide the dialog director(OK/Cancel)
+            states.getState(getDirector()).getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+            // display the Navigation buttons
+            states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+        }
+        else
+        {
+            // if the dialog isnt in execute mode, do not display the result navigation buttons
+            states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+        }
+    }
+
+
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
+        try
+        {
+
+            renderReport(writer, dc, reportSkin);
+        }
+        catch (Exception e)
+        {
+            log.error("Exception while trying to render report", e);
+            throw new DialogExecuteException(e);
+        }
+        /*
         try
         {
             HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand("query," + query.getQualifiedName());
@@ -187,5 +298,6 @@ public class QueryDialog extends Dialog
             log.error("Error executing query command.", e);
             throw new DialogExecuteException(e);
         }
+        */
     }
 }
