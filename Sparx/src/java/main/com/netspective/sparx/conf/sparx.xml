@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.53 2003-09-10 20:58:05 aye.thu Exp $
+  * $Id: sparx.xml,v 1.54 2003-09-13 03:05:36 roque.hernandez Exp $
   *****************************************************************************************
  -->
 
@@ -30,6 +30,7 @@
     <command class="com.netspective.sparx.command.ListValueSourceCommand"/>
 
     <connection-provider-entry-statistics class="com.netspective.sparx.console.util.ResinDataSourcePoolStatistics"/>
+    <connection-provider-entry-statistics class="com.netspective.sparx.console.util.JakartaCommonsDbcpDataSourcePoolStatistics"/>
     <class-path-provider class="com.netspective.sparx.console.util.ResinCompilingClassPathProvider"/>
 
     <theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" inherit-resources-from-themes="common"/>
