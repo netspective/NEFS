@@ -39,18 +39,16 @@
  */
 
 /**
- * $Id: DialogsCatalogOverviewPanel.java,v 1.5 2003-06-24 17:12:39 shahid.shah Exp $
+ * $Id: DialogsCatalogOverviewPanel.java,v 1.6 2003-06-24 17:14:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
 
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
 import com.netspective.sparx.form.DialogFlags;
-import com.netspective.sparx.form.DialogsManager;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
