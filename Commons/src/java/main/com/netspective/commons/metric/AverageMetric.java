@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AverageMetric.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: AverageMetric.java,v 1.2 2003-11-19 05:29:13 aye.thu Exp $
  */
 
 package com.netspective.commons.metric;
@@ -55,7 +55,7 @@ public class AverageMetric extends CountMetric
     {
         long count = getCount();
         if(count > 0)
-            return Double.toString(getSum() / getCount()) + " min = "+ getMin() +", max = "+ getMax() + getPercentageOfParent();
+            return Double.toString(getSum() / getCount()) + " (min = "+ getMin() +", max = "+ getMax() + getPercentageOfParent() + ")";
         else
             return "0.0";
     }
