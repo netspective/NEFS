@@ -45,6 +45,14 @@ Default location on development boxes are
 
 <b>If you're compiling with Ant</b>
 <ol>
+    <li>Make sure the JAVA_HOME environment variable is set to point to the JDK folder.</li>
+    <li>Make sure the following files are not in READ-ONLY mode:
+    	<ul>
+    	    <li><code>NEFS_HOME/Axiom/src/java/main/com/netspective/axiom/BuildLog.java</code></li>
+    	    <li><code>NEFS_HOME/Commons/src/java/main/com/nespective/commons/BuildLog.java</code></li>
+    	    <li><code>NEFS_HOME/Sparx/src/java/main/com/nespective/sparx/BuildLog.java</code></li>
+    	</ul>
+    </li>
     <li>Open command prompt or terminal window</code>
     <li>cd <code>NEFS_HOME/tools</code>
     <li>On Win32 type '<code>build</code>' and on UNIX type '<code>sh build.sh</code>' </ol>
