@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.19 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.20 2003-09-25 04:52:47 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -50,6 +50,8 @@ import java.io.IOException;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.*;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
@@ -287,27 +289,38 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         writer.write("</table>\n");
     }
 
-    protected void producerBannerActionsHtml(Writer writer, HtmlPanelValueContext rc, HtmlPanelActions actions) throws IOException, CommandNotFoundException
+    /**
+     * Generates the html for banner action items
+     * @param writer
+     * @param rc
+     * @param actions
+     * @throws IOException
+     * @throws CommandNotFoundException
+     */
+    protected void produceBannerActionsHtml(Writer writer, HtmlPanelValueContext rc, HtmlPanelActions actions) throws IOException, CommandNotFoundException
     {
         int actionsCount = actions.size();
         if(actionsCount == 0) return;
         String bannerItemFontAttrs = "";
-
-        //TODO: conversion from Sparx 2.x required below
-        //ReportSkin skin = rc.getSkin();
-        //if (skin instanceof com.netspective.sparx.xaf.skin.HtmlReportSkin)
-        //    bannerItemFontAttrs = ((HtmlReportSkin) skin).getBannerItemFontAttrs();
 
         if(actions.getStyle().getValueIndex() == HtmlPanelActions.Style.HORIZONTAL)
         {
             for(int i = 0; i < actionsCount; i++)
             {
                 HtmlPanelAction action = actions.get(i);
-                Command itemCmd = action.getCommand(rc);
                 ValueSource itemCaption = action.getCaption();
                 ValueSource itemIcon = action.getIcon();
-                String caption = itemCaption != null ? (itemCmd != null ? ("<a href='" + itemCmd.getParameters() + "'>" + itemCaption.getValue(rc) + "</a>") : itemCaption.getValue(rc).getTextValue()) : null;
-
+                String caption = "";
+                RedirectValueSource itemRedirect = action.getRedirect();
+                if (itemRedirect == null)
+                {
+                    caption = itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i;
+                }
+                else
+                {
+                    caption = constructRedirect(rc, itemRedirect, itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i,
+                            action.getHint().getValue(rc).getTextValue(), null);
+                }
                 writer.write("<font " + bannerItemFontAttrs + ">");
                 if(i > 0)
                     writer.write(", ");
@@ -323,12 +336,20 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
             for(int i = 0; i < actionsCount; i++)
             {
                 HtmlPanelAction action = actions.get(i);
-                Command itemCmd = action.getCommand(rc);
+                RedirectValueSource itemRedirect= action.getRedirect();
                 ValueSource itemCaption = action.getCaption();
                 ValueSource itemIcon = action.getIcon();
                 HtmlPanelActions childItems = action.getChildren();
-                String caption = itemCaption != null ? (itemCmd != null ? ("<a href='" + itemCmd.getParameters() + "'>" + itemCaption.getValue(rc) + "</a>") : itemCaption.getValue(rc).getTextValue()) : null;
-
+                String caption = "";
+                if (itemRedirect == null)
+                {
+                    caption = itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i;
+                }
+                else
+                {
+                    caption = constructRedirect(rc, itemRedirect, itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i,
+                            action.getHint().getValue(rc).getTextValue(), null);
+                }
                 writer.write("<tr><td>");
                 writer.write(itemIcon != null ? "<img src='" + itemIcon.getValue(rc) + "'>" : "-");
                 writer.write("</td>");
@@ -336,7 +357,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 if(caption != null)
                     writer.write(caption);
                 if(childItems != null && childItems.size() > 0)
-                    producerBannerActionsHtml(writer, rc, childItems);
+                    produceBannerActionsHtml(writer, rc, childItems);
                 writer.write("</font></td>");
                 writer.write("</tr>");
             }
@@ -356,12 +377,10 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         HtmlPanelBanner banner = panel.getBanner();
         if (banner == null)
             return;
-
         HtmlPanelActions actions = banner.getActions();
         ValueSource content = banner.getContent();
-        if((actions == null || (actions != null || actions.size() == 0) && content == null))
+        if(content == null && (actions == null || actions.size() == 0))
             return;
-
         writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_banner\"><td class=\""+ panelClassNamePrefix +"-banner\">\n");
         if(content != null)
         {
@@ -371,7 +390,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         {
             try
             {
-                producerBannerActionsHtml(writer, vc, actions);
+                produceBannerActionsHtml(writer, vc, actions);
             }
             catch (CommandNotFoundException e)
             {
@@ -380,4 +399,40 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         }
         writer.write("</td></tr>\n");
     }
+
+    /**
+     * Constructs the redirect URL from the passed in command
+     * @param rc
+     * @param redirect
+     * @param label
+     * @param hint
+     * @param target
+     * @return
+     */
+    // TODO: This is the same as the one in BasicHtmlTabularReportSkin. Need to refactor!
+    public String constructRedirect(ValueContext rc, ValueSource redirect, String label, String hint, String target)
+    {
+        if (redirect instanceof RedirectValueSource)
+        {
+            StringBuffer sb = new StringBuffer();
+            String url = ((RedirectValueSource)redirect).getUrl(rc);
+            if (url.startsWith("javascript"))
+            {
+                sb.append("<a href=\"#\" onclick=\"" + url + "\"");
+            }
+            else
+            {
+                sb.append("<a href='" + url + "'");
+
+            }
+            if (hint != null)
+                sb.append(" title=\"" + hint + "\"");
+            if (target != null)
+                sb.append(" target=\"" + target + "\"");
+            sb.append(">" + label + "</a>");
+            return sb.toString();
+        }
+        return null;
+    }
+
 }
