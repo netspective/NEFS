@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: web.xml,v 1.15 2003-08-10 00:42:08 shahid.shah Exp $
+$Id: resin-web.xml,v 1.1 2003-08-10 00:42:09 shahid.shah Exp $
 -->
 
 <web-app>

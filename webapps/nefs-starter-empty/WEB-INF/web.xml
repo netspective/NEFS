@@ -1,32 +1,27 @@
 <?xml version="1.0"?>
 
+<!--
+*****************************************************
+** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
+*****************************************************
+$Id: web.xml,v 1.10 2003-08-10 00:42:08 shahid.shah Exp $
+-->
+
 <web-app>
     <!--
-    *********************************************************************
-    * The following path-mapping entry is only required for developers  *
-    * that are actively modifying Sparx resources. The convenience is   *
-    * that the developer can point to the resources in the main Sparx   *
-    * codebase without copying them into the web application.           *
-    *********************************************************************
-    -->
-	<path-mapping url-pattern='/sparx/*' real-path='${app.docDir}/../../Sparx/resources'/>
-
-    <!--
-    *********************************************************************
-    * Setup application front-controller servlet                        *
-    * 1) The SparxNavigationController servlet handles all requests     *
-    * 2) Anything under the /sparx URL is assumed to be a resource or   *
-    *    asset so it's forwarded to the normal static file servlet.     *
-    * 3) Anything under the /resources URL is assumed to be a resource  *
-    *    so it's forwarded to the normal static file servlet.           *
-    *                                                                   *
-    * NOTE: if you will be using the NavigationPage forward or include  *
-    *       attributes (<page ... forward=''> or <page include=''>)     *
-    *       then you will need to ensure that those pages get handled   *
-    *       by the appropriate app server servlets so you may need      *
-    *       additional servlet-mappings for the forwarded or included   *
-    *       resources.                                                  *
-    *********************************************************************
+    *******************************************************************************************************************
+    ** APPLICATION FRONT-CONTROLLER CONFIGURATION                                                                    **
+    ** ============================================================================================================= **
+    ** 1) The SparxNavigationController servlet handles all the requests (it's the default servlet)                  **
+    ** 2) Anything under the /sparx URL is assumed to be a Sparx resource or asset so it's forwarded to the normal   **
+    **    app-server static file servlet.                                                                            **
+    ** 3) Anything under the /resources URL is assumed to be an application resource or asset so it's also forwared  **
+    **    to the normal app-server static file servlet.                                                              **
+    ** ============================================================================================================= **
+    ** NOTE: if you will be using the NavigationPage forward or include attributes (<page ... forward=''> or <page   **
+    **       include=''>) then you will need to ensure that those pages get handled by the appropriate app server    **
+    **       servlets so you may need additional servlet-mappings for the forwarded or included resources.           **
+    *******************************************************************************************************************
     -->
 	<servlet>
 		<servlet-name>SparxNavigationController</servlet-name>
@@ -54,11 +49,12 @@
     </servlet-mapping>
 
     <!--
-    *********************************************************************
-    * Setup Netspective Administration Console servlet                  *
-    * - if no security is desired, simply remove or comment out all of  *
-    *   the login-* init parameters.                                    *
-    *********************************************************************
+    *******************************************************************************************************************
+    ** NETSPECTIVE APPLICATION ADMINISTRATION CONSOLE CONFIGURATION                                                  **
+    ** ============================================================================================================= **
+    ** If you wish to disable the Console completely, just remove the <servlet> and <servlet-mapping> configuration  **
+    ** elements for the NetspectiveConsole servlet.                                                                  **
+    *******************************************************************************************************************
     -->
 	<servlet>
 		<servlet-name>NetspectiveConsole</servlet-name>

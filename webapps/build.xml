@@ -21,7 +21,7 @@
 
     <target name="sparx.copy-standard-items" depends="sparx.init" description="Copy files that are standard to Sparx from the 'primary' test app to all the other test apps.">
         <fileset id="standard-items" dir="${sparx.primary-test-app.home}">
-            <include name="WEB-INF/web.xml"/>
+            <include name="WEB-INF/sparx/conf/**"/>
             <include name="WEB-INF/sparx/ant-build-project.xml"/>
         </fileset>
 
@@ -37,6 +37,14 @@
         <copy todir="${sparx.test-apps.home}/sparx-test-app-04">
             <fileset refid="standard-items"/>
         </copy>
+    </target>
+
+    <target name="sparx.setup-for-resin" depends="sparx.init" description="Performs tasks necessary to setup applications for use under Caucho Resin app server">
+        <copy tofile="${sparx.test-apps.home}/sparx-test-app-00/WEB-INF/web.xml" file="${sparx.test-apps.home}/sparx-test-app-00/WEB-INF/sparx/conf/resin-web.xml"/>
+        <copy tofile="${sparx.test-apps.home}/sparx-test-app-01/WEB-INF/web.xml" file="${sparx.test-apps.home}/sparx-test-app-01/WEB-INF/sparx/conf/resin-web.xml"/>
+        <copy tofile="${sparx.test-apps.home}/sparx-test-app-02/WEB-INF/web.xml" file="${sparx.test-apps.home}/sparx-test-app-02/WEB-INF/sparx/conf/resin-web.xml"/>
+        <copy tofile="${sparx.test-apps.home}/sparx-test-app-03/WEB-INF/web.xml" file="${sparx.test-apps.home}/sparx-test-app-03/WEB-INF/sparx/conf/resin-web.xml"/>
+        <copy tofile="${sparx.test-apps.home}/sparx-test-app-04/WEB-INF/web.xml" file="${sparx.test-apps.home}/sparx-test-app-04/WEB-INF/sparx/conf/resin-web.xml"/>
     </target>
 
 </project>
