@@ -73,10 +73,10 @@
         <property name="change-log-xml.sparx.dest.file" value="${nefs.docs.change-log.home}/change-log-sparx.xml"/>
         <property name="change-log-xml.webapps.dest.file" value="${nefs.docs.change-log.home}/change-log-webapps.xml"/>
 
-        <cvschangelog dir="${nefs.home}/Commons" destfile="${change-log-xml.commons.dest.file}"/>
-        <cvschangelog dir="${nefs.home}/Axiom" destfile="${change-log-xml.axiom.dest.file}"/>
-        <cvschangelog dir="${nefs.home}/Sparx" destfile="${change-log-xml.sparx.dest.file}"/>
-        <cvschangelog dir="${nefs.home}/webapps" destfile="${change-log-xml.webapps.dest.file}"/>
+        <cvschangelog dir="${nefs.home}/Commons" destfile="${change-log-xml.commons.dest.file}" daysinpast="60"/>
+        <cvschangelog dir="${nefs.home}/Axiom" destfile="${change-log-xml.axiom.dest.file}" daysinpast="60"/>
+        <cvschangelog dir="${nefs.home}/Sparx" destfile="${change-log-xml.sparx.dest.file}" daysinpast="60"/>
+        <cvschangelog dir="${nefs.home}/webapps" destfile="${change-log-xml.webapps.dest.file}" daysinpast="60"/>
 
         <style in="${change-log-xml.commons.dest.file}" out="${change-log.html.path}/change-log-commons.html" style="${change-log-xslt.file}">
             <param name="title" expression="Netspective Commons ChangeLog"/>
