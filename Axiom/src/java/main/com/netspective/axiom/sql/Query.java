@@ -587,11 +587,14 @@ public class Query
         {
             String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
             cc = dbvc.getConnection(dataSrcIdText, true);
-            return executeUpdateAndIgnoreStatistics(cc, overrideParams);
+            int result = executeUpdateAndIgnoreStatistics(cc, overrideParams);
+            cc.commitAndClose();
+            return result;
         }
-        finally
+        catch(SQLException e)
         {
-            if(cc != null) cc.close();
+            if(cc != null) cc.rollbackAndClose();
+            throw e;
         }
     }
 }
