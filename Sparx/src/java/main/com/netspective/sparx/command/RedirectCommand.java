@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RedirectCommand.java,v 1.1 2003-04-06 04:01:46 shahid.shah Exp $
+ * $Id: RedirectCommand.java,v 1.2 2003-04-07 01:03:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -48,7 +48,6 @@ import java.util.StringTokenizer;
 
 import com.netspective.commons.command.AbstractCommand;
 import com.netspective.commons.command.CommandDocumentation;
-import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -57,7 +56,7 @@ public class RedirectCommand extends AbstractCommand
 {
     public static final String[] IDENTIFIERS = new String[] { "redirect" };
     public static final String IS_NAV_ID_FLAG = "IS_NAV_ID";
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
+    public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation(
             "Redirects the current page to another page via an URL.",
             new CommandDocumentation.Parameter[]
             {
@@ -71,7 +70,7 @@ public class RedirectCommand extends AbstractCommand
         return IDENTIFIERS;
     }
 
-    public static ValueSourceDocumentation getDocumentation()
+    public static CommandDocumentation getDocumentation()
     {
         return DOCUMENTATION;
     }
