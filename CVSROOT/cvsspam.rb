@@ -1346,7 +1346,7 @@ class SendmailMailer
     blah("invoking #{$sendmail_prog} -t")
     IO.popen("#{$sendmail_prog} -t", "w") do |mail|
       ctx = MailContext.new(mail) 
-      ctx.header("To", recipients.join(','))
+      ctx.header("Bcc", recipients.join(','))
       ctx.header("From", from) if from
       yield ctx
     end
