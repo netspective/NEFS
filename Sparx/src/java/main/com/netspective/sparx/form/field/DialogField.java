@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.48 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.49 2003-12-31 05:07:44 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -1423,6 +1423,9 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 		String js =
 			"field = new DialogField(\"" + fieldClassName + "\", \"" + this.getHtmlFormControlId() + "\", \"" + this.getName() + "\", \"" + fieldQualfName + "\", \"" + fieldCaption + "\", " + dc.getFieldStates().getState(this).getStateFlags().getFlags() + ");\n" +
 			"dialog.registerField(field);\n";
+        // if the field has a parent field, set the parent name
+        if (getParent() != null)
+            js = js + "field.parentName = '" + getParent().getQualifiedName() + "';\n";
 		String customStr = this.getEventJavaScriptFunctions(dc);
 		customStr += this.getCustomJavaScriptDefn(dc);
 		if (customStr != null)
