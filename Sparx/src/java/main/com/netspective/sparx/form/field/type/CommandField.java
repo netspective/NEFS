@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: CommandField.java,v 1.1 2003-05-23 02:18:41 shahid.shah Exp $
+ * $Id: CommandField.java,v 1.2 2003-11-19 02:13:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -60,15 +60,20 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.commons.command.CommandException;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.command.HttpServletCommand;
 
 public class CommandField extends DialogField
 {
     private HttpServletCommand command;
+    private ValueSource commandExpr;
 
     public CommandField()
     {
@@ -85,8 +90,46 @@ public class CommandField extends DialogField
         this.command = command;
     }
 
+    public ValueSource getCommandExpr()
+    {
+        return commandExpr;
+    }
+
+    /**
+     * A value source that will be evaluated and the result of the evaluation will be treated as a command
+     * specification. This method allows the actual command that will be executed to be dynamic.
+     * @param commandExpr
+     */
+    public void setCommandExpr(ValueSource commandExpr)
+    {
+        this.commandExpr = commandExpr;
+    }
+
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
+        ValueSource commandExpr = getCommandExpr();
+        if(commandExpr != null)
+        {
+            String commandText = commandExpr.getTextValue(dc);
+            if(commandText != null)
+            {
+                try
+                {
+                    HttpServletCommand httpCommand = (HttpServletCommand) Commands.getInstance().getCommand(commandText);
+                    httpCommand.handleCommand(writer, dc, false);
+                    return;
+                }
+                catch (CommandException e)
+                {
+                    dc.getDialog().getLog().error("Command error in " + this.getClass().getName(), e);
+                    throw new NestableRuntimeException(e);
+                }
+            }
+        }
+
+        // if we get to here, we don't have an expression or the expression returned null so see if we have static
+        // command supplied
+
         try
         {
             if(command != null)
