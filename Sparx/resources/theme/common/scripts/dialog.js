@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: dialog.js,v 1.3 2003-12-31 05:08:25 aye.thu Exp $
+ * $Id: dialog.js,v 1.4 2004-02-25 22:43:43 shahid.shah Exp $
  */
 
  /**
@@ -310,6 +310,7 @@ function DialogField(type, id, name, qualifiedName, caption, flags)
 	this.dependentConditions = new Array();
 	this.style = null;
 	this.requiresPreSubmit = false;
+	this.currentlyVisible = true;
 
 	this.fieldIndex = -1;
 	this.prevFieldIndex = -1;
@@ -345,11 +346,13 @@ function DialogField(type, id, name, qualifiedName, caption, flags)
 	this.isRequired = DialogField_isRequired;
 	this.isReadOnly = DialogField_isReadOnly;
 	this.alertMessage = DialogField_alertMessage;
+	this.isVisible = DialogField_isVisible;
+	this.setVisible = DialogField_setVisible;
 }
 
 function DialogField_isRequired()
 {
-	return (this.flags & FLDFLAG_REQUIRED) != 0;
+	return (this.flags & FLDFLAG_REQUIRED) != 0 && this.isVisible();
 }
 
 function DialogField_isReadOnly()
@@ -444,17 +447,13 @@ function DialogField_finalizeContents(dialog)
 		{
 			if(browser.ie5 || browser.ie6)
 			{
-				if (control.isContentEditable && (field.currentlyVisible || typeof field.currentlyVisible == 'undefined'))
-				{
+				if (control.isContentEditable && field.isVisible())
 					control.focus();
-				}
 			}
 			else
 			{
-				if (field.currentlyVisible || typeof field.currentlyVisible == 'undefined')
-				{
+				if (field.isVisible())
 					control.focus();
-				}
 			}
 		}
 	}
@@ -685,6 +684,27 @@ function DialogField_getFieldAreaElem_NS4(dialog)
 	return fieldAreaElem;
 }
 
+function DialogField_isVisible()
+{
+    return this.currentlyVisible == true;
+}
+
+function DialogField_setVisible(dialog, visible)
+{
+    this.currentlyVisible = visible;
+    this.evaluateConditionals(dialog);
+
+    // now find the children and hide them too
+	var dialogFields = dialog.fields;
+	var regExp = new RegExp("^" + field.qualifiedName + '\\.');
+
+	for(var i=0; i<dialogFields.length; i++)
+	{
+		if(regExp.test(dialogFields[i].qualifiedName))
+			dialogFields[i].setVisible(visible);
+	}
+}
+
 function setAllCheckboxes(sourceCheckbox, otherCheckboxesPrefix)
 {
 	var isChecked = sourceCheckbox.checked;
@@ -749,7 +769,7 @@ function DialogFieldConditionalDisplay_evaluate(dialog, control)
 	// the conditional "partner" (not the source)
 	if(eval(this.expression) == true)
 	{
-				condSource.currentlyVisible = true;
+		condSource.setVisible(dialog, true);
 
 		//fieldAreaElem.className = 'section_field_area_conditional_expanded';
 		if (fieldAreaElem.style)
@@ -759,7 +779,7 @@ function DialogFieldConditionalDisplay_evaluate(dialog, control)
 	}
 	else
 	{
-				condSource.currentlyVisible = false;
+		condSource.setVisible(dialog, false);
 
 		//fieldAreaElem.className = 'section_field_area_conditional';
 		if (fieldAreaElem.style)
