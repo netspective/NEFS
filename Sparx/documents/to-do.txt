@@ -1,3 +1,4 @@
+* Add Portlet API implementation for "output" panels (http://www-3.ibm.com/software/webservers/portal/library/InfoCenter/wps/wpspapi.html).
 * Add "concurrent users" into console (all people currently logged in, perhaps total time spent doing stuff, etc)
 * Add capability for HTTP request parameters to be automatically populate into beans for dialog context liks Struts does
 * Add permissions, conditionals, etc into navigation trees

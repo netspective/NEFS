@@ -11,3 +11,4 @@
 * Create Ant task that will allow the running of Metrics generator and store results in a configurable file name (for scripting the execution of metrics).
 * Add basic User Management functionality to the Access Control framework. Use Realm design pattern (http://jakarta.apache.org/tomcat/tomcat-4.0-doc/config/realm.html) and find a way to use the HttpServletRequest.getUserPrincipal() and HttpServletRequest.isUserInRole() methods.
 * Consider integration with MARS network monitor (http://www.altara.org/mars.html).
+* Consider how to add copy protection/licensing code to Sparx.
