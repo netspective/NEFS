@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.22 2004-03-12 06:52:31 aye.thu Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.23 2004-03-14 06:12:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -235,9 +235,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
             {
                 HttpServletRequest request = dialogContext.getHttpRequest();
-                if (request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE) != null)
+                if (request.getAttribute(PanelEditor.PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX) != null)
                 {
-                    PanelEditorState state = (PanelEditorState) request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
+                    PanelEditorState state = (PanelEditorState) request.getAttribute(PanelEditor.PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX);
                     primaryKeyValueSpec = ReportPanelEditorContentElement.getPkValueFromState(state);
                 }
                 else
