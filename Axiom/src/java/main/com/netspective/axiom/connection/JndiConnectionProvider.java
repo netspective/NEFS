@@ -56,49 +56,45 @@ import com.netspective.commons.value.ValueContext;
 public class JndiConnectionProvider implements ConnectionProvider
 {
     private static final Log log = LogFactory.getLog(JndiConnectionProvider.class);
-    public static final String JNDIKEY_ENV = "java:comp/env";
-    public static final String JNDIKEY_JDBC = JNDIKEY_ENV + "/jdbc";
-    public static final String JNDIKEY_JDBC_ENTRY_PREFIX = "jdbc/";
-    private static InitialContext initialContext;
-    private static Context rootEnv;
-    private static Context jdbcEnv;
 
-    public Context getJndiRootContext() throws NamingException
+    private final InitialContext initialContext;
+    private Context rootContext;
+    private String rootContextName;
+
+    public JndiConnectionProvider() throws NamingException
     {
-        if(initialContext == null)
-            initialContext = new InitialContext();
-
-        if(rootEnv == null)
-            rootEnv = (Context) initialContext.lookup(JNDIKEY_ENV);
-
-        return rootEnv;
+        initialContext = new InitialContext();
+        rootContext = initialContext;
     }
 
-    public Context getJndiJdbcContext() throws NamingException
+    public InitialContext getInitialContext()
     {
-        if(initialContext == null)
-            initialContext = new InitialContext();
+        return initialContext;
+    }
 
-        if(jdbcEnv == null)
-            jdbcEnv = (Context) initialContext.lookup(JNDIKEY_JDBC);
+    public Context getRootContext()
+    {
+        return rootContext;
+    }
 
-        return jdbcEnv;
+    public String getRootContextName()
+    {
+        return rootContextName;
+    }
+
+    public void setRootContextName(String rootContextName) throws NamingException
+    {
+        this.rootContextName = rootContextName;
+        rootContext = (Context) initialContext.lookup(rootContextName);
     }
 
     public Class getUnderlyingImplementationClass()
     {
-        try
-        {
-            Context jndiJdbcContext = getJndiJdbcContext();
-            if(jndiJdbcContext != null)
-                return jndiJdbcContext.getClass();
-            else
-                return null;
-        }
-        catch(NamingException e)
-        {
+        Context jndiJdbcContext = getRootContext();
+        if(jndiJdbcContext != null)
+            return jndiJdbcContext.getClass();
+        else
             return null;
-        }
     }
 
     public final Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException
@@ -106,8 +102,7 @@ public class JndiConnectionProvider implements ConnectionProvider
         if(dataSourceId == null)
             throw new NamingException("dataSourceId is NULL in " + this.getClass().getName() + ".getConnection(String)");
 
-        Context env = getJndiRootContext();
-
+        Context env = getRootContext();
         DataSource source = (DataSource) env.lookup(dataSourceId);
         if(source == null)
         {
@@ -130,7 +125,7 @@ public class JndiConnectionProvider implements ConnectionProvider
     {
         try
         {
-            DataSource source = (DataSource) getJndiRootContext().lookup(dataSourceId);
+            DataSource source = (DataSource) getRootContext().lookup(dataSourceId);
             if(source == null)
                 return null;
 
@@ -148,13 +143,14 @@ public class JndiConnectionProvider implements ConnectionProvider
         Set result = new HashSet();
         try
         {
-            Context env = getJndiJdbcContext();
+            String envPath = getRootContextName();
+            Context env = getRootContext();
             if(env != null)
             {
                 for(NamingEnumeration e = env.list(""); e.hasMore();)
                 {
                     NameClassPair entry = (NameClassPair) e.nextElement();
-                    result.add(JNDIKEY_JDBC_ENTRY_PREFIX + entry.getName());
+                    result.add(envPath != null ? (envPath + "/" + entry.getName()) : entry.getName());
                 }
             }
         }
@@ -171,14 +167,14 @@ public class JndiConnectionProvider implements ConnectionProvider
 
         try
         {
-            Context env = getJndiJdbcContext();
-
+            String envPath = getRootContextName();
+            Context env = getRootContext();
             if(env != null)
             {
                 for(NamingEnumeration e = env.list(""); e.hasMore();)
                 {
                     NameClassPair entry = (NameClassPair) e.nextElement();
-                    String dataSourceId = JNDIKEY_JDBC_ENTRY_PREFIX + entry.getName();
+                    String dataSourceId = envPath != null ? (envPath + "/" + entry.getName()) : entry.getName();
                     try
                     {
                         DataSource source = (DataSource) env.lookup(entry.getName());
