@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.1 2003-03-13 18:25:38 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.2 2003-05-18 22:25:34 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -52,17 +52,18 @@ import java.sql.SQLException;
 
 import org.apache.tools.ant.BuildException;
 
-import com.netspective.commons.xdm.XdmComponentTask;
+import com.netspective.commons.ant.XdmComponentTask;
 import com.netspective.commons.xdm.XmlDataModelDtd;
+import com.netspective.commons.xdm.XdmComponent;
 import com.netspective.axiom.SqlManagerComponent;
 import com.netspective.axiom.DatabasePolicy;
 import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.DataAccessLayerGenerator;
 import com.netspective.axiom.schema.transport.DataImportDtd;
 import com.netspective.axiom.schema.transport.DataImportParseContext;
 import com.netspective.axiom.schema.transport.TableImportStatistic;
@@ -73,17 +74,8 @@ import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 
 public class AxiomTask extends XdmComponentTask
 {
-    public static final int ACTIONID_GENERATE_AXIOM_DTD       = 1;
-    public static final int ACTIONID_GENERATE_DDL             = 2;
-    public static final int ACTIONID_GENERATE_IMPORT_DATA_DTD = 3;
-    public static final int ACTIONID_GENERATE_DAL             = 4;
-    public static final int ACTIONID_GENERATE_GRAPHVIZ_ERD    = 5;
-    public static final int ACTIONID_IMPORT_DATA              = 6;
-    public static final int ACTIONID_REVERSE_ENGINEER         = 7;
-
     public static final String DEFAULTCLASSNAME_DAL = "DataAccessLayer";
 
-    private int action;
     private File destDir;
     private String schemaName;
     private String dbPolicyIdMatchRegEx = DatabasePolicies.DBPOLICYIDMATCH_ALL;
@@ -102,7 +94,6 @@ public class AxiomTask extends XdmComponentTask
     public void init() throws BuildException
     {
         super.init();
-        action = 0;
         destDir = null;
         schemaName = null;
         dbPolicyIdMatchRegEx = DatabasePolicies.DBPOLICYIDMATCH_ALL;
@@ -117,6 +108,100 @@ public class AxiomTask extends XdmComponentTask
         reverseEngineerSchema = null;
         reverseEngineerCatalogPattern = null;
     }
+
+    public void setupActionHandlers()
+    {
+        super.setupActionHandlers();
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "generate-id-constants"; }
+                    public void execute() throws BuildException
+                    {
+                        generateIdentifierConstants(getComponent());
+                    }
+                });
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "generate-dtd"; }
+                    public void execute() throws BuildException
+                    {
+                        try
+                        {
+                            new XmlDataModelDtd().generate(getComponent(), dtdFile);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new BuildException(e);
+                        }
+                    }
+                });
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "generate-ddl"; }
+                    public void execute() throws BuildException
+                    {
+                        generateDdlFiles(getSqlManager());
+                    }
+                });
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "generate-dal"; }
+                    public void execute() throws BuildException
+                    {
+                        generateDalFiles(getSqlManager());
+                    }
+                });
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "import-data"; }
+                    public void execute() throws BuildException
+                    {
+                        importData(getSqlManager());
+                    }
+                });
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "generate-import-data-dtd"; }
+                    public void execute() throws BuildException
+                    {
+                        generateImportDtd(getSqlManager());
+                    }
+                });
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "generate-graphviz-erd"; }
+                    public void execute() throws BuildException
+                    {
+                        generateGraphVizErd(getSqlManager());
+                    }
+                });
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "reverse-engineer-schema"; }
+                    public void execute() throws BuildException
+                    {
+                        reverseEngineer();
+                    }
+                });
+    }
+
+    /* ----- reusable attributes and methods ------------------------------------------------------------------------*/
 
     public void setDestDir(File destDir)
     {
@@ -133,14 +218,14 @@ public class AxiomTask extends XdmComponentTask
         this.fileExtn = fileExtn;
     }
 
-    public Schema getSchema(SqlManagerComponent component) throws BuildException
+    public Schema getSchema(SqlManager sqlManager) throws BuildException
     {
         if(schemaName == null)
             throw new BuildException("No schema attribute provide for source of DDL.");
 
-        Schema schema = component.getManager().getSchema(schemaName);
+        Schema schema = sqlManager.getSchema(schemaName);
         if(schema == null)
-            throw new BuildException("Schema '"+ schemaName +"' does not exist in "+ component.getInputSource().getIdentifier() +".");
+            throw new BuildException("Schema '"+ schemaName +"' does not exist.");
 
         return schema;
     }
@@ -186,19 +271,17 @@ public class AxiomTask extends XdmComponentTask
 
     public void setImport(File importFile)
     {
-        action = ACTIONID_IMPORT_DATA;
         this.importFile = importFile;
     }
 
     public void setGenImportDtd(File importFile)
     {
-        action = ACTIONID_GENERATE_IMPORT_DATA_DTD;
         this.dtdFile = importFile;
     }
 
-    public void generateImportDtd(SqlManagerComponent component) throws BuildException
+    public void generateImportDtd(SqlManager sqlManager) throws BuildException
     {
-        Schema schema = getSchema(component);
+        Schema schema = getSchema(sqlManager);
         try
         {
             new DataImportDtd().generate(schema, dtdFile);
@@ -209,9 +292,9 @@ public class AxiomTask extends XdmComponentTask
         }
     }
 
-    public void importData(SqlManagerComponent component) throws BuildException
+    public void importData(SqlManager sqlManager) throws BuildException
     {
-        Schema schema = getSchema(component);
+        Schema schema = getSchema(sqlManager);
 
         final String dataSourceId = AxiomTask.class.getName();
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
@@ -280,13 +363,12 @@ public class AxiomTask extends XdmComponentTask
 
     public void setGraphVizErd(File file)
     {
-        action = ACTIONID_GENERATE_GRAPHVIZ_ERD;
         graphVizErdFile = file;
     }
 
-    public void generateGraphVizErd(SqlManagerComponent component) throws BuildException
+    public void generateGraphVizErd(SqlManager sqlManager) throws BuildException
     {
-        Schema schema = getSchema(component);
+        Schema schema = getSchema(sqlManager);
         try
         {
             schema.generateGraphVizErd(new FileWriter(graphVizErdFile));
@@ -301,7 +383,6 @@ public class AxiomTask extends XdmComponentTask
 
     public void setReverseEngineerDest(File reverseEngineerDest)
     {
-        action = ACTIONID_REVERSE_ENGINEER;
         this.reverseEngineerDest = reverseEngineerDest;
     }
 
@@ -358,7 +439,6 @@ public class AxiomTask extends XdmComponentTask
 
     public void setDdl(String policyIdMatchRegEx)
     {
-        action = ACTIONID_GENERATE_DDL;
         dbPolicyIdMatchRegEx = policyIdMatchRegEx;
     }
 
@@ -372,7 +452,7 @@ public class AxiomTask extends XdmComponentTask
         this.createDdlDropSql = createDdlDropSql;
     }
 
-    public void generateDdlFiles(SqlManagerComponent component)
+    public void generateDdlFiles(SqlManager sqlManager)
     {
         if(destDir == null)
             throw new BuildException("No destDir attribute provide for destination of DDL files.");
@@ -383,7 +463,7 @@ public class AxiomTask extends XdmComponentTask
         if(policies.length == 0)
             throw new BuildException("Can not generate DDL -- no policies matched '"+ dbPolicyIdMatchRegEx +"'.");
 
-        Schema schema = getSchema(component);
+        Schema schema = getSchema(sqlManager);
         for(int i = 0; i < policies.length; i++)
         {
             DatabasePolicy policy = policies[i];
@@ -407,7 +487,6 @@ public class AxiomTask extends XdmComponentTask
     public void setDalPackage(String dalRootPackage)
     {
         this.dalRootPackage = dalRootPackage;
-        action = ACTIONID_GENERATE_DAL;
     }
 
     public void setDalClass(String dalClassNameWithoutPackage)
@@ -415,7 +494,7 @@ public class AxiomTask extends XdmComponentTask
         this.dalClassNameWithoutPackage = dalClassNameWithoutPackage;
     }
 
-    public void generateDalFiles(SqlManagerComponent component) throws BuildException
+    public void generateDalFiles(SqlManager sqlManager) throws BuildException
     {
         if(dalRootPackage == null)
             throw new BuildException("No dalPackage attribute provided for DAL root package.");
@@ -427,7 +506,7 @@ public class AxiomTask extends XdmComponentTask
             throw new BuildException("No destDir attribute provided for destination of DAL files.");
         destDir.mkdirs();
 
-        Schema schema = getSchema(component);
+        Schema schema = getSchema(sqlManager);
         try
         {
             schema.generateDataAccessLayer(destDir, dalRootPackage, dalClassNameWithoutPackage);
@@ -440,68 +519,20 @@ public class AxiomTask extends XdmComponentTask
 
     /* ----- Utility methods ----------------------------------------------------------------------------------------*/
 
-    public SqlManagerComponent getSqlManagerComponent() throws BuildException
+    public XdmComponent getComponent()
     {
-        return (SqlManagerComponent) getComponent(SqlManagerComponent.class);
+        return getComponent(SqlManagerComponent.class);
+    }
+
+    public SqlManager getSqlManager() throws BuildException
+    {
+        return ((SqlManagerComponent) getComponent()).getManager();
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/
 
     public void setAxiomDtd(File dtdFile)
     {
-        action = ACTIONID_GENERATE_AXIOM_DTD;
         this.dtdFile = dtdFile;
-    }
-
-    public void execute() throws BuildException
-    {
-        if(action == ACTIONID_REVERSE_ENGINEER)
-        {
-            reverseEngineer();
-            return;
-        }
-
-        SqlManagerComponent component = getSqlManagerComponent();
-
-        if(generateIdentifierConstants(component))
-            return;
-
-        switch(action)
-        {
-            case ACTIONID_GENERATE_AXIOM_DTD:
-                try
-                {
-                    new XmlDataModelDtd().generate(component, dtdFile);
-                }
-                catch (Exception e)
-                {
-                    throw new BuildException(e);
-                }
-                break;
-
-            case ACTIONID_GENERATE_DDL:
-                generateDdlFiles(component);
-                break;
-
-            case ACTIONID_GENERATE_DAL:
-                generateDalFiles(component);
-                break;
-
-            case ACTIONID_IMPORT_DATA:
-                importData(component);
-                break;
-
-            case ACTIONID_GENERATE_IMPORT_DATA_DTD:
-                generateImportDtd(component);
-                break;
-
-            case ACTIONID_GENERATE_GRAPHVIZ_ERD:
-                generateGraphVizErd(component);
-                break;
-
-            default:
-                // if we get to here and we're not simply producing metrics there's been a problem
-                if(! isMetrics()) log("No valid execute action provided ("+ action +").");
-        }
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ImportConfigurationTask.java,v 1.4 2003-03-14 04:04:19 shahid.shah Exp $
+ * $Id: ImportConfigurationTask.java,v 1.5 2003-05-18 22:25:40 shahid.shah Exp $
  */
 
 package com.netspective.commons.ant;
@@ -54,7 +54,7 @@ import com.netspective.commons.config.Configurations;
 import com.netspective.commons.config.Configuration;
 import com.netspective.commons.config.Property;
 import com.netspective.commons.config.ConfigurationsComponent;
-import com.netspective.commons.xdm.XdmComponentTask;
+import com.netspective.commons.xdm.XdmComponent;
 
 public class ImportConfigurationTask extends XdmComponentTask
 {
@@ -81,6 +81,11 @@ public class ImportConfigurationTask extends XdmComponentTask
         this.prefix = prefix;
     }
 
+    public XdmComponent getComponent()
+    {
+        return getComponent(ConfigurationsComponent.class);
+    }
+
     public void execute() throws BuildException
     {
         // because there's no "servlet context" available from Ant (command line) we need to simulate it so that if the
@@ -88,7 +93,7 @@ public class ImportConfigurationTask extends XdmComponentTask
         File simulatedPath = new File(project.getProperty("app.root.dir"));
         System.setProperty("com.netspective.sparx.util.value.ServletContextPathValue.simulate", simulatedPath.getAbsolutePath());
 
-        ConfigurationsComponent component = (ConfigurationsComponent) getComponent(ConfigurationsComponent.class);
+        ConfigurationsComponent component = (ConfigurationsComponent) getComponent();
         Configurations manager = component.getItems().getConfigurations();
 
         int imported = 0;

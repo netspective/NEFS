@@ -39,22 +39,34 @@
  */
 
 /**
- * $Id: XdmComponentTask.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: XdmComponentTask.java,v 1.1 2003-05-18 22:25:40 shahid.shah Exp $
  */
 
-package com.netspective.commons.xdm;
+package com.netspective.commons.ant;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.BuildException;
 
 import com.netspective.commons.io.Resource;
+import com.netspective.commons.xdm.XdmComponent;
+import com.netspective.commons.xdm.XdmComponentFactory;
 
-public class XdmComponentTask extends Task
+public abstract class XdmComponentTask extends Task
 {
+    protected interface ActionHandler
+    {
+        public String getName();
+        public void execute() throws BuildException;
+    }
+
+    private Map actionHandlers;
+    private ActionHandler actionHandler;
     private File xdmFile;
     private Resource xdmResource;
     private boolean metrics = false;
@@ -65,6 +77,7 @@ public class XdmComponentTask extends Task
 
     public void init() throws BuildException
     {
+        actionHandler = null;
         xdmFile = null;
         xdmResource = null;
         debug = false;
@@ -72,6 +85,31 @@ public class XdmComponentTask extends Task
         executeHandled = false;
         genIdConstantsRootPath = null;
         genIdConstantsRootPkgAndClass = null;
+    }
+
+    public void addActionHandler(ActionHandler handler)
+    {
+        actionHandlers.put(handler.getName(), handler);
+    }
+
+    public void setupActionHandlers()
+    {
+        if(actionHandlers != null)
+            return;
+        actionHandlers = new HashMap();
+    }
+
+    public ActionHandler getActionHandler()
+    {
+        return actionHandler;
+    }
+
+    public void setAction(String action) throws BuildException
+    {
+        setupActionHandlers();
+        actionHandler = (ActionHandler) actionHandlers.get(action);
+        if(actionHandler == null)
+            throw new BuildException("Unknown action '"+ action +"'. Available: " + actionHandlers.keySet());
     }
 
     public boolean isExecuteHandled()
@@ -141,7 +179,9 @@ public class XdmComponentTask extends Task
             return false;
     }
 
-    public XdmComponent getComponent(Class componentClass) throws BuildException
+    public abstract XdmComponent getComponent();
+
+    protected XdmComponent getComponent(Class componentClass) throws BuildException
     {
         if(xdmFile == null && xdmResource == null)
             throw new BuildException("No resource or file attributes supplied.");
@@ -177,5 +217,16 @@ public class XdmComponentTask extends Task
             log(component.getMetrics().toString());
 
         return component;
+    }
+
+    public void execute() throws BuildException
+    {
+        if(getActionHandler() == null)
+        {
+            setupActionHandlers();
+            throw new BuildException("action attribute expected with one of the following values: " + actionHandlers.keySet());
+        }
+
+        getActionHandler().execute();
     }
 }
