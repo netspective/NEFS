@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.76 2003-08-03 15:08:01 shahid.shah Exp $
+  * $Id: console.xml,v 1.77 2003-08-06 18:03:43 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -96,29 +96,8 @@
                 <page name="documentation" caption="Documentation" heading="Dialog Documentation" retain-params="selected-dialog-id">
                     <body config="console" source="console-page-content:../documentation.ftl"/>
                 </page>
-                <!--
-				<page name="catalog" caption="Catalog">
-                    <panels>
-                        <panels style="tabbed">
-                            <frame heading="Available Dialogs"/>
-                            <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogsCatalogOverviewPanel"/>
-                            <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogsCatalogClassesPanel"/>
-                        </panels>
-                    </panels>
-                </page>
-                <page name="unit-test" caption="Unit Test" heading="simple-expr:Dialog: ${request:selected-dialog-id}" command="dynamic,simple-expr:dialog,${request:selected-dialog-id}"/>
-                <page name="detail" caption="Documentation" heading="simple-expr:Dialog: ${request:selected-dialog-id}">
-                    <panels>
-                        <panels style="tabbed">
-                            <frame heading="Dialog Details" allow-collapse="yes"/>
-                            <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogAttributesPanel"/>
-                            <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsPanel"/>
-                            <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsHtmlPanel"/>
-                            <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsValidationPanel"/>
-                        </panels>
-                    </panels>
-                </page>
-                -->
+                <page name="field-types" caption="Field Types" redirect="../../manual/presentation/dialogs/controls"/>
+                <page name="dialog-execute-handlers" caption="Handlers" heading="Dialog Execute Handlers"/>
 	        </page>
 
             <page name="reports" caption="Reports"/>
