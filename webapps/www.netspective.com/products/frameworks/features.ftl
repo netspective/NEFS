@@ -37,7 +37,7 @@
 <@features listing=
     [
         {'headline' : 'Navigation/Workflow', 'image': 'navigation', 'body': 'Control complex application behavior with integrated security and navigation personalized to individual users or roles.'},
-        {'headline' : 'Subsites/Multi-Modules', 'image': 'navigation', 'body': 'Develop complex apps with multiple sub-sites or modules with single-sign-on within a single application context.'},
+        {'headline' : 'Subsites/Multi-Modules', 'image': 'navigation', 'body': 'Develop sophisticated multi-module single-sign-on apps using one Servlet context.'},
         {'headline' : 'Forms', 'image': 'dialogs', 'body': 'Create auto-validated forms with dozens of built-in field types that easily handle and recover from all user errors.'},
         {'headline' : 'Themes', 'image': 'themes', 'body': 'Develop apps that have a consistent UI that can switch looks and feel without code changes.'},
         {'headline' : 'Template Engines', 'image': 'template-engines', 'body': 'Use your favorite template engine for content: JSP, FreeMarker, Velocity, Tea, etc.'},

@@ -25,9 +25,9 @@
 
                 <page name="features" caption="Features" tag-line="Features that Jump-start Development">
                     <summary>
-                        Stop cobbling together solutions from dozens of open-source and commercial offerings. The
-                        Netspective Java Frameworks contain everything you need in one
-                        integrated suite that works with any Servlet container or J2EE app server.
+                        Stop cobbling together solutions from disparate open-source and commercial providers that may
+                        work independently but not together. The Netspective Java Frameworks contain everything you need in one
+                        integrated suite where everything is guaranteed to work well together.
                     </summary>
                     <body source="products/frameworks/features.ftl"/>
                 </page>
