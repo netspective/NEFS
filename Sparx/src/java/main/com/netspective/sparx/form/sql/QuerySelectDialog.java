@@ -61,6 +61,7 @@ import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowser
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportFileDestination;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
 import com.netspective.sparx.panel.QueryReportPanel;
+import com.netspective.sparx.sql.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
@@ -78,7 +79,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 
 
 /**
- * $Id: QuerySelectDialog.java,v 1.1 2003-07-03 22:21:49 aye.thu Exp $
+ * $Id: QuerySelectDialog.java,v 1.2 2003-07-03 22:25:37 aye.thu Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
