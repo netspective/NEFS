@@ -103,7 +103,7 @@ import org.apache.commons.lang.exception.NestableException;
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
  *
- * @version $Id: NavigationPage.java,v 1.59 2004-02-11 17:17:00 aye.thu Exp $
+ * @version $Id: NavigationPage.java,v 1.60 2004-02-11 18:49:46 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -513,7 +513,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             for(int i = 0; i < errorPagesList.size(); i++)
             {
                 NavigationErrorPage errorPage = (NavigationErrorPage) errorPagesList.get(i);
-                if(errorPage.canHandle(exceptionClass, false))
+                if(errorPage.canHandle(t, false) || errorPage.canHandle(exceptionClass, false))
                 {
                     nc.setErrorPageException(errorPage, t, exceptionClass);
                     return true;
