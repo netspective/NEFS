@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<project name="hbm-generator" default="build">
+    <taskdef name="fmpp" classname="fmpp.tools.AntTask" />
+
+    <target name="generate" >
+        <property name="project.home" value="c:/Projects/client/eop/omb-part"/>
+        <property name="project.WEB-INF.path" value="${project.home}/WEB-INF"/>
+        <property name="project.hibernate.path" value="${project.WEB-INF.path}/hibernate"/>
+
+        <mkdir dir="${project.hibernate.path}"/>
+
+        <fmpp sourceRoot="templates" outputRoot="${project.hibernate.path}" dataRoot="${project.WEB-INF.path}">
+            <data>
+                xdm: com.netspective.support.fmpp.SparxProjectLoader(sparx/project.xml)
+                statics: com.netspective.support.fmpp.StaticsLoader()
+                package: auto.dal
+            </data>
+        </fmpp>
+    </target>
+</project>
