@@ -483,6 +483,48 @@
 
     <!--
     *********************************************************************
+    ** Denormalization helper table types
+    *********************************************************************
+    -->
+
+    <table-type name="Enumerated_Ids_List_Member" class="com.netspective.axiom.schema.table.type.EnumeratedValuesListTable">
+        <xdm:template-param name="parentIdColName" default="parent_id"/>
+        <xdm:template-param name="parentRef" required="yes"/>
+        <xdm:template-param name="valueIndexColName" required="yes"/>
+        <xdm:template-param name="valueColName" required="yes"/>
+        <xdm:template-param name="valueRef" required="yes"/>
+        <xdm:template-param name="uniqueRowIndexName" required="yes"/>
+
+        <description>
+            Maintains the normalized (DBMS-friendly) version of the denormalized single-column value in {params.parentRef}.
+            {params.parentRef} contains a delimited copy of the values in this table in a denormalized manner so that
+            a user that needs all the values at once just has to do a single table/column select and not a join to multiple
+            rows. However, if the separated values need to be search, this normalized table can be used. Java-side triggers
+            automatically manage the data in this table and records in this table should not be modified manually.
+        </description>
+
+        <column name="${params.parentIdColName}" parent-ref="${params.parentRef}" required="yes" descr="The owner of the enumerated value this entry was created for"/>
+        <column name="${params.valueIndexColName}" type="integer" indexed="yes" required="yes" descr="The position of the ${params.valueColName} value in ${params.parentIdColName}'s delmited column"/>
+        <column name="${params.valueColName}" lookup-ref="${params.valueRef}" required="yes" indexed="yes" descr="The enumerated value that is contained in ${params.parentIdColName} at position ${params.valueIndexColName}"/>
+
+        <!-- make sure a relationship record remains unique -->
+        <index name="${owner.abbrev}_${params.uniqueRowIndexName}" unique="yes" columns="${params.parentIdColName},${params.valueIndexColName},${params.valueColName}"/>
+
+        <!-- required for the EnumeratedValuesArray class so that it knows the columns it is working with -->
+        <parentIdColName>${params.parentIdColName}</parentIdColName>
+        <valueIndexColName>${params.valueIndexColName}</valueIndexColName>
+        <valueColName>${params.valueColName}</valueColName>
+    </table-type>
+
+    <data-type name="enumeration-ids-list" type="text" class="com.netspective.axiom.schema.column.type.EnumeratedValuesListColumn">
+        <xdm:template-param name="enumeratedIdsListMemberTable" required="yes"/>
+
+        <!-- use XDM to tell the com.netspective.axiom.schema.column.type.EnumeratedValuesArray class about the helper table -->
+        <enumeratedIdsListMemberTableName>${params.enumeratedIdsListMemberTable}</enumeratedIdsListMemberTableName>
+    </data-type>
+
+    <!--
+    *********************************************************************
     ** Relationship Tables and Enumerations
     *********************************************************************
     -->
