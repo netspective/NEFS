@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateContentPanel.java,v 1.7 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: TemplateContentPanel.java,v 1.8 2003-08-31 22:55:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -52,7 +52,7 @@ import java.util.HashMap;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.template.TemplateProcessor;
+import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
