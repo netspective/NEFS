@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationPageHtmlSubsiteBodyHandler.java,v 1.2 2003-10-28 12:26:35 shahid.shah Exp $
+ * $Id: NavigationPageHtmlSubsiteBodyHandler.java,v 1.3 2003-11-08 05:05:45 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.navigate.handler;
@@ -58,6 +58,7 @@ import org.apache.oro.text.perl.Perl5Util;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationContext;
 
@@ -67,8 +68,11 @@ import com.netspective.sparx.navigate.NavigationContext;
 
 public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefaultHandler
 {
-    protected class Substitute
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
+    protected static class Substitute
     {
+
         private ValueSource perlRegEx;
 
         public Substitute()
@@ -83,6 +87,12 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
         public void setPerlRegEx(ValueSource perlRegEx)
         {
             this.perlRegEx = perlRegEx;
+        }
+
+        // created here because we need to ignore text but can't include public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+        public void addText(String text)
+        {
+
         }
     }
 
