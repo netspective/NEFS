@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ActionDialog.java,v 1.1 2004-04-03 22:50:04 shahid.shah Exp $
+ * $Id: ActionDialog.java,v 1.2 2004-04-03 23:15:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.action;
@@ -190,12 +190,6 @@ public class ActionDialog extends Dialog
         return valid;
     }
 
-    public void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
-    {
-        ((ActionDialogContext) dc).setWriter(writer);
-        super.render(writer, dc, contextPreparedAlready);
-    }
-
     public void execute(Writer writer, DialogContext dc) throws DialogExecuteException, IOException
     {
         if(dc.executeStageHandled())
@@ -207,7 +201,7 @@ public class ActionDialog extends Dialog
         ActionWrapper.ActionExecutor actionExecutor = action.getActionExecutor();
         try
         {
-            String redirect = actionExecutor.execute(instance);
+            String redirect = actionExecutor.execute(writer, instance);
             if(redirect != null)
             {
                 ValueSource vs = ValueSources.getInstance().getValueSourceOrStatic(redirect);

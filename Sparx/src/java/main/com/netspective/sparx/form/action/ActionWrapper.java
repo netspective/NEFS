@@ -39,13 +39,12 @@
  */
 
 /**
- * $Id: ActionWrapper.java,v 1.1 2004-04-03 22:50:04 shahid.shah Exp $
+ * $Id: ActionWrapper.java,v 1.2 2004-04-03 23:15:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.action;
 
 import java.io.Writer;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -205,31 +204,13 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     {
         final Class actionClass = actionSchema.getBean();
 
-        try
+        actionConstructor = new ActionConstructor()
         {
-            final Constructor c = actionClass.getConstructor(new Class[] { Writer.class });
-            actionConstructor = new ActionConstructor()
+            public Object constructAction() throws Exception
             {
-                public Object constructAction(Writer writer) throws Exception
-                {
-                    return c.newInstance(new Object[] { writer });
-                }
-            };
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-
-        if(actionConstructor == null)
-        {
-            actionConstructor = new ActionConstructor()
-            {
-                public Object constructAction(Writer writer) throws Exception
-                {
-                    return actionClass.newInstance();
-                }
-            };
-        }
+                return actionClass.newInstance();
+            }
+        };
     }
 
     public FieldMutator locateMutator(String attributeName)
@@ -343,29 +324,57 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
 
     public void locateExecutor() throws NoSuchMethodException
     {
-        final Class actionClass = actionSchema.getBean();
-        final Method execMethod = actionClass.getMethod(executeMethodName, null);
+        final Method execMethod = getMethod(executeMethodName, Writer.class) == null ? getMethod(executeMethodName, (Class[]) null) : getMethod(executeMethodName, Writer.class);
+        if(execMethod == null)
+            throw new NoSuchMethodException("Unable to find " + executeMethodName + "() or " + executeMethodName + "(Writer) method in " + actionSchema.getBean());
 
-        if(execMethod.getReturnType() == String.class)
+        if(execMethod.getParameterTypes().length > 0)
         {
-            actionExecutor = new ActionExecutor()
+            if(execMethod.getReturnType() == String.class)
             {
-                public String execute(Object instance) throws Exception
+                actionExecutor = new ActionExecutor()
                 {
-                    return (String) execMethod.invoke(instance, null);
-                }
-            };
+                    public String execute(Writer writer, Object instance) throws Exception
+                    {
+                        return (String) execMethod.invoke(instance, new Object[] { writer });
+                    }
+                };
+            }
+            else
+            {
+                actionExecutor = new ActionExecutor()
+                {
+                    public String execute(Writer writer, Object instance) throws Exception
+                    {
+                        execMethod.invoke(instance, new Object[] { writer });
+                        return null;
+                    }
+                };
+            }
         }
         else
         {
-            actionExecutor = new ActionExecutor()
+            if(execMethod.getReturnType() == String.class)
             {
-                public String execute(Object instance) throws Exception
+                actionExecutor = new ActionExecutor()
                 {
-                    execMethod.invoke(instance, null);
-                    return null;
-                }
-            };
+                    public String execute(Writer writer, Object instance) throws Exception
+                    {
+                        return (String) execMethod.invoke(instance, null);
+                    }
+                };
+            }
+            else
+            {
+                actionExecutor = new ActionExecutor()
+                {
+                    public String execute(Writer writer, Object instance) throws Exception
+                    {
+                        execMethod.invoke(instance, null);
+                        return null;
+                    }
+                };
+            }
         }
     }
 
@@ -403,12 +412,12 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
             HttpUtils.assignParamsToInstance(dc.getHttpRequest(), instance, assignRequestParams);
     }
 
-    public Object constructInstance(Writer writer, ActionDialogContext dc) throws Exception
+    public Object constructInstance(ActionDialogContext dc) throws Exception
     {
-        Object result = null;
+        Object result;
         try
         {
-            result = actionConstructor.constructAction(writer);
+            result = actionConstructor.constructAction();
         }
         catch (Exception e)
         {
@@ -429,7 +438,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
 
     protected interface ActionConstructor
     {
-        public Object constructAction(Writer writer) throws Exception;
+        public Object constructAction() throws Exception;
     }
 
     protected interface ActionValidator
@@ -439,7 +448,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
 
     protected interface ActionExecutor
     {
-        public String execute(Object instance) throws Exception;
+        public String execute(Writer writer, Object instance) throws Exception;
     }
 
     protected interface FieldMutator

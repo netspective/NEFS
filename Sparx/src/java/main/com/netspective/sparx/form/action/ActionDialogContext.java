@@ -39,12 +39,11 @@
  */
 
 /**
- * $Id: ActionDialogContext.java,v 1.1 2004-04-03 22:50:04 shahid.shah Exp $
+ * $Id: ActionDialogContext.java,v 1.2 2004-04-03 23:15:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.action;
 
-import java.io.Writer;
 import java.sql.SQLException;
 
 import javax.naming.NamingException;
@@ -59,29 +58,18 @@ import com.netspective.sparx.form.DialogContext;
  */
 public class ActionDialogContext extends DialogContext
 {
-    private Writer writer;
     private Object actionInstance;
     private String actionDataSourceId;
     private ConnectionContext actionConnectionContext;
 
-    public Writer getWriter()
-    {
-        return writer;
-    }
-
-    public void setWriter(Writer writer)
-    {
-        this.writer = writer;
-    }
-
     public Object getActionInstance()
     {
-        if(actionInstance == null)
+        if (actionInstance == null)
         {
             ActionDialog actionDialog = ((ActionDialog) getDialog());
             try
             {
-                actionInstance = actionDialog.getAction().constructInstance(writer, this);
+                actionInstance = actionDialog.getAction().constructInstance(this);
             }
             catch (Exception e)
             {
@@ -121,7 +109,7 @@ public class ActionDialogContext extends DialogContext
 
     public void closeActionConnection() throws NamingException, SQLException
     {
-        if(actionConnectionContext != null)
+        if (actionConnectionContext != null)
             actionConnectionContext.close();
     }
 }
