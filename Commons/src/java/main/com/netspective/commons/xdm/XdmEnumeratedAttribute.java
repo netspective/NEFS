@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmEnumeratedAttribute.java,v 1.5 2003-08-14 17:54:36 shahid.shah Exp $
+ * $Id: XdmEnumeratedAttribute.java,v 1.6 2003-10-20 22:19:26 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -115,7 +115,7 @@ public abstract class XdmEnumeratedAttribute
     /**
      * Is this value included in the enumeration?
      */
-    public final int getValueIndex(String value)
+    public int getValueIndex(String value)
     {
         String[] values = getValues();
         if (values == null || value == null)
@@ -134,7 +134,7 @@ public abstract class XdmEnumeratedAttribute
     /**
      * Is this value included in the enumeration?
      */
-    public final boolean containsValue(String value)
+    public boolean containsValue(String value)
     {
         String[] values = getValues();
         if (values == null || value == null)
