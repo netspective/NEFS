@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.20 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.21 2004-06-23 20:43:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -53,6 +53,12 @@ import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.Role;
 import com.netspective.commons.acl.RoleNotFoundException;
+import com.netspective.commons.activity.Activity;
+import com.netspective.commons.activity.ActivityManager;
+import com.netspective.commons.activity.ActivityObserver;
+import com.netspective.commons.activity.ActivityObservers;
+import com.netspective.commons.activity.basic.ActivityObserversList;
+import com.netspective.commons.activity.basic.DefaultActivityObserver;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.config.Configuration;
@@ -83,7 +89,7 @@ import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducers;
 
-public class DefaultXdmComponentItems implements TemplateProducerParent, ConfigurationsManager, AccessControlListsManager, ReportsManager, ScriptsManager
+public class DefaultXdmComponentItems implements TemplateProducerParent, ConfigurationsManager, AccessControlListsManager, ReportsManager, ScriptsManager, ActivityManager
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     protected static final TemplateProducers templateProducers = new TemplateProducers();
@@ -128,6 +134,7 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     private Reports reportsManager = new Reports();
     private BeanScriptPackage activeScriptsNameSpace;
     private BeanScripts scripts = new BeanScripts();
+    private ActivityObservers activityObservers = new ActivityObserversList(this);
 
     public static TabularReportColumnTypeTemplate getTabularReportColumnTypes()
     {
@@ -256,7 +263,7 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
 
     public Script createScript()
     {
-        if(activeScriptsNameSpace != null)
+        if (activeScriptsNameSpace != null)
             return activeScriptsNameSpace.createScript();
         else
             return scripts.createBeanScript();
@@ -265,6 +272,28 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     public void addScript(Script beanScript)
     {
         scripts.add(beanScript);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public ActivityObserver createActivityObserver()
+    {
+        return new DefaultActivityObserver();
+    }
+
+    public void addActivityObserver(ActivityObserver activityObserver)
+    {
+        activityObservers.addActivityObserver(activityObserver);
+    }
+
+    public void broadcastActivity(Activity activity)
+    {
+        activityObservers.observeActivity(activity);
+    }
+
+    public ActivityObservers getActivityObservers()
+    {
+        return activityObservers;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
