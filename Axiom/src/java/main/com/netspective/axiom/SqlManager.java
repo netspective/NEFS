@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.5 2003-05-25 17:28:45 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.6 2003-05-28 02:59:27 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom;
@@ -99,7 +99,10 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
     protected Queries constructQueries()
     {
-        return new QueriesCollection();
+        QueriesCollection queriesCollection = new QueriesCollection();
+		queriesCollection.setSqlManager(this);
+
+		return queriesCollection;
     }
 
     protected QueryDefinitions constructQueryDefinitions()
