@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.14 2003-05-31 17:17:42 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.15 2003-06-02 04:28:11 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -372,7 +372,7 @@ public class DialogField implements TemplateConsumer
 	private DialogFields children;
 	private DialogFieldConditionalActions conditionalActions = new DialogFieldConditionalActions();
 	private DialogFieldConditionalActions dependentConditions = new DialogFieldConditionalActions();
-	private List clientJavascripts;
+	private List clientJavascripts = new ArrayList();
 	private Flags flags = createFlags();
 	private DialogFieldPopup popup;
     private DialogFieldScanEntry scanEntry;
@@ -1164,7 +1164,7 @@ public class DialogField implements TemplateConsumer
 		String ret = "";
 
 		List jsList = this.getClientJavascripts();
-		if (jsList != null)
+		if (jsList != null && !jsList.isEmpty())
 		{
 			String eventName = "";
 
