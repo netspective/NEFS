@@ -250,7 +250,7 @@
       <para>This module contains samples that demonstrate how forms and input
       fields are created in Sparx. There are many examples that show how quick
       and easy it is to set up forms to accept input values and automatically
-      validate them. </para>
+      validate them.</para>
 
       <para>The examples contained in this section are further divided into
       sub-categories. The <emphasis>Forms Input</emphasis> page contains a
@@ -481,7 +481,7 @@
           <para>This page demonstrates how to "plug" <emphasis>custom
           javascript</emphasis> calls to the client-side events (e.g. click,
           value-changed, lose-focus, key-press, is-valid) of the dialog
-          fields. </para>
+          fields.</para>
 
           <figure>
             <title>Sample Page for Custom Javascript</title>
@@ -506,7 +506,7 @@
           <emphasis>edit</emphasis>, <emphasis>delete</emphasis>,
           <emphasis>print</emphasis>, and <emphasis>confirm</emphasis>. This
           page demonstrates the usage of data perspectives for filling dialog
-          fields. </para>
+          fields.</para>
 
           <figure>
             <title>Sample Page for Perspectives</title>
@@ -524,7 +524,7 @@
 
           <para>This page demonstrates different usages of <emphasis>hidden
           fields</emphasis> in a dialog. Hidden fields are useful for keeping
-          track of information that you don't want the user to see. </para>
+          track of information that you don't want the user to see.</para>
 
           <figure>
             <title>Sample Page for Hidden Fields</title>
@@ -560,7 +560,7 @@
           either by you or the framework. They are used to encapsulate common
           logic and reuse that logic across pages and dialogs (forms). For
           information on <emphasis>Commands</emphasis> in general, please
-          consult the <emphasis>User Manual</emphasis>. </para>
+          consult the <emphasis>User Manual</emphasis>.</para>
 
           <figure>
             <title>Sample Page for List Command</title>
@@ -583,8 +583,8 @@
       forms and fields, this module deals with how to perform actions based on
       already validated input. Numerous examples delve into how to perform
       custom validation and execute dialog handlers based on existing Sparx
-      functionality or creating your own through inheritance and delegation.
-      </para>
+      functionality or creating your own through inheritance and
+      delegation.</para>
 
       <para>The examples contained in this section are further divided into
       sub-categories. The <emphasis>Forms Execution</emphasis> page contains a
@@ -612,6 +612,62 @@
         <para>Select the value from the <varname>Next Action</varname> select
         box and click the <command>OK</command> button to see the execution of
         next action for this dialog.</para>
+
+        <para>The XML Code that configures the Dialog Director is given
+        below:</para>
+
+        <example>
+          <title>XML for Using the Dialog Director</title>
+
+          <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="director-next-action" redirect-after-execute="yes"&gt; <co
+              id="declare-director-tags-eg-1" />
+    &lt;frame heading="Test Dialog Director's Next Action"/&gt;
+    &lt;field type="html"&gt;
+        &lt;body&gt;
+            &lt;![CDATA[
+            &lt;div class="textbox"&gt;
+            Every dialog is associated with a &lt;i&gt;Director&lt;/i&gt; which controls the actions available inside&lt;br&gt;
+            the form (such as the &lt;i&gt;Submit&lt;/i&gt; and &lt;i&gt;Cancel&lt;/i&gt; buttons) and the destination page to&lt;br&gt;
+            redirect to after the execution of the dialog. Visually the &lt;i&gt;Director&lt;/i&gt; can be configured&lt;br&gt;
+            to display multiple destinations to allow users to select the destination as shown in&lt;br&gt;
+            this dialog.
+            &lt;/div&gt;
+            &lt;hr/&gt;
+            ]]&gt;
+        &lt;/body&gt;
+    &lt;/field&gt;
+    &lt;field type="text" name="text_field" caption="Text Field (formOrRequestAttr)"
+        default="request:value"/&gt;
+    &lt;director&gt; <co id="declare-director-tags-eg-2" />
+        &lt;next-actions caption="Next Action\:" choices="text-list:Netspective=a;Google=y"
+            display-single-action="yes"/&gt; <co
+              id="declare-director-tags-eg-3" />
+    &lt;/director&gt;
+&lt;/dialog&gt;
+
+...
+&lt;/project&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-director-tags-eg-1">
+              <para>The <sgmltag>dialog</sgmltag> tag defines a dialog using
+              <sgmltag>exec-sample</sgmltag> template as the dialog-type.
+              </para>
+            </callout>
+
+            <callout arearefs="declare-director-tags-eg-2">
+              <para>The <sgmltag>director</sgmltag> tag is used to define the
+              director to be associated with this dialog.</para>
+            </callout>
+
+            <callout arearefs="declare-director-tags-eg-3">
+              <para>Configuring the director to display multiple
+              destinations.</para>
+            </callout>
+          </calloutlist>
+        </example>
       </section>
 
       <section>
@@ -620,14 +676,15 @@
         <para>This page demonstrates the ability to
         <emphasis>execute</emphasis> templates or display JSP output after
         successful submission of a dialog. Usually executing a template means
-        displaying the output from a template processing engine. </para>
+        displaying the output from a template processing engine.</para>
 
         <section>
           <title>Body in XML</title>
 
           <para>This page contains an example of a dialog which will execute a
           template body defined in the dialog's XML declaration and display
-          the output. </para>
+          the output. The XML template is used to display the Welcome message
+          to user. </para>
 
           <figure>
             <title>Sample Page for Templates using Body in XML</title>
@@ -639,16 +696,72 @@
             </mediaobject>
           </figure>
 
-          <para>The XML template is used to display the Welcome message to
-          user.</para>
+          <para>The XML Code for using the
+          <productname>FreeMarker</productname> template (embedded within
+          <classname>project.xml</classname>) is given below:</para>
+
+          <example>
+            <title>XML Code for Using Template (embedded in
+            project.xml)</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog <emphasis>type="exec-sample"</emphasis> name="body-xml"&gt; <co
+                id="declare-template-in-prj-file-eg-1" />
+    &lt;frame heading="Hello World Form"/&gt;
+    &lt;field type="text" name="first_name" caption="First Name" required="yes"/&gt;
+    &lt;field type="text" name="last_name" caption="Last Name" required="yes"/&gt;
+
+    &lt;on-execute <emphasis>handler="template"</emphasis>&gt; <co
+                id="declare-template-in-prj-file-eg-2" />
+        &lt;![CDATA[
+        Welcome to NEFS, <emphasis>${vc.fieldStates.getState("first_name").value.textValue}</emphasis> <co
+                id="declare-template-in-prj-file-eg-3" />
+        ${vc.fieldStates.getState("last_name").value.textValue}.
+        &lt;p&gt;Form1 demonstrated how you can take two
+        pieces of data and execute an arbritrary &lt;a href="http://www.freemarker.org"&gt;FreeMarker&lt;/a&gt; 
+        template embedded in the project.xml file.
+        ]]&gt;
+    &lt;/on-execute&gt;
+ &lt;/dialog&gt;
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-template-in-prj-file-eg-1">
+                <para>Declaring a dialog using
+                "<sgmltag>exec-sample</sgmltag>" template as the dialog
+                type.</para>
+              </callout>
+
+              <callout arearefs="declare-template-in-prj-file-eg-2">
+                <para>The <sgmltag>handler</sgmltag> attribute of
+                <sgmltag>on-execute</sgmltag> tag specifies the
+                "<sgmltag>template</sgmltag>" handler for this dialog. Sparx
+                provides various handlers for the dialogs (forms):
+                <emphasis>include</emphasis>, <emphasis>mail</emphasis>,
+                <emphasis>command</emphasis>, <emphasis>panels</emphasis> and
+                <emphasis>style-sheet</emphasis>.</para>
+              </callout>
+
+              <callout arearefs="declare-template-in-prj-file-eg-3">
+                <para>Retrieving the value of dialog (form) fields, from their
+                value contexts.</para>
+              </callout>
+            </calloutlist>
+          </example>
+
+          <note>
+            <para>In the above example, the template is embedded within
+            <filename>project.xml</filename></para>
+          </note>
         </section>
 
         <section>
           <title>Body in File</title>
 
           <para>This page contains an example of a dialog which will execute a
-          template body defined in a seperate file and display the output.
-          </para>
+          template body defined in a seperate file and display the
+          output.</para>
 
           <figure>
             <title>Sample Page for Templates using Body in a Separate
@@ -676,13 +789,51 @@
               </imageobject>
             </mediaobject>
           </figure>
+
+          <para>The XML Code for using the
+          <productname><productname>FreeMarker</productname></productname>
+          template (available in a separate file) is given below:</para>
+
+          <example>
+            <title>XML Code for Using Template (in a separate file)</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="body-file" <emphasis>loop="no"</emphasis>&gt; <co
+                id="declare-template-in-sep-file-eg-1" />
+    &lt;frame heading="Hello World Form"/&gt;
+    &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
+    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/&gt; 
+
+    &lt;on-execute handler="template"&gt;
+        <emphasis>&lt;source&gt;form/exec/template-body-file.ftl&lt;/source&gt;</emphasis> <co
+                id="declare-template-in-sep-file-eg-2" />
+    &lt;/on-execute&gt;
+ &lt;/dialog&gt;
+
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-template-in-sep-file-eg-1">
+                <para>The <sgmltag>loop</sgmltag> attribute of
+                <sgmltag>dialog</sgmltag> tag is used to specify not to show
+                the dialog after the dialog executes. </para>
+              </callout>
+
+              <callout arearefs="declare-template-in-sep-file-eg-2">
+                <para>Source tag is used to specify the template source file
+                to be used (<filename>template-body-file.ftl</filename> in
+                this case)</para>
+              </callout>
+            </calloutlist>
+          </example>
         </section>
 
         <section>
           <title>Body in JSP</title>
 
           <para>This page contains an example of a dialog which will display
-          an output from a JSP upon execution. </para>
+          an output from a JSP upon execution.</para>
 
           <figure>
             <title>Sample Page for Templates using Body in a JSP File</title>
@@ -725,13 +876,13 @@
         <emphasis>style-sheet</emphasis>. For defining more complex actions
         and logic for execution, please take a look at the
         <emphasis>inheritence</emphasis> or <emphasis>delegation</emphasis>
-        examples. </para>
+        examples.</para>
 
         <section>
           <title>Include URL</title>
 
           <para>This page contains an example of a dialog which has a handler
-          that will display HTML from an external page. </para>
+          that will display HTML from an external page.</para>
 
           <figure>
             <title>Sample Page for HTML Include of an External Page</title>
@@ -762,7 +913,7 @@
           <title>Send Mail</title>
 
           <para>This page contains an example of a dialog which has a handler
-          that will send an email upon execution of the dialog. </para>
+          that will send an email upon execution of the dialog.</para>
 
           <figure>
             <title>Sample Page for Send Mail</title>
@@ -792,7 +943,7 @@
 
           <para>This page contains an example of a dialog which has a handler
           that will display panels upon execution of the dialog. The panels
-          can contain html from various entities such as JSPs or URLs. </para>
+          can contain html from various entities such as JSPs or URLs.</para>
 
           <figure>
             <title>Sample Page for Execution of Panels</title>
@@ -829,7 +980,7 @@
 
           <para>This page contains an example of a dialog which has a handler
           that will display output from a XSL style sheet transformation upon
-          execution of the dialog. </para>
+          execution of the dialog.</para>
 
           <figure>
             <title>Sample Page for XSL Transformation</title>
@@ -914,14 +1065,14 @@
         dialog. This model should only be used for the most complex cases
         where you need to override the default behavior of the dialog. By
         extending the default dialog class, com.netspective.sparx.form.Dialog,
-        you have full control over the dialog and its behavior. </para>
+        you have full control over the dialog and its behavior.</para>
 
         <section>
           <title>Exec 1 A</title>
 
           <para>This page contains a dialog which has a custom dialog class
-          that overrides only the default execution behavior of the dialog.
-          </para>
+          that overrides only the default execution behavior of the
+          dialog.</para>
 
           <figure>
             <title>Sample Page for Handling Dialog 1A (through
@@ -938,7 +1089,7 @@
           the <command>OK</command> button. The custome java class
           (<classname>SampleExecuteDialog</classname> in this case) displays a
           <emphasis>Welcome</emphasis> message along with the supplied name
-          (as shown below): </para>
+          (as shown below):</para>
 
           <figure>
             <title>Welcome Message Generated by the Custom Class</title>
@@ -958,8 +1109,8 @@
           <title>Exec 1 B</title>
 
           <para>This page contains a dialog which has a custom dialog class
-          that overrides only the default execution behavior of the dialog.
-          </para>
+          that overrides only the default execution behavior of the
+          dialog.</para>
 
           <figure>
             <title>Sample Page for Handling Dialog 1B (through
@@ -992,7 +1143,7 @@
           <para>[TODO: Replace with new image after correcting the class path
           issue] You may view the code for custom java class using the link
           provided in the message. This opens the java source code in the
-          Console. </para>
+          Console.</para>
 
           <figure>
             <title>Source File for Custom Class</title>
@@ -1010,7 +1161,7 @@
 
           <para>This page contains a dialog which has a custom dialog class
           that overrides the default population, validation, and execution
-          behaviors of the dialog. </para>
+          behaviors of the dialog.</para>
 
           <figure>
             <title>Sample Page for Validation using Custom Class (through
@@ -1048,7 +1199,7 @@
         logic or action for different stages of a dialog. The Framework allows
         definition of various listeners for different stages of a dialog. By
         implementing the listener interfaces and then assigning the custom
-        listeners to a dialog, these listeners will get executed. </para>
+        listeners to a dialog, these listeners will get executed.</para>
 
         <section>
           <title>Exec 1 A</title>
@@ -1056,8 +1207,8 @@
           <para>This page demonstrates an <emphasis>execution</emphasis>
           listener for the <emphasis>delegation</emphasis> model. An execution
           listener implements the
-          com.netspective.sparx.form.handler.DialogExecuteHandler interface.
-          </para>
+          com.netspective.sparx.form.handler.DialogExecuteHandler
+          interface.</para>
 
           <figure>
             <title>Sample Page for Handling Dialog 1A (through
@@ -1096,8 +1247,8 @@
           <para>This page demonstrates an <emphasis>execution</emphasis>
           listener for the <emphasis>delegation</emphasis> model. An execution
           listener implements the
-          com.netspective.sparx.form.handler.DialogExecuteHandler interface.
-          </para>
+          com.netspective.sparx.form.handler.DialogExecuteHandler
+          interface.</para>
 
           <figure>
             <title>Sample Page for Handling Dialog 1B (through
@@ -1151,7 +1302,7 @@
           and <emphasis>execution</emphasis> listeners for the
           <emphasis>delegation</emphasis> model. A listener class can
           implement various listener interfaces to define custom business
-          logic for various dialog stages. </para>
+          logic for various dialog stages.</para>
 
           <figure>
             <title>Sample Page for Validation using Custom Class (through
@@ -1190,8 +1341,8 @@
       can be used. This feature is for setting up roles and capabilities to
       handle controlling access to various parts of an application. An
       application user can be assigned a role which will control whether or
-      not the user can access a page, a report, a dialog, or even a field.
-      </para>
+      not the user can access a page, a report, a dialog, or even a
+      field.</para>
 
       <para>The examples contained in this section are further divided into
       sub-categories. The <emphasis>Access Control</emphasis> page contains a
@@ -1208,7 +1359,7 @@
         also. By assigning a permission (<sgmltag>permission</sgmltag>) to a
         role, its child permissions are also automatically assigned. Changing
         a role might result in a completely new set of permissions or just one
-        permission being added or removed. </para>
+        permission being added or removed.</para>
 
         <figure>
           <title>Changing User Roles</title>
@@ -1222,7 +1373,7 @@
 
         <para>Select a new user role from the <varname>Available
         Roles</varname> select box and click the <command>OK</command> button
-        to assign a new role to the user. </para>
+        to assign a new role to the user.</para>
 
         <figure>
           <title>Role Changed</title>
@@ -1276,8 +1427,8 @@
         </figure>
 
         <para>When this link is not visible in the navigation menu tab, you
-        may select it from the Access Control page. In that case, it displays
-        a permission lacking message.</para>
+        may select it from the <emphasis>Access Control</emphasis> page.
+        </para>
       </section>
 
       <section>
@@ -1286,9 +1437,7 @@
         <para>This page is hidden in the navigation menu when the user lacks
         the following permission: /acl/app/forms/execution. You may click on
         this link from the Access Control page. You may also test it from the
-        Navigation Manu bar when it is visible there. Clicking this link
-        displays a message informing you about the permission rights currently
-        available:</para>
+        Navigation Manu bar when it is visible there. </para>
       </section>
 
       <section>
@@ -1297,22 +1446,48 @@
         <para>This page is hidden in the navigation menu when the user lacks
         the following permission: /acl/app/forms. You may click on this link
         from the Access Control page. You may also test it from the Navigation
-        Manu bar when it is visible there. Clicking this link displays a
-        message informing you about the permission rights currently
-        available:</para>
+        Manu bar when it is visible there. </para>
       </section>
     </section>
 
     <section>
       <title>Play</title>
 
-      <para></para>
+      <para>Now that you have learnt the use of some more features of the
+      framework, it is time for you to start creating your own applications!
+      The Play page gives you a chance to learn by writing your own code. You
+      can do this by updating the WEB-INF\sparx\play-page.xml file. The Play
+      page provides you the opportunity to test the functionality of your
+      newly written code. </para>
+
+      <figure>
+        <title>Page for Creating and Testing Your Own Code</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="./resources/images/screen-sampler-play-page.gif" />
+          </imageobject>
+        </mediaobject>
+      </figure>
     </section>
 
     <section>
       <title>Sitemap</title>
 
-      <para></para>
+      <para>Sparx provoides you with the facility to create sitemaps for your
+      web sites using templates. The <emphasis>Sitemap</emphasis> page
+      demonstrates this facility by providing a sitemap for the Sampler App.
+      </para>
+
+      <figure>
+        <title>Sampler App Sitemap</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="./resources/images/screen-sampler-sitemap.gif" />
+          </imageobject>
+        </mediaobject>
+      </figure>
     </section>
 
     <section>
