@@ -35,97 +35,36 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
+ * @author Aye Thu
  */
 
 /**
- * $Id: QueryParameterType.java,v 1.2 2003-10-31 03:35:12 aye.thu Exp $
+ * $Id: StoredProcedure.java,v 1.1 2003-10-31 03:37:54 aye.thu Exp $
  */
+package com.netspective.sparx.sql;
 
-package com.netspective.axiom.sql;
+import com.netspective.sparx.Project;
+import com.netspective.axiom.sql.StoredProceduresNameSpace;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.sql.Types;
-import java.sql.Clob;
-import java.sql.Date;
-import java.sql.Blob;
-
-public class QueryParameterType
+public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 {
-    public static final QueryParameterType TEXT = new QueryParameterType("text", Types.VARCHAR, String.class);
-    private static final Map typesMapByIdentifier = new HashMap();
-    private static final Map typesMapByJdbcType = new HashMap();
-    private static String[] typeIdentifiers;
+    private Project project;
+    //private StoredProcedure.Presentation presentation = new StoredProcedure.Presentation();
 
-    private String identifier;
-    private int jdbcType;
-    private Class javaClass;
-
-    static
+    public StoredProcedure(Project project)
     {
-        add("strings", Types.ARRAY, String[].class);
-        add("integer", Types.INTEGER, Integer.class);
-        add("double", Types.DOUBLE, Double.class);
-        add("varchar", Types.VARCHAR, String.class);
-        add(TEXT);
-
-        // added to support stored procedures
-        add("float", Types.FLOAT, Float.class);
-        //add("char", Types.CHAR, char.class);
-        add("clob", Types.CLOB, Clob.class);
-        add("decimal", Types.DECIMAL, Double.class);
-        add("date", Types.DATE, Date.class);
-        add("blob", Types.BLOB, Blob.class);
+        this.project = project;
     }
 
-    public final static void add(QueryParameterType type)
+    public StoredProcedure(Project project, StoredProceduresNameSpace nameSpace)
     {
-        typesMapByIdentifier.put(type.getIdentifier(), type);
-        typesMapByJdbcType.put(new Integer(type.getJdbcType()), type);
-        typeIdentifiers = (String[]) typesMapByIdentifier.keySet().toArray(new String[typesMapByIdentifier.size()]);
+        super(nameSpace);
+        this.project = project;
     }
 
-    public final static void add(String identifier, int jdbcType, Class javaClass)
+    public Project getProject()
     {
-        add(new QueryParameterType(identifier, jdbcType, javaClass));
+        return project;
     }
 
-    public final static QueryParameterType get(String identifier)
-    {
-        return (QueryParameterType) typesMapByIdentifier.get(identifier);
-    }
-
-    public final static QueryParameterType get(int jdbcType)
-    {
-        return (QueryParameterType) typesMapByJdbcType.get(new Integer(jdbcType));
-    }
-
-    public final static String[] getTypeIdentifiers()
-    {
-        return typeIdentifiers;
-    }
-
-    public QueryParameterType(String identifier, int jdbcType, Class javaClass)
-    {
-        this.identifier = identifier;
-        this.javaClass = javaClass;
-        this.jdbcType = jdbcType;
-    }
-
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-    public Class getJavaClass()
-    {
-        return javaClass;
-    }
-
-    public int getJdbcType()
-    {
-        return jdbcType;
-    }
 }
-

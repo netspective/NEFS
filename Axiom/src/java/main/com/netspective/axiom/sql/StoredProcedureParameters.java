@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameters.java,v 1.1 2003-10-29 23:00:12 aye.thu Exp $
+ * $Id: StoredProcedureParameters.java,v 1.2 2003-10-31 03:35:12 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -90,11 +90,11 @@ public class StoredProcedureParameters
             inOutTypes = new ArrayList();
         }
 
-        public void addInOutValue(Object object, int type, int inOutType)
+        public void addInOutValue(Object object, int type, StoredProcedureParameter.Type inOutType)
         {
             inOutValues.add(object);
             valueTypes.add(new Integer(type));
-            inOutTypes.add(new Integer(inOutType));
+            inOutTypes.add(inOutType);
         }
 
         public Object[] getInOutValues()
@@ -107,9 +107,9 @@ public class StoredProcedureParameters
             return (Integer[]) valueTypes.toArray(new Integer[valueTypes.size()]);
         }
 
-        public Integer[] getInOutTypes()
+        public StoredProcedureParameter.Type[] getInOutTypes()
         {
-            return (Integer[]) inOutTypes.toArray(new Integer[inOutTypes.size()]);
+            return (StoredProcedureParameter.Type[]) inOutTypes.toArray();
         }
     }
 
@@ -201,13 +201,14 @@ public class StoredProcedureParameters
         return vac.getActiveParamNum();
     }
 
-    public QueryParameter get(int index)
+    public StoredProcedureParameter get(int index)
     {
-        return (QueryParameter) params.get(index);
+        return (StoredProcedureParameter) params.get(index);
     }
 
     public int size()
     {
         return params.size();
     }
+
 }

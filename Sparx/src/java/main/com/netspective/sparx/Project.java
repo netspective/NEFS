@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.33 2003-10-24 03:20:52 shahid.shah Exp $
+ * $Id: Project.java,v 1.34 2003-10-31 03:38:07 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -61,6 +61,7 @@ import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionProviderEntryStatistics;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
+import com.netspective.axiom.sql.StoredProceduresNameSpace;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.sparx.navigate.NavigationTreesManager;
 import com.netspective.sparx.navigate.NavigationTree;
@@ -86,6 +87,7 @@ import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.sql.QueriesPackage;
+import com.netspective.sparx.sql.StoredProceduresPackage;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
 import com.netspective.sparx.ant.AntProjects;
@@ -293,6 +295,17 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public com.netspective.axiom.sql.Query createQuery()
     {
         return new com.netspective.sparx.sql.Query(this);
+    }
+
+    public StoredProceduresNameSpace createStoredProcedures()
+    {
+        activeSPNameSpace = new StoredProceduresPackage(this, getStoredProcedures());
+        return activeSPNameSpace;
+    }
+
+    public com.netspective.axiom.sql.StoredProcedure createStoredProcedure()
+    {
+        return new com.netspective.sparx.sql.StoredProcedure(this);
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */

@@ -39,28 +39,53 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.1 2003-10-29 23:00:12 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.2 2003-10-31 03:35:12 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
 import com.netspective.axiom.ConnectionContext;
 
 import java.sql.Types;
 import java.sql.SQLException;
 import java.sql.CallableStatement;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Class representing an in or out parameter of a callable statement object
  */
 public class StoredProcedureParameter implements XmlDataModelSchema.ConstructionFinalizeListener
 {
-    public static final int OUT_PARAMETER = 0;
-    public static final int IN_PARAMETER = 1;
+    public static class Type extends XdmEnumeratedAttribute
+    {
+        public static final int IN = 0;
+        public static final int OUT = 1;
+        public static final int IN_AND_OUT = 2;
+
+        public static final String[] VALUES = new String[] { "in", "out", "in-out" };
+
+        public Type()
+        {
+            super();
+        }
+
+        public Type(int index)
+        {
+            super(index);
+        }
+
+        public String[] getValues()
+        {
+            return VALUES;
+        }
+    }
 
     private StoredProcedureParameters parent;
     private String name;
@@ -68,18 +93,42 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     private int sqlType = Types.VARCHAR;
     private Class javaType = String.class;
     private int index;
-    private int type;
+    private Type type;
 
     public StoredProcedureParameter(StoredProcedureParameters parent)
     {
         setParent(parent);
     }
 
+    public int getSqlTypeCode()
+    {
+        return sqlType;
+    }
+
+    public void setSqlTypeCode(int type)
+    {
+        this.sqlType = type;
+    }
+
+    public void setSqlType(QueryParameterTypeEnumeratedAttribute sqlType)
+    {
+        String paramTypeName = sqlType.getValue();
+        if(paramTypeName != null)
+        {
+            QueryParameterType type = QueryParameterType.get(paramTypeName);
+            if(type == null)
+                throw new RuntimeException("param type '" + paramTypeName + "' is invalid for param '"+
+                        getName() +"' in stored procedure '" + parent.getProcedure().getQualifiedName() + "'");
+            setSqlTypeCode(type.getJdbcType());
+            setJavaType(type.getJavaClass());
+        }
+    }
+
     /**
-     * Gets the type of parameter (in or out)
+     * Gets the type of parameter (IN, OUT, or IN/OUT)
      * @return
      */
-    public int getType()
+    public Type getType()
     {
         return type;
     }
@@ -88,7 +137,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
      * Sets the type of parameter ( in or Out)
      * @param type
      */
-    public void setType(int type)
+    public void setType(Type type)
     {
         this.type = type;
     }
@@ -120,56 +169,38 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
      */
     public void apply(StoredProcedureParameters.ValueApplyContext vac, ConnectionContext cc, CallableStatement stmt) throws SQLException
     {
-        if(sqlType != Types.ARRAY)
+        int paramNum = vac.getNextParamNum();
+        Value sv = value.getValue(cc);
+        if (getType().getValueIndex() == Type.IN)
         {
-            int paramNum = vac.getNextParamNum();
-            if(sqlType == Types.VARCHAR)
+            switch (sqlType)
             {
-                if (getType() == IN_PARAMETER)
+                case Types.VARCHAR:
                     stmt.setObject(paramNum, value.getTextValue(cc));
-                else if (getType() == OUT_PARAMETER)
-                    stmt.registerOutParameter(paramNum, Types.VARCHAR);
-            }
-            else
-            {
-
-                switch(sqlType)
-                {
-                    case Types.INTEGER:
-                        if (getType() == IN_PARAMETER)
-                        {
-                            Value sv = value.getValue(cc);
-                            stmt.setInt(paramNum, sv.getIntValue());
-                        }
-                        else if (getType() == OUT_PARAMETER)
-                            stmt.registerOutParameter(paramNum, Types.INTEGER);
-                        break;
-
-                    case Types.DOUBLE:
-                        if (getType() == IN_PARAMETER)
-                        {
-                            Value sv = value.getValue(cc);
-                            stmt.setDouble(paramNum, sv.getDoubleValue());
-                        }
-                        else if (getType() == OUT_PARAMETER)
-                            stmt.registerOutParameter(paramNum, Types.DOUBLE);
-                        break;
-                }
+                    break;
+                case Types.INTEGER:
+                    stmt.setInt(paramNum, sv.getIntValue());
+                    break;
+                case Types.DOUBLE:
+                    stmt.setDouble(paramNum, sv.getDoubleValue());
+                    break;
+                case Types.ARRAY:
+                    String[] textValues = value.getTextValues(cc);
+                    for(int q = 0; q < textValues.length; q++)
+                    {
+                        paramNum = vac.getNextParamNum();
+                        stmt.setObject(paramNum, textValues[q]);
+                    }
+                    break;
+                default:
+                    // TODO: Need to handle all the types??
+                    break;
             }
         }
-        else
+        else if (getType().getValueIndex() == Type.OUT)
         {
-            // this IN parameter is actually an array (OUT parameter won't have a value associated
-            // with it.
-            if (value != null && getType() == IN_PARAMETER)
-            {
-                String[] textValues = value.getTextValues(cc);
-                for(int q = 0; q < textValues.length; q++)
-                {
-                    int paramNum = vac.getNextParamNum();
-                    stmt.setObject(paramNum, textValues[q]);
-                }
-            }
+            // sqlType MUST be of java.sqlTypes value always!
+            stmt.registerOutParameter(paramNum, sqlType);
         }
     }
     /**
@@ -180,6 +211,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
      */
     public void retrieve(StoredProcedureParameters.ValueRetrieveContext vrc, ConnectionContext cc) throws SQLException
     {
+        // TODO: This needs to be tested.. no checking for stored procedure situation yet
         if(sqlType != Types.ARRAY)
         {
             if(sqlType == Types.VARCHAR)
@@ -202,7 +234,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         }
         else
         {
-            if (value != null && type == IN_PARAMETER)
+            if (value != null && type.getValueIndex() == Type.IN)
             {
                 String[] textValues = value.getTextValues(cc);
                 for(int q = 0; q < textValues.length; q++)
@@ -304,4 +336,56 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         this.value = value;
     }
 
+    public boolean isListType()
+    {
+        return sqlType == Types.ARRAY;
+    }
+
+    /**
+     * Appends a list of bind parameters and their respective information used for debugging to the buffer
+     * @param text
+     * @param vc
+     * @param terminator
+     */
+    public void appendBindText(StringBuffer text, ValueContext vc, String terminator)
+    {
+        text.append("["+ index +"]");
+        if(sqlType != Types.ARRAY)
+        {
+            Object ov = value.getValue(vc);
+            text.append(value.getSpecification().getSpecificationText());
+            text.append(" = ");
+            text.append(((Value)ov).getValueForSqlBindParam());
+            text.append(" (java: ");
+            text.append(ov != null ? ov.getClass().getName() : "<NULL>");
+            text.append(", sql: ");
+            text.append(sqlType);
+            text.append(", ");
+            text.append(QueryParameterType.get(sqlType));
+            text.append(")");
+        }
+        else
+        {
+            text.append(value.getSpecification().getSpecificationText());
+            text.append(" = ");
+
+            String[] textValues = value.getTextValues(vc);
+            if(value != null)
+            {
+                for(int v = 0; v < textValues.length; v++)
+                {
+                    if(v > 0)
+                        text.append(", ");
+                    text.append("'" + textValues[v] + "'");
+                }
+            }
+            else
+            {
+                text.append("null");
+            }
+
+            text.append(" (text list)");
+        }
+        if(terminator != null) text.append(terminator);
+    }
 }

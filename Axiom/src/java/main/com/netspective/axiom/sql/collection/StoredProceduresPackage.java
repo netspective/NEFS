@@ -18,9 +18,9 @@ public class StoredProceduresPackage implements StoredProceduresNameSpace
     private StoredProcedures container;
     private String packageName;
 
-    public StoredProceduresPackage(StoredProcedures queries)
+    public StoredProceduresPackage(StoredProcedures sps)
     {
-        setContainer(queries);
+        setContainer(sps);
     }
 
     public StoredProcedures getContainer()
@@ -48,8 +48,8 @@ public class StoredProceduresPackage implements StoredProceduresNameSpace
         return new StoredProcedure(this);
     }
 
-    public void addStoredProcedure(StoredProcedure query)
+    public void addStoredProcedure(StoredProcedure sp)
     {
-        container.add(query);
+        container.add(sp);
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.16 2003-10-26 14:27:32 aye.thu Exp $
+ * $Id: SqlManager.java,v 1.17 2003-10-31 03:35:46 aye.thu Exp $
  */
 
 package com.netspective.axiom;
@@ -49,14 +49,8 @@ import com.netspective.axiom.schema.*;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.table.type.EnumerationTableRows;
-import com.netspective.axiom.sql.Queries;
-import com.netspective.axiom.sql.QueriesNameSpace;
-import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.sql.QueryResultSet;
-import com.netspective.axiom.sql.ResultSetUtils;
-import com.netspective.axiom.sql.collection.QueriesCollection;
-import com.netspective.axiom.sql.collection.QueriesPackage;
-import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
+import com.netspective.axiom.sql.*;
+import com.netspective.axiom.sql.collection.*;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.value.DatabaseConnValueContext;
@@ -97,6 +91,8 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     protected QueriesNameSpace activeNameSpace;
     private QueriesNameSpace temporaryQueriesNameSpace;
     private Queries queries = constructQueries();
+    private StoredProcedures storedProcedures = constructStoredProcedures();
+    protected StoredProceduresNameSpace activeSPNameSpace;
     private QueryDefinitions queryDefns = constructQueryDefinitions();
     private Schemas schemas = constructSchemas();
 
@@ -109,6 +105,13 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     public QueriesNameSpace getTemporaryQueriesNameSpace()
     {
         return temporaryQueriesNameSpace;
+    }
+
+    protected StoredProcedures constructStoredProcedures()
+    {
+        StoredProceduresCollection storedProceduresCollection = new StoredProceduresCollection();
+        storedProceduresCollection.setSqlManager(this);
+        return storedProceduresCollection;
     }
 
     protected Queries constructQueries()
@@ -130,6 +133,28 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
+
+    public StoredProcedures getStoredProcedures()
+    {
+        return storedProcedures;
+    }
+
+    public StoredProcedure getStoredProcedure(final String name)
+    {
+        StoredProcedure sp = null;
+        String actualName = "";
+        if (name != null && name.length() > 0)
+        {
+            actualName = StoredProcedure.translateNameForMapKey(name);
+            sp = storedProcedures.get(actualName);
+        }
+        if(sp == null && log.isDebugEnabled())
+        {
+            log.debug("Unable to find stored procedure object '"+ name +"' as '"+ actualName +"'. Available: " + storedProcedures);
+            return null;
+        }
+        return sp;
+    }
 
     public Queries getQueries()
     {
@@ -181,10 +206,20 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
         return ret;
     }
 
+    public StoredProcedure createStoredProcedure()
+    {
+        return new StoredProcedure();
+    }
 
     public Query createQuery()
     {
         return new Query();
+    }
+
+    public void addStoredProcedure(StoredProcedure sp)
+    {
+        System.out.println(sp.getName()  +  " " + sp.getNameForMapKey());
+        storedProcedures.add(sp);
     }
 
     public void addQuery(Query query)
@@ -192,10 +227,21 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
         queries.add(query);
     }
 
+    public StoredProceduresNameSpace createStoredProcedures()
+    {
+        activeSPNameSpace = new StoredProceduresPackage(getStoredProcedures());
+        return activeSPNameSpace;
+    }
+
     public QueriesNameSpace createQueries()
     {
         activeNameSpace = new QueriesPackage(getQueries());
         return activeNameSpace;
+    }
+
+    public void addStoredProcedures(StoredProceduresNameSpace pkg)
+    {
+        activeSPNameSpace = null;
     }
 
     public void addQueries(QueriesNameSpace pkg)
@@ -327,6 +373,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     public void produceMetrics(Metric parent)
     {
         parent.addValueMetric("Static Queries", Integer.toString(queries.size()));
+        parent.addValueMetric("Stored Procedures", Integer.toString(storedProcedures.size()));
         parent.addValueMetric("Dynamic Queries (Query Definitions)", Integer.toString(queryDefns.size()));
         parent.addValueMetric("Schemas", Integer.toString(schemas.size()));
         parent.addValueMetric("Database Policies", Integer.toString(DatabasePolicies.getInstance().size()));
@@ -339,6 +386,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
         public static final String DELIM = ".";
         private String rootPackage = "sql";
         private String queryPackage = "sql.query";
+        private String storedProcPackage = "sql.stored-proc";
         private String queryDefnPackage = "sql.query-defn";
         private String schemaPackage = "sql.schema";
 
@@ -346,17 +394,28 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
         {
         }
 
-        public SqlManagerIdentifierConstantsGenerator(String root, String queries, String queryDefns, String schemas)
+        public SqlManagerIdentifierConstantsGenerator(String root, String queries, String queryDefns, String storedProcs, String schemas)
         {
             this.rootPackage = root;
             this.queryPackage = queries;
             this.queryDefnPackage = queryDefns;
             this.schemaPackage = schemas;
+            this.storedProcPackage = storedProcs;
+        }
+
+        public String getStoredProcedurePackage(StoredProcedure sp)
+        {
+            return this.storedProcPackage + DELIM + sp.getQualifiedName();
         }
 
         public String getQueryPackage(Query query)
         {
             return this.queryPackage + DELIM + query.getQualifiedName();
+        }
+
+        public void setStoredProcedurePackage(String storedProcs)
+        {
+            this.storedProcPackage = storedProcs;
         }
 
         public void setQueryPackage(String queries)
@@ -416,6 +475,15 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
             }
         }
 
+        public void defineConstants(Map constants, StoredProcedures storedProcs)
+        {
+            for(int i = 0; i < storedProcs.size(); i++)
+            {
+                StoredProcedure sp = storedProcs.get(i);
+                constants.put(getStoredProcedurePackage(sp), sp.getQualifiedName());
+            }
+        }
+
         public void defineConstants(Map constants, QueryDefinitions queryDefns)
         {
             for(int i = 0; i < queryDefns.size(); i++)
@@ -467,6 +535,8 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
         {
             Map constants = new HashMap();
             defineConstants(constants, queries);
+            defineConstants(constants, storedProcedures);
+            defineConstants(constants, queryDefns);
             defineConstants(constants, queryDefns);
             defineConstants(constants, schemas);
             return constants;
