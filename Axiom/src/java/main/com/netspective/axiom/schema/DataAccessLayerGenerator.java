@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.2 2003-03-13 22:01:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -53,6 +53,9 @@ import java.sql.SQLException;
 import org.inxar.jenesis.*;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
+import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
@@ -71,6 +74,7 @@ public class DataAccessLayerGenerator
     private VirtualMachine vm;
     private CompilationUnit rootUnit;
     private CompilationUnit modelsUnit;
+    private CompilationUnit enumsUnit;
     private PackageClass rootClass;
     private ClassMethod rootClassChildrenAssignmentBlock;
     private Map tableAccessorGenerators = new HashMap(); // key is table instance, value is TableAccessorGenerator instance
@@ -144,6 +148,9 @@ public class DataAccessLayerGenerator
         modelsUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
         modelsUnit.setNamespace(rootNameSpace + ".model");
 
+        enumsUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+        enumsUnit.setNamespace(rootNameSpace + ".enum");
+
         List mainTables = structure.getChildren();
         for(int i = 0; i < mainTables.size(); i++)
             generate((Schema.TableTreeNode) mainTables.get(i), rootClass, rootClassChildrenAssignmentBlock);
@@ -154,6 +161,15 @@ public class DataAccessLayerGenerator
             TableAccessorGenerator tag = (TableAccessorGenerator) i.next();
             tag.accessorClass.getUnit().encode();
         }
+
+        Tables tables = structure.getSchema().getTables();
+        for(int i = 0; i < tables.size(); i++)
+        {
+            Table table = tables.get(i);
+            if(table instanceof EnumerationTable)
+                generate((EnumerationTable) table);
+        }
+
         rootUnit.encode();
     }
 
@@ -176,6 +192,32 @@ public class DataAccessLayerGenerator
         List children = node.getChildren();
         for(int i = 0; i < children.size(); i++)
             generate((Schema.TableTreeNode) children.get(i), tag.accessorClass, tag.accessorClassConstructorBlock);
+    }
+
+    public void generate(EnumerationTable enumTable) throws IOException
+    {
+        EnumerationTableRows rows = enumTable.getEnums();
+        if(rows != null && rows.size() > 0)
+        {
+            CompilationUnit enumUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+            enumUnit.setNamespace(enumsUnit.getNamespace().getName());
+
+            PackageClass enumerationClass = enumUnit.newClass(TextUtils.xmlTextToJavaIdentifier(enumTable.getName(), true));
+            enumerationClass.setAccess(Access.PUBLIC);
+            enumerationClass.isFinal(true);
+
+            for(int r = 0; r < rows.size(); r++)
+            {
+                EnumerationTableRow row = (EnumerationTableRow) rows.getRow(r);
+
+                ClassField field = enumerationClass.newField(vm.newType(Type.INT), row.getJavaConstant());
+                field.setAccess(Access.PUBLIC);
+                field.isFinal(true);
+                field.setExpression(vm.newFree(row.getIdAsInteger().toString()));
+            }
+
+            enumUnit.encode();
+        }
     }
 
     protected class TableAccessorGenerator
