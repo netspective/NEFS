@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FileSystemFilePage.java,v 1.1 2003-03-23 04:51:52 shahid.shah Exp $
+ * $Id: FileSystemFilePage.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
@@ -55,8 +55,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.netspective.sparx.navigate.fs.FileSystemEntryPage;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.commons.value.source.StaticValueSource;
 
 public class FileSystemFilePage extends FileSystemEntryPage
@@ -66,16 +64,6 @@ public class FileSystemFilePage extends FileSystemEntryPage
     private File file;
     private String fileExtension;
     private String contentType = DEFAULT_CONTENT_TYPE;
-
-    public FileSystemFilePage(NavigationTree owner)
-    {
-        super(owner);
-    }
-
-    public FileSystemFilePage(NavigationPath parent)
-    {
-        super(parent);
-    }
 
     public boolean isValid(NavigationContext npc)
     {

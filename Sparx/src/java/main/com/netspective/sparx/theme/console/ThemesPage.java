@@ -39,78 +39,61 @@
  */
 
 /**
- * $Id: Themes.java,v 1.2 2003-03-24 13:28:01 shahid.shah Exp $
+ * $Id: ThemesPage.java,v 1.1 2003-03-24 13:28:02 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.theme.console;
 
+import java.io.Writer;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Iterator;
 
-import org.apache.commons.discovery.tools.DiscoverClass;
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.servlet.ServletException;
 
-public class Themes
+import com.netspective.sparx.console.ConsoleServletPage;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.theme.Themes;
+import com.netspective.sparx.theme.Theme;
+
+public class ThemesPage extends ConsoleServletPage
 {
-    private static DiscoverClass discoverClass = new DiscoverClass();
-    protected static final Log log = LogFactory.getLog(Themes.class);
-
-    private static Themes instance = (Themes) DiscoverSingleton.find(Themes.class, Themes.class.getName());
-    private Map themesByName;
-    private Theme defaultTheme;
-
-    public static final Themes getInstance()
+    public boolean isValid(NavigationContext nc)
     {
-        return instance;
+        if(! super.isValid(nc))
+            return false;
+
+        // check to see if all the themes are loaded
+        List children = getChildrenList();
+        Map themes = Themes.getInstance().getThemesByName();
+
+        if(children.size() != themes.size())
+            syncronize(nc);
+
+        return true;
     }
 
-    public Themes()
+    public void syncronize(NavigationContext nc)
     {
-        themesByName = new HashMap();
-    }
+        removeAllChildren();
 
-    public void registerTheme(Theme theme)
-    {
-        themesByName.put(theme.getName(), theme);
-        if(log.isTraceEnabled())
-            log.trace("Registered value source "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
-
-        if(theme.isDefault())
+        Map themes = Themes.getInstance().getThemesByName();
+        for(Iterator i = themes.entrySet().iterator(); i.hasNext(); )
         {
-            defaultTheme = theme;
-            if(log.isTraceEnabled())
-                log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
+            Map.Entry entry = (Map.Entry) i.next();
+            Theme theme = (Theme) entry.getValue();
+            ThemePage page = new ThemePage();
+            String name = theme.getName();
+            page.setTheme(theme);
+            page.setName(name != null ? name : "default");
+            appendChild(page);
         }
     }
 
-    public Map getThemesByName()
+    public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        return themesByName;
-    }
-
-    public Theme getTheme(String name)
-    {
-        Theme result = (Theme) themesByName.get(name);
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find theme '"+ name +"'. Available: " + themesByName);
-            return null;
-        }
-
-        return result;
-    }
-
-    public Theme getDefaultTheme()
-    {
-        Theme result = defaultTheme;
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("No theme defined using the 'default' attribute was found. Available: " + themesByName);
-            return null;
-        }
-
-        return result;
+        syncronize(nc);
+        writer.write("here");
     }
 }

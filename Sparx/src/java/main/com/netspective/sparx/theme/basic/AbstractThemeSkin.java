@@ -39,78 +39,30 @@
  */
 
 /**
- * $Id: Themes.java,v 1.2 2003-03-24 13:28:01 shahid.shah Exp $
+ * $Id: AbstractThemeSkin.java,v 1.1 2003-03-24 13:28:02 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.theme.basic;
 
-import java.util.Map;
-import java.util.HashMap;
 
-import org.apache.commons.discovery.tools.DiscoverClass;
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.netspective.sparx.theme.Theme;
 
-public class Themes
+public class AbstractThemeSkin
 {
-    private static DiscoverClass discoverClass = new DiscoverClass();
-    protected static final Log log = LogFactory.getLog(Themes.class);
+    private Theme theme;
 
-    private static Themes instance = (Themes) DiscoverSingleton.find(Themes.class, Themes.class.getName());
-    private Map themesByName;
-    private Theme defaultTheme;
-
-    public static final Themes getInstance()
+    public AbstractThemeSkin(Theme theme)
     {
-        return instance;
+        this.theme = theme;
     }
 
-    public Themes()
+    public Theme getTheme()
     {
-        themesByName = new HashMap();
+        return theme;
     }
 
-    public void registerTheme(Theme theme)
+    public void setTheme(Theme theme)
     {
-        themesByName.put(theme.getName(), theme);
-        if(log.isTraceEnabled())
-            log.trace("Registered value source "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
-
-        if(theme.isDefault())
-        {
-            defaultTheme = theme;
-            if(log.isTraceEnabled())
-                log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
-        }
-    }
-
-    public Map getThemesByName()
-    {
-        return themesByName;
-    }
-
-    public Theme getTheme(String name)
-    {
-        Theme result = (Theme) themesByName.get(name);
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find theme '"+ name +"'. Available: " + themesByName);
-            return null;
-        }
-
-        return result;
-    }
-
-    public Theme getDefaultTheme()
-    {
-        Theme result = defaultTheme;
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("No theme defined using the 'default' attribute was found. Available: " + themesByName);
-            return null;
-        }
-
-        return result;
+        this.theme = theme;
     }
 }

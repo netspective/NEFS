@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: FileSystemEntryPage.java,v 1.1 2003-03-23 04:51:52 shahid.shah Exp $
+ * $Id: FileSystemEntryPage.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
@@ -62,13 +62,4 @@ import com.netspective.sparx.navigate.NavigationPath;
 
 public class FileSystemEntryPage extends NavigationPage
 {
-    public FileSystemEntryPage(NavigationTree owner)
-    {
-        super(owner);
-    }
-
-    public FileSystemEntryPage(NavigationPath parent)
-    {
-        super(parent);
-    }
 }

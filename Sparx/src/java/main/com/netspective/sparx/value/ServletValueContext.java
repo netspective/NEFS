@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletValueContext.java,v 1.1 2003-03-13 18:38:25 shahid.shah Exp $
+ * $Id: ServletValueContext.java,v 1.2 2003-03-24 13:28:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -50,6 +50,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.ServletContext;
 
 import com.netspective.commons.value.ValueContext;
+import com.netspective.sparx.ApplicationManager;
 
 public interface ServletValueContext extends ValueContext
 {
@@ -59,17 +60,24 @@ public interface ServletValueContext extends ValueContext
     public Servlet getServlet();
 
     /**
-     * Retrive the active servlet request (request scope).
+     * Retrieve the active servlet request (request scope).
      */
     public ServletRequest getRequest();
 
     /**
-     * Retrive the active servlet response.
+     * Retrieve the active servlet response.
      */
     public ServletResponse getResponse();
 
     /**
-     * Retrive the active servlet context (application scope).
+     * Retrieve the active servlet context (application scope).
      */
     public ServletContext getServletContext();
+
+    /**
+     * Retreive the default application manager (components).
+     */
+    public ApplicationManager getApplicationManager();
+
+    String getApplicationName();
 }

@@ -39,78 +39,70 @@
  */
 
 /**
- * $Id: Themes.java,v 1.2 2003-03-24 13:28:01 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.1 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx;
 
-import java.util.Map;
-import java.util.HashMap;
+import com.netspective.axiom.SqlManager;
+import com.netspective.sparx.navigate.NavigationTreesManager;
+import com.netspective.sparx.navigate.NavigationTree;
+import com.netspective.sparx.navigate.NavigationTrees;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.theme.Themes;
+import com.netspective.sparx.theme.basic.AbstractTheme;
+import com.netspective.sparx.console.ConsoleManager;
+import com.netspective.sparx.console.ConsoleNavigationTree;
 
-import org.apache.commons.discovery.tools.DiscoverClass;
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-public class Themes
+public class ApplicationManager extends SqlManager implements NavigationTreesManager, ConsoleManager
 {
-    private static DiscoverClass discoverClass = new DiscoverClass();
-    protected static final Log log = LogFactory.getLog(Themes.class);
+    private NavigationTrees navigationTrees = new NavigationTrees();
 
-    private static Themes instance = (Themes) DiscoverSingleton.find(Themes.class, Themes.class.getName());
-    private Map themesByName;
-    private Theme defaultTheme;
-
-    public static final Themes getInstance()
+    public ApplicationManager()
     {
-        return instance;
     }
 
-    public Themes()
+    public Theme createRegisterTheme()
     {
-        themesByName = new HashMap();
+        return new AbstractTheme();
     }
 
-    public void registerTheme(Theme theme)
+    public void addRegisterTheme(Theme theme)
     {
-        themesByName.put(theme.getName(), theme);
-        if(log.isTraceEnabled())
-            log.trace("Registered value source "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
-
-        if(theme.isDefault())
-        {
-            defaultTheme = theme;
-            if(log.isTraceEnabled())
-                log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
-        }
+        Themes.getInstance().registerTheme(theme);
     }
 
-    public Map getThemesByName()
+    /* ------------------------------------------------------------------------------------------------------------ */
+
+    public ConsoleNavigationTree getConsoleNavigationTree()
     {
-        return themesByName;
+        return (ConsoleNavigationTree) getNavigationTree("ace");
     }
 
-    public Theme getTheme(String name)
-    {
-        Theme result = (Theme) themesByName.get(name);
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find theme '"+ name +"'. Available: " + themesByName);
-            return null;
-        }
+    /* ------------------------------------------------------------------------------------------------------------ */
 
-        return result;
+    public void addNavigationTree(NavigationTree tree)
+    {
+        navigationTrees.addNavigationTree(tree);
     }
 
-    public Theme getDefaultTheme()
+    public NavigationTree createNavigationTree()
     {
-        Theme result = defaultTheme;
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("No theme defined using the 'default' attribute was found. Available: " + themesByName);
-            return null;
-        }
+        return navigationTrees.createNavigationTree();
+    }
 
-        return result;
+    public NavigationTree getDefaultNavigationTree()
+    {
+        return navigationTrees.getDefaultTree();
+    }
+
+    public NavigationTree getNavigationTree(String name)
+    {
+        return navigationTrees.getNavigationTree(name);
+    }
+
+    public NavigationTrees getNavigationTrees()
+    {
+        return navigationTrees;
     }
 }

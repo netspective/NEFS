@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FileSystemDirectoryPage.java,v 1.1 2003-03-23 04:51:52 shahid.shah Exp $
+ * $Id: FileSystemDirectoryPage.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
@@ -48,8 +48,6 @@ import java.io.File;
 import java.util.Set;
 
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.commons.value.source.StaticValueSource;
 
 public class FileSystemDirectoryPage extends FileSystemEntryPage
@@ -57,16 +55,6 @@ public class FileSystemDirectoryPage extends FileSystemEntryPage
     private File dir;
     private long lastModified;
     private Set ignoreEntries;
-
-    public FileSystemDirectoryPage(NavigationTree owner)
-    {
-        super(owner);
-    }
-
-    public FileSystemDirectoryPage(NavigationPath parent)
-    {
-        super(parent);
-    }
 
     public boolean isValid(NavigationContext npc)
     {
@@ -118,12 +106,12 @@ public class FileSystemDirectoryPage extends FileSystemEntryPage
             FileSystemEntryPage page = null;
             if (file.isDirectory())
             {
-                page = new FileSystemDirectoryPage(this);
+                page = new FileSystemDirectoryPage();
                 ((FileSystemDirectoryPage) page).setDir(new File(dir, file.getName()));
             }
             else
             {
-                page = new FileSystemFilePage(this);
+                page = new FileSystemFilePage();
                 ((FileSystemFilePage) page).setFile(file);
             }
 

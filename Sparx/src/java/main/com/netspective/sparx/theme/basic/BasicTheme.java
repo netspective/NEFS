@@ -39,61 +39,11 @@
  */
 
 /**
- * $Id: PresentationManager.java,v 1.1 2003-03-23 04:51:52 shahid.shah Exp $
+ * $Id: BasicTheme.java,v 1.1 2003-03-24 13:28:02 shahid.shah Exp $
  */
 
-package com.netspective.sparx;
+package com.netspective.sparx.theme.basic;
 
-import com.netspective.axiom.SqlManager;
-import com.netspective.sparx.navigate.NavigationTreesManager;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.NavigationTrees;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
-import com.netspective.sparx.theme.css.AbstractTheme;
-
-public class PresentationManager extends SqlManager implements NavigationTreesManager
+public class BasicTheme extends AbstractTheme
 {
-    private NavigationTrees navigationTrees = new NavigationTrees();
-
-    public PresentationManager()
-    {
-    }
-
-    public Theme createRegisterTheme()
-    {
-        return new AbstractTheme();
-    }
-
-    public void addRegisterTheme(Theme theme)
-    {
-        Themes.getInstance().registerTheme(theme);
-    }
-
-    /* ------------------------------------------------------------------------------------------------------------ */
-
-    public void addNavigationTree(NavigationTree tree)
-    {
-        navigationTrees.addNavigationTree(tree);
-    }
-
-    public NavigationTree createNavigationTree()
-    {
-        return navigationTrees.createNavigationTree();
-    }
-
-    public NavigationTree getDefaultNavigationTree()
-    {
-        return navigationTrees.getDefaultTree();
-    }
-
-    public NavigationTree getNavigationTree(String name)
-    {
-        return navigationTrees.getNavigationTree(name);
-    }
-
-    public NavigationTrees getNavigationTrees()
-    {
-        return navigationTrees;
-    }
 }

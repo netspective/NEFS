@@ -39,78 +39,17 @@
  */
 
 /**
- * $Id: Themes.java,v 1.2 2003-03-24 13:28:01 shahid.shah Exp $
+ * $Id: ConsoleServletPage.java,v 1.1 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.console;
 
-import java.util.Map;
-import java.util.HashMap;
+import com.netspective.sparx.navigate.NavigationPage;
 
-import org.apache.commons.discovery.tools.DiscoverClass;
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-public class Themes
+public class ConsoleServletPage extends NavigationPage
 {
-    private static DiscoverClass discoverClass = new DiscoverClass();
-    protected static final Log log = LogFactory.getLog(Themes.class);
-
-    private static Themes instance = (Themes) DiscoverSingleton.find(Themes.class, Themes.class.getName());
-    private Map themesByName;
-    private Theme defaultTheme;
-
-    public static final Themes getInstance()
+    public NavigationPage createPage()
     {
-        return instance;
-    }
-
-    public Themes()
-    {
-        themesByName = new HashMap();
-    }
-
-    public void registerTheme(Theme theme)
-    {
-        themesByName.put(theme.getName(), theme);
-        if(log.isTraceEnabled())
-            log.trace("Registered value source "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
-
-        if(theme.isDefault())
-        {
-            defaultTheme = theme;
-            if(log.isTraceEnabled())
-                log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
-        }
-    }
-
-    public Map getThemesByName()
-    {
-        return themesByName;
-    }
-
-    public Theme getTheme(String name)
-    {
-        Theme result = (Theme) themesByName.get(name);
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find theme '"+ name +"'. Available: " + themesByName);
-            return null;
-        }
-
-        return result;
-    }
-
-    public Theme getDefaultTheme()
-    {
-        Theme result = defaultTheme;
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("No theme defined using the 'default' attribute was found. Available: " + themesByName);
-            return null;
-        }
-
-        return result;
+        return new ConsoleServletPage();
     }
 }

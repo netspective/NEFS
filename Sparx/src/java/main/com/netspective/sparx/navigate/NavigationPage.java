@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.1 2003-03-23 04:51:52 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -84,21 +84,11 @@ public class NavigationPage extends NavigationPath
     private ValueSource url;
     private ValueSource retainParams;
 
-    public NavigationPage(NavigationTree owner)
-    {
-        super(owner);
-    }
-
-    public NavigationPage(NavigationPath parent)
-    {
-        super(parent);
-    }
-
     /* --- XDM Callbacks --------------------------------------------------------------------------------------------*/
 
     public NavigationPage createPage()
     {
-        return new NavigationPage(this);
+        return new NavigationPage();
     }
 
     public void addPage(NavigationPage page)
@@ -419,7 +409,7 @@ public class NavigationPage extends NavigationPath
             handlePageMetaData(writer, nc);
             handlePageHeader(writer, nc);
             //if(!ComponentCommandFactory.handleDefaultBodyItem(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse()))
-            //    handlePageBody(writer, nc);
+                handlePageBody(writer, nc);
             handlePageFooter(writer, nc);
         //}
         //catch (ComponentCommandException e)

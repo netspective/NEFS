@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationSkin.java,v 1.1 2003-03-23 04:51:52 shahid.shah Exp $
+ * $Id: NavigationSkin.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -72,18 +72,16 @@ public interface NavigationSkin extends ThemeSkin
      * Create a context that can be used to render this navigation skin.
      * @param jspPageContext The JSP page that will be rendering the navigation skin.
      * @param navTreeId The active page that will be rendered.
-     * @param popup True if this is a popup window
      * @return NavigationContext
      */
-    public NavigationContext createContext(PageContext jspPageContext, NavigationTree tree, String navTreeId, boolean popup);
+    public NavigationContext createContext(PageContext jspPageContext, NavigationTree tree, String navTreeId);
 
     /**
      * Create a context that can be used to render this navigation skin.
      * @param navTreeId The active page that will be rendered.
-     * @param popup True if this is a popup window
      * @return NavigationContext
      */
-    public NavigationContext createContext(ServletContext context, HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId, boolean popup);
+    public NavigationContext createContext(ServletContext context, HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId);
 
     /**
      * Render the meta data like <html>, <head>, <script> etc.

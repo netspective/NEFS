@@ -51,14 +51,11 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.1 2003-03-23 04:51:52 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -68,18 +65,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.text.TextUtils;
 
 public class NavigationContext extends BasicDbHttpServletValueContext
 {
-    private static final Log log = LogFactory.getLog(NavigationContext.class);
-    static public final long PCFLAG_HASERROR = 0;
-
     public class NavigationPathState
     {
         public NavigationPath path;
@@ -90,7 +81,6 @@ public class NavigationContext extends BasicDbHttpServletValueContext
             navigationStates.put(path.getQualifiedName(), path);
             this.path = path;
             this.flags = path.getFlags();
-            //TODO: See if it's necesary to have another constructor that takes a data-cmd like the FieldState
         }
 
         public final boolean flagIsSet(long flag)
@@ -99,41 +89,22 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         }
     }
 
-    private static int pageContextNum = 0;
     private NavigationTree ownerTree;
     private NavigationPage activePage;
     private NavigationSkin skin;
     private NavigationTree.FindResults activePathFindResults;
-    private String transactionId;
-    private long resultCode;
-    private long flags;
-    private boolean popup;
     private Map navigationStates = new HashMap();
     private int maxLevel = 0;
-    private String rootUrl;
 
     public NavigationContext(NavigationTree ownerTree, ServletContext aContext, Servlet aServlet, ServletRequest aRequest, ServletResponse aResponse, NavigationSkin skin, String activePathId)
     {
         super(aContext, aServlet, aRequest, aResponse);
 
-        pageContextNum++;
         this.ownerTree = ownerTree;
         this.skin = skin;
         activePathFindResults = ownerTree.findPath(activePathId);
         activePage = (NavigationPage) activePathFindResults.getMatchedPath();
         maxLevel = ownerTree.getMaxLevel();
-        rootUrl = ((HttpServletRequest) aRequest).getContextPath();
-
-        try
-        {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update((pageContextNum + new Date().toString()).getBytes());
-            transactionId = md.digest().toString();
-        }
-        catch (NoSuchAlgorithmException e)
-        {
-            log.error("No MessageDigest Algorithm found!", e);
-        }
 
         if(activePage != null)
         {
@@ -141,20 +112,6 @@ public class NavigationContext extends BasicDbHttpServletValueContext
                 throw new RuntimeException("Page " + activePage + " is not valid.");
 
             activePage.makeStateChanges(this);
-        }
-    }
-
-    public String getApplicationName(NavigationContext nc)
-    {
-        String servletContextName = nc.getServletContext().getServletContextName();
-
-        if (servletContextName != null && servletContextName.length() > 1)
-        {
-            return TextUtils.sqlIdentifierToText(nc.getServletContext().getServletContextName().substring(1), true);
-        }
-        else
-        {
-            return null;
         }
     }
 
@@ -178,69 +135,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         return skin;
     }
 
-    public final String getRootUrl()
-    {
-        return rootUrl;
-    }
-
-    public final String getThemeResourcesRootUrl(Theme theme)
-    {
-        return rootUrl + "/sparx/theme/" + theme.getName();
-    }
-
-    public final String getThemeImagesRootUrl(Theme theme)
-    {
-        return rootUrl + "/sparx/theme/" + theme.getName() + "/images";
-    }
-
-    public final String getServletRootUrl()
-    {
-        return rootUrl + "/" + getHttpRequest().getServletPath();
-    }
-
     public int getMaxLevel()
     {
         return maxLevel;
-    }
-
-    public final String getTransactionId()
-    {
-        return transactionId;
-    }
-
-    public final long getFlags()
-    {
-        return flags;
-    }
-
-    public final boolean flagIsSet(long flag)
-    {
-        return (flags & flag) == 0 ? false : true;
-    }
-
-    public final void setFlag(long flag)
-    {
-        flags |= flag;
-    }
-
-    public final void clearFlag(long flag)
-    {
-        flags &= ~flag;
-    }
-
-    public final boolean hasError()
-    {
-        return (flags & PCFLAG_HASERROR) != 0 ? true : false;
-    }
-
-    public long getResultCode()
-    {
-        return resultCode;
-    }
-
-    public void setResultCode(long value)
-    {
-        resultCode = value;
     }
 
     public Map getNavigationStates()
@@ -274,15 +171,4 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         NavigationPathState state = (NavigationPathState) navigationStates.get(path.getQualifiedName());
         return state != null ? state.flagIsSet(flag) : path.flagIsSet(flag);
     }
-
-    public boolean isPopup()
-    {
-        return popup;
-    }
-
-    public void setPopup(boolean popup)
-    {
-        this.popup = popup;
-    }
-
 }

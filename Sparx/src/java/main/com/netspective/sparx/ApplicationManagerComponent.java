@@ -39,78 +39,52 @@
  */
 
 /**
- * $Id: Themes.java,v 1.2 2003-03-24 13:28:01 shahid.shah Exp $
+ * $Id: ApplicationManagerComponent.java,v 1.1 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx;
 
-import java.util.Map;
-import java.util.HashMap;
+import java.io.File;
+import java.io.IOException;
 
-import org.apache.commons.discovery.tools.DiscoverClass;
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.netspective.commons.xdm.DefaultXdmComponent;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.metric.MetricsGroup;
+import com.netspective.commons.metric.Metric;
 
-public class Themes
+public class ApplicationManagerComponent extends DefaultXdmComponent
 {
-    private static DiscoverClass discoverClass = new DiscoverClass();
-    protected static final Log log = LogFactory.getLog(Themes.class);
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+    private ApplicationManager manager;
 
-    private static Themes instance = (Themes) DiscoverSingleton.find(Themes.class, Themes.class.getName());
-    private Map themesByName;
-    private Theme defaultTheme;
-
-    public static final Themes getInstance()
+    public ApplicationManagerComponent()
     {
-        return instance;
     }
 
-    public Themes()
+    public ApplicationManager createComponent()
     {
-        themesByName = new HashMap();
+        return new ApplicationManager();
     }
 
-    public void registerTheme(Theme theme)
+    public void addComponent(ApplicationManager manager)
     {
-        themesByName.put(theme.getName(), theme);
-        if(log.isTraceEnabled())
-            log.trace("Registered value source "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
-
-        if(theme.isDefault())
-        {
-            defaultTheme = theme;
-            if(log.isTraceEnabled())
-                log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
-        }
+        this.manager = manager;
     }
 
-    public Map getThemesByName()
+    public ApplicationManager getManager()
     {
-        return themesByName;
+        return manager;
     }
 
-    public Theme getTheme(String name)
+    public void produceMetrics(Metric parent)
     {
-        Theme result = (Theme) themesByName.get(name);
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find theme '"+ name +"'. Available: " + themesByName);
-            return null;
-        }
-
-        return result;
+        super.produceMetrics(parent);
+        MetricsGroup managerMetrics = parent.addGroupMetric("Sparx");
+        manager.produceMetrics(managerMetrics);
     }
 
-    public Theme getDefaultTheme()
+    public void generateIdentifiersConstants(File rootPath, String rootPkgAndClassName) throws IOException
     {
-        Theme result = defaultTheme;
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("No theme defined using the 'default' attribute was found. Available: " + themesByName);
-            return null;
-        }
-
-        return result;
+        manager.generateIdentifiersConstants(rootPath, rootPkgAndClassName);
     }
 }

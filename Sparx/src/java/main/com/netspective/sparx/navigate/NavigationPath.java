@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.1 2003-03-23 04:51:52 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -81,14 +81,8 @@ public class NavigationPath
     private int maxChildLevel;
     private int level;
 
-    public NavigationPath(NavigationTree owner)
+    public NavigationPath()
     {
-        setOwner(owner);
-    }
-
-    public NavigationPath(NavigationPath parent)
-    {
-        setParent(parent);
     }
 
     public String getQualifiedName()
@@ -146,8 +140,9 @@ public class NavigationPath
         {
             parent = value;
             setOwner(parent.getOwner());
-            if (parent != null)
-                setLevel(parent.getLevel() + 1);
+            setLevel(parent.getLevel() + 1);
+            if(defaultChildOfParent)
+                parent.setDefaultChild(this);
             generateAncestorList();
         }
         else
@@ -268,6 +263,7 @@ public class NavigationPath
 
     public void appendChild(NavigationPath path)
     {
+        path.setParent(this);
         childrenList.add(path);
         childrenMap.put(path.getName(), path);
         registerChild(path);
@@ -328,7 +324,7 @@ public class NavigationPath
     public void setDefault(boolean defaultChildOfParent)
     {
         this.defaultChildOfParent = defaultChildOfParent;
-        if(defaultChildOfParent)
+        if(defaultChildOfParent && getParent() != null)
            getParent().setDefaultChild(this);
     }
 

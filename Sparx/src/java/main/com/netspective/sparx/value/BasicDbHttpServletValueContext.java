@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.1 2003-03-23 04:51:53 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.2 2003-03-24 13:28:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -52,7 +52,20 @@ import javax.servlet.ServletResponse;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
+
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
+import com.netspective.axiom.SqlManager;
+import com.netspective.sparx.ApplicationManager;
+import com.netspective.sparx.ApplicationManagerComponent;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.theme.Themes;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.commons.xdm.XdmComponentFactory;
+import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.text.TextUtils;
 
 public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContext
                                       implements ServletValueContext, HttpServletValueContext,
@@ -65,13 +78,23 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     private Servlet servlet;
     private ServletRequest request;
     private ServletResponse response;
+    private boolean isPopup;
+    private boolean isPrint;
+    private String rootUrl;
 
     public BasicDbHttpServletValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response)
     {
+        contextNum++;
         this.context = context;
         this.request = request;
         this.response = response;
         this.servlet = servlet;
+        rootUrl = ((HttpServletRequest) request).getContextPath();
+    }
+
+    public Object getContextLocation()
+    {
+        return getHttpRequest().getRequestURI();
     }
 
     public HttpServletRequest getHttpRequest()
@@ -109,7 +132,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return context;
     }
 
-    public boolean inMaintenanceMode()
+    public boolean isInMaintenanceMode()
     {
         return "maintenance".equals(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT_MODE));
     }
@@ -138,5 +161,112 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public boolean isTrainingEnvironment()
     {
         return "training".equals(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
+    }
+
+    public boolean isPopup()
+    {
+        return isPopup;
+    }
+
+    public void setIsPopup(boolean popup)
+    {
+        this.isPopup = popup;
+    }
+
+    public boolean isPrint()
+    {
+        return isPrint;
+    }
+
+    public void setIsPrint(boolean print)
+    {
+        this.isPrint = print;
+    }
+
+    public AuthenticatedUser getAuthenticatedUser()
+    {
+        return (AuthenticatedUser) getHttpRequest().getSession(true).getAttribute("authenticated-user");
+    }
+
+    public void setAuthenticatedUser(AuthenticatedUser user)
+    {
+        getHttpRequest().getSession(true).setAttribute("authenticated-user", user);
+    }
+
+    public ConfigurationsManager getConfigurationsManager()
+    {
+        return getApplicationManager();
+    }
+
+    public AccessControlListsManager getAccessControlListsManager()
+    {
+        return getApplicationManager();
+    }
+
+    public SqlManager getSqlManager()
+    {
+        return getApplicationManager();
+    }
+
+    public ApplicationManager getApplicationManager()
+    {
+        try
+        {
+            // never store the PresentationManagerComponent instance since it may change if it needs to be reloaded
+            // (always use the factory get() method)
+            ApplicationManagerComponent pmComponent =
+                (ApplicationManagerComponent) XdmComponentFactory.get(
+                        ApplicationManagerComponent.class,
+                        getServletContext().getRealPath("/WEB-INF/sparx/components.xml"),
+                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+
+            for(int i = 0; i < pmComponent.getErrors().size(); i++)
+                System.out.println(pmComponent.getErrors().get(i));
+
+            return pmComponent.getManager();
+        }
+        catch(Exception e)
+        {
+            throw new NestableRuntimeException(e);
+        }
+    }
+
+    public String getApplicationName()
+    {
+        String servletContextName = context.getServletContextName();
+
+        if (servletContextName != null && servletContextName.length() > 1)
+        {
+            return TextUtils.sqlIdentifierToText(context.getServletContextName().substring(1), true);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public final String getRootUrl()
+    {
+        return rootUrl;
+    }
+
+    public final String getThemeResourcesRootUrl(Theme theme)
+    {
+        return rootUrl + "/sparx/theme/" + theme.getName();
+    }
+
+    public final String getThemeImagesRootUrl(Theme theme)
+    {
+        return rootUrl + "/sparx/theme/" + theme.getName() + "/images";
+    }
+
+    public final String getServletRootUrl()
+    {
+        return rootUrl + "/" + getHttpRequest().getServletPath();
+    }
+
+    public Theme getActiveTheme()
+    {
+        return Themes.getInstance().getDefaultTheme();
     }
 }

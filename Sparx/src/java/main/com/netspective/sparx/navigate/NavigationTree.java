@@ -76,6 +76,7 @@ public class NavigationTree
     public NavigationTree()
     {
         root = constructRoot();
+        root.setOwner(this);
         root.setName("");
     }
 
@@ -101,7 +102,7 @@ public class NavigationTree
 
     public NavigationPage constructRoot()
     {
-        return new NavigationPage(this);
+        return new NavigationPage();
     }
 
     public NavigationPage createPage()
