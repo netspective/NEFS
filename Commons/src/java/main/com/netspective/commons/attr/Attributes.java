@@ -39,18 +39,18 @@
  */
 
 /**
- * $Id: Attributes.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
+ * $Id: Attributes.java,v 1.2 2004-08-14 21:16:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.attr;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 public interface Attributes
 {
     public Attribute getAttribute(String name);
-    public List getAttributes(String name);
+    public Collection getAttributes(String name);
     public boolean isAttributeList(String name);
 
     public String getAttributeValue(String name, String defaultValue);

@@ -39,12 +39,22 @@
  */
 
 /**
- * $Id: MutableAttribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
+ * $Id: MutableAttribute.java,v 1.2 2004-08-14 21:16:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.attr;
 
+import java.util.Collection;
+
 public interface MutableAttribute extends Attribute
 {
     public MutableAttributes getMutableOwner();
+
+    /**
+     * If the Attribute allows multiple sub-attributes to be stored, this method creates the collection that
+     * holds the multiple attributes. By default the collection is an ArrayList but could be replaced by any
+     * collection concrete class.
+     * @return
+     */
+    public Collection createMultiAttributeCollection();
 }

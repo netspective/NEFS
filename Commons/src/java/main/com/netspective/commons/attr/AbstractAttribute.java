@@ -39,10 +39,13 @@
  */
 
 /**
- * $Id: AbstractAttribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
+ * $Id: AbstractAttribute.java,v 1.2 2004-08-14 21:16:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.attr;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -99,5 +102,10 @@ public abstract class AbstractAttribute implements Attribute, MutableAttribute, 
     public boolean isAllowMultiple()
     {
         return false;
+    }
+
+    public Collection createMultiAttributeCollection()
+    {
+        return new ArrayList();
     }
 }

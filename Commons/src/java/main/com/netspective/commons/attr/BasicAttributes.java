@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAttributes.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
+ * $Id: BasicAttributes.java,v 1.2 2004-08-14 21:16:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.attr;
@@ -99,14 +99,14 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
         return (Attribute) attributes.get(name);
     }
 
-    public List getAttributes(String name)
+    public Collection getAttributes(String name)
     {
-        return (List) attributes.get(name);
+        return (Collection) attributes.get(name);
     }
 
     public boolean isAttributeList(String name)
     {
-        return attributes.get(name) instanceof List;
+        return attributes.get(name) instanceof Collection;
     }
 
     public String getAttributeValue(String name, String defaultValue)
@@ -255,13 +255,13 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
 
         if(attribute.isAllowMultiple())
         {
-            List list = (List) attributes.get(attribute.getAttributeName());
-            if(list == null)
+            Collection coll = (Collection) attributes.get(attribute.getAttributeName());
+            if(coll == null)
             {
-                list = new ArrayList();
-                attributes.put(attribute.getAttributeName(), list);
+                coll = ((MutableAttribute) attribute).createMultiAttributeCollection();
+                attributes.put(attribute.getAttributeName(), coll);
             }
-            list.add(attribute);
+            coll.add(attribute);
         }
         else
             attributes.put(attribute.getAttributeName(), attribute);
@@ -274,13 +274,9 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
     {
         if(attribute.isAllowMultiple())
         {
-            List list = (List) attributes.get(attribute.getAttributeName());
-            if(list == null)
-            {
-                list = new ArrayList();
-                attributes.put(attribute.getAttributeName(), list);
-            }
-            list.remove(attribute);
+            Collection coll = (Collection) attributes.get(attribute.getAttributeName());
+            if(coll != null)
+                coll.remove(attribute);
         }
         else
             attributes.put(attribute.getAttributeName(), attribute);
