@@ -2,6 +2,21 @@
 
 <netspective>
     <release>
+        <product name="Axiom" version="7.0.12"/>
+        <change-log>
+            <summary>Minor enhancement</summary>
+            <change-log-entry>
+                <![CDATA[
+                Changed the behavior of the <sql-ddl><default> tag so that the contents of the default tag are no
+                longer quoted, Instead, the content is treated as a SQL expression. <b>Note:</b> this will break existing
+                code that depends upon the <sql-ddl><default> tag automatically generating quoted strings. Now, if
+                quotes are needed in the contents of the <sql-ddl><default> they must be added manually.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Sparx" version="7.0.17"/>
         <change-log>
             <summary>Minor enhancements</summary>
