@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlGenerator.java,v 1.5 2004-08-09 22:29:21 shahid.shah Exp $
+ * $Id: AnsiSqlDdlGenerator.java,v 1.6 2004-08-10 00:25:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -315,6 +315,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
             }
         }
 
+        DatabasePolicy policy = gc.getDatabasePolicy();
         try
         {
             for(int i = 0; i < createIndexes.size(); i++)
@@ -325,6 +326,11 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 String statement = jet.getFinalText(gc.getValueContext());
 
                 writer.write(statement);
+
+                DbmsSqlText appendExpr = index.getSqlDataDefns().getCreateIndexAppendParams().getByDbmsOrAnsi(policy);
+                if(appendExpr != null)
+                    writer.write(appendExpr.getSql(gc.getValueContext()));                            
+
                 writer.write(ddlFormats.getScriptStatementTerminator());
                 writer.write("\n");
             }
@@ -471,6 +477,11 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
             }
 
             writer.write(")");
+
+            DatabasePolicy policy = gc.getDatabasePolicy();
+            DbmsSqlText appendExpr = table.getSqlDataDefns().getCreateTableAppendParams().getByDbmsOrAnsi(policy);
+            if(appendExpr != null)
+                writer.write(appendExpr.getSql(gc.getValueContext()));
         }
         catch (Exception e)
         {

@@ -39,27 +39,51 @@
  */
 
 /**
- * $Id: BasicIndex.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: BasicIndex.java,v 1.2 2004-08-10 00:25:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
 
 import java.util.StringTokenizer;
 
+import com.netspective.axiom.schema.Column;
+import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.Index;
 import com.netspective.axiom.schema.IndexColumns;
 import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.column.IndexColumnsCollection;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
 
-public class BasicIndex implements Index
+public class BasicIndex implements Index, TemplateConsumer
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
+    public static final String ATTRNAME_TYPE = "type";
+    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[]{"name"};
+
+    static
+    {
+        XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[]{"row"});
+    }
+
+    protected class IndexTypeTemplateConsumerDefn extends TemplateConsumerDefn
+    {
+        public IndexTypeTemplateConsumerDefn()
+        {
+            super(getTable().getSchema().getIndexTypesTemplatesNameSpaceId(), ATTRNAME_TYPE, ATTRNAMES_SET_BEFORE_CONSUMING);
+        }
+    }
+
     private Table table;
     private String indexName;
     private String columnNames;
     private IndexColumns indexColumns;
     private boolean unique;
+    private IndexSqlDataDefns sqlDataDefns = new IndexSqlDataDefns(this);
+    private TemplateConsumerDefn templateConsumer;
 
     public BasicIndex(Table table)
     {
@@ -71,6 +95,17 @@ public class BasicIndex implements Index
         this.table = column.getTable();
         this.indexColumns = new IndexColumnsCollection();
         this.indexColumns.add(column);
+    }
+
+    public TemplateConsumerDefn getTemplateConsumerDefn()
+    {
+        if (templateConsumer == null)
+            templateConsumer = new IndexTypeTemplateConsumerDefn();
+        return templateConsumer;
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
     }
 
     public IndexColumns getColumns()
@@ -143,5 +178,22 @@ public class BasicIndex implements Index
     public void setUnique(boolean unique)
     {
         this.unique = unique;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public IndexSqlDataDefns getSqlDataDefns()
+    {
+        return sqlDataDefns;
+    }
+
+    public IndexSqlDataDefns createSqlDdl()
+    {
+        return sqlDataDefns;
+    }
+
+    public void addSqlDdl(IndexSqlDataDefns sqlDataDefn)
+    {
+        // do nothing -- we have the instance already created, but the XML data model will call this anyway
     }
 }

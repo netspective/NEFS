@@ -39,21 +39,20 @@
  */
 
 /**
- * $Id: Schema.java,v 1.5 2004-04-05 14:03:31 zahara.khan Exp $
+ * $Id: Schema.java,v 1.6 2004-08-10 00:25:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
+
+import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
-import com.netspective.axiom.sql.QueriesNameSpace;
-import com.netspective.axiom.SqlManager;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-
-import java.io.Writer;
-import java.io.IOException;
-import java.io.File;
-import java.util.List;
 
 /**
  * Interface for declaring and handlin database schema.  Provides functionality
@@ -74,6 +73,7 @@ public interface Schema extends XmlDataModelSchema.InputSourceLocatorListener
     public String getPresentationTemplatesNameSpaceId();
     public String getDataTypesTemplatesNameSpaceId();
     public String getTableTypesTemplatesNameSpaceId();
+    public String getIndexTypesTemplatesNameSpaceId();
 
     /**
      * Sets the name used to uniquely identify this schema.

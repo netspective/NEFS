@@ -39,24 +39,52 @@
  */
 
 /**
- * $Id: Index.java,v 1.2 2004-08-10 00:25:58 shahid.shah Exp $
+ * $Id: IndexSqlDataDefns.java,v 1.1 2004-08-10 00:25:58 shahid.shah Exp $
  */
 
-package com.netspective.axiom.schema;
+package com.netspective.axiom.schema.table;
 
-import com.netspective.axiom.schema.table.IndexSqlDataDefns;
+import com.netspective.axiom.schema.Index;
+import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.sql.DbmsSqlTexts;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
-public interface Index
+public class IndexSqlDataDefns
 {
-    public String getName();
-    public Table getTable();
-    public IndexColumns getColumns();
-    public boolean isUnique();
-    public void setUnique(boolean unique);
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+    public static final String VARNAME_TABLE = "index";
 
-    void setColumns(String columnNames);
+    private Index index;
+    private DbmsSqlTexts createIndexAppendParams;
 
-    void setName(String indexName);
+    public IndexSqlDataDefns(Index index)
+    {
+        this.index = index;
+        createIndexAppendParams = new DbmsSqlTexts(index, VARNAME_TABLE);
+    }
 
-    public IndexSqlDataDefns getSqlDataDefns();
+    public void merge(IndexSqlDataDefns sqlDataDefns)
+    {
+        this.createIndexAppendParams.merge(sqlDataDefns.createIndexAppendParams);
+    }
+
+    public Index getIndex()
+    {
+        return index;
+    }
+
+    public DbmsSqlTexts getCreateIndexAppendParams()
+    {
+        return createIndexAppendParams;
+    }
+
+    public DbmsSqlText createCreateIndexAppendParams()
+    {
+        return createIndexAppendParams.create();
+    }
+
+    public void addCreateIndexAppendParams(DbmsSqlText instance)
+    {
+        createIndexAppendParams.add(instance);
+    }
 }

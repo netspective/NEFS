@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.14 2004-06-10 19:57:45 shahid.shah Exp $
+ * $Id: Table.java,v 1.15 2004-08-10 00:25:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -53,6 +53,7 @@ import javax.naming.NamingException;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
+import com.netspective.axiom.schema.table.TableSqlDataDefns;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.QueryExecutionLog;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
@@ -304,6 +305,25 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
      * Create a multiple rows object suitable for storing data for this table's columns
      */
     public Rows createRows();
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    /**
+     * Return the SQL definition that will be added to the end of the CREATE TABLE clause in the SQL DDL for this table
+     * (specific database ID specified in the dbms parameter).
+     */
+    public TableSqlDataDefns getSqlDataDefns();
+
+    /**
+     * Factory method to create a SqlDataDefns object that will hold a DBMS-specific SQL definition
+     */
+    public TableSqlDataDefns createSqlDdl();
+
+    /**
+     * Add the SQL definition that will be added to the end of the CREATE TABLE clause in the SQL DDL for this table
+     */
+    public void addSqlDdl(TableSqlDataDefns sqlDataDefn);
+
 
     /* ------------------------------------------------------------------------------------------------------------- */
 

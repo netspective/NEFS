@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.26 2004-08-09 22:13:32 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.27 2004-08-10 00:25:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -171,6 +171,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private TemplateProducers templateProducers;
     private TemplateConsumerDefn templateConsumer;
     private TableRowTrigger[] triggers = new TableRowTrigger[0];
+    private TableSqlDataDefns sqlDataDefns = new TableSqlDataDefns(this);
 
     static public String translateTableNameForMapKey(String name)
     {
@@ -513,6 +514,25 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         pfKey.fillChildValuesFromParentConnector(childRow.getColumnValues(), parentRow.getColumnValues());
         return childRow;
     }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public TableSqlDataDefns getSqlDataDefns()
+    {
+        return sqlDataDefns;
+    }
+
+    public TableSqlDataDefns createSqlDdl()
+    {
+        return sqlDataDefns;
+    }
+
+    public void addSqlDdl(TableSqlDataDefns sqlDataDefn)
+    {
+        // do nothing -- we have the instance already created, but the XML data model will call this anyway
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
 
     public void refreshData(ConnectionContext cc, Row row) throws NamingException, SQLException
     {

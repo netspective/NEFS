@@ -39,44 +39,45 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.16 2004-03-06 23:00:30 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.17 2004-08-10 00:25:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
-import java.io.Writer;
-import java.io.IOException;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Constructor;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Comparator;
-import java.text.Collator;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
-import org.xml.sax.helpers.AttributesImpl;
+import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.Tables;
-import com.netspective.axiom.schema.Columns;
+import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.schema.column.BasicColumn;
+import com.netspective.axiom.schema.table.BasicIndex;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TablesCollection;
-import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
-import com.netspective.axiom.SqlManager;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xml.template.*;
+import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.xml.template.TemplateContentHandler;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducers;
 
 public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModelSchema.ConstructionFinalizeListener
 {
@@ -84,6 +85,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     private static int counter = 0;
     public static final String TEMPLATEELEMNAME_DATA_TYPE = "data-type";
     public static final String TEMPLATEELEMNAME_TABLE_TYPE = "table-type";
+    public static final String TEMPLATEELEMNAME_INDEX_TYPE = "index-type";
     public static final String TEMPLATEELEMNAME_PRESENTATION = "presentation";
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
     public static final TableComparator TABLE_COMPARATOR = new TableComparator();
@@ -97,6 +99,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
         // so we need to tell it that certain classes are consumers
         TemplateCatalog.registerNamespaceForClass("/schema/(.*)/data-type", BasicColumn.ATTRNAME_TYPE, BasicColumn.class, true, true);
         TemplateCatalog.registerNamespaceForClass("/schema/(.*)/table-type", BasicTable.ATTRNAME_TYPE, BasicTable.class, true, true);
+        TemplateCatalog.registerNamespaceForClass("/schema/(.*)/index-type", BasicIndex.ATTRNAME_TYPE, BasicIndex.class, true, true);
     }
 
     private SqlManager sqlManager;
@@ -104,6 +107,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     private String xmlNodeName;
     private Tables tables = new TablesCollection();
     private TemplateProducer tableTypes;
+    private TemplateProducer indexTypes;
     private TemplateProducer dataTypes;
     private TemplateProducers templateProducers;
     private Schema.TableTree structure;
@@ -149,12 +153,18 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
         return "/schema/" + getName() + "/table-type";
     }
 
+    public String getIndexTypesTemplatesNameSpaceId()
+    {
+        return "/schema/" + getName() + "/index-type";
+    }
+
     public TemplateProducers getTemplateProducers()
     {
         if(templateProducers == null)
         {
             templateProducers = new TemplateProducers();
             templateProducers.add(getTableTypes());
+            templateProducers.add(getIndexTypes());
             templateProducers.add(getDataTypes());
         }
         return templateProducers;
@@ -172,6 +182,13 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
         if(tableTypes == null)
             tableTypes = new TemplateProducer(getTableTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_TABLE_TYPE, "name", "type", false, false);
         return tableTypes;
+    }
+
+    public TemplateProducer getIndexTypes()
+    {
+        if(indexTypes == null)
+            indexTypes = new TemplateProducer(getIndexTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_INDEX_TYPE, "name", "type", false, false);
+        return indexTypes;
     }
 
     /**
