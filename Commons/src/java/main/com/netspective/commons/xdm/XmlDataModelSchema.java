@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.40 2003-11-11 19:40:42 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.41 2003-11-13 17:10:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1386,7 +1386,26 @@ public class XmlDataModelSchema
                 }
 
                 NestedAltClassCreator nac = (NestedAltClassCreator) nestedAltClassNameCreators.get(elementName);
-                return nac != null ? nac.create(element, cls) : cls.newInstance();
+                if(nac != null)
+                    return nac.create(element, cls);
+                else
+                {
+                    // check to make sure that either a storer or creator is available to ensure it's a valid tag
+                    if(nestedCreators.get(elementName) != null || nestedStorers.get(elementName) != null)
+                        return cls.newInstance();
+
+                    UnsupportedElementException e = new UnsupportedElementException(this, pc, element, elementName);
+                    if(pc != null)
+                    {
+                        pc.addError(e);
+                        if(pc.isThrowErrorException())
+                            throw e;
+                        else
+                            return null;
+                    }
+                    else
+                        return null;
+                }
             }
             else
             {
