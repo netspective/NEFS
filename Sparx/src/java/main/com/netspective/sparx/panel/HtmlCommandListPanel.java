@@ -33,7 +33,9 @@ public class HtmlCommandListPanel extends AbstractPanel
 
     public CommandList createCommandList()
     {
-        return new CommandList();
+        if (list == null)
+            list = new CommandList();
+        return list;
     }
 
     /**
@@ -55,8 +57,9 @@ public class HtmlCommandListPanel extends AbstractPanel
      */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
+        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
         HtmlListPanelSkin skin = theme.getListPanelSkin();
-        skin.renderHtml(writer, nc, list.getItems());
+        skin.renderHtml(writer, vc, list.getItems());
     }
 
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException

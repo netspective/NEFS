@@ -39,7 +39,7 @@
  */
 
 /**
- * @version $Id: HtmlListPanelSkin.java,v 1.1 2003-12-03 22:40:01 aye.thu Exp $
+ * @version $Id: HtmlListPanelSkin.java,v 1.2 2003-12-04 05:03:23 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -47,8 +47,10 @@ package com.netspective.sparx.theme.basic;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.BasicHtmlPanelValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.command.CommandListItem;
+import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.commons.value.PresentationValue;
 
 import java.io.Writer;
@@ -78,14 +80,14 @@ public class HtmlListPanelSkin extends BasicHtmlPanelSkin
      * @param itemList
      * @throws IOException
      */
-    public void renderHtml(Writer writer, NavigationContext nc, List itemList) throws IOException
+    public void renderHtml(Writer writer, HtmlPanelValueContext nc, List itemList) throws IOException
     {
-        renderPanelRegistration(writer, (HtmlPanelValueContext) nc);
+        renderPanelRegistration(writer, nc);
 
-        int panelRenderFlags = ((HtmlPanelValueContext)nc).getPanelRenderFlags();
+        int panelRenderFlags = nc.getPanelRenderFlags();
         if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
         {
-            renderFrameBegin(writer, (HtmlPanelValueContext) nc);
+            renderFrameBegin(writer, nc);
             writer.write("\t<table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
         }
         else
@@ -103,10 +105,10 @@ public class HtmlListPanelSkin extends BasicHtmlPanelSkin
                 Object item = itemList.get(i);
                 if (item instanceof CommandListItem)
                 {
-                    writer.write("\t\t\t\t<li><a href=\""+ ((CommandListItem)item).getUrl(nc) + "\">" +
-                        ((CommandListItem)item).getItemCaption() + "</a>");
-                    if (((CommandListItem)item).getItemDescription() != null)
-                        writer.write(":&nbsp;" + ((CommandListItem)item).getItemDescription());
+                    writer.write("\t\t\t\t<li><a href=\""+ ((CommandListItem)item).getUrl((HttpServletValueContext)nc) + "\">" +
+                        ((CommandListItem)item).getCaption() + "</a>");
+                    if (((CommandListItem)item).getDescription() != null)
+                        writer.write(":&nbsp;" + ((CommandListItem)item).getDescription());
                     writer.write("</li>\n");
                 }
                 else if (item instanceof String)

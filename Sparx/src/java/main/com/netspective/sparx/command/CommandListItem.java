@@ -6,6 +6,7 @@ import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.value.HttpServletValueContext;
 
 /**
  * Wrapper class around a Command object with extra information such as caption and
@@ -23,7 +24,7 @@ public class CommandListItem
 
     }
 
-    public String getUrl(NavigationContext nc)
+    public String getUrl(HttpServletValueContext nc)
     {
         String requestURL = nc.getHttpRequest().getRequestURL().toString();
 
@@ -31,7 +32,7 @@ public class CommandListItem
                 (requestURL + "?commandItem=" + index));
     }
 
-    public String getItemCaption()
+    public String getCaption()
     {
         if (itemCaption == null)
         {
@@ -58,12 +59,12 @@ public class CommandListItem
      * dialogs the dialog name is used as the caption.
      * @param itemCaption
      */
-    public void setItemCaption(String itemCaption)
+    public void setCaption(String itemCaption)
     {
         this.itemCaption = itemCaption;
     }
 
-    public String getItemDescription()
+    public String getDescription()
     {
         return itemDescription;
     }
@@ -72,7 +73,7 @@ public class CommandListItem
      * Sets the description to display with the command caption
      * @param itemDescription
      */
-    public void setItemDescription(String itemDescription)
+    public void setDescription(String itemDescription)
     {
         this.itemDescription = itemDescription;
     }

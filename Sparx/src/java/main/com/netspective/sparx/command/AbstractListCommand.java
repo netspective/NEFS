@@ -39,7 +39,7 @@
  */
 
 /**
- * @version $Id: AbstractListCommand.java,v 1.1 2003-12-03 22:38:46 aye.thu Exp $
+ * @version $Id: AbstractListCommand.java,v 1.2 2003-12-04 05:04:04 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -76,7 +76,7 @@ public abstract class AbstractListCommand extends AbstractHttpServletCommand
     {
         Theme theme = nc.getActiveTheme();
         HtmlListPanelSkin skin = theme.getListPanelSkin();
-        skin.renderHtml(writer, nc, getItems());
+
     }
 
     /**
