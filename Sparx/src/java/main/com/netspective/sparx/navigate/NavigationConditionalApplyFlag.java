@@ -37,7 +37,7 @@
  *
  * @author Shahid N. Shah
 
- * $Id: NavigationConditionalApplyFlag.java,v 1.1 2003-08-11 07:12:44 aye.thu Exp $
+ * $Id: NavigationConditionalApplyFlag.java,v 1.2 2003-08-14 13:00:26 shahid.shah Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -246,7 +246,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
         {
             String textVal = hasValue.getValue(nc).getTextValue();
             status = textVal != null && textVal.length() > 0;
-            System.out.println(status);
         }
 
         /*
