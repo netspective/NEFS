@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.23 2004-03-14 06:12:31 aye.thu Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.24 2004-04-02 04:16:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -113,6 +113,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public static final String ATTRNAME_CONDITION = "_condition";
     public static final String ATTRNAME_PRIMARYKEY_VALUE = "_pk-value";
     public static final String ATTRNAME_AUTOMAP = "_auto-map";
+    public static final String ATTRNAME_LOOP = "_loop-column";
 
     protected class InsertDataTemplate extends TemplateProducer
     {
@@ -576,77 +577,127 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         // now we have the table we're dealing with for this template element
         Table table = stte.getTable();
-
-        Row activeRow = null;
-
-        // find the connector from the child table to the parent table if one is available
-        Columns parentKeyCols = table.getForeignKeyColumns(ForeignKey.FKEYTYPE_PARENT);
-        if(parentKeyCols.size() == 1 && parentRow != null)
-        {
-            Column connector = parentKeyCols.getSole();
-            activeRow = table.createRow((ParentForeignKey) connector.getForeignKey(), parentRow);
-        }
-        else
-            activeRow = table.createRow();
-
-        ColumnValues columnValues = activeRow.getColumnValues();
-        boolean doInsert = true;
+        int insertCount = 1;
 
         // each of the attributes provided in the template are supposed to column-name="column-value" where
         // column-value may be a static string which refers to a dialog field name or a value source specification
         // which refers to some dynamic value
         Attributes templateAttributes = templateElement.getAttributes();
-        for(int i = 0; i < templateAttributes.getLength(); i++)
+        // if we have an attribute called _loop then it's a column name and the multiple values returned from
+        // this column should be used to insert multiple rows
+        String loopColumnName = templateAttributes.getValue(ATTRNAME_LOOP);
+        String[] loopColumnValues = null;
+        if (loopColumnName != null)
         {
-            String columnName = templateAttributes.getQName(i);
-            String columnTextValue = templateAttributes.getValue(i);
-
-            // if we have an attribute called _condition then it's a JSTL-style expression that should return true if
-            // we want to do this insert or false if we don't
-            if(columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
-            {
-                doInsert = isConditionalExpressionTrue(sredc, columnTextValue);
-                if(! doInsert)
-                    break; // don't bother setting values since we're not inserting
-            }
-
-            // these are private "instructions"
-            if(columnName.startsWith("_"))
-                continue;
-
-            ColumnValue columnValue = columnValues.getByNameOrXmlNodeName(columnName);
-            if(columnValue == null)
-            {
-                getLog().error("Table '"+ table.getName() +"' does not have a column named '"+ columnName +"'.");
-                continue;
-            }
-
-            // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
-            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
+            String loopColumnTextValue = templateAttributes.getValue(loopColumnName);
+            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(loopColumnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
             if(vs == null)
-                DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
-            else if (vs instanceof SqlExpressionValueSource)
-                setColumnSqlExpression(columnValue, vs, sredc);
+            {
+                DialogFieldStates states = sredc.getFieldStates();
+                DialogField.State state = states.getState(loopColumnTextValue);
+                if(state != null)
+                {
+                    loopColumnValues = state.getValue().getTextValues();
+                    insertCount = loopColumnValues.length;
+                }
+                else
+                {
+                    getLog().error("Unable to find fieldName '"+ loopColumnTextValue +"' to populate column value with.");
+                }
+            }
             else
-                columnValue.setTextValue(vs.getTextValue(sredc));
+            {
+                loopColumnValues = vs.getTextValues(sredc);
+                insertCount = loopColumnValues.length;
+            }
         }
 
-        if(doInsert)
+        for (int k = 0; k < insertCount; k++)
         {
-            table.insert(cc, activeRow);
-            sredc.getRowsAdded().add(activeRow);
-
-            // now recursively add children if any are available
-            List childTableElements = templateElement.getChildren();
-            for(int i = 0; i < childTableElements.size(); i++)
+            Row activeRow = null;
+            // find the connector from the child table to the parent table if one is available
+            Columns parentKeyCols = table.getForeignKeyColumns(ForeignKey.FKEYTYPE_PARENT);
+            if(parentKeyCols.size() == 1 && parentRow != null)
             {
-                TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-                if (childTableNode instanceof TemplateElement) {
-                    TemplateElement childTableElement = (TemplateElement) childTableNode;
-                    addDataUsingTemplateElement(sredc, cc, childTableElement, activeRow);
+                Column connector = parentKeyCols.getSole();
+                activeRow = table.createRow((ParentForeignKey) connector.getForeignKey(), parentRow);
+            }
+            else
+                activeRow = table.createRow();
+
+            ColumnValues columnValues = activeRow.getColumnValues();
+            boolean doInsert = true;
+
+            for(int i = 0; i < templateAttributes.getLength(); i++)
+            {
+                String columnName = templateAttributes.getQName(i);
+                String columnTextValue = templateAttributes.getValue(i);
+
+                // if we have an attribute called _condition then it's a JSTL-style expression that should return true if
+                // we want to do this insert or false if we don't
+                if(columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
+                {
+                    doInsert = isConditionalExpressionTrue(sredc, columnTextValue);
+                    if(! doInsert)
+                        break; // don't bother setting values since we're not inserting
+                }
+
+                if (columnName.equalsIgnoreCase(ATTRNAME_LOOP))
+                    continue;
+
+                // these are private "instructions"
+                if(columnName.startsWith("_"))
+                    continue;
+
+                ColumnValue columnValue = columnValues.getByNameOrXmlNodeName(columnName);
+                if(columnValue == null)
+                {
+                    getLog().error("Table '"+ table.getName() +"' does not have a column named '"+ columnName +"'.");
+                    continue;
+                }
+
+                if (loopColumnName != null && loopColumnName.equals(columnName))
+                    columnValue.setTextValue(loopColumnValues[k]);
+                else
+                    assignColumnValue(sredc, columnValue, columnTextValue);
+            }
+
+            if(doInsert)
+            {
+                table.insert(cc, activeRow);
+                sredc.getRowsAdded().add(activeRow);
+
+                // now recursively add children if any are available
+                List childTableElements = templateElement.getChildren();
+                for(int i = 0; i < childTableElements.size(); i++)
+                {
+                    TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+                    if (childTableNode instanceof TemplateElement) {
+                        TemplateElement childTableElement = (TemplateElement) childTableNode;
+                        addDataUsingTemplateElement(sredc, cc, childTableElement, activeRow);
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * Assigns a value to the column value object using the text value.
+     *
+     * @param sredc             schema record editor dialog context
+     * @param columnValue       column value object
+     * @param columnTextValue   the text to be used as the column value
+     */
+    private void assignColumnValue(SchemaRecordEditorDialogContext sredc, ColumnValue columnValue, String columnTextValue)
+    {
+        // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
+        ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
+        if(vs == null)
+            DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
+        else if (vs instanceof SqlExpressionValueSource)
+            setColumnSqlExpression(columnValue, vs, sredc);
+        else
+            columnValue.setTextValue(vs.getTextValue(sredc));
     }
 
     public void addDataUsingTemplate(SchemaRecordEditorDialogContext sredc, ConnectionContext cc) throws SQLException
@@ -741,14 +792,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 continue;
             }
 
-            // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
-            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
-            if(vs == null)
-                DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
-            else if (vs instanceof SqlExpressionValueSource)
-                setColumnSqlExpression(columnValue, vs, sredc);
-            else
-                columnValue.setTextValue(vs.getTextValue(sredc));
+            assignColumnValue(sredc, columnValue, columnTextValue);
         }
 
 
@@ -849,14 +893,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 continue;
             }
 
-            // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
-            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
-            if(vs == null)
-                DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
-            else if (vs instanceof SqlExpressionValueSource)
-                setColumnSqlExpression(columnValue, vs, sredc);
-            else
-                columnValue.setTextValue(vs.getTextValue(sredc));
+            assignColumnValue(sredc, columnValue, columnTextValue);
         }
 
         if(doDelete)
