@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Themes.java,v 1.7 2003-10-07 01:38:54 shahid.shah Exp $
+ * $Id: Themes.java,v 1.8 2003-11-20 04:15:00 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -50,8 +50,11 @@ import java.util.HashMap;
 import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.CountMetric;
 
-public class Themes
+public class Themes implements MetricsProducer
 {
     protected static final Log log = LogFactory.getLog(Themes.class);
 
@@ -122,5 +125,15 @@ public class Themes
     public int size()
     {
         return themesByName.size();
+    }
+
+    /**
+     * Generates various metrics associated with the project themese
+     * @param parent
+     */
+    public void produceMetrics(Metric parent)
+    {
+        CountMetric themesMetric = parent.addCountMetric("Total themes");
+        themesMetric.setSum(themesByName.size());
     }
 }
