@@ -147,7 +147,7 @@
 
                 <page name="console" caption="Console" heading="An Industry First\: Your Own App Console">
                     <summary>
-                        You're probably used to app servers having an management console. But, with NEFS your
+                        You're probably used to app servers having a management console. But, with NEFS your
                         applications can have their own administration consoles for managing their components.
                     </summary>
                     <body source="products/frameworks/console/index.ftl"/>
@@ -189,8 +189,34 @@
             </page>
         </page>
 
-        <page class="app.AppPage" name="support" caption="Support" heading="We're Here to Help">
-            <body source="support/index.ftl"/>
+        <page class="app.AppPage" name="support" caption="Support" heading="We're Here to Help" dialog-next-action-url="page-id:/support">
+            <page name="documentation" caption="Documentation">
+                <summary>All of our developer guides and documentation are available online.</summary>
+                <body source="support/documentation.ftl"/>
+            </page>
+            <page name="faqs" caption="FAQs (AnswerDesk)">
+                <summary>This area is not completed yet but will be available very soon. Please check back later.</summary>
+                <body source="support/faqs.ftl"/>
+            </page>
+            <page name="request-help" caption="Request Help" command="dialog,support.request-help">
+                <summary>
+                    All questions and answers, unless marked private, will be posted on the AnswerDesk for
+                    others to see. If you purchased Platinum support you may call the number
+                    provided with your support agreement.
+                </summary>
+            </page>
+            <page name="submit-bug" caption="Submit Bug">
+                <summary>This area is not completed yet but will be available very soon. Please check back later.</summary>
+                <body source="support/index.ftl"/>
+            </page>
+            <page name="request-feature" caption="Request Feature">
+                <summary>This area is not completed yet but will be available very soon. Please check back later.</summary>
+                <body source="support/index.ftl"/>
+            </page>
+            <page name="subscribe" caption="Subscribe to Maillist">
+                <summary>This area is not completed yet but will be available very soon. Please check back later.</summary>
+                <body source="support/index.ftl"/>
+            </page>
         </page>
 
         <page class="app.AppPage" name="company" caption="Company">
@@ -284,5 +310,77 @@
             </page>
         </page>
     </navigation-tree>
+
+    <dialogs package="support">
+        <dialog name="request-help" redirect-after-execute="false" allow-multiple-executes="yes">
+            <frame heading="Request Help"/>
+
+            <field name="priority" type="select" caption="Priority" required="yes">
+                <items>
+                    <item value="routine">Routine</item>
+                    <item value="important">Important</item>
+                    <item value="urgent">Urgent</item>
+                    <item value="emergency">Emergency</item>
+                </items>
+            </field>
+
+            <field name="product" type="select" caption="Product" required="yes">
+                <items>
+                    <item value="nefs">Entire Suite (General)</item>
+                    <item value="commons">Commons Core Library (Security/XDM)</item>
+                    <item value="axiom">Axiom Data Service (SQL/Persistence)</item>
+                    <item value="sparx">Sparx Application Platform (Presentation/UI)</item>
+                    <item value="console">Enterprise Console</item>
+                    <item value="other">Other (Non-product Related)</item>
+                </items>
+            </field>
+
+            <field name="area" type="select" caption="Area" required="yes">
+                <items>
+                    <item>Installation/Configuration</item>
+                    <item>Usage</item>
+                    <item>API</item>
+                    <item>Documentation</item>
+                    <item>General Programming</item>
+                    <item>Other</item>
+                </items>
+            </field>
+
+            <field name="netspective-id" type="text" caption="Netspective ID" persist="yes" hint="Your customer identifier (provided with maintenance agreement). If you don't have one, support is not guaranteed."/>
+            <field name="question" type="memo" caption="Question" required="yes" rows="5"/>
+            <field name="private" type="boolean" caption="" style="check" check-label="Private (don't publish on AnswerDesk)"/>
+            <field name="e-mail" type="e-mail" caption="Respond to" size="50" persist="yes" hint="If the question is private, please provide your e-mail address where you would like a response sent.">
+                <conditional action="display" partner-field-name="private" expression="control.checked"/>
+            </field>
+
+            <on-execute handler="mail">
+                <host>localhost</host>
+                <from>dialog-field:e-mail</from>
+                <to>support@netspective.com</to>
+                <subject>Help Request from www.netspective.com/support</subject>
+                <body>
+ID: ${vc.dialogState.identifier}
+Priority: ${vc.fieldStates.getState("priority").value.textValue}
+Product: ${vc.fieldStates.getState("product").value.textValue}
+Area: ${vc.fieldStates.getState("area").value.textValue}
+Question: ${vc.fieldStates.getState("question").value.textValue}
+Private: ${vc.fieldStates.getState("private").value.textValue}
+                </body>
+                <success-message>
+                    <![CDATA[
+                    Thank you for submitting your question. Your Question's tracking number is <code>${vc.dialogState.identifier}</code>.
+                    Please use the tracking number when asking for status or follow-up to the same issue.
+                    ]]>
+                </success-message>
+                <failure-message>
+                    <![CDATA[
+                    Unable to send e-mail to <code><b>support@netspective.com</b></code>.<p>
+                    Exception:<br>
+                    <pre>${exception}</pre>
+                    ]]>
+                </failure-message>
+            </on-execute>
+        </dialog>
+    </dialogs>
 
 </project>
