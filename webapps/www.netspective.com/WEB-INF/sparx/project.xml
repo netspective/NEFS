@@ -111,13 +111,17 @@
 
                 <page name="sparx" caption="Sparx" heading="Advanced Web User Interfaces Made Simple">
                     <summary>
-                        If you're tired of creating multiple pages of HTML and hundreds of lines of Java code just to
+                        If you're tired of pages and pages of HTML and hundreds or thousands of lines of Java code just to
                         allow your user to perform web-based data entry, you need Sparx.
                     </summary>
                     <body source="products/frameworks/sparx/index.ftl"/>
 
                     <page name="simplify-struts" caption="Simplify Struts">
-                        <body source="products/frameworks/sparx/index.ftl"/>
+                        <summary>
+                            What's wrong with Struts? Absolute nothing if you like to write lots of HTML and Java code.
+                        </summary>
+
+                        <body source="products/frameworks/sparx/simplify-struts.ftl"/>
                     </page>
                 </page>
 
