@@ -40,6 +40,7 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractEntity;
+import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
 
 import javax.ejb.Entity;
 import javax.ejb.Id;

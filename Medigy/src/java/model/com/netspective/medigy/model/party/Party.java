@@ -41,6 +41,7 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Entity;
