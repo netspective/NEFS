@@ -28,6 +28,10 @@ sleep 15s
 echo Warming up all the apps...
 wget --non-verbose --input-file=$NEFS_HOME/tools/nefs-webapps-warm-up-urls.list --output-document=- > /dev/null
 
+echo Building Documentation
+cd Frameworks/tools
+sh build.sh docs
+
 echo WARing up all the apps
 cd Frameworks/webapps
 sh build.sh nefs.war-all-apps

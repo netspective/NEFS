@@ -6,9 +6,9 @@ Setup instructions:
      - set the JAVA_HOME environment variable to the JDK root directory
 -->
 
-<project default="all">
+<project default="code">
 
-    <target name="all">
+    <target name="code">
 	<echo message="Building Netspective Commons..."/>
         <ant dir="../Commons/conf"/>
 
@@ -17,9 +17,19 @@ Setup instructions:
 
 	<echo message="Building Netspective Sparx..."/>
         <ant dir="../Sparx/conf"/>
-
-	<echo message="Building Netspective Enterprise Frameworks Documentation..."/>
-        <ant dir="../support/docs"/>
     </target>
 
+    <target name="docs">
+        <echo message="Building Netspective Commons..."/>
+        <ant dir="../Commons/conf" target="javadoc-html"/>
+
+        <echo message="Building Netspective Axiom..."/>
+        <ant dir="../Axiom/conf" target="javadoc-html"/>
+
+        <echo message="Building Netspective Sparx..."/>
+        <ant dir="../Sparx/conf" target="javadoc-html"/>
+
+        <echo message="Building Netspective Enterprise Frameworks Documentation..."/>
+        <ant dir="../support/docs"/>
+    </target>
 </project>
