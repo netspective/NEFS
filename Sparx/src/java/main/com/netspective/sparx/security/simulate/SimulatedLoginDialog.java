@@ -39,83 +39,113 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.15 2004-01-06 20:08:09 shahid.shah Exp $
+ * $Id: SimulatedLoginDialog.java,v 1.1 2004-01-06 20:08:09 shahid.shah Exp $
  */
 
-package com.netspective.sparx;
+package com.netspective.sparx.security.simulate;
 
-import com.netspective.commons.Product;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.sparx.security.LoginDialog;
+import com.netspective.sparx.security.HttpLoginManager;
 
-public class ProductRelease implements Product
+public class SimulatedLoginDialog extends LoginDialog
 {
-    public static final Product PRODUCT_RELEASE = new ProductRelease();
+    private String password;
+    private String userId;
+    private String userName;
+    private String userOrgId;
+    private String userOrgName;
+    private String[] permissions;
+    private String[] roles;
 
-    public static final String PRODUCT_NAME = "Netspective Sparx";
-    public static final String PRODUCT_ID = "netspective-sparx";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 10;
-
-    public ProductRelease()
+    public SimulatedLoginDialog(HttpLoginManager loginManager)
     {
+        super(loginManager);
+        setDialogContextClass(SimulatedLoginDialogContext.class);
     }
 
-    public String getProductId()
+    public boolean isAutoExecByDefault()
     {
-        return PRODUCT_ID;
+        return true;
     }
 
-    public String getProductName()
+    public String getPassword()
     {
-        return PRODUCT_NAME;
+        return password;
     }
 
-    public final int getReleaseNumber()
+    public void setPassword(String password)
     {
-        return PRODUCT_RELEASE_NUMBER;
+        this.password = password;
     }
 
-    public final int getVersionMajor()
+    public String getUserId()
     {
-        return PRODUCT_VERSION_MAJOR;
+        return userId;
     }
 
-    public final int getVersionMinor()
+    public void setUserId(String userId)
     {
-        return PRODUCT_VERSION_MINOR;
+        this.userId = userId;
     }
 
-    public final int getBuildNumber()
+    public String getUserName()
     {
-        return BuildLog.BUILD_NUMBER;
+        return userName;
     }
 
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
+    public void setUserName(String userName)
     {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
+        this.userName = userName;
     }
 
-    public final String getVersion()
+    public String getUserOrgId()
     {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
+        return userOrgId;
     }
 
-    public final String getVersionAndBuild()
+    public void setUserOrgId(String userOrgId)
     {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
+        this.userOrgId = userOrgId;
     }
 
-    public final String getProductBuild()
+    public String getUserOrgName()
     {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
+        return userOrgName;
     }
 
-    public final String getVersionAndBuildShort()
+    public void setUserOrgName(String userOrgName)
     {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        this.userOrgName = userOrgName;
+    }
+
+    public String[] getRoles()
+    {
+        return roles;
+    }
+
+    public void setRoles(String[] roles)
+    {
+        this.roles = roles;
+    }
+
+    public String[] getPermissions()
+    {
+        return permissions;
+    }
+
+    public void setPermissions(String[] permissions)
+    {
+        this.permissions = permissions;
+    }
+
+    public void setUserPermissions(String permissions)
+    {
+        setPermissions(TextUtils.split(permissions, ",", true));
+    }
+
+    public void setUserRoles(String roles)
+    {
+        setRoles(TextUtils.split(roles, ",", true));
     }
 }

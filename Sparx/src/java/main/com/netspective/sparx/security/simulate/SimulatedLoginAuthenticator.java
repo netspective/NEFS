@@ -39,83 +39,71 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.15 2004-01-06 20:08:09 shahid.shah Exp $
+ * $Id: SimulatedLoginAuthenticator.java,v 1.1 2004-01-06 20:08:09 shahid.shah Exp $
  */
 
-package com.netspective.sparx;
+package com.netspective.sparx.security.simulate;
 
-import com.netspective.commons.Product;
+import com.netspective.sparx.security.LoginDialogContext;
+import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.authenticator.AbstractLoginAuthenticator;
+import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.security.AuthenticatedUserInitializationException;
+import com.netspective.commons.security.AuthenticatedOrgUser;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.acl.PermissionNotFoundException;
+import com.netspective.commons.acl.RoleNotFoundException;
 
-public class ProductRelease implements Product
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
+public class SimulatedLoginAuthenticator extends AbstractLoginAuthenticator
 {
-    public static final Product PRODUCT_RELEASE = new ProductRelease();
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+    private static final Log log = LogFactory.getLog(SimulatedLoginAuthenticator.class);
 
-    public static final String PRODUCT_NAME = "Netspective Sparx";
-    public static final String PRODUCT_ID = "netspective-sparx";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 10;
-
-    public ProductRelease()
+    public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
+        // when simulating the user is always valid
+        return true;
     }
 
-    public String getProductId()
+    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
-        return PRODUCT_ID;
-    }
+        super.initAuthenticatedUser(loginManager, ldc, user);
 
-    public String getProductName()
-    {
-        return PRODUCT_NAME;
-    }
+        SimulatedLoginDialog sld = (SimulatedLoginDialog) ldc.getLoginDialog();
 
-    public final int getReleaseNumber()
-    {
-        return PRODUCT_RELEASE_NUMBER;
-    }
+        user.setUserId(sld.getUserId());
+        user.setUserName(sld.getUserName());
+        if(user instanceof AuthenticatedOrgUser)
+        {
+            ((AuthenticatedOrgUser) user).setUserOrgId(sld.getUserOrgId());
+            ((AuthenticatedOrgUser) user).setUserOrgName(sld.getUserOrgName());
+        }
 
-    public final int getVersionMajor()
-    {
-        return PRODUCT_VERSION_MAJOR;
-    }
+        if(sld.getPermissions() != null)
+        {
+            try
+            {
+                user.setPermissions(ldc.getProject(), sld.getPermissions());
+            }
+            catch(PermissionNotFoundException e)
+            {
+                log.error("Error assigning permissions to user " + user.getUserId(), e);
+            }
+        }
 
-    public final int getVersionMinor()
-    {
-        return PRODUCT_VERSION_MINOR;
-    }
-
-    public final int getBuildNumber()
-    {
-        return BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        if(sld.getRoles() != null)
+        {
+            try
+            {
+                user.setRoles(ldc.getProject(), sld.getRoles());
+            }
+            catch(RoleNotFoundException e)
+            {
+                log.error("Error assigning roles to user " + user.getUserId(), e);
+            }
+        }
     }
 }

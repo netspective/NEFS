@@ -39,83 +39,30 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.15 2004-01-06 20:08:09 shahid.shah Exp $
+ * $Id: SimulatedLoginDialogContext.java,v 1.1 2004-01-06 20:08:09 shahid.shah Exp $
  */
 
-package com.netspective.sparx;
+package com.netspective.sparx.security.simulate;
 
-import com.netspective.commons.Product;
+import com.netspective.sparx.security.simulate.SimulatedLoginDialog;
+import com.netspective.sparx.security.LoginDialogContext;
+import com.netspective.sparx.security.LoginDialog;
 
-public class ProductRelease implements Product
+public class SimulatedLoginDialogContext extends LoginDialogContext
 {
-    public static final Product PRODUCT_RELEASE = new ProductRelease();
-
-    public static final String PRODUCT_NAME = "Netspective Sparx";
-    public static final String PRODUCT_ID = "netspective-sparx";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 10;
-
-    public ProductRelease()
+    public SimulatedLoginDialogContext()
     {
     }
 
-    public String getProductId()
+    public String getUserIdInput()
     {
-        return PRODUCT_ID;
+        return ((SimulatedLoginDialog) getLoginDialog()).getUserId();
     }
 
-    public String getProductName()
+    public String getPasswordInput(boolean encrypted)
     {
-        return PRODUCT_NAME;
-    }
-
-    public final int getReleaseNumber()
-    {
-        return PRODUCT_RELEASE_NUMBER;
-    }
-
-    public final int getVersionMajor()
-    {
-        return PRODUCT_VERSION_MAJOR;
-    }
-
-    public final int getVersionMinor()
-    {
-        return PRODUCT_VERSION_MINOR;
-    }
-
-    public final int getBuildNumber()
-    {
-        return BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        LoginDialog loginDialog = (LoginDialog) getDialog();
+        String password = ((SimulatedLoginDialog) loginDialog).getPassword();
+        return encrypted ? encryptPlainTextPassword(password) : password;
     }
 }
