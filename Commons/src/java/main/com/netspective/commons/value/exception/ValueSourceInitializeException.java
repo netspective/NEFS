@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceInitializeException.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: ValueSourceInitializeException.java,v 1.2 2003-03-13 22:35:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.exception;
@@ -47,7 +47,7 @@ package com.netspective.commons.value.exception;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSourceSpecification;
 
-public class ValueSourceInitializeException extends Exception
+public class ValueSourceInitializeException extends RuntimeException
 {
     private ValueSource vs;
     private ValueSourceSpecification spec;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceNotFoundException.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: ValueSourceNotFoundException.java,v 1.2 2003-03-13 22:35:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.exception;
@@ -52,6 +52,7 @@ public class ValueSourceNotFoundException extends RuntimeException
 
     public ValueSourceNotFoundException(ValueSourceSpecification vss)
     {
+        super("Value source '"+ vss.getIdOrClassName() +"' not found.");
         this.vss = vss;
     }
 
