@@ -19,7 +19,7 @@ When you are ready to customize the actions or attach events, you just use Java.
 It fits in your current environment.
 <ul class="check-list">
     <li>NEFS is delivered as a single, integrated solution that doesn't make you buy all-new app servers, database servers, or learn a new IDE.</li>
-    <li>NEFS-based applications are deployed as standard <code>.war</code> files with no special vendor-specific extensions.</li>
+    <li>NEFS-based applications are deployed as standard <code>.war</code> or <code>.ear</code> files with no special vendor-specific extensions.</li>
 </ul>
 
 <h1>Overview of NEFS Tags</h1>
