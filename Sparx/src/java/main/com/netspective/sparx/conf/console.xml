@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.82 2003-08-12 18:42:47 aye.thu Exp $
+  * $Id: console.xml,v 1.83 2003-08-13 12:20:35 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -153,6 +153,7 @@
                 </page>
                 <page name="test" caption="Unit Test" retain-params="query-defn-source,selected-query-defn-id"/>
 		        <page name="sql-comparisons" caption="SQL Comparisons"/>
+		        <page name="active-scroll-states" caption="Scroll States"/>
 	        </page>
 
 	        <page name="schemas" caption="Schemas">
