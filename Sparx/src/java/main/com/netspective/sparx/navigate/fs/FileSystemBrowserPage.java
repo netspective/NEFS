@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FileSystemBrowserPage.java,v 1.2 2004-06-13 22:11:47 shahid.shah Exp $
+ * $Id: FileSystemBrowserPage.java,v 1.3 2004-06-14 01:36:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
@@ -82,8 +82,10 @@ public class FileSystemBrowserPage extends NavigationPage
     private FileSystemBrowserImages images = new DefaultFileSystemBrowserImages();
     private FileSystemBrowserEntries ignoreEntries;
     private String stuctureTableCssClass = "filesys-browser-struct";
+    private String pathTableCssClass = "filesys-browser-path";
     private String filesTableCssClass = "filesys-browser-files";
     private String stuctureLevelPrefixHtml = "<span class='entry-level'>&nbsp;&nbsp;&nbsp;&nbsp;</span>";
+    private String pathSeparatorHtml = "<span class='entry-separator'>&nbsp;/&nbsp;</span>";
     private FileSystemBrowserEntryContentHandlers contentHandlers = new DefaultFileSystemBrowserEntryContentHandlers();
 
     public FileSystemBrowserPage(NavigationTree owner)
@@ -330,8 +332,6 @@ public class FileSystemBrowserPage extends NavigationPage
         for (int i = 0; i < activePathParents.size(); i++)
         {
             final FileSystemEntry parent = (FileSystemEntry) activePathParents.get(i);
-            if (ignoreEntries.contains(parent))
-                continue;
 
             writer.write("    <tr class='parent-" + evenText + "'>\n");
             writer.write("        <td class='parent-" + evenText + "'>");
@@ -442,6 +442,48 @@ public class FileSystemBrowserPage extends NavigationPage
         writer.write("</table>\n");
     }
 
+    public void generateDirectoryPathHtml(final Writer writer, final NavigationContext nc, final FileSystemEntry activePath) throws IOException
+    {
+        final Theme theme = nc.getActiveTheme();
+        final List activePathParents = activePath.getParents();
+        int activePathParentsCount = activePathParents.size();
+        int ancestorsCount = activePathParentsCount - 1;
+
+        writer.write("<table class='" + pathTableCssClass + "'>\n");
+        writer.write("    <tr class='path'>\n");
+        writer.write("        <td class='path-image'><img src='" + theme.getResourceUrl(images.getFolderOpenImage()) + "'></td>");
+        writer.write("        <td class='path'>");
+        for (int i = 0; i < activePathParents.size(); i++)
+        {
+            final FileSystemEntry parent = (FileSystemEntry) activePathParents.get(i);
+
+            String href = ".";
+            if (ancestorsCount > 0)
+            {
+                final StringBuffer hrefBuffer = new StringBuffer();
+                for (int a = 1; a <= ancestorsCount; a++)
+                    hrefBuffer.append(a < ancestorsCount ? "../" : "..");
+                href = hrefBuffer.toString();
+            }
+
+            writer.write("<a class='parent-entry-name' href='" + href + "'>" + (showExactEntryNames
+                    ? parent.getFile().getName() : parent.getEntryCaption()) + "</a>");
+            writer.write(pathSeparatorHtml);
+
+            ancestorsCount--;
+        }
+        writer.write("        </td>");
+        writer.write("    </tr>\n");
+        writer.write("    <tr class='file'>\n");
+        writer.write("        <td class='file-image'><img src='" + images.getImage(theme, activePath) + "'</td>");
+        writer.write("        <td class='path'>");
+        writer.write("            " + (showExactEntryNames
+                ? activePath.getFile().getName() : activePath.getEntryCaption()));
+        writer.write("        </td>");
+        writer.write("    </tr>\n");
+        writer.write("</table>\n");
+    }
+
     public String getChildEntriesHtml(final NavigationContext nc, boolean includeDirs, boolean dirsMixedWithFiles) throws IOException
     {
         final FileSystemContext fileSystemContext = (FileSystemContext) nc.getRequest().getAttribute(ATTRNAME_FS_CONTEXT);
@@ -459,6 +501,16 @@ public class FileSystemBrowserPage extends NavigationPage
 
         StringWriter writer = new StringWriter();
         generateDirectoryStructureHtml(writer, nc, activePath, includeFiles, filesMixedWithDirs);
+        return writer.toString();
+    }
+
+    public String getDirectoryPathHtml(final NavigationContext nc) throws IOException
+    {
+        final FileSystemContext fileSystemContext = (FileSystemContext) nc.getRequest().getAttribute(ATTRNAME_FS_CONTEXT);
+        final FileSystemEntry activePath = fileSystemContext.getActivePath();
+
+        StringWriter writer = new StringWriter();
+        generateDirectoryPathHtml(writer, nc, activePath);
         return writer.toString();
     }
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SyntaxHighlightingContentHandler.java,v 1.1 2004-06-13 22:11:47 shahid.shah Exp $
+ * $Id: SyntaxHighlightingContentHandler.java,v 1.2 2004-06-14 01:36:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
@@ -74,6 +74,10 @@ public class SyntaxHighlightingContentHandler extends DefaultFileSystemEntryCont
 
     public void handleContent(Writer writer, NavigationContext nc, FileSystemEntry fileSystemEntry) throws IOException
     {
+        writer.write("<div class=textbox>");
+        ((FileSystemBrowserPage) nc.getActivePage()).generateDirectoryPathHtml(writer, nc, fileSystemEntry);
+        writer.write("<hr size=1 color=silver>");
         HtmlSyntaxHighlightPanel.emitHtml(fileSystemEntry.getFile(), writer);
+        writer.write("</div");
     }
 }
