@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextUtils.java,v 1.5 2003-10-17 15:59:07 shahid.shah Exp $
+ * $Id: DialogContextUtils.java,v 1.6 2003-11-08 16:32:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -226,7 +226,7 @@ public class DialogContextUtils
     public void populateFieldValuesFromSql(DialogContext dc, String dataSourceId, String sql, Object[] params)
     {
         SqlManager sqlManager = dc.getSqlManager();
-        Query query = sqlManager.createQuery();
+        Query query = sqlManager.constructQuery();
 
         try
         {
@@ -268,7 +268,7 @@ public class DialogContextUtils
     public void populateFieldValuesFromSql(DialogContext dc, ConnectionContext cc, String sql, Object[] params)
     {
         SqlManager sqlManager = dc.getSqlManager();
-        Query query = sqlManager.createQuery();
+        Query query = sqlManager.constructQuery();
 
         try
         {
