@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.64 2004-07-14 19:05:34 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.65 2004-08-03 22:46:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -1096,6 +1096,16 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
             dc.getParentActivity().broadcastChildActivity(dc);
 
         dc.setExecuteStageHandled(true);
+        if (getDialogFlags().flagIsSet(DialogFlags.CLOSE_PAGE_AFTER_EXECUTE))
+        {
+            writer.write("<script>\n" +
+                    "<!--\n" +
+                    "    window.close();\n" +
+                    "-->\n" +
+                    "</script>");
+            return;
+        }
+
         dc.performDefaultRedirect(writer, null);
     }
 
@@ -1115,6 +1125,15 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
             dc.getParentActivity().broadcastChildActivity(dc);
 
         dc.setExecuteStageHandled(true);
+        if (getDialogFlags().flagIsSet(DialogFlags.CLOSE_PAGE_AFTER_EXECUTE))
+        {
+            writer.write("<script>\n" +
+                    "<!--\n" +
+                    "    window.close();\n" +
+                    "-->\n" +
+                    "</script>");
+            return;
+        }
         dc.performDefaultRedirect(writer, redirect);
     }
 
