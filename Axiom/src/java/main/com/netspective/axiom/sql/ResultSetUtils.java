@@ -39,19 +39,24 @@
  */
 
 /**
- * $Id: ResultSetUtils.java,v 1.2 2003-08-19 16:08:33 shahid.shah Exp $
+ * $Id: ResultSetUtils.java,v 1.3 2004-08-03 19:40:39 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
+
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.exception.DataModelException;
 
 public class ResultSetUtils
 {
@@ -84,7 +89,7 @@ public class ResultSetUtils
 
     public Object getResultSetSingleColumn(ResultSet rs) throws SQLException
     {
-        if(rs.next())
+        if (rs.next())
             return rs.getObject(1);
         else
             return null;
@@ -92,12 +97,12 @@ public class ResultSetUtils
 
     public Object[] getResultSetSingleRowArray(ResultSet rs) throws SQLException
     {
-        if(rs.next())
+        if (rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
             Object[] result = new Object[colsCount];
-            for(int i = 1; i <= colsCount; i++)
+            for (int i = 1; i <= colsCount; i++)
             {
                 result[i - 1] = rs.getObject(i);
             }
@@ -109,14 +114,19 @@ public class ResultSetUtils
 
     public Map getResultSetSingleRowAsMap(ResultSet rs) throws SQLException
     {
+        return getResultSetSingleRowAsMap(rs, false);
+    }
+
+    public Map getResultSetSingleRowAsMap(ResultSet rs, boolean useLabelAsKey) throws SQLException
+    {
         Map result = new HashMap();
-        if(rs.next())
+        if (rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
-            for(int i = 1; i <= colsCount; i++)
+            for (int i = 1; i <= colsCount; i++)
             {
-                result.put(rsmd.getColumnName(i).toLowerCase(), rs.getObject(i));
+                result.put(useLabelAsKey ? rsmd.getColumnLabel(i).toLowerCase() : rsmd.getColumnName(i).toLowerCase(), rs.getObject(i));
             }
             return result;
         }
@@ -126,26 +136,32 @@ public class ResultSetUtils
 
     public Map[] getResultSetRowsAsMapArray(ResultSet rs) throws SQLException
     {
+        return getResultSetRowsAsMapArray(rs, false);
+    }
+
+    public Map[] getResultSetRowsAsMapArray(ResultSet rs, boolean useLabelAsKey) throws SQLException
+    {
         ResultSetMetaData rsmd = rs.getMetaData();
         int colsCount = rsmd.getColumnCount();
         String[] columnNames = new String[colsCount];
-        for(int c = 1; c <= colsCount; c++)
+        for (int c = 1; c <= colsCount; c++)
         {
-            columnNames[c - 1] = rsmd.getColumnName(c).toLowerCase();
+            columnNames[c - 1] = useLabelAsKey
+                    ? rsmd.getColumnLabel(c).toLowerCase() : rsmd.getColumnName(c).toLowerCase();
         }
 
         ArrayList result = new ArrayList();
-        while(rs.next())
+        while (rs.next())
         {
             Map rsMap = new HashMap();
-            for(int i = 1; i <= colsCount; i++)
+            for (int i = 1; i <= colsCount; i++)
             {
                 rsMap.put(columnNames[i - 1], rs.getObject(i));
             }
             result.add(rsMap);
         }
 
-        if(result.size() > 0)
+        if (result.size() > 0)
             return (Map[]) result.toArray(new Map[result.size()]);
         else
             return null;
@@ -153,12 +169,12 @@ public class ResultSetUtils
 
     public Object[] getResultSetSingleRowAsArray(ResultSet rs) throws SQLException
     {
-        if(rs.next())
+        if (rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
             Object[] result = new Object[colsCount];
-            for(int i = 1; i <= colsCount; i++)
+            for (int i = 1; i <= colsCount; i++)
             {
                 result[i - 1] = rs.getObject(i);
             }
@@ -170,12 +186,12 @@ public class ResultSetUtils
 
     public String[] getResultSetSingleRowAsStrings(ResultSet rs) throws SQLException
     {
-        if(rs.next())
+        if (rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
             String[] result = new String[colsCount];
-            for(int i = 1; i <= colsCount; i++)
+            for (int i = 1; i <= colsCount; i++)
             {
                 result[i - 1] = rs.getString(i);
             }
@@ -188,19 +204,19 @@ public class ResultSetUtils
     public Object[][] getResultSetRowsAsMatrix(ResultSet rs) throws SQLException
     {
         ArrayList result = new ArrayList();
-        while(rs.next())
+        while (rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
             Object[] row = new Object[colsCount];
-            for(int i = 1; i <= colsCount; i++)
+            for (int i = 1; i <= colsCount; i++)
             {
                 row[i - 1] = rs.getObject(i);
             }
             result.add(row);
         }
 
-        if(result.size() > 0)
+        if (result.size() > 0)
             return (Object[][]) result.toArray(new Object[result.size()][]);
         else
             return null;
@@ -209,14 +225,72 @@ public class ResultSetUtils
     public String[] getResultSetRowsAsStrings(ResultSet rs) throws SQLException
     {
         ArrayList result = new ArrayList();
-        while(rs.next())
+        while (rs.next())
         {
             result.add(rs.getString(1));
         }
 
-        if(result.size() > 0)
+        if (result.size() > 0)
             return (String[]) result.toArray(new String[result.size()]);
         else
             return null;
+    }
+
+    /**
+     * Given a ResultSet, assign the current row's values using appropriate accessor methods of the
+     * instance object (using Java reflection).
+     *
+     * @param rs              The ResultSet to assign
+     * @param instance        The object who's mutator methods should be matched
+     * @param columnKeys      The names of the columns (or labels) that should be assigned to the mutators of the instance object.
+     *                        This may be '*' (for all columns) or a comma-separated list of names/labels. The parameter names
+     *                        may optionally be followed by an '=' to indicate a default value for the column. Column
+     *                        names may optionally be terminated with an '!' to indicate that they are required (an exception
+     *                        is thrown if the parameter is unavailable. For example, "a,b!,c" would mean that parameter
+     *                        'a', 'b' and 'c' should be assigned using setA(), setB() and setC() if available but an
+     *                        exception should be thrown if 'b' is not available as a column name/label.
+     * @param useLabelsAsKeys true if the keys provided are column labels and not column names
+     *
+     * @return The Map created using getResultSetSingleRowAsMap(rs) since this method requires the Map to be created anyway
+     *
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
+    public Map assignColumnValuesToInstance(ResultSet rs, Object instance, String columnKeys, boolean useLabelsAsKeys) throws IllegalAccessException, InvocationTargetException, DataModelException, SQLException
+    {
+        XmlDataModelSchema schema = XmlDataModelSchema.getSchema(instance.getClass());
+        Map result = getResultSetSingleRowAsMap(rs, useLabelsAsKeys);
+        schema.assignMapValues(instance, result, columnKeys);
+        return result;
+    }
+
+    /**
+     * Given a class, loop through the result set and return the result as a set of typed Java objects. The values are
+     * filled using reflection. This method simply loops through the result set and calls type.newInstance() and then
+     * calls assignColumnValuesToInstance() for each row.
+     *
+     * @param list            The list to add the typed java objects into
+     * @param rs              The result set to retrieve
+     * @param type            The class that each row should represent
+     * @param columnKeys      The names of the columns (or labels) that should be assigned to the mutators of the instance object.
+     *                        This may be '*' (for all columns) or a comma-separated list of names/labels. The parameter names
+     *                        may optionally be followed by an '=' to indicate a default value for the column. Column
+     *                        names may optionally be terminated with an '!' to indicate that they are required (an exception
+     *                        is thrown if the parameter is unavailable. For example, "a,b!,c" would mean that parameter
+     *                        'a', 'b' and 'c' should be assigned using setA(), setB() and setC() if available but an
+     *                        exception should be thrown if 'b' is not available as a column name/label.
+     * @param useLabelsAsKeys true if the keys provided are column labels and not column names
+     */
+    public void getResultSetRowsAsTypedObjects(List list, ResultSet rs, Class type, String columnKeys, boolean useLabelsAsKeys) throws IllegalAccessException, InvocationTargetException, DataModelException, SQLException, InstantiationException
+    {
+        XmlDataModelSchema schema = XmlDataModelSchema.getSchema(type);
+
+        while (rs.next())
+        {
+            Object row = type.newInstance();
+            Map result = getResultSetSingleRowAsMap(rs, useLabelsAsKeys);
+            schema.assignMapValues(row, result, columnKeys);
+            list.add(row);
+        }
     }
 }
