@@ -4,7 +4,7 @@ table.about td { font-family: verdana; font-size: 9pt; }
 
 <table class="about">
 
-    <tr>
+    <tr valign=top>
         <td>
             <b>Application</b>
             <table>
