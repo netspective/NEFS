@@ -2,6 +2,8 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
 <!ENTITY include_nef_faq_non_tech SYSTEM "../nef-faq-non-tech-section.xml">
+<!ENTITY __unit-test-dialog__du3yjpcw SYSTEM "../nef-reusable-content/unit-test-dialog.xml">
+<!ENTITY __unit-test-sql-queries__du3wqiiz SYSTEM "../nef-reusable-content/unit-test-sql-queries.xml">
 ]>
 <book>
   <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
@@ -9,7 +11,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.1 ($Date: 2004-04-26 12:24:15 $)</releaseinfo>
+    <releaseinfo>Release 7.1 ($Date: 2004-05-11 12:49:00 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until March 31, 2004 when it's
     expected to be completed. Check back daily until then because material is
@@ -2361,13 +2363,22 @@
       <section>
         <title>Unit Testing and Demonstrating the Presentation Layer</title>
 
-        <para>TODO: documentation coming soon...</para>
+        <para>NEFS enables you to unit test your application's presentation
+        layer through the <guimenu>Presentation </guimenu>tab within the
+        Console.</para>
+
+        &__unit-test-dialog__du3yjpcw;
       </section>
 
       <section>
         <title>Unit Testing the Data Management Layer</title>
 
-        <para>TODO: documentation coming soon...</para>
+        <para>NEFS enables you to unit test your application's data management
+        layer through the Console. To unit test different components of the
+        data management layer, go to <guimenu>Data Management</guimenu> tab
+        within the Console.</para>
+
+        &__unit-test-sql-queries__du3wqiiz;
       </section>
 
       <section>
@@ -2417,7 +2428,7 @@
         class="directory">APP_ROOT/WEB-INF/classes/auto</filename> directory
         may be destroyed and recreated as necessary and you should not place
         any custom source files into that directory. If this directory is not
-        convenit (of if the package name is already in use) you may change it
+        convenit (or if the package name is already in use) you may change it
         by modifying the
         <filename>APP_ROOT/WEB-INF/sparx/conf/ant-build-project.xml</filename>
         Ant build file.</para>
@@ -2433,7 +2444,7 @@
         <literal>generate-id-constants</literal> target in the Ant build file.
         Instead of accessing identifiers by strings programmers can access the
         identifiers using Java constants. Using Java constants to access
-        identiable objects in your Java code is highly desirable so that if
+        identifiable objects in your Java code is highly desirable so that if
         names of items change your project, the compiler will identify
         problems in your code that might otherwise not be found until
         runtime.<mediaobjectco>
@@ -2462,7 +2473,7 @@
 
               <calloutlist>
                 <callout arearefs="genarate-id-constants-co-1">
-                  <para>All of the presentation tag identifers in tags like
+                  <para>All of the presentation tag identifiers in tags like
                   <sgmltag class="starttag">navigation-tree</sgmltag>,
                   <sgmltag class="starttag">page</sgmltag>, <sgmltag
                   class="starttag">dialogs</sgmltag>, <sgmltag
@@ -2494,7 +2505,7 @@
                 </callout>
 
                 <callout arearefs="genarate-id-constants-co-5">
-                  <para>All of the SQL (data management) tag identifers like
+                  <para>All of the SQL (data management) tag identifiers like
                   <sgmltag class="starttag">queries</sgmltag>, <sgmltag
                   class="starttag">query</sgmltag>, <sgmltag
                   class="starttag">schema</sgmltag>, <sgmltag
@@ -2521,9 +2532,9 @@
                 <callout arearefs="genarate-id-constants-co-8">
                   <para>One of the most useful features of the ID constant
                   generators is that it creates Java constants for enumerated
-                  values in the databse. So, if you have many tables that have
-                  static lookup values those static values can become actual
-                  Java constants using the <emphasis>Schema Enumeration
+                  values in the database. So, if you have many tables that
+                  have static lookup values those static values can become
+                  actual Java constants using the <emphasis>Schema Enumeration
                   Tables</emphasis> feature.</para>
                 </callout>
               </calloutlist>
@@ -2568,7 +2579,7 @@
 
         <para>NEF supports code customization using either inheritance or
         delegation. Although both methods are supported, the delegation model
-        is recommened to help ensure that changes in the NEF APIs do not
+        is recommended to help ensure that changes in the NEF APIs do not
         affect your code. Inheritance is used for large-scale customizations
         and enhancing the framework itself while delegation is used to
         implement listeners and event processing customizations.</para>
@@ -2596,7 +2607,7 @@
     <section>
       <title>Acceptance, Regression, and Load/Stress Testing</title>
 
-      <para>Run functional/integration and acceptacne tests of your combined
+      <para>Run functional/integration and acceptance tests of your combined
       Sparx XML declarations and Java code customizations. The actual style of
       tests and structural requirements of your tests will be
       application-dependent but the NEF includes numerous examples of how to
@@ -2822,11 +2833,10 @@
           <term>WEB-INF/sparx/conf</term>
 
           <listitem>
-            <para>This directory contains contains sample
-            <literal>web.xml</literal> configuration files for different
-            application servers like WebLogic, WebSphere, Resin and Tomcat. It
-            also contains Ant build files for compiling your application's
-            classes.</para>
+            <para>This directory contains sample <literal>web.xml</literal>
+            configuration files for different application servers like
+            WebLogic, WebSphere, Resin and Tomcat. It also contains Ant build
+            files for compiling your application's classes.</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -3389,7 +3399,7 @@
           allows the <sgmltag class="attribute">class</sgmltag> attribute to
           override which class will handle that particular tag. So, if you see
           any tag in any framework (Commons, Axiom, Sparx) that you want to
-          ehance, extend, or replace you may do so simply by supplying a
+          enhance, extend, or replace you may do so simply by supplying a
           <sgmltag class="attribute">class</sgmltag> attribute to the
           tag.</para>
         </note>
@@ -3465,7 +3475,7 @@
 
         <calloutlist>
           <callout arearefs="xdm-include-file-abs">
-            <para>Include the contents of the given file using an abosolute
+            <para>Include the contents of the given file using an absolute
             path.</para>
           </callout>
 
@@ -3562,7 +3572,7 @@
 
         <para>XDM Templates are very powerful but easy to use alternatives to
         pre-processing using XSLT. They basically allow defining custom tags
-        that are not actually instantiated into obects; instead they are
+        that are not actually instantiated into objects; instead they are
         stored as a template to be reused by other objects. An example should
         clarify how to create (produce) and use (consume) templates:</para>
 
@@ -3827,7 +3837,7 @@
         static value source (described below) whose value never changes
         doesn't really care what context it's in: it's very will remain the
         same at all time. However, if you have a value source that is
-        specified as as "request:XXX" (the value of a request parameter called
+        specified as "request:XXX" (the value of a request parameter called
         XXX) then it's important to have the value context know the Servlet
         request object at the time. Put another way, the Value Context is sort
         of an <emphasis>Environment</emphasis> within which a value is
@@ -3968,9 +3978,9 @@
         Assuming that you have created a class called
         <literal>MyValueSource</literal> that implements the
         <classname>com.netspective.commons.value.ValueSource</classname>
-        inteface and have placed your class in the package
+        interface and have placed your class in the package
         <literal>my.value.source</literal> you can use the following
-        declartion in your
+        declaration in your
         <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename> file.</para>
 
         <programlisting role="xml">&lt;project&gt;
@@ -3994,13 +4004,21 @@
       <para>NEF provides a series of scripts that, among other functions,
       allow you to compile your application, generate code, and upgrade NEF
       libraries and components. All of the scripts are built to be executed in
-      the the industry-standard <ulink url="http://ant.apache.org">Apache
+      the industry-standard <ulink url="http://ant.apache.org">Apache
       Ant</ulink> tool. Apache Ant is included in the NEF distribution.</para>
 
       <section>
         <title>Executing Ant Scripts through Console</title>
 
-        <para>TODO: documentation coming soon...</para>
+        <para>To execute an Ant script through the Console, login to the
+        Console and go to Project -&gt; Ant Build tab. A list of Ant script
+        targets are available for execution. You can easily run a script by
+        selecting it from the list. Complete description of each Ant target is
+        also provided there for your reference.</para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/nefs-console-ant-build-scripts.gif" />
+          </screenshot></para>
       </section>
 
       <section>
@@ -4480,7 +4498,7 @@
           <title>Specifying the Active Navigation Tree</title>
 
           <para>If you have multiple navigation trees, which tree is actually
-          used by the application may be specfied as a servlet parameter or
+          used by the application may be specified as a servlet parameter or
           chosen dynamically at runtime based on some processing rules.</para>
 
           <section>
@@ -4529,7 +4547,7 @@
         pages not defined in the map will not be accessible.</para>
 
         <section>
-          <title>Page name (identifer) attribute and paths</title>
+          <title>Page name (identifier) attribute and paths</title>
 
           <para>Each <sgmltag class="starttag">page</sgmltag> tag requires a
           <sgmltag class="attribute">name</sgmltag> attribute. The value of
@@ -4647,7 +4665,7 @@
                   <para>The <sgmltag class="attribute">caption</sgmltag>
                   attribute, which is a value source type and is always
                   required, may provide a static string or dynamic text that
-                  will be shown as the page's identifer to end users when the
+                  will be shown as the page's identifier to end users when the
                   page needs to be shown in a menu (or a tab). Although the
                   actual rendering and what the caption will look like is
                   determined by the active theme and its specific navigation
@@ -4669,7 +4687,7 @@
                 </callout>
 
                 <callout arearefs="screen-sparx-page-title-co">
-                  <para>Thte <sgmltag class="attribute">title</sgmltag>
+                  <para>The <sgmltag class="attribute">title</sgmltag>
                   attribute, which is a value source type and is optional, may
                   provide a static string or dynamic text that will be placed
                   into the browser window's title. This is the text that will
@@ -4778,7 +4796,7 @@
 
           <programlisting role="xml">&lt;page name="X" caption="Another JSP Page" forward="some/other/file.jsp"/&gt;</programlisting>
 
-          <para>To forward to a resource based on a dynamic vlaue, use a value
+          <para>To forward to a resource based on a dynamic value, use a value
           source specification instead of a static string. In the next example
           we'll forward to whatever resource is specified in the request
           parameter called 'url'.</para>
@@ -4815,7 +4833,7 @@
 
           <programlisting role="xml">&lt;page name="X" caption="Another JSP Page" include="a/file.jsp"/&gt;</programlisting>
 
-          <para>To include a resource based on a dynamic vlaue, use a value
+          <para>To include a resource based on a dynamic value, use a value
           source specification instead of a static string. In the next example
           we'll simply include whatever resource is specified in the request
           parameter called 'url'.</para>
@@ -4866,10 +4884,10 @@
           class="attribute">source</sgmltag> attribute then you can include
           the body content directly in the XML (but you will be responsible
           for escaping any tags that may interfere with XML processing). If
-          you specify a a <sgmltag class="attribute">source</sgmltag>
-          attribute then you may provide an external template to load and
-          execute. The external template's location is relative to the
-          APP_ROOT directory.</para>
+          you specify a <sgmltag class="attribute">source</sgmltag> attribute
+          then you may provide an external template to load and execute. The
+          external template's location is relative to the APP_ROOT
+          directory.</para>
         </section>
 
         <section>
@@ -5032,7 +5050,7 @@
       create new data, edit existing data, and remove data. Sparx Dialog
       objects provide a multitude of features such as client-side/server-side
       data verifications and validations, dialog state tracking, and
-      consistent skinnable appearances.</para>
+      consistent skinable appearances.</para>
 
       <section id="dialogs">
         <title>Overview</title>
@@ -5097,7 +5115,7 @@
                 specifies a subclass of <classname>DialogContext</classname>
                 to dynamically load and instantiate instead of the default
                 java class. This attribute is very useful when you want to
-                some special handling of request/response cylces that may not
+                some special handling of request/response cycles that may not
                 be supported by the default class.</para>
               </listitem>
             </varlistentry>
@@ -5120,7 +5138,7 @@
 
               <listitem>
                 <para>The name of the dialog created for the HTML form. This
-                is usally the same as the Sparx <sgmltag
+                is usually the same as the Sparx <sgmltag
                 class="starttag">dialog</sgmltag> <sgmltag
                 class="attribute">name</sgmltag> but could be different if you
                 need it to be so.</para>
@@ -5133,7 +5151,7 @@
               <listitem>
                 <para>This attribute, which is normally true, specifies
                 whether the dialog will redirect after executing (performing
-                the tasks it's been instructted to perform). If this is set to
+                the tasks it's been instructed to perform). If this is set to
                 false, then no redirect will happen after the execute --
                 instead, the execute will be called and control flow remains
                 on the current page. You should set this attribute to false if
@@ -5256,7 +5274,7 @@
 
               <listitem>
                 <para>Specifies whether or not fields in this dialog that are
-                flagged as read-only will be made invislble (field will not be
+                flagged as read-only will be made invisible (field will not be
                 visible nor will it have any value associated with it) if the
                 field does not have a value.</para>
               </listitem>
@@ -5390,7 +5408,7 @@
           all built-in field types and any custom field types you register).
           Clicking on any field type name will show the list of attributes and
           elements supported by the particular field type. Although this
-          section of the documention introduces you to many of the form field
+          section of the document ion introduces you to many of the form field
           types available in Sparx, there are still quite a few that it does
           not cover in detail so you should browse the Console to review all
           of them.</para>
@@ -5435,7 +5453,7 @@
               <listitem>
                 <para>The caption or label that describes the usage of the
                 field to the end user. If this field is a member of a
-                composite or grid field thn the caption will only show if the
+                composite or grid field then the caption will only show if the
                 parent field's show-child-caption is set to yes.</para>
               </listitem>
             </varlistentry>
@@ -5699,9 +5717,9 @@
 
               <listitem>
                 <para>Specifies whether to set the initial focus of the dialog
-                to ths field. The last field to have this value set to yes (in
-                creation order) will have the focus when the dialog is first
-                displayed.</para>
+                to this field. The last field to have this value set to yes
+                (in creation order) will have the focus when the dialog is
+                first displayed.</para>
               </listitem>
             </varlistentry>
 
@@ -5730,7 +5748,7 @@
               <term><sgmltag class="attribute">min-length</sgmltag></term>
 
               <listitem>
-                <para>The miminum length of data that the control should
+                <para>The minimum length of data that the control should
                 require.</para>
               </listitem>
             </varlistentry>
@@ -6398,7 +6416,7 @@ public class NewField extends DialogField
         perspectives</emphasis>. A dialog functions differently based upon the
         data command it receives; for example, it can display fields as read
         only when the data command is delete and it can hide some fields when
-        the data perspective is add. As hinted above, Sparx ialogs recognizes
+        the data perspective is add. As hinted above, Sparx dialogs recognizes
         the following data perspectives:</para>
 
         <variablelist>
@@ -6462,7 +6480,7 @@ public class NewField extends DialogField
         <emphasis>delete</emphasis> mode. By default, there is very little
         difference in the behavior of the dialog when it is in either the
         <emphasis>add</emphasis> or <emphasis>edit</emphasis>. The
-        funtionality of the <emphasis>add</emphasis> or
+        functionality of the <emphasis>add</emphasis> or
         <emphasis>edit</emphasis> modes are enhanced more through the power of
         the conditional fields assigned to the dialog. Conditional fields can
         be configured to depend upon the mode the dialog is in so that fields
@@ -6534,7 +6552,7 @@ public class NewField extends DialogField
           <listitem>
             <para>In order for a dialog to actually execute, the <sgmltag
             class="starttag">page</sgmltag> defined in the <sgmltag
-            class="starttag">navigation-tree</sgmltag> must be visted using a
+            class="starttag">navigation-tree</sgmltag> must be visited using a
             browser (or you can unit test it in the Console).</para>
           </listitem>
 
@@ -6553,7 +6571,7 @@ public class NewField extends DialogField
           <listitem>
             <para>Once all validation has been performed (both client- and
             server-side) and all the data is assumed to be valid then it is
-            your responsiblity to do something useful with the data.</para>
+            your responsibility to do something useful with the data.</para>
           </listitem>
 
           <listitem>
@@ -6882,7 +6900,102 @@ public class Test1  extends com.netspective.sparx.form.Dialog
     <section>
       <title>Connection Providers</title>
 
-      <para>TODO: documentation coming soon...</para>
+      <para>To set up your database, you need to have a database connection
+      (data source) pointing towards your database. This is accomplished by
+      using the <sgmltag>connection-provider</sgmltag> tag in the Project File
+      (<filename>project.xml</filename>). </para>
+
+      <para><example>
+          <title>Setting up the Data Source for Books Application</title>
+
+          <programlisting>&lt;project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt;
+...
+&lt;<emphasis>connection-provider</emphasis> <emphasis>
+                 class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider"</emphasis>&gt; <co
+              id="declare-conn-provider-tags-eg-1" />
+ &lt;<emphasis>data-source</emphasis> name="<emphasis>jdbc/default</emphasis>"&gt; <co
+              id="declare-conn-provider-tags-eg-2" />
+  &lt;<emphasis>driver-class</emphasis>&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; <co
+              id="declare-conn-provider-tags-eg-3" />
+  &lt;<emphasis>url</emphasis>&gt;
+  vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db} <co
+              id="declare-conn-provider-tags-eg-4" />
+  &lt;/url&gt; 
+  &lt;<emphasis>user</emphasis>&gt;sa&lt;/user&gt; <co
+              id="declare-conn-provider-tags-eg-5" />
+  &lt;<emphasis>password</emphasis>&gt;&lt;/password&gt; <co
+              id="declare-conn-provider-tags-eg-6" />
+ &lt;/data-source&gt;
+&lt;/connection-provider&gt;</programlisting>
+        </example><calloutlist>
+          <callout arearefs="declare-conn-provider-tags-eg-1">
+            <para>A <sgmltag>connection-provider</sgmltag> tag is used to
+            declare the connection to your application's database. <note>
+                <para>Note that data sources specified under this connection
+                provider will be managed by the Jakarta Commons DBCP. If you
+                wish to use JNDI, you simply have to specify the resource
+                according to the server you're using.</para>
+              </note></para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-2">
+            <para>Each <sgmltag>connection-provider</sgmltag> tag may contain
+            one or more <sgmltag>data-source</sgmltag> tags. The
+            <sgmltag>data-source</sgmltag> tag is used to specify the data
+            source for the application. Any data source called
+            '<emphasis>jdbc/default</emphasis>' is automatically used as the
+            default JDBC data source. That is why the name of the data source
+            in the above example code is set to "<literal>jdbc/default".
+            </literal><note>
+                <para>If you wish to change the name of the default data
+                source, you may specify it in <filename>project.xml</filename>
+                using the <sgmltag>default-data-source</sgmltag> tag.</para>
+              </note></para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-3">
+            <para>The <sgmltag>driver-class</sgmltag> tag is used to provide
+            the driver to be used for the specified database. </para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-4">
+            <para>The url is the JDBC URL used to connect to the database. The
+            JDBC driver uses it to point to a specific database on a specific
+            server. The URL has three parts which are separated by a colon
+            "<literal>:</literal>". The first part is always
+            "<literal>jdbc</literal>" and the second part is usually the name
+            of the driver. In the example code, <literal>hsqldb</literal> is
+            the name of the driver that is used to connect to your
+            <productname>HypersonicSQL</productname> database. The third part
+            is the name of the database.</para>
+
+            <para>It is important to note the
+            <sgmltag>servlet-context-path</sgmltag> value source. Value
+            sources allow dynamic data to be included in XML without creating
+            a programming language inside XML. In the example code, the
+            <sgmltag>servlet-context-path</sgmltag> value source creates the
+            database named '<literal>db</literal>' in <filename
+            class="directory">WEB-INF</filename>/<filename
+            class="directory">database</filename>/<filename
+            class="directory">instance</filename> folder.</para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-5">
+            <para>The <sgmltag>user</sgmltag> tag defines a default user to
+            log in to the database. The example code specifies
+            '<literal>sa</literal>' which is the default user for System
+            Administrator.</para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-6">
+            <para>The <sgmltag>password </sgmltag>tag is used to provide the
+            password for the log in user. The default '<literal>sa</literal>'
+            user has no password.</para>
+          </callout>
+        </calloutlist><note>
+          <para>Please review Tag Documentation in the Console to get further
+          details on each tag.</para>
+        </note></para>
     </section>
 
     <section>
@@ -6902,9 +7015,9 @@ public class Test1  extends com.netspective.sparx.form.Dialog
       are automatically created for all SQL statements. Data can be easily
       aggregated from multiple data sources because each SQL statement in the
       statement pool can be specified (either in XML or JSP) to come from a
-      variety of pre-defined or dynamic data sources. In addition to to basic
-      SQL management (like prepare, bind parameters, and execute) the Sparx
-      static queries objects automatically maintain peformance and usage
+      variety of pre-defined or dynamic data sources. In addition to basic SQL
+      management (like prepare, bind parameters, and execute) the Sparx static
+      queries objects automatically maintain performance and usage
       statistics.</para>
 
       <section id="Query">
@@ -6968,7 +7081,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
           </step>
         </procedure>
 
-        <para>Now, the same steps with Axiom for the data manament and Sparx
+        <para>Now, the same steps with Axiom for the data management and Sparx
         for the presentation layer would become:</para>
 
         <orderedlist>
@@ -7118,7 +7231,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
 
           <para>The display result of the query execution can be configured
           easily using the <sgmltag class="starttag">report</sgmltag> XML tag
-          . Column names can be assigned and the acutal result itself can be
+          . Column names can be assigned and the actual result itself can be
           aligned or modified as a URL.<programlisting role="xml">&lt;project&gt;
     ....
     &lt;queries package="books"&gt;
@@ -7143,7 +7256,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         &lt;/query&gt;
     &lt;/queries&gt;                </programlisting>Each <sgmltag
           class="starttag">column</sgmltag> XML tag of the report corresponds
-          to the query statement's result set column entry though the the
+          to the query statement's result set column entry though the
           attribute <emphasis>index</emphasis> (if all the columns follow the
           order of the columns in the SQL select clause the index attribute
           may be left out). The query above does not specify the data source
@@ -7214,9 +7327,9 @@ public class Test1  extends com.netspective.sparx.form.Dialog
             will display the retrieved data in a report format (multiple rows
             with column names as the first row) while <programlisting
             role="xml"> skin="text-csv" </programlisting> displays the
-            retrieved data as comma seperated variables. A static query report
+            retrieved data as comma separated variables. A static query report
             can also be created a result of a submit action of a dialog. For
-            example, by listing the static query customt tag inside the custom
+            example, by listing the static query custom tag inside the custom
             dialog tag node, <sgmltag class="starttag">xaf:dialog</sgmltag> ,
             one can ensure that the query will only be executed when the
             dialog is submitted:</para>
@@ -8016,7 +8129,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
               <term><sgmltag class="attribute">self-ref</sgmltag></term>
 
               <listitem>
-                <para>Format is "Table_X.Column_Y". Specifies a a
+                <para>Format is "Table_X.Column_Y". Specifies a
                 self-referential foreign key relationship which indicates that
                 Table_X Column_Y is used to maintain an internal hierarchy
                 (creates a 1:N relationship between itself). If you use this
@@ -8138,7 +8251,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
 
               <listitem>
                 <para>should be kept to 3 or 4 characters to allow constraint
-                names and indexe names to be created properly</para>
+                names and index names to be created properly</para>
               </listitem>
             </varlistentry>
 
