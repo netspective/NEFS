@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateConsumer.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: TemplateConsumer.java,v 1.2 2003-04-23 15:41:52 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -47,4 +47,5 @@ package com.netspective.commons.xml.template;
 public interface TemplateConsumer
 {
     public TemplateConsumerDefn getTemplateConsumerDefn();
+    public void registerTemplateConsumption(Template template);
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataModelSchemaTest.java,v 1.9 2003-04-05 18:36:28 shahid.shah Exp $
+ * $Id: DataModelSchemaTest.java,v 1.10 2003-04-23 15:41:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -57,6 +57,7 @@ import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.xdm.XmlDataModelDtd;
@@ -307,6 +308,10 @@ public class DataModelSchemaTest extends TestCase
         public TemplateConsumerDefn getTemplateConsumerDefn()
         {
             return TEMPLATE_CONSUMER_DEFN;
+        }
+
+        public void registerTemplateConsumption(Template template)
+        {
         }
 
         public void addText(String pcData)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Template.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: Template.java,v 1.2 2003-04-23 15:41:52 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -65,6 +65,7 @@ import com.netspective.commons.xml.NodeIdentifiers;
 
 public class Template extends TemplateElement
 {
+    private String templateName;
     private TemplateCatalog templateCatalog;
     private TemplateProducer templateProducer;
     private boolean calculatedInheritedTemplates;
@@ -135,11 +136,17 @@ public class Template extends TemplateElement
         }
     }
 
-    public Template(TemplateContentHandler handler, TemplateCatalog catalog, TemplateProducer producer, String url, String localName, String qName, Attributes attributes) throws SAXException
+    public Template(String templateName, TemplateContentHandler handler, TemplateCatalog catalog, TemplateProducer producer, String url, String localName, String qName, Attributes attributes) throws SAXException
     {
         super(handler, url, localName, qName, attributes);
+        this.templateName = templateName;
         this.templateCatalog = catalog;
         this.templateProducer = producer;
+    }
+
+    public String getTemplateName()
+    {
+        return templateName;
     }
 
     public void declareParameter(TemplateContentHandler contentHandler, String url, String localName, String qName, Attributes attributes) throws SAXException
@@ -234,6 +241,9 @@ public class Template extends TemplateElement
         if(! defnFinalized())
             finalizeDefinition(ac);
 
+        TemplateContentHandler contentHandler = ac.getContentHandler();
+        contentHandler.registerTemplateConsumption(this);
+
         Template[] inheritedTemplates = getInheritedTemplates();
         if(inheritedTemplates != null)
         {
@@ -252,6 +262,9 @@ public class Template extends TemplateElement
     {
         if(! defnFinalized())
             finalizeDefinition(ac);
+
+        TemplateContentHandler contentHandler = ac.getContentHandler();
+        contentHandler.registerTemplateConsumption(this);
 
         Template[] inheritedTemplates = getInheritedTemplates();
         if(inheritedTemplates != null)

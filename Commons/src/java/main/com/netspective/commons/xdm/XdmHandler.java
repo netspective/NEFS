@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmHandler.java,v 1.1 2003-03-13 18:33:13 shahid.shah Exp $
+ * $Id: XdmHandler.java,v 1.2 2003-04-23 15:41:52 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -145,7 +145,7 @@ public class XdmHandler extends AbstractContentHandler
             if (tp != null)
             {
                 String templateName = tp.getTemplateName(url, localName, qName, attributes);
-                Template template = new Template(this, templateCatalog, tp, url, localName, qName, attributes);
+                Template template = new Template(templateName, this, templateCatalog, tp, url, localName, qName, attributes);
                 templateCatalog.registerTemplate(tp, templateName, template);
                 getTemplateDefnStack().push(template);
                 return true;
@@ -161,6 +161,13 @@ public class XdmHandler extends AbstractContentHandler
         entry.setActiveApplyContext(tac);
         startElement(url, localName, qName, attributes);
         entry.setActiveApplyContext(null);
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
+        XdmHandlerNodeStackEntry entry = (XdmHandlerNodeStackEntry) getActiveNodeEntry();
+        if(entry.getInstance() instanceof TemplateConsumer)
+            ((TemplateConsumer) entry.getInstance()).registerTemplateConsumption(template);
     }
 
     public void startElement(String url, String localName, String qName, Attributes attributes) throws SAXException
