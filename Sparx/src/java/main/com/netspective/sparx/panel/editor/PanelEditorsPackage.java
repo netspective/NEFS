@@ -11,16 +11,15 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.DialogsNameSpace;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.sql.QueriesPackage;
-import com.netspective.sparx.Project;
-import com.netspective.sparx.panel.editor.PanelEditor;
-import com.netspective.sparx.panel.editor.PanelEditors;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
 
 public class PanelEditorsPackage
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
+
+    /**
+     * Prefix string for dialog and query packages defined in panel editors
+     */
+    public static final String NAMESPACE_PREFIX = "panel-editor.";
 
     static
     {
@@ -65,8 +64,8 @@ public class PanelEditorsPackage
     public void setNameSpaceId(String identifier)
     {
         this.packageName = identifier;
-        queriesPkg.setNameSpaceId(packageName);
-        dialogsPkg.setNameSpaceId(packageName);
+        queriesPkg.setNameSpaceId(NAMESPACE_PREFIX + packageName);
+        dialogsPkg.setNameSpaceId(NAMESPACE_PREFIX + packageName);
     }
 
     /**
