@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-03 01:20:36 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-03 11:49:40 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -2002,10 +2002,12 @@ id="declare-form-tags-eg-8" />
 &#60;<emphasis role="bold">queries</emphasis> package=&#34;test&#34;&#62; <co
 id="declare-data-query-static-eg-1" />
 
-    &#60;<emphasis role="bold">query</emphasis> name=&#34;get-asset-loans&#34;&#62; <co
-id="declare-data-query-static-eg-2" />
+    &#60;<emphasis role="bold">query</emphasis> <co
+id="declare-data-query-static-eg-2" /> name=&#34;get-asset-loans&#34; <emphasis
+role="bold">data-src</emphasis>=&#34;jdbc/default&#34;&#62; <co
+id="declare-data-query-static-eg-3" />
 
-        select <co id="declare-data-query-static-eg-3" />
+        select <co id="declare-data-query-static-eg-4" />
             asset_loan_id, last_name + &#39;, &#39; + first_name, Loan_Type.caption, loan_begin_date, loan_end_date, returned
         from
             Asset_Loan, Loan_Type, Borrower
@@ -2017,9 +2019,9 @@ id="declare-data-query-static-eg-2" />
             by loan_begin_date desc
 
         &#60;<emphasis role="bold">params</emphasis>&#62; <co
-id="declare-data-query-static-eg-4" />
-            <emphasis role="bold">&#60;param value=&#34;request:asset_id&#34;/&#62;</emphasis> <co
 id="declare-data-query-static-eg-5" />
+            <emphasis role="bold">&#60;param value=&#34;request:asset_id&#34;/&#62;</emphasis> <co
+id="declare-data-query-static-eg-6" />
         &#60;/params&#62;
     &#60;/query&#62;
 </programlisting>
@@ -2041,6 +2043,12 @@ id="declare-data-query-static-eg-5" />
             </callout>
 
             <callout arearefs="declare-data-query-static-eg-3">
+              <para>A query may be assigned a <sgmltag>data-src</sgmltag>
+              attribute which may be dynamically calculated to connect to
+              different data sources or may default to a common data source.</para>
+            </callout>
+
+            <callout arearefs="declare-data-query-static-eg-4">
               <para>The SQL for the query is placed in the XML. This way, all
               SQL is external from Java code and may be tuned, optimized, and
               modified separate from the code that calls it. Notice that the
@@ -2051,17 +2059,17 @@ id="declare-data-query-static-eg-5" />
               Sources as well.</para>
             </callout>
 
-            <callout arearefs="declare-data-query-static-eg-4">
+            <callout arearefs="declare-data-query-static-eg-5">
               <para>Each query that requires parameters may have a <sgmltag
               class="starttag">params</sgmltag>.</para>
             </callout>
 
-            <callout arearefs="declare-data-query-static-eg-5">
+            <callout arearefs="declare-data-query-static-eg-6">
               <para>Each <sgmltag class="starttag">params</sgmltag> tag must
               have one or more <sgmltag class="starttag">param</sgmltag> tags
               along with <sgmltag class="attribute">value</sgmltag>
               attributes. The <sgmltag class="attribute">value</sgmltag>
-              attribute support Value Sources for its value so the value may
+              attribute supports Value Sources for its value so the value may
               be static or dynamic (see <xref linkend="section-value-sources" />).
               This allows, for example, the parameter to a query to be
               obtained dynamically from the runtime environment. Every
@@ -2080,6 +2088,115 @@ id="declare-data-query-static-eg-5" />
             that the programmer only calls the right object and the SQL for
             the proper database will be called.</para>
           </note>
+        </section>
+
+        <section>
+          <title>Introduction to Stored Procedure Declarations (Remote Data
+          Access Objects)</title>
+
+          <para>The stored procedure and data access objects (DAOs)
+          delcarations are comprised of the <sgmltag class="starttag">stored-procedures</sgmltag>,
+          <sgmltag class="starttag">stored-procedure</sgmltag>, and <sgmltag
+          class="starttag">params</sgmltag> tags.</para>
+
+          <example>
+            <title>Examples of Stored Procedure Tags in Data Management Layer</title>
+
+            <programlisting>project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+...
+
+&#60;<emphasis role="bold">stored-procedures</emphasis> package=&#34;pkg_test&#34;&#62; <co
+id="declare-data-sp-eg-1" />
+
+    &#60;stored-procedure name=&#34;getVersion&#34; data-src=&#34;jdbc/oracle&#34;&#62;
+
+        { ? = call pkg_test.getVersion() }
+
+        &#60;params&#62;
+            &#60;param type=&#34;out&#34; sql-type=&#34;varchar&#34; value=&#34;session:pkg_return_value&#34;/&#62;
+        &#60;/params&#62;
+    &#60;/stored-procedure&#62;
+
+    &#60;<emphasis role="bold">stored-procedure</emphasis> <co
+id="declare-data-sp-eg-2" /> name=&#34;appendString&#34; data-src=&#34;jdbc/oracle&#34;&#62; <co
+id="declare-data-sp-eg-3" />
+
+        { call pkg_test.doSomeAction(?, ?, ?) }  <co id="declare-data-sp-eg-4" />
+
+        &#60;params&#62; <co id="declare-data-sp-eg-5" />
+            &#60;param type=&#34;in-out&#34; sql-type=&#34;varchar&#34; value=&#34;request-attr:string1&#34;/&#62; <co
+id="declare-data-sp-eg-6" />
+            &#60;param type=&#34;in&#34; sql-type=&#34;varchar&#34; value=&#34;request-attr:string2&#34;/&#62;
+            &#60;param type=&#34;in&#34; sql-type=&#34;integer&#34; value=&#34;request-attr:tab&#34;/&#62;
+        &#60;/params&#62;
+    &#60;/stored-procedure&#62;</programlisting>
+          </example>
+
+          <calloutlist>
+            <callout arearefs="declare-data-sp-eg-1">
+              <para>All stored procedures are placed into packages using the
+              <sgmltag class="starttag">stored-procedures</sgmltag> tag so
+              that they may be organized appropriately.</para>
+            </callout>
+
+            <callout arearefs="declare-data-sp-eg-2">
+              <para>Each stored procedure is declared using a <sgmltag
+              class="starttag">stored-procedure</sgmltag> tag and is uniquely
+              identified with a name. The fully qualfied name of the callable
+              procedure becomes <replaceable>packageName</replaceable>.<replaceable>storeProcedureName</replaceable>
+              and may be treated as a database-indendent remote DAO (data
+              access object).</para>
+            </callout>
+
+            <callout arearefs="declare-data-sp-eg-3">
+              <para>A stored procedure may be assigned a <sgmltag>data-src</sgmltag>
+              attribute which may be dynamically calculated to connect to
+              different data sources or may default to a common data source.</para>
+            </callout>
+
+            <callout arearefs="declare-data-query-static-eg-4">
+              <para>The SQL, using standard JDBC syntax, for the stored
+              procedure call is placed in the XML. This way, all the JDBC call
+              statements are external from Java code. If some portion of the
+              stored procedure call is dynamic (such as the procedure name),
+              then portions of the JDBC call statement may be made replaceable
+              using Value Sources.</para>
+            </callout>
+
+            <callout arearefs="declare-data-sp-eg-5">
+              <para>Each stored procedure must have a <sgmltag
+              class="starttag">params</sgmltag> tag for declaration of
+              parameters.</para>
+            </callout>
+
+            <callout arearefs="declare-data-query-static-eg-6">
+              <para>Each <sgmltag class="starttag">params</sgmltag> tag must
+              have one or more <sgmltag class="starttag">param</sgmltag> tags
+              along with <sgmltag class="attribute">value</sgmltag>
+              attributes. All <emphasis>in</emphasis> parameters and
+              <emphasis>out</emphasis> parameters must be sequentially defined
+              to match the stored procedure&#39;s signature and the
+              <emphasis>flow</emphasis> of the parameter is defined using the
+              <sgmltag class="attribute">type</sgmltag> attribute. There are
+              only three values available for <sgmltag class="attribute">type</sgmltag>
+              attribute: <sgmltag class="attvalue">in</sgmltag>, <sgmltag
+              class="attvalue">out</sgmltag>, and <sgmltag class="attvalue">in-out</sgmltag>.
+              Also, the attribute <sgmltag class="attribute">sql-type</sgmltag>
+              must be defined to reflect what kind of object is being returned
+              or bound. The <sgmltag class="attribute">value</sgmltag>
+              attribute is used to currently hold either the input for the
+              bind variables or the return value of the registered out
+              variables. The <sgmltag class="attribute">value</sgmltag>
+              attribute supports Value Sources for its value so the value may
+              be static or dynamic (see <xref linkend="section-value-sources" />).
+              This allows, for example, the parameter to a stored procedure to
+              be obtained dynamically from the runtime environment. Every
+              <sgmltag class="starttag">stored-procedure</sgmltag> tag also
+              becomes a real Java object so parameters may be passed into Java
+              methods for the object as well (which would override what was
+              specified in the XML). </para>
+            </callout>
+          </calloutlist>
         </section>
 
         <section>
@@ -4997,6 +5114,12 @@ public class Test1  extends com.xaf.form.Dialog
           </note>
         </section>
       </section>
+    </section>
+
+    <section>
+      <title>Stored Procedures and Callable Statements</title>
+
+      <para></para>
     </section>
 
     <section>
