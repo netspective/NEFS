@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceCommand.java,v 1.2 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: ValueSourceCommand.java,v 1.3 2003-11-09 19:27:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -89,6 +89,11 @@ public class ValueSourceCommand extends AbstractHttpServletCommand
 
     public ValueSourceCommand()
     {
+    }
+
+    public boolean isAbleToAffectNavigation()
+    {
+        return true;
     }
 
     public String getParameters()

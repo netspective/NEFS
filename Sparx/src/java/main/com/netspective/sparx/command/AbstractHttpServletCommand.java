@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHttpServletCommand.java,v 1.2 2003-05-10 16:49:59 shahid.shah Exp $
+ * $Id: AbstractHttpServletCommand.java,v 1.3 2003-11-09 19:27:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -54,6 +54,11 @@ import com.netspective.sparx.form.DialogContext;
 public abstract class AbstractHttpServletCommand extends AbstractCommand implements HttpServletCommand
 {
     static public final String PAGE_COMMAND_REQUEST_PARAM_NAME = "cmd";
+
+    public boolean isAbleToAffectNavigation()
+    {
+        return false;
+    }
 
     public void handleCommand(Writer writer, DialogContext dc, boolean unitTest) throws CommandException, IOException
     {

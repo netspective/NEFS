@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.10 2003-08-30 16:41:28 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.11 2003-11-09 19:27:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -108,6 +108,11 @@ public class DialogCommand extends AbstractHttpServletCommand
     private DialogPerspectives perspective;
     private String skinName;
     private DialogDebugFlags debugFlags;
+
+    public boolean isAbleToAffectNavigation()
+    {
+        return true;
+    }
 
     public String getParameters()
     {

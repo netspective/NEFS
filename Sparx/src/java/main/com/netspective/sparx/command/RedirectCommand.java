@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RedirectCommand.java,v 1.4 2003-08-06 18:02:43 shahid.shah Exp $
+ * $Id: RedirectCommand.java,v 1.5 2003-11-09 19:27:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -81,6 +81,11 @@ public class RedirectCommand extends AbstractHttpServletCommand
 
     private ValueSource location;
     private boolean isNavId;
+
+    public boolean isAbleToAffectNavigation()
+    {
+        return true;
+    }
 
     public String getParameters()
     {

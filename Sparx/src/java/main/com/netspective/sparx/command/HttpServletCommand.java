@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpServletCommand.java,v 1.3 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: HttpServletCommand.java,v 1.4 2003-11-09 19:27:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -64,4 +64,12 @@ public interface HttpServletCommand extends ServletCommand
      * mode.
      */
     public void handleCommand(Writer writer, DialogContext dc, boolean unitTest) throws CommandException, IOException;
+
+    /**
+     * Ascertain whether or not this command may affect the navigation of the active page. For example, if the command
+     * may redirect a user, could change a heading, or otherwise alter the navigation page behavior then it is said to
+     * affect navigation.
+     * @return True if this command is able to affect the navigation of the current page
+     */
+    public boolean isAbleToAffectNavigation();
 }
