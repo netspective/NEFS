@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.44 2004-03-03 08:11:08 aye.thu Exp $
+ * $Id: Project.java,v 1.45 2004-03-03 16:06:56 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -225,7 +225,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private List lifecycleListeners = new ArrayList();
     private NavigationTrees navigationTrees = new NavigationTrees(this);
     private Dialogs dialogs = new Dialogs(this);
-    private PanelEditors recordEditorPanels = new PanelEditors(this);
+    private PanelEditors panelEditors = new PanelEditors(this);
     private DialogsPackage activeDialogsNameSpace;
     private PanelEditorsPackage activeRecordEditorPanelsNameSpace;
     private AntProjects antProjects = new AntProjects();
@@ -463,36 +463,36 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public PanelEditors getRecordEditorPanels()
+    public PanelEditors getPanelEditors()
     {
-        return recordEditorPanels;
+        return panelEditors;
     }
 
-    public List getRecordEditorPanels(String pkgName)
+    public List getPanelEditors(String pkgName)
     {
-        return recordEditorPanels.getByNameSpace(pkgName);
+        return panelEditors.getByNameSpace(pkgName);
     }
 
-    public PanelEditor getRecordEditorPanel(final String name)
+    public PanelEditor getPanelEditor(final String name)
     {
         String actualName = PanelEditor.translateNameForMapKey(name);
-        PanelEditor dialog = recordEditorPanels.get(actualName);
+        PanelEditor dialog = panelEditors.get(actualName);
 
         if(dialog == null && log.isDebugEnabled())
         {
-            log.debug("Unable to find record editor panel '"+ name +"' as '"+ actualName +"'. Available: " + recordEditorPanels);
+            log.debug("Unable to find panel editor '"+ name +"' as '"+ actualName +"'. Available: " + panelEditors);
             return null;
         }
         return dialog;
     }
 
-    public PanelEditorsPackage createRecordEditorPanels()
+    public PanelEditorsPackage createPanelEditors()
     {
-        activeRecordEditorPanelsNameSpace = new PanelEditorsPackage(getRecordEditorPanels());
+        activeRecordEditorPanelsNameSpace = new PanelEditorsPackage(getPanelEditors());
         return activeRecordEditorPanelsNameSpace;
     }
 
-    public void addRecordEditorPanels(PanelEditorsPackage pkg)
+    public void addPanelEditors(PanelEditorsPackage pkg)
     {
         activeRecordEditorPanelsNameSpace = null;
     }

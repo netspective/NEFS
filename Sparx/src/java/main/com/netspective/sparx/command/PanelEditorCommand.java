@@ -70,7 +70,7 @@ import java.util.StringTokenizer;
  * Class for handling the record-editor-panel command
  *
  *
- * @version $Id: PanelEditorCommand.java,v 1.2 2004-03-03 16:01:22 aye.thu Exp $
+ * @version $Id: PanelEditorCommand.java,v 1.3 2004-03-03 16:07:13 aye.thu Exp $
  */
 public class PanelEditorCommand extends AbstractHttpServletCommand
 {
@@ -202,7 +202,7 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
      */
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
-        PanelEditor ePanel = nc.getProject().getRecordEditorPanel(getPanelEditorName());
+        PanelEditor ePanel = nc.getProject().getPanelEditor(getPanelEditorName());
         if (ePanel == null)
         {
              throw new RuntimeException("Record editor panel '"+ getPanelEditorName() + "' not found in "+ this +".");

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.2 2004-03-03 08:22:37 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.3 2004-03-03 16:01:32 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -434,13 +434,13 @@ public class PanelEditor extends AbstractPanel
 
 
         if (mode == EDIT_RECORD_DISPLAY_MODE)
-             url = url + PanelEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",edit,${" + pkColumnIndex + "}";
+             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",edit,${" + pkColumnIndex + "}";
         else if (mode == DELETE_RECORD_DISPLAY_MODE)
-            url = url + PanelEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",delete,${" + pkColumnIndex + "}";
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",delete,${" + pkColumnIndex + "}";
         else if (mode == ADD_RECORD_DISPLAY_MODE)
-            url = url + PanelEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",add";
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",add";
         else if (mode == MANAGE_RECORDS_DISPLAY_MODE)
-            url = url + PanelEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",manage";
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",manage";
         else if (mode == DEFAULT_DISPLAY_MODE)
             url = currentUrl;
 
