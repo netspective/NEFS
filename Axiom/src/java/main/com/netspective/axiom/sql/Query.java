@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.9 2003-06-26 06:03:36 roque.hernandez Exp $
+ * $Id: Query.java,v 1.10 2003-08-01 22:27:42 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -165,7 +165,7 @@ public class Query
 
     public static String translateNameForMapKey(String name)
     {
-        return name.toUpperCase();
+        return name != null ? name.toUpperCase() : null;
     }
 
     public String getNameForMapKey()
