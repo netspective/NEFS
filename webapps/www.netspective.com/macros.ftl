@@ -66,6 +66,15 @@
    </table>
 </#macro>
 
+<#assign tour =
+    [
+        { 'id': "nefs-console-tour", 'name': "NEFS Enterprise Console Tour",
+    	      'tourUrl' : resourcesPath + '/support/docs/nef-articles/nefs-console-tour.html',
+              'tourPDF' : resourcesPath + '/nefs-console-tour.pdf',
+              'tourName' : 'NEFS Enterprise Console Tour'
+        }
+    ]>
+
 <#assign sampleApps =
     [
         { 'id': "nefs-starter-empty", 'name': "Starter App", 'allowTryOnline': false, 'allowDownload': true,
