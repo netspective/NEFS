@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.4 2003-04-01 13:06:34 shahbaz.javeed Exp $
+ * $Id: TextUtils.java,v 1.5 2003-04-04 17:10:59 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -52,6 +52,15 @@ import org.apache.oro.text.perl.Perl5Util;
 
 public class TextUtils
 {
+    public static final String[] BOOLEAN_CHOICES = new String[]
+    {
+        "yes", "no",
+        "true", "false",
+        "on", "off",
+        "1", "0"
+    };
+
+
     /**
      * Return the name of the given cls that is different from the relativeTo class. Basically, this chops off the
      * package name of the cls that is equivalent to that of the relativeTo class.
@@ -240,6 +249,11 @@ public class TextUtils
 
 		return returnValue;
 	}
+
+    public static String[] getBooleanChoices()
+    {
+        return BOOLEAN_CHOICES;
+    }
 
     /**
      * returns the boolean equivalent of a string, which is considered true
