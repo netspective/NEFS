@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.11 2003-07-09 16:51:40 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.12 2003-07-10 00:52:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -692,7 +692,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
         }
         else
-            writer.write("    <table id=\""+ dc.getPanel().getIdentifier() +"_content\" class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+            writer.write("    <table id=\""+ dc.getPanel().getPanelIdentifier() +"_content\" class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
         List fieldErrorMsgs = new ArrayList();
         List dlgErrorMsgs = dc.getValidationContext().getValidationErrorsForScope(ValidationContext.VALIDATIONSCOPE_ENTIRE_CONTEXT);

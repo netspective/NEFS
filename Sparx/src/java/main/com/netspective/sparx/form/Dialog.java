@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.20 2003-07-09 16:51:40 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.21 2003-07-10 00:52:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -147,8 +147,8 @@ public class Dialog extends AbstractPanel
     private String name;
     private String htmlFormName;
     private int layoutColumnsCount = 1;
-    private String[] retainRequestParams = new String[0];
-    private Class dcClass = DialogContext.class;
+    private String[] retainRequestParams;
+    private Class dialogContextClass = DialogContext.class;
     private List clientJavascripts = new ArrayList();
 
     /**
@@ -274,14 +274,14 @@ public class Dialog extends AbstractPanel
             return false;
     }
 
-    public Class getDcClass()
+    public Class getDialogContextClass()
     {
-        return dcClass;
+        return dialogContextClass;
     }
 
-    public void setDcClass(Class dcClass)
+    public void setDialogContextClass(Class dialogContextClass)
     {
-        this.dcClass = dcClass;
+        this.dialogContextClass = dialogContextClass;
     }
 
     public int getLayoutColumnsCount()
@@ -442,11 +442,6 @@ public class Dialog extends AbstractPanel
     public void addClientJs(DialogIncludeJavascriptFile clientJsFile)
     {
         clientJavascripts.add(clientJsFile);
-    }
-
-    public void setDialogContextClass(Class cls)
-    {
-        dcClass = cls;
     }
 
     public DialogsPackage getNameSpace()
@@ -617,7 +612,7 @@ public class Dialog extends AbstractPanel
         DialogContext dc = null;
         try
         {
-            dc = (DialogContext) dcClass.newInstance();
+            dc = (DialogContext) dialogContextClass.newInstance();
         }
         catch(Exception e)
         {

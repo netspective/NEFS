@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.11 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: HtmlPanel.java,v 1.12 2003-07-10 00:52:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -56,7 +56,7 @@ public interface HtmlPanel
     public final int RENDERFLAG_NOFRAME = 1;
     public final int RENDERFLAGS_DEFAULT = 0;
 
-    public String getIdentifier();
+    public String getPanelIdentifier();
 
     public HtmlPanels getChildren();
 

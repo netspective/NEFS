@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.8 2003-06-26 07:07:51 aye.thu Exp $
+ * $Id: QueryReportPanel.java,v 1.9 2003-07-10 00:52:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -72,12 +72,12 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
 
     public String getName()
     {
-        return getIdentifier();
+        return getPanelIdentifier();
     }
 
     public void setName(String name)
     {
-        setIdentifier(name);
+        setPanelIdentifier(name);
     }
 
     public boolean isDefaultPanel()

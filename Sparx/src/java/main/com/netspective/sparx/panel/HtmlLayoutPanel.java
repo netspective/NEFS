@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.16 2003-06-20 20:52:51 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.17 2003-07-10 00:52:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -75,7 +75,7 @@ public class HtmlLayoutPanel implements HtmlPanel
         banner = createBanner();
     }
 
-    public String getIdentifier()
+    public String getPanelIdentifier()
     {
         return identifier;
     }
@@ -214,14 +214,14 @@ public class HtmlLayoutPanel implements HtmlPanel
                 HtmlPanelSkin tabbedPanelSkin = theme.getTabbedPanelSkin();
                 tabbedPanelSkin.renderPanelRegistration(writer, vc);
                 tabbedPanelSkin.renderFrameBegin(writer, vc);
-                writer.write("<script>startParentPanel(ALL_PANELS.getPanel(\""+ getIdentifier() +"\"))</script>\n");
+                writer.write("<script>startParentPanel(ALL_PANELS.getPanel(\""+ getPanelIdentifier() +"\"))</script>\n");
                 writer.write("<div class=\"panel-output-tabs\">");
-                writer.write("<table id=\""+ getIdentifier() + "_tabs\" class=\"panel-output-tabs\"><tr>");
+                writer.write("<table id=\""+ getPanelIdentifier() + "_tabs\" class=\"panel-output-tabs\"><tr>");
                 for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
                     writer.write("<td>");
-                    writer.write("  <a id=\""+ panel.getIdentifier() +"_tab\" class=\"panel-output-tab\" href=\"javascript:ALL_PANELS.getPanel('"+ getIdentifier() +"').children.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">&nbsp;");
+                    writer.write("  <a id=\""+ panel.getPanelIdentifier() +"_tab\" class=\"panel-output-tab\" href=\"javascript:ALL_PANELS.getPanel('"+ getPanelIdentifier() +"').children.togglePanelExpandCollapse('"+ panel.getPanelIdentifier() +"')\">&nbsp;");
                     writer.write(      panel.getFrame().getHeading().getTextValue(vc));
                     writer.write("  </a></td>");
                 }
@@ -230,10 +230,10 @@ public class HtmlLayoutPanel implements HtmlPanel
                 for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
-                    writer.write("<div id=\""+ panel.getIdentifier() + "_container\" style='display: none'>");
+                    writer.write("<div id=\""+ panel.getPanelIdentifier() + "_container\" style='display: none'>");
                     panel.render(writer, nc, theme, HtmlPanel.RENDERFLAG_NOFRAME);
                     writer.write("</div>");
-                    writer.write("<script>ACTIVE_PANEL_PARENT.getPanel(\""+ panel.getIdentifier() +"\").setStyle(PANELSTYLE_TABBED);</script>\n");
+                    writer.write("<script>ACTIVE_PANEL_PARENT.getPanel(\""+ panel.getPanelIdentifier() +"\").setStyle(PANELSTYLE_TABBED);</script>\n");
                 }
                 tabbedPanelSkin.renderFrameEnd(writer, vc);
                 writer.write("<script>endParentPanel()</script>\n");
@@ -271,14 +271,14 @@ public class HtmlLayoutPanel implements HtmlPanel
                 vc.setDialogContext(dc);
                 tabbedPanelSkin.renderPanelRegistration(writer, vc);
                 tabbedPanelSkin.renderFrameBegin(writer, vc);
-                writer.write("<script>startParentPanel(ALL_PANELS.getPanel(\""+ getIdentifier() +"\"))</script>\n");
+                writer.write("<script>startParentPanel(ALL_PANELS.getPanel(\""+ getPanelIdentifier() +"\"))</script>\n");
                 writer.write("<div class=\"panel-output-tabs\">");
-                writer.write("<table id=\""+ getIdentifier() + "_tabs\" class=\"panel-output-tabs\"><tr>");
+                writer.write("<table id=\""+ getPanelIdentifier() + "_tabs\" class=\"panel-output-tabs\"><tr>");
                 for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
                     writer.write("<td>");
-                    writer.write("  <a id=\""+ panel.getIdentifier() +"_tab\" class=\"panel-output-tab\" href=\"javascript:ALL_PANELS.getPanel('"+ getIdentifier() +"').children.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">&nbsp;");
+                    writer.write("  <a id=\""+ panel.getPanelIdentifier() +"_tab\" class=\"panel-output-tab\" href=\"javascript:ALL_PANELS.getPanel('"+ getPanelIdentifier() +"').children.togglePanelExpandCollapse('"+ panel.getPanelIdentifier() +"')\">&nbsp;");
                     writer.write(      panel.getFrame().getHeading().getTextValue(vc));
                     writer.write("  </a></td>");
                 }
@@ -287,10 +287,10 @@ public class HtmlLayoutPanel implements HtmlPanel
                 for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
-                    writer.write("<div id=\""+ panel.getIdentifier() + "_container\" style='display: none'>");
+                    writer.write("<div id=\""+ panel.getPanelIdentifier() + "_container\" style='display: none'>");
                     panel.render(writer, dc, theme, HtmlPanel.RENDERFLAG_NOFRAME);
                     writer.write("</div>");
-                    writer.write("<script>ACTIVE_PANEL_PARENT.getPanel(\""+ panel.getIdentifier() +"\").setStyle(PANELSTYLE_TABBED);</script>\n");
+                    writer.write("<script>ACTIVE_PANEL_PARENT.getPanel(\""+ panel.getPanelIdentifier() +"\").setStyle(PANELSTYLE_TABBED);</script>\n");
                 }
                 tabbedPanelSkin.renderFrameEnd(writer, vc);
                 writer.write("<script>endParentPanel()</script>\n");

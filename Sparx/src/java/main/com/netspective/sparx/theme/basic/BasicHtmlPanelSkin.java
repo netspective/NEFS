@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.12 2003-06-30 01:34:54 aye.thu Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.13 2003-07-10 00:52:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -196,7 +196,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
     public void renderPanelRegistration(Writer writer, HtmlPanelValueContext vc) throws IOException
     {
         HtmlPanel panel = vc.getPanel();
-        writer.write("<script>ACTIVE_PANEL_PARENT.registerPanel(new Panel(\""+ panel.getIdentifier() +"\", false, PANELSTYLE_TOPLEVEL, \""+ panelClassNamePrefix +"\"))</script>\n");
+        writer.write("<script>ACTIVE_PANEL_PARENT.registerPanel(new Panel(\""+ panel.getPanelIdentifier() +"\", false, PANELSTYLE_TOPLEVEL, \""+ panelClassNamePrefix +"\"))</script>\n");
     }
 
     public void renderFrameBegin(Writer writer, HtmlPanelValueContext vc) throws IOException
@@ -207,7 +207,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         Theme theme = ((BasicDbHttpServletValueContext) vc).getActiveTheme();
         String imgPath = ((BasicDbHttpServletValueContext) vc).getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
 
-        writer.write("<table id=\""+ panel.getIdentifier() +"_frame\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap ");
+        writer.write("<table id=\""+ panel.getPanelIdentifier() +"_frame\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap ");
         if(flags.flagIsSet(Flags.FULL_WIDTH))
             writer.write("width='100%' ");
         writer.write(">\n");
@@ -227,13 +227,13 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 if (frame.getFlags().flagIsSet(HtmlPanelFrame.Flags.ALLOW_COLLAPSE))
                 {
                     if (vc.isMinimized())
-                        writer.write("            <td id=\""+ panel.getIdentifier() +"_action\" class=\""+ panelClassNamePrefix +"-frame-heading-action-expand\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
+                        writer.write("            <td id=\""+ panel.getPanelIdentifier() +"_action\" class=\""+ panelClassNamePrefix +"-frame-heading-action-expand\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('"+ panel.getPanelIdentifier() +"')\">" +
                             "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
                     else
-                        writer.write("            <td id=\""+ panel.getIdentifier() +"_action\" class=\""+ panelClassNamePrefix +"-frame-heading-action-collapse\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
+                        writer.write("            <td id=\""+ panel.getPanelIdentifier() +"_action\" class=\""+ panelClassNamePrefix +"-frame-heading-action-collapse\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('"+ panel.getPanelIdentifier() +"')\">" +
                             "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
 
-                    writer.write("<script>ALL_PANELS.getPanel(\""+ panel.getIdentifier() +"\").minimized = "+ (vc.isMinimized() ? "true" : "false") +"</script>");
+                    writer.write("<script>ALL_PANELS.getPanel(\""+ panel.getPanelIdentifier() +"\").minimized = "+ (vc.isMinimized() ? "true" : "false") +"</script>");
                 }
                 else
                 {
@@ -259,9 +259,9 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
         int height = panel.getHeight();
         if(height > 0)
-            writer.write("<tr id=\""+ panel.getIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"height: "+ height +"; overflow: auto;\">\n");
+            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"height: "+ height +"; overflow: auto;\">\n");
         else
-            writer.write("<tr id=\""+ panel.getIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"'>\n");
+            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"'>\n");
     }
 
     public void renderFrameEnd(Writer writer, HtmlPanelValueContext vc) throws IOException
@@ -277,7 +277,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
             ValueSource fvs = frame.getFooting();
             if(fvs != null)
             {
-                writer.write("<tr id=\""+ panel.getIdentifier() +"_banner_footer\">\n");
+                writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_banner_footer\">\n");
                 writer.write("    <td class=\""+ panelClassNamePrefix +"-banner-footer\">" + fvs.getTextValue(vc) + "</td>\n");
                 writer.write("</tr>\n");
             }
@@ -361,7 +361,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         if((actions == null || (actions != null || actions.size() == 0) && content == null))
             return;
 
-        writer.write("<tr id=\""+ panel.getIdentifier() +"_banner\"><td class=\""+ panelClassNamePrefix +"-banner\">\n");
+        writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_banner\"><td class=\""+ panelClassNamePrefix +"-banner\">\n");
         if(content != null)
         {
             writer.write(content.getTextValue(vc));

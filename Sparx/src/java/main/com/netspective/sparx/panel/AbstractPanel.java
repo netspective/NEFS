@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractPanel.java,v 1.1 2003-04-29 19:57:24 shahid.shah Exp $
+ * $Id: AbstractPanel.java,v 1.2 2003-07-10 00:52:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -91,12 +91,12 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
     {
     }
 
-    public String getIdentifier()
+    public String getPanelIdentifier()
     {
         return identifier;
     }
 
-    public void setIdentifier(String identifier)
+    public void setPanelIdentifier(String identifier)
     {
         this.identifier = identifier;
     }

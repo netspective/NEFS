@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.1 2003-07-02 14:02:47 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.2 2003-07-10 00:52:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -76,13 +76,13 @@ public class TableDialog extends Dialog
 
     public TableDialog()
     {
-        setDcClass(TableDialogContext.class);
+        setDialogContextClass(TableDialogContext.class);
     }
 
     public TableDialog(DialogsPackage pkg)
     {
         super(pkg);
-        setDcClass(TableDialogContext.class);
+        setDialogContextClass(TableDialogContext.class);
     }
 
     public DialogFlags createDialogFlags()

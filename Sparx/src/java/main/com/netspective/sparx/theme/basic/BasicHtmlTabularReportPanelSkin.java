@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.13 2003-06-28 05:23:48 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.14 2003-07-10 00:52:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -160,7 +160,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
         }
         else
-            writer.write("    <table id=\""+ ((HtmlPanelValueContext) rc).getPanel().getIdentifier() +"_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+            writer.write("    <table id=\""+ ((HtmlPanelValueContext) rc).getPanel().getPanelIdentifier() +"_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
         if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
             produceHeadingRow(writer, (HtmlTabularReportValueContext) rc, (HtmlTabularReportDataSource) ds);
@@ -232,7 +232,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
         boolean hiearchical = ds.isHierarchical();
         boolean allowTreeExpandCollapse = getFlags().flagIsSet(Flags.ALLOW_TREE_EXPAND_COLLAPSE);
-        String panelId = rc.getPanel().getIdentifier();
+        String panelId = rc.getPanel().getPanelIdentifier();
 
         StringBuffer treeScript = null;
         if(hiearchical && allowTreeExpandCollapse)

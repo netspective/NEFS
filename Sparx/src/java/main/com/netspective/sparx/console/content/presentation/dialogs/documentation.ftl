@@ -25,18 +25,25 @@
     <@inspectObject object=dialog heading="Dialog '${dialog.qualifiedName}' Documentation"/>
 </#macro>
 
-<#macro listDialogFields dialog>
-    <#assign fields = []/>
-    <#list dialog.fields.fieldsList as field>
-        <#assign fields = fields + [
-                    [field_index, "<a href='?selected-dialog-id=${selectedDialogId}&amp;selected-field-id=${field.qualifiedName?default('')}'>" + field.qualifiedName?default('(none)') + "</a>", field.caption?default('&nbsp;'), field.fieldTypes.toString(), getClassReference(field.class.name)]
+<#function appendFieldData dialogFields indent="">
+    <#assign fieldsData = []/>
+    <#list dialogFields.fieldsList as field>
+        <#assign fieldsData = fieldsData + [
+                    [indent + field_index, indent + "<a href='?selected-dialog-id=${selectedDialogId}&amp;selected-field-id=${field.qualifiedName?default('')}'>" + field.qualifiedName?default('(none)') + "</a>", field.caption?default('&nbsp;'), field.fieldTypes.toString(), getClassReference(field.class.name)]
                     ]/>
+        <#if field.children?default('-') != '-'>
+            <#assign fieldsData = fieldsData + appendFieldData(field.children, indent + "&nbsp;&nbsp;&nbsp;&nbsp;")/>
+        </#if>
     </#list>
+    <#return fieldsData/>
+</#function>
 
+<#macro listDialogFields dialog>
+    <#assign fieldsData = appendFieldData(dialog.fields)/>
     <@panel heading="Dialog '${dialog.qualifiedName}' Fields">
         <@reportTable
                 headings = ["&nbsp;", "Field", "Caption", "Type(s)", "Class"]
-                data=fields/>
+                data=fieldsData/>
     </@panel>
 </#macro>
 

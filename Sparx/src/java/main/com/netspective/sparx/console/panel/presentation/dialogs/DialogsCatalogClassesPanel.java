@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogClassesPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: DialogsCatalogClassesPanel.java,v 1.4 2003-07-10 00:52:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -143,7 +143,7 @@ public class DialogsCatalogClassesPanel extends DialogsCatalogPanel
                     return reportValueContext.getSkin().constructClassRef(activeRowDialog.getClass());
 
                 case 5:
-                    return reportValueContext.getSkin().constructClassRef(activeRowDialog.getDcClass());
+                    return reportValueContext.getSkin().constructClassRef(activeRowDialog.getDialogContextClass());
 
                 default:
                     return null;
