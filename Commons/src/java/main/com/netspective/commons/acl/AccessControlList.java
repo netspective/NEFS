@@ -123,7 +123,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     /**
      * Gets a map of all permissions including children
      */
-    protected Map getPermissionsByName()
+    public Map getPermissionsByName()
     {
         return permissionsByName;
     }
@@ -136,7 +136,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     /**
      * Gets a map of all roles including children
      */
-    protected Map getRolesByName()
+    public Map getRolesByName()
     {
         return rolesByName;
     }

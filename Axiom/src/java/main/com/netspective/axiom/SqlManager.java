@@ -570,6 +570,8 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
     public void generateIdentifiersConstants(File rootPath, String rootPkgAndClassName) throws IOException
     {
+        super.generateIdentifiersConstants(rootPath, rootPkgAndClassName);
+
         XdmIdentifierConstantsGenerator xicg =
                 new XdmIdentifierConstantsGenerator(rootPath,
                                                     rootPkgAndClassName,

@@ -32,6 +32,11 @@
  */
 package com.netspective.commons.xdm;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -338,4 +343,61 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     {
         return getReports().get(name);
     }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    protected class IdentifierConstantsGenerator
+    {
+        public static final char DELIM = '.';
+
+        public IdentifierConstantsGenerator()
+        {
+        }
+
+        public void defineConstants(Map constants, AccessControlList acl)
+        {
+            for(Iterator i = acl.getPermissionsByName().entrySet().iterator(); i.hasNext(); )
+            {
+                final Map.Entry entry = (Map.Entry) i.next();
+                final Permission permission = (Permission) entry.getValue();
+                constants.put("security" + permission.getQualifiedName().replace('/', DELIM), permission.getQualifiedName());
+                System.out.println("security" + permission.getQualifiedName().replace('/', DELIM) + " => " + permission.getQualifiedName());
+            }
+
+            for(Iterator i = acl.getRolesByName().entrySet().iterator(); i.hasNext(); )
+            {
+                final Map.Entry entry = (Map.Entry) i.next();
+                final Role role = (Role) entry.getValue();
+                constants.put("security" + role.getQualifiedName().replace('/', DELIM), role.getQualifiedName());
+                System.out.println("security" + role.getQualifiedName().replace('/', DELIM) + " => " + role.getQualifiedName());
+            }
+        }
+
+        public Map createConstants()
+        {
+            final Map constants = new HashMap();
+            final AccessControlLists acls = getAccessControlLists();
+            for(Iterator i = acls.getAccessControlListNames().iterator(); i.hasNext(); )
+            {
+                final String name = (String) i.next();
+                defineConstants(constants, acls.getAccessControlList(name));
+            }
+            return constants;
+        }
+    }
+
+    protected IdentifierConstantsGenerator getXdmIdentifiersConstantsDecls()
+    {
+        return new IdentifierConstantsGenerator();
+    }
+
+    public void generateIdentifiersConstants(File rootPath, String rootPkgAndClassName) throws IOException
+    {
+        XdmIdentifierConstantsGenerator xicg =
+                new XdmIdentifierConstantsGenerator(rootPath,
+                                                    rootPkgAndClassName,
+                                                    getXdmIdentifiersConstantsDecls().createConstants());
+        xicg.generateCode();
+    }
+
 }
