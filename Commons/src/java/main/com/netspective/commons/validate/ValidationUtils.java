@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValidationUtils.java,v 1.3 2003-05-15 15:53:55 shahid.shah Exp $
+ * $Id: ValidationUtils.java,v 1.4 2004-03-17 17:13:09 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.validate;
@@ -589,4 +589,20 @@ public class ValidationUtils
         return (REGEXP_DELIM + regexp + REGEXP_DELIM);
     }
 
+    /**
+     * <p>Checks to see whether an integer is a multiple of another integer or not.</p>
+     * @param value The value that this multiple check is being performed on.
+     * @param multiple The number that should divide value evenly into an integral number of parts.
+     * @return A boolean indicating whether value is evenly divisible by multiple or not.  The return value is always
+     * false when multiple == 0.
+     */
+    public static boolean isMultipleOf(int value, int multiple)
+    {
+        if (multiple == 0)
+            return false;
+
+        int quotient = value / multiple;
+
+        return (quotient * multiple == value);
+    }
 }
