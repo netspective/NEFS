@@ -69,6 +69,8 @@
       Preferences should be set to <emphasis>"passwd" file on the cvs
       server</emphasis> option (as shown below):</para>
 
+      <para></para>
+
       <figure>
         <title>Setting the Authentication Preference in WinCVS 1.2</title>
 
@@ -85,8 +87,9 @@
 
       <para>The <emphasis>Authentication</emphasis> option under
       <guimenu>Admin</guimenu> | <guimenuitem>Preferences</guimenuitem> should
-      be set to <emphasis>pserver</emphasis> option (as shown below): (TODO:
-      Image to be put here)</para>
+      be set to <emphasis>pserver</emphasis> option (as shown below): </para>
+
+      <para></para>
 
       <figure>
         <title>Setting the Authentication Preference in WinCVS 1.3</title>
