@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AppNavigationSkin.java,v 1.8 2003-10-22 18:59:19 shahid.shah Exp $
+ * $Id: AppNavigationSkin.java,v 1.9 2004-03-21 19:19:45 shahid.shah Exp $
  */
 
 package app;
@@ -117,7 +117,7 @@ public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSk
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-report.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-text.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/syntax-highlight.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/calendar-0.9.2/calendar-win2k-1.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/jscalendar-0.9.6/calendar-win2k-1.css") + "\" type=\"text/css\">\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/panel.js") + "\" language=\"JavaScript1.1\"></script>\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/dialog.js") + "\" language=\"JavaScript1.2\"></script>\n");
 
