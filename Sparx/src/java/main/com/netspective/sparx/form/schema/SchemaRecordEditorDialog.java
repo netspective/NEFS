@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.27 2004-04-12 22:37:08 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.28 2004-04-13 21:02:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -115,6 +115,28 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public static final String ATTRNAME_PRIMARYKEY_VALUE = "_pk-value";
     public static final String ATTRNAME_AUTOMAP = "_auto-map";
     public static final String ATTRNAME_LOOP = "_loop-column";
+
+    protected class ConditionalTemplateResult
+    {
+        private boolean exprResult;
+        private TemplateElement templateElement;
+
+        public ConditionalTemplateResult(boolean exprResult, TemplateElement templateElement)
+        {
+            this.exprResult = exprResult;
+            this.templateElement = templateElement;
+        }
+
+        public boolean isExprResultTrue()
+        {
+            return exprResult;
+        }
+
+        public TemplateElement getTemplateElement()
+        {
+            return templateElement;
+        }
+    }
 
     protected class InsertDataTemplate extends TemplateProducer
     {
@@ -350,18 +372,18 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public boolean isConditionalTestExpressionTrue(SchemaRecordEditorDialogContext sredc, TemplateElement element)
     {
         String testExpr = element.getAttributes().getValue(ATTRNAME_TEST);
-        if(testExpr != null || testExpr.length() > 0)
+        if(testExpr != null && testExpr.length() > 0)
             return sredc.isConditionalExpressionTrue(testExpr, null);
 
         testExpr = element.getAttributes().getValue(ATTRNAME_TEST_VS);
-        if(testExpr != null || testExpr.length() > 0)
+        if(testExpr != null && testExpr.length() > 0)
             return ValueSources.getInstance().getValueSourceOrStatic(testExpr).getValue(sredc).getBooleanValue();
 
         getLog().error("'test' attribute or 'test-vs' attribute with conditional expression is required");
         return false;
     }
 
-    public TemplateElement getConditionalChoiceTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
+    public ConditionalTemplateResult getConditionalChoiceTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
         if(! template.getElementName().equals(ELEMNAME_CHOOSE))
             return null;
@@ -378,7 +400,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 if(whenElement.getElementName().equals(ELEMNAME_WHEN))
                 {
                     if(isConditionalTestExpressionTrue(sredc, whenElement))
-                        return whenElement;
+                        return new ConditionalTemplateResult(true, whenElement);
                 }
                 else if(whenElement.getElementName().equals(ELEMNAME_OTHERWISE))
                     otherwiseTemplate = whenElement;
@@ -388,10 +410,10 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
 
         // if we get to here and we have an otherwise then go ahead and return that (otherwise it will be null)
-        return otherwiseTemplate;
+        return new ConditionalTemplateResult(false, otherwiseTemplate);
     }
 
-    public TemplateElement getConditionalIfTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
+    public ConditionalTemplateResult getConditionalIfTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
         if(! template.getElementName().equals(ELEMNAME_IF))
             return null;
@@ -400,20 +422,15 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         if(testExpr == null || testExpr.length() == 0)
         {
             getLog().error("Test expression is required");
-            return null;
+            return new ConditionalTemplateResult(false, template);
         }
         else
-        {
-            if(isConditionalTestExpressionTrue(sredc, template))
-                return template;
-            else
-                return null;
-        }
+            return new ConditionalTemplateResult(isConditionalTestExpressionTrue(sredc, template), template);
     }
 
-    public TemplateElement getConditionalTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
+    public ConditionalTemplateResult getConditionalTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
-        TemplateElement result = getConditionalChoiceTemplate(sredc, template);
+        ConditionalTemplateResult result = getConditionalChoiceTemplate(sredc, template);
         if(result != null)
             return result;
 
@@ -521,15 +538,18 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // first check to see if we're a conditional template (instead of a table name we are a <choose> or <if> block)
         // in the case we are a <choose> or <if> then the children of the choose's <when> or <otherwise> blocks will be
         // the actual things we want to populate
-        TemplateElement conditionalTemplate = getConditionalTemplate(sredc, templateElement);
-        if(conditionalTemplate != null)
+        ConditionalTemplateResult conditionalTemplateResult = getConditionalTemplate(sredc, templateElement);
+        if(conditionalTemplateResult != null)
         {
-            List conditionalChildElements = conditionalTemplate.getChildren();
-            for (int i = 0; i < conditionalChildElements.size(); i++)
+            if(conditionalTemplateResult.isExprResultTrue())
             {
-                TemplateNode childTableNode = (TemplateNode) conditionalChildElements.get(i);
-                if (childTableNode instanceof TemplateElement)
-                    populateDataUsingTemplateElement(sredc, (TemplateElement) childTableNode);
+                List conditionalChildElements = conditionalTemplateResult.getTemplateElement().getChildren();
+                for (int i = 0; i < conditionalChildElements.size(); i++)
+                {
+                    TemplateNode childTableNode = (TemplateNode) conditionalChildElements.get(i);
+                    if (childTableNode instanceof TemplateElement)
+                        populateDataUsingTemplateElement(sredc, (TemplateElement) childTableNode);
+                }
             }
 
             // we're not really a "populate" block since we're conditional so we leave now
@@ -665,15 +685,18 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // first check to see if we're a conditional template (instead of a table name we are a <choose> or <if> block)
         // in the case we are a <choose> or <if> then the children of the choose's <when> or <otherwise> blocks will be
         // the actual things we want to add
-        TemplateElement conditionalTemplate = getConditionalTemplate(sredc, templateElement);
-        if(conditionalTemplate != null)
+        ConditionalTemplateResult conditionalTemplateResult = getConditionalTemplate(sredc, templateElement);
+        if(conditionalTemplateResult != null)
         {
-            List conditionalChildElements = conditionalTemplate.getChildren();
-            for (int i = 0; i < conditionalChildElements.size(); i++)
+            if(conditionalTemplateResult.isExprResultTrue())
             {
-                TemplateNode childTableNode = (TemplateNode) conditionalChildElements.get(i);
-                if (childTableNode instanceof TemplateElement)
-                    addDataUsingTemplateElement(sredc, (TemplateElement) childTableNode, parentRow);
+                List conditionalChildElements = conditionalTemplateResult.getTemplateElement().getChildren();
+                for (int i = 0; i < conditionalChildElements.size(); i++)
+                {
+                    TemplateNode childTableNode = (TemplateNode) conditionalChildElements.get(i);
+                    if (childTableNode instanceof TemplateElement)
+                        addDataUsingTemplateElement(sredc, (TemplateElement) childTableNode, parentRow);
+                }
             }
 
             // we're not really an "add" block since we're conditional so we leave now
