@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlFormats.java,v 1.4 2004-08-11 02:07:59 shahid.shah Exp $
+ * $Id: AnsiSqlDdlFormats.java,v 1.5 2004-08-12 16:28:50 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -48,10 +48,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.netspective.axiom.policy.SqlDdlFormats;
+import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.text.TextUtils;
 
 public class AnsiSqlDdlFormats implements SqlDdlFormats
 {
+    private TemplateProcessor preDdlContentTemplate;
+    private TemplateProcessor preStaticDataContentTemplate;
+    private TemplateProcessor postDdlContentTemplate;
     private String scriptStatementTerminator;
     private String createTableClauseFormat;
     private String createTableAppendParamsFormat;
@@ -67,6 +71,7 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
     private String columnCommentClauseFormat;
     private boolean createPrimaryKeyIndex;
     private boolean createParentKeyIndex;
+    private boolean blankLineAllowedInCreateTable;
 
     public AnsiSqlDdlFormats()
     {
@@ -81,6 +86,7 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
         setFkeyConstraintAlterTableStatementFormat("ALTER TABLE ${fkey.sourceColumns.first.table.name} ADD " + getFkeyConstraintTableClauseFormat());
         setCreatePrimaryKeyIndex(true);
         setCreateParentKeyIndex(true);
+        setBlankLineAllowedInCreateTable(true);
     }
 
     public Map createJavaExpressionVars()
@@ -88,6 +94,36 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
         Map result = new HashMap();
         result.put("textUtils", TextUtils.getInstance());
         return result;
+    }
+
+    public TemplateProcessor getPreDdlContentTemplate()
+    {
+        return preDdlContentTemplate;
+    }
+
+    public void addPreDdlContentTemplate(TemplateProcessor templateProcessor)
+    {
+        this.preDdlContentTemplate = templateProcessor;
+    }
+
+    public TemplateProcessor getPreStaticDataContentTemplate()
+    {
+        return preStaticDataContentTemplate;
+    }
+
+    public void addPreStaticDataContentTemplate(TemplateProcessor templateProcessor)
+    {
+        this.preStaticDataContentTemplate = templateProcessor;
+    }
+
+    public TemplateProcessor getPostDdlContentTemplate()
+    {
+        return postDdlContentTemplate;
+    }
+
+    public void addPostDdlContentTemplate(TemplateProcessor templateProcessor)
+    {
+        this.postDdlContentTemplate = templateProcessor;
     }
 
     public String getCreateTableClauseFormat()
@@ -213,6 +249,16 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
     public boolean isCreateParentKeyIndex()
     {
         return createParentKeyIndex;
+    }
+
+    public boolean isBlankLineAllowedInCreateTable()
+    {
+        return blankLineAllowedInCreateTable;
+    }
+
+    public void setBlankLineAllowedInCreateTable(boolean blankLineAllowedInCreateTable)
+    {
+        this.blankLineAllowedInCreateTable = blankLineAllowedInCreateTable;
     }
 
     public void setCreateParentKeyIndex(boolean createParentKeyIndex)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlGenerator.java,v 1.8 2004-08-12 00:21:54 shahid.shah Exp $
+ * $Id: AnsiSqlDdlGenerator.java,v 1.9 2004-08-12 16:28:50 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -49,6 +49,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -81,6 +82,7 @@ import com.netspective.axiom.schema.table.IndexesCollection;
 import com.netspective.axiom.schema.table.TablesCollection;
 import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.axiom.value.DatabasePolicyValueContext;
+import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.text.JavaExpressionText;
 import com.netspective.commons.text.TextUtils;
 
@@ -117,6 +119,18 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         Writer writer = gc.getWriter();
         SqlDdlFormats ddlFormats = gc.getSqlDdlFormats();
         Tables tablesWithData = new TablesCollection();
+
+        TemplateProcessor preDdlContent = ddlFormats.getPreDdlContentTemplate();
+        TemplateProcessor preStaticDataContent = ddlFormats.getPreStaticDataContentTemplate();
+        TemplateProcessor postDdlContent = ddlFormats.getPostDdlContentTemplate();
+
+        Map prePostDdlTemplateVars = new HashMap();
+        prePostDdlTemplateVars.put("gc", gc);
+        prePostDdlTemplateVars.put("schema", gc.getSchema());
+        prePostDdlTemplateVars.put("textUtils", TextUtils.getInstance());
+
+        if(preDdlContent != null)
+            preDdlContent.process(writer, gc.getValueContext(), prePostDdlTemplateVars);
 
         if(gc.isCreateAbbreviationsMapCommentBlock())
             renderSqlDdlAbbreviationsCommentBlock(gc);
@@ -175,6 +189,9 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
             }
         }
 
+        if(preStaticDataContent != null)
+            preStaticDataContent.process(writer, gc.getValueContext(), prePostDdlTemplateVars);
+
         if(tablesWithData.size() > 0)
         {
             for(int i = 0; i < tablesWithData.size(); i++)
@@ -200,6 +217,9 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 }
             }
         }
+
+        if(postDdlContent != null)
+            postDdlContent.process(writer, gc.getValueContext(), prePostDdlTemplateVars);
     }
 
     public void renderSqlDdlAbbreviationsCommentBlock(SqlDdlGeneratorContext gc) throws IOException
@@ -272,7 +292,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         Writer writer = gc.getWriter();
         if(tablesSortedByAbbrev.size() > 0)
         {
-            writer.write("/*\n");
+            writer.write("\n/*\n");
             writer.write("   Some table names have been abbreviated in constraint and/or index names.\n");
             writer.write("   ========================================================================\n");
 
@@ -292,12 +312,12 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                     writer.write(((Table) entry.getValue()).getName());
                 writer.write("\n");
             }
-            writer.write("*/\n\n");
+            writer.write("*/\n");
         }
 
         if(tablesSortedByAbbrev.size() > 0)
         {
-            writer.write("/*\n");
+            writer.write("\n/*\n");
             writer.write("   Some column names have been abbreviated in constraint and/or index names.\n");
             writer.write("   =========================================================================\n");
 
@@ -574,7 +594,8 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
 
             if(tableConstraints.size() > 0)
             {
-                writer.write("\n");
+                if(ddlFormats.isBlankLineAllowedInCreateTable())  // create a separator between columns and in-table constraints
+                    writer.write("\n");
 
                 int lastConstr = tableConstraints.size() - 1;
                 int constrIndex = 0;
