@@ -39,20 +39,27 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.9 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.10 2003-11-14 13:24:44 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.form.schema;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
-
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.schema.*;
+import com.netspective.axiom.schema.constraint.ParentForeignKey;
+import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.value.source.SqlExpressionValueSource;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.xml.template.*;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.form.*;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldStates;
+import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
@@ -61,41 +68,18 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.DatabasePolicies;
-import com.netspective.axiom.sql.DbmsSqlText;
-import com.netspective.axiom.value.source.SqlExpressionValueSource;
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.Columns;
-import com.netspective.axiom.schema.ForeignKey;
-import com.netspective.axiom.schema.Row;
-import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.ColumnValue;
-import com.netspective.axiom.schema.ColumnValues;
-import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.constraint.ParentForeignKey;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.xml.template.TemplateProducerParent;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateProducers;
-import com.netspective.commons.xml.template.Template;
-import com.netspective.commons.xml.template.TemplateElement;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogContextUtils;
-import com.netspective.sparx.form.DialogFlags;
-import com.netspective.sparx.form.DialogPerspectives;
-import com.netspective.sparx.form.DialogsPackage;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFields;
-import com.netspective.sparx.form.field.DialogFieldStates;
-import com.netspective.sparx.form.handler.DialogExecuteHandlers;
-import com.netspective.sparx.Project;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.Writer;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SchemaRecordEditorDialog extends Dialog implements TemplateProducerParent
 {
+
     private static final String ATTRNAME_CONDITION = "_condition";
     private static final String ATTRNAME_PRIMARYKEY_VALUE = "_pk-value";
     private static final String ATTRNAME_AUTOMAP = "_auto-map";
@@ -257,7 +241,6 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         {
             return table != null;
         }
-
     }
 
     private ValueSource dataSrc;
@@ -392,8 +375,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         for(int i = 0; i < childTableElements.size(); i++)
         {
-            TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
-            populateFieldValuesUsingRequestParameters((SchemaRecordEditorDialogContext) dc, childTableElement);
+            TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+            if (childTableNode instanceof TemplateElement) {
+                TemplateElement childTableElement = (TemplateElement) childTableNode;
+                populateFieldValuesUsingRequestParameters((SchemaRecordEditorDialogContext) dc, childTableElement);
+            }
         }
     }
 
@@ -473,8 +459,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         for(int i = 0; i < childTableElements.size(); i++)
         {
-            TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
-            populateDataUsingTemplateElement((SchemaRecordEditorDialogContext) dc, cc, childTableElement);
+            TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+            if (childTableNode instanceof TemplateElement) {
+                TemplateElement childTableElement = (TemplateElement) childTableNode;
+                populateDataUsingTemplateElement((SchemaRecordEditorDialogContext) dc, cc, childTableElement);
+            }
         }
     }
 
@@ -604,8 +593,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             List childTableElements = templateElement.getChildren();
             for(int i = 0; i < childTableElements.size(); i++)
             {
-                TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
-                addDataUsingTemplateElement(sredc, cc, childTableElement, activeRow);
+                TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+                if (childTableNode instanceof TemplateElement) {
+                    TemplateElement childTableElement = (TemplateElement) childTableNode;
+                    addDataUsingTemplateElement(sredc, cc, childTableElement, activeRow);
+                }
             }
         }
     }
@@ -624,8 +616,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         List childTableElements = insertDataTemplate.getChildren();
         for(int i = 0; i < childTableElements.size(); i++)
         {
-            TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
-            addDataUsingTemplateElement(sredc, cc, childTableElement, null);
+            TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+            if (childTableNode instanceof TemplateElement) {
+                TemplateElement childTableElement = (TemplateElement) childTableNode;
+                addDataUsingTemplateElement(sredc, cc, childTableElement, null);
+            }
         }
     }
 
@@ -641,8 +636,8 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         // now we have the table we're dealing with for this template element
         Table table = stte.getTable();
-
         ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
+
         if(primaryKeyValueSource == null)
             sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[] { table.getName() });
 
@@ -699,6 +694,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 columnValue.setTextValue(vs.getTextValue(sredc));
         }
 
+
         if(doUpdate)
         {
             table.update(cc, activeRow);
@@ -708,8 +704,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             List childTableElements = templateElement.getChildren();
             for(int i = 0; i < childTableElements.size(); i++)
             {
-                TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
-                editDataUsingTemplateElement(sredc, cc, childTableElement);
+                TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+                if (childTableNode instanceof TemplateElement) {
+                    TemplateElement childTableElement = (TemplateElement) childTableNode;
+                    editDataUsingTemplateElement(sredc, cc, childTableElement);
+                }
             }
         }
     }
@@ -728,8 +727,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         List childTableElements = editDataTemplate.getChildren();
         for(int i = 0; i < childTableElements.size(); i++)
         {
-            TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
-            editDataUsingTemplateElement(sredc, cc, childTableElement);
+            TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+            if (childTableNode instanceof TemplateElement) {
+                TemplateElement childTableElement = (TemplateElement) childTableNode;
+                editDataUsingTemplateElement(sredc, cc, childTableElement);
+            }
         }
     }
 
@@ -809,8 +811,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             List childTableElements = templateElement.getChildren();
             for(int i = 0; i < childTableElements.size(); i++)
             {
-                TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
-                deleteDataUsingTemplateElement(sredc, cc, childTableElement);
+                TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+                if (childTableNode instanceof TemplateElement) {
+                    TemplateElement childTableElement = (TemplateElement) childTableNode;
+                    deleteDataUsingTemplateElement(sredc, cc, childTableElement);
+                }
             }
         }
     }
@@ -829,8 +834,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         List childTableElements = deleteDataTemplate.getChildren();
         for(int i = 0; i < childTableElements.size(); i++)
         {
-            TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
-            deleteDataUsingTemplateElement(sredc, cc, childTableElement);
+            TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+            if (childTableNode instanceof TemplateElement) {
+                TemplateElement childTableElement = (TemplateElement) childTableNode;
+                deleteDataUsingTemplateElement(sredc, cc, childTableElement);
+            }
         }
     }
 
