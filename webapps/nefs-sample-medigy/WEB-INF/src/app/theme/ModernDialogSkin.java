@@ -85,7 +85,7 @@ import java.util.Map;
  *
  *
  * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.5 2004-03-06 16:51:37 aye.thu Exp $
+ * @version $Id: ModernDialogSkin.java,v 1.6 2004-03-06 17:11:29 aye.thu Exp $
  */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -1503,9 +1503,9 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                     if(generated.length() > 0)
                         generated.append(" / ");
                     if (childField.isRequired(dc))
-                        generated.append("<span class=\"" + getCaptionRequiredStyleClass() + "\">" + childCaption + ":</span>");
+                        generated.append("<span class=\"" + getCaptionRequiredStyleClass() + "\">" + childCaption + (endsWithPunctuation(caption) ? "" : ":") +"</span>");
                     else
-                        generated.append("<span class=\"" + getCaptionStyleClass() + "\">" + childCaption + ":</span>");
+                        generated.append("<span class=\"" + getCaptionStyleClass() + "\">" + childCaption + (endsWithPunctuation(caption) ? "" : ":") + "</span>");
                 }
             }
             caption = generated.toString();
@@ -1525,7 +1525,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                         (endsWithPunctuation(caption) ? "" : ":") + "</span>";
             else
                 caption = "<span class=\"" + getCaptionStyleClass() + "\">" +
-                        (caption != null ? caption : "") + "</span>";
+                        (caption != null ? caption + (endsWithPunctuation(caption) ? "" : ":") : "") + "</span>";
         }
 
         return caption;
@@ -1533,9 +1533,20 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
     public static boolean endsWithPunctuation(String caption)
     {
-        if (caption.endsWith("?") || caption.endsWith("!")  || caption.endsWith(":") || caption.endsWith("."))
-            return true;
-        return false;
+        boolean punctuation = false;
+        char lastChar = caption.charAt(caption.length()-1);
+        switch (lastChar)
+        {
+            case '?':
+            case '!':
+            case ':':
+            case '.':
+                punctuation = true;
+                break;
+            default:
+                punctuation = false;
+        }
+        return punctuation;
     }
 
     /**
