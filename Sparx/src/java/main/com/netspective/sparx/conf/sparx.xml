@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.57 2003-10-01 03:34:06 aye.thu Exp $
+  * $Id: sparx.xml,v 1.58 2003-10-11 14:41:53 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -106,12 +106,13 @@
     <dialog-execute-handler name="panels" class="com.netspective.sparx.form.handler.DialogExecutePanelsHandler"/>
     <dialog-execute-handler name="style-sheet" class="com.netspective.sparx.form.handler.DialogExecuteXsltHandler"/>
     <dialog-execute-handler name="mail" class="com.netspective.sparx.form.handler.DialogExecuteSendMailHandler"/>
+    <dialog-execute-handler name="record-editor" class="com.netspective.sparx.form.handler.DialogExecuteRecordEditorHandler"/>
 
-    <ant-project id="Project" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-project.xml" default="yes">
+    <ant-project id="project" caption="Project" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-project.xml" default="yes">
         <dialog type="ant-build"/>
     </ant-project>
 
-    <ant-project id="NEFS/Sparx" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-nefs.xml">
+    <ant-project id="nefs" caption="NEFS/Sparx" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-nefs.xml">
         <dialog type="ant-build"/>
     </ant-project>
 

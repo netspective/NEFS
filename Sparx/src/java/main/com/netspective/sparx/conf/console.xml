@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.101 2003-10-09 18:45:07 shahid.shah Exp $
+  * $Id: console.xml,v 1.102 2003-10-11 14:41:53 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -74,7 +74,18 @@
                 </page>
             </page>
 	        <page name="access-control" caption="Access Control">
-                <page name="acl" caption="ACLs"/>
+                <page name="catalog" caption="ACLs Catalog">
+                    <body config="console" source="console-page-content:../catalog.ftl"/>
+                </page>
+                <page name="tree" caption="ACL Inspector">
+                    <body config="console" source="console-page-content:../tree.ftl"/>
+                </page>
+                <page name="perm-inspector" caption="Perm Inspector" heading="ACL Permission Inspector">
+                    <body config="console" source="console-page-content:../permission.ftl"/>
+                </page>
+                <page name="role-inspector" caption="Role Inspector" heading="ACL Role Inspector">
+                    <body config="console" source="console-page-content:../role.ftl"/>
+                </page>
                 <page name="login-managers" caption="Login Managers">
                     <body config="console" source="console-page-content:../login-managers.ftl"/>
                 </page>
@@ -90,10 +101,10 @@
         <page name="presentation" caption="Presentation" heading="Presentation Layer">
 
 	        <page name="navigation" caption="Navigation">
-                <page name="catalog" caption="Catalog">
+                <page name="catalog" caption="Catalog" heading="Navigation Trees Catalog">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
                 </page>
-                <page name="tree" caption="Tree" heading="Navigation Tree">
+                <page name="tree" caption="Tree Inspector" heading="Navigation Tree Inspector">
                     <body config="console" source="console-page-content:../tree.ftl"/>
                 </page>
                 <page name="inspector" caption="Page Inspector" heading="Navigation Page Inspector">
@@ -108,11 +119,11 @@
                 <page name="unit-test" caption="Unit Test" heading="Dialog Unit Test" retain-params="selected-dialog-id">
                     <body config="console" source="console-page-content:../unit-test.ftl"/>
                 </page>
-                <page name="documentation" caption="Documentation" heading="Dialog Documentation" retain-params="selected-dialog-id">
-                    <body config="console" source="console-page-content:../documentation.ftl"/>
+                <page name="inspector" caption="Inspector" heading="Dialog Inspector" retain-params="selected-dialog-id">
+                    <body config="console" source="console-page-content:../inspector.ftl"/>
                 </page>
                 <page name="field-types" caption="Field Types" redirect="../../manual/presentation/dialogs/controls"/>
-                <page name="dialog-execute-handlers" caption="Handlers" redirect="../../manual/presentation/dialogs/exec-handlers"/>
+                <page name="dialog-execute-handlers" caption="Exec Handlers" redirect="../../manual/presentation/dialogs/exec-handlers"/>
 	        </page>
 
             <page name="reports" caption="Reports"/>

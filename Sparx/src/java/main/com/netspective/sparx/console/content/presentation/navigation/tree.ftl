@@ -40,6 +40,8 @@
         <#assign activeTree = vc.project.navigationTrees.getNavigationTree(activeTreeName)?default('-')/>
 
         <#if activeTree != '-'>
+            Source: <code>${vc.getConsoleFileBrowserLink(activeTree.inputSourceLocator.inputSourceTracker.identifier, true)} line ${activeTree.inputSourceLocator.lineNumber}</code>
+
             <#assign activePageId = consolePathFindResults.getUnmatchedPath(1)/>
             <#if activePageId = '' || activePageId = '/'>
                 <#assign currentPage = activeTree.root/>

@@ -399,6 +399,11 @@
     </#list>
 
     <@panel heading="${heading}">
+        <#if object.inputSourceLocator?exists>
+            <div class="textbox">
+            Source: <code>${vc.getConsoleFileBrowserLink(object.inputSourceLocator.inputSourceTracker.identifier, true)} line ${object.inputSourceLocator.lineNumber}</code>
+            </div>
+        </#if>
         <@reportTable
                 headings = ["Property", "Value", "Type"]
                 data=attribs
