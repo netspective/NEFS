@@ -2,6 +2,170 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.0.14"/>
+        <change-log>
+            <summary>Minor bug fixed</summary>
+            <change-log-entry>
+                Fixed problem where overriding stored procedure parameters were not being used. The fix changes the
+                existing StoredProcedure.execute(...) API with the introduction of two variables for the overrding
+                parameters instead of just one. e.g. sp.execute(Context, int[] , Object[] , boolean).
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Sparx" version="7.0.13"/>
+        <change-log>
+            <summary>Minor bug fixes</summary>
+            <change-log-entry>
+                Fixed another bug associated with cases where duplicates were being checked for edit mode when the
+                associated record being searched did not have a valid primary key (because it allows INSERT when primary
+                key is not found).
+            </change-log-entry>
+            <change-log-entry>
+                Fixed problem where a NPE is thrown when no named servlet request attribute exists for request: value source.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Sparx" version="7.0.12"/>
+        <change-log>
+            <summary>Minor bug fixed</summary>
+            <change-log-entry>
+                Fixed bug for cases when primary key value is null in SchemaRecordEditor dialog.
+                See http://www.netspective.com/community/viewtopic.php?p=203#203 for discussion of problem.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Axiom" version="7.0.8"/>
+        <change-log>
+            <summary>Minor bug fixed</summary>
+            <change-log-entry>
+                Modified the generated where expr generation in query definitions using the contains-ignore-case condition
+                so that UPPER() method is used on both sides of the comparison check even where there is no explicit
+                bind expression defined.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Commons" version="7.0.6"/>
+        <change-log>
+            <summary>Minor bug fixes</summary>
+            <change-log-entry>
+                Added overriden method getSpecification() since ConcatenateValueSource by itself does not have a VS
+                specifcation defined. This was throwing a NPE in QueryParameter.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Axiom" version="7.0.7"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                Perform better type management by allowing improved numeric type conversions between numeric columns.
+                Now, numeric types should be able to convert from double to float, float to double, short to long,
+                long to short, etc assuming the numers are not out of bounds.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Commons" version="7.0.5"/>
+        <change-log>
+            <summary>Minor enhancement</summary>
+            <change-log-entry>
+                Added ability for InputSourceLocator to track ending line number and starting/ending columns for tags.
+                This allows extraction of source code from XML source files for presenting to the user or to use in
+                development tools like Console.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Sparx" version="7.0.11"/>
+        <change-log>
+            <summary>Minor bug fixes and enhancements</summary>
+            <change-log-entry>
+                Moved the makeStateChanges call from the NavigationContext into the NavigationControllerServlet so that
+                makeStateChanges is called after all login and security checks are conducted.
+            </change-log-entry>
+            <change-log-entry>
+                Ensure that dialogs and command panels do not eat exceptions. In order for &lt;error-page&gt; to work,
+                exceptions must be propogated.
+            </change-log-entry>
+            <change-log-entry>
+                Cleaned up the has-permissions and lack-permissions conditon checks.
+            </change-log-entry>
+            <change-log-entry>
+                Instead of setting the active login manager using BasicDbHttpServletValueContext
+                REQATTRNAME_ACTIVE_LOGIN_MANAGER request attribute, now allowing the getActiveLoginManager() method to
+                directly query the NavigationControllerServlet.
+            </change-log-entry>
+            <change-log-entry>
+                Delegated the checking of whether a dialog is in auto execute mode to the dialog. This refactoring was
+                necessary so that the dialog (and not the dialog context) could decide if it was currently in
+                auto-execute mode.
+            </change-log-entry>
+            <change-log-entry>
+                Removed overloaded setChoices(String[] choices) from SelectField.java and moved the functionality into
+                the constructor and setItems() methods of SelectFieldChoicesValueSource.
+            </change-log-entry>
+            <change-log-entry>
+                Added new "record-editor-added-row-pk" value source that allows access to recently added schema record
+                editor row primary key values.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Sparx" version="7.0.10"/>
+        <change-log>
+            <summary>Minor enhancement</summary>
+            <change-log-entry>
+                Added a new user authentication and login simulation feature. Now, during testing and other phases
+                programmers can "soft-code" a simulated user, org, roles, and other AuthenticatedUser functionality
+                in the project XML file.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Sparx" version="7.0.9"/>
+        <change-log>
+            <summary>Minor bug fixed</summary>
+            <change-log-entry>
+                Added check for authUser not being null before checking for permissions.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Sparx" version="7.0.8"/>
+        <change-log>
+            <summary>Third-party library upgrade</summary>
+            <change-log-entry>
+                Upgraded to freemarker 2.3 pre 15 that should fix the nasty MRU cache NPE.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Sparx" version="7.0.7"/>
+        <change-log>
+            <summary>Minor bug fixed</summary>
+            <change-log-entry>
+                Required the NavigationTree to be supplied in the NavigationPath/Page constructor. This is necessary
+                for the &lt;page-type&gt; template tag to work properly (because it needs a valid namespace).
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Sparx" version="7.0.6"/>
         <change-log>
             <summary>Minor enhancements</summary>
@@ -41,7 +205,6 @@
             <change-log-entry>Added nullity check that was preventing the Project DTD from being generated after store procedures were added.</change-log-entry>
         </change-log>
     </release>
-
 
     <release>
         <product name="Axiom" version="7.0.6"/>
