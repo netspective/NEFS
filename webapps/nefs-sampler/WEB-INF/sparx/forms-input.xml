@@ -241,8 +241,7 @@
                 </div>
                 <hr/>
                 ]]>
-                </body>
-                <conditional action="display" partner-field-name="description_checkbox_field" expression="control.checked == true"/>
+                </body>                
             </field>
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
             <field type="static" name="static_field2" caption="Statuc Field" default="Checkbox checked!" hint="Hidden static field">
