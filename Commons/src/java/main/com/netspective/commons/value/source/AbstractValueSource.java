@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: AbstractValueSource.java,v 1.3 2003-03-16 17:04:35 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -91,5 +91,10 @@ abstract public class AbstractValueSource implements ValueSource
     {
         Value value = getValue(vc);
         return value != null ? value.getTextValues() : null;
+    }
+
+    public String toString()
+    {
+        return this.getClass().getName() + " " + spec.getSpecificationText();
     }
 }
