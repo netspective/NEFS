@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.35 2003-11-03 16:27:40 shahid.shah Exp $
+ * $Id: Project.java,v 1.36 2003-11-05 11:54:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -69,7 +69,6 @@ import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
 import com.netspective.sparx.navigate.NavigationConditionalAction;
 import com.netspective.sparx.navigate.NavigationPageBodyHandler;
-import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
@@ -134,8 +133,8 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private static final DialogExecuteHandlerTemplate DIALOG_EXECUTE_HANDLERS = new DialogExecuteHandlerTemplate();
     private static final NavigationPageBodyHandlerTemplate PAGE_BODY_HANDLERS = new NavigationPageBodyHandlerTemplate();
     private static final DialogFieldTypeTemplate FIELD_TYPES = new DialogFieldTypeTemplate();
-    private static final DialogFieldConditionalActionTemplate CONDITIONAL_ACTIONS = new DialogFieldConditionalActionTemplate();
-    private static final NavigationConditionalActionTemplate NAVIGATION_PAGE_CONDITIONAL_ACTIONS = new NavigationConditionalActionTemplate();
+    private static final DialogFieldConditionalActionTemplate FIELD_CONDITIONAL_ACTIONS = new DialogFieldConditionalActionTemplate();
+    private static final NavigationConditionalActionTemplate PAGE_CONDITIONAL_ACTIONS = new NavigationConditionalActionTemplate();
 
     protected static class PanelTypeTemplate extends TemplateProducer
     {
@@ -201,8 +200,8 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         templateProducers.add(DIALOG_EXECUTE_HANDLERS);
         templateProducers.add(PAGE_BODY_HANDLERS);
         templateProducers.add(FIELD_TYPES);
-        templateProducers.add(CONDITIONAL_ACTIONS);
-        templateProducers.add(NAVIGATION_PAGE_CONDITIONAL_ACTIONS);
+        templateProducers.add(FIELD_CONDITIONAL_ACTIONS);
+        templateProducers.add(PAGE_CONDITIONAL_ACTIONS);
     }
 
     private List lifecycleListeners = new ArrayList();
@@ -252,11 +251,6 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /* ------------------------------------------------------------------------------------------------------------ */
 
-    public DialogFieldConditionalActionTemplate getConditionalActions()
-    {
-        return CONDITIONAL_ACTIONS;
-    }
-
     public DialogTypeTemplate getDialogTypes()
     {
         return DIALOG_TYPES;
@@ -282,9 +276,14 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         return PANEL_TYPES;
     }
 
-    public NavigationConditionalActionTemplate getNavigationPageConditionalActions()
+    public DialogFieldConditionalActionTemplate getFieldConditionalActions()
     {
-        return NAVIGATION_PAGE_CONDITIONAL_ACTIONS;
+        return FIELD_CONDITIONAL_ACTIONS;
+    }
+
+    public NavigationConditionalActionTemplate getPageConditionalActions()
+    {
+        return PAGE_CONDITIONAL_ACTIONS;
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */

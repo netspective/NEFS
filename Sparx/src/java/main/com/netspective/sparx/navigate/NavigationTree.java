@@ -83,6 +83,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     private NavigationPage popupPage;
     private Map pagesByQualifiedName = new HashMap();
     private TemplateProducers templateProducers;
+    private TemplateProducer pageTypes;
     private int maxLevel = -1;
     private boolean defaultTree;
 
@@ -163,9 +164,15 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         if(templateProducers == null)
         {
             templateProducers = new TemplateProducers();
-            templateProducers.add(new TemplateProducer(getPageTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_PAGE_TYPE, "name", "type", false, false));
+            pageTypes = new TemplateProducer(getPageTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_PAGE_TYPE, "name", "type", false, false);
+            templateProducers.add(pageTypes);
         }
         return templateProducers;
+    }
+
+    public TemplateProducer getPageTypes()
+    {
+        return pageTypes;
     }
 
     public void register(NavigationPath path)
