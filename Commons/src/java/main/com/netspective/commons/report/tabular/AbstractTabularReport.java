@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AbstractTabularReport.java,v 1.7 2003-08-20 18:59:31 shahid.shah Exp $
+ * $Id: AbstractTabularReport.java,v 1.8 2004-04-29 19:01:55 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -60,15 +60,10 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.report.tabular.TabularReport;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.TabularReportColumns;
-import com.netspective.commons.report.tabular.TabularReportContextListener;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
 
 public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.ConstructionFinalizeListener
