@@ -1,0 +1,610 @@
+   ABD    ABDELKADER                                                                                                                        413-283-7651                                            
+   ABR    ABRAHAMIAN, JANET     A58012                                       52 BOYDEN RD #209               HOLDEN, MA  10520              508-829-4351                                            
+   ACX    CONTI, ANTHONY        F21402                                       HALL RD                         STURBRIDGE, MA  01566          507-347-3300                                            
+   ADL    ADLER, RONALD         F31642                                       39 DEAN STREET                  WORCESTER, MA  01609           508-792-8830                                            
+   ADM    ADAMS, TODD           G06915                                       604 MAIN STREET                 SHREWSBURY, MA  01545          508-842-0057                                            
+   AGG    AGA                                                                                                                                  -   -                                                
+   AGI    AGIOMAVRITIS, DEMOST  B87266                                       645 PARK AVENUE                 WORCESTER, MA  01603           508-792-0515                                            
+   AHO    AHOLA, SAUL J         B39660                                       612 HARTFORD PIKE               DAYVILLE, CT  06241            860-779-0867                                            
+   ALL    ALLSANDRO, JOSEPH     G23693                                       63 CANTERBURY RD                BROOKLYN, CT  06234            860-779-5940                                            
+   ALP    ALPERT, STEPHEN MD                                                                                                                   -   -                                                
+   AMM    AMMERMAN, KAREN       A59325                                       35 MILLBURY STREET              AUBURN, MA  01501              508-832-9621                                            
+   AND    ANDREWS, SEAN MD      G20993                                       55 HOSPITAL DRIVE               WICHENDON, MA                  978-297-2311                                            
+   ANG    ANGOFF, RICHARD       A68009                                                                                                         -   -                                                
+   ANT    ANTAKI, JOSEPH        E36410                                       281 E HARTFORD AVE              UXBRIDGE MA 01, 89  9658       508-278-5573                                            
+   ARC    CARE PC, ALLERGY & R                                                                                                                 -   -                                                
+   ARM    AROMIN, SALVADOR      B83377                                       120 PLAINFIELD ROAD             MOOSUP, CT  06354              860-564-3306                                            
+   ASX    STEFANINI, ALAN                                                    MAIN STREET                     WEBSTER, MA  01570             508-943-8312                                            
+   AVE    AVERSA, MARK          A58258                                       25 OAK AVE                      WORCESTER, MA  01605           508-798-8826                                            
+   BAB    HARIBABU, MUDDANA     D88057                                       10 WINTHROP STREET              WORCESTER, MA  01604           508-753-3120                                            
+   BAI    BABINEAU, ROBERT                                                                                                                     -   -                                                
+   BAK    BAKER, FREDERIC       F97328                                       52 BOYDEN RD                    HOLDEN, MA  01520              508-829-7405                                            
+   BAL    BALL, HARRISON        B74116                                       119 BELMONT STREET              WORCESTER, MA  01605           508-421-1160                                            
+   BAN    BANDARI, USHA         G76460                                       116 MAIN STREET                 NORTHBOROUGH, MA  01532        508-229-2227                                            
+   BAR    BARON, MICHAEL        B76290                                       281 LINCOLN STREET              WORCESTER, MA  01605           508-792-8199                                            
+   BAX    BAXTER, JEFFREY       RES000                                       26 QUEEN STREET                 WORCESTER, MA                  508-860-7700                                            
+   BEL    BELEZOS, ELIAS                                                                                                                       -   -                                                
+   BEN    BENOTTI, JOSEPH       A67457                                       25 WINTHROP STREET              WORCESTER, MA  01604           508-798-6330                                            
+   BER    BERUBE, NANCY                                                      26 QUEEN STREET                 WORCESTER, MA  01610           508-860-7700                                            
+   BIR    BIRBARA, CHARLES      A67226                                       26 QUEEN STREET                 WORCESTER, MA  01610           508-799-2674                                            
+   BOR    BERGUS, BORIS         F14292                                       340 THOMPSON RD                 WEBSTER, MA  01570             508-943-2600                                            
+   BOU    BOUCHER, KEVIN        B37834                                       5 CLINICRD PO BOX157            ABINGTON, CT  06230            860-974-0529                                            
+   BRE    BREA, FRANCISCO       G70957                                                                                                         -   -                                                
+   BRO    BROVAR, GILBERT T     B75035                                       112 MAIN STREET                 NORTHBOROUGH, MA  01532        508-393-2734                                            
+   BRR    BURRER                G76889                                                                                                         -   -                                                
+   BRU    BRUNING, CARL         F97370                                       THOMPSON ROAD                   WEBSTER, MA  01570                -   -                                                
+   BUC    BUCHBINDER, ERVING    T23505                                                                                                         -   -                                                
+   BUR    BURBANK, BETSY                                                     48 GARDNER ROAD                 HUBBARDSTON, MA  01452         978-928-4412                                            
+   BUS    BUSCONI, BRIAN        G00935                                       55 LAKE AVE NORTH               WORCESTER, MA  01655           508-856-2340                                            
+   BUU    BRUUN, SVEND          D82996                                       326 NICHOLS ROAD                FITCHBURG, MA  01440           978-343-6946                                            
+   BYN    BYNUM, T EDWARD       A67076                                       65 FREMONT STREET               MARLBOROUGH, MA  01752         508-624-0605                                            
+   CAD    CANDIB, LUCY MD                                                                                                                      -   -                                                
+   CAN    CANNON, NEIL          A55068                                       11 MAYO ROAD                    HOLDEN, MA  01520              508-829-4355                                            
+   CAR    CARLUCCI, DANIEL      E68173                                       112 MAIN STREET                 NORTHBORO, MA  01532           508-393-2883                                            
+   CAT    CARTER, HELEN                                                      385 GROVE STREET                WORCESTER, MA  01605           508-791-2508                                            
+   CA1    CARMICHAEL, PAULA     F82581                                       344 THOMPSON RD                 WEBSTER, MA  01570             508-949-6880                                            
+   CEN    CENNAMO, JAMES                                                     83 SOUTH ST SUITE111            WARE, MA  01082                413-967-2030                                            
+   CFP    PRACTICE, CHARLTON F                                                                                                              508-248-4801                                            
+   CHA    CHATTERJEE, NEETA     G57409                                       415 RIVERSIDE DRIVE             NGROSVENORDALE, CT  06255      860-923-1190                                            
+   CHE    CHIEFFALO, ANTHONY    B84221                                       168-ROUTE 171                   SOUTH WOODSTOCK, CT  06267     860-928-7775                                            
+   CHG    CHUA, ALVIN                                                                                                                          -   -                                                
+   CHI    CHITRE, HARSHAD       A67585                                       385 GROVE STREET                WORCESTER, MA  01605           508-752-6570                                            
+   CHL    LINK, COMMUNITY HEAL                                                                                                              508-860-1260                                            
+   CHM    CHIARAMONTE, ANDREA   G98501                                                                                                         -   -                                                
+   CHR    CHURCH, ARTHUR        B73316                                       10 WINTHROP ST                  WORCESTER, MA  01604           508-753-5487                                            
+   CHT    CHATTERJEE, ARABINDA  G45948                                       415 RIVERSIDE DRIVE             THOMPSON, CT  06255            860-923-1181                                            
+   CHU    CHUA, ALVIN           A29105                                       100 SOUTH STREET                SOUTHBRIDGE, MA  01550             765-9691                                            
+   CLA    CLAY, THOMAS          B99224                                                                       BRIMFIELD, MA                  413-245-3389                                            
+   CLK    CLARK, SAM            B74305                                       28 LORD ROAD S255               MARLBOROUGH, MA  02752         508-485-7660                                            
+   COD    CODARO-DAVIS                                                                                                                          278-5573                                            
+   COH    COHEN, JUDITH                                                      55 LAKE AVE NORTH               WORCESTER, MA  01615           508-856-2818                                            
+   COL    COLLINSON, URSULA     G56712                                       281 LINCOLN STREET              WORCESTER, MA  01605           508-792-3135                                            
+   CON    CONNOLLY, SAMUEL T    OTH000                                       340 THOMPSON RD                 WEBSTER, MA  01570             508-943-2600                                            
+   COO    COOPER, HUGH          G29482                                       38 OAKES AVENUE                 SOUTHBRIDGE, MA  01550            -   -                                                
+   COU    COUNIHAN, TIMOTHY     G46807                                       295 LINCOLN STREET              WORCESTER, MA  01605           508-792-8195                                            
+   CRE    CREME, JOSEPH         B37896                                       7 KENNEDY DRIVE                 POMFRET, CT  06260             860-928-7704                                            
+   CST    CASTIEL, MATILDA                                                   26 QUEEN STREET                 WORCESTER, MA  01610           508-860-7700                                            
+   CTE    CARTER, LETTIE                                                     231 BROAD STREET                DANIELSON, CT  06239           860-774-7501                                            
+   CUR    CURRAN, JOHN          B97986                                       203 UNION STREET                MARLBOROUGH, MA  01752         508-485-0801                                            
+   CWC    & CHILDREN, CENTER F                                               119 BELMONT STEET               WORCESTER, MA  01605           508-793-6355                                            
+   CWO    OB/GYN, CENTER FOR W                                               119 BELMONT STREET              WORCESTER, MA                  508-793-6388                                            
+   DAI    DAIGNEAULT, JOSEPH    J13976                                       26 JULIO DRIVE                  SHREWSBURY, MA  01545             -   -                                                
+   DAT    JOSSLYN DATU MD                                                                                                                      -   -                                                
+   DAV    DAVARO, RAUL          G58805                                       119 BELMONT STREET              WORCESTER, MA  01605           508-793-6261                                            
+   DAY    DAY, JOHN                                                          291 LINCOLN STREET              WORCESTER, MA 01606            508-752-7464                                            
+   DEC    DECKER, THOMAS MD                                                                                                                    -   -                                                
+   DEG    DEGRAND, DAVID                                                     330 GROVE STREET                WORCESTER, MA  01605              -   -                                                
+   DEL    DELLISOLA, LAWRENCE   A68006                                       291 LINCOLN STREET              WORCESTER, MA  01605           508-799-7284                                            
+   DEM    DEMCHEK, PAUL         E58455                                                                                                      508-798-6093                                            
+   DES    DESAI, ALEEM          F50161                                       HUBBARD HOSPITAL                WEBSTER, MA  01570             508-943-2600                                            
+   DET    DETORA, NANCY         D88318                                       48 AUBURN STREET                AUBURN, MA  01501              508-832-9691                                            
+   DFT    DUFAULT, FRANCIS      O76276                                       281 LINCOLN STREET              WORCESTER, MA  01605           508-792-8802                                            
+   DHA    DHARAMPURIYA, RAJESH  G71992                                       201 HIGHLAND STREET             CLINTON, MA  01510             978-365-8200                                            
+   DIF    DIFRANZA, JOSEPH MD   A57136                                       55 LAKE AVE NORTH               WORCESTER, MA 01655            508-856-2818                                            
+   DIL    DILLEY, PATRICIA MD   C87444                                       94 ELM STREET                   MILLBURY, MA 01527             508-865-5858                                            
+   DIM    DIMARTINO, CORRADO    A55113                                       85 SOUTH STREET                 SOUTHBRIDGE, MA  01550             764-2563                                            
+   DIR    DIRAGO, GEORGE        A58115                                       340 THOMPSON ROAD               WEBSTER, MA  01570                -   -                                                
+   DKP    PEDIATRICS, DAY KIMB                                               DOW ROAD                        PUTNAM, CT  06374              860-564-6200                                            
+   DKS    DICKINSONMD, GAIL     F37770                                       168-ROUTE 171                   SOUTH WOODSTOCK, CT  06267     860-928-7775                                            
+   DLX    LOCKHART, DIANE       G35600                                       340 THOMPSON RD                 WEBSTER, MA  01570             508-943-2600                                            
+   DMI    DIMITRI, DENNIS       A68029                                       295 LINCOLN STREET              WORCESTER, MA  01605           508-757-5520                                            
+   DOH    DOHAN, J L            A37484                                       101 COOLIDGE ST                 HUDSON, MA  01749              508-562-7188                                            
+   DON    SUSAN                 E77305                                       119 BELMONT STREET              WORCESTER, MA  01605           508-793-6276                                            
+   DOR    NELLIE                                                             FAMILY HEALTH CTR               26 QUEEN, ST  WORESTER         508-752-2540                                            
+   DOT    DOTTAVIO, GINA  MD    C07737                                       19 TACOMA STREET                WORCESTER, MA  01605           508-852-1805                                            
+   DO2    RUSSELL               F24946                                                                                                      508-856-9730                                            
+   DRA    DRAGOON, NANCY        A59161                                       28 GRAFTON COMMONS              GRAFTON, MA  01519             508-839-5391                                            
+   DRE    DREXLER, CONNIE       A52562                                       640 BOLTON STREET               MARLBOROUGH, MA  01752         508-481-0200                                            
+   DRR    RONALD                A67129                                       10 WINTHROP STREET              WORCESTER, MA  01604           508-757-9188                                            
+   DST    DESIO, STEPHEN        G00337                                       GOLDSTAR BLVD                   WORCESTER, MA                  800-283-2556                                            
+   DUH    DUHME, DAVID          A67031                                       148 SUDBURY ROAD                WESTON, MA  02493              781-642-1884                                            
+   DUN    DUNN, WILLIAM         E76195                                       100 SOUTH STREET                SOUTHBRIDGE, MA  01550             764-2620                                            
+   DUS    DUSHAY, KEVIN         A58495                                                                                                         -   -                                                
+   DYL    JANE DOYLE MD                                                      291 LINCOLN STREET              WORCESTER, MA 01605            508-752-7464                                            
+   EAR    EARLS, STEPHEN        E04006                                       151 WORCESTER ROAD              BARRE, MA  01005               508-355-6321                                            
+   EER    ERBANMD, ELIZABETH                                                 279 LINCOLN STREET              WORCESTER, MA  01605           508-792-8830                                            
+   EFX    FULLER, ELIZABETH                                                  HALL RD                         STURBRIDGE, MA  01566              347-3300                                            
+   ELL    ELLIS, JOHN           B97008                                       26 CENTRAL STREET               HUDSON, MA  01749              508-562-7905                                            
+   ENN    ENNIS, MICHAEL        A58358                                       39 DEAN STREET                  WORCESTER, MA  01609           508-792-8830                                            
+   EPP    EPPERS, ANNE MD                                                                                                                      -   -                                                
+   EYP    EYPPER, SHARON        A59327                                       55 LAKE AVE NORTH               WORCESTER, MA  01655           508-856-6244                                            
+   FAL    INC, FALLON CLINIC                                                 630 PLANTATION STREE            WORCESTER, MA  01604           800-283-2556                                            
+   FAM    SOCIAL SERVICE, FAMI                                               26 QUEEN STREET                 WORCESTER, MA                  508-860-7700                                            
+   FAR    FARROKH, ALINAGHI                                                                                                                    -   -                                                
+   FAU    FAUST, JAMES A        B97590                                       250 GREEN STREET 200            GARDNER, MA  01440             978-632-6444                                            
+   FER    FERGUSON, KEVIN       B74847                                       94 ELM STREET                   MILLBURY, MA  01527                865-5858                                            
+   FHS    HEALTH, MMG/FAMILY                                                                                                                   -   -                                                
+   FIG    FIGUEROA, JAMES                                                    100 SOUTH STREET                SOUTHBRIDGE, MA  01550            -   -                                                
+   FIR    FIRST, STEVEN         A34884                                       640 BOLTON STREET               MARLBOROUGH, MA  01752         508-485-9303                                            
+   FOC    FOCHT, GLENN                                                       281 E HARTFORD AVE              UXBRIDGE, MA                   508-278-5573                                            
+   FOR    FORSTER, RICHARD      C32818                                       604 MAIN STREET                 SHREWSBURY, MA  01545          508-842-0057                                            
+   FOU    FOURNIER, PHILLIP                                                  U MASS MEDICAL                                                    -   -                                                
+   FOW    FOWLER, RICHARD       B73949                                       125 MAIN STREET                 SPENCER, MA                    508-885-3835                                            
+   FRE    FRENCH, ALBERT                                                                                     SOUTHBRIDGE, MA  01550             765-5834                                            
+   FRO    FROHLOFF,                                                                                                                            -   -                                                
+   FSS    SOCIAL SERVICE, FAMI                                                                                                              508-860-7700                                            
+   FUL    FULLER, INGRID        S61394                                       26 JULIO DRIVE                  SHREWSBURY, MA  01545          508-845-1436                                            
+   GAB    ABRAHAM, GEORGE                                                    ST VINCENTS HOSPITAL            WORCESTER, MA  01604           508-789-1433                                            
+   GAI    GAINES                A58826                                                                       AUBURN, MA  01501              800-283-2556                                            
+   GAL    GALLAGHER, JULIA MD                                                                                                                  -   -                                                
+   GAR    GARCIA, ERIC                                                       FAMILY HEALTH CENTER                                           508-860-7700                                            
+   GBV    HEALTH, GREAT BROOK                                                                                                               508-852-1805                                            
+   GEE    GEEVARGHESE, DOLLY    F70642                                       320 BOLTON STREET               MARLBOROUGH, MA  01752         508-485-0260                                            
+   GEN    GENTILE, DONALD       D88274                                       100 SOUTH ST                    SOUTHBRIDGE, MA  01550         508-764-6356                                            
+   GEO    GEORGIAN, FREDERICK   A57150                                       191 MAY ST                      WORCESTER, MA  01602           508-792-1766                                            
+   GET    GETZ, DAVID                                                        193 GREENLY STREET              CLINTON, MA  01510             508-368-3472                                            
+   GIO    GIORDANO, ROBERT      A24510                                       100 SOUTH STREET                SOUTHBRIDGE, MA  01550         508-765-0934                                            
+   GLD    GOLDING, JEREMY MD                                                 279 LINCOLN STREET              WORCESTER, MA 01605            508-334-8830                                            
+   GLE    GLEICH, GERALD        D88913                                       29 DEAN SREET                   WORCESTER, MA  01610           508-792-8830                                            
+   GMG    GROUP, GROVE MEDICAL                                                                                                                 -   -                                                
+   GOD    GODIWALA, SUNITA      A66558                                       11 MAYO ROAD                    HUDSON, MA  01520              508-829-5599                                            
+   GOL    GOLDMAN, JILL                                                      495 BEACON STREET               BARRE, MA                      617-232-2603                                            
+   GOY    GOYETTE, R PHILIP     B38605                                       330 POMFRET STREET              PUTNAM, CT  06260              860-928-2736                                            
+   GRE    GREENLEAF, KENNETH    A65521                                       126 PLEASANT STREET             MARLBOROUGH, MA  01752         508-485-2709                                            
+   GRI    GRIFFEY, STEPHEN      F40522                                       119 BELMONT STREET              WORCESTER, MA  01605           508-793-5524                                            
+   GRL    WILSON-GRILLO, CYNTH                                               HARRINGTON MEM HOSP             SOUTHBRIDGE, MA  01550         508-765-9700                                            
+   GRO    GROUSSIS, GEORGE      G33588                                       645 PARK AVE                    WORCESTER, MA  01603           508-792-0515                                            
+   GRV    HEALTH, GREAT BROOK                                                                                                                  -   -                                                
+   GUL    GULATI, SUBHASH       D08887                                       385 GROVE ST.                   WORCESTER, MA  01605           508-755-0770                                            
+   GUP    GUPTA, SATISH         B73973                                       92 E MAIN STREET                WESTBOROUGH, MA  01581         508-366-9294                                            
+   GUR    GURSKI, DEBORAH                                                    369 MAIN STREET                 SPENCER, MA  01562             508-885-6359                                            
+   HAB    HABASHY, WAGDY        I22390                                       31 DOWD ROAD                    PLAINFIELD, CT                 860-564-6296                                            
+   HAH    CENTER, HAHNEMANN FA                                                                                                              508-792-8830                                            
+   HAL    HALSBAND, EARLE       T56998                                                                                                         -   -                                                
+   HAR    HARRINGTON, PAUL      B73897                                       61 NORTH MAIN STREET            CHARLTON, MA  01507                248-4801                                            
+   HAS    HASIJA, KENNY         B73952                                       256 HAMILTON STREET             SOUTHBRIDGE, MA  01550             764-6166                                            
+   HAT    HATEM, DAVID          A66653                                       55 LAKE AVE NORTH               WORCESTER, MA  01655           508-856-0090                                            
+   HAZ    HAZZARD, BESSIE       F95395                                       FAIRLAWN REHAB                                                 508-791-6351                                            
+   HA1    CTR, HAHNEMANN FAM H                                                                                                              508-792-8830                                            
+   HEL    HELLER                                                             26 QUEEN STREET                 WORCESTER, MA  01610              -   -                                                
+   HER    HERLIHY, MARY         G78006                                       119 BELMONT STREET              WORCESTER, MA  01605           508-793-6255                                            
+   HIL    HILL, ARNOLD          B97011                                       320 BOLTON STREET                                                  175-2                                               
+   HOL    HOLLOPETER                                                                                                                           -   -                                                
+   HOL    HOLLOPETER                                                                                                                           -   -                                                
+   HOO    HOWE, JEFFREY         B38886                                       330 POMFRET STREET              PUTNAM, CT  06260              860-928-2736                                            
+   HOR    HORNER, RICHARD                                                    119 BELMONT STREET              WORCESTER, MA  01605              -   -                                                
+   HOW    HOWLAND, JOHN         A98262                                       61 NORTH MAIN STREET            CHARLTON, MA  01507                248-4801                                            
+   HSI    HSIEH, HWA HSIN       B98826                                       PO BOX 488                      WEBSTER, MA  01570-0488           -   -                                                
+   HUR    HUROWITZ, JAMES       B97900                                       141 HIGHLAND STREET             WORCESTER, MA  01610           508-753-8800                                            
+   HUW    HURWITZ, JOEL         B97077                                       112 MAIN STREET                 NORTHBORO, MA 01532            508-393-9676                                            
+   IMA    INTER MED ASSOC                                                    325 THOMPSON RD                 WEBSTER, MA 01570                 -   -                                                
+   IYE    IYER, SUHASINI MD                                                                                                                    -   -                                                
+   JAF    JAFFE, EDWARD         E66339                                       112 MAIN STREET                 NORTHBORO, MA  01532           508-393-2240                                            
+   JAI    JAIN, DILIP           B98205                                       10 WINTHROP STREET              WORCESTER, MA  01604           508-753-2586                                            
+   JEX    ELLIS, JOHN A                                                      MARLBORO HOSPITAL               MARLBORO, MA                      -   -                                                
+   JEZ    JEZNACH, GARY         A59293                                       54 MAIN STREET                  STURBRIDGE, MA  01550              347-5755                                            
+   JHO    JOHNSON, WILLIAM RK   B38615                                       612 HARTFORD PIKE               DAYVILLE, CT  06241            860-779-0867                                            
+   JJX    JOHNSTONE, JOHN                                                    46 MILL ST                      WORCESTER, MA                  508-755-9776                                            
+   JNN    JAIN, CHANDRIKA       F17792                                                                                                      978-838-2244                                            
+   JOH    JOHNSON, WILLIAM      B38615                                       612 HARTFORD PIKE               DAYVILLE, CT  06241            860-779-0867                                            
+   JOS    JOSE, ERNESTO         B76583                                       20 LINCOLN STREET               HUDSON, MA  01749              508-562-2804                                            
+   KAD    KADISH, WILLIAM       J04043                                                                                                      508-791-2562                                            
+   KAH    KAHN, ROBERT E        B98495                                       61 LINCOLN STREET               FRAMINGHAM, MA  01701          508-879-1300                                            
+   KAM    KAMENS, EDWARD        B74415                                       HOSP. RD. MEM.DR.214            LEOMINSTER, MA  01453          978-534-6863                                            
+   KAP    KAPALI, NARESH                                                     340 THOMPSON RD                 WEBSTER, MA  01570             508-943-2600                                            
+   KAV    KAVITA, NAVANI MD                                                                                                                    -   -                                                
+   KEL    KELLER, DAVID                                                      340 THOMPSON ROAD               WEBSTER, MA  01570                 943-5224                                            
+   KEN    KENDER, WINIFRED                                                   750 WASHINGTONST 697            BOSTON, MA  02111              617-636-9750                                            
+   KE1    KELLY, PETER          B77127                                                                                                      508-943-7439                                            
+   KFG    GUARNIERI, KENNETH    E76196                                       SUTTON AVE                      OXFORD, MA  01540                  987-6422                                            
+   KHI    HILLIKER, KEITH                                                    55 LAKE AVE NORTH               WORCESTER, MA  01655           508-856-2818                                            
+   KHO    KHOURY, ALEXIS        D02957                                       147 BROAD STREET                DANIELSON, CT  06239           860-564-5957                                            
+   KIR    KIRSHENBAUM, HOWARD   A38743                                       112 MAIN STREET                 NORTHBORO, MA  01532           508-393-2883                                            
+   KLE    KLENZ, JEFFREY MD                                                                                                                    -   -                                                
+   KOR    KORMENDI, FRANK       G85419                                       119 BELMONT STREET              WORCESTER, MA  01605           508-793-6293                                            
+   KOU    KOURY, EDMOND         A67980                                       295 LINCOLN STREET              WORCESTER, MA  01605           508-752-1943                                            
+   KRA    KRAUTH, DONNA         A56828                                       41 SOUTH STREET                 WESTBOROUGH, MA  01581         508-898-9617                                            
+   KRI    KRISTANSEN, SANDRA    E19216                                       112 MAIN STREET                 NORTHBORO, MA  01532           508-393-6881                                            
+   KTZ    KURTZ, BETH MD                                                     275 NICHOLS ROAD                FITCHBURG, MA  01420           978-665-5925                                            
+   KUM    KUMAR, VINAY          B74820                                       126 UNION STREET                MARLBOROUGH, MA  01752         508-460-3872                                            
+   KUR    KURL, RITA                                                                                                                           -   -                                                
+   KUV    KURUVILLA, JOSEPH     G31965                                       369 MAIN STREET                 SPENCER, MA  01562             508-885-3922                                            
+   LAB    LALIBERTE, BRIAN      F56349                                       11 MAIN STREET                  NORTHBORO, MA  01532           508-393-2883                                            
+   LAL    LALANCETTE, EUGENE A  A55043                                       114 SUMMER STREET               FITCHBURG, MA  01420           508-342-1525                                            
+   LAR    LARSON, H E           F08240                                       126 UNION STREET                MARLBOROUGH, MA  01752         508-229-2291                                            
+   LAT    LITANI, VLADAS        F30201                                       100 SOUTH STREET                SOUTHBRIDGE, MA  01550         508-764-8855                                            
+   LAU    LAU, WAI LANG                                                      168-ROUTE 171                   S WOODSTOCK, CT  06267         860-928-7775                                            
+   LAX    LAHEY-ARLINGTON                                                                                                                      -   -                                                
+   LBL    BLINDER, LYUBOV       A57010                                       385 GROVE ST                    WORCESTER, MA  01605           508-753-4244                                            
+   LBR    LABARRE, ROSEANNE                                                  470 PLEASANT STREET             WORCESTER, MA  01609           508-753-4222                                            
+   LEB    LEBOW, ROBERT         B97991                                                                                                      508-765-9771                                            
+   LED    LEVENSON, DMITRY                                                                                                                     -   -                                                
+   LER    RICHARD, LERNER                                                    UMASS                                                          508-856-0090                                            
+   LEV    LEVINE, DONALD        D94084                                       100 HOSPITAL ROAD#1A            LEOMINSTER, MA  01453          978-537-0985                                            
+   LEW    RICARDO LEWITUS MD                                                 320 BOLTON STREET #200          MARLBORO, MA 01752             508-460-9670                                            
+   LGX    GOLDSTEIN, LISA                                                    BRIGHTON MARINE HOSP            BRIGHTON, MA                      -   -                                                
+   LID    LINDHOLM, MARY                                                                                                                       -   -                                                
+   LIL    LILAND, JON           A67133                                       67 BELMONT STREET               WORCESTER, MA  01605           508-755-8623                                            
+   LIN    LINDSEY, EUGENE                                                    KENMORE CENTER                  BOSTON, MA                     617-421-6050                                            
+   LIS    LISI, KRISTINE        G46642                                                                                                      508-721-4100                                            
+   LIT    LITANI, VLADAS                                                                                                                       -   -                                                
+   LOU    LOUCA, BAHY           A34874                                       320 BOLTON STREET               MARLBORO, MA  01752            508-485-1056                                            
+   LPC    CARE, LINCOLN PRIMAR                                               119 BELMONT ST                  WORCESTER, MA  01605              -   -                                                
+   LUC    LUCAS, PETER                                                       FALLON CLINIC                   WORCESTER, MA                  508-792-1766                                            
+   LYO    LYONS, DAVID          B97859                                       40 CONVERSE STREET              WORCESTER, MA  01605           508-754-4153                                            
+   MAC    MANCHESTER, GERTRUDE  A58551                                       55 LAKE AVE NORTH               WORCESTER, MA 01655            508-856-0090                                            
+   MAH    MAHENDRAN, ALEXANDER  B38503                                                                                                         -   -                                                
+   MAI    MAITLAND, DAVID J     A55098                                       112 MAIN STREET                 NORTHBOROUGH, MA  01532        508-485-0400                                            
+   MAL    MALKIEL, SAUL         A67785                                       57 UNION STREET                 MARLBOROUGH, MA  01752            -   -                                                
+   MAN    MANJEROVIC, JOSEPH                                                 CHILD HEALTH ASSOC              SHREWSBURY, MA                    -   -                                                
+   MAO    MARON, MYRON          F19015                                       201 SOUTH MAIN ST               ATHOL, MA  01331               508-249-0099                                            
+   MAR    GROUP, MARLBORO                                                                                                                   508-485-0260                                            
+   MAT    MATHUR, ANUPAM        F31930                                       101 COOLIDGE STREET             HUDSON, MA  01749              508-562-0564                                            
+   MAY    MATTY, PAUL J         E33052                                       612 HARTFORD PIKE               DAYVILLE, CT  06241            860-779-0867                                            
+   MCG    MCGEE, SARAH MD       E08516                                       119 BELMONT STREET              WORCESTER, MA 01605            508-793-6251                                            
+   MCL    H, LYDIA              A59183                                       233 AYER ROAD                   HARVARD, MA  01451             978-772-7500                                            
+   MCM    RICHARD               D66099                                       101 COOLIDGE STREET             HUDSON, MA  01752              508-562-0757                                            
+   MDA    DAVIS, MARQUERITE     D81064                                       P O BOX 609                     DANIELSON, CT  06239           860-774-1255                                            
+   MEA    MEADE, LARRY          E91426                                       9 CRESCENT STREET               WEST BOYLSTON, MA  01583       508-835-6221                                            
+   MEC    GRT LOWELL, MEDICAL                                                1230 BRIDGE STREET              LOWELL, MA                     978-458-6868                                            
+   MGH    MGHOINER                                                           281 LINCOLN STREET              WORCESTER, MA  01605           508-792-8409                                            
+   MGI    MACGINNIS, CHRISTINE                                                                                                              508-791-8525                                            
+   MIR    MEDICAL, MIRAY                                                                                                                    508-586-8012                                            
+   MLO    MALONEY, ROBERT       B99222                                       385 GROVE STREET                WORCESTER, MA  01605           508-791-2508                                            
+   MME    GROUP, MEMORIAL MEDI                                                                                                              508-754-1707                                            
+   MMG    GROUP, MEMORIAL MEDI  F95211                                       LINCOLN STREET                  WORCESTER, MA                  508-752-6462                                            
+   MMI    DIS, MEMORIAL MED GR                                               119 BELMONT STREET              WORCESTER, MA  01605           508-793-6053                                            
+   MM2    GROUP, MEMORIAL MEDI                                                                                                              508-798-3344                                            
+   MNZ    MANZO                                                              1 JAMES P MURPHY HWY            WEST WARWICK, RI  02893        401-821-5100                                            
+   MOO    MOORE, ROGER          B99279                                       BELMONT STREET                  WORCESTER, MA  01605           508-757-7411                                            
+   MOR    MORSE, LEONARD        D83078                                       200 LINCOLN STREET              WORCESTER, MA  01605           508-755-1222                                            
+   MOS    MOSS, ALAN            B98889                                       255 PARK AVENUE                 WORCESTER, MA  01609           508-753-1032                                            
+   MSS    MOSS, STEVE                                                        SOUTHBRIDGE MA 01550                                              -   -                                                
+   MTT    MATTA, LALITA         F93337                                       28 LORD ROAD                    MARLBOROUGH, MA  01752         508-485-7660                                            
+   MUL    MULHERN, PETER        A59271                                       135 GOLD STAR BLVD              WORCESTER, MA  01606           508-856-9730                                            
+   MUT    MUTLUKAN, ERKAN       G83530                                       55 LAKE AVE NORTH               WORCESTER, MA  01655           508-856-0011                                            
+   NAS    NASSAR, NICHOLAS      A36325                                       33 BARTLETT STREET              LOWELL, MA  01852              508-452-5050                                            
+   NEE    NEE, ROBERT           G08015                                       N MAIN STREET                   N BROOKFI, LD  MA              508-867-7777                                            
+   NEW    NEWPORT, MARJORIE                                                  112 MAIN STREET                 NORTHBOROUGH, MA  01532        508-393-5710                                            
+   NGU    NGUYEN, CUONG         B96437                                       20 MILLBURY STREET              WORCESTER, MA  01610           508-757-2706                                            
+   OBR    OBRIEN, MARY MD       F81521                                       604 MAIN STREET                 SHREWSBURY, MA 01545           508-842-0057                                            
+   ODO    ODONNELL, DANIEL      J13357                                       19 TACOMA STREET                WORCESTER, MA  01605           508-852-1805                                            
+   OLE    OLEARY, PAUL          A67302                                       101 PLEASANT STREET             WORCESTER, MA  01609           508-799-6426                                            
+   ONE    ONEILL, DANIEL        G74762                                       7 KENNEDY DRIVE                 PUTNAM, CT  06260              860-928-7704                                            
+   ORI    RICHARD ORINO MD                                                   MAIN STREET                     SHREWSBURY, MA 01545              -   -                                                
+   PAC    PACIFICO, LUIGI       G08975                                       344 THOMPSON ROAD               WEBSTER, MA  01570             508-949-6880                                            
+   PAL    PALKEN, RICHARD       F14158                                       55 LAKE AVE NORTH               WORCESTER, MA  01655               856-1370                                            
+   PAR    PARULKAR, GB          G29676                                       GOLDSTAR BLVD                   WORCESTER, MA                     -   -                                                
+   PAS    PASZKOWSKI, ADAM      A68040                                       34 OAKES AVENUE                 SOUTHBRIDGE, MA  01550             765-1641                                            
+   PAT    PATALANO, VINCENT                                                  236 HIGHLAND AVE                SOMERVILLE, MA  02143          617-625-8799                                            
+   PAY    PASSEY, SADHEV        E03297                                       10 WINTHROP STREET              WORCESTER, MA  01604           508-753-3120                                            
+   PCG    GROUP, PRIMARY CARE                                                                                                               508-949-8100                                            
+   PCP    FALLON, PCP                                                                                        WORCESTER, MA  01680           508-852-0600                                            
+   PEA    PEACE, RONALD         B74103                                                                                                         -   -                                                
+   PER    PERUSSE, PASCALE      A58660                                       591 LINCOLN STREET              WORCESTER, MA  01605           508-757-7600                                            
+   PGT    PINGETON, DIANE                                                                                                                      -   -                                                
+   PID    PIERCE, DAVID         B77224                                       67 HALL ROAD                    STURBRIDGE, MA  01566          508-347-3300                                            
+   PIE    PIERCE, DEBORAH                                                                                                                      -   -                                                
+   PIK    PIKE, RONALD          A55101                                       10 WINTHROP STREET              WORCESTER, MA  01604           508-752-1400                                            
+   PIN    LEITAO-PINA, JAN      G45339                                       295 LINCOLN ST                  WORCESTER, MA  01605           508-792-8409                                            
+   PIT    PITTS, WILFRID        B96428                                       10 WINTHROP STREET              WORCESTER, MA  01604           508-757-5552                                            
+   PLH    POLUHA, DOROTA        G73633                                       10 WINTHROP ST.                 WORCESTER, MA  01604           508-752-1400                                            
+   POL    POLLACK, STUART       E91207                                       35 MILLBURY STREET              AUBURN, MA  01501              508-832-9621                                            
+   POT    POTTS, EARL                                                        543 NORTH STREET                NEW BEDFORD, MA  02740            -   -                                                
+   PRI    PRIMACK, WILLIAM                                                   35 MILLBURY ST                  AUBURN, MA  01501                  832-5917                                            
+   PTK    PATHAK, ANU           G94945                                       69 HALL ROAD STE #3             STURBRIDGE, MA  01566          508-347-8180                                            
+   PTS    PATSOS, THOEDORE MD                                                22 ASYLUM STREET                MILFORD, MA  01757             508-473-7221                                            
+   PTT    POTTER, CHRISTIAN MD                                                                                                                 -   -                                                
+   PUJ    PUNJABI, SAN                                                                                                                         -   -                                                
+   PUL    PC, PULMONARY CARE                                                                                                                508-676-3411                                            
+   QKC    CARE, QUALITY KIDS                                                                                                                508-753-3120                                            
+   QUE    QUEROSIO, LUIGI                                                                                                                      -   -                                                
+   RAT    RATHI, LAXIMIKANT     B83597                                       616 BOSTON POST RD              SUDBURY, MA  01776             508-443-4961                                            
+   RAZ    RAZVI, SYED                                                        160 SOUTH MAIN ST               MILFORD, MA                    508-478-2700                                            
+   RCX    CHANNAPPA, RAVISHANK  G43295                                       340 THOMPSON RD                 WEBSTER, MA  01570             508-943-2600                                            
+   RIC    RICARD, A MICHELE     B96908                                       44CENTRAL ST BX 1170            BERLIN, MA  01503              978-838-0303                                            
+   RIN    RING, HOPE            G51540                                       100 SOUTH STREET                SOUTHBRIDGE, MA  01550         508-765-9771                                            
+   RIS    RISK, CLIFFORD        A66274                                       320 BOLTON STREET               MARLBOROUGH, MA  01752         508-481-4288                                            
+   RIT    RITTENHOUSE, ROBERT   A34573                                       640 BOLTON STREET               MARLBOROUGH, MA  01752         508-481-0200                                            
+   ROF    ROSENFIELD, DAVID     B99225                                       52 BOYDEN RD 3209               HOLDEN, MA  01520              508-829-4351                                            
+   ROH    ROHRER, MICHAEL       A59304                                       55 LAKE AVE                     WORCESTER, MA                  508-856-5599                                            
+   ROO    ROONEY, JAMES J                                                                                                                      -   -                                                
+   ROS    ROSSINI, ALDO         A66121                                       55 LAKE AVE NORTH               WORCESTER, MA  01655           508-856-3206                                            
+   ROU    ROUSSEAU, JEANNE                                                   330 GROVE STREET                WORCESTER, MA  01605           508-752-0121                                            
+   RSA    SAMAAN, RENAULT                                                                                                                      -   -                                                
+   RSS    ROUSSE, MICHAEL                                                    279 LINCOLN STREET              WORCESTER, MA  01605           508-792-8830                                            
+   RSX    SHARMA, RAJESH        E60124                                       325 THOMPSON ROAD               WEBSTER, MA  01570             508-943-6612                                            
+   RTH    THOMAS, ROBERT                                                                                                                       -   -                                                
+   SAI    SAID, SAMEH           B74700                                       1385 MAIN STREET                WORCESTER, MA  01603           508-752-0117                                            
+   SAL    SAILER, STASIA        F80421                                       119 BELMONT STREET              WORCESTER, MA  01605           508-793-6611                                            
+   SAM    SAMANT, JOANNE                                                     U MASS                                                            -   -                                                
+   SAV    SAVITT, JOSEPH        A58097                                       200 LINCOLN STREET              WORCESTER, MA  01605           508-755-1222                                            
+   SCH    SCHULTES, ALEXANDRA   E68367                                                                                                         -   -                                                
+   SCL    SCHWALENBERG-LEIP, E                                               103 MILLBURY STREET             AUBURN, MA  01501              508-721-4100                                            
+   SCR    ROBERT, SCHREINER                                                  MILLBURY ST                     AUBURN, MA  01550                 -   -                                                
+   SCX    SCHONHOLZ, STEVEN                                                  100 SOUTH STREET                SOUTHBRIDGE, MA  01550         508-765-1502                                            
+   SEI    SEIDLER, CHRISTOPHER                                                                                                                 -   -                                                
+   SHA    SHARDA, ARUN                                                                                                                         -   -                                                
+   SHE    SHEILDS, SARAH                                                     26 QUEEN STREET                 WORCESTER, MA  01608           508-860-7700                                            
+   SHL    SHLIMAK, ILIA MD                                                                                                                     -   -                                                
+   SHO    SHOEMAKER, THEODORE   F17619                                       26 QUEEN STREET                 WORCESTER, MA  01610           508-860-7700                                            
+   SHR    SHRINATH, SHYLA       F71057                                       95 EAST MAIN STREET             WESTBOROUGH, MA  01581         508-366-8836                                            
+   SID    SIDHU, KAMWARJUT MD                                                                                                                  -   -                                                
+   SIH    SINHA, BIRENDRA       B99108                                       201 HIGHLAND STREET             CLINTON, MA  01510             978-365-4523                                            
+   SIL    SILVER, DANIEL        E62973                                                                                                         -   -                                                
+   SIM    MEDICINE, SHREWSBURY                                                                                                                 -   -                                                
+   SIN    SINGH, RANVIR         G97975                                       122 PLAINFIELD ROAD             MOOSUP, CT  06354              860-564-4068                                            
+   SIR    SIRACO, ELIZABETH                                                                                                                    -   -                                                
+   SLM    SOLOMONIDES, JOHN     G82248                                       55 LAKE AVE NORTH               WORCESTER, MA  01615           508-856-2731                                            
+   SLT    SALTIN, COREY                                                                                                                        -   -                                                
+   SMX    HENCK, SAMUEL                                                                                                                     508-927-7727                                            
+   SOL    SALOMON, STEVEN       A56491                                       112 MAIN STREET                 NORTHBORO, MA                  508-393-9503                                            
+   SPR    SHEPRO, DAVID                                                      119 BELMONT STREET              WORCESTER, MA  01605               793-6276                                            
+   STE    STENGER, JOSEPH       A48826                                       151 WORCESTER ROAD              BARRE, MA  01005               508-355-6321                                            
+   STL    STILLMAN, KENNETH MD                                                                                                                 -   -                                                
+   STM    STROMCZAK, CHRISTOPH                                                                                                                 -   -                                                
+   STR    STRATTON, JAMES       B99340                                       295 LINCOLN ST #206             WORCESTER, MA  01605           508-757-3648                                            
+   SUD    SUDIREDDY, NEELIMA    D77184                                       344 THOMPSON ROAD               WEBSTER, MA  01570             508-949-6880                                            
+   SUL    SULLIVAN, GERALD      B38549                                                                       CT                                -   -                                                
+   SUM    SUMNER, ROBERT        B97148                                       28 LORD ROAD                    MARLBOROUGH, MA  0101752       508-485-7660                                            
+   SUN    SHARMA, SANJEEV                                                    28 WORCESTER RD RT 9            FRAMINGHAM, MA  01702          508-879-5111                                            
+   TAG    TSAGRONIS, DEMETRE    D19530                                       295 LINCOLN STREET              WORCESTER, MA  01605           508-757-6975                                            
+   TAR    TARDIF, LISE                                                       26 QUEEN STREET                 WORCESTER, MA 01610               -   -                                                
+   TEM    TEMPLE, WARREN        B97007                                       435 LAKESIDE AVENUE             MARLBOROUGH, MA  01752         508-481-2500                                            
+   THA    THARAKAN, ROSE                                                                                                                       -   -                                                
+   THM    THOMPSON, MICHAEL J   F45226                                       55 LAKE AVE NORTH               WORCESTER, MA  01655           508-856-3206                                            
+   THO    THOMAS, T                                                                                                                            -   -                                                
+   TIR    TIRZAMAN, OLTITA MD   H43827                                       THOMPSON ROAD                   WEBSTER, MA 01570              508-943-6612                                            
+   TRE    TREHAN, HEMANT                                                     103 MILLBURY ST                 AUBURN, MA  01501              508-721-4100                                            
+   TRI    TRISTER, JON          G12349                                       10 WINTHROP STREET              WORCESTER, MA  01604           508-754-9950                                            
+   TRU    TRUGMAN, SHELIA       A56993                                       291 LINCOLN ST #303             WORCESTER, MA  01605           508-798-3344                                            
+   TSA    TSANG, HING HAU       B99328                                       45 EAST MAIN STREET             WEBSTER, MA  01570                -   -                                                
+   TTO    THORGEIRSSON, OFEIGU  MMG                                          330 GROVE STREET                WORCESTER, MA  01605           508-752-0121                                            
+   TVX    VARGAS, TAMMY         F68218                                       32 OAK STREET                   SOUTHBRIDGE, MA  01550         508-764-3194                                            
+   UMG    PRACTICE, UMASS GROU                                                                                                              508-856-2731                                            
+   UMM    CTR, UMASS MEMORIAL                                                                                                               508-793-6388                                            
+   UM2    PRACTICE, UMASS GROU                                                                                                              508-856-2818                                            
+   UM3    PRACTICE, UMASS GROU                                                                                                              508-842-6502                                            
+   VAI    VAIDEE,                                                                                                                              -   -                                                
+   VAN    VANDERPUTTEN, CARL                                                 HARRINGTON MEMORIAL                                               -   -                                                
+   VAR    VARGAS, GISELA        G08839                                       101 COOLIDGE STREET             HUDSON, MA  01749              508-562-0045                                            
+   VAV    VANCAMPEN, MONICA                                                                                                                    -   -                                                
+   VIN    VINER, BRANT          A58782                                       119 BELMONT STREET              WORCESTER, MA  01605           508-793-6053                                            
+   VIS    VISWANATHAN, SAWNYA   G34688                                       154 EAST MAIN ST SUITE 101      WESTBORO, MA  01581            508-366-1120                                            
+   WAI    WAICE, LEONARD        F88437                                       52 BOYDEN ROAD                  HOLDEN, MA  01520              508-829-4351                                            
+   WAL    WALSH, JAMES P        B99286                                                                                                      508-752-8201                                            
+   WAT    WATSON, KIRK          B37745                                       85 SEYMOUR STREET               HARTFORD, CT  06106            860-527-7161                                            
+   WAU    WAUD, CATHERINE       E74255                                       67 BELMONT STREET               WORCESTER, MA  01605           508-754-1707                                            
+   WAY    JOHN WAY MD                                                        321 MAIN STREET                 ACTON, MA 01720                978-263-1131                                            
+   WCN    WILCON, RICHARD       F25158                                       122 PLAINFIELD ROAD             MOOSUP, CT  06354              860-564-4068                                            
+   WDD    WEDDA,                                                                                                                               -   -                                                
+   WEC    WECHSLER, JONATHAN D                                               MCCM MEMORIAL                                                  508-754-2066                                            
+   WEI    WEIL, ROBERT          F47252                                                                                                         -   -                                                
+   WER    WERTHEIMER, RANDY     F34741                                       39 DEAN ST                      WORCESTER, MA  01609           508-792-8830                                            
+   WES    WEISS, SUZANNE                                                     585 LINCOLN STREET              WORCESTER, MA  01605            50-885-2836                                            
+   WEY    WEYLER, JENNIFER                                                   26 JULIO DRIVE                  SHREWSBURY, MA  01545          508-845-1436                                            
+   WFR    FERGUSON, WARREN                                                   26 QUEEN STREET                 WORCESTER, MA  01610           508-860-7700                                            
+   WGX    GLAZIER, WAYNE        B99066                                       291 LINCOLN STREET              WORCESTER, MA  01605           508-753-7259                                            
+   WHC    CENTRAL MASS, WOMEN'                                                                               WEBSTER, MA  01570             508-949-3600                                            
+   WHI    WHITING, LAWRENCE     F95396                                       385 GROVE STREET                WORCESTER, MA  01605           508-754-8000                                            
+   WHO    WHOLEY, RICHARD       E74254                                       40 CONVERSE STREET              WORCESTER, MA  01605           508-654-4153                                            
+   WIE    WEICHA, JOHN          F31410                                       26 QUEEN STREET                 WORCESTER, MA  01610           508-860-7777                                            
+   WIL    WILTERDINK, DAVID     B84342                                       P.O.BOX 609                     DANIELSON, CT  06239           860-774-1255                                            
+   WOO    WOODRUFF, WILLIAM                                                                                                                    -   -                                                
+   WSL    WESLER, LEE           B39169                                       612 HARTFORD PIKE               DAYVILLE, CT  06241            860-779-0867                                            
+   WSM    MEDICAL, WEBSTER SQU                                                                                                              508-755-9776                                            
+   WSO    WILSON, PAMELA                                                     100 SOUTH ST.SU 207             SOUTHBRIDGE, MA  01550         508-765-9700                                            
+   WUU    WUU, JIM                                                                                                                             -   -                                                
+   WYE    JENNIFER WEYLER MD                                                                                                                508-845-1436                                            
+   WYM    WYMAN, PETER                                                                                                                         -   -                                                
+   YAZ    YAZDANI,MAJID                                                                                                                        -   -                                                
+   000    PANDEY, KESHAV        N01646                                       10 WINTHROP STREET              WORCESTER, MA 01604            508-755-7794                                            
+   001    SHARMA, I N           A66102                                       325 THOMPSON RD                 WEBSTER, MA  01570                 943-6612                                            
+   011    SINGH, G B            B73961                                       325 THOMPSON RD                 WEBSTER, MA  01570                 943-9292                                            
+   012    ACHARYA, RAVINDRA     A55095                                       488 WORCESTER RD                WEBSTER, MA  01570                 949-6880                                            
+   013    PATEL, SM             B73964                                       340 THOMPSON RD                 WEBSTER, MA  01570             508-943-9255                                            
+   014    FLANAGAN JR, WILLIAM  B73968                                       P.O. BOX 488                    WEBSTER, MA  01570             508-943-9147                                            
+   015    HOLZER, N             A67663                                                                                                         -   -                                                
+   017    WRIGHT, JAMES         B73942                                       340 THOMPON RD                  WEBSTER, MA  01570                -   -                                                
+   020    PANDEY, KESHAV D      NO1646                                       10 WINTHROP STREET              WORCESTER, MA  01604           508-755-7794                                            
+   023    GIRGIS, R             J02686                                                                                                         -   -                                                
+   024    VENEZIANO, JOSEPH     A55154                                       46 OAKS AVE                     SOUTHBRIDGE, MA  01550         509-764-2587                                            
+   026    KATTAN, FAIZA         B97597                                       186 WEST MAIN ST                DUDLEY, MA  01571              508-943-2400                                            
+   027    KURLAND, STEPHEN                                                   THOMPSON RD                     WEBSTER, MA  01570                -   -                                                
+   028    COLLEY, JOHN          B73943                                       261 THOMPSON RD                 WEBSTER, MA  01570                -   -                                                
+   029    BUYUK, MAJID          A66021                                       340 THOMPSON RD                 WEBSTER, MA  01570                 943-5544                                            
+   030    KOLBE, BRUCE          A55223                                       100 SOUTH ST                    SOUTHBRIDGE, MA  01550            -   -                                                
+   031    NARAYAN, SHANKAR      B99304                                       162 THOMPSON RD                 WEBSTER, MA  01570             508-949-6880                                            
+   032    SCHUR, WALTER         B73917                                       367 MAIN ST                     OXFORD, MA  01540                  987-2533                                            
+   033    CHEN, FUSEN           B73963                                       240 THOMPSON RD                 WEBSTER, MA  01570                -   -                                                
+   034    D'CRUZ, ALEX          B84427                                       340 THOMPSON RD                 WEBSTER, MA  01570             203-928-0801                                            
+   041    PATEL, SARLA          B73967                                       325 THOMPSTON RD                WEBSTER, MA  01570                -   -                                                
+   059    SODHA, NAREN          D08902                                       10 WINTHROP ST                  WORCESTER, MA  01604              -   -                                                
+   062    ROBERT                                                             325 THOMPSON RD                 WEBSTER, MA  01570                -   -                                                
+   063    CHASE, GERALD         B77080                                       OXFORD MEDICAL CTR              OXFORD, MA  01540              508-987-3545                                            
+   066    RAO, CS               M13218                                       92 JUNE ST                      WORCESTER, MA  01602               791-1212                                            
+   069    BLUTE, R              M11462                                                                                                          756-3509                                            
+   073    UPADHYAY, S RAM       D93008                                       THOMPSON ROAD                   WEBSTER, MA  01570             508-949-1665                                            
+   075    GARG, S               D83082                                       21 WEST ST                      WORCESTER, MA  01609               753-3947                                            
+   076    PEREL, LUDMILA        B59993                                       THOMPSON RD HRH                 WEBSTER, MA  01570             508-949-1988                                            
+   077    NASINNYK, GEORGE      E37008                                       257 MAIN ST                     OXFORD, MA  01540                  987-3996                                            
+   079    PABLEY, AS            A57239                                       52 BOYDEN ST                    HOLDEN, MA  01520                 -   -                                                
+   080    GUARNIERI, KENNETH F  E76196                                       27 SUTTON AVE                   OXFORD, MA  01540              508-987-6422                                            
+   081    LIEPMAN, M            E43382                                                                                                         -   -                                                
+   083    DAVIDOW, PETER        E37682                                       340 THOMPSON RD                 WEBSTER, MA  01570                 949-3600                                            
+   085    SHARMA, I N           A66102                                       325 THOMPSON RD                 WEBSTER, MA  01570                -   -                                                
+   086    AGGARWAL, SARIKA      F33449                                       30 JULIO DRIVE                  SHREWSBURY, MA  01545              842-5594                                            
+   088    ALBERT, ALAN          B76452                                       116 BELMONT STREET              WORCESTER, MA  01605               792-5800                                            
+   089    ALFRED, HOWARD        A66440                                       281 LINCOLN STREET              WORCESTER, MA  01605               793-6227                                            
+   090    ANAND, RAJ            B97029                                       210 LINCOLN STREET              WORCESTER, MA  01605               755-0286                                            
+   091    AROUS, ELIAS          A56176                                       67 BELMONT STREET               WORCESTER, MA  01605               793-6600                                            
+   092    BATBOUTA, JOHN        A55123                                       23 PLEASANT STREET              SPENCER, MA  01524                 885-9737                                            
+   093    BADRA, ZIAM           F39454                                       154 EAST MAIN STREET            WESTBORO, MA  01581                898-2297                                            
+   094    BAGLEY, PETER         B93594                                       119 BLEMONT STREET              WORCESTER, MA  01605               793-6231                                            
+   095    BALDOR, ROBERT        D99843                                       55 LAKE AVE NORTH               WORCESTER, MA  01655               856-2818                                            
+   096    BAYARD, KERN          A54147                                       281 LINCOLN STREET              WORCESTER, MA  01604           508-792-8409                                            
+   097    BAZEMORE, ROBERT      A67994                                       116 BELMONT STREET              WORCESTER, MA  01605               753-0278                                            
+   098    BEHMER, CLIFFORD      A66545                                       154 EAST MAIN STREET            WESTBORO, MA  01581                366-1120                                            
+   099    BERGER, HOWARD        B73522                                       25 BURNCOAT STREET              WORCESTER, MA  01605               852-0434                                            
+   1      KESHAV D PANDEY, MD   B99005                         000-00-0000   10 WINTHROP STREET              WORCESTER, MA 01604            508-755-7794                                            
+   100    BHALOTRA, RAKESH      A58081                                       385 GROVE STREET                WORCESTER, MA  01610               757-2710                                            
+   101    BLAKE, WILLIAM        B97605                                       MAYO DRIVE                      HOLDEN, MA  01520                  829-4355                                            
+   102    BRESS, NORMAN         D83009                                       210 LINCOLN STREET              WORCESTER, MA  01605               757-8383                                            
+   103    BRETTLER, DOREEN      B73172                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6276                                            
+   104    BUDNITZ, EDWARD       A67466                                       55 LAKE AVE NORTH               WORCESTER, MA  01655               856-2374                                            
+   105    CAHN, THOMAS          A38366                                       210 LINCOLN STREET              WORCESTER, MA  01605               754-3823                                            
+   106    CAMPOS, LORENZO       A67976                                       282 BURNCOAT STREET             WORCESTER, MA  01605               853-8202                                            
+   107    CASAL, MARIA          J08407                                       295 LINCOLN STREET              WORCESTER, MA  01605           508-792-8409                                            
+   108    CAUSSENHEIMER         A55139                                       69 WEST MAIN STREET             WESTBOROUGH, MA  01581           3-668-1223                                            
+   109    CEDARBAUM, ANDREW     D88050                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6276                                            
+   11     MCGEARY, RN ROSEANN                                  000-00-0000   325 THOMPSON RD                 WEBSTER, MA. 01570             508-949-8103                                            
+   110    CHANDLER, J P                                                      25 OAK AVENUE                   WORCESTER, MA  01605               791-6521                                            
+   111    COCCOZELLA, JOSEPH    D83083                                       10 WINTHROP STREET              WORCESTER, MA  01604               755-6163                                            
+   112    SHERMAN, CAROL        E01943                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6276                                            
+   113    COLLEY, JOHN          E46046                                       THOMPSON ROAD                   WEBSTER, MA  01570                 949-0008                                            
+   114    CORBETT, WILLIAM      J05107                                       30 JULIO DRIVE                  SHREWSBURY, MA  01545              842-5594                                            
+   115    COURNOYER, RUSSELL    A67489                                       1 RENE DRIVE                    SPENCER, MA  01562                 885-5254                                            
+   116    CULINANE, PAULA       F53375                                       LINCOLN PRIMARY CARE            WORCESTER, MA  01605           508-792-8409                                            
+   117    CUTLER, MARK          A68018                                       119 BELMONT STREET              WORCESTER, MA  01605               757-2233                                            
+   118    CUTLER, SCOTT         A68018                                       51-A CEDAR STREET               WORCESTER, MA  01609               755-2233                                            
+   119    DAHL, REYNOLD         B97922                                       18 GRANITE STREET               WHITINSVILLE, MA  01588            234-8272                                            
+   120    DALY, JENNIFER        B76561                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6172                                            
+   121    DAVIS, STEVEN         B77246                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6231                                            
+   122    DELACEY, K            A56836                                       123 CENTRAL STREET              AUBURN, MA  01501                  832-9646                                            
+   123    DELROSARIO            E33644                                       LINCOLN PRIMARY CARE            WORCESTER, MA  01605               793-6227                                            
+   124    DRISCOLL, EDWARD      A68007                                       121 LINCOLN STREET              WORCESTER, MA  01605               755-9156                                            
+   125    DUFAULT, PAUL         C52152                                       40 CONVERSE STREET              WORCESTER, MA  01605               791-6611                                            
+   126    DUNN, PAUL            B74592                                       25 OAK AVENUE                   WORCESTER, MA  01605           508-798-8826                                            
+   127    DURHAM, CHRISTOPHER   B99013                                       116 BELMONT STREET              WORCESTER, MA  01605               754-7018                                            
+   128    DYKHUIZEN, DAVID      A68011                                       116 BELMONT STREET              WORCESTER, MA  01605               752-7470                                            
+   129    EBERT, THOMAS         B11644                                       119 BLEMONT STREET              WORCESTER, MA  01605               793-6227                                            
+   130    ERBAN, STEPHEN        A66637                                       55 LAKE AVE NORTH               WORCESTER, MA  01655               856-2731                                            
+   131    FANALE, JAMES         A67818                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6293                                            
+   132    FARBMAN, KENNETH      V02550                                       291 LINCOLN STREET              WORCESTER, MA  01605               752-7464                                            
+   133    FISCHER, ABRAHAM      E42684                                       67 BELMONT STREET               WORCESTER, MA  01605               755-4861                                            
+   134    FISHER, MARK          B76984                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6641                                            
+   135    FLORECK, JAMES        N51757                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6275                                            
+   136    FRANKS, STEVEN        B99107                                       210 LINCOLN STREET              WORCESTER, MA  01605               754-3823                                            
+   137    FRIEDLEY, NANCY       N01885                                       130 LINCOLN STRET               WORCESTER, MA  01605               755-9428                                            
+   138    FREITAS               F14261                                       176 EAST MAIN STREET            WESTBORO, MA  01581                366-7100                                            
+   139    GALICA, MICHEAL       J07285                                       328 HIGHLAND STREET             WORCESTER, MA  01609               754-1308                                            
+   140    GARG, SHANKAR         B99004                                       10 WINTHROP STREET              WORCESTER, MA  01604               793-3947                                            
+   141    GIL, FRANCISCO        B99036                                       10 WINTHROP STREET              WORCESTER, MA  01604               799-2922                                            
+   142    GILBERT, JAMES        N01833                                       188 PROVIDENCE TPK              SUTTON, MA  01527                  865-3650                                            
+   143    GIRGIS, ROMANY        J02686                                       186 WEST MAIN STREET            DUDLEY, MA  01571                  943-2400                                            
+   144    GISE, ROBERT          A67716                                       25 OAK AVENUE                   WORCESTER, MA  01605               755-4922                                            
+   145    GITKIND, MITCHELL     B95356                                       116 BELMONT STREET              WORCESTER, MA  01605               831-0399                                            
+   146    GLEW, RICHARD         E03268                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6256                                            
+   147    GOLJAN, WALTER        B99089                                       46 MILL STREET                  WORCESTER, MA  01603               755-9776                                            
+   148    GOODWIN, JAMES        B73946                                       50 ELM STREET                   SOUTHBRIDGE, MA  01516             765-5417                                            
+   149    GRANDE, KAREN         A67989                                       206 NORTH MAIN ST               WHITINSVILLE, MA  01588            234-9220                                            
+   150    GRAPSKI, RICHARD      A39771                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6276                                            
+   151    GREEN, KAREN          B74543                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6255                                            
+   152    GREEN, STEPHEN        B97607                                       52 BOYDEN STREET                HOLDEN, MA  01520                  829-4351                                            
+   153    GREEN, WILLIAM        D10535                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6204                                            
+   154    GREENBERG, JOSHUA     J01043                                       116 BELMONT STREET              WORCESTER, MA  01605               792-0616                                            
+   155    GREENE, DENNIS                                                     48 ELM STREET                   WORCESTER, MA  01609               755-3161                                            
+   156    HAAS, RICHARD         D94194                                       200 LINCOLN STREET              WORCESTER, MA  01605               755-1222                                            
+   157    HALPIN, THOMAS        B76192                                       25 OAK STREET                   WORCESTER, MA  01605               798-8826                                            
+   158    HANNON, HARLAND       A55062                                       151 WORCESTER STREET            GRAFTON, MA  01539                 839-3323                                            
+   159    HART, PAUL            B73951                                       104 LEOMINSTER RD               STERLING, MA  01564            978-422-7774                                            
+   160    HAWTHORNE, MARY       A56858                                       33 OAK AVE                      WORCESTER, MA  01605               791-8524                                            
+   161    HIGANO, NORIO         A67964                                       116 BELMONT STREET              WORCESTER, MA  01605               791-9333                                            
+   162    HITZHUSEN, JANICE     A56432                                       200 LINCOLN STREET              WORCESTER, MA  01605               755-1222                                            
+   163    HOAK, DENNIS          D83086                                       35 MILLBURY STREET              AUBURN, MA  01501                  832-9621                                            
+   164    HOPKINS, TIMOTHY      A36242                                       25 OAK AVENUE                   WORCESTER, MA  01605               756-6293                                            
+   165    HOWARD, PHILIP        B76328                                       25 OAK AVENUE                   WORCESTER, MA  01605               756-6293                                            
+   166    HUNTER, TODD          B99189                                       25 OAK AVENUE                   WORCESTER, MA  01605               755-4861                                            
+   167    HURWITZ, EDWARD       A49706                                       121 LINCOLN STREET              WORCESTER, MA  01605               753-8151                                            
+   168    JOHNSON, KIRK         M11273                                       33 OAK AVENUE                   WORCESTER, MA  01605               752-1304                                            
+   169    JONES, ALBERT         B77126                                       25 OAK AVENUE                   WORCESTER, MA  01605               791-4141                                            
+   170    JONES, KATHRYN        J06272                                       67 BELMONT STREET               WORCESTER, MA  01605               754-1707                                            
+   171    KELLY, JOHN           B99211                                       385 GROVE STREET                WORCESTER, MA  01609               753-2060                                            
+   172    KEROACK, MARK         A38557                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6053                                            
+   173    KIRKENDALL, HENRY     A67168                                       25 OAK AVENUE                   WORCESTER, MA  01605               798-8826                                            
+   174    KLUGMAN, ROBERT       A55144                                       5 CHESTNUT STREET               WESTBORO, MA  01581                366-1120                                            
+   175    KOURY, EDMOND         A67817                                       295 LINCOLN STREET              WORCESTER, MA  01605               752-1943                                            
+   176    KOWOLOFF, HARVEY      A67817                                       295 LINCOLN STREET              WORCESTER, MA  01605           508-792-8409                                            
+   177    LASSER, DANIEL        A55189                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6156                                            
+   178    LIEPMAN, MARCIA       B99338                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6276                                            
+   179    LEVINE, PETER         B75706                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6488                                            
+   180    LEVY, MARK            J84984                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6297                                            
+   181    LOCK, JOHN PAUL       D94186                                       26 QUEEN STREET                 WORCESTER, MA                  508-754-8000                                            
+   182    MACLIN, RONALD        A55118                                       136 MAIN STREET                 SPENCER, MA  01562                 885-4808                                            
+   183    MACNEIL, MERLE        A67989                                       206 NORTH MAIN ST               WHITINSVILLE, MA  01588            234-9220                                            
+   184    MANNING, GORDON       E56018                                       154 EAST MAIN ST                WESTBORO, MA  01581                366-1120                                            
+   185    MARKLEY, HERBERT      B97717                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6641                                            
+   186    MASSARELLI, DANIEL    A66582                                       281 LINCOLN  STREET             WORCESTER, MA  01605           508-792-8802                                            
+   187    MATHUR, USHA          A66250                                       30 EDWARD STREET                WORCESTER, MA  01605               752-2248                                            
+   188    SARAH                 E08516                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6251                                            
+   189    MELTZER, GLENN        A67660                                       33 LINCOLN STREET               WORCESTER, MA  01605               757-4160                                            
+   190    METZMAKER, JEFFREY    A67541                                       33 OAK STREET                   WORCESTER, MA  01605               752-5144                                            
+   191    MIETKEIWICZ, LESTER   A56863                                       28 GRAFTON COMMON               GRAFTON, MA  01519                 839-5391                                            
+   192    MILLER, ANDREW        B99336                                       15 WEST STREET                  EAST DOUGLAS, MA  01516            476-3291                                            
+   193    MILLS, CHARLES        B99344                                       35 MILLBURY STREET              AUBURN, MA  01501                  832-9621                                            
+   194    MOODY, BETSY          A67819                                       295 LINCOLN STREET              WORCESTER, MA  01605               755-8070                                            
+   195    MORETTI, MARIO        A67855                                       265 BOSTON TPK                  SHREWSBURY, MA  01545              757-5845                                            
+   196    MULLER, WILLIAM       B98996                                       EAST HARTFORD AVE               UXBRIDGE, MA  01569                278-5573                                            
+   197    MURPHY, DENNIS        B74993                                       GROVE STREET                    WORCESTER, MA  01605               753-2060                                            
+   198    NEMITZ, ANN           D14877                                       39 DEAN STREET                  WORCESTER, MA  01609               756-4301                                            
+   199    OSHEA, MICHAEL        E02027                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6161                                            
+   2      RAJESH SHARMA, MD     E60124                         000-00-0000   10 WINTHROP STREET              WORCESTER, MASS 01604          508-755-7794                                            
+   200    PANTANO, RONALD       D88062                                       40 CONVERSE STREET              WORCESTER, MA  01605           508-792-8409                                            
+   201    PAQUETTE, CHARLES     A67154                                       470 PLEASANT STREET             WORCESTER, MA  01609               754-7244                                            
+   202    PATEL, CBS            D19534                                       30 EDWARD STREET                WORCESTER, MA  01605               753-4180                                            
+   203    PATENAUDE, THOMAS     A67687                                       130 ELM STREET                  WORCESTER, MA  01609               756-6609                                            
+   204    PATWARDHAN, RASHIMI   A68021                                       10 WINTHROP STREET              WORCESTER, MA  01604               756-4319                                            
+   205    PHILIBIN, JEROME      A67705                                       121 LINCOLN STREET              WORCESTER, MA  01605               757-1431                                            
+   206    POKOLY, THOMAS        D83066                                       121 LINCOLN STREET              WORCESTER, MA  01605               756-1538                                            
+   207    QUINLAN, ROBERT       A66788                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6216                                            
+   208    REDDY, ROOPA          F71053                                       33 OAK STREET                   WORCESTER, MA  01605           508-791-8524                                            
+   209    REISS, HAROLD         A68004                                       37 FRUIT STREET                 WORCESTER, MA  01609               799-9032                                            
+   210    RILEY, JEFFREY        B72954                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6255                                            
+   211    ROMERO, HERNANDO      A67991                                       30 EDWARD STREET                WORCESTER, MA  01605               755-8177                                            
+   212    ROCKWELL, JESSICA     A58055                                       136 HIGH STREET EXT             LANCASTER, MA  01523              -   -                                                
+   213    ROZAK, STEVEN         A57697                                       319 SOUTHBRIDGE ST              AUBURN, MA  01501                  832-9646                                            
+   214    RUBIN, HERBERT        B99281                                       59 WILLIAM STREET               WORCESTER, MA  01609               791-5275                                            
+   215    RUDNICK, RICHARD      J03336                                       291 LINCOLN STREET              WORCESTER, MA  01605               798-3344                                            
+   216    SAID, NANCY           A66554                                       1385 MAIN STREET                SPENCER, MA  01562                 752-0117                                            
+   217    SAMA, RALPH           B73950                                       407 MAIN STREET                 SPENCER, MA  01562                 885-9737                                            
+   218    SANDERS, JOHN         B76368                                       121 LINCOLN STREET              WORCESTER, MA  01605               791-6397                                            
+   219    SANFACON, PHILIP      A67569                                       116 BELMONT STREET              WORCESTER, MA  01605               757-1699                                            
+   220    SCHEFFEL, HANNES      A67792                                       10 WINTHROP STREET              WORCESTER, MA  01604               755-2611                                            
+   221    SCHMITT, STEPHANIE    F09727                                       67 BELMONT STREET               WORCESTER, MA  01605               793-5352                                            
+   222    SCHWARTZ, PAUL        B98492                                       121 LINCOLN STREET              WORCESTER, MA  01605               799-2319                                            
+   223    SEGER, JERRIANNE      E44026                                       30 JULIO DRIVE                  SHREWSBURY, MA  01545              842-5594                                            
+   224    SEIDMAN, JOEL         B73487                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6231                                            
+   225    SHEWMON, DAVID        C43408                                       67 BELMONT STREET               WORCESTER, MA  01605               754-1707                                            
+   226    NGUYEN, LONG                                                       90 MADISON ST NO 106            WORCESTER, MA  01608           508-756-2343                                            
+   227    SINGH, JANG           B77052                                       25 WINTHROP STREET              WORCESTER, MA  01604               798-6621                                            
+   228    SMALL, WILFRED                                                     25 OAK AVENUE                   WORCESTER, MA  01605               791-6521                                            
+   229    SPANKNEBEL, GUENTER   B99288                                       116 BELMONT STREET              WORCESTER, MA  01605               754-4170                                            
+   230    STAROBIN, OSCAR       A67887                                       130 LINCOLN STREET              WORCESTER, MA  01605               757-6262                                            
+   231    STARR, JEROME         D83061                                       67 BELMONT STREET               WORCESTER, MA  01605               754-1707                                            
+   232    STEVENS, KENNETH      E18012                                       30 JULIO DRIVE                  SHREWSBURY, MA  01545              842-5594                                            
+   233    STOCK, JOHN           E20180                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6213                                            
+   234    TANGUAY, GARY         A44253                                       119 BELMONT STREET              WORCESTER, MA  01605               793-6296                                            
+   235    THEERMAN, MICHEAL     A55067                                       42 CENTRAL STREET               WEST BOYLSTON, MA  01583           835-3934                                            
+   236    THEODOSIOU, GEORGE    A67708                                       26 QUEEN STREET                 WORCESTER, MA  01609               799-2697                                            
+   237    UPCHURCH, KATHERINE   D82884                                       119 BELMONT STREET              WORCESTER, MA  01609               793-6273                                            
+   238    VAKIL, ROHIT          A67672                                       10 WINTHROP STREET              WORCESTER, MA  01604               755-3139                                            
+   239    WALSH, THOMAS         B73911                                       10 WINTHROP STREET              WORCESTER, MA  01604               791-3120                                            
+   240    WARD, ALLEN           B97290                                       33 KENDALL STREET               WORCESTER, MA  01605               793-6276                                            
+   241    WHITTEN, RICHARD      C46306                                       116 BELMONT STREET              WORCESTER, MA  01605               754-7018                                            
+   242    YOUNG, E RUSSELL      B76079                                       319 SOUTHBRIDGE ST              AUBURN, MA  01501                  832-9646                                            
+   243    ZABIK, GERALDINE      E83203                                       295 LINCOLN STREET              WORCESTER, MA  01605               793-5400                                            
+   244    ZAMBETTI, FRANCIS     A55066                                       NICHOLS ROAD                    FITCHBURG, MA  01420               345-1166                                            
+   245    ZWEIG, DANA           J10528                                       291 LINCOLN STREET              WORCESTER, MA  01605               798-3344                                            
+   250    BESSETTE, ROBERT      D83080                                       25A WINTHROP STREET             WORCESTER, MA  01604           508-798-1280                                            
+   251    STENGER, JOSEPH                                                                                                                      -   -                                                
+   255    SEDGWICK, PAUL        F72442                                       200 LINCOLN ST                  WORCESTER, MA  01605           508-755-1222                                            
+   256    SHEKAR, VASANTHA      F30765                                       630 PLANTATION ST               WORCESTER, MA  01605           508-791-6351                                            
+   260    COHEN, JOSEPH         E25245                                       25 WINTHROP STREET              WORCESTER, MA  01604           508-754-1707                                            
+   261    PEASE, JAMES          B74732                                       55 LAKE AVE NORTH               WORCESTER, MA  01655           508-856-2818                                            
+   262    ENDRIGA, RAUL         A67990                                       130 ELM STREET                  WORCESTER, MA  01609           508-756-6609                                            
+   263    SHAH, NEETA           G30996                                       325 THOMPSON RD                 WEBSTER, MA  01570             508-943-6612                                            
+   264    GRIFFEY, KATHARINE    E56861                                       325 THOMPSON RD                 WEBSTER, MA  01570             508-943-6612                                            
+   266    GULLA, MARY M         F95211                                                                       DOUGLAS, MA  01516                -   -                                                
+   270    GRILLO, CYNTHIA       F96608                                                                                                      508-764-2430                                            
+   280    ROSEN, MARK           F48506                                       THOMPSON RD                     WEBSTER, MA  01570             508-949-6880                                            
+   288    MURK, STEPHEN         G10251                                       344 THOMPSON ROAD               WEBSTER, MA  01570             508-949-6880                                            
+   300    KARLIN, BRUCE         E60210                                       200 LINCOLN STREET              WORCESTER, MA  01605           508-755-1222                                            
+   301    BREAM, RICHARD                                                     48 AUBURN ST                    AUBURN, MA  01501              508-832-9691                                            
+   302    BRADLEY, PAUL         A56811                                       338 CHURCH ST                   WHITINSVILLE, MA  01588        508-234-9931                                            
+   303    ACHARYA, RAVINDRA     A55095                                                                                                         -   -                                                
+   304    GOSS, THOMAS P        A67183                                       55 LAKE AVE NORTH               WORCESTER, MA  01655              -   -                                                
+   310    MOORES, MARK          F99988                                       161 WEST MAIN ST.               DUDLEY, MA  01571              508-949-7707                                            
+   333    COHEN, JEFFREY        F29194                                       344 THOMPSON RD                 WEBSTER, MA  01570             508-949-6880                                            
+   350    HEISS, FREDERICK                                                   BURLINGTON MA                                                     -   -                                                
+   5      KESHAV D PANDEY, MD   B99005                         000-00-0000   10 WINTHROP STREET              WORCESTER, MASS 01604          508-755-9974                                            
+   6      RAJESH SHARMA, MD     E60124                         000-00-0000   10 WINTHROP STREET              WORCESTER, MA 01604            508-755-9974                                            

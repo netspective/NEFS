@@ -1,0 +1,23 @@
+                                                          PROCEDURE CODE MASTER LISTING  (GI)                     
+
++----------+-+----------------------------------------+-+-------+--------+----------+-+--------+--------+----------+-+--------+--------+
+|Proc Code |C|           Description                  |T|Amount | Accptd |  Code 1  |T| Amount | Accptd |  Code 2  |T| Amount | Accptd |
+|          | |                                        | |       |        |  Code 3  | |        |        |  Code 4  | |        |        |
++----------+-+----------------------------------------+-+-------+--------+----------+-+--------+--------+----------+-+--------+--------+
+
+All lines start from column 0...
+
+001 - 010 Proc Code
+012 - 012 C ?
+014 - 053 Description
+055 - 055 T ?
+057 - 063 Amount
+065 - 072 Accepted
+074 - 083 Code 1 (Code 3 on Line 2)
+085 - 085 T ?
+087 - 094 Amount
+096 - 103 Accepted
+105 - 114 Code 2 (Code 4 on Line 2)
+116 - 116 T ?
+118 - 125 Amount
+127 - 134 Accepted
