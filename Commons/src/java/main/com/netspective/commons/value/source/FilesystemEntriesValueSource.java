@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSource.java,v 1.2 2003-03-16 17:04:19 shahid.shah Exp $
+ * $Id: FilesystemEntriesValueSource.java,v 1.3 2003-03-16 21:18:50 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -86,11 +86,6 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
     private ValueSource rootPathValue;
     private String filter;
 
-    public FilesystemEntriesValueSource()
-    {
-        filter = ALL_FILES_FILTER;
-    }
-
     public static String[] getIdentifiers()
     {
         return IDENTIFIERS;
@@ -99,6 +94,11 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
     public static ValueSourceDocumentation getDocumentation()
     {
         return DOCUMENTATION;
+    }
+
+    public FilesystemEntriesValueSource()
+    {
+        filter = ALL_FILES_FILTER;
     }
 
     public boolean isPathInSelection()
