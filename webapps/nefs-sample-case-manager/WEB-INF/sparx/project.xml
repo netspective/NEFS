@@ -35,7 +35,7 @@
         <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
         <!-- columns that should be included in all tables -->
-        <table-type name="Default">
+        <table-type name="Default" type="Presentation">
             <xdm:template-param name="recordStatusEnum" default="Record_Status"/>
 
             <column name="cr_stamp" type="creation-stamp"/>

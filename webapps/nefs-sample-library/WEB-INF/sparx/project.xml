@@ -23,11 +23,11 @@
                 Welcome to the home page.
             </body>
         </page>
-        <page name="add" caption="Add Book" command="dialog,library.bookInfo,add"/>
+        <page name="add" caption="Add Book" command="dialog,library.book-info,add"/>
     </navigation-tree>
 
 	<dialogs package="library">
-		<dialog name="bookInfo" retain-params="*">
+		<dialog name="book-info" retain-params="*">
 			<frame heading="create-dialog-perspective-heading:Book Information"/>
 
 			<field name="id" type="text" caption="Book ID" required="yes" max-length="10"/>
@@ -57,7 +57,7 @@
 	<schema name="db">
 		<xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
-		<table name="Book_Info" abbrev="bkI">
+		<table name="Book_Info" abbrev="bkI" type="Presentation">
 			<column name="id" type="text" size="10" primary-key="yes" descr="Unique ID for every book in the database"/>
 			<column name="name" type="text" size="64" descr="Name of the book"/>
             <column name="author" type="text" size="64" descr="Name of the author(s)"/>
@@ -75,7 +75,6 @@
 				<enum>Chemistry</enum>
 			</enumerations>
 		</table>
-
 	</schema>
 
 	<!--
