@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldConditionalAction.java,v 1.5 2003-05-31 22:26:23 shahid.shah Exp $
+ * $Id: DialogFieldConditionalAction.java,v 1.6 2003-06-05 23:22:11 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -67,6 +67,7 @@ public class DialogFieldConditionalAction
     private DialogField sourceField = null;
     private DialogField partnerField = null;
     private String partnerFieldName = null;
+    private String jsExpr = null;
 
     /**
      * Empty constructor
@@ -149,5 +150,15 @@ public class DialogFieldConditionalAction
         partnerField = value;
         if(partnerField != null)
             partnerField.getDependentConditions().addAction(this);
+    }
+
+    public String getJsExpr()
+    {
+        return jsExpr;
+    }
+
+    public void setJsExpr(String jsExpr)
+    {
+        this.jsExpr = jsExpr;
     }
 }
