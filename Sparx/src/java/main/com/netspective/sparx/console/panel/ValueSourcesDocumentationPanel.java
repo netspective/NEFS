@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesDocumentationPanel.java,v 1.1 2003-03-26 00:35:32 shahid.shah Exp $
+ * $Id: ValueSourcesDocumentationPanel.java,v 1.2 2003-03-27 22:22:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -50,13 +50,7 @@ import java.util.Iterator;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.console.ConsoleServlet;
-import com.netspective.commons.report.tabular.TabularReport;
-import com.netspective.commons.report.tabular.BasicTabularReport;
-import com.netspective.commons.report.tabular.TabularReportFrame;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
-import com.netspective.commons.report.tabular.TabularReportException;
+import com.netspective.commons.report.tabular.*;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSources;
@@ -68,21 +62,18 @@ public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPan
     public static final TabularReport documentationReport = new BasicTabularReport();
     static
     {
-        GeneralColumn identifiers = new GeneralColumn();
+        documentationReport.getFrame().setHeading(new StaticValueSource("Value Sources Documentation"));
+        documentationReport.getFrame().setFlag(TabularReportFrame.RPTFRAMEFLAG_ALLOW_COLLAPSE);
+
+        TabularReportColumn identifiers = documentationReport.createColumn();
         identifiers.setHeading(new StaticValueSource("Identifier(s)"));
         identifiers.setColIndex(0);
         identifiers.setWordWrap(false);
+        documentationReport.addColumn(identifiers);
 
-        GeneralColumn doc = new GeneralColumn();
+        TabularReportColumn doc = documentationReport.createColumn();
         doc.setHeading(new StaticValueSource("Documentation"));
-        doc.setColIndex(1);
-
-        documentationReport.getFrame().setHeading(new StaticValueSource("Value Sources Documentation"));
-        documentationReport.getFrame().setFlag(TabularReportFrame.RPTFRAMEFLAG_ALLOW_COLLAPSE);
-        documentationReport.initialize(new TabularReportColumn[] {
-                identifiers,
-                doc,
-            });
+        documentationReport.addColumn(doc);
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc)

@@ -19,6 +19,7 @@
 	        <page name="xdm" caption="XDM Components">
                 <panels>
                     <panel class="com.netspective.sparx.console.panel.XdmComponentsPanel"/>
+                    <panel class="com.netspective.sparx.console.panel.XmlDataModelSchemaStructurePanel" xdm-class="com.netspective.sparx.ApplicationManagerComponent"/>
                 </panels>
             </page>
 	        <page name="value-source" caption="Value Sources">

@@ -39,70 +39,67 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.3 2003-03-27 22:22:56 shahid.shah Exp $
+ * $Id: XmlDataModelSchemaStructurePanel.java,v 1.1 2003-03-27 22:22:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
 
-import java.io.Writer;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.List;
-
-import javax.servlet.ServletException;
-
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-
-import com.netspective.sparx.console.ConsoleServletPage;
-import com.netspective.sparx.console.ConsoleServlet;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.commons.report.tabular.BasicTabularReport;
-import com.netspective.commons.report.tabular.TabularReport;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.TabularReportSkin;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
-import com.netspective.commons.report.tabular.TabularReportException;
-import com.netspective.sparx.report.ReportHttpServletValueContext;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.HtmlTabularReportPanel;
-import com.netspective.sparx.report.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.commons.report.tabular.*;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.xdm.XdmComponentFactory;
-import com.netspective.commons.xdm.XdmComponent;
-import com.netspective.commons.io.InputSourceTracker;
-import com.netspective.commons.io.FileTracker;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xml.template.TemplateProducers;
+import com.netspective.commons.xml.template.TemplateProducerParent;
 
-public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
+import java.util.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 {
+    private static final Log log = LogFactory.getLog(XmlDataModelSchemaStructurePanel.class);
     private static final TabularReport report = new BasicTabularReport();
 
     static
     {
         report.getFrame().setHeading(new StaticValueSource("XDM Components Usage"));
 
-        NumericColumn index = new NumericColumn();
-        report.addColumn(index);
+        GeneralColumn elementName = new GeneralColumn();
+        elementName.setHeading(new StaticValueSource("Element"));
+        elementName.setWordWrap(false);
+        report.addColumn(elementName);
 
         GeneralColumn xdmClass = new GeneralColumn();
-        xdmClass.setHeading(new StaticValueSource("XDM Component"));
+        xdmClass.setHeading(new StaticValueSource("Class"));
         xdmClass.setWordWrap(false);
         report.addColumn(xdmClass);
 
         GeneralColumn xdmSystemId = new GeneralColumn();
-        xdmSystemId.setHeading(new StaticValueSource("Source"));
-        xdmSystemId.setColIndex(2);
+        xdmSystemId.setHeading(new StaticValueSource("Text"));
         xdmSystemId.setWordWrap(false);
         report.addColumn(xdmSystemId);
     }
 
+    private Class xdmClass;
+
+    public Class getXdmClass()
+    {
+        return xdmClass;
+    }
+
+    public void setXdmClass(Class xdmClass)
+    {
+        this.xdmClass = xdmClass;
+    }
+
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        return new UsageReportDataSource();
+        return new StructureDataSource();
     }
 
     public TabularReport getReport()
@@ -110,38 +107,51 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
         return report;
     }
 
-    public class UsageReportDataSource implements TabularReportDataSource
+    protected class StructureDataSource implements TabularReportDataSource
     {
         protected int row = -1;
-        protected int lastRow = XdmComponentFactory.getComponentsBySystemId().size() - 1;
-        protected Map componentsBySystemId = XdmComponentFactory.getComponentsBySystemId();
-        protected Iterator iterator = componentsBySystemId.entrySet().iterator();
-        protected String systemId;
-        protected XdmComponent component;
+        protected List rows = new ArrayList();
+        protected int lastRow;
+        protected Object[] activeRow;
+        protected Set visitedElements = new HashSet();
 
-        public String getHtml(FileTracker ft)
+        public StructureDataSource()
         {
-            StringBuffer src = new StringBuffer();
-            src.append(ft.getFile().getAbsolutePath());
-            List preProcs = ft.getPreProcessors();
-            if(preProcs != null && preProcs.size() > 0)
-            {
-                src.append("<ul>");
-                for(int i = 0; i < preProcs.size(); i++)
-                    src.append("<li>"+ getHtml((FileTracker) preProcs.get(i)) +" (pre-processors)</li>");
-                src.append("</ul>");
-            }
+            addRow(-1, XmlDataModelSchema.getSchema(xdmClass), xdmClass, null);
+            lastRow = rows.size() - 1;
+        }
 
-            List dependencies = ft.getIncludes();
-            if(dependencies != null && dependencies.size() > 0)
-            {
-                src.append("<ul>");
-                for(int i = 0; i < dependencies.size(); i++)
-                    src.append("<li>"+ getHtml((FileTracker) dependencies.get(i)) +"</li>");
-                src.append("</ul>");
-            }
+        public void addRow(int level, XmlDataModelSchema parentSchema, Class cls, String name)
+        {
+            TemplateProducers templateProducers = null;
+            if(parentSchema instanceof TemplateProducerParent)
+                templateProducers = ((TemplateProducerParent) parentSchema).getTemplateProducers();
 
-            return src.toString();
+            if (visitedElements.contains(name))
+                return;
+
+            visitedElements.add(name);
+
+            XmlDataModelSchema schema = XmlDataModelSchema.getSchema(cls);
+
+            if(name != null)
+                rows.add(new Object[] { new Integer(level), parentSchema, schema, name });
+
+            Iterator iterator = schema.getNestedElements().keySet().iterator();
+            while (iterator.hasNext())
+            {
+                String nestedName = (String) iterator.next();
+                if(schema.getOptions().ignoreNestedElement(nestedName))
+                    continue;
+                try
+                {
+                    addRow(level+1, schema, schema.getElementType(nestedName), nestedName);
+                }
+                catch(DataModelException e)
+                {
+                    log.error(e);
+                }
+            }
         }
 
         public Object getData(TabularReportValueContext vc, int columnIndex)
@@ -149,20 +159,18 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             switch(columnIndex)
             {
                 case 0:
-                    return new Integer(getRow());
+                    int level = ((Integer) activeRow[0]).intValue();
+                    StringBuffer indent = new StringBuffer();
+                    for(int i = 0; i < level; i++)
+                        indent.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+                    indent.append((String) activeRow[3]);
+                    return indent.toString();
 
                 case 1:
-                    return ConsoleServlet.constructClassRefHtml(component.getClass());
-
-                case 2:
-                    InputSourceTracker ist = component.getInputSource();
-                    if(ist instanceof FileTracker)
-                        return getHtml((FileTracker) ist);
-                    else
-                        return ist.getIdentifier() + " (Dependencies: " + ist.getDependenciesCount() + ")";
+                    return ((XmlDataModelSchema) activeRow[2]).getBean().getName();
 
                 default:
-                    return "Invalid column: " + columnIndex;
+                    return ((XmlDataModelSchema) activeRow[2]).supportsCharacters() ? "Yes" : "&nbsp;";
             }
         }
 
@@ -176,9 +184,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             if(row < lastRow)
             {
                 row++;
-                Map.Entry entry = (Map.Entry) iterator.next();
-                systemId = (String) entry.getKey();
-                component = (XdmComponent) entry.getValue();
+                activeRow = (Object[]) rows.get(row);
                 return true;
             }
 
@@ -190,4 +196,5 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             return row + 1;
         }
     }
+
 }
