@@ -43,12 +43,12 @@
  */
 package com.netspective.medigy.reference.type;
 
-import javax.ejb.Entity;
-import javax.ejb.Table;
-
 import com.netspective.medigy.reference.AbstractReferenceEntity;
 import com.netspective.medigy.reference.CachedReferenceEntity;
 import com.netspective.medigy.reference.ReferenceEntity;
+
+import javax.ejb.Entity;
+import javax.ejb.Table;
 
 @Entity
 @Table(name = "Marital_Status_Type")
@@ -56,19 +56,21 @@ public class MaritalStatusType extends AbstractReferenceEntity
 {
     public enum Cache implements CachedReferenceEntity
     {
-        UNKNOWN("?", "Unkown"),
-        SINGLE("S", "Single"),
-        MARRIED("M", "Married"),
-        DIVORCED("D", "Divorced");
+        UNKNOWN("?", "Unkown", ""),
+        SINGLE("S", "Single", ""),
+        MARRIED("M", "Married", ""),
+        DIVORCED("D", "Divorced", "");
 
         private final String code;
         private final String label;
+        private final String description;
         private MaritalStatusType entity;
 
-        private Cache(final String code, final String label)
+        private Cache(final String code, final String label, final String description)
         {
             this.code = code;
             this.label = label;
+            this.description = description;
         }
 
         public final String getId()
@@ -79,6 +81,11 @@ public class MaritalStatusType extends AbstractReferenceEntity
         public final String getLabel()
         {
             return label;
+        }
+
+        public String getDescription()
+        {
+            return description;
         }
 
         public final MaritalStatusType getEntity()
