@@ -1,3 +1,7 @@
+* Use the Axiom/documents/sample-graphviz-schema-code.dot GraphViz dot example file to beef up dot graph generation from Schemas.
+* Add capability to create <data> tags within <table> tags to supply DDL-time data (like <enumerations> except generic).
+* Add capability to store the data-types (domain names and descriptions) to columns so that DBDDs can pick them up (all inherited data-types).
+* Add capability to store the table-type (table inheritance) to tables so that DBDDs can pick them up (all inherited table-types).
 * Add "description" column to enumerations so that each row can contain documentation on itself.
 * Add column, table, abbrev validations in collections so that duplicated abbreviations and names are not allowed.
 * Add relationship descriptions to foreign keys like they are defined in "Universal Data Models" -- this will allow better DBDDs.
@@ -5,7 +9,7 @@
 * Change 'self-ref' nomenclature to 'recursive-ref'?
 * Add java triggers to foreign keys declarations so that onadd/onupdate/etc runs whenever the referenced value changes.
 * Add Jakarta DBCP connection pooling as another ConnectionProvider.
-* Add flag to Query class that would allow usage of normal Statements instead of prepared statements.
+* Add flag to Query class that would allow usage of normal Statements with SQL injection instead of just prepared statements with bind parameters.
 * Allow <query> tags to be added under <schema> that would simply allow the <schema> to act as a namespace.
 * Add result set iterator (paging) base classes from Sparx.
 * In schema manager, improve automatically generated table Query Definitions with more features such a foreign key references, parent references, etc.
@@ -27,7 +31,8 @@
 * Add Supertype/Subtype tables like http://jrf.sourceforge.net/advancedTopics.html#SubtypeTables.
 * Add Linking of related objects at retrieval time through the use of a postFind() method. This will be a "find" trigger analogous to insert/update/delete triggers.
 * Add validation listeners that can augment validation system.
-* Review jRelationalFramework (http://jrf.sourceforge.net/) and Alzabo (http://alzabo.sourceforge.net/) for new DAL features.
+* Review jRelationalFramework (http://jrf.sourceforge.net/), Torque (http://db.apache.org/torque), and Alzabo (http://alzabo.sourceforge.net/) for new DAL features.
 * Review http://java.sun.com/blueprints/patterns/DAO.html to consider other items needed by a DAO.
 * Review http://db.apache.org/ojb/index.html to see if OJB has any applicability to Axiom.
 * Add feature to maintain object identity (multiple lookups on a given table with same primary key should return one and the same object)
+* Add CSV, Tab-delimited, and other text import/export formats with full support for validation, auto-key generation, etc
