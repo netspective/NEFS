@@ -1,24 +1,24 @@
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="body-copy" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top" width="83">
             <div align="left">
                 <img src="${resourcesPath}/images/products/frameworks/suite/presentation-bug.gif" alt="" height="54" width="63" border="0"/>
             </div>
         </td>
-        <td class="bodycopy" valign="top" width="350">
+        <td valign="top" width="350">
             <a href="frameworks/sparx">SPARX Application Platform</a>
             <br/>
             <b>Create</b> rich web-based user interfaces that are easier to use but just as sophisticated as desktop-based applications.
             <ul class="check-list-in-body">
-                <li>Automatic page navigation and workflow using simple declarative constructs and almost no Java on your part.</li>
-                <li>Auto-validating forms capable of performing complex data entry and validation without you writing any HTML.</li>
-                <li>Theme-based skinnable user interfaces that can be personalized and updated without breaking existing code.</li>
+                <li>Automatic page navigation and workflow</li>
+                <li>Auto-validating data entry and CRUD forms</li>
+                <li>Theme-based skinnable user interfaces</li>
             </ul>
         </td>
     </tr>
 </table>
 <p/>
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="body-copy" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top" width="83">
             <div align="left">
@@ -30,14 +30,15 @@
             <br/>
             <b>Connect</b> to multiple data sources simultaneously and allow modern web-based applications to consume legacy data.
             <ul class="check-list-in-body">
-                <li>Automatic SQL binding, SQL execution, and creation of pageable reports with no Java coding.</li>
-                <li>Dynamic SQL DML and DDL allow record adds, edits, and deletes using any relational Db without requiring pages of Java code.</li>
+                <li>Automatic SQL binding and execution</li>
+                <li>Creation of pageable reports</li>
+                <li>Connect to any relational database</li>
             </ul>
         </td>
     </tr>
 </table>
 <p/>
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="body-copy" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top" width="83">
             <div align="left">
@@ -50,14 +51,14 @@
             <br/>
             <b>Protect</b> web-based applications using rock-solid role-based access control.
             <ul class="check-list-in-body">
-                <li>Declarative security provides consistent data protection through your app without writing Java code.</li>
-                <li>Automated login, timeout, and logout functions provide user-based security with no Java code.</li>
+                <li>Consistent data protection throughout your app</li>
+                <li>Automated login, timeout, and logout functions</li>
             </ul>
         </td>
     </tr>
 </table>
 <p/>
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="body-copy" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top" width="83">
             <div align="left">
@@ -70,10 +71,10 @@
             Java libraries that:
 
             <ul class="check-list-in-body">
+                <li>Plays well with other frameworks</li>
                 <li>Run on Unix, Windows, Linux, OS X</li>
-                <li>Integrate nicely with app servers from BEA, IBM, Oracle</li>
-                <li>Can be edited with any IDE, like Eclipse or IDEA</li>
-                <li>Connect to any relational Db on the market</li>
+                <li>Works on app servers from BEA, IBM, Oracle, others</li>
+                <li>Works with any IDE, like Eclipse or IDEA</li>
             </ul>
         </td>
     </tr>

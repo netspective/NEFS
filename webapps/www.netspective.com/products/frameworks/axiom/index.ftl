@@ -27,3 +27,19 @@ and dynamic SQL by using just a few simple lines of XML. Even legacy data can be
 <h1>Isolate Vendor-specific Database Functionality</h1>
 
 <h1>Leave Connection Pooling to Axiom or your App Server</h1>
+
+<h1>Additional Axiom Features</h1>
+<ul class="check-list-in-body">
+    <li>Schema management
+	<li>Lightweight Data Access Objects (DAOs)
+	<li>Object-relational mapping and persistence
+	<li>Connection pooling
+	<li>SQL DML generation
+	<li>SQL DDL generation
+	<li>Static SQL queries library
+	<li>Dynamic SQL queries library
+	<li>HTML design documentation
+	<li>Dynamic data sources
+	<li>SQL performance statistics
+	<li>Transaction management and isolation
+</ul>

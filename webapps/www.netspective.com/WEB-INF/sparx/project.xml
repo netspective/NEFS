@@ -15,7 +15,7 @@
         </page>
 
         <page class="app.AppPage" name="products" caption="Products">
-            <page name="frameworks" caption="Enterprise Frameworks">
+            <page name="frameworks" caption="Frameworks (NEF)">
                 <page name="suite" caption="Suite" heading="Developing Java Web Applications Gets Easier">
                     <body source="products/frameworks/suite/index.ftl"/>
                     <summary>
@@ -54,12 +54,50 @@
                         <body source="products/frameworks/suite/features.ftl"/>
                     </page>
 
+                    <page name="screen-shots" caption="Screenshots" heading="Your J2EE Applications will Look Great">
+                        <summary>
+                            Stop being ashamed of your user interfaces, delight your customers with applications that look
+                            as great as they work.
+                        </summary>
+                        <body source="products/frameworks/suite/features.ftl"/>
+                    </page>
+
                     <page name="architecture" caption="Architecture" heading="An Architecture you're Already Familiar with">
                         <summary>
                             A standards-based, pattern-oriented architecture that follows industry best-practices assures
                             that the NEFS will fit right into your development environment.
                         </summary>
                         <body source="products/frameworks/suite/architecture.ftl"/>
+                    </page>
+
+                    <page name="competitors" caption="Competitors" heading="NEFS is not Just Another Framework">
+                        <summary>
+                            The first framework to concentrate on your application's functionality and not just on
+                            grunt infrastructure issues, NEFS will truly enhance your productivity.
+                        </summary>
+                        <body source="products/frameworks/suite/competitors/index.ftl"/>
+
+                        <page name="home-grown" caption="Home Grown" heading="Why not Create My Own Framework?">
+                            <summary>
+                                You've got customers to delight and you don't really have time or money to spend months on
+                                creating your own frameworks that my not be reusable on your future projects.
+                            </summary>
+                            <body source="products/frameworks/suite/competitors/home-grown.ftl"/>
+                        </page>
+                        <page name="app-server" caption="Built-in" heading="Why not Use my App Server's Framework?">
+                            <summary>
+                                Your app server vendor wants to lock you into their solution so you don't want to end
+                                up using the lightweight frameworks that come with those tools.
+                            </summary>
+                            <body source="products/frameworks/suite/competitors/app-server.ftl"/>
+                        </page>
+                        <page name="open-source" caption="Open Source" heading="Why not Use Free Open Source Frameworks?">
+                            <summary>
+                                Free open source frameworks often end up costing much more by the time your application
+                                is deployed. With us you get an affordable solution with full source code and excellent support.
+                            </summary>
+                            <body source="products/frameworks/suite/competitors/open-source.ftl"/>
+                        </page>
                     </page>
                 </page>
                 <page name="sparx" caption="Sparx" heading="Advanced Web User Interfaces Made Simple">
@@ -69,7 +107,7 @@
                     </summary>
                     <body source="products/frameworks/sparx/index.ftl"/>
 
-                    <page name="struts" caption="Simplifying Struts">
+                    <page name="simplify-struts" caption="Simplify Struts">
                         <body source="products/frameworks/sparx/index.ftl"/>
                     </page>
                 </page>
@@ -87,7 +125,7 @@
                     <page name="security" caption="Security" heading="Rock-solid Role-based Security">
                         <summary><![CDATA[
                             Harden your applications using simple declarative resource protection tags that provide
-                            consistent, hard to crack, application security with little or no Java code.
+                            consistent, hard to crack, application security with no Java code.
                             ]]>
                         </summary>
                         <body source="products/frameworks/commons/security.ftl"/>

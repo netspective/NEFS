@@ -1,7 +1,7 @@
 <h1>The Sparx Application Platform</h1>
-Because Sparx comes out-of-the-box with skinable navigation systems, auto validated forms and ports to any thin-device,
-it takes under 30 minutes to fully prototype your J2EE applications and prep them for Axiom's data bindings and
-Commons' security authenticators. By starting your development process with Sparx, the bulk of your application's
+Because Sparx comes out-of-the-box with skinable navigation systems, auto validated forms and works on any modern
+browswer that supports HTML and CSS, it takes under 30 minutes to fully prototype your J2EE applications and prep them
+for <a href="${servletPath}/products/frameworks/axiom">Axiom's</a> data bindings and <a href="${servletPath}/products/frameworks/commons">Commons'</a> security authenticators. By starting your development process with Sparx, the bulk of your application's
 presentation code is geneerated for you giving you more time to focus on any customization you may have.
 
 <ul class="check-list">

@@ -1,12 +1,16 @@
 <#macro childMenus parentPage>
-
     <#list parentPage.childrenList as childPage>
     <tr>
         <td>
             <a class="menu" href="${childPage.getUrl(vc)}">
             <span class="L${childPage.level}">
-                ${childPage.caption.getTextValue(vc)}
-                <#if childPage = activePage> *</#if>
+                <#if childPage = activePage>
+                    <span class="active-page">${childPage.caption.getTextValue(vc)}</a>
+                <#elseif childPage.isInActivePath(vc)>
+                    <span class="active-path">${childPage.caption.getTextValue(vc)}</a>
+                <#else>
+                    ${childPage.caption.getTextValue(vc)}
+                </#if>
             </span>
             </a>
         </td>
@@ -15,13 +19,17 @@
         <@childMenus parentPage=childPage/>
     </#if>
     </#list>
-
 </#macro>
 
 <#macro primaryAncestorChildren>
     <table width="151" border="0" cellspacing="0" cellpadding="0">
         <@childMenus parentPage=activePage.primaryAncestor/>
     </table>
+</#macro>
+
+<#macro nextPageLink>
+   <#local nextPage = activePage.getNextPath()?default('')/>
+   <#if nextPage != ''><p align=right><br><a href="${nextPage.getUrl(vc)}">${nextPage.getHeading(vc)}</a> &gt;&nbsp;</p></#if>
 </#macro>
 
 <#macro pageBodyBegin>

@@ -10,10 +10,11 @@ automatic sign-out.
 
 <h1>Manage your Application Security in One Place</h1>
 NEFS's Security Service is centrally managed at the MVC layer and can be added at any time during the development
-process. Iindividual developers can count on "base-level" security and only be worried about adding on
-top of it. Automatically generate reports of application components that are not secured properly.
+process. Individual developers can count on "base-level" security and only be worried about adding on
+top of it.
 <ul class="check-list">
     <li>Sub-sites and multiple modules may share a common security scheme or create their own.
+    <li>Because all NEFS security is declarative, you can generate reports of application components that are not secured properly.
 </ul>
 
 <h1>Additional NEFS Security Service Features</h1>
