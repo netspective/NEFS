@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.9 2003-06-06 22:58:46 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.10 2003-06-09 06:56:52 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -66,6 +66,7 @@ import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.sql.QueriesPackage;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
@@ -77,6 +78,7 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
     private static final Log log = LogFactory.getLog(ApplicationManager.class);
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_TYPE = "dialog-field-type";
+    public static final String TEMPLATEELEMNAME_DIALOG_FIELD_CONDITIONAL_ACTION_TYPE = "dialog-field-conditional-action";
 
     protected static class PanelTypeTemplate extends TemplateProducer
     {
@@ -94,10 +96,19 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
         }
     }
 
+    protected static class DialogFieldConditionalActionTemplate extends TemplateProducer
+    {
+        public DialogFieldConditionalActionTemplate()
+        {
+            super(DialogFieldConditionalAction.class.getName(), TEMPLATEELEMNAME_DIALOG_FIELD_CONDITIONAL_ACTION_TYPE, "name", "extends", true, false);
+        }
+    }
+
     static
     {
         templateProducers.add(new PanelTypeTemplate());
         templateProducers.add(new DialogFieldTypeTemplate());
+        templateProducers.add(new DialogFieldConditionalActionTemplate());
     }
 
     private NavigationTrees navigationTrees = new NavigationTrees();
