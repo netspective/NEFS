@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
+<!-- the xdm-transform processing instruction tells Sparx to filter special tags through the XSLT before processing -->
+<?transform --xslt initial-and-test-data.xsl?>
+
 <!DOCTYPE dal SYSTEM "library.dtd">
 
 <dal>
@@ -9,5 +12,7 @@
     <book-info
         id="test-002" name="Book 002"
         author="Jones, Rober. J." genre="Mystery"/>
+
+    <generate-book-info-records count="100"/>
 </dal>
 
