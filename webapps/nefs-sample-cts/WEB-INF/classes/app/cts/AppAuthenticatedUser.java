@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppAuthenticatedUser.java,v 1.4 2003-10-23 04:09:00 aye.thu Exp $
+ * $Id: AppAuthenticatedUser.java,v 1.5 2003-10-24 05:19:31 aye.thu Exp $
  */
 
 package app.cts;
@@ -47,6 +47,7 @@ package app.cts;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
 import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.Value;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.sparx.security.LoginDialogContext;
 import com.netspective.sparx.navigate.NavigationControllerAuthenticatedUser;
@@ -155,8 +156,11 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser implements Navi
             throw new RuntimeException("Unknown User Type");
 
         return ncServlet.getProject().getNavigationTree(treeName);
-
     }
 
+    public String getPersonId()
+    {
+        return  (String)getAttribute("person_id");
+    }
 
 }

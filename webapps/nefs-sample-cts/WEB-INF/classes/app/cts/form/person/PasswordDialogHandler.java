@@ -39,18 +39,22 @@
  */
 
 /**
- * $Id: PasswordDialogHandler.java,v 1.3 2003-10-22 06:48:21 aye.thu Exp $
+ * $Id: PasswordDialogHandler.java,v 1.4 2003-10-24 05:19:31 aye.thu Exp $
  */
 package app.cts.form.person;
 
 import com.netspective.sparx.form.handler.DialogExecuteDefaultHandler;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogValidationContext;
 import com.netspective.sparx.form.listener.DialogValidateListener;
+import com.netspective.sparx.value.source.PageIdValueSource;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.security.Crypt;
+import com.netspective.commons.security.AuthenticatedUser;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -65,8 +69,9 @@ import app.cts.AppAuthenticatedUser;
 /**
  * Class for handling changing of a user's login password
  */
-public class PasswordDialogHandler extends DialogExecuteDefaultHandler implements DialogValidateListener
+public class PasswordDialogHandler extends DialogExecuteDefaultHandler implements DialogValidateListener, DialogNextActionProvider
 {
+    public static final String NEXT_ACTION_URL = "/home/account";
     /**
      * Handles the validation of the password
      * @param dvc
@@ -111,7 +116,10 @@ public class PasswordDialogHandler extends DialogExecuteDefaultHandler implement
 
         PersonTable personTable = DataAccessLayer.getInstance().getPersonTable();
         PersonTable.Record personRecord = personTable.createRecord();
-        personRecord.setPersonId(lic.getLoginId());
+
+        AppAuthenticatedUser authenticatedUser = (AppAuthenticatedUser) dc.getAuthenticatedUser();
+        personRecord.setPersonId(new GenericValue(authenticatedUser.getPersonId()));
+
 
         PersonLoginTable plTable = personTable.getPersonLoginTable();
         ConnectionContext cc = null;
@@ -125,10 +133,8 @@ public class PasswordDialogHandler extends DialogExecuteDefaultHandler implement
                 loginRecord.setPassword(new GenericValue(newPassword));
                 loginRecord.update(cc);
                 cc.commitAndClose();
-
                 AppAuthenticatedUser user = (AppAuthenticatedUser) dc.getAuthenticatedUser();
                 user.setEncryptedPassword(newPassword);
-                //dc.setAuthenticatedUser(user);
             }
             else
             {
@@ -138,6 +144,7 @@ public class PasswordDialogHandler extends DialogExecuteDefaultHandler implement
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             try
             {
                 if (cc != null)
@@ -161,5 +168,19 @@ public class PasswordDialogHandler extends DialogExecuteDefaultHandler implement
             }
         }
 
+    }
+
+    /**
+     * Generates the URL for the next destination
+     * @param dc
+     * @param defaultUrl
+     * @return
+     */
+    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
+    {
+        PageIdValueSource pvs = new PageIdValueSource();
+        pvs.initialize(new ValueSourceSpecification(NEXT_ACTION_URL));
+        System.out.println(pvs.getTextValue(dc));
+        return pvs.getTextValue(dc);
     }
 }
