@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtilsTest.java,v 1.3 2003-04-01 13:07:42 shahbaz.javeed Exp $
+ * $Id: TextUtilsTest.java,v 1.4 2004-06-06 23:50:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -329,6 +329,7 @@ public class TextUtilsTest extends TestCase
 		// XML to Java Constant
 		String xmlTagOne = "all-work-and-no-play";
 		String xmlTagTwo = ":makes_jack:a_dull.boy";
+		String xmlTagThree = "04makes_jack_dull";
 
 		String javaConstantOne = TextUtils.xmlTextToJavaConstant(xmlTagOne);
 		assertEquals("ALL_WORK_AND_NO_PLAY", javaConstantOne);
@@ -349,10 +350,13 @@ public class TextUtilsTest extends TestCase
 		assertEquals("AllWorkAndNoPlay", javaConstantSix);
 
 		String javaConstantSeven = TextUtils.xmlTextToJavaIdentifier(xmlTagTwo, false);
-		assertEquals(":makesJackADull_boy", javaConstantSeven);
+		assertEquals("_makesJackADull_boy", javaConstantSeven);
 
 		String javaConstantEight = TextUtils.xmlTextToJavaIdentifier(xmlTagTwo, true);
 		assertEquals(javaConstantSeven, javaConstantEight);
+
+		String javaConstantNine = TextUtils.xmlTextToJavaIdentifier(xmlTagThree, true);
+		assertEquals("_04makesJackDull", javaConstantNine);
 
 		// XML to Node Name
 		String xmlTextOne = "Jack_Be_Nimble";
