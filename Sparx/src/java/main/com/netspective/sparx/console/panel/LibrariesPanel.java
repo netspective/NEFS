@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LibrariesPanel.java,v 1.1 2003-04-29 19:57:24 shahid.shah Exp $
+ * $Id: LibrariesPanel.java,v 1.2 2003-05-21 11:10:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -115,15 +115,33 @@ public class LibrariesPanel extends AbstractHtmlTabularReportPanel
             lastRow = list.size() - 1;
         }
 
+        public int getTotalRows()
+        {
+            return list.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return row < lastRow;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            this.row = rowNum;
+        }
+
         public boolean next()
         {
-            if(row < lastRow)
-            {
-                row++;
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(row + 1);
+            return true;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

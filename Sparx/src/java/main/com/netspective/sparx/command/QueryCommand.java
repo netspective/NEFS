@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.1 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: QueryCommand.java,v 1.2 2003-05-21 11:10:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -59,7 +59,6 @@ package com.netspective.sparx.command;
 import com.netspective.sparx.form.DialogDataCommands;
 import com.netspective.sparx.form.DialogDebugFlags;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.QueryDialog;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.HtmlTabularReportPanel;
 import com.netspective.sparx.panel.QueryReportPanel;
@@ -89,18 +88,19 @@ public class QueryCommand extends AbstractHttpServletCommand
             "Displays results of a SQL statement and optionally allows a dialog to be executed along with it.",
             new CommandDocumentation.Parameter[]
             {
-                new CommandDocumentation.Parameter("statement-name", true, "The fully qualified name of the statement (package-name.statement-name)."),
-                new CommandDocumentation.Parameter("report-id", false, "The name of a specific report element in the statement declaration or '-' for the default report-id."),
+                new CommandDocumentation.Parameter("query-name", true, "The fully qualified name of the statement (package-name.statement-name)."),
+                new CommandDocumentation.Parameter("query-dialog-id", false, "The name of a specific query dialog or '-' for no query dialog or 'DEFAULT' for default query dialog."),
+                new CommandDocumentation.Parameter("report-id", false, "The name of a specific report element in the query declaration or '-' for the default report-id."),
                 new CommandDocumentation.Parameter("rows-per-page", false, "-", "The number of rows per page to display ('-' means single page, any other number means a pageable report."),
                 new SkinParameter(),
                 new CommandDocumentation.Parameter("url-formats", false, "The url-formats parameter is one or more "+
                                                    "semicolon-separated URL formats that may override those within a report."),
 
                 // the following are the same as the ones in DialogComponentCommand so be sure to make them look the same
-                new CommandDocumentation.Parameter("dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
-                new CommandDocumentation.Parameter("data-command", false, new DialogDataCommands(), null, "The data command to send to DialogContext."),
+                new CommandDocumentation.Parameter("additional-dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
+                new CommandDocumentation.Parameter("additional-dialog-data-command", false, new DialogDataCommands(), null, "The data command to send to DialogContext."),
                 new DialogCommand.SkinParameter(),
-                new CommandDocumentation.Parameter("debug-flags", false, new DialogDebugFlags(), null, "The debug flags.")
+                new CommandDocumentation.Parameter("additional-dialog-debug-flags", false, new DialogDebugFlags(), null, "The debug flags.")
             }
     );
 
@@ -115,15 +115,25 @@ public class QueryCommand extends AbstractHttpServletCommand
     }
 
     protected String queryName;
+    protected String queryDialogName;
     protected int rowsPerPage;
     protected String skinName;
     protected String reportId;
     protected String[] urlFormats;
-    protected DialogCommand dialogCommand;
+    protected DialogCommand additionalDialogCommand;
 
     public void setParameters(StringTokenizer params)
     {
         queryName = params.nextToken();
+
+        if(params.hasMoreTokens())
+        {
+            queryDialogName = params.nextToken();
+            if(queryDialogName.length() == 0 || queryDialogName.equals(PARAMVALUE_DEFAULT))
+                queryDialogName = null;
+        }
+        else
+            queryDialogName = null;
 
         if(params.hasMoreTokens())
         {
@@ -179,8 +189,8 @@ public class QueryCommand extends AbstractHttpServletCommand
 
         if(params.hasMoreTokens())
         {
-            dialogCommand = new DialogCommand();
-            dialogCommand.setParameters(params);
+            additionalDialogCommand = new DialogCommand();
+            additionalDialogCommand.setParameters(params);
         }
     }
 
@@ -219,6 +229,8 @@ public class QueryCommand extends AbstractHttpServletCommand
         String delim = getParametersDelimiter();
         StringBuffer sb = new StringBuffer(queryName);
         sb.append(delim);
+        sb.append(queryDialogName != null ? queryDialogName : PARAMVALUE_DEFAULT);
+        sb.append(delim);
         sb.append(reportId != null ? reportId : PARAMVALUE_DEFAULT);
         sb.append(delim);
         sb.append(rowsPerPage != UNLIMITED_ROWS ? Integer.toString(rowsPerPage) : PARAMVALUE_DEFAULT);
@@ -235,15 +247,15 @@ public class QueryCommand extends AbstractHttpServletCommand
         }
         else
             sb.append(PARAMVALUE_DEFAULT);
-        if(dialogCommand != null)
+        if(additionalDialogCommand != null)
         {
             sb.append(delim);
-            sb.append(dialogCommand.getParameters());
+            sb.append(additionalDialogCommand.getParameters());
         }
         return sb.toString();
     }
 
-    public QueryDialog createQueryDialog(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
+    public com.netspective.sparx.form.sql.QueryDialog createQueryDialog(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
         Query query = sqlManager.getQuery(queryName);
         if(query == null)
@@ -252,11 +264,10 @@ public class QueryCommand extends AbstractHttpServletCommand
             return null;
         }
 
-        QueryDialog result = new QueryDialog();
-        result.setQuery(query);
-        result.setRowsPerPage(rowsPerPage);
-
-        return result;
+        if(queryDialogName.equals("default"))
+            return ((com.netspective.sparx.sql.Query) query).getPresentation().getDefaultDialog();
+        else
+            return ((com.netspective.sparx.sql.Query) query).getPresentation().getDialog(queryDialogName);
     }
 
     public QueryReportPanel createQueryReportPanel(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
@@ -279,26 +290,26 @@ public class QueryCommand extends AbstractHttpServletCommand
         SqlManager sqlManager = dc.getSqlManager();
         Theme theme = dc.getActiveTheme();
 
-        if(dialogCommand != null)
+        if(additionalDialogCommand != null)
             writer.write("<table><tr valign='top'><td>");
 
-        if(rowsPerPage > 0 && rowsPerPage < UNLIMITED_ROWS)
+        if(queryDialogName != null)
         {
-            QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
+            com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
             if(queryDialog != null)
-                queryDialog.render(writer, dc, theme, HtmlPanel.RENDEFFLAGS_DEFAULT);
+                queryDialog.render(writer, dc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
         }
         else
         {
             HtmlTabularReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
             if(panel != null)
-                panel.render(writer, dc, theme, HtmlPanel.RENDEFFLAGS_DEFAULT);
+                panel.render(writer, dc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
         }
 
-        if(dialogCommand != null)
+        if(additionalDialogCommand != null)
         {
             writer.write("</td><td>");
-            dialogCommand.handleCommand(writer, dc, unitTest);
+            additionalDialogCommand.handleCommand(writer, dc, unitTest);
             writer.write("</td></tr></td></table>");
         }
     }
@@ -308,26 +319,26 @@ public class QueryCommand extends AbstractHttpServletCommand
         SqlManager sqlManager = nc.getSqlManager();
         Theme theme = nc.getActiveTheme();
 
-        if(dialogCommand != null)
+        if(additionalDialogCommand != null)
             writer.write("<table><tr valign='top'><td>");
 
-        if(rowsPerPage > 0 && rowsPerPage < UNLIMITED_ROWS)
+        if(queryDialogName != null)
         {
-            QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
+            com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
             if(queryDialog != null)
-                queryDialog.render(writer, nc, theme, HtmlPanel.RENDEFFLAGS_DEFAULT);
+                queryDialog.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
         }
         else
         {
             HtmlTabularReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
             if(panel != null)
-                panel.render(writer, nc, theme, HtmlPanel.RENDEFFLAGS_DEFAULT);
+                panel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
         }
 
-        if(dialogCommand != null)
+        if(additionalDialogCommand != null)
         {
             writer.write("</td><td>");
-            dialogCommand.handleCommand(writer, nc, unitTest);
+            additionalDialogCommand.handleCommand(writer, nc, unitTest);
             writer.write("</td></tr></td></table>");
         }
     }

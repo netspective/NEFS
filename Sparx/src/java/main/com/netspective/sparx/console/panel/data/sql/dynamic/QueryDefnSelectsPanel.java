@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSelectsPanel.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
+ * $Id: QueryDefnSelectsPanel.java,v 1.2 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql.dynamic;
@@ -118,15 +118,33 @@ public class QueryDefnSelectsPanel extends QueryDefnDetailPanel
             return activeRow;
         }
 
+        public int getTotalRows()
+        {
+            return queryDefnSelects.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return activeRow < lastRow;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            activeRow = rowNum;
+        }
+
         public boolean next()
         {
-            if(activeRow < lastRow)
-            {
-                activeRow++;
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(activeRow + 1);
+            return true;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

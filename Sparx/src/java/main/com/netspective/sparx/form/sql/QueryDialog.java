@@ -39,16 +39,20 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.1 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: QueryDialog.java,v 1.1 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
-package com.netspective.sparx.form;
+package com.netspective.sparx.form.sql;
 
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.axiom.sql.Query;
+import com.netspective.axiom.sql.QueryParameter;
+import com.netspective.commons.value.source.StaticValueSource;
 
 public class QueryDialog extends Dialog
 {
@@ -75,6 +79,19 @@ public class QueryDialog extends Dialog
     public void setQuery(Query query)
     {
         this.query = query;
+    }
+
+    public void createParamFields()
+    {
+        for(int i = 0; i < query.getParams().size(); i++)
+        {
+            QueryParameter param = query.getParams().get(i);
+            DialogField field = new TextField();
+            field.setName("param_" + i);
+            field.setCaption(new StaticValueSource(param.getName() != null ? param.getName() : ("Parameter " + i)));
+            field.setDefault(param.getValue());
+            addField(field);
+        }
     }
 
     public HtmlTabularReport getReport()

@@ -39,28 +39,33 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.1 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: QueryReportPanel.java,v 1.2 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 
 public class QueryReportPanel extends AbstractHtmlTabularReportPanel
 {
     private static final Log log = LogFactory.getLog(QueryReportPanel.class);
+    private static final ValueSource NO_DATA_MSG = new StaticValueSource("No data in query results.");
 
     private Query query;
     private HtmlTabularReport report;
@@ -129,8 +134,8 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             QueryResultSet resultSet = (QueryResultSet) nc.getAttribute("QRS-" + this.hashCode());
             if(resultSet == null)
                 resultSet = query.execute(nc, null, false);
-            QueryResultSetDataSource qrsds = new QueryResultSetDataSource(vc, "No data in query results.");
-            qrsds.setResultSet(resultSet);
+            QueryResultSetDataSource qrsds = new QueryResultSetDataSource(vc, NO_DATA_MSG);
+            qrsds.setQueryResultSet(resultSet);
             return qrsds;
         }
         catch (Exception e)
@@ -161,37 +166,56 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         return report;
     }
 
-    public class QueryResultSetDataSource extends SimpleMessageDataSource
+    public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSource
     {
         protected int activeRowIndex = -1;
-        protected QueryResultSet resultSet;
-
-        public QueryResultSetDataSource(HtmlTabularReportValueContext vc, String noDataMessage) throws SQLException
-        {
-            super(vc, noDataMessage);
-        }
+        protected QueryResultSet queryResultSet;
+        protected ResultSet resultSet;
+        protected boolean scrollable;
+        protected ValueSource message;
+        protected boolean calculatedTotalRows;
+        protected int totalRows = TOTAL_ROWS_UNKNOWN;
 
         public QueryResultSetDataSource(HtmlTabularReportValueContext vc, ValueSource noDataMessage) throws SQLException
         {
-            super(vc, noDataMessage);
+            super(vc);
+            this.message = noDataMessage;
         }
 
-        public QueryResultSet getResultSet()
+        public QueryResultSet getQueryResultSet()
         {
-            return resultSet;
+            return queryResultSet;
         }
 
-        public void setResultSet(QueryResultSet resultSet)
+        public void setQueryResultSet(QueryResultSet queryResultSet)
         {
-            this.resultSet = resultSet;
+            this.queryResultSet = queryResultSet;
+            setResultSet(queryResultSet.getResultSet());
+        }
+
+        protected void setResultSet(ResultSet resultSet)
+        {
+            this.resultSet = queryResultSet.getResultSet();
+
+            try
+            {
+                scrollable = resultSet.getType() != ResultSet.TYPE_FORWARD_ONLY ? true : false;
+            }
+            catch (SQLException e)
+            {
+                log.error(e);
+                throw new NestableRuntimeException(e);
+            }
+
             activeRowIndex = -1;
+            calculatedTotalRows = false;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
             try
             {
-                return resultSet.getResultSet().getObject(columnIndex + 1);
+                return queryResultSet.getResultSet().getObject(columnIndex + 1);
             }
             catch (SQLException e)
             {
@@ -200,11 +224,87 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
+        public int getTotalRows()
+        {
+            if(calculatedTotalRows)
+                return totalRows;
+
+            try
+            {
+                if(scrollable)
+                {
+                    resultSet.last();
+                    totalRows = resultSet.getRow();
+                    resultSet.first();
+                }
+            }
+            catch (SQLException e)
+            {
+                log.error(e);
+                throw new NestableRuntimeException(e);
+            }
+
+            calculatedTotalRows = true;
+            return totalRows;
+        }
+
+        public boolean hasMoreRows()
+        {
+            try
+            {
+                return ! resultSet.isAfterLast();
+            }
+            catch (SQLException e)
+            {
+                log.error(e);
+                throw new NestableRuntimeException(e);
+            }
+        }
+
+        public boolean isScrollable()
+        {
+            return scrollable;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            try
+            {
+                if(scrollable)
+                {
+                    resultSet.absolute(rowNum);
+                    resultSet.previous();
+                }
+                else
+                {
+                    queryResultSet.reExecute();
+                    setResultSet(queryResultSet.getResultSet());
+
+                    if(rowNum > 0)
+                    {
+                        int atRow = 0;
+                        while(resultSet.next())
+                        {
+                            if(atRow >= rowNum)
+                                break;
+
+                            atRow++;
+                        }
+                    }
+                }
+            }
+            catch (SQLException e)
+            {
+                log.error(e);
+                throw new NestableRuntimeException(e);
+            }
+        }
+
         public boolean next()
         {
             try
             {
-                if(resultSet.getResultSet().next())
+                if(resultSet.next())
                 {
                     activeRowIndex++;
                     return true;
@@ -213,7 +313,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             catch (SQLException e)
             {
                 log.error(e);
-                return false;
+                throw new NestableRuntimeException(e);
             }
 
             return false;
@@ -222,6 +322,11 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         public int getActiveRowNumber()
         {
             return activeRowIndex + 1;
+        }
+
+        public ValueSource getNoDataFoundMessage()
+        {
+            return message;
         }
     }
 

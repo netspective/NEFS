@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpRequestParametersPanel.java,v 1.1 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: HttpRequestParametersPanel.java,v 1.2 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation;
@@ -220,16 +220,34 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
+        public int getTotalRows()
+        {
+            return paramRows.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return activeRowIndex < lastRowIndex;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            activeRowIndex = rowNum;
+            activeRow = paramRows.get(activeRowIndex);
+        }
+
         public boolean next()
         {
-            if(activeRowIndex < lastRowIndex)
-            {
-                activeRowIndex++;
-                activeRow = paramRows.get(activeRowIndex);
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(activeRowIndex + 1);
+            return true;
         }
 
         public int getActiveRowNumber()

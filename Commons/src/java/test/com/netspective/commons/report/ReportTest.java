@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.7 2003-04-06 03:57:44 shahid.shah Exp $
+ * $Id: ReportTest.java,v 1.8 2003-05-21 11:06:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.report;
@@ -80,16 +80,34 @@ public class ReportTest extends TestCase
             lastRowNum = rows.size() - 1;
         }
 
+        public int getTotalRows()
+        {
+            return rows.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return activeRowNum < lastRowNum;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            activeRowNum = rowNum;
+            activeRow = (Object[]) rows.get(activeRowNum);
+        }
+
         public boolean next()
         {
-            if(activeRowNum < lastRowNum)
-            {
-                activeRowNum++;
-                activeRow = (Object[]) rows.get(activeRowNum);
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(activeRowNum + 1);
+            return true;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

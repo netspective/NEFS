@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogPanel.java,v 1.2 2003-05-06 17:18:19 shahid.shah Exp $
+ * $Id: DialogsCatalogPanel.java,v 1.3 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -147,21 +147,39 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
             return activeRow;
         }
 
+        public int getTotalRows()
+        {
+            return rows.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return activeRow < lastRow;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            activeRow = rowNum;
+            String itemName = (String) rows.get(activeRow);
+            activeRowDialog = dialogs.get(itemName);
+            if(activeRowDialog == null)
+                activeNameSpace = itemName;
+            else
+                activeNameSpace = null;
+        }
+
         public boolean next()
         {
-            if(activeRow < lastRow)
-            {
-                activeRow++;
-                String itemName = (String) rows.get(activeRow);
-                activeRowDialog = dialogs.get(itemName);
-                if(activeRowDialog == null)
-                    activeNameSpace = itemName;
-                else
-                    activeNameSpace = null;
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(activeRow + 1);
+            return true;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

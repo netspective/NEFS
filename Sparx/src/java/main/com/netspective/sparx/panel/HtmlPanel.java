@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.10 2003-05-10 16:50:01 shahid.shah Exp $
+ * $Id: HtmlPanel.java,v 1.11 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -54,7 +54,7 @@ import com.netspective.sparx.form.DialogContext;
 public interface HtmlPanel
 {
     public final int RENDERFLAG_NOFRAME = 1;
-    public final int RENDEFFLAGS_DEFAULT = 0;
+    public final int RENDERFLAGS_DEFAULT = 0;
 
     public String getIdentifier();
 

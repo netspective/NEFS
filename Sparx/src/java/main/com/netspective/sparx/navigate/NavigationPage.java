@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.19 2003-05-19 00:58:56 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.20 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -615,7 +615,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
         if(bodyPanel != null)
         {
-            bodyPanel.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDEFFLAGS_DEFAULT);
+            bodyPanel.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
             return;
         }
 

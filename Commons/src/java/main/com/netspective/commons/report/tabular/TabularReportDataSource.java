@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportDataSource.java,v 1.6 2003-04-06 03:57:43 shahid.shah Exp $
+ * $Id: TabularReportDataSource.java,v 1.7 2003-05-21 11:06:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -48,6 +48,8 @@ import com.netspective.commons.value.ValueSource;
 
 public interface TabularReportDataSource
 {
+    public static final int TOTAL_ROWS_UNKNOWN = -1;
+
     /**
      * The type of data returned by getActiveRowColumnData() when structural information is available.
      */
@@ -70,10 +72,21 @@ public interface TabularReportDataSource
     }
 
     /**
+     * Close the data source and release all allocated resources immediately.
+     */
+    public void close();
+
+    /**
      * Cycle to next row in the data source -- this will be called even for the first row (the first call should
      * "initialize" the data source).
      */
     public boolean next();
+
+    /**
+     * Ascertain whether or not there are additional rows available
+     * @return Return true if next() will return a valid row or false if the end of the data source has been reached.
+     */
+    public boolean hasMoreRows();
 
     /**
      * Retrieve the active row number (1-based).
@@ -123,4 +136,29 @@ public interface TabularReportDataSource
      * method returns null, no message is rendered.
      */
     public ValueSource getNoDataFoundMessage();
+
+    /**
+     * Ascertain whether or not the data source is active
+     * @param timeOut The number of milliseconds to consider as a valid
+     * @return  True if the time since this data source was last used is less than the timeOut otherwise return false
+     */
+    public boolean isActive(long timeOut);
+
+    /**
+     * Ascertain whether or not the data source is considered "scrollable" (allows paging of results/data)
+     * @return True if data may be scrolled forward/backward or false if the data source is unidirectional (forward only)
+     */
+    public boolean isScrollable();
+
+    /**
+     * Move to the selected row.
+     * @param rowNum The 0-based row number that should become the active row.
+     */
+    public void setActiveRow(int rowNum);
+
+    /**
+     * Get the total number of rows in the data source (assuming the data source is scrollable)
+     * @return TOTAL_ROWS_UNKNOWN if there is no way to know the total rows, otherwise the number of rows in the data source
+     */
+    public int getTotalRows();
 }

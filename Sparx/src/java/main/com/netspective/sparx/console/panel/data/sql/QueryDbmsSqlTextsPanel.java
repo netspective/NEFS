@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDbmsSqlTextsPanel.java,v 1.2 2003-05-06 14:52:13 shahid.shah Exp $
+ * $Id: QueryDbmsSqlTextsPanel.java,v 1.3 2003-05-21 11:10:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -61,6 +61,7 @@ import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
+import com.netspective.sparx.console.panel.data.schema.SchemaTablesPanel;
 import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
@@ -137,15 +138,33 @@ public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
             return activeRow;
         }
 
+        public int getTotalRows()
+        {
+            return rows.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return activeRow < lastRow;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            activeRow = rowNum;
+        }
+
         public boolean next()
         {
-            if(activeRow < lastRow)
-            {
-                activeRow++;
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(activeRow + 1);
+            return true;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

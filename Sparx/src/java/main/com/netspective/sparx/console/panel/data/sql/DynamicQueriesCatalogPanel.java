@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DynamicQueriesCatalogPanel.java,v 1.2 2003-05-19 14:47:41 shahid.shah Exp $
+ * $Id: DynamicQueriesCatalogPanel.java,v 1.3 2003-05-21 11:10:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -189,26 +189,44 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             return activeRow;
         }
 
+        public int getTotalRows()
+        {
+            return rows.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return activeRow < lastRow;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            activeRow = rowNum;
+            Object item = rows.get(activeRow);
+            if(item instanceof QueryDefinition)
+            {
+                activeRowHeading = null;
+                activeRowQueryDefn = (QueryDefinition) item;
+            }
+            else
+            {
+                activeRowHeading = (String) item;
+                activeRowQueryDefn = null;
+            }
+        }
+
         public boolean next()
         {
-            if(activeRow < lastRow)
-            {
-                activeRow++;
-                Object item = rows.get(activeRow);
-                if(item instanceof QueryDefinition)
-                {
-                    activeRowHeading = null;
-                    activeRowQueryDefn = (QueryDefinition) item;
-                }
-                else
-                {
-                    activeRowHeading = (String) item;
-                    activeRowQueryDefn = null;
-                }
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(activeRow + 1);
+            return true;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

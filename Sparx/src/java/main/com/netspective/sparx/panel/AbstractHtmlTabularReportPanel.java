@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.7 2003-05-10 16:50:01 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.8 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -106,6 +106,30 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         public ValueSource getNoDataFoundMessage()
         {
             return message;
+        }
+
+        public int getTotalRows()
+        {
+            return 0;
+        }
+
+        public boolean hasMoreRows()
+        {
+            return false;
+        }
+
+        public boolean isScrollable()
+        {
+            return false;
+        }
+
+        public boolean next()
+        {
+            return false;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
         }
     }
 

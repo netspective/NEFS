@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogDetailPanel.java,v 1.4 2003-05-14 15:55:33 shahid.shah Exp $
+ * $Id: DialogDetailPanel.java,v 1.5 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -321,16 +321,34 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
+        public int getTotalRows()
+        {
+            return fieldRows.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return activeRowIndex < lastRowIndex;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            activeRowIndex = rowNum;
+            activeRow = fieldRows.get(activeRowIndex);
+        }
+
         public boolean next()
         {
-            if(activeRowIndex < lastRowIndex)
-            {
-                activeRowIndex++;
-                activeRow = fieldRows.get(activeRowIndex);
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(activeRowIndex + 1);
+            return true;
         }
 
         public int getActiveRowNumber()

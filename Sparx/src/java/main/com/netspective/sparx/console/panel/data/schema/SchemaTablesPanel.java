@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTablesPanel.java,v 1.3 2003-05-02 15:13:25 shahid.shah Exp $
+ * $Id: SchemaTablesPanel.java,v 1.4 2003-05-21 11:10:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -409,16 +409,34 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
+        public int getTotalRows()
+        {
+            return rows.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return row < lastRow;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            row = rowNum;
+            activeRow = (StructureRow) rows.get(row);
+        }
+
         public boolean next()
         {
-            if(row < lastRow)
-            {
-                row++;
-                activeRow = (StructureRow) rows.get(row);
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(row + 1);
+            return true;
         }
 
         public int getActiveRowNumber()

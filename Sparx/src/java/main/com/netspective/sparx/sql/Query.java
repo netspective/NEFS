@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.1 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: Query.java,v 1.2 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.netspective.sparx.panel.QueryReportPanel;
+import com.netspective.sparx.form.sql.QueryDialog;
 import com.netspective.axiom.sql.QueriesNameSpace;
 
 public class Query extends com.netspective.axiom.sql.Query
@@ -55,11 +56,20 @@ public class Query extends com.netspective.axiom.sql.Query
     public class Presentation
     {
         private Map reportPanels = new HashMap();
+        private Map reportDialogs = new HashMap();
         private QueryReportPanel defaultPanel;
+        private QueryDialog defaultDialog;
 
         public QueryReportPanel createPanel()
         {
             QueryReportPanel result = new QueryReportPanel();
+            result.setQuery(Query.this);
+            return result;
+        }
+
+        public QueryDialog createDialog()
+        {
+            QueryDialog result = new QueryDialog();
             result.setQuery(Query.this);
             return result;
         }
@@ -71,9 +81,27 @@ public class Query extends com.netspective.axiom.sql.Query
             reportPanels.put(panel.getName(), panel);
         }
 
+        public void addDialog(QueryDialog dialog)
+        {
+            if(reportDialogs.size() == 0)
+                defaultDialog = dialog;
+            reportDialogs.put(dialog.getName(), dialog);
+        }
+
         public QueryReportPanel getDefaultPanel()
         {
             return defaultPanel;
+        }
+
+        public QueryDialog getDefaultDialog()
+        {
+            if(defaultDialog == null)
+            {
+                defaultDialog = createDialog();
+                defaultDialog.createParamFields();
+            }
+
+            return defaultDialog;
         }
 
         public QueryReportPanel getPanel(String name)
@@ -81,9 +109,19 @@ public class Query extends com.netspective.axiom.sql.Query
             return (QueryReportPanel) reportPanels.get(name);
         }
 
+        public QueryDialog getDialog(String name)
+        {
+            return (QueryDialog) reportDialogs.get(name);
+        }
+
         public void setDefaultPanel(QueryReportPanel defaultPanel)
         {
             this.defaultPanel = defaultPanel;
+        }
+
+        public void setDefaultDialog(QueryDialog defaultDialog)
+        {
+            this.defaultDialog = defaultDialog;
         }
 
         public int size()
@@ -101,6 +139,11 @@ public class Query extends com.netspective.axiom.sql.Query
     public Query(QueriesNameSpace nameSpace)
     {
         super(nameSpace);
+    }
+
+    public Presentation getPresentation()
+    {
+        return presentation;
     }
 
     public Presentation createPresentation()

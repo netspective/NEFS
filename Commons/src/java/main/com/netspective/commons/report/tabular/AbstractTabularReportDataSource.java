@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.4 2003-04-06 03:57:43 shahid.shah Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.5 2003-05-21 11:06:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -51,16 +51,23 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 {
     private static ValueSource defaultNoDataFoundMsg = new StaticValueSource("No data available.");
     protected TabularReportValueContext reportValueContext;
+    protected long lastAccessed = System.currentTimeMillis();
 
     public AbstractTabularReportDataSource(TabularReportValueContext reportValueContext)
     {
         this.reportValueContext = reportValueContext;
     }
 
-    public boolean next()
+    public void recordActivity()
     {
-        return false;
+        lastAccessed = System.currentTimeMillis();
     }
+
+    public abstract boolean hasMoreRows();
+    public abstract boolean next();
+    public abstract void setActiveRow(int rowNum);
+    public abstract boolean isScrollable();
+    public abstract int getTotalRows();
 
     public int getActiveRowNumber()
     {
@@ -101,5 +108,14 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
     public ValueSource getNoDataFoundMessage()
     {
         return defaultNoDataFoundMsg;
+    }
+
+    public void close()
+    {
+    }
+
+    public boolean isActive(long timeOut)
+    {
+        return (System.currentTimeMillis() - lastAccessed) > timeOut;
     }
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.7 2003-05-15 21:34:46 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.8 2003-05-21 11:10:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -1110,7 +1110,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
     public void renderDebugPanels(Writer writer) throws IOException
     {
-        debugPanels.render(writer, this, this.getActiveTheme(), HtmlPanel.RENDEFFLAGS_DEFAULT);
+        debugPanels.render(writer, this, this.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
     }
 
     protected static final HtmlLayoutPanel debugPanels = new HtmlLayoutPanel();

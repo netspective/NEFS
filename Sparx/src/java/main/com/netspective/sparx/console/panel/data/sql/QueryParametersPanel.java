@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParametersPanel.java,v 1.2 2003-05-06 14:52:13 shahid.shah Exp $
+ * $Id: QueryParametersPanel.java,v 1.3 2003-05-21 11:10:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -129,15 +129,33 @@ public class QueryParametersPanel extends QueryDetailPanel
             return activeRow;
         }
 
+        public int getTotalRows()
+        {
+            return params.size();
+        }
+
+        public boolean hasMoreRows()
+        {
+            return activeRow < lastRow;
+        }
+
+        public boolean isScrollable()
+        {
+            return true;
+        }
+
+        public void setActiveRow(int rowNum)
+        {
+            activeRow = rowNum;
+        }
+
         public boolean next()
         {
-            if(activeRow < lastRow)
-            {
-                activeRow++;
-                return true;
-            }
+            if(! hasMoreRows())
+                return false;
 
-            return false;
+            setActiveRow(activeRow + 1);
+            return true;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

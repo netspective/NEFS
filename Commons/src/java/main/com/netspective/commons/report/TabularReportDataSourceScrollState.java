@@ -39,18 +39,23 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportDataSource.java,v 1.2 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: TabularReportDataSourceScrollState.java,v 1.1 2003-05-21 11:11:17 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report.tabular;
+package com.netspective.commons.report;
 
-import com.netspective.commons.report.tabular.AbstractTabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 
-public abstract class AbstractHtmlTabularReportDataSource extends AbstractTabularReportDataSource implements HtmlTabularReportDataSource
+public interface TabularReportDataSourceScrollState
 {
-    public AbstractHtmlTabularReportDataSource(TabularReportValueContext reportValueContext)
-    {
-        super(reportValueContext);
-    }
+    public TabularReportDataSource getDataSource();
+    public void setDataSource(TabularReportDataSource dataSource);
+
+    public int getActivePage();
+    public void setActivePage(int page);
+
+    public int getRowsPerPage();
+    public void setRowsPerPage(int rowsPerPage);
+
+    public void scrollToActivePage();
 }
