@@ -4,7 +4,7 @@
  */
 
 /**
- * $Id: SampleExecuteAction.java,v 1.1 2004-04-03 23:16:35 shahid.shah Exp $
+ * $Id: SampleExecuteAction.java,v 1.2 2004-04-28 17:05:52 shahid.shah Exp $
  */
 
 package app.form.exec.action;
@@ -28,7 +28,7 @@ import java.io.Writer;
  *     setServletEnvironment(Servlet, ServletRequest, ServletResponse) -- action class will be provided the active servlet
  *     setConnectionContext(ConnectionContext) -- if the action needs access to a connection context (in transaction mode)
  *     setConnection(Connection) -- if the action needs access to a JDBC connection (in transaction mode)
- *     * if either setConnectionContext or setConnection are found, an optional getDataSourceId() may be provided by the
+ *     * if either setConnectionContext or setConnection are found, an optional getDataSourceName() may be provided by the
  *       action class to supply the data source id for the connection that should be set
  *     * when a connection is provided (either using ConnectionContext or Connection) then the framework is responsible
  *       for closing it -- but, the programmer is reponsible for commit and rollback of the transaction
