@@ -23,7 +23,10 @@
 
         <property name="articles.path" value="${project.home}/nef-articles"/>
         <property name="articles.resources.dir" value="${articles.path}/resources"/>
-
+        
+        <property name="reusable-content.path" value="${project.home}/nef-reusable-content"/>
+        <property name="reusable-content.resources.dir" value="${reusable-content.path}/resources/images"/>
+        
         <property name="docs.html.path" value="${project.home}/../../webapps/www.netspective.com/resources/support/docs"/>
         <property name="articles.html.path" value="${docs.html.path}/nef-articles"/>
         <property name="manual.html.path" value="${docs.html.path}/${manual.id}"/>
@@ -80,6 +83,10 @@
             <fileset dir="${common.resources.dir}"/>
             <fileset dir="${articles.resources.dir}"/>
         </copy>
+        <copy todir="${articles.html.path}/resources/images">
+            <fileset dir="${reusable-content.resources.dir}"/>
+        </copy>
+
         <copy todir="${articles.html.path}/images">
             <fileset dir="${docbook-xsl-redist.home}/images"/>
         </copy>
