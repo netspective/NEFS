@@ -69,7 +69,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordViewerReportSkin.java,v 1.11 2003-09-15 03:58:35 aye.thu Exp $
+ * $Id: RecordViewerReportSkin.java,v 1.12 2003-09-17 04:28:20 aye.thu Exp $
  */
 public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -145,7 +145,7 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
                 "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
-            writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
+            writer.write("<td class=\"" + (isOddRow ? "report-column-even" : "report-column-odd") + "\" width=\"10\">");
             writer.write(editRecordUrl);
             writer.write("</td>");
         }
