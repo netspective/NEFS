@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SparxTask.java,v 1.5 2003-07-12 03:31:46 shahid.shah Exp $
+ * $Id: SparxTask.java,v 1.6 2003-07-17 13:50:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -56,6 +56,7 @@ import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.Dialog;
 
 import java.io.IOException;
+import java.io.File;
 
 public class SparxTask extends AxiomTask
 {
@@ -107,7 +108,10 @@ public class SparxTask extends AxiomTask
         if(getDestDir() != null || dcbPackage != null)
         {
             if(getDestDir() == null || dcbPackage == null)
-                throw new BuildException("dcbRootPackage is required to generate dialog context beans.");
+                throw new BuildException("dcbPackage is required to generate dialog context beans.");
+
+            if(isCleanFirst())
+                delete(new File(getDestDir(), dcbPackage.replace('.', '/')));
 
             try
             {
