@@ -68,7 +68,7 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
  * Class for handling stored procedure calls
  *
  * @author Aye Thu
- * @version $Id: StoredProcedure.java,v 1.11 2004-06-18 22:29:02 shahid.shah Exp $
+ * @version $Id: StoredProcedure.java,v 1.12 2004-06-18 22:29:33 shahid.shah Exp $
  */
 public class StoredProcedure
 {
@@ -511,9 +511,6 @@ public class StoredProcedure
             log.error(createExceptionMessage(cc, overrideIndexes, overrideValues), e);
             throw e;
         }
-        finally
-        {
-        }
     }
 
 
@@ -609,9 +606,6 @@ public class StoredProcedure
             logEntry.registerExecSqlEndFailed();
             log.error(createExceptionMessage(cc, overrideIndexes, overrideValues), e);
             throw e;
-        }
-        finally
-        {
         }
     }
 
