@@ -39,27 +39,17 @@
  */
 
 /**
- * $Id: XmlDataModelSchemaStructurePanel.java,v 1.4 2003-03-29 13:00:56 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.1 2003-03-31 20:16:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.report.tabular.BasicTabularReport;
-import com.netspective.commons.report.tabular.TabularReport;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportException;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
+import com.netspective.commons.report.tabular.*;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModel;
@@ -71,40 +61,57 @@ import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.ReportHttpServletValueContext;
+import com.netspective.sparx.report.HtmlTabularReportSkin;
 
-public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportPanel
+public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 {
-    private static final Log log = LogFactory.getLog(XmlDataModelSchemaStructurePanel.class);
-    private static final TabularReport report = new BasicTabularReport();
+    private static final Log log = LogFactory.getLog(XdmSchemaStructurePanel.class);
+    public static final String REQPARAMNAME_SHOW_CLASS_DETAIL = "xdm-class";
+    private static final TabularReport structureReport = new BasicTabularReport();
+    private static final TabularReport detailReport = new BasicTabularReport();
 
     static
     {
-        report.getFrame().setHeading(new StaticValueSource("XDM Structure"));
+        structureReport.getFrame().setHeading(new StaticValueSource("XDM Structure"));
 
         GeneralColumn elementName = new GeneralColumn();
         elementName.setHeading(new StaticValueSource("Element"));
         elementName.setWordWrap(false);
-        report.addColumn(elementName);
+        elementName.setUrl(new StaticValueSource("detail?"+ REQPARAMNAME_SHOW_CLASS_DETAIL +"=%{1}"));
+        structureReport.addColumn(elementName);
 
         GeneralColumn xdmClass = new GeneralColumn();
         xdmClass.setHeading(new StaticValueSource("Class"));
         xdmClass.setWordWrap(false);
-        report.addColumn(xdmClass);
+        structureReport.addColumn(xdmClass);
 
         GeneralColumn isText = new GeneralColumn();
         isText.setHeading(new StaticValueSource("Text"));
         isText.setWordWrap(false);
         isText.setAlign(new TabularReportColumn.AlignStyle(TabularReportColumn.ALIGN_CENTER));
-        report.addColumn(isText);
+        structureReport.addColumn(isText);
 
         GeneralColumn isRecursive = new GeneralColumn();
         isRecursive.setHeading(new StaticValueSource("Recursive"));
         isRecursive.setWordWrap(false);
         isRecursive.setAlign(new TabularReportColumn.AlignStyle(TabularReportColumn.ALIGN_CENTER));
-        report.addColumn(isRecursive);
+        structureReport.addColumn(isRecursive);
+
+        detailReport.getFrame().setHeading(new StaticValueSource("XDM Detail"));
+
+        elementName = new GeneralColumn();
+        elementName.setHeading(new StaticValueSource("Element"));
+        elementName.setWordWrap(false);
+        detailReport.addColumn(elementName);
+
+        xdmClass = new GeneralColumn();
+        xdmClass.setHeading(new StaticValueSource("Type"));
+        xdmClass.setWordWrap(false);
+        detailReport.addColumn(xdmClass);
     }
 
-    protected class Row
+    protected class StructureRow
     {
         private int level;
         private List ancestors;
@@ -113,7 +120,7 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
         private String elementName;
         private boolean recursive;
 
-        protected Row(int level, String elementName, List ancestors, XmlDataModelSchema schema, boolean recursive)
+        protected StructureRow(int level, String elementName, List ancestors, XmlDataModelSchema schema, boolean recursive)
         {
             this.elementName = elementName;
             this.level = level;
@@ -122,7 +129,7 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
             this.schema = schema;
         }
 
-        protected Row(int level, String elementName, List ancestors, TemplateProducer templateProducer, boolean recursive)
+        protected StructureRow(int level, String elementName, List ancestors, TemplateProducer templateProducer, boolean recursive)
         {
             this.elementName = elementName;
             this.level = level;
@@ -134,8 +141,9 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
 
     private XmlDataModel dataModel;
     private static Map dataModelRows = new HashMap();
+    private XdmSchemaStructurePanelViewEnumeratedAttribute view = new XdmSchemaStructurePanelViewEnumeratedAttribute(0);
 
-    public void addRow(List rows, int level, List ancestors, Object parent, String name)
+    public void addStructureRow(List rows, int level, List ancestors, Object parent, String name)
     {
         XmlDataModelSchema parentSchema = (XmlDataModelSchema) ancestors.get(0);
         XmlDataModelSchema.PropertyNames propNames = (XmlDataModelSchema.PropertyNames) parentSchema.getPropertyNames().get(name);
@@ -171,7 +179,7 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
 
             recursive = ancestors.contains(schema);
 
-            rows.add(new Row(level, propNames.getPrimaryName(), ancestors, schema, recursive));
+            rows.add(new StructureRow(level, propNames.getPrimaryName(), ancestors, schema, recursive));
         }
         else
         {
@@ -219,14 +227,14 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
             {
                 String nestedName = nested[i];
                 if(templateProducers != null && templateProducers.get(nestedName) != null)
-                    rows.add(new Row(level+1, nestedName, ancestors, templateProducers.get(nestedName), false));
+                    rows.add(new StructureRow(level+1, nestedName, ancestors, templateProducers.get(nestedName), false));
                 else
-                    addRow(rows, level+1, childAncestors, childInstance, nestedName);
+                    addStructureRow(rows, level+1, childAncestors, childInstance, nestedName);
             }
         }
     }
 
-    public List createRows(XmlDataModel dataModel)
+    public List createStructureRows(XmlDataModel dataModel)
     {
         List rows = (List) dataModelRows.get(dataModel);
         if(rows != null)
@@ -235,10 +243,20 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
         rows = new ArrayList();
         List ancestors = new ArrayList();
         ancestors.add(XmlDataModelSchema.getSchema(dataModel.getClass()));
-        addRow(rows, -1, ancestors, dataModel, null);
+        addStructureRow(rows, -1, ancestors, dataModel, null);
 
         dataModelRows.put(dataModel, rows);
         return rows;
+    }
+
+    public XdmSchemaStructurePanelViewEnumeratedAttribute getView()
+    {
+        return view;
+    }
+
+    public void setView(XdmSchemaStructurePanelViewEnumeratedAttribute view)
+    {
+        this.view = view;
     }
 
     public XmlDataModel getDataModel()
@@ -251,21 +269,55 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
         this.dataModel = dataModel;
     }
 
+    public ReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
+    {
+        ReportHttpServletValueContext vc = new ReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(nc), skin);
+        if(view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.TREE && vc.getReport() == structureReport)
+        {
+            TabularReportColumnState[] states = vc.getStates();
+            states[1].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+            states[2].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+            states[3].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+        }
+        return vc;
+    }
+
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        return new StructureDataSource(createRows(dataModel == null ? nc.getApplicationManagerComponent() : dataModel));
+        List structureRows = createStructureRows(dataModel == null ? nc.getApplicationManagerComponent() : dataModel);
+        if(view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL)
+        {
+            String showClassDetail = nc.getRequest().getParameter(REQPARAMNAME_SHOW_CLASS_DETAIL);
+            for(int i = 0; i < structureRows.size(); i++)
+            {
+                try
+                {
+                    StructureRow structureRow = (StructureRow) structureRows.get(i);
+                    if(structureRow.schema != null && structureRow.schema.getBean().getName().equals(showClassDetail))
+                        return new DetailDataSource(structureRows, structureRow);
+                }
+                catch (DataModelException e)
+                {
+                    log.error(e);
+                    return new DetailNotFoundDataSource();
+                }
+            }
+            return new DetailNotFoundDataSource();
+        }
+        else
+            return new StructureDataSource(structureRows);
     }
 
-    public TabularReport getReport()
+    public TabularReport getReport(NavigationContext nc)
     {
-        return report;
+        return view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL ? detailReport : structureReport;
     }
 
-    protected class StructureDataSource implements TabularReportDataSource
+    protected class StructureDataSource extends AbstractTabularReportDataSource
     {
         protected int row = -1;
         protected int lastRow;
-        protected Row activeRow;
+        protected StructureRow activeRow;
         protected List rows;
         protected Hierarchy hierarchy = new ActiveHierarchy();
 
@@ -303,7 +355,7 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
             lastRow = rows.size() - 1;
         }
 
-        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex)
+        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
         {
             switch(columnIndex)
             {
@@ -311,15 +363,25 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
                     return activeRow.elementName;
 
                 case 1:
-                    if(activeRow.templateProducer != null)
+                    if((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
                     {
-                        if(activeRow.templateProducer.isStatic())
-                            return "Template producer (namespace '" + activeRow.templateProducer.getNameSpaceId() + "')";
+                        if(activeRow.templateProducer != null)
+                            return activeRow.templateProducer.getClass().getName();
                         else
-                            return "Template producer (dynamic namespace: "+ vc.getSkin().constructClassRef(activeRow.templateProducer.getClass()) +")";
+                            return activeRow.schema.getBean().getName();
                     }
                     else
-                        return vc.getSkin().constructClassRef(activeRow.schema.getBean());
+                    {
+                        if(activeRow.templateProducer != null)
+                        {
+                            if(activeRow.templateProducer.isStatic())
+                                return "Template producer (namespace '" + activeRow.templateProducer.getNameSpaceId() + "')";
+                            else
+                                return "Template producer (dynamic namespace: "+ vc.getSkin().constructClassRef(activeRow.templateProducer.getClass()) +")";
+                        }
+                        else
+                            return vc.getSkin().constructClassRef(activeRow.schema.getBean());
+                    }
 
                 case 2:
                     if(activeRow.templateProducer == null)
@@ -335,17 +397,12 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
             }
         }
 
-        public Object getActiveRowColumnData(TabularReportValueContext vc, String columnName)
-        {
-            throw new TabularReportException("getActiveRowColumnData(vc, columnName) is not suppored");
-        }
-
         public boolean next()
         {
             if(row < lastRow)
             {
                 row++;
-                activeRow = (Row) rows.get(row);
+                activeRow = (StructureRow) rows.get(row);
                 return true;
             }
 
@@ -358,4 +415,113 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
         }
     }
 
+    protected class DetailNotFoundDataSource extends AbstractTabularReportDataSource
+    {
+    }
+
+    protected class DetailDataSource extends AbstractTabularReportDataSource
+    {
+        private class DetailRow
+        {
+            private StructureRow childElement;
+            private String attrName;
+            private Class attrType;
+
+            public DetailRow(StructureRow childElement)
+            {
+                this.childElement = childElement;
+            }
+
+            public DetailRow(String attrName) throws DataModelException
+            {
+                this.attrName = attrName;
+                attrType = structureRow.schema.getAttributeType(attrName);
+            }
+        }
+
+        private List structureRows;
+        private Map childPropertyNames;
+        private StructureRow structureRow;
+        private int activeRowNum = -1;
+        private int lastRowNum;
+        private DetailRow activeRow;
+        private List detailRows = new ArrayList();
+
+        public DetailDataSource(List structureRows, StructureRow structureRow) throws DataModelException
+        {
+            this.structureRows = structureRows;
+            this.structureRow = structureRow;
+
+            if(structureRow.schema != null)
+            {
+                // find all the structure rows that have this structureRow as the first ancestor (meaning we're their parent)
+                for(int i = 0; i < structureRows.size(); i++)
+                {
+                    StructureRow checkChildRow = (StructureRow) structureRows.get(i);
+                    if(checkChildRow.schema != null)
+                    {
+                        if(checkChildRow.ancestors.get(0) == structureRow.schema)
+                            detailRows.add(new DetailRow(checkChildRow));
+                    }
+                }
+
+                childPropertyNames = structureRow.schema.getPropertyNames();
+                Iterator iterator = new TreeSet(structureRow.schema.getAttributes()).iterator();
+                while (iterator.hasNext())
+                {
+                    String attrName = (String) iterator.next();
+                    if(structureRow.schema.getOptions().ignoreAttribute(attrName))
+                        continue;
+
+                    XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
+                    if(! attrNames.isPrimaryName(attrName))
+                        continue;
+
+                    detailRows.add(new DetailRow(attrName));
+                }
+
+            }
+
+            activeRowNum = -1;
+            lastRowNum = detailRows.size() - 1;
+        }
+
+        public boolean next()
+        {
+            if(activeRowNum < lastRowNum)
+            {
+                activeRowNum++;
+                activeRow = (DetailRow) detailRows.get(activeRowNum);
+                return true;
+            }
+
+            return false;
+        }
+
+        public int getActiveRowNumber()
+        {
+            return activeRowNum;
+        }
+
+        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
+        {
+            switch(columnIndex)
+            {
+                case 0 :
+                    if(activeRow.childElement != null)
+                        return "&lt;" + activeRow.childElement.elementName + "&gt;";
+                    else
+                        return activeRow.attrName;
+
+                case 1:
+                    if(activeRow.childElement != null)
+                        return vc.getSkin().constructClassRef(activeRow.childElement.schema.getBean());
+                    else
+                        return vc.getSkin().constructClassRef(activeRow.attrType);
+
+                default:
+                    return "Unknown column " + columnIndex;
+            }
+        }
+    }
 }

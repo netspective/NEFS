@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportDataSource.java,v 1.2 2003-03-28 04:13:08 shahid.shah Exp $
+ * $Id: TabularReportDataSource.java,v 1.3 2003-03-31 20:16:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -84,7 +84,7 @@ public interface TabularReportDataSource
      * @param columnIndex The column we're interested in (0-based)
      * @return The raw data the report can use to put into the report
      */
-    public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex);
+    public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags);
 
     /**
      * Retrieve data for one of the current row's columns based on a column name (may throw an exception if not

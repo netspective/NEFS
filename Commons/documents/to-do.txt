@@ -1,4 +1,5 @@
 * Create "XdmFlags" datatype that would allow XML files to supply flags as yes/no using booleans as well as Java-style A | B | C
+* Add capability for <xdm:define-template-tag name="abc" name-space="/x/y/z"/> that would allow "on the fly" template producers
 * Add performance, load, and stress tests using JunitPerf
 * Start using JAAS for login and user management (replace Principal with Subject)
 * Start using mock objects for hard to create unit tests

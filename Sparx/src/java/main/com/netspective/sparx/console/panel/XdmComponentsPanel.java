@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.5 2003-03-29 13:00:56 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.6 2003-03-31 20:16:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -91,7 +91,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
         return new UsageReportDataSource();
     }
 
-    public TabularReport getReport()
+    public TabularReport getReport(NavigationContext nc)
     {
         return report;
     }
@@ -140,7 +140,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             return src.toString();
         }
 
-        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex)
+        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
         {
             switch(columnIndex)
             {

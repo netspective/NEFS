@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicReportSkin.java,v 1.4 2003-03-29 13:00:56 shahid.shah Exp $
+ * $Id: BasicReportSkin.java,v 1.5 2003-03-31 20:16:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -449,7 +449,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
             if(! states[i].isVisible())
                 continue;
 
-            Object heading = ds.getActiveRowColumnData(rc, rcd.getColIndex());
+            Object heading = ds.getActiveRowColumnData(rc, rcd.getColIndex(), flags);
             if(heading != null)
             {
                 String colHeading = heading.toString();
@@ -516,7 +516,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
                 String data =
                         state.flagIsSet(TabularReportColumn.COLFLAG_HASOUTPUTPATTERN) ?
                         state.getOutputFormat() :
-                        column.getFormattedData(rc, ds, true);
+                        column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
 
                 String style = state.getCssStyleAttrValue();
                 if(hiearchical && (hiearchyCol == i) && activeLevel > 0)

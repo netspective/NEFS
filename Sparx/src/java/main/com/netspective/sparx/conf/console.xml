@@ -14,19 +14,37 @@
         </page>
         <page name="application" caption="Application">
             <page name="xdm" caption="XDM Components">
-                <panels>
-                    <panel class="com.netspective.sparx.console.panel.XdmComponentsPanel"/>
-                    <panel class="com.netspective.sparx.console.panel.XmlDataModelSchemaStructurePanel"/>
-                </panels>
+                <page name="components" caption="Instances">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.XdmComponentsPanel"/>
+                    </panels>
+                </page>
+                <page name="structure" caption="Structure">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel"/>
+                    </panels>
+                </page>
+                <page name="detail" caption="Detail">
+                    <panels style="horizontal">
+                        <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="tree"/>
+                        <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="detail"/>
+                    </panels>
+                </page>
             </page>
 	        <page name="metrics" caption="Metrics"/>
 	        <page name="configuration" caption="Configuration Properties"/>
 	        <page name="access-control" caption="Access Control"/>
 	        <page name="value-source" caption="Value Sources">
-                <panels>
-                    <panel class="com.netspective.sparx.console.panel.ValueSourcesDocumentationPanel"/>
-                    <panel class="com.netspective.sparx.console.panel.ValueSourcesUsagePanel"/>
-                </panels>
+                <page name="documentation" caption="Documentation" heading="Value Sources Documentation">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.ValueSourcesDocumentationPanel"/>
+                    </panels>
+                </page>
+                <page name="usage" caption="Usage" heading="Value Sources Usage">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.ValueSourcesUsagePanel"/>
+                    </panels>
+                </page>
             </page>
         </page>
         <page name="presentation" caption="Presentation">

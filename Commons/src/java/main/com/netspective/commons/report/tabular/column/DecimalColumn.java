@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DecimalColumn.java,v 1.2 2003-03-28 04:13:08 shahid.shah Exp $
+ * $Id: DecimalColumn.java,v 1.3 2003-03-31 20:16:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -61,6 +61,7 @@ import java.text.NumberFormat;
 import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.TabularReportColumn;
 
 public class DecimalColumn extends NumericColumn
 {
@@ -70,10 +71,10 @@ public class DecimalColumn extends NumericColumn
         setFormat("decimal");
     }
 
-    public String getFormattedData(TabularReportValueContext rc, TabularReportDataSource ds, boolean doCalc)
+    public String getFormattedData(TabularReportValueContext rc, TabularReportDataSource ds, int flags)
     {
         int colIndex = getColIndex();
-        Object oData = ds.getActiveRowColumnData(rc, colIndex);
+        Object oData = ds.getActiveRowColumnData(rc, colIndex, flags);
         String data = "";
         double value = 0;
         if(oData != null)
@@ -83,7 +84,7 @@ public class DecimalColumn extends NumericColumn
             data = fmt == null ? Double.toString(value) : fmt.format(value);
         }
 
-        if(doCalc)
+        if((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
         {
             ColumnDataCalculator calc = rc.getCalc(colIndex);
             if(calc != null)

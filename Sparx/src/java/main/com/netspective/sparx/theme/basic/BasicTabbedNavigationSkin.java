@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.1 2003-03-24 13:28:02 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.2 2003-03-31 20:16:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -715,7 +715,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 {
                     writer.append("      <tr>\n");
                     writer.append("          <td class=\"menu-level-3-active\" align=\"left\" valign=\"middle\">" +
-                            "<a class=\"menu-level-3\" href=\"" + sideBarElement.getUrl(nc) + "\">" +
+                            "<a class=\"menu-level-3-active\" href=\"" + sideBarElement.getUrl(nc) + "\">" +
                             "<nobr>" + sideBarElement.getCaption(nc) + "</nobr></a></td>\n");
                     writer.append("      </tr>\n");
                 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.3 2003-03-28 04:13:08 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.4 2003-03-31 20:16:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -311,11 +311,11 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         return replacedIn;
     }
 
-    public String getFormattedData(TabularReportValueContext rc, TabularReportDataSource ds, boolean doCalc)
+    public String getFormattedData(TabularReportValueContext rc, TabularReportDataSource ds, int flags)
     {
-        Object oData = ds.getActiveRowColumnData(rc, getColIndex());
+        Object oData = ds.getActiveRowColumnData(rc, getColIndex(), flags);
         String data = oData == null ? "" : oData.toString();
-        if(doCalc)
+        if((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
         {
             ColumnDataCalculator calc = rc.getCalc(getColIndex());
             if(calc != null)
@@ -423,12 +423,12 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             if(calcCmd != null)
                 calc = ColumnDataCalculatorFactory.createDataCalc(calcCmd);
 
-            flags = getFlags();
+            flags = GeneralColumn.this.getFlags();
 
             if((flags & TabularReportColumn.COLFLAG_HIDDEN) == 0)
             {
                 if(flagIsSet(TabularReportColumn.COLFLAG_HASOUTPUTPATTERN))
-                    outputFormat = resolvePattern(getOutput());
+                    outputFormat = resolvePattern(GeneralColumn.this.getOutput());
 
                 if(flagIsSet(TabularReportColumn.COLFLAG_WRAPURL))
                     url = resolvePattern(GeneralColumn.this.getUrl().getValue(rc).getTextValue());

@@ -51,22 +51,18 @@
  */
 
 /**
- * $Id: BasicTabularReport.java,v 1.3 2003-03-28 04:13:08 shahid.shah Exp $
+ * $Id: BasicTabularReport.java,v 1.4 2003-03-31 20:16:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
 
 import java.net.URLEncoder;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.List;
 
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportBanner;
 import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.ReportColumnFactory;
 import com.netspective.commons.report.tabular.TabularReportColumns;
 import com.netspective.commons.report.tabular.TabularReportContextListener;
 import com.netspective.commons.report.tabular.TabularReportFrame;
@@ -301,9 +297,9 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
                     {
                         int colIndex = Integer.parseInt(expression);
                         if(encode)
-                            sb.append(URLEncoder.encode(columns.getColumn(colIndex).getFormattedData(rc, ds, false)));
+                            sb.append(URLEncoder.encode(columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_FOR_URL)));
                         else
-                            sb.append(columns.getColumn(colIndex).getFormattedData(rc, ds, false));
+                            sb.append(columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAGS_DEFAULT));
                     }
                     catch(NumberFormatException e)
                     {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanels.java,v 1.1 2003-03-26 00:35:32 shahid.shah Exp $
+ * $Id: BasicHtmlPanels.java,v 1.2 2003-03-31 20:16:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -50,6 +50,17 @@ import java.util.ArrayList;
 public class BasicHtmlPanels implements HtmlPanels
 {
     private List panels = new ArrayList();
+    private int style;
+
+    public int getStyle()
+    {
+        return this.style;
+    }
+
+    public void setStyle(HtmlPanelsStyleEnumeratedAttribute style)
+    {
+        this.style = style.getValueIndex();
+    }
 
     public void add(HtmlPanel panel)
     {

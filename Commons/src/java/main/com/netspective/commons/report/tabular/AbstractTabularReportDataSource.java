@@ -39,85 +39,40 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.2 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.1 2003-03-31 20:16:25 shahid.shah Exp $
  */
 
-package com.netspective.sparx.panel;
+package com.netspective.commons.report.tabular;
 
-import java.io.Writer;
-import java.io.IOException;
-
-import com.netspective.sparx.navigate.NavigationContext;
-
-public class HtmlLayoutPanel implements HtmlPanel
+public abstract class AbstractTabularReportDataSource implements TabularReportDataSource
 {
-    private HtmlPanels children = new BasicHtmlPanels();
-
-    public int getStyle()
+    public boolean next()
     {
-        return children.getStyle();
+        return false;
     }
 
-    public void setStyle(HtmlPanelsStyleEnumeratedAttribute style)
+    public int getActiveRowNumber()
     {
-        children.setStyle(style);
+        return 0;
     }
 
-    public void addPanel(HtmlPanel panel)
+    public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
     {
-        children.add(panel);
+        return null;
     }
 
-    public HtmlPanels getChildren()
+    public Object getActiveRowColumnData(TabularReportValueContext vc, String columnName)
     {
-        return children;
+        throw new TabularReportException("getActiveRowColumnData(vc, columnName) is not suppored");
     }
 
-    public void render(Writer writer, NavigationContext nc) throws IOException
+    public boolean isHierarchical()
     {
-        if(getStyle() == HtmlPanelsStyleEnumeratedAttribute.VERTICAL)
-        {
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<div>");
-                children.get(i).render(writer, nc);
-                writer.write("</div>");
-            }
-        }
-        else
-        {
-            writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<td>");
-                children.get(i).render(writer, nc);
-                writer.write("</td>");
-            }
-            writer.write("</tr></table>");
-        }
+        return false;
     }
 
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException
+    public TabularReportDataSource.Hierarchy getActiveHiearchy()
     {
-        if(getStyle() == HtmlPanelsStyleEnumeratedAttribute.VERTICAL)
-        {
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<div>");
-                children.get(i).render(writer, nc, skin);
-                writer.write("</div>");
-            }
-        }
-        else
-        {
-            writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<td>");
-                children.get(i).render(writer, nc, skin);
-                writer.write("</td>");
-            }
-            writer.write("</tr></table>");
-        }
+        return null;
     }
 }

@@ -39,85 +39,31 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.2 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: HtmlPanelsStyleEnumeratedAttribute.java,v 1.1 2003-03-31 20:16:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.io.Writer;
-import java.io.IOException;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
-import com.netspective.sparx.navigate.NavigationContext;
-
-public class HtmlLayoutPanel implements HtmlPanel
+public class HtmlPanelsStyleEnumeratedAttribute extends XdmEnumeratedAttribute
 {
-    private HtmlPanels children = new BasicHtmlPanels();
+    public static final int VERTICAL = 0;
+    public static final int HORIZONTAL = 1;
 
-    public int getStyle()
+    private static final String[] VALUES = new String[] { "vertical", "horizontal" };
+
+    public HtmlPanelsStyleEnumeratedAttribute()
     {
-        return children.getStyle();
     }
 
-    public void setStyle(HtmlPanelsStyleEnumeratedAttribute style)
+    public HtmlPanelsStyleEnumeratedAttribute(int valueIndex)
     {
-        children.setStyle(style);
+        super(valueIndex);
     }
 
-    public void addPanel(HtmlPanel panel)
+    public String[] getValues()
     {
-        children.add(panel);
-    }
-
-    public HtmlPanels getChildren()
-    {
-        return children;
-    }
-
-    public void render(Writer writer, NavigationContext nc) throws IOException
-    {
-        if(getStyle() == HtmlPanelsStyleEnumeratedAttribute.VERTICAL)
-        {
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<div>");
-                children.get(i).render(writer, nc);
-                writer.write("</div>");
-            }
-        }
-        else
-        {
-            writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<td>");
-                children.get(i).render(writer, nc);
-                writer.write("</td>");
-            }
-            writer.write("</tr></table>");
-        }
-    }
-
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException
-    {
-        if(getStyle() == HtmlPanelsStyleEnumeratedAttribute.VERTICAL)
-        {
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<div>");
-                children.get(i).render(writer, nc, skin);
-                writer.write("</div>");
-            }
-        }
-        else
-        {
-            writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<td>");
-                children.get(i).render(writer, nc, skin);
-                writer.write("</td>");
-            }
-            writer.write("</tr></table>");
-        }
+        return VALUES;
     }
 }

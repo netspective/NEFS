@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TabularReportColumn.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: TabularReportColumn.java,v 1.3 2003-03-31 20:16:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -77,6 +77,10 @@ public interface TabularReportColumn
     static public final long COLFLAG_SORTED_ASCENDING = COLFLAG_SORT_ALLOWED * 2;
     static public final long COLFLAG_SORTED_DESCENDING = COLFLAG_SORTED_ASCENDING * 2;
     static public final long COLFLAG_CUSTOMSTART = COLFLAG_SORTED_DESCENDING * 2;
+
+    static public final int GETDATAFLAGS_DEFAULT = 0;
+    static public final int GETDATAFLAG_DO_CALC = 1;
+    static public final int GETDATAFLAG_FOR_URL = GETDATAFLAG_DO_CALC * 2;
 
     static public final int ALIGN_LEFT = 0;
     static public final int ALIGN_CENTER = 1;
@@ -169,7 +173,7 @@ public interface TabularReportColumn
 
     public void setBreak(String header);
 
-    public String getFormattedData(TabularReportValueContext rc, TabularReportDataSource ds, boolean doCalc);
+    public String getFormattedData(TabularReportValueContext rc, TabularReportDataSource ds, int flags);
 
     public String getFormattedData(TabularReportValueContext rc, ColumnDataCalculator calc);
 

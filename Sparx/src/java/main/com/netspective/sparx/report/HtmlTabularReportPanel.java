@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportPanel.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: HtmlTabularReportPanel.java,v 1.2 2003-03-31 20:16:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report;
@@ -51,7 +51,7 @@ import com.netspective.commons.report.tabular.TabularReportDataSource;
 
 public interface HtmlTabularReportPanel extends HtmlOutputPanel
 {
-    public TabularReport getReport();
+    public TabularReport getReport(NavigationContext nc);
     public ReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin);
     public TabularReportDataSource createDataSource(NavigationContext nc);
 }

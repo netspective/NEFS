@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanels.java,v 1.1 2003-03-26 00:35:32 shahid.shah Exp $
+ * $Id: HtmlPanels.java,v 1.2 2003-03-31 20:16:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -49,4 +49,7 @@ public interface HtmlPanels
     public void add(HtmlPanel panel);
     public HtmlPanel get(int i);
     public int size();
+
+    public int getStyle();
+    public void setStyle(HtmlPanelsStyleEnumeratedAttribute style);
 }

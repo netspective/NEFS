@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesUsagePanel.java,v 1.4 2003-03-29 13:00:56 shahid.shah Exp $
+ * $Id: ValueSourcesUsagePanel.java,v 1.5 2003-03-31 20:16:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -87,7 +87,7 @@ public class ValueSourcesUsagePanel extends AbstractHtmlTabularReportPanel
         return new UsageReportDataSource();
     }
 
-    public TabularReport getReport()
+    public TabularReport getReport(NavigationContext nc)
     {
         return usageReport;
     }
@@ -100,7 +100,7 @@ public class ValueSourcesUsagePanel extends AbstractHtmlTabularReportPanel
         {
         }
 
-        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex)
+        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
         {
             switch(columnIndex)
             {
