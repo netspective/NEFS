@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.40 2004-01-08 14:10:35 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.41 2004-01-09 14:20:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -718,6 +718,9 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             nc.getResponse().setContentType("text/html");
             if(nc.isActivePageValid())
             {
+                // make any necessary state changes (such as permissions, conditionals, etc).
+                activePage.makeStateChanges(nc);
+
                 // check to see if we have static content and we're in development mode (because in development presumably we don't want
                 // anything to be static since 'static' is a performance attribute, not functionality
                 if(! nc.getRuntimeEnvironmentFlags().isDevelopment() && activePage.getFlags().flagIsSet(NavigationPage.Flags.STATIC_CONTENT))

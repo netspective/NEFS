@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.24 2003-12-22 13:10:59 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.25 2004-01-09 14:20:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -59,10 +59,7 @@ package com.netspective.sparx.navigate;
 import java.util.Map;
 import java.util.HashMap;
 import java.io.File;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletResponse;
 import javax.servlet.ServletRequest;
 import javax.servlet.Servlet;
@@ -71,7 +68,6 @@ import javax.servlet.ServletException;
 import org.apache.oro.text.perl.Perl5Util;
 
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
-import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.commons.text.TextUtils;
 
@@ -115,9 +111,6 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         if(activePage != null)
         {
             activePageValid = activePage.isValid(this);
-            if(activePageValid)
-                activePage.makeStateChanges(this);
-
             if(activePage.getRedirect() != null)
                 redirectRequired = true;
         }
