@@ -9,6 +9,7 @@
 
     <xdm:include file="forms-input.xml"/>
     <xdm:include file="forms-exec.xml"/>
+    <xdm:include file="forms-acl.xml"/>
 
     <!--
        ======================================
@@ -351,6 +352,17 @@
             </page>
         </page>
 
+        <page name="test-acl" caption="Access Control" heading="Access Control" command="dialog,form.acl.role">
+            <!--summary>
+                <![CDATA[
+                This module is for demonstrating how the <i>Access Control</i> feature can be used. This feature
+                is for setting up roles and capabilities to handle controlling access to various parts of an application.
+                An application user can be assigned a role which will control whether or not the user can access a page,
+                a report, a dialog, or even a field.
+                ]]>
+            </summary-->
+        </page>
+
         <!--
         This page is not used for anything except to demonstrate the usage of popup fields.
         -->
@@ -374,5 +386,36 @@
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
         <page name="sample-apps-home" caption="Sample Apps Home" redirect="netspective-url:nefs-sample-apps-home"/>
     </navigation-tree>
+
+    <!--
+    **********************************************************************
+    ** SAMPLE SECURITY DECLARATIONS                                            **
+    **********************************************************************
+    -->
+
+    <access-control-list name="acl">
+        <permission name="app">
+            <permission name="forms">
+                <permission name="input">
+                </permission>
+                <permission name="execution">
+                </permission>
+            </permission>
+            <permission name="console">
+            </permission>
+        </permission>
+
+        <role name="role">
+            <role name="super-user">
+                <grant permission="/acl/app/forms"/>
+                <grant permission="/acl/app/console"/>                
+            </role>
+            <role name="restricted-user">
+                <grant permission="/acl/app/forms"/>
+                <revoke permission="/acl/app/forms/execution"/>
+            </role>
+        </role>
+    </access-control-list>
+
 
 </project>
