@@ -16,7 +16,7 @@
 
     <mediaobject>
       <imageobject>
-        <imagedata fileref="resources/images/screen-nef-folder-structure.gif" />
+        <imagedata fileref="./resources/images/screen-nef-folder-structure.gif" />
       </imageobject>
     </mediaobject>
   </figure>
