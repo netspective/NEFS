@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RedirectValueSource.java,v 1.3 2003-09-10 14:08:47 aye.thu Exp $
+ * $Id: RedirectValueSource.java,v 1.4 2003-09-10 20:53:36 aye.thu Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -54,7 +54,7 @@ import com.netspective.commons.value.exception.ValueSourceInitializeException;
  */
 public class RedirectValueSource implements ValueSource
 {
-    public static final String[] IDENTIFIERS = new String[] { "redirect", "url" };
+    public static final String[] IDENTIFIERS = new String[] { "redirect"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
             "A special value source wrapper that handles redirects.",
             new ValueSourceDocumentation.Parameter[]
