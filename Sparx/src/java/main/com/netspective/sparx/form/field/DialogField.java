@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.56 2004-07-26 13:43:52 aye.thu Exp $
+ * $Id: DialogField.java,v 1.57 2004-08-03 20:06:21 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -93,6 +93,7 @@ import com.netspective.sparx.form.ClientDataEncryption;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
+import com.netspective.sparx.form.field.conditional.DialogFieldConditionalClear;
 import com.netspective.sparx.panel.HtmlHelpPanel;
 import com.netspective.sparx.value.source.DialogFieldValueSource;
 
@@ -1617,7 +1618,17 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             for (int i = 0; i < dependentConditions.size(); i++)
             {
                 DialogFieldConditionalAction o = dependentConditions.getAction(i);
-                if (o instanceof DialogFieldConditionalDisplay)
+                if (o instanceof DialogFieldConditionalClear)
+                {
+                    DialogFieldConditionalClear action = (DialogFieldConditionalClear) o;
+                    if (action.getPartnerField().isAvailable(dc))
+                        dcJs.append("field.dependentConditions[field.dependentConditions.length] = new DialogFieldConditionalClear(\"" + action.getSourceField().getQualifiedName()
+                                + "\", \"" + action.getPartnerField().getQualifiedName() + "\", \"" + action.getExpression() + "\");\n");
+                    else
+                        log.warn("Javascript dependent condition was not added because the partner field with name '" + action.getPartnerFieldName() + "' was not available.");
+
+                }
+                else if (o instanceof DialogFieldConditionalDisplay)
                 {
                     DialogFieldConditionalDisplay action = (DialogFieldConditionalDisplay) o;
                     if (action.getPartnerField().isAvailable(dc))
@@ -1630,7 +1641,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                 {
                     DialogFieldConditionalApplyFlag condition = (DialogFieldConditionalApplyFlag) o;
                     DialogFieldFlags flags = condition.getFlags();
-                    if (flags.flagIsSet(DialogFieldFlags.INPUT_HIDDEN) || flags.flagIsSet(DialogFieldFlags.REQUIRED))
+                    if (flags.flagIsSet(DialogFieldFlags.INPUT_HIDDEN) || flags.flagIsSet(DialogFieldFlags.REQUIRED) || flags.flagIsSet(DialogFieldFlags.BROWSER_READONLY))
                     {
                         // the INPUT HIDDEN flag needs to be handled on both the client side and the server side if the
                         // condition is based on client-side actions
@@ -1643,7 +1654,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                                 dcJs.append("field.dependentConditions[field.dependentConditions.length] = new DialogFieldConditionalFlag(\"" +
                                         condition.getSourceField().getQualifiedName() + "\", \"" +
                                         condition.getPartnerField().getQualifiedName() + "\", \"" +
-                                        condition.getExpression(dc) + "\", "+ flags.getFlags() + ");\n");
+                                        condition.getExpression(dc) + "\", "+ flags.getFlags() + ", " + !condition.isClear() + ");\n");
                            }
                            else
                                log.warn("Javascript dependent condition was not added because " +
@@ -1651,8 +1662,8 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                         }
 
                     }
-
                 }
+
             }
             js = js + dcJs.toString();
         }
@@ -1757,7 +1768,8 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         if (flags.flagIsSet(DialogFieldFlags.SUBMIT_ONBLUR))
         {
             sb.append("field.submitOnBlur = true;\n");
-            sb.append("field.submitOnBlurPartnerField ='" + submitOnBlur.getPartner() + "';\n");
+            if (submitOnBlur.getPartner() != null)
+                sb.append("field.submitOnBlurPartnerField = '" + submitOnBlur.getPartner() + "';\n");
             if (submitOnBlur.getCustomScript() != null && submitOnBlur.getCustomScript().length() > 0)
                 sb.append("field.submitOnBlurCustomScript = new Function(\"field\", \"control\", \"" + submitOnBlur.getCustomScript() + "\");\n");
             else
