@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryDefnCommand.java,v 1.1 2003-05-30 23:11:32 shahid.shah Exp $
+ * $Id: QueryDefnCommand.java,v 1.2 2003-06-25 07:02:35 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -95,6 +95,7 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
                                                    "semicolon-separated URL formats that may override those within a report."),
             }
     );
+    public static final int MAXIMUM_CONDITIONS = 5;
 
     public static String[] getIdentifiers()
     {
@@ -260,7 +261,7 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
         QueryBuilderDialog result = new QueryBuilderDialog();
         result.setName("queryDefn");
         result.setQueryDefn(queryDefn);
-        result.setMaxConditions(5);
+        result.setMaxConditions(MAXIMUM_CONDITIONS);
         return result;
         // TODO:
         //if(queryDefnSelectDialogName.equals(PARAMVALUE_DEFAULT))
