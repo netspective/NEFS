@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: popup.js,v 1.3 2004-07-14 20:58:12 aye.thu Exp $
+ * $Id: popup.js,v 1.4 2004-07-26 13:34:41 aye.thu Exp $
  */
 
 //****************************************************************************
@@ -103,8 +103,10 @@ function PopulateControlInfo(sourceForm, sourceField, fieldName)
 		else
     	    alert("In DialogFieldPopup for " + sourceForm + "." + sourceField + ", fill field '" + fieldName + "' could not be found [001].");
 	}
-    else if(this.field != null)
+    else if(this.field != null && typeof this.field != 'undefined')
+    {
         this.control = this.field.getControl(this.dialog);
+    }
 	else
     	alert("In DialogFieldPopup for " + sourceForm + "." + sourceField + ", fill field '" + fieldName + "' could not be found [002].");
 
@@ -113,7 +115,7 @@ function PopulateControlInfo(sourceForm, sourceField, fieldName)
 }
 
 function PopulateControlInfo_populateValue(value)
-{
+{    
 	if(this.additive)
 	{
 		if(this.field != null)
@@ -196,13 +198,27 @@ function DialogFieldPopup(sourceForm, sourceField, actionURL, windowClass, close
             controls[i] = new PopulateControlInfo(sourceForm, sourceField, fieldName);
         }
     }
-    // TODO: this extract code is incomplete so it is commented out.
-    /*
 	if (extractArray != null)
 	{
-	    this.appendActionUrl = DialogFieldPopup_appendActionUrl;
+	    //this.appendActionUrl = DialogFieldPopup_appendActionUrl;
+	    for (var i=0; i < extractArray.length; i++)
+        {
+            var fieldName = extractArray[i];
+            var field = activeDialog.fieldsByQualName[fieldName];
+            if (field != null && typeof field != 'undefined')
+            {
+		        var control = field.getControl(this.dialog);
+		        var value = '';;
+		        if (typeof field != 'undefined')
+		            value = control.value;
+		        if (this.actionURL.indexOf('?') != -1)
+		            this.actionURL = this.actionURL + '&' + fieldName + '=' + escape(value);
+		        else
+		            this.actionURL = this.actionURL + '?' + fieldName + '=' + escape(value);
+		    }
+        }
     }
-    */
+
 
 	// the remaining are object-based methods
 	this.populateControl = DialogFieldPopup_populateControl;
@@ -218,7 +234,7 @@ function DialogFieldPopup(sourceForm, sourceField, actionURL, windowClass, close
 	this.doPopup();
 }
 
-/*
+
 function DialogFieldPopup_appendActionUrl(valueArray)
 {
     // test to make sure it is an array
@@ -238,7 +254,7 @@ function DialogFieldPopup_appendActionUrl(valueArray)
         }
     }
 }
-*/
+
 function DialogFieldPopup_populateControl(value)
 {    
 	this.controlsInfo[0].populateValue(value);
