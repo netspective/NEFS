@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JakartaCommonsDbcpDataSourcePoolStatistics.java,v 1.1 2003-09-13 03:03:14 roque.hernandez Exp $
+ * $Id: JakartaCommonsDbcpDataSourcePoolStatistics.java,v 1.2 2003-09-13 03:23:54 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.console.util;
@@ -115,7 +115,7 @@ public class JakartaCommonsDbcpDataSourcePoolStatistics implements ConnectionPro
         if(entry != null)
         {
             DataSource ds = entry.getDataSource();
-            JakartaCommonsDbcpConnectionProvider.DbcpPooligDataSource dbcpDs = (JakartaCommonsDbcpConnectionProvider.DbcpPooligDataSource) ds;
+            JakartaCommonsDbcpConnectionProvider.DbcpPoolingDataSource dbcpDs = (JakartaCommonsDbcpConnectionProvider.DbcpPoolingDataSource) ds;
             if(ds == null)
                 throw new RuntimeException("DataSource is NULL");
 
