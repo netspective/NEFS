@@ -15,41 +15,45 @@
         </page>
 
         <page class="app.AppPage" name="products" caption="Products">
-            <page name="frameworks" caption="Frameworks" heading="Developing Java Web Applications Gets Easier">
+            <page name="frameworks" caption="NEFS" heading="Developing Java Web Applications Gets Easier">
                 <body source="products/frameworks/index.ftl"/>
                 <summary>
                     The Netspective Enterprise Frameworks Suite (NEFS) is the fastest path to building production-ready,
                     secure, data-driven Java web applications.
                 </summary>
 
-                <page name="what-nefs-does" caption="What does NEFS do?" heading="The Secret Sauce: Declare More, Code Less">
+                <page name="what-nefs-does" caption="What it does" heading="NEFS Simplifies J2EE Application Development">
                     <summary>
-                        If you find J2EE app development to be difficult, you're using the wrong ingredients in your
-                        development process.
+                        If your team still finds J2EE app development to be difficult, you're probably using the wrong tools.
                     </summary>
                     <body source="products/frameworks/what-nefs-does.ftl"/>
                 </page>
 
-                <page name="why-you-need-nefs" caption="Why use NEFS?" heading="Why should you use use the NEFS?">
+                <page name="how-nefs-does-it" caption="How it does it" heading="The Secret\: Declare More, Code Less">
                     <summary>
-                        If you have enough expert programmers, already have a great-looking user interface for
-                        your web application, and your tools already save you from writing repetitive Java and HTML
-                        code you probably don't need our Java Frameworks. In case you live in the real world, though,
-                        you probably need the NEFS.
+                        Leverage XML to help you get more application features and functionality completed with
+                        much less code and much higher quality.
+                    </summary>
+                    <body source="products/frameworks/how-nefs-does-it.ftl"/>
+                </page>
+
+                <page name="why-you-need-nefs" caption="Why use it" heading="Get the Job Done with NEFS">
+                    <summary>
+                        If your development team has already mastered all the J2EE APIs, you probably don't need our Java
+                        Frameworks. In case you live in the real world, though, you probably need the NEFS.
                     </summary>
                     <body source="products/frameworks/why-you-need-nefs.ftl"/>
                 </page>
 
-                <page name="features" caption="NEFS Features" heading="Features that Jump-start Development">
+                <page name="features" caption="Features" heading="Features that Jump-start Development">
                     <summary>
                         Stop cobbling together solutions from disparate open-source and commercial providers. Our Java
-                        Frameworks contain everything you need in one integrated suite where everything is guaranteed to
-                        work great together. And, when something doesn't work, help is only a phone call or e-mail away.
+                        Frameworks contain everything you need in one integrated Suite.
                     </summary>
                     <body source="products/frameworks/features.ftl"/>
                 </page>
 
-                <page name="architecture" caption="NEFS Architecture" heading="An Architecture you're Already Familiar with">
+                <page name="architecture" caption="Architecture" heading="An Architecture you're Already Familiar with">
                     <summary>
                         A standards-based, pattern-oriented architecture that follows industry best-practices assures
                         that the NEFS will fit right into your development environment.
@@ -57,38 +61,30 @@
                     <body source="products/frameworks/architecture.ftl"/>
                 </page>
 
-                <page name="sparx" caption="Sparx App Platform" heading="Advanced Web User Interfaces Made Simple">
+                <page name="sparx" caption="Sparx" heading="Advanced Web User Interfaces Made Simple">
                     <summary>
-                        If you're tired of creating pages of HTML and hundreds of lines of Java code just to
-                        allow your user to perform data entry for forms, you need Sparx. Just declare
-                        your input fields, page navigation and validation criteria in simple XML files and let Sparx
-                        generate all HTML, error trapping, and Java code for you.
+                        If you're tired of creating multiple pages of HTML and hundreds of lines of Java code just to
+                        allow your user to perform web-based data entry, you need Sparx.
                     </summary>
                     <body source="products/frameworks/sparx.ftl"/>
                 </page>
 
-                <page name="axiom" caption="Axiom Data Service" heading="Painless SQL Data Management">
+                <page name="axiom" caption="Axiom" heading="Painless SQL Data Management">
                     <summary><![CDATA[
                         If binding your data to your J2EE application seems difficult, that's because it <i>is</i> difficult.
-                        The Axiom Data Service makes JDBC connection management, SQL generation, data retrieval, and
-                        reporting painless. Data management tasks that took hours and days using plain J2EE APIs can now
-                        be finished in minutes using Axiom's J2EE wrapper APIs.
+                        Axiom makes JDBC, SQL generation, data retrieval, and reporting painless.
                         ]]>
                     </summary>
                     <body source="products/frameworks/axiom.ftl"/>
                 </page>
 
-                <page name="commons" caption="Commons Library" heading="Commons Core Library">
+                <page name="commons" caption="Commons" heading="Commons Core Library">
                     <body source="products/frameworks/index.ftl"/>
                 </page>
 
-                <page name="console" caption="Enterprise Console" heading="Netspective Enterprise Console (NEC)">
+                <page name="console" caption="Console" heading="Netspective Enterprise Console (NEC)">
                     <body source="products/frameworks/index.ftl"/>
                 </page>
-            </page>
-
-            <page name="web-services" caption="Web Services">
-                <body source="products/index.ftl"/>
             </page>
 
             <page name="struts" caption="Simplifying Struts">

@@ -1,10 +1,12 @@
 <h1>The Axiom Data Service</h1>
-Without forcing you to drop down to Java, Axiom is able to completely bind and execute your static and dynamic SQL by
-using just a few simple lines of XML. Use any relational database server to generate add/edit/delete SQL that tie into the
-Sparx Presentation Framework. Even legacy data can be brought in by using Axiom's built-in SQL generator saving time and
-making the entire process simple.
+Data management tasks that took hours and days using plain J2EE APIs can now be finished in minutes using Axiom's
+J2EE wrapper APIs. Without forcing you to drop down to Java, Axiom is able to completely bind and execute your static
+and dynamic SQL by using just a few simple lines of XML. Even legacy data can be brought in by using Axiom's built-in SQL
+    generator saving time and making the entire process simple.
 
 <ul class="check-list">
+    <li>Use any relational database server to generate add/edit/delete
+        SQL that tie into the Sparx Presentation Framework.</li>
     <li>Axiom can often shave weeks, if not months, of SQL data development tasks and
         your code is less prone to error caused by repetitive tasks.
     </li>

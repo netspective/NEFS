@@ -5,6 +5,8 @@ Commons' security authenticators. By starting your development process with Spar
 presentation code is geneerated for you giving you more time to focus on any customization you may have.
 
 <ul class="check-list">
+    <li>Just declare your input fields, page navigation and validation criteria in simple XML files and let Sparx
+        generate all HTML, error trapping, and Java code for you.</li>
     <li>Create entire application mockups, including navigation and data entry, without expert programmers.</li>
     <li>Once your prototypes are complete, drop in the business rules and application logic using standard Java and
         you'll be able to complete entire application functions in minutes instead of hours and days.</li>

@@ -14,22 +14,22 @@
                 <tbody><tr>
                     <td><img src="${resourcesPath}/images/home/release-7.gif" width="116" height="23" alt=""></td>
 
-                    <td><a onmouseover="changeImages( /*CMP*/'home_21',/*URL*/'${resourcesPath}/images/home/presentation-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_21',/*URL*/'${resourcesPath}/images/home/presentation.gif');return true" href="#"><img name="home_21" src="${resourcesPath}/images/home/presentation.gif" width="80" height="23" border="0" alt=""></a></td>
-                    <td><a onmouseover="changeImages( /*CMP*/'home_23',/*URL*/'${resourcesPath}/images/home/database-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_23',/*URL*/'${resourcesPath}/images/home/database.gif');return true" href="#"><img name="home_23" src="${resourcesPath}/images/home/database.gif" width="55" height="23" border="0" alt=""></a></td>
-                    <td><a onmouseover="changeImages( /*CMP*/'home_27',/*URL*/'${resourcesPath}/images/home/security-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_27',/*URL*/'${resourcesPath}/images/home/security.gif');return true" href="#"><img name="home_27" src="${resourcesPath}/images/home/security.gif" width="55" height="23" border="0" alt=""></a></td>
+                    <td><a onmouseover="changeImages( /*CMP*/'home_21',/*URL*/'${resourcesPath}/images/home/presentation-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_21',/*URL*/'${resourcesPath}/images/home/presentation.gif');return true" href="${servletPath}/products/frameworks/sparx"><img name="home_21" src="${resourcesPath}/images/home/presentation.gif" width="80" height="23" border="0" alt=""></a></td>
+                    <td><a onmouseover="changeImages( /*CMP*/'home_23',/*URL*/'${resourcesPath}/images/home/database-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_23',/*URL*/'${resourcesPath}/images/home/database.gif');return true" href="${servletPath}/products/frameworks/axiom"><img name="home_23" src="${resourcesPath}/images/home/database.gif" width="55" height="23" border="0" alt=""></a></td>
+                    <td><a onmouseover="changeImages( /*CMP*/'home_27',/*URL*/'${resourcesPath}/images/home/security-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_27',/*URL*/'${resourcesPath}/images/home/security.gif');return true" href="${servletPath}/products/frameworks/commons"><img name="home_27" src="${resourcesPath}/images/home/security.gif" width="55" height="23" border="0" alt=""></a></td>
                 </tr>
             </tbody></table><table border="0" cellspacing="0" cellpadding="0">
                 <tbody><tr>
                     <td><table border="0" cellspacing="0" cellpadding="0">
 
                             <tbody><tr>
-                                <td><a onmouseover="changeImages( /*CMP*/'home_28',/*URL*/'images/what-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_28',/*URL*/'${resourcesPath}/images/home/what.gif');return true" href="#"><img name="home_28" src="${resourcesPath}/images/home/what.gif" width="116" height="24" border="0" alt=""></a></td>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_28',/*URL*/'images/what-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_28',/*URL*/'${resourcesPath}/images/home/what.gif');return true" href="${servletPath}/products/frameworks/what-nefs-does"><img name="home_28" src="${resourcesPath}/images/home/what.gif" width="116" height="24" border="0" alt=""></a></td>
                             </tr>
                             <tr>
-                                <td><a onmouseover="changeImages( /*CMP*/'home_29',/*URL*/'images/how-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_29',/*URL*/'${resourcesPath}/images/home/how.gif');return true" href="#"><img name="home_29" src="${resourcesPath}/images/home/how.gif" width="116" height="22" border="0" alt=""></a></td>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_29',/*URL*/'images/how-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_29',/*URL*/'${resourcesPath}/images/home/how.gif');return true" href="${servletPath}/products/frameworks/how-nefs-does-it"><img name="home_29" src="${resourcesPath}/images/home/how.gif" width="116" height="22" border="0" alt=""></a></td>
                             </tr>
                             <tr>
-                                <td><a onmouseover="changeImages( /*CMP*/'home_30',/*URL*/'images/online-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_30',/*URL*/'${resourcesPath}/images/home/online.gif');return true" href="#"><img name="home_30" src="${resourcesPath}/images/home/online.gif" width="116" height="22" border="0" alt=""></a></td>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_30',/*URL*/'images/online-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_30',/*URL*/'${resourcesPath}/images/home/online.gif');return true" href="http://sampler.netspective.com" target="sampler.netspective.com"><img name="home_30" src="${resourcesPath}/images/home/online.gif" width="116" height="22" border="0" alt=""></a></td>
                             </tr>
 
                             <tr>
@@ -64,16 +64,16 @@
         <td>
             <table border="0" cellspacing="0" cellpadding="0">
                 <tbody><tr>
-                    <td><img src="${resourcesPath}/images/home/preview1.gif" width="111" height="78" alt=""></td>
+                    <td><a href="${servletPath}/products"><img src="${resourcesPath}/images/home/preview1.gif" width="111" height="78" alt="Brainstorm to Built in 30 minutes" border=0></a></td>
                     <td><img src="${resourcesPath}/images/home/home_30.gif" width="11" height="78" alt=""></td>
-                    <td><img src="${resourcesPath}/images/home/preview2.gif" width="111" height="78" alt=""></td>
+                    <td><a href="${servletPath}/products/frameworks/simplify-struts"><img src="${resourcesPath}/images/home/preview2.gif" width="111" height="78" alt="" border=0></a></td>
 
                     <td><img src="${resourcesPath}/images/home/home_32.gif" width="12" height="78" alt=""></td>
-                    <td><img src="${resourcesPath}/images/home/preview3.gif" width="110" height="78" alt=""></td>
+                    <td><a href="${servletPath}/products/frameworks/architecture"><img src="${resourcesPath}/images/home/preview3.gif" width="110" height="78" alt="" border=0></a></td>
                     <td><img src="${resourcesPath}/images/home/home_34.gif" width="12" height="78" alt=""></td>
-                    <td><img src="${resourcesPath}/images/home/preview4.gif" width="111" height="78" alt=""></td>
+                    <td><a href="${servletPath}/products/frameworks/console"><img src="${resourcesPath}/images/home/preview4.gif" width="111" height="78" alt="" border=0></a></td>
                     <td><img src="${resourcesPath}/images/home/home_36.gif" width="11" height="78" alt=""></td>
-                    <td><img src="${resourcesPath}/images/home/preview5.gif" width="111" height="78" alt=""></td>
+                    <td><a href="${servletPath}/company/customers"><img src="${resourcesPath}/images/home/preview5.gif" width="111" height="78" alt="" border=0></a></td>
                 </tr>
             </tbody></table>
         </td>
