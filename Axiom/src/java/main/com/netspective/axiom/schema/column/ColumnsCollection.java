@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ColumnsCollection.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
+ * $Id: ColumnsCollection.java,v 1.3 2003-06-26 05:02:45 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -383,6 +383,32 @@ public class ColumnsCollection implements Columns
             }
             sb.append("]");
             return sb.toString();
+        }
+
+        public boolean equals(Object o){
+
+            ColumnsCollection.BasicValues columnsObject;
+            try
+            {
+
+                columnsObject = (ColumnsCollection.BasicValues) o;
+            }
+            catch (ClassCastException cce)
+            {
+                return false;
+            }
+
+            if (this.values.length != columnsObject.size())
+                return false;
+
+            for (int i = 0; i < values.length; i++)
+            {
+                if (!values[i].equals(columnsObject.values[i]))
+                    return false;
+            }
+
+            return true;
+
         }
     }
 }
