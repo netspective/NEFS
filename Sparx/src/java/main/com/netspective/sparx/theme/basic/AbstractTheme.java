@@ -5,7 +5,8 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.report.ReportSkin;
+import com.netspective.sparx.report.HtmlTabularReportSkin;
+import com.netspective.commons.report.tabular.TabularReportSkin;
 
 /**
  * The Theme class is used to save theme related information such as name, style, and location.
@@ -63,7 +64,7 @@ public class AbstractTheme implements Theme
         return navigationSkin;
     }
 
-    public ReportSkin getReportSkin()
+    public HtmlTabularReportSkin getReportSkin()
     {
         return defaultReportSkin;
     }

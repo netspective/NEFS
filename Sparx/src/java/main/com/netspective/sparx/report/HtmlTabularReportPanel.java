@@ -39,18 +39,19 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.2 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: HtmlTabularReportPanel.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
  */
 
-package com.netspective.sparx.panel;
+package com.netspective.sparx.report;
 
-import java.io.IOException;
-import java.io.Writer;
-
+import com.netspective.sparx.panel.HtmlOutputPanel;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.commons.report.tabular.TabularReport;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 
-public interface HtmlPanel
+public interface HtmlTabularReportPanel extends HtmlOutputPanel
 {
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException;
-    public void render(Writer writer, NavigationContext nc) throws IOException;
+    public TabularReport getReport();
+    public ReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin);
+    public TabularReportDataSource createDataSource(NavigationContext nc);
 }

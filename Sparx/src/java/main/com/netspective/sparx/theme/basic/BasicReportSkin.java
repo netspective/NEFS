@@ -51,30 +51,31 @@
  */
 
 /**
- * $Id: BasicReportSkin.java,v 1.1 2003-03-24 13:28:02 shahid.shah Exp $
+ * $Id: BasicReportSkin.java,v 1.2 2003-03-25 21:05:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.netspective.sparx.report.ReportSkin;
-import com.netspective.sparx.report.ReportFrame;
-import com.netspective.sparx.report.ReportContext;
-import com.netspective.sparx.report.ReportBanner;
-import com.netspective.sparx.report.StandardReport;
-import com.netspective.sparx.report.ReportColumnsList;
-import com.netspective.sparx.report.ReportColumn;
-import com.netspective.sparx.report.Report;
+import com.netspective.commons.report.tabular.TabularReportSkin;
+import com.netspective.commons.report.tabular.TabularReportFrame;
+import com.netspective.commons.report.tabular.TabularReportBanner;
+import com.netspective.commons.report.tabular.BasicTabularReport;
+import com.netspective.commons.report.tabular.TabularReportColumns;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReport;
+import com.netspective.commons.report.tabular.TabularReportValueContext;
+import com.netspective.commons.report.tabular.TabularReportColumnState;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.report.ReportHttpServletValueContext;
+import com.netspective.sparx.report.HtmlTabularReportSkin;
 import com.netspective.commons.value.ValueSource;
 
-public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
+public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularReportSkin
 {
     static public final int HTMLFLAG_SHOW_BANNER = 1;
     static public final int HTMLFLAG_SHOW_HEAD_ROW = HTMLFLAG_SHOW_BANNER * 2;
@@ -135,14 +136,14 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
         if(set) flags |= flag; else flags &= ~flag;
     }
 
-    public void produceHeadingExtras(Writer writer, ReportContext rc, ReportFrame frame) throws IOException
+    public void produceHeadingExtras(Writer writer, TabularReportValueContext rc, TabularReportFrame frame) throws IOException
     {
         ArrayList items = frame.getItems();
 
         if(items != null && items.size() > 0)
         {
-            Theme theme = rc.getActiveTheme();
-            String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelStyle;
+            Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
+            String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
 
             int colCount = 0;
 
@@ -155,7 +156,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
                     itemBuffer.append("            <td bgcolor=\"white\"><img src=\"" + imgPath + "/login/spacer.gif\" width=\"5\" height=\"5\"></td>");
                     colCount++;
                 }
-                ReportFrame.Item item = (ReportFrame.Item) items.get(i);
+                TabularReportFrame.Item item = (TabularReportFrame.Item) items.get(i);
                 ValueSource itemUrl = item.getUrl();
                 ValueSource itemCaption = item.getCaption();
                 ValueSource itemIcon = item.getIcon();
@@ -195,32 +196,13 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
         }
     }
 
-    public ReportBanner getReportBanner(ReportContext rc)
+    public void produceReport(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
-        return rc.getReport().getBanner();
-    }
+        TabularReportFrame frame = rc.getReport().getFrame();
+        TabularReportBanner banner = rc.getReport().getBanner();
 
-    public ReportFrame getReportFrame(ReportContext rc)
-    {
-        return rc.getReport().getFrame();
-    }
-
-    /**
-     * Produce the report
-     * @param writer
-     * @param rc
-     * @param rs
-     * @param data
-     * @throws SQLException
-     * @throws IOException
-     */
-    public void produceReport(Writer writer, ReportContext rc, ResultSet rs, Object[][] data) throws SQLException, IOException
-    {
-        ReportFrame frame = getReportFrame(rc);
-        ReportBanner banner = getReportBanner(rc);
-
-        Theme theme = rc.getActiveTheme();
-        String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelStyle;
+        Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
+        String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
 
         writer.write("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap ");
         if(flagIsSet(HTMLFLAG_FULL_WIDTH))
@@ -240,9 +222,9 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
                 writer.write("    <td class=\"panel-output\">\n");
                 writer.write("    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap>\n");
                 writer.write("        <tr>\n");
-                if (frame.allowCollapse())
+                if (frame.flagIsSet(TabularReportFrame.RPTFRAMEFLAG_ALLOW_COLLAPSE))
                 {
-                    if (frame.isMinimized())
+                    if (rc.isMinimized())
                         writer.write("            <td class=\"panel-frame-heading-action-expand-output\"   align=\"left\" valign=\"middle\" nowrap width=\"17\">" +
                             "<img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"></td>");
                     else
@@ -269,40 +251,21 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
             }
 
             if(banner != null)
-            {
                 produceBannerRow(writer, rc);
-            }
         }
 
         writer.write("<tr>\n" +
                 "    <td class=\"panel-content-output\">\n");
         writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
-        int startDataRow = 0;
-        if(flagIsSet(HTMLFLAG_SHOW_HEAD_ROW) && !rc.getReport().flagIsSet(StandardReport.REPORTFLAG_HIDE_HEADING))
+        if(flagIsSet(HTMLFLAG_SHOW_HEAD_ROW) && !rc.getReport().flagIsSet(BasicTabularReport.REPORTFLAG_HIDE_HEADING))
         {
-            if(!rc.getReport().flagIsSet(StandardReport.REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS))
-            {
-                produceHeadingRow(writer, rc, (Object[]) null);
-            }
+            if(!rc.getReport().flagIsSet(BasicTabularReport.REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS))
+                produceHeadingRow(writer, rc);
             else
-            {
-                if(rs != null)
-                    produceHeadingRow(writer, rc, rs);
-                else if(data.length > 0)
-                {
-                    produceHeadingRow(writer, rc, data[0]);
-                    startDataRow = 1;
-                }
-            }
+                produceHeadingRow(writer, rc, ds);
         }
-        if(rs != null)
-        {
-            produceDataRows(writer, rc, rs);
-        }
-        else
-        {
-            produceDataRows(writer, rc, data, startDataRow);
-        }
+
+        produceDataRows(writer, rc, ds);
 
         if(flagIsSet(HTMLFLAG_SHOW_FOOT_ROW) && rc.getCalcsCount() > 0)
             produceFootRow(writer, rc);
@@ -329,20 +292,20 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
      * @param rc
      * @throws IOException
      */
-    private void produceBannerRow(Writer writer, ReportContext rc) throws IOException
+    private void produceBannerRow(Writer writer, TabularReportValueContext rc) throws IOException
     {
-        ReportBanner banner = getReportBanner(rc);
+        TabularReportBanner banner = rc.getReport().getBanner();
         if (banner == null)
             return;
 
         writer.write("<tr><td class=\"panel-banner-output\">\n");
-        ReportBanner.Items items = banner.getItems();
+        TabularReportBanner.Items items = banner.getItems();
         int style = items.getStyle();
-        if (style == ReportBanner.Items.LAYOUTSTYLE_HORIZONTAL)
+        if (style == TabularReportBanner.Items.LAYOUTSTYLE_HORIZONTAL)
         {
             for (int i=0; items != null && i < items.size(); i++)
             {
-                ReportBanner.Item item = (ReportBanner.Item) items.get(i);
+                TabularReportBanner.Item item = (TabularReportBanner.Item) items.get(i);
                 ValueSource itemUrl = item.getUrl();
                 ValueSource itemCaption = item.getCaption();
                 ValueSource itemIcon = item.getIcon();
@@ -360,11 +323,11 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
             writer.write("<table border=0 cellspacing=0>");
             for(int i = 0; items != null && i < items.size(); i++)
             {
-                ReportBanner.Item item = (ReportBanner.Item) items.get(i);
+                TabularReportBanner.Item item = (TabularReportBanner.Item) items.get(i);
                 ValueSource itemUrl = item.getUrl();
                 ValueSource itemCaption = item.getCaption();
                 ValueSource itemIcon = item.getIcon();
-                ReportBanner.Items childItems = item.getChildItems();
+                TabularReportBanner.Items childItems = item.getChildItems();
                 String caption = itemCaption != null ? (itemUrl != null ? ("<a href='" + itemUrl.getValue(rc) + "'>" + itemCaption.getValue(rc) + "</a>") : itemCaption.getValue(rc).getTextValue()) : null;
 
                 writer.write("<tr><td>");
@@ -383,24 +346,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
         writer.write("</td></tr>\n");
     }
 
-    public void produceReport(Writer writer, ReportContext rc, ResultSet rs) throws SQLException, IOException
-    {
-        produceReport(writer, rc, rs, null);
-    }
-
-    public void produceReport(Writer writer, ReportContext rc, Object[][] data) throws IOException
-    {
-        try
-        {
-            produceReport(writer, rc, null, data);
-        }
-        catch(SQLException e)
-        {
-            throw new RuntimeException("This should never happen.");
-        }
-    }
-
-    private int getTableColumnsCount(ReportContext rc)
+    private int getTableColumnsCount(TabularReportValueContext rc)
     {
         return (rc.getVisibleColsCount() * 2) +
                (getRowDecoratorPrependColsCount(rc) * 2) +
@@ -408,104 +354,30 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
                + 1; // each column has "spacer" in between, first column as spacer before too
     }
 
-    public void produceHeadingRowDecoratorPrepend(Writer writer, ReportContext rc) throws IOException
+    public void produceHeadingRowDecoratorPrepend(Writer writer, TabularReportValueContext rc) throws IOException
     {
     }
 
-    public void produceHeadingRowDecoratorAppend(Writer writer, ReportContext rc) throws IOException
+    public void produceHeadingRowDecoratorAppend(Writer writer, TabularReportValueContext rc) throws IOException
     {
     }
 
-    public void produceDataRowDecoratorPrepend(Writer writer, ReportContext rc, int rowNum, Object[] rowData, boolean isOddRow) throws IOException
+    public void produceDataRowDecoratorPrepend(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds, boolean isOddRow) throws IOException
     {
     }
 
-    public void produceDataRowDecoratorAppend(Writer writer, ReportContext rc, int rowNum, Object[] rowData, boolean isOddRow) throws IOException
+    public void produceDataRowDecoratorAppend(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds, boolean isOddRow) throws IOException
     {
     }
 
-    public void produceHeadingRow(Writer writer, ReportContext rc, Object[] headings) throws IOException
+    public void produceHeadingRow(Writer writer, TabularReportValueContext rc) throws IOException
     {
-        ReportColumnsList columns = rc.getColumns();
-        ReportContext.ColumnState[] states = rc.getStates();
+        TabularReportColumns columns = rc.getColumns();
+        TabularReportColumnState[] states = rc.getStates();
         int dataColsCount = columns.size();
 
-        Theme theme = rc.getActiveTheme();
-        String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelStyle;
-
-        String sortAscImgTag = " <img src=\""+ imgPath + "/column-sort-ascending.gif\" border=0>";
-        String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";
-
-        writer.write("<tr>");
-        produceHeadingRowDecoratorPrepend(writer, rc);
-
-        if(headings == null)
-        {
-            for(int i = 0; i < dataColsCount; i++)
-            {
-                ReportColumn rcd = columns.getColumn(i);
-                ReportContext.ColumnState rcs = rc.getState(i);
-                if(states[i].isHidden())
-                    continue;
-
-                String colHeading = rcd.getHeading().getValue(rc).getTextValue();
-                ValueSource headingAnchorAttrs = rcd.getHeadingAnchorAttrs();
-                if(headingAnchorAttrs != null)
-                    colHeading = "<a " + headingAnchorAttrs.getValue(rc) + ">" + colHeading + "</a>";
-                if(rcs.flagIsSet(ReportColumn.COLFLAG_SORTED_ASCENDING))
-                    colHeading += sortAscImgTag;
-                if(rcs.flagIsSet(ReportColumn.COLFLAG_SORTED_DESCENDING))
-                    colHeading += sortDescImgTag;
-                writer.write("        <td class=\"report-field\" nowrap>" + colHeading  + "</td>");
-            }
-        }
-        else
-        {
-            for(int i = 0; i < dataColsCount; i++)
-            {
-                ReportColumn rcd = columns.getColumn(i);
-                ReportContext.ColumnState rcs = rc.getState(i);
-                if(states[i].isHidden())
-                    continue;
-
-                Object heading = headings[rcd.getColIndexInArray()];
-                if(heading != null)
-                {
-                    String colHeading = heading.toString();
-                    ValueSource headingAnchorAttrs = rcd.getHeadingAnchorAttrs();
-                    if(headingAnchorAttrs != null)
-                        colHeading = "<a " + headingAnchorAttrs.getValue(rc) + ">" + colHeading + "</a>";
-                    if(rcs.flagIsSet(ReportColumn.COLFLAG_SORTED_ASCENDING))
-                        colHeading += sortAscImgTag;
-                    if(rcs.flagIsSet(ReportColumn.COLFLAG_SORTED_DESCENDING))
-                        colHeading += sortDescImgTag;
-
-                    writer.write("        <td class=\"report-field\" nowrap>" + colHeading  + "</td>");
-                }
-                else
-                    writer.write("        <td class=\"report-field\" nowrap>&nbsp;&nbsp;</td>");
-            }
-        }
-
-        produceHeadingRowDecoratorAppend(writer, rc);
-
-        writer.write("</tr>");
-        /*
-        if(flagIsSet(HTMLFLAG_ADD_ROW_SEPARATORS))
-            writer.write("</tr><tr><td colspan='" + tableColsCount + "'><img src='" + rowSepImgSrc + "' height='2' width='100%'></td></tr>");
-        */
-    }
-
-    public void produceHeadingRow(Writer writer, ReportContext rc, ResultSet rs) throws IOException, SQLException
-    {
-        ReportColumnsList columns = rc.getColumns();
-        ReportContext.ColumnState[] states = rc.getStates();
-        int dataColsCount = columns.size();
-
-        if(!rs.next()) return;
-
-        Theme theme = rc.getActiveTheme();
-        String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelStyle;
+        Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
+        String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
 
         String sortAscImgTag = " <img src=\""+ imgPath + "/column-sort-ascending.gif\" border=0>";
         String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";
@@ -515,21 +387,20 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
 
         for(int i = 0; i < dataColsCount; i++)
         {
-            ReportColumn rcd = columns.getColumn(i);
-            ReportContext.ColumnState rcs = rc.getState(i);
-            if(states[i].isHidden())
+            TabularReportColumn rcd = columns.getColumn(i);
+            TabularReportColumnState rcs = rc.getState(i);
+            if(! states[i].isVisible())
                 continue;
 
-            Object heading = rs.getString(rcd.getColIndexInResultSet());
-            if(heading != null)
+            String colHeading = rcs.getHeading();
+            if(colHeading != null)
             {
-                String colHeading = heading.toString();
                 ValueSource headingAnchorAttrs = rcd.getHeadingAnchorAttrs();
                 if(headingAnchorAttrs != null)
                     colHeading = "<a " + headingAnchorAttrs.getValue(rc) + ">" + colHeading + "</a>";
-                if(rcs.flagIsSet(ReportColumn.COLFLAG_SORTED_ASCENDING))
+                if(rcs.flagIsSet(TabularReportColumn.COLFLAG_SORTED_ASCENDING))
                     colHeading += sortAscImgTag;
-                if(rcs.flagIsSet(ReportColumn.COLFLAG_SORTED_DESCENDING))
+                if(rcs.flagIsSet(TabularReportColumn.COLFLAG_SORTED_DESCENDING))
                     colHeading += sortDescImgTag;
 
                 writer.write("        <td class=\"report-field\" nowrap>" + colHeading  + "</td>");
@@ -540,12 +411,53 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
 
         produceHeadingRowDecoratorAppend(writer, rc);
 
-        /*
-        if(flagIsSet(HTMLFLAG_ADD_ROW_SEPARATORS))
-            writer.write("</tr><tr><td colspan='" + tableColsCount + "'><img src='" + rowSepImgSrc + "' height='2' width='100%'></td></tr>");
-        else
-            writer.write("</tr>");
-            */
+        writer.write("</tr>");
+    }
+
+    public void produceHeadingRow(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
+    {
+        TabularReportColumns columns = rc.getColumns();
+        TabularReportColumnState[] states = rc.getStates();
+        int dataColsCount = columns.size();
+
+        // get the first row (heading)
+        if(!ds.next()) return;
+
+        Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
+        String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
+
+        String sortAscImgTag = " <img src=\""+ imgPath + "/column-sort-ascending.gif\" border=0>";
+        String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";
+
+        writer.write("<tr>");
+        produceHeadingRowDecoratorPrepend(writer, rc);
+
+        for(int i = 0; i < dataColsCount; i++)
+        {
+            TabularReportColumn rcd = columns.getColumn(i);
+            TabularReportColumnState rcs = rc.getState(i);
+            if(! states[i].isVisible())
+                continue;
+
+            Object heading = ds.getData(rc, rcd.getColIndex());
+            if(heading != null)
+            {
+                String colHeading = heading.toString();
+                ValueSource headingAnchorAttrs = rcd.getHeadingAnchorAttrs();
+                if(headingAnchorAttrs != null)
+                    colHeading = "<a " + headingAnchorAttrs.getValue(rc) + ">" + colHeading + "</a>";
+                if(rcs.flagIsSet(TabularReportColumn.COLFLAG_SORTED_ASCENDING))
+                    colHeading += sortAscImgTag;
+                if(rcs.flagIsSet(TabularReportColumn.COLFLAG_SORTED_DESCENDING))
+                    colHeading += sortDescImgTag;
+
+                writer.write("        <td class=\"report-field\" nowrap>" + colHeading  + "</td>");
+            }
+            else
+                writer.write("        <td class=\"report-field\" nowrap>&nbsp;&nbsp;</td>");
+        }
+
+        produceHeadingRowDecoratorAppend(writer, rc);
     }
 
     /*
@@ -554,11 +466,11 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
       modify that method when this method changes, too
     */
 
-    public void produceDataRows(Writer writer, ReportContext rc, ResultSet rs) throws SQLException, IOException
+    public void produceDataRows(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
-        Report defn = rc.getReport();
-        ReportColumnsList columns = rc.getColumns();
-        ReportContext.ColumnState[] states = rc.getStates();
+        TabularReport defn = rc.getReport();
+        TabularReportColumns columns = rc.getColumns();
+        TabularReportColumnState[] states = rc.getStates();
 
         int rowsWritten = 0;
         int dataColsCount = columns.size();
@@ -568,48 +480,37 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
         //ResultSetScrollState scrollState = rc.getScrollState();
         //boolean paging = scrollState != null;
 
-        ResultSetMetaData rsmd = rs.getMetaData();
-        int resultSetColsCount = rsmd.getColumnCount();
         boolean isOddRow = false;
-
-        while(rs.next())
+        while(ds.next())
         {
-            // the reason why we need to copy the objects here is that
-            // most JDBC drivers will only let data be ready one time; calling
-            // the resultSet.getXXX methods more than once is problematic
-            //
-            Object[] rowData = new Object[resultSetColsCount];
-            for(int i = 1; i <= resultSetColsCount; i++)
-                rowData[i - 1] = rs.getObject(i);
-
             isOddRow = ! isOddRow;
-            int rowNum = rs.getRow();
 
             writer.write("<tr>");
-            produceDataRowDecoratorPrepend(writer, rc, rowNum, rowData, isOddRow);
+            produceDataRowDecoratorPrepend(writer, rc, ds, isOddRow);
 
             for(int i = 0; i < dataColsCount; i++)
             {
 
-                ReportColumn column = columns.getColumn(i);
-                ReportContext.ColumnState state = states[i];
+                TabularReportColumn column = columns.getColumn(i);
+                TabularReportColumnState state = states[i];
 
-                if(state.isHidden())
+                if(! state.isVisible())
                     continue;
 
                 String data =
-                        state.flagIsSet(ReportColumn.COLFLAG_HASOUTPUTPATTERN) ?
+                        state.flagIsSet(TabularReportColumn.COLFLAG_HASOUTPUTPATTERN) ?
                         state.getOutputFormat() :
-                        column.getFormattedData(rc, rowNum, rowData, true);
+                        column.getFormattedData(rc, ds, true);
 
-                String singleRow = "<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + ">" +
-                        (state.flagIsSet(ReportColumn.COLFLAG_WRAPURL) ? "<a href=\"" + state.getUrl() + "\" " + state.getUrlAnchorAttrs() + ">" +
+                String singleRow = "<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + state.getCssStyleAttr() +  ">" +
+                        (state.flagIsSet(TabularReportColumn.COLFLAG_WRAPURL) ? "<a href=\"" + state.getUrl() + "\" " + state.getUrlAnchorAttrs() + ">" +
                         data + "</a>" : data) +
                         "&nbsp;</td>";
-                writer.write(defn.replaceOutputPatterns(rc, rowNum, rowData, singleRow));
+
+                writer.write(defn.replaceOutputPatterns(rc, ds, singleRow));
             }
 
-            produceDataRowDecoratorAppend(writer, rc, rowNum, rowData, isOddRow);
+            produceDataRowDecoratorAppend(writer, rc, ds, isOddRow);
 
             rowsWritten++;
             //TODO: Sparx 2.x conversion required
@@ -633,369 +534,38 @@ public class BasicReportSkin extends AbstractThemeSkin implements ReportSkin
         //}
     }
 
-    /*
-      This method and the previous one (produceDataRows with ResultSet) are almost
-      identical except for their data sources (Object[][] vs. ResultSet). Be sure to
-      modify that method when this method changes, too.
-    */
-
-    public void produceDataRows(Writer writer, ReportContext rc, Object[][] data, int startDataRow) throws IOException
-    {
-        Report defn = rc.getReport();
-        ReportColumnsList columns = rc.getColumns();
-        ReportContext.ColumnState[] states = rc.getStates();
-
-        int rowsWritten = 0;
-        int dataColsCount = columns.size();
-        int tableColsCount = getTableColumnsCount(rc);
-
-        //TODO: Sparx 2.x conversion required
-        //ResultSetScrollState scrollState = rc.getScrollState();
-        //boolean paging = scrollState != null;
-        boolean isOddRow = false;
-
-        for(int row = startDataRow; row < data.length; row++)
-        {
-            Object[] rowData = data[row];
-            isOddRow = ! isOddRow;
-            int rowNum = row - startDataRow;
-
-            writer.write("<tr>");
-
-            produceDataRowDecoratorPrepend(writer, rc, rowNum, rowData, isOddRow);
-
-            for(int i = 0; i < dataColsCount; i++)
-            {
-                ReportColumn column = columns.getColumn(i);
-                ReportContext.ColumnState state = states[i];
-
-                if(state.isHidden())
-                    continue;
-
-                String colData =
-                        state.flagIsSet(ReportColumn.COLFLAG_HASOUTPUTPATTERN) ?
-                        state.getOutputFormat() :
-                        column.getFormattedData(rc, rowNum, rowData, true);
-
-                String singleRow = "<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + ">" +
-                        (state.flagIsSet(ReportColumn.COLFLAG_WRAPURL) ? "<a href=\"" + state.getUrl() + "\" " + state.getUrlAnchorAttrs() + ">" + colData + "</a>" : colData) +
-                        "</td>";
-                /*
-                String singleRow = "<td align='" + ALIGN_ATTRS[column.getAlignStyle()] + "'>"+ dataTagsBegin +"<font " + dataFontAttrs + ">" +
-                        (state.flagIsSet(ReportColumn.COLFLAG_WRAPURL) ? "<a href='" + state.getUrl() + "'" + state.getUrlAnchorAttrs() + ">" + colData + "</a>" : colData) +
-                        "</font>"+ dataTagsEnd +"</td><td><font " + dataFontAttrs + ">&nbsp;&nbsp;</td>";
-                */
-                writer.write(defn.replaceOutputPatterns(rc, rowNum, rowData, singleRow));
-            }
-
-            produceDataRowDecoratorAppend(writer, rc, rowNum, rowData, isOddRow);
-
-            writer.write("</tr>");
-            rowsWritten++;
-            //if(paging && rc.endOfPage())
-            //    break;
-        }
-
-        if(rowsWritten == 0)
-        {
-            //writer.write("</tr><tr><td colspan='" + tableColsCount + "'><font " + dataFontAttrs + ">No data found.</font></td></tr>");
-            writer.write("<tr><td class=\"report-summary\" colspan='" + tableColsCount + "'>No data found.</td></tr>");
-            //if(paging)
-            //    scrollState.setNoMoreRows();
-        }
-        //else if(paging)
-        //{
-        //    scrollState.accumulateRowsProcessed(rowsWritten);
-        //    if(rowsWritten < scrollState.getRowsPerPage())
-        //        scrollState.setNoMoreRows();
-        //}
-    }
-
-    public void produceFootRow(Writer writer, ReportContext rc) throws SQLException, IOException
+    public void produceFootRow(Writer writer, TabularReportValueContext rc) throws IOException
     {
         int calcsCount = rc.getCalcsCount();
         if(calcsCount == 0)
             return;
 
-        ReportContext.ColumnState[] states = rc.getStates();
-        ReportColumnsList columns = rc.getColumns();
+        TabularReportColumnState[] states = rc.getStates();
+        TabularReportColumns columns = rc.getColumns();
         int dataColsCount = columns.size();
 
         writer.write("<tr>");
         for(int i = 0; i < dataColsCount; i++)
         {
-            ReportColumn column = columns.getColumn(i);
-            if(states[i].isHidden())
+            TabularReportColumn column = columns.getColumn(i);
+            if(! states[i].isVisible())
                 continue;
 
-            writer.write("<td class=\"report-summary\"" + column.getFormattedData(rc, states[i].getCalc()) + "</td>");
+            String summary = column.getFormattedData(rc, states[i].getCalc());
+            if(summary == null)
+                summary = "&nbsp;";
+
+            writer.write("<td class=\"report-summary\""+ states[i].getCssStyleAttr() +">" + summary + "</td>");
         }
         writer.write("</tr>");
     }
 
-    /*
-    public String getFrameHdTableAttrs()
-    {
-        return frameHdTableAttrs;
-    }
-
-    public void setFrameHdTableAttrs(String frameHdTableAttrs)
-    {
-        this.frameHdTableAttrs = frameHdTableAttrs;
-    }
-
-    public String getFrameHdRowSpacerAttrs()
-    {
-        return frameHdRowSpacerAttrs;
-    }
-
-    public void setFrameHdRowSpacerAttrs(String frameHdRowSpacerAttrs)
-    {
-        this.frameHdRowSpacerAttrs = frameHdRowSpacerAttrs;
-    }
-
-    public String getFrameHdCellAttrs()
-    {
-        return frameHdCellAttrs;
-    }
-
-    public void setFrameHdCellAttrs(String frameHdCellAttrs)
-    {
-        this.frameHdCellAttrs = frameHdCellAttrs;
-    }
-
-    public String getFrameHdInfoCellAttrs()
-    {
-        return frameHdInfoCellAttrs;
-    }
-
-    public void setFrameHdInfoCellAttrs(String frameHdInfoCellAttrs)
-    {
-        this.frameHdInfoCellAttrs = frameHdInfoCellAttrs;
-    }
-
-    public ValueSource getFrameHdTabImgSrcValueSource()
-    {
-        return frameHdTabImgSrcValueSource;
-    }
-
-    public void setFrameHdTabImgSrcValueSource(ValueSource frameHdTabImgSrcValueSource)
-    {
-        this.frameHdTabImgSrcValueSource = frameHdTabImgSrcValueSource;
-    }
-
-    public ValueSource getFrameHdSpacerImgSrcValueSource()
-    {
-        return frameHdSpacerImgSrcValueSource;
-    }
-
-    public void setFrameHdSpacerImgSrcValueSource(ValueSource frameHdSpacerImgSrcValueSource)
-    {
-        this.frameHdSpacerImgSrcValueSource = frameHdSpacerImgSrcValueSource;
-    }
-
-    public String getDataHdRowAttrs()
-    {
-        return dataHdRowAttrs;
-    }
-
-    public void setDataHdRowAttrs(String dataHdRowAttrs)
-    {
-        this.dataHdRowAttrs = dataHdRowAttrs;
-    }
-
-    public String getDataHdCellAttrs()
-    {
-        return dataHdCellAttrs;
-    }
-
-    public void setDataHdCellAttrs(String dataHdCellAttrs)
-    {
-        this.dataHdCellAttrs = dataHdCellAttrs;
-    }
-
-    public String getDataEvenRowAttrs()
-    {
-        return dataEvenRowAttrs;
-    }
-
-    public void setDataEvenRowAttrs(String dataEvenRowAttrs)
-    {
-        this.dataEvenRowAttrs = dataEvenRowAttrs;
-    }
-
-    public String getDataOddRowAttrs()
-    {
-        return dataOddRowAttrs;
-    }
-
-    public void setDataOddRowAttrs(String dataOddRowAttrs)
-    {
-        this.dataOddRowAttrs = dataOddRowAttrs;
-    }
-
-    public String getDataFtRowAttrs()
-    {
-        return dataFtRowAttrs;
-    }
-
-    public void setDataFtRowAttrs(String dataFtRowAttrs)
-    {
-        this.dataFtRowAttrs = dataFtRowAttrs;
-    }
-
-    public void setFlags(int flags)
-    {
-        this.flags = flags;
-    }
-
-    public String getOuterTableAttrs()
-    {
-        return outerTableAttrs;
-    }
-
-    public void setOuterTableAttrs(String outerTableAttrs)
-    {
-        this.outerTableAttrs = outerTableAttrs;
-    }
-
-    public String getInnerTableAttrs()
-    {
-        return innerTableAttrs;
-    }
-
-    public void setInnerTableAttrs(String innerTableAttrs)
-    {
-        this.innerTableAttrs = innerTableAttrs;
-    }
-
-    public String getFrameHdRowAttrs()
-    {
-        return frameHdRowAttrs;
-    }
-
-    public void setFrameHdRowAttrs(String frameHdRowAttrs)
-    {
-        this.frameHdRowAttrs = frameHdRowAttrs;
-    }
-
-    public String getFrameHdFontAttrs()
-    {
-        return frameHdFontAttrs;
-    }
-
-    public void setFrameHdFontAttrs(String frameHdFontAttrs)
-    {
-        this.frameHdFontAttrs = frameHdFontAttrs;
-    }
-
-    public String getFrameFtRowAttrs()
-    {
-        return frameFtRowAttrs;
-    }
-
-    public void setFrameFtRowAttrs(String frameFtRowAttrs)
-    {
-        this.frameFtRowAttrs = frameFtRowAttrs;
-    }
-
-    public String getFrameFtFontAttrs()
-    {
-        return frameFtFontAttrs;
-    }
-
-    public void setFrameFtFontAttrs(String frameFtFontAttrs)
-    {
-        this.frameFtFontAttrs = frameFtFontAttrs;
-    }
-
-    public String getBannerRowAttrs()
-    {
-        return bannerRowAttrs;
-    }
-
-    public void setBannerRowAttrs(String bannerRowAttrs)
-    {
-        this.bannerRowAttrs = bannerRowAttrs;
-    }
-
-    public String getBannerItemFontAttrs()
-    {
-        return bannerItemFontAttrs;
-    }
-
-    public void setBannerItemFontAttrs(String bannerItemFontAttrs)
-    {
-        this.bannerItemFontAttrs = bannerItemFontAttrs;
-    }
-
-    public String getDataHdFontAttrs()
-    {
-        return dataHdFontAttrs;
-    }
-
-    public void setDataHdFontAttrs(String dataHdFontAttrs)
-    {
-        this.dataHdFontAttrs = dataHdFontAttrs;
-    }
-
-    public String getDataFontAttrs()
-    {
-        return dataFontAttrs;
-    }
-
-    public void setDataFontAttrs(String dataFontAttrs)
-    {
-        this.dataFontAttrs = dataFontAttrs;
-    }
-
-    public String getDataFtFontAttrs()
-    {
-        return dataFtFontAttrs;
-    }
-
-    public void setDataFtFontAttrs(String dataFtFontAttrs)
-    {
-        this.dataFtFontAttrs = dataFtFontAttrs;
-    }
-
-    public String getRowSepImgSrc()
-    {
-        return rowSepImgSrc;
-    }
-
-    public void setRowSepImgSrc(String rowSepImgSrc)
-    {
-        this.rowSepImgSrc = rowSepImgSrc;
-    }
-
-    public String getSortAscImgSrc()
-    {
-        return sortAscImgSrc;
-    }
-
-    public void setSortAscImgSrc(String sortAscImgSrc)
-    {
-        this.sortAscImgSrc = sortAscImgSrc;
-    }
-
-    public String getSortDescImgSrc()
-    {
-        return sortDescImgSrc;
-    }
-
-    public void setSortDescImgSrc(String sortDescImgSrc)
-    {
-        this.sortDescImgSrc = sortDescImgSrc;
-    }
-    */
-
-    protected int getRowDecoratorPrependColsCount(ReportContext rc)
+    protected int getRowDecoratorPrependColsCount(com.netspective.commons.report.tabular.TabularReportValueContext rc)
     {
         return 0;
     }
 
-    protected int getRowDecoratorAppendColsCount(ReportContext rc)
+    protected int getRowDecoratorAppendColsCount(com.netspective.commons.report.tabular.TabularReportValueContext rc)
     {
         return 0;
     }

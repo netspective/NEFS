@@ -39,94 +39,26 @@
  */
 
 /**
- * $Id: ValueSourcesPage.java,v 1.1 2003-03-24 13:28:00 shahid.shah Exp $
+ * $Id: ValueSourcesPage.java,v 1.2 2003-03-25 21:05:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.util.Set;
-import java.util.Iterator;
 
 import javax.servlet.ServletException;
 
 import com.netspective.sparx.console.ConsoleServletPage;
+import com.netspective.sparx.console.panel.ValueSourcesPanel;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.StandardReport;
-import com.netspective.sparx.report.Report;
-import com.netspective.sparx.report.ReportColumn;
-import com.netspective.sparx.report.ReportSkin;
-import com.netspective.sparx.report.ReportContext;
-import com.netspective.sparx.report.column.GeneralColumn;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.ValueSourceDocumentation;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.text.TextUtils;
 
 public class ValueSourcesPage extends ConsoleServletPage
 {
-    public static final Report valueSourcesReport = new StandardReport();
-
-    static
-    {
-        GeneralColumn identifiers = new GeneralColumn();
-        identifiers.setHeading(new StaticValueSource("Identifier(s)"));
-        identifiers.setColIndexInArray(0);
-        identifiers.setWordWrap(false);
-
-        GeneralColumn usage = new GeneralColumn();
-        usage.setHeading(new StaticValueSource("Usage"));
-        usage.setColIndexInArray(1);
-
-        valueSourcesReport.getFrame().setHeading(new StaticValueSource("Value Sources"));
-        valueSourcesReport.initialize(new ReportColumn[] {
-                identifiers,
-                usage,
-            });
-    }
-
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        ValueSources factory = ValueSources.getInstance();
-        Set valueSourcesClasses = factory.getValueSourceClassesSet();
-
-        Object[][] rows = new Object[valueSourcesClasses.size()][];
-        int rowNum = 0;
-        for(Iterator i = valueSourcesClasses.iterator(); i.hasNext(); )
-        {
-            Object[] row = new Object[valueSourcesReport.getColumns().size()];
-            rows[rowNum] = row;
-
-            Class vsClass = (Class) i.next();
-            try
-            {
-                String[] identifiers = factory.getValueSourceIdentifiers(vsClass);
-                ValueSourceDocumentation doc = factory.getValueSourceDocumentation(vsClass);
-
-                row[0] = TextUtils.join(identifiers, ", ");
-                if(doc != null)
-                {
-                    String usage = (identifiers.length > 1 ? "<i>id</i>" : identifiers[0]) + ":" + doc.getUsageHtml();
-
-                    row[1] = "<font color=green>" + usage + "</font><br>" +
-                            doc.getDescription() + "<br>Class: " + vsClass.getName();
-                }
-                else
-                {
-                    row[1] = "No documentation available in " + vsClass.getName();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new ServletException(e);
-            }
-
-            rowNum++;
-        }
-
-        ReportSkin skin = nc.getActiveTheme().getReportSkin();
-        ReportContext rc = new ReportContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), valueSourcesReport, skin);
-        rc.produceReport(writer, rows);
+        ValueSourcesPanel.getDocumentationPanel().render(writer, nc);
+        writer.write("<p>");
+        ValueSourcesPanel.getUsagePanel().render(writer, nc);
     }
 }

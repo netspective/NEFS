@@ -39,18 +39,24 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.2 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: XdmComponentsPage.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
  */
 
-package com.netspective.sparx.panel;
+package com.netspective.sparx.console.page;
 
-import java.io.IOException;
 import java.io.Writer;
+import java.io.IOException;
 
+import javax.servlet.ServletException;
+
+import com.netspective.sparx.console.ConsoleServletPage;
+import com.netspective.sparx.console.panel.XdmComponentsPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 
-public interface HtmlPanel
+public class XdmComponentsPage extends ConsoleServletPage
 {
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException;
-    public void render(Writer writer, NavigationContext nc) throws IOException;
+    public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
+    {
+        XdmComponentsPanel.getInstance().render(writer, nc);
+    }
 }

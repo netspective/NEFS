@@ -39,18 +39,11 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.2 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: HtmlPanelSkin.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import com.netspective.sparx.navigate.NavigationContext;
-
-public interface HtmlPanel
+public interface HtmlPanelSkin
 {
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException;
-    public void render(Writer writer, NavigationContext nc) throws IOException;
 }

@@ -39,18 +39,31 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.2 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
  */
 
-package com.netspective.sparx.panel;
+package com.netspective.sparx.report;
 
-import java.io.IOException;
 import java.io.Writer;
+import java.io.IOException;
 
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.HtmlPanelSkin;
 
-public interface HtmlPanel
+public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
 {
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException;
-    public void render(Writer writer, NavigationContext nc) throws IOException;
+    public ReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
+    {
+        return new ReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(), skin);
+    }
+
+    public void render(Writer writer, NavigationContext nc) throws IOException
+    {
+        render(writer, nc, nc.getActiveTheme().getReportSkin());
+    }
+
+    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException
+    {
+        createContext(nc, (HtmlTabularReportSkin) skin).produceReport(writer, createDataSource(nc));
+    }
 }
