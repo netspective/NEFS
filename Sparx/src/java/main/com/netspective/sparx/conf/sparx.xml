@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.68 2003-12-03 00:34:38 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.69 2003-12-05 05:29:54 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -27,11 +27,11 @@
     <command class="com.netspective.sparx.command.StoredProcedureCommand"/>
     <command class="com.netspective.sparx.command.QueryDefnCommand"/>
     <command class="com.netspective.sparx.command.ListValueSourceCommand"/>
+    <command class="com.netspective.sparx.command.CommandListCommand"/>
 
     <connection-provider-entry-statistics class="com.netspective.sparx.console.util.ResinDataSourcePoolStatistics"/>
     <connection-provider-entry-statistics class="com.netspective.sparx.console.util.JakartaCommonsDbcpDataSourcePoolStatistics"/>
     <class-path-provider class="com.netspective.sparx.console.util.ResinCompilingClassPathProvider"/>
-
     <theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" inherit-resources-from-themes="common"/>
     <theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="common"/>
     <theme name="sampler" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="console,common">
@@ -43,6 +43,7 @@
     <panel-type name="transform" class="com.netspective.sparx.panel.TransformPanel"/>
     <panel-type name="include" class="com.netspective.sparx.panel.HtmlIncludePanel"/>
     <panel-type name="command" class="com.netspective.sparx.panel.HtmlCommandPanel"/>
+    <panel-type name="command-list" class="com.netspective.sparx.panel.HtmlCommandListPanel"/>
 
     <dialog-field-type name="composite" class="com.netspective.sparx.form.field.DialogField"/>
     <dialog-field-type name="text" class="com.netspective.sparx.form.field.type.TextField"/>

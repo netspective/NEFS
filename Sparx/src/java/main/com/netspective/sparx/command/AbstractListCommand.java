@@ -39,17 +39,15 @@
  */
 
 /**
- * @version $Id: AbstractListCommand.java,v 1.2 2003-12-04 05:04:04 aye.thu Exp $
+ * @version $Id: AbstractListCommand.java,v 1.3 2003-12-05 05:30:19 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
 
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.basic.HtmlListPanelSkin;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.commons.command.CommandException;
-import com.netspective.commons.value.PresentationValue;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -58,26 +56,60 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * Abstract class for handling commands that present a list of link items for selection by default.
+ * When a selected item or its index is passed in the request as a parameter, the corresponding list
+ * item is presented instead of the list.
+ */
 public abstract class AbstractListCommand extends AbstractHttpServletCommand
 {
     private static final Log log = LogFactory.getLog(AbstractListCommand.class);
 
-    private String activeListItem;
-    private List listItems;
+    /* the request parameter name for the active (selected) list item */
+    public static final String ACTIVE_LIST_ITEM = "activeItem";
 
-    public abstract PresentationValue.Items getItems();
+    /* Gets the list */
+    public abstract List getItems();
 
     /**
-     * Renders the list items
+     * Gets the active (selected) item from the request
+     * @param vc
+     * @return
+     */
+    public String getActiveItem(HttpServletValueContext vc)
+    {
+        return vc.getHttpRequest().getParameter(ACTIVE_LIST_ITEM);
+    }
+
+    /**
+     * Renders the item list
      * @param writer
      * @param nc
      */
-    protected void renderListItems(Writer writer, NavigationContext nc) throws IOException
-    {
-        Theme theme = nc.getActiveTheme();
-        HtmlListPanelSkin skin = theme.getListPanelSkin();
+    protected abstract void renderList(Writer writer, NavigationContext nc) throws IOException;
 
-    }
+    /**
+     * Render the selected item component from the list
+     * @param writer
+     * @param nc
+     * @throws IOException
+     */
+    protected abstract void renderListItem(Writer writer, NavigationContext nc, String activeItem) throws IOException;
+
+ /**
+     * Renders the item list
+     * @param writer
+     * @param nc
+     */
+    protected abstract void renderList(Writer writer, DialogContext nc) throws IOException;
+
+    /**
+     * Render the selected item component from the list
+     * @param writer
+     * @param nc
+     * @throws IOException
+     */
+    protected abstract void renderListItem(Writer writer, DialogContext nc, String activeItem) throws IOException;
 
     /**
      * Handles the command
@@ -89,13 +121,28 @@ public abstract class AbstractListCommand extends AbstractHttpServletCommand
      */
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
-        if (activeListItem != null && activeListItem.length() > 0)
-        {
-
-        }
+        String activeItem = getActiveItem(nc);
+        if (activeItem != null && activeItem.length() > 0)
+            renderListItem(writer, nc, activeItem);
         else
-        {
-            renderListItems(writer, nc);
-        }
+            renderList(writer, nc);
+    }
+
+    /**
+     * Handles the command
+     * @param writer
+     * @param dc
+     * @param unitTest
+     * @throws CommandException
+     * @throws IOException
+     */
+    public void handleCommand(Writer writer, DialogContext dc, boolean unitTest) throws CommandException, IOException
+    {
+        String activeItem = getActiveItem(dc);
+        if (activeItem != null && activeItem.length() > 0)
+            renderListItem(writer, dc, activeItem);
+        else
+            renderList(writer, dc);
+
     }
 }

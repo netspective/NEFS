@@ -9,7 +9,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.value.HttpServletValueContext;
 
 /**
- * Wrapper class around a Command object with extra information such as caption and
+ * Wrapper class around a Command object with additional information such as caption and
  * description for displaying the command as a link
  */
 public class CommandListItem
@@ -24,14 +24,23 @@ public class CommandListItem
 
     }
 
+    /**
+     * Gets the URL associated with this command item
+     * @param nc
+     * @return
+     */
     public String getUrl(HttpServletValueContext nc)
     {
         String requestURL = nc.getHttpRequest().getRequestURL().toString();
 
-        return (requestURL.indexOf("?") != -1 ?  (requestURL + "&commandItem=" + index) :
-                (requestURL + "?commandItem=" + index));
+        return (requestURL.indexOf("?") != -1 ?  (requestURL + "&" + AbstractListCommand.ACTIVE_LIST_ITEM + "=" + index) :
+                (requestURL + "?" + AbstractListCommand.ACTIVE_LIST_ITEM + "=" + index));
     }
 
+    /**
+     * Gets the presentation caption for the command
+     * @return
+     */
     public String getCaption()
     {
         if (itemCaption == null)
@@ -64,13 +73,17 @@ public class CommandListItem
         this.itemCaption = itemCaption;
     }
 
+    /**
+     * Gets the more detailed information (compared to the caption) about the command item
+     * @return
+     */
     public String getDescription()
     {
         return itemDescription;
     }
 
     /**
-     * Sets the description to display with the command caption
+     * Sets the detailed description to display with the command caption
      * @param itemDescription
      */
     public void setDescription(String itemDescription)
@@ -96,11 +109,19 @@ public class CommandListItem
         this.command = command;
     }
 
+    /**
+     * Gets the index (position) of this item in the list
+     * @return
+     */
     public int getIndex()
     {
         return index;
     }
 
+    /**
+     * Sets the index (position) of this item in the list
+     * @param index
+     */
     public void setIndex(int index)
     {
         this.index = index;
