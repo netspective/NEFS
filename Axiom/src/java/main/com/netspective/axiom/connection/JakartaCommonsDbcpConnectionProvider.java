@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JakartaCommonsDbcpConnectionProvider.java,v 1.2 2003-09-05 16:10:42 roque.hernandez Exp $
+ * $Id: JakartaCommonsDbcpConnectionProvider.java,v 1.3 2003-09-09 00:56:02 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -78,7 +78,6 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
         public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
         private String name;
-        private boolean defaultDataSource;
         private ValueSource driverClass = new StaticValueSource("");
         private ValueSource url = new StaticValueSource("");
         private ValueSource user = new StaticValueSource("");
@@ -94,16 +93,6 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
         public void setName(String name)
         {
             this.name = name;
-        }
-
-        public boolean isDefault()
-        {
-            return defaultDataSource;
-        }
-
-        public void setDefault(boolean defaultDataSource)
-        {
-            this.defaultDataSource = defaultDataSource;
         }
 
         public ValueSource getDriverClass()
