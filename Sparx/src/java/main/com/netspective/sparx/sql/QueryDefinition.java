@@ -42,13 +42,14 @@ package com.netspective.sparx.sql;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.sql.QuerySelectDialog;
+import com.netspective.sparx.form.sql.QueryBuilderDialog;
 
 import java.util.Map;
 import java.util.HashMap;
 
 /**
  * @author aye
- * $Id: QueryDefinition.java,v 1.1 2003-07-03 22:25:19 aye.thu Exp $
+ * $Id: QueryDefinition.java,v 1.2 2003-07-03 22:32:21 aye.thu Exp $
  */
 public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefinition
 {
@@ -113,6 +114,9 @@ public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefi
             return qsDialogs.size();
         }
     }
+
+    public static final int QBDIALOG_MAXIMUM_CONDITIONS = 5;
+    private QueryBuilderDialog qbDialog = null;
     private Presentation presentation = new Presentation();
 
     public QueryDefinition()
@@ -139,5 +143,17 @@ public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefi
     public void addPresentation(Presentation presentation)
     {
         // do nothing, but this method is needed so XDM knows that "presentation" is a valid XML child
+    }
+
+    public QueryBuilderDialog createQueryBuilderDialog()
+    {
+        if (qbDialog == null)
+        {
+            qbDialog = new QueryBuilderDialog();
+            qbDialog.setName(this.getName());
+            qbDialog.setQueryDefn(this);
+            qbDialog.setMaxConditions(QBDIALOG_MAXIMUM_CONDITIONS);
+        }
+        return qbDialog;
     }
 }
