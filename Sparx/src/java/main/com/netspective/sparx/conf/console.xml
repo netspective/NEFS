@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.115 2003-11-08 23:28:18 shahid.shah Exp $
+  * $Id: console.xml,v 1.116 2003-11-16 17:39:05 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -12,19 +12,6 @@
     <freemarker-configuration name="console" base-class="com.netspective.sparx.ProductRelease" base-class-path="console" template-update-delay="5"/>
 
     <value-source class="com.netspective.sparx.console.value.ConsolePageContentPathValueSource"/>
-
-    <panel-type name="console-page-summary" extends="html">
-        <frame heading="Overview"/>
-        <body config="console" source="content/page-summary.ftl"/>
-    </panel-type>
-
-    <panel-type name="console-children-summaries" extends="html">
-        <body config="console" source="content/children-summaries.ftl"/>
-    </panel-type>
-
-    <panel-type name="console-sibling-summaries" extends="html">
-        <body config="console" source="content/sibling-summaries.ftl"/>
-    </panel-type>
 
     <panel-type name="xdm-doc" extends="html">
         <body config="console" source="content/xdm-doc.ftl"/>
