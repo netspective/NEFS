@@ -67,6 +67,7 @@ public class CommunicationEvent extends AbstractDateDurationEntity
     }
 
     @Id(generate = GeneratorType.AUTO)
+    @Column(name = "comm_event_id")
     public Long getEventId()
     {
         return this.eventId;
