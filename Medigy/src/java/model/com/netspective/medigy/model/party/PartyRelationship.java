@@ -63,7 +63,7 @@ public class PartyRelationship extends AbstractDateDurationEntity
     private PartyRole partyRole;
     private PartyRelationshipType relationshipType;
     private PartyRelationshipStatus relationshipStatus;
-    private Priority priority;
+    private PartyRelationshipPriority partyRelationshipPriority;
 
     public PartyRelationship()
     {
@@ -140,13 +140,13 @@ public class PartyRelationship extends AbstractDateDurationEntity
 
     @OneToOne(cascade={CascadeType.ALL})
     @JoinColumn(name = "party_rel_id")
-    public Priority getPriority()
+    public PartyRelationshipPriority getPriority()
     {
-        return priority;
+        return partyRelationshipPriority;
     }
 
-    protected void setPriority(final Priority priority)
+    protected void setPriority(final PartyRelationshipPriority partyRelationshipPriority)
     {
-        this.priority = priority;
+        this.partyRelationshipPriority = partyRelationshipPriority;
     }
 }
