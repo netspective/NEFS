@@ -46,6 +46,7 @@ package com.netspective.medigy.model;
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.medigy.util.ModelInitializer;
 import com.netspective.medigy.model.data.EntitySeedDataPopulator;
 import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
 import com.netspective.tool.graphviz.GraphvizLayoutType;
@@ -67,7 +68,7 @@ import java.util.logging.LogManager;
 
 public abstract class TestCase extends junit.framework.TestCase
 {
-    protected static final File DEFAULT_DB_DIR = new File("C:\\temp\\medigy-test-db-02");
+    protected static final File DEFAULT_DB_DIR = new File("C:\\temp\\medigy-test-db-08");
 
     protected String getClassNameWithoutPackage()
     {
@@ -153,11 +154,10 @@ public abstract class TestCase extends junit.framework.TestCase
 
         final HibernateConfiguration hibernateConfiguration = getHibernateConfiguration();
         HibernateUtil.setConfiguration(hibernateConfiguration);
-        HibernateUtil.initReferenceEntityCaches(hibernateConfiguration.getReferenceEntitiesAndCachesMap());
 
-        EntitySeedDataPopulator populator = new EntitySeedDataPopulator(HibernateUtil.getSession());
-        populator.populateSeedData();
-        HibernateUtil.initCustomReferenceEntityCaches(hibernateConfiguration.getCustomReferenceEntitiesAndCachesMap());
+        new ModelInitializer(HibernateUtil.getSession(),
+                             ModelInitializer.SeedDataPopulationType.AUTO,
+                             hibernateConfiguration).initialize();
 
         // Generate the DDL into a file so we can review it
         final SchemaExport se = new SchemaExport(hibernateConfiguration);
