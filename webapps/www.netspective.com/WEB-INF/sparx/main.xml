@@ -152,6 +152,30 @@
                     <body source="products/frameworks/console/index.ftl"/>
                 </page>
 
+                <page name="medigy" caption="Medigy" heading="The J2EE Healthcare Informatics Platform">
+                    <summary>
+                        Medigy allows you to build and deploy sophisticated healthcare applications using fewer
+                        programmers, in less time, with higher-quality, and better documentation.
+                    </summary>
+                    <body source="products/frameworks/medigy/index.ftl"/>
+
+                    <page name="hc-objects" caption="Health Objects" heading="Hundreds of Healthcare Informatics Objects">
+                        <summary>
+                            Medigy includes hundreds of Java/J2EE healthcare objects, a complete database-neutral
+                            relational data model, and full XML import/export capabilities.
+                        </summary>
+                        <body source="products/frameworks/medigy/hc-objects.ftl"/>
+                    </page>
+
+                    <page name="app-types" caption="App Types" heading="Supports Dozens of Applications">
+                        <summary>
+                            Medigy provides your team with the ability to create almost any J2EE-based healthcare
+                            informatics application.
+                        </summary>
+                        <body source="products/frameworks/medigy/app-types.ftl"/>
+                    </page>
+                </page>
+
                 <page name="try" caption="Try" heading="Try Us Out for Free">
                     <summary>
                         NEFS sample applications demonstrate the major capabilities present in the Netspective Enterprise Frameworks. There are
