@@ -39,18 +39,24 @@
  */
 
 /**
- * $Id: ConsoleServletPage.java,v 1.3 2003-05-19 00:58:56 shahid.shah Exp $
+ * $Id: ConsoleServletPage.java,v 1.4 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
 
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationPath;
+import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class ConsoleServletPage extends NavigationPage
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
+    public ConsoleServletPage(NavigationTree owner)
+    {
+        super(owner);
+    }
 
     public class State extends NavigationPage.State
     {

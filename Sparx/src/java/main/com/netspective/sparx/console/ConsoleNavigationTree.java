@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationTree.java,v 1.2 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: ConsoleNavigationTree.java,v 1.3 2003-12-13 17:33:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -57,6 +57,6 @@ public class ConsoleNavigationTree extends NavigationTree
 
     public NavigationPage constructRoot()
     {
-        return new ConsoleServletPage();
+        return new ConsoleServletPage(this);
     }
 }

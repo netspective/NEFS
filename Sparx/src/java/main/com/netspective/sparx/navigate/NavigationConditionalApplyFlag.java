@@ -37,7 +37,7 @@
  *
  * @author Shahid N. Shah
 
- * $Id: NavigationConditionalApplyFlag.java,v 1.6 2003-11-20 04:14:33 aye.thu Exp $
+ * $Id: NavigationConditionalApplyFlag.java,v 1.7 2003-12-13 17:33:32 shahid.shah Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -62,17 +62,12 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
     private ValueSource lackValue = ValueSource.NULL_VALUE_SOURCE;
     private ValueSource isTrue = ValueSource.NULL_VALUE_SOURCE;
     private String dataCommand;
-    private NavigationPage.Flags flags = createFlags();
-
-    public NavigationConditionalApplyFlag()
-    {
-        super();
-    }
+    private NavigationPathFlags flags;
 
     public NavigationConditionalApplyFlag(NavigationPath path)
     {
         super(path);
-        //flags = path.createFlags();
+        flags = path.createFlags();
     }
 
     /**
@@ -125,13 +120,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
         }
     }
 
-    public NavigationPage.Flags createFlags()
-    {
-        //TODO: why is this not using the parent page that it belongs to -- why creating a new flags object?
-        return new NavigationPage().new Flags();
-    }
-
-    public NavigationPage.Flags getFlags()
+    public NavigationPathFlags getFlags()
     {
         return flags;
     }

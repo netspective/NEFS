@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ThemesPage.java,v 1.4 2003-11-19 17:28:24 shahid.shah Exp $
+ * $Id: ThemesPage.java,v 1.5 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -54,12 +54,18 @@ import javax.servlet.ServletException;
 
 import com.netspective.sparx.console.ConsoleServletPage;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.commons.value.ValueSources;
 
 public class ThemesPage extends ConsoleServletPage
 {
+    public ThemesPage(NavigationTree owner)
+    {
+        super(owner);
+    }
+
     public boolean isValid(NavigationContext nc)
     {
         if(! super.isValid(nc))
@@ -84,7 +90,7 @@ public class ThemesPage extends ConsoleServletPage
         {
             Map.Entry entry = (Map.Entry) i.next();
             Theme theme = (Theme) entry.getValue();
-            ThemePage page = new ThemePage();
+            ThemePage page = new ThemePage(getOwner());
             String name = theme.getName();
             page.setTheme(theme);
             page.setName(name != null ? name : "default");

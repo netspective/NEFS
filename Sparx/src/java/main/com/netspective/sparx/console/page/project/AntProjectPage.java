@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntProjectPage.java,v 1.5 2003-08-24 20:07:51 shahid.shah Exp $
+ * $Id: AntProjectPage.java,v 1.6 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page.project;
@@ -52,6 +52,7 @@ import javax.servlet.ServletException;
 import com.netspective.sparx.console.ConsoleServletPage;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPageBodyType;
+import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.ant.AntProject;
 import com.netspective.sparx.panel.HtmlPanel;
 
@@ -59,8 +60,9 @@ public class AntProjectPage extends ConsoleServletPage
 {
     private AntProject antProject;
 
-    public AntProjectPage()
+    public AntProjectPage(NavigationTree owner)
     {
+        super(owner);
         getBodyType().setValue(NavigationPageBodyType.OVERRIDE);
     }
 

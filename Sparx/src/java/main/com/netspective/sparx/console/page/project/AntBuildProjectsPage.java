@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: AntBuildProjectsPage.java,v 1.4 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: AntBuildProjectsPage.java,v 1.5 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page.project;
 
 import com.netspective.sparx.console.ConsoleServletPage;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.ant.AntProjects;
 import com.netspective.sparx.ant.AntProject;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -53,6 +54,11 @@ import com.netspective.commons.text.TextUtils;
 
 public class AntBuildProjectsPage extends ConsoleServletPage
 {
+    public AntBuildProjectsPage(NavigationTree owner)
+    {
+        super(owner);
+    }
+
     public void finalizeContents()
     {
         super.finalizeContents();
@@ -67,7 +73,7 @@ public class AntBuildProjectsPage extends ConsoleServletPage
         for(int i = 0; i < antProjects.size(); i++)
         {
             AntProject antProject = antProjects.getByIndex(i);
-            AntProjectPage page = new AntProjectPage();
+            AntProjectPage page = new AntProjectPage(getOwner());
             page.setAntProject(antProject);
             page.setName(TextUtils.xmlTextToJavaIdentifier(antProject.getId(), false));
             page.setCaption(new StaticValueSource(antProject.getCaptionOrId()));

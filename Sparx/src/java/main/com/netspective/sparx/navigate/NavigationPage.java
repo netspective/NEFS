@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.55 2003-12-12 17:20:38 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.56 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -70,7 +70,7 @@ import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
+import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.util.AlternateOutputDestServletResponse;
 import com.netspective.commons.template.TemplateProcessor;
@@ -84,16 +84,16 @@ import com.netspective.sparx.navigate.handler.NavigationPageBodyDefaultHandler;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.theme.Theme;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.io.StringWriter;
-import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 import javax.servlet.ServletException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
@@ -254,9 +254,9 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private Map errorPagesMap = new HashMap();
     private Map errorPageDescendantsByQualifiedName = new HashMap();
 
-    public NavigationPage()
+    public NavigationPage(NavigationTree owner)
     {
-        super();
+        super(owner);
     }
 
     public InputSourceLocator getInputSourceLocator()
@@ -294,14 +294,23 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /* --- XDM Callbacks --------------------------------------------------------------------------------------------*/
 
-    /**
-     * When inheriting pages, we want our child pages to be the same class as us
-     */
-    public NavigationPage createPage() throws InstantiationException, IllegalAccessException
+    public NavigationPage createPage() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        NavigationPage result = (NavigationPage) this.getClass().newInstance();
-        result.getFlags().inherit(getFlags(), INHERIT_PAGE_FLAGS_FROM_PARENT);
-        return result;
+        // When inheriting pages, we want our child pages to be the same class as us
+        return createPage(getClass());
+    }
+
+    public NavigationPage createPage(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(NavigationPage.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { NavigationTree.class });
+            NavigationPage result = (NavigationPage) c.newInstance(new Object[] { getOwner() });
+            result.getFlags().inherit(getFlags(), INHERIT_PAGE_FLAGS_FROM_PARENT);
+            return result;
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
     public void addPage(NavigationPage page)
@@ -311,7 +320,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     public NavigationErrorPage createErrorPage()
     {
-        return new NavigationErrorPage();
+        return new NavigationErrorPage(getOwner());
     }
 
     public void registerErrorPage(NavigationErrorPage page)
@@ -1251,23 +1260,10 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     public void renderViewSource(Writer writer, NavigationContext nc) throws IOException
     {
-        if(! getFlags().flagIsSet(Flags.ALLOW_VIEW_SOURCE))
-            return;
-
-        Theme theme = nc.getActiveTheme();
-        String xmlSourceImg = theme.getResourceUrl("/images/xml-source.gif");
-        String pageId = getQualifiedNameIncludingTreeId();
-        InputSourceLocator isl = getInputSourceLocator();
-
-        writer.write("<p><table class='view-xml-source'>\n");
-        writer.write("  <tr id='view-src-"+ pageId +"-cmd-show'><td class='cmd-view'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ pageId +"')\">View Navigation/Page XDM Code</a></td></tr>\n");
-        writer.write("  <tr id='view-src-"+ pageId +"-cmd-hide' style='display:none'><td class='cmd-hide'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ pageId +"')\">Hide Navigation/Page XDM Code</a></td></tr>\n");
-        writer.write("  <tr id='view-src-"+ pageId +"-location' style='display:none'><td class='location'>XML Location: "+ nc.getConsoleFileBrowserLink(isl.getInputSourceTracker().getIdentifier(), true) + " " + isl.getLineNumbersText());
-        writer.write("      <br>Java Class Instantiated: <code>"+ nc.getClassSourceHtml(getClass(), false) + "</code></td></tr>\n");
-        writer.write("      </td></tr>\n");
-        writer.write("  <tr id='view-src-"+ pageId +"-content' style='display:none'><td class='content'>\n");
-        HtmlSyntaxHighlightPanel.emitHtml("xml", new StringReader(TextUtils.getUnindentedText(isl.getSourceText())), writer);
-        writer.write("  </td></tr>\n");
-        writer.write("</table>\n");
+        if(getFlags().flagIsSet(Flags.ALLOW_VIEW_SOURCE))
+        {
+            writer.write("<p>");
+            AbstractPanel.renderXdmObjectViewSource(writer, nc, getQualifiedNameIncludingTreeId() + " Page XDM Code", this.getClass(), getQualifiedNameIncludingTreeId(), getInputSourceLocator());
+        }
     }
 }

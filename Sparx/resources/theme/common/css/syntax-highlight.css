@@ -3,27 +3,24 @@ body {
 }
 .tag{
     font-family: lucida console, courier;
-	font-weight:bold;
-	color:blue;
+	color:navy; font-weight: bold;
 }
 .endtag{
     font-family: lucida console, courier;
-	color:blue;
+	color:navy; font-weight: bold;
 }
 .reference{
 	color:black;
 }
 .name{
-	font-weight:bold;
     font-family: lucida console, courier;
-	color:maroon;
+	color:blue;
 }
 .value{
     font-family: lucida console, courier;
 	color:green;
 }
 .text{
-	font-weight:bold;
     font-family: lucida console, courier;
 	color:black;
 }
@@ -45,7 +42,6 @@ body {
 }
 .operator{
     font-family: lucida console, courier;
-    font-weight:bold;
     color:navy;
 }
 .comment{
@@ -81,7 +77,7 @@ table.view-xml-source tr { }
 
 table.view-xml-source td { font-family: verdana, arial; font-size: 9pt; }
 table.view-xml-source td.cmd-view { }
-table.view-xml-source td.cmd-hide { }
-table.view-xml-source td.location { border-bottom: 1px solid #EEEEEE; }
+table.view-xml-source td.cmd-hide { border: 1px solid #DDDDDD; background-color: #EEEEEE;}
+table.view-xml-source td.location { border-bottom: 1px solid #EEEEEE; color: #999999; }
 table.view-xml-source td.content { font-size: 8pt; padding: 3px; }
 table.view-xml-source td.content pre { font-size: 8pt; }

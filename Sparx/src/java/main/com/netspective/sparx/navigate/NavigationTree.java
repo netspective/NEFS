@@ -56,6 +56,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -108,7 +109,6 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     {
         this.project = project;
         root = constructRoot();
-        root.setOwner(this);
         root.setName("");
         defaultErrorPage = constructDefaultErrorPage();
     }
@@ -225,12 +225,12 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
     public NavigationPage constructRoot()
     {
-        return new NavigationPage();
+        return new NavigationPage(this);
     }
 
     public NavigationErrorPage constructDefaultErrorPage()
     {
-        NavigationErrorPage result = new NavigationErrorPage();
+        NavigationErrorPage result = new NavigationErrorPage(this);
         result.setName("default");
         result.setHeading(new StaticValueSource("Error Encountered"));
         NavigationErrorPage.Error error = result.createError();
@@ -243,9 +243,14 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         return result;
     }
 
-    public NavigationPage createPage() throws InstantiationException, IllegalAccessException
+    public NavigationPage createPage() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
         return root.createPage();
+    }
+
+    public NavigationPage createPage(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        return root.createPage(cls);
     }
 
     public void addPage(NavigationPage page)

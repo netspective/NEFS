@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationErrorPage.java,v 1.1 2003-11-15 19:03:47 shahid.shah Exp $
+ * $Id: NavigationErrorPage.java,v 1.2 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -69,8 +69,9 @@ public class NavigationErrorPage extends NavigationPage
 
     private ClassMap exceptionsMap = new ClassMap();
 
-    public NavigationErrorPage()
+    public NavigationErrorPage(NavigationTree owner)
     {
+        super(owner);
     }
 
     public Error createError()

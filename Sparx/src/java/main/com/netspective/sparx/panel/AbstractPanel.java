@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractPanel.java,v 1.4 2003-12-12 17:20:38 shahid.shah Exp $
+ * $Id: AbstractPanel.java,v 1.5 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -201,30 +201,31 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
         this.allowViewSource = allowViewSource;
     }
 
-    public static void renderPanelViewSource(HtmlPanel panel, Writer writer, NavigationContext nc) throws IOException
+    public static void renderXdmObjectViewSource(Writer writer, NavigationContext nc, String objectName, Class cls, String objectId, InputSourceLocator isl) throws IOException
     {
-        if(! panel.isAllowViewSource(nc))
-            return;
-
         Theme theme = nc.getActiveTheme();
         String xmlSourceImg = theme.getResourceUrl("/images/xml-source.gif");
-        String panelId = panel.getPanelIdentifier();
-        InputSourceLocator isl = panel.getInputSourceLocator();
 
         writer.write("<table class='view-xml-source'>\n");
-        writer.write("  <tr id='view-src-"+ panelId +"-cmd-show'><td class='cmd-view'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ panelId +"')\">View Panel XDM Code</a></td></tr>\n");
-        writer.write("  <tr id='view-src-"+ panelId +"-cmd-hide' style='display:none'><td class='cmd-hide'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ panelId +"')\">Hide Panel XDM Code</a></td></tr>\n");
-        writer.write("  <tr id='view-src-"+ panelId +"-location' style='display:none'><td class='location'>XML Location: "+ nc.getConsoleFileBrowserLink(isl.getInputSourceTracker().getIdentifier(), true) + " " + isl.getLineNumbersText());
-        writer.write("      <br>Java Class Instantiated: <code>"+ nc.getClassSourceHtml(panel.getClass(), false) + "</code></td></tr>\n");
+        writer.write("  <tr id='view-src-"+ objectId +"-cmd-show'><td class='cmd-view'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ objectId +"')\">View "+ objectName +"</a></td></tr>\n");
+        writer.write("  <tr id='view-src-"+ objectId +"-cmd-hide' style='display:none'><td class='cmd-hide'><img src='"+ xmlSourceImg +"' border=0> <a href=\"javascript:ViewXmlSource('"+ objectId +"')\">Hide "+ objectName +"</a></td></tr>\n");
+        writer.write("  <tr id='view-src-"+ objectId +"-location' style='display:none'><td class='location'>XML Location: <b>"+ nc.getConsoleFileBrowserLink(isl.getInputSourceTracker().getIdentifier(), true) + " " + isl.getLineNumbersText() + "</b>");
+        writer.write("      <br>Java Class Instantiated: <b><code>"+ nc.getClassSourceHtml(cls, false) + "</code></b></td></tr>\n");
         writer.write("      </td></tr>\n");
-        writer.write("  <tr id='view-src-"+ panelId +"-content' style='display:none'><td class='content'>\n");
+        writer.write("  <tr id='view-src-"+ objectId +"-content' style='display:none'><td class='content'>\n");
         HtmlSyntaxHighlightPanel.emitHtml("xml", new StringReader(TextUtils.getUnindentedText(isl.getSourceText())), writer);
         writer.write("  </td></tr>\n");
         writer.write("</table>\n");
     }
 
+    public static void renderPanelViewSource(Writer writer, NavigationContext nc, HtmlPanel panel) throws IOException
+    {
+        if(panel.isAllowViewSource(nc))
+            renderXdmObjectViewSource(writer, nc, "Panel XDM Code", panel.getClass(), panel.getPanelIdentifier(), panel.getInputSourceLocator());
+    }
+
     public void renderViewSource(Writer writer, NavigationContext nc) throws IOException
     {
-        renderPanelViewSource(this, writer, nc);
+        renderPanelViewSource(writer, nc, this);
     }
 }

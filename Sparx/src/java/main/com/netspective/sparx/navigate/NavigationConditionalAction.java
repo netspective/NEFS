@@ -49,7 +49,7 @@
  *
  * @author Shahid N. Shah
  *
- * $Id: NavigationConditionalAction.java,v 1.3 2003-11-07 17:44:09 shahid.shah Exp $
+ * $Id: NavigationConditionalAction.java,v 1.4 2003-12-13 17:33:32 shahid.shah Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -92,16 +92,10 @@ public class NavigationConditionalAction implements TemplateConsumer
         }
     }
 
-    public NavigationConditionalAction()
-    {
-    }
-
     public NavigationConditionalAction(NavigationPath path)
     {
         this.path = path;
     }
-
-
 
     /**
      * Gets the navigation path item the conditional belongs to

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.14 2003-11-27 19:29:39 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.15 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -118,8 +118,9 @@ public class NavigationPath
     private int level;
     private Map attributes = new HashMap();
 
-    public NavigationPath()
+    public NavigationPath(NavigationTree owner)
     {
+        setOwner(owner);
         flags = createFlags();
     }
 
@@ -283,7 +284,7 @@ public class NavigationPath
         return owner;
     }
 
-    public void setOwner(NavigationTree value)
+    protected void setOwner(NavigationTree value)
     {
         owner = value;
     }
@@ -298,7 +299,6 @@ public class NavigationPath
         if (value != this)
         {
             parent = value;
-            setOwner(parent.getOwner());
             setLevel(parent.getLevel() + 1);
             if(defaultChildOfParent)
                 parent.setDefaultChild(this);

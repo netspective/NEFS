@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.21 2003-12-12 17:20:38 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.22 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -222,7 +222,7 @@ public class HtmlLayoutPanel implements HtmlPanel
 
     public void renderViewSource(Writer writer, NavigationContext nc) throws IOException
     {
-        AbstractPanel.renderPanelViewSource(this, writer, nc);
+        AbstractPanel.renderPanelViewSource(writer, nc, this);
     }
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException

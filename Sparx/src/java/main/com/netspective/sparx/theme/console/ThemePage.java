@@ -39,17 +39,23 @@
  */
 
 /**
- * $Id: ThemePage.java,v 1.2 2003-10-13 03:10:27 shahid.shah Exp $
+ * $Id: ThemePage.java,v 1.3 2003-12-13 17:33:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
 
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.console.ConsoleServletPage;
+import com.netspective.sparx.navigate.NavigationTree;
 
 public class ThemePage extends ConsoleServletPage
 {
     private Theme theme;
+
+    public ThemePage(NavigationTree owner)
+    {
+        super(owner);
+    }
 
     public Theme getTheme()
     {
