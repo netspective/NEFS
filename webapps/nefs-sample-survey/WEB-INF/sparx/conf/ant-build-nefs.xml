@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project default="show-properties">
+
+    <target name=".init-app-path" unless="app.home" description="If app.home property is not passed in, set the application path relative to the location of the build project file.">
+        <path id="app.home.path">
+            <pathelement location="${basedir}/../../../"/>
+        </path>
+        <pathconvert targetos="unix" property="app.home" refid="app.home.path"/>
+    </target>
+
+    <target name=".init" depends=".init-app-path" description="Private target that performs intialization for all tasks. This target is designed for use as a dependent, not to be called directly.">
+        <property name="app.WEB-INF.path" value="${app.home}/WEB-INF"/>
+        <property name="app.WEB-INF.lib.path" value="${app.WEB-INF.path}/lib"/>
+        <property name="app.WEB-INF.lib.sparx.jar" value="${app.WEB-INF.lib.path}/netspective-sparx.jar"/>
+        <property name="app.sparx.resources.path" value="${app.home}/sparx"/>
+
+        <available file="${app.WEB-INF.lib.sparx.jar}" property="app.WEB-INF.lib.sparx.jar.exists"/>
+    </target>
+
+    <target name="show-properties" depends=".init" description="Displays the properties that will be used by all the targets. Mainly used for debugging.">
+        <echo message="app.home = '${app.home}'"/>
+        <echo message="app.WEB-INF.path = '${app.WEB-INF.path}'"/>
+        <echo message="app.WEB-INF.lib.path = '${app.WEB-INF.lib.path}'"/>
+        <echo message="app.WEB-INF.lib.sparx.jar.exists = '${app.WEB-INF.lib.sparx.jar.exists}'"/>
+        <echo message="app.sparx.resources.path = '${app.sparx.resources.path}'"/>
+    </target>
+
+    <target name="install-sparx-resources-into-app" depends=".init" description="Installs the Sparx HTML/web server resources by copying the files from WEB-INF/lib/netspective-sparx.jar into APP_ROOT/sparx.">
+
+        <!-- We need to create a temporary directory, extract the data, and then copy it into the proper location.
+             The reason why we can't simply unjar directly into ${app.home}/sparx is that the files are stored in
+             the jar file under "resources".
+          -->
+        <tempfile property="temp.dir" prefix="nefs-" suffix="-sparx-resources" destdir="${app.home}"/>
+        <mkdir dir="${temp.dir}"/>
+        <unjar src="${app.WEB-INF.lib.sparx.jar}" dest="${temp.dir}">
+            <patternset>
+                <include name="resources/**"/>
+                <exclude name="resources/java-doc-xml/**"/>
+            </patternset>
+        </unjar>
+        <copy todir="${app.sparx.resources.path}">
+            <fileset dir="${temp.dir}/resources"/>
+        </copy>
+        <delete dir="${temp.dir}"/>
+    </target>
+
+</project>
