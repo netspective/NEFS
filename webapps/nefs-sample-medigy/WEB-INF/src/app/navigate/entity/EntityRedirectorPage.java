@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EntityRedirectorPage.java,v 1.1 2004-02-27 01:48:15 shahid.shah Exp $
+ * $Id: EntityRedirectorPage.java,v 1.2 2004-03-05 21:18:10 shahid.shah Exp $
  */
 
 package app.navigate.entity;
@@ -59,7 +59,12 @@ import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.value.HttpServletValueContext;
+import com.netspective.sparx.Project;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
+import com.netspective.axiom.schema.Table;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
 
@@ -144,6 +149,7 @@ public abstract class EntityRedirectorPage extends AppNavigationPage
         private String name;
         private ValueSource redirect;
         private String[] retainParams;
+        private String schemaEnum;
 
         public EntitySubtypeInfo()
         {
@@ -203,6 +209,16 @@ public abstract class EntityRedirectorPage extends AppNavigationPage
         {
             this.retainParams = retainParams;
         }
+
+        public String getSchemaEnum()
+        {
+            return schemaEnum;
+        }
+
+        public void setSchemaEnum(String schemaEnum)
+        {
+            this.schemaEnum = schemaEnum;
+        }
     }
 
     private Map subtypeInfoByIdMap = new HashMap();
@@ -237,6 +253,30 @@ public abstract class EntityRedirectorPage extends AppNavigationPage
 
     public void addEntitySubtype(EntitySubtypeInfo subtypeInfo)
     {
+        if(subtypeInfo.getSchemaEnum() != null)
+        {
+            String[] params = TextUtils.split(subtypeInfo.getSchemaEnum(), ",", true);
+            if(params.length != 2)
+                log.error("the schema-enum attribute in <sub-type> of entity redirector requires 2 params: schema.enum-table,enum-id-or-caption");
+            else
+            {
+                Project project = getOwner().getProject();
+                Table table = project.getSchemas().getTable(params[0]);
+                if(table == null || !(table instanceof EnumerationTable))
+                    log.error("the schema-enum attribute in <sub-type> of entity redirector has an invalid schema.enum-table: " + params[0]);
+                else
+                {
+                    EnumerationTable enumTable = (EnumerationTable) table;
+                    EnumerationTableRows enumRows = (EnumerationTableRows) enumTable.getData();
+                    EnumerationTableRow enumRow = enumRows.getByIdOrCaptionOrAbbrev(params[1]);
+                    if(enumRow == null)
+                        log.error("the schema-enum attribute in <sub-type> of entity redirector has an invalid enum value for "+ params[0] +": " + params[1]);
+                    else
+                        subtypeInfo.setId(enumRow.getId());
+                }
+            }
+        }
+
         if(subtypeInfo.getId() != ID_UNKNOWN)
             subtypeInfoByIdMap.put(new Integer(subtypeInfo.getId()), subtypeInfo);
 
