@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="attributes/org.xml"/>
+	<xdm:include file="query-defns/org.xml"/>
+
+	<queries package="org">
+		<query name="get-all-orgs">
+			select
+				org_name, org_id
+			from
+				Org
+			where
+				Org.rec_stat_id != 0
+		</query>
+
+		<query name="get-insurance-orgs">
+			select
+				Org.org_name,
+				Org_Classification.org_id
+			from
+				Org_Classification, Org, Org_Type
+			where
+				Org.org_id = Org_Classification.org_id and
+				Org.rec_stat_id != 0 and
+				Org_Classification.org_type_id = Org_Type.id and
+				Org_Type.caption = 'Insurance'
+		</query>
+
+		<query name="get-all-invoices">
+			select
+				invoice_id,
+				invoice_num,
+				Target.name_first || ' ' || Target.name_middle || ' ' || Target.name_last
+			from
+				Invoice,
+				Person Target
+			where
+				Invoice.target_id = Target.person_id and
+				Invoice.rec_stat_id != 0 and
+				Invoice.org_id = ?
+				
+			<params>
+				<param value="session:org_id"/>
+			</params>
+		</query>
+
+		<query name="get-all-claims">
+			select
+				claim_id,
+				batch_date,
+				Patient.name_first || ' ' || Patient.name_middle || ' ' || Patient.name_last
+			from
+				Claim,
+				Person Patient
+			where
+				Claim.target_id = Patient.person_id and
+				Claim.rec_stat_id != 0 and
+		</query>
+
+
+	</queries>
+</xdm:container>

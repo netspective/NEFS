@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<query-defn name="searchOrgs">
+		<field name="org_id" caption="Org ID" join="Org" column="org_id"/>
+
+		<field name="org_name" caption="Name" join="Org" column="org_name">
+			<presentation>
+<report url="nav-url:/org/summary?org_id=${0}"/>
+</presentation>
+		</field>
+
+		
+		
+		<field name="org_type_id" caption="Org Type ID" join="OrgClassification" column="org_type_id"/>
+		
+		<join name="Org" table="Org"/>
+		<join name="OrgClassification" table="Org_Classification" condition="Org.org_id = OrgClassification.org_id"/>
+		<join name="OrgType" table="Org_Type" condition="OrgClassification.org_type_id = OrgType.id"/>
+		
+		<presentation>
+<select-dialog name="searchDialog" heading="Search for Organizations">
+			<field.text query-field="org_id"/>
+			<field.text query-field="org_name"/>
+			<field.select query-field="org_type_id" choices="schema-enum:Org_Type" prepend-blank="yes"/>
+			
+			<select heading="Search Results">
+				<display field="org_id"/>
+				<display field="org_name"/>
+				
+				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
+				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
+				<condition field="org_type_id" allow-null="no" comparison="equals" value="form:org_type_id" connector="and"/>
+			</select>
+		</select-dialog>
+</presentation>
+
+		<presentation>
+<select-dialog name="searchAncilliaryServiceDialog" heading="Search for Anciliary Services">
+			<field.text query-field="org_id"/>
+			<field.text query-field="org_name"/>
+			
+			<select heading="Search Results">
+				<display field="org_id"/>
+				<display field="org_name"/>
+				
+				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
+				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
+				<condition field="org_type_id" allow-null="no" comparison="equals" value="9" connector="and"/>
+			</select>
+		</select-dialog>
+</presentation>
+
+		<presentation>
+<select-dialog name="searchAssociatedProviderDialog" heading="Search for Associated Providers">
+			<field.text query-field="org_id"/>
+			<field.text query-field="org_name"/>
+			
+			<select heading="Search Results">
+				<display field="org_id"/>
+				<display field="org_name"/>
+				
+				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
+				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
+				<condition field="org_type_id" allow-null="no" comparison="equals" value="form:org_type_id" connector="and"/>
+			</select>
+		</select-dialog>
+</presentation>
+
+		<presentation>
+<select-dialog name="searchDepartmentDialog" heading="Search for Departments">
+			<field.text query-field="org_id"/>
+			<field.text query-field="org_name"/>
+			
+			<select heading="Search Results">
+				<display field="org_id"/>
+				<display field="org_name"/>
+				
+				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
+				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
+				<condition field="org_type_id" allow-null="no" comparison="equals" value="form:org_type_id" connector="and"/>
+			</select>
+		</select-dialog>
+</presentation>
+
+		<presentation>
+<select-dialog name="searchEmployerDialog" heading="Search for Employers">
+			<field.text query-field="org_id"/>
+			<field.text query-field="org_name"/>
+			
+			<select heading="Search Results">
+				<display field="org_id"/>
+				<display field="org_name"/>
+				
+				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
+				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
+				<condition field="org_type_id" allow-null="no" comparison="equals" value="7" connector="and"/>
+			</select>
+		</select-dialog>
+</presentation>
+
+		<presentation>
+<select-dialog name="searchInsuranceDialog" heading="Search for Insurance Organizations">
+			<field.text query-field="org_id"/>
+			<field.text query-field="org_name"/>
+			
+			<select heading="Search Results">
+				<display field="org_id"/>
+				<display field="org_name"/>
+				
+				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
+				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
+				<condition field="org_type_id" allow-null="no" comparison="equals" value="6" connector="and"/>
+			</select>
+		</select-dialog>
+</presentation>
+
+		<presentation>
+<select-dialog name="searchIPADialog" heading="Search for IPAs">
+			<field.text query-field="org_id"/>
+			<field.text query-field="org_name"/>
+			
+			<select heading="Search Results">
+				<display field="org_id"/>
+				<display field="org_name"/>
+				
+				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
+				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
+				<condition field="org_type_id" allow-null="no" comparison="equals" value="8" connector="and"/>
+			</select>
+		</select-dialog>
+</presentation>
+
+		<presentation>
+<select-dialog name="searchPharmacyDialog" heading="Search for Pharmacies">
+			<field.text query-field="org_id"/>
+			<field.text query-field="org_name"/>
+			
+			<select heading="Search Results">
+				<display field="org_id"/>
+				<display field="org_name"/>
+				
+				<condition field="org_id" allow-null="no" comparison="equals" value="form:org_id" connector="and"/>
+				<condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="form:org_name" connector="and"/>
+				<condition field="org_type_id" allow-null="no" comparison="equals" value="10" connector="and"/>
+			</select>
+		</select-dialog>
+</presentation>
+
+	</query-defn>
+</xdm:container>

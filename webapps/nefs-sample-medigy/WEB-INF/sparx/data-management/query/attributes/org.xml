@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<queries package="orgAttribute">
+		<query name="address">
+			select
+				system_id,
+				Contact_Address_Type.caption,
+				city || ', ' || US_State_Type.caption
+			from
+				Org_Address,
+				US_State_Type,
+				Contact_Address_Type,
+				Record_Status
+			where
+				Org_Address.parent_id = ? and
+				Org_Address.address_type_id = Contact_Address_Type.id and
+				Org_Address.state_id = US_State_Type.id and
+				Org_Address.rec_stat_id = Record_Status.id and
+				Record_Status.caption = 'Active'
+
+			<params>
+				<param value="request:org_id"/>
+			</params>
+			
+			<presentation>
+<report heading="Address">
+				<record-add-caption>Add</record-add-caption>
+				<record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.address,orgAttribute.orgAddressTableDialog?parent_id=${request:org_id}</record-add-url>
+                <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.address,orgAttribute.orgAddressTableDialog?parent_id=${request:org_id}&amp;address_id=${0}</record-edit-url>
+                <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.address,orgAttribute.orgAddressTableDialog?parent_id=${request:org_id}&amp;address_id=${0}</record-delete-url>
+				<column index="0" display="no"/>
+				<column heading="Address Type"/>
+				<column heading="City"/>
+			</report>
+</presentation>
+		</query>
+		
+		<query name="classification">
+			select
+				system_id,
+				Org_Type.caption
+			from
+				Org_Classification,
+				Org_Type
+			where
+				Org_Classification.org_id = ? and
+				Org_Classification.org_type_id = Org_Type.id
+
+			<params>
+				<param value="request:org_id"/>
+			</params>
+			<presentation>
+<report heading="Classification">
+				<record-add-caption>Add</record-add-caption>
+				<record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.classification,orgAttribute.orgClassificationTableDialog?parent_id=${request:org_id}</record-add-url>
+                <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.classification,orgAttribute.orgClassificationTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-edit-url>
+                <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.classification,orgAttribute.orgClassificationTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-delete-url>
+				<column display="no"/>
+				<column heading="Classification"/>
+			</report>
+</presentation>
+		</query>
+		<query name="contact">
+			select
+				system_id,
+				Contact_Method_Type.caption,
+				method_value
+			from
+				Org_Contact,
+				Contact_Method_Type
+			where
+				Org_Contact.parent_id = ? and
+				Org_Contact.method_type = Contact_Method_Type.id
+
+			<params>
+				<param value="request:org_id"/>
+			</params>
+			<presentation>
+<report heading="Contact Information">
+				<record-add-caption>Add</record-add-caption>
+				<record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.contact,orgAttribute.orgContactTableDialog?parent_id=${request:org_id}</record-add-url>
+                <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.contact,orgAttribute.orgContactTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-edit-url>
+                <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.contact,orgAttribute.orgContactTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-delete-url>
+				<column display="no"/>
+				<column heading="Contact Type"/>
+				<column heading="&amp;nbsp;"/>
+			</report>
+</presentation>
+		</query>
+		
+		<query name="identifier">
+			select
+				system_id,
+				Org_Identifier_Type.caption,
+				identifier
+			from
+				Org_Identifier,
+				Org_Identifier_Type
+			where
+				Org_Identifier.org_id = ? and
+				Org_Identifier.identifier_type_id = Org_Identifier_Type.id
+
+			<params>
+				<param value="request:org_id"/>
+			</params>
+			<presentation>
+<report heading="Identifiers">
+				<record-add-caption>Add</record-add-caption>
+				<record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.identifier,orgAttribute.orgIdentifierTableDialog</record-add-url>
+                <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.identifier,orgAttribute.orgIdentifierTableDialog?system_id=${0}</record-edit-url>
+                <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.identifier,orgAttribute.orgIdentifierTableDialog?system_id=${0}</record-delete-url>
+				<column display="no"/>
+				<column heading="Type"/>
+				<column heading="&amp;nbsp;"/>
+			</report>
+</presentation>
+		</query>
+
+		<query name="insProduct">
+			select
+				product_id,
+				product_name
+			from
+				Ins_Product
+			where
+				Ins_Product.org_id = ?
+				
+			<params>
+				<param value="request:org_id"/>
+			</params>
+			<presentation>
+<report heading="Insurance Products">
+				<record-add-caption>Add</record-add-caption>
+				<record-add-url>nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,add?org_id=${request:org_id}</record-add-url>
+                <record-edit-url>nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,edit?product_id=${0}&amp;org_id=${request:org_id}</record-edit-url>
+                <record-delete-url>nav-url-cmd:/claim,statement,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,delete?product_id=${0}&amp;org_id=${request:org_id}</record-delete-url>
+				
+				<column display="no"/>
+				<column heading="&amp;nbsp;"/>
+			</report>
+</presentation>
+		</query>
+
+		<query name="insPlan">
+			select
+				plan_id,
+				Ins_Product.product_name,
+				plan_name
+			from
+				Ins_Product,
+				Ins_Plan
+			where
+				Ins_Product.org_id = ? and
+				Ins_Plan.product_id = Ins_Product.product_id
+				
+			<params>
+				<param value="request:org_id"/>
+			</params>
+			<presentation>
+<report heading="Insurance Plans">
+				<record-add-caption>Add</record-add-caption>
+				
+				<record-add-url>nav-url-cmd:/claim,dialog,insurancePlan.main,add?product_id=${request:product_id}&amp;org_id=${request:org_id}</record-add-url>
+                <record-edit-url>nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,edit?plan_id=${0}&amp;product_id=${request:product_id}&amp;org_id=${request:org_id}</record-edit-url>
+                <record-delete-url>nav-url-cmd:/claim,statement,insuranceAttribute.plan-siblings,-,-,component,-,insurancePlanAttribute.profile,delete?plan_id=${0}&amp;product_id=${request:product_id}&amp;org_id=${request:org_id}</record-delete-url>
+				
+				<column display="no"/>
+				<column heading="Product"/>
+				<column heading="Plan" url="nav-url:/insurance/plan/summary?plan_id=${0}"/>
+			</report>
+</presentation>
+		</query>
+
+		<query name="personidsrc">
+			select
+				system_id,
+				caption
+			from
+				Org_PersonId_Src_Type
+			where
+				org_id = ?
+
+			<params>
+				<param value="request:org_id"/>
+			</params>
+			<presentation>
+<report heading="Person ID Sources">
+				<record-add-caption>Add</record-add-caption>
+				<record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.personidsrc,orgAttribute.orgPersonIdSrcTableDialog</record-add-url>
+                <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.personidsrc,orgAttribute.orgPersonIdSrcTableDialog?system_id=${0}</record-edit-url>
+                <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.personidsrc,orgAttribute.orgPersonIdSrcTableDialog?system_id=${0}</record-delete-url>
+				<column display="no"/>
+				<column heading="Source Type"/>
+			</report>
+</presentation>
+		</query>
+
+		<query name="relationship">
+			select
+				system_id,
+				rel_org_id,
+				Org.org_name,
+				Org_Relationship_Type.caption
+			from
+				Org,
+				Org_Relationship,
+				Org_Relationship_Type
+			where
+				Org_Relationship.parent_id = ? and
+				Org_Relationship.rel_entity_id = Org.org_id and
+				Org_Relationship.rel_type_id = Org_Relationship_Type.id
+
+			<params>
+				<param value="request:org_id"/>
+			</params>
+			<presentation>
+<report heading="Related Organizations">
+				<record-add-caption>Add</record-add-caption>
+				<record-add-url>nav-url-cmd:/org/summary,record-edit-add,orgAttribute.relationship,orgAttribute.orgRelationshipTableDialog?parent_id=${request:org_id}</record-add-url>
+                <record-edit-url>nav-url-cmd:/org/summary,record-edit-update,orgAttribute.relationship,orgAttribute.orgRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-edit-url>
+                <record-delete-url>nav-url-cmd:/org/summary,record-edit-delete,orgAttribute.relationship,orgAttribute.orgRelationshipTableDialog?system_id=${0}&amp;parent_id=${request:org_id}</record-delete-url>
+				<column display="no"/>
+				<column display="no"/>
+				<column heading="Organization" url="nav-url-cmd:/org/summary?org_id=${1}"/>
+				<column heading="Relationship"/>
+			</report>
+</presentation>
+		</query>
+
+		<query name="profile">
+			select
+				org_id,
+				org_name,
+				org_code,
+				org_abbrev,
+				ticker_symbol,
+				HCFA1500_Service_Place_Type.caption
+			from
+				Org,
+				HCFA1500_Service_Place_Type
+			where
+				HCFA1500_Service_Place_Type.id = Org.hcfa_servplace_id and
+				Org.org_id = ?
+
+			<params>
+				<param value="request:org_id"/>
+			</params>
+			<presentation>
+<report heading="Profile">
+				<banner style="horizontal">
+					<item caption="Edit" icon="create-app-url:/resources/icons/addIcon.gif" url="nav-url-cmd:/org/summary,dialog,orgAttribute.orgProfileTableDialog,edit?org_id=${request:org_id}"/>
+				</banner>
+				<column heading="Org ID" align="left"/>
+				<column heading="Name"/>
+				<column heading="Org. Code"/>
+				<column heading="Abbreviation"/>
+				<column heading="Ticker"/>
+				<column heading="HCFA1500 Service Place"/>
+			</report>
+</presentation>
+		</query>
+	</queries>
+</xdm:container>

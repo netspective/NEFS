@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="attributes/claim.xml"/>
+	<xdm:include file="components/claim.xml"/>
+	<xdm:include file="query-defns/claim.xml"/>
+
+	<queries package="claim">
+		<query name="get-all-claims">
+			select
+				claim_id,
+				invoice_id,
+				batch_id,
+				Claim_Status_Type.caption,
+				patient_id,
+				Patient.name_first || ' ' || Patient.name_last,
+				service_provider_id,
+				ServiceProvider.name_first || ' ' || ServiceProvider.name_last,
+				service_facility_id,
+				ServiceFacility.org_name,
+				billing_provider_id,
+				BillingProvider.name_first || ' ' || BillingProvider.name_last,
+				billing_facility_id,
+				BillingFacility.org_name
+			from
+				Claim,
+				Claim_Status_Type,
+				Person Patient,
+				Person ServiceProvider,
+				Org ServiceFacility,
+				Person BillingProvider,
+				Org BillingFacility
+			where
+				Claim.claim_status_id = Claim_Status_Type.id and
+				Claim.patient_id = Patient.person_id and
+				Claim.service_provider_id = ServiceProvider.person_id and
+				Claim.service_facility_id = ServiceFacility.org_id and
+				Claim.billing_provider_id = BillingProvider.person_id and
+				Claim.billing_facility_id = BillingFacility.org_id
+				
+			<presentation>
+<report heading="All Claims">
+				<banner style="horizontal">
+					<item caption="Add" url="create-app-url:/transaction/claim.jsp?data_cmd=add"/>
+				</banner>
+				
+				<column heading="Claim ID" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit"/>
+				<column heading="Invoice ID" url="create-app-url:/invoice/attribute/profile.jsp?data_cmd=edit&amp;invoice_id=${1}"/>
+				<column heading="Batch ID"/>
+				<column heading="Claim Status"/>
+				<column display="no"/>
+				<column heading="Patient" url="nav-url:/person/summary?person_id=${4}"/>
+				<column display="no"/>
+				<column heading="Service Provider" url="nav-url:/person/summary?person_id=${6}"/>
+				<column display="no"/>
+				<column heading="Service Facility" url="nav-url:/org/summary?org_id=${8}"/>
+				<column display="no"/>
+				<column heading="Billing Provider" url="nav-url:/person/summary?person_id=${10}"/>
+				<column display="no"/>
+				<column heading="Billing Facility" url="nav-url:/org/summary?org_id=${12}"/>
+			</report>
+</presentation>
+		</query>
+		
+		<query name="get-claims-by-invoice">
+			select
+				claim_id,
+				batch_id,
+				Claim_Status_Type.caption,
+				patient_id,
+				Patient.name_first || ' ' || Patient.name_last,
+				service_provider_id,
+				ServiceProvider.name_first || ' ' || ServiceProvider.name_last,
+				service_facility_id,
+				ServiceFacility.org_name,
+				billing_provider_id,
+				BillingProvider.name_first || ' ' || BillingProvider.name_last,
+				billing_facility_id,
+				BillingFacility.org_name
+			from
+				Claim,
+				Claim_Status_Type,
+				Person Patient,
+				Person ServiceProvider,
+				Org ServiceFacility,
+				Person BillingProvider,
+				Org BillingFacility
+			where
+				Claim.invoice_id = ?
+				Claim.claim_status_id = Claim_Status_Type.id and
+				Claim.patient_id = Patient.person_id and
+				Claim.service_provider_id = ServiceProvider.person_id and
+				Claim.service_facility_id = ServiceFacility.org_id and
+				Claim.billing_provider_id = BillingProvider.person_id and
+				Claim.billing_facility_id = BillingFacility.org_id
+				
+			<params>
+				<param value="request:invoice_id"/>
+			</params>
+
+			<presentation>
+<report heading="All Claims">
+				<banner style="horizontal">
+					<item caption="Add" url="create-app-url:/transaction/claim.jsp?data_cmd=add"/>
+				</banner>
+				
+				<column heading="Claim ID" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit"/>
+				<column heading="Batch ID"/>
+				<column heading="Claim Status"/>
+				<column display="no"/>
+				<column heading="Patient" url="nav-url:/person/summary?person_id=${3}"/>
+				<column display="no"/>
+				<column heading="Service Provider" url="nav-url:/person/summary?person_id=${5}"/>
+				<column display="no"/>
+				<column heading="Service Facility" url="nav-url:/org/summary?org_id=${7}"/>
+				<column display="no"/>
+				<column heading="Billing Provider" url="nav-url:/person/summary?person_id=${9}"/>
+				<column display="no"/>
+				<column heading="Billing Facility" url="nav-url:/org/summary?org_id=${11}"/>
+			</report>
+</presentation>
+		</query>
+
+		<query name="get-claims-by-patient">
+			select
+				claim_id,
+				invoice_id,
+				batch_id,
+				Claim_Status_Type.caption,
+				patient_id,
+				Patient.name_first || ' ' || Patient.name_last,
+				service_provider_id,
+				ServiceProvider.name_first || ' ' || ServiceProvider.name_last,
+				service_facility_id,
+				ServiceFacility.org_name,
+				billing_provider_id,
+				BillingProvider.name_first || ' ' || BillingProvider.name_last,
+				billing_facility_id,
+				BillingFacility.org_name
+			from
+				Claim,
+				Claim_Status_Type,
+				Person Patient,
+				Person ServiceProvider,
+				Org ServiceFacility,
+				Person BillingProvider,
+				Org BillingFacility
+			where
+				Claim.patient_id = ? and
+				Claim.claim_status_id = Claim_Status_Type.id and
+				Claim.patient_id = Patient.person_id and
+				Claim.service_provider_id = ServiceProvider.person_id and
+				Claim.service_facility_id = ServiceFacility.org_id and
+				Claim.billing_provider_id = BillingProvider.person_id and
+				Claim.billing_facility_id = BillingFacility.org_id
+				
+			<params>
+				<param value="request:person_id"/>
+			</params>
+
+			<presentation>
+<report heading="All Claims">
+				<banner style="horizontal">
+					<item caption="Add" url="create-app-url:/transaction/claim.jsp?data_cmd=add"/>
+				</banner>
+				
+				<column heading="Claim ID" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit"/>
+				<column heading="Invoice ID" url="create-app-url:/invoice/attribute/profile.jsp?data_cmd=edit&amp;invoice_id=${1}"/>
+				<column heading="Batch ID"/>
+				<column heading="Claim Status"/>
+				<column display="no"/>
+				<column heading="Patient" url="nav-url:/person/summary?person_id=${4}"/>
+				<column display="no"/>
+				<column heading="Service Provider" url="nav-url:/person/summary?person_id=${6}"/>
+				<column display="no"/>
+				<column heading="Service Facility" url="nav-url:/org/summary?org_id=${8}"/>
+				<column display="no"/>
+				<column heading="Billing Provider" url="nav-url:/person/summary?person_id=${10}"/>
+				<column display="no"/>
+				<column heading="Billing Facility" url="nav-url:/org/summary?org_id=${12}"/>
+			</report>
+</presentation>
+		</query>
+		
+	</queries>
+</xdm:container>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<queries package="claimAttribute">
+		<query name="profile">
+			select
+				claim_id,
+				batch_id,
+				invoice_id,
+				Claim_Status_Type.caption,
+				patient_id,
+				Patient.name_first || ' ' || Patient.name_last,
+				service_provider_id,
+				ServiceProvider.name_first || ' ' || ServiceProvider.name_last,
+				service_facility_id,
+				ServiceFacility.org_name,
+				billing_provider_id,
+				BillingProvider.name_first || ' ' || BillingProvider.name_last,
+				billing_facility_id,
+				BillingFacility.org_name
+			from
+				Claim,
+				Claim_Status_Type,
+				Person Patient,
+				Person ServiceProvider,
+				Org ServiceFacility,
+				Person BillingProvider,
+				Org BillingFacility
+			where
+				Claim.claim_id = ? and
+				Claim.claim_status_id = Claim_Status_Type.id and
+				Claim.patient_id = Patient.person_id and
+				Claim.service_provider_id = ServiceProvider.person_id and
+				Claim.service_facility_id = ServiceFacility.org_id and
+				Claim.billing_provider_id = BillingProvider.person_id and
+				Claim.billing_facility_id = BillingFacility.org_id
+				
+			<params>
+				<param value="request:claim_id"/>
+			</params>
+
+			<presentation>
+<report heading="All Claims">
+				<banner style="horizontal">
+					<item caption="Edit" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit"/>
+				</banner>
+				
+				<column heading="Claim ID" align="left" url="nav-url-cmd:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.profile,edit?claim_id=${0}"/>
+				<column heading="Batch ID" align="left"/>
+				<column heading="Invoice ID" align="left"/>
+				<column heading="Claim Status"/>
+				<column display="no"/>
+				<column heading="Patient" url="nav-url:/person/summary?person_id=${4}"/>
+				<column display="no"/>
+				<column heading="Service Provider" url="nav-url:/person/summary?person_id=${6}"/>
+				<column display="no"/>
+				<column heading="Service Facility" url="nav-url:/org/summary?org_id=${8}"/>
+				<column display="no"/>
+				<column heading="Billing Provider" url="nav-url:/person/summary?person_id=${10}"/>
+				<column display="no"/>
+				<column heading="Billing Facility" url="nav-url:/org/summary?org_id=${12}"/>
+			</report>
+</presentation>
+		</query>
+
+		<query name="diag-proc-codes">
+			select
+				Claim_DiagProc_Rel.system_id,
+				Claim_Diagnosis_Code_Type.caption,
+				Claim_Diagnosis.diag_code,
+				Claim_Procedure_Code_Type.caption,
+				Claim_Procedure.proc_code
+			from
+				Claim_Diagnosis_Code_Type,
+				Claim_Procedure_Code_Type,
+				Claim_Diagnosis,
+				Claim_Procedure,
+				Claim_DiagProc_Rel
+			where
+				Claim_Diagnosis.claim_id = ? and
+				Claim_Procedure.claim_id = ? and
+				Claim_DiagProc_Rel.diagnosis_id = Claim_Diagnosis.system_id and
+				Claim_DiagProc_Rel.procedure_id = Claim_Procedure.system_id and
+				Claim_Diagnosis.diag_code_type_id = Claim_Diagnosis_Code_Type.id and
+				Claim_Procedure.proc_code_type_id = Claim_Procedure_Code_Type.id
+				
+			<params>
+				<param value="request:claim_id"/>
+				<param value="request:claim_id"/>
+			</params>
+
+			<presentation>
+<report heading="Claim Diagnoses and Procedures">
+				<banner style="horizontal">
+					<item caption="Add" url="nav-url-cmd:/claim/summary,statement,claimAttribute.diag-proc-codes,-,-,component,-,claimAttribute.diagproc,add"/>
+				</banner>
+				
+				<column heading="&amp;nbsp;" output="Edit" url="nav-url-cmd:/claim/summary,statement,claimAttribute.diag-proc-codes,-,-,component,-,claimAttribute.diagproc,edit?diagproc_id=${0}"/>
+				<column heading="Diag Code Type"/>
+				<column heading="Diag Code"/>
+				<column heading="Proc Code Type"/>
+				<column heading="Proc Code"/>
+				<column heading="&amp;nbsp;" output="Delete" url="nav-url-cmd:/claim/summary,statement,claimAttribute.diag-proc-codes,-,-,component,-,claimAttribute.diagproc,delete?diagproc_id=${0}"/>
+			</report>
+</presentation>
+		</query>
+
+		<query name="get-diagnoses-by-claim">
+			select
+				diag_code,
+				system_id
+			from
+				Claim_Diagnosis
+			where
+				claim_id = ?
+			order by
+				diag_code
+				
+			<params>
+				<param value="request:claim_id"/>
+			</params>
+		</query>
+
+		<query name="get-procedures-by-claim">
+			select
+				proc_code,
+				system_id
+			from
+				Claim_Procedure
+			where
+				claim_id = ?
+			order by
+				proc_code
+				
+			<params>
+				<param value="request:claim_id"/>
+			</params>
+		</query>
+
+	</queries>
+</xdm:container>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="attributes/insurance.xml"/>
+	
+	<queries package="insurance">
+		<query name="getProductsByOrg">
+			select
+				product_name,
+				product_id
+			from
+				Ins_Product
+			where
+				Ins_Product.org_id = ?
+				
+			<params>
+				<param value="session:org_id"/>
+			</params>
+		</query>
+	</queries>
+</xdm:container>

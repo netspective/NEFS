@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="attributes/person.xml"/>
+	<xdm:include file="query-defns/person.xml"/>
+
+	<queries package="person">
+		<query name="get-all-persons">
+			select
+				short_name,
+				person_id
+			from
+				Person
+		</query>
+
+		<query name="get-all-patients">
+			select
+				Person.short_name,
+				Person.person_id
+			from
+				Person,
+				Person_Classification,
+				Person_Type
+			where
+				Person.person_id = Person_Classification.person_id and
+				Person_Classification.person_type_id = Person_Type.id and
+				Person_Type.caption like '%Patient%'
+		</query>
+
+		<query name="get-all-physicians">
+			select
+				Person.short_name,
+				Person.person_id
+			from
+				Person,
+				Person_Classification,
+				Person_Type
+			where
+				Person.person_id = Person_Classification.person_id and
+				Person_Classification.person_type_id = Person_Type.id and
+				Person_Type.caption like '%Physician%'
+		</query>
+
+		<query name="get-person-record">
+			select
+				*
+			from
+				Person
+			where
+				person_id = ?
+		</query>
+
+		<query name="get-all-referring-doctors">
+			select
+				Person.short_name,
+				Person.person_id
+			from
+				Person,
+				Person_Classification,
+				Person_Type
+			where
+				Person.person_id = Person_Classification.person_id and
+				Person_Classification.person_type_id = Person_Type.id and
+				Person_Type.caption like '%Refer%'
+		</query>
+
+		<query name="get-person-related-organizations">
+			select
+				Org.org_id,
+				Org.org_name,
+				PersonOrg_Relationship.rel_type
+			from
+				Org,
+				PersonOrg_Relationship,
+				PersonOrg_Rel_Type,
+				Record_Status
+			where
+				PersonOrg_Relationship.parent_id = ? and
+				PersonOrg_Relationship.rel_entity_id = Org.org_id and
+				PersonOrg_Relationship.rel_type_id = PersonOrg_Rel_Type.id and
+					(PersonOrg_Rel_Type.caption = 'Employed (Full-time)' or PersonOrg_Rel_Type.caption = 'Employed (Part-time)') and
+				PersonOrg_Relationship.rec_stat_id = Record_Status.id and
+				Record_Status.caption = 'Active'
+		</query>
+
+		<query name="personProfile">
+			select
+				name_prefix,
+				name_first,
+				name_middle,
+				name_last,
+				name_suffix,
+				to_char(birth_date, 'MM/DD/YYYY'),
+				to_char(death_date, 'MM/DD/YYYY'),
+			from
+				Person
+			where
+				Person.person_id = ?
+
+			<params>
+				<param value="request:person_id"/>
+			</params>
+
+			<presentation>
+<report heading="Personal Profile">
+				<banner style="horizontal">
+					<item caption="Edit" url="nav-url-cmd:/person/summary,statement,personAttribute.profile,-,-,detail,-,personAttribute.personProfileTableDialog,edit"/>
+				</banner>
+
+				<column heading="Prefix"/>
+				<column heading="First Name"/>
+				<column heading="Middle Name"/>
+				<column heading="Last Name"/>
+				<column heading="Birth Date"/>
+				<column heading="Death Date"/>
+			</report>
+</presentation>
+		</query>
+
+		<query name="get-total-person-logins">
+			select
+				count(*)
+			from
+				Person_Login
+		</query>
+	</queries>
+</xdm:container>
