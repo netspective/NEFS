@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServletOptions.java,v 1.4 2003-09-13 01:07:20 shahid.shah Exp $
+ * $Id: NavigationControllerServletOptions.java,v 1.5 2003-10-25 19:18:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -95,7 +95,7 @@ public class NavigationControllerServletOptions
         try
         {
             String optionsParamValue = servletConfig.getInitParameter(INITPARAMNAME_SERVLET_OPTIONS);
-            log.debug("Using servlet int param " + INITPARAMNAME_SERVLET_OPTIONS + ":\n  " + optionsParamValue);
+            log.debug("Using servlet init param " + INITPARAMNAME_SERVLET_OPTIONS + ":\n  " + optionsParamValue);
             commandLine = parser.parse(servletOptions, optionsParamValue != null ? TextUtils.split(optionsParamValue, " ", false) : new String[0]);
         }
         catch (ParseException pe)
