@@ -63,6 +63,11 @@ public interface SearchHitsRenderer
     public void renderQueryError(Writer writer, NavigationContext nc, SearchExpression expression, ParseException exception) throws IOException;
 
     /**
+     * Called when the search throws an exception
+     */
+    public void renderSearchError(Writer writer, NavigationContext nc, SearchExpression expression, Exception exception) throws IOException;
+
+    /**
      * Called when the user enters an empty query
      */
     public void renderEmptyQuery(Writer writer, NavigationContext nc) throws IOException;

@@ -46,6 +46,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
@@ -113,6 +114,20 @@ public class FullTextSearchPage extends NavigationPage
     public void finalizeContents()
     {
         super.finalizeContents();
+
+        for(Iterator i = fieldAttributes.values().iterator(); i.hasNext();)
+        {
+            FieldAttribute fieldAttribute = (FieldAttribute) i.next();
+            final Analyzer fieldAnalyzer = fieldAttribute.getAnalyzer();
+            if(fieldAnalyzer != null)
+            {
+                if(!analyzer.getClass().equals(PerFieldAnalyzerWrapper.class))
+                    analyzer = new PerFieldAnalyzerWrapper(new StandardAnalyzer());
+
+                PerFieldAnalyzerWrapper pfaw = (PerFieldAnalyzerWrapper) analyzer;
+                pfaw.addAnalyzer(fieldAttribute.getName(), fieldAnalyzer);
+            }
+        }
 
         if(indexDirectorySearchPath != null)
         {
@@ -269,23 +284,29 @@ public class FullTextSearchPage extends NavigationPage
         return renderer;
     }
 
+    protected Query parseQuery(String query) throws ParseException
+    {
+        return QueryParser.parse(query, defaultSearchFieldName, analyzer);
+    }
+
     public Query parseQuery(NavigationContext nc, SearchExpression expression) throws ParseException
     {
         if(expression.isSearchWithinPreviousResults())
         {
             final FullTextSearchResults searchResults = getSearchResultsManager().getActiveUserSearchResults(this, nc);
             if(searchResults == null)
-                getLog().error("Attempting to search within a search but there is are no active search results");
+                getLog().error("Attempting to search within a search but there are no active search results");
             else
             {
                 BooleanQuery booleanQuery = new BooleanQuery();
                 booleanQuery.add(searchResults.getQuery(), true, false);
-                booleanQuery.add(QueryParser.parse(expression.getExprText(), defaultSearchFieldName, analyzer), true, false);
+                booleanQuery.add(parseQuery(expression.getExprText()), true, false);
                 return booleanQuery;
             }
         }
 
-        return QueryParser.parse(expression.getExprText(), defaultSearchFieldName, analyzer);
+        final Query advancedQuery = expression.getAdvancedQuery();
+        return advancedQuery != null ? advancedQuery : parseQuery(expression.getExprText());
     }
 
     protected SearchHits search(NavigationContext nc, final Query query) throws IOException
@@ -384,7 +405,21 @@ public class FullTextSearchPage extends NavigationPage
                 return;
             }
 
-            final SearchHits hits = search(nc, query);
+            final SearchHits hits;
+            try
+            {
+                hits = search(nc, query);
+            }
+            catch(IOException e)
+            {
+                throw e;
+            }
+            catch(Exception e)
+            {
+                renderer.renderSearchError(writer, nc, expression, e);
+                return;
+            }
+
             final FullTextSearchResults searchResults = constructSearchResults(nc, expression, query, hits);
             FullTextSearchResultsActivity activity = new FullTextSearchResultsActivity(nc, searchResults);
             nc.getProject().broadcastActivity(activity);
@@ -462,6 +497,7 @@ public class FullTextSearchPage extends NavigationPage
         private String name;
         private String description;
         private String usage;
+        private Analyzer analyzer;
 
         public FieldAttribute()
         {
@@ -495,6 +531,26 @@ public class FullTextSearchPage extends NavigationPage
         public void setUsage(String usage)
         {
             this.usage = usage;
+        }
+
+        public Analyzer getAnalyzer()
+        {
+            return analyzer;
+        }
+
+        public Analyzer createAnalyzer()
+        {
+            return new StandardAnalyzer();
+        }
+
+        public void addAnalyzer(Analyzer analyzer)
+        {
+            this.analyzer = analyzer;
+        }
+
+        public void addText(String text)
+        {
+            // do nothing -- it's here so XDM doesn't complain about this object not accepting PCDATA
         }
     }
 

@@ -74,7 +74,7 @@
 
             <library>
                 <name>Jakarta Lucene Full Text Search API</name>
-                <version>1.4</version>
+                <version>1.4.2</version>
                 <class-path>lucene.jar</class-path>
                 <source home-uri="http://jakarta.apache.org/lucene"
                     license="Apache Software License"

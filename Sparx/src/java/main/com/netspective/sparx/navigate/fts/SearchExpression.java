@@ -32,6 +32,8 @@
  */
 package com.netspective.sparx.navigate.fts;
 
+import org.apache.lucene.search.Query;
+
 public interface SearchExpression
 {
     public String getExprText();
@@ -41,6 +43,10 @@ public interface SearchExpression
     public boolean isEmptyExpression();
 
     public boolean isSearchWithinPreviousResults();
+
+    public boolean isAdvancedQuery();
+
+    public Query getAdvancedQuery();
 
     public String getRewrittenExpressionRedirectParams();
 }
