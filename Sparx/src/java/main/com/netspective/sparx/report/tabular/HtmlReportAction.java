@@ -45,7 +45,7 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.sparx.panel.HtmlPanelAction;
 
 /**
- * @version $Id: HtmlReportAction.java,v 1.8 2004-03-16 21:21:42 aye.thu Exp $
+ * @version $Id: HtmlReportAction.java,v 1.9 2004-06-23 15:16:33 aye.thu Exp $
  */
 public class HtmlReportAction extends HtmlPanelAction
 {
@@ -56,7 +56,14 @@ public class HtmlReportAction extends HtmlPanelAction
         public static final short RECORD_DELETE = 2;
         public static final short RECORD_SELECT = 3;
 
-        public static final String values[] = { "add", "edit", "delete", "select" };
+        // this is a more generic report action that can be used to display multiple buttons
+        // in the report. For example, a DELETE button. The skin used needs to interpret this
+        // as a button and generate  buttons and a form around it. This should only be used
+        // for single-page reports.
+        public static final short REPORT_SUBMIT = 4;
+
+
+        public static final String values[] = { "add", "edit", "delete", "select", "submit" };
 
         public Type()
         {
@@ -103,6 +110,7 @@ public class HtmlReportAction extends HtmlPanelAction
 
     /**
      * Creates an instance of the class
+     *
      * @return
      */
     public HtmlPanelAction createAction()
