@@ -39,19 +39,75 @@
  */
 
 /**
- * $Id: NavigationPageDefaultCustomBodyHandler.java,v 1.1 2003-08-14 14:23:30 shahid.shah Exp $
+ * $Id: NavigationPageTransformBodyHandler.java,v 1.1 2003-10-24 03:28:10 shahid.shah Exp $
  */
 
-package com.netspective.sparx.navigate;
+package com.netspective.sparx.navigate.handler;
 
 import java.io.Writer;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
-public class NavigationPageDefaultCustomBodyHandler implements NavigationPageBodyHandler
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.text.Transform;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.navigate.NavigationContext;
+
+/**
+ * Allows the navigation of a HTML website but makes it looks like it's part of the same theme (including headers, footers, etc)
+ */
+
+public class NavigationPageTransformBodyHandler extends NavigationPageBodyDefaultHandler
 {
+    private Transform transform = new Transform();
+
+    public void addParam(Transform.StyleSheetParameter param)
+    {
+        transform.addParam(param);
+    }
+
+    public void addSystemProperty(Transform.SystemProperty param)
+    {
+        transform.addSystemProperty(param);
+    }
+
+    public Transform.StyleSheetParameter createParam()
+    {
+        return transform.createParam();
+    }
+
+    public Transform.SystemProperty createSystemProperty()
+    {
+        return transform.createSystemProperty();
+    }
+
+    public void setRelativeToClass(Class relativeToClass)
+    {
+        transform.setRelativeToClass(relativeToClass);
+    }
+
+    public void setSource(ValueSource source)
+    {
+        transform.setSource(source);
+    }
+
+    public void setSourceFile(ValueSource source)
+    {
+        transform.setSourceFile(source);
+    }
+
+    public void setStyleSheet(ValueSource styleSheet)
+    {
+        transform.setStyleSheet(styleSheet);
+    }
+
+    public void setStyleSheetFile(ValueSource styleSheet)
+    {
+        transform.setStyleSheetFile(styleSheet);
+    }
+
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + page.getClass().getName() + " class and the body type is set to CUSTOM but the page class does not override NavigationPageDefaultCustomBodyHandler.handleNavigationPageBody(...).");
+        transform.render(writer, nc, null, nc.getRuntimeEnvironmentFlags().isDevelopmentOrTesting());
     }
 }
