@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.15 2003-11-02 17:31:16 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.16 2003-11-12 12:50:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -60,13 +60,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
-
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogFieldValue;
@@ -82,8 +77,6 @@ import com.netspective.commons.text.TextUtils;
 
 public class DateTimeField extends TextField
 {
-    private static final Log log = LogFactory.getLog(DateTimeField.class);
-
     public static final Flags.FlagDefn[] DATE_TIME_FIELD_FLAG_DEFNS = new Flags.FlagDefn[TextField.TEXT_FIELD_FLAG_DEFNS.length + 5];
     static
     {
@@ -198,11 +191,11 @@ public class DateTimeField extends TextField
                 {
                     case DataType.DATE_ONLY:
                     case DataType.BOTH:
-                        value = translateDateString(value);
+                        value = dateValidationRule.translateDateString(value);
                         break;
 
                     case DataType.TIME_ONLY:
-                        value = translateTimeString(value);
+                        value = dateValidationRule.translateTimeString(value);
                         break;
 
                     default:
@@ -385,71 +378,6 @@ public class DateTimeField extends TextField
         }
 
         return buf.toString();
-    }
-
-    /**
-     * Translates a reserved date word such as "today" or "now" into the actual time
-     *
-     * @param str reserved string
-     * @return String actual time string
-     */
-    public String translateTimeString(String str)
-    {
-        String xlatedDate = str;
-
-        if(str != null && (str.startsWith("today") || str.startsWith("now")))
-        {
-            Date dt = new Date();
-            xlatedDate = dateValidationRule.format(dt);
-        }
-        return xlatedDate;
-    }
-
-    /**
-     * Translates a reserved date word such as "today" or "now" into the actual date
-     *
-     * @param str reserved string
-     * @return String actual date string
-     */
-    public String translateDateString(String str)
-    {
-        String xlatedDate = str;
-
-        if(str != null && (str.startsWith("today") || str.startsWith("now")))
-        {
-            int strLength = 0;
-            if(str.startsWith("today"))
-                strLength = "today".length();
-            else
-                strLength = "now".length();
-            Date dt = null;
-            if(str.length() > strLength)
-            {
-                try
-                {
-                    String opValueStr = null;
-                    if(str.charAt(strLength) == '+')
-                        opValueStr = str.substring(strLength + 1);
-                    else
-                        opValueStr = str.substring(strLength);
-                    int opValue = Integer.parseInt(opValueStr);
-                    Calendar calendar = new GregorianCalendar();
-                    calendar.add(Calendar.DAY_OF_MONTH, opValue);
-                    dt = calendar.getTime();
-                    xlatedDate = dateValidationRule.format(dt);
-                }
-                catch(Exception e)
-                {
-                    log.error("Unable to translate date string " + str, e);
-                }
-            }
-            else
-            {
-                dt = new Date();
-                xlatedDate = dateValidationRule.format(dt);
-            }
-        }
-        return xlatedDate;
     }
 
     /**
