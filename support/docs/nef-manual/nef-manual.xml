@@ -10,7 +10,7 @@
     <title>Netspective Enterprise Frameworks (NEF) 7.0 Release Candidate 1
     User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-11 22:27:28 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-11 22:36:43 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 30, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -1645,7 +1645,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="resources/images/nefs-tags-overview.gif" />
+            <imagedata fileref="./resources/images/nefs-tags-overview.gif" />
           </imageobject>
         </mediaobject>
       </figure>
