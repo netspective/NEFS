@@ -1076,7 +1076,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             if(partnerField != null)
                 action.setPartnerField(partnerField);
             else if(action.isPartnerRequired())
-                log.error("Unknown partner supplied for conditional action " + action.getSourceField().getQualifiedName());
+                log.error("Unknown partner '"+ action.getPartnerFieldName() +"' supplied for dialog field '" + action.getSourceField().getQualifiedName() + "' conditional action.");
         }
 
         if(children != null)
