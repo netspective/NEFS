@@ -3,15 +3,13 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.87 2003-08-15 01:54:03 shahid.shah Exp $
+  * $Id: console.xml,v 1.88 2003-08-17 00:23:06 shahid.shah Exp $
   *****************************************************************************************
 -->
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-    <!-- TODO: the base-dir attribute below is included only because resource loading does not notice file updates (REMOVE before deployment) -->
-    <!--register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="/Users/aye/Projects/Frameworks/Sparx/src/java/main/com/netspective/sparx/console"/-->
-    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="C:/Projects/Frameworks/Sparx/src/java/main/com/netspective/sparx/console"/>
+    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.ProductRelease" base-class-path="console" template-update-delay="5"/>
 
     <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console">
         <report-skin name="record-viewer" class="com.netspective.sparx.theme.basic.RecordViewerReportSkin"
@@ -22,6 +20,7 @@
         <report-skin class="com.netspective.sparx.theme.basic.HtmlSingleRowReportPanelSkin" name="detail"
             panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
     </register-theme>
+
     <register-value-source class="com.netspective.sparx.console.value.ConsolePageContentPathValueSource"/>
 
     <panel-type name="console-page-summary" extends="html">
@@ -44,13 +43,10 @@
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" heading="Console Home" default="yes">
             <body config="console" source="console-page-content:index.ftl"/>
-            <page name="lib-dependencies" caption="Library Dependencies">
-                <body config="console" source="console-page-content:../lib-dependencies.ftl"/>
-            </page>
         </page>
 
         <page name="project" caption="Project" heading="Project Home">
-            <page name="input-source" caption="Source" heading="Sparx Project Input Source File and Dependencies">
+            <page name="input-source" caption="Source" heading="Project Source File and Dependencies">
                 <body config="console" source="console-page-content:../input-source.ftl"/>
             </page>
 	        <page name="build" caption="Ant Build" heading="Execute Ant Build Target" class="com.netspective.sparx.console.page.project.AntBuildProjectsPage"/>
@@ -231,6 +227,9 @@
             </page>
 	        <page name="database-policies" caption="Database Policies"/>
             <page name="connection-providers" caption="Connection Providers"/>
+            <page name="open-connections" caption="Open Connections">
+                <body config="console" source="console-page-content:../open-connections.ftl"/>
+            </page>
         </page>
 
         <xdm:include resource="com/netspective/sparx/conf/console-user-manual-pages.xml"/>
