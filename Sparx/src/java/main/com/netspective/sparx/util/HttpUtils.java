@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpUtils.java,v 1.4 2003-08-31 23:04:15 shahid.shah Exp $
+ * $Id: HttpUtils.java,v 1.5 2003-08-31 23:40:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.util;
@@ -52,8 +52,6 @@ import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.navigate.NavigationPath;
-import com.netspective.sparx.navigate.NavigationPathFlags;
 import com.netspective.sparx.ProjectComponent;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
@@ -234,8 +232,8 @@ public class HttpUtils
             writer.write("</tr></table>");
         }
 
-        final NavigationPathFlags flags = nc.getActiveState().getFlags();
-        if(flags.flagIsSet(NavigationPage.Flags.DEBUG_REQUEST))
+        final NavigationPage.Flags flags = (NavigationPage.Flags) nc.getActiveState().getFlags();
+        if(flags.isDebuggingRequest())
             develEnvironmentHeader.process(writer, nc, null);
     }
 }
