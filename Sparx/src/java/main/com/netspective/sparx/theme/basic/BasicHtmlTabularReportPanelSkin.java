@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.6 2003-04-28 01:10:37 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.7 2003-04-30 21:46:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -230,6 +230,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         int tableColsCount = getTableColumnsCount(rc);
 
         boolean hiearchical = ds.isHierarchical();
+        String panelId = rc.getPanel().getIdentifier();
 
         //TODO: Sparx 2.x conversion required
         //ResultSetScrollState scrollState = rc.getScrollState();
@@ -240,8 +241,6 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         {
             isOddRow = ! isOddRow;
 
-            writer.write("<tr>");
-
             int hiearchyCol = 0;
             int activeLevel = 0;
 
@@ -250,7 +249,10 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHierarchy();
                 hiearchyCol = activeHierarchy.getColumn();
                 activeLevel = activeHierarchy.getLevel();
+                writer.write("<tr id=\""+ panelId + "_row_" + rowsWritten + "\" parentRow=\""+ panelId + "_row_" + activeHierarchy.getParentRow() +"\">");
             }
+            else
+                writer.write("<tr>");
 
             for(int i = 0; i < dataColsCount; i++)
             {
@@ -268,17 +270,21 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
                 String style = state.getCssStyleAttrValue();
                 if(hiearchical && (hiearchyCol == i) && activeLevel > 0)
+                {
                     style += "padding-left:" + (activeLevel * 15) + ";";
+                    data = "<span id=\""+ panelId + "_row_" + rowsWritten + "_img\" onclick=\"\"></span>" + data;
+                }
 
-                String singleRow =
+                String singleColumn =
                         "<td class=\"" +
                             (ds.isActiveRowSelected() ? "report-column-selected" : (isOddRow ? "report-column-even" : "report-column-odd")) + "\" style=\"" + style + "\">" +
                         data +
                         "&nbsp;</td>";
 
-                writer.write(defn.replaceOutputPatterns(rc, ds, singleRow));
+                writer.write(defn.replaceOutputPatterns(rc, ds, singleColumn));
             }
 
+            writer.write("</tr>");
             rowsWritten++;
             //TODO: Sparx 2.x conversion required
             //if(paging && rc.endOfPage())
