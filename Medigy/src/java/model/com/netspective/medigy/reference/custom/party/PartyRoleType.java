@@ -39,15 +39,16 @@
  */
 package com.netspective.medigy.reference.custom.party;
 
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.model.common.EntitySeedData;
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
 import javax.ejb.Entity;
-import javax.ejb.Id;
 import javax.ejb.GeneratorType;
+import javax.ejb.Id;
+import javax.ejb.Transient;
 
 @Entity
-public class PartyRoleType extends AbstractCustomReferenceEntity
+public class PartyRoleType extends AbstractCustomReferenceEntity implements  EntitySeedData
 {
 
     /**
@@ -79,5 +80,15 @@ public class PartyRoleType extends AbstractCustomReferenceEntity
         super.setSystemId(id);
     }
 
+    @Transient
+    public String[] getColumnNames()
+    {
+        return new String[] {"code", "description"};
+    }
 
+    @Transient
+    public Object[][] getSeedData()
+    {
+        return new Object[][] {{"P", "Prospect"}};
+    }
 }

@@ -40,6 +40,8 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.common.EntitySeedDataProvider;
+import com.netspective.medigy.model.common.EntitySeedData;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
 import javax.ejb.CascadeType;
@@ -52,12 +54,13 @@ import javax.ejb.ManyToOne;
 import javax.ejb.OneToOne;
 import javax.ejb.Table;
 import javax.ejb.OneToMany;
+import javax.ejb.Transient;
 import java.util.Set;
 import java.util.HashSet;
 
 @Entity
 @Table(name = "Party_Role")
-public class PartyRole extends AbstractDateDurationEntity implements Comparable
+public class PartyRole extends AbstractDateDurationEntity implements Comparable,  EntitySeedDataProvider
 {
     public static final String PK_COLUMN_NAME = "party_role_id";
 
@@ -71,6 +74,12 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
     public PartyRole()
     {
 
+    }
+
+    @Transient
+    public EntitySeedData getEntitySeedData()
+    {
+        return new PartyRoleType();
     }
 
     @Id(generate=GeneratorType.AUTO)
