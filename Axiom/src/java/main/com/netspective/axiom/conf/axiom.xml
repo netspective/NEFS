@@ -7,9 +7,10 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <!-- this configuration file may contain "standard" tags like the following:
-
     <register-database-policy class="my.own.DatabasePolicy"/>
-
     -->
+
+    <register-value-source class="com.netspective.axiom.value.source.QueryResultsValueSource"/>
+    <register-value-source class="com.netspective.axiom.value.source.ConnectionProviderEntriesValueSource"/>
 
 </xdm:container>
