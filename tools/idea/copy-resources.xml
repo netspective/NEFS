@@ -15,6 +15,7 @@
             </fileset>
             <fileset dir="c:/Projects/Frameworks/Sparx/src/java/main">
                 <include name="**/*.xml"/>
+                <include name="**/*.ftl"/>
                 <include name="**/*.properties"/>
             </fileset>
         </copy>
