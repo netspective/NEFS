@@ -28,37 +28,12 @@
 
     <!--
     *********************************************************************
-    * Setup application's execution environment.                        *
-    *********************************************************************
-    -->
-
-    <!-- Setup Sparx components project root file -->
-    <context-param>
-      <param-name>com.netspective.sparx.PROJECT_FILE_NAME</param-name>
-      <param-value>/WEB-INF/sparx/project.xml</param-value>
-    </context-param>
-
-	<!-- Setup runtime environment -->
-	<context-param>
-	  <param-name>com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS</param-name>
-	  <param-value>DEVELOPMENT | FRAMEWORK_DEVELOPMENT</param-value>
-	  <!-- the parameter for the environment flags may be combined using
-	       the following vaues:
-	       * DEVELOPMENT
-	       * TESTING
-	       * TRAINING
-	       * DEMONSTRATION
-	       * PRODUCTION
-	       * UNDERGOING_MAINTENANCE
-	       * FRAMEWORK_DEVELOPMENT
-
-	       e.g. "PRODUCTION | UNDERGOING_MAINTENANCE" is valid
-	    -->
-	</context-param>
-
-    <!--
-    *********************************************************************
     * Setup application front-controller servlet                        *
+    * 1) The NavigationController servlet handles all requests          *
+    * 2) Anything under the /sparx URL is assumed to be a resource or   *
+    *    asset so it's forwarded to the normal static file servlet.     *
+    * 3) Anything under the /resources URL is assumed to be a resource  *
+    *    so it's forwarded to the normal static file servlet.           *
     *********************************************************************
     -->
 	<servlet>
@@ -66,10 +41,21 @@
 		<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
 	</servlet>
 
-	<servlet-mapping>
-		<servlet-name>NavigationController</servlet-name>
-		<url-pattern>/app/*</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>StaticContent</servlet-name>
+        <servlet-class>com.caucho.server.http.FileServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>NavigationController</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>StaticContent</servlet-name>
+        <url-pattern>/sparx/*</url-pattern>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
 
     <!--
     *********************************************************************
