@@ -37,23 +37,58 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.netspective.axiom.schema.Index;
 import com.netspective.axiom.schema.Indexes;
 
 public class IndexesCollection implements Indexes
 {
+    private Log log = LogFactory.getLog(IndexesCollection.class);
+
+    private boolean throwExceptionOnDuplicate;
     private List indexes = new ArrayList();
     private Map byName = new HashMap();
+    private Map byColNames = new HashMap();
+
+    public IndexesCollection(boolean throwExceptionOnDuplicate)
+    {
+        this.throwExceptionOnDuplicate = throwExceptionOnDuplicate;
+    }
 
     public void add(Index index)
     {
+        final String indexNameKey = index.getName().toUpperCase();
+        if(byName.get(indexNameKey) != null)
+        {
+            final String message = "Attempting to add duplicate index name '" + indexNameKey + "'.";
+            if(throwExceptionOnDuplicate)
+                throw new RuntimeException(message);
+            log.warn(message);
+            return;
+        }
+
+        final String indexColNames = index.getColumns().getOnlyNames(",");
+        final Index existingIndex = (Index) byColNames.get(indexColNames);
+        if(existingIndex != null)
+        {
+            final String message = "Attempting to add an index called '" + indexNameKey + "' that already has the same columns as another index '" + existingIndex.getName() + "': " + indexColNames;
+            if(throwExceptionOnDuplicate)
+                throw new RuntimeException(message);
+            log.warn(message);
+            return;
+        }
+
         indexes.add(index);
-        byName.put(index.getName().toUpperCase(), index);
+        byName.put(indexNameKey, index);
+        byColNames.put(indexColNames, index);
     }
 
     public void merge(Indexes indexes)
     {
-        this.indexes.addAll(((IndexesCollection) indexes).indexes);
+        for(int i = 0; i < indexes.size(); i++)
+            add(indexes.get(i));
     }
 
     public Index get(int i)

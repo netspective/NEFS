@@ -420,7 +420,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         JavaExpressionText jet = new JavaExpressionText(format, vars);
 
         Indexes tableIndexes = table.getIndexes();
-        Indexes createIndexes = new IndexesCollection();
+        Indexes createIndexes = new IndexesCollection(false);
         createIndexes.merge(tableIndexes);
 
         if(ddlFormats.isCreatePrimaryKeyIndex())

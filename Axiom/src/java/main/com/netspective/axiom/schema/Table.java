@@ -320,6 +320,18 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
     /* ------------------------------------------------------------------------------------------------------------- */
 
     /**
+     * Retrieve the first row using a specific accessor of this table
+     *
+     * @param cc  The active connection context
+     * @param row The row in which to store the data
+     *
+     * @return the row passed in
+     */
+    public Row getRowByAccessor(ConnectionContext cc, QueryDefnSelect accessor, Object[] bindValues, Row row) throws NamingException, SQLException;
+
+    public Rows getRowsByAccessor(ConnectionContext cc, QueryDefnSelect accessor, Object[] bindValues) throws NamingException, SQLException;
+
+    /**
      * Retrieve the row identified by the given primary key
      *
      * @param cc  The active connection context

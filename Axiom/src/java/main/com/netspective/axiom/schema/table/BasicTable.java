@@ -104,7 +104,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private static final Log log = LogFactory.getLog(BasicTable.class);
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
     public static final String ATTRNAME_TYPE = "type";
-    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[]{"name"};
+    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[]{"name", "abbrev"};
 
     static
     {
@@ -154,7 +154,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private String primaryKeyWhereClauseExpr;
     private QueryDefnSelect selectByParentKey;
     private Rows staticData;
-    private Indexes indexes = new IndexesCollection();
+    private Indexes indexes = new IndexesCollection(true);
     private TablePresentationTemplate presentation;
     private TemplateProducers templateProducers;
     private TemplateConsumerDefn templateConsumer;
@@ -556,6 +556,41 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         }
 
         return resultRow;
+    }
+
+    public Row getRowByAccessor(ConnectionContext cc, QueryDefnSelect accessor, Object[] bindValues, Row row) throws NamingException, SQLException
+    {
+        Row resultRow = row;
+        QueryResultSet qrs = accessor.execute(cc, bindValues, false);
+        if(qrs != null)
+        {
+            ResultSet rs = qrs.getResultSet();
+            if(rs.next())
+            {
+                if(resultRow == null) resultRow = createRow();
+                resultRow.getColumnValues().populateValues(rs, ColumnValues.RESULTSETROWNUM_SINGLEROW);
+            }
+            qrs.close(false);
+        }
+        return resultRow;
+    }
+
+    public Rows getRowsByAccessor(ConnectionContext cc, QueryDefnSelect accessor, Object[] bindValues) throws NamingException, SQLException
+    {
+        Rows resultRows = createRows();
+        QueryResultSet qrs = accessor.execute(cc, bindValues, false);
+        if(qrs != null)
+        {
+            ResultSet rs = qrs.getResultSet();
+            while(rs.next())
+            {
+                Row resultRow = createRow();
+                resultRow.getColumnValues().populateValues(rs, ColumnValues.RESULTSETROWNUM_SINGLEROW);
+                resultRows.addRow(resultRow);
+            }
+            qrs.close(false);
+        }
+        return resultRows;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
