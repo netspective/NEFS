@@ -41,22 +41,29 @@
 
     <navigation-tree name="app" default="yes">
         <page caption="Home" name="home" heading="Welcome to CTS" title="CTS - Clinical Trial Management System" default="yes">
-            <page caption="Summary" name="summary" heading="authenticated-user:complete_sortable_name" title="Welcome to CTS" >
-                <panels>
+            <!--page caption="Summary" name="summary" heading="authenticated-user:complete_sortable_name" title="Welcome to CTS" -->
+                <panels >
+                    <frame heading="Table Columns"/>
                     <panel type="html">
-                    <body>
-                        <![CDATA[
-                        <div align="left" style="padding:10">
-                            Welcome to the Netspective Clinical Trial System.
-                        </div>
-                        ]]>
-                    </body>
-                </panel>
-                    <panel type="command" command="query,cts.active-studies-by-person" />
+                        <body>
+                            <![CDATA[
+                            <div align="left" style="padding:10">
+                                Welcome to the Netspective Clinical Trial System. This is your personal home page containing information
+                                about the studies you are currently involved in and their related information.
+                            </div>
+                            ]]>
+                        </body>
+                    </panel>
+                    <panel type="command" command="query,cts.active-studies-by-person,-,-,-,record-viewer-compressed" />
+                    <panel type="command" command="query,cts.active-orgs-by-person,-,-,-,record-editor-compressed" />
                     <!--panel type="command" command="statement,person.user-journal-report,-,-,report"/>
                     <panel type="command" command="statement,person.user-activity-report,-,-,report"/-->
                 </panels>
+            <!--/page-->
+            <page caption="Edit Profile" name="edit_profile" heading="Personal Information" title="CTS" command="dialog,cts.person-contact-info,edit">
             </page>
+
+
             <page caption="Contact Data" name="contact_info" heading="Contact Information" title="Contact Information">
                 <panels>
                     <panel type="command" command="query,cts.user-info,-,-,-,detail-compressed" />
@@ -74,6 +81,94 @@
                     <!--panel type="command" command="dialog,person.journal" col-span="2"/-->
                 </panels>
             </page>
+            <page caption="Study" name="study" heading="Study Information" title="CTS - Clinical Trial Management System" hidden="yes">
+                <panels>
+                    <panel type="command" command="query,cts.get-study-info-by-id,-,-,-,record-editor" />
+                    <panel type="command" command="query,cts.get-related-orgs-by-study-id,-,-,-,record-editor" />
+                    <panel type="command" command="query,cts.get-related-persons-by-study-id,-,-,-,record-editor" />
+                </panels>
+                <page name="add" caption="Add Study" heading="Add a new study" title="CTS - Add Study" command="dialog,study.profile,add" hidden="yes"/>
+                <page name="edit" caption="Edit Study" heading="Edit study" title="CTS - Edit Study" command="dialog,study.profile,edit" hidden="yes"/>
+                <page name="delete" caption="Delete Study" heading="Edit study" title="CTS - Delete Study" command="dialog,study.profile,delete" hidden="yes"/>
+                <page name="add_person" caption="Add Study Person" heading="Create a new person" title="CTS - Add Study" command="dialog,study.profile,add" hidden="yes"/>
+            </page>
+            <page caption="Organization" name="org" heading="Organizations" title="CTS - Clinical Trial Management System">
+                <panels>
+                    <panel type="command" command="query,cts.get-org-info-by-id,-,-,-,record-editor" />
+                    <panel type="command" command="query,cts.get-org-addresses-by-id,-,-,-,report" />
+                </panels>
+                <page name="add" caption="Add" heading="Add a new organization" title="CTS - Add Organization" command="dialog,org.profile,add"/>
+                <page name="edit" caption="Edit" heading="Edit organization" title="CTS - Edit Organization" command="dialog,org.profile,edit"/>
+                <page name="delete" caption="Delete" heading="Delete organization" title="CTS - Delete Organization" command="dialog,org.profile,delete"/>
+            </page>
+        </page>
+        <page caption="Search" name="search" heading="Search" title="CTS">
+            <panels>
+                <panel type="html">
+                <body>
+                    <![CDATA[
+                    <div align="left" style="padding:10">
+                     This is where you can search for studies and other related information such as doctors, subjects, and organizations.
+                    <ul>
+                        <li><b><a href="subject">Subject</a></b>: Search for study subjects </li>
+                        <li><b><a href="doctor">Doctor</a></b>: Search for doctors </li>
+                        <li><b><a href="administrator">Administrator</a></b>: Search for administrative personnel</li>
+                        <li><b><a href="organizations">Organizations</a></b>: Search for organizations</li>
+                        <li><b><a href="studies">Studies</a></b>: Search for studies</li>
+                    </ul>
+                    </div>
+                    ]]>
+                </body>
+                </panel>
+            </panels>
+            <page caption="Subjects" name="subjects" heading="Search for subjects" command="query-defn,org,-,searchDialog"/>
+            <page caption="Doctors" name="doctors" heading="Search for doctors" command="query-defn,org,-,searchDialog"/>
+            <page caption="Administrators" name="adminstrators" heading="Search for administrators" command="query-defn,org,-,searchDialog"/>
+            <page caption="Organizations" name="organizations" heading="Search for organizations" command="query-defn,org,-,searchDialog"/>
+        </page>
+
+        <!--page caption="Person" name="person" heading="CTS - Personnel Management Section" title="CTS - Clinical Trial Management System">
+            <panels>
+				<panel type="html">
+				<body>
+					<![CDATA[
+					<div align="left" style="padding:10">
+						This section contains information about the different personnel invoilved with a clinical trial study.
+                        <ul>
+                            <li><b><a href="person/subject">Subject</a></b>: Manage study subjects </li>
+                            <li><b><a href="person/doctor">Doctor</a></b>: Manage doctors involved with the study </li>
+                            <li><b><a href="person/administrator">Administrator</a></b>: Manage administrative personnel involved with the study</li>
+
+                        </ul>
+					</div>
+					</div>
+					]]>
+				</body>
+				</panel>
+                <panel type="command" command="query,cts.get-person-info-by-id,-,-,-,record-editor" />
+            </panels>
+            <page caption="Subject" name="subject" heading="CTS" title="CTS - Clinical Trial Management System">
+                <page name="search" caption="Search" heading="Search for Subject" title="CTS - Search Personnel"
+            	command="query-defn,org,-,searchDialog"/>
+                <page name="add" caption="Add" heading="Add a new person" title="CTS - Add Person" command="dialog,person.profile,add"/>
+                <page name="edit" caption="Edit" heading="Edit person" title="CTS - Edit Person" command="dialog,person.profile,edit"/>
+                <page name="delete" caption="Delete" heading="Delete person" title="CTS - Delete Person" command="dialog,person.profile,delete"/>
+            </page>
+            <page caption="Doctor" name="doctor" heading="CTS" title="CTS - Clinical Trial Management System">
+                <page name="search" caption="Search" heading="Search for Doctor" title="CTS - Search Personnel"
+            	command="query-defn,org,-,searchDialog"/>
+                <page name="add" caption="Add" heading="Add a new doctor" title="CTS - Add doctor" command="dialog,person.profile,add"/>
+                <page name="edit" caption="Edit" heading="Edit doctor" title="CTS - Edit doctor" command="dialog,person.profile,edit"/>
+                <page name="delete" caption="Delete" heading="Delete doctor" title="CTS - Delete doctor" command="dialog,person.profile,delete"/>
+            </page>
+            <page caption="Administrator" name="administrator" heading="CTS" title="CTS - Clinical Trial Management System">
+                <page name="search" caption="Search" heading="Search for Administrator" title="CTS - Search Personnel"
+            	command="query-defn,org,-,searchDialog"/>
+                <page name="add" caption="Add" heading="Add a new Administrator" title="CTS - Add Administrator" command="dialog,person.profile,add"/>
+                <page name="edit" caption="Edit" heading="Edit Administrator" title="CTS - Edit Administrator" command="dialog,person.profile,edit"/>
+                <page name="delete" caption="Delete" heading="Delete Administrator" title="CTS - Delete Administrator" command="dialog,person.profile,delete"/>
+            </page>
+
         </page>
         <page caption="Study" name="study" heading="Clinical Trial studies" title="CTS - Clinical Trial Management System">
             <panels>
@@ -81,7 +176,14 @@
                     <body>
                         <![CDATA[
                         <div align="left" style="padding:10">
-                            Welcome to the Netspective Clinical Trial System.
+                            This section is for display and management of study related information.
+                            <ul>
+                            <li><b><a href="study/search">Search</a></b>: Search for a study</li>
+                            <li><b><a href="study/add">Add a study</a></b>: Add a  new study</li>
+                            <li><b><a href="study/edit">Edit a study</a></b>: Edit an existing study </li>
+                            <li><b><a href="study/delete">Delete a study</a></b>: Delete a study</li>
+
+                        </ul>
                         </div>
                         ]]>
                     </body>
@@ -90,6 +192,11 @@
             </panels>
         	<page name="search" caption="Search" heading="Search for studies" title="CTS - Search Studies" default="yes" command="query-defn,study,-,searchDialog"/>
             <page name="add" caption="Add Study" heading="Add a new study" title="CTS - Add Study" command="dialog,study.profile,add"/>
+            <page name="edit" caption="Edit Study" heading="Edit study" title="CTS - Edit Study" command="dialog,study.profile,edit"/>
+            <page name="delete" caption="Delete Study" heading="Edit study" title="CTS - Delete Study" command="dialog,study.profile,delete"/>
+            <page name="home" caption="Selected Study" heading="Selected Study" title="CTS - Study - ">
+
+            </page>
         </page>
         <page caption="Organization" name="org" heading="Organizations" title="CTS - Clinical Trial Management System">
         	<panels>
@@ -110,8 +217,13 @@
             	command="query-defn,org,-,searchDialog"/>
             <page name="add" caption="Add" heading="Add a new organization" title="CTS - Add Organization" command="dialog,org.profile,add"/>
             <page name="edit" caption="Edit" heading="Edit organization" title="CTS - Edit Organization" command="dialog,org.profile,edit"/>
-
+            <page name="delete" caption="Delete" heading="Delete organization" title="CTS - Delete Organization" command="dialog,org.profile,delete"/>
         </page>
+        <page caption="Subject" name="subject" heading="Subjects" title="CTS - Subjects">
+            <page name="add" caption="Add" heading="Add a new subject" title="CTS - Add Subject" command="dialog,person.subject-profile,add"/>
+            <page name="edit" caption="Edit" heading="Edit subject" title="CTS - Edit Subject" command="dialog,person.subject-profile,edit"/>
+            <page name="delete" caption="Delete" heading="Delete subject" title="CTS - Delete Subject" command="dialog,person.subject-profile,delete"/>
+        </page-->
     </navigation-tree>
     <!--
         *******************************************************************************************************************

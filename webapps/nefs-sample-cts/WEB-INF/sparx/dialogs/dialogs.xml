@@ -36,6 +36,7 @@
         <dialog name="profile" class="app.cts.form.StudyDialog">
             <frame heading="Study Profile"/>
             <field type="separator" heading="Overview"/>
+            <field type="text" name="study_id" caption="Study ID" default="request:study_id" hidden="yes"/>
             <field type="text" name="study_name" caption="Name"  uppercase="yes"   max-length="255" required="yes">
                 <conditional action="apply-flags" flags="browser_readonly" perspective="edit,delete"/>
             </field>
@@ -66,17 +67,20 @@
         </dialog>
     </dialogs>
 
-    <dialogs package="person">
-        <dialog name="subject-profile" hide-hints-until-focus="yes">
-            <field type="integer" name="person_id" hidden="yes"/>
-			<field type="separator" heading="Personal Profile"/>
+    <dialogs package="person.subject">
+        <dialog name="profile" hide-hints-until-focus="yes" bind-table="person" auto-bind-fields-to-columns="yes">
+            <field type="integer" name="person_id" hidden="yes" default="request:person_id"/>
+            <field type="integer" name="person_type" hidden="yes"  default="schema-enum:"/>
+            <field type="text" name="org_id" hidden="yes" default="request:org_id"/>
+            <field type="text" name="study_id" hidden="yes" default="request:study_id"/>
 
+			<field type="separator" heading="Personal Profile"/>
 			<field type="composite"  name="fullName" >   <!-- show-child-caption="yes" -->
                 <field type="select" name="name_prefix" caption="Prefix" choices="schema-enum:Name_Prefix_Type" prepend-blank="yes"/>
-				<field type="text" name="name_last" size="16" caption="Last Name" required="yes"/>
+				<field type="text" name="name_last" size="16" caption="Last Name" required="yes" />
                 <field type="text" name="name_first" size="16" caption="First Name" required="yes" />
-                <field type="text" name="name_middle" size="2" caption="MI"/>
-                <field type="text" name="name_suffix" size="4" caption="Suffix"/>
+                <field type="text" name="name_middle" size="2" caption="MI" />
+                <field type="text" name="name_suffix" size="4" caption="Suffix" />
 			</field>
 
             <field type="separator" heading="Demographic Information"/>
@@ -99,9 +103,9 @@
                 <field type="zip-code" name="zip" caption="Zip Code" required="yes"/>
             </field>
             <field type="text" name="country" caption="Country" size="16" default="USA"/>
-
+            <!--
             <field type="separator" heading="Contact Methods"/>
-            <field type="composite" name="primary_contact" >     <!-- show-child-caption="yes" -->
+            <field type="composite" name="primary_contact" >
                 <field type="select" name="type" caption="Primary Contact Method" choices="schema-enum:Contact_Method_Type"
                     prepend-blank="yes" required="yes"/>
                 <field type="phone" name="phone_value"  size="30">
@@ -133,6 +137,7 @@
                         expression="control.options[control.selectedIndex].text.substring(0, 5) == 'Email'"/>
                 </field>
             </field>
+            -->
         </dialog>
     </dialogs>
 </xdm:container>

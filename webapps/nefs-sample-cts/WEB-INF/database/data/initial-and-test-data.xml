@@ -66,6 +66,15 @@
         <studyperson-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:PERSON 1"/>
         <studyperson-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:PERSON 2"/>
     </study>
+    <study ID="STUDY 1" study-code="AL" study-name="Ragweed Allergy" study-descr="Ragweed Allergy" rec-stat-id="Active" study-status="Proposed"
+        irb-name="Northwestern University" irb-number="IRB00000010">
+        <studyorg-relationship rec-stat-id="Active" rel-type-id="Sponsor" rel-entity-id="IDREF:ORG 1"/>
+        <studyorg-relationship rec-stat-id="Active" rel-type-id="Site" rel-entity-id="IDREF:ORG 2"/>
+        <study-contact rec-stat-id="Active" method-type="Telephone: Office" method-value="111-1234" phone-ac="800"/>
+        <studyperson-relationship rec-stat-id="Active" rel-type-id="Administrator" rel-entity-id="IDREF:PERSON 0"/>
+        <studyperson-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:PERSON 1"/>
+        <studyperson-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:PERSON 2"/>
+    </study>
 <!--person ID="PERSON_1">
 		<name-first>Harold</name-first>
 		<name-last>Scotts</name-last>
