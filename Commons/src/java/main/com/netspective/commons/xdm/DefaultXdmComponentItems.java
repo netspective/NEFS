@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.2 2003-03-14 04:04:19 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.3 2003-03-16 16:15:46 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -101,7 +101,7 @@ public class DefaultXdmComponentItems implements ConfigurationsManager, AccessCo
         getAccessControlLists().addAccessControlList(acl);
     }
 
-    public AccessControlList getDefaultAccessControList()
+    public AccessControlList getDefaultAccessControlList()
     {
         return getAccessControlLists().getAccessControlList();
     }
