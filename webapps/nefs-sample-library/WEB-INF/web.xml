@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: web.xml,v 1.19 2003-08-17 13:45:11 shahid.shah Exp $
+$Id: web.xml,v 1.20 2003-08-20 19:03:18 shahid.shah Exp $
 -->
 
 <web-app>
@@ -33,6 +33,18 @@ $Id: web.xml,v 1.19 2003-08-17 13:45:11 shahid.shah Exp $
     **       servlets so you may need additional servlet-mappings for the forwarded or included resources.           **
     *******************************************************************************************************************
     -->
+
+    <filter>
+        <filter-name>EncryptedParametersFilter</filter-name>
+        <filter-class>com.netspective.sparx.security.EncryptedParametersFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>EncryptedParametersFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
 	<servlet>
 		<servlet-name>SparxNavigationController</servlet-name>
 		<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
