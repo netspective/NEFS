@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.16 2003-06-09 06:44:47 aye.thu Exp $
+ * $Id: DialogField.java,v 1.17 2003-06-09 22:21:56 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -61,7 +61,8 @@ import java.io.Writer;
 import java.util.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import javax.servlet.http.Cookie;
 
 import org.apache.commons.logging.Log;
@@ -479,13 +480,23 @@ public class DialogField implements TemplateConsumer
     public void addConditional(DialogFieldConditionalAction action)
     {
         conditionalActions.addAction(action);
-        action.setSourceField(this);
         flags.setFlag(Flags.HAS_CONDITIONAL_DATA); // in case JavaScript needs it
     }
 
     public DialogFieldConditionalAction createConditional()
     {
-        return new DialogFieldConditionalAction();
+        return new DialogFieldConditionalAction(this);
+    }
+
+    public DialogFieldConditionalAction createConditional(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(DialogFieldConditionalAction.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { DialogField.class });
+            return (DialogFieldConditionalAction) c.newInstance(new Object[] { this });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
     public DialogFieldPopup getPopup()
