@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DataSourceNavigatorButtonsField.java,v 1.9 2003-09-14 17:04:39 shahid.shah Exp $
+ * $Id: DataSourceNavigatorButtonsField.java,v 1.10 2003-11-07 05:13:23 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -136,7 +136,7 @@ public class DataSourceNavigatorButtonsField extends DialogField
         if (dc instanceof QueryDialogContext)
         {
             QueryDialogContext qdc = (QueryDialogContext)dc;
-            HtmlTabularReport reportPanel = qdc.getReportPanel().getReport();
+            HtmlTabularReport reportPanel = qdc.getReportPanel().getReport(dc.getNavigationContext());
             if (reportPanel != null && reportPanel.getFlags().flagIsSet(HtmlTabularReport.Flags.SELECTABLE))
             {
                 selectableReport = true;
