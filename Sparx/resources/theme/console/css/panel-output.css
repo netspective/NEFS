@@ -34,3 +34,7 @@
 .panel-tab-output:visited { color: #8b0000; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
 .panel-tab-output:active { color: #8b0000; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
 .panel-tab-output:hover { color: black; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none }
+
+.panel-tree-collapse-output  { background: url(../images/panel/output/tree-collapse.gif) no-repeat; width: 10px; cursor: hand; }
+.panel-tree-expand-output  { background: url(../images/panel/output/tree-expand.gif) no-repeat; width: 10px; cursor: hand; }
+.panel-tree-leaf-output  { background: url(../images/panel/output/tree-leaf.gif) no-repeat; width: 10px; }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTablesPanel.java,v 1.2 2003-04-29 02:27:41 shahid.shah Exp $
+ * $Id: SchemaTablesPanel.java,v 1.3 2003-05-02 15:13:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -108,20 +108,23 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
     protected static class StructureRow
     {
         protected int level;
+        protected StructureRow parentRow;
         protected List ancestors;
         protected String heading;
         protected Schema.TableTreeNode tableTreeNode;
         protected EnumerationTable enumTable;
 
-        protected StructureRow(int level, String heading)
+        protected StructureRow(int level, StructureRow parentRow, String heading)
         {
             this.level = level;
+            this.parentRow = parentRow;
             this.heading = heading;
         }
 
         protected StructureRow(int level, Schema.TableTreeNode tableTreeNode, List ancestors)
         {
             this.level = level;
+            this.parentRow = (StructureRow) ancestors.get(0);
             this.ancestors = ancestors;
             this.tableTreeNode = tableTreeNode;
         }
@@ -129,8 +132,14 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
         protected StructureRow(int level, EnumerationTable enumTable, List ancestors)
         {
             this.level = level;
+            this.parentRow = (StructureRow) ancestors.get(0);
             this.ancestors = ancestors;
             this.enumTable = enumTable;
+        }
+
+        public StructureRow getParentRow()
+        {
+            return parentRow;
         }
 
         public Table getTable()
@@ -199,10 +208,10 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             Schema schema = schemas.get(i);
             Schema.TableTree tree = schema.getStructure();
 
-            StructureRow schemaRow = new StructureRow(0, "Schema: '" + schema.getName() + "'");
+            StructureRow schemaRow = new StructureRow(0, null, "Schema: '" + schema.getName() + "'");
             rows.add(schemaRow);
 
-            StructureRow appTablesRow = new StructureRow(1, "Application Tables");
+            StructureRow appTablesRow = new StructureRow(1, schemaRow, "Application Tables");
             rows.add(appTablesRow);
 
             List appTableAncestors = new ArrayList();
@@ -213,7 +222,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             for(int c = 0; c < children.size(); c++)
                 addStructurRow(rows, 2, (Schema.TableTreeNode) children.get(c), appTableAncestors);
 
-            StructureRow enumTablesRow = new StructureRow(1, "Enumeration Tables");
+            StructureRow enumTablesRow = new StructureRow(1, schemaRow, "Enumeration Tables");
             rows.add(enumTablesRow);
 
             List enumTableAncestors = new ArrayList();
@@ -315,7 +324,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
             public int getParentRow()
             {
-                return row-1;
+                return activeRow.getParentRow() != null ? rows.indexOf(activeRow.getParentRow()) : -1;
             }
         }
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.7 2003-04-30 21:46:48 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.8 2003-05-02 15:13:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -83,7 +83,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
     {
         public static final int SHOW_HEAD_ROW = BasicHtmlPanelSkin.Flags.STARTCUSTOM;
         public static final int SHOW_FOOT_ROW = SHOW_HEAD_ROW * 2;
-        public static final int STARTCUSTOM = SHOW_FOOT_ROW * 2;
+        public static final int ALLOW_TREE_EXPAND_COLLAPSE = SHOW_FOOT_ROW * 2;
+        public static final int STARTCUSTOM = ALLOW_TREE_EXPAND_COLLAPSE * 2;
 
         public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 2];
 
@@ -93,6 +94,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 FLAGDEFNS[i] = BasicHtmlPanelSkin.Flags.FLAGDEFNS[i];
             FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 0] = new FlagDefn(ACCESS_XDM, "SHOW_HEAD_ROW", SHOW_HEAD_ROW);
             FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "SHOW_FOOT_ROW", SHOW_FOOT_ROW);
+            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "ALLOW_TREE_EXPAND_COLLAPSE", ALLOW_TREE_EXPAND_COLLAPSE);
         }
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
@@ -105,7 +107,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
     {
         super(theme, panelStyle, fullWidth);
         setPanelStyle(panelStyle);
-        flags.setFlag(Flags.SHOW_HEAD_ROW | Flags.SHOW_FOOT_ROW);
+        flags.setFlag(Flags.SHOW_HEAD_ROW | Flags.SHOW_FOOT_ROW | Flags.ALLOW_TREE_EXPAND_COLLAPSE);
     }
 
     public BasicHtmlPanelSkin.Flags createFlags()
@@ -230,7 +232,16 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         int tableColsCount = getTableColumnsCount(rc);
 
         boolean hiearchical = ds.isHierarchical();
+        boolean allowTreeExpandCollapse = getFlags().flagIsSet(Flags.ALLOW_TREE_EXPAND_COLLAPSE);
         String panelId = rc.getPanel().getIdentifier();
+
+        StringBuffer treeScript = null;
+        if(hiearchical && allowTreeExpandCollapse)
+        {
+            treeScript = new StringBuffer();
+            treeScript.append("var activeTree = new Tree(\""+ panelId +"\");\n");
+            treeScript.append("var activeNode;\n");
+        }
 
         //TODO: Sparx 2.x conversion required
         //ResultSetScrollState scrollState = rc.getScrollState();
@@ -243,13 +254,25 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
             int hiearchyCol = 0;
             int activeLevel = 0;
+            int activeParent = -1;
 
             if(hiearchical)
             {
                 TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHierarchy();
                 hiearchyCol = activeHierarchy.getColumn();
                 activeLevel = activeHierarchy.getLevel();
-                writer.write("<tr id=\""+ panelId + "_row_" + rowsWritten + "\" parentRow=\""+ panelId + "_row_" + activeHierarchy.getParentRow() +"\">");
+                activeParent = activeHierarchy.getParentRow();
+
+                if(allowTreeExpandCollapse)
+                {
+                    if(activeParent == -1)
+                        treeScript.append("activeNode = activeTree.newNode(null, \"node_"+ rowsWritten +"\");\n");
+                    else
+                        treeScript.append("activeNode = activeTree.newNode(\"node_"+ activeHierarchy.getParentRow() +"\", \"node_"+ rowsWritten +"\");\n");
+                    writer.write("<tr id=\""+ panelId + "_node_" + rowsWritten + "\">");
+                }
+                else
+                    writer.write("<tr>");
             }
             else
                 writer.write("<tr>");
@@ -272,7 +295,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 if(hiearchical && (hiearchyCol == i) && activeLevel > 0)
                 {
                     style += "padding-left:" + (activeLevel * 15) + ";";
-                    data = "<span id=\""+ panelId + "_row_" + rowsWritten + "_img\" onclick=\"\"></span>" + data;
+                    if(allowTreeExpandCollapse)
+                        data = "<span id=\""+ panelId + "_node_" + rowsWritten + "_controller\" onclick=\"TREES.toggleNodeExpansion('"+ panelId +"', 'node_"+ rowsWritten +"')\" class=\"panel-tree-collapse-output\">&nbsp;</span>" + data;
                 }
 
                 String singleColumn =
@@ -308,6 +332,17 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         //    if(rowsWritten < scrollState.getRowsPerPage())
         //        scrollState.setNoMoreRows();
         //}
+
+        if(hiearchical && allowTreeExpandCollapse)
+        {
+            treeScript.append("TREES.registerTree(activeTree)\n");
+            treeScript.append("activeTree.initialize()\n");
+
+            writer.write("<script>\n");
+            writer.write(treeScript.toString());
+            writer.write("</script>");
+        }
+
 
         return rowsWritten;
     }

@@ -25,3 +25,7 @@
 
 .panel-content-output    { border: solid 1px #5a5ae6 }
 .panel-frame-table-action-output  { background-color: white }
+
+.panel-tree-collapse-output  { background: url(../images/panel/output/tree-collapse.gif) no-repeat; width: 10px; height: 18px; cursor: hand; }
+.panel-tree-expand-output  { background: url(../images/panel/output/tree-expand.gif) no-repeat; 10px; height: 18px; cursor: hand; }
+.panel-tree-leaf-output  { background: url(../images/panel/output/tree-leaf.gif) no-repeat; 10px; height: 18px; cursor: hand; }

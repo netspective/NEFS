@@ -1,6 +1,9 @@
 * [IMPORTANT] -- wherever a "close()" method is called for result sets and exceptions are being thrown, be sure to capture the close() in a try..finally block (reported by Aye)
 * [IMPORTANT] -- allowd for pooled/cached PreparedStatements in Queries (tests show that prepared statements are 20% slower than non-prepared unless they are reused)
+* Add feature to connection provider to detect connection leaks (a connection leak occurs when a connection obtained from the pool was not closed explicitly by calling close() and then was disposed by the garbage collector and returned to the connection pool).
+* Store call stack where database connections are opened so that if any are left open at the end of a program run we know where they were created.
 * Add "versioning of rows" feature into the framework -- perhaps a table-type called "Versioned" that would manage it?
+* Add support for "temporal data" that may "auto expire" or in other way are able to be retired, etc. (storing, querying, and updating historical and/or future data)
 * Add new 'denormalize-ref' foreign key type that would allow automated table denomalization to occur through DAL
 * Start using SPI for Query, Query Definition, Schema, etc
 * Add feature that would allow rows to be automatically read immediately after an insert/update in case triggers fire in the database
