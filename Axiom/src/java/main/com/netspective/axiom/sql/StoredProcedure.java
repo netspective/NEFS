@@ -68,7 +68,7 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
  * Class for handling stored procedure calls
  *
  * @author Aye Thu
- * @version $Id: StoredProcedure.java,v 1.10 2004-06-18 22:20:21 shahid.shah Exp $
+ * @version $Id: StoredProcedure.java,v 1.11 2004-06-18 22:29:02 shahid.shah Exp $
  */
 public class StoredProcedure
 {
@@ -513,9 +513,6 @@ public class StoredProcedure
         }
         finally
         {
-            if(stmt != null) stmt.close();
-            if (conn != null && closeConnection)
-                conn.close();
         }
     }
 
@@ -615,9 +612,6 @@ public class StoredProcedure
         }
         finally
         {
-            if(stmt != null) stmt.close();
-            if (conn != null && closeConnection)
-                conn.close();
         }
     }
 
