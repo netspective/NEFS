@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ****************************************************************************************
+     * Sparx standard configuration file (designed to be included in other Sparx XDM files. *
+     **************************************************************************************** -->
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <register-value-source class="com.netspective.sparx.value.source.ServletContextPathValueSource"/>
+
+    <register-theme class="com.netspective.sparx.theme.css.BasicTheme" resources-path="servlet-context-path:/sparx/resources/theme/slate"/>
+
+    <structure name="ace">
+        <page name="home" caption="Home"/>
+        <page name="presentation" caption="Presentation"/>
+        <page name="data-management" caption="Data Management"/>
+        <page name="documents" caption="Documents"/>
+    </structure>
+
+</xdm:container>
