@@ -40,18 +40,17 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.model.common.ContactMechanism;
 import com.netspective.medigy.reference.type.ContactMechanismType;
 
-import javax.ejb.Entity;
+import javax.ejb.CascadeType;
 import javax.ejb.Column;
+import javax.ejb.Entity;
+import javax.ejb.GeneratorType;
+import javax.ejb.Id;
 import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
-import javax.ejb.CascadeType;
-import javax.ejb.Table;
-import javax.ejb.Id;
-import javax.ejb.GeneratorType;
 import javax.ejb.OneToOne;
+import javax.ejb.Table;
 
 @Entity
 @Table(name = "Party_Contact_Mech")
@@ -62,7 +61,6 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
     private boolean nonSolicitation;
 
     private Party party;
-    private ContactMechanism contactMechanism;
     private ContactMechanismType type;
 
     public PartyContactMechanism()
@@ -79,18 +77,6 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
     protected void setPartyContactMechanismId(final Long partyContactMechanismId)
     {
         this.partyContactMechanismId = partyContactMechanismId;
-    }
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contact_mech_id")
-    public ContactMechanism getContactMechanism()
-    {
-        return contactMechanism;
-    }
-
-    public void setContactMechanism(final ContactMechanism contactMechanism)
-    {
-        this.contactMechanism = contactMechanism;
     }
 
     @Column(length = 1000)
