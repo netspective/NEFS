@@ -1,5 +1,6 @@
 <#include "*/library.ftl"/>
 
+<@panel heading="Active Project Source">
 <div class="textbox">
 
     The Sparx Project Source is the single entry point for Sparx component declarations and the actual file where you
@@ -48,5 +49,29 @@
             </td>
         </tr>
     </table>
+</@panel>
+    <p>
+    <@panel heading="How to Specify A Differnt Project Source">
+        <div class="textbox">
+        If you would like to change the location of the default project file, simply define a servlet
+        init parameter in <@webXmlFile/> with the appropriate alternate location.
+        <p>
+        Example:
+<@xmlCode>
+<web-app>
+      ...
+    <servlet>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+        <init-param>
+            <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
+            <param-value>--project=/WEB-INF/other/path/project.xml</param-value>
+        </init-param>
+    </servlet>
+      ...
+</web-app>
+</@xmlCode>
+        </div>
+    </@panel>
 
 </div>
