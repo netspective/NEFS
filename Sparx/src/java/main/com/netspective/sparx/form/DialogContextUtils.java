@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextUtils.java,v 1.1 2003-08-19 16:10:52 shahid.shah Exp $
+ * $Id: DialogContextUtils.java,v 1.2 2003-09-29 02:07:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -309,7 +309,7 @@ public class DialogContextUtils
         for(int i = 0; i < columnValues.size(); i++)
         {
             ColumnValue columnValue = columnValues.getByColumnIndex(i);
-            DialogField.State state = states.getState(columnValue.getColumn().getName(), null);
+            DialogField.State state = states.getState(columnValue.getColumn());
             if(state != null)
                 state.getValue().copyValueByReference(columnValue);
         }
@@ -333,7 +333,7 @@ public class DialogContextUtils
         for(int i = 0; i < columnValues.size(); i++)
         {
             ColumnValue columnValue = columnValues.getByColumnIndex(i);
-            DialogField.State state = states.getState(columnValue.getColumn().getName(), null);
+            DialogField.State state = states.getState(columnValue.getColumn());
             if(state != null)
                 columnValue.copyValueByReference(state.getValue());
         }
