@@ -39,31 +39,48 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.8 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: DialogFlags.java,v 1.9 2003-11-05 05:20:47 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
 
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
+/**
+ * Class representing all the flags that can be set on a dialog
+ */
 public class DialogFlags extends XdmBitmaskedFlagsAttribute
 {
     // NOTE: when adding new flags, make sure to create them before the
     // last CUSTOM_START entry. This is because QueryBuilderDialog
     // extends this class and has additional flags that is based on the value
     // of CUSTOM_START.
+
+    // retain all the values coming from request parameters
     public static final int RETAIN_ALL_REQUEST_PARAMS = 1;
+    // hide hints defined to read only fields
     public static final int HIDE_READONLY_HINTS = RETAIN_ALL_REQUEST_PARAMS * 2;
+    // encrypt multipart form data
     public static final int ENCTYPE_MULTIPART_FORMDATA = HIDE_READONLY_HINTS * 2;
+    // hide the heading of the dialog when dialod is in execution mode
     public static final int HIDE_HEADING_IN_EXEC_MODE = ENCTYPE_MULTIPART_FORMDATA * 2;
+    // hide read only fields unless they have values in them
     public static final int READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA = HIDE_HEADING_IN_EXEC_MODE * 2;
+    // include read only fields in the dialog onlny when they have data
     public static final int READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA = READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA * 2;
+    // completely disable client side validation
     public static final int DISABLE_CLIENT_VALIDATION = READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA * 2;
+    // treat the enter (return) key as the tab key
     public static final int TRANSLATE_ENTER_KEY_TO_TAB_KEY = DISABLE_CLIENT_VALIDATION * 2;
+    // shows a message if no data has been changed at submission of the dialog
     public static final int SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE = TRANSLATE_ENTER_KEY_TO_TAB_KEY * 2;
+    // disables all the javascript keypress handlers
     public static final int DISABLE_CLIENT_KEYPRESS_FILTERS = SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE * 2;
+    // hides the field hints until the focus is on the field
     public static final int HIDE_HINTS_UNTIL_FOCUS = DISABLE_CLIENT_KEYPRESS_FILTERS * 2;
+    // save the initial state of the dialog
     static public final int RETAIN_INITIAL_STATE = HIDE_HINTS_UNTIL_FOCUS * 2;
+    // automatically bind fields to database columns
     static public final int AUTO_BIND_FIELDS_TO_COLUMNS = RETAIN_INITIAL_STATE * 2;
     public static final int CUSTOM_START = AUTO_BIND_FIELDS_TO_COLUMNS * 2;
 
@@ -93,6 +110,10 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         return FLAG_DEFNS;
     }
 
+    /**
+     * Clear the flag
+     * @param flag
+     */
     public void clearFlag(long flag)
     {
         super.clearFlag(flag);
@@ -100,6 +121,10 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         //    clearFlagRecursively(flag);
     }
 
+    /**
+     * Sets the flag
+     * @param flag
+     */
     public void setFlag(long flag)
     {
         super.setFlag(flag);
