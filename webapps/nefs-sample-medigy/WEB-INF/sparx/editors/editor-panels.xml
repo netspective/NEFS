@@ -24,7 +24,7 @@
                         <param value="request:person_id"/>
                     </params>
                     <presentation>
-                        <panel>
+                        <panel no-data-msg="No contact methods found.">
                             <frame heading="Contact Information"/>
                             <report>
                                 <column hidden="yes"/>
@@ -57,7 +57,7 @@
                     <param value="request:person_id"/>
                 </params>
                 <presentation>
-                    <panel>
+                    <panel no-data-msg="No addresses found.">
                         <frame heading="Address"/>
                         <report>
                             <column hidden="yes"/>
@@ -105,7 +105,7 @@
 
         <panel-editor  name="relationship"  require-request-param="person_id">
             <frame heading="Relationships"/>
-            <element type="report" dialog-ref="personAttribute.relationship" pk-column-index="0">
+            <element type="report" caption="Relationship" dialog-ref="personAttribute.relationship" pk-column-index="0">
                 <query>
                     select
                     system_id,
@@ -124,7 +124,7 @@
                     <param value="request:person_id"/>
                 </params>
                 <presentation>
-                    <panel>
+                    <panel no-data-msg="No relationships found.">
                         <frame heading="Related Individuals"/>
                         <report>
                             <column hidden="yes"/>
