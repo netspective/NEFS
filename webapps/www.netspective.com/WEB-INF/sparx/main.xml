@@ -63,7 +63,7 @@
                         <page name="home-grown" caption="Home Grown" heading="Why not Create My Own Framework?">
                             <summary>
                                 You've got customers to delight and you don't really have time or money to spend months on
-                                creating your own frameworks that my not be reusable on your future projects.
+                                creating your own frameworks that may not be reusable on your future projects.
                             </summary>
                             <body source="products/frameworks/suite/competitors/home-grown.ftl"/>
                         </page>
