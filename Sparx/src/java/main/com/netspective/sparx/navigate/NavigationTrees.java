@@ -39,15 +39,13 @@
  */
 
 /**
- * $Id: NavigationTrees.java,v 1.2 2003-05-17 17:51:29 shahid.shah Exp $
+ * $Id: NavigationTrees.java,v 1.3 2003-08-17 00:16:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
