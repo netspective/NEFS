@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.63 2003-10-24 03:22:39 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.64 2003-11-02 17:29:06 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -84,6 +84,31 @@
                   reg-expr="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/"
                   invalid-reg-ex-message="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
         </validation>
+    </dialog-field-type>
+
+    <dialog-field-type name="credit-card-number" class="com.netspective.sparx.form.field.type.TextField">
+        <max-length>16</max-length>
+        <validation>
+            <rule class="com.netspective.commons.validate.rule.CreditCardValueValidationRule"/>
+        </validation>
+    </dialog-field-type>
+
+    <dialog-field-type name="credit-card-expiration-date" class="com.netspective.sparx.form.field.type.DateTimeField">
+        <max-length>7</max-length>
+        <data-type>month-and-year-only</data-type>
+        <future-only>yes</future-only>
+        <popup-calendar>no</popup-calendar>
+    </dialog-field-type>
+
+    <dialog-field-type name="credit-card-type" class="com.netspective.sparx.form.field.type.SelectField">
+        <style>combo</style>
+        <items>
+            <item caption="MasterCard" value="mc"/>
+            <item caption="VISA" value="visa"/>
+            <item caption="American Express" value="amex"/>
+            <item caption="Diners Club/Carte Blanche" value="diners"/>
+            <item caption="Discover" value="discover"/>
+        </items>
     </dialog-field-type>
 
     <dialog-field-conditional-action name="apply-flags" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag"/>
