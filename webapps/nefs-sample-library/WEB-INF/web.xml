@@ -26,10 +26,10 @@
     *********************************************************************
     -->
 
-    <!-- Setup Sparx configuration/specifications root file -->
+    <!-- Setup Sparx components project root file -->
     <context-param>
-      <param-name>com.netspective.sparx.CONF_FILE_NAME</param-name>
-      <param-value>/WEB-INF/sparx/components.xml</param-value>
+      <param-name>com.netspective.sparx.PROJECT_FILE_NAME</param-name>
+      <param-value>/WEB-INF/sparx/project.xml</param-value>
     </context-param>
 
 	<!-- Setup runtime environment -->
