@@ -38,14 +38,18 @@
         <page name="asset" caption="Assets">
             <page name="view" caption="View Assets" command="query,library.get-all-assets,-,-,-,record-editor-compressed"/>
             <page name="add" caption="Add Asset" command="dialog,schema.db.Asset,add"/>
-            <page name="edit" caption="Edit Asset" command="dialog,schema.db.Asset,edit" require-request-param="asset_id" retain-params="asset_id">
+            <page name="edit" caption="Edit Asset" require-request-param="asset_id" retain-params="asset_id">
                 <missing-params-body>
-                   Please choose a book to edit from the &lt;a href='view'&gt; assets list&lt;/a&gt;.
+                   Please choose an asset to edit from the &lt;a href='view'&gt; assets list&lt;/a&gt;.
                 </missing-params-body>
+                <panels style="horizontal">
+                    <panel type="command" command="dialog,schema.db.Asset,edit"/>
+                    <panel type="command" command="query,library.get-asset-loans,-,-,-,record-editor-compressed"/>
+                </panels>
             </page>
             <page name="delete" caption="Delete Asset" command="dialog,schema.db.Asset,delete" require-request-param="asset_id" retain-params="asset_id">
                 <missing-params-body>
-                   Please choose a book to delete from the &lt;a href='view'&gt; assets list&lt;/a&gt;.
+                   Please choose an asset to delete from the &lt;a href='view'&gt; assets list&lt;/a&gt;.
                 </missing-params-body>
             </page>
         </page>
@@ -55,12 +59,31 @@
             <page name="add" caption="Add Borrower" command="dialog,schema.db.borrower,add"/>
             <page name="edit" caption="Edit Borrower" command="dialog,schema.db.borrower,edit" require-request-param="borrower_id" retain-params="borrower_id">
                 <missing-params-body>
-                   Please choose a book to edit from the &lt;a href='view'&gt; borrowers list&lt;/a&gt;.
+                   Please choose a borrower to edit from the &lt;a href='view'&gt; borrowers list&lt;/a&gt;.
                 </missing-params-body>
+                <panels style="horizontal">
+                    <panel type="command" command="dialog,schema.db.Borrower,edit"/>
+                    <panel type="command" command="query,library.get-borrower-loans,-,-,-,record-editor-compressed"/>
+                </panels>
             </page>
             <page name="delete" caption="Delete Borrower" command="dialog,schema.db.borrower,delete" require-request-param="borrower_id" retain-params="borrower_id">
                 <missing-params-body>
-                   Please choose a book to delete from the &lt;a href='view'&gt; borrowers list&lt;/a&gt;.
+                   Please choose a borrower to delete from the &lt;a href='view'&gt; borrowers list&lt;/a&gt;.
+                </missing-params-body>
+            </page>
+        </page>
+
+        <page name="loan" caption="Loans">
+            <page name="view" caption="View Loans" command="query,library.get-all-asset-loans,-,-,-,record-editor-compressed"/>
+            <page name="add" caption="Add Loan" command="dialog,schema.db.Asset_Loan,add"/>
+            <page name="edit" caption="Edit Loan" command="dialog,schema.db.Asset_Loan,edit" require-request-param="asset_loan_id" retain-params="asset_loan_id">
+                <missing-params-body>
+                   Please choose an asset and select a loan from the &lt;a href='../asset/view'&gt;asset list&lt;/a&gt;.
+                </missing-params-body>
+            </page>
+            <page name="delete" caption="Delete loan" command="dialog,schema.db.Asset_Loan,delete" require-request-param="asset_loan_id" retain-params="asset_loan_id">
+                <missing-params-body>
+                    Please choose an asset and select a loan from the &lt;a href='../asset/view'&gt;asset list&lt;/a&gt;.
                 </missing-params-body>
             </page>
         </page>
@@ -193,6 +216,108 @@
             </presentation>
         </query>
 
+        <query name="get-all-asset-loans">
+
+            select asset_loan_id, Asset.name, last_name + ', ' + first_name, Loan_Type.caption, loan_begin_date, loan_end_date, returned
+            from Asset, Asset_Loan, Loan_Type, Borrower
+            where Asset.asset_id = Asset_Loan.asset_id and loan_type = Loan_Type.id and Asset_Loan.borrower_id = Borrower.borrower_id
+            order by loan_begin_date desc
+
+            <presentation>
+                <panel name="main">
+                    <frame heading="static:Loans for Asset"/>
+                    <report>
+                        <actions>
+                            <action type="add" caption="Add Loan" redirect="page-id:/asset/add"/>
+                            <action type="edit" redirect="page-id:/loan/edit?asset_loan_id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="page-id:/loan/delete?asset_loan_id=${0}"/>
+                        </actions>
+                        <column heading="ID" format="plain" redirect="page-id:/loan/edit?asset_loan_id=${0}"/>
+                        <column heading="Asset"/>
+                        <column heading="Borrower"/>
+                        <column heading="Type"/>
+                        <column heading="Begin"/>
+                        <column heading="End"/>
+                        <column heading="Returned"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="get-asset-loans">
+
+            select
+                asset_loan_id, last_name + ', ' + first_name, Loan_Type.caption, loan_begin_date, loan_end_date, returned
+            from
+                Asset_Loan, Loan_Type, Borrower
+            where
+                loan_type = Loan_Type.id and
+                Asset_Loan.borrower_id = Borrower.borrower_id and
+                Asset_Loan.asset_id = ?
+            order
+                by loan_begin_date desc
+
+            <params>
+                <param value="request:asset_id"/>
+            </params>
+
+            <presentation>
+                <panel name="main">
+                    <frame heading="static:Loans for Asset"/>
+                    <report>
+                        <actions>
+                            <action type="add" caption="Add Loan" redirect="page-id:/asset/add"/>
+                            <action type="edit" redirect="page-id:/loan/edit?asset_loan_id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="page-id:/loan/delete?asset_loan_id=${0}"/>
+                        </actions>
+                        <column heading="ID" format="plain" redirect="page-id:/loan/edit?asset_loan_id=${0}"/>
+                        <column heading="Borrower"/>
+                        <column heading="Type"/>
+                        <column heading="Begin"/>
+                        <column heading="End"/>
+                        <column heading="Returned"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="get-borrower-loans">
+
+            select
+                asset_loan_id, Asset.name, Loan_Type.caption, loan_begin_date, loan_end_date, returned
+            from
+                Asset, Asset_Loan, Loan_Type
+            where
+                loan_type = Loan_Type.id and
+                Asset_Loan.asset_id = Asset.asset_id and
+                Asset_Loan.borrower_id = ?
+            order by
+                loan_begin_date desc
+
+            <params>
+                <param value="request:borrower_id"/>
+            </params>
+
+            <presentation>
+                <panel name="main">
+                    <frame heading="static:Loans for Borrower"/>
+                    <report>
+                        <actions>
+                            <action type="add" caption="Add Loan" redirect="page-id:/asset/add"/>
+                            <action type="edit" redirect="page-id:/loan/edit?asset_loan_id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="page-id:/loan/delete?asset_loan_id=${0}"/>
+                        </actions>
+                        <column heading="ID" format="plain" redirect="page-id:/loan/edit?asset_loan_id=${0}"/>
+                        <column heading="Asset"/>
+                        <column heading="Type"/>
+                        <column heading="Begin"/>
+                        <column heading="End"/>
+                        <column heading="Returned"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
         <query name="get-all-borrowers">
 
             select borrower_id, last_name, first_name,
@@ -202,7 +327,7 @@
             order by last_name, first_name
 
             <presentation>
-                <panel name="main" height="300">
+                <panel name="main">
                     <frame heading="static:All available borrowers"/>
                     <report>
                         <actions>
