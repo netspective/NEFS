@@ -18,6 +18,7 @@
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
 * Consider ways of allowing Console to be extended in end-user applications by allowing "object insertion" capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
 
+* Check out http://www.jmyra.com features and incorporate them into Console
 * Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
 * Use http://erw.dsi.unimi.it/ (ERW) to help explain Axiom and its features, benefits, etc.
 * Add feature that allows Navigation tree to "remember" the last child it was viewing (using cookies) so that traversal will be easier for users (won't have to go down the hierarchy)
