@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlComparisonFactory.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: SqlComparisonFactory.java,v 1.2 2003-05-30 23:06:53 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -95,13 +95,18 @@ public class SqlComparisonFactory
         }
     }
 
-    static public SqlComparison getComparison(String name)
+    public static SqlComparison getComparison(String name)
     {
         return (SqlComparison) comparisonsMap.get(name);
     }
 
-    static public String[] getComparisonIdentifiers()
+    public static String[] getComparisonIdentifiers()
     {
         return (String[]) comparisonsMap.keySet().toArray(new String[comparisonsMap.size()]);
+    }
+
+    public static List getComparisonsList()
+    {
+        return comparisonsList;
     }
 }

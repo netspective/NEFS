@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportDataSource.java,v 1.7 2003-05-21 11:06:53 shahid.shah Exp $
+ * $Id: TabularReportDataSource.java,v 1.8 2003-05-30 23:08:01 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -70,6 +70,11 @@ public interface TabularReportDataSource
          */
         public int getParentRow();
     }
+
+    /**
+     * Create a scroll state that will manage the paging of this data source
+     */
+    public TabularReportDataSourceScrollState createScrollState(String identifier);
 
     /**
      * Close the data source and release all allocated resources immediately.
@@ -161,4 +166,7 @@ public interface TabularReportDataSource
      * @return TOTAL_ROWS_UNKNOWN if there is no way to know the total rows, otherwise the number of rows in the data source
      */
     public int getTotalRows();
+
+    public TabularReportValueContext getReportValueContext();
+    public void setReportValueContext(TabularReportValueContext vc);
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefinition.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryDefinition.java,v 1.2 2003-05-30 23:06:53 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -53,6 +53,8 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.Queries;
+import com.netspective.axiom.value.source.QueryDefnFieldsValueSource;
+import com.netspective.axiom.value.source.QueryDefnSelectsValueSource;
 
 public class QueryDefinition implements QueriesNameSpace
 {
@@ -104,6 +106,8 @@ public class QueryDefinition implements QueriesNameSpace
     private QueryDefnSelects selects = new QueryDefnSelects();
     private QueryDefnConditions defaultConditions = new QueryDefnConditions(null);
     private QueryDefnSqlWhereExpressions defaultWhereExprs = new QueryDefnSqlWhereExpressions();
+    private QueryDefnFieldsValueSource fieldsValueSource = new QueryDefnFieldsValueSource(this);
+    private QueryDefnSelectsValueSource selectsValueSource = new QueryDefnSelectsValueSource(this);
 
     public QueryDefinition()
     {
@@ -356,5 +360,15 @@ public class QueryDefinition implements QueriesNameSpace
     public void addSelect(QueryDefnSelect select)
     {
         selects.add(select);
+    }
+
+    public QueryDefnFieldsValueSource getFieldsValueSource()
+    {
+        return fieldsValueSource;
+    }
+
+    public QueryDefnSelectsValueSource getSelectsValueSource()
+    {
+        return selectsValueSource;
     }
 }

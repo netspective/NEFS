@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.5 2003-05-21 11:06:53 shahid.shah Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.6 2003-05-30 23:08:01 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -49,11 +49,129 @@ import com.netspective.commons.value.source.StaticValueSource;
 
 public abstract class AbstractTabularReportDataSource implements TabularReportDataSource
 {
+    //TODO: this does not handle non-scrollable data sources yet -- need to implement by using brute-force method
+    //      that will just go to the beginning of data source and use next() to scroll down to given row like Sparx 2.x
+    public class ScrollState implements TabularReportDataSourceScrollState
+    {
+        private String identifier;
+        private TabularReport report;
+        private int activePage;
+        private int rowsPerPage;
+        private int totalPages;
+        private boolean haveMoreRows;    // used only for non-scrollable data sources
+        private int rowsProcessed;       // used only for non-scrollable data sources
+        private boolean reachedEndOnce;  // used only for non-scrollable data sources
+
+        public ScrollState(String identifier)
+        {
+            setIdentifier(identifier);
+        }
+
+        public TabularReport getReport()
+        {
+            return report;
+        }
+
+        public void setReport(TabularReport report)
+        {
+            this.report = report;
+        }
+
+        public void accumulateRowsProcessed(int rowsProcessed)
+        {
+            if(! reachedEndOnce)
+                this.rowsProcessed += rowsProcessed;
+        }
+
+        public void close()
+        {
+            AbstractTabularReportDataSource.this.close();
+        }
+
+        public int getActivePage()
+        {
+            return activePage;
+        }
+
+        public TabularReportDataSource getDataSource()
+        {
+            return AbstractTabularReportDataSource.this;
+        }
+
+        public String getIdentifier()
+        {
+            return identifier;
+        }
+
+        public void setIdentifier(String identifier)
+        {
+            this.identifier = identifier;
+        }
+
+        public int getRowsPerPage()
+        {
+            return rowsPerPage;
+        }
+
+        public int getRowsProcessed()
+        {
+            return rowsProcessed;
+        }
+
+        public int getTotalPages()
+        {
+            return totalPages;
+        }
+
+        public void setActivePage(int page)
+        {
+            recordActivity();
+
+            this.activePage = page;
+            int activePageRowStart = ((activePage - 1) * rowsPerPage) + 1;
+            AbstractTabularReportDataSource.this.setActiveRow(activePageRowStart);
+        }
+
+        public void setRowsPerPage(int rowsPerPage)
+        {
+            this.rowsPerPage = rowsPerPage;
+
+            int totalRows = AbstractTabularReportDataSource.this.getTotalRows();
+            this.totalPages = totalRows / rowsPerPage;
+            if((totalPages * rowsPerPage) < totalRows)
+                totalPages++;
+        }
+
+        public void setPageDelta(int delta)
+        {
+            setActivePage(getActivePage() + delta);
+        }
+
+        public void setPageFirst()
+        {
+            setActivePage(0);
+        }
+
+        public void setPageLast()
+        {
+            setActivePage(getTotalPages());
+        }
+    }
+
     private static ValueSource defaultNoDataFoundMsg = new StaticValueSource("No data available.");
     protected TabularReportValueContext reportValueContext;
     protected long lastAccessed = System.currentTimeMillis();
 
-    public AbstractTabularReportDataSource(TabularReportValueContext reportValueContext)
+    public AbstractTabularReportDataSource()
+    {
+    }
+
+    public TabularReportValueContext getReportValueContext()
+    {
+        return reportValueContext;
+    }
+
+    public void setReportValueContext(TabularReportValueContext reportValueContext)
     {
         this.reportValueContext = reportValueContext;
     }
@@ -68,6 +186,11 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
     public abstract void setActiveRow(int rowNum);
     public abstract boolean isScrollable();
     public abstract int getTotalRows();
+
+    public TabularReportDataSourceScrollState createScrollState(String identifier)
+    {
+        return new ScrollState(identifier);
+    }
 
     public int getActiveRowNumber()
     {

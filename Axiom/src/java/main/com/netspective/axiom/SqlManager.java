@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.6 2003-05-28 02:59:27 shahbaz.javeed Exp $
+ * $Id: SqlManager.java,v 1.7 2003-05-30 23:06:53 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -48,6 +48,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -79,6 +80,9 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(SqlManager.class);
+
+    public static final String PREFIX_CUSTOM = "custom.";
+    public static final String PREFIX_SCHEMA = "schema.";
 
     protected QueriesNameSpace activeNameSpace;
     private QueriesNameSpace temporaryQueriesNameSpace;
@@ -174,6 +178,41 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
             return null;
         }
         return queryDefn;
+    }
+
+    public QueryDefinition getQueryDefinition(final String name, boolean checkSchemas)
+    {
+        if(name == null)
+            throw new RuntimeException("name is NULL");
+
+        if(name.startsWith(PREFIX_CUSTOM))
+            return getQueryDefinition(name.substring(PREFIX_CUSTOM.length()));
+        else if(name.startsWith(PREFIX_SCHEMA))
+        {
+            StringTokenizer st = new StringTokenizer(name, ".");
+            String schemaPrefix = st.nextToken();
+            String schemaName = st.nextToken();
+            Schema schema = getSchema(schemaName);
+            if(schema != null && st.hasMoreTokens())
+            {
+                String tableName = st.nextToken();
+                Table table = schema.getTables().getByName(tableName);
+                if(table != null)
+                    return table.getQueryDefinition();
+                else
+                {
+                    log.debug("Unable to find table '"+ tableName +"' from '"+ name +"' in getQueryDefinition(). Available: " + queryDefns);
+                    return null;
+                }
+            }
+            else
+            {
+                log.debug("Unable to find schema '"+ schemaName +"' from '"+ name +"' in getQueryDefinition(). Available: " + queryDefns);
+                return null;
+            }
+        }
+        else
+            return getQueryDefinition(name);
     }
 
     public QueryDefinition createQueryDefn()

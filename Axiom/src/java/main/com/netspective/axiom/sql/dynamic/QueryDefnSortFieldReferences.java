@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSortFieldReferences.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: QueryDefnSortFieldReferences.java,v 1.2 2003-05-30 23:06:53 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -68,5 +68,11 @@ public class QueryDefnSortFieldReferences
     public QueryDefnSortFieldReference get(int i)
     {
         return (QueryDefnSortFieldReference) list.get(i);
+    }
+
+    public void copy(QueryDefnSortFieldReferences refs)
+    {
+        for(int i = 0; i < refs.size(); i++)
+            add(refs.get(i));
     }
 }

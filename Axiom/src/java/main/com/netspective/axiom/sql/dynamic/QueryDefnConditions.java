@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnConditions.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryDefnConditions.java,v 1.2 2003-05-30 23:06:53 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -78,6 +78,12 @@ public class QueryDefnConditions
     public QueryDefnCondition get(int i)
     {
         return (QueryDefnCondition) list.get(i);
+    }
+
+    public void copy(QueryDefnConditions conds)
+    {
+        for(int i = 0; i < conds.size(); i++)
+            add(conds.get(i));
     }
 
     /**

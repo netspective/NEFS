@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultsValueSource.java,v 1.4 2003-05-24 20:27:57 shahid.shah Exp $
+ * $Id: QueryResultsValueSource.java,v 1.5 2003-05-30 23:06:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -152,7 +152,7 @@ public class QueryResultsValueSource extends AbstractValueSource
         if(dataSrcIdDelim != -1)
         {
             String srcParams = params.substring(0, dataSrcIdDelim);
-            int querySrcIdDelim = srcParams.indexOf('/');
+            int querySrcIdDelim = srcParams.lastIndexOf('/');
             if(querySrcIdDelim != -1)
             {
                 sourceId = ValueSources.getInstance().getValueSourceOrStatic(srcParams.substring(0, querySrcIdDelim));

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.9 2003-05-25 17:28:56 shahid.shah Exp $
+ * $Id: ReportTest.java,v 1.10 2003-05-30 23:08:01 shahid.shah Exp $
  */
 
 package com.netspective.commons.report;
@@ -72,7 +72,7 @@ public class ReportTest extends TestCase
 
         public TestReportDataSource(TabularReportValueContext vc)
         {
-            super(vc);
+            super();
             for(int i = 0; i < 25; i++)
             {
                 rows.add(new Object[] { "row " + i, new Integer(100 + i), new Double(200 + i + (200.0 + i)/1000.0) });

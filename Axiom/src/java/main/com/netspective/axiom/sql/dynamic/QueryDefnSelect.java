@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSelect.java,v 1.2 2003-04-13 02:36:50 shahid.shah Exp $
+ * $Id: QueryDefnSelect.java,v 1.3 2003-05-30 23:06:53 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -50,7 +50,10 @@ import java.sql.SQLException;
 import javax.naming.NamingException;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.axiom.sql.Query;
+import com.netspective.axiom.sql.QueryParameters;
+import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 import com.netspective.axiom.ConnectionContext;
@@ -78,7 +81,6 @@ public class QueryDefnSelect extends Query
     private QueryDefnFields groupByFields = new QueryDefnFields();
     private QueryDefnConditions conditions = new QueryDefnConditions(null);
     private QueryDefnSqlWhereExpressions whereExprs = new QueryDefnSqlWhereExpressions();
-    private List bindParams;
     private String whereClauseSql;
 
     public QueryDefnSelect(QueryDefinition queryDefn)
@@ -217,13 +219,6 @@ public class QueryDefnSelect extends Query
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public List getBindParams()
-    {
-        return bindParams;
-    }
-
-    /* ------------------------------------------------------------------------------------------------------------- */
-
     public String getWhereClauseSql()
     {
         return whereClauseSql;
@@ -250,10 +245,39 @@ public class QueryDefnSelect extends Query
                 return null;
             }
 
-            bindParams = selectStmt.getBindParams();
+            List bindParams = selectStmt.getBindParams();
+            if(bindParams != null)
+            {
+                QueryParameters params = createParams();
+                for(int i = 0; i < bindParams.size(); i++)
+                {
+                    QueryParameter param = params.createParam();
+                    param.setValue((ValueSource) params.get(i));
+                    params.addParam(param);
+                }
+
+            }
+
             isDirty = false;
         }
         return super.getSqlText(cc);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public void copy(QueryDefnSelect select)
+    {
+        distinctRows = select.distinctRowsOnly();
+
+        conditions.copy(queryDefn.getDefaultConditions());
+        conditions.copy(select.getConditions());
+        orderByFieldRefs.copy(select.getOrderByFieldRefs());
+        groupByFields.copy(select.getGroupByFields());
+
+        conditions.registerDynamicConditions();
+
+        whereExprs.copy(select.getWhereExprs());
+        whereExprs.copy(queryDefn.getWhereExpressions());
     }
 
 }

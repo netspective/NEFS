@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSqlWhereExpressions.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: QueryDefnSqlWhereExpressions.java,v 1.2 2003-05-30 23:06:53 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -69,4 +69,11 @@ public class QueryDefnSqlWhereExpressions
     {
         return (QueryDefnSqlWhereExpression) list.get(i);
     }
+
+    public void copy(QueryDefnSqlWhereExpressions exprs)
+    {
+        for(int i = 0; i < exprs.size(); i++)
+            add(exprs.get(i));
+    }
+
 }

@@ -39,23 +39,32 @@
  */
 
 /**
- * $Id: TabularReportDataSourceScrollState.java,v 1.1 2003-05-21 11:11:17 shahid.shah Exp $
+ * $Id: TabularReportDataSourceScrollState.java,v 1.1 2003-05-30 23:08:01 shahid.shah Exp $
  */
 
-package com.netspective.commons.report;
+package com.netspective.commons.report.tabular;
 
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 
 public interface TabularReportDataSourceScrollState
 {
+    public String getIdentifier();
+
+    public TabularReport getReport();
     public TabularReportDataSource getDataSource();
-    public void setDataSource(TabularReportDataSource dataSource);
 
     public int getActivePage();
     public void setActivePage(int page);
+    public void setPageDelta(int delta);
+    public void setPageFirst();
+    public void setPageLast();
 
     public int getRowsPerPage();
+    public int getTotalPages();
     public void setRowsPerPage(int rowsPerPage);
 
-    public void scrollToActivePage();
+    public int getRowsProcessed();
+    public void accumulateRowsProcessed(int rowsProcessed);
+
+    public void close();
 }
