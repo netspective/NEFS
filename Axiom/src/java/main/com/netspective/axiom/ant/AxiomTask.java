@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.12 2004-08-09 20:28:52 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.13 2004-08-11 04:14:14 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -80,6 +80,7 @@ public class AxiomTask extends XdmComponentTask
     private String dbPolicyIdMatchRegEx = DatabasePolicies.DBPOLICYIDMATCH_ALL;
     private String fileExtn;
     private boolean createDdlDropSql;
+    private boolean createDdlCommentObjects;
     private File importFile;
     private File graphVizErdFile;
     private File dtdFile;
@@ -97,6 +98,7 @@ public class AxiomTask extends XdmComponentTask
         dbPolicyIdMatchRegEx = DatabasePolicies.DBPOLICYIDMATCH_ALL;
         fileExtn = null;
         createDdlDropSql = false;
+        createDdlCommentObjects = true;
         importFile = null;
         graphVizErdFile = null;
         dsInfo = null;
@@ -485,6 +487,16 @@ public class AxiomTask extends XdmComponentTask
         this.createDdlDropSql = createDdlDropSql;
     }
 
+    public boolean isCreateDdlCommentObjects()
+    {
+        return createDdlCommentObjects;
+    }
+
+    public void setCreateDdlCommentObjects(boolean createDdlCommentObjects)
+    {
+        this.createDdlCommentObjects = createDdlCommentObjects;
+    }
+
     public void generateDdlFiles(SqlManager sqlManager)
     {
         if(getDestDir() == null)
@@ -505,7 +517,7 @@ public class AxiomTask extends XdmComponentTask
             File ddlFile = new File(getDestDir(), schema.getName() + "-" + policy.getDbmsIdentifier() + getFileExtn(".sql"));
             try
             {
-                policy.getDdlGenerator().generateSqlDdl(ddlFile, vc, schema, createDdlDropSql, true);
+                policy.getDdlGenerator().generateSqlDdl(ddlFile, vc, schema, createDdlDropSql, createDdlCommentObjects);
             }
             catch (Exception e)
             {
