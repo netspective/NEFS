@@ -159,14 +159,6 @@
                     </summary>
                     <body source="products/frameworks/try.ftl"/>
                 </page>
-
-                <page name="buy" caption="Buy" heading="NEFS is Very Affordable">
-                    <summary>
-                        Simple license provisions, complete source code, and a very affordable price let you easily
-                        justify the cost to your boss.
-                    </summary>
-                    <body source="products/frameworks/buy.ftl"/>
-                </page>
             </page>
         </page>
 
@@ -181,6 +173,25 @@
                         a variety of applications provided for all levels of programmer experience.
                     </summary>
                     <body source="downloads/frameworks/sample-apps.ftl"/>
+                </page>
+            </page>
+        </page>
+
+        <page class="app.AppPage" name="sales" caption="Sales">
+            <page name="frameworks" caption="Frameworks (NEF)">
+                <page name="pricing" caption="Pricing" heading="NEFS is Very Affordable">
+                    <summary>
+                        Simple license provisions, complete source code, and a very affordable price let you easily
+                        justify the cost to your boss.
+                    </summary>
+                    <body source="sales/frameworks/pricing.ftl"/>
+                </page>
+                <page name="licensing" caption="Licensing" heading="License Options Everyone Can Benefit From">
+                    <summary>
+                        Simple license provisions, complete source code, and a very affordable price let you easily
+                        justify the cost to your boss.
+                    </summary>
+                    <body source="sales/frameworks/licensing.ftl"/>
                 </page>
             </page>
         </page>
