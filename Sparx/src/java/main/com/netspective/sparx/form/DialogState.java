@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogState.java,v 1.1 2003-11-13 17:20:09 shahid.shah Exp $
+ * $Id: DialogState.java,v 1.2 2003-11-13 22:57:43 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -87,9 +87,11 @@ public class DialogState implements Serializable
     private int runSequence;
     private int execSequence;
     private String initialFieldStatesXml;
+    private boolean executeModeLocked;
 
     public DialogState()
     {
+        executeModeLocked = false;
         try
         {
             identifier = GloballyUniqueIdentifier.getRandomGUID(true);
@@ -175,9 +177,24 @@ public class DialogState implements Serializable
         incExecSequence();
     }
 
+    /**
+     * Checks to see if the dialog has already been executed once.
+     * @return
+     */
     public boolean isAlreadyExecuted()
     {
-        return executeMode && execSequence > 0;
+        return executeModeLocked;
+    }
+
+    /**
+     * Sets a flag to indicate that the dialog has been executed once. This will be used
+     * to make sure an already executed dialog will not be executed again unless
+     * a new request for the dialog is made. Essestially, this is used for taking care of
+     * users pressing BACK button on the browser and re-executing the dialog.
+     */
+    public void setAlreadyExecuted()
+    {
+        executeModeLocked = true;
     }
 
     public int getExecSequence()
