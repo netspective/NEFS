@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConcatenateValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: ConcatenateValueSource.java,v 1.3 2003-03-23 16:44:37 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -61,7 +61,7 @@ public class ConcatenateValueSource extends AbstractValueSource
         return IDENTIFIERS;
     }
 
-    public ConcatenateValueSource(String appendText, ValueSource valueSource, String prependText)
+    public ConcatenateValueSource(String prependText, ValueSource valueSource, String appendText)
     {
         this.appendText = appendText;
         this.prependText = prependText;
