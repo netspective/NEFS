@@ -37,7 +37,7 @@
     </navigation-tree>
 
     <dialogs package="test">
-        <dialog name="DialogTest_01_A"  retain-params="*">
+        <dialog name="DialogTest_01_A"  retain-params="*" hide-hints-until-focus="yes">
             <frame heading="Test String Fields"/>
             <field type="separator" heading="Text Fields"/>
             <field name="text_field_hidden"   type="text"   hidden="yes"    default="request:id"/>
