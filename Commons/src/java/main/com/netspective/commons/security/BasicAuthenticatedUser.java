@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.10 2003-08-31 03:09:49 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.11 2003-08-31 22:43:38 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -231,11 +231,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
     {
     }
 
-    public void registerLogout()
-    {
-    }
-
-    public void registerTimeOut()
+    public void registerLogout(AuthenticatedUserLogoutType type)
     {
     }
 }

@@ -39,60 +39,24 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.9 2003-08-31 22:43:38 shahid.shah Exp $
+ * $Id: AuthenticatedUserLogoutType.java,v 1.1 2003-08-31 22:43:38 shahid.shah Exp $
  */
-
 package com.netspective.commons.security;
 
-import java.security.Principal;
-import java.util.BitSet;
-
-import com.netspective.commons.acl.PermissionNotFoundException;
-import com.netspective.commons.acl.AccessControlListsManager;
-import com.netspective.commons.acl.RoleNotFoundException;
-import com.netspective.commons.value.ValueContext;
-
-public interface AuthenticatedUser extends Principal
+public class AuthenticatedUserLogoutType
 {
-    String PASSWORD_ENCRYPTION_SALT = "NC";
+    public static final AuthenticatedUserLogoutType USER_REQUEST = new AuthenticatedUserLogoutType("USER_REQUEST");
+    public static final AuthenticatedUserLogoutType SESSION_TERMINATED = new AuthenticatedUserLogoutType("SESSION_TERMINATED");
 
-    public void init(ValueContext vc) throws AuthenticatedUserInitializationException;
+    private final String myName; // for debug only
 
-    public String getUserName();
-    public void setUserName(String userName);
+    private AuthenticatedUserLogoutType(String name)
+    {
+        myName = name;
+    }
 
-    public String getUserId();
-    public void setUserId(String userId);
-
-    public BitSet getUserPermissions();
-
-    public String[] getUserRoleNames();
-
-    public void setPermissions(AccessControlListsManager aclsManager, String[] permissions) throws PermissionNotFoundException;
-
-    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws RoleNotFoundException;
-
-    public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException;
-
-    public boolean hasAnyPermission(AccessControlListsManager aclsManager, String[] permissionNames) throws PermissionNotFoundException;
-
-    public Object getAttribute(String attrName);
-
-    public void setAttribute(String attrName, Object attrValue);
-
-    public void removeAttribute(String attrName);
-
-    public String getEncryptedPassword();
-
-    public void setEncryptedPassword(String encryptedPassword);
-
-    public void setUnencryptedPassword(String unEncryptedPassword);
-
-    public void setRemembered(boolean isRemembered);
-
-    public boolean isRemembered();
-
-    public void registerLogin();
-
-    public void registerLogout(AuthenticatedUserLogoutType type);
+    public String toString()
+    {
+        return myName;
+    }
 }
