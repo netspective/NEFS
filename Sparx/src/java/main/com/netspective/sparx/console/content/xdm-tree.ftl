@@ -1,4 +1,5 @@
 <#include "*/library.ftl"/>
+<#setting number_format="0"/>
 
 <#assign dTreeRootUrl = vc.activeTheme.getResourceUrl('/dtree-2.05')/>
 <#assign classAliases = {
