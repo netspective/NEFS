@@ -1,41 +1,62 @@
 /* field block styles */
-tr.dialog-field-block           { color: #333;    font: normal 12px Verdana, Arial; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; }
-tr.dialog-field-block td        { padding: 3px 3px 3px 10px }
+tr.dialog-field-block           { color: #333;    font: normal 11px Verdana, serif; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; }
+tr.dialog-field-block td        { padding: 3px 3px 3px 4px }
 
-tr.dialog-field-block-errors    { color: #cc0000; font: normal 12px Verdana, Arial; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; }
+tr.dialog-field-block-errors    { color: #cc0000; font: normal 11px Verdana, serif; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: left; vertical-align: middle; }
 tr.dialog-field-block-errors td { padding: 3px 3px 3px 10px }
 
 /* these are the spans around the captions and inputs. The style settings should only enforce the font and text alignment with no block properties */
-span.dialog-field-caption           { color: #333;    font: normal 12px georgia, serif; text-align: left; vertical-align: middle; }
-span.dialog-field-caption-required  { color: #000000; font: bold   12px georgia, serif; width: auto }
-span.dialog-field-caption-required:before  { content: '*'; color: red}
-span.dialog-field-hint              { color: #696969; font: normal 10px georgia, serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top }
-span.dialog-field-hint-hidden       { color: #696969; font: normal 10px georgia, serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top; display: none;  }
-span.dialog-field-input             { color: #000; font: normal 12px Verdana, Arial; width: auto }
-span.dialog-field-input-required    { color: #000; font: normal 12px Verdana, Arial; width: auto }
+label.dialog-field-caption           { color: #333;    font: normal 11px Verdana, serif; text-align: left; vertical-align: middle; }
+label.dialog-field-caption-required  { color: #000000; font: bold   11px Verdana, serif; width: auto }
+label.dialog-field-caption-required:before  { content: '*'; color: red}
+span.dialog-field-hint              { color: #696969; font: normal 10px Verdana, serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top }
+span.dialog-field-hint-hidden       { color: #696969; font: normal 10px Verdana, serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top; display: none;  }
+span.dialog-field-input             { color: #000; font: normal 11px Verdana, serif; width: auto }
+span.dialog-field-input-required    { color: #000; font: normal 11px Verdana, serif; width: auto }
+
+/* this is a general style for all inputs */
+input:focus { border: 2px solid #3d80df; background: #edf3fe}
+input       { font: normal 10px Verdana, serif }
+select                  { font: normal 10px Verdana, serif }
+select:focus            { font: normal 10px Verdana, serif; border: 2px solid #3d80df}
+select option           { font: normal 10px Verdana, serif }
+select option:selected  { font: normal 10px Verdana, serif }
+
 span.dialog-field-errors            { color: red; font-size: 10px; font-family: Tahoma; }
 span.dialog-field-errors a          { color: red; font-size: 10px; font-family: Tahoma; }
 span.dialog-field-errors a:link     { color: red; font-size: 10px; font-family: Tahoma; }
 span.dialog-field-errors a:hover    { color: red; font-size: 10px; font-family: Tahoma; }
 span.dialog-field-errors a:visited  { color: red; font-size: 10px; font-family: Tahoma; }
 
+/* select field styles */
+span.dialog-field-input table.dialog-field-select-options    { width: auto; padding: 0px; border: 0px; margin: 0px}
+span.dialog-field-input table.dialog-field-select-options td { padding: 0px }
+/* select field's checkbox's label styles */
+span.dialog-field-input table.dialog-field-select-options label           { color: #000; font: normal 10px Verdana, serif; width: auto }
+span.dialog-field-input-required table.dialog-field-select-options label  { color: #000; font: normal 10px Verdana, serif; width: auto }
+
+
 /* separator field styles */
 tr.dialog-field-separator-block     { background-color: #f1eeee; text-align: left; vertical-align: bottom; }
 tr.dialog-field-separator-block td  { padding: 5px 4px 1px 5px; border-style: solid; border-width: 1px; border-color: #c0c0c0 #808080 #808080 #c0c0c0; width: auto}
-tr.dialog-field-separator-block td a         { color: #696969; font: bold small-caps 14px georgia, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
-tr.dialog-field-separator-block td a:link    { color: #696969; font: bold small-caps 14px georgia, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
-tr.dialog-field-separator-block td a:hover   { color: #696969; font: bold small-caps 14px georgia, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
+tr.dialog-field-separator-block td a         { color: #696969; font: bold small-caps 14px Verdana, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
+tr.dialog-field-separator-block td a:link    { color: #696969; font: bold small-caps 14px Verdana, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
+tr.dialog-field-separator-block td a:hover   { color: #696969; font: bold small-caps 14px Verdana, serif; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
 
 /* grid styles */
-span.dialog-field-grid-row-caption              { color: #000; font: normal 12px georgia, serif; }
-span.dialog-field-grid-column-caption           { color: #000; font: normal 12px georgia, serif; }
-span.dialog-field-grid-column-caption-required  { color: #000; font: bold   12px georgia, serif; }
+span.dialog-field-grid-row-caption              { color: #000; font: normal 11px Verdana, serif; }
+span.dialog-field-grid-column-caption           { color: #000; font: normal 11px Verdana, serif; }
+span.dialog-field-grid-column-caption-required  { color: #000; font: bold   11px Verdana, serif; }
 
 
 /* buttons styles */
 tr.dialog-buttons-block     { font: normal 10px georgia, normal; text-align: left; }
 tr.dialog-buttons-block td  { padding: 7px 7px 10px 5px }
 input.dialog-button         { color: #333; font: normal 10px Verdana; text-decoration: none; background-color: #dcdcdc; text-transform: uppercase; padding: 1px 3px; border: solid 1px #009;    }
+
+/* section styles */
+.dialog-section-field   { width: auto; padding: 0px; margin: 0px}
+.dialog-section-field  td { vertical-align: top; text-align: left ; padding-right: 5px}
 
 /*
  * ==================================================
