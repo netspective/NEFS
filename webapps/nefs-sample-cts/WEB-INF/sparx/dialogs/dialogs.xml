@@ -42,7 +42,7 @@
         <!--
            This dialog is for adding/updating/deleting a subject's profile information
         -->
-        <dialog name="profile" hide-hints-until-focus="yes"  auto-bind-fields-to-columns="yes">
+        <dialog name="profile" hide-hints-until-focus="yes">
             <field type="integer" name="person_id" hidden="yes" default="request:person_id"/>
             <!--field type="integer" name="person_type" caption="Person Type" hidden="yes"  default="schema-enum:cts."/-->
             <field type="text" name="org_id" hidden="yes" default="request:org_id"/>
