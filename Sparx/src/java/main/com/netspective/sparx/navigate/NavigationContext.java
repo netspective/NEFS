@@ -51,7 +51,6 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 {
     private NavigationTree ownerTree;
     private NavigationPage activePage;
-    private boolean activePageValid;
     private boolean redirectRequired;
     private boolean missingRequiredReqParams;
     private boolean missingRequiredPermissions;
@@ -88,7 +87,6 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
         if(activePage != null)
         {
-            activePageValid = activePage.isValid(this);
             if(activePage.getRedirect() != null)
                 redirectRequired = true;
         }
@@ -100,7 +98,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public boolean isActivePageValid()
     {
-        return activePageValid;
+        return activePage != null && activePage.isValid(this);
     }
 
     public boolean isRedirectRequired()
