@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSource.java,v 1.1 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: FilesystemEntriesValueSource.java,v 1.2 2003-03-16 17:04:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -133,7 +133,10 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
 
     public void setFilter(String filter)
     {
-        this.filter = "/" + filter + "/";
+        if(filter.startsWith("/"))
+            this.filter = filter;
+        else
+            this.filter = "/" + filter + "/";
     }
 
     public boolean accept(File file, String s)
