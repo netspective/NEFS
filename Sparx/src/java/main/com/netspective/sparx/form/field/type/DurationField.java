@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DurationField.java,v 1.7 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: DurationField.java,v 1.8 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -63,6 +63,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogValidationContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSource;
 
@@ -172,7 +173,7 @@ public class DurationField extends DialogField
             return;
 
         DialogContext dc = dvc.getDialogContext();
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
+        DialogFieldStates states = dc.getFieldStates();
 
         Date beginDate = (Date) states.getState(beginField).getValue().getValue();
         Date endDate = (Date) states.getState(endField).getValue().getValue();

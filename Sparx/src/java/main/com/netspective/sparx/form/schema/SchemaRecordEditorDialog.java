@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.8 2003-10-22 15:32:50 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.9 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -90,6 +90,7 @@ import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.Project;
 
@@ -352,7 +353,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         if(! stte.isTableFound())
             return;
 
-        DialogContext.DialogFieldStates states = sredc.getFieldStates();
+        DialogFieldStates states = sredc.getFieldStates();
         HttpServletRequest request = sredc.getHttpRequest();
 
         Attributes templateAttributes = templateElement.getAttributes();
@@ -398,7 +399,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public void populateFieldValuesUsingAttributes(SchemaRecordEditorDialogContext sredc, Row row, TemplateElement templateElement)
     {
-        DialogContext.DialogFieldStates states = sredc.getFieldStates();
+        DialogFieldStates states = sredc.getFieldStates();
         ColumnValues columnValues = row.getColumnValues();
 
         Attributes templateAttributes = templateElement.getAttributes();
@@ -479,7 +480,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public void populateValues(DialogContext dc, int formatType)
     {
-        if(dc.isInitialEntry())
+        if(dc.getDialogState().isInitialEntry())
         {
             if(dc.addingData() && ! getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.DONT_POPULATE_USING_REQUEST_PARAMS))
                 populateFieldValuesUsingRequestParameters(dc, insertDataTemplateProducer);
@@ -489,7 +490,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 try
                 {
                     cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
-                    switch((int) dc.getPerspectives().getFlags())
+                    switch((int) dc.getDialogState().getPerspectives().getFlags())
                     {
                         case DialogPerspectives.EDIT:
                         case DialogPerspectives.PRINT:
@@ -504,11 +505,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 }
                 catch (SQLException e)
                 {
-                    getLog().error("Error in populateValues for perspective " + dc.getPerspectives(), e);
+                    getLog().error("Error in populateValues for perspective " + dc.getDialogState().getPerspectives(), e);
                 }
                 catch (NamingException e)
                 {
-                    getLog().error("Error in populateValues for perspective " + dc.getPerspectives(), e);
+                    getLog().error("Error in populateValues for perspective " + dc.getDialogState().getPerspectives(), e);
                 }
                 finally
                 {
@@ -852,13 +853,13 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
         catch (Exception e)
         {
-            handlePostExecuteException(writer, dc, dc.getPerspectives() + ": unable to establish connection", e);
+            handlePostExecuteException(writer, dc, dc.getDialogState().getPerspectives() + ": unable to establish connection", e);
             return;
         }
 
         try
         {
-            switch((int) dc.getPerspectives().getFlags())
+            switch((int) dc.getDialogState().getPerspectives().getFlags())
             {
                 case DialogPerspectives.ADD:
                     addDataUsingTemplate(sredc, cc);
@@ -891,7 +892,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             {
                 getLog().error("Error while rolling back DML", e1);
             }
-            handlePostExecuteException(writer, dc, dc.getPerspectives().getFlagsText(), e);
+            handlePostExecuteException(writer, dc, dc.getDialogState().getPerspectives().getFlagsText(), e);
         }
     }
 }

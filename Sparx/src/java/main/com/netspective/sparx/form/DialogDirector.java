@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.13 2003-11-05 05:27:01 aye.thu Exp $
+ * $Id: DialogDirector.java,v 1.14 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -279,7 +279,7 @@ public class DialogDirector extends DialogField
         String submitCaption = (this.submitCaption != null) ? this.submitCaption.getTextValue(dc) : null;
         String cancelCaption = (this.cancelCaption != null) ? this.cancelCaption.getTextValue(dc) : null;
 
-        int dataCmd = (int) dc.getPerspectives().getFlags();
+        int dataCmd = (int) dc.getDialogState().getPerspectives().getFlags();
         switch(dataCmd)
         {
             case DialogPerspectives.ADD:
@@ -332,7 +332,7 @@ public class DialogDirector extends DialogField
             writer.write("' ");
             if(cancelActionUrl == null)
             {
-                String referer = dc.getOriginalReferer();
+                String referer = dc.getDialogState().getReferer();
                 if(referer != null)
                 {
                     writer.write("onclick=\"document.location = '");

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DirectorNextActionsSelectField.java,v 1.8 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: DirectorNextActionsSelectField.java,v 1.9 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -136,7 +136,7 @@ public class DirectorNextActionsSelectField extends SelectField
     public void makeStateChanges(DialogContext dc, int stage)
     {
         super.makeStateChanges(dc, stage);
-        if(stage != DialogContext.STATECALCSTAGE_FINAL)
+        if(stage != DialogContext.STATECALCSTAGE_AFTER_VALIDATION)
             return;
 
         ValueSource choices = getChoices();

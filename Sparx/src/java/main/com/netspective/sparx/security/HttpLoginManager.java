@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.19 2003-10-22 19:04:13 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.20 2003-11-13 17:30:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -552,7 +552,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         if(allowLoginAttempt(ldc))
         {
             // ok, we're not locked out so see if we're in execute mode
-            if(! ldc.inExecuteMode())
+            if(! ldc.getDialogState().isInExecuteMode())
             {
                 // we're not in execute mode so we need to present the login dialog
                 nc.getSkin().renderPageMetaData(writer, nc);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.6 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.7 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -61,6 +61,7 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.form.field.type.SelectField;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.ant.AntProject;
@@ -114,7 +115,7 @@ public class AntBuildDialog extends ConsoleDialog
     public void populateValues(DialogContext dc, int formatType)
     {
         super.populateValues(dc, formatType);
-        if(dc.isInitialEntry() && formatType == DialogContext.STATECALCSTAGE_INITIAL)
+        if(dc.getDialogState().isInitialEntry() && formatType == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION)
         {
             Project project = antProject.getProject(dc);
             dc.getFieldStates().getState("target").getValue().setTextValue(project.getDefaultTarget());
@@ -139,7 +140,7 @@ public class AntBuildDialog extends ConsoleDialog
 
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
+        DialogFieldStates states = dc.getFieldStates();
 
         Value projectValue = states.getState("project-file").getValue();
         Value targetValue = states.getState("target").getValue();

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.12 2003-10-26 19:08:26 shahid.shah Exp $
+ * $Id: SelectField.java,v 1.13 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -75,7 +75,6 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.source.StaticListValueSource;
 
 public class SelectField extends TextField
 {
@@ -434,7 +433,7 @@ public class SelectField extends TextField
                 values = dc.getRequest().getParameterValues(getHtmlFormControlId());
 
             // initial display of the dialog
-            if(dc.getRunSequence() == 1)
+            if(dc.getDialogState().getRunSequence() == 1)
             {
                 // if no request parameter is passed in and the XML defined default value exists
                 ValueSource defaultValue = getDefault();

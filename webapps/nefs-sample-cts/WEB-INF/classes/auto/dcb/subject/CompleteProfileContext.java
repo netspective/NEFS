@@ -11,7 +11,7 @@ public class CompleteProfileContext
 {
     public static final String DIALOG_ID = "subject.complete-profile";
     private DialogContext dialogContext;
-    private DialogContext.DialogFieldStates fieldStates;
+    private DialogFieldStates fieldStates;
 
     public CompleteProfileContext(DialogContext dc)
     {

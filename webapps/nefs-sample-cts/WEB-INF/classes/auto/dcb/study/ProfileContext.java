@@ -11,7 +11,7 @@ public class ProfileContext
 {
     public static final String DIALOG_ID = "study.profile";
     private DialogContext dialogContext;
-    private DialogContext.DialogFieldStates fieldStates;
+    private DialogFieldStates fieldStates;
 
     public ProfileContext(DialogContext dc)
     {

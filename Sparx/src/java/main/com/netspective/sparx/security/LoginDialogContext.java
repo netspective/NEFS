@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: LoginDialogContext.java,v 1.5 2003-08-30 13:07:15 shahid.shah Exp $
+ * $Id: LoginDialogContext.java,v 1.6 2003-11-13 17:30:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.security.LoginDialog;
 import com.netspective.commons.security.Crypt;
@@ -94,7 +95,7 @@ public class LoginDialogContext extends DialogContext
         if(rememberedUserId != null && rememberedEncPassword != null &&
            rememberedUserId.length() > 0 && rememberedEncPassword.length() > 0)
         {
-            DialogContext.DialogFieldStates states = getFieldStates();
+            DialogFieldStates states = getFieldStates();
             LoginDialog loginDialog = (LoginDialog) getDialog();
             states.getState(loginDialog.getUserIdFieldName()).getValue().setValue(rememberedUserId);
             states.getState(loginDialog.getPasswordFieldName()).getValue().setValue(rememberedEncPassword);

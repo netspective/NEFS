@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.11 2003-11-09 19:27:52 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.12 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -64,9 +64,9 @@ import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogSkin;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogState;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.panel.HtmlPanel;
 
 import java.util.StringTokenizer;
 import java.io.IOException;
@@ -215,7 +215,7 @@ public class DialogCommand extends AbstractHttpServletCommand
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
         if(perspective != null)
-            nc.getRequest().setAttribute(Dialog.PARAMNAME_PERSPECTIVE_INITIAL, perspective.getFlagsText());
+            nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, perspective.getFlagsText());
 
         Dialog dialog = nc.getDialogsManager().getDialog(dialogName);
         if(dialog == null)
@@ -234,7 +234,7 @@ public class DialogCommand extends AbstractHttpServletCommand
 
         DialogContext dc = dialog.createContext(nc, skin);
         if(debugFlags != null)
-            dc.getDebugFlags().setFlag(debugFlags.getFlags());
+            dc.getDialogState().getDebugFlags().setFlag(debugFlags.getFlags());
 
         dc.addRetainRequestParams(DIALOG_COMMAND_RETAIN_PARAMS);
 

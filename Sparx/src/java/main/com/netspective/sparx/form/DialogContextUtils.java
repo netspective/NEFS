@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextUtils.java,v 1.7 2003-11-13 11:21:47 shahid.shah Exp $
+ * $Id: DialogContextUtils.java,v 1.8 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -59,6 +59,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.DbmsSqlText;
@@ -88,7 +89,7 @@ public class DialogContextUtils
     {
         HttpServletRequest request = dc.getHttpRequest();
         Map params = request.getParameterMap();
-        DialogContext.DialogFieldStates fieldStates = dc.getFieldStates();
+        DialogFieldStates fieldStates = dc.getFieldStates();
         Iterator i = params.entrySet().iterator();
         while(i.hasNext())
         {
@@ -128,7 +129,7 @@ public class DialogContextUtils
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
-            DialogContext.DialogFieldStates fieldStates = dc.getFieldStates();
+            DialogFieldStates fieldStates = dc.getFieldStates();
             for(int i = 1; i <= colsCount; i++)
             {
                 String fieldName = rsmd.getColumnName(i).toLowerCase();
@@ -305,7 +306,7 @@ public class DialogContextUtils
 
     public void populateColumnValueWithFieldValue(DialogContext dc, ColumnValue columnValue, String fieldName)
     {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
+        DialogFieldStates states = dc.getFieldStates();
         DialogField.State state = states.getState(fieldName);
         if(state != null)
             columnValue.copyValueByReference(state.getValue());

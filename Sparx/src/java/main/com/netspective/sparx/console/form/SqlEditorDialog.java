@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlEditorDialog.java,v 1.4 2003-11-08 16:32:04 shahid.shah Exp $
+ * $Id: SqlEditorDialog.java,v 1.5 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -54,6 +54,7 @@ import com.netspective.sparx.console.form.ConsoleDialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.sql.Query;
 import com.netspective.sparx.command.HttpServletCommand;
 import com.netspective.sparx.Project;
@@ -83,7 +84,7 @@ public class SqlEditorDialog extends ConsoleDialog
     {
         super.populateValues(dc, formatType);
 
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
+        DialogFieldStates states = dc.getFieldStates();
         Value name = states.getState("name").getValue();
         if(! name.hasValue())
             name.setValue("temp-query-" + dc.hashCode());
@@ -93,7 +94,7 @@ public class SqlEditorDialog extends ConsoleDialog
     {
         try
         {
-            DialogContext.DialogFieldStates states = dc.getFieldStates();
+            DialogFieldStates states = dc.getFieldStates();
             String sql = states.getState("sql").getValue().getTextValue();
             String dataSource = states.getState("data-source").getValue().getTextValue();
             String name = states.getState("name").getValue().getTextValue();

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: RiskResponseDialog.java,v 1.8 2003-10-19 17:07:10 shahid.shah Exp $
+ * $Id: RiskResponseDialog.java,v 1.9 2003-11-13 17:32:49 shahid.shah Exp $
  */
 
 package app;
@@ -73,6 +73,7 @@ import auto.dal.db.vo.impl.RiskResponseVO;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.Project;
 import com.netspective.axiom.sql.Query;
@@ -107,7 +108,7 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
     {
         // get the names of all the risks so that we can add them appropriately
         List riskIdentifiers = new ArrayList();
-        DialogContext.DialogFieldStates fieldStates = dc.getFieldStates();
+        DialogFieldStates fieldStates = dc.getFieldStates();
         for(Iterator i = fieldStates.getStatesByQualifiedName().keySet().iterator(); i.hasNext(); )
         {
             String fieldName = (String) i.next();
@@ -123,9 +124,9 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
         if(dc.getAuthenticatedUser() == null || dc.isInConsole())
             return;
 
-        if(dc.isInitialEntry())
+        if(dc.getDialogState().isInitialEntry())
         {
-            DialogContext.DialogFieldStates fieldStates = dc.getFieldStates();
+            DialogFieldStates fieldStates = dc.getFieldStates();
 
             List riskIdentifiers = getRiskIdentifiers(dc);
             for(int i = 0; i < riskIdentifiers.size(); i++)
@@ -186,7 +187,7 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
         {
             RiskResponseTable riskResponseTable = DataAccessLayer.getInstance().getRiskResponseTable();
             cc = dc.getConnection(null, true);
-            DialogContext.DialogFieldStates fieldStates = dc.getFieldStates();
+            DialogFieldStates fieldStates = dc.getFieldStates();
 
             for(int i = 0; i < riskIdentifiers.size(); i++)
             {

@@ -11,7 +11,7 @@ public class LoginInfoContext
 {
     public static final String DIALOG_ID = "subject.login_info";
     private DialogContext dialogContext;
-    private DialogContext.DialogFieldStates fieldStates;
+    private DialogFieldStates fieldStates;
 
     public LoginInfoContext(DialogContext dc)
     {

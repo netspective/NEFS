@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogPerspectiveExprValueSource.java,v 1.1 2003-06-12 14:36:10 shahid.shah Exp $
+ * $Id: DialogPerspectiveExprValueSource.java,v 1.2 2003-11-13 17:30:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -91,7 +91,7 @@ public class DialogPerspectiveExprValueSource extends AbstractValueSource
         String expr = getSpecification().getParams();
         if(vc instanceof DialogContext)
         {
-            DialogPerspectives ddc = ((DialogContext) vc).getPerspectives();
+            DialogPerspectives ddc = ((DialogContext) vc).getDialogState().getPerspectives();
             switch((int) ddc.getFlags())
             {
                 case DialogPerspectives.ADD:

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.14 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.15 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -68,6 +68,7 @@ import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
 import com.netspective.sparx.form.field.type.SelectField;
 import com.netspective.sparx.form.field.type.TextField;
@@ -179,7 +180,7 @@ public class QueryBuilderDialog extends Dialog
                 return false;
 
             State valueState = dc.getFieldStates().getState(valueText);
-            return dc.inExecuteMode() ? valueState.hasRequiredValue() : true;
+            return dc.getDialogState().isInExecuteMode() ? valueState.hasRequiredValue() : true;
         }
 
     }
@@ -388,9 +389,9 @@ public class QueryBuilderDialog extends Dialog
         }
 
         QueryBuilderDialogFlags dFlags = (QueryBuilderDialogFlags) getDialogFlags();
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
+        DialogFieldStates states = dc.getFieldStates();
 
-        if(dc.inExecuteMode() && stage == DialogContext.STATECALCSTAGE_FINAL)
+        if(dc.getDialogState().isInExecuteMode())
         {
             states.getState("conditions_separator").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
             states.getState("results_separator").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
@@ -419,7 +420,7 @@ public class QueryBuilderDialog extends Dialog
 
     public QueryDefnSelect createSelect(DialogContext dc) throws QueryDefnFieldNotFoundException, QueryDefnSqlComparisonNotFoundException, QueryDefinitionException
     {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
+        DialogFieldStates states = dc.getFieldStates();
         QueryDefnSelect result = new QueryDefnSelect(queryDefn);
 
         boolean customizing = true;
@@ -504,7 +505,7 @@ public class QueryBuilderDialog extends Dialog
     protected String getFirstAvailableFieldValue(DialogContext dc, String[] fieldNames, String defaultValue)
     {
         DialogFields fields = getFields();
-        DialogContext.DialogFieldStates dfStates = dc.getFieldStates();
+        DialogFieldStates dfStates = dc.getFieldStates();
 
         for(int i = 0; i < fieldNames.length; i++)
         {
@@ -553,17 +554,8 @@ public class QueryBuilderDialog extends Dialog
             HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
-            /*
-                If the state is not found, then we have not executed at all yet;
-                if the state is found and it's the initial execution then it means
-                that the user has pressed the "back" button -- which means we
-                should reset the state management.
-             */
-            if(scrollStateById == null || (scrollStateById != null && dc.isInitialExecute()))
+            if(scrollStateById == null)
             {
-                // if our transaction does not have a scroll state, but there is an active scroll state available, then it
-                // means that we need to close the previous one and remove the attribute so that the connection can be
-                // closed and returned to the pool
                 HtmlTabularReportDataSourceScrollState activeScrollState = scrollStatesManager.getActiveScrollState(dc);
 
                 String resortBy = dc.getRequest().getParameter(QBDIALOG_RESORT_PARAMNAME);
@@ -602,7 +594,7 @@ public class QueryBuilderDialog extends Dialog
 
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
+        DialogFieldStates states = dc.getFieldStates();
         String debugStr = states.getState("options.debug").getValue().getTextValue();
         if(debugStr != null && debugStr.equals("1"))
         {
@@ -717,7 +709,7 @@ public class QueryBuilderDialog extends Dialog
         if(!contextPreparedAlready)
             prepareContext(dc);
 
-        if(dc.inExecuteMode())
+        if(dc.getDialogState().isInExecuteMode())
         {
             execute(writer, dc);
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultLoginAttemptsManager.java,v 1.2 2003-08-31 23:01:03 shahid.shah Exp $
+ * $Id: DefaultLoginAttemptsManager.java,v 1.3 2003-11-13 17:30:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -109,7 +109,7 @@ public class DefaultLoginAttemptsManager implements HttpLoginAttemptsManager
         int attemptCount = (attemptCountTemp == null ? 0 : attemptCountTemp.intValue()) + 1;
 
         // only store the attempt count increase if the dialog is past "input" mode (meaning it was submitted)
-        if(loginDialogContext.getRunSequence() > 1)
+        if(loginDialogContext.getDialogState().getRunSequence() > 1)
         {
             Integer saveAttemptCount = new Integer(attemptCount);
 

@@ -51,12 +51,11 @@
  */
 
 /**
- * $Id: DialogFieldFlags.java,v 1.4 2003-10-29 13:29:13 shahid.shah Exp $
+ * $Id: DialogFieldFlags.java,v 1.5 2003-11-13 17:30:51 shahid.shah Exp $
  */
 package com.netspective.sparx.form.field;
 
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.sparx.form.DialogContext;
 
 /**
  */
@@ -197,7 +196,7 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
         }
         else if (state != null && state.getField().carryFlag(flag))
         {
-            DialogContext.DialogFieldStates fieldStates = state.getDialogContext().getFieldStates();
+            DialogFieldStates fieldStates = state.getDialogContext().getFieldStates();
             DialogFields children = state.getField().getChildren();
             if (children != null)
             {
@@ -225,7 +224,7 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
         }
         else if (state != null && state.getField().carryFlag(flag))
         {
-            DialogContext.DialogFieldStates fieldStates = state.getDialogContext().getFieldStates();
+            DialogFieldStates fieldStates = state.getDialogContext().getFieldStates();
             DialogFields children = state.getField().getChildren();
             if (children != null)
             {

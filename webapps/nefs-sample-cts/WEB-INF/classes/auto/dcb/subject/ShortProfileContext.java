@@ -11,7 +11,7 @@ public class ShortProfileContext
 {
     public static final String DIALOG_ID = "subject.short-profile";
     private DialogContext dialogContext;
-    private DialogContext.DialogFieldStates fieldStates;
+    private DialogFieldStates fieldStates;
 
     public ShortProfileContext(DialogContext dc)
     {

@@ -47,6 +47,7 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
 import com.netspective.sparx.form.field.type.BooleanField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDestination;
@@ -72,7 +73,7 @@ import java.io.Writer;
 import java.sql.SQLException;
 
 /**
- * $Id: QuerySelectDialog.java,v 1.9 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: QuerySelectDialog.java,v 1.10 2003-11-13 17:30:51 shahid.shah Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -164,11 +165,11 @@ public class QuerySelectDialog extends QueryBuilderDialog
             field = fields.get(i);
             field.makeStateChanges(dc, stage);
         }
-        DialogContext.DialogFieldStates fieldStates = dc.getFieldStates();
+        DialogFieldStates fieldStates = dc.getFieldStates();
         fieldStates.getState(QSDIALOG_QUERYDEFN_NAME_PASSTHRU_FIELDNAME).getValue().setTextValue(getQueryDefn().getName());
         fieldStates.getState(QSDIALOG_DIALOG_NAME_PASSTHRU_FIELDNAME).getValue().setTextValue(getName());
         QueryBuilderDialogFlags dFlags = (QueryBuilderDialogFlags) getDialogFlags();
-        if(dc.inExecuteMode() && stage == DialogContext.STATECALCSTAGE_FINAL)
+        if(dc.getDialogState().isInExecuteMode())
         {
             int flag =
                     dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA) ? DialogFieldFlags.UNAVAILABLE : DialogFieldFlags.READ_ONLY;
@@ -197,7 +198,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
 
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
+        DialogFieldStates states = dc.getFieldStates();
         if(getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
         {
             String debugStr = states.getState("options.debug").getValue().getTextValue();
@@ -314,13 +315,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
             HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
-            /*
-                If the state is not found, then we have not executed at all yet;
-                if the state is found and it's the initial execution then it means
-                that the user has pressed the "back" button -- which means we
-                should reset the state management.
-             */
-            if(scrollStateById == null || (scrollStateById != null && dc.isInitialExecute()))
+            if(scrollStateById == null)
             {
                 // if our transaction does not have a scroll state, but there is an active scroll state available, then it
                 // means that we need to close the previous one and remove the attribute so that the connection can be

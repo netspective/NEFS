@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.11 2003-11-07 05:01:49 aye.thu Exp $
+ * $Id: QueryDialog.java,v 1.12 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -59,6 +59,7 @@ import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.type.IntegerField;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
@@ -343,13 +344,8 @@ public class QueryDialog extends Dialog
         {
             HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
-            /*
-                If the state is not found, then we have not executed at all yet;
-                if the state is found and it's the initial execution then it means
-                that the user has pressed the "back" button -- which means we
-                should reset the state management.
-             */
-            if(scrollStateById == null || (scrollStateById != null && dc.isInitialExecute()))
+
+            if(scrollStateById == null)
             {
                 // if our transaction does not have a scroll state, but there is an active scroll state available, then it
                 // means that we need to close the previous one and remove the attribute so that the connection can be
@@ -385,8 +381,8 @@ public class QueryDialog extends Dialog
     public void makeStateChanges(DialogContext dc, int stage)
     {
         QueryDialogContext qdc = (QueryDialogContext) dc;
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
-        if(dc.inExecuteMode() && stage == DialogContext.STATECALCSTAGE_FINAL)
+        DialogFieldStates states = dc.getFieldStates();
+        if(dc.getDialogState().isInExecuteMode())
         {
             //DialogField.State state = dc.getFieldStates().getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME);
             //rowsPerPage =  state.getValue().getIntValue();

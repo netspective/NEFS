@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.47 2003-11-07 17:43:31 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.48 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -217,7 +217,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         {
             stateFlags.copy(getFlags());
 
-            if(dc.getRunSequence() == 1 && stateFlags.flagIsSet(DialogFieldFlags.PERSIST))
+            if(stateFlags.flagIsSet(DialogFieldFlags.PERSIST) && dc.getDialogState().isInLoadPersistentFieldDataMode())
             {
                 Cookie[] cookies = dc.getHttpRequest().getCookies();
                 if(cookies != null)
@@ -231,7 +231,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                 }
             }
 
-            switch((int) dc.getPerspectives().getFlags())
+            switch((int) dc.getDialogState().getPerspectives().getFlags())
             {
                 case DialogPerspectives.ADD:
                     // when in "add" mode, auto generated primary keys should not be on the form
@@ -1354,7 +1354,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
      */
 	public void makeStateChanges(DialogContext dc, int stage)
 	{
-		if (stage == DialogContext.STATECALCSTAGE_INITIAL)
+		if (stage == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION)
 		{
 			for (int i = 0; i < conditionalActions.size(); i++)
 			{
@@ -1390,7 +1390,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 		if (textValue == null)
 			textValue = dc.getRequest().getParameter(htmlFormControlId);
 
-		if (dc.getRunSequence() == 1)
+		if (dc.getDialogState().getRunSequence() == 1)
 		{
 			if ((textValue != null && textValue.length() == 0 && defaultValue != null) ||
 				(textValue == null && defaultValue != null))

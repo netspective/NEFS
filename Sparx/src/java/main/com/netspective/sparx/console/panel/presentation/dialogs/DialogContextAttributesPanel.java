@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextAttributesPanel.java,v 1.8 2003-07-29 21:11:29 shahid.shah Exp $
+ * $Id: DialogContextAttributesPanel.java,v 1.9 2003-11-13 17:30:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -115,12 +115,11 @@ public class DialogContextAttributesPanel extends DialogDetailPanel
             result.add(createAttribute("Dialog Class", rc.getSkin().constructClassRef(dialogContext.getDialog().getClass())));
             result.add(createAttribute("Dialog Context Class", rc.getSkin().constructClassRef(dialogContext.getClass())));
             result.add(createAttribute("Form Name", dialogContext.getDialog().getHtmlFormName()));
-            result.add(createAttribute("Run Sequence", new Integer(dialogContext.getRunSequence())));
-            result.add(createAttribute("Active Mode", new Character(dialogContext.getActiveMode())));
-            result.add(createAttribute("Next Mode", new Character(dialogContext.getNextMode())));
+            result.add(createAttribute("Run Sequence", new Integer(dialogContext.getDialogState().getRunSequence())));
+            result.add(createAttribute("Active Mode", dialogContext.getDialogState().getActiveModeText()));
             result.add(createAttribute("Validation Stage", new Integer(dialogContext.getValidationContext().getValidationStage())));
             result.add(createAttribute("Is Pending", new Boolean(dialogContext.isPending())));
-            result.add(createAttribute("Data Command", dialogContext.getPerspectives().getFlagsText()));
+            result.add(createAttribute("Data Command", dialogContext.getDialogState().getPerspectives().getFlagsText()));
             String XML = null;
             try
             {
