@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.87 2004-09-24 00:50:07 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.88 2004-10-11 00:49:09 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -22,6 +22,7 @@
     <value-source class="com.netspective.sparx.value.source.SchemaRecordEditorLastAddedPrimaryKeyValueSource"/>
     <value-source class="com.netspective.sparx.value.source.ActivePageUrlValueSource"/>
     <value-source class="com.netspective.sparx.value.source.ThemeResourceUrlValueSource"/>
+    <value-source class="com.netspective.sparx.value.source.URLEncoderWrapperValueSource"/>
 
     <command class="com.netspective.sparx.command.RedirectCommand"/>
     <command class="com.netspective.sparx.command.DialogCommand"/>
