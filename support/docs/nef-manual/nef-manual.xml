@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-05 21:03:35 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-06 16:45:00 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -3976,7 +3976,63 @@ id="value-source-eg-5" /></programlisting>
     <section>
       <title>Sharing of NEF Objects Across Threads</title>
 
-      <para></para>
+      <para>The NEF is designed for complex multi-user and multi-threaded
+      applications and is thread-safe. In order to help ensure that a large
+      number of users of a large application don&#39;t end up using too many
+      system resources many objects and instances are shared across users and
+      threads. In fact, almost any object that does not end in
+      &#34;Context&#34; is generally shared. For example, navigation trees,
+      navigation pages, forms (dialogs), queries, schemas, etc. are all shared
+      across users. To help protect users from modifying each other&#39;s
+      data, specific state classes are used to manage per-user interactions
+      with the frameworks. Here are some examples:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term>Navigation</term>
+
+          <listitem>
+            <para>All navigation trees and navigation pages (<sgmltag
+            class="starttag">navigation-tree</sgmltag>, <sgmltag
+            class="starttag">page</sgmltag>, <sgmltag class="starttag">body</sgmltag>
+            etc.) are shared. The <classname>com.netspective.navigate.NavigationContext</classname>
+            class manages the per-user interaction. For every request/response
+            cycle of the web application process, users will use the same
+            instances of the structural elements (trees, pages, bodies, etc)
+            but will have their own state object (the <classname>NavigationContext</classname>)
+            which manages a particular the individual user&#39;s navigation
+            state (like what page they are on). If there are any value sources
+            defined for page captions, headings or other values then the
+            <classname>NavigationContext</classname> is the Value Context that
+            is used for resolving the value source expressions. This way,
+            value source <emphasis>values</emphasis> may be dynamic per-user
+            yet they can share the definition in the XML files.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>Forms and Dialogs</term>
+
+          <listitem>
+            <para>All forms (dialogs), form fields, validation rules and
+            criteria (<sgmltag class="starttag">dialog</sgmltag>, <sgmltag
+            class="starttag">field</sgmltag>, <sgmltag class="starttag">validation</sgmltag>
+            etc.) are shared. The com.netspective.sparx.form.DialogContext
+            class manages the per-user interaction. For every request/response
+            cycle of the web application process, users will use the same
+            instances of the structural elements (dialogs, fields, etc) but
+            will have their own state object (the <classname>DialogContext</classname>)
+            which manages a particular the individual user&#39;s form state
+            (like what values were typed in, if there are any validation
+            errors, etc). If there are any value sources defined for dialog
+            headings, field captions, message text, or other values then the
+            <classname>DialogContext</classname> is the Value Context that is
+            used for resolving the value source expressions. This way, value
+            source <emphasis>values</emphasis> may be dynamic per-user yet
+            they can share the definition in the XML files.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
     </section>
   </chapter>
 
@@ -4075,7 +4131,7 @@ id="value-source-eg-5" /></programlisting>
       </section>
 
       <section>
-        <title>Overview of Navigation Tags</title>
+        <title>Navigation Tag Descriptions</title>
 
         <para>The following tags are used in the <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename>
         file to declare navigation rules and actions.</para>
@@ -4092,7 +4148,11 @@ id="value-source-eg-5" /></programlisting>
               be unique across all navigation trees. The <sgmltag
               class="attribute">default</sgmltag> attribute may be set to
               <sgmltag class="attvalue">yes</sgmltag> to make it the default
-              tree.</para>
+              tree. Each <sgmltag class="starttag">navigation-tree</sgmltag>
+              tag ends up as an instance of the <classname>com.netspective.sparx.navigate.NavigationTree</classname>
+              class. There is only one instance of each navigation tree that
+              you define and the definition is shared across all users and
+              threads.</para>
             </listitem>
           </varlistentry>
 
@@ -4104,7 +4164,11 @@ id="value-source-eg-5" /></programlisting>
               definition of a single page and appears under the <sgmltag
               class="starttag">navigation-tree</sgmltag> tag. The <sgmltag
               class="attribute">name</sgmltag> attribute is required and must
-              be unique within the navigation tree in which it is defined.</para>
+              be unique within the navigation tree in which it is defined.
+              Each <sgmltag class="starttag">page</sgmltag> tag ends up as an
+              instance of the <classname>com.netspective.sparx.navigate.NavigationPage</classname>
+              class. There is only one instance of each page that you define
+              and the definition is shared across all users and threads.</para>
             </listitem>
           </varlistentry>
 
@@ -4115,7 +4179,13 @@ id="value-source-eg-5" /></programlisting>
               <para>The <sgmltag class="starttag">body</sgmltag> tag starts a
               definition of a page body and appears under the <sgmltag
               class="starttag">page</sgmltag> tag. Its contents are handled by
-              the FreeMarker templating engine.</para>
+              the FreeMarker templating engine. Each <sgmltag class="starttag">body</sgmltag>
+              tag ends up as an instance of the <classname>com.netspective.commons.template.TemplateProcessor</classname>
+              interface. The default implementation is the
+              <classname>com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor</classname>
+              class. So, unless you override the <sgmltag class="starttag">body</sgmltag>
+              tag&#39;s <sgmltag class="attribute">class</sgmltag> attribute
+              the body will be processed as a FreeMarker template.</para>
             </listitem>
           </varlistentry>
 
@@ -4127,7 +4197,9 @@ id="value-source-eg-5" /></programlisting>
               a definition of a page body and appears under the <sgmltag
               class="starttag">page</sgmltag> tag. Its contents are handled by
               Sparx by laying out pre-defined panels similar to the way
-              portals lay out their content.</para>
+              portals lay out their content. The <sgmltag class="starttag">panels</sgmltag>
+              tag ends up as an instance of the <classname>com.netspective.sparx.panel.HtmlLayoutPanel</classname>
+              class.</para>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -4154,22 +4226,6 @@ id="value-source-eg-5" /></programlisting>
              &#60;panel type=&#34;command&#34; command=&#34;query,org.get-sponsor-info-by-id,-,-,-,detail-compressed&#34;/&#62;
              &#60;panel type=&#34;command&#34; command=&#34;query,org.get-org-addresses-by-id,-,-,-,report-compressed&#34; /&#62;
         &#60;/panels&#62;
-    &#60;/page&#62;
-
-    &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
-role="bold">redirect</emphasis>=&#34;vs-expr:${servlet-context-uri:server-root}/nefs-sampler&#34;/&#62; 
-    &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
-role="bold">include</emphasis>=&#34;/some/file.jsp&#34;/&#62; 
-    &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
-role="bold">forward</emphasis>=&#34;/some/file.jsp&#34;/&#62; 
-
-    &#60;page name=&#34;add&#34; caption=&#34;Add Book&#34; <emphasis
-role="bold">command</emphasis>=&#34;dialog,schema.db.Book_Info,add&#34;/&#62; 
-    &#60;page name=&#34;edit&#34; caption=&#34;Edit Book&#34; command=&#34;dialog,schema.db.Book_Info,edit&#34;
-          require-request-param=&#34;id&#34; retain-params=&#34;id&#34;&#62;
-        &#60;<emphasis role="bold">missing-params-body</emphasis>&#62; 
-           Please choose a book to edit from the &#38;lt;a href=&#39;home&#39;&#38;gt; books list&#38;lt;/a&#38;gt;.
-        &#60;/missing-params-body&#62;
     &#60;/page&#62;</programlisting>
       </section>
 
@@ -4191,40 +4247,328 @@ role="bold">command</emphasis>=&#34;dialog,schema.db.Book_Info,add&#34;/&#62;
           chosen dynamically at runtime based on some processing rules. You
           may choose which navigation tree is used either statically or
           dynamically.</para>
+
+          <section>
+            <title>In the <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename>
+            file</title>
+
+            <para>To specify a static navigation tree in the
+            <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename> file just
+            set the <sgmltag class="starttag">navigation-tree</sgmltag>
+            <sgmltag class="attribute">default</sgmltag> attribute to <sgmltag
+            class="attvalue">yes</sgmltag>.<programlisting>&#60;navigation-tree name=&#34;myNavigationTree&#34; <emphasis
+role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
+          </section>
+
+          <section>
+            <title>In the <filename>APP_ROOT/WEB-INF/web.xml</filename> file
+            as part of a Servlet descriptor</title>
+
+            <para>Use the following example to specify a static navigation
+            tree in the <filename>APP_ROOT/WEB-INF/web.xml</filename> file as
+            part of the servlet configuration. This method allows you to
+            define multiple servlets (sub applications) each with its own
+            navigation tree.<programlisting>&#60;servlet&#62;
+    &#60;servlet-name&#62;<emphasis role="bold">SparxNavigationController</emphasis>&#60;/servlet-name&#62;
+    &#60;servlet-class&#62;<emphasis role="bold">com.netspective.sparx.navigate.NavigationControllerServlet</emphasis>&#60;/servlet-class&#62;
+    &#60;init-param&#62;
+        &#60;param-name&#62;<emphasis role="bold">com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</emphasis>&#60;/param-name&#62;
+        &#60;param-value&#62;<emphasis role="bold">--navigation-tree=myNavigationTree</emphasis>&#60;/param-value&#62;
+    &#60;/init-param&#62;
+&#60;/servlet&#62;</programlisting></para>
+          </section>
         </section>
       </section>
 
       <section>
-        <title>Paths and Pages</title>
+        <title>Paths, Pages, and Page Identification</title>
 
         <para>Each <sgmltag class="starttag">page</sgmltag> tag corresponds to
         an HTML page and may contain other <sgmltag class="starttag">page</sgmltag>
         tags that will be considered children of the container page. By
-        defining the pages in a hierarchical fashion</para>
+        defining the pages in a hierarchical fashion it allows you to create a
+        programmable site map of all pages in your application. You&#39;ll be
+        able to review the entire application&#39;s hierarchy in one place and
+        the application will be more secure because pages not defined in the
+        map will not be accessible.</para>
 
         <section>
-          <title>Page identifers and paths</title>
+          <title>Page name (identifer) attribute and paths</title>
 
-          <para></para>
+          <para>Each <sgmltag class="starttag">page</sgmltag> tag requires a
+          <sgmltag class="attribute">name</sgmltag> attribute. The value of
+          the <sgmltag class="attribute">name</sgmltag> attribute defines both
+          it&#39;s unique name within it&#39;s parent and becomes part of the
+          <emphasis>fully qualified path</emphasis> name of the page so it may
+          be uniquely identified within the entire navigation tree. Assuming
+          you have the following definition:<programlisting>&#60;navigation-tree name=&#34;myTree&#34; default=&#34;yes&#34;&#62;
+    &#60;page name=&#34;A&#34; caption=&#34;Page A&#34;&#62;
+        &#60;page name=&#34;X&#34; caption=&#34;Page 1 of Page A&#34;/&#62;
+        &#60;page name=&#34;Y&#34; caption=&#34;Page 2 of Page A&#34;&#62;
+            &#60;page name=&#34;T&#34; caption=&#34;Page 2 of Page Y&#34;/&#62;
+        &#60;/page&#62;
+    &#60;/page&#62;
+    &#60;page name=&#34;B&#34; caption=&#34;Page A&#34;&#62;
+        &#60;page name=&#34;F&#34; caption=&#34;Page 1 of Page B&#34;&#62;
+            &#60;page name=&#34;J&#34; caption=&#34;Page 1 of Page F&#34;&#62;
+                &#60;page name=&#34;Q&#34; caption=&#34;Page 1 of Page J&#34;/&#62;
+                &#60;page name=&#34;R&#34; caption=&#34;Page 2 of Page J&#34;/&#62;
+            &#60;/page&#62;
+        &#60;/page&#62;
+    &#60;/page&#62;</programlisting></para>
+
+          <para>When Sparx processes the preceding XML, you will get a
+          <classname>NavigationTree</classname> class instance identified as
+          <sgmltag class="attvalue">myTree</sgmltag> and it will create pages
+          in memory that will be uniquely identified using the following URLs
+          -- note that each of the <sgmltag class="attribute">name</sgmltag>
+          attributes is simply appended to the parent&#39;s <sgmltag
+          class="attribute">name</sgmltag> attribute to construct the
+          <emphasis>fully qualified path</emphasis>. </para>
+
+          <itemizedlist>
+            <listitem>
+              <para>/A</para>
+
+              <itemizedlist>
+                <listitem>
+                  <para>/A/X</para>
+                </listitem>
+
+                <listitem>
+                  <para>/A/Y</para>
+
+                  <itemizedlist>
+                    <listitem>
+                      <para>/A/Y/T</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+
+            <listitem>
+              <para>/B</para>
+
+              <itemizedlist>
+                <listitem>
+                  <para>/B/F</para>
+
+                  <itemizedlist>
+                    <listitem>
+                      <para>/B/F/J</para>
+
+                      <itemizedlist>
+                        <listitem>
+                          <para>/B/F/J/Q</para>
+                        </listitem>
+
+                        <listitem>
+                          <para>/B/F/J/R</para>
+                        </listitem>
+                      </itemizedlist>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </itemizedlist>
         </section>
 
         <section>
-          <title>Page Types</title>
+          <title>Page <sgmltag class="attribute">captions</sgmltag>, <sgmltag
+          class="attribute">headings</sgmltag>, and <sgmltag class="attribute">title</sgmltag>
+          attributes</title>
 
-          <para></para>
-        </section>
+          <para>While the <sgmltag class="starttag">page</sgmltag> <sgmltag
+          class="attribute">name</sgmltag> attribute identifies the page
+          internally to Sparx and is used for accessing the page when a URL is
+          defined, the <sgmltag class="attribute">caption</sgmltag>, <sgmltag
+          class="attribute">heading</sgmltag>, and <sgmltag class="attribute">title</sgmltag>
+          attributes are used to identify the page to the end user. Each page
+          may have different values for the <sgmltag class="attribute">caption</sgmltag>,
+          <sgmltag class="attribute">heading</sgmltag>, and <sgmltag
+          class="attribute">title</sgmltag> attributes or they may share the
+          same values if appropriate.</para>
 
-        <section>
-          <title>Page inheritance</title>
+          <mediaobjectco>
+            <imageobjectco>
+              <areaspec>
+                <area coords="1" id="screen-sparx-page-caption-co" />
 
-          <para></para>
+                <area coords="2" id="screen-sparx-page-heading-co" />
+
+                <area coords="3" id="screen-sparx-page-title-co" />
+              </areaspec>
+
+              <imageobject>
+                <imagedata
+                fileref="./resources/images/screen-sparx-page-cap-head-title.gif" />
+              </imageobject>
+
+              <calloutlist>
+                <callout arearefs="screen-sparx-page-caption-co">
+                  <para>The <sgmltag class="attribute">caption</sgmltag>
+                  attribute, which is a value source type and is always
+                  required, may provide a static string or dynamic text that
+                  will be shown as the page&#39;s identifer to end users when
+                  the page needs to be shown in a menu (or a tab). Although
+                  the actual rendering and what the caption will look like is
+                  determined by the active theme and its specific navigation
+                  skin, the <sgmltag class="attribute">caption</sgmltag>
+                  attribute is always used to help navigate to a page and is
+                  almost always rendered as a hyperlink.</para>
+                </callout>
+
+                <callout arearefs="screen-sparx-page-heading-co">
+                  <para>The <sgmltag class="attribute">heading</sgmltag>
+                  attribute, which is a value source type and is optional, may
+                  provide a static string or dynamic text that will be shown
+                  as page&#39;s heading. Although the actual rendering and
+                  what the heading looks like is determined by the active and
+                  its specific navigation skin, the <sgmltag class="attribute">heading</sgmltag>
+                  attribute is always used to indicate what the current
+                  page&#39;s content means to the end user.</para>
+                </callout>
+
+                <callout arearefs="screen-sparx-page-title-co">
+                  <para>Thte <sgmltag class="attribute">title</sgmltag>
+                  attribute, which is a value source type and is optional, may
+                  provide a static string or dynamic text that will be placed
+                  into the browser window&#39;s title. This is the text that
+                  will usually be used by the browser when it bookmarks a page
+                  as well.</para>
+                </callout>
+              </calloutlist>
+            </imageobjectco>
+          </mediaobjectco>
+
+          <note>
+            <para>The <sgmltag class="attribute">caption</sgmltag> is always
+            required. However, both the <sgmltag class="attribute">heading</sgmltag>
+            and <sgmltag class="attribute">title</sgmltag> attributes are
+            optional. If a <sgmltag class="attribute">heading</sgmltag> is not
+            provided the value defaults to the <sgmltag class="attribute">caption</sgmltag>.
+            If a <sgmltag class="attribute">title</sgmltag> is not provided it
+            defaults to the <sgmltag class="attribute">heading</sgmltag>. This
+            way, if only a <sgmltag class="attribute">caption</sgmltag> is
+            provided then the <sgmltag class="attribute">caption</sgmltag>
+            becomes the <sgmltag class="attribute">heading</sgmltag> and
+            <sgmltag class="attribute">title</sgmltag>. If a <sgmltag
+            class="attribute">caption</sgmltag> and <sgmltag class="attribute">heading</sgmltag>
+            are both provided but no <sgmltag class="attribute">title</sgmltag>
+            is provided then the <sgmltag class="attribute">heading</sgmltag>
+            becomes the <sgmltag class="attribute">title</sgmltag>.</para>
+          </note>
+
+          <example>
+            <title>Using the <sgmltag class="starttag">page</sgmltag> <sgmltag
+            class="attribute">caption</sgmltag>, <sgmltag class="attribute">heading</sgmltag>,
+            and <sgmltag class="attribute">title</sgmltag> attributes</title>
+
+            <programlisting>&#60;page name=&#34;X&#34; caption=&#34;page X&#34;/&#62;
+&#60;page name=&#34;Y&#34; caption=&#34;session:someVar&#34; heading=&#34;heading for page Y&#34; /&#62;
+&#60;page name=&#34;Z&#34; caption=&#34;PageZ&#34; heading=&#34;heading for page Z&#34; title=&#34;vs-expr:${authenticated-user:name}&#39;s page&#34;/&#62;</programlisting>
+          </example>
         </section>
       </section>
 
       <section>
         <title>Page Content (Bodies)</title>
 
-        <para></para>
+        <para>Since page content (the body) is where all of the action is,
+        Sparx allows a wide variety of different content management
+        techniques. From simple redirects to complex templates all the way
+        through completely customized handled, there&#39;s nothing that the
+        Sparx page bodies can&#39;t handle.</para>
+
+        <section>
+          <title>Redirect</title>
+
+          <para>The <sgmltag class="starttag">page</sgmltag> <sgmltag
+          class="attribute">redirect</sgmltag> attribute, which is a value
+          source type, will simply tell the browser to go an alternate page
+          when it is clicked in a menu. The alternate page is usually an
+          external site but it could actually be any URL that you construct.
+          You may specify a <sgmltag class="attribute">target</sgmltag> if you
+          want to open another window. Because the <sgmltag class="attribute">redirect</sgmltag>
+          attribute is a value source, the actual destination may be a static
+          string or a dynamic text specification that will be computed at
+          runtime.</para>
+
+          <para>To redirect to an external static URL, use the following
+          example. Note that we escape the &#39;:&#39; in &#39;http:&#39;
+          because the <sgmltag class="attribute">redirect</sgmltag> attribute
+          is a value source.</para>
+
+          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Java Home&#34; redirect=&#34;http\://java.sun.com&#34;/&#62;</programlisting>
+
+          <para>To redirect to a dynamic URL, use the following example. In
+          this sample we&#39;ll redirect to whatever is in the request
+          parameter called &#39;url&#39;. Note that we&#39;ll open a second
+          window for this redirect.</para>
+
+          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Dynamic Redirect&#34; redirect=&#34;request:url&#34; target=&#34;anotherWindow&#34;/&#62;</programlisting>
+        </section>
+
+        <section>
+          <title>Forward</title>
+
+          <para>The <sgmltag class="starttag">page</sgmltag> <sgmltag
+          class="attribute">forward</sgmltag> attribute, which is a value
+          source type, uses the Servlet Request&#39;s <classname>RequestDispatcher</classname>.<methodname>forward()</methodname>
+          method to simply take the request as-sent and forward it to another
+          resource within the application&#39;s context. The forwarded page
+          has no Sparx navigation skin header/footer or anything else in the
+          response buffer so the target resource (where the forward is going)
+          will need to handle everything. This is useful for custom processing
+          outside of Sparx.</para>
+
+          <para>To forward to an internal, static, URL use the following
+          example. The <sgmltag class="attribute">forward</sgmltag>
+          attribute&#39;s value is relative to the application root.</para>
+
+          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Another JSP Page&#34; forward=&#34;some/other/file.jsp&#34;/&#62;</programlisting>
+
+          <para>To forward to a resource based on a dynamic vlaue, use a value
+          source specification instead of a static string. In the next example
+          we&#39;ll forward to whatever resource is specified in the request
+          parameter called &#39;url&#39;.</para>
+
+          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Dynamic forward&#34; forward=&#34;request:url&#34;/&#62;</programlisting>
+        </section>
+
+        <section>
+          <title>Include</title>
+
+          <para>The <sgmltag class="starttag">page</sgmltag> <sgmltag
+          class="attribute">include</sgmltag> attribute, which is a value
+          source type, uses the Servlet Request&#39;s <classname>RequestDispatcher</classname>.<methodname>include()</methodname>
+          method to include another resource within the application&#39;s
+          context. The included page will be called after the Sparx navigation
+          skin header (menus, page heading, meta-data, etc) has already been
+          rendered and when control returns from the include the standard
+          navigation skin footer will be rendered.</para>
+
+          <para>To include an internal, static, URL use the following example.
+          The <sgmltag class="attribute">include</sgmltag> attribute&#39;s
+          value is relative to the application root.</para>
+
+          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Another JSP Page&#34; include=&#34;a/file.jsp&#34;/&#62;</programlisting>
+
+          <para>To include a resource based on a dynamic vlaue, use a value
+          source specification instead of a static string. In the next example
+          we&#39;ll simpley include whatever resource is specified in the
+          request parameter called &#39;url&#39;.</para>
+
+          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Dynamic include&#34; include=&#34;request:url&#34;/&#62;</programlisting>
+        </section>
+
+        <section>
+          <title>Command</title>
+
+          <para></para>
+        </section>
 
         <section>
           <title>Panels</title>
@@ -4260,6 +4604,12 @@ role="bold">command</emphasis>=&#34;dialog,schema.db.Book_Info,add&#34;/&#62;
       </section>
 
       <section>
+        <title>Conditionally Displaying or Hiding Pages</title>
+
+        <para></para>
+      </section>
+
+      <section>
         <title>Navigation Skins</title>
 
         <para></para>
@@ -4269,6 +4619,56 @@ role="bold">command</emphasis>=&#34;dialog,schema.db.Book_Info,add&#34;/&#62;
         <title>Custom Pages, Bodies, and Body Handlers</title>
 
         <para></para>
+      </section>
+
+      <section>
+        <title><classname>NavigationControllerServlet</classname> Processing
+        Overview</title>
+
+        <para>This section provides an introduction to most of the classes
+        involved in processing a Sparx navigation request. The exhibit below
+        is a sequence diagram that depicts the general process followed for
+        each request that the <literal>NavigationControllerServlet</literal>
+        processes. The sequence diagram assumes that the Servlet is setup with
+        the following descriptors in the <filename>APP_ROOT/WEB-INF/web.xml</filename>
+        file:</para>
+
+        <programlisting>&#60;web-app&#62;
+
+    &#60;servlet&#62;
+        &#60;servlet-name&#62;<emphasis role="bold">SparxNavigationController</emphasis>&#60;/servlet-name&#62;
+        &#60;servlet-class&#62;<emphasis role="bold">com.netspective.sparx.navigate.NavigationControllerServlet</emphasis>&#60;/servlet-class&#62;
+    &#60;/servlet&#62;
+
+    &#60;servlet-mapping&#62;
+        &#60;servlet-name&#62;<emphasis role="bold">SparxNavigationController</emphasis>&#60;/servlet-name&#62;
+        &#60;url-pattern&#62;<emphasis role="bold">/*</emphasis>&#60;/url-pattern&#62;
+    &#60;/servlet-mapping&#62;
+</programlisting>
+
+        <para>The web application descriptors shown above will take all
+        requests (basically any URL) and pass it along to the Sparx
+        NavigationControllerServlet. The entire URL will be available to the
+        Servlet as HttpServletRequest.getPathInfo() so that the appropriate
+        NavigationPage can be located.</para>
+
+        <figure>
+          <title>Sparx NavigationControllerServlet Request Processing Sequence
+          Diagram</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata
+              fileref="./resources/images/sparx-uml-seq-nav-controller-no-login.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <orderedlist>
+          <listitem>
+            <para></para>
+          </listitem>
+        </orderedlist>
       </section>
     </section>
 

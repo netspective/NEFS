@@ -54,3 +54,13 @@ pre.programlisting
     font-size: 10pt;
     white-space: pre;
 }
+
+div.section
+{
+    margin-left: 10px;
+}
+
+div.section h2, div.section h3, div.section h4, div.section h5, div.section h6, div.section h7
+{
+ 	margin-left: -10px;
+}
