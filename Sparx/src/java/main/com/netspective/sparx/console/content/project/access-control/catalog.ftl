@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <#assign doingFrameworkDeveploment = vc.runtimeEnvironmentFlags.flagIsSet(statics["com.netspective.commons.RuntimeEnvironmentFlags"].FRAMEWORK_DEVELOPMENT)/>
 <#assign accessControlLists = vc.project.accessControlLists/>

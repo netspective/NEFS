@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <div class="textbox">
     The current runtime environment is available within your Java applications by using the

@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <#macro showPermAndDescendants activeItem rowClassSuffix='even'>
     <#assign children = activeItem.children/>

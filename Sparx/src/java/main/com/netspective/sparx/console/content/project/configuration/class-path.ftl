@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <#assign classPathUtilityClass = statics["com.netspective.commons.lang.ClassPath"]/>
 <#assign classLoader = classPathUtilityClass.getDefaultClassLoader()/>

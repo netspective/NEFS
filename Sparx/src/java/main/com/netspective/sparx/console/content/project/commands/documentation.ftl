@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <#assign factory = statics["com.netspective.commons.command.Commands"].getInstance()/>
 <#assign commandClassesMap = factory.getClassesMap()/>

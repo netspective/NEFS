@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <#assign fieldState = vc.fieldStates.getState("value-source-spec")/>
 <#assign valueSource = statics["com.netspective.commons.value.ValueSources"].getInstance().getValueSource(fieldState.value.textValue, 2)/>

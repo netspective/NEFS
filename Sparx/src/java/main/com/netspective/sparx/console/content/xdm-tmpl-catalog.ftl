@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <div class="textbox">
     <#assign templateCatalog = vc.projectComponent.templateCatalog/>

@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <!-- FTL designed for xdm-doc <panel-type> in console.xml; assumes xdm-class attribute will be set or defaults to project -->
 

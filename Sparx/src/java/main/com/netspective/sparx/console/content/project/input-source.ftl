@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <@panel heading="Active Project Source">
 <div class="textbox">

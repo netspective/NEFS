@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <#assign activePage = vc.navigationContext.activePage/>
 <#assign theme = vc.project.themes.getTheme(activePage.name)/>

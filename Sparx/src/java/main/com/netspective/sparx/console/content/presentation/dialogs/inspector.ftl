@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <#assign selectedDialogId = vc.getRequest().getParameter('selected-dialog-id')?default('-')/>
 <#assign selectedFieldId = vc.getRequest().getParameter('selected-field-id')?default('-')/>

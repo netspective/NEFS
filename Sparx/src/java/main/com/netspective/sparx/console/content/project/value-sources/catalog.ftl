@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <#assign factory = statics["com.netspective.commons.value.ValueSources"].getInstance()/>
 <#assign valueSourceClassesMap = factory.getValueSourceClassesMap()/>

@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <#macro showSelfDescendants activePage rowClassSuffix='even'>
     <#assign children = activePage.childrenList/>
@@ -32,7 +32,7 @@
 
 <div class="textbox">
 
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <div class="textbox">
 

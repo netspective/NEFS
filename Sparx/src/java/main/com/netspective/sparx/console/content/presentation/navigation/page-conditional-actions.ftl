@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <@templateProducerInstances templateProducer=vc.project.pageConditionalActions
                             consumerTag="conditional"

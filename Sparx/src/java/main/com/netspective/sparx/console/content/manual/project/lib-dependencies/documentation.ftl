@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <#assign factory = statics["com.netspective.commons.product.NetspectiveComponent"].getInstance()/>
 <#assign allLibDependencies = factory.netspective.allLibraryDependencies/>

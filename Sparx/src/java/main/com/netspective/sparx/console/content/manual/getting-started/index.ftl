@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 There are several schools of thought when it comes to answering the "where do I start writing my application?" question.
 Two of the popular ones are:

@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <#macro showSelfDescendants activePath fileTypesToCount rowClassSuffix='even'>
     <#assign children = activePath.children/>

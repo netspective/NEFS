@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <@reportTable>
     <#assign schemas = vc.sqlManager.schemas/>

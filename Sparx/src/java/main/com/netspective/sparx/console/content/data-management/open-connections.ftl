@@ -1,4 +1,4 @@
-<#include "*/library.ftl">
+<#include "/content/library.ftl"/>
 
 <#assign openConnContextsSet = statics["com.netspective.axiom.connection.AbstractConnectionContext"].getConnectionContextsWithOpenConnections()/>
 <#assign catalog = []/>
