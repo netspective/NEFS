@@ -39,18 +39,18 @@
  */
 
 /**
- * $Id: DialogFieldStates.java,v 1.2 2003-11-14 19:46:20 shahid.shah Exp $
+ * $Id: DialogFieldStates.java,v 1.3 2004-06-23 21:06:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.netspective.sparx.form.DialogContext;
 
@@ -184,12 +184,27 @@ public class DialogFieldStates
         }
     }
 
+    public String getAsUrlParams()
+    {
+        StringBuffer sb = new StringBuffer();
+        Iterator i = statesByQualifiedName.values().iterator();
+        while (i.hasNext())
+        {
+            if (sb.length() > 0)
+                sb.append('&');
+
+            DialogField.State state = (DialogField.State) i.next();
+            state.appendAsUrlParam(sb);
+        }
+        return sb.toString();
+    }
+
     public Map createTextValuesMap(String fieldNamePrefix)
     {
         Map result = new HashMap();
         Iterator i = statesByQualifiedName.values().iterator();
 
-        if(fieldNamePrefix == null)
+        if (fieldNamePrefix == null)
         {
             while (i.hasNext())
             {

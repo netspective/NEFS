@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultCustomRenderer.java,v 1.1 2004-04-30 01:36:18 shahid.shah Exp $
+ * $Id: DefaultCustomRenderer.java,v 1.2 2004-06-23 21:06:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -97,14 +97,14 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
     public void setDataType(CustomRendererDataType dataType)
     {
         this.dataType = dataType;
-        switch(dataType.getValueIndex())
+        switch (dataType.getValueIndex())
         {
             case CustomRendererDataType.QUERY_RESULT_SET:
-                dataPopulator = new SqlResultSetPopulator();
+                dataPopulator = new QueryResultSetPopulator();
                 break;
 
             case CustomRendererDataType.SQL_RESULT_SET:
-                dataPopulator = new QueryResultSetPopulator();
+                dataPopulator = new SqlResultSetPopulator();
                 break;
 
             case CustomRendererDataType.TABULAR_DATA_SOURCE:
@@ -225,15 +225,15 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
             HtmlTabularReportDataSourceScrollState scrollState = (HtmlTabularReportDataSourceScrollState) rc.getScrollState();
             boolean paging = scrollState != null;
 
-            while(ds.next())
+            while (ds.next())
             {
                 // construct the HTML for the data columns
                 Object[] rowData = new Object[dataColsCount];
-                for(int i = 0; i < dataColsCount; i++)
+                for (int i = 0; i < dataColsCount; i++)
                     rowData[i] = ds.getActiveRowColumnData(i, 0);
 
-                if(hierarchical)
-                    list.add(new Object[] { ds.getActiveHierarchy(), rowData });
+                if (hierarchical)
+                    list.add(new Object[]{ds.getActiveHierarchy(), rowData});
                 else
                     list.add(rowData);
 
@@ -250,7 +250,7 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
                 scrollState.accumulateRowsProcessed(rowsWritten);
                 // if the total number of rows written is less than the scroll state's number of rows per page setting,
                 // this must be the last page
-                if(rowsWritten < scrollState.getRowsPerPage())
+                if (rowsWritten < scrollState.getRowsPerPage())
                     scrollState.setNoMoreRows();
             }
 
@@ -275,18 +275,18 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
             HtmlTabularReportDataSourceScrollState scrollState = (HtmlTabularReportDataSourceScrollState) rc.getScrollState();
             boolean paging = scrollState != null;
 
-            while(ds.next())
+            while (ds.next())
             {
                 // construct the HTML for the data columns
                 String[] rowData = new String[dataColsCount];
-                for(int i = 0; i < dataColsCount; i++)
+                for (int i = 0; i < dataColsCount; i++)
                 {
                     TabularReportColumn column = columns.getColumn(i);
                     TabularReportColumnState state = states[i];
 
-                    if(! state.isVisible())
+                    if (!state.isVisible())
                         continue;
-                    
+
                     String data =
                             state.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN) ?
                             state.getOutputFormat() :
@@ -301,8 +301,8 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
                     rowData[i] = data;
                 }
 
-                if(hierarchical)
-                    list.add(new Object[] { ds.getActiveHierarchy(), rowData });
+                if (hierarchical)
+                    list.add(new Object[]{ds.getActiveHierarchy(), rowData});
                 else
                     list.add(rowData);
 
@@ -319,7 +319,7 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
                 scrollState.accumulateRowsProcessed(rowsWritten);
                 // if the total number of rows written is less than the scroll state's number of rows per page setting,
                 // this must be the last page
-                if(rowsWritten < scrollState.getRowsPerPage())
+                if (rowsWritten < scrollState.getRowsPerPage())
                     scrollState.setNoMoreRows();
             }
 

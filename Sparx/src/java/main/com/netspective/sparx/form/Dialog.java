@@ -51,10 +51,27 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.62 2004-04-20 13:15:24 aye.thu Exp $
+ * $Id: Dialog.java,v 1.63 2004-06-23 21:06:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.collections.LRUMap;
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.tools.ant.Main;
 
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
@@ -97,21 +114,6 @@ import com.netspective.sparx.panel.HtmlInputPanel;
 import com.netspective.sparx.panel.editor.PanelEditor;
 import com.netspective.sparx.panel.editor.PanelEditorState;
 import com.netspective.sparx.theme.Theme;
-import org.apache.commons.collections.LRUMap;
-import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.tools.ant.Main;
-
-import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * The <code>Dialog</code> object contains the dialog/form's structural information, field types, rules, and
@@ -122,7 +124,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String ATTRNAME_TYPE = "type";
-    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
+    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[]{"name"};
 
     private static DialogTypeTemplateConsumerDefn dialogTypeConsumer = new DialogTypeTemplateConsumerDefn();
     private static int dialogNumber = 0;
@@ -156,7 +158,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     public static final String ATTRNAME_DIALOG_STATES = Dialog.class.getName() + ".STATES";
     public static final String ATTRNAME_DIALOG_STATES_MAX_ENTRIES = Dialog.class.getName() + ".STATES.MAX_ENTRIES";
-    public static final int    DIALOG_STATES_LRU_MAP_DEFAULT_MAX_SIZE = 16; // keep the last 32 dialog states in the session at any time
+    public static final int DIALOG_STATES_LRU_MAP_DEFAULT_MAX_SIZE = 16; // keep the last 32 dialog states in the session at any time
 
     public static final String PARAMNAME_DIALOG_STATE_ID = ".dialog_state_id";
     public static final String PARAMNAME_POST_EXECUTE_REDIRECT = ".post_exec_redirect";
@@ -167,7 +169,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Converts dialog name to uppercase for use as MapKey
+     *
      * @param name dialog name
+     *
      * @return formatted dialog name
      */
     public static final String translateNameForMapKey(String name)
@@ -440,11 +444,12 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Checks whether or not the dialog heading is to be hidden.
      *
      * @param dc current dialog context for the dialog
+     *
      * @return <code>true</code> if the heading should be hidden; <code>false</code> otherwise
      */
     public boolean hideHeading(DialogContext dc)
     {
-        if(dialogFlags.flagIsSet(DialogFlags.HIDE_HEADING_IN_EXEC_MODE) && dc.getDialogState().isInExecuteMode())
+        if (dialogFlags.flagIsSet(DialogFlags.HIDE_HEADING_IN_EXEC_MODE) && dc.getDialogState().isInExecuteMode())
             return true;
         else
             return false;
@@ -569,7 +574,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      */
     public void setRetainParams(String value)
     {
-        if(value.equals("*"))
+        if (value.equals("*"))
             dialogFlags.setFlag(DialogFlags.RETAIN_ALL_REQUEST_PARAMS);
         else
             retainRequestParams = TextUtils.split(value, ",", true);
@@ -600,41 +605,42 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Gets the URL for the next action of the dialog after execution. It searches for a next action URL using the
      * following order (and uses the first one found)<p>
      * <ol>
-     *   <li>The dialog director next actions field. If the director returns "-" as the URL, it means keep checking.</li>
-     *   <li>The dialog's next action provider delegated class (using Dialog.getNextActionProvider())</li>
-     *   <li>Active page next action provider delegated class (using dc.NavigationContext().getNextActionProvider)</li>
-     *   <li>The default url passed in</li>
+     * <li>The dialog director next actions field. If the director returns "-" as the URL, it means keep checking.</li>
+     * <li>The dialog's next action provider delegated class (using Dialog.getNextActionProvider())</li>
+     * <li>Active page next action provider delegated class (using dc.NavigationContext().getNextActionProvider)</li>
+     * <li>The default url passed in</li>
      * </ol>
      *
-     * @param dc The dialog context for the dialog that just executed
+     * @param dc         The dialog context for the dialog that just executed
      * @param defaultUrl The URL to use if no specific next actions are provided
+     *
      * @return URL string to use for the URL (to send in redirect)
      */
     public String getNextActionUrl(DialogContext dc, String defaultUrl)
     {
-        if(director != null && director.hasNextAction())
+        if (director != null && director.hasNextAction())
         {
             String url = director.getDialogNextActionUrl(dc, null);
-            if(url != null)
+            if (url != null)
                 return url;
 
             // if the url is null, it means that the director returned the default (NULL) and wants to let the
             // the delegated callers handle it so we'll fall through to the rest of the providers below
         }
         // if this dialog is being executed within a panel editor context, then use the panel'editor's mode URL
-        PanelEditorState  state = (PanelEditorState) dc.getHttpRequest().getAttribute(PanelEditor.PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX);
+        PanelEditorState state = (PanelEditorState) dc.getHttpRequest().getAttribute(PanelEditor.PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX);
         if (state != null)
         {
             return state.calculateNextModeUrl(dc);
         }
 
         // see if we are delegating our next action call to another class
-        if(nextActionProvider != null)
+        if (nextActionProvider != null)
             return nextActionProvider.getDialogNextActionUrl(dc, defaultUrl);
 
         // first see if there is page-specific or tree-wide next action provider
         DialogNextActionProvider navNextActionProvider = dc.getNavigationContext().getDialogNextActionProvider();
-        if(navNextActionProvider != null)
+        if (navNextActionProvider != null)
             return navNextActionProvider.getDialogNextActionUrl(dc, defaultUrl);
 
         return defaultUrl;
@@ -671,15 +677,15 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         value.setOwner(this);
     }
 
-        /**
-	 * Gets all the javascript files to be included with this dialog.
-	 *
-	 * @return all the client javascript files
-	 */
-	public List getClientJs()
-	{
-		return this.clientJavascripts;
-	}
+    /**
+     * Gets all the javascript files to be included with this dialog.
+     *
+     * @return all the client javascript files
+     */
+    public List getClientJs()
+    {
+        return this.clientJavascripts;
+    }
 
     /**
      * Adds a javascript file to be included.
@@ -812,10 +818,10 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     public void finalizeContents()
     {
         fields.finalizeContents();
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
-            if(field.getFlags().flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE | DialogFieldFlags.COLUMN_BREAK_AFTER))
+            if (field.getFlags().flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE | DialogFieldFlags.COLUMN_BREAK_AFTER))
                 layoutColumnsCount++;
         }
     }
@@ -827,6 +833,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * @param pc          The XDM parsing context
      * @param element     The XML element for the dialog object
      * @param elementName The name of the element
+     *
      * @throws DataModelException
      */
     public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
@@ -838,74 +845,74 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Populates the dialog with field values.  This should be called everytime
      * the dialog is loaded except when it is ready for execution (validated already)
      *
-     * @param dc          dialog context
-     * @param formatType  format for the field
+     * @param dc         dialog context
+     * @param formatType format for the field
      */
     public void populateValues(DialogContext dc, int formatType)
     {
         DialogState dialogState = dc.getDialogState();
 
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
-            if(field.isAvailable(dc))
+            if (field.isAvailable(dc))
                 field.populateValue(dc, formatType);
         }
 
-        if(director != null)
+        if (director != null)
         {
             DialogField field = director.getNextActionsField();
-            if(field != null)
+            if (field != null)
                 field.populateValue(dc, formatType);
         }
 
-        if(dialogState.isInitialEntry())
+        if (dialogState.isInitialEntry())
         {
-            if(formatType == DialogField.DISPLAY_FORMAT && haveInitialPopulateForDisplayListeners)
+            if (formatType == DialogField.DISPLAY_FORMAT && haveInitialPopulateForDisplayListeners)
             {
-                for(int i = 0; i < initialPopulateForDisplayListeners.size(); i++)
+                for (int i = 0; i < initialPopulateForDisplayListeners.size(); i++)
                     ((DialogInitialPopulateForDisplayListener) initialPopulateForDisplayListeners.get(i)).populateInitialDialogValuesForDisplay(dc);
             }
 
-            if(formatType == DialogField.SUBMIT_FORMAT && haveInitialPopulateForSubmitListeners)
+            if (formatType == DialogField.SUBMIT_FORMAT && haveInitialPopulateForSubmitListeners)
             {
-                for(int i = 0; i < initialPopulateForSubmitListeners.size(); i++)
+                for (int i = 0; i < initialPopulateForSubmitListeners.size(); i++)
                     ((DialogInitialPopulateForSubmitListener) initialPopulateForSubmitListeners.get(i)).populateInitialDialogValuesForSubmit(dc);
             }
 
-            if(haveInitialPopulateListeners)
+            if (haveInitialPopulateListeners)
             {
-                for(int i = 0; i < initialPopulateListeners.size(); i++)
+                for (int i = 0; i < initialPopulateListeners.size(); i++)
                     ((DialogInitialPopulateListener) initialPopulateListeners.get(i)).populateInitialDialogValues(dc, formatType);
             }
         }
 
-        if(formatType == DialogField.DISPLAY_FORMAT && havePopulateForDisplayListeners)
+        if (formatType == DialogField.DISPLAY_FORMAT && havePopulateForDisplayListeners)
         {
-            for(int i = 0; i < populateForDisplayListeners.size(); i++)
+            for (int i = 0; i < populateForDisplayListeners.size(); i++)
                 ((DialogPopulateForDisplayListener) populateForDisplayListeners.get(i)).populateDialogValuesForDisplay(dc);
         }
 
-        if(formatType == DialogField.SUBMIT_FORMAT && havePopulateForSubmitListeners)
+        if (formatType == DialogField.SUBMIT_FORMAT && havePopulateForSubmitListeners)
         {
-            for(int i = 0; i < populateForSubmitListeners.size(); i++)
+            for (int i = 0; i < populateForSubmitListeners.size(); i++)
                 ((DialogPopulateForSubmitListener) populateForSubmitListeners.get(i)).populateDialogValuesForSubmit(dc);
         }
 
-        if(havePopulateListeners)
+        if (havePopulateListeners)
         {
-            for(int i = 0; i < populateListeners.size(); i++)
+            for (int i = 0; i < populateListeners.size(); i++)
                 ((DialogPopulateListener) populateListeners.get(i)).populateDialogValues(dc, formatType);
         }
 
-        if(getDialogFlags().flagIsSet(DialogFlags.RETAIN_INITIAL_STATE) && dialogState.isInitialEntry())
+        if (getDialogFlags().flagIsSet(DialogFlags.RETAIN_INITIAL_STATE) && dialogState.isInitialEntry())
             dialogState.saveInitialState(dc);
     }
 
     /**
      * Checks each field to see if its state needs to be changed or not, usually
      * based on Conditionals.
-     *
+     * <p/>
      * <b>IMPORTANT</b>: If any changes are made in this class, make sure
      * that they are also reflected in QuerySelectDialog and QueryBuilderDialog classes
      * which extend this class but they overwrite this method and don't make a call
@@ -917,30 +924,30 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      */
     public void makeStateChanges(DialogContext dc, int stage)
     {
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
             field.makeStateChanges(dc, stage);
         }
         DialogDirector director = getDirector();
-        if(director != null)
+        if (director != null)
             director.makeStateChanges(dc, stage);
 
-        if(stage == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION && haveStateBeforeValidationListeners)
+        if (stage == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION && haveStateBeforeValidationListeners)
         {
-            for(int i = 0; i < stateBeforeValidationListeners.size(); i++)
+            for (int i = 0; i < stateBeforeValidationListeners.size(); i++)
                 ((DialogStateBeforeValidationListener) stateBeforeValidationListeners.get(i)).makeDialogStateChangesBeforeValidation(dc);
         }
 
-        if(stage == DialogContext.STATECALCSTAGE_AFTER_VALIDATION && haveStateAfterValidationListeners)
+        if (stage == DialogContext.STATECALCSTAGE_AFTER_VALIDATION && haveStateAfterValidationListeners)
         {
-            for(int i = 0; i < stateAfterValidationListeners.size(); i++)
+            for (int i = 0; i < stateAfterValidationListeners.size(); i++)
                 ((DialogStateAfterValidationListener) stateAfterValidationListeners.get(i)).makeDialogStateChangesChangesAfterValidation(dc);
         }
 
-        if(haveStateListeners)
+        if (haveStateListeners)
         {
-            for(int i = 0; i < stateListeners.size(); i++)
+            for (int i = 0; i < stateListeners.size(); i++)
                 ((DialogStateListener) stateListeners.get(i)).makeDialogStateChanges(dc, stage);
         }
     }
@@ -962,7 +969,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * <code>DialogExecuteHandler</code> interface will be called at execution time
      * to process custome dialog execute actions.
      *
-     * @param handler  execution handler object to be added for the dialog
+     * @param handler execution handler object to be added for the dialog
      */
     public void addOnExecute(DialogExecuteHandler handler)
     {
@@ -995,13 +1002,14 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * If this dialog is not auto-exec by default, then does the current state of the dialog (using the context)
      * indicate that it should be auto-executed.
      *
-     * @param dc The current dialog context
+     * @param dc                    The current dialog context
      * @param autoExecReqParamValue The value of the _d_exec request parameter
+     *
      * @return <code>true</code> if the current state indicates auto-execution; <code>false</code> otherwise
      */
     public boolean isAutoExec(DialogContext dc, String autoExecReqParamValue)
     {
-        return autoExecReqParamValue != null && ! autoExecReqParamValue.equals("no");
+        return autoExecReqParamValue != null && !autoExecReqParamValue.equals("no");
     }
 
     /**
@@ -1009,17 +1017,18 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      *
      * @param writer stream for dialog execution output
      * @param dc     dialog context
+     *
      * @throws IOException
      * @throws DialogExecuteException
      */
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        if(dc.executeStageHandled())
+        if (dc.executeStageHandled())
             return;
 
         try
         {
-            if(executeHandlers.size() > 0)
+            if (executeHandlers.size() > 0)
                 executeHandlers.handleDialogExecute(writer, dc);
             else
                 dc.renderDebugPanels(writer);
@@ -1058,12 +1067,16 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Handles any post execution actions. Currently, it sets a flag to indicate
      * that the execution has been handled and then performs a URL redirection.
      *
-     * @param writer  Writer object related to the response buffer
-     * @param dc      current dialog context
+     * @param writer Writer object related to the response buffer
+     * @param dc     current dialog context
+     *
      * @throws IOException
      */
     public void handlePostExecute(Writer writer, DialogContext dc) throws IOException
     {
+        if (!getDialogFlags().flagIsSet(DialogFlags.DISABLE_ACTIVITY_ANNOUNCEMENT))
+            dc.getParentActivity().broadcastChildActivity(dc);
+
         dc.setExecuteStageHandled(true);
         dc.performDefaultRedirect(writer, null);
     }
@@ -1072,13 +1085,17 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Handles any post execution actions. Currently, it sets a flag to indicate
      * that the execution has been handled and then performs a URL redirection.
      *
-     * @param writer    Writer object related to the response buffer
-     * @param dc        current dialog context
-     * @param redirect  the URL to redirect to
+     * @param writer   Writer object related to the response buffer
+     * @param dc       current dialog context
+     * @param redirect the URL to redirect to
+     *
      * @throws IOException
      */
     public void handlePostExecute(Writer writer, DialogContext dc, String redirect) throws IOException
     {
+        if (!getDialogFlags().flagIsSet(DialogFlags.DISABLE_ACTIVITY_ANNOUNCEMENT))
+            dc.getParentActivity().broadcastChildActivity(dc);
+
         dc.setExecuteStageHandled(true);
         dc.performDefaultRedirect(writer, redirect);
     }
@@ -1086,10 +1103,11 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     /**
      * Logs the exeception and writes it to the Writer.
      *
-     * @param writer    Writer object related to the response buffer
-     * @param dc        current dialog context
-     * @param message   custom exception message
-     * @param e         the exception object
+     * @param writer  Writer object related to the response buffer
+     * @param dc      current dialog context
+     * @param message custom exception message
+     * @param e       the exception object
+     *
      * @throws DialogExecuteException
      * @throws IOException
      */
@@ -1098,7 +1116,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         dc.setExecuteStageHandled(true);
         getLog().error(message, e);
         dc.setRedirectDisabled(true);
-        if(e instanceof DialogExecuteException)
+        if (e instanceof DialogExecuteException)
             throw (DialogExecuteException) e;
         else
             throw new DialogExecuteException(e);
@@ -1108,25 +1126,27 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Gets the current state of the dialog.
      *
      * @param dc current dialog context
+     *
      * @return the current state of the dialog
      */
     public DialogState getDialogState(DialogContext dc)
     {
         HttpSession session = dc.getHttpRequest().getSession();
         Map dialogStates = (Map) session.getAttribute(ATTRNAME_DIALOG_STATES);
-        if(dialogStates == null)
+        if (dialogStates == null)
         {
             Integer maxEntriesAttr = (Integer) session.getAttribute(ATTRNAME_DIALOG_STATES_MAX_ENTRIES);
-            dialogStates = new LRUMap(maxEntriesAttr != null ? maxEntriesAttr.intValue() : DIALOG_STATES_LRU_MAP_DEFAULT_MAX_SIZE);
+            dialogStates = new LRUMap(maxEntriesAttr != null
+                    ? maxEntriesAttr.intValue() : DIALOG_STATES_LRU_MAP_DEFAULT_MAX_SIZE);
             session.setAttribute(ATTRNAME_DIALOG_STATES, dialogStates);
         }
 
         DialogState result = null;
         String existingStateId = dc.getRequest().getParameter(getDialogStateIdentifierParamName());
-        if(existingStateId != null)
+        if (existingStateId != null)
             result = (DialogState) dialogStates.get(existingStateId);
 
-        if(result == null)
+        if (result == null)
         {
             result = constructDialogState();
             result.initialize(dc);
@@ -1151,8 +1171,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * defined, the custom class will be instantiated, else a default
      * <code>DialogContext</code> object will be returned.
      *
-     * @param nc        current navigation context for the dialog
-     * @param skin      dialog skin
+     * @param nc   current navigation context for the dialog
+     * @param skin dialog skin
+     *
      * @return DialogContext newly create dialog context object
      */
     public DialogContext createContext(NavigationContext nc, DialogSkin skin)
@@ -1162,7 +1183,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         {
             dc = (DialogContext) dialogContextClass.newInstance();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             dc = new DialogContext();
         }
@@ -1182,7 +1203,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         populateValues(dc, DialogField.DISPLAY_FORMAT);
         dc.calcState();
         // validated and the dialog is ready for execution
-        if(dc.getDialogState().isInExecuteMode())
+        if (dc.getDialogState().isInExecuteMode())
         {
             dc.persistValues();
             populateValues(dc, DialogField.SUBMIT_FORMAT);
@@ -1192,35 +1213,36 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     /**
      * Creates and writes the HTML for the dialog
      *
-     * @param writer                    stream to write the dialog HTML to
-     * @param dc                        dialog context
-     * @param contextPreparedAlready    flag to indicate whether or not the
-     *                                  context has been prepared
+     * @param writer                 stream to write the dialog HTML to
+     * @param dc                     dialog context
+     * @param contextPreparedAlready flag to indicate whether or not the
+     *                               context has been prepared
+     *
      * @throws IOException
      * @throws DialogExecuteException
      */
     public void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
-        if(!contextPreparedAlready)
+        if (!contextPreparedAlready)
             prepareContext(dc);
 
-        if(dc.getDialogState().isInExecuteMode())
+        if (dc.getDialogState().isInExecuteMode())
         {
             boolean debug = debugFlags.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA);
-            if(debug)
+            if (debug)
                 dc.setRedirectDisabled(true);
 
-            switch(loop.getValueIndex())
+            switch (loop.getValueIndex())
             {
                 case DialogLoopStyle.NONE:
-                    if(debug)
+                    if (debug)
                         dc.renderDebugPanels(writer);
                     else
                         execute(writer, dc);
                     break;
 
                 case DialogLoopStyle.APPEND:
-                    if(debug)
+                    if (debug)
                         dc.renderDebugPanels(writer);
                     else
                         execute(writer, dc);
@@ -1231,7 +1253,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
                 case DialogLoopStyle.PREPEND:
                     dc.getSkin().renderHtml(writer, dc);
                     writer.write(loop.getLoopSeparator());
-                    if(debug)
+                    if (debug)
                         dc.renderDebugPanels(writer);
                     else
                         execute(writer, dc);
@@ -1250,10 +1272,11 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     /**
      * Creates and writes the HTML for the dialog using a dialog theme.
      *
-     * @param writer  stream to write the HTML
-     * @param dc      current dialog context
-     * @param theme   dialog theme
+     * @param writer stream to write the HTML
+     * @param dc     current dialog context
+     * @param theme  dialog theme
      * @param flags
+     *
      * @throws IOException
      */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
@@ -1265,10 +1288,11 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     /**
      * Creates and writes the HTML for the dialog using a dialog theme.
      *
-     * @param writer  stream to write the HTML
-     * @param nc      current navigation context for the dialog
-     * @param theme   dialog theme
+     * @param writer stream to write the HTML
+     * @param nc     current navigation context for the dialog
+     * @param theme  dialog theme
      * @param flags
+     *
      * @throws IOException when an error occurs while writing to HTML stream
      */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
@@ -1290,7 +1314,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      *
      * @param destDir   the destination directory to write the bean class
      * @param pkgPrefix the package to which the bean class belongs
-     * @return          the bean class file
+     *
+     * @return the bean class file
+     *
      * @throws IOException when an error occurs during file or html stream I/O
      */
     public File generateDialogContextBean(File destDir, String pkgPrefix) throws IOException
@@ -1301,19 +1327,19 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         Set modulesImported = new HashSet();
 
         DialogFields fields = getFields();
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
             DialogContextBeanMemberInfo mi = field.getDialogContextBeanMemberInfo();
-            if(mi != null)
+            if (mi != null)
             {
                 String[] importModules = mi.getImportModules();
-                if(importModules != null)
+                if (importModules != null)
                 {
-                    for(int m = 0; m < importModules.length; m++)
+                    for (int m = 0; m < importModules.length; m++)
                     {
                         String module = importModules[m];
-                        if(!modulesImported.contains(module))
+                        if (!modulesImported.contains(module))
                         {
                             modulesImported.add(module);
                             importsCode.append("import " + module + ";\n");
@@ -1328,19 +1354,19 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
             DialogFields childrenFields = field.getChildren();
             if (childrenFields != null && childrenFields.size() > 0)
             {
-                for (int j=0; j < childrenFields.size() ; j++)
+                for (int j = 0; j < childrenFields.size(); j++)
                 {
                     DialogField child = childrenFields.get(j);
                     DialogContextBeanMemberInfo miChild = child.getDialogContextBeanMemberInfo();
-                    if(mi != null)
+                    if (mi != null)
                     {
                         String[] importModules = miChild.getImportModules();
-                        if(importModules != null)
+                        if (importModules != null)
                         {
-                            for(int m = 0; m < importModules.length; m++)
+                            for (int m = 0; m < importModules.length; m++)
                             {
                                 String module = importModules[m];
-                                if(!modulesImported.contains(module))
+                                if (!modulesImported.contains(module))
                                 {
                                     modulesImported.add(module);
                                     importsCode.append("import " + module + ";\n");
@@ -1361,17 +1387,17 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         StringBuffer code = new StringBuffer();
         code.append("\n/* this file is generated by com.netspective.sparx.form.Dialog.getSubclassedDialogContextCode(), do not modify (you can extend it, though) */\n\n");
         code.append("package " + packageName + ";\n\n");
-        if(importsCode.length() > 0)
+        if (importsCode.length() > 0)
             code.append(importsCode.toString());
         code.append("import com.netspective.sparx.form.*;\n");
         code.append("import com.netspective.sparx.form.field.*;\n");
         code.append("import com.netspective.sparx.form.field.type.*;\n\n");
         code.append("public class " + className + "Context\n");
         code.append("{\n");
-        code.append("    public static final String DIALOG_ID = \""+ getQualifiedName() +"\";\n");
+        code.append("    public static final String DIALOG_ID = \"" + getQualifiedName() + "\";\n");
         code.append("    private DialogContext dialogContext;\n");
         code.append("    private DialogFieldStates fieldStates;\n\n");
-        code.append("    public "+ className +"Context(DialogContext dc)\n");
+        code.append("    public " + className + "Context(DialogContext dc)\n");
         code.append("    {\n");
         code.append("        this.dialogContext = dc;\n");
         code.append("        this.fieldStates = dc.getFieldStates();\n");
@@ -1396,16 +1422,17 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Indicates whether or not the dialog needs validation.
      *
      * @param dc dialog context
+     *
      * @return <code>true</code> if the dialog needs validation; <code>false</code> otherwise
      */
     public boolean needsValidation(DialogContext dc)
     {
         int validateFieldsCount = 0;
 
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
-            if(field.isAvailable(dc) && field.needsValidation(dc))
+            if (field.isAvailable(dc) && field.needsValidation(dc))
                 validateFieldsCount++;
         }
 
@@ -1416,45 +1443,49 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Checks whether or not the dailog is valid for execution.
      *
      * @param dc dialog context
+     *
      * @return <code>true</code> if the dialog is valid; <code>false</code> otherwise.
      */
     public boolean isValid(DialogContext dc)
     {
         DialogValidationContext dvc = dc.getValidationContext();
         int valStage = dvc.getValidationStage();
-        if(valStage == DialogValidationContext.VALSTAGE_PERFORMED_SUCCEEDED || valStage == DialogValidationContext.VALSTAGE_IGNORE)
+        if (valStage == DialogValidationContext.VALSTAGE_PERFORMED_SUCCEEDED || valStage == DialogValidationContext.VALSTAGE_IGNORE)
             return true;
-        if(valStage == DialogValidationContext.VALSTAGE_PERFORMED_FAILED)
+        if (valStage == DialogValidationContext.VALSTAGE_PERFORMED_FAILED)
             return false;
 
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
-            if((field.isAvailable(dc) && !field.isInputHidden(dc)))
+            if ((field.isAvailable(dc) && !field.isInputHidden(dc)))
                 field.validate(dvc);
         }
 
-        if(haveValidationListeners)
+        if (haveValidationListeners)
         {
-            for(int i = 0; i < validationListeners.size(); i++)
+            for (int i = 0; i < validationListeners.size(); i++)
                 ((DialogValidateListener) validationListeners.get(i)).validateDialog(dvc);
         }
 
         boolean isValid = dvc.isValid();
-        dvc.setValidationStage(isValid ? DialogValidationContext.VALSTAGE_PERFORMED_SUCCEEDED : DialogValidationContext.VALSTAGE_PERFORMED_FAILED);
+        dvc.setValidationStage(isValid
+                ? DialogValidationContext.VALSTAGE_PERFORMED_SUCCEEDED
+                : DialogValidationContext.VALSTAGE_PERFORMED_FAILED);
         return isValid;
     }
 
     /**
      * Formats and displays the error message in HTML format.
      *
-     * @param writer  html stream
-     * @param e       error message
+     * @param writer html stream
+     * @param e      error message
+     *
      * @throws IOException
      */
     protected void renderFormattedExceptionMessage(Writer writer, Exception e) throws IOException
     {
-        writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
+        writer.write("<div class='textbox'>" + Main.getAntVersion() + "<p><pre>");
         writer.write(TextUtils.getStackTrace(e));
         writer.write("</pre>");
     }
@@ -1470,16 +1501,16 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         return new DialogListenerPlaceholder();
     }
 
-  /**
-   * Registers a listener for the dialog.  Listeners are used to define custom actions
-   * for different stages that the dialog goes through.
-   *
-   * @param listeners list of listeners to which the listener is being registered
-   * @param listener  the listener to be registered
-   */
+    /**
+     * Registers a listener for the dialog.  Listeners are used to define custom actions
+     * for different stages that the dialog goes through.
+     *
+     * @param listeners list of listeners to which the listener is being registered
+     * @param listener  the listener to be registered
+     */
     private void registerListener(List listeners, DialogListener listener)
     {
-        if(! listeners.contains(listener))
+        if (!listeners.contains(listener))
             listeners.add(listener);
     }
 
@@ -1487,18 +1518,18 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Adds a listener for the dialog.  Listeners are used to define custom actions
      * for different stages that the dialog goes through.  There are several listener
      * interfaces available for a dialog:
-     *  <ul>
-     *      <li>DialogInitialPopulateForDisplayListener: processed during initial population of the dialog and the format type is set to display mode </li>
-     *      <li>DialogInitialPopulateForSubmitListener: processed during initial population of the dialog  and the format type is set to submit mode </li>
-     *      <li>DialogInitialPopulateListener</li>
-     *      <li>DialogPopulateForDisplayListener: processed during subsequent population of the dialog and the format type is set to display mode</li>
-     *      <li>DialogPopulateForSubmitListener: porcessed during subsequent population of the dialog and the format type is set to submit mode</li>
-     *      <li>DialogPopulateListener</li>
-     *      <li>DialogStateAfterValidationListener</li>
-     *      <li>DialogStateBeforeValidationListener</li>
-     *      <li>DialogStateListener</li>
-     *      <li>DialogValidateListener</li>
-     *      <li>DialogExecuteHandler: </li>
+     * <ul>
+     * <li>DialogInitialPopulateForDisplayListener: processed during initial population of the dialog and the format type is set to display mode </li>
+     * <li>DialogInitialPopulateForSubmitListener: processed during initial population of the dialog  and the format type is set to submit mode </li>
+     * <li>DialogInitialPopulateListener</li>
+     * <li>DialogPopulateForDisplayListener: processed during subsequent population of the dialog and the format type is set to display mode</li>
+     * <li>DialogPopulateForSubmitListener: porcessed during subsequent population of the dialog and the format type is set to submit mode</li>
+     * <li>DialogPopulateListener</li>
+     * <li>DialogStateAfterValidationListener</li>
+     * <li>DialogStateBeforeValidationListener</li>
+     * <li>DialogStateListener</li>
+     * <li>DialogValidateListener</li>
+     * <li>DialogExecuteHandler: </li>
      * </ul>
      * Implementing listeners classes can be registered to the dialog using the
      * <code>&lt;listener&gt;</code> tag.
@@ -1507,67 +1538,67 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      */
     public void addListener(DialogListener listener)
     {
-        if(listener instanceof DialogInitialPopulateForDisplayListener)
+        if (listener instanceof DialogInitialPopulateForDisplayListener)
         {
             haveInitialPopulateForDisplayListeners = true;
             registerListener(initialPopulateForDisplayListeners, listener);
         }
 
-        if(listener instanceof DialogInitialPopulateForSubmitListener)
+        if (listener instanceof DialogInitialPopulateForSubmitListener)
         {
             haveInitialPopulateForSubmitListeners = true;
             registerListener(initialPopulateForSubmitListeners, listener);
         }
 
-        if(listener instanceof DialogInitialPopulateListener)
+        if (listener instanceof DialogInitialPopulateListener)
         {
             haveInitialPopulateListeners = true;
             registerListener(initialPopulateListeners, listener);
         }
 
-        if(listener instanceof DialogPopulateForDisplayListener)
+        if (listener instanceof DialogPopulateForDisplayListener)
         {
             havePopulateForDisplayListeners = true;
             registerListener(populateForDisplayListeners, listener);
         }
 
-        if(listener instanceof DialogPopulateForSubmitListener)
+        if (listener instanceof DialogPopulateForSubmitListener)
         {
             havePopulateForSubmitListeners = true;
             registerListener(populateForSubmitListeners, listener);
         }
 
-        if(listener instanceof DialogPopulateListener)
+        if (listener instanceof DialogPopulateListener)
         {
             havePopulateListeners = true;
             registerListener(populateListeners, listener);
         }
 
-        if(listener instanceof DialogStateAfterValidationListener)
+        if (listener instanceof DialogStateAfterValidationListener)
         {
             haveStateAfterValidationListeners = true;
             registerListener(stateAfterValidationListeners, listener);
         }
 
-        if(listener instanceof DialogStateBeforeValidationListener)
+        if (listener instanceof DialogStateBeforeValidationListener)
         {
             haveStateBeforeValidationListeners = true;
             registerListener(stateBeforeValidationListeners, listener);
         }
 
-        if(listener instanceof DialogStateListener)
+        if (listener instanceof DialogStateListener)
         {
             haveStateListeners = true;
             registerListener(stateListeners, listener);
         }
 
-        if(listener instanceof DialogValidateListener)
+        if (listener instanceof DialogValidateListener)
         {
             haveValidationListeners = true;
             registerListener(validationListeners, listener);
         }
 
-        if(listener instanceof DialogExecuteHandler)
+        if (listener instanceof DialogExecuteHandler)
             executeHandlers.add((DialogExecuteHandler) listener);
     }
 

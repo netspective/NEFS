@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.18 2004-03-20 13:50:51 zahara.khan Exp $
+ * $Id: DialogFlags.java,v 1.19 2004-06-23 21:06:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -90,8 +90,10 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     public static final int GENERATE_DCB = ALLOW_PENDING_DATA * 2;
     // allow the dialog to execute when the cancel button is pressed
     public static final int ALLOW_EXECUTE_WITH_CANCEL_BUTTON = GENERATE_DCB * 2;
+    // allow the dialog to execute when the cancel button is pressed
+    public static final int DISABLE_ACTIVITY_ANNOUNCEMENT = ALLOW_EXECUTE_WITH_CANCEL_BUTTON * 2;
     // custom start
-    public static final int CUSTOM_START = ALLOW_EXECUTE_WITH_CANCEL_BUTTON * 2;
+    public static final int CUSTOM_START = DISABLE_ACTIVITY_ANNOUNCEMENT * 2;
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
@@ -111,7 +113,8 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_MULTIPLE_EXECUTES", ALLOW_MULTIPLE_EXECUTES, "If set, the dialog is allowed to execute multiple times (using back button). Otherwise, an error message is displayed everytime this dialog is executed using back button."),
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_PENDING_DATA", ALLOW_PENDING_DATA, "If set, data is allowed to be entered in the dialog fields but server side validation is not performed. Client-side validation is performed normally."),
         new FlagDefn(DialogFlags.ACCESS_XDM, "GENERATE_DCB", GENERATE_DCB, "If set, a dialog context bean is automatically generated for this dialog, whenever Ant build is run using generate-dialog-context-beans target."),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_EXECUTE_WITH_CANCEL_BUTTON", ALLOW_EXECUTE_WITH_CANCEL_BUTTON, "If set, the cancel button will cause the form to be submitted and the dialog's execute method will be called. The default is to just send a JavaScript 'history.back()' event.")
+        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_EXECUTE_WITH_CANCEL_BUTTON", ALLOW_EXECUTE_WITH_CANCEL_BUTTON, "If set, the cancel button will cause the form to be submitted and the dialog's execute method will be called. The default is to just send a JavaScript 'history.back()' event."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_ACTIVITY_ANNOUNCEMENT", DISABLE_ACTIVITY_ANNOUNCEMENT, "If set, the dialog will NOT announce events to the activity manager so that observers are preventing from acting upon the activity.")
     };
 
     public DialogFlags()
@@ -125,6 +128,7 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
 
     /**
      * Clear the flag
+     *
      * @param flag
      */
     public void clearFlag(long flag)
@@ -136,6 +140,7 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
 
     /**
      * Sets the flag
+     *
      * @param flag
      */
     public void setFlag(long flag)

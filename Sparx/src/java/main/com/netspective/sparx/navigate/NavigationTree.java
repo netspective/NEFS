@@ -52,31 +52,31 @@
 
 package com.netspective.sparx.navigate;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xml.template.TemplateProducerParent;
-import com.netspective.commons.xml.template.TemplateProducers;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.activity.ActivityObserver;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.sparx.Project;
-import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.navigate.handler.NavigationPageBodyHandlerTemplateConsumer;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
 /**
  * Main class for handling the navigation tree XML tag, &lt;navigation-tree&gt;.
@@ -136,14 +136,14 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
     public void finalizeContents()
     {
-        if(root != null)
+        if (root != null)
         {
             if (popupPage == null)
             {
                 try
                 {
                     popupPage = createPage();
-                    NavigationPathFlags flags =  popupPage.createFlags();
+                    NavigationPathFlags flags = popupPage.createFlags();
                     flags.setFlag(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.HIDDEN);
                     popupPage.setFlags(flags);
                     popupPage.setName("popup");
@@ -191,7 +191,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
     public TemplateProducers getTemplateProducers()
     {
-        if(templateProducers == null)
+        if (templateProducers == null)
         {
             templateProducers = new TemplateProducers();
             pageTypes = new TemplateProducer(getPageTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_PAGE_TYPE, "name", "type", false, false);
@@ -208,6 +208,8 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public void register(NavigationPath path)
     {
         pagesByQualifiedName.put(path.getQualifiedName(), path);
+        if (path instanceof ActivityObserver)
+            getProject().addActivityObserver((ActivityObserver) path);
     }
 
     public void unregister(NavigationPath path)
@@ -232,6 +234,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
     /**
      * Required and unique name of the navigation tree.
+     *
      * @param name the navigation tree name
      */
     public void setName(String name)
@@ -272,7 +275,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public void addPage(NavigationPage page)
     {
         root.addPage(page);
-        if(page.isDefault())
+        if (page.isDefault())
         {
             pagesByQualifiedName.put("/", page);
             homePage = page;
@@ -292,7 +295,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public void addErrorPage(NavigationErrorPage page)
     {
         root.addErrorPage(page);
-        if(page.isDefault())
+        if (page.isDefault())
             defaultErrorPage = page;
     }
 
@@ -356,6 +359,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     /**
      * Gets the next action provider for all dialogs in this navigation tree. The next action represents the action
      * to be performed after dialog execution.
+     *
      * @return
      */
     public DialogNextActionProvider getDialogNextActionProvider()
@@ -365,6 +369,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
     /**
      * Sets the next action provider for all dialogs executed by this navigation tree
+     *
      * @param nextActionProvider
      */
     public void addDialogNextActionProvider(DialogNextActionProvider nextActionProvider)
@@ -385,7 +390,8 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         /**
          * Constructs a <code>FindResult</code> object that will contain the appropiate information regarding the matching up of
          * the path string in the search NavigationPath.
-         * @param path  A <code>String</code> object that represents tha path that is being requested.
+         *
+         * @param path A <code>String</code> object that represents tha path that is being requested.
          */
         public FindResults(String path)
         {
@@ -426,7 +432,8 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
         /**
          * Returns the requested path.
-         * @return  String  A string that represents the requested path.
+         *
+         * @return String  A string that represents the requested path.
          */
         public String getSearchedForPath()
         {
@@ -435,7 +442,8 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
         /**
          * Returns <code>NavigationPath</code> object that the requested path is being matched against.
-         * @return  NavigationPath  The object that the path is being searched on.
+         *
+         * @return NavigationPath  The object that the path is being searched on.
          */
         public NavigationPath getSearchedInPath()
         {
@@ -445,6 +453,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         /**
          * Returns the <code>NavigationPath</code> object which id matched the requested path, or there was an absolute path
          * registered with the string as its id.
+         *
          * @return NavigationPath
          */
         public NavigationPath getMatchedPath()
@@ -454,6 +463,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
         /**
          * Returns a String array that contains the portions of the path that could not be matched.
+         *
          * @return String[]  Array of unmatched path items
          */
         public String[] getUnmatchedPathItems()
@@ -468,7 +478,9 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
         /**
          * Returns a concatenated String of all of the elements of getUnmatchedPathItems with a "/" as a path separator.
+         *
          * @param startItem the item number to start with
+         *
          * @return String  Full unmatched path
          */
         public String getUnmatchedPath(int startItem)

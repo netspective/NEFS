@@ -51,27 +51,29 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.26 2004-02-26 19:16:46 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.27 2004-06-23 21:06:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.servlet.ServletResponse;
-import javax.servlet.ServletRequest;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 import org.apache.oro.text.perl.Perl5Util;
 
-import com.netspective.sparx.value.BasicDbHttpServletValueContext;
-import com.netspective.sparx.form.handler.DialogNextActionProvider;
+import com.netspective.commons.activity.Activity;
+import com.netspective.commons.activity.ActivityManager;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
-public class NavigationContext extends BasicDbHttpServletValueContext
+public class NavigationContext extends BasicDbHttpServletValueContext implements Activity
 {
     private NavigationTree ownerTree;
     private NavigationPage activePage;
@@ -101,20 +103,43 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
         NavigationPage firstDescendantWithBody = findFirstMemberWithBody(activePage);
 
-        if(firstDescendantWithBody != null)
+        if (firstDescendantWithBody != null)
         {
-            if(firstDescendantWithBody != activePage || (activePathId == null || activePathId.equals("/")))
+            if (firstDescendantWithBody != activePage || (activePathId == null || activePathId.equals("/")))
                 redirectRequired = true;
             activePage = firstDescendantWithBody;
         }
 
-        if(activePage != null)
+        if (activePage != null)
         {
             activePageValid = activePage.isValid(this);
-            if(activePage.getRedirect() != null)
+            if (activePage.getRedirect() != null)
                 redirectRequired = true;
         }
     }
+
+    /**
+     * -------------------------------------------- ACTIVITY MANAGEMENT METHODS for Activity interface ------------ *
+     */
+
+    public ActivityManager getActivityManager()
+    {
+        return getProject();
+    }
+
+    public void broadcastChildActivity(Activity activity)
+    {
+        getProject().broadcastActivity(activity);
+    }
+
+    public Activity getParentActivity()
+    {
+        return null;  // no parent activity (we are a top-level activity)
+    }
+
+    /**
+     * -------------------------------------------- END ACTIVITY MANAGEMENT METHODS for Activity interface -------- *
+     */
 
     public boolean isActivePageValid()
     {
@@ -153,13 +178,13 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getErrorPageExceptionStackStrace()
     {
-        if(errorPageException == null)
+        if (errorPageException == null)
             return null;
 
-        if(errorPageException instanceof ServletException)
+        if (errorPageException instanceof ServletException)
         {
             Throwable rootCause = ((ServletException) errorPageException).getRootCause();
-            if(rootCause != null)
+            if (rootCause != null)
                 return TextUtils.getStackTrace(rootCause);
         }
 
@@ -188,11 +213,11 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public NavigationPage findFirstMemberWithBody(NavigationPage parent)
     {
-        if(parent == null || (parent != null && parent.getBodyType().getValueIndex() != NavigationPageBodyType.NONE))
+        if (parent == null || (parent != null && parent.getBodyType().getValueIndex() != NavigationPageBodyType.NONE))
             return parent;
 
         NavigationPage defNavigationPage = (NavigationPage) parent.getDefaultChild();
-        if(defNavigationPage == null)
+        if (defNavigationPage == null)
             defNavigationPage = parent.getFirstFocusableChild();
         return findFirstMemberWithBody(defNavigationPage);
     }
@@ -234,10 +259,10 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getPageHeading()
     {
-        if(errorPage != null)
+        if (errorPage != null)
             return errorPage.getHeading(this);
 
-        if(pageHeading != null)
+        if (pageHeading != null)
             return pageHeading;
 
         return activePage.getHeading(this);
@@ -245,10 +270,10 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getPageSubheading()
     {
-        if(errorPage != null)
+        if (errorPage != null)
             return errorPage.getSubHeading(this);
 
-        if(pageSubheading != null)
+        if (pageSubheading != null)
             return pageSubheading;
 
         return activePage.getSubHeading(this);
@@ -256,13 +281,13 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getPageTitle()
     {
-        if(errorPage != null)
+        if (errorPage != null)
             return errorPage.getTitle(this);
 
-        if(pageTitle != null)
+        if (pageTitle != null)
             return pageTitle;
 
-        if(pageHeading != null)
+        if (pageHeading != null)
             return pageHeading;
 
         return activePage.getTitle(this);
