@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SimulatedLoginAuthenticator.java,v 1.2 2004-08-03 19:55:22 shahid.shah Exp $
+ * $Id: SimulatedLoginAuthenticator.java,v 1.3 2004-08-08 22:55:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.simulate;
@@ -50,7 +50,8 @@ import org.apache.commons.logging.LogFactory;
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.RoleNotFoundException;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
-import com.netspective.commons.security.MutableAuthenticatedOrgUser;
+import com.netspective.commons.security.MutableAuthenticatedOrganization;
+import com.netspective.commons.security.MutableAuthenticatedOrganizations;
 import com.netspective.commons.security.MutableAuthenticatedUser;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.security.HttpLoginManager;
@@ -76,10 +77,15 @@ public class SimulatedLoginAuthenticator extends AbstractLoginAuthenticator
 
         user.setUserId(sld.getUserId());
         user.setUserName(sld.getUserName());
-        if(user instanceof MutableAuthenticatedOrgUser)
+
+        if(sld.getUserOrgId() != null)
         {
-            ((MutableAuthenticatedOrgUser) user).setUserOrgId(sld.getUserOrgId());
-            ((MutableAuthenticatedOrgUser) user).setUserOrgName(sld.getUserOrgName());
+            MutableAuthenticatedOrganizations orgs = (MutableAuthenticatedOrganizations) user.getOrganizations();
+            MutableAuthenticatedOrganization org = orgs.createOrganization();
+            org.setPrimary(true);
+            org.setOrgId(sld.getUserOrgId());
+            org.setOrgName(sld.getUserOrgName());
+            orgs.addOrganization(org);
         }
 
         if(sld.getPermissions() != null)

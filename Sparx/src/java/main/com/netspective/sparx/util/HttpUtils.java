@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpUtils.java,v 1.6 2003-11-16 19:52:29 shahid.shah Exp $
+ * $Id: HttpUtils.java,v 1.7 2004-08-08 22:55:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.util;
@@ -52,6 +52,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -163,10 +164,7 @@ public class HttpUtils
                 String paramName = retainParams[i];
                 int defaultValuePos = paramName.indexOf('=');
                 if(defaultValuePos > 0)
-                {
-                    paramName = paramName.substring(0, defaultValuePos);
                     assignParamToInstance(req, schema, instance, paramName.substring(0, defaultValuePos), paramName.substring(defaultValuePos+1));
-                }
                 else
                     assignParamToInstance(req, schema, instance, paramName, null);
             }

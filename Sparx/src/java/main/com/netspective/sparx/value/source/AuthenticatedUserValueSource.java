@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUserValueSource.java,v 1.3 2003-09-02 17:07:31 shahid.shah Exp $
+ * $Id: AuthenticatedUserValueSource.java,v 1.4 2004-08-08 22:55:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -49,20 +49,20 @@ import java.util.StringTokenizer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.value.ValueSourceDocumentation;
-import com.netspective.commons.value.ValueSourceSpecification;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.security.AuthenticatedOrganization;
+import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
-import com.netspective.commons.value.source.AbstractValueSource;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.commons.value.source.AbstractValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xdm.exception.InvalidXdmEnumeratedAttributeValueException;
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.security.AuthenticatedOrgUser;
-import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.value.HttpServletValueContext;
 
 public class AuthenticatedUserValueSource extends AbstractValueSource
 {
@@ -145,10 +145,12 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
                 return new GenericValue(authUser.getUserName());
 
             case AttributeType.ORG_ID:
-                return new GenericValue(((AuthenticatedOrgUser) authUser).getUserOrgId());
+                AuthenticatedOrganization authOrg = authUser.getOrganizations().getPrimaryOrganization();
+                return new GenericValue(authOrg != null ? authOrg.getOrgId() : null);
 
             case AttributeType.ORG_NAME:
-                return new GenericValue(((AuthenticatedOrgUser) authUser).getUserOrgName());
+                authOrg = authUser.getOrganizations().getPrimaryOrganization();
+                return new GenericValue(authOrg != null ? authOrg.getOrgName() : null);
 
             case AttributeType.ENC_PASSWORD:
                 return new GenericValue(authUser.getEncryptedPassword());

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.25 2004-08-03 19:55:22 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.26 2004-08-08 22:55:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -401,7 +401,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     protected void registerLogin(HttpServletValueContext hsvc, MutableAuthenticatedUser user)
     {
-        user.registerLogin();
+        user.registerLogin(hsvc);
         activeUsers.add(user);
 
         HttpServletRequest req = hsvc.getHttpRequest();
@@ -464,7 +464,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     {
         hsvc.getProject().broadcastActivity(new HttpLogoutActivity(hsvc.getProject(), hsvc));
 
-        user.registerLogout(AuthenticatedUserLogoutType.USER_REQUEST);
+        user.registerLogout(hsvc, AuthenticatedUserLogoutType.USER_REQUEST);
         activeUsers.remove(user);
 
         if(log.isInfoEnabled())

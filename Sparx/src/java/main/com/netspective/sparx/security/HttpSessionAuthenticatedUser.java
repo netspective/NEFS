@@ -39,16 +39,16 @@
  */
 
 /**
- * $Id: HttpSessionAuthenticatedUser.java,v 1.1 2003-08-31 23:01:03 shahid.shah Exp $
+ * $Id: HttpSessionAuthenticatedUser.java,v 1.2 2004-08-08 22:55:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
-import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 
-import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserLogoutType;
+import com.netspective.commons.security.BasicAuthenticatedUser;
 
 public class HttpSessionAuthenticatedUser extends BasicAuthenticatedUser implements HttpSessionBindingListener
 {
@@ -59,6 +59,6 @@ public class HttpSessionAuthenticatedUser extends BasicAuthenticatedUser impleme
     public void valueUnbound(HttpSessionBindingEvent event)
     {
         // in case the user times out, make sure to do anything that would happen on logout
-        registerLogout(AuthenticatedUserLogoutType.SESSION_TERMINATED);
+        registerLogout(null, AuthenticatedUserLogoutType.SESSION_TERMINATED);
     }
 }

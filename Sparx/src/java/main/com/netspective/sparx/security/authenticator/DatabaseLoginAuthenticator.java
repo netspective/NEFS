@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.8 2004-08-03 19:47:26 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.9 2004-08-08 22:55:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
@@ -54,10 +54,11 @@ import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
-import com.netspective.commons.security.MutableAuthenticatedOrgUser;
-import com.netspective.commons.security.MutableAuthenticatedOrgsUser;
+import com.netspective.commons.security.EntityPreference;
+import com.netspective.commons.security.MutableAuthenticatedOrganization;
+import com.netspective.commons.security.MutableAuthenticatedOrganizations;
 import com.netspective.commons.security.MutableAuthenticatedUser;
-import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.security.MutableEntityPreferences;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.security.LoginDialogContext;
@@ -70,11 +71,18 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     private String passwordQueryPasswordColumnLabel = "password";
     private Query passwordQuery;        // the query to get the user's password
     private Query roleQuery;            // the query to get the user's roles
-    private Query orgsQuery;            // the query to get the user's multiple organizations
-    private Query orgQuery;             // the query to get the user's single organization
+    private Query primaryOrgQuery;      // the query to get the user's primary organization
+    private Query orgsQuery;            // the query to get the user's supplementary organizations
+    private Query userPrefsQuery;       // the query to get a user's preferences list
+    private Query primaryOrgPrefsQuery; // the query to get a primary org's preferences list
+    private Query orgsPrefsQuery;       // the query to get a supplementary org's preferences list
     private boolean passwordEncrypted;  // true if the password is encrypted
+
     private static final String ATTRNAME_PASSWORD_QUERY_RESULTS = "PASSWORD_QUERY_RESULTS";
+    private static final String ATTRNAME_PRIMARY_ORG_QUERY_RESULTS = "PRIMARY_ORG_QUERY_RESULTS";
     private static final String ATTRNAME_ORGS_QUERY_RESULTS = "ORGS_QUERY_RESULTS";
+    private static final String ATTRNAME_USER_PREFS_QUERY_RESULTS = "USER_PREFS_QUERY_RESULTS";
+    private static final String ATTRNAME_ORG_PREFS_QUERY_RESULTS = "PRIMARY_ORG_PREFS_QUERY_RESULTS";
 
     public String getPasswordQueryPasswordColumnLabel()
     {
@@ -132,8 +140,10 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, MutableAuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
         assignUserInfo(ldc, user);
+        retrievePreferences(ldc, userPrefsQuery, new Object[]{ldc.getUserIdInput()}, (MutableEntityPreferences) user.getPreferences(), ATTRNAME_USER_PREFS_QUERY_RESULTS);
+
         assignOrganizations(ldc, user);
-        assignRoles(ldc, user);
+        assignUserRoles(ldc, user);
 
         // the super will call user.init so we want to give the authenticated user class a chance to initalize itself
         // now that the user information and roles have been assigned
@@ -161,7 +171,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         }
     }
 
-    protected void assignRoles(LoginDialogContext ldc, MutableAuthenticatedUser user)
+    protected void assignUserRoles(LoginDialogContext ldc, MutableAuthenticatedUser user)
     {
         if (roleQuery != null)
         {
@@ -183,85 +193,93 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         }
     }
 
+    protected void retrievePreferences(LoginDialogContext ldc, Query query, Object[] queryParams, MutableEntityPreferences preferences, String resultsAttrName)
+    {
+        if (query != null)
+        {
+            try
+            {
+                QueryResultSet qrs = query.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
+                if (qrs != null)
+                {
+                    Map[] orgsResult = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(qrs.getResultSet(), true);
+                    ldc.setAttribute(resultsAttrName, orgsResult);
+
+                    for (int rowIndex = 0; rowIndex < orgsResult.length; rowIndex++)
+                    {
+                        EntityPreference pref = preferences.createPreference();
+                        XmlDataModelSchema schema = XmlDataModelSchema.getSchema(pref.getClass());
+                        Map row = orgsResult[rowIndex];
+                        schema.assignMapValues(pref, row, "*");
+                        preferences.addPreference(pref);
+                    }
+
+                    qrs.close(true);
+                }
+            }
+            catch (Exception e)
+            {
+                log.error("Error retrieving preferences", e);
+            }
+        }
+    }
+
     protected void assignOrganizations(LoginDialogContext ldc, AuthenticatedUser user)
     {
+        MutableAuthenticatedOrganizations mutableOrgs = (MutableAuthenticatedOrganizations) user.getOrganizations();
+
         if (orgsQuery != null)
         {
-            if (!(user instanceof MutableAuthenticatedOrgsUser))
-                log.error("Unable to assign organizations using orgs-query since the AuthenticatedUser does not implement MutableAuthenticatedOrgsUser");
-            else
+            try
             {
-                try
+                QueryResultSet qrs = orgsQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
+                if (qrs != null)
                 {
-                    QueryResultSet qrs = orgsQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
-                    if (qrs != null)
+                    Map[] orgsResult = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(qrs.getResultSet(), true);
+                    ldc.setAttribute(ATTRNAME_ORGS_QUERY_RESULTS, orgsResult);
+
+                    for (int rowIndex = 0; rowIndex < orgsResult.length; rowIndex++)
                     {
-                        Object[][] orgsResult = ResultSetUtils.getInstance().getResultSetRowsAsMatrix(qrs.getResultSet());
-                        ldc.setAttribute(ATTRNAME_ORGS_QUERY_RESULTS, orgsResult);
+                        MutableAuthenticatedOrganization org = mutableOrgs.createOrganization();
+                        XmlDataModelSchema schema = XmlDataModelSchema.getSchema(org.getClass());
+                        Map row = orgsResult[rowIndex];
+                        schema.assignMapValues(org, row, "*");
+                        mutableOrgs.addOrganization(org);
 
-                        MutableAuthenticatedOrgsUser mutableOrgsUser = (MutableAuthenticatedOrgsUser) user;
-                        for (int rowIndex = 0; rowIndex < orgsResult.length; rowIndex++)
-                        {
-                            Object[] row = orgsResult[rowIndex];
-                            switch (row.length)
-                            {
-                                case 1:
-                                    mutableOrgsUser.addUserOrg(false, row[0].toString(), row[0].toString());
-                                    break;
-
-                                case 2:
-                                    mutableOrgsUser.addUserOrg(false, row[0].toString(), row[1].toString());
-                                    break;
-
-                                default: /** 3 or more **/
-                                    Object isPrimaryObjValue = row[2];
-                                    boolean isPrimary = false;
-                                    if (isPrimaryObjValue instanceof Boolean)
-                                        isPrimary = ((Boolean) isPrimaryObjValue).booleanValue();
-                                    else if (isPrimaryObjValue instanceof Integer)
-                                        isPrimary = ((Integer) isPrimaryObjValue).intValue() == 1 ? true : false;
-                                    else if (isPrimaryObjValue instanceof Long)
-                                        isPrimary = ((Long) isPrimaryObjValue).longValue() == 1 ? true : false;
-                                    else
-                                        isPrimary = TextUtils.toBoolean(isPrimaryObjValue.toString(), false);
-
-                                    mutableOrgsUser.addUserOrg(isPrimary, row[0].toString(), row[1].toString());
-                                    break;
-                            }
-                        }
+                        retrievePreferences(ldc, orgsPrefsQuery, new Object[] { org.getOrgId() }, (MutableEntityPreferences) org.getPreferences(), null);
                     }
                 }
-                catch (Exception e)
-                {
-                    log.error("Error assigning orgs to user", e);
-                }
+            }
+            catch (Exception e)
+            {
+                log.error("Error assigning orgs to user", e);
             }
         }
 
-        if (orgQuery != null)
+        if (primaryOrgQuery != null)
         {
-            if (!(user instanceof MutableAuthenticatedOrgUser))
-                log.error("Unable to assign organization using org-query since the AuthenticatedUser does not implement MutableAuthenticatedOrgUser");
-            else
+            try
             {
-                try
+                QueryResultSet qrs = primaryOrgQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
+                if (qrs != null)
                 {
-                    QueryResultSet qrs = orgQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
-                    if (qrs != null)
-                    {
-                        Object[] orgResult = ResultSetUtils.getInstance().getResultSetSingleRowAsArray(qrs.getResultSet());
-                        ldc.setAttribute(ATTRNAME_ORGS_QUERY_RESULTS, orgResult);
+                    Map orgResult = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet(), true);
+                    ldc.setAttribute(ATTRNAME_PRIMARY_ORG_QUERY_RESULTS, orgResult);
 
-                        MutableAuthenticatedOrgUser mutableOrgUser = (MutableAuthenticatedOrgUser) user;
-                        mutableOrgUser.setUserOrgId(orgResult[0].toString());
-                        if (orgResult.length > 1)
-                            mutableOrgUser.setUserOrgName(orgResult[1].toString());
-                    }
+                    MutableAuthenticatedOrganization org = mutableOrgs.createOrganization();
+                    XmlDataModelSchema schema = XmlDataModelSchema.getSchema(org.getClass());
+
+                    schema.assignMapValues(org, orgResult, "*");
+
+                    org.setPrimary(true);
+                    mutableOrgs.addOrganization(org);
+
+                    retrievePreferences(ldc, primaryOrgPrefsQuery, new Object[] { org.getOrgId() }, (MutableEntityPreferences) org.getPreferences(), ATTRNAME_ORG_PREFS_QUERY_RESULTS);
                 }
-                catch (Exception e)
-                {
-                    log.error("Error assigning orgs to user", e);
-                }
+            }
+            catch (Exception e)
+            {
+                log.error("Error assigning primary org to user", e);
             }
         }
     }
@@ -321,18 +339,63 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         orgsQuery = query;
     }
 
-    public Query getOrgQuery()
+    public Query getPrimaryOrgQuery()
     {
-        return orgQuery;
+        return primaryOrgQuery;
     }
 
-    public Query createOrgQuery()
+    public Query createPrimaryOrgQuery()
     {
         return new Query();
     }
 
-    public void addOrgQuery(Query query)
+    public void addPrimaryOrgQuery(Query query)
     {
-        orgQuery = query;
+        primaryOrgQuery = query;
+    }
+
+    public Query getUserPrefsQuery()
+    {
+        return userPrefsQuery;
+    }
+
+    public Query createUserPrefsQuery()
+    {
+        return new Query();
+    }
+
+    public void addUserPrefsQuery(Query query)
+    {
+        userPrefsQuery = query;
+    }
+
+    public Query getPrimaryOrgPrefsQuery()
+    {
+        return primaryOrgPrefsQuery;
+    }
+
+    public Query createPrimaryOrgPrefsQuery()
+    {
+        return new Query();
+    }
+
+    public void addPrimaryOrgPrefsQuery(Query query)
+    {
+        primaryOrgPrefsQuery = query;
+    }
+
+    public Query getOrgsPrefsQuery()
+    {
+        return orgsPrefsQuery;
+    }
+
+    public Query createOrgsPrefsQuery()
+    {
+        return new Query();
+    }
+
+    public void addOrgsPrefsQuery(Query query)
+    {
+        orgsPrefsQuery = query;
     }
 }
