@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.2 2003-05-15 15:51:17 shahid.shah Exp $
+ * $Id: SelectField.java,v 1.3 2003-05-15 20:50:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -86,10 +86,10 @@ public class SelectField extends TextField
     {
         for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
             SELECT_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
-        SELECT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "SORT_CHOICES", Flags.SORT_CHOICES);
-        SELECT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 1] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "PREPEND_BLANK", Flags.PREPEND_BLANK);
-        SELECT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 2] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "APPEND_BLANK", Flags.APPEND_BLANK);
-        SELECT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 3] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "SEND_CHOICES_TO_CLIENT", Flags.SEND_CHOICES_TO_CLIENT);
+        SELECT_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "SORT_CHOICES", Flags.SORT_CHOICES);
+        SELECT_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 1] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "PREPEND_BLANK", Flags.PREPEND_BLANK);
+        SELECT_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 2] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "APPEND_BLANK", Flags.APPEND_BLANK);
+        SELECT_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 3] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "SEND_CHOICES_TO_CLIENT", Flags.SEND_CHOICES_TO_CLIENT);
     }
 
     public class Flags extends TextField.Flags

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.8 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.9 2003-05-15 20:50:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -615,7 +615,7 @@ public class Dialog extends AbstractPanel
         if(dc.inExecuteMode())
         {
             dc.persistValues();
-            this.populateValues(dc, DialogField.SUBMIT_FORMAT);
+            populateValues(dc, DialogField.SUBMIT_FORMAT);
         }
     }
 

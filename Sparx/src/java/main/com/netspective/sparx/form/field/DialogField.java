@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.11 2003-05-15 15:51:17 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.12 2003-05-15 20:50:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -350,7 +350,7 @@ public class DialogField implements TemplateConsumer
     }
 
     public static final int DISPLAY_FORMAT = 0;
-    public static final int SUBMIT_FORMAT = 0;
+    public static final int SUBMIT_FORMAT = 1;
 
 	public static final String CUSTOM_CAPTION = new String();
 	public static final String GENERATE_CAPTION = "*";

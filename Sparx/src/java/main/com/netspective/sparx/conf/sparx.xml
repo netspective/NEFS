@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.12 2003-05-15 15:51:17 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.13 2003-05-15 20:50:32 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -31,5 +31,23 @@
     <dialog-field-type name="float" class="com.netspective.sparx.form.field.type.FloatField"/>
     <dialog-field-type name="memo" class="com.netspective.sparx.form.field.type.MemoField"/>
     <dialog-field-type name="text-area" class="com.netspective.sparx.form.field.type.MemoField"/>
+    <dialog-field-type name="ssn" class="com.netspective.sparx.form.field.type.SocialSecurityField"/>
+    <dialog-field-type name="social-security" class="com.netspective.sparx.form.field.type.SocialSecurityField"/>
+
+    <dialog-field-type name="e-mail" class="com.netspective.sparx.form.field.type.TextField">
+        <validation>
+            <rule class="com.netspective.commons.validate.rule.TextValueValidationRule"
+                  reg-expr="/^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$/"
+                  invalid-reg-ex-message="Email must be in xxx@xxxx.xxx format."/>
+        </validation>
+    </dialog-field-type>
+
+    <dialog-field-type name="guid32" class="com.netspective.sparx.form.field.type.TextField">
+        <validation>
+            <rule class="com.netspective.commons.validate.rule.TextValueValidationRule"
+                  reg-expr="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/"
+                  invalid-reg-ex-message="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
+        </validation>
+    </dialog-field-type>
 
 </xdm:container>

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: FloatField.java,v 1.1 2003-05-15 15:51:17 shahid.shah Exp $
+ * $Id: FloatField.java,v 1.2 2003-05-15 20:50:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -80,7 +80,7 @@ public class FloatField extends TextField
             {
                 if(value == null || value.length() == 0)
                 {
-                    super.setTextValue(value);
+                    setValue((Float) null);
                     return;
                 }
 

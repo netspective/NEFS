@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DirectorNextActionsSelectField.java,v 1.4 2003-05-15 15:51:17 shahid.shah Exp $
+ * $Id: DirectorNextActionsSelectField.java,v 1.5 2003-05-15 20:50:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -68,13 +68,40 @@ public class DirectorNextActionsSelectField extends SelectField
 {
     public static final String DEFAULT_NAME = "director_next_actions";
 
+    public static final Flags.FlagDefn[] NEXT_ACTION_FIELD_FLAG_DEFNS = new Flags.FlagDefn[SelectField.SELECT_FIELD_FLAG_DEFNS.length + 1];
+    static
+    {
+        for(int i = 0; i < SelectField.SELECT_FIELD_FLAG_DEFNS.length; i++)
+            NEXT_ACTION_FIELD_FLAG_DEFNS[i] = SelectField.SELECT_FIELD_FLAG_DEFNS[i];
+        NEXT_ACTION_FIELD_FLAG_DEFNS[SelectField.SELECT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(Flags.ACCESS_XDM, "DISPLAY_SINGLE_ACTION", Flags.DISPLAY_SINGLE_ACTION);
+    }
+
+    public class Flags extends SelectField.Flags
+    {
+        public static final int DISPLAY_SINGLE_ACTION = SelectField.Flags.START_CUSTOM;
+        public static final int START_CUSTOM = DISPLAY_SINGLE_ACTION * 2;
+
+        public Flags()
+        {
+        }
+
+        public FlagDefn[] getFlagsDefns()
+        {
+            return NEXT_ACTION_FIELD_FLAG_DEFNS;
+        }
+    }
+
     private DialogDataCommands dataCmd = new DialogDataCommands();
-    private boolean displayOneItemOnly = false;
 
     public DirectorNextActionsSelectField()
     {
         super();
         getFlags().setFlag(Flags.PERSIST);
+    }
+
+    public DialogField.Flags createFlags()
+    {
+        return new Flags();
     }
 
     public void setParent(DialogField newParent)
@@ -115,7 +142,7 @@ public class DirectorNextActionsSelectField extends SelectField
             return;
 
         // if there's only a single item but we don't want to display "one item only" then get the value but hide the field
-        if (listSize == 1 && !displayOneItemOnly)
+        if (listSize == 1 && ! getFlags().flagIsSet(Flags.DISPLAY_SINGLE_ACTION))
         {
             SelectFieldState state = (SelectFieldState) dc.getFieldStates().getState(this);
             state.getValue().setTextValue(((PresentationValue.Items.Item) items.get(0)).getValue());
@@ -140,15 +167,5 @@ public class DirectorNextActionsSelectField extends SelectField
             dataCmdAction.setDataCmd(this.dataCmd);
             addConditional(dataCmdAction);
         }
-    }
-
-    public boolean isDisplayOneItemOnly()
-    {
-        return displayOneItemOnly;
-    }
-
-    public void setDisplayOneItemOnly(boolean displayOneItemOnly)
-    {
-        this.displayOneItemOnly = displayOneItemOnly;
     }
 }

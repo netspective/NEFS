@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: CurrencyField.java,v 1.2 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: CurrencyField.java,v 1.3 2003-05-15 20:50:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -109,7 +109,7 @@ public class CurrencyField extends TextField
             {
                 if(value == null || value.length() == 0)
                 {
-                    super.setTextValue(value);
+                    setValue((Double) null);
                     return;
                 }
 
