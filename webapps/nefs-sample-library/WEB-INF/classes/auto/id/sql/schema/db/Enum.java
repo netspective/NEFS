@@ -5,7 +5,8 @@ package auto.id.sql.schema.db;
 
 public interface Enum
 {
-    static public final int BOOK_TYPE = 3;
+    static public final int ASSET_TYPE = 5;
+    static public final int LOAN_TYPE = 6;
     static public final int LOOKUP_RESULT_TYPE = 0;
     static public final int RECORD_STATUS = 1;
 }

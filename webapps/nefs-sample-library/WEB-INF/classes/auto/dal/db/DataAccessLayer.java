@@ -1,15 +1,21 @@
 package auto.dal.db;
 
 import com.netspective.axiom.schema.Schema;
-import auto.dal.db.dao.BookInfoTable;
+import auto.dal.db.dao.AssetTable;
+import auto.dal.db.dao.BorrowerTable;
 
 public final class DataAccessLayer
 {
     private static final DataAccessLayer INSTANCE = new DataAccessLayer();
     
-    public final BookInfoTable getBookInfoTable()
+    public final AssetTable getAssetTable()
     {
-        return bookInfoTable;
+        return assetTable;
+    }
+    
+    public final BorrowerTable getBorrowerTable()
+    {
+        return borrowerTable;
     }
     
     public final Schema getSchema()
@@ -20,13 +26,15 @@ public final class DataAccessLayer
     public final void setSchema(Schema schema)
     {
         this.schema = schema;
-        bookInfoTable = new BookInfoTable(schema.getTables().getByName("Book_Info"));
+        assetTable = new AssetTable(schema.getTables().getByName("Asset"));
+        borrowerTable = new BorrowerTable(schema.getTables().getByName("Borrower"));
     }
     
     public static final DataAccessLayer getInstance()
     {
         return INSTANCE;
     }
-    private BookInfoTable bookInfoTable;
+    private AssetTable assetTable;
+    private BorrowerTable borrowerTable;
     private Schema schema;
 }

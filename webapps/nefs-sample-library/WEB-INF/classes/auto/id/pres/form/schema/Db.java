@@ -5,5 +5,7 @@ package auto.id.pres.form.schema;
 
 public interface Db
 {
-    static public final String BOOK_INFO = "schema.db.Book_Info";
+    static public final String ASSET = "schema.db.Asset";
+    static public final String ASSET_LOAN = "schema.db.Asset_Loan";
+    static public final String BORROWER = "schema.db.Borrower";
 }

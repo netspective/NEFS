@@ -5,14 +5,9 @@
 <!DOCTYPE dal SYSTEM "library.dtd">
 
 <dal>
-    <book-info
-        id="test-001" name="Book 001"
-        author="Smith, James R." genre="Science Fiction"/>
+    <generate-asset-records count="35"/>
 
-    <book-info
-        id="test-002" name="Book 002"
-        author="Jones, Rober. J." genre="Mystery"/>
-
-    <generate-book-info-records count="100"/>
+    <borrower last-name="Doe" first-name="John"/>
+    <borrower last-name="Doe" first-name="Jane"/>
 </dal>
 

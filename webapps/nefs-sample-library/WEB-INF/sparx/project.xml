@@ -18,7 +18,9 @@
     ********************************************************************** -->
 
     <!-- setup the data access layer Singleton to point to our schema -->
+<!--
     <listener class="app.Util"/>
+-->
 
 	<!--
 	**********************************************************************
@@ -26,22 +28,44 @@
 	********************************************************************** -->
 
     <navigation-tree name="app" default="yes">
-        <page name="home" default="yes" caption="Home" command="query,library.get-all-books,-,-,-,record-editor-compressed"/>
+        <page name="home" default="yes" caption="Home">
+            <panels style="horizontal">
+                <panel type="command" command="query,library.get-all-assets,-,-,-,record-editor-compressed"/>
+                <panel type="command" command="query,library.get-all-borrowers,-,-,-,record-editor-compressed"/>
+            </panels>
+        </page>
 
-        <page name="add" caption="Add Book" command="dialog,schema.db.Book_Info,add"/>
-        <page name="edit" caption="Edit Book" command="dialog,schema.db.Book_Info,edit" require-request-param="id" retain-params="id">
-            <missing-params-body>
-               Please choose a book to edit from the &lt;a href='home'&gt; books list&lt;/a&gt;.
-            </missing-params-body>
+        <page name="asset" caption="Assets">
+            <page name="view" caption="View Assets" command="query,library.get-all-assets,-,-,-,record-editor-compressed"/>
+            <page name="add" caption="Add Asset" command="dialog,schema.db.Asset,add"/>
+            <page name="edit" caption="Edit Asset" command="dialog,schema.db.Asset,edit" require-request-param="asset_id" retain-params="asset_id">
+                <missing-params-body>
+                   Please choose a book to edit from the &lt;a href='view'&gt; assets list&lt;/a&gt;.
+                </missing-params-body>
+            </page>
+            <page name="delete" caption="Delete Asset" command="dialog,schema.db.Asset,delete" require-request-param="asset_id" retain-params="asset_id">
+                <missing-params-body>
+                   Please choose a book to delete from the &lt;a href='view'&gt; assets list&lt;/a&gt;.
+                </missing-params-body>
+            </page>
         </page>
-        <page name="delete" caption="Delete Book" command="dialog,schema.db.Book_Info,delete" require-request-param="id" retain-params="id">
-            <missing-params-body>
-               Please choose a book to delete from the &lt;a href='home'&gt; books list&lt;/a&gt;.
-            </missing-params-body>
+
+        <page name="borrower" caption="Borrowers">
+            <page name="view" caption="View Borrowers" command="query,library.get-all-borrowers,-,-,-,record-editor-compressed"/>
+            <page name="add" caption="Add Borrower" command="dialog,schema.db.borrower,add"/>
+            <page name="edit" caption="Edit Borrower" command="dialog,schema.db.borrower,edit" require-request-param="borrower_id" retain-params="borrower_id">
+                <missing-params-body>
+                   Please choose a book to edit from the &lt;a href='view'&gt; borrowers list&lt;/a&gt;.
+                </missing-params-body>
+            </page>
+            <page name="delete" caption="Delete Borrower" command="dialog,schema.db.borrower,delete" require-request-param="borrower_id" retain-params="borrower_id">
+                <missing-params-body>
+                   Please choose a book to delete from the &lt;a href='view'&gt; borrowers list&lt;/a&gt;.
+                </missing-params-body>
+            </page>
         </page>
-        <page name="search" caption="Search Books" command="query-defn,library,test,searchBooksDialog"/>
-        <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
-        <page name="sampler" caption="Sampler" redirect="vs-expr:${servlet-context-uri:server-root}/nefs-sampler"/>
+
+        <page name="console" caption="Console" redirect="console"/>
     </navigation-tree>
 
 <!--
@@ -77,22 +101,58 @@
 	<schema name="db">
 		<xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
-		<table name="Book_Info" abbrev="bkI" type="Presentation">
-			<column name="id" type="text" size="10" primary-key="yes" descr="Unique ID for every book in the database"/>
-			<column name="name" type="text" size="64" descr="Name of the book"/>
-            <column name="author" type="text" size="64" descr="Name of the author(s)"/>
-			<column name="genre" lookup-ref="Book_Type"/>
-			<column name="isbn" type="text" size="10" descr="The 10 digit ISBN number"/>
+        <table-type name="Entity">
+            <column name="${owner.name.toLowerCase()}_id" type="auto-inc" primary-key="yes" descr="Unique identifier for ${owner.name}">
+                <presentation>
+                    <field name="${column.name}" type="integer" caption="ID" primary-key="yes"/>
+                </presentation>
+            </column>
+        </table-type>
+
+        <table-type name="Person" type="Entity">
+            <column name="first_name" type="text" size="64" descr="The person's first name"/>
+            <column name="last_name" type="text" size="64" descr="The person's last name"/>
+        </table-type>
+
+		<table name="Asset" abbrev="asset" type="Entity,Presentation">
+            <column name="type" lookup-ref="Asset_Type" required="yes" descr="The type of asset"/>
+			<column name="name" type="text" size="64" required="yes" descr="Name of the asset"/>
+			<column name="quantity" type="integer" required="yes" descr="Count of number of assets available to loan"/>
 		</table>
 
-		<table name="Book_Type" abbrev="bkT" type="Enumeration">
+        <table name="Borrower" type="Person,Presentation">
+            <!-- no columns are being added, it's just first name and last name -->
+        </table>
+
+        <table name="Asset_Loan" abbrev="asloan" type="Entity,Presentation">
+            <column name="asset_id" parent-ref="Asset.asset_id" descr="The asset that was borrowed (a loan is owned by the Asset so it's a parent reference)">
+                <presentation>
+                    <field name="${column.name}" type="select" caption="Asset" choices="query:library.asset-names-for-select-field-choices"/>
+                </presentation>
+            </column>
+            <column name="borrower_id" lookup-ref="Borrower.borrower_id" descr="The person that borrowed the asset">
+                <presentation>
+                    <field name="${column.name}" type="select" caption="Borrower" choices="query:library.borrower-names-for-select-field-choices"/>
+                </presentation>
+            </column>
+            <column name="loan_type" lookup-ref="Loan_Type" descr="The type of loan"/>
+            <column name="loan" type="duration" required="yes" descr="The duration of the loan"/>
+            <column name="returned" type="boolean" descr="Whether the asset has been returned or not"/>
+        </table>
+
+		<table name="Asset_Type" abbrev="atype" type="Enumeration">
 			<enumerations>
-				<enum>Science Fiction</enum>
-				<enum>Mystery</enum>
-				<enum>Business</enum>
-				<enum>Information Technology</enum>
-				<enum>Nuclear Physics</enum>
-				<enum>Chemistry</enum>
+				<enum>Other</enum>
+				<enum>Software</enum>
+				<enum>Periodical</enum>
+				<enum>Book</enum>
+			</enumerations>
+		</table>
+
+		<table name="Loan_Type" abbrev="ltype" type="Enumeration">
+			<enumerations>
+				<enum>Short term</enum>
+				<enum>Long term</enum>
 			</enumerations>
 		</table>
 	</schema>
@@ -104,79 +164,75 @@
 
     <queries package="library">
 
-        <query name="get-all-books">
+        <query name="get-all-assets">
 
-            select id, name, author, book_type.caption, isbn
-            from book_info, book_type
-            where genre = book_type.id
+            select asset_id, name, Asset_Type.caption, quantity,
+                   (select count(*) from Asset_Loan where Asset_Loan.asset_id = asset_id),
+                   (select count(*) from Asset_Loan where Asset_Loan.asset_id = asset_id and Asset_Loan.returned = 0)
+            from Asset, Asset_Type
+            where Asset.type = Asset_Type.id
+            order by name;
 
             <presentation>
                 <panel name="main" height="300">
-                    <frame heading="static:All available books"/>
+                    <frame heading="static:All available assets"/>
                     <report>
                         <actions>
-                            <action type="add" caption="Add Book" redirect="page-id:/add"/>
-                            <action type="edit" redirect="page-id:/edit?id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
-                            <action type="delete" redirect="page-id:/delete?id=${0}"/>
+                            <action type="add" caption="Add Book" redirect="page-id:/asset/add"/>
+                            <action type="edit" redirect="page-id:/asset/edit?asset_id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="page-id:/asset/delete?asset_id=${0}"/>
                         </actions>
-                        <column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/>
+                        <column heading="ID" format="plain" redirect="page-id:/asset/edit?asset_id=${0}"/>
                         <column heading="Name" />
-                        <column heading="Author"/>
-                        <column heading="Genre"/>
-                        <column heading="ISBN"/>
+                        <column heading="Type"/>
+                        <column heading="Quantity" align="right"/>
+                        <column heading="Total Loans" align="right"/>
+                        <column heading="Currently Out" align="right"/>
                     </report>
                 </panel>
             </presentation>
         </query>
 
+        <query name="get-all-borrowers">
+
+            select borrower_id, last_name, first_name,
+                   (select count(*) from Asset_Loan where Asset_Loan.borrower_id = borrower_id),
+                    (select count(*) from Asset_Loan where Asset_Loan.borrower_id = borrower_id and Asset_Loan.returned = 0)
+            from Borrower
+            order by last_name, first_name
+
+            <presentation>
+                <panel name="main" height="300">
+                    <frame heading="static:All available borrowers"/>
+                    <report>
+                        <actions>
+                            <action type="add" caption="Add Borrower" redirect="page-id:/borrower/add"/>
+                            <action type="edit" redirect="page-id:/borrower/edit?borrower_id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="page-id:/borrower/delete?borrower_id=${0}"/>
+                        </actions>
+                        <column heading="ID" format="plain" redirect="page-id:/borrower/edit?borrower_id=${0}"/>
+                        <column heading="Last Name" />
+                        <column heading="First Name"/>
+                        <column heading="Borrowed" align="right"/>
+                        <column heading="Unreturned" align="right"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="asset-names-for-select-field-choices">
+
+            select name, asset_id
+            from Asset
+
+        </query>
+
+        <query name="borrower-names-for-select-field-choices">
+
+            select (last_name + ', ' + first_name) as "Name", borrower_id
+            from Borrower
+
+        </query>
+
     </queries>
-
-    <query-defn name="library">
-        <field name="book_id" caption="Book ID" join="BookInfo" column="id"/>
-        <field name="name" caption="Name" join="BookInfo" column="name"/>
-        <field name="author" caption="Author" join="BookInfo" column="author"/>
-        <field name="genre_id" caption="Genre ID" join="BookInfo" column="genre"/>
-        <field name="genre_caption" caption="Genre" join="BookType" column="caption"/>
-        <field name="isbn" caption="ISBN" join="BookInfo" column="isbn"/>
-
-        <join name="BookInfo" table="book_info"/>
-		<join name="BookType" table="book_type" condition="BookType.id = BookInfo.genre"/>
-
-        <presentation>
-            <select-dialog name="searchBooksDialog"  allow-debug="yes" hide-output-dests="no" hide-readonly-hints="yes" >
-                <frame heading="Search for Books" />
-                <field type="text" name="book_id" caption="Book ID" />
-                <field type="text" name="name" caption="Book Name"/>
-                <field type="text" name="author" caption="Author"/>
-                <field type="text" name="isbn" caption="ISBN"/>
-                <field type="select" style="list" name="genre" caption="Genre" choices="schema-enum:Book_Type"/>
-
-                <select name="test">
-                    <display field="book_id"/>
-                    <display field="name"/>
-                    <display field="author"/>
-                    <display field="genre_caption"/>
-                    <display field="isbn"/>
-
-                    <condition field="book_id" allow-null="no" comparison="equals" value="field:book_id" connector="and"/>
-                    <condition field="name" allow-null="no" comparison="starts-with" value="field:name" connector="and"/>
-                    <condition field="author" allow-null="no" comparison="equals" value="field:author" connector="and"/>
-                    <condition field="genre_id" allow-null="no" comparison="equals" value="field:genre" connector="and"/>
-
-                    <presentation>
-                        <panel name="report">
-                            <frame heading="static:Book Search Results"/>
-                            <report>
-                                <column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/>
-                                <column heading="Name" />
-                                <column heading="Author"/>
-                                <column heading="Genre"/>
-                                <column heading="ISBN"/>
-                            </report>
-                        </panel>
-                    </presentation>
-                </select>
-            </select-dialog>
-        </presentation>
-    </query-defn>
 </project>

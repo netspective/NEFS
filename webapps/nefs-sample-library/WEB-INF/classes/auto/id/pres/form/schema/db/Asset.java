@@ -3,11 +3,10 @@
 
 package auto.id.pres.form.schema.db;
 
-public interface BookInfo
+public interface Asset
 {
-    static public final String AUTHOR = "author";
-    static public final String GENRE = "genre";
-    static public final String ID = "id";
-    static public final String ISBN = "isbn";
+    static public final String ASSET_ID = "asset_id";
     static public final String NAME = "name";
+    static public final String QUANTITY = "quantity";
+    static public final String TYPE = "type";
 }

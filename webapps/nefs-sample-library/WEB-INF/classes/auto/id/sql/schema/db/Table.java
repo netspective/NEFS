@@ -5,5 +5,7 @@ package auto.id.sql.schema.db;
 
 public interface Table
 {
-    static public final int BOOK_INFO = 2;
+    static public final int ASSET = 2;
+    static public final int ASSET_LOAN = 4;
+    static public final int BORROWER = 3;
 }

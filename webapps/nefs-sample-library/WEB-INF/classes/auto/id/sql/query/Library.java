@@ -5,5 +5,8 @@ package auto.id.sql.query;
 
 public interface Library
 {
-    static public final String GET_ALL_BOOKS = "library.get-all-books";
+    static public final String ASSET_NAMES_FOR_SELECT_FIELD_CHOICES = "library.asset-names-for-select-field-choices";
+    static public final String BORROWER_NAMES_FOR_SELECT_FIELD_CHOICES = "library.borrower-names-for-select-field-choices";
+    static public final String GET_ALL_ASSETS = "library.get-all-assets";
+    static public final String GET_ALL_BORROWERS = "library.get-all-borrowers";
 }
