@@ -3,8 +3,8 @@
 	<xdm:include file="templates/org.xml"/>
 
 	<dialogs package="orgAttribute">
-		<dialog name="address" class="app.form.org.attribute.AddressDialog" retain-params="org_id">
-<frame heading="create-dialog-perspective-heading:Address"/>
+		<dialog name="address" retain-params="org_id">
+            <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
@@ -26,16 +26,17 @@
             <director>
                 <next-actions caption="Next Action ">
                     <items>
-<item value="page-id:/org/summary" caption="Summary"/>
-</items>
+                        <item value="page-id:/org/summary" caption="Summary"/>
+                    </items>
                 </next-actions>
             </director>
+            <!--listener class="app.form.org.attribute.AddressDialog"/-->
 		</dialog>
 
 		
 
-		<dialog name="classification" class="app.form.org.attribute.ClassificationDialog" retain-params="org_id">
-<frame heading="create-dialog-perspective-heading:Classification"/>
+		<dialog name="classification" retain-params="org_id">
+            <frame heading="create-dialog-perspective-heading:Classification"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
@@ -49,16 +50,17 @@
             <director>
                 <next-actions caption="Next Action  ">
                     <items>
-<item value="page-id:/person/summary" caption="Summary"/>
-</items>
+                        <item value="page-id:/person/summary" caption="Summary"/>
+                    </items>
                 </next-actions>
             </director>
+            <!--listener class="app.form.org.attribute.ClassificationDialog"/-->
 		</dialog>
 		
 		
 
-		<dialog name="contact" class="app.form.org.attribute.ContactDialog" retain-params="org_id">
-<frame heading="create-dialog-perspective-heading:Contact"/>
+		<dialog name="contact" retain-params="org_id">
+            <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
@@ -74,17 +76,18 @@
             <director>
                 <next-actions caption="Next Action  ">
                     <items>
-<item value="page-id:/org/summary" caption="Summary"/>
-<item value="page-id:/org/summary" caption="Summary"/>
-</items>
+                        <item value="page-id:/org/summary" caption="Summary"/>
+                        <item value="page-id:/org/summary" caption="Summary"/>
+                    </items>
                 </next-actions>
             </director>
+            <!--listener  class="app.form.org.attribute.ContactDialog"/-->
 		</dialog>
 		
 		
 
-		<dialog name="identifier" class="app.form.org.attribute.IdentifierDialog" retain-params="org_id">
-<frame heading="create-dialog-perspective-heading:Identifier"/>
+		<dialog name="identifier" retain-params="org_id">
+            <frame heading="create-dialog-perspective-heading:Identifier"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="org_id" caption="Org ID" required="yes">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
@@ -103,11 +106,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener  class="app.form.org.attribute.IdentifierDialog"/-->
 		</dialog>
 
 		
 
-		<dialog name="personidsrc" class="app.form.org.attribute.PersonIDSrcDialog" retain-params="org_id">
+		<dialog name="personidsrc" retain-params="org_id">
 <frame heading="create-dialog-perspective-heading:Person ID Source"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="org_id" caption="Org ID" required="yes">
@@ -122,11 +126,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener class="app.form.org.attribute.PersonIDSrcDialog" /-->
 		</dialog>
 
 		
 
-		<dialog name="profile" class="app.form.org.attribute.ProfileDialog" retain-params="org_id">
+		<dialog name="profile" retain-params="org_id">
 <frame heading="create-dialog-perspective-heading:Organization Profile"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.demographic-information"/>
@@ -138,11 +143,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener  class="app.form.org.attribute.ProfileDialog"/-->
 		</dialog>
 		
 		
 
-		<dialog name="relationship" class="app.form.org.attribute.RelationshipDialog" retain-params="org_id">
+		<dialog name="relationship"  retain-params="org_id">
 <frame heading="create-dialog-perspective-heading:Organization Relationship"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
@@ -167,11 +173,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener  class="app.form.org.attribute.RelationshipDialog"/-->
 		</dialog>
 
 		
 
-		<dialog name="industry" class="app.form.org.attribute.IndustryDialog" retain-params="org_id">
+		<dialog name="industry"  retain-params="org_id">
 <frame heading="create-dialog-perspective-heading:Organization Industry"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
@@ -190,6 +197,7 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener  class="app.form.org.attribute.IndustryDialog"/-->
 		</dialog>
 
 		

@@ -2,13 +2,14 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<dialogs package="scheduling">
 
-		<dialog name="adhocquery" class="app.form.scheduling.AdhocQueryDialog">
-<frame heading="Adhoc Query"/>
+		<dialog name="adhocquery" >
+            <frame heading="Adhoc Query"/>
 			<field type="memo" name="sql" caption="SQL" required="yes" initial-focus="yes" rows="25" cols="120"/>
+            <!--listener class="app.form.scheduling.AdhocQueryDialog"/-->
 		</dialog>
 
-		<dialog name="appointment" class="app.form.scheduling.EventDialog">
-<frame heading="create-dialog-perspective-heading:Appointment"/>
+		<dialog name="appointment" >
+            <frame heading="create-dialog-perspective-heading:Appointment"/>
 			<field type="select" name="patient_id" caption="Patient" choices="query:person.get-all-patients" required="yes" prepend-blank="yes"/>
 			<field type="select" name="event_type_id" caption="Type of Visit" choices="schema-enum:Event_Type" required="yes"/>
 			<field type="memo" name="reason" caption="Reason for Visit"/>
@@ -21,6 +22,7 @@
 			<field type="select" name="provider_id" caption="Provider" choices="query:person.get-all-physicians" required="yes" prepend-blank="yes"/>
 			<field type="select" name="facility_id" caption="Facility" choices="query:org.get-all-orgs" required="yes" prepend-blank="yes"/>
 			<field type="memo" name="remark" caption="Remarks"/>
+            <!--listener class="app.form.scheduling.EventDialog"/-->
 		</dialog>
 
 	</dialogs>

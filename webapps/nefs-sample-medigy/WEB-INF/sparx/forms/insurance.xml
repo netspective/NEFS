@@ -3,8 +3,8 @@
 	<xdm:include file="templates/insurance.xml"/>
 	
 	<dialogs package="insuranceProduct">	
-		<dialog name="main" class="app.form.insurance.InsProductDialog">
-<frame heading="create-dialog-perspective-heading:Insurance Product"/>
+		<dialog name="main">
+            <frame heading="create-dialog-perspective-heading:Insurance Product"/>
 			<field type="integer" name="product_id" caption="" hidden="yes"/>
 			<field type="select" name="org_id" caption="Org ID" choices="query:org.get-insurance-orgs" required="yes" prepend-blank="yes"/>
 			<field type="text" name="product_name" caption="Product Name" required="yes"/>
@@ -17,12 +17,13 @@
 
 			<xdm:include template="insurance.remittance"/>
 			<xdm:include template="insurance.billing-address"/>
+            <!--listener class="app.form.insurance.InsProductDialog"/-->
 		</dialog>
 	</dialogs>
 	
 	<dialogs package="insurancePlan">
-		<dialog name="main" class="app.form.insurance.InsPlanDialog">
-<frame heading="create-dialog-perspective-heading:Insurance Plan"/>
+		<dialog name="main">
+            <frame heading="create-dialog-perspective-heading:Insurance Plan"/>
 			<field type="integer" name="plan_id" caption="" hidden="yes"/>
 			<field type="select" name="product_id" caption="Insurance Product" choices="query:insurance.getProductsByOrg" required="yes" prepend-blank="yes"/>
 			<field type="text" name="plan_name" caption="Plan Name" required="yes"/>
@@ -30,6 +31,7 @@
 			<xdm:include template="insurance.billing-address"/>
 			<xdm:include template="insurance.coverage"/>
 			<xdm:include template="insurance.remittance"/>
+            <!--listener class="app.form.insurance.InsPlanDialog"/-->
 		</dialog>
 
 	</dialogs>

@@ -3,7 +3,7 @@
 	<xdm:include file="templates/person.xml"/>
 	
 	<dialogs package="personAttribute">
-		<dialog name="address" class="app.form.person.attribute.AddressDialog" retain-params="person_id">
+		<dialog name="address"  retain-params="person_id">
 <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="text" name="system_id" caption="" hidden="yes"/>
 			<field type="text" name="parent_id" caption="Person ID" required="yes">
@@ -30,11 +30,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener  class="app.form.person.attribute.AddressDialog"/-->
 		</dialog>
 
 		
 
-		<dialog name="classification" class="app.form.person.attribute.ClassificationDialog" retain-params="person_id">
+		<dialog name="classification"  retain-params="person_id">
 <frame heading="create-dialog-perspective-heading:Classification"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
@@ -54,11 +55,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener  class="app.form.person.attribute.ClassificationDialog"/-->
 		</dialog>
 		
 		
 
-		<dialog name="contact" class="app.form.person.attribute.ContactDialog" retain-params="person_id">
+		<dialog name="contact" retain-params="person_id">
 <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
@@ -79,11 +81,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener  class="app.form.person.attribute.ContactDialog"/-->
 		</dialog>
 
 		
 
-		<dialog name="ethnicity" class="app.form.person.attribute.EthnicityDialog" retain-params="person_id">
+		<dialog name="ethnicity" retain-params="person_id">
 <frame heading="create-dialog-perspective-heading:Ethnicity"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
@@ -102,11 +105,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener class="app.form.person.attribute.EthnicityDialog" /-->
 		</dialog>
 
 		
 
-		<dialog name="language" class="app.form.person.attribute.LanguageDialog" retain-params="person_id">
+		<dialog name="language" retain-params="person_id">
 <frame heading="create-dialog-perspective-heading:Language"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
@@ -125,11 +129,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener class="app.form.person.attribute.LanguageDialog" /-->
 		</dialog>
 		
 		
 
-		<dialog name="profile" class="app.form.person.attribute.ProfileDialog" retain-params="person_id">
+		<dialog name="profile" retain-params="person_id">
 <frame heading="create-dialog-perspective-heading:Person Profile"/>
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="person.profile-demographic-information"/>
@@ -140,11 +145,12 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener class="app.form.person.attribute.ProfileDialog"/-->
 		</dialog>
 
 		
 
-		<dialog name="relationship" class="app.form.person.attribute.RelationshipDialog" retain-params="person_id">
+		<dialog name="relationship" retain-params="person_id">
 <frame heading="create-dialog-perspective-heading:Personal Relationship"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
@@ -169,20 +175,10 @@
 </items>
                 </next-actions>
             </director>
+            <!--listener class="app.form.person.attribute.RelationshipDialog"/-->
 		</dialog>
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 
 	</dialogs>
 </xdm:container>

@@ -5,8 +5,8 @@
 	</dialogs>
 	
 	<dialogs package="insuranceProductAttribute">	
-		<dialog name="address" class="app.form.insurance.attribute.ProductAddressDialog">
-<frame heading="create-dialog-perspective-heading:Address"/>
+		<dialog name="address">
+            <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Product ID" required="yes">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
@@ -25,12 +25,13 @@
 			<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type"/>
 			<field type="zip-code" name="zip" caption="Zip Code"/>
 			<field type="text" name="country" caption="Country" size="16"/>
+            <!--listener class="app.form.insurance.attribute.ProductAddressDialog"/-->
 		</dialog>
 		
 		
 		
-		<dialog name="contact" class="app.form.insurance.attribute.ProductContactDialog">
-<frame heading="create-dialog-perspective-heading:Contact"/>
+		<dialog name="contact" >
+            <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Product ID" required="yes">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
@@ -43,12 +44,13 @@
 				</field>
 			</composite>
 			<field type="text" name="method_value" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+            <!--listener class="app.form.insurance.attribute.ProductContactDialog"/-->
 		</dialog>
 
 		
 
-		<dialog name="profile" class="app.form.insurance.attribute.ProductProfileDialog" retain-params="*">
-<frame heading="create-dialog-perspective-heading:Insurance Product Profile"/>
+		<dialog name="profile"  retain-params="*">
+            <frame heading="create-dialog-perspective-heading:Insurance Product Profile"/>
 			<field type="integer" name="product_id" caption="" hidden="yes"/>
 			<field type="select" name="org_id" caption="Org ID" choices="query:org.get-insurance-orgs" required="yes"/>
 			<field type="text" name="product_name" caption="Product Name" required="yes"/>
@@ -61,13 +63,14 @@
 				</field>
 			</composite>
 			<field type="text" name="medigap_id" caption="Medigap ID"/>
+            <!--listener class="app.form.insurance.attribute.ProductProfileDialog"/-->
 		</dialog>
 
 	</dialogs>
 
 	<dialogs package="insurancePlanAttribute">	
-		<dialog name="address" class="app.form.insurance.attribute.PlanAddressDialog">
-<frame heading="create-dialog-perspective-heading:Address"/>
+		<dialog name="address" >
+            <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Plan ID" required="yes">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
@@ -86,12 +89,13 @@
 			<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type"/>
 			<field type="zip-code" name="zip" caption="Zip Code"/>
 			<field type="text" name="country" caption="Country" size="16"/>
+            <!--listener class="app.form.insurance.attribute.PlanAddressDialog"/-->
 		</dialog>
 		
 		
 		
-		<dialog name="contact" class="app.form.insurance.attribute.PlanContactDialog">
-<frame heading="create-dialog-perspective-heading:Contact"/>
+		<dialog name="contact">
+            <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Plan ID" required="yes">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
@@ -104,12 +108,13 @@
 				</field>
 			</composite>
 			<field type="text" name="method_value" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+            <!--listener  class="app.form.insurance.attribute.PlanContactDialog"/-->
 		</dialog>
 
 		
 
-		<dialog name="profile" class="app.form.insurance.attribute.PlanProfileDialog" retain-params="*">
-<frame heading="create-dialog-perspective-heading:Insurance Plan Profile"/>
+		<dialog name="profile" retain-params="*">
+            <frame heading="create-dialog-perspective-heading:Insurance Plan Profile"/>
 			<field type="integer" name="plan_id" caption="" hidden="yes"/>
 			<field type="select" name="product_id" caption="Insurance Product" choices="query:insuranceAttribute.products-by-planOrg" required="yes"/>
 			<field type="text" name="plan_name" caption="Plan Name" required="yes"/>
@@ -121,6 +126,7 @@
 					<conditional action="display" partner-field-name="remittance.remit_type" expression="control.options[control.selectedIndex].text == 'Electronic'"/>
 				</field>
 			</composite>
+            <!--listener  class="app.form.insurance.attribute.PlanProfileDialog" /-->
 		</dialog>
 
 		

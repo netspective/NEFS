@@ -18,8 +18,186 @@
 
 	<xdm:include file="data-management/query/statements.xml"/>
 	<xdm:include file="data-management/schema/schema.xml"/>
-
     <xdm:include file="forms/dialogs.xml"/>
+
+
+    <template-processor-type name="container" extends="freemarker" xdm:replace-template-expressions="no">
+        <![CDATA[
+        <#include "*/macros.ftl"/>
+        <div class="textbox">
+        ${vc.navigationContext.activePage.summary?default("No summary available for ${vc.navigationContext.activePage.qualifiedNameIncludingTreeId}. Please supply one using &lt;summary&gt; tag.")}
+        <p>
+        <@pageChildren/>
+        </div>
+        <@footer/>
+        ]]>
+    </template-processor-type>
+    <theme name="sampler" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="console,common">
+        <navigation-skin default="yes" show-authenticated-user="no" show-error-header="yes"/>
+        <!--dialog-skin class="app.theme.ProfileDialogSkin" name="profile" panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/-->
+    </theme>
+    <!--
+       ======================================
+       Application theme setting
+       ======================================
+    -->
+    <default-theme>sampler</default-theme>
+
+    <navigation-tree name="app" default="yes">
+        <page name="home" caption="Home" default="yes"/>
+        <!-- Actions -->
+		<page name="search" caption="Search" reject-focus="yes">
+			<page name="person" caption="Person" >
+                <page name="people" caption="People" command="query-defn,searchPersons,-,searchPersonDialog"/>
+                <page name="patient" caption="Patients" command="query-defn,searchPersons,-,searchPatientDialog" default="yes"/>
+                <page name="physician" caption="Physician/Provnameers" command="query-defn,searchPersons,-,searchPhysicianDialog"/>
+                <page name="referring-doctor" caption="Reffering Doctors" command="query-defn,searchPersons,-,searchReferringDoctorDialog"/>
+                <page name="nurse" caption="Nurses" command="query-defn,searchPersons,-,searchNurseDialog"/>
+                <page name="staff" caption="Staff Members" command="query-defn,searchPersons,-,searchStaffDialog"/>
+            </page>
+			<page name="org" caption="Organization" command="query-defn,searchOrgs,-,searchDialog">
+                <page name="org" caption="Organization" command="query-defn,searchOrgs,-,searchDialog"/>
+                <page name="department" caption="Department" command="query-defn,searchOrgs,-,searchDepartmentDialog"/>
+                <page name="associated-provider" caption="Associated Providers" command="query-defn,searchOrgs,-,searchAssociatedProviderDialog"/>
+                <page name="pharmacy" caption="Pharmacy" command="query-defn,searchOrgs,-,searchPharmacyDialog"/>
+                <page name="employer" caption="Employer" command="query-defn,searchOrgs,-,searchEmployerDialog"/>
+                <page name="insurance" caption="Insurance" command="query-defn,searchOrgs,-,searchInsuranceDialog"/>
+                <page name="ipa" caption="IPA" command="query-defn,searchOrgs,-,searchIPADialog"/>
+                <page name="ancilliary-service" caption="Anciliary Service" command="query-defn,searchOrgs,-,searchAncilliaryServiceDialog"/>
+            </page>
+            <page name="accounting" caption="Accounting/Billing" command="query-defn,searchClaims,-,searchClaimDialog">
+                <page name="claim" caption="Claim" command="query-defn,searchClaims,-,searchClaimDialog"/>
+            </page>
+		</page>
+        <page name="add" caption="Add">
+            <!--summary>
+            In this section you can add/create different types of people: patients, physicians, doctoss, nurses, and staff.
+            </summary-->
+
+			<page name="person" caption="Person">
+                <panels>
+                    <panel type="html">
+                    <frame heading="Add personnel"/>
+                    <body>
+                        <![CDATA[
+                        <div align="left" style="padding:10">
+                         In this section you can add/create different types of personnel: patients, physicians, doctoss, nurses, and staff.
+                        <ul>
+                            <li><b><a href="person/patients">Patient</a></b>: Add a patient</li>
+                            <li><b><a href="person/physician">Physicians/Providers</a></b>: Add a physician</li>
+                            <li><b><a href="person/referring-doctor">Referring Doctors</a></b>: Add a referring doctor</li>
+                            <li><b><a href="person/nurse">Nurses</a></b>: Add a nurse</li>
+                            <li><b><a href="person/staff">Staff</a></b>: Add a staff member</li>
+                        </ul>
+                        </div>
+                        ]]>
+                    </body>
+                    </panel>
+                </panels>
+                <page name="patient" caption="Patients" command="dialog,person.patient,add,profile"/>
+                <page name="physician" caption="Physician/Providers" command="dialog,person.physician,add"/>
+                <page name="referring-doctor" caption="Referring Doctors" command="dialog,person.referringDoctor,add"/>
+                <page name="nurse" caption="Nurses" command="dialog,person.nurse,add"/>
+                <page name="staff" caption="Staff Members" command="dialog,person.staff,add"/>
+            </page>
+			<page name="org" caption="Organization" command="dialog,org.main,add">
+                <panels>
+                    <panel type="html">
+                    <frame heading="Add organizations"/>
+                    <body>
+                        <![CDATA[
+                        <div align="left" style="padding:10">
+                         In this section you can add/create different types of organizations: companies, departments,
+                         associated providers, pharmacies, employers, insurance companies, IPAs, and anciliary services.
+                        <ul>
+                            <li><b><a href="org/subjects">Organization</a></b>: Add an organization</li>
+                            <li><b><a href="org/department">Department</a></b>: Add a department</li>
+                            <li><b><a href="org/associated-provider">Associated Provider</a></b>: Add an associated provider</li>
+                            <li><b><a href="org/pharmacy">Pharmacy</a></b>: Add a nurse</li>
+                            <li><b><a href="org/employer">Employer</a></b>: Add a staff member</li>
+                            <li><b><a href="org/insurance">Insurance</a></b>: Add an insurance</li>
+                            <li><b><a href="org/ipa">IPA</a></b>: Add an IPA</li>
+                            <li><b><a href="org/ancilliary-service">Anciliary Service</a></b>: Add a Anciliary Service</li>
+                        </ul>
+                        </div>
+                        ]]>
+                    </body>
+                    </panel>
+                </panels>
+                <page name="org" caption="Organization" command="dialog,org.main,add"/>
+                <page name="department" caption="Department" command="dialog,org.department,add"/>
+                <page name="associated-provider" caption="Associated Providers" command="dialog,org.associatedProvider,add"/>
+                <page name="pharmacy" caption="Pharmacy" command="dialog,org.pharmacy,add"/>
+                <page name="employer" caption="Employer" command="dialog,org.employer,add"/>
+                <page name="insurance" caption="Insurance" command="dialog,org.insurance,add"/>
+                <page name="ipa" caption="IPA" command="dialog,org.ipa,add"/>
+                <page name="ancilliary-service" caption="Anciliary Service" command="dialog,org.ancilliaryService,add"/>
+            </page>
+            <page name="claim" caption="Accouting/Billing" command="dialog,claim.claim,add">
+                <page name="claim" caption="Claim" command="dialog,claim.claim,add"/>
+            </page>
+		</page>
+        <page name="schedule" caption="Scheduling" redirect="page-id:/schedule/schedule?person_id=${session:validated-user-id}">
+		</page>
+        <page name="worklist" caption="Worklist" redirect="page-id:/person/summary?person_id=${session:validated-user-id}">
+		</page>
+        <page name="tools" caption="Tools">
+		</page>
+        <page name="help" caption="Help" redirect="page-id:/person/summary?person_id=${session:validated-user-id}">
+		</page>
+        <!-- Entities -->
+        <page name="person" hidden="yes">
+            <page name="summary" caption="Summary" require-request-param="person_id">
+                <panels style="two-columns">
+                    <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
+                    <panel type="command" command="query,personAttribute.address,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.language,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.classification,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.insurance,-,-,-,record-viewer" />
+                    <panel type="command" command="query,personAttribute.contact,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.ethnicity,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.relationship,-,-,-,record-viewer"/>
+                </panels>
+            </page>
+            <page name="chart" caption="Chart"/>
+            <page name="clinical-note" caption="Clinical Note"/>
+            <page name="account" caption="Account"/>
+            <page name="billing" caption="Billing"/>
+            <page name="associate" caption="Associate"/>
+            <page name="documents" caption="Documents"/>
+        </page>
+        <page name="org" hidden="yes">
+            <page name="summary" caption="Summary" require-request-param="org_id">
+                <panels style="two-columns">
+                    <panel type="command" command="query,orgAttribute.profile,-,-,-,detail" />
+                    <panel type="command" command="query,orgAttribute.address,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,orgAttribute.identifier,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,orgAttribute.classification,-,-,-,record-viewer" />
+                    <panel type="command" command="query,orgAttribute.contact,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,orgAttribute.personidsrc,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,orgAttribute.relationship,-,-,-,record-viewer"/>
+                </panels>
+            </page>
+            <page name="insurance" caption="Insurance"/>
+            <page name="clearing-house" caption="Clearing House"/>
+            <page name="personnel" caption="Personnel"/>
+            <page name="catalog" caption="Catalog"/>
+            <page name="account" caption="Account"/>
+            <!--page name="addInsPlan" hidden="yes" caption="Insurance Plan" redirect="page-id:/claim,dialog,insurancePlan.main,add?org_id=${request:org_id}"/-->
+            <!--page name="addInsProduct" hidden="yes" caption="Insurance Product" redirect="page-id:/claim,query,insuranceAttribute.products-by-org,-,-,component,-,insuranceProduct.main,edit?org_id=${request:org_id}"/-->
+        </page>
+        <page name="claim"  hidden="yes" require-request-param="claim_id">                                                                                                                                                                                                P
+            <page name="summary" caption="Summary" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="hcfa1500" caption="HCFA 1500" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="1500pdf(pp)" caption="1500 PDF (PP)" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="1500pdf" caption="1500 PDF" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="errors" caption="Errors" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="history" caption="History" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="notes" caption="Notes" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="thinnsf" caption="THIN NSF" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="halleynsf" caption="Halley NSF" command="query,claimAttribute.profile,-,-,-,detail"/>
+        </page>
+    </navigation-tree>
 
 <!--
     *******************************************************************************************************************
@@ -33,7 +211,7 @@
     ** Or by specifying it in the data source definition as follows:						     **
     **     <data-source name="theName" default="yes"								     **
     **														     **
-    ** Note that data sources specified under this connection provider will be managed by the Jakarta Commons DBCP   **
+    ** Note that data sources specified under this connection provnameer will be managed by the Jakarta Commons DBCP   **
     ** If you wish to use JNDI, you simply have to specify the resource according to the server you're using.	     **
     **														     **
     ******************************************************************************************************************* 

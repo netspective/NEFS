@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+<xdm:include file="templates/claim.xml"/>
+
+	<dialogs package="claim">
+		<dialog name="claim" >
+            <frame heading="create-dialog-perspective-heading:Claim"/>
+			<composite name="batch" caption="Batch ID and Date">
+				<field type="integer" name="id" caption="" size="16"/>
+				<field type="date" name="date" caption="" size="16"/>
+			</composite>
+			
+			<field type="separator" heading="Demographics"/>
+
+			<field type="select" name="patient_id" caption="Patient" choices="query:person.get-all-patients" required="yes"/>
+			<field type="select" name="visit_type_id" caption="Type of Visit" choices="schema-enum:Doctor_Visit_Type" required="yes"/>
+			<field type="boolean" name="is_accident" caption="Accident?"/>
+			
+			<composite name="accident" caption="Location of Accident">
+				<field type="select" name="state_id" caption="" choices="schema-enum:US_State_Type"/>
+				<field type="text" name="state" caption="" size="16">
+					<conditional action="display" partner-field-name="accident.state_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+			
+			<composite name="servprov" caption="Service Provider/Facility">
+				<field type="select" name="provider_id" caption="" choices="query:person.get-all-physicians" required="yes"/>
+				<field type="select" name="facility_id" caption="" choices="query:org.get-all-orgs" required="yes"/>
+			</composite>
+
+			<composite name="billprov" caption="Billing Provider/Facility">
+				<field type="select" name="provider_id" caption="" choices="query:person.get-all-physicians" required="yes"/>
+				<field type="select" name="facility_id" caption="" choices="query:org.get-all-orgs" required="yes"/>
+			</composite>
+			
+			<field type="select" name="referrer_id" caption="Referring Doctor" choices="query:person.get-all-referring-doctors"/>
+			
+			<composite name="similar" caption="Current/Similar Illness and Date">
+				<field type="text" name="illness" caption="" size="32"/>
+				<field type="date" name="date" caption=""/>
+			</composite>
+
+			<field type="duration" name="disability" caption="Disability Begin/End Dates"/>
+			<field type="duration" name="hospitalStay" caption="Hospital Stay Begin/End Dates"/>
+
+			<field type="text" name="prior_auth_num" caption="Prior Authorization Number" size="32"/>
+
+			<composite name="dptype" caption="Diagnosis/Procedure Code Type">
+					<field type="select" name="diag_code_type_id" caption="Diagnosis Code Type" choices="schema-enum:Claim_Diagnosis_Code_Type"/>
+					<field type="select" name="proc_code_type_id" caption="Procedure Code Type" choices="schema-enum:Claim_Procedure_Code_Type"/>
+			</composite>
+
+			<grid name="diagproc" caption="Diagnosis/Procedure List">
+                <row name="diagproc_0">
+					<field type="duration" name="procedure_duration" caption="Proc Start/End" required="yes"/>
+                    <field type="text" name="proc_code" caption="Procedure Code" required="yes" size="8"/>
+					<field type="text" name="proc_modifier" caption="Procedure Modifier" size="4" column-break-after="yes"/>
+					<field type="text" name="diag_code" caption="Diagnosis Code" required="yes" size="15"/>
+				    <field type="integer" name="units" caption="Units" required="yes"/>
+					<field type="currency" name="charge" caption="Charge" required="yes" size="10"/>
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <!--row name="diagproc_1">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_2">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_3">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_4">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_5">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_6">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_7">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_8">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_9">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_10">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_11">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_12">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_13">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row>
+                <row name="diagproc_14">
+					<field type="duration" name="procedure" caption="Proc Start/End"/>
+
+					<composite name="dp" caption="Proc Code/Modifier&lt;br&gt;Diag Code">
+						<field type="text" name="proc_code" caption="Procedure Code" size="8"/>
+						<field type="text" name="proc_modifier" caption="Modifier" size="4" column-break-after="yes"/>
+						<field type="text" name="diag_code" caption="Diagnosis Code" size="15"/>
+					</composite>
+
+					<composite name="uc" caption="Units/Charge">
+						<field type="integer" name="units" caption="Units"/>
+						<field type="currency" name="charge" caption="Charge" size="10"/>
+					</composite>
+
+					<field type="text" name="comments" caption="Comments" size="32"/>
+				</row-->
+            </grid>
+            <!--listener class="app.form.claim.ClaimDialog"/-->
+		</dialog>
+	</dialogs>
+</xdm:container>

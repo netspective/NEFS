@@ -3,10 +3,10 @@
 	<xdm:include file="templates/person.xml"/>
 	
 	<dialogs package="person">	
-		<dialog name="nurse" class="app.form.person.NurseDialog">
-<frame heading="create-dialog-perspective-heading:Nursing Staff"/>
+		<dialog name="nurse" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Nursing Staff"/>
 			<xdm:include template="person.personal-profile"/>
-			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="non-patient.demographic-information"/>
 			<xdm:include template="person.identification-information"/>
 			<xdm:include template="person.contact-information"/>
 			<xdm:include template="person.employment-information"/>
@@ -15,28 +15,43 @@
 			<xdm:include template="staff.speciality"/>
 			
 			<xdm:include template="nurse.associated-physicians"/>
+            <!--listener class="app.form.person.NurseDialog" /-->
+            <on-add-data>
+                <person _auto-map="*" rec_stat_id="static:Active">
+                    <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-value="work_phone"
+                        _condition="vc.getFieldStates().getState('work_phone').getValue().hasValue()"/>
+                    <person-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-value="email"
+                         _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                    <person-login user_id="user_id" password="field:password1" rec-stat-id="static:Active"
+                        quantity="static:100"/>
+                </person>
+            </on-add-data>
+            <on-delete-data>
+                <person _pk-value="request:person_id" _auto-map="*" />
+            </on-delete-data>
 		</dialog>
 
-		<dialog name="patient" class="app.form.person.PatientDialog">
-<frame heading="create-dialog-perspective-heading:Patient/Person"/>
+		<dialog name="patient" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Patient/Person"/>
 			<xdm:include template="person.personal-profile"/>
-			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="patient.demographic-information"/>
 			<xdm:include template="person.identification-information"/>
 			<xdm:include template="person.contact-information"/>
 			<xdm:include template="person.employment-information"/>
 			<xdm:include template="person.insurance-information"/>
+            <!--listener class="app.form.person.PatientDialog" /-->
 		</dialog>
 
-		<dialog name="person">
-<frame heading="create-dialog-perspective-heading:Person"/>
+		<!--dialog name="person" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Person"/>
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="person.demographic-information"/>
-		</dialog>
+		</dialog-->
 
-		<dialog name="physician" class="app.form.person.PhysicianDialog">
-<frame heading="create-dialog-perspective-heading:Physician/Provider"/>
+		<dialog name="physician" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Physician/Provider"/>
 			<xdm:include template="person.personal-profile"/>
-			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="non-patient.demographic-information"/>
 			<xdm:include template="person.identification-information"/>
 			<xdm:include template="person.contact-information"/>
 			<xdm:include template="person.employment-information"/>
@@ -46,12 +61,13 @@
 			
 			<xdm:include template="physician.license-and-provider-information"/>
 			<xdm:include template="physician.billing-information"/>
+            <!--listener class="app.form.person.PhysicianDialog" /-->
 		</dialog>
 		
-		<dialog name="referringDoctor" class="app.form.person.ReferringDoctorDialog">
-<frame heading="create-dialog-perspective-heading:Referring Doctor"/>
+		<dialog name="referringDoctor" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Referring Doctor"/>
 			<xdm:include template="person.personal-profile"/>
-			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="non-patient.demographic-information"/>
 			<xdm:include template="person.identification-information"/>
 			<xdm:include template="person.contact-information"/>
 			<xdm:include template="person.employment-information"/>
@@ -60,17 +76,19 @@
 			<xdm:include template="staff.speciality"/>
 
 			<xdm:include template="physician.license-and-provider-information"/>
+            <!--listener class="app.form.person.ReferringDoctorDialog" /-->
 		</dialog>
 
-		<dialog name="staff" class="app.form.person.StaffDialog">
-<frame heading="create-dialog-perspective-heading:Staff"/>
+		<dialog name="staff" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Staff"/>
 			<xdm:include template="person.personal-profile"/>
-			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="non-patient.demographic-information"/>
 			<xdm:include template="person.identification-information"/>
 			<xdm:include template="person.contact-information"/>
 			<xdm:include template="person.employment-information"/>
 
 			<xdm:include template="staff.professional-identification"/>
+            <!--listener class="app.form.person.StaffDialog" /-->
 		</dialog>
 	</dialogs>
 </xdm:container>

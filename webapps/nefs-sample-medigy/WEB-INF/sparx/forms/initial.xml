@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<dialogs package="initial">
-		<dialog name="firstUse" class="app.form.initial.CreateInitialPersonOrgLogin"><frame heading="First Use Information"/>
+		<dialog name="firstUse">
+            <frame heading="First Use Information"/>
 			<field type="separator" heading="Your Organization"/>
 			<field type="text" name="org_name" caption="Name" required="yes"/>
 			<field type="text" name="org_code" caption="Org. Code" required="yes"/>
@@ -17,6 +18,7 @@
 			<field type="text" name="user_id" caption="User ID" required="yes"/>
 			<field type="text" name="password_1" caption="Password" required="yes" mask-entry="yes"/>
 			<field type="text" name="password_2" caption="Password" required="yes" mask-entry="yes" hint="Enter your password again for verification."/>
+            <!--listener class="app.form.initial.CreateInitialPersonOrgLogin"/--> 
 		</dialog>
 	</dialogs>
 </xdm:container>
