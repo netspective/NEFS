@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.8 2003-06-19 23:15:56 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.9 2003-06-27 01:12:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -122,22 +122,22 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         return findFirstMemberWithBody(defNavigationPage);
     }
 
-    public final NavigationTree.FindResults getActivePathFindResults()
+    public NavigationTree.FindResults getActivePathFindResults()
     {
         return activePathFindResults;
     }
 
-    public final NavigationPage getActivePage()
+    public NavigationPage getActivePage()
     {
         return activePage;
     }
 
-    public final NavigationTree getOwnerTree()
+    public NavigationTree getOwnerTree()
     {
         return ownerTree;
     }
 
-    public final NavigationSkin getSkin()
+    public NavigationSkin getSkin()
     {
         return skin;
     }

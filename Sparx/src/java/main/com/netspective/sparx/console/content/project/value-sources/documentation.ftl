@@ -1,3 +1,5 @@
+<#include "*/library.ftl"/>
+
 <div class="textbox">
 
     The best way to learn about Value Sources is to consider some examples. Although value sources are used throughout
@@ -26,4 +28,7 @@
     from a class that has been registered as 'my-rule'.	In the select field example, this
     select field fills its choices with the files contained in the directory /home/all.
 
+    <p>
+
+    <@contentImage image='value-sources-overview.gif'/>
 </div>

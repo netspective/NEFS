@@ -76,7 +76,7 @@
  ** PARAMS: heading (the heading to display above the description of the class)
  ****************************************************************************************
  -->
-<#macro xdmStructure className heading expandFlagAliases>
+<#macro xdmStructure className tag="" heading="" expandFlagAliases="yes">
 <div class="textbox">
 
     <#assign schema = getXmlDataModelSchema(className)/>
@@ -86,12 +86,30 @@
         <#assign settableAttributesDetail = schema.getSettableAttributesDetail(false)/>
     </#if>
     <#assign childElements = schema.getNestedElementsDetail()/>
-    <#assign xmlImageSrc=vc.getThemeResourcesRootUrl(vc.activeTheme) + "/images/xml" />
+    <#assign imageSrc=vc.getThemeResourcesRootUrl(vc.activeTheme) + "/images" />
+    <#assign xmlImageSrc=imageSrc + "/xml" />
     <#assign classSuffix="odd"/>
 
-    <img src="${xmlImageSrc}/xml.gif"/> <b>${heading}</b> (<@classReference className = schema.bean.name/>)<br>
-    ${schema.description}
+    <table width=100%>
+        <tr valign=center>
+            <td>
+                <img src="${xmlImageSrc}/xml.gif"/>
+                <#if tag != ''>
+                &lt;<b>${tag}</b>&gt;
+                <#else>
+                <b>${heading}</b>
+                </#if>
+            </td>
+            <td align=right>
+                <img src="${imageSrc}/java-class.gif"/> <code>${schema.bean.name}</code>
+            </td>
+        </tr>
+        <tr class="report-column-even">
+            <td colspan=2>${schema.description}</td>
+        </tr>
+    </table>
 
+    <p>
     <table class="report" border="0" cellspacing="2" cellpadding="0">
         <tr>
             <td class="report-column-heading">Node</td>
@@ -195,6 +213,13 @@
 
 </#macro>
 
+
+<#macro contentImage image="">
+    <#assign navigationContext = vc.navigationContext?default(vc)/>
+    <#assign activePage = navigationContext.activePage/>
+    <#assign imagePath=vc.resourcesRootUrl + "/content/console/" + activePage.qualifiedName />
+    <img src='${imagePath}/${image?default(activePage.name + '.gif')}'>
+</#macro>
 
 <#macro classDescription className>
 

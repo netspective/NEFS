@@ -1,10 +1,7 @@
-Value sources, which are simply Java classes that
-follow a specific interface, provide dynamic access to common business logic and may be
-considered a business rules (or more specifically a business <i>values</i>) library. Many of the
-classes in the Sparx use value sources to provide values for captions, defaults,
-comparisons, conditionals, and many other types of variables. Value sources
-allow common business logic to be stored in reusable classes and then used
-either in XML or Java files where necessary. Value sources can be either
-single or multiple (list context) and are used in dialogs, fields, sql
-statements, and many other places where dynamic data is required. The format of a value source
-is similar to a URL (name:params).
+Value sources are a simple Java interface along with numerous implementation classes that allows dynamic data to be
+included in XML without creating a programming language inside XML. There are many locations in the Project
+where value sources are used: configuration variables, forms/dialogs, form fields, form conditionals, SQL statements,
+and SQL bind parameters. Value sources allow common business logic and <i>business values</i> to be stored in shareable
+instance and then used either in XML or Java files where necessary. Value sources can be either single or multiple
+(list context) and are used anywhere dynamic data is required. The format of a value source is similar to a
+URL (name:params).
