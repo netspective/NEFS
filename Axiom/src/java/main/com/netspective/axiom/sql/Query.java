@@ -334,31 +334,57 @@ public class Query
         return text.toString();
     }
 
+    protected PreparedStatement createStatement(ConnectionContext cc, Object[] overrideParams, boolean scrollable, QueryExecutionLogEntry logEntry) throws NamingException, SQLException
+    {
+        logEntry.registerGetConnectionBegin();
+        Connection conn = cc.getConnection();
+        logEntry.registerGetConnectionEnd(conn);
+        PreparedStatement stmt = null;
+        String sql = getSqlText(cc);
+        if(scrollable)
+            stmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        else
+            stmt = conn.prepareStatement(sql);
+
+        logEntry.registerBindParamsBegin();
+        if(overrideParams != null)
+        {
+            for(int i = 0; i < overrideParams.length; i++)
+                stmt.setObject(i + 1, overrideParams[i]);
+        }
+        else if(parameters != null)
+            parameters.apply(cc, stmt);
+        logEntry.registerBindParamsEnd();
+        return stmt;
+    }
+
+    protected PreparedStatement createStatement(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
+    {
+        Connection conn = cc.getConnection();
+        PreparedStatement stmt = null;
+        String sql = getSqlText(cc);
+        if(scrollable)
+            stmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        else
+            stmt = conn.prepareStatement(sql);
+
+        if(overrideParams != null)
+        {
+            for(int i = 0; i < overrideParams.length; i++)
+                stmt.setObject(i + 1, overrideParams[i]);
+        }
+        else if(parameters != null)
+            parameters.apply(cc, stmt);
+        return stmt;
+    }
+
     protected QueryResultSet executeAndRecordStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
     {
         if(log.isTraceEnabled()) trace(cc, overrideParams);
         QueryExecutionLogEntry logEntry = execLog.createNewEntry(cc, this.getQualifiedName());
         try
         {
-            logEntry.registerGetConnectionBegin();
-            Connection conn = cc.getConnection();
-            logEntry.registerGetConnectionEnd(conn);
-            PreparedStatement stmt = null;
-            String sql = getSqlText(cc);
-            if(scrollable)
-                stmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            else
-                stmt = conn.prepareStatement(sql);
-
-            logEntry.registerBindParamsBegin();
-            if(overrideParams != null)
-            {
-                for(int i = 0; i < overrideParams.length; i++)
-                    stmt.setObject(i + 1, overrideParams[i]);
-            }
-            else if(parameters != null)
-                parameters.apply(cc, stmt);
-            logEntry.registerBindParamsEnd();
+            PreparedStatement stmt = createStatement(cc, overrideParams, scrollable, logEntry);
 
             logEntry.registerExecSqlBegin();
             boolean executeStmtResult = stmt.execute();
@@ -382,24 +408,55 @@ public class Query
         if(log.isTraceEnabled()) trace(cc, overrideParams);
         try
         {
-            Connection conn = cc.getConnection();
-            PreparedStatement stmt = null;
-            String sql = getSqlText(cc);
-            if(scrollable)
-                stmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            else
-                stmt = conn.prepareStatement(sql);
-
-            if(overrideParams != null)
-            {
-                for(int i = 0; i < overrideParams.length; i++)
-                    stmt.setObject(i + 1, overrideParams[i]);
-            }
-            else if(parameters != null)
-                parameters.apply(cc, stmt);
+            PreparedStatement stmt = createStatement(cc, overrideParams, scrollable);
 
             boolean executeStmtResult = stmt.execute();
             return new QueryResultSet(this, cc, executeStmtResult, stmt.getResultSet());
+        }
+        catch(SQLException e)
+        {
+            log.error(createExceptionMessage(cc, overrideParams), e);
+            throw e;
+        }
+    }
+
+    protected boolean checkRecordExistsLogStatistics(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
+    {
+        if(log.isTraceEnabled()) trace(cc, overrideParams);
+        QueryExecutionLogEntry logEntry = execLog.createNewEntry(cc, this.getQualifiedName());
+        try
+        {
+            PreparedStatement stmt = createStatement(cc, overrideParams, false, logEntry);
+
+            logEntry.registerExecSqlBegin();
+            boolean executeStmtResult = stmt.execute();
+            logEntry.registerExecSqlEndSuccess();
+            boolean exists = executeStmtResult && stmt.getResultSet().next();
+            stmt.close();
+            return exists;
+        }
+        catch(SQLException e)
+        {
+            logEntry.registerExecSqlEndFailed();
+            log.error(createExceptionMessage(cc, overrideParams), e);
+            throw e;
+        }
+        finally
+        {
+            logEntry.finalize(cc, log);
+        }
+    }
+
+    protected boolean checkRecordExistsIgnoreStatistics(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
+    {
+        if(log.isTraceEnabled()) trace(cc, overrideParams);
+        try
+        {
+            PreparedStatement stmt = createStatement(cc, overrideParams, false);
+
+            boolean exists = stmt.execute() && stmt.getResultSet().next();
+            stmt.close();
+            return exists;
         }
         catch(SQLException e)
         {
@@ -445,6 +502,49 @@ public class Query
         return log.isInfoEnabled()
                ? executeAndRecordStatistics(cc, overrideParams, scrollable)
                : executeAndIgnoreStatistics(cc, overrideParams, scrollable);
+    }
+
+    protected boolean recordsExistLogStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams) throws SQLException, NamingException
+    {
+        String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
+        final ConnectionContext cc = dataSrcIdText != null
+                                     ? dbvc.getConnection(dataSrcIdText, false)
+                                     : dbvc.getConnection(dbvc.getDefaultDataSource(), false);
+        boolean result = checkRecordExistsLogStatistics(cc, overrideParams);
+        cc.close();
+        return result;
+    }
+
+    protected boolean recordsExistIgnoreStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams) throws SQLException, NamingException
+    {
+        String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
+        final ConnectionContext cc = dataSrcIdText != null
+                                     ? dbvc.getConnection(dataSrcIdText, false)
+                                     : dbvc.getConnection(dbvc.getDefaultDataSource(), false);
+        boolean result = checkRecordExistsIgnoreStatistics(cc, overrideParams);
+        cc.close();
+        return result;
+    }
+
+    public boolean recordsExist(DatabaseConnValueContext dbvc, Object[] overrideParams) throws NamingException, SQLException
+    {
+        return log.isInfoEnabled()
+               ? recordsExistLogStatistics(dbvc, overrideParams)
+               : recordsExistIgnoreStatistics(dbvc, overrideParams);
+    }
+
+    public boolean recordsExist(DatabaseConnValueContext dbvc, String dataSourceId, Object[] overrideParams) throws NamingException, SQLException
+    {
+        return log.isInfoEnabled()
+               ? recordsExistLogStatistics(dbvc, overrideParams)
+               : recordsExistIgnoreStatistics(dbvc, overrideParams);
+    }
+
+    public boolean recordsExist(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
+    {
+        return log.isInfoEnabled()
+               ? checkRecordExistsLogStatistics(cc, overrideParams)
+               : checkRecordExistsIgnoreStatistics(cc, overrideParams);
     }
 
     public int executeUpdateAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
