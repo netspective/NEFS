@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+
+<project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+
+    <navigation-tree name="app" default="yes">
+        <!--page name="home" default="yes" caption="Home">
+            <body>
+                <![CDATA[<p>
+                <#include "console/content/library.ftl"/>
+                 <table cellspacing="0" width="100%"
+                 background=>
+                 <tr>
+                 <td>bbb</td>
+                 </tr>
+                 </table>
+                <i>If you're asked to log into Console, use 'console' for both user id and password.</i>
+                <ul>
+                    <li>Edit the NEFS <@projectFile/> file to begin declaring your application components.
+                    <li>Open the <a href="${vc.consoleUrl}?_dc.userId=console&_dc.password=console">Console</a> for this application.
+                    <li>Browse the <a href="${vc.consoleUrl}/manual">User's Manual</a>.
+                </ul>
+                ]]>
+            </body>
+        </page-->
+        <page name="home" default="yes" caption="Home">
+         <body source="home.ftl"/>
+        </page>
+        <!--page name="category" caption="Category" command="query,petstore.getProducts,-,-,-,record-editor-compressed"/-->
+        <!--page name="category" caption="request:category_id" heading="Get data, execute template body in separate file" command="dialog,templates.body-file"/-->
+        <page name="category" caption="Category" require-request-param="category_id" retain-params="category_id">
+            <body  source="category.ftl" />
+        </page>
+        <page name="product" caption="Product" require-request-param="product_id" retain-params="product_id">
+            <body source="product.ftl" />
+        </page>
+        <page name="productdetails" caption="Poduct Details" require-request-param="item_id" retain-params="item_id">
+            <body  source="productdetails.ftl" />
+        </page>
+        <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
+
+    </navigation-tree>
+    <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
+        <data-source name="jdbc/default">
+            <driver-class>org.hsqldb.jdbcDriver</driver-class>
+            <url>vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}</url>
+            <user>sa</user>
+            <password></password>
+        </data-source>
+    </connection-provider>
+
+    **********************************************************************
+    ** DATA MANAGEMENT STRUCTURE (SCHEMA) SPECIFICATIONS                **
+    ********************************************************************** -->
+
+    <schema name="db">
+        <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+        <!--Tables for user account-->
+        <table-type name="Entity">
+            <column name="${owner.name.toLowerCase()}_id" type="auto-inc" primary-key="yes" descr="Unique identifier for ${owner.name}">
+                <presentation>
+                    <field name="${column.name}" type="integer" caption="ID" primary-key-generated="yes"/>
+                </presentation>
+            </column>
+        </table-type>
+
+        <table-type name="StrEntity">
+            <column name="${owner.name.toLowerCase()}_id" type="text" primary-key="yes" descr="Unique identifier for ${owner.name}">
+                <presentation>
+                    <field name="${column.name}" type="text" caption="ID" primary-key-generated="yes"/>
+                </presentation>
+            </column>
+        </table-type>
+
+
+        <table-type name="Login" type="StrEntity">
+            <column name="password" type="text" size="20" descr="Signon Password"/>
+        </table-type>
+
+        <table name="Profile" abbrev="profiles" type="StrEntity,Presentation">
+            <column name="account_id" parent-ref="Account.account_id" descr="User's Account ID" />
+            <column name="langpref" lookup-ref="Language" required="yes" descr="Preferered Language"/>
+            <column name="favcategory" lookup-ref="BannerData.bannerdata_id" descr="User's favorite pet category"/>
+            <column name="mylstopt" type="text" required="no" descr="User display options"/>
+            <column name="banneropt" type="text" required="no" descr="User banner display option"/>
+        </table>
+
+        <table name="Account" abbrev="accounts" type="Entity,Presentation">
+            <column name="login_id" type="text" required="yes" descr="User's login id" />
+            <column name="email" type="text" size="30" required="yes" descr="Email ID"/>
+            <column name="firstname" type="text" size="20" required="yes" descr="First Name"/>
+            <column name="lastname" type="text" size="25" required="yes" descr="Last Name"/>
+            <column name="status" type="text" required="yes" descr="Users account status"/>
+            <column name="addr1" type="text" size="64" required="yes" descr="User's street address"/>
+            <column name="addr2" type="text" size="64" required="yes" descr="User's street address"/>
+            <column name="city" type="text" size="64" required="yes" descr="User's city"/>
+            <column name="state" type="text" size="64" required="yes" descr="User's state or province"/>
+            <column name="country" type="text" size="64" required="yes" descr="User's country"/>
+            <column name="phone" type="text" size="30" required="yes" descr="User's phone number"/>
+        </table>
+
+         <table name="BannerData" abbrev="profiles" type="StrEntity, Presentation">
+            <column name="bannername" type="text" size="64" required="yes" descr="Display banner name"/>
+        </table>
+
+        <!---Tables for Petstore Information-->
+         <table name="Category" abbrev="categorys" type="StrEntity, Presentation">
+            <column name="name" type="text" size="30" required="yes" descr="Animal category name"/>
+            <column name="descr" type="text" size="30" required="yes" descr="Animal category description"/>
+        </table>
+
+        <table name="Product" abbrev="products" type="StrEntity, Presentation">
+            <column name="category_id" parent-ref="Category.category_id" descr="Animal category name"/>
+            <column name="name" type="text" size="30" required="yes" descr="Animal in category name"/>
+            <column name="descr" type="text" size="30" required="yes" descr="Animal in category description"/>
+        </table>
+
+        <table name="Item" abbrev="items" type="StrEntity, Presentation">
+             <column name="product_id" parent-ref="Product.product_id" descr="Product ID"/>
+             <column name="listprice" type="currency" size="16" required="yes" descr="Price of animal"/>
+             <column name="unitcost" type="currency" size="16" required="no" descr="Cost of an animal to store"/>
+             <column name="supplier_id" lookup-ref="Supplier.supplier_id" descr="Supplier for this animal"/>
+             <column name="status" type="text" size="20" required="yes" descr="Current status of stock"/>
+             <column name="name" type="text" size="30" required="yes" descr="Type name of this animal"/>
+             <column name="descr" type="text" size="30" required="yes" descr="Type description of this animal"/>
+             <column name="image" type="text" size="20" required="yes" descr="Image name for this animal"/>
+             <column name="attr1" type="text" size="30" required="no" descr="Additional table attribute"/>
+             <column name="attr2" type="text" size="30" required="no" descr="Additional table attribute"/>
+             <column name="attr3" type="text" size="30" required="no" descr="Additional table attribute"/>
+        </table>
+
+        <table name="Supplier" abbrev="suppls" type="Entity, Presentation">
+             <column name="name" type="text" size="64" required="yes" descr="Name of Supplier"/>
+             <column name="status" type="text" size="20" required="yes" descr="Status of Supplier"/>
+             <column name="addr1" type="text" size="64" required="yes" descr="Supplier's street address"/>
+             <column name="addr2" type="text" size="64" required="yes" descr="Supplier's street address"/>
+             <column name="city" type="text" size="64" required="yes" descr="Supplier's city"/>
+             <column name="state" type="text" size="64" required="yes" descr="Supplier's state or province"/>
+             <column name="country" type="text" size="64" required="yes" descr="Supplier's country"/>
+             <column name="phone" type="text" size="30" required="yes" descr="Supplier's phone number"/>
+        </table>
+        <!--Order specific tables-->
+        <table name="Orders" abbrev="ords" type="Entity, Presentation">
+             <column name="account_id" parent-ref="Account.account_id" descr="Account id for order"/>
+             <column name="orderdate" type="date" required="yes" descr="Date of order"/>
+             <column name="shipaddr1" type="text" size="64" required="yes" descr="Shipping street address"/>
+             <column name="shipaddr2" type="text" size="64" required="yes" descr="Shipping street address"/>
+             <column name="shipcity" type="text" size="64" required="yes" descr="Shipping city"/>
+             <column name="shipstate" type="text" size="64" required="yes" descr="Shipping state or province"/>
+             <column name="shipcountry" type="text" size="64" required="yes" descr="Shipping country"/>
+             <column name="shipphone" type="text" size="30" required="yes" descr="Shipping phone number"/>
+             <column name="billaddr1" type="text" size="64" required="yes" descr="Billping street address"/>
+             <column name="billaddr2" type="text" size="64" required="yes" descr="Billping street address"/>
+             <column name="billcity" type="text" size="64" required="yes" descr="Billping city"/>
+             <column name="billstate" type="text" size="64" required="yes" descr="Billping state or province"/>
+             <column name="billcountry" type="text" size="64" required="yes" descr="Billping country"/>
+             <column name="billphone" type="text" size="30" required="yes" descr="Billping phone number"/>
+        </table>
+
+        <table name="OrderStatus" abbrev="orderstat" type="Entity, Presentation">
+           <column name="orders_id" parent-ref="orders.orders_id" descr="Order ID"/>
+           <column name="itemnum" type="integer" required="yes" descr="Item num for order"/>
+           <column name="ts" type="date" required="yes" descr="time stamp"/>
+           <column name="status" type="text" size="20" required="yes" descr="Status for this item in the order"/>
+       </table>
+
+        <table name="LineItem" abbrev="lineitems" type="Entity, Presentation">
+           <column name="orders_id" parent-ref="orders.orders_id" descr="Order ID"/>
+           <column name="itemnum" type="integer" descr="Item number for order" />
+           <column name="item_id" parent-ref="item.item_id" descr="Item id for order"/>
+           <column name="quantity" type="integer" required="yes" descr="Quantity for this item in the order"/>
+           <column name="unitprice" type="currency" required="yes" descr="Item number for order" />
+        </table>
+
+        <table name="Language" abbrev="lang" type="Enumeration">
+            <enumerations>
+                <enum>English</enum>
+                <enum>French</enum>
+                <enum>Japanese</enum>
+                <enum>Urdu</enum>
+            </enumerations>
+        </table>
+    </schema>
+    <dialogs package="templates">
+    <dialog name="body-file" loop="no" redirect-after-execute="false">
+        <frame heading="Hello World Form"/>
+        <field type="text" name="full_name" caption="Full Name" required="yes"/>
+        <field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/>
+        <on-execute handler="template">
+            <source>category.ftl</source>  <!-- source is relative to the app root -->
+        </on-execute>
+    </dialog>
+    </dialogs>
+    <queries package="petstore">
+         <query name="getProducts">
+             select product_id, name, descr from product where category_id = ?
+            <params>
+              <param value="request:category_id"/>
+            </params>
+             <presentation>
+                 <panel name="main" height="300">
+                     <frame heading="static:Pets"/>
+                     <report>
+                         <column heading="ID" format="plain"/>
+                         <column heading="Name" format="plain"/>
+                         <column heading="Description" format="plain"/>
+                    </report>
+                  </panel>
+              </presentation>
+        </query>
+        <query name="getProductName">
+            select name from product where product_id = ?
+            <params>
+                <param value="request:product_id"/>
+            </params>
+            <presentation>
+               <panel name="main" height="300">
+                  <frame heading="static:Products"/>
+                  <report>
+                       <column heading="Name" format="plain"/>
+                   </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="getItems">
+             select i.item_id, i.listprice, i.name, p.name
+             from item i, product p
+             where p.product_id = ?
+             and p.product_id = i.product_id
+
+            <params>
+              <param value="request:product_id"/>
+            </params>
+             <presentation>
+                 <panel name="main" height="300">
+                     <frame heading="static:Pets"/>
+                     <report>
+                         <column heading="ID" format="plain"/>
+                         <column heading="Price" format="plain"/>
+                         <column heading="Name" format="plain"/>
+                         <column heading="Category" format="plain"/>
+                    </report>
+                  </panel>
+              </presentation>
+        </query>
+        <query name="getProductDetail">
+             select name, descr, image, listprice, status from item
+            where item_id = ?
+            <params>
+              <param value="request:item_id"/>
+            </params>
+             <presentation>
+                 <panel name="main" height="300">
+                     <frame heading="static:Pets"/>
+                     <report>
+                         <column heading="Name" format="plain"/>
+                         <column heading="Description" format="plain"/>
+                         <column heading="Image" format="plain"/>
+                         <column heading="Price" format="plain"/>
+                         <column heading="Status" format="plain"/>
+
+                    </report>
+                  </panel>
+              </presentation>
+        </query>
+
+
+    </queries>
+</project>

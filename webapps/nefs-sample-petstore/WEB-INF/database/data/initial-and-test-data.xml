@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!-- the xdm-transform processing instruction tells Sparx to filter special tags through the XSLT before processing -->
+<?transform --xslt initial-and-test-data.xsl?>
+
+<!DOCTYPE dal SYSTEM "../defn/db-import.dtd">
+
+<dal>
+    <category category-id="BIRDS" name="Birds" descr="Exotic Varieties"/>
+    <category category-id="CATS" name="Cats" descr="Various Breeds, Exotic Varieties"/>
+    <category category-id="DOGS" name="Dogs" descr="Various Breeds"/>
+    <category category-id="FISH" name="Fish" descr="Saltwater, Freshwater"/>
+    <category category-id="REPTILES" name="Reptiles" descr="Lizards, Turtles, Snakes"/>
+    <product product-id="AV-CB-01"  category-id="BIRDS"    name="Amazon Parrot"    descr="Great companion for up to 75 years."/>
+    <product product-id="AV-SB-02"  category-id="BIRDS"    name="Finch"            descr="Great companion stress reliever"/>
+    <product product-id="F1-FW-01"  category-id="FISH"     name="Goldfish"         descr="FreshWater fish from China"/>                
+    <product product-id="F1-FW-02"  category-id="FISH"     name="Koi"              descr="FreshWater fish from Japan"/>                
+    <product product-id="F1-SW-01"  category-id="FISH"     name="Angelfish"        descr="Salt Water fish from Australia"/>            
+    <product product-id="F1-SW-02"  category-id="FISH"     name="Tiger Shark"      descr="Salt Water fish from Australia"/>            
+    <product product-id="FL-DSH-01" category-id="CATS"     name="Manx"             descr="Great for reducing mouse populations"/>      
+    <product product-id="FL-DSH-02" category-id="CATS"     name="Persian"          descr="Friendly house cat, doubles as a princess"/> 
+    <product product-id="K9-BD-01"  category-id="DOGS"     name="Bulldog"          descr="Friendly dog from  England"/>                
+    <product product-id="K9-CW-01"  category-id="DOGS"     name="Chihuahua"        descr="Great companion dog"/>                       
+    <product product-id="K9-DL-01"  category-id="DOGS"     name="Dalmation"        descr="Great dog for a Fire Station"/>              
+    <product product-id="K9-RT-01"  category-id="DOGS"     name="Golden Retriever" descr="Great family dog"/>                          
+    <product product-id="RP-LI-02"  category-id="REPTILES" name="Iguana"           descr="Friendly green friend"/>                     
+    <product product-id="RP-SN-01"  category-id="REPTILES" name="Rattlesnake"      descr="Doubles as a watch dog"/> 
+    <item item-id="EST-1"  product-id="F1-SW-01"  listprice="16.5"      unitcost="0"   status="BACK"   name="Large Angelfish"                descr="Salt Water fish from Austalia"             image="fish1.jpg"   attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-10" product-id="K9-DL-01"  listprice="18.5"      unitcost="0"   status="IN"     name="Spotted Adult Female Dalmation" descr="Great dog for a Fire Station"              image="dog5.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-11" product-id="RP-SN-01"  listprice="18.5"      unitcost="0"    status="BACK"   name="Venomless Rattlesnake"          descr="Doubles as a watch dog"                    image="lizard3.gif" attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-13" product-id="RP-LI-02"  listprice="18.5"      unitcost="0"    status="BACK"   name="Green Adult Iguana"             descr="Friendly green friend"                     image="lizard2.gif" attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-14" product-id="FL-DSH-01" listprice="58.5"      unitcost="0"     status="BACK"   name="Tailess Manx"                   descr="Great for reducing mouse populations"      image="cat3.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-15" product-id="FL-DSH-01" listprice="58.5"      unitcost="0"    status="IN"     name="With tail Manx"                 descr="Great for reducing mouse populations"      image="cat3.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-16" product-id="FL-DSH-02" listprice="93.5"      unitcost="0"     status="IN"     name="Adult Female Persian"           descr="Friendly house cat, doubles as a princess" image="cat1.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-17" product-id="FL-DSH-02" listprice="93.5"      unitcost="0"    status="IN"     name="Adult Male Persian"             descr="Friendly house cat, doubles as a princess" image="cat1.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-18" product-id="AV-CB-01"  listprice="193.5"     unitcost="0"     status="IN"     name="Amazon Parrot"                  descr="Great companion for up to 75 years"        image="bird4.gif"   attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-19" product-id="AV-SB-02"  listprice="15.5"      unitcost="0"     status="IN"     name="Adult Male Finch"               descr="Great stress reliever"                     image="bird1.gif"   attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-2"  product-id="F1-SW-01"  listprice="16.5"      unitcost="0"      status="BACK"   name="Small Angelfish"                descr="Salt Water fish from Austalia"             image="fish1.jpg"   attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-20" product-id="F1-FW-01"  listprice="5.5"       unitcost="0"      status="BACK"   name="Adult Male Goldfish"            descr="Fresh Water fish from China"               image="fish3.gif"   attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-21" product-id="F1-FW-01"  listprice="5.29"      unitcost="0"      status="BACK"   name="Adult Female Goldfish"          descr="Fresh Water fish from China"               image="fish3.gif"   attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-26" product-id="K9-CW-01"  listprice="125.5"     unitcost="0"      status="BACK"   name="Adult Male Chihuahua"           descr="Great companion dog"                       image="dog4.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-27" product-id="K9-CW-01"  listprice="155.29"    unitcost="0"      status="BACK"   name="Adult Female Chihuahua"         descr="Great companion dog"                       image="dog4.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-28" product-id="K9-RT-01"  listprice="155.29"    unitcost="0"     status="IN"     name="Adult Female Golden Retriever"  descr="Great family dog"                          image="dog1.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-3"  product-id="F1-SW-02"  listprice="18.5"      unitcost="0"      status="BACK"   name="Toothless Tiger Shark"          descr="Salt Water fish from Austalia"             image="fish4.gif"   attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-4"  product-id="F1-FW-02"  listprice="18.5"      unitcost="0"      status="BACK"   name="Spotted Koi"                    descr="Fresh water fish from Japan"               image="fish3v"   attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-5"  product-id="F1-FW-02"  listprice="18.5"      unitcost="0"      status="BACK"   name="Spotless Koi"                   descr="Fresh Water fish from Japan"               image="fish3.gif"   attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-6"  product-id="K9-BD-01"  listprice="18.5"      unitcost="0"     status="BACK"   name="Male Adult Bulldog"             descr="Friendly dog from England"                 image="dog2.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-7"  product-id="K9-BD-01"  listprice="18.5"      unitcost="0"      status="IN"     name="Female Puppy Bulldog"           descr="Friendly dog from England"                 image="dog2.gif"    attr1="" attr2="" attr3=""/> 
+    <item item-id="EST-9"  product-id="K9-DL-01"  listprice="18.5"      unitcost="0"      status="BACK"   name="Spotless Male Puppy Dalmation"  descr="Great dog for a Fire Station"              image="dog5.gif"    attr1="" attr2="" attr3=""/> 
+</dal>

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ENTITY % boolean "(true | false | on | off | yes | no)">
+<!ENTITY % enum_table_without_enums "CDATA">
+<!ENTITY % elements "dal">
+
+<!ELEMENT dal (account | bannerdata | category | supplier)*>
+
+<!ELEMENT profile (profile-id | account-id | langpref | favcategory | mylstopt | banneropt | dal:include)*>
+<!ATTLIST profile
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          profile-id CDATA #IMPLIED
+          account-id CDATA #IMPLIED
+          langpref (0 | English | 1 | French | 2 | Japanese | 3 | Urdu) #IMPLIED
+          favcategory CDATA #IMPLIED
+          mylstopt CDATA #IMPLIED
+          banneropt CDATA #IMPLIED>
+
+<!ELEMENT account (account-id | login-id | email | firstname | lastname | status | addr1 | addr2 | city | state | country | phone | profile | orders | dal:include)*>
+<!ATTLIST account
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          account-id CDATA #IMPLIED
+          login-id CDATA #IMPLIED
+          email CDATA #IMPLIED
+          firstname CDATA #IMPLIED
+          lastname CDATA #IMPLIED
+          status CDATA #IMPLIED
+          addr1 CDATA #IMPLIED
+          addr2 CDATA #IMPLIED
+          city CDATA #IMPLIED
+          state CDATA #IMPLIED
+          country CDATA #IMPLIED
+          phone CDATA #IMPLIED>
+
+<!ELEMENT orders (orders-id | account-id | orderdate | shipaddr1 | shipaddr2 | shipcity | shipstate | shipcountry | shipphone | billaddr1 | billaddr2 | billcity | billstate | billcountry | billphone | orderstatus | lineitem | dal:include)*>
+<!ATTLIST orders
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          orders-id CDATA #IMPLIED
+          account-id CDATA #IMPLIED
+          orderdate CDATA #IMPLIED
+          shipaddr1 CDATA #IMPLIED
+          shipaddr2 CDATA #IMPLIED
+          shipcity CDATA #IMPLIED
+          shipstate CDATA #IMPLIED
+          shipcountry CDATA #IMPLIED
+          shipphone CDATA #IMPLIED
+          billaddr1 CDATA #IMPLIED
+          billaddr2 CDATA #IMPLIED
+          billcity CDATA #IMPLIED
+          billstate CDATA #IMPLIED
+          billcountry CDATA #IMPLIED
+          billphone CDATA #IMPLIED>
+
+<!ELEMENT orderstatus (orderstatus-id | orders-id | itemnum | ts | status | dal:include)*>
+<!ATTLIST orderstatus
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          orderstatus-id CDATA #IMPLIED
+          orders-id CDATA #IMPLIED
+          itemnum CDATA #IMPLIED
+          ts CDATA #IMPLIED
+          status CDATA #IMPLIED>
+
+<!ELEMENT lineitem (lineitem-id | orders-id | itemnum | item-id | quantity | unitprice | dal:include)*>
+<!ATTLIST lineitem
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          lineitem-id CDATA #IMPLIED
+          orders-id CDATA #IMPLIED
+          itemnum CDATA #IMPLIED
+          item-id CDATA #IMPLIED
+          quantity CDATA #IMPLIED
+          unitprice CDATA #IMPLIED>
+
+<!ELEMENT bannerdata (bannerdata-id | bannername | dal:include)*>
+<!ATTLIST bannerdata
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          bannerdata-id CDATA #IMPLIED
+          bannername CDATA #IMPLIED>
+
+<!ELEMENT category (category-id | name | descr | product | dal:include)*>
+<!ATTLIST category
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          category-id CDATA #IMPLIED
+          name CDATA #IMPLIED
+          descr CDATA #IMPLIED>
+
+<!ELEMENT product (product-id | category-id | name | descr | item | dal:include)*>
+<!ATTLIST product
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          product-id CDATA #IMPLIED
+          category-id CDATA #IMPLIED
+          name CDATA #IMPLIED
+          descr CDATA #IMPLIED>
+
+<!ELEMENT item (item-id | product-id | listprice | unitcost | supplier-id | status | name | descr | image | attr1 | attr2 | attr3 | lineitem | dal:include)*>
+<!ATTLIST item
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          item-id CDATA #IMPLIED
+          product-id CDATA #IMPLIED
+          listprice CDATA #IMPLIED
+          unitcost CDATA #IMPLIED
+          supplier-id CDATA #IMPLIED
+          status CDATA #IMPLIED
+          name CDATA #IMPLIED
+          descr CDATA #IMPLIED
+          image CDATA #IMPLIED
+          attr1 CDATA #IMPLIED
+          attr2 CDATA #IMPLIED
+          attr3 CDATA #IMPLIED>
+
+<!ELEMENT supplier (supplier-id | name | status | addr1 | addr2 | city | state | country | phone | dal:include)*>
+<!ATTLIST supplier
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          supplier-id CDATA #IMPLIED
+          name CDATA #IMPLIED
+          status CDATA #IMPLIED
+          addr1 CDATA #IMPLIED
+          addr2 CDATA #IMPLIED
+          city CDATA #IMPLIED
+          state CDATA #IMPLIED
+          country CDATA #IMPLIED
+          phone CDATA #IMPLIED>
+
+<!ELEMENT account-id (#PCDATA)>
+<!ATTLIST account-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT addr1 (#PCDATA)>
+<!ATTLIST addr1 IDREF CDATA #IMPLIED>
+
+<!ELEMENT addr2 (#PCDATA)>
+<!ATTLIST addr2 IDREF CDATA #IMPLIED>
+
+<!ELEMENT attr1 (#PCDATA)>
+<!ATTLIST attr1 IDREF CDATA #IMPLIED>
+
+<!ELEMENT attr2 (#PCDATA)>
+<!ATTLIST attr2 IDREF CDATA #IMPLIED>
+
+<!ELEMENT attr3 (#PCDATA)>
+<!ATTLIST attr3 IDREF CDATA #IMPLIED>
+
+<!ELEMENT bannerdata-id (#PCDATA)>
+<!ATTLIST bannerdata-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT bannername (#PCDATA)>
+<!ATTLIST bannername IDREF CDATA #IMPLIED>
+
+<!ELEMENT banneropt (#PCDATA)>
+<!ATTLIST banneropt IDREF CDATA #IMPLIED>
+
+<!ELEMENT billaddr1 (#PCDATA)>
+<!ATTLIST billaddr1 IDREF CDATA #IMPLIED>
+
+<!ELEMENT billaddr2 (#PCDATA)>
+<!ATTLIST billaddr2 IDREF CDATA #IMPLIED>
+
+<!ELEMENT billcity (#PCDATA)>
+<!ATTLIST billcity IDREF CDATA #IMPLIED>
+
+<!ELEMENT billcountry (#PCDATA)>
+<!ATTLIST billcountry IDREF CDATA #IMPLIED>
+
+<!ELEMENT billphone (#PCDATA)>
+<!ATTLIST billphone IDREF CDATA #IMPLIED>
+
+<!ELEMENT billstate (#PCDATA)>
+<!ATTLIST billstate IDREF CDATA #IMPLIED>
+
+<!ELEMENT category-id (#PCDATA)>
+<!ATTLIST category-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT city (#PCDATA)>
+<!ATTLIST city IDREF CDATA #IMPLIED>
+
+<!ELEMENT country (#PCDATA)>
+<!ATTLIST country IDREF CDATA #IMPLIED>
+
+<!ELEMENT dal:include (#PCDATA)>
+<!ATTLIST dal:include IDREF CDATA #IMPLIED>
+
+<!ELEMENT descr (#PCDATA)>
+<!ATTLIST descr IDREF CDATA #IMPLIED>
+
+<!ELEMENT email (#PCDATA)>
+<!ATTLIST email IDREF CDATA #IMPLIED>
+
+<!ELEMENT favcategory (#PCDATA)>
+<!ATTLIST favcategory IDREF CDATA #IMPLIED>
+
+<!ELEMENT firstname (#PCDATA)>
+<!ATTLIST firstname IDREF CDATA #IMPLIED>
+
+<!ELEMENT image (#PCDATA)>
+<!ATTLIST image IDREF CDATA #IMPLIED>
+
+<!ELEMENT item (#PCDATA)>
+<!ATTLIST item IDREF CDATA #IMPLIED>
+
+<!ELEMENT item-id (#PCDATA)>
+<!ATTLIST item-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT itemnum (#PCDATA)>
+<!ATTLIST itemnum IDREF CDATA #IMPLIED>
+
+<!ELEMENT langpref (#PCDATA)>
+<!ATTLIST langpref IDREF CDATA #IMPLIED>
+
+<!ELEMENT lastname (#PCDATA)>
+<!ATTLIST lastname IDREF CDATA #IMPLIED>
+
+<!ELEMENT lineitem (#PCDATA)>
+<!ATTLIST lineitem IDREF CDATA #IMPLIED>
+
+<!ELEMENT lineitem-id (#PCDATA)>
+<!ATTLIST lineitem-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT listprice (#PCDATA)>
+<!ATTLIST listprice IDREF CDATA #IMPLIED>
+
+<!ELEMENT login-id (#PCDATA)>
+<!ATTLIST login-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT mylstopt (#PCDATA)>
+<!ATTLIST mylstopt IDREF CDATA #IMPLIED>
+
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name IDREF CDATA #IMPLIED>
+
+<!ELEMENT orderdate (#PCDATA)>
+<!ATTLIST orderdate IDREF CDATA #IMPLIED>
+
+<!ELEMENT orders (#PCDATA)>
+<!ATTLIST orders IDREF CDATA #IMPLIED>
+
+<!ELEMENT orders-id (#PCDATA)>
+<!ATTLIST orders-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT orderstatus (#PCDATA)>
+<!ATTLIST orderstatus IDREF CDATA #IMPLIED>
+
+<!ELEMENT orderstatus-id (#PCDATA)>
+<!ATTLIST orderstatus-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT phone (#PCDATA)>
+<!ATTLIST phone IDREF CDATA #IMPLIED>
+
+<!ELEMENT product (#PCDATA)>
+<!ATTLIST product IDREF CDATA #IMPLIED>
+
+<!ELEMENT product-id (#PCDATA)>
+<!ATTLIST product-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT profile (#PCDATA)>
+<!ATTLIST profile IDREF CDATA #IMPLIED>
+
+<!ELEMENT profile-id (#PCDATA)>
+<!ATTLIST profile-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT quantity (#PCDATA)>
+<!ATTLIST quantity IDREF CDATA #IMPLIED>
+
+<!ELEMENT shipaddr1 (#PCDATA)>
+<!ATTLIST shipaddr1 IDREF CDATA #IMPLIED>
+
+<!ELEMENT shipaddr2 (#PCDATA)>
+<!ATTLIST shipaddr2 IDREF CDATA #IMPLIED>
+
+<!ELEMENT shipcity (#PCDATA)>
+<!ATTLIST shipcity IDREF CDATA #IMPLIED>
+
+<!ELEMENT shipcountry (#PCDATA)>
+<!ATTLIST shipcountry IDREF CDATA #IMPLIED>
+
+<!ELEMENT shipphone (#PCDATA)>
+<!ATTLIST shipphone IDREF CDATA #IMPLIED>
+
+<!ELEMENT shipstate (#PCDATA)>
+<!ATTLIST shipstate IDREF CDATA #IMPLIED>
+
+<!ELEMENT state (#PCDATA)>
+<!ATTLIST state IDREF CDATA #IMPLIED>
+
+<!ELEMENT status (#PCDATA)>
+<!ATTLIST status IDREF CDATA #IMPLIED>
+
+<!ELEMENT supplier-id (#PCDATA)>
+<!ATTLIST supplier-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT ts (#PCDATA)>
+<!ATTLIST ts IDREF CDATA #IMPLIED>
+
+<!ELEMENT unitcost (#PCDATA)>
+<!ATTLIST unitcost IDREF CDATA #IMPLIED>
+
+<!ELEMENT unitprice (#PCDATA)>
+<!ATTLIST unitprice IDREF CDATA #IMPLIED>
+
+<!ELEMENT dal:include EMPTY>
+<!ATTLIST dal:include
+          file CDATA #IMPLIED
+          template CDATA #IMPLIED
+          resource CDATA #IMPLIED
+          relative-to CDATA #IMPLIED>
