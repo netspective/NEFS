@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.28 2004-02-04 23:24:30 min-gu.lee Exp $
+ * $Id: StandardDialogSkin.java,v 1.29 2004-02-11 21:09:02 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -655,24 +655,27 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         }
 
         String hintHtml = "";
-        String hint = field.getHint().getTextValue(dc);
-        if(hint != null)
+        if (controlHtml.getBuffer().length() > 0)
         {
-            DialogFlags dialogFlags = dc.getDialog().getDialogFlags();
-            if ((field.isReadOnly(dc) && dialogFlags.flagIsSet(DialogFlags.HIDE_READONLY_HINTS)))
+            // only show the hint when there is an input field!
+            String hint = field.getHint().getTextValue(dc);
+            if(hint != null)
             {
-                hintHtml = "";
+                DialogFlags dialogFlags = dc.getDialog().getDialogFlags();
+                if ((field.isReadOnly(dc) && dialogFlags.flagIsSet(DialogFlags.HIDE_READONLY_HINTS)))
+                {
+                    hintHtml = "";
+                }
+                else if (dialogFlags.flagIsSet(DialogFlags.HIDE_HINTS_UNTIL_FOCUS))
+                {
+                    // hide the hints until the field is being edited
+                    hintHtml = "<br><span id=\"" + field.getQualifiedName() + "_hint\" class=\"dialog-fields-hint-hidden\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>";
+                }
+                else
+                {
+                    hintHtml = "<br><span id=\"" + field.getQualifiedName() + "_hint\" class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>";
+                }
             }
-            else if (dialogFlags.flagIsSet(DialogFlags.HIDE_HINTS_UNTIL_FOCUS))
-            {
-                // hide the hints until the field is being edited
-                hintHtml = "<br><span id=\"" + field.getQualifiedName() + "_hint\" class=\"dialog-fields-hint-hidden\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>";
-            }
-            else
-            {
-                hintHtml = "<br><span id=\"" + field.getQualifiedName() + "_hint\" class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>";
-            }
-
         }
 
         /*
@@ -688,8 +691,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             if (field instanceof SeparatorField)
                 fieldsHtml.append("<tr" + rowAttr + "><td class=\"dialog-fields-separator\" colspan='2'>" + controlHtml + "</td></tr>\n");
             else
-                fieldsHtml.append("<tr" + rowAttr + "><td colspan='2'>" + controlHtml +
-                        (hint != null ? "<br><span class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>": "") +
+                fieldsHtml.append("<tr" + rowAttr + "><td colspan='2'>" + controlHtml + hintHtml +
                         "</td></tr>\n");
 
             if (haveErrors)
