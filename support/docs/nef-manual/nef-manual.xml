@@ -9,7 +9,11 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-10-30 01:35:31 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-10-30 01:38:02 $)</releaseinfo>
+
+    <releaseinfo>This version is in DRAFT until November 15, 2003 when
+    it&#39;s expected to be completed. Check back daily until then because
+    material is being added regularly.</releaseinfo>
 
     <authorgroup>
       <author>
