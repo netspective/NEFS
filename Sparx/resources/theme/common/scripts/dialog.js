@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: dialog.js,v 1.6 2004-07-14 18:59:37 shahid.shah Exp $
+ * $Id: dialog.js,v 1.7 2004-07-26 14:00:09 aye.thu Exp $
  */
 
  /**
@@ -385,11 +385,62 @@ function DialogField(type, id, name, qualifiedName, caption, flags)
 	this.alertMessage = DialogField_alertMessage;
 	this.isVisible = DialogField_isVisible;
 	this.setVisible = DialogField_setVisible;
+	this.setRequired = DialogField_setRequired;
 }
 
 function DialogField_isRequired()
 {
 	return (this.flags & FLDFLAG_REQUIRED) != 0 && this.isVisible();
+}
+
+function getElementStyle(elemID, IEStyleProp, CSSStyleProp)
+{
+    var elem = document.getElementById(elemID);
+    if (elem.currentStyle)
+    {
+        return elem.currentStyle[IEStyleProp];
+    }
+    else if (window.getComputedStyle)
+    {
+        var compStyle = window.getComputedStyle(elem, "");
+        return compStyle.getPropertyValue(CSSStyleProp);
+    }
+    return "";
+}
+
+/**
+ * Changes the label and input appearance based on the field's REQUIRED status
+ */
+function DialogField_setRequired(required)
+{
+    if (required)
+    {
+        this.flags = this.flags | FLDFLAG_REQUIRED;
+        var objLabels = document.getElementsByTagName("LABEL");
+        for (var i = 0; i < objLabels.length; i++)
+        {
+            if (objLabels[i].htmlFor == this.controlId)
+            {
+                //  NOTE: This is dependent on how the skin looks!
+                objLabels[i].style['font'] = 'bold 12px Verdana';
+                break;
+            }
+        }
+    }
+    else
+    {
+        this.flags = this.flags & ~FLDFLAG_REQUIRED; //flags &= ~flag;
+        var objLabels = document.getElementsByTagName("LABEL");
+        for (var i = 0; i < objLabels.length; i++)
+        {
+            if (objLabels[i].htmlFor == this.controlId)
+            {
+                //  NOTE: This is dependent on how the skin looks!
+                objLabels[i].style['font'] = 'normal 12px Verdana';
+                break;
+            }
+        }
+    }
 }
 
 function DialogField_isReadOnly()
@@ -760,6 +811,37 @@ function setAllCheckboxes(sourceCheckbox, otherCheckboxesPrefix)
 	}
 }
 
+function DialogFieldConditionalFlag(source, partner, expression, flag)
+{
+	this.source = source;
+	this.partner = partner;
+	this.expression = expression;
+    this.flag = flag;
+	// the remaining are object-based methods
+	this.evaluate = DialogFieldConditionalFlag_evaluate;
+}
+
+function DialogFieldConditionalFlag_evaluate(dialog, control)
+{
+    if(control == null)
+    {
+        alert("control is null in DialogFieldConditionalFlag.evaluate(dialog, control)");
+        return;
+    }
+    var condSource = dialog.fieldsByQualName[this.source];
+    if(eval(this.expression) == true)
+	{
+	    // set the flag on the dialog
+	    if (this.flag == FLDFLAG_REQUIRED)
+    		condSource.setRequired(true);
+	}
+	else
+	{
+	    if (this.flag == FLDFLAG_REQUIRED)
+    		condSource.setRequired(false);
+	}
+}
+
 //****************************************************************************
 // DialogFieldConditionalDisplay class
 //****************************************************************************
@@ -840,107 +922,6 @@ function evaluateQuestions(control, field)
 		return true;
 	}
 	return false;
-}
-//****************************************************************************
-// SelectField MultiDual support functions
-//****************************************************************************
-
-/*
-Description:
-	Moves items from one select box to another.
-Input:
-	strFormName = Name of the form containing the <SELECT> elements
-	strFromSelect = Name of the left or "from" select list box.
-	strToSelect = Name of the right or "to" select list box
-	blnSort = Indicates whether list box should be sorted when an item(s) is added
-
-Return:
-	none
-*/
-function MoveSelectItems(strFormName, strFromSelect, strToSelect, blnSort)
-{
-	var dialog = eval("document.forms." + strFormName);
-	var objSelectFrom = dialog.elements[strFromSelect];
-	var objSelectTo = dialog.elements[strToSelect];
-	var intLength = objSelectFrom.options.length;
-
-	for (var i=0; i < intLength; i++)
-	{
-		if(objSelectFrom.options[i].selected && objSelectFrom.options[i].value != "")
-		{
-			var objNewOpt = new Option();
-			objNewOpt.value = objSelectFrom.options[i].value;
-			objNewOpt.text = objSelectFrom.options[i].text;
-			objSelectTo.options[objSelectTo.options.length] = objNewOpt;
-			objSelectFrom.options[i].value = "";
-			objSelectFrom.options[i].text = "";
-		}
-	}
-
-	if (blnSort) SimpleSort(objSelectTo);
-	RemoveEmpties(objSelectFrom, 0);
-}
-
-/*
-Description:
-	Removes empty select items. This is a helper function for MoveSelectItems.
-Input:
-	objSelect = A <SELECT> object.
-	intStart = The start position (zero-based) search. Optimizes the recursion.
-Return:
-	none
-*/
-function RemoveEmpties(objSelect, intStart)
-{
-	for(var i=intStart; i<objSelect.options.length; i++)
-	{
-		if (objSelect.options[i].value == "")
-		{
-			objSelect.options[i] = null;    // This removes item and reduces count
-			RemoveEmpties(objSelect, i);
-			break;
-		}
-	}
-}
-
-/*
-Description:
-	Sorts a select box. Uses a simple sort.
-Input:
-	objSelect = A <SELECT> object.
-Return:
-	none
-*/
-function SimpleSort(objSelect)
-{
-	var arrTemp = new Array();
-	var objTemp = new Object();
-	var valueTemp = new Object();
-	for(var i=0; i<objSelect.options.length; i++)
-	{
-		arrTemp[i] = objSelect.options[i];
-	}
-
-	for(var x=0; x<arrTemp.length-1; x++)
-	{
-		for(var y=(x+1); y<arrTemp.length; y++)
-		{
-			if(arrTemp[x].text > arrTemp[y].text)
-			{
-				objTemp = arrTemp[x].text;
-				arrTemp[x].text = arrTemp[y].text;
-				arrTemp[y].text = objTemp;
-
-				valueTemp = arrTemp[x].value;
-				arrTemp[x].value = arrTemp[y].value;
-				arrTemp[y].value = valueTemp;
-			}
-		}
-	}
-	for(var i=0; i<objSelect.options.length; i++)
-	{
-		alert(objSelect.options[i].text + " " + objSelect.options[i].value);
-	}
 }
 
 //****************************************************************************
@@ -1179,35 +1160,6 @@ var LOW_ALPHA_KEYS_RANGE   = [97, 122];
 var UNDERSCORE_KEY_RANGE   = [95,  95];
 var COLON_KEY_RANGE        = [58, 58];
 var ENTER_KEY_RANGE        = [13, 13];
-
-function keypressAcceptRanges(field, control, acceptKeyRanges, event)
-{
-	if(! ENABLE_KEYPRESS_FILTERS)
-		return true;
-
-	// the event should have been passed in here but for some reason
-	// its null, look for it in the window object (works only in IE)
-	if (event == null || typeof event == "undefined")
-		event = window.event;
-	for (i=0; i<acceptKeyRanges.length; i++)
-	{
-		var keyCodeValue = null;
-		if (event.keyCode)
-			keyCodeValue = event.keyCode;
-		else
-			keyCodeValue = event.which;
-
-		var keyInfo = acceptKeyRanges[i];
-		if(keyCodeValue >= keyInfo[0] && keyCodeValue <= keyInfo[1])
-			return true;
-	}
-
-	// if we get to here, it means we didn't accept any of the ranges
-	if (event.cancelBubble)
-	    event.cancelBubble = true;
-	event.returnValue = false;
-	return false;
-}
 
 //****************************************************************************
 // Field-specific validation and keypress filtering functions
@@ -1584,13 +1536,7 @@ function SelectField_isValid(field, control)
 	{
 		if(style == SELECTSTYLE_RADIO)
 		{
-			var selectedCount = 0;
-			for(var r = 0; r < control.length; r++)
-			{
-				if(control[r].checked)
-					selectedCount++;
-			}
-			if(selectedCount == 0)
+			if(control.value == '')
 			{
 				field.alertRequired(control[0]);
 				return false;
@@ -1606,14 +1552,7 @@ function SelectField_isValid(field, control)
 		}
 		else if(style == SELECTSTYLE_LIST || style == SELECTSTYLE_MULTILIST)
 		{
-
-			var selectedCount = 0;
-			var options = control.options;
-			for(var o = 0; o < options.length; o++)
-			{
-				if(options[o].selected)
-					selectedCount++;
-			}
+			var selectedCount = getSelectedCount(control);
 			if(selectedCount == 0)
 			{
 				field.alertRequired(control);
@@ -1622,12 +1561,7 @@ function SelectField_isValid(field, control)
 		}
 		else if(style == SELECTSTYLE_MULTICHECK)
 		{
-			var selectedCount = 0;
-			for(var c = 0; c < control.length; c++)
-			{
-				if(control[c].checked)
-					selectedCount++;
-			}
+			var selectedCount = getCheckedCount(control);
 			if(selectedCount == 0)
 			{
 				field.alertRequired(control[0]);
@@ -1636,20 +1570,13 @@ function SelectField_isValid(field, control)
 		}
 		else if(style == SELECTSTYLE_MULTIDUAL)
 		{
-			var selectedCount = 0;
-			var options = control.options;
-			for(var o = 0; o < options.length; o++)
-			{
-				if(options[o].selected)
-					selectedCount++;
-			}
+			var selectedCount = getSelectedCount(control);
 			if(selectedCount == 0)
 			{
 				field.alertRequired(control);
 				return false;
 			}
 		}
-
 	}
 
 	return true;
@@ -1671,21 +1598,6 @@ addFieldType("com.netspective.sparx.form.field.type.CurrencyField", null, Curren
 //****************************************************************************
 
 var VALID_NUMBERS =  ["0","1","2","3","4","5","6","7","8","9"];
-
-// returns a string of exactly count characters left padding with zeros
-function padZeros(number, count)
-{
-	var padding = "0";
-	for (var i=1; i < count; i++)
-		padding += "0";
-	if (typeof(number) == 'number')
-		number = number.toString();
-	if (number.length < count)
-		number = (padding.substring(0, (count - number.length))) + number;
-	if (number.length > count)
-		number = number.substring((number.length - count));
-	return number;
-}
 
 // This method is to demonstrate calculating the total of the first four columns in a grid row and
 // setting the fifth column to the total value
@@ -1947,56 +1859,6 @@ function formatDate(field, control, delim, strictYear)
 		return [false, inDate];
 	}
 	return [true, padZeros(a[0],2) + delim + padZeros(a[1],2) + delim + a[2]];
-}
-
-// Split "string" into multiple tokens at "char"
-function splitOnChar(strString, strDelimiter)
-{
-	var a = new Array();
-	var field = 0;
-	for (var i = 0; i < strString.length; i++)
-	{
-		if ( strString.charAt(i) != strDelimiter )
-		{
-			if (a[field] == null)
-				a[field] = strString.charAt(i);
-			else
-				a[field] += strString.charAt(i);
-		}
-		else
-		{
-			if (a[field] != null)
-				field++;
-		}
-	}
-	return a;
-}
-
-// Split "strString" into multiple tokens at inverse of "array"
-function splitNotInArray(strString, arrArray)
-{
-	var a = new Array();
-	var field = 0;
-	var matched;
-	for (var i = 0; i < strString.length; i++)
-	{
-		matched = 0;
-		for (k in arrArray)
-		{
-			if (strString.charAt(i) == arrArray[k])
-			{
-				if (a[field] == null || typeof a[field] == "undefined")
-					a[field] = strString.charAt(i);
-				else
-					a[field] += strString.charAt(i);
-				matched = 1;
-				break;
-			}
-		}
-		if ( matched == 0 && a[field] != null )
-			field++;
-	}
-	return a;
 }
 
 // --------------------------------------------
@@ -2310,4 +2172,364 @@ document.onkeyup   = documentOnKeyUp;
 window.onbeforeunload = documentOnLeave;
 
 dialogLibraryLoaded = true;
+
+
+/**
+ * THE FOLLOWING SECTION CONTAINS JAVASCRIPT FUNCTIONS THAT ARE MORE GENERIC IN NATURE
+ * ----------------------------------------------------------------------------------------------------
+ */
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *     This function checks a group of checkboxes with the same name to see if a
+ *     checked checkbox exists with a particular value.
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *     checkbox:    checkbox(s) form element
+ *     value:       value to look for
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     True if one or more checked checkbox has the value else False
+ * ------------------------------------------------------------------------------------------------------
+ */
+function checkedCheckedValue(checkbox, value)
+{
+    if (checkbox.length)
+    {
+        // multiple checkboxes with the same name
+        for(var i = 0; i < checkbox.length; i++)
+        {
+            if (checkbox[i].checked && checkbox[i].value == value)
+                return true;
+        }
+    }
+    else
+    {
+        // only one checkbox
+        if (checkbox.checked && checkbox.value == value)
+            return true;
+    }
+    return false;
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *     This function gets the total number of checkboxes that are checked
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *     checkBox:    checkbox(s) form element
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     Zero if no checkboxes are checked
+ * ------------------------------------------------------------------------------------------------------
+ */
+function getCheckedCount(checkbox)
+{
+    var selectedCount = 0;
+    if (checkbox.length)
+    {
+        // multiple checkboxes with same name
+        for(var c = 0; c < checkbox.length; c++)
+        {
+            if(checkbox[c].checked)
+                selectedCount++;
+        }
+    }
+    else
+    {
+        // one checkbox
+        if (checkbox.checked)
+            selectedCount = 1;
+    }
+    return selectedCount;
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *     This function gets the total number of options that are selected in an HTML SELECT element
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *     select:    SELECT form element
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     Zero if no options are selected
+ * ------------------------------------------------------------------------------------------------------
+ */
+function getSelectedCount(select)
+{
+    var selectedCount = 0;
+    var options = select.options;
+    for(var o = 0; o < options.length; o++)
+    {
+        if(options[o].selected)
+            selectedCount++;
+    }
+    return selectedCount;
+}
+
+/*
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *     Sorts a select box. Uses a simple sort.
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *	   objSelect = A <SELECT> object.
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     None
+ * ------------------------------------------------------------------------------------------------------
+ * NOTE:
+ *    Refactored from dialog.js and used for SelectField MultiDual support
+ * ------------------------------------------------------------------------------------------------------
+ */
+function SimpleSort(objSelect)
+{
+	var arrTemp = new Array();
+	var objTemp = new Object();
+	var valueTemp = new Object();
+	for(var i=0; i<objSelect.options.length; i++)
+	{
+		arrTemp[i] = objSelect.options[i];
+	}
+
+	for(var x=0; x<arrTemp.length-1; x++)
+	{
+		for(var y=(x+1); y<arrTemp.length; y++)
+		{
+			if(arrTemp[x].text > arrTemp[y].text)
+			{
+				objTemp = arrTemp[x].text;
+				arrTemp[x].text = arrTemp[y].text;
+				arrTemp[y].text = objTemp;
+
+				valueTemp = arrTemp[x].value;
+				arrTemp[x].value = arrTemp[y].value;
+				arrTemp[y].value = valueTemp;
+			}
+		}
+	}
+	for(var i=0; i<objSelect.options.length; i++)
+	{
+		alert(objSelect.options[i].text + " " + objSelect.options[i].value);
+	}
+}
+
+/*
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *    Removes empty select items. This is a helper function for MoveSelectItems.
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *     objSelect = A <SELECT> object.
+ *     intStart = The start position (zero-based) search. Optimizes the recursion.
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     None
+ * ------------------------------------------------------------------------------------------------------
+ * NOTE:
+ *    Refactored from dialog.js and used for SelectField MultiDual support
+ * ------------------------------------------------------------------------------------------------------
+ */
+function RemoveEmpties(objSelect, intStart)
+{
+	for(var i=intStart; i<objSelect.options.length; i++)
+	{
+		if (objSelect.options[i].value == "")
+		{
+			objSelect.options[i] = null;    // This removes item and reduces count
+			RemoveEmpties(objSelect, i);
+			break;
+		}
+	}
+}
+
+/*
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *    Moves items from one select box to another.
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *     strFormName = Name of the form containing the <SELECT> elements
+ *     strFromSelect = Name of the left or "from" select list box.
+ *     strToSelect = Name of the right or "to" select list box
+ *     blnSort = Indicates whether list box should be sorted when an item(s) is added
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     none
+ * ------------------------------------------------------------------------------------------------------
+*/
+function MoveSelectItems(strFormName, strFromSelect, strToSelect, blnSort)
+{
+	var dialog = eval("document.forms." + strFormName);
+	var objSelectFrom = dialog.elements[strFromSelect];
+	var objSelectTo = dialog.elements[strToSelect];
+	var intLength = objSelectFrom.options.length;
+
+	for (var i=0; i < intLength; i++)
+	{
+		if(objSelectFrom.options[i].selected && objSelectFrom.options[i].value != "")
+		{
+			var objNewOpt = new Option();
+			objNewOpt.value = objSelectFrom.options[i].value;
+			objNewOpt.text = objSelectFrom.options[i].text;
+			objSelectTo.options[objSelectTo.options.length] = objNewOpt;
+			objSelectFrom.options[i].value = "";
+			objSelectFrom.options[i].text = "";
+		}
+	}
+
+	if (blnSort) SimpleSort(objSelectTo);
+	RemoveEmpties(objSelectFrom, 0);
+}
+
+/*
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *    Checks to see if the key pressed is allowed
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *     field
+ *     control
+ *     acceptKeyRanges:     array of ascii values
+ *     event:               the key press event
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     True if the originating key is within the accepted key range else False
+ * ------------------------------------------------------------------------------------------------------
+ * NOTES:
+ *     This function has IE-specific code
+ * ------------------------------------------------------------------------------------------------------
+ */
+function keypressAcceptRanges(field, control, acceptKeyRanges, event)
+{
+	//if(! ENABLE_KEYPRESS_FILTERS)
+	//	return true;
+
+	// the event should have been passed in here but for some reason
+	// its null, look for it in the window object (works only in IE)
+	if (event == null || typeof event == "undefined")
+		event = window.event;
+	for (i = 0; i < acceptKeyRanges.length; i++)
+	{
+		var keyCodeValue = null;
+		if (event.keyCode)
+			keyCodeValue = event.keyCode;
+		else
+			keyCodeValue = event.which;
+
+		var keyInfo = acceptKeyRanges[i];
+		if(keyCodeValue >= keyInfo[0] && keyCodeValue <= keyInfo[1])
+			return true;
+	}
+
+	// if we get to here, it means we didn't accept any of the ranges
+	if (event.cancelBubble)
+	    event.cancelBubble = true;
+	event.returnValue = false;
+	return false;
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *     This function returns a string of exactly count characters left padding with zeros
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *     number:  string to pad
+ *     count:   number of zero paddings
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     returns a string of exactly count characters left padding with zeros
+ * ------------------------------------------------------------------------------------------------------
+ */
+function padZeros(number, count)
+{
+	var padding = "0";
+	for (var i=1; i < count; i++)
+		padding += "0";
+	if (typeof(number) == 'number')
+		number = number.toString();
+	if (number.length < count)
+		number = (padding.substring(0, (count - number.length))) + number;
+	if (number.length > count)
+		number = number.substring((number.length - count));
+	return number;
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *     This function splits "string" into multiple tokens at "char"
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *     strString:       string to parse
+ *     strDelimiter:    the token
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     returns an array of substrings
+ * ------------------------------------------------------------------------------------------------------
+ */
+function splitOnChar(strString, strDelimiter)
+{
+	var a = new Array();
+	var field = 0;
+	for (var i = 0; i < strString.length; i++)
+	{
+		if ( strString.charAt(i) != strDelimiter )
+		{
+			if (a[field] == null)
+				a[field] = strString.charAt(i);
+			else
+				a[field] += strString.charAt(i);
+		}
+		else
+		{
+			if (a[field] != null)
+				field++;
+		}
+	}
+	return a;
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * DESCRIPTION:
+ *     This function Splits "strString" into multiple tokens at inverse of "array"
+ * ------------------------------------------------------------------------------------------------------
+ * INPUT:
+ *     strString:       string to parse
+ *     arrArray:        an array of characters
+ * ------------------------------------------------------------------------------------------------------
+ * RETURNS:
+ *     returns an array of substrings
+ * ------------------------------------------------------------------------------------------------------
+ */
+function splitNotInArray(strString, arrArray)
+{
+	var a = new Array();
+	var field = 0;
+	var matched;
+	for (var i = 0; i < strString.length; i++)
+	{
+		matched = 0;
+		for (k in arrArray)
+		{
+			if (strString.charAt(i) == arrArray[k])
+			{
+				if (a[field] == null || typeof a[field] == "undefined")
+					a[field] = strString.charAt(i);
+				else
+					a[field] += strString.charAt(i);
+				matched = 1;
+				break;
+			}
+		}
+		if ( matched == 0 && a[field] != null )
+			field++;
+	}
+	return a;
+}
 
