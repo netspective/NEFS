@@ -36,7 +36,7 @@
          <property name="test.config.summary" value="yes"/>
          <property name="test.config.verbose" value="yes"/>
          <property name="test.config.result-file" value="results.xml"/>
-         <property name="test.config.halt-on-failure" value="false"/>
+         <property name="test.config.halt-on-failure" value="true"/>
      </target>
 
      <target name=".init" depends=".init_webtest,.init_server,.init_options">
