@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.10 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.11 2003-06-25 07:14:08 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -71,6 +71,8 @@ import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
 import com.netspective.sparx.command.RedirectCommand;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.lang.ClassPath;
@@ -155,7 +157,6 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         int panelRenderFlags = ((HtmlTabularReportValueContext) rc).getPanelRenderFlags();
         if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
         {
-            renderFrameBegin(writer, (HtmlPanelValueContext) rc);
             writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
         }
         else
@@ -163,7 +164,6 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
         if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
             produceHeadingRow(writer, (HtmlTabularReportValueContext) rc, (HtmlTabularReportDataSource) ds);
-
         produceDataRows(writer, (HtmlTabularReportValueContext) rc, (HtmlTabularReportDataSource) ds);
 
         if(flags.flagIsSet(Flags.SHOW_FOOT_ROW) && rc.getCalcsCount() > 0)
@@ -245,6 +245,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         //TODO: Sparx 2.x conversion required
         //ResultSetScrollState scrollState = rc.getScrollState();
         //boolean paging = scrollState != null;
+        HtmlTabularReportDataSourceScrollState scrollState = (HtmlTabularReportDataSourceScrollState) rc.getScrollState();
+        boolean paging = scrollState != null;
 
         boolean isOddRow = false;
         while(ds.next())
@@ -310,8 +312,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             writer.write("</tr>");
             rowsWritten++;
             //TODO: Sparx 2.x conversion required
-            //if(paging && rc.endOfPage())
-            //    break;
+            if(paging && rc.endOfPage())
+                break;
         }
 
         if(rowsWritten == 0)
@@ -321,16 +323,16 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             if(noDataFoundMsg != null)
                 writer.write("<tr><td class=\"report-column-summary\" colspan='" + tableColsCount + "'>"+ noDataFoundMsg +"</td></tr>");
             //TODO: Sparx 2.x conversion required
-            //if(paging)
-            //    scrollState.setNoMoreRows();
+            if(paging)
+                scrollState.setNoMoreRows();
         }
         //TODO: Sparx 2.x conversion required
-        //else if(paging)
-        //{
-        //    scrollState.accumulateRowsProcessed(rowsWritten);
-        //    if(rowsWritten < scrollState.getRowsPerPage())
-        //        scrollState.setNoMoreRows();
-        //}
+        else if(paging)
+        {
+            scrollState.accumulateRowsProcessed(rowsWritten);
+            if(rowsWritten < scrollState.getRowsPerPage())
+                scrollState.setNoMoreRows();
+        }
 
         if(hiearchical && allowTreeExpandCollapse)
         {
