@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-10-29 16:44:45 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-10-29 21:55:46 $)</releaseinfo>
 
     <authorgroup>
       <author>
@@ -1525,13 +1525,12 @@
       file (see <xref linkend="nef-project-file" />).</para>
 
       <section>
-        <title>Presentation Layer Declaration and Descriptor Tags</title>
+        <title>Declaring the Presentation Layer</title>
 
         <para>The presentation layer tags are broken up into several groups:
         navigation, forms/fields, on-screen validation, and conditional
-        processing. Once you define any of these tags you can immediately test
-        the functionality without any code either using a test application or
-        the Enterprise Console.</para>
+        processing. Almost all of the presentation layer tags are managed by
+        Sparx.</para>
 
         <section>
           <title>Navigation Declaration Tags</title>
@@ -1543,7 +1542,9 @@
           functionality without requiring any HTML or JSP. However, if you
           need to customize the behavior you have full access to the APIs
           through both inheritance and delegation. You focus on the hierarchy,
-          specify the structure and rules and NEF will do the rest.</para>
+          specify the structure and rules and NEF will do the rest. The Sparx
+          navigation system fully implements MVC (model-view-controller)
+          design pattern.</para>
 
           <example>
             <title>Examples of Navigation Tags in the Presentation Layer</title>
@@ -1590,7 +1591,7 @@ id="declare-nav-tags-eg-8" />
     &#60;page name=&#34;add&#34; caption=&#34;Add Book&#34; <emphasis
 role="bold">command</emphasis>=&#34;dialog,schema.db.Book_Info,add&#34;/&#62; <co
 id="declare-nav-tags-eg-9" />
-    &#60;page name=&#34;edit&#34; caption=&#34;Edit Book&#34; command=&#34;dialog,schema.db.Book_Info,edit&#34; 
+    &#60;page name=&#34;edit&#34; caption=&#34;Edit Book&#34; command=&#34;dialog,schema.db.Book_Info,edit&#34;
           require-request-param=&#34;id&#34; retain-params=&#34;id&#34;&#62;
         &#60;<emphasis role="bold">missing-params-body</emphasis>&#62; <co
 id="declare-nav-tags-eg-10" />
@@ -1620,10 +1621,7 @@ id="declare-nav-tags-eg-10" />
               that define what pages should be visible to the user. Each
               <sgmltag class="starttag">page</sgmltag> tag supports common
               things like the page&#39;s name (unique identifier), a caption
-              (what might show up in a tab or menu), a heading, and title.
-              Almost all page attributes support Value Sources for their
-              values so they may be static or dynamic (see <xref
-              linkend="section-value-sources" />).</para>
+              (what might show up in a tab or menu), a heading, and title.</para>
             </callout>
 
             <callout arearefs="declare-nav-tags-eg-3">
@@ -1687,9 +1685,22 @@ id="declare-nav-tags-eg-10" />
             <callout arearefs="declare-nav-tags-eg-10">
               <para>The <sgmltag class="starttag">page</sgmltag> tag may
               specify required request parameters and optionally produce
-              automatic error messages when they are not provided. </para>
+              automatic error messages when they are not provided.</para>
             </callout>
           </calloutlist>
+
+          <note>
+            <para>Almost all <sgmltag class="starttag">page</sgmltag> tag
+            attributes support Value Sources for their values so the values
+            may be static or dynamic (see <xref
+            linkend="section-value-sources" />). This allows, for example the
+            captions, headings, and all user-visible values to be properly
+            placed in property files or other external resources and mapped in
+            a language-specific manner for internationlization purposes. The
+            important thing to understand is that even though the declarations
+            are in a static XML file, the values of the descriptors are
+            capable of being dynamic.</para>
+          </note>
         </section>
 
         <section>
@@ -1720,13 +1731,13 @@ id="declare-form-tags-eg-3" />
         &#60;<emphasis role="bold">field</emphasis> name=&#34;text_field_hidden&#34; <emphasis
 role="bold">type=&#34;text&#34;</emphasis> hidden=&#34;yes&#34; default=&#34;request:id&#34;/&#62; <co
 id="declare-form-tags-eg-4" />
-        &#60;field name=&#34;text_field&#34; type=&#34;text&#34; caption=&#34;Text&#34; hint=&#34;Text field optional (max-length=5, uppercase=yes)&#34; 
+        &#60;field name=&#34;text_field&#34; type=&#34;text&#34; caption=&#34;Text&#34; hint=&#34;Text field optional (max-length=5, uppercase=yes)&#34;
                max-length=&#34;5&#34; uppercase=&#34;yes&#34;/&#62;
         &#60;field name=&#34;text_field_regex&#34; type=&#34;text&#34; caption=&#34;Text Email&#34; hint=&#34;Text field with regular expression validation&#34;
                display-pattern=&#34;/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/&#34;
                invalid-reg-ex-message=&#34;Invalid email format.&#34;/&#62;
 
-         <co id="declare-form-tags-eg-5" />
+               <co id="declare-form-tags-eg-5" />
         &#60;field <emphasis role="bold">type=&#34;boolean&#34;</emphasis> name=&#34;bool_field_radio&#34; caption=&#34;Boolean Field (Radio)&#34; style=&#34;radio&#34; /&#62;
         &#60;field name=&#34;email_field&#34; <emphasis role="bold">type=&#34;e-mail&#34;</emphasis> caption=&#34;Email&#34; hint=&#34;Email field&#34;/&#62;
         &#60;field name=&#34;masked_field&#34; <emphasis role="bold">type=&#34;text&#34;</emphasis> caption=&#34;Masked Field&#34; mask-entry=&#34;yes&#34; hint=&#34;e.g password&#34;/&#62;
@@ -1735,12 +1746,12 @@ role="bold">persist=&#34;yes&#34;</emphasis>/&#62;
         &#60;field <emphasis role="bold">type=&#34;float&#34;</emphasis> name=&#34;float_field&#34; caption=&#34;Float Field&#34; hint=&#34;Float field&#34;/&#62;
         &#60;field <emphasis role="bold">type=&#34;currency&#34;</emphasis> name=&#34;currency_field1&#34; caption=&#34;Currency&#34; decimals-required=&#34;2&#34; default=&#34;123.45&#34;
                negative-pos=&#34;after-symbol&#34; hint=&#34;Currency field (US) with negative sign after the symbol&#34;/&#62;
-        &#60;field <emphasis role="bold">type=&#34;phone&#34;</emphasis> name=&#34;phone_field1&#34; caption=&#34;Phone Field (dash format)&#34; strip-brackets=&#34;yes&#34; style=&#34;dash&#34; 
+        &#60;field <emphasis role="bold">type=&#34;phone&#34;</emphasis> name=&#34;phone_field1&#34; caption=&#34;Phone Field (dash format)&#34; strip-brackets=&#34;yes&#34; style=&#34;dash&#34;
                hint=&#34;Phone field&#34; default=&#34;8001234567&#34;/&#62;
         &#60;field <emphasis role="bold">type=&#34;zip-code&#34;</emphasis> name=&#34;zip_field&#34; caption=&#34;Zip Field&#34; hint=&#34;Zip code field&#34; default=&#34;12345&#34;/&#62;
         &#60;field <emphasis role="bold">type=&#34;ssn&#34;</emphasis> name=&#34;ssn_field&#34; caption=&#34;SSN&#34; strip-dashes=&#34;yes&#34; default=&#34;999999999&#34;/&#62;
 
-        &#60;field <emphasis role="bold">type=&#34;select&#34;</emphasis> name=&#34;sel_field_combo_xml_items&#34; caption=&#34;Select Field (Combo with XML Items)&#34; 
+        &#60;field <emphasis role="bold">type=&#34;select&#34;</emphasis> name=&#34;sel_field_combo_xml_items&#34; caption=&#34;Select Field (Combo with XML Items)&#34;
                style=&#34;combo&#34; default=&#34;A&#34; prepend-blank=&#34;yes&#34;&#62;
             &#60;items&#62;
                 &#60;item value=&#34;A&#34; caption=&#34;Choice 1 (in XML Item)&#34;/&#62;
@@ -1825,24 +1836,372 @@ id="declare-form-tags-eg-8" />
             </callout>
 
             <callout arearefs="declare-form-tags-eg-8">
-              <para>A special <sgmltag class="starttag">director</sgmltag> tag
-              is provided to control navigation out of a dialog. Different
-              directors may be created and reused for various purposes such as
-              having a different set of buttons for confirm dialogs versus
-              data entry dialogs.</para>
+              <para>A <sgmltag class="starttag">director</sgmltag> tag is used
+              for forms submission and to control navigation out of a dialog
+              after processing is completed. Different directors may be
+              created and reused for various purposes such as having a
+              different set of buttons for confirm dialogs versus data entry
+              dialogs.</para>
+            </callout>
+          </calloutlist>
+
+          <note>
+            <para>Almost all <sgmltag class="starttag">dialog</sgmltag> and
+            <sgmltag class="starttag">field</sgmltag> tag attributes support
+            Value Sources for their values so the values may be static or
+            dynamic (see <xref linkend="section-value-sources" />). This
+            allows, for example the captions, headings, and all user-visible
+            values to be properly placed in property files or other external
+            resources and mapped in a language-specific manner for
+            internationlization purposes. Also, it means that the values of
+            fields and select choices may be bound to database values,
+            request/response values, or other dynamic sources. The important
+            thing to understand is that even though the declarations are in a
+            static XML file, the values of the descriptors are capable of
+            being dynamic.</para>
+          </note>
+        </section>
+      </section>
+
+      <section>
+        <title>Declaring the Data Management Layer</title>
+
+        <para>The data manager layer tags are broken up into several groups:
+        static queries, dynamic queries, schema management, and connection
+        management, and database vendor management. Almost all of the data
+        management layer tags are managed by Axiom.</para>
+
+        <section>
+          <title>Static Query Declarations (Static Data Access Objects)</title>
+
+          <para>That static query and data access objects (DAOs) declarations
+          are comprised of the <sgmltag class="starttag">queries</sgmltag>,
+          <sgmltag class="starttag">query</sgmltag>, and <sgmltag
+          class="starttag">params</sgmltag> tags.</para>
+
+          <example>
+            <title>Examples of Query Tags in Data Management Layer</title>
+
+            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+...
+
+&#60;<emphasis role="bold">queries</emphasis> package=&#34;test&#34;&#62; <co
+id="declare-data-query-static-eg-1" />
+
+    &#60;<emphasis role="bold">query</emphasis> name=&#34;get-asset-loans&#34;&#62; <co
+id="declare-data-query-static-eg-2" />
+
+        select <co id="declare-data-query-static-eg-3" />
+            asset_loan_id, last_name + &#39;, &#39; + first_name, Loan_Type.caption, loan_begin_date, loan_end_date, returned
+        from
+            Asset_Loan, Loan_Type, Borrower
+        where
+            loan_type = Loan_Type.id and
+            Asset_Loan.borrower_id = Borrower.borrower_id and
+            Asset_Loan.asset_id = ?
+        order
+            by loan_begin_date desc
+
+        &#60;<emphasis role="bold">params</emphasis>&#62; <co
+id="declare-data-query-static-eg-4" />
+            <emphasis role="bold">&#60;param value=&#34;request:asset_id&#34;/&#62;</emphasis> <co
+id="declare-data-query-static-eg-5" />
+        &#60;/params&#62;
+    &#60;/query&#62;
+</programlisting>
+          </example>
+
+          <calloutlist>
+            <callout arearefs="declare-data-query-static-eg-1">
+              <para>All queries are placed into packages using the <sgmltag
+              class="starttag">queries</sgmltag> tag so that they may be
+              organized appropriately.</para>
+            </callout>
+
+            <callout arearefs="declare-data-query-static-eg-2">
+              <para>Each query is declared using a <sgmltag class="starttag">query</sgmltag>
+              tag and is uniquely identified with a name. The fully qualfied
+              name of the query becomes <replaceable>packageName</replaceable>.<replaceable>queryName</replaceable>
+              and may be treated as a read-only database-indendent DAO (data
+              access object).</para>
+            </callout>
+
+            <callout arearefs="declare-data-query-static-eg-3">
+              <para>The SQL for the query is placed in the XML. This way, all
+              SQL is external from Java code and may be tuned, optimized, and
+              modified separate from the code that calls it. Notice that the
+              perferred method of creating static query objects to to not use
+              SQL injection (replaceable SQL) and instead rely on bind
+              parameters. If SQL Injection (or SQL rewriting) is required,
+              then portions of actual SQL may be made replaceable using Value
+              Sources as well.</para>
+            </callout>
+
+            <callout arearefs="declare-data-query-static-eg-4">
+              <para>Each query that requires parameters may have a <sgmltag
+              class="starttag">params</sgmltag>.</para>
+            </callout>
+
+            <callout arearefs="declare-data-query-static-eg-5">
+              <para>Each <sgmltag class="starttag">params</sgmltag> tag must
+              have one or more <sgmltag class="starttag">param</sgmltag> tags
+              along with <sgmltag class="attribute">value</sgmltag>
+              attributes. The <sgmltag class="attribute">value</sgmltag>
+              attribute support Value Sources for its value so the value may
+              be static or dynamic (see <xref linkend="section-value-sources" />).
+              This allows, for example, the parameter to a query to be
+              obtained dynamically from the runtime environment. Every
+              <sgmltag class="starttag">query</sgmltag> tag also becomes a
+              real Java object so parameters may be passed into Java methods
+              for the object as well (which would override what was specified
+              in the XML).</para>
+            </callout>
+          </calloutlist>
+
+          <note>
+            <para>A single <sgmltag class="starttag">query</sgmltag> tag may
+            actually contain various SQL texts, each for a different database.
+            For example, the <sgmltag class="starttag">query</sgmltag> tag
+            supports defining multiple SQL statements for any given name so
+            that the programmer only calls the right object and the SQL for
+            the proper database will be called.</para>
+          </note>
+        </section>
+
+        <section>
+          <title>Dynamic Query Declarations (Dynamic Data Access Objects)</title>
+
+          <para>The dynamic queries data access objects (DAOs) declarations
+          are comprised of the <sgmltag class="starttag">query-defn</sgmltag>,
+          <sgmltag class="starttag">field</sgmltag>, and <sgmltag
+          class="starttag">join</sgmltag> tags. Once declared, the query
+          definition supports completely automatic generation of SQL based on
+          user selections.</para>
+
+          <example>
+            <title>Examples of Query Definition Tags in Data Management Layer</title>
+
+            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+...
+
+&#60;<emphasis role="bold">query-defn</emphasis> name=&#34;books&#34;&#62; <co
+id="declare-data-query-defn-eg-1" />
+
+    &#60;<emphasis role="bold">field</emphasis> name=&#34;book_id&#34; caption=&#34;Book ID&#34; <emphasis
+role="bold">join=&#34;BookInfo&#34;</emphasis> column=&#34;id&#34;/&#62; <co
+id="declare-data-query-defn-eg-2" />
+    &#60;field name=&#34;name&#34; caption=&#34;Name&#34; join=&#34;BookInfo&#34; column=&#34;name&#34;/&#62;
+    &#60;field name=&#34;author&#34; caption=&#34;Author&#34; join=&#34;BookInfo&#34; column=&#34;author&#34;/&#62;
+    &#60;field name=&#34;genre_id&#34; caption=&#34;Genre ID&#34; join=&#34;BookInfo&#34; column=&#34;genre&#34;/&#62;
+    &#60;field name=&#34;genre_caption&#34; caption=&#34;Genre&#34; join=&#34;BookType&#34; column=&#34;caption&#34;/&#62;
+    &#60;field name=&#34;isbn&#34; caption=&#34;ISBN&#34; join=&#34;BookInfo&#34; column=&#34;isbn&#34;/&#62;
+
+    &#60;<emphasis role="bold">join</emphasis> name=&#34;BookInfo&#34; table=&#34;book_info&#34;/&#62; <co
+id="declare-data-query-defn-eg-3" />
+    &#60;join name=&#34;BookType&#34; table=&#34;book_type&#34; condition=&#34;BookType.id = BookInfo.genre&#34;/&#62;
+</programlisting>
+          </example>
+
+          <calloutlist>
+            <callout arearefs="declare-data-query-defn-eg-1">
+              <para>All query definitions are declared using the <sgmltag
+              class="starttag">query-defn</sgmltag> tag and are uniquely
+              identified with a name.</para>
+            </callout>
+
+            <callout arearefs="declare-data-query-defn-eg-2">
+              <para>Each query definition contains one ore more <sgmltag
+              class="starttag">field</sgmltag> tags that declare the universe
+              of selectable fields. The <sgmltag class="starttag">field</sgmltag>
+              tags are specified so that Axiom knows what fields the user
+              should be allowed to select. Query definition fields may come
+              from a mix of tables so long as they have appropriately defined
+              <sgmltag class="attribute">join</sgmltag> attribute values.</para>
+            </callout>
+
+            <callout arearefs="declare-data-query-defn-eg-3">
+              <para>Each query definition contains one ore more <sgmltag
+              class="starttag">join</sgmltag> tags that declare the source
+              table for fields. The <sgmltag class="starttag">join</sgmltag>
+              tags are specified so that Axiom knows which tables to connect
+              to which fields.</para>
+            </callout>
+          </calloutlist>
+        </section>
+
+        <section>
+          <title>Schema Management Declarations</title>
+
+          <para>The schema management declarations are comprised of the
+          <sgmltag class="starttag">schema</sgmltag>, <sgmltag
+          class="starttag">table</sgmltag>, and <sgmltag class="starttag">column</sgmltag>
+          tags. Once declared, the schema descriptor supports completely
+          automatic generation of SQL DML (insert/updates/removes), SQL DDL
+          (create tables, objects, etc), and XML import/export. Schema tags
+          support full relational integrity and may actually be used to define
+          meta data to support Java-based relational integrity for existing
+          and legacy databases that may not be built with fully relational
+          integrity.</para>
+
+          <example>
+            <title>Examples of Schema Tags in Data Management Layer</title>
+
+            <programlisting>&#60;<emphasis role="bold">schema</emphasis> name=&#34;db&#34;&#62; <co
+id="declare-data-schema-eg-1" />
+    <emphasis role="bold">&#60;xdm:include resource=&#34;com/netspective/axiom/conf/schema.xml&#34;/&#62;</emphasis> <co
+id="declare-data-schema-eg-2" />
+
+    &#60;<emphasis role="bold">data-type</emphasis> name=&#34;text&#34; <emphasis
+role="bold">class=&#34;com.netspective.axiom.schema.column.type.TextColumn&#34;</emphasis>&#62; <co
+id="declare-data-schema-eg-3" />
+        &#60;size&#62;32&#60;/size&#62;
+        &#60;<emphasis role="bold">sql-ddl</emphasis>&#62; <co
+id="declare-data-schema-eg-4" />
+            &#60;define dbms=&#34;ansi&#34; xdm:replace-template-expressions=&#34;no&#34;&#62;varchar(${column.getSize()})&#60;/define&#62;
+            &#60;define dbms=&#34;oracle&#34; xdm:replace-template-expressions=&#34;no&#34;&#62;varchar2(${column.getSize()})&#60;/define&#62;
+        &#60;/sql-ddl&#62;
+    &#60;/data-type&#62;
+
+    &#60;<emphasis role="bold">table-type</emphasis> name=&#34;Entity&#34; <emphasis
+role="bold">class=&#34;my.base.TableClass&#34;</emphasis>&#62; <co
+id="declare-data-schema-eg-5" />
+        &#60;column <emphasis role="bold">name=&#34;${owner.name.toLowerCase()}_id&#34;</emphasis> <co
+id="declare-data-schema-eg-6" /> <emphasis role="bold">type=&#34;auto-inc&#34;</emphasis> <co
+id="declare-data-schema-eg-7" />
+                <emphasis role="bold">primary-key=&#34;yes&#34; </emphasis>descr=&#34;Unique identifier for ${owner.name}&#34;/&#62;
+    &#60;/table-type&#62;
+
+    &#60;table-type name=&#34;Person&#34; <emphasis role="bold">type=&#34;Entity&#34;</emphasis>&#62; <co
+id="declare-data-schema-eg-8" />
+        &#60;column name=&#34;first_name&#34; <emphasis role="bold">type=&#34;text&#34;</emphasis> size=&#34;64&#34; descr=&#34;The person&#39;s first name&#34;/&#62;
+        &#60;column name=&#34;last_name&#34; type=&#34;text&#34; size=&#34;64&#34; descr=&#34;The person&#39;s last name&#34;/&#62;
+    &#60;/table-type&#62;
+
+    &#60;<emphasis role="bold">table</emphasis> name=&#34;Borrower&#34; <emphasis
+role="bold">type=&#34;Person&#34;</emphasis>&#62; <co
+id="declare-data-schema-eg-9" />
+        &#60;!-- no columns are being added, it&#39;s just first name and last name --&#62;
+    &#60;/table&#62;
+
+    &#60;table name=&#34;Asset&#34; abbrev=&#34;asset&#34; type=&#34;Entity,Presentation&#34;&#62;
+        &#60;column name=&#34;type&#34; lookup-ref=&#34;Asset_Type&#34; required=&#34;yes&#34; descr=&#34;The type of asset&#34;/&#62;
+        &#60;column name=&#34;name&#34; type=&#34;text&#34; size=&#34;64&#34; required=&#34;yes&#34; descr=&#34;Name of the asset&#34;/&#62;
+        &#60;column name=&#34;quantity&#34; type=&#34;integer&#34; required=&#34;yes&#34;/&#62;
+    &#60;/table&#62;
+
+    &#60;table name=&#34;Asset_Type&#34; abbrev=&#34;atype&#34; <emphasis
+role="bold">type=&#34;Enumeration&#34;</emphasis>&#62; <co
+id="declare-data-schema-eg-10" />
+        &#60;enumerations&#62;
+            &#60;enum&#62;Other&#60;/enum&#62;
+            &#60;enum&#62;Software&#60;/enum&#62;
+            &#60;enum&#62;Periodical&#60;/enum&#62;
+            &#60;enum&#62;Book&#60;/enum&#62;
+        &#60;/enumerations&#62;
+    &#60;/table&#62;</programlisting>
+          </example>
+
+          <calloutlist>
+            <callout arearefs="declare-data-schema-eg-1">
+              <para>All schemas are declared using the <sgmltag
+              class="starttag">schema</sgmltag> tag and are uniquely
+              identified with a name. You may define multiple schemas within
+              the same project.</para>
+            </callout>
+
+            <callout arearefs="declare-data-schema-eg-2">
+              <para>Schemas components like <sgmltag class="starttag">data-types</sgmltag>
+              and <sgmltag class="starttag">table-types</sgmltag> that
+              comprise a data dictionary may be externalized and shared across
+              projects. The default <filename>com/netspective/axiom/conf/schema.xml</filename>
+              resource file contains dozens of built-in data types and table
+              types that may be extended or just used. Type such as text,
+              integer, float, currency, date, and even composite types such as
+              duration are built-into Axiom.</para>
+            </callout>
+
+            <callout arearefs="declare-data-schema-eg-3">
+              <para>Each schema may define <sgmltag class="starttag">data-type</sgmltag>
+              tags that act as column templates. Each data type may specify a
+              special handler class as well so that actual functionality may
+              be placed into Java classes.</para>
+            </callout>
+
+            <callout arearefs="declare-data-schema-eg-4">
+              <para>Each <sgmltag class="starttag">data-type</sgmltag> tag may
+              contain <sgmltag class="starttag">sql-ddl</sgmltag> tags that
+              describe what a logical data type declaration should be
+              physically constructed as when the SQL DDL is generated. Support
+              for complete database independence is built-in.</para>
+            </callout>
+
+            <callout arearefs="declare-data-schema-eg-5">
+              <para>Each schema may define <sgmltag class="starttag">table-type</sgmltag>
+              tags that act as templates templates. Each table type may
+              specify a special handler class as well so that actual
+              functionality may be placed into Java classes. Any number of
+              columns may be defined in a table type and automatically placed
+              into tables that consume the table type.</para>
+            </callout>
+
+            <callout arearefs="declare-data-schema-eg-6">
+              <para>In table type templates the names of columns may be
+              auto-generated so that they follow a consistent scheme. In this
+              case we&#39;re saying that all Entity tables should have an
+              auto-incrementing primary key that is named the same name as the
+              table plus &#39;_id&#39;.</para>
+            </callout>
+
+            <callout arearefs="declare-data-schema-eg-7">
+              <para>Full support for database-independent auto-generated
+              columns is provided. If a column is defined as an <sgmltag
+              class="attvalue">auto-inc</sgmltag> column that column will
+              automatically use sequences for its implementation in Oracle and
+              an IDENTITY type in SQL *Server (Axiom will figure out the
+              proper database at runtime). Support for a database-neutral GUID
+              type is also available if non-numeric auto increment
+              capabilities are required.</para>
+            </callout>
+
+            <callout arearefs="declare-data-schema-eg-8">
+              <para>Type inheritance is supported in both data types and table
+              types. A <sgmltag class="starttag">table-type</sgmltag> tag may
+              use the <sgmltag class="attribute">type</sgmltag> attribute to
+              extend other table types which would declare that the
+              <literal>Person</literal> table type extends the
+              <literal>Entity</literal> table type so that when the
+              <literal>Person</literal> table type is assigned to a table it
+              will get the contents of both table types.</para>
+            </callout>
+
+            <callout arearefs="declare-data-schema-eg-9">
+              <para>A <sgmltag class="starttag">table</sgmltag> tag may use
+              the <sgmltag class="attribute">type</sgmltag> attribute to
+              consume the contents of table-types. The <literal>Borrower</literal>
+              table in this case declares that it&#39;s a Person type so it
+              obtains the contents of the <literal>Person</literal> table type
+              (and by inheritance the <literal>Entity</literal> table type as
+              well).</para>
+            </callout>
+
+            <callout arearefs="declare-data-schema-eg-9">
+              <para>Special support is included for lookup tables. A <sgmltag
+              class="starttag">table</sgmltag> tag may use the <sgmltag
+              class="attribute">type</sgmltag> attribute specify that it&#39;s
+              an <literal>Enumeration</literal> table and with that simple
+              declaration the table will be treated as a static table meaning
+              any retrievals for rows necessary in the table will be done
+              purely Java-side and will not require any database calls. Also,
+              the static data defined in the <sgmltag class="starttag">table</sgmltag>
+              tag will automatically be populated into the database when the
+              DDL is loaded.</para>
             </callout>
           </calloutlist>
         </section>
       </section>
 
       <section>
-        <title>Data Management Tags</title>
-
-        <para></para>
-      </section>
-
-      <section>
-        <title>Security Tags</title>
+        <title>Declaring the Security Layer</title>
 
         <para></para>
       </section>
