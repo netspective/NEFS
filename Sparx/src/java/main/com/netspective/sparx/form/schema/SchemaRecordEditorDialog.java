@@ -859,7 +859,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
      * ****************************************************************************************************************
      */
 
-    public void editDataUsingTemplateElement(SchemaRecordEditorDialogContext sredc, TemplateElement templateElement) throws NamingException, SQLException
+    public void editDataUsingTemplateElement(SchemaRecordEditorDialogContext sredc, TemplateElement templateElement) throws NamingException, SQLException, DialogExecuteException
     {
         SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, templateElement);
         if(!stte.isTableFound())
@@ -870,12 +870,8 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
 
         if(primaryKeyValueSource == null)
-        {
-            sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[]{
-                table.getName()
-            });
-            return;
-        }
+            throw new DialogExecuteException(java.text.MessageFormat.format("Unable to locate primary key for table {0} because value source is NULL.",
+                                                                            new Object[]{ table.getName() }));
 
         final Value primaryKeyValue = primaryKeyValueSource.getValue(sredc);
         if(primaryKeyValue == null)
@@ -883,9 +879,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             if(getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
                 addDataUsingTemplateElement(sredc, templateElement, null);
             else
-                sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
+                throw new DialogExecuteException(java.text.MessageFormat.format("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
                     primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName()
-                });
+                }));
             return;
         }
 
@@ -896,9 +892,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             if(getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
                 addDataUsingTemplateElement(sredc, templateElement, null);
             else
-                sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
+                throw new DialogExecuteException(java.text.MessageFormat.format("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
                     primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName()
-                });
+                }));
             return;
         }
 
@@ -937,7 +933,6 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             assignColumnValue(sredc, columnValue, columnTextValue);
         }
 
-
         if(doUpdate)
         {
             table.update(sredc.getActiveConnectionContext(), activeRow);
@@ -957,7 +952,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
     }
 
-    public void editDataUsingTemplate(SchemaRecordEditorDialogContext sredc) throws NamingException, SQLException
+    public void editDataUsingTemplate(SchemaRecordEditorDialogContext sredc) throws NamingException, SQLException, DialogExecuteException
     {
         if(editDataTemplateProducer == null)
             return;
@@ -986,7 +981,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
      * ****************************************************************************************************************
      */
 
-    public void deleteDataUsingTemplateElement(SchemaRecordEditorDialogContext sredc, TemplateElement templateElement) throws NamingException, SQLException
+    public void deleteDataUsingTemplateElement(SchemaRecordEditorDialogContext sredc, TemplateElement templateElement) throws NamingException, SQLException, DialogExecuteException
     {
         SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, templateElement);
         if(!stte.isTableFound())
@@ -997,22 +992,16 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
         if(primaryKeyValueSource == null)
-        {
-            sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0}.", new Object[]{
+            throw new DialogExecuteException(java.text.MessageFormat.format("Unable to locate primary key for table {0}.", new Object[]{
                 table.getName()
-            });
-            return;
-        }
+            }));
 
         final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
         Row activeRow = table.getRowByPrimaryKeys(sredc.getActiveConnectionContext(), new Object[]{primaryKeyValue}, null);
         if(activeRow == null)
-        {
-            sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
+            throw new DialogExecuteException(java.text.MessageFormat.format("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
                 primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName()
-            });
-            return;
-        }
+            }));
 
         ColumnValues columnValues = activeRow.getColumnValues();
         boolean doDelete = true;
@@ -1068,7 +1057,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
     }
 
-    public void deleteDataUsingTemplate(SchemaRecordEditorDialogContext sredc) throws NamingException, SQLException
+    public void deleteDataUsingTemplate(SchemaRecordEditorDialogContext sredc) throws NamingException, SQLException, DialogExecuteException
     {
         if(deleteDataTemplateProducer == null)
             return;
