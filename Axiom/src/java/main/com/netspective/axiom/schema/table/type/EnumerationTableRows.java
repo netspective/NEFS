@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EnumerationTableRows.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: EnumerationTableRows.java,v 1.2 2003-05-17 17:50:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table.type;
@@ -56,6 +56,9 @@ import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.column.type.EnumerationIdRefColumn;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
 
 public class EnumerationTableRows extends BasicRows
 {
@@ -69,6 +72,8 @@ public class EnumerationTableRows extends BasicRows
     private int lastEnumId = -1;
     private Map mapById = new HashMap();
     private Map mapByAbbrevOrCaption = new HashMap();
+    private Value value;
+    private PresentationValue pValue;
 
     public EnumerationTableRows(Table owner)
     {
@@ -140,5 +145,39 @@ public class EnumerationTableRows extends BasicRows
             validValues.add(row.getCaption());
         }
         return (String[]) validValues.toArray(new String[size() * 2]);
+    }
+
+    public Value getEnumerationsValue()
+    {
+        if(value == null)
+        {
+            List list = new ArrayList();
+            for(int i = 0; i < size(); i++)
+            {
+                EnumerationTableRow row = (EnumerationTableRow) getRow(i);
+                list.add(row.getIdAsInteger().toString());
+            }
+
+            value = new GenericValue(list);
+        }
+
+        return value;
+    }
+
+    public PresentationValue getEnumerationsPresentationValue()
+    {
+        if(pValue == null)
+        {
+            pValue = new PresentationValue();
+            PresentationValue.Items items = pValue.createItems();
+
+            for(int i = 0; i < size(); i++)
+            {
+                EnumerationTableRow row = (EnumerationTableRow) getRow(i);
+                items.addItem(row.getCaption(), row.getIdAsInteger().toString());
+            }
+        }
+
+        return pValue;
     }
 }
