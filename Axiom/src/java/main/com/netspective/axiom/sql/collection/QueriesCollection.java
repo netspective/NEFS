@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueriesCollection.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueriesCollection.java,v 1.2 2003-04-06 03:57:12 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.collection;
@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.HashSet;
 
 import com.netspective.axiom.sql.Queries;
 import com.netspective.axiom.sql.Query;
@@ -57,6 +58,7 @@ public class QueriesCollection implements Queries
 {
     private List queries = new ArrayList();
     private Map byName = new HashMap();
+    private Set nameSpaceNames = new HashSet();
 
     public QueriesCollection()
     {
@@ -66,6 +68,7 @@ public class QueriesCollection implements Queries
     {
         queries.add(query);
         byName.put(query.getNameForMapKey(), query);
+        nameSpaceNames.add(query.getNameSpace().getNameSpaceId());
     }
 
     public Query get(int i)
@@ -81,6 +84,11 @@ public class QueriesCollection implements Queries
     public Set getNames()
     {
         return byName.keySet();
+    }
+
+    public Set getNameSpaceNames()
+    {
+        return nameSpaceNames;
     }
 
     public int size()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Queries.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: Queries.java,v 1.2 2003-04-06 03:57:12 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -54,5 +54,6 @@ public interface Queries
     public Query get(int i);
     public Query get(String name);
     public Set getNames();
+    public Set getNameSpaceNames();
     public int size();
 }
