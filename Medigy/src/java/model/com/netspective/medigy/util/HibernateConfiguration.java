@@ -43,25 +43,23 @@
  */
 package com.netspective.medigy.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.ejb.Table;
-
+import com.netspective.medigy.model.common.EntitySeedData;
+import com.netspective.medigy.model.common.EntitySeedDataProvider;
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.HSQLDialect;
 
-import com.netspective.medigy.model.common.EntitySeedData;
-import com.netspective.medigy.model.common.EntitySeedDataProvider;
-import com.netspective.medigy.reference.CachedReferenceEntity;
-import com.netspective.medigy.reference.ReferenceEntity;
+import javax.ejb.Table;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class HibernateConfiguration extends AnnotationConfiguration
 {
@@ -107,7 +105,10 @@ public class HibernateConfiguration extends AnnotationConfiguration
         }
 
         if (EntitySeedDataProvider.class.isAssignableFrom(aClass))
-            entitiesWithSeedDataSet.add(aClass);
+        {
+            if (!entitiesWithSeedDataSet.contains(aClass))
+                entitiesWithSeedDataSet.add(aClass);
+        }
 
         return super.addAnnotatedClass(aClass);
     }
@@ -141,7 +142,6 @@ public class HibernateConfiguration extends AnnotationConfiguration
                 newDDL.add("insert into " + tableName + " (type_id, type_label) values ('" + cached.getId() + "', '" + cached.getLabel() + "')");
             }
         }
-
         for (final Class seedDataEntityClass : entitiesWithSeedDataSet)
         {
             final String tableName = ((Table) seedDataEntityClass.getAnnotation(Table.class)).name();
@@ -159,7 +159,7 @@ public class HibernateConfiguration extends AnnotationConfiguration
                     if (data == null || data.length == 0)
                         throw new HibernateException("EntitySeedData data is NULL for " + tableName + " " + seedDataEntityClass);
 
-                    for (int row = 0; row < columnNames.length; row++)
+                    for (int row = 0; row < data.length; row++)
                     {
                         final Object[] rowData = data[row];
                         if (columnNames.length != rowData.length)
@@ -175,6 +175,8 @@ public class HibernateConfiguration extends AnnotationConfiguration
                         rowSql.append(") values (");
                         for (int column = 0; column < rowData.length; column++)
                         {
+                            if (column != 0)
+                                rowSql.append(", ");
                             final Object element = rowData[column];
                             if (element instanceof Number)
                                 rowSql.append(element.toString());
@@ -184,7 +186,6 @@ public class HibernateConfiguration extends AnnotationConfiguration
                         rowSql.append(")");
                         newDDL.add(rowSql.toString());
                     }
-
                 }
                 else
                     throw new HibernateException("EntitySeedData is NULL for " + tableName + " " + seedDataEntityClass);
