@@ -89,6 +89,11 @@ public class DelimitedValuesWriter
     protected char commentStart = '#';
 
     /**
+     * Character used to escape quote character.
+     */
+    protected char escapeQuoteCharacter = '\\';
+
+    /**
      * Change this printer so that it uses a new delimiter.
      *
      * @param newDelimiter The new delimiter character to use.
@@ -237,6 +242,30 @@ public class DelimitedValuesWriter
         setAlwaysQuote(alwaysQuote);
         setAutoFlush(autoFlush);
     }
+
+    /**
+     * Create a printer that will print values to the given
+     * stream.
+     *
+     * @param out          stream to which to print.
+     * @param commentStart Character used to start comments.
+     * @param delimiter    The new delimiter character to use.
+     * @param quote        The new character to use for quoting.
+     * @param alwaysQuote  true if quotes should be used even when not strictly needed.
+     * @param autoFlush    should auto flushing be enabled.
+     * @param escapeQuoteCharacter    The new character to use for escaping the quote character.
+     */
+    public DelimitedValuesWriter(Writer out, char commentStart, char quote, char delimiter, boolean alwaysQuote, boolean autoFlush,char escapeQuoteCharacter)
+    {
+        this.out = out;
+        this.commentStart = commentStart;
+        changeQuote(quote);
+        changeDelimiter(delimiter);
+        setAlwaysQuote(alwaysQuote);
+        setAutoFlush(autoFlush);
+        this.escapeQuoteCharacter = escapeQuoteCharacter;
+    }
+
 
     /**
      * Print the string as the last value on the line.	The value
@@ -693,7 +722,8 @@ public class DelimitedValuesWriter
                     {
                         if(c == quoteChar)
                         {
-                            sb.append("\\" + quoteChar);
+                            sb.append(escapeQuoteCharacter);
+                            sb.append(quoteChar);
                         }
                         else
                         {
