@@ -116,6 +116,7 @@
                         </panel>
                     </panels>
                 </page>
+                <page name="exec-handlers" caption="Exec Handlers"/>
 		        <page name="perspectives" caption="Perspectives">
                     <panels>
                         <panel type="console-page-summary"/>
