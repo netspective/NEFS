@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.90 2003-08-22 14:34:07 shahid.shah Exp $
+  * $Id: console.xml,v 1.91 2003-08-24 22:09:37 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -11,7 +11,9 @@
 
     <register-freemarker-configuration name="console" base-class="com.netspective.sparx.ProductRelease" base-class-path="console" template-update-delay="5"/>
 
-    <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="common">
+    <register-value-source class="com.netspective.sparx.console.value.ConsolePageContentPathValueSource"/>
+
+    <theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="common">
         <report-skin name="record-viewer" class="com.netspective.sparx.theme.basic.RecordViewerReportSkin"
             panel-resources-prefix="panel/output" panel-class-name-prefix="panel-output"/>
 
@@ -19,9 +21,7 @@
             panel-resources-prefix="panel/output" panel-class-name-prefix="panel-output"/>
         <report-skin class="com.netspective.sparx.theme.basic.HtmlSingleRowReportPanelSkin" name="detail"
             panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
-    </register-theme>
-
-    <register-value-source class="com.netspective.sparx.console.value.ConsolePageContentPathValueSource"/>
+    </theme>
 
     <panel-type name="console-page-summary" extends="html">
         <frame heading="Overview"/>

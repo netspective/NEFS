@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.20 2003-08-22 03:33:43 shahid.shah Exp $
+ * $Id: Project.java,v 1.21 2003-08-24 22:09:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -273,7 +273,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /* ------------------------------------------------------------------------------------------------------------ */
 
-    public Theme createRegisterTheme()
+    public Theme createTheme()
     {
         return new AbstractTheme();
     }
@@ -283,7 +283,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         return themes;
     }
 
-    public void addRegisterTheme(Theme theme)
+    public void addTheme(Theme theme)
     {
         getThemes().registerTheme(theme);
     }

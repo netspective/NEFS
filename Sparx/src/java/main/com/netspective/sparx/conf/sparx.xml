@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.45 2003-08-22 14:34:07 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.46 2003-08-24 22:09:37 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -17,15 +17,6 @@
     <register-value-source class="com.netspective.sparx.value.source.AuthenticatedUserValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.EncryptParameterValueSource"/>
 
-    <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" inherit-resources-from-themes="common">
-        <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"
-            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output" />
-        <report-skin class="com.netspective.sparx.theme.basic.RecordEditorReportSkin" name="record-editor"
-            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
-        <report-skin class="com.netspective.sparx.theme.basic.HtmlSingleRowReportPanelSkin" name="detail"
-            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
-    </register-theme>
-
     <register-command class="com.netspective.sparx.command.RedirectCommand"/>
     <register-command class="com.netspective.sparx.command.DialogCommand"/>
     <register-command class="com.netspective.sparx.command.ValueSourceCommand"/>
@@ -34,6 +25,15 @@
 
     <register-connection-provider-entry-statistics class="com.netspective.sparx.console.util.ResinDataSourcePoolStatistics"/>
     <register-class-path-provider class="com.netspective.sparx.console.util.ResinCompilingClassPathProvider"/>
+
+    <theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" inherit-resources-from-themes="common">
+        <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"
+            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output" />
+        <report-skin class="com.netspective.sparx.theme.basic.RecordEditorReportSkin" name="record-editor"
+            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
+        <report-skin class="com.netspective.sparx.theme.basic.HtmlSingleRowReportPanelSkin" name="detail"
+            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
+    </theme>
 
     <panel-type name="html" class="com.netspective.sparx.panel.TemplateContentPanel"/>
     <panel-type name="command" class="com.netspective.sparx.panel.HtmlCommandPanel"/>
