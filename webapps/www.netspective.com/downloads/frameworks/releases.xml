@@ -14,7 +14,9 @@
             </change-log-entry>
             <change-log-entry>
                 <![CDATA[
-                Added new NavigationSqlErrorPage class that could be used to handle specific SQL error codes.
+                Added new NavigationSqlErrorPage class that could be used to handle specific SQL error codes. Now the
+                following would work: &lt;error-page class="com.netspective.sparx.navigate.error.NavigationSqlErrorPage" sql-code="123"&gt;
+                or &lt;error-page class="...NavigationSqlErrorPage" start-sql-code="123" end-sql-code="456"&gt;
                 ]]>
             </change-log-entry>
         </change-log>
