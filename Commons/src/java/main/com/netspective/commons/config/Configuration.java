@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Configuration.java,v 1.2 2003-03-14 04:04:19 shahid.shah Exp $
+ * $Id: Configuration.java,v 1.3 2003-04-02 14:48:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
@@ -78,13 +78,21 @@ public class Configuration extends Property implements XmlDataModelSchema.Custom
 
     public Property createProperty()
     {
-        Property result = new Property(this, this);
-        return result;
+        return new Property(this, this);
+    }
+
+    public SystemProperty createSystemProperty()
+    {
+        // the system property is "registered" automatically in the construction finalization listener
+        return new SystemProperty(this);
     }
 
     public Object createCustomDataModelElement(XdmParseContext pc, XmlDataModelSchema schema, Object parent, String elementName, String alternateClassName)
             throws InvocationTargetException, IllegalAccessException, InstantiationException
     {
+        if(elementName.equals("system-property"))
+            return createSystemProperty();
+
         /* all custom elements are treated as properties with the element name as the property name */
         Property property = createProperty();
         property.setName(elementName);
@@ -94,6 +102,10 @@ public class Configuration extends Property implements XmlDataModelSchema.Custom
     public void storeCustomDataModelElement(XdmParseContext pc, XmlDataModelSchema schema, Object parent, Object child, String elementName)
             throws InvocationTargetException, IllegalAccessException, InstantiationException
     {
+        // the system property is "registered" automatically in the construction finalization listener
+        if(elementName.equals("system-property"))
+            return;
+
         /* just add the property that was created in createCustomElement */
         addProperty((Property) child);
     }

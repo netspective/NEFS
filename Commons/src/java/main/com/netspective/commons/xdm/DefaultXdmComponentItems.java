@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.10 2003-04-01 22:36:32 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.11 2003-04-02 14:48:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -47,6 +47,7 @@ package com.netspective.commons.xdm;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.config.Configurations;
 import com.netspective.commons.config.Configuration;
+import com.netspective.commons.config.SystemProperty;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.acl.AccessControlLists;
 import com.netspective.commons.acl.AccessControlList;
@@ -110,6 +111,12 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     public void addRegisterTabularReportCalcType(ColumnDataCalculator calc)
     {
         TabularReportCalcs.getInstance().registerColumnDataCalc(calc.getClass());
+    }
+
+    public SystemProperty createSystemProperty()
+    {
+        // the system property is "registered" automatically in the construction finalization listener
+        return new SystemProperty();
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Property.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: Property.java,v 1.2 2003-04-02 14:48:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
@@ -204,7 +204,7 @@ public class Property
 
     public void appendPropertyValueText(String text)
     {
-        setValue(value != null ? value += text : text);
+        setValue(value != null ? (value + text) : text);
     }
 
     protected String getValue()
@@ -267,5 +267,10 @@ public class Property
     public Property getProperty(String name)
     {
         return (Property) childrenMap.get(name);
+    }
+
+    public String toString()
+    {
+        return "Property " + getName();
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConfigurationTest.java,v 1.5 2003-03-19 08:13:52 shahbaz.javeed Exp $
+ * $Id: ConfigurationTest.java,v 1.6 2003-04-02 14:48:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
@@ -50,20 +50,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 import java.util.Map;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import junit.framework.TestCase;
 
 import org.xml.sax.InputSource;
 
-import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XmlDataModelDtd;
-import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.io.Resource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.DefaultValueContext;
 
 public class ConfigurationTest extends TestCase
 {
@@ -84,6 +79,8 @@ public class ConfigurationTest extends TestCase
 
 		ConfigurationsManager configManager = component.getItems();
         assertNotNull("Configuration Manager is null", configManager);
+
+        assertEquals("just a value no variables", System.getProperty("test.system-property.01"));
 
 	    Configurations configs = configManager.getConfigurations();
 	    int expectedNumConfigs = 2;
@@ -143,7 +140,7 @@ public class ConfigurationTest extends TestCase
         assertEquals(3, test05Property.getChildrenList().size());
 
 		Property test0500Property = (Property) test05Children.get("test05.00");
-	    Property expected0500Property = (Property) test05Property.getProperty("test05.00");
+	    Property expected0500Property = test05Property.getProperty("test05.00");
 	    assertEquals("test05.00-value", test0500Property.getValue(null));
 	    assertEquals(expected0500Property, test0500Property);
 
@@ -151,6 +148,7 @@ public class ConfigurationTest extends TestCase
         assertEquals("test01-value.abc.more.even.more", defaultConfig.getTextValue(null, "test06"));
         assertEquals("custom property tag with value in PCDATA: test00-value.test01-value", defaultConfig.getTextValue(null, "test-07"));
 
+        assertEquals("value with variables test01-value.abc", System.getProperty("test.system-property.02"));
     }
 
     public void testDefaultPropertiesErrorValues() throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, IOException
@@ -182,8 +180,6 @@ public class ConfigurationTest extends TestCase
 	    expectedConfigs.add("DEFAULT");
 	    expectedConfigs.add("NOT-DEFAULT");
 	    assertEquals("Expected Configs: " + expectedConfigs + ", Found: " + availableConfigs, expectedConfigs, availableConfigs);
-
-	    Map defaultProperties = defaultConfig.getAllProperties();
 
 	    final String test00DefaultValue = "test00-here-be-dragons";
 	    final String test01DefaultValue = "test01-pinky-and-the-brain";

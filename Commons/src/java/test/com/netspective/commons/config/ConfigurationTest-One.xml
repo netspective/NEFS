@@ -1,4 +1,6 @@
 <component>
+    <system-property name="test.system-property.01" value="just a value no variables"/>
+
 	<configuration>
 		<property name="test00" value="test00-value"/>
 		<property name="test01" value="test01-value"/>
@@ -12,6 +14,7 @@
 		</property>
 		<property name="test06">${test04}.even.more</property>
 		<test-07>custom property tag with value in PCDATA: ${test02}</test-07>
+        <system-property name="test.system-property.02">value with variables ${test01}.${static:abc}</system-property>
 	</configuration>
 
 	<configuration name="not-default">
