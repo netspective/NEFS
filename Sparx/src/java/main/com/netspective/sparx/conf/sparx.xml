@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.48 2003-08-31 02:01:15 aye.thu Exp $
+  * $Id: sparx.xml,v 1.49 2003-08-31 03:10:49 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -97,6 +97,7 @@
     <dialog-execute-handler name="include" class="com.netspective.sparx.form.handler.DialogExecuteIncludeResourceHandler"/>
     <dialog-execute-handler name="panels" class="com.netspective.sparx.form.handler.DialogExecutePanelsHandler"/>
     <dialog-execute-handler name="style-sheet" class="com.netspective.sparx.form.handler.DialogExecuteXsltHandler"/>
+    <dialog-execute-handler name="mail" class="com.netspective.sparx.form.handler.DialogExecuteSendMailHandler"/>
 
     <register-ant-project id="Project" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-project.xml" default="yes">
         <dialog type="ant-build"/>
