@@ -72,7 +72,7 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
         setDropIndexStatementFormat("DROP INDEX ${index.name}");
         setCreateSequenceStatementFormat("CREATE SEQUENCE ${column.sequenceName} increment 1 start 1");
         setDropSequenceStatementFormat("DROP SEQUENCE ${column.sequenceName}");
-        setFkeyConstraintTableClauseFormat("CONSTRAINT ${fkey.constraintName} FOREIGN KEY (${fkey.sourceColumns.getOnlyNames(', ')}) REFERENCES ${fkey.referencedColumns.first.table.name} (${fkey.referencedColumns.getOnlyNames(', ')}) ON DELETE CASCADE");
+        setFkeyConstraintTableClauseFormat("CONSTRAINT ${fkey.constraintName} FOREIGN KEY (${fkey.sourceColumns.getOnlyNames(', ')}) REFERENCES ${fkey.referencedColumns.first.table.name} (${fkey.referencedColumns.getOnlyNames(', ')})");
         setFkeyConstraintAlterTableStatementFormat("ALTER TABLE ${fkey.sourceColumns.first.table.name} ADD " + getFkeyConstraintTableClauseFormat());
         setCreatePrimaryKeyIndex(true);
         setCreateParentKeyIndex(true);
