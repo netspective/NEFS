@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.11 2003-08-10 16:59:08 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.12 2003-08-17 00:18:35 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -86,9 +86,12 @@ public class NavigationControllerServlet extends HttpServlet
     private String navigationTreeName;
     private String logoutActionReqParamName = DEFAULT_LOGOUT_ACTION_REQ_PARAM_NAME;
 
+    private Project project;
     private HttpLoginManager loginManager;
     private Theme theme;
     private NavigationTree navigationTree;
+    private RuntimeEnvironmentFlags runtimeEnvironmentFlags;
+    private boolean cacheComponents;
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
@@ -106,6 +109,39 @@ public class NavigationControllerServlet extends HttpServlet
         if(! xdmSourceFile.exists())
             throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist. Please " +
                     "correct the context-param called '"+ BasicDbHttpServletValueContext.INITPARAMNAME_PROJECT_FILE +"' in your WEB-INF/web.xml file.");
+
+        setRuntimeEnvironmentFlags(BasicDbHttpServletValueContext.getEnvironmentFlags(this.getServletContext()));
+        if(isCacheComponents())
+        {
+            // go ahead and grab all the components now -- so that we don't have to synchronize calls
+            getProject();
+            getTheme();
+            getLoginManager();
+            getNavigationTree();
+        }
+    }
+
+    public RuntimeEnvironmentFlags getRuntimeEnvironmentFlags()
+    {
+        return runtimeEnvironmentFlags;
+    }
+
+    protected void setRuntimeEnvironmentFlags(RuntimeEnvironmentFlags runtimeEnvironmentFlags)
+    {
+        this.runtimeEnvironmentFlags = runtimeEnvironmentFlags;
+
+        // don't cache if we're in development mode -- we want XML files to be automatically reloaded when they change
+        setCacheComponents(! runtimeEnvironmentFlags.flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT));
+    }
+
+    public boolean isCacheComponents()
+    {
+        return cacheComponents;
+    }
+
+    protected void setCacheComponents(boolean cacheComponents)
+    {
+        this.cacheComponents = cacheComponents;
     }
 
     public boolean isSecure()
@@ -155,7 +191,7 @@ public class NavigationControllerServlet extends HttpServlet
 
     public Theme getTheme()
     {
-        if(theme == null)
+        if(theme == null || ! isCacheComponents())
         {
             String themeName = getThemeName();
             theme = themeName != null ? Themes.getInstance().getTheme(themeName) : Themes.getInstance().getDefaultTheme();
@@ -166,7 +202,7 @@ public class NavigationControllerServlet extends HttpServlet
 
     public NavigationTree getNavigationTree() throws ServletException
     {
-        if(navigationTree == null)
+        if(navigationTree == null || ! isCacheComponents())
         {
             String navTreeName = getNavigationTreeName();
             Project project = getProject();
@@ -178,14 +214,16 @@ public class NavigationControllerServlet extends HttpServlet
 
     public HttpLoginManager getLoginManager() throws ServletException
     {
-        if(loginManagerName != null && loginManager == null)
+        if(loginManagerName != null && (loginManager == null || ! isCacheComponents()))
             loginManager = getProject().getLoginManagers().getLoginManager(loginManagerName);
         return loginManager;
     }
 
     public Project getProject() throws ServletException
     {
-        return BasicDbHttpServletValueContext.getProjectComponent(getServletContext()).getProject();
+        if(project == null || ! isCacheComponents())
+            project = BasicDbHttpServletValueContext.getProjectComponent(getServletContext()).getProject();
+        return project;
     }
 
     public NavigationContext createNavigationContext(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
