@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.56 2004-03-12 06:54:23 aye.thu Exp $
+ * $Id: Dialog.java,v 1.57 2004-03-14 06:10:07 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -506,7 +506,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
             // the delegated callers handle it so we'll fall through to the rest of the providers below
         }
         // if this dialog is being executed within a panel editor context, then use the panel'editor's mode URL
-        PanelEditorState  state = (PanelEditorState) dc.getHttpRequest().getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
+        PanelEditorState  state = (PanelEditorState) dc.getHttpRequest().getAttribute(PanelEditor.PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX);
         if (state != null)
         {
             return state.calculateNextModeUrl(dc);
