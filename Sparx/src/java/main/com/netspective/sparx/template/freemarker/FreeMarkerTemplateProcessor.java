@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.13 2003-11-15 19:03:47 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.14 2003-11-27 19:26:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -54,6 +54,7 @@ import org.apache.commons.logging.LogFactory;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import freemarker.ext.beans.BeansWrapper;
 
 import com.netspective.commons.template.AbstractTemplateProcessor;
@@ -66,6 +67,7 @@ import com.netspective.commons.value.ValueContext;
 
 public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
 {
+    public static final String VCATTRNAME_SHARED_FM_CONFIG = "SHARED_CONFIG";
     private static final Log log = LogFactory.getLog(FreeMarkerTemplateProcessor.class);
 
     private FreeMarkerConfigurationAdapter fmConfigAdapter;
@@ -119,9 +121,19 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
                 ((ServletValueContext) vc).getFreeMarkerConfiguration() :
                 fmConfigAdapter.getConfiguration();
 
+        // if we have a shared configuration (like from a theme or something) then use it
+        Configuration sharedConfig = (Configuration) vc.getAttribute(VCATTRNAME_SHARED_FM_CONFIG);
+        if(sharedConfig != null)
+            fmConfig = sharedConfig;
+
         try
         {
-            Map instanceVars = templateVars != null ? new HashMap(templateVars) : new HashMap();
+            Map instanceVars = new HashMap();
+            Map sharedVars = (Map) vc.getAttribute(VCATTRNAME_SHARED_TEMPLATE_VARS);
+            if(sharedVars != null)
+                instanceVars.putAll(sharedVars);
+            if(templateVars != null)
+                instanceVars.putAll(templateVars);
 
             Template template = null;
             if(source != null)
@@ -136,12 +148,10 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
             instanceVars.put("vc", BeansWrapper.getDefaultInstance().wrap(vc));
             template.process(instanceVars, writer);
         }
-        catch (Exception e)
+        catch (TemplateException e)
         {
             log.error("Unable to process template", e);
-            writer.write("<pre>");
-            writer.write(e.getMessage());
-            writer.write("</pre>");
+            throw new TemplateProcessorException(e);
         }
     }
 }
