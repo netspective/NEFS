@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.8 2003-06-20 05:12:10 aye.thu Exp $
+ * $Id: SqlManager.java,v 1.9 2003-07-08 14:16:25 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -410,17 +410,14 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
         public Map createConstants()
         {
             Map constants = new HashMap();
-            SqlManagerIdentifierConstantsGenerator icd = getIdentifiersConstantsDecls();
-
-            icd.defineConstants(constants, queries);
-            icd.defineConstants(constants, queryDefns);
-            icd.defineConstants(constants, schemas);
-
+            defineConstants(constants, queries);
+            defineConstants(constants, queryDefns);
+            defineConstants(constants, schemas);
             return constants;
         }
     }
 
-    protected SqlManagerIdentifierConstantsGenerator getIdentifiersConstantsDecls()
+    protected SqlManagerIdentifierConstantsGenerator getSqlIdentifiersConstantsDecls()
     {
         return new SqlManagerIdentifierConstantsGenerator();
     }
@@ -430,7 +427,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
         XdmIdentifierConstantsGenerator xicg =
                 new XdmIdentifierConstantsGenerator(rootPath,
                                                     rootPkgAndClassName,
-                                                    getIdentifiersConstantsDecls().createConstants());
+                                                    getSqlIdentifiersConstantsDecls().createConstants());
         xicg.generateCode();
     }
 }
