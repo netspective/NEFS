@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.32 2003-10-22 06:50:10 aye.thu Exp $
+ * $Id: Project.java,v 1.33 2003-10-24 03:20:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -66,6 +66,7 @@ import com.netspective.sparx.navigate.NavigationTreesManager;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
 import com.netspective.sparx.navigate.NavigationConditionalAction;
+import com.netspective.sparx.navigate.NavigationPageBodyHandler;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.sparx.theme.basic.AbstractTheme;
@@ -117,6 +118,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
     public static final String TEMPLATEELEMNAME_DIALOG_TYPE = "dialog-type";
     public static final String TEMPLATEELEMNAME_DIALOG_EXECUTE_HANDLER = "dialog-execute-handler";
+    public static final String TEMPLATEELEMNAME_PAGE_BODY_HANDLER = "page-body-handler";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_TYPE = "dialog-field-type";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_CONDITIONAL_ACTION_TYPE = "dialog-field-conditional-action";
     public static final String TEMPLATEELEMNAME_NAVIGATION_PAGE_CONDITIONAL_ACTION_TYPE = "navigation-page-conditional-action";
@@ -125,6 +127,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private static final PanelTypeTemplate PANEL_TYPES = new PanelTypeTemplate();
     private static final DialogTypeTemplate DIALOG_TYPES = new DialogTypeTemplate();
     private static final DialogExecuteHandlerTemplate DIALOG_EXECUTE_HANDLERS = new DialogExecuteHandlerTemplate();
+    private static final NavigationPageBodyHandlerTemplate PAGE_BODY_HANDLERS = new NavigationPageBodyHandlerTemplate();
     private static final DialogFieldTypeTemplate FIELD_TYPES = new DialogFieldTypeTemplate();
     private static final DialogFieldConditionalActionTemplate CONDITIONAL_ACTIONS = new DialogFieldConditionalActionTemplate();
     private static final NavigationConditionalActionTemplate NAVIGATION_PAGE_CONDITIONAL_ACTIONS = new NavigationConditionalActionTemplate();
@@ -150,6 +153,14 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         public DialogExecuteHandlerTemplate()
         {
             super(DialogExecuteHandler.class.getName(), TEMPLATEELEMNAME_DIALOG_EXECUTE_HANDLER, "name", "extends", true, false);
+        }
+    }
+
+    protected static class NavigationPageBodyHandlerTemplate extends TemplateProducer
+    {
+        public NavigationPageBodyHandlerTemplate()
+        {
+            super(NavigationPageBodyHandler.class.getName(), TEMPLATEELEMNAME_PAGE_BODY_HANDLER, "name", "extends", true, false);
         }
     }
 
@@ -183,6 +194,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         templateProducers.add(PANEL_TYPES);
         templateProducers.add(DIALOG_TYPES);
         templateProducers.add(DIALOG_EXECUTE_HANDLERS);
+        templateProducers.add(PAGE_BODY_HANDLERS);
         templateProducers.add(FIELD_TYPES);
         templateProducers.add(CONDITIONAL_ACTIONS);
         templateProducers.add(NAVIGATION_PAGE_CONDITIONAL_ACTIONS);
@@ -248,6 +260,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public DialogExecuteHandlerTemplate getDialogExecuteHandlers()
     {
         return DIALOG_EXECUTE_HANDLERS;
+    }
+
+    public NavigationPageBodyHandlerTemplate getPageBodyHandlers()
+    {
+        return PAGE_BODY_HANDLERS;
     }
 
     public DialogFieldTypeTemplate getFieldTypes()
