@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: HtmlTabularReport.java,v 1.2 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: HtmlTabularReport.java,v 1.3 2004-03-03 08:20:36 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -63,4 +63,10 @@ import com.netspective.commons.report.tabular.TabularReport;
 
 public interface HtmlTabularReport extends TabularReport
 {
+    /* Add an action to the report */
+    public void addActions(HtmlReportActions reportActions);
+    /* Gets all the actions defined for the report */
+    public HtmlReportActions getActions();
+    /* Creates an action for the report */
+    public HtmlReportActions createActions();
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportValueContext.java,v 1.8 2004-03-02 07:42:17 aye.thu Exp $
+ * $Id: HtmlTabularReportValueContext.java,v 1.9 2004-03-03 08:20:36 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -128,12 +128,23 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
                 calcsCount++;
             states[i] = state;
         }
-
-        // calculate the states for the panel actions if they exist
-        HtmlPanelActions actions = panel.getBanner().getActions();
-        for (int k = 0; k < actions.size(); k++)
+        
+        HtmlPanelActions bannerActions = panel.getBanner().getActions();
+        HtmlPanelActions frameActions = panel.getFrame().getActions();
+        HtmlReportActions reportActions = reportDefn.getActions();
+        for (int k = 0; k < bannerActions.size(); k++)
         {
-            HtmlPanelAction.State state = actions.get(k).constructStateInstance(this);
+            HtmlPanelAction.State state = bannerActions.get(k).constructStateInstance(this);
+            panelActionStates.addState(state);
+        }
+        for (int j = 0; j < frameActions.size(); j++)
+        {
+            HtmlPanelAction.State state = frameActions.get(j).constructStateInstance(this);
+            panelActionStates.addState(state);
+        }
+        for (int k = 0; k < reportActions.size(); k++)
+        {
+            HtmlPanelAction.State state = reportActions.get(k).constructStateInstance(this);
             panelActionStates.addState(state);
         }
     }

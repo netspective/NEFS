@@ -47,12 +47,12 @@ import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.sparx.panel.HtmlPanelAction;
 
 /**
- * @author aye
- * $Id: HtmlReportAction.java,v 1.6 2003-09-15 04:00:43 aye.thu Exp $
+ * @version $Id: HtmlReportAction.java,v 1.7 2004-03-03 08:20:36 aye.thu Exp $
  */
-public class HtmlReportAction
+public class HtmlReportAction extends HtmlPanelAction
 {
     public static class Type extends XdmEnumeratedAttribute
     {
@@ -83,9 +83,6 @@ public class HtmlReportAction
         }
     }
 
-    private ValueSource caption;
-    private RedirectValueSource redirect;
-    private ValueSource title;
     private Type type;
 
     public Type getType()
@@ -102,62 +99,36 @@ public class HtmlReportAction
      * Creates an instance of the class
      * @return
      */
-    public HtmlReportAction createAction()
+    public HtmlPanelAction createAction()
     {
         return new HtmlReportAction();
     }
 
     /**
-     * Gets the caption of the report action
+     * Gets the mouse over title of the action.
+     *
+     * NOTE: This method is the same as the getHint() method. This became redundant once
+     * the class was refactored to extend from the HtmlPanelAction class.
+     *
      * @return
-     */
-    public ValueSource getCaption()
-    {
-        return caption;
-    }
-
-    /**
-     * Sets the caption of the report action
-     * @param caption
-     */
-    public void setCaption(ValueSource caption)
-    {
-        this.caption = caption;
-    }
-
-    /**
-     * Gets the mouse over title of the action
-     * @return
+     * @deprecated
      */
     public ValueSource getTitle()
     {
-        return title;
+        return getHint();
     }
 
     /**
      * Sets the mouseover title of the action
+     *
+     * NOTE: This method is the same as the setHint() method. This became redundant once
+     * the class was refactored to extend from the HtmlPanelAction class.
+     *
      * @param title
+     * @deprecated
      */
     public void setTitle(ValueSource title)
     {
-        this.title = title;
-    }
-
-    /**
-     * Gets the redirect of the report action
-     * @return   Valuesource
-     */
-    public RedirectValueSource getRedirect()
-    {
-        return redirect;
-    }
-
-    /**
-     * Sets the redirect of the report action
-     * @param redirect
-     */
-    public void setRedirect(RedirectValueSource redirect)
-    {
-        this.redirect = redirect;
+        setHint(title);
     }
 }
