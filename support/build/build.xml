@@ -8,30 +8,42 @@ Setup instructions:
 
 <project default="code">
 
-    <target name="code">
-	<echo message="Building Netspective Commons..."/>
-        <ant dir="../../Commons/conf"/>
+    <target name="all">
+        <echo message="Building Netspective Commons..."/>
+            <ant dir="../../Commons/conf"/>
 
-	<echo message="Building Netspective Axiom..."/>
-        <ant dir="../../Axiom/conf"/>
+        <echo message="Building Netspective Axiom..."/>
+            <ant dir="../../Axiom/conf"/>
 
-	<echo message="Building Netspective Sparx..."/>
-        <ant dir="../../Sparx/conf"/>
+        <echo message="Building Netspective Sparx..."/>
+            <ant dir="../../Sparx/conf"/>
+    </target>
+
+    <target name="jar">
+        <echo message="Building Netspective Commons..."/>
+            <ant dir="../../Commons/conf" target="jar"/>
+
+        <echo message="Building Netspective Axiom..."/>
+            <ant dir="../../Axiom/conf" target="jar"/>
+
+        <echo message="Building Netspective Sparx..."/>
+            <ant dir="../../Sparx/conf" target="jar"/>
     </target>
 
     <target name="commons">
         <echo message="Building Netspective Commons..."/>
         <ant dir="../../Commons/conf"/>
     </target>
+
     <target name="axiom">
         <echo message="Building Netspective Axiom..."/>
         <ant dir="../../Axiom/conf"/>
     </target>
+
     <target name="sparx">
         <echo message="Building Netspective Sparx..."/>
         <ant dir="../../Sparx/conf"/>
     </target>
-
 
     <target name="docs">
         <echo message="Building Netspective Commons..."/>
