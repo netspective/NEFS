@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SparxTask.java,v 1.3 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: SparxTask.java,v 1.4 2003-07-09 02:13:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -114,6 +114,9 @@ public class SparxTask extends AxiomTask
                 for(int i = 0; i < dialogs.size(); i++)
                 {
                     Dialog dialog = dialogs.get(i);
+                    if(dialog.getQualifiedName().startsWith("console"))
+                        continue;
+
                     dialog.generateDialogContextBean(getDestDir(), dcbPackage);
                 }
             }
