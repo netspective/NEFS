@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.4 2003-07-21 15:04:11 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.5 2003-09-29 02:03:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -92,7 +92,7 @@ public class AntBuildDialog extends ConsoleDialog
         this.antProject = antProject;
     }
 
-    public void finalizeContents(NavigationContext nc)
+    public synchronized void finalizeContents(NavigationContext nc)
     {
         super.finalizeContents(nc);
         DialogFields fields = getFields();

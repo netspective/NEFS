@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.32 2003-09-15 03:47:59 aye.thu Exp $
+ * $Id: Dialog.java,v 1.33 2003-09-29 02:05:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -61,6 +61,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -96,6 +99,9 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.Tables;
+import com.netspective.axiom.schema.Schema;
 
 /**
  * The <code>Dialog</code> object contains the dialog/form's structural information, field types, rules, and
@@ -190,6 +196,11 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     private List clientJavascripts = new ArrayList();
     private DialogExecuteHandlers executeHandlers = new DialogExecuteHandlers();
     private DialogNextActionProvider nextActionProvider;
+    private String bindSchemaTableName;
+
+    private Table bindTable;
+    private Map bindColumnFieldsMap = new HashMap();  // key is a Column instance, value is a DialogField
+    private Set bindColumnTablesSet = new HashSet(); // a list of all the tables the fields map to (in case of child tables, etc)
 
     private boolean haveInitialPopulateForDisplayListeners;
     private boolean haveInitialPopulateForSubmitListeners;
@@ -585,22 +596,53 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
         addField(field);
     }
 
-    /**
-     * Loops through each dialog field and finalize them.
-     */
-    public void finalizeContents(NavigationContext nc)
+    public String getBindTableName()
     {
+        return bindSchemaTableName;
+    }
+
+    public void setBindTable(String schemaTableNames)
+    {
+        bindSchemaTableName = schemaTableNames;
+    }
+
+    public Table getBindTable()
+    {
+        return bindTable;
+    }
+
+    public Map getBindColumnFieldsMap()
+    {
+        return bindColumnFieldsMap;
+    }
+
+    public Set getBindColumnTablesSet()
+    {
+        return bindColumnTablesSet;
+    }
+
+    /**
+     * Loops through each dialog field and finalize them. Because this can be called via multiple threads but all threads
+     * usually use the same dialog, it is synchronized.
+     */
+    public synchronized void finalizeContents(NavigationContext nc)
+    {
+        // be sure to get the bound table first because children may need it
+        if(bindSchemaTableName != null)
+        {
+            bindTable = nc.getProject().getSchemas().getTable(bindSchemaTableName);
+            if(bindTable == null)
+                log.error("Dialog '"+ getQualifiedName() +"' tried to bind to table '"+ bindSchemaTableName +"' but it does not exist.");
+        }
+
+        fields.finalizeContents(nc);
         for(int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
-            field.finalizeContents();
-
-            if(field.requiresMultiPartEncoding())
-                dialogFlags.setFlag(DialogFlags.ENCTYPE_MULTIPART_FORMDATA);
-
             if(field.getFlags().flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE | DialogFieldFlags.COLUMN_BREAK_AFTER))
                 layoutColumnsCount++;
         }
+
         dialogFlags.setFlag(DialogFlags.CONTENTS_FINALIZED);
     }
 
