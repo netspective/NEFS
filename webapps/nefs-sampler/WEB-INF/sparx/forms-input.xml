@@ -15,7 +15,6 @@
        ==============================================================================
     -->
     <dialogs package="form.input">
-
         <dialog type="input-sample" name="text-fields" hide-hints-until-focus="yes" retain-params="abc">
             <frame heading="Sample Text Fields"/>
             <field name="text_field_required" type="text" caption="Text Required" required="yes"
@@ -63,9 +62,9 @@
             <frame heading="Sample Numeric Fields"/>
             <field type="integer" name="integer_field" caption="Integer Field" hint="Integer field" persist="yes"/>
             <field type="float" name="float_field" caption="Float Field" hint="Float field"/>
-            <field type="currency" name="currency_field1" caption="Currency" decimals-required="2" default="123.45"
+            <field type="currency" name="currency_field1" caption="Currency" decimals-required="2" default="123456789.45"
                 negative-pos="after-symbol" hint="Currency field (US) with negative sign after the symbol"/>
-            <field type="currency" name="currency_field2" caption="Currency" decimals-required="2" default="123.45"
+            <field type="currency" name="currency_field2" caption="Currency" decimals-required="2" default="123456789.45"
                 negative-pos="before-symbol" hint="Currency field (US) with negative sign before the symbol"/>
             <field type="phone" name="phone_field1" caption="Phone Field (dash format)" strip-brackets="yes" style="dash" hint="Phone field" default="8001234567"/>
             <field type="phone" name="phone_field2" caption="Phone Field (bracket format)" strip-brackets="yes" style="bracket" hint="Phone field" default="8001234567"/>
@@ -241,7 +240,7 @@
                 </div>
                 <hr/>
                 ]]>
-                </body>                
+                </body>
             </field>
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
             <field type="static" name="static_field2" caption="Statuc Field" default="Checkbox checked!" hint="Hidden static field">
@@ -259,7 +258,6 @@
                 <conditional action="apply-flags" flags="unavailable" perspective="add"/>
                 <conditional action="apply-flags" flags="unavailable" perspective="edit"/>
             </field>
-
         </dialog>
 
         <!-- Dialog for testing binding query data to fields -->
