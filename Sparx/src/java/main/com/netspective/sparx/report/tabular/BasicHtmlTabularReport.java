@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReport.java,v 1.6 2003-07-11 14:36:52 aye.thu Exp $
+ * $Id: BasicHtmlTabularReport.java,v 1.7 2003-07-12 02:14:08 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -69,21 +69,22 @@ public class BasicHtmlTabularReport extends AbstractTabularReport implements Htm
     }
 
 
-    private HtmlReportActions actions = new HtmlReportActions();
+    private HtmlReportActions actions = null;
 
+    public void addActions(HtmlReportActions reportActions)
+    {
+        actions = reportActions;
+    }
 
     public HtmlReportActions getActions()
     {
         return actions;
     }
 
-    public HtmlReportAction createAction()
+    public HtmlReportActions createActions()
     {
-        return new HtmlReportAction();
+        return new HtmlReportActions();
     }
 
-    public void addAction(HtmlReportAction item)
-    {
-        actions.add(item);
-    }
+
 }
