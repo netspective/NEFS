@@ -6,7 +6,7 @@
         <column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The insurance product/plan/policy that this information is related to">
             <presentation>
                 <field type="text" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>

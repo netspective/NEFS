@@ -86,14 +86,18 @@
             </presentation>
         </column>
         <column name="age" type="integer" descr="Actual age (only required if date_of_birth is NULL or not known)"/>
+        <!--
         AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;trigger&gt; is no longer used in Axiom.
         Table triggers must now be placed in Java classes.
-        <trigger type="dal-row-java" time="before" event="insert"/><!---->
-        AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;trigger&gt; is no longer used in Axiom.
+        -->
+        <!--trigger type="dal-row-java" time="before" event="insert"/-->
+        <!-- AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;trigger&gt; is no longer used in Axiom.
         Table triggers must now be placed in Java classes.
-        <trigger type="dal-row-java" time="before" event="update"/><!---->
-        <presentation>
-            <dialog name="personProfileTableDialog" heading="create-data-cmd-heading:Person Profile" retain-params="person_id">
+        -->
+        <!--trigger type="dal-row-java" time="before" event="update"/-->
+        <!--presentation>
+            <dialog name="personProfileTableDialog" retain-params="person_id">
+                <frame heading="create-data-cmd-heading:Person Profile"/>
                 <field.table-column column="person_id"/>
 
                 <field.separator heading="Personal Profile"/>
@@ -117,11 +121,11 @@
                 <field.table-column column="ethnicity_id"/>
                 <field.table-column column="language_id"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Address" abbrev="PerAddr" type="Physical_Address" xdm:param-parentRef="Person.person_id">
-        <presentation>
+        <!--presentation>
             <dialog name="personAddressTableDialog" retain-params="parent_id,person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -144,11 +148,11 @@
                 <field.table-column column="zip"/>
                 <field.table-column column="country"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Note" abbrev="PerNote" type="Note" xdm:param-parentRef="Person.person_id" xdm:param-noteTypeEnum="Person_Note_Type">
-        <presentation>
+        <!--presentation>
             <dialog name="personNoteTableDialog" retain-params="parent_id,person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -160,7 +164,7 @@
                 <field.table-column column="note_type"/>
                 <field.table-column column="notes"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Classification" abbrev="PerClass" type="Default">
@@ -171,7 +175,7 @@
         <column name="person_id" parentref="Person.person_id" descr="The actual person record for which classification record is being defined">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -192,7 +196,7 @@
                 </field>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="personClassificationTableDialog" retain-params="person_id,person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -204,11 +208,11 @@
                 <field.table-column column="person_type_id"/>
                 <field.table-column column="person_type"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Contact" abbrev="PerCont" type="Contact_Method" xdm:param-parentRef="Person.person_id">
-        <presentation>
+        <!--presentation>
             <dialog name="personContactTableDialog" retain-params="parent_id,person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -220,7 +224,7 @@
                 <field.table-column column="method_name"/>
                 <field.table-column column="method_value"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Ethnicity" abbrev="PerEth" type="Default">
@@ -233,7 +237,7 @@
         <column name="person_id" parentref="Person.person_id" descr="Person ID for whose ethnicity is being defined">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -249,7 +253,7 @@
                 </field>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="personEthnicityTableDialog" retain-params="person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -260,7 +264,7 @@
                 <field.table-column column="ethnicity_id"/>
                 <field.table-column column="ethnicity"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Flag_Type" abbrev="PerFlTy" type="Flag_Type"/>
@@ -268,7 +272,7 @@
     <table name="Person_Flag_Status" abbrev="PerFlSt" type="Flag_Status"/>
 
     <table name="Person_Flag" abbrev="PerFlg" type="Flag" xdm:param-parentRef="Person.person_id" xdm:param-recordStatusEnum="Person_Flag_Status" xdm:param-flagTypeEnum="Person_Flag_Type">
-        <presentation>
+        <!--presentation>
             <dialog name="personFlagTableDialog" retain-params="parent_id,person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -277,7 +281,7 @@
                 <field.table-column column="parent_id" caption="Person ID"/>
                 <field.table-column column="flag_id"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Identifier" abbrev="PerID" type="Default">
@@ -290,7 +294,7 @@
         <column name="person_id" parentref="Person.person_id" descr="The actual person record for which identifier is being defined">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -329,7 +333,7 @@
                 <field.memo caption="Notes"/>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="personIdentifierTableDialog" retain-params="person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -349,7 +353,7 @@
 
                 <field.table-column column="notes"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Insurance" abbrev="PerIns" type="Default">
@@ -363,7 +367,7 @@
         <column name="person_id" parentref="Person.person_id" descr="The person_id whose insurance coverage this record contains information about">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -392,7 +396,7 @@
                 <field type="text" caption="Policy Number"/>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="personInsuranceTableDialog" retain-params="person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -409,7 +413,7 @@
                 <field.table-column column="policy_id"/>
                 <field.table-column column="member_number"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Language" abbrev="PerLang" type="Default">
@@ -422,7 +426,7 @@
         <column name="person_id" parentref="Person.person_id" descr="Person whose language is being defined">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -438,7 +442,7 @@
                 </field>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="personLanguageTableDialog" retain-params="person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -449,7 +453,7 @@
                 <field.table-column column="language_id"/>
                 <field.table-column column="language"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Login_Status" abbrev="PerLgSt" type="Status"/>
@@ -464,7 +468,7 @@
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom login information is specified">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -488,7 +492,7 @@
                 <field.integer caption="Number of Simultaneous Logins" min="1"/>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="personLoginTableDialog" retain-params="person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -503,14 +507,14 @@
                 <field.table-column column="login_status"/>
                 <field.table-column column="quantity"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Relationship_Status" abbrev="PerRelSt" type="Relationship_Status"/>
 
     <table name="Person_Relationship" abbrev="PerRel" type="Person_Relationship" xdm:param-recordStatusEnum="Person_Relationship_Status" xdm:param-relationshipTypeEnum="Person_Relationship_Type" xdm:param-relatedEntityFieldQuery="person.get-all-persons" xdm:param-relatedEntityFieldCaption="Related Person">
         <description>The relationship between a person and another person.</description>
-        <presentation>
+        <!--presentation>
             <dialog name="personRelationshipTableDialog" retain-params="parent_id,person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -527,7 +531,7 @@
 
                 <field.table-column column="rel_descr"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Person_Relationship_Map" abbrev="PerRelMp" type="Relationship_Map" xdm:param-relationshipTypeTable="Person_Relationship_Type">
@@ -544,7 +548,7 @@
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom role information is specified">
             <presentation>
                 <field type="guid32" caption="Person ID">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -553,7 +557,7 @@
                 <field type="guid32" caption="Role Name"/>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="personRoleTableDialog" retain-params="person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -562,7 +566,7 @@
                 <field.table-column column="person_id"/>
                 <field.table-column column="role_name_id"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="PersonOrg_Rel_Status" abbrev="PeORelSt" type="Relationship_Status"/>
@@ -571,7 +575,7 @@
         <description>The relationship between a person and an organization.</description>
         <column name="relationship_name" type="text" size="64" descr="The exact name of the relationship between this org_id and this person_id"/>
         <column name="relationship_code" type="text" size="64" descr="A code (e.g. a Job Code) assigned to this relationship"/>
-        <presentation>
+        <!--presentation>
             <dialog name="personOrgRelationshipTableDialog" retain-params="parent_id,person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -587,7 +591,7 @@
                 <field.table-column column="rel_end"/>
                 <field.table-column column="rel_descr"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="PersonOrg_Relationship_Map" abbrev="PerORelMp" type="Relationship_Map" xdm:param-relationshipTypeTable="PersonOrg_Rel_Type">
@@ -602,7 +606,7 @@
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom this medical license record is stored">
             <presentation>
                 <field type="guid32" caption="Person ID">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -626,7 +630,7 @@
                 <field type="memo" caption="Details of Benefit"/>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="staffBenefitTableDialog" retain-params="person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -640,7 +644,7 @@
                 <field.table-column column="benefit_type"/>
                 <field.table-column column="benefit_detail"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Staff_License" abbrev="StfLic" type="Default">
@@ -689,7 +693,7 @@
                 <field type="select" caption="Speciality"/>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="staffLicenseTableDialog" retain-params="person_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -708,7 +712,7 @@
                 <field.table-column column="license_state"/>
                 <field.table-column column="speciality_type_id"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
 </xdm:container>

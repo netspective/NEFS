@@ -88,5 +88,4 @@
         <description>This table stores details of all actions where a patient visited a physician</description>
         <column name="reason" type="text" size="256" descr="The reason why this visit took place"/>
     </table>
-
 </xdm:container>

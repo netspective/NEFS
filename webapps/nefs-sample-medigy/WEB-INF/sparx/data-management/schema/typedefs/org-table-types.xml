@@ -27,7 +27,7 @@
         <column name="org_id" parentref="Org.org_id" descr="The organization that the lookup item belongs to">
             <presentation>
                 <field type="select" caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>

@@ -139,7 +139,7 @@
         </sql-ddl>
         <presentation>
             <field.guid32>
-                <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                <conditional action="apply-flag" flag="hidden" perspective="add"/>
             </field.guid32>
         </presentation>
     </data-type>
@@ -163,9 +163,11 @@
     <data-type name="past-time" type="time"/>
 
     <data-type name="creation-stamp" type="stamp">
+        <!--
         AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;java-default&gt; is no longer used in Axiom.
         Column triggers, validation, and DAL information must now be placed in Java classes.
-        <java-default/><!---->
+        <java-default/>
+        -->
     </data-type>
 
     <data-type name="survey">

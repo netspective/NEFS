@@ -68,7 +68,6 @@
 
 
     <table name="Patient_Referral" abbrev="PatRef" type="Default">
-        <description/>
         <column name="referral_id" type="guid32" primarykey="yes" descr="Unique Referral ID"/>
         <column name="patient_id" parentref="Person.person_id" descr="Who is the patient that is being referred from one doctor to another?"/>
         <column name="referrer_id" parentref="Person.person_id" descr="The physician that is requesting another doctor to take a look at the above patient"/>
@@ -81,7 +80,7 @@
         <column name="referral_type_id" lookupref="Referral_Type" descr="Type of Referral"/>
         <column name="allowed_visits" type="integer" descr="Number of Visits allowed"/>
         <column name="auth_number" type="text" size="64" descr="Authorization Number"/>
-        <column name="referral" type="duration"/>
+        <column name="referral" type="duration" descr="referral duration"/>
         <column name="comm_type_id" lookupref="Referral_Communication" descr="Method of communication"/>
         <column name="completion_date" type="stamp" descr="Date Of Completion"/>
         <column name="referral_status_id" lookupref="Referral_Status" descr="Status of Referral"/>

@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	
 
-	<table name="Artifact_Type" abbrev="ArfType" type="Enumeration"><description>Types of artifacts that the application can manage.</description><enumerations><enum id="0">Folder/Container</enum><enum id="1000">MIME Artifact</enum><enum id="2000">Internal Message (within Physia system)</enum><enum id="2100">E-mail Message</enum><enum id="3000">HL7 Message (Originating)</enum><enum id="4000">HL7 Message (Translated to XML/MDL)</enum><enum id="5000">Fax</enum></enumerations></table>
+    <table name="Artifact_Type" abbrev="ArfType" type="Enumeration">
+        <description>Types of artifacts that the application can manage.</description>
+        <enumerations>
+            <enum id="0">Folder/Container</enum>
+            <enum id="1000">MIME Artifact</enum>
+            <enum id="2000">Internal Message (within Physia system)</enum>
+            <enum id="2100">E-mail Message</enum>
+            <enum id="3000">HL7 Message (Originating)</enum>
+            <enum id="4000">HL7 Message (Translated to XML/MDL)</enum>
+            <enum id="5000">Fax</enum>
+        </enumerations>
+    </table>
 
-	<table name="Artifact_Event_Type" abbrev="ArfEvTy" type="Enumeration"><description>Variety of events that can take place while managing artifacts.</description><enumerations><enum>Arrived</enum><enum>Reviewed</enum><enum>Filed</enum><enum>On-hold</enum><enum>Routed</enum><enum>Signed</enum></enumerations></table>
+    <table name="Artifact_Event_Type" abbrev="ArfEvTy" type="Enumeration">
+        <description>Variety of events that can take place while managing artifacts.</description>
+        <enumerations>
+            <enum>Arrived</enum>
+            <enum>Reviewed</enum>
+            <enum>Filed</enum>
+            <enum>On-hold</enum>
+            <enum>Routed</enum>
+            <enum>Signed</enum>
+        </enumerations>
+    </table>
 
-	<table name="Artifact_Source_Type" abbrev="ArfSrcTy" type="Enumeration"><description>Variety of sources that can send us artifacts to be managed.</description><enumerations><enum id="0">Our firm</enum><enum id="100">Person</enum><enum id="200">Org</enum></enumerations></table>
+    <table name="Artifact_Source_Type" abbrev="ArfSrcTy" type="Enumeration">
+        <description>Variety of sources that can send us artifacts to be managed.</description>
+        <enumerations>
+            <enum id="0">Our firm</enum>
+            <enum id="100">Person</enum>
+            <enum id="200">Org</enum>
+        </enumerations>
+    </table>
 
-	<table name="Artifact_Association_Type" abbrev="ArfAsnTy" type="Enumeration"><description>Variety of assocations that a artifact can have to another artifact.</description><enumerations><enum id="0">None</enum><enum id="1">Parent</enum><enum id="2">Child</enum><enum id="3">Sibling</enum><enum id="10">Translated from</enum><enum id="1000">Owned by Person</enum><enum id="1010">Owned by Organization</enum><enum id="1020">Owned by Person in Organization</enum><enum id="1030">Owned by Project</enum><enum id="1040">Owned by Task</enum><enum id="2000">Requested by Person</enum><enum id="2010">Requested by Organization</enum><enum id="2020">Requested by Person in Organization</enum><enum id="3000">Requires review by Person</enum><enum id="3010">Requires review by Organization</enum><enum id="3020">Requires review by Person in Organization</enum></enumerations></table>
+    <table name="Artifact_Association_Type" abbrev="ArfAsnTy" type="Enumeration">
+        <description>Variety of assocations that a artifact can have to another artifact.</description>
+        <enumerations>
+            <enum id="0">None</enum>
+            <enum id="1">Parent</enum>
+            <enum id="2">Child</enum>
+            <enum id="3">Sibling</enum>
+            <enum id="10">Translated from</enum>
+            <enum id="1000">Owned by Person</enum>
+            <enum id="1010">Owned by Organization</enum>
+            <enum id="1020">Owned by Person in Organization</enum>
+            <enum id="1030">Owned by Project</enum>
+            <enum id="1040">Owned by Task</enum>
+            <enum id="2000">Requested by Person</enum>
+            <enum id="2010">Requested by Organization</enum>
+            <enum id="2020">Requested by Person in Organization</enum>
+            <enum id="3000">Requires review by Person</enum>
+            <enum id="3010">Requires review by Organization</enum>
+            <enum id="3020">Requires review by Person in Organization</enum>
+        </enumerations>
+    </table>
 
 </xdm:container>

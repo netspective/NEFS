@@ -1,10 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	
 
-	<table name="HCFA1500_Service_Place_Type" abbrev="HcfaPos" type="Enumeration"><description>List of Place of Service. Provided by Envoy Exhibit 5 for processing NSF claims.</description><enumerations><enum abbrev="11">Office</enum><enum abbrev="12">Home</enum><enum abbrev="21">Inpatient Hospital</enum><enum abbrev="22">Outpatient Hospital</enum><enum abbrev="23">Emergency Room - Hospital</enum><enum abbrev="24">Ambulatory Surgical Center</enum><enum abbrev="25">Birthing Center</enum><enum abbrev="26">Military Treatment Facility</enum><enum abbrev="31">Skilled Nursing Facility</enum><enum abbrev="32">Nursing Facility</enum><enum abbrev="33">Custodial Care Facility</enum><enum abbrev="34">Hospice</enum><enum abbrev="41">Ambulance - Land</enum><enum abbrev="42">Ambulance - Air or Water</enum><enum abbrev="51">Inpatient Psyciatric Facility</enum><enum abbrev="52">Psyciatric Facility Partial Hospitalization</enum><enum abbrev="53">Community Mental Health Center</enum><enum abbrev="54">Intermediate Care Facility/Mentally Retarted</enum><enum abbrev="55">Residential Substance Abuse Treatment Facility</enum><enum abbrev="56">Psyciatric Residential Treatment Center</enum><enum abbrev="61">Comprehensive Inpatient Rehabilitation Facility</enum><enum abbrev="62">Comprehensive Outpatient Rehabilitation Facility</enum><enum abbrev="65">End Stage Renal Disease Treatment Facility</enum><enum abbrev="71">State or Local Public Health Clinic</enum><enum abbrev="72">Rural Health Clinic</enum><enum abbrev="81">Independent Laboratory</enum><enum abbrev="99">Other Unlisted Facility</enum></enumerations></table>
+    <table name="HCFA1500_Service_Place_Type" abbrev="HcfaPos" type="Enumeration">
+        <description>List of Place of Service. Provided by Envoy Exhibit 5 for processing NSF claims.</description>
+        <enumerations>
+            <enum abbrev="11">Office</enum>
+            <enum abbrev="12">Home</enum>
+            <enum abbrev="21">Inpatient Hospital</enum>
+            <enum abbrev="22">Outpatient Hospital</enum>
+            <enum abbrev="23">Emergency Room - Hospital</enum>
+            <enum abbrev="24">Ambulatory Surgical Center</enum>
+            <enum abbrev="25">Birthing Center</enum>
+            <enum abbrev="26">Military Treatment Facility</enum>
+            <enum abbrev="31">Skilled Nursing Facility</enum>
+            <enum abbrev="32">Nursing Facility</enum>
+            <enum abbrev="33">Custodial Care Facility</enum>
+            <enum abbrev="34">Hospice</enum>
+            <enum abbrev="41">Ambulance - Land</enum>
+            <enum abbrev="42">Ambulance - Air or Water</enum>
+            <enum abbrev="51">Inpatient Psyciatric Facility</enum>
+            <enum abbrev="52">Psyciatric Facility Partial Hospitalization</enum>
+            <enum abbrev="53">Community Mental Health Center</enum>
+            <enum abbrev="54">Intermediate Care Facility/Mentally Retarted</enum>
+            <enum abbrev="55">Residential Substance Abuse Treatment Facility</enum>
+            <enum abbrev="56">Psyciatric Residential Treatment Center</enum>
+            <enum abbrev="61">Comprehensive Inpatient Rehabilitation Facility</enum>
+            <enum abbrev="62">Comprehensive Outpatient Rehabilitation Facility</enum>
+            <enum abbrev="65">End Stage Renal Disease Treatment Facility</enum>
+            <enum abbrev="71">State or Local Public Health Clinic</enum>
+            <enum abbrev="72">Rural Health Clinic</enum>
+            <enum abbrev="81">Independent Laboratory</enum>
+            <enum abbrev="99">Other Unlisted Facility</enum>
+        </enumerations>
+    </table>
 
-	<table name="Procedure_Code_Type" abbrev="ProcCodeTy" type="Enumeration"><enumerations><enum>ICD-9</enum><enum>CPT</enum></enumerations></table>
+    <table name="Procedure_Code_Type" abbrev="ProcCodeTy" type="Enumeration">
+        <enumerations>
+            <enum>ICD-9</enum>
+            <enum>CPT</enum>
+        </enumerations>
+    </table>
 
 </xdm:container>

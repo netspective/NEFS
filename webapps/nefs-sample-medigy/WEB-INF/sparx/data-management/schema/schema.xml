@@ -30,20 +30,19 @@
         <xdm:include file="enums/session.xml"/>
         <xdm:include file="enums/staff.xml"/>
         <xdm:include file="enums/transaction.xml"/>
-        <xdm:include file="action.xml"/>
         <xdm:include file="person.xml"/>
         <xdm:include file="scheduling.xml"/>
         <xdm:include file="org.xml"/>
         <xdm:include file="insurance.xml"/>
         <xdm:include file="resource.xml"/>
         <xdm:include file="invoice.xml"/>
-        <xdm:include file="claim.xml"/>
         <xdm:include file="medical.xml"/>
-
-        <!--xdm:include file="artifact.xml"/>
+        <xdm:include file="claim.xml"/>
+        <xdm:include file="action.xml"/>
+        <xdm:include file="artifact.xml"/>
         <xdm:include file="catalog.xml"/>
         <xdm:include file="message.xml"/>
-        <xdm:include file="transaction.xml"/-->
+        <xdm:include file="transaction.xml"/>
         <table name="Person_Session" abbrev="PerSess">
             <description>
             An active session of a user connected to the application

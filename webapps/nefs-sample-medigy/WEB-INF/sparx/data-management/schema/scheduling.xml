@@ -10,7 +10,7 @@
         <column name="other_id" type="text" size="36" descr="Possible other roaming resource IDs"/>
     </table-type>
 
-    <table name="Org_Appt_Type" abbrev="ApTy" type="Default">
+    <table name="Org_Appt_Type" abbrev="OrgApTy" type="Default">
         <description>This table stores practice-defined Appointment Types.</description>
         <column name="appt_type_id" type="guid32" primarykey="yes" descr="Unique ID for a specific Appt Type"/>
         <column name="org_id" parentref="Org.org_id" required="yes" indexed="yes" descr="The organization which owns this record"/>
@@ -75,11 +75,11 @@
 
     <table name="Event" abbrev="Event" type="Default">
         <description>
-            &lt;p&gt;The Event table stores all events information managed by this application.  Event has two
+            The Event table stores all events information managed by this application.  Event has two
 				child tables Event_Resource and Event_Attendee.  Event_Resource stores the 1-to-n resources
 				required for an event.  A Resource can be a facility, a physician, or an asset.
 				Event_Attendee stores data associated with the attendee or the patient.
-            &lt;/p&gt;
+
         </description>
         <column name="event_id" type="guid32" primarykey="yes" descr="Unique ID for a specific event"/>
         <column name="org_id" lookupref="Org.org_id" required="yes" indexed="yes" descr="The owner Org of the event"/>

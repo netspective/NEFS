@@ -10,52 +10,52 @@
         <column name="plan_id" type="guid32" primarykey="yes" descr="Unique System ID for each insurance plan"/>
         <column name="product_id" parentref="Ins_Product.product_id" descr="The insurance product that this insurance plan is a part of.">
             <presentation>
-                <field.select caption="Insurance Product ID" choices="query:insurance.getProductsByOrg" style="popup"/>
+                <field type="select" caption="Insurance Product ID" choices="query:insurance.getProductsByOrg" style="popup"/>
             </presentation>
         </column>
         <column name="plan_name" type="text" size="64" descr="Name of the plan">
             <presentation>
-                <field.text caption="Plan Name" size="16"/>
+                <field type="text" caption="Plan Name" size="16"/>
             </presentation>
         </column>
         <column name="remit_payer_id" type="text" size="64" descr="The id (if required) for this insurance plan/group for electronic remittance">
             <presentation>
-                <field.text caption="Electronic Remittance ID">
+                <field type="text" caption="Electronic Remittance ID">
                     <conditional action="display" partner="remit_type_id" js-expr="control.options[control.selectedIndex].text == 'Electronic'"/>
-                </field.text>
+                </field>
             </presentation>
         </column>
         <column name="remit_type_id" lookupref="Bill_Remittance_Type" descr="How the bill is transmitted (paper, electronic, etc)">
             <presentation>
-                <field.select caption="Remittance Type"/>
+                <field type="select" caption="Remittance Type"/>
             </presentation>
         </column>
         <column name="remit_type" type="text" size="32" descr="How the bill is transmitted - if 'Other' chosen above">
             <presentation>
-                <field.text caption="Other Remittance Type" size="16"/>
+                <field type="text" caption="Other Remittance Type" size="16"/>
             </presentation>
         </column>
         <column name="remit_payer_name" type="text" size="256" descr="The name given to the primary remittance id record">
             <presentation>
-                <field.text caption="Remittance Payer Name" size="16"/>
+                <field type="text" caption="Remittance Payer Name" size="16"/>
             </presentation>
         </column>
         <column name="medigap_id" type="text" size="64" descr="The Medigap number for this insurance product">
             <presentation>
-                <field.text caption="Medigap ID"/>
+                <field type="text" caption="Medigap ID"/>
             </presentation>
         </column>
         <column name="initiation_date" type="date" descr="Initiation date for this plan">
             <presentation>
-                <field.date caption="Coverage Begin Date" size="12"/>
+                <field type="date" caption="Coverage Begin Date" size="12"/>
             </presentation>
         </column>
         <column name="expiration_date" type="date" descr="Expiration date for this plan">
             <presentation>
-                <field.date caption="Coverage End Date" size="12"/>
+                <field type="date" caption="Coverage End Date" size="12"/>
             </presentation>
         </column>
-        <presentation>
+        <!--presentation>
             <dialog name="insPlanProfileTableDialog">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -74,7 +74,7 @@
                 <field.table-column column="initiation_date"/>
                 <field.table-column column="expiration_date"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="Ins_Policy" abbrev="InsPlcy" type="Default">
@@ -90,42 +90,42 @@
         <column name="policy_id" type="guid32" primarykey="yes" descr="Unique System ID for each insurance policy"/>
         <column name="person_id" lookupref="Person.person_id" descr="The person in whose name this policy is taken out">
             <presentation>
-                <field.select caption="Insured Person ID" choices="query:person.get-all-persons" style="popup"/>
+                <field type="select" caption="Insured Person ID" choices="query:person.get-all-persons" style="popup"/>
             </presentation>
         </column>
         <column name="plan_id" parentref="Ins_Plan.plan_id" descr="The specific plan that is implemented as a policy for this person">
             <presentation>
-                <field.select caption="Insurance Plan ID" choices="query:insurance.get-all-plans" style="popup"/>
+                <field type="select" caption="Insurance Plan ID" choices="query:insurance.get-all-plans" style="popup"/>
             </presentation>
         </column>
         <column name="policy_number" type="text" size="32" descr="Policy number (if applicable)">
             <presentation>
-                <field.text caption="Policy Number" size="16"/>
+                <field type="text" caption="Policy Number" size="16"/>
             </presentation>
         </column>
         <column name="group_number" type="text" size="32" descr="Group number (if record_type is group)">
             <presentation>
-                <field.text caption="Group Number" size="16"/>
+                <field type="text" caption="Group Number" size="16"/>
             </presentation>
         </column>
         <column name="group_name" type="text" size="32" descr="Group name (if record_type is group)">
             <presentation>
-                <field.text caption="Group Name" size="16"/>
+                <field type="text" caption="Group Name" size="16"/>
             </presentation>
         </column>
         <column name="bill_sequence_id" lookupref="Bill_Sequence_Type" descr="Primary, secondary, or tertiary insurance (if record type is person plan)">
             <presentation>
-                <field.select caption="Bill Sequence ID"/>
+                <field type="select" caption="Bill Sequence ID"/>
             </presentation>
         </column>
         <column name="coverage_begin_date" type="date" descr="Date that this group policy was activated">
             <presentation>
-                <field.date caption="Coverage Begin Date" size="12"/>
+                <field type="date" caption="Coverage Begin Date" size="12"/>
             </presentation>
         </column>
         <column name="coverage_end_date" type="date" descr="Date that this group policy was/will be deactived">
             <presentation>
-                <field.date caption="Coverage End Date" size="12"/>
+                <field type="date" caption="Coverage End Date" size="12"/>
             </presentation>
         </column>
     </table>
@@ -149,7 +149,7 @@
 
     <table name="InsPlan_Address" abbrev="InsPlnAddr" type="Physical_Address" xdm:param-parentRef="Ins_Plan.plan_id">
         <description>This table contains the billing address and any other type of physical address corresponding to this insurance plan</description>
-        <presentation>
+        <!--presentation>
             <dialog name="insPlanAddressTableDialog" retain-params="parent_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -172,12 +172,12 @@
                 <field.table-column column="zip"/>
                 <field.table-column column="country"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="InsPlan_Contact" abbrev="InsPlnCont" type="Contact_Method" xdm:param-parentRef="Ins_Plan.plan_id">
         <description>This table contains the billing contact and all other methods of contact corresponding to this insurance plan</description>
-        <presentation>
+        <!--presentation>
             <dialog name="insPlanContactTableDialog" retain-params="parent_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -189,7 +189,7 @@
                 <field.table-column column="method_name"/>
                 <field.table-column column="method_value"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="InsPlan_Coverage" abbrev="InsPlnCov" type="Ins_Coverage" xdm:param-parentRef="Ins_Plan.plan_id"/>
@@ -198,7 +198,7 @@
 
     <table name="InsProduct_Address" abbrev="InsPrdAddr" type="Physical_Address" xdm:param-parentRef="Ins_Product.product_id">
         <description>This table contains the billing address and any other type of physical address corresponding to this insurance product</description>
-        <presentation>
+        <!--presentation>
             <dialog name="insuranceProductAddressTableDialog" retain-params="parent_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -221,12 +221,12 @@
                 <field.table-column column="zip"/>
                 <field.table-column column="country"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="InsProduct_Contact" abbrev="InsPrdCont" type="Contact_Method" xdm:param-parentRef="Ins_Product.product_id">
         <description>This table contains the billing contact and all other methods of contact corresponding to this insurance product</description>
-        <presentation>
+        <!--presentation>
             <dialog name="insProductContactTableDialog" retain-params="parent_id">
                 <field.table-column column="cr_sess_id"/>
                 <field.table-column column="cr_stamp"/>
@@ -238,7 +238,7 @@
                 <field.table-column column="method_name"/>
                 <field.table-column column="method_value"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
 
     <table name="InsProduct_Coverage" abbrev="InsPrdCov" type="Ins_Coverage" xdm:param-parentRef="Ins_Product.product_id"/>

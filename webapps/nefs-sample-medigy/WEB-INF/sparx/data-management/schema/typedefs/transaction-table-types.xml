@@ -37,7 +37,7 @@
         <column name="patient_id" lookupref="Person.person_id" descr="The name of the patient involved in this transaction">
             <presentation>
                 <field type="text" caption="Patient ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -49,7 +49,7 @@
         <column name="physician_id" lookupref="Person.person_id" descr="The physician involved in this transaction">
             <presentation>
                 <field type="text" caption="Physician ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>

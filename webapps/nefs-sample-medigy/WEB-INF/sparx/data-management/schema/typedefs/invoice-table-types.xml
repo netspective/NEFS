@@ -14,7 +14,7 @@
         <column name="org_id" parentref="Org.org_id" descr="The organization which issued this invoice">
             <presentation>
                 <field type="text" caption="Invoice Issuer Org ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>
@@ -61,7 +61,7 @@
         <column name="invoice_id" parentref="${params.parentInvoiceId}" descr="The invoice that is the parent of this line item">
             <presentation>
                 <field type="text" caption="Invoice ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
-                    <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
                 </field>
             </presentation>
         </column>

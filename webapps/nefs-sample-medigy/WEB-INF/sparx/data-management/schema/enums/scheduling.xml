@@ -1,16 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	
 
-	<table name="Event_Type" abbrev="EventTy" type="Enumeration"><description>
+    <table name="Event_Type" abbrev="EventTy" type="Enumeration">
+        <description>
 			Types of events that the application can manage.
-		</description><enumerations><enum>Appointment</enum><enum>Well Examination</enum><enum>Consultation</enum><enum>Sick</enum><enum>Re-Check</enum><enum>Allergy Injection</enum><enum>Immunization</enum><enum>Physical Exam</enum><enum>Seminar</enum><enum>Group Therapy</enum><enum>Hospital Rounds</enum><enum>Surgery</enum><enum>Meeting</enum><enum>Staff Meeting</enum><enum>Vacation</enum><enum>Other</enum></enumerations></table>
+        </description>
+        <enumerations>
+            <enum>Appointment</enum>
+            <enum>Well Examination</enum>
+            <enum>Consultation</enum>
+            <enum>Sick</enum>
+            <enum>Re-Check</enum>
+            <enum>Allergy Injection</enum>
+            <enum>Immunization</enum>
+            <enum>Physical Exam</enum>
+            <enum>Seminar</enum>
+            <enum>Group Therapy</enum>
+            <enum>Hospital Rounds</enum>
+            <enum>Surgery</enum>
+            <enum>Meeting</enum>
+            <enum>Staff Meeting</enum>
+            <enum>Vacation</enum>
+            <enum>Other</enum>
+        </enumerations>
+    </table>
 
-	<table name="Event_Status_Type" abbrev="EvStatusTy" type="Enumeration"><enumerations><enum>Scheduled</enum><enum>In Progress</enum><enum>Complete</enum><enum>Discard</enum></enumerations></table>
+    <table name="Event_Status_Type" abbrev="EvStatusTy" type="Enumeration">
+        <enumerations>
+            <enum>Scheduled</enum>
+            <enum>In Progress</enum>
+            <enum>Complete</enum>
+            <enum>Discard</enum>
+        </enumerations>
+    </table>
 
-	<table name="Event_Status_ChgRsn_Type" abbrev="EvStRChTy" type="Enumeration"><enumerations><enum>Natural Progression of Events</enum><enum>Event Cancelled</enum><enum>No Show</enum><enum>Patient Rescheduled</enum><enum>Org Rescheduled</enum></enumerations></table>
+    <table name="Event_Status_ChgRsn_Type" abbrev="EvStRChTy" type="Enumeration">
+        <enumerations>
+            <enum>Natural Progression of Events</enum>
+            <enum>Event Cancelled</enum>
+            <enum>No Show</enum>
+            <enum>Patient Rescheduled</enum>
+            <enum>Org Rescheduled</enum>
+        </enumerations>
+    </table>
 
-	<table name="Resource_Type" abbrev="RsrcTy" type="Enumeration"><enumerations><enum>Organiztion</enum><enum>People</enum><enum>Asset</enum><enum>Other</enum></enumerations></table>
+    <table name="Resource_Type" abbrev="RsrcTy" type="Enumeration">
+        <enumerations>
+            <enum>Organiztion</enum>
+            <enum>People</enum>
+            <enum>Asset</enum>
+            <enum>Other</enum>
+        </enumerations>
+    </table>
 
 </xdm:container>

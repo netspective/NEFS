@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	
 
-	
+    <table name="Transaction_Type" abbrev="TrnsTy" type="Enumeration">
+        <enumerations>
+            <enum>Billing</enum>
+            <enum>Clinical</enum>
+            <enum>Document</enum>
+            <enum>Financial</enum>
+            <enum>Other</enum>
+        </enumerations>
+    </table>
 
-	<table name="Transaction_Type" abbrev="TrnsTy" type="Enumeration"><enumerations><enum>Billing</enum><enum>Clinical</enum><enum>Document</enum><enum>Financial</enum><enum>Other</enum></enumerations></table>
 
-	
+    <table name="Comm_Trns_Type" abbrev="CommTrnsTy" type="Enumeration">
+        <enumerations>
+            <enum>Telephone</enum>
+            <enum>Fax</enum>
+            <enum>Page</enum>
+            <enum>E-Mail</enum>
+            <enum>Delivery</enum>
+        </enumerations>
+    </table>
 
-	<table name="Comm_Trns_Type" abbrev="CommTrnsTy" type="Enumeration"><enumerations><enum>Telephone</enum><enum>Fax</enum><enum>Page</enum><enum>E-Mail</enum><enum>Delivery</enum></enumerations></table>
-	
-	
 
-	<table name="PhyComm_Trns_Type" abbrev="PhyCommTrnsTy" type="Enumeration"><enumerations><enum>Telephone</enum><enum>Fax</enum><enum>Page</enum><enum>E-Mail</enum><enum>Delivery</enum><enum>Mail</enum></enumerations></table>
-	
-	
+    <table name="PhyComm_Trns_Type" abbrev="PhyCommTrnsTy" type="Enumeration">
+        <enumerations>
+            <enum>Telephone</enum>
+            <enum>Fax</enum>
+            <enum>Page</enum>
+            <enum>E-Mail</enum>
+            <enum>Delivery</enum>
+            <enum>Mail</enum>
+        </enumerations>
+    </table>
 
-	<table name="Directive_Trns_Type" abbrev="DrctvTrnsTy" type="Enumeration"><enumerations><enum>Patient Directive</enum><enum>Physician Directive</enum><enum>Other</enum></enumerations></table>
-	
+
+    <table name="Directive_Trns_Type" abbrev="DrctvTrnsTy" type="Enumeration">
+        <enumerations>
+            <enum>Patient Directive</enum>
+            <enum>Physician Directive</enum>
+            <enum>Other</enum>
+        </enumerations>
+    </table>
+
 </xdm:container>
