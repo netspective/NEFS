@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletContextFileValueSource.java,v 1.3 2003-08-31 15:29:14 shahid.shah Exp $
+ * $Id: ServletContextFileValueSource.java,v 1.4 2003-11-14 19:49:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -112,7 +112,7 @@ public class ServletContextFileValueSource extends AbstractValueSource
         else
         {
             return new GenericValue(root ?
-                         svc.getHttpServlet().getServletContext().getRealPath(null) :
+                         svc.getHttpServlet().getServletContext().getRealPath("") :
                          svc.getHttpServlet().getServletContext().getRealPath(spec.getParams()));
         }
     }
