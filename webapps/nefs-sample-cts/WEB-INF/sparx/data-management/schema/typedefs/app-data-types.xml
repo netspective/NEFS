@@ -83,11 +83,6 @@
             <define dbms="ansi" xdm:replace-template-expressions="no">varchar(${size})</define>
             <define dbms="mssql" xdm:replace-template-expressions="no">varchar(${size})</define>
         </sql-ddl>
-        <presentation>
-            <field.guid32>
-                <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-            </field.guid32>
-        </presentation>
     </data-type>
     <data-type name="address_state" type="text"/>
     <data-type name="address_zip" type="text"/>

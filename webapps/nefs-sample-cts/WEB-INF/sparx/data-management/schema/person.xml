@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-    <table name="Person" abbrev="Per" type="Default">
+    <table name="Person" abbrev="Per" type="Default" class="app.cts.schema.PersonTable">
         <description>Any person (client, staff member, etc.)</description>
         <column name="person_id" primarykey="yes" type="auto-inc" descr="Auto-generated Unique ID for a person within the entire system">
             <presentation>
-                <field.guid32 hidden="yes"/>
+                <field type="guid32" name="${column.name}" hidden="yes"/>
             </presentation>
         </column>
         <column name="name_prefix_id" lookupref="Name_Prefix_Type">
             <presentation>
-                <field.select caption="Name Prefix"/>
+                <field type="select" name="${column.name}" caption="Name Prefix"/>
             </presentation>
         </column>
         <column name="name_prefix" type="text" size="16">
             <presentation>
-                <field.text caption="Other Name Prefix">
-                    <conditional action="display" partner="name_prefix_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                <field type="text" name="${column.name}" caption="Other Name Prefix">
+                    <conditional action="display" partner-field-name="name_prefix_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
             </presentation>
         </column>
         <column name="name_first" type="text" required="yes" size="32">
             <presentation>
-                <field.text caption="First Name"/>
+                <field type="text" name="${column.name}" caption="First Name"/>
             </presentation>
         </column>
         <column name="name_middle" type="text" size="32">
             <presentation>
-                <field.text caption="Middle Name"/>
+                <field type="text" name="${column.name}" caption="Middle Name"/>
             </presentation>
         </column>
         <column name="name_last" type="text" required="yes" size="32">
             <presentation>
-                <field.text caption="Last Name"/>
+                <field type="text" name="${column.name}" caption="Last Name"/>
             </presentation>
         </column>
         <column name="name_suffix" type="text" size="16">
             <presentation>
-                <field.text caption="Suffix" size="4"/>
+                <field type="text" name="${column.name}" caption="Suffix" size="4"/>
             </presentation>
         </column>
         <column name="short_name" type="text" required="dbms" size="42" descr="[first letter of name_first] [name_last]"/>
@@ -46,41 +46,40 @@
         <column name="complete_sortable_name" type="text" required="dbms" size="128" descr="[name_last], [name_first] [name_middle]"/>
         <column name="ssn" indexed="yes" type="text" size="11" descr="Social Security number">
             <presentation>
-                <field.ssn caption="Social Security Number" required="yes" size="11"/>
+                <field type="ssn" name="${column.name}"  caption="Social Security Number" required="yes" size="11"/>
             </presentation>
         </column>
         <column name="gender_id" lookupref="Gender_Type" descr="Gender_Type">
             <presentation>
-                <field.select caption="Gender"/>
+                <field type="select" name="${column.name}"  caption="Gender"/>
             </presentation>
         </column>
         <column name="ethnicity_id" type="enum-set" xdm:param-enumerationTable="Ethnicity_Type" abbrev="eth" descr="The primary ethnicity for this person.  This is a de-normalized field from the Person_Ethnicity table.  Whenever you add/modify a record there, make sure to update this field with the new primary ethnicity.">
             <presentation>
-                <field.select caption="Ethnicity" style="multilist" choices="schema-enum-set:Ethnicity_Type"/>
+                <field type="select" name="${column.name}"  caption="Ethnicity" style="multilist" choices="schema-enum-set:Ethnicity_Type"/>
             </presentation>
         </column>
         <column name="language_id" type="enum-set" xdm:param-enumerationTable="Language_Type" abbrev="lang" descr="The primary language that this person speaks.  This is a de-normalized field from the Person_Language table.  Whenever you add/modify a record there, make sure to update this field with the new primary language.">
             <presentation>
-                <field.select caption="Language" style="multilist" choices="schema-enum-set:Language_Type"/>
+                <field type="select" name="${column.name}" caption="Language" style="multilist" choices="schema-enum-set:Language_Type"/>
             </presentation>
         </column>
         <column name="marital_status_id" lookupref="Marital_Status_Type" descr="Marital status">
             <presentation>
-                <field.select caption="Marital Status"/>
+                <field type="select" name="${column.name}" caption="Marital Status"/>
             </presentation>
         </column>
         <column name="blood_type_id" lookupref="Blood_Type" descr="Blood Type">
             <presentation>
-                <field.select caption="Blood Type"/>
+                <field type="select" name="${column.name}" caption="Blood Type"/>
             </presentation>
         </column>
         <column name="birth_date" type="date" descr="Date of Birth">
             <presentation>
-                <field.date caption="Date of Birth" size="12"/>
+                <field type="date" name="${column.name}" caption="Date of Birth" size="12"/>
             </presentation>
         </column>
         <column name="age" type="integer" descr="Actual age (only required if date_of_birth is NULL or not known)"/>
-
     </table>
     <table name="Person_Address" abbrev="PerAddr" type="Physical_Address" xdm:param-parentRef="Person.person_id">
         <!--<presentation>
@@ -128,26 +127,26 @@
         <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="The actual person record for which classification record is being defined">
             <presentation>
-                <field.guid32 caption="Person ID" required="yes">
+                <field type="guid32" name="${column.name}" caption="Person ID" required="yes">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-                </field.guid32>
+                </field>
             </presentation>
         </column>
         <column name="org_id" lookupref="Org.org_id" descr="The org record for which person's classification record is being defined">
             <presentation>
-                <field.select caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup"/>
+                <field type="select" name="${column.name}" caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup"/>
             </presentation>
         </column>
         <column name="person_type_id" lookupref="Person_Type" descr="This person's classification">
             <presentation>
-                <field.select caption="Person Type"/>
+                <field type="select" name="${column.name}" caption="Person Type"/>
             </presentation>
         </column>
         <column name="person_type" type="text" size="64" descr="This person_id's classification at this org_id (if 'Other' chosen above)">
             <presentation>
-                <field.text caption="Other Person Type" size="16">
-                    <conditional action="display" partner="person_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                <field type="text" name="${column.name}" caption="Other Person Type" size="16">
+                    <conditional action="display" partner-field-name="person_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
             </presentation>
         </column>
         <!--<presentation>
@@ -179,21 +178,21 @@
         <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="Person ID for whose ethnicity is being defined">
             <presentation>
-                <field.guid32 caption="Person ID" required="yes">
+                <field type="guid32" name="${column.name}" caption="Person ID" required="yes">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-                </field.guid32>
+                </field>
             </presentation>
         </column>
         <column name="ethnicity_id" lookupref="Ethnicity_Type" required="yes" descr="The ethnicity of this person">
             <presentation>
-                <field.select caption="Ethnicity"/>
+                <field type="select" name="${column.name}" caption="Ethnicity"/>
             </presentation>
         </column>
         <column name="ethnicity" type="text" size="64" descr="Descriptive name of ethnicity if choosing 'Other' for the ethnicity field above">
             <presentation>
-                <field.text caption="Other Ethnicity Type">
-                    <conditional action="display" partner="ethnicity_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                <field type="text" name="${column.name}" caption="Other Ethnicity Type">
+                    <conditional action="display" partner-field-name="ethnicity_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
             </presentation>
         </column>
         <!--<presentation>
@@ -231,44 +230,44 @@
         <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="The actual person record for which identifier is being defined">
             <presentation>
-                <field.guid32 caption="Person ID" required="yes">
+                <field type="guid32" name="${column.name}" caption="Person ID" required="yes">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-                </field.guid32>
+                </field>
             </presentation>
         </column>
         <column name="org_id" lookupref="Org.org_id" descr="The org record for which person's identifier is being defined">
             <presentation>
-                <field.guid32 caption="Org ID" required="yes"/>
+                <field type="guid32" name="${column.name}" caption="Org ID" required="yes"/>
             </presentation>
         </column>
         <column name="id_type_id" lookupref="Org_PersonId_Src_Type.system_id" descr="The type of identifier">
             <presentation>
-                <field.select caption="Identifier Type"/>
+                <field type="select" name="${column.name}" caption="Identifier Type"/>
             </presentation>
         </column>
         <column name="id_type" type="text" size="64" descr="The type of identifier, if choosing 'Other' above">
             <presentation>
-                <field.text caption="Other Identifier Type" size="16"/>
+                <field type="text" name="${column.name}" caption="Other Identifier Type" size="16"/>
             </presentation>
         </column>
         <column name="identifier" type="text" size="64" descr="The actual identification for given type, person_id, and org_id">
             <presentation>
-                <field.text caption="Identifier Value" size="16"/>
+                <field type="text" name="${column.name}" caption="Identifier Value" size="16"/>
             </presentation>
         </column>
         <column name="source_type_id" lookupref="Org_PersonId_Src_Type.system_id" descr="Who issued this identifier?  E.g. US Federal Government, US State Government, Independent Body, etc">
             <presentation>
-                <field.select caption="Identifier Source"/>
+                <field type="select" name="${column.name}" caption="Identifier Source"/>
             </presentation>
         </column>
         <column name="source_type" type="text" size="64" descr="The name of the source of this identifier">
             <presentation>
-                <field.text caption="Other Id Source" size="16"/>
+                <field type="text" name="${column.name}" caption="Other Id Source" size="16"/>
             </presentation>
         </column>
         <column name="notes" type="text" size="1024" descr="Any notes associated with this identifier">
             <presentation>
-                <field.memo caption="Notes"/>
+                <field type="memo" name="${column.name}" caption="Notes"/>
             </presentation>
         </column>
         <!--<presentation>
@@ -299,21 +298,21 @@
         <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="Person whose language is being defined">
             <presentation>
-                <field.guid32 caption="Person ID" required="yes">
+                <field type="guid32" name="${column.name}" caption="Person ID" required="yes">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-                </field.guid32>
+                </field>
             </presentation>
         </column>
         <column name="language_id" lookupref="Language_Type" required="yes" descr="The language for this person">
             <presentation>
-                <field.select caption="Language Type"/>
+                <field type="select" name="${column.name}" caption="Language Type"/>
             </presentation>
         </column>
         <column name="language" type="text" size="64" descr="Descriptive name of an alternate language if choosing 'Other' for the field above">
             <presentation>
-                <field.text caption="Other Language Type">
-                    <conditional action="display" partner="language_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                <field type="text" name="${column.name}" caption="Other Language Type">
+                    <conditional action="display" partner-field-name="language_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
             </presentation>
         </column>
         <!--<presentation>
@@ -338,29 +337,29 @@
         <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom login information is specified">
             <presentation>
-                <field.guid32 caption="Person ID" required="yes">
+                <field type="guid32" name="${column.name}" caption="Person ID" required="yes">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-                </field.guid32>
+                </field>
             </presentation>
         </column>
         <column name="user_id" type="text" size="32" unique="yes" descr="The login ID for the person in this system">
             <presentation>
-                <field.text caption="Login Name" required="yes"/>
+                <field type="text" name="${column.name}" caption="Login Name" required="yes"/>
             </presentation>
         </column>
         <column name="password" type="text" size="16" descr="The login password">
             <presentation>
-                <field.text caption="Password" size="16" mask-entry="yes"/>
+                <field type="text" name="${column.name}" caption="Password" size="16" mask-entry="yes"/>
             </presentation>
         </column>
         <column name="login_status" lookupref="Person_Login_Status" required="yes" descr="Whether or not login is actually allowed at this time">
             <presentation>
-                <field.select caption="Login Status"/>
+                <field type="select" name="${column.name}" caption="Login Status"/>
             </presentation>
         </column>
         <column name="quantity" type="integer" descr="The number of times login is allowed from different sessions">
             <presentation>
-                <field.integer caption="Number of Simultaneous Logins" min="1"/>
+                <field type="integer" name="${column.name}" caption="Number of Simultaneous Logins" min="1"/>
             </presentation>
         </column>
         <!--<presentation>
@@ -373,7 +372,7 @@
                 <field.separator heading="Login Information"/>
                 <field.table-column column="user_id"/>
                 <field.table-column column="password"/>
-                <field.text name="password_verify" caption="Verify Password" size="16" mask-entry="yes"/>
+                <field type="text" name="password_verify" caption="Verify Password" size="16" mask-entry="yes"/>
                 <field.table-column column="login_status"/>
                 <field.table-column column="quantity"/>
             </dialog>
@@ -409,14 +408,14 @@
         <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom role information is specified">
             <presentation>
-                <field.guid32 caption="Person ID">
+                <field type="guid32" name="${column.name}" caption="Person ID">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-                </field.guid32>
+                </field>
             </presentation>
         </column>
         <column name="role_name_id" lookupref="Org_Role_Declaration.role_name_id" indexed="yes" required="yes" descr="The title of this role">
             <presentation>
-                <field.guid32 caption="Role Name"/>
+                <field type="guid32" name="${column.name}" caption="Role Name"/>
             </presentation>
         </column>
         <!--<presentation>
@@ -464,42 +463,42 @@
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom this medical license record is stored"/>
         <column name="org_id" lookupref="Org.org_id" descr="The org record for which person's medical license record is being defined">
             <presentation>
-                <field.guid32 caption="Org ID"/>
+                <field type="guid32" name="${column.name}" caption="Org ID"/>
             </presentation>
         </column>
         <column name="license_type_id" lookupref="Person_License_Type" descr="The type of license this record is for">
             <presentation>
-                <field.select caption="License Type"/>
+                <field type="select" name="${column.name}" caption="License Type"/>
             </presentation>
         </column>
         <column name="license_type" type="text" size="64" descr="The type of license, if 'Other' in field above">
             <presentation>
-                <field.text caption="Other License Type" size="32"/>
+                <field type="text" name="${column.name}" caption="Other License Type" size="32"/>
             </presentation>
         </column>
         <column name="license_num" type="text" size="64" descr="The license number">
             <presentation>
-                <field.text caption="License Number" size="32"/>
+                <field type="text" name="${column.name}" caption="License Number" size="32"/>
             </presentation>
         </column>
         <column name="expiration_date" type="date" descr="The date when the license expires">
             <presentation>
-                <field.date caption="Expiration Date"/>
+                <field type="date" name="${column.name}" caption="Expiration Date"/>
             </presentation>
         </column>
         <column name="license_state_id" lookupref="US_State_Type" descr="The US state this license was issued in or is valid for">
             <presentation>
-                <field.select caption="License State"/>
+                <field type="select" name="${column.name}" caption="License State"/>
             </presentation>
         </column>
         <column name="license_state" type="text" size="64" descr="The location where this license was issued or is valid for, in case it's not a US state">
             <presentation>
-                <field.text caption="Other License State" size="16"/>
+                <field type="text" name="${column.name}" caption="Other License State" size="16"/>
             </presentation>
         </column>
         <column name="speciality_type_id" lookupref="Staff_Speciality_Type" descr="The specific speciality of this staff member if 'Speciality' is chosen for license_id above">
             <presentation>
-                <field.select caption="Speciality"/>
+                <field type="select" name="${column.name}" caption="Speciality"/>
             </presentation>
         </column>
         <!--<presentation>

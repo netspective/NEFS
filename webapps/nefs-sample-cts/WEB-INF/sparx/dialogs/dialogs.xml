@@ -81,21 +81,23 @@
         <!--
            This dialog is for adding/updating/deleting a subject's journal entry
         -->
-        <dialog name="journal" bind-table="Person_Note" class="app.cts.form.person.JournalDialogHandler" hide-hints-until-focus="yes" auto-bind-fields-to-columns="yes">
+        <dialog name="journal" type="table-dialog" bind-table="Person_Note"  hide-hints-until-focus="yes" auto-bind-fields-to-columns="yes">
             <frame heading="Journal Entry"/>
-            <field type="text" caption="Subject ID" name="person_id" hidden="yes" default="authenticated-user:user-id"  bind-column="parent_id"/>
+            <field type="text" caption="Subject ID" name="person_id" hidden="yes" default="authenticated-user:person_id"  bind-column="parent_id"/>
             <field type="text" caption="Subject Name" name="name" read-only="yes" default="authenticated-user:complete_sortable_name" required="yes"/>
             <field type="date-time" caption="Date/Time" name="date" hidden="no" default="now" read-only="yes" bind-column=""/>
             <field type="memo" caption="Journal Entry" name="journal" required="yes" bind-column="notes"/>
             <field type="integer" caption="Note Type ID" name="note_type_id" hidden="yes" default="0" bind-column="note_type_id" />
         </dialog>
 
-        <dialog name="login_info" bind-table="person_login">
+        <dialog name="login_info" bind-table="person_login" >
             <frame heading="Login Information"/>
             <field type="text" caption="Login ID" name="login_id" default="authenticated-user:user-id" read-only="yes" required="yes"/>
             <field type="text" mask-entry="yes" caption="Old Password" name="old_password"  required="yes"/>
             <field type="text" mask-entry="yes" caption="New Password" name="new_password1" required="yes"/>
             <field type="text" mask-entry="yes" caption="Verify New Password" name="new_password2" required="yes"/>
+            <on-execute class="app.cts.form.person.PasswordDialogHandler"/>
+            <listener class="app.cts.form.person.PasswordDialogHandler"/>
         </dialog>
         <!--
            This dialog is for adding/updating/deleting a subject's profile information

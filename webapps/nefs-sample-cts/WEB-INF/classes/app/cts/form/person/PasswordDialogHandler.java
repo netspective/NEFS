@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PasswordDialogHandler.java,v 1.1 2003-10-12 05:15:32 aye.thu Exp $
+ * $Id: PasswordDialogHandler.java,v 1.2 2003-10-13 05:51:19 aye.thu Exp $
  */
 package app.cts.form.person;
 
@@ -49,6 +49,8 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogValidationContext;
 import com.netspective.sparx.form.listener.DialogValidateListener;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.security.Crypt;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -56,6 +58,7 @@ import java.sql.SQLException;
 
 import auto.dcb.subject.LoginInfoContext;
 import auto.dal.db.dao.person.PersonLoginTable;
+import auto.dal.db.dao.PersonTable;
 import auto.dal.db.DataAccessLayer;
 import app.cts.AppAuthenticatedUser;
 
@@ -64,6 +67,10 @@ import app.cts.AppAuthenticatedUser;
  */
 public class PasswordDialogHandler extends DialogExecuteDefaultHandler implements DialogValidateListener
 {
+    /**
+     * Handles the validation of the password
+     * @param dvc
+     */
     public void validateDialog(DialogValidationContext dvc)
     {
         LoginInfoContext lic = new LoginInfoContext(dvc.getDialogContext());
@@ -71,9 +78,12 @@ public class PasswordDialogHandler extends DialogExecuteDefaultHandler implement
         String newPassword1 = lic.getNewPassword1State().getValue().getTextValue();
         String newPassword2 = lic.getNewPassword2State().getValue().getTextValue();
         AppAuthenticatedUser user = (AppAuthenticatedUser) dvc.getDialogContext().getAuthenticatedUser();
-        if (!oldPassword.equals(user.getEncryptedPassword()))
+
+        String encryptedOldPassword = Crypt.crypt(AppAuthenticatedUser.PASSWORD_ENCRYPTION_SALT, oldPassword);
+        if (!encryptedOldPassword.equals(user.getEncryptedPassword()))
         {
             // the old password doesnt match up
+            System.out.println(user.getEncryptedPassword());
             dvc.addError("Old password value is not correct.");
             return;
         }
@@ -86,18 +96,44 @@ public class PasswordDialogHandler extends DialogExecuteDefaultHandler implement
         }
     }
 
+    /**
+     * Handles the update of the password
+     * @param writer
+     * @param dc
+     * @throws IOException
+     * @throws DialogExecuteException
+     */
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         LoginInfoContext lic = new LoginInfoContext(dc);
+
         String newPassword = lic.getNewPassword1State().getValue().getTextValue();
 
-        PersonLoginTable plTable = DataAccessLayer.getInstance().getPersonTable().getPersonLoginTable();
+        PersonTable personTable = DataAccessLayer.getInstance().getPersonTable();
+        PersonTable.Record personRecord = personTable.createRecord();
+        personRecord.setPersonId(lic.getLoginId());
+
+        PersonLoginTable plTable = personTable.getPersonLoginTable();
         ConnectionContext cc = null;
         try
         {
             cc = dc.getConnection(null, true);
-            DataAccessLayer.getInstance().getPersonTable().getPersonLoginTable().getParentRecordsByPersonId()
-            //plTable.getRecordByPrimaryKey(cc, );
+            PersonLoginTable.Records loginRecords = plTable.getParentRecordsByPersonId(personRecord, cc);
+            if (loginRecords != null)
+            {
+                PersonLoginTable.Record loginRecord = loginRecords.get(0);
+                loginRecord.setPassword(new GenericValue(newPassword));
+                loginRecord.update(cc);
+                cc.commitAndClose();
+
+                AppAuthenticatedUser user = (AppAuthenticatedUser) dc.getAuthenticatedUser();
+                user.setEncryptedPassword(newPassword);
+                dc.setAuthenticatedUser(user);
+            }
+            else
+            {
+                throw new DialogExecuteException("Failed to find the recrod for updating login information.");
+            }
 
         }
         catch (Exception e)

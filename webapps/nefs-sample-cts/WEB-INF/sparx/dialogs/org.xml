@@ -5,7 +5,7 @@
         Organization related dialogs
      -->
     <dialogs package="org">
-        <dialog name="address" class="app.cts.form.OrgAddressDialog">
+        <dialog name="address" >
             <frame heading="create-dialog-perspective-heading: Address"/>
             <field type="separator" heading="Contact Information"/>
             <field type="text" name="line1" caption="Mailing Address" required="yes" size="64"/>
@@ -92,17 +92,33 @@
 			<include-template id="org.service-information"/>
 		</dialog-->
 
-        <dialog name="person_registration" retain-params="*" >
-            <frame heading="Import Organization Member(s)"/>
-            <field type="integer" name="cr_person_id" hidden="yes" default="session:person_id"/>
-            <field type="integer" name="cr_org_id" hidden="yes" default="session:organization"/>
-            <field type="integer" name="org_id" hidden="yes" default="request:org_id"/>
+        <dialog type="table-dialog" name="employee" retain-params="*" bind-table="person" connection-share-type="request">
+            <frame heading="create-dialog-perspective-heading:Employee"/>
 
-            <!-- allow import from parent org only -->
-            <field type="text" name="org_name" caption="Organization" read-only="no" default="query:org.parent-org"/>
-            <field type="select" name="rel_person_id" style="multidual" caption="Contacts" required="yes"
-                choices="query:org.selected-org-person-list" default="query:org.member-persons">
-            </field>
+            <field type="text" name="org_id" hidden="no" default="request:org_id"
+                bind-column="PersonOrg_Relationship.rel_entity_id"/>
+
+            <field type="separator" heading="Employee Profile"/>
+            <field type="text" name="name_last" size="16" caption="Last Name" required="yes" bind-column="person.name_last"/>
+            <field type="text" name="name_first" size="16" caption="First Name" required="yes" bind-column="person.name_first"/>
+            <field type="text" name="name_middle" size="2" caption="MI" bind-column="person.name_middle" />
+            <field type="text" name="name_suffix" size="4" caption="Suffix" bind-column="person.name_suffix" />
+            <field type="date" caption="Date of Birth" name="date_of_birth" size="12" bind-column="birthdate"/>
+            <field type="ssn" caption="Social Security Number"  name="ssn" required="yes" size="11" bind-column="ssn"/>
+			<field type="select" name="gender_id" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"
+                required="yes" bind-column="person.gender_id"/>
+			<field type="select" name="marital_status_id" caption="Marital Status"
+                choices="schema-enum:Marital_Status_Type" bind-column="person.marital_status_id"/>
+
+            <field type="separator" heading="Employment Information"/>
+            <field type="text" caption="Employee Number" name="employee_number" bind-column="employees" />
+            <field type="text" caption="Job Title" name="job_title"/>
+
+            <!-- The following information will be handled explicitly in the handler class-->
+            <field type="phone"  name="phone" caption="Telephone"/>
+            <field type="e-mail" name="email" caption="E-Mail"/>
+            <on-execute class="app.cts.form.person.PersonDialogHandler"/>
+
             <!--director>
                 <next-actions>
                     <choices>

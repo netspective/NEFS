@@ -5,63 +5,53 @@
         <column name="org_id" type="auto-inc" primarykey="yes" descr="Unique organization record identification (in entire system) for internal use"/>
         <column name="org_code" required="yes" type="text" size="64" descr="Unique org identification within owner organization (basically, an account number)">
             <presentation>
-                <field.text caption="Org Code" size="16"/>
+                <field type="text" name="${column.name}" caption="Org Code" size="16"/>
             </presentation>
         </column>
         <column name="org_name" type="text" size="128" required="yes" descr="Name of organization">
             <presentation>
-                <field.text caption="Name" size="16"/>
+                <field type="text" name="${column.name}" caption="Name" size="16"/>
             </presentation>
         </column>
         <column name="org_abbrev" type="text" size="24" descr="Abbreviated name of organization">
             <presentation>
-                <field.text caption="Abbreviation" size="16"/>
+                <field type="text" name="${column.name}" caption="Abbreviation" size="16"/>
             </presentation>
         </column>
         <column name="employees" type="integer" descr="A round figure describing number of employees">
             <presentation>
-                <field.integer caption="Num. Employees" size="8"/>
+                <field type="integer" name="${column.name}" caption="Num. Employees" size="8"/>
             </presentation>
         </column>
         <column name="business_start_time" type="time" descr="The time of day when this org opens for business each working day">
             <presentation>
-                <field.time caption="Business Day Start Time" size="12"/>
+                <field type="time" name="${column.name}" caption="Business Day Start Time" size="12"/>
             </presentation>
         </column>
         <column name="business_end_time" type="time" descr="The time of day when this org closes for business each working day">
             <presentation>
-                <field.time caption="Business Day End Time" size="12"/>
+                <field type="time" name="${column.name}" caption="Business Day End Time" size="12"/>
             </presentation>
         </column>
         <column name="time_zone" type="text" size="10" descr="Time zone that the organization operates in">
             <presentation>
-                <field.text caption="Time Zone" size="8" hint="descr"/>
+                <field type="text" name="${column.name}" caption="Time Zone" size="8" hint="descr"/>
             </presentation>
         </column>
     </table>
     <table name="Org_Address" abbrev="OrgAdr" type="Physical_Address" xdm:param-parentRef="Org.org_id">
-        <!--presentation>
-            <dialog name="orgAddressTableDialog" retain-params="parent_id,org_id">
-                <field.table-column column="cr_sess_id"/>
-                <field.table-column column="cr_stamp"/>
-                <field.table-column column="rec_stat_id"/>
-                <field.table-column column="system_id"/>
-                <field.table-column column="parent_id" caption="Org ID"/>
-                <field.separator heading="Address Classification"/>
-                <field.table-column column="address_name"/>
-                <field.table-column column="mailing"/>
-                <field.table-column column="address_type_id"/>
-                <field.separator heading="Address Data"/>
-                <field.table-column column="line1"/>
-                <field.table-column column="line2"/>
-                <field.table-column column="city"/>
-                <field.table-column column="county"/>
-                <field.table-column column="state_id"/>
-                <field.table-column column="state" hint="The state, if not within the USA/Canada"/>
-                <field.table-column column="zip"/>
-                <field.table-column column="country"/>
+        <presentation>
+            <dialog class="com.netspective.sparx.form.schema.TableDialog"
+                    name="${table.name}"
+                    bind-table="${table.schema.name}.${table.name}"
+                    auto-bind-fields-to-columns="yes"
+                    allow-insert-if-edit-pk-not-found="yes"
+                    primary-key-value-for-edit-or-delete="authenticated-user:user-id">
+                <frame heading="create-dialog-perspective-heading:Organization Address"/>
+
+                <data-type-presentation columns="*"/>
             </dialog>
-        </presentation-->
+        </presentation>
     </table>
     <table name="Org_Note" abbrev="ONote" type="Note" xdm:param-parentRef="Org.org_id" xdm:param-noteTypeEnum="Org_Note_Type">
         <!--presentation>
@@ -84,21 +74,21 @@
         <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="org_id" parentref="Org.org_id" descr="The actual org record for which classification record is being defined">
             <presentation>
-                <field.guid32 caption="Org ID" required="yes">
+                <field type="guid32" name="${column.name}" caption="Org ID" required="yes">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-                </field.guid32>
+                </field>
             </presentation>
         </column>
         <column name="org_type_id" lookupref="Org_Type" descr="This org's classification">
             <presentation>
-                <field.select/>
+                <field type="select" name="${column.name}"/>
             </presentation>
         </column>
         <column name="org_type" type="text" size="64" descr="This org's classification if 'Other' chosen above">
             <presentation>
-                <field.text size="16">
-                    <conditional action="display" partner="org_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                <field type="text" name="${column.name}" size="16">
+                    <conditional action="display" partner-field-name="org_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
             </presentation>
         </column>
         <!--presentation>
@@ -132,19 +122,19 @@
         <column name="org_id" parentref="Org.org_id"/>
         <column name="identifier_type_id" lookupref="Org_Identifier_Type" descr="The type of ID number to be stored in this record">
             <presentation>
-                <field.select caption="Identifier Type"/>
+                <field type="select" name="${column.name}" caption="Identifier Type"/>
             </presentation>
         </column>
         <column name="identifier_type" type="text" size="64" descr="The explicit name of the ID number type, if choosing 'Other' in the field above">
             <presentation>
-                <field.text caption="Other Identifier Type" size="16">
-                    <conditional action="display" partner="identifier_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                <field type="text" name="${column.name}" caption="Other Identifier Type" size="16">
+                    <conditional action="display" partner-field-name="identifier_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
             </presentation>
         </column>
         <column name="identifier" type="text" size="256">
             <presentation>
-                <field.text caption="Identifier Name" size="16"/>
+                <field type="text" name="${column.name}" caption="Identifier Name" size="16"/>
             </presentation>
         </column>
         <!--presentation>
@@ -164,21 +154,21 @@
         <column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for each row"/>
         <column name="org_id" parentref="Org.org_id" descr="The organization being described">
             <presentation>
-                <field.select caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
+                <field type="select" name="${column.name}" caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-                </field.select>
+                </field>
             </presentation>
         </column>
         <column name="industry_type_id" lookupref="Org_Industry_Type" descr="The industry organization belongs in">
             <presentation>
-                <field.select caption="Industry Type"/>
+                <field type="select" name="${column.name}" caption="Industry Type"/>
             </presentation>
         </column>
         <column name="industry_type" type="text" size="64" descr="The full name of the org's industry if the field above contains 'Other'">
             <presentation>
-                <field.text caption="Other Industry Type" size="16">
-                    <conditional action="display" partner="org_industry_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                </field.text>
+                <field type="text" name="${column.name}" caption="Other Industry Type" size="16">
+                    <conditional action="display" partner-field-name="org_industry_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
             </presentation>
         </column>
         <!--presentation>
@@ -215,7 +205,7 @@
             <enum>Our Firm</enum>
             <enum>Client</enum>
             <enum>Vendor</enum>
-            <enum>Partner</enum>
+            <enum>partner-field-name</enum>
             <enum id="1000">Ancestor of Org</enum>
             <enum id="1010">Parent of Org</enum>
             <enum id="1020">Sibling of Org</enum>
@@ -246,17 +236,17 @@
         <column name="role_name_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="org_id" parentref="Org.org_id" required="yes" descr="The org for which this role is defined">
             <presentation>
-                <field.select caption="Org ID" choices="query:org.get-all-orgs" style="popup"/>
+                <field type="select" name="${column.name}" caption="Org ID" choices="query:org.get-all-orgs" style="popup"/>
             </presentation>
         </column>
         <column name="role_type_id" lookupref="Person_Role_Type" indexed="yes" required="dbms" descr="What type of role this is">
             <presentation>
-                <field.select caption="Role Type" required="yes"/>
+                <field type="select" name="${column.name}" caption="Role Type" required="yes"/>
             </presentation>
         </column>
         <column name="role_name" type="text" size="255" required="yes" descr="The role name">
             <presentation>
-                <field.text caption="Role Name" size="32"/>
+                <field type="text" name="${column.name}" caption="Role Name" size="32"/>
             </presentation>
         </column>
         <index name="Org_Role_Declaration_unq" columns="role_type_id,role_name" unique="yes"/>

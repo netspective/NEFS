@@ -43,9 +43,8 @@
     <navigation-tree name="app" default="yes" >
         <page caption="Home" name="home" heading="Welcome to CTS" title="CTS - Clinical Trial Management System" default="yes">
             <!--page caption="Summary" name="summary" heading="authenticated-user:complete_sortable_name" title="Welcome to CTS" -->
-                <panels style="tabbed" height="350" width="400">
-                    <frame heading="Welcome to CTS"/>
-                    <panel  type="html" view="all" test="a" height="300">
+                <panels >
+                    <panel  type="html" view="all" test="a" >
                         <frame heading="Welcome"/>
                         <body>
                             <![CDATA[
@@ -56,10 +55,10 @@
                             ]]>
                         </body>
                     </panel>
-                    <panel type="command"  command="query,cts.active-studies-by-person,-,-,-,record-viewer-compressed" >
+                    <panel type="command"  command="query,cts.active-studies-by-person,-,-,-,report-compressed" >
                         <frame heading="Studies"/>
                     </panel>
-                    <panel type="command"  command="query,cts.active-orgs-by-person,-,-,-,record-editor-compressed" >
+                    <panel type="command"  command="query,cts.active-orgs-by-person,-,-,-,report-compressed" >
                         <frame heading="Organizations"/>
                     </panel>
                     <!--panel type="command" command="statement,person.user-journal-report,-,-,report"/>
@@ -91,7 +90,7 @@
                     </panel>
                     <panel type="command" command="query,cts.contact-info,-,-,-,record-viewer" width="400"/>
                 </panels>
-                <page name="add" caption="Add Contact Info" command="dialog,cts.person-contact-info,add" hidden="yes"
+                <page name="add" caption="Add Contact Info" command="dialog,db.person-contact,add" hidden="yes"
                 require-request-param="person_id"  />
                 <page name="edit" caption="Edit Contact Info" command="dialog,cts.person-contact-info,edit"   hidden="yes"
                 require-request-param="id" retain-params="id" />
@@ -117,29 +116,42 @@
                 <page name="add_subject" caption="Create Subject" heading="Create a new subject" title="CTS - Create Study Subject"
                     command="dialog,subject.profile,add" hidden="yes"/>
             </page>
-            <page caption="Organization" name="org" heading="Organizations" title="CTS - Clinical Trial Management System">
+            <page caption="Organization" name="org" heading="Organizations" title="CTS - Clinical Trial Management System" hidden="yes">
                 <panels>
-                    <panel type="command" command="query,cts.get-org-info-by-id,-,-,-,record-editor" />
-                    <panel type="command" command="query,cts.get-org-addresses-by-id,-,-,-,report" />
+                    <panel type="command" command="query,cts.get-org-info-by-id,-,-,-,report" />
+                    <panel type="command" command="query,cts.get-org-addresses-by-id,-,-,-,record-editor" />
+                    <panel type="command" command="query,cts.get-persons-by-org-id,-,-,-,record-editor" />
                 </panels>
-                <page name="add" caption="Add" heading="Add a new organization" title="CTS - Add Organization" command="dialog,org.profile,add"/>
-                <page name="edit" caption="Edit" heading="Edit organization" title="CTS - Edit Organization" command="dialog,org.profile,edit"/>
-                <page name="delete" caption="Delete" heading="Delete organization" title="CTS - Delete Organization" command="dialog,org.profile,delete"/>
+                <page name="add" caption="Add" heading="Add a new organization" title="CTS - Add Organization" hidden="yes" command="dialog,org.profile,add"/>
+                <page name="edit" caption="Edit" heading="Edit organization" title="CTS - Edit Organization" hidden="yes" command="dialog,org.profile,edit"/>
+                <page name="delete" caption="Delete" heading="Delete organization" title="CTS - Delete Organization" hidden="yes" command="dialog,org.profile,delete"/>
+                <page name="add_employee" caption="Add new employee" heading="Organization - Add new employee"
+                    title="Organization - Add new employee" hidden="yes" command="dialog,org.employee,add"/>
+                <page name="delete_employee" caption="Delete employee" heading="Organization - Delete employee"
+                    title="Organization - Delete employee" hidden="yes" command="dialog,org.employee,delete"/>
+                <page name="address" caption="Address" heading="Organization Address">
+                    <page name="add" caption="Add Organization Address" heading="Add Organization Address" title="Add Organization Address"
+                        hidden="yes" command="dialog,db.Org_Address,add"/>
+                    <page name="edit" caption="Edit Organization Address" heading="Edit Organization Address" title="Edit Organization Address"
+                        hidden="yes" command="dialog,db.Org_Address,edit"/>
+                    <page name="delete" caption="Delete Organization Address" heading="Delete Organization Address" title="Delete Organization Address"
+                        hidden="yes" command="dialog,db.Org_Address,delete"/>
+                </page>
             </page>
         </page>
         <page caption="Search" name="search" heading="Search" title="CTS">
             <panels>
                 <panel type="html">
+                    <frame heading="Search"/>
                 <body>
                     <![CDATA[
                     <div align="left" style="padding:10">
                      This is where you can search for studies and other related information such as doctors, subjects, and organizations.
                     <ul>
-                        <li><b><a href="subject">Subject</a></b>: Search for study subjects </li>
-                        <li><b><a href="doctor">Doctor</a></b>: Search for doctors </li>
-                        <li><b><a href="administrator">Administrator</a></b>: Search for administrative personnel</li>
-                        <li><b><a href="organizations">Organizations</a></b>: Search for organizations</li>
-                        <li><b><a href="studies">Studies</a></b>: Search for studies</li>
+                        <li><b><a href="search/subjects">Subject</a></b>: Search for study subjects </li>
+                        <li><b><a href="search/physicians">Physician</a></b>: Search for doctors </li>
+                        <li><b><a href="search/organizations">Organizations</a></b>: Search for organizations</li>
+                        <li><b><a href="search/studies">Studies</a></b>: Search for studies</li>
                     </ul>
                     </div>
                     ]]>
@@ -147,9 +159,8 @@
                 </panel>
             </panels>
 
-            <page caption="Subjects" name="subjects" heading="Search for subjects" command="query-defn,org,-,searchDialog"/>
-            <page caption="Doctors" name="doctors" heading="Search for doctors" command="query-defn,org,-,searchDialog"/>
-            <page caption="Administrators" name="adminstrators" heading="Search for administrators" command="query-defn,org,-,searchDialog"/>
+            <page caption="Subjects" name="subjects" heading="Search for subjects" command="query-defn,person,-,searchSubjectDialog"/>
+            <page caption="Physicians" name="physicians" heading="Search for physicians" command="query-defn,person,-,searchPhysicianDialog"/>
             <page caption="Organizations" name="organizations" heading="Search for organizations" command="query-defn,org,-,searchDialog"/>
             <page name="search" caption="Studies" heading="Search for studies" title="CTS - Search Studies" default="yes" command="query-defn,study,-,searchDialog"/>
         </page>

@@ -23,7 +23,7 @@
 
 	<table name="Language_Type" abbrev="LngTy" type="Enumeration"><enumerations><enum>English</enum><enum>Spanish</enum><enum>French</enum><enum>German</enum><enum>Italian</enum><enum>Chinese</enum><enum>Japanese</enum><enum>Korean</enum><enum>Vietnamese</enum><enum>Other</enum></enumerations></table>
 
-	<table name="Marital_Status_Type" abbrev="MarStTy" type="Enumeration"><enumerations><enum>Unknown</enum><enum>Single</enum><enum>Married</enum><enum>Partner</enum><enum>Legally Separated</enum><enum>Divorced</enum><enum>Widowed</enum><enum>Not applicable</enum></enumerations></table>
+	<table name="Marital_Status_Type" abbrev="MarStTy" type="Enumeration"><enumerations><enum>Unknown</enum><enum>Single</enum><enum>Married</enum><enum>partner-field-name</enum><enum>Legally Separated</enum><enum>Divorced</enum><enum>Widowed</enum><enum>Not applicable</enum></enumerations></table>
 
 	<table name="Name_Prefix_Type" abbrev="NmPreTy" type="Enumeration"><enumerations><enum>Mr.</enum><enum>Ms.</enum><enum>Mrs.</enum></enumerations></table>
 
