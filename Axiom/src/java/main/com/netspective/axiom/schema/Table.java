@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.10 2003-10-26 14:33:13 aye.thu Exp $
+ * $Id: Table.java,v 1.11 2003-11-07 17:31:16 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -58,8 +58,9 @@ import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateConsumer;
 
-public interface Table extends QueriesNameSpace
+public interface Table extends QueriesNameSpace, TemplateConsumer
 {
     /**
      * Returns the schema that owns this table.

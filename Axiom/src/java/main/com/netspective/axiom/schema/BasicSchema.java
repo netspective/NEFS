@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.13 2003-10-17 15:58:02 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.14 2003-11-07 17:31:16 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -66,6 +66,7 @@ import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.Columns;
+import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TablesCollection;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
@@ -91,6 +92,11 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     static
     {
         XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
+
+        // these template consumers use dynamic namespaces but we need XDM to be able to document them at runtime
+        // so we need to tell it that certain classes are consumers
+        TemplateCatalog.registerNamespaceForClass("/schema/(.*)/data-type", BasicColumn.ATTRNAME_TYPE, BasicColumn.class, true, true);
+        TemplateCatalog.registerNamespaceForClass("/schema/(.*)/table-type", BasicTable.ATTRNAME_TYPE, BasicTable.class, true, true);
     }
 
     private SqlManager sqlManager;

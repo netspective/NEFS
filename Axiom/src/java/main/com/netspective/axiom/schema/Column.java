@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Column.java,v 1.7 2003-10-17 15:58:02 shahid.shah Exp $
+ * $Id: Column.java,v 1.8 2003-11-07 17:31:16 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -55,8 +55,9 @@ import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateElement;
+import com.netspective.commons.xml.template.TemplateConsumer;
 
-public interface Column
+public interface Column extends TemplateConsumer
 {
     /**
      * Constructs a column value object instance for storage of this column's data.

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.17 2003-10-29 13:26:31 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.18 2003-11-07 17:31:17 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -63,7 +63,6 @@ import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.column.ForeignKeyPlaceholderColumn;
-import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.schema.Rows;
