@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.17 2003-04-13 02:37:06 shahid.shah Exp $
+  * $Id: console.xml,v 1.18 2003-04-13 16:43:44 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -118,9 +118,15 @@
 		        <page name="sql-comparisons" caption="SQL Comparisons"/>
 	        </page>
 	        <page name="schema" caption="Schemas">
-                <page name="catalog" caption="Catalog" heading="Schemas">
+                <page name="structure" caption="Structure" heading="Schema Structure" retain-params="schema-table">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.schema.SchemaStructurePanel"/>
+                    </panels>
+                </page>
+                <page name="detail" caption="Documentation" heading="Table Documentation" retain-params="schema-table">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableAncestorsPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel"/>
                     </panels>
                 </page>
 	        </page>
