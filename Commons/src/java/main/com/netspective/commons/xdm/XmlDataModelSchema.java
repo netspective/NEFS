@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.28 2003-07-09 19:39:05 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.29 2003-08-06 04:53:05 aye.thu Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1562,7 +1562,12 @@ public class XmlDataModelSchema
                 {
                     ValueSource vs = ValueSources.getInstance().getValueSourceOrStatic(value);
                     if(vs == null)
-                        pc.addWarning("Unable to create ValueSource for '"+ value +"' at " + pc.getLocator().getSystemId() +" line "+ pc.getLocator().getLineNumber());
+                    {
+                        // better to throw an error here since if there are objects which are based on null/non-null
+                        // value of the value source, it is easier to debug
+                        pc.addError("Unable to create ValueSource for '"+ value +"' at " + pc.getLocator().getSystemId() +
+                                " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                    }
                     m.invoke(parent, new ValueSource[]{ vs });
                 }
             };
