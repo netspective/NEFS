@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.15 2003-07-29 20:47:22 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.16 2003-08-05 17:40:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -243,13 +243,16 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         setFlag(flags);
     }
 
-    public void setValue(String value)
+    public void setValue(String value, boolean clearFirst)
     {
-        this.flags = 0;
-        if(value == null || value.length() == 0)
+        if(clearFirst)
         {
-            flagsChanged();
-            return;
+            this.flags = 0;
+            if(value == null || value.length() == 0)
+            {
+                flagsChanged();
+                return;
+            }
         }
 
         String[] flagNames = TextUtils.split(value, flagDelimiter, true);
@@ -273,6 +276,11 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         }
 
         flagsChanged();
+    }
+
+    public void setValue(String value)
+    {
+        setValue(value, true);
     }
 
     public void setValue(XdmParseContext pc, Object element, String attribute, String value) throws DataModelException
