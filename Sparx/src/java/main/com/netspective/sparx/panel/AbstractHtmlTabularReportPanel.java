@@ -39,34 +39,33 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.23 2003-11-13 17:30:50 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.24 2004-03-02 07:40:11 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.io.Writer;
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.theme.Theme;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
 
 public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel implements HtmlTabularReportPanel
 {
@@ -129,6 +128,17 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
     public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin, TabularReportDataSourceScrollState scrollState)
     {
         return new HtmlTabularReportValueContext(nc.getServlet(), nc.getRequest(), nc.getResponse(), this, (HtmlTabularReport) scrollState.getReport(), skin);
+    }
+
+    public HtmlTabularReportValueContext createContext(NavigationContext nc, Theme theme)
+    {
+        return createContext(nc, (reportSkin == null || theme.getReportSkin(reportSkin) == null )? theme.getDefaultReportSkin() : theme.getReportSkin(reportSkin));
+    }
+
+    public void render(Writer writer, HtmlTabularReportValueContext vc, TabularReportDataSource ds) throws IOException
+    {
+        vc.produceReport(writer, ds);
+        ds.close();
     }
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
