@@ -32,6 +32,8 @@
  */
 package com.netspective.sparx.navigate.query;
 
+import javax.servlet.http.HttpSession;
+
 import com.netspective.sparx.navigate.NavigationContext;
 
 public interface QueryResultsNavigatorStatesManager
@@ -59,4 +61,12 @@ public interface QueryResultsNavigatorStatesManager
      * @param state The state being managed by this manager
      */
     public void timeOut(QueryResultsNavigatorState state);
+
+    /**
+     * In case the page's query results have changed due to external stimuli, remove the query results so that the
+     * next hit will rerun the query.
+     * @param page The page for which we're removing user query results
+     * @param session The HTTP session which was managing the state
+     */
+    public void removeActiveUserQueryResults(QueryResultsNavigatorPage page, HttpSession session);
 }

@@ -41,6 +41,7 @@ import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 
@@ -275,6 +276,11 @@ public class QueryResultsNavigatorPage extends NavigationPage
     public void setActiveScrollPage(NavigationContext nc, int activePage)
     {
         nc.getRequest().setAttribute(activeScrollPageParamName, new Integer(activePage));
+    }
+
+    public void removeActiveUserQueryResults(final HttpSession session)
+    {
+        getQueryResultsNavigatorStatesManager().removeActiveUserQueryResults(this, session);
     }
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException

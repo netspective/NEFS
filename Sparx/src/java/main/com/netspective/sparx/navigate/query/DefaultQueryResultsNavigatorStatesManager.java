@@ -36,6 +36,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,9 +56,14 @@ public class DefaultQueryResultsNavigatorStatesManager implements QueryResultsNa
 
     private Map states = new HashMap();
 
+    public String getQueryResultsSessionAttrKey(final QueryResultsNavigatorPage page, final HttpSession session)
+    {
+        return page.getQualifiedName() + "/" + session.getId();
+    }
+
     public QueryResultsNavigatorState getActiveUserQueryResults(QueryResultsNavigatorPage page, NavigationContext nc, String executionId)
     {
-        final String key = page.getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
+        final String key = getQueryResultsSessionAttrKey(page, nc.getHttpRequest().getSession());
         QueryResultsNavigatorState state = (QueryResultsNavigatorState) states.get(key);
 
         if(state != null)
@@ -78,11 +85,20 @@ public class DefaultQueryResultsNavigatorStatesManager implements QueryResultsNa
 
     public void setActiveUserQueryResults(NavigationContext nc, QueryResultsNavigatorState state)
     {
-        final String key = state.getQueryResultsNavigatorPage().getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
+        final String key = getQueryResultsSessionAttrKey(state.getQueryResultsNavigatorPage(), nc.getHttpRequest().getSession());
         states.put(key, state);
 
         if(log.isDebugEnabled())
             log.debug("Stored active query results state: '" + key + "' " + state);
+    }
+
+    public void removeActiveUserQueryResults(final QueryResultsNavigatorPage page, final HttpSession session)
+    {
+        final String key = getQueryResultsSessionAttrKey(page, session);
+        final QueryResultsNavigatorState state = (QueryResultsNavigatorState) states.remove(key);
+
+        if(log.isDebugEnabled())
+            log.debug("Removed active query results state: '" + key + "' " + state);
     }
 
     public void timeOut(QueryResultsNavigatorState state)
