@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateElement.java,v 1.3 2003-07-02 13:58:23 shahid.shah Exp $
+ * $Id: TemplateElement.java,v 1.4 2003-10-16 18:31:26 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -225,6 +225,11 @@ public class TemplateElement extends TemplateNode
     public Attributes getAttributes()
     {
         return attributes;
+    }
+
+    public void setAttributes(Attributes attributes)
+    {
+        this.attributes = attributes;
     }
 
     public List getChildren()
