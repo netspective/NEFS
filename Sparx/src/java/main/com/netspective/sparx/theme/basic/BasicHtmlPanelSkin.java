@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.20 2003-09-25 04:52:47 aye.thu Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.21 2003-10-12 05:20:54 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -261,10 +261,11 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         renderBanner(writer, vc);
 
         int height = panel.getHeight();
+        int width = panel.getWidth();
         if(height > 0)
-            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"height: "+ height +"; overflow: auto;\">\n");
+            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"width: " + width + "; height: "+ height +"; overflow: auto;\">\n");
         else
-            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"'>\n");
+            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"width: " + width + ";\">\n");
     }
 
     public void renderFrameEnd(Writer writer, HtmlPanelValueContext vc) throws IOException
@@ -312,14 +313,16 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 ValueSource itemIcon = action.getIcon();
                 String caption = "";
                 RedirectValueSource itemRedirect = action.getRedirect();
+
                 if (itemRedirect == null)
                 {
                     caption = itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i;
                 }
                 else
                 {
+                    String hint = action.getHint() != null ? action.getHint().getValue(rc).getTextValue() : "";
                     caption = constructRedirect(rc, itemRedirect, itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i,
-                            action.getHint().getValue(rc).getTextValue(), null);
+                            hint, null);
                 }
                 writer.write("<font " + bannerItemFontAttrs + ">");
                 if(i > 0)
@@ -347,8 +350,9 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 }
                 else
                 {
+                    String hint = action.getHint() != null ? action.getHint().getValue(rc).getTextValue() : "";
                     caption = constructRedirect(rc, itemRedirect, itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i,
-                            action.getHint().getValue(rc).getTextValue(), null);
+                            hint, null);
                 }
                 writer.write("<tr><td>");
                 writer.write(itemIcon != null ? "<img src='" + itemIcon.getValue(rc) + "'>" : "-");
