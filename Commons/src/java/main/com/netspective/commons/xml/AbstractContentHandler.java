@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.8 2003-07-01 01:02:57 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.9 2003-07-16 19:33:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -149,6 +149,11 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     public ContentHandlerNodeStackEntry getActiveNodeEntry()
     {
         return (ContentHandlerNodeStackEntry) getNodeStack().peek();
+    }
+
+    public boolean haveActiveNodeEntry()
+    {
+        return getNodeStack().size() > 0;
     }
 
     public Stack getNodeStack()

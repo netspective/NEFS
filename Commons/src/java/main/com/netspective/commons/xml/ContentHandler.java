@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ContentHandler.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: ContentHandler.java,v 1.2 2003-07-16 19:33:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -61,6 +61,8 @@ public interface ContentHandler extends org.xml.sax.ContentHandler
     public Stack getNodeStack();
 
     public ContentHandlerNodeStackEntry getActiveNodeEntry();
+
+    public boolean haveActiveNodeEntry();
 
     public Locator getDocumentLocator();
 
