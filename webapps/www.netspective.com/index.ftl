@@ -38,11 +38,11 @@
                         </tbody></table></td>
                     <td>
                     <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" height="90" width="190">
-											<param name="movie" value="digital-path.swf">
-											<param name="quality" value="best">
-											<param name="play" value="true">
-											<embed height="90" pluginspage="http://www.macromedia.com/go/getflashplayer" src="${resourcesPath}/home-flash-features.swf" type="application/x-shockwave-flash" width="190" quality="best" play="true">
-										</object>
+                        <param name="movie" value="${resourcesPath}/home-flash-features.swf">
+                        <param name="quality" value="best">
+                        <param name="play" value="true">
+                        <embed height="90" pluginspage="http://www.macromedia.com/go/getflashplayer" src="${resourcesPath}/home-flash-features.swf" type="application/x-shockwave-flash" width="190" quality="best" play="true">
+                    </object>
                     </td>
                 </tr>
             </tbody></table></td>
@@ -80,7 +80,14 @@
                     <td><img src="${resourcesPath}/images/home/home_34.gif" width="12" height="78" alt=""></td>
                     <td><a href="${servletPath}/products/frameworks/console"><img src="${resourcesPath}/images/home/preview4.gif" width="111" height="78" alt="" border=0></a></td>
                     <td><img src="${resourcesPath}/images/home/home_36.gif" width="11" height="78" alt=""></td>
-                    <td><a href="${servletPath}/company/customers"><img src="${resourcesPath}/images/home/preview5.gif" width="111" height="78" alt="" border=0></a></td>
+                    <td><a href="${servletPath}/company/customers">
+                    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" height="78" width="111">
+                        <param name="movie" value="${resourcesPath}/home-flash-customers.swf">
+                        <param name="quality" value="best">
+                        <param name="play" value="true">
+                        <embed height="78" pluginspage="http://www.macromedia.com/go/getflashplayer" src="${resourcesPath}/home-flash-customers.swf" type="application/x-shockwave-flash" width="111" quality="best" play="true">
+                        </object>
+                    </a></td>
                 </tr>
             </tbody></table>
         </td>
