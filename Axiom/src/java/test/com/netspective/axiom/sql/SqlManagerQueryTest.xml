@@ -71,7 +71,34 @@
             <display field="field_02"/>
             <display field="field_03"/>
 
+			<group-by field="field_01"/>
+			<order-by field="field_03"/>
 
+			<condition field="field_01" allow-null="no" comparison="equals" value="10" connector="and"/>
+			<condition field="field_02" allow-null="no" comparison="starts-with" value="a" connector="and"/>
+			<condition field="field_03" allow-null="no" comparison="contains" value="eve" connector="and"/>
+			<condition field="field_04" allow-null="yes" comparison="equals" value="adam" connector="and"/>
+			<condition field="field_05" allow-null="no" comparison="contains" value="abel" connector="and"/>
+        </select>
+    </query-defn>
+
+    <query-defn name="query-defn-2">
+        <field name='field_01' join="join_01" column="column_01"/>
+        <field name='field_02' caption="Test Field 02 Caption" join="join_02" column="column_02"/>
+        <field name='field_03' caption="Test Field 03 Caption" column="column_03"/>
+        <field name='field_04' caption="Test Field 04 Caption" join="join_04" column="column_04"/>
+        <field name='field_05' caption="Test Field 05 Caption" column="column_05"/>
+
+        <join name='join_01'/>
+        <join name='join_02' table="Table_02" imply-join="join_03"/>
+        <join name='join_03' table="Table_03"/>
+<!--        <join name='join_04' table="Table_04"/>-->
+        <join name='join_05' table="Table_05" auto-include="yes"/>
+
+        <select name="query-select-1">
+            <display field="field_01"/>
+            <display field="field_02"/>
+            <display field="field_03"/>
         </select>
     </query-defn>
 
