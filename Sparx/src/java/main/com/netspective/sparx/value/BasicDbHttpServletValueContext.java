@@ -39,11 +39,12 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.33 2003-08-31 15:29:14 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.34 2003-08-31 23:08:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
 
+import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServlet;
@@ -51,14 +52,21 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
+import javax.naming.NamingException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import freemarker.template.Configuration;
 
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.ConnectionContext;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.ProjectComponent;
 import com.netspective.sparx.ProjectManager;
+import com.netspective.sparx.connection.HttpSessionBindableTransactionConnectionContext;
+import com.netspective.sparx.connection.HttpSessionBindableAutoCommitConnectionContext;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.navigate.NavigationContext;
@@ -77,10 +85,14 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
                                       implements ServletValueContext, HttpServletValueContext,
                                                  DatabaseServletValueContext, DatabaseHttpServletValueContext
 {
+    private static final Log log = LogFactory.getLog(BasicDbHttpServletValueContext.class);
+
     public static final String CONTEXTATTRNAME_FREEMARKER_CONFIG = "freemarker-config";
     public static final String INITPARAMNAME_DEFAULT_DATA_SRC_ID = "com.netspective.sparx.DEFAULT_DATA_SOURCE";
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
     public static final String REQATTRNAME_ACTIVE_LOGIN_MANAGER = "sparx-active-login-manager";
+    public static final String REQATTRNAME_SHARED_CONN_CONTEXT = "sparx-shared-cc.";
+    public static final String SESSATTRNAME_SHARED_CONN_CONTEXT = "sparx-shared-cc.";
 
     private NavigationContext navigationContext;
     private DialogContext dialogContext;
@@ -111,6 +123,49 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     {
         initialize(nc.getServlet(), nc.getRequest(), nc.getResponse());
         setNavigationContext(nc);
+    }
+
+    /**
+     * Override the parent get connection to provide connection contexts that may be stored in HTTP sessions. If they
+     * are stored in HTTP sessions, they will be automatically closed when the session unbinding event occurs. This
+     * method allows connection sharing to take place as well -- if a connection is available in either the session or
+     * the request then it will be "reused" and a new ConnectionContext will not be created.
+     * @param dataSourceId
+     * @param transaction
+     * @return
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public ConnectionContext getConnection(String dataSourceId, boolean transaction) throws NamingException, SQLException
+    {
+        ConnectionContext result = null;
+
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        result = (ConnectionContext) httpRequest.getSession().getAttribute(SESSATTRNAME_SHARED_CONN_CONTEXT + dataSourceId);
+        if(result != null)
+        {
+            if(log.isTraceEnabled())
+                log.trace("Reusing shared session cc " + result + " for data source '"+ result.getDataSourceId() +"'.");
+            return result;
+        }
+
+        result = (ConnectionContext) httpRequest.getAttribute(REQATTRNAME_SHARED_CONN_CONTEXT + dataSourceId);
+        if(result != null)
+        {
+            if(log.isTraceEnabled())
+                log.trace("Reusing shared request cc " + result + " for data source '"+ result.getDataSourceId() +"'.");
+            return result;
+        }
+
+        if(transaction)
+            result = new HttpSessionBindableTransactionConnectionContext(dataSourceId, this);
+        else
+            result = new HttpSessionBindableAutoCommitConnectionContext(dataSourceId, this);
+
+        if(log.isTraceEnabled())
+            log.trace("Obtained " + result + " for data source '"+ result.getDataSourceId() +"'.");
+
+        return result;
     }
 
     public String getDefaultDataSource()
