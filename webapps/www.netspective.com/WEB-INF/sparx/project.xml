@@ -244,7 +244,9 @@
     </navigation-tree>
 
     <navigation-tree name="sampler">
-        <page name="introduction" default="yes" caption="Introduction">
+        <page name="home" caption="Home" redirect="netspective-url:www"/>
+
+        <page name="introduction" default="yes" caption="Sampler">
             <body source="sampler/introduction.ftl"/>
         </page>
 
