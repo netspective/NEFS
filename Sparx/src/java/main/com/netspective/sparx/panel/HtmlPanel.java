@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.8 2003-04-24 02:26:21 shahid.shah Exp $
+ * $Id: HtmlPanel.java,v 1.9 2003-04-24 17:01:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -52,6 +52,9 @@ import com.netspective.sparx.theme.Theme;
 
 public interface HtmlPanel
 {
+    public final int RENDERFLAG_NOFRAME = 1;
+    public final int RENDEFFLAGS_DEFAULT = 0;
+
     public String getIdentifier();
 
     public HtmlPanels getChildren();
@@ -77,5 +80,5 @@ public interface HtmlPanel
      */
     public boolean affectsNavigationContext(NavigationContext nc);
 
-    public void render(Writer writer, NavigationContext nc, Theme theme) throws IOException;
+    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException;
 }

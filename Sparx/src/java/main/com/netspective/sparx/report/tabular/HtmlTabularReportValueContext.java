@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportValueContext.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: HtmlTabularReportValueContext.java,v 1.2 2003-04-24 17:01:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -87,6 +87,7 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
     private TabularReportColumnState[] states;
     private HtmlPanel panel;
     private HtmlTabularReport report;
+    private int panelRenderFlags;
     private int calcsCount;
     private int visibleColsCount;
     private TabularReportSkin skin;
@@ -184,6 +185,16 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
                 visibleColsCount++;
         }
         return visibleColsCount;
+    }
+
+    public int getPanelRenderFlags()
+    {
+        return panelRenderFlags;
+    }
+
+    public void setPanelRenderFlags(int panelRenderFlags)
+    {
+        this.panelRenderFlags = panelRenderFlags;
     }
 
     public final TabularReportColumns getColumns()

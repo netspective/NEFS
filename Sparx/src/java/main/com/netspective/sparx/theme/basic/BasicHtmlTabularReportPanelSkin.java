@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.4 2003-04-06 04:01:46 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.5 2003-04-24 17:01:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -60,6 +60,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.netspective.sparx.panel.HtmlPanelValueContext;
+import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.report.tabular.TabularReportColumns;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
@@ -148,7 +149,11 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
     public void render(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
-        renderFrameBegin(writer, (HtmlPanelValueContext) rc);
+        renderPanelRegistration(writer, (HtmlPanelValueContext) rc);
+
+        int panelRenderFlags = ((HtmlTabularReportValueContext) rc).getPanelRenderFlags();
+        if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            renderFrameBegin(writer, (HtmlPanelValueContext) rc);
 
         writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
@@ -162,7 +167,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
         writer.write("    </table>\n");
 
-        renderFrameEnd(writer, (HtmlPanelValueContext) rc);
+        if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            renderFrameEnd(writer, (HtmlPanelValueContext) rc);
     }
 
     private int getTableColumnsCount(TabularReportValueContext rc)

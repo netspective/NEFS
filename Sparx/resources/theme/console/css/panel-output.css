@@ -23,3 +23,7 @@
 
 .panel-content-output     { border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }
 .panel-frame-table-action-output { background-color: white }
+
+.panel-tabs-output { background-color: #DDDDDD; }
+.panel-tab-active-output { margin: 5px; color: white; padding: 2px; border: 1px solid #FFFFFF; background-color: #000000; font-size: 9px; font-family: Tahoma; font-weight: bold; cursor: hand; }
+.panel-tab-output { margin: 5px; padding: 2px; color: lightyellow; background-color: #696969; border: 1px solid #999999; font-size: 9px; font-family: Tahoma; cursor: hand; }

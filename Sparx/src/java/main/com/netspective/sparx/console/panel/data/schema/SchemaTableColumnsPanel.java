@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableColumnsPanel.java,v 1.2 2003-04-23 15:42:15 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPanel.java,v 1.3 2003-04-24 17:01:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -60,7 +60,6 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.text.TextUtils;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.ForeignKey;

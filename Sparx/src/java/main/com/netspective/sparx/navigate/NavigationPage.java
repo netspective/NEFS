@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.12 2003-04-24 02:26:21 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.13 2003-04-24 17:01:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -61,6 +61,7 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
+import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.util.HttpUtils;
 
 import java.io.IOException;
@@ -520,7 +521,7 @@ public class NavigationPage extends NavigationPath
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         if(bodyPanel != null)
-            bodyPanel.render(writer, nc, nc.getActiveTheme());
+            bodyPanel.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDEFFLAGS_DEFAULT);
         else
             writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
     }

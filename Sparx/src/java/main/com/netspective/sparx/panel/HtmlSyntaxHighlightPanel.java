@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlSyntaxHighlightPanel.java,v 1.3 2003-04-24 02:26:21 shahid.shah Exp $
+ * $Id: HtmlSyntaxHighlightPanel.java,v 1.4 2003-04-24 17:01:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -150,7 +150,7 @@ public class HtmlSyntaxHighlightPanel implements HtmlPanel
         return width;
     }
 
-    public void render(Writer writer, NavigationContext nc, Theme theme) throws IOException
+    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         if(text != null)
         {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.7 2003-04-24 02:26:21 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.8 2003-04-24 17:01:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -175,7 +175,7 @@ public class HtmlLayoutPanel implements HtmlPanel
         return children;
     }
 
-    public void render(Writer writer, NavigationContext nc, Theme theme) throws IOException
+    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         switch(getStyle())
         {
@@ -183,7 +183,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                 for(int i = 0; i < children.size(); i++)
                 {
                     writer.write("<div style='padding-bottom: 6'>");
-                    children.get(i).render(writer, nc, theme);
+                    children.get(i).render(writer, nc, theme, flags);
                     writer.write("</div>");
                 }
                 break;
@@ -193,7 +193,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                 for(int i = 0; i < children.size(); i++)
                 {
                     writer.write("<td>");
-                    children.get(i).render(writer, nc, theme);
+                    children.get(i).render(writer, nc, theme, flags);
                     writer.write("</td>");
                 }
                 writer.write("</tr></table>");
@@ -201,23 +201,27 @@ public class HtmlLayoutPanel implements HtmlPanel
 
             case HtmlPanelsStyleEnumeratedAttribute.TABBED:
                 HtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
+                theme.getPanelSkin().renderPanelRegistration(writer, vc);
                 theme.getPanelSkin().renderFrameBegin(writer, vc);
-                writer.write("<div id=\""+ getIdentifier() + "_tabs\">");
+                writer.write("<script>startParentPanel(ALL_PANELS.getPanel(\""+ getIdentifier() +"\"))</script>\n");
+                writer.write("<div id=\""+ getIdentifier() + "_tabs\" class=\"panel-tabs-output\">");
                 for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
-                    writer.write("<span class=\"panel-tab\">"+ panel.getFrame().getHeading().getTextValue(vc) +"</span>");
+                    writer.write("<span id=\""+ panel.getIdentifier() +"_tab\" class=\"panel-tab-output\" onclick=\"ALL_PANELS.getPanel('"+ getIdentifier() +"').children.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">"+ panel.getFrame().getHeading().getTextValue(vc) +"</span>");
                 }
                 writer.write("</div>");
 
                 for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
-                    writer.write("<div id=\""+ getIdentifier() + "_" + panel.getIdentifier() +"\" style='display: none'>");
-                    panel.render(writer, nc, theme);
+                    writer.write("<div id=\""+ panel.getIdentifier() + "_container\" style='display: none'>");
+                    panel.render(writer, nc, theme, HtmlPanel.RENDERFLAG_NOFRAME);
                     writer.write("</div>");
+                    writer.write("<script>ACTIVE_PANEL_PARENT.getPanel(\""+ panel.getIdentifier() +"\").setStyle(PANELSTYLE_TABBED);</script>\n");
                 }
                 theme.getPanelSkin().renderFrameEnd(writer, vc);
+                writer.write("<script>endParentPanel()</script>\n");
                 break;
         }
     }
