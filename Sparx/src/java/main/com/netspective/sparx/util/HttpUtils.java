@@ -39,6 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
@@ -179,7 +180,7 @@ public class HttpUtils
 
                     result.append(paramName);
                     result.append("=");
-                    result.append(paramValue);
+                    result.append(URLEncoder.encode(paramValue));
                 }
                 i++;
             }
@@ -200,7 +201,7 @@ public class HttpUtils
 
                     result.append(paramName);
                     result.append("=");
-                    result.append(paramValue);
+                    result.append(URLEncoder.encode(paramValue));
                 }
             }
         }
