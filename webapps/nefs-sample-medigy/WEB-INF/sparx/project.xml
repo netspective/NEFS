@@ -134,16 +134,15 @@
         </page>
 
         <page type="entity" name="patient" class="app.navigate.entity.person.PatientPage" hidden-unless-active="yes" caption="Patient" retain-params="person_id">
-            <page name="summary" caption="Summary">
+            <page name="summary" caption="Summary" sub-heading="">
                 <panels style="two-columns-stacked">
-                    <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
-                    <panel type="command" command="query,personAttribute.address,-,-,-,record-editor"/>
-                    <panel type="command" command="query,personAttribute.language,-,-,-,record-editor"/>
-                    <panel type="command" command="query,personAttribute.classification,-,-,-,record-editor"/>
+                    <!--panel type="command" command="query,personAttribute.profile,-,-,-,detail" /-->
+                    <panel type="command" command="panel-editor,personAttribute.contact"/>
+                    <!--panel type="command" command="query,personAttribute.language,-,-,-,record-editor"/-->
+                    <!--panel type="command" command="query,personAttribute.classification,-,-,-,record-editor"/-->
                     <panel type="command" command="query,personAttribute.insurance,-,-,-,record-editor" />
-                    <panel type="command" command="query,personAttribute.contact,-,-,-,record-editor"/>
-                    <panel type="command" command="query,personAttribute.ethnicity,-,-,-,record-editor"/>
-                    <panel type="command" command="query,personAttribute.relationship,-,-,-,record-editor"/>
+                    <!--panel type="command" command="query,personAttribute.ethnicity,-,-,-,record-editor"/-->
+                    <panel type="command" command="panel-editor,personAttribute.relationship"/>
                 </panels>
             </page>
             <page name="chart" caption="Chart"/>
