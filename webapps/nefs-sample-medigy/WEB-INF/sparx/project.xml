@@ -42,7 +42,6 @@
     <theme name="sampler" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="console,common">
         <navigation-skin default="yes" show-authenticated-user="no" show-error-header="yes"/>
         <dialog-skin class="app.theme.ModernDialogSkin" name="modern" default="yes" panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
-        <report-skin class="app.theme.PanelEditorSkin" name="panel-editor" full-width="yes"/>
     </theme>
 
 
@@ -158,13 +157,13 @@
         </page>
 
         <page type="entity" name="physician" class="app.navigate.entity.person.PhysicianPage" hidden="yes" retain-params="person_id">
-            <page name="summary" caption="Summary">
+            <page name="summary" caption="Summary" require-request-param="person_id">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
                     <panel type="command" command="record-editor-panel,personAttribute.address"/>
                     <panel type="command" command="record-editor-panel,personAttribute.classification"/>
                     <panel type="command" command="record-editor-panel,personAttribute.contact"/>
-                    <panel type="command" command="query,personAttribute.relationship,-,-,-,record-editor"/>
+                    <panel type="command" command="record-editor-panel,personAttribute.relationship"/>
                 </panels>
             </page>
             <page name="associate" caption="Associate"/>
