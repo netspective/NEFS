@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.79 2003-08-08 13:55:55 shahid.shah Exp $
+  * $Id: console.xml,v 1.80 2003-08-08 17:19:22 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -226,7 +226,8 @@
         <xdm:include resource="com/netspective/sparx/conf/console-user-manual-pages.xml"/>
     </navigation-tree>
 
-    <register-login-manager name="console">
+    <login-manager name="console">
+        <login-authenticator class="com.netspective.sparx.security.SingleUserServletLoginAuthenticator"/>
         <authenticated-user-session-attr-name>nefs-console-authenticated-user-01</authenticated-user-session-attr-name>
         <allow-remember-user-id>yes</allow-remember-user-id>
         <remember-user-id-cookie-name>nefs-console-user-id-01</remember-user-id-cookie-name>
@@ -239,7 +240,7 @@
             <field name="password" type="text" caption="Password" mask-entry="yes" required="yes"/>
             <field name="remember" type="boolean" caption="" check-label="Remember my ID on this computer" style="check"/>
         </login-dialog>
-    </register-login-manager>
+    </login-manager>
 
     <dialogs package="console">
         <dialog name="sql-editor" class="com.netspective.sparx.console.form.SqlEditorDialog">

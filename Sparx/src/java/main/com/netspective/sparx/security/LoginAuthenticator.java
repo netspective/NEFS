@@ -39,65 +39,12 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.16 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: LoginAuthenticator.java,v 1.1 2003-08-08 17:19:22 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.security;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.Project;
-import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
-
-public class ConsoleServlet extends NavigationControllerServlet
+public interface LoginAuthenticator
 {
-    public static final String CONSOLE_ID = "console";
-    public static final String REQATTRNAME_INCONSOLE = "in-console";
-    public static final Boolean REQATTRVALUE_INCONSOLE = new Boolean(true);
-
-    private HttpLoginManager loginManager;
-
-    protected Theme getTheme()
-    {
-        return Themes.getInstance().getTheme(CONSOLE_ID);
-    }
-
-    protected NavigationTree getNavigationTree(Project project)
-    {
-        return project.getConsoleNavigationTree();
-    }
-
-    protected HttpLoginManager getLoginManager(Project project)
-    {
-        if(loginManager == null)
-            loginManager = project.getLoginManagers().getLoginManager("console");
-        return loginManager;
-    }
-
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
-    {
-        long startTime = System.currentTimeMillis();
-        httpServletRequest.setAttribute(REQATTRNAME_INCONSOLE, REQATTRVALUE_INCONSOLE);
-
-        NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
-        checkForLogout(nc);
-        if(nc.isRedirectToAlternateChildRequired())
-        {
-            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
-            return;
-        }
-
-        renderPage(nc);
-
-        long renderTime = System.currentTimeMillis() - startTime;
-        httpServletResponse.getWriter().write("Render time: " + renderTime + " milliseconds");
-    }
+    public boolean isUserValid(LoginDialog loginDialog, LoginDialogContext loginDialogContext);
 }

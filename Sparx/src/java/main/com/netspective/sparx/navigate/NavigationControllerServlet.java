@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.8 2003-08-08 01:03:32 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.9 2003-08-08 17:19:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -61,8 +61,8 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.form.security.LoginDialog;
-import com.netspective.sparx.form.security.LoginDialogContext;
+import com.netspective.sparx.security.LoginDialog;
+import com.netspective.sparx.security.LoginDialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;

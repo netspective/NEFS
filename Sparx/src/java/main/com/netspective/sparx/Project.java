@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.13 2003-08-08 01:03:32 shahid.shah Exp $
+ * $Id: Project.java,v 1.14 2003-08-08 17:19:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -242,12 +242,12 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /* ------------------------------------------------------------------------------------------------------------ */
 
-    public HttpLoginManager createRegisterLoginManager()
+    public HttpLoginManager createLoginManager()
     {
         return new HttpLoginManager();
     }
 
-    public void addRegisterLoginManager(HttpLoginManager loginManager)
+    public void addLoginManager(HttpLoginManager loginManager)
     {
         loginManagers.addLoginManager(loginManager);
     }

@@ -39,65 +39,64 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.16 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: LoginDialogContext.java,v 1.1 2003-08-08 17:19:22 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.security;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.Project;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
+import com.netspective.sparx.security.LoginDialog;
+import com.netspective.commons.security.Crypt;
+import com.netspective.commons.security.AuthenticatedUser;
 
-public class ConsoleServlet extends NavigationControllerServlet
+public class LoginDialogContext extends DialogContext
 {
-    public static final String CONSOLE_ID = "console";
-    public static final String REQATTRNAME_INCONSOLE = "in-console";
-    public static final Boolean REQATTRVALUE_INCONSOLE = new Boolean(true);
+    private boolean hasRememberedValues;
+    private boolean hasEncryptedPassword;
 
-    private HttpLoginManager loginManager;
-
-    protected Theme getTheme()
+    public String getUserId()
     {
-        return Themes.getInstance().getTheme(CONSOLE_ID);
+        LoginDialog loginDialog = (LoginDialog) getDialog();
+        return getFieldStates().getState(loginDialog.getUserIdFieldName()).getValue().getTextValue();
     }
 
-    protected NavigationTree getNavigationTree(Project project)
+    public String getPassword(boolean encrypted)
     {
-        return project.getConsoleNavigationTree();
+        LoginDialog loginDialog = (LoginDialog) getDialog();
+        String password = getFieldStates().getState(loginDialog.getPasswordFieldName()).getValue().getTextValue();
+        return encrypted ? Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, password) : password;
     }
 
-    protected HttpLoginManager getLoginManager(Project project)
+    public boolean hasRememberedValues(HttpLoginManager loginManager)
     {
-        if(loginManager == null)
-            loginManager = project.getLoginManagers().getLoginManager("console");
-        return loginManager;
-    }
+        String rememberedUserId = loginManager.getRememberedUserId(this);
+        String rememberedEncPassword = loginManager.getRememberedEncryptedPassword(this);
 
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
-    {
-        long startTime = System.currentTimeMillis();
-        httpServletRequest.setAttribute(REQATTRNAME_INCONSOLE, REQATTRVALUE_INCONSOLE);
-
-        NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
-        checkForLogout(nc);
-        if(nc.isRedirectToAlternateChildRequired())
+        if(rememberedUserId != null && rememberedEncPassword != null &&
+           rememberedUserId.length() > 0 && rememberedEncPassword.length() > 0)
         {
-            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
-            return;
+            DialogContext.DialogFieldStates states = getFieldStates();
+            LoginDialog loginDialog = (LoginDialog) getDialog();
+            states.getState(loginDialog.getUserIdFieldName()).getValue().setValue(rememberedUserId);
+            states.getState(loginDialog.getPasswordFieldName()).getValue().setValue(rememberedEncPassword);
+
+            hasEncryptedPassword = true;
+            hasRememberedValues = true;
+            return true;
         }
 
-        renderPage(nc);
+        hasRememberedValues = false;
+        return false;
+    }
 
-        long renderTime = System.currentTimeMillis() - startTime;
-        httpServletResponse.getWriter().write("Render time: " + renderTime + " milliseconds");
+    public boolean hasRememberedValues()
+    {
+        return hasRememberedValues;
+    }
+
+    public boolean hasEncryptedPassword()
+    {
+        return hasEncryptedPassword;
     }
 }

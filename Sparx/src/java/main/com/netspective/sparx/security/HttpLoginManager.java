@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.1 2003-08-08 01:03:32 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.2 2003-08-08 17:19:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -53,20 +53,41 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
-import com.netspective.sparx.form.security.LoginDialogContext;
-import com.netspective.sparx.form.security.LoginDialog;
+import com.netspective.sparx.form.listener.DialogValidateListener;
+import com.netspective.sparx.form.DialogValidationContext;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.security.BasicAuthenticatedUser;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 
 public class HttpLoginManager
 {
     public static final String DEFAULT_AUTHENTICATED_USER_SESS_ATTR_NAME = "authenticated-user";
     public static final String DEFAULT_REMEMBER_USER_ID_COOKIE_NAME = "sparx-user-id-00";
     public static final String DEFAULT_REMEMBER_PASSWORD_COOKIE_NAME = "sparx-password-00";
+    public static final ValueSource DEFAULT_INVALID_USER_MESSAGE = new StaticValueSource("Invalid user id or password.");
 
     private static final Log log = LogFactory.getLog(HttpLoginManager.class);
     private static final String MONITOR_ENTRY_FIELD_SEPARATOR = ",";
+
+    protected class LoginDialogValidator implements DialogValidateListener
+    {
+        public void validateDialog(DialogValidationContext dvc)
+        {
+            LoginDialogContext ldc = (LoginDialogContext) dvc.getDialogContext();
+            LoginDialog loginDialog = (LoginDialog) ldc.getDialog();
+
+            if(loginAuthenticator == null)
+            {
+                dvc.addError("No login authenticator provided.");
+                return;
+            }
+
+            if(! loginAuthenticator.isUserValid(loginDialog, ldc))
+                dvc.addError(invalidUserMessage.getTextValue(ldc));
+        }
+    }
 
     private boolean isDefault;
     private String name;
@@ -78,6 +99,8 @@ public class HttpLoginManager
     private AuthenticatedUsers activeUsers = new AuthenticatedUsers();
     private int rememberUserIdCookieMaxAge = 60 * 60 * 24 * 365; // 1 year
     private LoginDialog loginDialog;
+    private LoginAuthenticator loginAuthenticator;
+    private ValueSource invalidUserMessage = DEFAULT_INVALID_USER_MESSAGE;
 
     public HttpLoginManager()
     {
@@ -166,6 +189,16 @@ public class HttpLoginManager
     public void setRememberUserIdCookieMaxAge(int rememberUserIdCookieMaxAge)
     {
         this.rememberUserIdCookieMaxAge = rememberUserIdCookieMaxAge;
+    }
+
+    public ValueSource getInvalidUserMessage()
+    {
+        return invalidUserMessage;
+    }
+
+    public void setInvalidUserMessage(ValueSource invalidUserMessage)
+    {
+        this.invalidUserMessage = invalidUserMessage;
     }
 
     /**
@@ -392,6 +425,16 @@ public class HttpLoginManager
                 ", UserCookieName " + getRememberUserIdCookieName() + ", PasswordCookieName " + getRememberPasswordCookieName();
     }
 
+    public LoginAuthenticator createLoginAuthenticator()
+    {
+        return new SingleUserServletLoginAuthenticator();
+    }
+
+    public void addLoginAuthenticator(LoginAuthenticator loginAuthenticator)
+    {
+        this.loginAuthenticator = loginAuthenticator;
+    }
+
     public LoginDialog createLoginDialog()
     {
         return new LoginDialog();
@@ -401,6 +444,7 @@ public class HttpLoginManager
     {
         this.loginDialog = loginDialog;
         this.loginDialog.setLoginManager(this);
+        this.loginDialog.addListener(new LoginDialogValidator());
     }
 
     public LoginDialog getLoginDialog()
