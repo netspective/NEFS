@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.8 2003-08-26 21:54:21 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.9 2003-08-27 01:21:40 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -81,7 +81,7 @@ public class DataAccessLayerGenerator
     private CompilationUnit rootUnit;
     private CompilationUnit modelsUnit;
     private CompilationUnit enumsUnit;
-    private CompilationUnit valueObjectsUnit;
+    private CompilationUnit valueObjectUnit;
     private PackageClass rootClass;
     private ClassMethod rootClassChildrenAssignmentBlock;
     private Map tableAccessorGenerators = new HashMap(); // key is table instance, value is TableAccessorGenerator instance
@@ -200,13 +200,13 @@ public class DataAccessLayerGenerator
         rootClassChildrenAssignmentBlock.newStmt(vm.newAssign(vm.newVar("this.schema"), vm.newVar("schema")));
 
         modelsUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
-        modelsUnit.setNamespace(rootNameSpace + ".model");
+        modelsUnit.setNamespace(rootNameSpace + ".dao");
 
         enumsUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
         enumsUnit.setNamespace(rootNameSpace + ".enum");
 
-        valueObjectsUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
-        valueObjectsUnit.setNamespace(rootNameSpace + ".value");
+        valueObjectUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+        valueObjectUnit.setNamespace(rootNameSpace + ".vo");
 
         List mainTables = structure.getChildren();
         for (int i = 0; i < mainTables.size(); i++)
@@ -217,6 +217,8 @@ public class DataAccessLayerGenerator
         {
             TableAccessorGenerator tag = (TableAccessorGenerator) i.next();
             tag.accessorClass.getUnit().encode();
+            tag.valueObjectInterface.getUnit().encode();
+            tag.valueObjectClass.getUnit().encode();
         }
 
         Tables tables = structure.getSchema().getTables();
@@ -225,13 +227,6 @@ public class DataAccessLayerGenerator
             Table table = tables.get(i);
             if (table instanceof EnumerationTable)
                 generate((EnumerationTable) table);
-        }
-
-        for (int i = 0; i < tables.size(); i++)
-        {
-            Table table = tables.get(i);
-            TableValueObjectGenerator tvog = new TableValueObjectGenerator(table);
-            tvog.generate();
         }
 
         rootUnit.encode();
@@ -252,6 +247,7 @@ public class DataAccessLayerGenerator
         tag.generateRecordsInnerClass();
         tag.generateColumnAccessors();
         tag.generateChildMethodsInParent();
+        tag.generateValueObjects();
 
         List children = node.getChildren();
         for (int i = 0; i < children.size(); i++)
@@ -284,71 +280,6 @@ public class DataAccessLayerGenerator
         }
     }
 
-    protected class TableValueObjectGenerator
-    {
-        private Table table;
-
-        public TableValueObjectGenerator(Table table)
-        {
-            this.table = table;
-        }
-
-        public void generate() throws IOException
-        {
-            CompilationUnit valueInterfaceUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
-            valueInterfaceUnit.setNamespace(valueObjectsUnit.getNamespace().getName());
-
-            CompilationUnit valueClassUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
-            valueClassUnit.setNamespace(valueObjectsUnit.getNamespace().getName() + ".impl");
-
-            Columns columns = table.getColumns();
-
-            String interfaceNameNoPackage = TextUtils.xmlTextToJavaIdentifier(table.getName(), true);
-            Interface valueInterface = valueInterfaceUnit.newInterface(interfaceNameNoPackage);
-            valueInterface.setAccess(Access.PUBLIC);
-
-            String classNameNoPackage = TextUtils.xmlTextToJavaIdentifier(table.getName(), true) + "VO";
-            PackageClass valueClass = valueClassUnit.newClass(classNameNoPackage);
-            valueClass.setAccess(Access.PUBLIC);
-
-            for (int i = 0; i < columns.size(); i++)
-            {
-                Column column = columns.get(i);
-
-                ColumnValue valueInstance = column.constructValueInstance();
-                Class valueHolderClass = valueInstance.getValueHolderClass();
-                String valueInstClassName = valueHolderClass.getName();
-
-                Type valueHolderValueType = vm.newType(valueInstClassName.replace('$', '.'));
-
-                String fieldName = TextUtils.xmlTextToJavaIdentifier(column.getName(), false);
-                ClassField field = valueClass.newField(valueHolderValueType, fieldName);
-                field.setAccess(Access.PRIVATE);
-
-                String methodSuffix = TextUtils.xmlTextToJavaIdentifier(column.getName(), true);
-
-                ClassMethod method = valueClass.newMethod(valueHolderValueType, "get" + methodSuffix);
-                method.setAccess(Access.PUBLIC);
-                method.newReturn().setExpression(vm.newFree(fieldName));
-
-                method = valueClass.newMethod(vm.newType(Type.VOID), "set" + methodSuffix);
-                method.addParameter(valueHolderValueType, fieldName);
-                method.setAccess(Access.PUBLIC);
-                method.newStmt(vm.newFree("this." + fieldName + " = " + fieldName));
-
-                AbstractMethod abstractMethod = valueInterface.newMethod(valueHolderValueType, "get" + methodSuffix);
-                abstractMethod.setAccess(Access.PUBLIC);
-
-                abstractMethod = valueInterface.newMethod(vm.newType(Type.VOID), "set" + methodSuffix);
-                abstractMethod.addParameter(valueHolderValueType, fieldName);
-                abstractMethod.setAccess(Access.PUBLIC);
-            }
-
-            valueInterfaceUnit.encode();
-            valueClassUnit.encode();
-        }
-    }
-
     protected class TableAccessorGenerator
     {
         private Schema.TableTreeNode node;
@@ -356,7 +287,11 @@ public class DataAccessLayerGenerator
         private Block parentChildAssignmentsBlock;
         private String accessorNameSpace;
         private PackageClass accessorClass;
+        private Interface valueObjectInterface;
+        private PackageClass valueObjectClass;
         private Block accessorClassConstructorBlock;
+        private ClassMethod recordInnerClassValueObjectAccessorMethod;
+        private ClassMethod recordInnerClassValueObjectMutatorMethod;
         private InnerClass recordInnerClass;
         private ClassMethod recordInnerClassRetrieveChildrenMethod;
         private InnerClass recordsInnerClass;
@@ -365,6 +300,10 @@ public class DataAccessLayerGenerator
         private String recordInnerClassNameDecl;
         private String recordsInnerClassNameDecl;
         private String recordInnerClassName;
+        private CompilationUnit valueInterfaceUnit;
+        private CompilationUnit valueClassUnit;
+        private String valueInterfaceName;
+        private String valueClassName;
         private String recordsInnerClassName;
         private boolean customClass;
         private Type tableType;
@@ -375,8 +314,8 @@ public class DataAccessLayerGenerator
             this.parentAccessorClass = parentClass;
             this.parentChildAssignmentsBlock = parentChildrenAssignmentsBlock;
 
-            fieldName = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), false);
-            classNameNoPackage = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true);
+            fieldName = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), false) + "Table";
+            classNameNoPackage = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true) + "Table";
 
             recordInnerClassNameDecl = "Record";
             recordsInnerClassNameDecl = "Records";
@@ -404,6 +343,15 @@ public class DataAccessLayerGenerator
             accessorClass = unit.newClass(classNameNoPackage);
             accessorClass.setAccess(Access.PUBLIC);
             accessorClass.isFinal(true);
+
+            valueInterfaceName = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true);
+            valueClassName = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true) + "VO";
+
+            valueInterfaceUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+            valueInterfaceUnit.setNamespace(valueObjectUnit.getNamespace().getName());
+
+            valueClassUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
+            valueClassUnit.setNamespace(valueObjectUnit.getNamespace().getName() + ".impl");
         }
 
         public void generateImports()
@@ -704,6 +652,23 @@ public class DataAccessLayerGenerator
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             method.newStmt(vm.newFree("table.delete(cc, row)"));
 
+            Type valueObjectIntefaceType = vm.newType(valueInterfaceUnit.getNamespace().getName() + '.' + valueInterfaceName);
+
+            method = recordInnerClass.newMethod(valueObjectIntefaceType, "getValues");
+            method.setAccess(Access.PUBLIC);
+            method.isFinal(true);
+            method.newReturn().setExpression(vm.newFree("getValues(new "+ valueClassUnit.getNamespace().getName() + '.' + valueClassName +"())"));
+
+            recordInnerClassValueObjectAccessorMethod = recordInnerClass.newMethod(valueObjectIntefaceType, "getValues");
+            recordInnerClassValueObjectAccessorMethod.setAccess(Access.PUBLIC);
+            recordInnerClassValueObjectAccessorMethod.isFinal(true);
+            recordInnerClassValueObjectAccessorMethod.addParameter(valueObjectIntefaceType, "valueObject");
+
+            recordInnerClassValueObjectMutatorMethod = recordInnerClass.newMethod(vm.newType(Type.VOID), "setValues");
+            recordInnerClassValueObjectMutatorMethod.setAccess(Access.PUBLIC);
+            recordInnerClassValueObjectMutatorMethod.isFinal(true);
+            recordInnerClassValueObjectMutatorMethod.addParameter(valueObjectIntefaceType, "valueObject");
+
             if (node.hasChildren())
             {
                 recordInnerClassRetrieveChildrenMethod = recordInnerClass.newMethod(vm.newType(Type.VOID), "retrieveChildren");
@@ -887,8 +852,59 @@ public class DataAccessLayerGenerator
                 method.setAccess(Access.PUBLIC);
                 method.isFinal(true);
                 method.newStmt(vm.newFree("get"+ methodSuffix +"().copyValueByReference(value)"));
+
+                recordInnerClassValueObjectAccessorMethod.newStmt(vm.newFree("valueObject.set" + methodSuffix + "(("+ valueInstance.getValueHolderClass().getName() +") values.getByColumnIndex(" + constantId + ").getValue())"));
+                recordInnerClassValueObjectMutatorMethod.newStmt(vm.newFree("values.getByColumnIndex(" + constantId + ").setValue(valueObject.get" + methodSuffix + "())"));
+            }
+
+            recordInnerClassValueObjectAccessorMethod.newReturn().setExpression(vm.newFree("valueObject"));
+        }
+
+        public void generateValueObjects() throws IOException
+        {
+            valueObjectInterface = valueInterfaceUnit.newInterface(valueInterfaceName);
+            valueObjectInterface.setAccess(Access.PUBLIC);
+
+            valueObjectClass = valueClassUnit.newClass(valueClassName);
+            valueObjectClass.setAccess(Access.PUBLIC);
+            valueObjectClass.addImplements(valueInterfaceUnit.getNamespace().getName() + '.' + valueInterfaceName);
+
+            Columns columns = node.getTable().getColumns();
+
+            for (int i = 0; i < columns.size(); i++)
+            {
+                Column column = columns.get(i);
+
+                ColumnValue valueInstance = column.constructValueInstance();
+                Class valueHolderClass = valueInstance.getValueHolderClass();
+                String valueInstClassName = valueHolderClass.getName();
+
+                Type valueHolderValueType = vm.newType(valueInstClassName.replace('$', '.'));
+
+                String fieldName = TextUtils.xmlTextToJavaIdentifier(column.getName(), false);
+                ClassField field = valueObjectClass.newField(valueHolderValueType, fieldName);
+                field.setAccess(Access.PRIVATE);
+
+                String methodSuffix = TextUtils.xmlTextToJavaIdentifier(column.getName(), true);
+
+                ClassMethod method = valueObjectClass.newMethod(valueHolderValueType, "get" + methodSuffix);
+                method.setAccess(Access.PUBLIC);
+                method.newReturn().setExpression(vm.newFree(fieldName));
+
+                method = valueObjectClass.newMethod(vm.newType(Type.VOID), "set" + methodSuffix);
+                method.addParameter(valueHolderValueType, fieldName);
+                method.setAccess(Access.PUBLIC);
+                method.newStmt(vm.newFree("this." + fieldName + " = " + fieldName));
+
+                AbstractMethod abstractMethod = valueObjectInterface.newMethod(valueHolderValueType, "get" + methodSuffix);
+                abstractMethod.setAccess(Access.PUBLIC);
+
+                abstractMethod = valueObjectInterface.newMethod(vm.newType(Type.VOID), "set" + methodSuffix);
+                abstractMethod.addParameter(valueHolderValueType, fieldName);
+                abstractMethod.setAccess(Access.PUBLIC);
             }
         }
+
     }
 }
 
