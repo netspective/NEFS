@@ -14,8 +14,7 @@
             </field>
             <field type="text" name="study_code" caption="Code" max-length="64" required="yes"/>
             <field type="memo" name="study_descr" caption="Description" required="yes"/>
-            <field type="select" name="study_status" caption="Status" required="yes" choices="schema-enum:Study_Status" prepend-blank="yes"
-                required="yes">
+            <field type="select" name="study_status" caption="Status" required="yes" choices="schema-enum:Study_Status" prepend-blank="yes">
                 <conditional action="apply-flags" flags="browser_readonly" perspective="edit,delete"/>
             </field>
             <field type="select" name="study_stage" caption="Stage" choices="schema-enum:Study_Stage_Type"

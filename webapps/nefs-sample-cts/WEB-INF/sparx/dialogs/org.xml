@@ -10,7 +10,7 @@
         <field type="text" name="line1" caption="Address 1"  size="64" required="yes" />
         <field type="text" name="line2" caption="Address 2" size="64" />
         <field type="composite" name="cityStateZip" caption="*">
-            <field type="text" name="city" caption="City" required="yes" size="16" required="yes" />
+            <field type="text" name="city" caption="City" required="yes" size="16"/>
             <field type="select" name="state" caption="State" choices="schema-enum:db.US_State_Type"
                  required="yes"/>
             <field type="zip-code" name="zip" caption="Zip Code" max-length="5" size="7" required="yes" />
