@@ -5,7 +5,7 @@
         <dependencies>
             <library>
                 <name>Apache Xalan</name>
-                <version>2.4.0</version>
+                <version>2.5.1</version>
                 <class-path>xalan.jar</class-path>
                 <source home-uri="http://xml.apache.org/xalan-j"
                         license="Apache Software License"
@@ -14,7 +14,7 @@
 
             <library>
                 <name>Apache JAXP/TrAX XML APIs</name>
-                <version>2.4.0</version>
+                <version>2.5.0</version>
                 <class-path>xml-apis.jar</class-path>
                 <source home-uri="http://xml.apache.org/xerces-j"
                     license="Apache Software License"
@@ -23,7 +23,7 @@
 
             <library>
                 <name>Apache Xerces</name>
-                <version>2.0.2</version>
+                <version>2.5.0</version>
                 <class-path>xerces.jar</class-path>
                 <source home-uri="http://xml.apache.org/xerces-j"
                     license="Apache Software License"
