@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnAnsiSelectStmtGenerator.java,v 1.2 2003-05-31 17:16:58 shahid.shah Exp $
+ * $Id: QueryDefnAnsiSelectStmtGenerator.java,v 1.3 2003-08-30 19:15:28 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -145,11 +145,6 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
     public void addParam(ValueSource bindParam)
     {
         bindParams.add(bindParam);
-    }
-
-    public String getWhereClauseSql()
-    {
-        return whereClauseSql;
     }
 
     public String generateSql(ValueContext vc) throws QueryDefinitionException

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.4 2003-07-02 13:54:59 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.5 2003-08-30 19:15:28 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -872,6 +872,8 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 sql += " where";
             sql += " " + whereCond;
         }
+
+        System.out.println(sql);
 
         if(execute)
         {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSelectStmtGenerator.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: QueryDefnSelectStmtGenerator.java,v 1.2 2003-08-30 19:15:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -57,8 +57,6 @@ public interface QueryDefnSelectStmtGenerator
     public List getBindParams();
 
     public void addParam(ValueSource bindParam);
-
-    public String getWhereClauseSql();
 
     public String generateSql(ValueContext vc) throws QueryDefinitionException;
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.14 2003-08-28 00:42:01 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.15 2003-08-30 19:15:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -148,6 +148,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private QueryExecutionLog execLog = new QueryExecutionLog();
     private TableQueryDefinition queryDefn = null;
     private QueryDefnSelect selectByPrimaryKey;
+    private String primaryKeyWhereClauseExpr;
     private QueryDefnSelect selectByParentKey;
     private Rows staticData;
     private Indexes indexes = new IndexesCollection();
@@ -591,7 +592,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void update(ConnectionContext cc, Row row) throws SQLException
     {
-        update(cc, row, getAccessorByPrimaryKeyEquality().getWhereClauseSql(), row.getPrimaryKeyValues().getValuesForSqlBindParams());
+        update(cc, row, primaryKeyWhereClauseExpr, row.getPrimaryKeyValues().getValuesForSqlBindParams());
     }
 
     public void update(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws SQLException
@@ -609,7 +610,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void delete(ConnectionContext cc, Row row) throws SQLException
     {
-        delete(cc, row, getAccessorByPrimaryKeyEquality().getWhereClauseSql(), row.getPrimaryKeyValues().getValuesForSqlBindParams());
+        delete(cc, row, primaryKeyWhereClauseExpr, row.getPrimaryKeyValues().getValuesForSqlBindParams());
     }
 
     public void delete(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws SQLException
@@ -775,6 +776,18 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 log.error(e.getMessage(), e);
                 e.printStackTrace();
             }
+
+            PrimaryKeyColumns columns = getPrimaryKeyColumns();
+            StringBuffer whereClausExprBuf = new StringBuffer();
+            int lastColumn = columns.size() - 1;
+            for(int c = 0; c <= lastColumn; c++)
+            {
+                if(c > 0) whereClausExprBuf.append(" and ");
+                whereClausExprBuf.append(columns.get(c).getName());
+                whereClausExprBuf.append(" = ");
+                whereClausExprBuf.append(" ? ");
+            }
+            primaryKeyWhereClauseExpr = whereClausExprBuf.toString();
         }
 
         return selectByPrimaryKey;

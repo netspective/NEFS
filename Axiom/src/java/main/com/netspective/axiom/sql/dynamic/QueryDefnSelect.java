@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSelect.java,v 1.8 2003-07-07 15:07:09 aye.thu Exp $
+ * $Id: QueryDefnSelect.java,v 1.9 2003-08-30 19:15:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -81,7 +81,6 @@ public class QueryDefnSelect extends Query
     private QueryDefnFields groupByFields = new QueryDefnFields();
     private QueryDefnConditions conditions = new QueryDefnConditions(null);
     private QueryDefnSqlWhereExpressions whereExprs = new QueryDefnSqlWhereExpressions();
-    private String whereClauseSql;
 
     public QueryDefnSelect()
     {
@@ -247,11 +246,6 @@ public class QueryDefnSelect extends Query
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public String getWhereClauseSql()
-    {
-        return whereClauseSql;
-    }
-
     public boolean isSqlStatic()
     {
         return ! isDirty && ! alwaysDirty;
@@ -265,7 +259,6 @@ public class QueryDefnSelect extends Query
             try
             {
                 setSqlText(selectStmt.generateSql(cc));
-                whereClauseSql = selectStmt.getWhereClauseSql();
             }
             catch (QueryDefinitionException e)
             {
