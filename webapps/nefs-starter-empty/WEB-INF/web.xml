@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: web.xml,v 1.11 2003-08-10 16:59:25 shahid.shah Exp $
+$Id: web.xml,v 1.12 2003-08-14 19:24:17 shahid.shah Exp $
 -->
 
 <web-app>
@@ -64,15 +64,15 @@ $Id: web.xml,v 1.11 2003-08-10 16:59:25 shahid.shah Exp $
             <param-value>console</param-value> <!-- the <login-manager> defined in the project that should be used -->
         </init-param>
         <init-param>
-            <param-name>com.netspective.sparx.security.SingleUserServletLoginAuthenticator.LOGIN_USER_ID</param-name>
+            <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.LOGIN_USER_ID</param-name>
             <param-value>console</param-value>
         </init-param>
         <init-param>
-            <param-name>com.netspective.sparx.security.SingleUserServletLoginAuthenticator.LOGIN_PASSWORD_PLAIN_TEXT</param-name> <!-- if you use this parameter then the encrypted one is not required -->
+            <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.LOGIN_PASSWORD_PLAIN_TEXT</param-name> <!-- if you use this parameter then the encrypted one is not required -->
             <param-value>console</param-value>
         </init-param>
         <init-param>
-            <param-name>com.netspective.sparx.security.SingleUserServletLoginAuthenticator.LOGIN_PASSWORD_ENCRYPTED</param-name> <!-- if you provide an encrypted password, it takes precedence over unencrypted -->
+            <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.LOGIN_PASSWORD_ENCRYPTED</param-name> <!-- if you provide an encrypted password, it takes precedence over unencrypted -->
             <param-value>NCbHq1WqkpfDY</param-value> <!-- run "java com.netspective.commons.security.Crypt NC <password>" to generate encrypted password -->
         </init-param>
 	</servlet>
