@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="templates/org.xml"/>
+
+	<dialogs package="org">
+		<dialog name="main" class="app.form.org.MainDialog"><frame heading="create-data-cmd-heading:Main Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.classification-information"/>
+			<xdm:include template="org.contact-information"/>
+			<xdm:include template="org.demographic-information"/>
+			<xdm:include template="org.identification-information"/>
+			<xdm:include template="org.service-information"/>
+		</dialog>
+
+		<dialog name="department" class="app.form.org.DepartmentDialog"><frame heading="create-data-cmd-heading:Department Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+			<xdm:include template="org.service-information"/>
+		</dialog>
+
+		<dialog name="associatedProvider" class="app.form.org.AssociatedProviderDialog"><frame heading="create-data-cmd-heading:Associated Provider Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+			<xdm:include template="org.identification-information"/>
+			<xdm:include template="org.service-information"/>
+		</dialog>
+
+		<dialog name="pharmacy" class="app.form.org.PharmacyDialog"><frame heading="create-data-cmd-heading:Pharmacy"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+			<xdm:include template="org.identification-information"/>
+			<xdm:include template="org.service-information"/>
+		</dialog>
+
+		<dialog name="employer" class="app.form.org.EmployerDialog"><frame heading="create-data-cmd-heading:Employer Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+		</dialog>
+
+		<dialog name="insurance" class="app.form.org.InsuranceDialog"><frame heading="create-data-cmd-heading:Insurance Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+		</dialog>
+
+		<dialog name="ipa" class="app.form.org.IPADialog"><frame heading="create-data-cmd-heading:IPA Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+		</dialog>
+
+		<dialog name="ancilliaryService" class="app.form.org.AncilliaryServiceDialog"><frame heading="create-data-cmd-heading:Ancilliary Service Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+		</dialog>
+
+	</dialogs>
+</xdm:container>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<dialogs package="initial">
+		<dialog name="firstUse" class="app.form.initial.CreateInitialPersonOrgLogin"><frame heading="First Use Information"/>
+			<field type="separator" heading="Your Organization"/>
+			<field type="text" name="org_name" caption="Name" required="yes"/>
+			<field type="text" name="org_code" caption="Org. Code" required="yes"/>
+
+			<field type="separator" heading="The Medspective Administrator"/>
+			<composite name="fullName" caption="Full Name">
+				<field type="text" name="name_first" caption="First Name" required="yes" size="16"/>
+				<field type="text" name="name_middle" caption="Middle Name" size="16"/>
+				<field type="text" name="name_last" caption="Last Name" required="yes" size="16"/>
+			</composite>
+
+			<field type="separator" heading="Login Information"/>
+			<field type="text" name="user_id" caption="User ID" required="yes"/>
+			<field type="text" name="password_1" caption="Password" required="yes" mask-entry="yes"/>
+			<field type="text" name="password_2" caption="Password" required="yes" mask-entry="yes" hint="Enter your password again for verification."/>
+		</dialog>
+	</dialogs>
+</xdm:container>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	
+	
+	
+	
+		<xdm:template name="org.org-profile">
+			<field type="integer" name="org_id" caption="" hidden="yes"/>
+			<field type="select" name="parent_org_id" caption="Parent Org ID" choices="query:org.get-all-orgs" required="yes"/>
+			<field type="separator" heading="Organization Profile"/>
+			<field type="text" name="org_name" caption="Name" required="yes" size="32"/>
+			<field type="text" name="org_code" caption="Org Code" required="yes" size="16"/>
+			<field type="text" name="org_abbrev" caption="Abbreviated Name" size="16"/>
+
+			<field type="text" name="ticker_symbol" caption="Ticker Symbol" size="16"/>
+			<field type="text" name="sic_code" caption="SIC Code" size="16"/>
+
+			<field type="select" name="fiscal_year_month_id" caption="Start of Fiscal Year" choices="schema-enum:Month_Of_Year"/>
+			<field type="text" name="time_zone" caption="Time Zone of Organization Location" size="16" hint="The following fields should be filled with times in this timezone"/>
+			<field type="time" name="business_start_time" caption="Start of Business Day"/>
+			<field type="time" name="business_end_time" caption="End of Business Day"/>
+		</xdm:template>
+
+	    <xdm:template name="org.classification-information">
+			<field type="separator" heading="Classification"/>
+			<field type="select" name="org_type_id" caption="Organization Type" choices="schema-enum:Org_Type" required="yes" style="multidual"/>
+		</xdm:template>
+
+		<xdm:template name="org.contact-information">
+			<field type="separator" heading="Contact Information"/>
+
+			<field type="text" name="line1" caption="Mailing Address" required="yes" size="64"/>
+			<field type="text" name="line2" caption="Line 2" size="64"/>
+			<composite name="cityStateZip" caption="*">
+				<field type="text" name="city" caption="City" required="yes" size="16"/>
+				<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes"/>
+				<field type="zip-code" name="zip" caption="Zip Code"/>
+			</composite>
+			<field type="text" name="country" caption="Country" size="16"/>
+
+			<composite name="primary" caption="*">
+				<field type="phone" name="phone" caption="Telephone"/>
+				<field type="phone" name="fax" caption="Fax"/>
+			</composite>
+
+			<composite name="billing" caption="*">
+				<field type="text" name="contact" caption="Billing Contact"/>
+				<field type="phone" name="phone" caption="Phone"/>
+			</composite>
+
+            <field type="email" name="email" caption="E-Mail"/>
+			<field type="text" name="website" caption="Web Site"/>
+		</xdm:template>
+
+		<xdm:template name="org.demographic-information">
+			<field type="separator" heading="Demographic Information"/>
+			<field type="select" name="ownership_id" caption="Ownership Type" choices="schema-enum:Org_Ownership_Type"/>
+			<field type="select" name="org_level_id" caption="Organization Type" choices="schema-enum:Org_Level_Type"/>
+			<field type="text" name="employees" caption="Approx. Employees" size="16"/>
+		</xdm:template>
+
+		<xdm:template name="org.identification-information">
+			<field type="separator" heading="Identification Information"/>
+			<field type="text" name="tax_id" caption="Tax ID" size="16"/>
+			<field type="text" name="employer_id" caption="Employer ID" size="16"/>
+			<field type="text" name="state_id" caption="State ID" size="16"/>
+			<field type="text" name="medicaid_id" caption="Medicaid ID" size="16"/>
+			<field type="text" name="medicare_id" caption="Medicare ID" size="16"/>
+			<field type="text" name="workers_comp_id" caption="Workers Comp. ID" size="16"/>
+			<field type="text" name="bcbs_id" caption="Blue Cross/Blue Shield ID" size="16"/>
+			<field type="text" name="clia_id" caption="CLIA ID" size="16"/>
+		</xdm:template>
+
+		<xdm:template name="org.service-information">
+			<field type="separator" heading="Service Information"/>
+			<field type="select" name="hcfa_servplace_id" caption="HCFA Service Place Type" choices="schema-enum:HCFA1500_Service_Place_Type"/>
+		</xdm:template>
+	
+</xdm:container>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="templates/claim.xml"/>
+	
+	<dialogs package="claimAttribute">
+		<dialog name="profile" class="app.form.claim.attribute.ProfileDialog">
+<frame heading="create-dialog-perspective-heading:Claim"/>
+			<field type="integer" name="invoice_id" caption="Invoice ID"/>
+			<field type="select" name="claim_status_id" caption="Status" choices="schema-enum:Claim_Status_Type"/>
+			<field type="separator" heading="Demographics"/>
+
+			<field type="select" name="patient_id" caption="Patient" choices="query:person.get-all-patients" required="yes"/>
+			
+			<composite name="servprov" caption="Service Provider/Facility">
+				<field type="select" name="provider_id" caption="" choices="query:person.get-all-physicians" required="yes"/>
+				<field type="select" name="facility_id" caption="" choices="query:org.get-all-orgs" required="yes"/>
+			</composite>
+
+			<composite name="billprov" caption="Billing Provider/Facility">
+				<field type="select" name="provider_id" caption="" choices="query:person.get-all-physicians" required="yes"/>
+				<field type="select" name="facility_id" caption="" choices="query:org.get-all-orgs" required="yes"/>
+			</composite>
+		</dialog>
+		
+		<dialog name="diagproc" class="app.form.claim.attribute.DiagProcDialog">
+<frame heading="create-dialog-perspective-heading:Diagnosis/Procedure Pair"/>
+			<field type="text" name="system_id" caption="" hidden="yes"/>
+			
+			<composite name="new" caption="New Diagnosis/Procedure">
+				<field type="select" name="diag_code_type_id" caption="" choices="schema-enum:Claim_Diagnosis_Code_Type"/>
+				<field type="text" name="diagnosis" caption="" size="16"/>
+				<field type="select" name="proc_code_type_id" caption="" choices="schema-enum:Claim_Procedure_Code_Type"/>
+				<field type="text" name="procedure" caption="" size="16"/>
+			</composite>
+
+			<composite name="existing" caption="Existing Diagnoses/Procedures">
+				<field type="select" name="diagnoses" caption="Diagnoses" choices="query:claimAttribute.get-diagnoses-by-claim" style="multilist"/>
+				<field type="select" name="procedures" caption="Procedures" choices="query:claimAttribute.get-procedures-by-claim" style="multilist"/>
+			</composite>
+		</dialog>
+	</dialogs>
+</xdm:container>

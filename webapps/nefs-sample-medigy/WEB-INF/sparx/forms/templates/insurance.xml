@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	
+	
+	
+	
+		<xdm:template name="insurance.billing-address">
+			<field type="separator" heading="Billing Address"/>
+			<field type="text" name="line1" caption="Line 1" required="yes" size="64"/>
+			<field type="text" name="line2" caption="Line 2" size="64"/>
+			<composite name="cityStateZip" caption="*">
+				<field type="text" name="city" caption="City" required="yes" size="16"/>
+				<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes"/>
+				<field type="zip-code" name="zip" caption="Zip Code"/>
+			</composite>
+			<field type="text" name="country" caption="Country" size="16"/>
+
+			<composite name="telephoneInfo" caption="Telephone/Fax">
+				<field type="phone" name="phone" caption="" size="16"/>
+				<field type="phone" name="fax" caption="" size="16"/>
+			</composite>
+		</xdm:template>
+
+		<xdm:template name="insurance.coverage">
+			<field type="separator" heading="Coverage Information"/>
+			<field type="duration" name="plan_duration" caption="Plan Begin/End Dates"/>
+
+			<composite name="deductible" caption="Deductible Amounts">
+				<field type="currency" name="individual" caption="Individual" size="16"/>
+				<field type="currency" name="family" caption="Family" size="16"/>
+			</composite>
+			
+			<composite name="pmt_thresh" caption="Percentage Pay/Threshold">
+				<field type="float" name="percentage_pay" caption=""/>
+				<field type="currency" name="threshold" caption="" size="16"/>
+			</composite>
+			
+			<field type="text" name="copay" caption="Office Visit Co-pay" size="16"/>
+		</xdm:template>
+
+		<xdm:template name="insurance.remittance">
+			<field type="separator" heading="Remittance Information"/>
+			<field type="text" name="remittance_payer_name" caption="Remittance Payer Name"/>
+			<composite name="remittance" caption="Remittance Type">
+				<field type="select" name="remit_type" caption=" " choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
+				<field type="text" name="remit_payer_id" caption="Remittance Payer ID" hint="This is used for electronic remittance">\
+					<conditional action="display" partner="remittance.remit_type" js-expr="control.options[control.selectedIndex].text == 'Electronic'"/>
+				</field>
+			</composite>
+		</xdm:template>
+
+	
+</xdm:container>

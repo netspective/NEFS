@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	
+	
+	
+	
+		<xdm:template name="person.personal-profile">
+			<field type="integer" name="person_id" caption="" hidden="yes"/>
+			<field type="separator" heading="Personal Profile"/>
+			<field type="select" name="name_prefix" caption="Prefix" choices="schema-enum:Name_Prefix_Type" prepend-blank="yes"/>
+			<composite name="fullName" caption="Full Name">
+				<field type="text" name="name_first" caption="First Name" required="yes" size="16"/>
+				<field type="text" name="name_middle" caption="Middle Name" size="16"/>
+				<field type="text" name="name_last" caption="Last Name" required="yes" size="16"/>
+			</composite>
+			<field type="text" name="name_suffix" caption="Suffix" size="4"/>
+			<composite name="lifespan" caption="Date of Birth/Death">
+				<field type="date" name="date_of_birth" caption="Date of Birth" size="12"/>
+				<field type="date" name="date_of_death" caption="Date of Death" size="12"/>
+			</composite>
+			<field type="ssn" name="ssn" caption="Social Security" required="yes" size="11"/>
+		</xdm:template>
+
+		<xdm:template name="person.demographic-information">
+			<field type="separator" heading="Demographic Information"/>
+			<field type="select" name="gender_id" caption="Gender" choices="schema-enum:Gender_Type" required="yes" prepend-blank="yes"/>
+			<field type="select" name="marital_status_id" caption="Marital Status" choices="schema-enum:Marital_Status_Type"/>
+			<field type="select" name="blood_type_id" caption="Blood Type" choices="schema-enum:Blood_Type" required="yes"/>
+
+			<field type="select" name="ethnicity_id" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" style="multidual" hint="Please note that the first ethnicity you select will be considered the primary ethnicity of this person."/>
+			<field type="select" name="language_id" caption="Language" choices="schema-enum:Language_Type" style="multidual" hint="Please note that the first language you select will be considered the primary language of this person."/>
+		</xdm:template>
+
+		<xdm:template name="person.profile-demographic-information">
+			<field type="separator" heading="Demographic Information"/>
+			<field type="select" name="gender_id" caption="Gender" choices="schema-enum:Gender_Type" required="yes" prepend-blank="yes"/>
+			<field type="select" name="marital_status_id" caption="Marital Status" choices="schema-enum:Marital_Status_Type"/>
+			<field type="select" name="blood_type_id" caption="Blood Type" choices="schema-enum:Blood_Type" required="yes"/>
+
+			<field type="select" name="ethnicity_id" caption="Primary Ethnicity" choices="query:personAttribute.get-ethnicities-for-person"/>
+			<field type="select" name="language_id" caption="Primary Language" choices="query:personAttribute.get-languages-for-person"/>
+		</xdm:template>
+
+		<xdm:template name="person.identification-information">
+			<field type="separator" heading="Personal Identification"/>
+			<field type="text" name="user_name" caption="System Login" size="16" max-length="16" hint="This is the text based ID that will be used for this person in the application.  This is also the login name used by people if they want to access their information online."/>
+
+			<composite name="driversLicense" caption="Driver License">
+				<field type="integer" name="system_id" caption="" hidden="yes"/>
+				<field type="text" name="license_number" caption="License Number"/>
+				<field type="select" name="license_src" caption="State" choices="schema-enum:US_State_Type" style="combo"/>
+				<field type="text" name="license_src_other" caption="Other State" size="16" max-length="16">
+					<conditional action="display" partner="driversLicense.license_src" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+		</xdm:template>
+
+		<xdm:template name="person.contact-information">
+			<field type="separator" heading="Contact Methods"/>
+			<field type="text" name="line1" caption="Home Address" required="yes" size="64"/>
+			<field type="text" name="line2" caption="Line 2" size="64"/>
+			<composite name="cityStateZip" caption="*">
+				<field type="text" name="city" caption="City" required="yes" size="16"/>
+				<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes"/>
+				<field type="zip-code" name="zip" caption="Zip Code"/>
+			</composite>
+			<field type="text" name="country" caption="Country" size="16"/>
+
+			<composite name="telephoneInfo" caption="Primary/Secondary Telephone">
+				<field type="phone" name="primary_phone" caption="" size="16"/>
+				<field type="phone" name="secondary_phone" caption="" size="16"/>
+			</composite>
+		</xdm:template>
+
+		<xdm:template name="person.employment-information">
+			<field type="separator" heading="Employment Information"/>
+			<field type="select" name="employment_status" caption="Employment Status" choices="schema-enum:PersonOrg_Rel_Type"/>
+			<field type="select" name="employer_id" caption="Employer ID" choices="query:org.get-all-orgs" prepend-blank="yes"/>
+
+			<composite name="employer" caption="Org Code/Name">
+				<field type="text" name="org_code" caption="Org Code" size="16"/>
+				<field type="text" name="org_name" caption="Org Name"/>
+				<conditional action="display" partner="employer_id" js-expr="control.selectedIndex == 0"/>
+			</composite>
+
+			<field type="text" name="occupation" caption="Occupation"/>
+		</xdm:template>
+
+		<xdm:template name="person.insurance-information">
+			<field type="separator" heading="Insurance Information"/>
+			<composite name="responsible" caption="Responsible Party">
+				<field type="boolean" name="self" caption="Self?"/>
+				<field type="select" name="party_id" caption="Responsible Party" choices="query:person.get-all-persons">
+					<conditional action="display" partner="responsible.self" js-expr="control.value"/>
+				</field>
+			</composite>
+			
+			<composite name="relResp" caption="Relationship to Responsible Party">
+				<field type="select" name="rel_type_id" caption="Relationship" choices="schema-enum:Person_Relationship_Type" style="combo"/>
+				<field type="text" name="rel_descr" caption="Other Relationship" size="16">
+					<conditional action="display" partner="relationshipResponsible.rel_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+			<field type="select" name="care_provider_id" caption="Care Provider ID" choices="query:person.get-all-physicians"/>
+		</xdm:template>
+	
+
+	
+	
+	
+	
+		<xdm:template name="physician.license-and-provider-information">
+			<field type="separator" heading="License and Provider Numbers"/>
+			<field type="grid" name="licenses"><row name="licenseInfo_0">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_0.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+				</row><row name="licenseInfo_1">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_1.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_0.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_2">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_2.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_1.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_3">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_3.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_2.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_4">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_4.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_3.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_5">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_5.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_4.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_6">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_6.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_5.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_7">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_7.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_6.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_8">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_8.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_7.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_9">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_9.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_8.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_10">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_10.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_9.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_11">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_11.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_10.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_12">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_12.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_11.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_13">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_13.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_12.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_14">
+					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
+					<field type="text" name="license_name" caption="" size="16">
+						<conditional action="display" partner="licenses.licenseInfo_14.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					</field>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<field type="integer" name="facility_id" caption="Facility ID"/>
+					<conditional action="display" partner="licenses.licenseInfo_13.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row></field>
+
+			<field type="grid" name="stateLicenses"><row name="licenseInfo_0">
+					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+				</row><row name="licenseInfo_1">
+					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<conditional action="display" partner="stateLicenses.licenseInfo_0.us_state_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_2">
+					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<conditional action="display" partner="stateLicenses.licenseInfo_1.us_state_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_3">
+					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<conditional action="display" partner="stateLicenses.licenseInfo_2.us_state_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="licenseInfo_4">
+					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
+					<field type="text" name="license_number" caption="License Number" size="16"/>
+					<field type="date" name="expiration_date" caption="Expiration Date"/>
+					<conditional action="display" partner="stateLicenses.licenseInfo_3.us_state_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row></field>
+		</xdm:template>
+
+		<xdm:template name="physician.billing-information">
+			<field type="separator" heading="Billing Information"/>
+			<field type="grid" name="billing"><row name="billingInfo_0">
+					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
+					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
+					<field type="date" name="effective_date" caption="Effective Date"/>
+				</row><row name="billingInfo_1">
+					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
+					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
+					<field type="date" name="effective_date" caption="Effective Date"/>
+					<conditional action="display" partner="billing.billingInfo_0.bill_remittance_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="billingInfo_2">
+					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
+					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
+					<field type="date" name="effective_date" caption="Effective Date"/>
+					<conditional action="display" partner="billing.billingInfo_1.bill_remittance_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="billingInfo_3">
+					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
+					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
+					<field type="date" name="effective_date" caption="Effective Date"/>
+					<conditional action="display" partner="billing.billingInfo_2.bill_remittance_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row><row name="billingInfo_4">
+					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
+					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
+					<field type="date" name="effective_date" caption="Effective Date"/>
+					<conditional action="display" partner="billing.billingInfo_3.bill_remittance_type_id" js-expr="control.selectedIndex &gt; 0"/>
+				</row></field>
+		</xdm:template>
+	
+
+	
+		<xdm:template name="staff.professional-identification">
+			<field type="separator" heading="Professional Information"/>
+			<field type="select" name="person_type_id" caption="Classification" choices="schema-enum:Person_Type" style="multidual"/>
+		</xdm:template>
+
+		<xdm:template name="staff.speciality">
+			<field type="separator" heading="Specialties"/>
+			<field type="grid" name="specialties"><row name="specialityInfo_0">
+					<field type="select" name="speciality_id" caption="Speciality Type" choices="schema-enum:Staff_Speciality_Type"/>
+				</row><row name="specialityInfo_1">
+					<field type="select" name="speciality_id" caption="Speciality Type" choices="schema-enum:Staff_Speciality_Type">
+						<conditional action="display" partner="specialties.specialityInfo_0.speciality_id" js-expr="control.selectedIndex &gt; 0"/>
+					</field>
+				</row><row name="specialityInfo_2">
+					<field type="select" name="speciality_id" caption="Speciality Type" choices="schema-enum:Staff_Speciality_Type">
+						<conditional action="display" partner="specialties.specialityInfo_1.speciality_id" js-expr="control.selectedIndex &gt; 0"/>
+					</field>
+				</row><row name="specialityInfo_3">
+					<field type="select" name="speciality_id" caption="Speciality Type" choices="schema-enum:Staff_Speciality_Type">
+						<conditional action="display" partner="specialties.specialityInfo_2.speciality_id" js-expr="control.selectedIndex &gt; 0"/>
+					</field>
+				</row></field>
+		</xdm:template>
+	
+
+	
+		<xdm:template name="nurse.associated-physicians">
+			<field type="select" name="associated_physician_id" caption="Associated Physicians" choices="query:person.get-all-physicians" style="multidual"/>
+		</xdm:template>
+	
+</xdm:container>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="templates/person.xml"/>
+	
+	<dialogs package="personAttribute">
+		<dialog name="address" class="app.form.person.attribute.AddressDialog" retain-params="person_id">
+<frame heading="create-dialog-perspective-heading:Address"/>
+			<field type="text" name="system_id" caption="" hidden="yes"/>
+			<field type="text" name="parent_id" caption="Person ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			
+			<field type="separator" heading="Address Classification"/>
+			<field type="text" name="address_name" caption="Address Label" size="32"/>
+			<field type="boolean" name="mailing" caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/>
+			<field type="select" name="address_type_id" caption="Address Type" choices="schema-enum:Contact_Address_Type"/>
+
+			<field type="separator" heading="Address Data"/>
+			<field type="text" name="line1" caption="Line 1" size="64"/>
+			<field type="text" name="line2" caption="Line 2" size="64"/>
+			<field type="text" name="city" caption="City" size="16"/>
+			<field type="text" name="county" caption="County" size="16"/>
+			<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type"/>
+			<field type="zip-code" name="zip" caption="Zip Code"/>
+			<field type="text" name="country" caption="Country" size="16"/>
+            <director>
+                <next-actions caption="Next Action "/>
+            </director>
+		</dialog>
+
+		
+
+		<dialog name="classification" class="app.form.person.attribute.ClassificationDialog" retain-params="person_id">
+<frame heading="create-dialog-perspective-heading:Classification"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Person ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			<field type="integer" name="org_id" caption="Org ID" required="yes"/>
+			<composite name="personType" caption="Person Type">
+				<field type="select" name="person_type_id" caption="" choices="schema-enum:Person_Type"/>
+				<field type="text" name="person_type" caption="" size="16">
+					<conditional action="display" partner-field-name="personType.person_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+            <director>
+                <next-actions caption="Next Action "/>
+            </director>
+		</dialog>
+		
+		
+
+		<dialog name="contact" class="app.form.person.attribute.ContactDialog" retain-params="person_id">
+<frame heading="create-dialog-perspective-heading:Contact"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Person ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+
+			<composite name="contactType" caption="Contact Type">
+				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type"/>
+				<field type="text" name="method_name" caption="Other Contact Type">
+					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+			<field type="text" name="method_value" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+            <director>
+                <next-actions caption="Next Action "/>
+            </director>
+		</dialog>
+
+		
+
+		<dialog name="ethnicity" class="app.form.person.attribute.EthnicityDialog" retain-params="person_id">
+<frame heading="create-dialog-perspective-heading:Ethnicity"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Person ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			<composite name="ethnicityType" caption="Ethnicity">
+				<field type="select" name="ethnicity_id" caption="Ethnicity Type" choices="schema-enum:Ethnicity_Type"/>
+				<field type="text" name="ethnicity" caption="Other Ethnicity Type">
+					<conditional action="display" partner-field-name="ethnicityType.ethnicity_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+            <director>
+                <next-actions caption="Next Action "/>
+            </director>
+		</dialog>
+
+		
+
+		<dialog name="language" class="app.form.person.attribute.LanguageDialog" retain-params="person_id">
+<frame heading="create-dialog-perspective-heading:Language"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Person ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			<composite name="languageType" caption="Language">
+				<field type="select" name="language_id" caption="Language Type" choices="schema-enum:Language_Type"/>
+				<field type="text" name="language" caption="Other Language Type">
+					<conditional action="display" partner-field-name="languageType.language_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+            <director>
+                <next-actions caption="Next Action "/>
+            </director>
+		</dialog>
+		
+		
+
+		<dialog name="profile" class="app.form.person.attribute.ProfileDialog" retain-params="person_id">
+<frame heading="create-dialog-perspective-heading:Person Profile"/>
+			<xdm:include template="person.personal-profile"/>
+			<xdm:include template="person.profile-demographic-information"/>
+            <director>
+                <next-actions caption="Next Action "/>
+            </director>
+		</dialog>
+
+		
+
+		<dialog name="relationship" class="app.form.person.attribute.RelationshipDialog" retain-params="person_id">
+<frame heading="create-dialog-perspective-heading:Personal Relationship"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Person ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			<field type="integer" name="rel_person_id" caption="Relation ID" hint="The ID of the person with which this relationship is being defined"/>
+			<composite name="relType" caption="Relationship">
+				<field type="select" name="rel_type_id" caption="Relationship Type" choices="schema-enum:Person_Relationship_Type"/>
+				<field type="text" name="rel_type" caption="Other Relationship Type">
+					<conditional action="display" partner-field-name="relType.rel_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+			<composite name="lifespan" caption="Begin/End Dates">
+				<field type="date" name="rel_begin" caption="Begin Date"/>
+				<field type="date" name="rel_end" caption="End Date"/>
+			</composite>
+			<field type="memo" name="rel_descr" caption="Description"/>
+            <director>
+                <next-actions caption="Next Action "/>
+            </director>
+		</dialog>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+	</dialogs>
+</xdm:container>

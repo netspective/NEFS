@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<dialogs package="insuranceAttribute">
+		
+	</dialogs>
+	
+	<dialogs package="insuranceProductAttribute">	
+		<dialog name="address" class="app.form.insurance.attribute.ProductAddressDialog">
+<frame heading="create-dialog-perspective-heading:Address"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Product ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			
+			<field type="separator" heading="Address Classification"/>
+			<field type="text" name="address_name" caption="Address Label" size="32"/>
+			<field type="boolean" name="mailing" caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/>
+			<field type="select" name="address_type_id" caption="Address Type" choices="schema-enum:Contact_Address_Type"/>
+
+			<field type="separator" heading="Address Data"/>
+			<field type="text" name="line1" caption="Line 1" size="64"/>
+			<field type="text" name="line2" caption="Line 2" size="64"/>
+			<field type="text" name="city" caption="City" size="16"/>
+			<field type="text" name="county" caption="County" size="16"/>
+			<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type"/>
+			<field type="zip-code" name="zip" caption="Zip Code"/>
+			<field type="text" name="country" caption="Country" size="16"/>
+		</dialog>
+		
+		
+		
+		<dialog name="contact" class="app.form.insurance.attribute.ProductContactDialog">
+<frame heading="create-dialog-perspective-heading:Contact"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Product ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+
+			<composite name="contactType" caption="Contact Type">
+				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type"/>
+				<field type="text" name="method_name" caption="Other Contact Type">
+					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+			<field type="text" name="method_value" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+		</dialog>
+
+		
+
+		<dialog name="profile" class="app.form.insurance.attribute.ProductProfileDialog" retain-params="*">
+<frame heading="create-dialog-perspective-heading:Insurance Product Profile"/>
+			<field type="integer" name="product_id" caption="" hidden="yes"/>
+			<field type="select" name="org_id" caption="Org ID" choices="query:org.get-insurance-orgs" required="yes"/>
+			<field type="text" name="product_name" caption="Product Name" required="yes"/>
+
+			<field type="text" name="remittance_payer_name" caption="Remittance Payer Name"/>
+			<composite name="remittance" caption="Remittance Type">
+				<field type="select" name="remit_type" caption=" " choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
+				<field type="text" name="remit_payer_id" caption="Remittance Payer ID" hint="This is used for electronic remittance">\
+					<conditional action="display" partner-field-name="remittance.remit_type" expression="control.options[control.selectedIndex].text == 'Electronic'"/>
+				</field>
+			</composite>
+			<field type="text" name="medigap_id" caption="Medigap ID"/>
+		</dialog>
+
+	</dialogs>
+
+	<dialogs package="insurancePlanAttribute">	
+		<dialog name="address" class="app.form.insurance.attribute.PlanAddressDialog">
+<frame heading="create-dialog-perspective-heading:Address"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Plan ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			
+			<field type="separator" heading="Address Classification"/>
+			<field type="text" name="address_name" caption="Address Label" size="32"/>
+			<field type="boolean" name="mailing" caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/>
+			<field type="select" name="address_type_id" caption="Address Type" choices="schema-enum:Contact_Address_Type"/>
+
+			<field type="separator" heading="Address Data"/>
+			<field type="text" name="line1" caption="Line 1" size="64"/>
+			<field type="text" name="line2" caption="Line 2" size="64"/>
+			<field type="text" name="city" caption="City" size="16"/>
+			<field type="text" name="county" caption="County" size="16"/>
+			<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type"/>
+			<field type="zip-code" name="zip" caption="Zip Code"/>
+			<field type="text" name="country" caption="Country" size="16"/>
+		</dialog>
+		
+		
+		
+		<dialog name="contact" class="app.form.insurance.attribute.PlanContactDialog">
+<frame heading="create-dialog-perspective-heading:Contact"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Plan ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+
+			<composite name="contactType" caption="Contact Type">
+				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type"/>
+				<field type="text" name="method_name" caption="Other Contact Type">
+					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+			<field type="text" name="method_value" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+		</dialog>
+
+		
+
+		<dialog name="profile" class="app.form.insurance.attribute.PlanProfileDialog" retain-params="*">
+<frame heading="create-dialog-perspective-heading:Insurance Plan Profile"/>
+			<field type="integer" name="plan_id" caption="" hidden="yes"/>
+			<field type="select" name="product_id" caption="Insurance Product" choices="query:insuranceAttribute.products-by-planOrg" required="yes"/>
+			<field type="text" name="plan_name" caption="Plan Name" required="yes"/>
+
+			<field type="text" name="remittance_payer_name" caption="Remittance Payer Name"/>
+			<composite name="remittance" caption="Remittance Type">
+				<field type="select" name="remit_type" caption=" " choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
+				<field type="text" name="remit_payer_id" caption="Remittance Payer ID" hint="This is used for electronic remittance">\
+					<conditional action="display" partner-field-name="remittance.remit_type" expression="control.options[control.selectedIndex].text == 'Electronic'"/>
+				</field>
+			</composite>
+		</dialog>
+
+		
+
+	</dialogs>
+</xdm:container>

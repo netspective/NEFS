@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	
+
+	
+
+	<xdm:include file="claim.xml"/>
+	<xdm:include file="initial.xml"/>
+	<xdm:include file="insurance.xml"/>
+	<xdm:include file="org.xml"/>
+	<xdm:include file="person.xml"/>
+	<xdm:include file="transaction.xml"/>
+	<xdm:include file="scheduling.xml"/>
+
+	<xdm:include file="attributes/claim.xml"/>
+	<xdm:include file="attributes/insurance.xml"/>
+	<xdm:include file="attributes/org.xml"/>
+	<xdm:include file="attributes/person.xml"/>
+
+</xdm:container>

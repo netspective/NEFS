@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="templates/org.xml"/>
+
+	<dialogs package="orgAttribute">
+		<dialog name="address" class="app.form.org.attribute.AddressDialog" retain-params="org_id">
+<frame heading="create-dialog-perspective-heading:Address"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Org ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+
+			<field type="separator" heading="Address Classification"/>
+			<field type="text" name="address_name" caption="Address Label" size="32"/>
+			<field type="boolean" name="mailing" caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/>
+			<field type="select" name="address_type_id" caption="Address Type" choices="schema-enum:Contact_Address_Type" required="yes"/>
+
+			<field type="separator" heading="Address Data"/>
+			<field type="text" name="line1" caption="Line 1" required="yes" size="64"/>
+			<field type="text" name="line2" caption="Line 2" size="64"/>
+			<field type="text" name="city" caption="City" required="yes" size="16"/>
+			<field type="text" name="county" caption="County" size="16"/>
+			<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes"/>
+			<field type="zip-code" name="zip" caption="Zip Code"/>
+			<field type="text" name="country" caption="Country" size="16"/>
+            <director>
+                <next-actions caption="Next Action "/>
+            </director>
+		</dialog>
+
+		
+
+		<dialog name="classification" class="app.form.org.attribute.ClassificationDialog" retain-params="org_id">
+<frame heading="create-dialog-perspective-heading:Classification"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Org ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			<composite name="orgType" caption="Org Type">
+				<field type="select" name="org_type_id" caption="" choices="schema-enum:Org_Type" required="yes"/>
+				<field type="text" name="org_type" caption="" size="16">
+					<conditional action="display" partner-field-name="orgType.org_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+            <director>
+                <next-actions caption="Next Action  "/>
+            </director>
+		</dialog>
+		
+		
+
+		<dialog name="contact" class="app.form.org.attribute.ContactDialog" retain-params="org_id">
+<frame heading="create-dialog-perspective-heading:Contact"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Org ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+
+			<composite name="contactType" caption="Contact Type">
+				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type" required="yes"/>
+				<field type="text" name="method_name" caption="Other Contact Type">
+					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
+            <director>
+                <next-actions caption="Next Action  "/>
+            </director>
+		</dialog>
+		
+		
+
+		<dialog name="identifier" class="app.form.org.attribute.IdentifierDialog" retain-params="org_id">
+<frame heading="create-dialog-perspective-heading:Identifier"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="org_id" caption="Org ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			<composite name="identifierType" caption="Identifier">
+				<field type="select" name="identifier_type_id" caption="Identifier Type" choices="schema-enum:Org_Identifier_Type" required="yes"/>
+				<field type="text" name="identifier_type" caption="Other Identifier Type">
+					<conditional action="display" partner-field-name="identifierType.identifier_type_id" expression="control.options[control.selectedIndex].text == 'Other ID'"/>
+				</field>
+			</composite>
+			<field type="text" name="identifier" caption="Identifier Value" required="yes"/>
+            <director>
+                <next-actions caption="Next Action  "/>
+            </director>
+		</dialog>
+
+		
+
+		<dialog name="personidsrc" class="app.form.org.attribute.PersonIDSrcDialog" retain-params="org_id">
+<frame heading="create-dialog-perspective-heading:Person ID Source"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="org_id" caption="Org ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			<field type="text" name="caption" caption="Caption" required="yes"/>
+			<field type="text" name="abbrev" caption="Abbreviation"/>
+            <director>
+                <next-actions caption="Next Action  "/>
+            </director>
+		</dialog>
+
+		
+
+		<dialog name="profile" class="app.form.org.attribute.ProfileDialog" retain-params="org_id">
+<frame heading="create-dialog-perspective-heading:Organization Profile"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.demographic-information"/>
+			<xdm:include template="org.service-information"/>
+            <director>
+                <next-actions caption="Next Action  "/>
+            </director>
+		</dialog>
+		
+		
+
+		<dialog name="relationship" class="app.form.org.attribute.RelationshipDialog" retain-params="org_id">
+<frame heading="create-dialog-perspective-heading:Organization Relationship"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Org ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			<field type="select" name="rel_org_id" caption="Relation ID" choices="query:org.get-all-orgs" required="yes" prepend-blank="yes" hint="The ID of the org with which this relationship is being defined"/>
+			<composite name="relType" caption="Relationship">
+				<field type="select" name="rel_type_id" caption="Relationship Type" choices="schema-enum:Org_Relationship_Type" required="yes"/>
+				<field type="text" name="rel_type" caption="Other Relationship Type">
+					<conditional action="display" partner-field-name="relType.rel_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+			<composite name="lifespan" caption="Begin/End Dates">
+				<field type="date" name="rel_begin" caption="Begin Date"/>
+				<field type="date" name="rel_end" caption="End Date"/>
+			</composite>
+			<field type="memo" name="rel_descr" caption="Description"/>
+            <director>
+                <next-actions caption="Next Action  "/>
+            </director>
+		</dialog>
+
+		
+
+		<dialog name="industry" class="app.form.org.attribute.IndustryDialog" retain-params="org_id">
+<frame heading="create-dialog-perspective-heading:Organization Industry"/>
+			<field type="integer" name="system_id" caption="" hidden="yes"/>
+			<field type="integer" name="parent_id" caption="Org ID" required="yes">
+				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+			</field>
+			<composite name="industry" caption="Industry">
+				<field type="select" name="org_industry_id" caption="Industry" choices="schema-enum:Org_Industry_Type" required="yes"/>
+				<field type="text" name="org_industry" caption="Other Industry">
+					<conditional action="display" partner-field-name="industry.org_industry_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</composite>
+            <director>
+                <next-actions caption="Next Action  "/>
+            </director>
+		</dialog>
+
+		
+
+		
+		
+		
+		
+
+	</dialogs>
+</xdm:container>

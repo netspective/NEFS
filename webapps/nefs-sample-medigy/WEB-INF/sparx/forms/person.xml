@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="templates/person.xml"/>
+	
+	<dialogs package="person">	
+		<dialog name="nurse" class="app.form.person.NurseDialog"><frame heading="create-data-cmd-heading:Nursing Staff"/>
+			<xdm:include template="person.personal-profile"/>
+			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="person.identification-information"/>
+			<xdm:include template="person.contact-information"/>
+			<xdm:include template="person.employment-information"/>
+
+			<xdm:include template="staff.professional-identification"/>
+			<xdm:include template="staff.specialty"/>
+			
+			<xdm:include template="nurse.associated-physicians"/>
+		</dialog>
+
+		<dialog name="patient" class="app.form.person.PatientDialog"><frame heading="create-data-cmd-heading:Patient/Person"/>
+			<xdm:include template="person.personal-profile"/>
+			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="person.identification-information"/>
+			<xdm:include template="person.contact-information"/>
+			<xdm:include template="person.employment-information"/>
+			<xdm:include template="person.insurance-information"/>
+		</dialog>
+
+		<dialog name="person"><frame heading="create-data-cmd-heading:Person"/>
+			<xdm:include template="person.personal-profile"/>
+			<xdm:include template="person.demographic-information"/>
+		</dialog>
+
+		<dialog name="physician" class="app.form.person.PhysicianDialog"><frame heading="create-data-cmd-heading:Physician/Provider"/>
+			<xdm:include template="person.personal-profile"/>
+			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="person.identification-information"/>
+			<xdm:include template="person.contact-information"/>
+			<xdm:include template="person.employment-information"/>
+			
+			<xdm:include template="staff.professional-identification"/>
+			<xdm:include template="staff.specialty"/>
+			
+			<xdm:include template="physician.license-and-provider-information"/>
+			<xdm:include template="physician.billing-information"/>
+		</dialog>
+		
+		<dialog name="referringDoctor" class="app.form.person.ReferringDoctorDialog"><frame heading="create-data-cmd-heading:Referring Doctor"/>
+			<xdm:include template="person.personal-profile"/>
+			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="person.identification-information"/>
+			<xdm:include template="person.contact-information"/>
+			<xdm:include template="person.employment-information"/>
+
+			<xdm:include template="staff.professional-identification"/>
+			<xdm:include template="staff.specialty"/>
+
+			<xdm:include template="physician.license-and-provider-information"/>
+		</dialog>
+
+		<dialog name="staff" class="app.form.person.StaffDialog"><frame heading="create-data-cmd-heading:Staff"/>
+			<xdm:include template="person.personal-profile"/>
+			<xdm:include template="person.demographic-information"/>
+			<xdm:include template="person.identification-information"/>
+			<xdm:include template="person.contact-information"/>
+			<xdm:include template="person.employment-information"/>
+
+			<xdm:include template="staff.professional-identification"/>
+		</dialog>
+	</dialogs>
+</xdm:container>
