@@ -41,7 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -58,93 +57,20 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 
+import com.netspective.commons.io.FileSearchPath;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationPageBodyType;
 import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.commons.io.PropertiesLoader;
-import com.netspective.commons.io.InputSourceLocator;
-import com.netspective.commons.text.TextUtils;
 
 public class FullTextSearchPage extends NavigationPage
 {
-    public class IndexDirectorySearchPathElement
-    {
-        private File path;
-
-        public IndexDirectorySearchPathElement()
-        {
-        }
-
-        public IndexDirectorySearchPathElement(File path)
-        {
-            this.path = path;
-        }
-
-        public File getPath()
-        {
-            return path;
-        }
-
-        public void setPath(File path)
-        {
-            final InputSourceLocator inputSourceLocator = getInputSourceLocator();
-            if(!path.isAbsolute() && inputSourceLocator != null)
-                path = inputSourceLocator.getRelativeFile(path);
-
-            this.path = path;
-        }
-
-        public boolean isValid()
-        {
-            return path != null && (path.exists() && path.isDirectory());
-        }
-    }
-
-    public class IndexDirectorySearchPath
-    {
-        private List directories = new ArrayList();
-        private IndexDirectorySearchPathElement firstValidDirectory;
-
-        public IndexDirectorySearchPath()
-        {
-        }
-
-        public IndexDirectorySearchPathElement getFirstValidDirectory()
-        {
-            return firstValidDirectory;
-        }
-
-        public List getDirectories()
-        {
-            return directories;
-        }
-
-        public IndexDirectorySearchPathElement createDirectory()
-        {
-            return new IndexDirectorySearchPathElement();
-        }
-
-        public void addDirectory(IndexDirectorySearchPathElement directory)
-        {
-            if(firstValidDirectory == null && directory.isValid())
-                firstValidDirectory = directory;
-            directories.add(directory);
-        }
-
-        public void addText(String text)
-        {
-            // we're ignoring text from XDM (just required so PCDATA is ignored in this class
-        }
-    }
-
     private String activeScrollPageParamName = "scroll-page";
     private String activeUserSearchResultsSessAttrName = "active-search-results";
-    private String indexLocatorIndexDirPropertyName = "indexDir"; // property that will be used to read the index dir from a given properties file
-    private String indexLocatorIndexDirPathSepPropertyName = "indexDirPathSep"; // property that will be used to split index directory path to search for first available directory
     private boolean valid; // is the search page valid?
     private File indexDirectory;
-    private IndexDirectorySearchPath indexDirectorySearchPath;
+    private FileSearchPath indexDirectorySearchPath;
     private IndexSearcher indexSearcher;
     private Analyzer analyzer = new StandardAnalyzer();
     private String defaultSearchFieldName;
@@ -170,12 +96,12 @@ public class FullTextSearchPage extends NavigationPage
 
         if(indexDirectorySearchPath != null)
         {
-            IndexDirectorySearchPathElement firstValid = indexDirectorySearchPath.getFirstValidDirectory();
+            File firstValid = indexDirectorySearchPath.getFirstValidDirectory();
             if(firstValid != null)
             {
                 try
                 {
-                    setIndexDirectory(firstValid.getPath());
+                    setIndexDirectory(firstValid);
                 }
                 catch(IOException e)
                 {
@@ -188,36 +114,12 @@ public class FullTextSearchPage extends NavigationPage
             getLog().error("Index directory '" + indexDirectory + "' in FullTextSearchPage " + getQualifiedName() + " is not valid. Use index-directory, index-locator-properties, or <index-directory-search-path> to specify a valid index directory location.");
     }
 
-    public String getIndexLocatorIndexDirPropertyName()
+    public FileSearchPath createIndexDirectorySearchPath()
     {
-        return indexLocatorIndexDirPropertyName;
+        return new FileSearchPath(this);
     }
 
-    public void setIndexLocatorIndexDirPropertyName(String indexLocatorIndexDirPropertyName)
-    {
-        this.indexLocatorIndexDirPropertyName = indexLocatorIndexDirPropertyName;
-    }
-
-    public void setIndexLocatorProperties(Properties properties) throws IOException
-    {
-        String indexDirPropValue = properties.getProperty(indexLocatorIndexDirPropertyName);
-        String indexDirPathSepPropValue = properties.getProperty(indexLocatorIndexDirPathSepPropertyName, ",");
-        if(indexDirPropValue == null)
-            throw new IOException("Property '"+ indexLocatorIndexDirPropertyName +"' not found in supplied properties file " + properties.getProperty(PropertiesLoader.PROPNAME_PROPERTIES_SOURCE));
-
-        String[] indexDirSearchPath = TextUtils.getInstance().split(indexDirPropValue, indexDirPathSepPropValue, true);
-        IndexDirectorySearchPath searchPath = createIndexDirectorySearchPath();
-        for(int i = 0; i < indexDirSearchPath.length; i++)
-            searchPath.addDirectory(new IndexDirectorySearchPathElement(new File(indexDirSearchPath[i])));
-        addIndexDirectorySearchPath(searchPath);
-    }
-
-    public IndexDirectorySearchPath createIndexDirectorySearchPath()
-    {
-        return new IndexDirectorySearchPath();
-    }
-
-    public void addIndexDirectorySearchPath(IndexDirectorySearchPath searchPath)
+    public void addIndexDirectorySearchPath(FileSearchPath searchPath)
     {
         indexDirectorySearchPath = searchPath;
     }
@@ -410,7 +312,7 @@ public class FullTextSearchPage extends NavigationPage
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        if(! valid)
+        if(!valid)
         {
             writer.write("Index loading was not completed properly, this page is not valid.");
             return;
