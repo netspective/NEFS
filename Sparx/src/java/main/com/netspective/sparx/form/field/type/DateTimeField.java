@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.12 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: DateTimeField.java,v 1.13 2003-10-01 15:23:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -191,7 +191,7 @@ public class DateTimeField extends TextField
 
             public String getTextValue()
             {
-                return (getValue() != null) ? getFormat().format((Date)getValue()) : null;
+                return (getValue() != null) ? dateValidationRule.format((Date)getValue()) : null;
             }
 
             public void setTextValue(String value) throws ValueException
@@ -218,12 +218,12 @@ public class DateTimeField extends TextField
                 }
                 try
                 {
-                    setValue(getFormat().parse(value));
+                    setValue(dateValidationRule.parse(value));
                 }
                 catch (ParseException e)
                 {
                     setInvalidText(value);
-                    invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in date format ("+ getFormat().toPattern() +").");
+                    invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in date format ("+ dateValidationRule.toPattern() +").");
                 }
             }
 
@@ -320,14 +320,9 @@ public class DateTimeField extends TextField
         dataType = value;
         setFormat(dataType.getFormat());
         setClientCalendarFormat(dataType.getClientFormatPattern());
-        getFormat().setLenient(false);
+        dateValidationRule.getFormat().setLenient(false);
         setSize(dataType.getServerFormatPattern().length());
         setMaxLength(getSize());
-    }
-
-    public SimpleDateFormat getFormat()
-    {
-        return dateValidationRule.getFormat();
     }
 
     public void setFormat(SimpleDateFormat format)
@@ -382,7 +377,7 @@ public class DateTimeField extends TextField
     {
         StringBuffer buf = new StringBuffer(super.getCustomJavaScriptDefn(dc));
         buf.append("field.dateDataType = " + this.getDataType().getValueIndex() + ";\n");
-        buf.append("field.dateFormat = '" + this.getFormat().toPattern() + "';\n");
+        buf.append("field.dateFormat = '" + dateValidationRule.toPattern() + "';\n");
 
         if(getFlags().flagIsSet(Flags.STRICT_YEAR))
             buf.append("field.dateStrictYear = true;\n");
@@ -413,7 +408,7 @@ public class DateTimeField extends TextField
         if(str != null && (str.startsWith("today") || str.startsWith("now")))
         {
             Date dt = new Date();
-            xlatedDate = getFormat().format(dt);
+            xlatedDate = dateValidationRule.format(dt);
         }
         return xlatedDate;
     }
@@ -449,7 +444,7 @@ public class DateTimeField extends TextField
                     Calendar calendar = new GregorianCalendar();
                     calendar.add(Calendar.DAY_OF_MONTH, opValue);
                     dt = calendar.getTime();
-                    xlatedDate = getFormat().format(dt);
+                    xlatedDate = dateValidationRule.format(dt);
                 }
                 catch(Exception e)
                 {
@@ -459,7 +454,7 @@ public class DateTimeField extends TextField
             else
             {
                 dt = new Date();
-                xlatedDate = getFormat().format(dt);
+                xlatedDate = dateValidationRule.format(dt);
             }
         }
         return xlatedDate;
@@ -499,15 +494,17 @@ public class DateTimeField extends TextField
         else if(isBrowserReadOnly(dc))
         {
             className = dc.getSkin().getControlAreaReadonlyStyleClass();
+            final String formatPattern = dateValidationRule.toPattern();
             writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" readonly value=\"" +
-                    textValue + "\" maxlength=\"" + getFormat().toPattern().length() + "\" size=\"" +
-                    getFormat().toPattern().length() + "\" " + controlAreaStyle +
+                    textValue + "\" maxlength=\"" + formatPattern.length() + "\" size=\"" +
+                    formatPattern.length() + "\" " + controlAreaStyle +
                     " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
         }
         else if(!stateFlags.flagIsSet(TextField.Flags.MASK_ENTRY))
         {
+            final String formatPattern = dateValidationRule.toPattern();
             writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
-                    getFormat().toPattern().length() + "\" size=\"" + getFormat().toPattern().length() + "\" " +
+                    formatPattern.length() + "\" size=\"" + formatPattern.length() + "\" " +
                     controlAreaStyle + " class=\"" + className + "\" " +
                     dc.getSkin().getDefaultControlAttrs() + ">");
         }
