@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.9 2003-05-16 21:21:32 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.10 2003-06-20 20:50:29 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -58,25 +58,32 @@ import com.netspective.commons.RuntimeEnvironmentFlags;
 public class DefaultValueContext implements ValueContext
 {
     private static final Log log = LogFactory.getLog(DefaultValueContext.class);
-    private static DiscoverClass discoverClass = new DiscoverClass();
+    protected static DiscoverClass discoverClass = new DiscoverClass();
     protected static int contextNum = 0;
 
     private String contextId;
     private long creationTime;
-    private RuntimeEnvironmentFlags environmentFlags = constructEnvironmentFlags();
+    private RuntimeEnvironmentFlags environmentFlags;
 
     public DefaultValueContext()
     {
         this.creationTime = System.currentTimeMillis();
     }
 
-    public RuntimeEnvironmentFlags constructEnvironmentFlags()
-    {
-        return new RuntimeEnvironmentFlags();
-    }
-
     public RuntimeEnvironmentFlags getEnvironmentFlags()
     {
+        if(environmentFlags == null)
+        {
+            try
+            {
+                environmentFlags = (RuntimeEnvironmentFlags) discoverClass.newInstance(RuntimeEnvironmentFlags.class, RuntimeEnvironmentFlags.class.getName());
+            }
+            catch (Exception e)
+            {
+                log.error("Unable to instantiate environment flags using SPI -- creating statically instead", e);
+                environmentFlags = new RuntimeEnvironmentFlags();
+            }
+        }
         return environmentFlags;
     }
 
