@@ -2,55 +2,36 @@
 <project version="3" relativePaths="true">
   <component name="FileEditorManager">
     <history>
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/template/freemarker/FreeMarkerTemplateProcessor.java" line="65" column="13" vertical-scroll-proportion="0.52663934" horizontal-scroll-proportion="0.07724958" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/template/freemarker/SyntaxHighlightTransform.java" line="66" column="61" vertical-scroll-proportion="0.20957309" horizontal-scroll-proportion="0.36247876" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/template/freemarker/ClassReferenceMethod.java" line="56" column="27" vertical-scroll-proportion="0.83811474" horizontal-scroll-proportion="0.16044143" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/template/freemarker/FreeMarkerConfigurationAdapter.java" line="94" column="64" vertical-scroll-proportion="0.5717213" horizontal-scroll-proportion="0.3803056" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/panel/framework/XdmComponentsPanel.java" line="189" column="0" vertical-scroll-proportion="0.5252264" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/content/library.ftl" line="7" column="57" vertical-scroll-proportion="-2.4954722" horizontal-scroll-proportion="0.33870968" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/conf/console.xml" line="65" column="11" vertical-scroll-proportion="0.41914618" horizontal-scroll-proportion="0.065365024" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/theme/console/ConsoleNavigationSkin.java" line="206" column="141" vertical-scroll-proportion="0.45407504" horizontal-scroll-proportion="0.83786076" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/template/freemarker/InputSourceDependenciesMethod.java" line="83" column="12" vertical-scroll-proportion="0.3661061" horizontal-scroll-proportion="0.0713073">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/content/project/input-source/documentation.ftl" line="15" column="108" vertical-scroll-proportion="0.27166882" horizontal-scroll-proportion="0.6417657" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/conf/commons.xml" line="29" column="49" vertical-scroll-proportion="0.5252264" horizontal-scroll-proportion="0.2911715" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xml/ParseContext.java" line="138" column="16" vertical-scroll-proportion="0.13712807" horizontal-scroll-proportion="0.0950764" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xdm/XdmParseContext.java" line="76" column="17" vertical-scroll-proportion="0.17335059" horizontal-scroll-proportion="0.101018675" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xdm/XdmHandlerNodeStackEntry.java" line="101" column="27" vertical-scroll-proportion="0.13712807" horizontal-scroll-proportion="0.16044143" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xml/AbstractContentHandler.java" line="215" column="64" vertical-scroll-proportion="0.5135834" horizontal-scroll-proportion="0.3803056" />
+      <source-position-entry url="file://$PROJECT_DIR$/../source-code-formatting/java-license.txt" line="12" column="17" vertical-scroll-proportion="0.21185371" horizontal-scroll-proportion="0.101018675" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/value/HttpServletValueContext.java" line="56" column="17" vertical-scroll-proportion="0.21185371" horizontal-scroll-proportion="0.101018675" />
+      <source-position-entry url="jar://$PROJECT_DIR$/../../Sparx/lib/redist/servlet.jar!/javax/servlet/http/HttpServlet.class" line="14" column="22" vertical-scroll-proportion="0.12777053" horizontal-scroll-proportion="0.13073005" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/ProjectManager.java" line="30" column="25" vertical-scroll-proportion="0.52332914" horizontal-scroll-proportion="0.14855687" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/navigate/NavigationControllerServlet.java" line="101" column="58" vertical-scroll-proportion="-4.7616644" horizontal-scroll-proportion="0.34465197" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/value/ServletValueContext.java" line="56" column="17" vertical-scroll-proportion="0.41740227" horizontal-scroll-proportion="0.101018675" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../webapps/nefs-sample-survey/WEB-INF/database/data/initial-and-test-data.xml" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../webapps/nefs-sample-library/WEB-INF/database/data/initial-and-test-data.xml" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Axiom/src/java/main/com/netspective/axiom/schema/transport/DataImportHandler.java" line="63" column="0" vertical-scroll-proportion="-0.24968474" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Axiom/src/java/main/com/netspective/axiom/schema/ColumnValues.java" line="68" column="9" vertical-scroll-proportion="0.36443883" horizontal-scroll-proportion="0.053480476" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Axiom/src/java/main/com/netspective/axiom/schema/BasicSchema.java" line="44" column="96" vertical-scroll-proportion="0.26229507" horizontal-scroll-proportion="0.5704584" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/test/com/netspective/commons/xdm/DataModelSchemaTest.java" line="44" column="33" vertical-scroll-proportion="0.776797" horizontal-scroll-proportion="0.19609508" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xdm/XdmBitmaskedFlagsAttribute.java" line="69" column="68" vertical-scroll-proportion="0.45649433" horizontal-scroll-proportion="0.4040747" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xdm/XmlDataModelSchema.java" line="1651" column="119" vertical-scroll-proportion="0.45649433" horizontal-scroll-proportion="0.70713073" />
+      <source-position-entry url="file://$PROJECT_DIR$/../README.TXT" line="30" column="30" vertical-scroll-proportion="0.5296343" horizontal-scroll-proportion="0.17826825" />
     </history>
-    <open-files>
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/template/freemarker/InputSourceDependenciesMethod.java" line="83" column="12" vertical-scroll-proportion="0.3661061" horizontal-scroll-proportion="0.0713073">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/conf/console.xml" line="65" column="11" vertical-scroll-proportion="0.41914618" horizontal-scroll-proportion="0.065365024" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/content/project/input-source/documentation.ftl" line="15" column="108" vertical-scroll-proportion="0.27166882" horizontal-scroll-proportion="0.6417657" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xml/ParseContext.java" line="138" column="16" vertical-scroll-proportion="0.13712807" horizontal-scroll-proportion="0.0950764" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xdm/XdmParseContext.java" line="76" column="17" vertical-scroll-proportion="0.17335059" horizontal-scroll-proportion="0.101018675" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xdm/XdmHandlerNodeStackEntry.java" line="101" column="27" vertical-scroll-proportion="0.13712807" horizontal-scroll-proportion="0.16044143" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/xml/AbstractContentHandler.java" line="215" column="64" vertical-scroll-proportion="0.5135834" horizontal-scroll-proportion="0.3803056" selected="true" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/conf/commons.xml" line="29" column="49" vertical-scroll-proportion="0.5252264" horizontal-scroll-proportion="0.2911715" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/content/library.ftl" line="7" column="57" vertical-scroll-proportion="-2.4954722" horizontal-scroll-proportion="0.33870968" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/theme/console/ConsoleNavigationSkin.java" line="206" column="141" vertical-scroll-proportion="0.45407504" horizontal-scroll-proportion="0.83786076" />
-    </open-files>
+    <open-files />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1288" height="972" extended-state="6" />
-    <editor active="false" />
+    <frame x="-4" y="-4" width="1288" height="972" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="floating" visible="true" weight="0.16626506" order="1" x="-266" y="165" width="256" height="374" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.35341364" order="1" x="-356" y="165" width="346" height="374" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.25029516" order="6" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.3305785" order="3" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24979919" order="2" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.3305785" order="8" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="docked" type="floating" visible="true" weight="0.37911648" order="0" x="-1019" y="166" width="661" height="763" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.40047392" order="4" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.35903615" order="0" x="-1019" y="166" width="661" height="763" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.40023613" order="4" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.24979919" order="1" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.3305785" order="2" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.3305785" order="11" />
@@ -61,6 +42,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="1" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="5" />
       <window_info id="Tailed Logs" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.33056873" order="10" />
+      <window_info id="Code Logic" active="false" anchor="bottom" auto_hide="true" internal_type="docked" type="docked" visible="false" weight="0.63744074" order="13" />
       <window_info id="simpleUML" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33056873" order="12" />
     </layout>
   </component>
@@ -188,18 +170,18 @@
       <option name="RESET_STICKY_TAGS" value="false" />
       <option name="NON_RECURSIVE" value="false" />
       <option name="CREATE_MISSING_DIRECTORIES" value="true" />
-      <option name="DONT_CHANGE_FILES" value="false" />
-      <option name="QUIET_MODE" value="false" />
+      <option name="DONT_CHANGE_FILES" value="true" />
+      <option name="QUIET_MODE" value="true" />
       <option name="ADDITIONAL_OPTIONS" value="" />
     </Update>
     <Commit>
       <option name="NON_RECURSIVE" value="false" />
       <option name="REVISION_TAG" value="" />
-      <option name="LOG_MESSAGE" value="" />
+      <option name="LOG_MESSAGE" value="Added notes for compiling using IDEA." />
       <option name="ADDITIONAL_OPTIONS" value="" />
     </Commit>
     <Diff>
-      <option name="REVISION_TAG" value="HEAD" />
+      <option name="REVISION_TAG" value="" />
       <option name="DATE_TAG" value="" />
       <option name="IGNORE_WHITESPACE" value="false" />
     </Diff>
@@ -256,7 +238,7 @@
     <option name="SHOW_EDITORS_OPTIONS" value="true" />
     <option name="HIDE_UNKNOWN_FILES" value="false" />
     <option name="HIDE_MISSING_FILES" value="false" />
-    <option name="HIDE_UP_TO_DATE_FILES" value="false" />
+    <option name="HIDE_UP_TO_DATE_FILES" value="true" />
   </component>
   <component name="CvsVcs">
     <expanded_paths>
@@ -266,44 +248,14 @@
   <component name="ProjectViewSettings">
     <navigator currentView="ProjectPane" flattenPackages="false" showMembers="false" showStructure="false" autoscrollToSource="false" splitterProportion="0.5" />
     <view id="ProjectPane">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/conf" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/panel" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Commons/src/java/main" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Commons/src/java/main/com" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/resources/theme" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/template" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/conf" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/content/project" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Commons/src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/resources/theme/console/css" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/.." />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/../.." />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/content" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Commons/src/java" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Commons" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/content/project/project-source" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/documents" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/resources/theme/console" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/panel/framework" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/resources" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/panel" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/console/content/project/input-source" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/template/freemarker" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective" />
     </view>
     <view id="SourcepathPane">
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Axiom/src/java/main/com/netspective/axiom" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Axiom/src/java/main/com" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Axiom/src/java/main/com/netspective" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Axiom/src/java/main" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Axiom/src/java/main/com" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../Axiom/src/java/main/com/netspective/axiom" />
     </view>
     <view id="ClasspathPane" />
   </component>
@@ -366,7 +318,7 @@
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="Suite" type="JUnit" default="false" selected="true">
+    <configuration name="Suite" type="JUnit" default="false" selected="false">
       <option name="PACKAGE_NAME" />
       <option name="MAIN_CLASS_NAME" value="com.netspective.commons.Suite" />
       <option name="METHOD_NAME" />
@@ -393,7 +345,7 @@
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="Suite" type="JUnit" default="false" selected="false">
+    <configuration name="Suite" type="JUnit" default="false" selected="true">
       <option name="PACKAGE_NAME" />
       <option name="MAIN_CLASS_NAME" value="com.netspective.axiom.Suite" />
       <option name="METHOD_NAME" />
@@ -465,22 +417,42 @@
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
+    <configuration name="SchemaColumnsTest" type="JUnit" default="false" selected="false">
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" value="com.netspective.axiom.schema.SchemaColumnsTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="SimpleSymmtericEncryptorTest" type="JUnit" default="false" selected="false">
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" value="com.netspective.commons.security.SimpleSymmtericEncryptorTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
   </component>
   <component name="BookmarkManager">
-    <editor_bookmark url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/report/tabular/HtmlTabularReportValueContext.java" line="173" />
+    <editor_bookmark url="file://$PROJECT_DIR$/../../Sparx/src/java/main/com/netspective/sparx/report/tabular/HtmlTabularReportValueContext.java" line="172" />
     <commander_bookmark type="package" url="file://$PROJECT_DIR$/../../Commons/src/java/main/com/netspective/commons/validate/rule" />
   </component>
   <component name="Commander">
-    <leftPanel view="Project" />
-    <rightPanel view="Project" />
+    <leftPanel view="Project" url="file://$PROJECT_DIR$/../../Axiom/src/java/main/com/netspective/axiom" />
+    <rightPanel view="Project" url="file://$PROJECT_DIR$/../.." />
     <splitter proportion="0.5" />
   </component>
   <component name="PropertiesComponent">
+    <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="last_opened_file_path" value="C:\Projects\Sparx\tools" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
   </component>
   <component name="SelectInManager">
