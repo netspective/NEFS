@@ -105,12 +105,12 @@ import java.util.Map;
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
  *
- * @version $Id: NavigationPage.java,v 1.62 2004-03-11 13:14:04 aye.thu Exp $
+ * @version $Id: NavigationPage.java,v 1.63 2004-03-16 16:19:54 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 19];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 20];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
@@ -125,21 +125,22 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "STATIC", Flags.STATIC_CONTENT);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "REJECT_FOCUS", Flags.REJECT_FOCUS);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD_PARAM", Flags.ALLOW_PAGE_CMD_PARAM);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 5] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_RETAIN_PARAMS", Flags.INHERIT_RETAIN_PARAMS);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 6] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_ASSIGN_STATE_PARAMS", Flags.INHERIT_ASSIGN_STATE_PARAMS);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 7] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "POPUP", Flags.IS_POPUP_MODE);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 8] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "PRINT", Flags.IS_PRINT_MODE);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 9] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SERVICE", Flags.IS_SERVICE_MODE);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 10] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SHOW_RENDER_TIME", Flags.SHOW_RENDER_TIME);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 11] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_META_DATA", Flags.HANDLE_META_DATA);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 12] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_HEADER", Flags.HANDLE_HEADER);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 13] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_FOOTER", Flags.HANDLE_FOOTER);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 14] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "DEBUG_REQUEST", Flags.DEBUG_REQUEST);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 15] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "BODY_AFFECTS_NAVIGATION", Flags.BODY_AFFECTS_NAVIGATION);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 16] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_VIEW_SOURCE", Flags.ALLOW_VIEW_SOURCE);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 17] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PANEL_EDITING", Flags.ALLOW_PANEL_EDITING);
-        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 18] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "VALIDATE_PANEL_EDITOR_IN_PAGE", Flags.VALIDATE_PANEL_EDITOR_IN_PAGE);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN_UNLESS_ACTIVE", Flags.HIDDEN_UNLESS_ACTIVE);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 5] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD_PARAM", Flags.ALLOW_PAGE_CMD_PARAM);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 6] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_RETAIN_PARAMS", Flags.INHERIT_RETAIN_PARAMS);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 7] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_ASSIGN_STATE_PARAMS", Flags.INHERIT_ASSIGN_STATE_PARAMS);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 8] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "POPUP", Flags.IS_POPUP_MODE);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 9] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "PRINT", Flags.IS_PRINT_MODE);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 10] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SERVICE", Flags.IS_SERVICE_MODE);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 11] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SHOW_RENDER_TIME", Flags.SHOW_RENDER_TIME);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 12] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_META_DATA", Flags.HANDLE_META_DATA);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 13] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_HEADER", Flags.HANDLE_HEADER);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 14] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_FOOTER", Flags.HANDLE_FOOTER);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 15] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "DEBUG_REQUEST", Flags.DEBUG_REQUEST);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 16] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "BODY_AFFECTS_NAVIGATION", Flags.BODY_AFFECTS_NAVIGATION);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 17] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_VIEW_SOURCE", Flags.ALLOW_VIEW_SOURCE);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 18] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PANEL_EDITING", Flags.ALLOW_PANEL_EDITING);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 19] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "VALIDATE_PANEL_EDITOR_IN_PAGE", Flags.VALIDATE_PANEL_EDITOR_IN_PAGE);
     }
 
     protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
@@ -165,7 +166,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public static final int STATIC_CONTENT = REQUIRE_LOGIN * 2;
         public static final int REJECT_FOCUS = STATIC_CONTENT * 2;
         public static final int HIDDEN = REJECT_FOCUS * 2;
-        public static final int ALLOW_PAGE_CMD_PARAM = HIDDEN * 2;
+        public static final int HIDDEN_UNLESS_ACTIVE = HIDDEN * 2;
+        public static final int ALLOW_PAGE_CMD_PARAM = HIDDEN_UNLESS_ACTIVE * 2;
         public static final int INHERIT_RETAIN_PARAMS = ALLOW_PAGE_CMD_PARAM * 2;
         public static final int INHERIT_ASSIGN_STATE_PARAMS = INHERIT_RETAIN_PARAMS * 2;
         public static final int IS_POPUP_MODE = INHERIT_ASSIGN_STATE_PARAMS * 2;
@@ -201,7 +203,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public void clearFlag(long flag)
         {
             super.clearFlag(flag);
-            if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
+            if((flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
                 clearFlagRecursively(flag);
         }
 
@@ -213,7 +215,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public void setFlag(long flag)
         {
             super.setFlag(flag);
-            if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
+            if((flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
                 setFlagRecursively(flag);
         }
 
@@ -235,6 +237,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public boolean isHidden()
         {
             return flagIsSet(HIDDEN);
+        }
+
+        /**
+         * Checks to see if page is in hidden mode
+         *
+         * @return
+         */
+        public boolean isHiddenUnlessActive()
+        {
+            return flagIsSet(HIDDEN_UNLESS_ACTIVE);
         }
 
         /**
@@ -736,7 +748,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             for(int i = 0; i < childrenList.size(); i++)
             {
                 NavigationPage child = (NavigationPage) childrenList.get(i);
-                if(! child.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN))
+                if(! child.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN | Flags.HIDDEN_UNLESS_ACTIVE))
                     return child;
                 else
                     return child.getNextPath();
@@ -764,7 +776,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             for(int i = thisIndex + 1; i < siblings.size(); i++)
             {
                 NavigationPage sibling = (NavigationPage) siblings.get(i);
-                if(! sibling.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN))
+                if(! sibling.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN | Flags.HIDDEN_UNLESS_ACTIVE))
                     return sibling;
                 else
                     return sibling.getNextPath();

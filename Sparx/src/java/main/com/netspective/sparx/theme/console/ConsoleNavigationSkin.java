@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.42 2003-12-11 17:50:17 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.43 2004-03-16 16:19:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -559,7 +559,9 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         for (int i = 0; i < tabElements.size(); i++)
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
-            if (!nc.getState(tabElement).getFlags().flagIsSet(NavigationPage.Flags.HIDDEN))
+            NavigationPage.Flags flags = (NavigationPage.Flags) nc.getState(tabElement).getFlags();
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && ! tabElement.isInActivePath(nc));
+            if (!hidden)
             {
                 if (i == 0)
                 {
@@ -640,8 +642,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         for (int i = 0; i < size; i++)
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
+            NavigationPage.Flags flags = (NavigationPage.Flags) nc.getState(tabElement).getFlags();
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && ! tabElement.isInActivePath(nc));
 
-            if (!nc.getState(tabElement).getFlags().flagIsSet(NavigationPage.Flags.HIDDEN))
+            if (!hidden)
             {
                 if (tabElement.isInActivePath(nc))
                 {
@@ -693,7 +697,9 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         for (int i = 0; i < sideBarElements.size(); i++)
         {
             NavigationPage sideBarElement = (NavigationPage) sideBarElements.get(i);
-            if (!nc.getState(sideBarElement).getFlags().flagIsSet(NavigationPage.Flags.HIDDEN))
+            NavigationPage.Flags flags = (NavigationPage.Flags) nc.getState(sideBarElement).getFlags();
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && ! sideBarElement.isInActivePath(nc));
+            if (!hidden)
             {
                 if (sideBarElement.isInActivePath(nc))
                 {
