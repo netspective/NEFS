@@ -34,21 +34,19 @@ package com.netspective.tool.hibernate.document.diagram;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.naming.NamingException;
 
+import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.Table;
-import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.Table;
 
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
-import com.netspective.medigy.reference.ReferenceEntity;
 
 public class HibernateDiagramTableStructureNodeGenerator implements HibernateDiagramTableNodeGenerator
 {
@@ -80,22 +78,22 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
         final StringBuffer result = new StringBuffer(indent + "<TR>\n");
         result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + "\">" + column.getName() + "</TD>\n");
 
-        if(showDataTypes)
-            result.append(indent + indent + "<TD ALIGN=\"LEFT\">"+ column.getSqlType(generator.getDialect(), generator.getMapping()) +"</TD>\n");
+        if (showDataTypes)
+            result.append(indent + indent + "<TD ALIGN=\"LEFT\">" + column.getSqlType(generator.getDialect(), generator.getMapping()) + "</TD>\n");
 
-        if(showConstraints)
+        if (showConstraints)
         {
 
             List constraints = new ArrayList();
-            if(isPK)
+            if (isPK)
                 constraints.add("PK");
-            if(column.isUnique())
+            if (column.isUnique())
                 constraints.add("U");
-            if(column.isFormula())
+            if (column.isFormula())
                 constraints.add("F");
-            if(! column.isNullable())
+            if (!column.isNullable())
                 constraints.add("R");
-            if(isFK)
+            if (isFK)
                 constraints.add("FK");
 
 /*
@@ -121,7 +119,7 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
             }
 */
 
-            if(constraints.size() > 0)
+            if (constraints.size() > 0)
                 result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX + "\">" + constraints + "</TD>\n");
             else
                 result.append(indent + indent + "<TD ALIGN=\"LEFT\"> </TD>\n");
@@ -144,25 +142,25 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
         final String indent = "        ";
         int hidden = 0;
 
-        for(final Iterator columns = table.getColumnIterator(); columns.hasNext(); )
+        for (final Iterator columns = table.getColumnIterator(); columns.hasNext();)
         {
             final Column column = (Column) columns.next();
 
-            if(filter.includeColumnInDiagram(generator, column))
+            if (filter.includeColumnInDiagram(generator, column))
             {
                 try
                 {
-                    if(primaryKeyColumns.containsColumn(column))
+                    if (primaryKeyColumns.containsColumn(column))
                         primaryKeyRows.append(getColumnDefinitionRow(generator, column, true, false, indent) + "\n");
                     //else if(parentRefColumns.contains(column))
                     //    parentKeyRows.append(getColumnDefinitionRow(generator, column, false, indent) + "\n");
                     else
                     {
                         boolean isFK = false;
-                        for(Iterator fkIterator = table.getForeignKeyIterator(); fkIterator.hasNext(); )
+                        for (Iterator fkIterator = table.getForeignKeyIterator(); fkIterator.hasNext();)
                         {
                             final ForeignKey fKey = (ForeignKey) fkIterator.next();
-                            if(fKey.containsColumn(column))
+                            if (fKey.containsColumn(column))
                             {
                                 isFK = true;
                                 break;
@@ -171,11 +169,11 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
                         columnRows.append(getColumnDefinitionRow(generator, column, false, isFK, indent) + "\n");
                     }
                 }
-                catch(SQLException e)
+                catch (SQLException e)
                 {
                     throw new HibernateDiagramGeneratorException(e);
                 }
-                catch(NamingException e)
+                catch (NamingException e)
                 {
                     throw new HibernateDiagramGeneratorException(e);
                 }
@@ -185,17 +183,17 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
         }
 
         int colSpan = 1;
-        if(showDataTypes) colSpan++;
-        if(showConstraints) colSpan++;
+        if (showDataTypes) colSpan++;
+        if (showConstraints) colSpan++;
 
         StringBuffer tableNodeLabel = new StringBuffer("<<TABLE " + entityTableAttrs + ">\n");
         tableNodeLabel.append("        <TR><TD COLSPAN=\"" + colSpan + "\" BGCOLOR=\"" + tableNameBgColor + "\">" + table.getName() + "</TD></TR>\n");
-        if(primaryKeyRows.length() > 0)
+        if (primaryKeyRows.length() > 0)
             tableNodeLabel.append(primaryKeyRows);
-        if(parentKeyRows.length() > 0)
+        if (parentKeyRows.length() > 0)
             tableNodeLabel.append(parentKeyRows);
         tableNodeLabel.append(columnRows);
-        if(hidden > 0)
+        if (hidden > 0)
             tableNodeLabel.append("        <TR><TD COLSPAN=\"" + colSpan + "\">(" + hidden + " columns not shown)</TD></TR>\n");
         tableNodeLabel.append("    </TABLE>>");
 
@@ -207,36 +205,42 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
         return result;
     }
 
-    public String getEdgeSourceElementAndPort(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
+    public String getEdgeSourceElementAndPort(final HibernateDiagramGenerator generator, final HibernateDiagramGeneratorFilter filter, final ForeignKey foreignKey)
     {
-        for(Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext(); )
+        if (filter.isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
+            return foreignKey.getTable().getName();
+
+        for (Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext();)
         {
             final Collection coll = (Collection) colls.next();
-            if(coll.isOneToMany())
+            if (coll.isOneToMany())
             {
                 // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
                 //System.out.println(coll.getOwner().getTable().getName() + " -> " + coll.getCollectionTable().getName());
-                if(foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
+                if (foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
                     return foreignKey.getReferencedTable().getName();
             }
         }
 
         return foreignKey.getTable().getName() + ":" + (showConstraints
-                                                               ? (foreignKey.getColumn(0).getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX)
-                                                               : foreignKey.getColumn(0).getName());
+                ? (foreignKey.getColumn(0).getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX)
+                : foreignKey.getColumn(0).getName());
 
     }
 
-    public String getEdgeDestElementAndPort(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
+    public String getEdgeDestElementAndPort(final HibernateDiagramGenerator generator, final HibernateDiagramGeneratorFilter filter, final ForeignKey foreignKey)
     {
-        for(Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext(); )
+        if (filter.isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
+            return foreignKey.getReferencedTable().getName();
+
+        for (Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext();)
         {
             final Collection coll = (Collection) colls.next();
-            if(coll.isOneToMany())
+            if (coll.isOneToMany())
             {
                 // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
                 //System.out.println(coll.getOwner().getTable().getName() + " -> " + coll.getCollectionTable().getName());
-                if(foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
+                if (foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
                     return foreignKey.getTable().getName();
             }
         }

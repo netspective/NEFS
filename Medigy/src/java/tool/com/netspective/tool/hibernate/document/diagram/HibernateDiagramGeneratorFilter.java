@@ -32,7 +32,6 @@
  */
 package com.netspective.tool.hibernate.document.diagram;
 
-import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
@@ -55,4 +54,10 @@ public interface HibernateDiagramGeneratorFilter
     public void formatTableNode(HibernateDiagramGenerator generator, PersistentClass pclass, GraphvizDiagramNode node);
 
     public void formatForeignKeyEdge(HibernateDiagramGenerator generator, ForeignKey foreignKey, GraphvizDiagramEdge edge);
+
+    public boolean isReferenceClass(HibernateDiagramGenerator generator, PersistentClass pclass);
+
+    public Class getReferenceCachedItems(HibernateDiagramGenerator generator, PersistentClass pclass);
+
+    public boolean isShowClassStructure(HibernateDiagramGenerator generator, ForeignKey foreignKey);
 }

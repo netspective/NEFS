@@ -156,12 +156,12 @@ public abstract class TestCase extends junit.framework.TestCase
         // the first version is good for software engineers
         generateDiagram(hibernateConfiguration,
                 DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-se",
-                new HibernateDiagramFilter(true, true));
+                new HibernateDiagramFilter(true, true, true));
 
         // the second version is good for database administrators (simple ERD)
         generateDiagram(hibernateConfiguration,
                 DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-erd",
-                new HibernateDiagramFilter(false, false));
+                new HibernateDiagramFilter(false, false, false));
     }
 
     protected void tearDown() throws Exception

@@ -14,7 +14,6 @@ import com.netspective.tool.graphviz.GraphvizDiagramEdge;
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
-import com.netspective.tool.hibernate.document.diagram.HibernateDiagramReferenceTableNodeGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramTableNodeGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramTableStructureNodeGenerator;
 
@@ -23,13 +22,15 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
     private Set commonColumns = new HashSet();
     private boolean hideCommonColumns;
     private boolean showReferenceData;
+    private boolean showClassStructure;
     private final HibernateDiagramTableNodeGenerator tableDataNodeGenerator = new HibernateDiagramReferenceTableNodeGenerator("enum");
     private final HibernateDiagramTableNodeGenerator tableStructureNodeGenerator = new HibernateDiagramTableStructureNodeGenerator("app");
 
-    public HibernateDiagramFilter(boolean hideCommonColumns, boolean showReferenceData)
+    public HibernateDiagramFilter(final boolean hideCommonColumns, final boolean showReferenceData, final boolean showClassStructure)
     {
         this.hideCommonColumns = hideCommonColumns;
         this.showReferenceData = showReferenceData;
+        this.showClassStructure = showClassStructure;
         commonColumns.add("version");
         commonColumns.add("create_timestamp");
         commonColumns.add("update_timestamp");
@@ -45,6 +46,13 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 
     public void formatForeignKeyEdge(final HibernateDiagramGenerator generator, final ForeignKey foreignKey, final GraphvizDiagramEdge edge)
     {
+        if (isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
+        {
+            edge.setArrowHead("onormal");
+            edge.setArrowSize("2");
+            return;
+        }
+
         for (Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext();)
         {
             final Collection coll = (Collection) colls.next();
@@ -52,9 +60,30 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
             {
                 // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
                 if (foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
+                {
                     edge.setArrowHead("crow");
+                    return;
+                }
             }
         }
+    }
+
+    public boolean isReferenceClass(final HibernateDiagramGenerator generator, final PersistentClass pclass)
+    {
+        if (!showReferenceData)
+            return false;
+
+        return ReferenceEntity.class.isAssignableFrom(pclass.getMappedClass());
+    }
+
+    public Class getReferenceCachedItems(final HibernateDiagramGenerator generator, final PersistentClass pclass)
+    {
+        return ((HibernateConfiguration) generator.getConfiguration()).getReferenceEntitiesAndCachesMap().get(pclass.getMappedClass());
+    }
+
+    public boolean isShowClassStructure(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
+    {
+        return showClassStructure;
     }
 
     public void formatTableNode(final HibernateDiagramGenerator generator, final PersistentClass pclass, final GraphvizDiagramNode node)
@@ -70,8 +99,7 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
                                                                     final PersistentClass pclass)
     {
         if (showReferenceData)
-            return ReferenceEntity.class.isAssignableFrom(pclass.getMappedClass())
-                    ? tableDataNodeGenerator : tableStructureNodeGenerator;
+            return isReferenceClass(generator, pclass) ? tableDataNodeGenerator : tableStructureNodeGenerator;
         else
             return tableStructureNodeGenerator;
     }

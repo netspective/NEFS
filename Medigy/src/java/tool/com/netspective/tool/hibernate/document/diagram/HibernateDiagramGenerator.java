@@ -32,28 +32,27 @@
  */
 package com.netspective.tool.hibernate.document.diagram;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
+import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.Mappings;
-import org.hibernate.mapping.Table;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.Mapping;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Column;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.Mapping;
+import org.hibernate.mapping.Table;
 import org.hibernate.type.Type;
-import org.hibernate.MappingException;
 
+import com.netspective.tool.graphviz.GraphvizDiagramEdge;
 import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
-import com.netspective.tool.graphviz.GraphvizDiagramEdge;
 
 public class HibernateDiagramGenerator
 {
@@ -90,45 +89,46 @@ public class HibernateDiagramGenerator
     private final GraphvizDiagramGenerator graphvizDiagramGenerator;
 
     public HibernateDiagramGenerator(final Configuration configuration,
-                                          final GraphvizDiagramGenerator graphvizDiagramGenerator,
-                                          final HibernateDiagramGeneratorFilter schemaDiagramFilter) throws HibernateDiagramGeneratorException
+                                     final GraphvizDiagramGenerator graphvizDiagramGenerator,
+                                     final HibernateDiagramGeneratorFilter schemaDiagramFilter) throws HibernateDiagramGeneratorException
     {
         this.configuration = configuration;
         this.graphvizDiagramGenerator = graphvizDiagramGenerator;
         this.diagramFilter = schemaDiagramFilter;
 
         // the following was copied from org.hibernate.cfg.Configuration.buildMapping() because buildMapping() was private
-        this.mapping = new Mapping() {
-			/**
-			 * Returns the identifier type of a mapped class
-			 */
-			public Type getIdentifierType(String persistentClass) throws MappingException
-            {
-				final PersistentClass pc = configuration.getClassMapping(persistentClass);
-				if (pc==null) throw new MappingException("persistent class not known: " + persistentClass);
-				return pc.getIdentifier().getType();
-			}
-
-			public String getIdentifierPropertyName(String persistentClass) throws MappingException
+        this.mapping = new Mapping()
+        {
+            /**
+             * Returns the identifier type of a mapped class
+             */
+            public Type getIdentifierType(String persistentClass) throws MappingException
             {
                 final PersistentClass pc = configuration.getClassMapping(persistentClass);
-				if (pc==null) throw new MappingException("persistent class not known: " + persistentClass);
-				if ( !pc.hasIdentifierProperty() ) return null;
-				return pc.getIdentifierProperty().getName();
-			}
+                if (pc == null) throw new MappingException("persistent class not known: " + persistentClass);
+                return pc.getIdentifier().getType();
+            }
 
-			public Type getPropertyType(String persistentClass, String propertyName) throws MappingException
+            public String getIdentifierPropertyName(String persistentClass) throws MappingException
             {
                 final PersistentClass pc = configuration.getClassMapping(persistentClass);
-				if (pc==null) throw new MappingException("persistent class not known: " + persistentClass);
-				Property prop = pc.getProperty(propertyName);
-				if (prop==null)  throw new MappingException("property not known: " + persistentClass + '.' + propertyName);
-				return prop.getType();
-			}
+                if (pc == null) throw new MappingException("persistent class not known: " + persistentClass);
+                if (!pc.hasIdentifierProperty()) return null;
+                return pc.getIdentifierProperty().getName();
+            }
+
+            public Type getPropertyType(String persistentClass, String propertyName) throws MappingException
+            {
+                final PersistentClass pc = configuration.getClassMapping(persistentClass);
+                if (pc == null) throw new MappingException("persistent class not known: " + persistentClass);
+                Property prop = pc.getProperty(propertyName);
+                if (prop == null) throw new MappingException("property not known: " + persistentClass + '.' + propertyName);
+                return prop.getType();
+            }
         };
 
         String dialectName = configuration.getProperty(Environment.DIALECT);
-        if(dialectName == null)
+        if (dialectName == null)
             dialectName = org.hibernate.dialect.GenericDialect.class.getName();
 
         try
@@ -141,7 +141,7 @@ public class HibernateDiagramGenerator
             throw new HibernateDiagramGeneratorException(e);
         }
 
-        for(final Iterator classes = configuration.getClassMappings(); classes.hasNext(); )
+        for (final Iterator classes = configuration.getClassMappings(); classes.hasNext();)
         {
             final PersistentClass pclass = (PersistentClass) classes.next();
             final Table table = (Table) pclass.getTable();
@@ -156,11 +156,11 @@ public class HibernateDiagramGenerator
         final HibernateDiagramGeneratorFilter filter = getDiagramFilter();
         final Set includedTables = new HashSet();
 
-        for(final Iterator classes = configuration.getClassMappings(); classes.hasNext(); )
+        for (final Iterator classes = configuration.getClassMappings(); classes.hasNext();)
         {
             final PersistentClass pclass = (PersistentClass) classes.next();
             final Table table = (Table) pclass.getTable();
-            if(filter.includeClassInDiagram(this, pclass))
+            if (filter.includeClassInDiagram(this, pclass))
             {
                 final HibernateDiagramTableNodeGenerator nodeGenerator = filter.getTableNodeGenerator(this, pclass);
                 final GraphvizDiagramNode node = nodeGenerator.generateTableNode(this, filter, pclass);
@@ -170,37 +170,52 @@ public class HibernateDiagramGenerator
             }
         }
 
-        for(final Iterator classes = configuration.getClassMappings(); classes.hasNext(); )
+        for (final Iterator classes = configuration.getClassMappings(); classes.hasNext();)
         {
             final PersistentClass pclass = (PersistentClass) classes.next();
             final Table table = (Table) pclass.getTable();
-            if(includedTables.contains(table))
+            if (includedTables.contains(table))
             {
                 FOREIGN_KEY:
-                for(final Iterator fKeys = table.getForeignKeyIterator(); fKeys.hasNext(); )
+                for (final Iterator fKeys = table.getForeignKeyIterator(); fKeys.hasNext();)
                 {
                     final ForeignKey foreignKey = (ForeignKey) fKeys.next();
-                    for(Iterator fKeyCols = foreignKey.getColumnIterator(); fKeyCols.hasNext(); )
+                    for (Iterator fKeyCols = foreignKey.getColumnIterator(); fKeyCols.hasNext();)
                     {
                         final Column fKeyCol = (Column) fKeyCols.next();
-                        if(! filter.includeColumnInDiagram(this, fKeyCol))
+                        if (!filter.includeColumnInDiagram(this, fKeyCol))
                             continue FOREIGN_KEY;
                     }
 
-                    if(filter.includeForeignKeyEdgeInDiagram(this, foreignKey) &&
-                       includedTables.contains(foreignKey.getReferencedTable()))
+                    if (filter.includeForeignKeyEdgeInDiagram(this, foreignKey) &&
+                            includedTables.contains(foreignKey.getReferencedTable()))
                     {
                         final HibernateDiagramTableNodeGenerator sourceTableNodeGenerator = filter.getTableNodeGenerator(this, pclass);
                         final HibernateDiagramTableNodeGenerator refTableNodeGenerator = filter.getTableNodeGenerator(this, getClassForTable(foreignKey.getReferencedTable()));
 
-                        GraphvizDiagramEdge edge = new GraphvizDiagramEdge(gdg, sourceTableNodeGenerator.getEdgeSourceElementAndPort(this, foreignKey),
-                                                                           refTableNodeGenerator.getEdgeDestElementAndPort(this, foreignKey));
+                        GraphvizDiagramEdge edge = new GraphvizDiagramEdge(gdg, sourceTableNodeGenerator.getEdgeSourceElementAndPort(this, filter, foreignKey),
+                                refTableNodeGenerator.getEdgeDestElementAndPort(this, filter, foreignKey));
                         filter.formatForeignKeyEdge(this, foreignKey, edge);
                         gdg.addEdge(edge);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Ascertain whether the referenced class in the foreign key relationship is a superclass of the source
+     * class.
+     *
+     * @param foreignKey The foreign key relationship
+     *
+     * @return True if the source of the foreign key is a subclass of the referenced class
+     */
+    public boolean isSubclassRelationship(final ForeignKey foreignKey)
+    {
+        PersistentClass sourceClass = getClassForTable(foreignKey.getTable());
+        PersistentClass refClass = getClassForTable(foreignKey.getReferencedTable());
+        return refClass.getMappedClass().isAssignableFrom(sourceClass.getMappedClass());
     }
 
     /*-- Accessors and Mutators for access to private fields --------------------------------------------------------*/

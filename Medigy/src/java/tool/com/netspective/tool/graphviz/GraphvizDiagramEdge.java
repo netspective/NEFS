@@ -39,6 +39,7 @@ public class GraphvizDiagramEdge
 {
     public static final String ARROWHEADSTYLE_CROW = "crow";
     private static final String ATTRNAME_ARROWHEAD = "arrowhead";
+    private static final String ATTRNAME_ARROWSIZE = "arrowsize";
 
     /**
      * The node attributes
@@ -61,10 +62,10 @@ public class GraphvizDiagramEdge
         this.source = source;
         this.destintation = destintation;
 
-        if(this.source == null)
+        if (this.source == null)
             throw new NullPointerException("Edge source may not be NULL.");
 
-        if(this.destintation == null)
+        if (this.destintation == null)
             throw new NullPointerException("Edge destintation may not be NULL.");
     }
 
@@ -101,6 +102,16 @@ public class GraphvizDiagramEdge
     public void setArrowHead(String arrowHead)
     {
         attributes.put(ATTRNAME_ARROWHEAD, arrowHead);
+    }
+
+    public String getArrowSize()
+    {
+        return (String) attributes.get(ATTRNAME_ARROWSIZE);
+    }
+
+    public void setArrowSize(String arrowSize)
+    {
+        attributes.put(ATTRNAME_ARROWSIZE, arrowSize);
     }
 
 }

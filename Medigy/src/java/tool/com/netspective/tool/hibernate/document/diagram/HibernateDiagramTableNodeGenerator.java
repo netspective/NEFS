@@ -43,7 +43,7 @@ public interface HibernateDiagramTableNodeGenerator
 
     public GraphvizDiagramNode generateTableNode(HibernateDiagramGenerator generator, HibernateDiagramGeneratorFilter filter, PersistentClass pclass);
 
-    public String getEdgeSourceElementAndPort(HibernateDiagramGenerator generator, ForeignKey foreignKey);
+    public String getEdgeSourceElementAndPort(HibernateDiagramGenerator generator, HibernateDiagramGeneratorFilter filter, ForeignKey foreignKey);
 
-    public String getEdgeDestElementAndPort(HibernateDiagramGenerator generator, ForeignKey foreignKey);
+    public String getEdgeDestElementAndPort(HibernateDiagramGenerator generator, HibernateDiagramGeneratorFilter filter, ForeignKey foreignKey);
 }

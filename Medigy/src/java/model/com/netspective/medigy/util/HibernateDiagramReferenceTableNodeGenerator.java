@@ -30,20 +30,17 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package com.netspective.tool.hibernate.document.diagram;
+package com.netspective.medigy.util;
 
-import java.util.Map;
-
-import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.HibernateException;
+import org.hibernate.mapping.Table;
 
-import com.netspective.tool.graphviz.GraphvizDiagramNode;
 import com.netspective.medigy.reference.CachedReferenceEntity;
-import com.netspective.medigy.reference.AbstractReferenceEntity;
-import com.netspective.medigy.reference.ReferenceEntity;
-import com.netspective.medigy.util.HibernateConfiguration;
+import com.netspective.tool.graphviz.GraphvizDiagramNode;
+import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
+import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
+import com.netspective.tool.hibernate.document.diagram.HibernateDiagramTableNodeGenerator;
 
 public class HibernateDiagramReferenceTableNodeGenerator implements HibernateDiagramTableNodeGenerator
 {
@@ -67,16 +64,16 @@ public class HibernateDiagramReferenceTableNodeGenerator implements HibernateDia
                                                  final HibernateDiagramGeneratorFilter filter,
                                                  final PersistentClass pclass)
     {
-        final Class refEntityCacheEnum = ((HibernateConfiguration) generator.getConfiguration()).getReferenceEntitiesAndCachesMap().get(pclass.getMappedClass());
+        final Class refEntityCacheEnum = filter.getReferenceCachedItems(generator, pclass);
         final Table table = pclass.getTable();
         final StringBuffer dataRowsHtml = new StringBuffer();
 
         int colSpan = 0;
         Object[] dataRows = refEntityCacheEnum.getEnumConstants();
-        if(dataRows != null && dataRows.length > 0)
+        if (dataRows != null && dataRows.length > 0)
         {
             int count = dataRows.length > maxRowsToShow ? maxRowsToShow : dataRows.length;
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 final CachedReferenceEntity row = (CachedReferenceEntity) dataRows[i];
                 dataRowsHtml.append("<TR>");
@@ -93,13 +90,13 @@ public class HibernateDiagramReferenceTableNodeGenerator implements HibernateDia
                 dataRowsHtml.append("</TR>\n");
             }
 
-            if(count < dataRows.length)
+            if (count < dataRows.length)
                 dataRowsHtml.append("        <TR><TD COLSPAN=\"" + colSpan + "\">(Only " + count + " of " + dataRows.length + " shown)</TD></TR>\n");
         }
 
         StringBuffer tableNodeLabel = new StringBuffer("<<TABLE " + entityTableAttrs + ">\n");
         tableNodeLabel.append("        <TR><TD COLSPAN=\"" + colSpan + "\" BGCOLOR=\"" + tableNameBgColor + "\">" + table.getName() + "</TD></TR>\n");
-        if(dataRowsHtml.length() > 0)
+        if (dataRowsHtml.length() > 0)
             tableNodeLabel.append(dataRowsHtml);
         tableNodeLabel.append("    </TABLE>>");
 
@@ -111,12 +108,12 @@ public class HibernateDiagramReferenceTableNodeGenerator implements HibernateDia
         return result;
     }
 
-    public String getEdgeSourceElementAndPort(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
+    public String getEdgeSourceElementAndPort(final HibernateDiagramGenerator generator, final HibernateDiagramGeneratorFilter filter, final ForeignKey foreignKey)
     {
         return foreignKey.getTable().getName();
     }
 
-    public String getEdgeDestElementAndPort(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
+    public String getEdgeDestElementAndPort(final HibernateDiagramGenerator generator, final HibernateDiagramGeneratorFilter filter, final ForeignKey foreignKey)
     {
         return foreignKey.getReferencedTable().getName();
     }
