@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServletTest.java,v 1.2 2003-12-02 16:07:05 shahid.shah Exp $
+ * $Id: ConsoleServletTest.java,v 1.3 2003-12-06 01:19:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -74,7 +74,7 @@ public class ConsoleServletTest extends TestCase
     protected void setUp() throws Exception
     {
         wc = new WebConversation();
-        WebResponse resp = wc.getResponse( "http://sampler.netspective.com/nefs-sampler/console");
+        WebResponse resp = wc.getResponse("http://localhost:8099/www.netspective.com/console");
         WebForm form = resp.getForms()[0];
         form.setParameter(Dialog.PARAMNAME_CONTROLPREFIX + "userId", "console");
         form.setParameter(Dialog.PARAMNAME_CONTROLPREFIX + "password", "console");
