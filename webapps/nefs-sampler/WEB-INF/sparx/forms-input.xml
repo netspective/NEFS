@@ -16,7 +16,7 @@
     -->
     <dialogs package="form.input">
 
-        <dialog type="input-sample" name="text-fields" hide-hints-until-focus="yes">
+        <dialog type="input-sample" name="text-fields" hide-hints-until-focus="yes" retain-params="abc">
             <frame heading="Sample Text Fields"/>
             <field name="text_field_required" type="text" caption="Text Required" required="yes"
                                               hint="This text field is always required"/>
@@ -181,7 +181,7 @@
             </composite>
         </dialog>
 
-        <dialog type="input-sample" name="conditional-fields">
+        <dialog type="input-sample" name="conditional-fields" retain-params="id">
             <frame heading="Sample Conditionals"/>
             <field type="html">
                 <body>
@@ -204,8 +204,11 @@
                 <conditional action="display" partner-field-name="sel_field_list" expression="control.selectedIndex == 2"/>
             </field>
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone" hint="Click me to see my hidden static field."/>
-            <field type="static" name="static_field2" default="Checkbox checked!">
+            <field type="static" caption="Static Field" name="static_field2" default="Checkbox checked!">
                 <conditional action="display" partner-field-name="checkbox_field" expression="control.checked == true"/>
+            </field>
+            <field type="text" name="text_field" caption="Text Field" hint="This field is only required when a request parameter named 'id' is available">
+                <conditional action="apply-flags" flags="required" has-value="request:id"/>
             </field>
         </dialog>
 
@@ -222,8 +225,27 @@
         <!-- Dialog for testing data perspective conditionals -->
         <dialog type="input-sample" name="data-perspective-conditionals">
             <frame heading="Sample Data Perspective Conditionals"/>
+            <field type="html" name="description">
+                <body>
+                <![CDATA[
+                <div class="textbox">
+                Generally dialogs are used for different data processing actions: entering new data, editing existing data,
+                and deleting existing data. The Framework considers these separate data processing actions as <i>perspectives</i>
+                of the dialog. Thus, there are several different perspectives to which a dialog can be set to: <i>add</i>,
+                <i>edit</i>, <i>delete</i>, <i>print</i>, and <i>confirm</i>. The following fields demonstrate conditional
+                flags that are based on the perspective that dialog is in.<br/>
+
+                For a more detailed explanation about dialog perspectives, please refer to the
+                <a href="#" onclick="javascript:window.open('http://www.netspective.com/corp/resources/support/docs/nef-manual/ch04s02.html#Dialogs-DataCommands')">
+                User Manual </a>.
+                </div>
+                <hr/>
+                ]]>
+                </body>
+                <conditional action="display" partner-field-name="description_checkbox_field" expression="control.checked == true"/>
+            </field>
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
-            <field type="static" name="static_field2" default="Checkbox checked!" hint="Hidden static field">
+            <field type="static" name="static_field2" caption="Statuc Field" default="Checkbox checked!" hint="Hidden static field">
                 <conditional action="display" partner-field-name="checkbox_field" expression="control.checked == true"/>
             </field>
             <field type="text" name="text_field_1" caption="Text Field" size="50" hint="Read only when data_perspective is 'ADD'"
@@ -234,10 +256,11 @@
                 choices="text-list:Choice 1=Choice 1's value;Choice 2=Choice 2's value;Choice 3=Choice 3's value" default="Choice 1's value">
                 <conditional action="apply-flags" flags="unavailable" perspective="add"/>
             </field>
-            <field type="static" name="static_field_4" default="The data command is not 'add' or 'edit'">
+            <field type="static" name="static_field_4" caption="Message" default="The data command is not 'add' or 'edit'">
                 <conditional action="apply-flags" flags="unavailable" perspective="add"/>
                 <conditional action="apply-flags" flags="unavailable" perspective="edit"/>
             </field>
+
         </dialog>
 
         <!-- Dialog for testing binding query data to fields -->
@@ -300,9 +323,23 @@
                     <div class="textbox">
                     For every dialog field, the Framework creates a corresponding Javascript field object when creating the
                     html. Hence, all flags and properties defined in XML can be passed to the client-side as properties of
-                    the field object. Also, relationships between fields can also be defined and easily used to do custom
-                    client-side processing.  Please view the HTML source of this
-                    page to see and familiarize youself with the definition of these field Javascript objects.
+                    the field object. Also, custom javascript code can be attached to each field for execution based on
+                    a client side event such as on-focus, value-changed, and key-prerss. For example, the following snippet
+                    of javascript declared for the first <i>Float</i> field displayed in the dialog:
+                    <pre>
+    field = new DialogField("com.netspective.sparx.form.field.type.FloatField", "_dc.floatField",
+        "float_field", "float_field", "Float", 0);
+    dialog.registerField(field);
+    field.customHandlers.isValid = new Function("field", "control", "return testValid(field, control);");
+    field.customHandlers.isValidType = 'extends';
+    field.customHandlers.valueChanged = new Function("field", "control", "return testNum(field, control);");
+    field.customHandlers.valueChangedType = 'extends';
+                    </pre>
+                    Please view the HTML source of this page to see the complete declarations of these javascript
+                    objects defined for each displayed field.
+                    For a more detailed explanation about using custom client side scripts,
+                    please refer to the <a href="#" onclick="javascript:window.open('http://www.netspective.com/corp/resources/support/docs/nef-manual/ch04s02.html#N11A5C')">
+                    User Manual</a>
                     </div>
                     <hr/>
                     ]]>
