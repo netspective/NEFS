@@ -674,7 +674,6 @@ public class DataAccessLayerGenerator
             method = recordInnerClass.newMethod(vm.newType(Type.VOID), "insert");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
-            method.addThrows("NamingException");
             method.addThrows("SQLException");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             method.newStmt(vm.newFree("table.insert(cc, row)"));
@@ -682,7 +681,6 @@ public class DataAccessLayerGenerator
             method = recordInnerClass.newMethod(vm.newType(Type.VOID), "update");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
-            method.addThrows("NamingException");
             method.addThrows("SQLException");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             method.addParameter(vm.newType("String"), "whereCond");
@@ -692,7 +690,6 @@ public class DataAccessLayerGenerator
             method = recordInnerClass.newMethod(vm.newType(Type.VOID), "update");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
-            method.addThrows("NamingException");
             method.addThrows("SQLException");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             method.newStmt(vm.newFree("table.update(cc, row)"));
@@ -700,7 +697,6 @@ public class DataAccessLayerGenerator
             method = recordInnerClass.newMethod(vm.newType(Type.VOID), "delete");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
-            method.addThrows("NamingException");
             method.addThrows("SQLException");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             method.addParameter(vm.newType("String"), "whereCond");
@@ -710,7 +706,6 @@ public class DataAccessLayerGenerator
             method = recordInnerClass.newMethod(vm.newType(Type.VOID), "delete");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
-            method.addThrows("NamingException");
             method.addThrows("SQLException");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             // TODO: Need to see if deleting the children should be a default behavior or not. If so, then this method needs to be moved below after initializing  recordInnerClassDeleteChildrenMethod
@@ -827,7 +822,6 @@ public class DataAccessLayerGenerator
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
             method.addParameter(vm.newType("ConnectionContext"), "cc");
-            method.addThrows("NamingException");
             method.addThrows("SQLException");
             Freeform forLoop = vm.newFree("for(int i = 0; i < cache.length; i++)");
             forLoop.write("get(i).delete(cc)");

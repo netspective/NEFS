@@ -86,7 +86,6 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     private static final ThreadLocal THREAD_SQL_MANAGER = new ThreadLocal();
 
     public static final ConnectionProvider DEFAULT_CONN_PROVIDER = (ConnectionProvider) DiscoverSingleton.find(ConnectionProvider.class, JndiConnectionProvider.class.getName());
-    private ConnectionProvider provider = DEFAULT_CONN_PROVIDER;
 
     public static final String PREFIX_CUSTOM = "custom.";
     public static final String PREFIX_SCHEMA = "schema.";
@@ -113,6 +112,8 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     }
 
     protected QueriesNameSpace activeNameSpace;
+    private ConnectionProvider provider;
+    private Map providers = new HashMap();
     private QueriesNameSpace temporaryQueriesNameSpace;
     private Queries queries = constructQueries();
     private StoredProcedures storedProcedures = constructStoredProcedures();
@@ -124,6 +125,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     {
         temporaryQueriesNameSpace = new QueriesPackage(queries);
         temporaryQueriesNameSpace.setNameSpaceId("temporary");
+        addConnectionProvider(DEFAULT_CONN_PROVIDER);
     }
 
     public QueriesNameSpace getTemporaryQueriesNameSpace()
@@ -361,19 +363,22 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public ConnectionProvider createConnectionProvider()
-    {
-        return getConnectionProvider();
-    }
-
     public void addConnectionProvider(ConnectionProvider provider)
     {
+        this.providers.put(provider.getConnectionProviderName(), provider);
         this.provider = provider;
     }
 
     public ConnectionProvider getConnectionProvider()
     {
         return provider;
+    }
+
+    public void setDefaultConnectionProviderName(String name)
+    {
+        this.provider = (ConnectionProvider) providers.get(name);
+        if(this.provider == null)
+            throw new RuntimeException("No connection provider named '" + name + "' was found. Available: " + providers.keySet());
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

@@ -68,6 +68,7 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
     private Map dataSourcesInfo = Collections.synchronizedMap(new HashMap());
     private Map dataSources = Collections.synchronizedMap(new HashMap());
     private int dataSourceInfoIndex = 0;
+    private String name = "jakarta-dbcp";
 
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
@@ -319,8 +320,9 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
      * Returns the configured info object associated with a datasource. This will contain more information then what
      * a {@link javax.sql.DataSource} will reveal.
      *
-     * @param dataSourceId  datasource name
-     * @return              DataSourceInfo object configured in the connection provider
+     * @param dataSourceId datasource name
+     *
+     * @return DataSourceInfo object configured in the connection provider
      */
     public DataSourceInfo getDataSourceInfo(String dataSourceId)
     {
@@ -338,6 +340,16 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
                 dataSources.put(dataSourceId, dataSource);
         }
         return dataSource;
+    }
+
+    public String getConnectionProviderName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public final Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException

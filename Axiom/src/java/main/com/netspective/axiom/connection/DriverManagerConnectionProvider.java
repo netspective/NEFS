@@ -181,6 +181,17 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
     }
 
     private Map dataSources = new HashMap();
+    private String name = "driver-manager";
+
+    public String getConnectionProviderName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
     public Class getUnderlyingImplementationClass()
     {

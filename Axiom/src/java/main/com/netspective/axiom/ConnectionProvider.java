@@ -43,6 +43,13 @@ import com.netspective.commons.value.ValueContext;
 public interface ConnectionProvider
 {
     /**
+     * Obtain the name of this connection provider (for identifying it versus other connectino providers)
+     *
+     * @return The name of the connection provider
+     */
+    public String getConnectionProviderName();
+
+    /**
      * Given a valid data source identifier, return a database connection for the data source
      *
      * @param dataSourceId The data source identifier

@@ -57,6 +57,7 @@ public class JndiConnectionProvider implements ConnectionProvider
 {
     private static final Log log = LogFactory.getLog(JndiConnectionProvider.class);
 
+    private String name = "jndi";
     private final InitialContext initialContext;
     private Context rootContext;
     private String rootContextName;
@@ -65,6 +66,16 @@ public class JndiConnectionProvider implements ConnectionProvider
     {
         initialContext = new InitialContext();
         rootContext = initialContext;
+    }
+
+    public String getConnectionProviderName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public InitialContext getInitialContext()
