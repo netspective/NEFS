@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AbstractTabularReport.java,v 1.5 2003-08-01 14:58:50 aye.thu Exp $
+ * $Id: AbstractTabularReport.java,v 1.6 2003-08-20 04:01:02 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -171,114 +171,94 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
      * Replace contents from rowData using the String row as a template. Each
      * occurrence of ${#} will be replaced with rowNum and occurrences of ${x}
      * where x is a number between 0 and rowData.length will be replaced with
-     * the contents of rowData[x]. NOTE: this function needs to be
+     * the contents of rowData[x]. TODO: this function needs to be
      * improved from both an elegance and performance perspective.
      */
 
-    public String replaceOutputPatterns(TabularReportValueContext rc, TabularReportDataSource ds, String row)
+    public String replaceOutputPatterns(TabularReportValueContext rc, TabularReportDataSource ds, final String source)
     {
         StringBuffer sb = new StringBuffer();
-        int prev = 0;
+        int prev = 0, lastCharPos = source.length() - 1;
         boolean encode = false;
+        boolean encrypt = false;
 
-        int pos = 0;
-        int pos1 = row.indexOf("$", prev);
-        int pos2 = row.indexOf("%", prev);
-        if(pos2 != -1)
+        int pos = source.indexOf("{", prev);
+        if(pos > 0 && pos < lastCharPos)
         {
-            if(pos1 != -1 && pos2 > pos1)
+            switch(source.charAt(pos -1))
             {
-                pos = pos1;
-            }
-            else
-            {
-                encode = true;
-                pos = pos2;
+                case '$' : encode = false; encrypt = false; pos--; break;
+                case '%' : encode = true; encrypt = false; pos--; break;
+                case '^' : encode = false; encrypt = true; pos--; break;
+                default: pos = -1;
             }
         }
         else
-        {
-            encode = false;
-            pos = pos1;
-        }
+            pos = -1;
 
         while(pos >= 0)
         {
             if(pos > 0)
             {
                 // append the substring before the '$' or '%' character
-                sb.append(row.substring(prev, pos));
+                sb.append(source.substring(prev, pos));
             }
-            if(pos == (row.length() - 1))
+
+            int endExpr = source.indexOf('}', pos);
+            if(endExpr < 0)
             {
-                if(encode)
-                    sb.append('%');
-                else
-                    sb.append('$');
-                prev = pos + 1;
+                throw new RuntimeException("Syntax error in: " + source);
             }
-            else if(row.charAt(pos + 1) != '{')
-            {
-                sb.append(row.charAt(pos));
-                sb.append(row.charAt(pos + 1));
-                prev = pos + 2;
-            }
+            String expression = source.substring(pos + 2, endExpr);
+
+            if(expression.equals("#"))
+                sb.append(ds.getActiveRowNumber());
             else
             {
-                int endName = row.indexOf('}', pos);
-                if(endName < 0)
+                try
                 {
-                    throw new RuntimeException("Syntax error in: " + row);
-                }
-                String expression = row.substring(pos + 2, endName);
-
-                if(expression.equals("#"))
-                    sb.append(ds.getActiveRowNumber());
-                else
-                {
-                    try
+                    int colIndex = Integer.parseInt(expression);
+                    if(encrypt)
                     {
-                        int colIndex = Integer.parseInt(expression);
-                        if(encode)
-                            sb.append(URLEncoder.encode(columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_FOR_URL)));
-                        else
-                            sb.append(columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAGS_DEFAULT));
-                    }
-                    catch(NumberFormatException e)
-                    {
-                        ValueSource vs = ValueSources.getInstance().getValueSource(expression, ValueSources.VSNOTFOUNDHANDLER_NULL);
+                        ValueSource vs = ValueSources.getInstance().getValueSource("encrypt:" + columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_FOR_URL), ValueSources.VSNOTFOUNDHANDLER_NULL);
                         if(vs == null)
                             sb.append("Invalid: '" + expression + "'");
                         else
-                            sb.append(vs.getValue(rc));
+                            sb.append(URLEncoder.encode(vs.getTextValue(rc)));
                     }
+                    else if(encode)
+                        sb.append(URLEncoder.encode(columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_FOR_URL)));
+                    else
+                        sb.append(columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAGS_DEFAULT));
                 }
-
-                prev = endName + 1;
+                catch(NumberFormatException e)
+                {
+                    ValueSource vs = ValueSources.getInstance().getValueSource(expression, ValueSources.VSNOTFOUNDHANDLER_NULL);
+                    if(vs == null)
+                        sb.append("Invalid: '" + expression + "'");
+                    else
+                        sb.append(vs.getTextValue(rc));
+                }
             }
 
-            pos1 = row.indexOf("$", prev);
-            pos2 = row.indexOf("%", prev);
-            if(pos2 != -1)
+            prev = endExpr + 1;
+
+            pos = source.indexOf("{", prev);
+            if(pos > 0 && pos < lastCharPos)
             {
-                if(pos1 != -1 && pos2 > pos1)
+                switch(source.charAt(pos -1))
                 {
-                    pos = pos1;
-                }
-                else
-                {
-                    encode = true;
-                    pos = pos2;
+                    case '$' : encode = false; encrypt = false; pos--; break;
+                    case '%' : encode = true; encrypt = false; pos--; break;
+                    case '^' : encode = false; encrypt = true; pos--; break;
+                    default: pos = -1;
                 }
             }
             else
-            {
-                encode = false;
-                pos = pos1;
-            }
+                pos = -1;
         }
 
-        if(prev < row.length()) sb.append(row.substring(prev));
+        if(prev < source.length()) sb.append(source.substring(prev));
         return sb.toString();
     }
 
