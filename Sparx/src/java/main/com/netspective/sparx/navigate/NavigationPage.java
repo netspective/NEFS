@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.46 2003-11-13 19:25:12 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.47 2003-11-13 19:48:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -81,6 +81,7 @@ import com.netspective.sparx.navigate.listener.NavigationPageExitListener;
 import com.netspective.sparx.navigate.handler.NavigationPageBodyDefaultHandler;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
+import com.netspective.sparx.form.DialogContext;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -95,7 +96,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
+public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final Log log = LogFactory.getLog(NavigationPage.class);
@@ -230,6 +231,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private List customHandlers = new ArrayList();
     private List enterListeners = new ArrayList();
     private List exitListeners = new ArrayList();
+    private ValueSource dialogNextActionUrl;
     private DialogNextActionProvider dialogNextActionProvider;
 
     public NavigationPage()
@@ -743,6 +745,23 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/
+
+    public ValueSource getDialogNextActionUrl()
+    {
+        return dialogNextActionUrl;
+    }
+
+    public void setDialogNextActionUrl(ValueSource dialogNextActionUrl)
+    {
+        // if we have a specific next action provided, then we become our own provider
+        addDialogNextActionProvider(this);
+        this.dialogNextActionUrl = dialogNextActionUrl;
+    }
+
+    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
+    {
+        return dialogNextActionUrl.getTextValue(dc);
+    }
 
     /**
      * Gets the next action provider for this particular page. The next action represents the action to be performed

@@ -68,11 +68,13 @@ import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.handler.NavigationPageBodyHandlerTemplateConsumer;
 
-public class NavigationTree implements TemplateProducerParent, XmlDataModelSchema.InputSourceLocatorListener, XmlDataModelSchema.ConstructionFinalizeListener
+public class NavigationTree implements TemplateProducerParent, XmlDataModelSchema.InputSourceLocatorListener, XmlDataModelSchema.ConstructionFinalizeListener, DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(NavigationTree.class);
@@ -90,6 +92,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     private NavigationPage root;
     private NavigationPage homePage;
     private NavigationPage popupPage;
+    private ValueSource dialogNextActionUrl;
     private DialogNextActionProvider dialogNextActionProvider;
     private Map pagesByQualifiedName = new HashMap();
     private TemplateProducers templateProducers;
@@ -254,6 +257,23 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     {
         return new FindResults(path);
     };
+
+    public ValueSource getDialogNextActionUrl()
+    {
+        return dialogNextActionUrl;
+    }
+
+    public void setDialogNextActionUrl(ValueSource dialogNextActionUrl)
+    {
+        // if we have a specific next action provided, then we become our own provider
+        addDialogNextActionProvider(this);
+        this.dialogNextActionUrl = dialogNextActionUrl;
+    }
+
+    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
+    {
+        return dialogNextActionUrl.getTextValue(dc);
+    }
 
     /**
      * Gets the next action provider for all dialogs in this navigation tree. The next action represents the action
