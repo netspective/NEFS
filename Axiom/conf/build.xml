@@ -45,9 +45,7 @@ Setup instructions:
 
 	    <property name="tools.home" value="../../tools"/>
 
-	    <property name="webapps.home" value="../../webapps"/>
-	    <property name="webapps.sampler.home" value="${webapps.home}/nefs-sampler"/>
-	    <property name="webapps.sampler.downloads.path" value="${webapps.sampler.home}/downloads"/>
+        <property name="downloads.path" value="../../webapps/www.netspective.com/resources/downloads"/>
 
         <property name="commons.home" value="../../Commons"/>
         <property name="commons.lib.dir" value="${commons.home}/lib"/>
@@ -293,7 +291,7 @@ Setup instructions:
         <copy file="${project.lib.dir}/${project.output.versioned.jar-name}" tofile="${project.lib.dir}/${project.output.jar-name}"/>
 
         <!-- copy the jar to the downloads directory for sampler too -->
-        <copy file="${project.lib.dir}/${project.output.versioned.jar-name}" todir="${webapps.sampler.downloads.path}/lib"/>
+        <copy file="${project.lib.dir}/${project.output.versioned.jar-name}" todir="${downloads.path}/lib"/>
     </target>
 
     <!-- ==================== Administrative targets  ======================= -->
