@@ -3,6 +3,7 @@
 "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
 <!ENTITY __nef-assumptions__drd5ufsf SYSTEM "../nef-reusable-content/nef-assumptions.xml">
 <!ENTITY __nef-starter-app-setup__dr4w0y2f SYSTEM "../nef-reusable-content/nef-starter-app-setup.xml">
+<!ENTITY __nef-key-features__dv3ncu8x SYSTEM "../nef-reusable-content/nef-key-features.xml">
 <!ENTITY __nef-project-file-tags-descr__drcg7alc SYSTEM "../nef-reusable-content/nef-project-file-tags-descr.xml">
 ]>
 <article>
@@ -13,12 +14,22 @@
 
     <para>The Library Application is a project meant to get you familiar with
     more features of <acronym>NEF</acronym> by creating a complete library
-    managament application.</para>
+    management application.</para>
   </section>
 
   &__nef-assumptions__drd5ufsf;
 
   &__nef-starter-app-setup__dr4w0y2f;
+
+  <section>
+    <title>Key Concepts</title>
+
+    <para>This section outlines some of the important, global concepts that
+    you should be familiar with before embarking on developing your own
+    applications.</para>
+
+    &__nef-key-features__dv3ncu8x;
+  </section>
 
   <section>
     <title>Functionality</title>
@@ -27,7 +38,7 @@
     library of books. It allows you to track the books within a library and
     maintain the loan records for these library books. Assets, borrowers and
     loan information can be added and edited using the various management
-    intrefaces provided by the Library Application.</para>
+    interfaces provided by the Library Application.</para>
   </section>
 
   <section>
@@ -270,30 +281,31 @@
         <programlisting>&lt;<emphasis>schema</emphasis> name="db"&gt; 
   &lt;<emphasis>xdm:include resource="com/netspective/axiom/conf/schema.xml"</emphasis>/&gt; 
 
-   &lt;table-type name="Entity"&gt; <co id="???" />
+   &lt;table-type name="Entity"&gt; <co id="declare-schema-tags-eg-1" />
     &lt;column name="${owner.name.toLowerCase()}_id" type="auto-inc" primary-key="yes" <co
-            id="???" />
+            id="declare-schema-tags-eg-2" />
                                           descr="Unique identifier for ${owner.name}"&gt;
      &lt;presentation&gt; 
       &lt;field name="${column.name}" type="integer" caption="ID" primary-key-generated="yes"/&gt; <co
-            id="???" />
+            id="declare-schema-tags-eg-3" />
      &lt;/presentation&gt;
     &lt;/column&gt;
    &lt;/table-type&gt;
 
-   &lt;table-type name="Person" type="Entity"&gt; <co id="???" />
+   &lt;table-type name="Person" type="Entity"&gt; <co
+            id="declare-schema-tags-eg-4" />
     &lt;column name="first_name" type="text" size="64" descr="The person's first name"/&gt; <co
-            id="???" />
+            id="declare-schema-tags-eg-5" />
     &lt;column name="last_name" type="text" size="64" descr="The person's last name"/&gt;
    &lt;/table-type&gt;</programlisting>
 
         <calloutlist>
-          <callout arearefs="declare-schema-tags-eg-3">
+          <callout arearefs="declare-schema-tags-eg-1">
             <para>Defining a table type named
             <literal>Entity</literal>.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg-2">
             <para>The <sgmltag>column</sgmltag> element in the
             <sgmltag>table-type</sgmltag> elements creates actual columns
             derived from a particular <sgmltag>data-type</sgmltag>. The
@@ -304,7 +316,7 @@
             separated by underscores. Since this is a table template, the
             actual column name of the table that uses this table type will
             replace <emphasis>${owner.name.toLowerCase()}</emphasis> to form
-            the actual column name. </para>
+            the actual column name.</para>
 
             <para>The <sgmltag>type</sgmltag> attribute represents the name of
             data-type to inherit. All of the attributes and elements from the
@@ -314,18 +326,18 @@
             this column is a primary key.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg-3">
             <para>Defining the presentation for the column. This defines how
             the column data will be displayed.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg-4">
             <para>Inheriting a new table type from the
-            <literal>Entity</literal> table type defined in steps 1 through 3.
-            </para>
+            <literal>Entity</literal> table type defined in steps 1 through
+            3.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg-5">
             <para>Specifying columns for the newly defined table type. The
             <literal>Person</literal> table type will consist of 3 columns -
             <literal>person_id</literal>, <literal>first_name</literal>,
@@ -341,7 +353,7 @@
         <title>Creating tables for Library Application</title>
 
         <programlisting> &lt;table name="Asset_Type" abbrev="atype" type="Enumeration"&gt; <co
-            id="???" />
+            id="declare-schema-tags-eg2-1" />
   &lt;enumerations&gt;
    &lt;enum&gt;Other&lt;/enum&gt;
    &lt;enum&gt;Software&lt;/enum&gt;
@@ -350,7 +362,8 @@
   &lt;/enumerations&gt;
  &lt;/table&gt;
 
- &lt;table name="Loan_Type" abbrev="ltype" type="Enumeration"&gt; <co id="???" />
+ &lt;table name="Loan_Type" abbrev="ltype" type="Enumeration"&gt; <co
+            id="declare-schema-tags-eg2-2" />
   &lt;enumerations&gt;
    &lt;enum&gt;Short term&lt;/enum&gt;
    &lt;enum&gt;Long term&lt;/enum&gt;
@@ -358,39 +371,41 @@
  &lt;/table&gt;
 
  &lt;table name="Asset" abbrev="asset" type="Entity,Presentation"&gt; <co
-            id="???" />
+            id="declare-schema-tags-eg2-3" />
   &lt;column name="type" lookup-ref="Asset_Type" required="yes" descr="The type of asset"/&gt; <co
-            id="???" />
+            id="declare-schema-tags-eg2-4" />
   &lt;column name="name" type="text" size="64" required="yes" descr="Name of the asset"/&gt; 
   &lt;column name="quantity" type="integer" required="yes" 
                           descr="Count of number of assets available to loan"/&gt;
  &lt;/table&gt;
    
- &lt;table name="Borrower" type="Person,Presentation"&gt; <co id="???" />
+ &lt;table name="Borrower" type="Person,Presentation"&gt; <co
+            id="declare-schema-tags-eg2-5" />
  &lt;/table&gt;
 
  &lt;table name="Asset_Loan" abbrev="asloan" type="Entity,Presentation"&gt;
-  &lt;column name="asset_id" parent-ref="Asset.asset_id" <co id="???" />
+  &lt;column name="asset_id" parent-ref="Asset.asset_id" <co
+            id="declare-schema-tags-eg2-6" />
           descr="The asset that was borrowed (a loan is owned by the Asset so 
                  it's a parent reference)"&gt;
     &lt;presentation&gt;
       &lt;field name="${column.name}" type="select" caption="Asset" <co
-            id="???" />
+            id="declare-schema-tags-eg2-7" />
              choices="query:library.asset-names-for-select-field-choices"/&gt;
     &lt;/presentation&gt;
   &lt;/column&gt;
 
   &lt;column name="borrower_id" lookup-ref="Borrower.borrower_id" descr="The person <co
-            id="???" />
+            id="declare-schema-tags-eg2-8" />
                                                         that borrowed the asset"&gt;
     &lt;presentation&gt;
       &lt;field name="${column.name}" type="select" caption="Borrower" <co
-            id="???" />
+            id="declare-schema-tags-eg2-9" />
              choices="query:library.borrower-names-for-select-field-choices"/&gt;
     &lt;/presentation&gt;
   &lt;/column&gt;
   &lt;column name="loan_type" lookup-ref="Loan_Type" descr="The type of loan"/&gt; <co
-            id="???" />
+            id="declare-schema-tags-eg2-10" />
   &lt;column name="loan" type="duration" required="yes" descr="The duration of the loan"/&gt;
   &lt;column name="returned" type="boolean" descr="Whether the asset has been returned or not"/&gt;
  &lt;/table&gt;
@@ -398,38 +413,38 @@
 &lt;/schema&gt;</programlisting>
 
         <calloutlist>
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg2-1">
             <para>Defining an enumeration containing available asset
             types.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg2-2">
             <para>Defining an enumeration containing available loan
             types.</para>
           </callout>
 
-          <callout arearefs="declare-schema-tags-eg-3">
+          <callout arearefs="declare-schema-tags-eg2-3">
             <para>Defining <literal>Asset</literal> table using the
             <literal>Entity</literal> table type defined previously.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg2-4">
             <para>Adding more columns to the <literal>Asset</literal> table.
             The <sgmltag>lookup-ref</sgmltag> attribute specifies a general
             foreign key relationship from this column which references the
             foreign field <literal>type</literal> in table
             <literal>Asset_Type</literal>. This creates a 1:N relationship
             between the <literal>Asset_Type</literal> and
-            <literal>Asset</literal> tables. </para>
+            <literal>Asset</literal> tables.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg2-5">
             <para>Defining <literal>Borrower</literal> table using the
             <literal>Person</literal> table type defined previously. No
             columns are being added.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg2-6">
             <para>Defining the field which represents the asset to which the
             loan belongs. The <sgmltag>parent-ref</sgmltag> attribute
             specifies a parent/child foreign key relationship which indicates
@@ -439,7 +454,7 @@
             <literal>asset_id</literal> column).</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg2-7">
             <para>Defines presentation for the <literal>asset_id</literal>
             field. The available assets will be displayed as a select option.
             The <sgmltag>choices</sgmltag> attribute is used to fill the
@@ -448,17 +463,17 @@
             the assets.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg2-8">
             <para>Defining the field which represents the borrower taking the
             loan. The <sgmltag>lookup-ref</sgmltag> attribute specifies a
             general foreign key relationship from this column which references
             the foreign field <literal>borrower_id</literal> in table
             <literal>Borrower</literal>. This creates a 1:N relationship
             between the <literal>Borrower</literal> and
-            <literal>Asset_Loan</literal> tables. </para>
+            <literal>Asset_Loan</literal> tables.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg2-9">
             <para>Defines presentation for the <literal>borrower_id</literal>
             field. The available borrowers will be displayed as a select
             option. The <sgmltag>choices</sgmltag> attribute is used to fill
@@ -467,7 +482,7 @@
             to obtain the borrower names.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="declare-schema-tags-eg2-10">
             <para>Defining the field which represents the loan type. The
             <sgmltag>lookup-ref</sgmltag> attribute specifies a general
             foreign key relationship from this column which references the
@@ -529,7 +544,7 @@
         database), generates the SQL DDL for the default schema, loads the SQL
         DDL (effectively creating the Hypersonic SQL database) and finally
         loads the 'starter' from XML files using Sparx import from XML
-        feature. The Console displays differemt messages during the HSQL
+        feature. The Console displays different messages during the HSQL
         database creation (as show below):</para>
 
         <para></para>
@@ -567,27 +582,29 @@
         </important>
 
         <example>
-          <title>Loading Initial Test Data into Book_Info Table</title>
+          <title>Loading Initial Test Data into Asset and Borrower
+          Tables</title>
 
           <programlisting>&lt;?transform --xslt initial-and-test-data.xsl?&gt; <co
-              id="???" />
+              id="load-test-data-1" />
 &lt;<emphasis>!DOCTYPE dal SYSTEM "../defn/db-import.dtd"</emphasis>&gt; <co
-              id="declare-test-db-xml-eg-1" />
+              id="load-test-data-2" />
 
-&lt;<emphasis>dal</emphasis>&gt; <co id="declare-test-db-xml-eg-2" />
-    &lt;generate-asset-records count="35"/&gt; <co id="???" />
+&lt;<emphasis>dal</emphasis>&gt; <co id="load-test-data-3" />
+    &lt;generate-asset-records count="35"/&gt; <co id="load-test-data-4" />
 
-    &lt;borrower last-name="Doe" first-name="John"/&gt; <co id="???" />
+    &lt;borrower last-name="Doe" first-name="John"/&gt; <co
+              id="load-test-data-5" />
     &lt;borrower last-name="Doe" first-name="Jane"/&gt;
 &lt;/dal&gt;</programlisting>
 
           <calloutlist>
-            <callout arearefs="declare-test-db-xml-eg-1">
+            <callout arearefs="load-test-data-1">
               <para>The xdm-transform processing instruction tells Sparx to
               filter special tags through the XSLT before processing.</para>
             </callout>
 
-            <callout arearefs="???">
+            <callout arearefs="load-test-data-2">
               <para>The db-import.dtd is the DTD that is automatically created
               (by the Ant Build) based on the schema that is provided by the
               <sgmltag>schema</sgmltag> tag. The DTD is always called
@@ -596,22 +613,17 @@
               <sgmltag>schema</sgmltag> tag.</para>
             </callout>
 
-            <callout arearefs="declare-test-db-xml-eg-2">
+            <callout arearefs="load-test-data-3">
               <para>The root tag for the initial-and-test-data.xml is
               <sgmltag>dal. </sgmltag></para>
             </callout>
 
-            <callout arearefs="declare-test-db-xml-eg-3">
+            <callout arearefs="load-test-data-4">
               <para>Setting the value for the number of asset records to be
               generated automatically by the XSL.</para>
             </callout>
 
-            <callout arearefs="???">
-              <para>The values you provide for these fields are stored in the
-              corresponding hsql table.</para>
-            </callout>
-
-            <callout arearefs="???">
+            <callout arearefs="load-test-data-5">
               <para>Adding the test record in the <literal>Borrower</literal>
               table.</para>
             </callout>
@@ -638,24 +650,26 @@
         &lt;/xsl:copy&gt;
     &lt;/xsl:template&gt;
 
-    &lt;xsl:template match="generate-asset-records"&gt; <co id="???" />
+    &lt;xsl:template match="generate-asset-records"&gt; <co
+              id="declare-test-db-xsl-eg-4" />
         &lt;xsl:call-template name="iterate-one"&gt;
             &lt;xsl:with-param name="x"&gt;0&lt;/xsl:with-param&gt;
             &lt;xsl:with-param name="count"&gt;&lt;xsl:value-of select="@count"/&gt;&lt;/xsl:with-param&gt;
         &lt;/xsl:call-template&gt;
     &lt;/xsl:template&gt;
  
-    &lt;xsl:template name="iterate-one"&gt; <co id="???" />
+    &lt;xsl:template name="iterate-one"&gt; <co id="declare-test-db-xsl-eg-5" />
         &lt;xsl:param name="x"/&gt;
         &lt;xsl:param name="count"/&gt;
 
-        &lt;asset&gt; <co id="???" />
+        &lt;asset&gt; <co id="declare-test-db-xsl-eg-6" />
             &lt;xsl:attribute name="name"&gt;Item &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
             &lt;xsl:attribute name="type"&gt;Book&lt;/xsl:attribute&gt;
             &lt;xsl:attribute name="quantity"&gt;5&lt;/xsl:attribute&gt;
         &lt;/asset&gt;
 
-        &lt;xsl:if test="$x &amp;lt; $count"&gt; <co id="???" />
+        &lt;xsl:if test="$x &amp;lt; $count"&gt; <co
+              id="declare-test-db-xsl-eg-7" />
           &lt;xsl:call-template name="iterate-one"&gt;
             &lt;xsl:with-param name="x" select="$x + 1"/&gt;
             &lt;xsl:with-param name="count"&gt;&lt;xsl:value-of select="$count"/&gt;&lt;/xsl:with-param&gt;
@@ -741,150 +755,95 @@
       <title>Creating the Data Management Layer</title>
 
       <para>The Library Application uses the following queries for data
-      management: [TODO]</para>
+      management:</para>
 
       <section id="section-declare-static-qry">
-        <title>Declaring a Static Query</title>
+        <title>Declaring Queries</title>
 
-        <para>The Library Application uses a simple join query to get
-        information about all the books and their genres. Following is the xml
-        declaration that performs this task:</para>
+        <para>The Library Application uses different queries to retrieve
+        required information from the library database.</para>
 
         <example>
-          <title>Declaring a Static Query</title>
+          <title>Static query to get all the library assets</title>
 
-          <programlisting>&lt;<emphasis>queries</emphasis> package="books"&gt; <co
+          <programlisting>&lt;<emphasis>queries</emphasis> package="library"&gt; <co
               id="declare-static-sql-tags-eg-1" />
 
- &lt;<emphasis>query</emphasis> name="get-all-books"&gt; <co
-              id="declare-static-sql-tags-eg-2" />
-  select id, name, author, book_type.caption, isbn <co
-              id="declare-static-sql-tags-eg-3" />
-         from book_info, book_type
-         where genre = book_type.id
- &lt;/query&gt;
+ &lt;query name="get-all-assets"&gt; <co id="declare-static-sql-tags-eg-2" />
 
-&lt;/queries&gt;</programlisting>
+   select asset_id, name, Asset_Type.caption, quantity, <co
+              id="declare-static-sql-tags-eg-3" />
+          (select count(*) from Asset_Loan where Asset_Loan.asset_id = asset_id),
+          (select count(*) from Asset_Loan where Asset_Loan.asset_id = asset_id 
+                                                 and Asset_Loan.returned = 0)
+   from Asset, Asset_Type
+   where Asset.type = Asset_Type.id
+   order by name;
+
+   &lt;presentation&gt; <co id="declare-static-sql-tags-eg-4" />
+     &lt;panel name="main" height="300"&gt;
+       &lt;frame heading="static:All available assets"/&gt;
+       &lt;report&gt;
+         &lt;actions&gt; 
+           &lt;action type="add" caption="Add Asset" redirect="page-id:/asset/add"/&gt; <co
+              id="declare-static-sql-tags-eg-5" />
+           &lt;action type="edit" redirect="page-id:/asset/edit?asset_id=${0}"/&gt; <co
+              id="declare-static-sql-tags-eg-6" />
+           &lt;action type="delete" redirect="page-id:/asset/delete?asset_id=${0}"/&gt;
+         &lt;/actions&gt;
+         &lt;column heading="ID" format="plain" redirect="page-id:/asset/edit?asset_id=${0}"/&gt; <co
+              id="declare-static-sql-tags-eg-7" />
+         &lt;column heading="Name" /&gt;
+         &lt;column heading="Type"/&gt;
+         &lt;column heading="Quantity" align="right"/&gt;
+         &lt;column heading="Total Loans" align="right"/&gt;
+         &lt;column heading="Currently Out" align="right"/&gt;
+       &lt;/report&gt;
+     &lt;/panel&gt;
+   &lt;/presentation&gt;
+ &lt;/query&gt;</programlisting>
 
           <calloutlist>
             <callout arearefs="declare-static-sql-tags-eg-1">
-              <para>All the static in Axiom must belong to a statement package
-              represented by <sgmltag>queries</sgmltag> XML tag. The statement
-              package is identified by its name (<literal>books</literal> in
-              the above example). You can define multiple packages within your
-              application's project.xml file.</para>
+              <para>All the static queries in Axiom must belong to a statement
+              package represented by <sgmltag>queries</sgmltag> XML tag. The
+              statement package is identified by its name
+              (<literal>library</literal> in the above example). You can
+              define multiple packages within your application's project.xml
+              file.</para>
             </callout>
 
             <callout arearefs="declare-static-sql-tags-eg-2">
-              <para>A static query is defined (with or without bind
+              <para>The static query is defined (with or without bind
               parameters) by using the <sgmltag>query</sgmltag> tag. Each
               query is identified by its name
-              (<literal>get-all-books</literal> in the above example). <note>
-                  <para>The namespace of a query is always
-                  <replaceable>queryPkg</replaceable>.<replaceable>queryName</replaceable>.
-                  This means you can have more than one queries with same name
-                  if each of them belongs to a different query package.</para>
-                </note></para>
+              (<literal>get-all-assets</literal> in the above example).</para>
             </callout>
 
             <callout arearefs="declare-static-sql-tags-eg-3">
               <para>The static SQL (with or without bind parameters) is
               declared under the query tag. The query in this example declares
-              a join on the <literal>Book_Type</literal> and
-              <literal>Book_Info</literal> tables using the
-              <literal>genre</literal> (from <literal>Book_Info</literal>) and
-              <literal>id</literal> (from <literal>Book_Type</literal>)
+              a join on the <literal>Asset</literal> and
+              <literal>Asset_Type</literal> tables using the
+              <literal>type</literal> (from <literal>Asset</literal>) and
+              <literal>id</literal> (from <literal>Asset_Type</literal>)
               fields.</para>
             </callout>
-          </calloutlist>
-        </example>
-      </section>
 
-      <section>
-        <title>Presenting the Results of a Static Query</title>
-
-        <para>The next step is to define the customized way of displaying the
-        result of your <literal>get-all-books</literal> query.</para>
-
-        <example>
-          <title>Presenting the Results of a Static Query</title>
-
-          <programlisting>&lt;queries package="books"&gt; 
-
- &lt;query name="get-all-books"&gt; 
-  select id, name, author, book_type.caption, isbn 
-         from book_info, book_type
-         where genre = book_type.id
-
-  &lt;<emphasis>presentation</emphasis>&gt; <co id="declare-pres-tags-eg-1" />
-    &lt;<emphasis>panel</emphasis> name="main" height="300"&gt; <co
-              id="declare-pres-tags-eg-2" />
-        &lt;<emphasis>frame</emphasis> heading="<emphasis>static:All available books</emphasis>"/&gt; <co
-              id="declare-pres-tags-eg-3" />
-        &lt;<emphasis>report</emphasis>&gt; <co id="declare-pres-tags-eg-4" />
-           &lt;<emphasis>actions</emphasis>&gt; <co
-              id="declare-pres-tags-eg-5" />
-               &lt;<emphasis>action</emphasis> <emphasis>type="add"</emphasis> caption="Add Book" redirect="page-id:/add"/&gt; <co
-              id="declare-pres-tags-eg-6" />
-               &lt;action type="<emphasis><literal>edit</literal></emphasis>" <emphasis>redirect</emphasis>="page-id:/edit?id=<emphasis>${0}</emphasis>"/&gt; <co
-              id="declare-pres-tags-eg-7" />
-               &lt;action type="<emphasis>delete</emphasis>" redirect="page-id:/delete?id=${0}"/&gt; <co
-              id="declare-pres-tags-eg-8" />
-           &lt;/actions&gt;
-           &lt;column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/&gt; <co
-              id="declare-pres-tags-eg-9" />
-           &lt;column heading="Name" /&gt;
-           &lt;column heading="Author"/&gt;
-           &lt;column heading="Genre"/&gt;
-           &lt;column heading="ISBN"/&gt;
-        &lt;/report&gt;
-    &lt;/panel&gt;
-  &lt;/presentation&gt;
- &lt;/query&gt;
-
-&lt;/queries&gt;</programlisting>
-
-          <calloutlist>
-            <callout arearefs="declare-pres-tags-eg-1">
-              <para>Each <sgmltag>query</sgmltag> tag contains a
-              <sgmltag>presentation </sgmltag>tag associated with it. This tag
+            <callout arearefs="declare-static-sql-tags-eg-4">
+              <para>Defining the presentation for displaying the query result.
+              Each <sgmltag>query</sgmltag> tag contains a
+              <sgmltag>presentation</sgmltag>tag associated with it. This tag
               defines presentation aspects of the query.</para>
             </callout>
 
-            <callout arearefs="declare-pres-tags-eg-2">
-              <para>The panel tag is used to display a panel of given height.
-              This panel serves as a container for the displayed query
-              result.</para>
-            </callout>
-
-            <callout arearefs="declare-pres-tags-eg-3">
-              <para>The frame tag defines a frame to be drawn around the query
-              result. The heading attribute is assigned a value using static
-              value source.</para>
-            </callout>
-
-            <callout arearefs="declare-pres-tags-eg-4">
-              <para>A report is a way to customize the output of a SQL
-              statement on the page.</para>
-
-              <note>
-                <para>Each SQL statement may have any number of
-                <sgmltag>report</sgmltag> tags as necessary. That way, a
-                single statement can be viewed differently depending upon what
-                context it’s being called in.</para>
-              </note>
-            </callout>
-
-            <callout arearefs="declare-pres-tags-eg-5">
+            <callout arearefs="declare-static-sql-tags-eg-5">
               <para>You can declare a set of actions for your query's result.
-              This is done using the <sgmltag>actions</sgmltag> tag. These
-              actions provide a way to perform different functions on the
-              displayed query result. Sparx has pre-defined action types for
-              performing add, edit and delete operations on the selected
+              These actions provide a way to perform different functions on
+              the displayed query result. Sparx has pre-defined action types
+              for performing add, edit and delete operations on the selected
               record within your query result.</para>
-            </callout>
 
-            <callout arearefs="declare-pres-tags-eg-6">
               <para>The action tag is used to define individual actions
               (<literal>add</literal> in this case). The
               <sgmltag>action</sgmltag> tag may specify a <sgmltag
@@ -894,29 +853,17 @@
               value source.</para>
             </callout>
 
-            <callout arearefs="declare-pres-tags-eg-7">
+            <callout arearefs="declare-static-sql-tags-eg-6">
               <para>Declaring <literal>edit</literal> action. You may also
               supply parameters and their values within the redirect URL
-              (selected record's <literal>id</literal> field in this
-              case).</para>
-
-              <para>Any ${XXX} specifies a dynamic replacement. Usually, value
-              sources are used within the brackets but when the dynamic
-              replacement definition is used within a report definition
-              (declared using <sgmltag>report</sgmltag> tag), you can insert a
-              number within the brackets to indicate the column index of the
-              report. In the above example, <emphasis>${0}</emphasis> is used
-              to indicate that it should be replaced with the value of the
-              first column of current row.</para>
+              (selected record's <literal>id</literal> field in this case).
+              ${XXX} specifies a dynamic replacement. In the above example,
+              <emphasis>${0}</emphasis> is used to indicate that it should be
+              replaced with the value of the first column of current
+              row.</para>
             </callout>
 
-            <callout arearefs="declare-pres-tags-eg-8">
-              <para>Declaring the <literal>delete</literal> action with
-              redirect attribute pointing to the <literal>delete</literal>
-              page.</para>
-            </callout>
-
-            <callout arearefs="declare-pres-tags-eg-9">
+            <callout arearefs="declare-static-sql-tags-eg-7">
               <para>Every SQL report contains <sgmltag>column</sgmltag> tags
               that are used to customize the appearance of a particular column
               or, more accurately, a particular field. You may also specify a
@@ -925,10 +872,317 @@
             </callout>
           </calloutlist>
         </example>
+
+        <example>
+          <title>Static query to get all the loans</title>
+
+          <programlisting> &lt;query name="get-all-asset-loans"&gt; <co
+              id="declare-sql-tags-eg2-1" />
+
+   select asset_loan_id, Asset.name, last_name + ', ' + first_name, <co
+              id="declare-sql-tags-eg2-2" />
+          Loan_Type.caption, loan_begin_date, loan_end_date, returned
+   from Asset, Asset_Loan, Loan_Type, Borrower
+   where Asset.asset_id = Asset_Loan.asset_id and loan_type = Loan_Type.id and 
+         Asset_Loan.borrower_id = Borrower.borrower_id
+   order by loan_begin_date desc
+
+   &lt;presentation&gt; <co id="declare-sql-tags-eg2-3" />
+     &lt;panel name="main"&gt;
+       &lt;frame heading="static:Loans for Asset"/&gt;
+       &lt;report&gt;
+         &lt;actions&gt;
+           &lt;action type="edit" redirect="page-id:/loan/edit?asset_loan_id=${0}"/&gt; <co
+              id="declare-sql-tags-eg2-4" />
+           &lt;action type="delete" redirect="page-id:/loan/delete?asset_loan_id=${0}"/&gt; <co
+              id="declare-sql-tags-eg2-5" />
+         &lt;/actions&gt;
+         &lt;column heading="ID" format="plain" <co
+              id="declare-sql-tags-eg2-6" />
+                              redirect="page-id:/loan/edit?asset_loan_id=${0}"/&gt;
+         &lt;column heading="Asset"/&gt;
+         &lt;column heading="Borrower"/&gt;
+         &lt;column heading="Type"/&gt;
+         &lt;column heading="Begin"/&gt;
+         &lt;column heading="End"/&gt;
+         &lt;column heading="Returned"/&gt;
+       &lt;/report&gt;
+     &lt;/panel&gt;
+   &lt;/presentation&gt;
+ &lt;/query&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-sql-tags-eg2-1">
+              <para>Defining query to retrieve 'all' the asset loans from the
+              database.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg2-2">
+              <para>The query declares a join on the <literal>Asset</literal>,
+              <literal>Asset_Loan</literal>, <literal>Loan_Type</literal> and
+              <literal>Borrower</literal> tables.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg2-3">
+              <para>Defining the presentation for displaying the query
+              result.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg2-4">
+              <para>Defining <literal>edit</literal> action for the asset
+              loan. The <sgmltag>action</sgmltag> tag specifies a <sgmltag
+              class="attribute">redirect</sgmltag> attribute to automatically
+              redirect to <literal>edit</literal> page.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg2-5">
+              <para>Defining <literal>delete</literal> action for the asset
+              loan. The <sgmltag>action</sgmltag> tag specifies a <sgmltag
+              class="attribute">redirect</sgmltag> attribute to automatically
+              redirect to <literal>delete</literal> page.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg2-6">
+              <para>Every SQL report contains <sgmltag>column</sgmltag> tags
+              that are used to customize the appearance of a particular column
+              or, more accurately, a particular field. You may also specify a
+              redirect page URL (<literal>edit</literal> page in this case).
+              The <sgmltag>format</sgmltag> attribute specifies the format
+              (<literal>plain</literal> in the above example) to be used to
+              display the column data.</para>
+            </callout>
+          </calloutlist>
+        </example>
+
+        <example>
+          <title>Static query to retrieve a specific loan</title>
+
+          <programlisting> &lt;query name="get-asset-loans"&gt; <co
+              id="declare-sql-tags-eg3-1" />
+
+   select
+     asset_loan_id, last_name + ', ' + first_name, Loan_Type.caption, 
+     loan_begin_date, loan_end_date, returned
+   from
+     Asset_Loan, Loan_Type, Borrower
+   where
+     loan_type = Loan_Type.id and
+     Asset_Loan.borrower_id = Borrower.borrower_id and
+     Asset_Loan.asset_id = ? <co id="declare-sql-tags-eg3-2" />
+   order
+     by loan_begin_date desc
+
+   &lt;params&gt;
+     &lt;param value="request:asset_id"/&gt; <co id="declare-sql-tags-eg3-3" />
+   &lt;/params&gt;
+
+   &lt;presentation&gt;
+     &lt;panel name="main"&gt;
+       &lt;frame heading="static:Loans for Asset"/&gt;
+       &lt;report&gt;
+         &lt;actions&gt;
+           &lt;action type="add" caption="Add Loan" 
+               redirect="page-id:/loan/add?simple-expr:asset_id=${request:asset_id}"/&gt; <co
+              id="declare-sql-tags-eg3-4" />
+           &lt;action type="edit" redirect="page-id:/loan/edit?asset_loan_id=${0}"/&gt;
+           &lt;action type="delete" redirect="page-id:/loan/delete?asset_loan_id=${0}"/&gt;
+         &lt;/actions&gt;
+         &lt;column heading="ID" format="plain" 
+                              redirect="page-id:/loan/edit?asset_loan_id=${0}"/&gt;
+         &lt;column heading="Borrower"/&gt;
+         &lt;column heading="Type"/&gt;
+         &lt;column heading="Begin"/&gt;
+         &lt;column heading="End"/&gt;
+         &lt;column heading="Returned"/&gt;
+       &lt;/report&gt;
+     &lt;/panel&gt;
+   &lt;/presentation&gt;
+ &lt;/query&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-sql-tags-eg3-1">
+              <para>Defining query to retrieve a specific loan from the
+              database.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg3-2">
+              <para>The ID for the specific asset to be retrieved will be
+              replaced with the selected value dynamically.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg3-3">
+              <para>Defining bound parameter for the query. This parameter
+              represents the asset_id for the asset whose information is to be
+              retrieved. The asset ID is retrieved from the request parameter
+              named <varname>asset_id</varname>.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg3-4">
+              <para>Defining <literal>add</literal> action for the asset loan.
+              The <sgmltag>action</sgmltag> tag specifies a <sgmltag
+              class="attribute">redirect</sgmltag> attribute to automatically
+              redirect to <literal>add</literal> page. The asset ID is
+              retrieved from request parameter named
+              <varname>asset_id</varname>. This asset ID is in turn passed to
+              the <literal>add</literal> page as the request parameter.</para>
+            </callout>
+          </calloutlist>
+        </example>
+
+        <example>
+          <title>Static query to retrieve all loans of a borrower</title>
+
+          <programlisting> &lt;query name="get-borrower-loans"&gt; <co
+              id="declare-sql-tags-eg4-1" />
+
+   select
+     asset_loan_id, Asset.name, Loan_Type.caption, loan_begin_date, 
+     loan_end_date, returned
+   from
+     Asset, Asset_Loan, Loan_Type
+   where
+     loan_type = Loan_Type.id and
+     Asset_Loan.asset_id = Asset.asset_id and
+     Asset_Loan.borrower_id = ? <co id="declare-sql-tags-eg4-2" />
+   order by
+     loan_begin_date desc
+
+   &lt;params&gt;
+     &lt;param value="request:borrower_id"/&gt; <co
+              id="declare-sql-tags-eg4-3" />
+   &lt;/params&gt;
+
+   &lt;presentation&gt;
+     &lt;panel name="main"&gt;
+       &lt;frame heading="static:Loans for Borrower"/&gt;
+       &lt;report&gt;
+         &lt;actions&gt;
+           &lt;action type="edit" redirect="page-id:/loan/edit?asset_loan_id=${0}"/&gt;
+           &lt;action type="delete" redirect="page-id:/loan/delete?asset_loan_id=${0}"/&gt;
+         &lt;/actions&gt;
+         &lt;column heading="ID" format="plain" 
+                              redirect="page-id:/loan/edit?asset_loan_id=${0}"/&gt;
+         &lt;column heading="Asset"/&gt;
+         &lt;column heading="Type"/&gt;
+         &lt;column heading="Begin"/&gt;
+         &lt;column heading="End"/&gt;
+         &lt;column heading="Returned"/&gt;
+       &lt;/report&gt;
+     &lt;/panel&gt;
+   &lt;/presentation&gt;
+ &lt;/query&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-sql-tags-eg4-1">
+              <para>Defining query to retrieve all loans of a specific
+              borrower.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg4-2">
+              <para>The ID for the specific borrower whose loans are to be
+              retrieved. The value will be replaced with the selected value
+              dynamically.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg4-3">
+              <para>Defining bound parameter for the query. This parameter
+              represents the borrower_id for the borrower whose loan
+              information is to be retrieved. The borrower ID is retrieved
+              from the request parameter named
+              <varname>borrower_id</varname>.</para>
+            </callout>
+          </calloutlist>
+        </example>
+
+        <example>
+          <title>Static query to retrieve all the borrowers</title>
+
+          <programlisting> &lt;query name="get-all-borrowers"&gt; <co
+              id="declare-sql-tags-eg5-1" />
+
+   select borrower_id, last_name, first_name,
+         (select count(*) from Asset_Loan where Asset_Loan.borrower_id = borrower_id),
+         (select count(*) from Asset_Loan where Asset_Loan.borrower_id = borrower_id 
+          and Asset_Loan.returned = 0)
+   from Borrower
+   order by last_name, first_name
+
+   &lt;presentation&gt;
+     &lt;panel name="main"&gt;
+       &lt;frame heading="static:All available borrowers"/&gt;
+       &lt;report&gt;
+         &lt;actions&gt;
+           &lt;action type="add" caption="Add Borrower" redirect="page-id:/borrower/add"/&gt; 
+           &lt;action type="edit" redirect="page-id:/borrower/edit?borrower_id=${0}"/&gt; <co
+              id="declare-sql-tags-eg5-2" />
+           &lt;action type="delete" redirect="page-id:/borrower/delete?borrower_id=${0}"/&gt;
+         &lt;/actions&gt;
+         &lt;column heading="ID" format="plain" 
+                 redirect="page-id:/borrower/edit?borrower_id=${0}"/&gt; <co
+              id="declare-sql-tags-eg5-3" />
+         &lt;column heading="Last Name" /&gt;
+         &lt;column heading="First Name"/&gt;
+         &lt;column heading="Borrowed" align="right"/&gt;
+         &lt;column heading="Unreturned" align="right"/&gt;
+       &lt;/report&gt;
+     &lt;/panel&gt;
+   &lt;/presentation&gt;
+ &lt;/query&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-sql-tags-eg5-1">
+              <para>Defining query to retrieve all the borrowers.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg5-2">
+              <para>Defining <literal>edit</literal> action for the borrowers.
+              The <sgmltag>action</sgmltag> tag specifies a <sgmltag
+              class="attribute">redirect</sgmltag> attribute to automatically
+              redirect to <literal>edit</literal> page.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg5-3">
+              <para>Specifying the redirect page URL (<literal>edit</literal>
+              page in this case). The selected borrower's ID is also passed to
+              the redirected page.</para>
+            </callout>
+          </calloutlist>
+        </example>
+
+        <example>
+          <title>Static queries to get all the assets and borrowers (to fill
+          the select fields)</title>
+
+          <programlisting> &lt;query name="asset-names-for-select-field-choices"&gt; <co
+              id="declare-sql-tags-eg6-1" />
+   select name, asset_id
+   from Asset
+ &lt;/query&gt;
+
+ &lt;query name="borrower-names-for-select-field-choices"&gt; <co
+              id="declare-sql-tags-eg6-2" />
+   select (last_name + ', ' + first_name) as "Name", borrower_id
+   from Borrower
+ &lt;/query&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-sql-tags-eg6-1">
+              <para>Defining the query to retrieve all the assets. This
+              information is used to fill the select fields displaying the
+              Assets.</para>
+            </callout>
+
+            <callout arearefs="declare-sql-tags-eg6-2">
+              <para>Defining the query to retrieve all the borrowers. This
+              information is used to fill the select fields displaying the
+              Borrowers.</para>
+            </callout>
+          </calloutlist>
+        </example>
       </section>
 
       <section>
-        <title>Unit Testing a Static SQL</title>
+        <title>Unit Testing a Static SQL [TODO]</title>
 
         <para>To test your newly defined static query, go to the <guimenu>Data
         Management</guimenu> | <guisubmenu>Static Queries</guisubmenu> section
@@ -939,7 +1193,7 @@
             <graphic fileref="./resources/images/screen-console-static-queries.gif" />
           </screenshot></para>
 
-        <para>Click on the <literal>get-all-books</literal> query to see the
+        <para>Click on the <literal>get-all-assets</literal> query to see the
         SQL statement.</para>
 
         <screenshot>
@@ -960,327 +1214,6 @@
         <screenshot>
           <graphic fileref="./resources/images/screen-console-static-qry-unit-test.gif" />
         </screenshot>
-      </section>
-
-      <section>
-        <title id="section-declare-dynamic-qry">Declaring a Dynamic Query
-        (Query Definition)</title>
-
-        <para>Query definitions are one of the most powerful features that
-        Sparx provides developers. Using query definitions a developer wields
-        extreme flexibility and power with an ease rivaled by few, if any,
-        other components of Sparx.</para>
-
-        <para>The Library Application will make use of the following query
-        definition:</para>
-
-        <example>
-          <title>Declaring a Dynamic Query (query Definition)</title>
-
-          <programlisting>&lt;<emphasis>query-defn</emphasis> name="books"&gt; <co
-              id="declare-qry-defn-tags-eg-1" />
-  &lt;<emphasis>field</emphasis> name="book_id" caption="Book ID" <emphasis>join</emphasis>="BookInfo" column="id"/&gt; <co
-              id="declare-qry-defn-tags-eg-2" />
-  &lt;field name="name" caption="Name" join="BookInfo" column="name"/&gt; 
-  &lt;field name="author" caption="Author" join="BookInfo" column="author"/&gt;
-  &lt;field <emphasis>name="genre_id"</emphasis> caption="Genre ID" join="BookInfo" <emphasis>column="genre"</emphasis>/&gt; <co
-              id="declare-qry-defn-tags-eg-3" />
-  &lt;field name="genre_caption" caption="Genre" join="BookType" column="caption"/&gt;
-  &lt;field name="isbn" caption="ISBN" join="BookInfo" column="isbn"/&gt;
-
-  &lt;join name="BookInfo" table="book_info"/&gt; 
-  <emphasis>&lt;join name="BookType" table="book_type" condition="BookType.id = BookInfo.genre"/&gt;</emphasis> <co
-              id="declare-qry-defn-tags-eg-4" />
-
-&lt;/query-defn&gt;</programlisting>
-
-          <calloutlist>
-            <callout arearefs="declare-qry-defn-tags-eg-1">
-              <para>All query definitions are declared using the
-              <sgmltag>query-defn</sgmltag> tag and are uniquely identified
-              with a name (<literal>books</literal> in this case).</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-tags-eg-2">
-              <para>Each query definition contains one ore more
-              <sgmltag>field</sgmltag> tags that declare the selectable
-              fields. The <sgmltag>field</sgmltag> tags are specified so that
-              Axiom knows what fields the user should be allowed to select.
-              Query definition fields may come from a mix of tables so long as
-              they have appropriately defined <sgmltag>join</sgmltag>
-              attribute values. The value of the <sgmltag>join</sgmltag>
-              attribute is a reference to a <sgmltag>join</sgmltag> tag later
-              on in the query definition (<literal>BookInfo</literal> and
-              <literal>bookType</literal> in this case).</para>
-
-              <note>
-                <para>In the context of the final SQL statement that Sparx
-                generates, the field tags become a part of the select clause.
-                i.e. the part of a select statement that determines which
-                fields need to be returned.</para>
-              </note>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-tags-eg-3">
-              <para>The <sgmltag>column</sgmltag> attribute of <sgmltag>field
-              </sgmltag>tag contains the field name (<literal>name</literal>
-              in this case) as defined in the schema table
-              (<literal>Book_Info</literal> in this case). The
-              <sgmltag>name</sgmltag> attribute is used to define a different
-              name for the schema table field (<literal>genre_id</literal> and
-              <literal>genre</literal>, respectively, in this case).</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-tags-eg-4">
-              <para>The <sgmltag>join</sgmltag> tag is used to let the query
-              definition know of the list of tables and joins. This is
-              necessary to be able to get all the fields that are a part of
-              the query definition. Each <sgmltag>join</sgmltag> tag is
-              uniquely identified through its name. The
-              <sgmltag>table</sgmltag> attribute contains the schema table
-              name whereas the <sgmltag>condition</sgmltag> attribute defines
-              the join condition.</para>
-
-              <note>
-                <para>In the context of the final SQL statement that Sparx
-                generates, the join tags become a part of the where clause to
-                signify the relationships between tables (if any
-                exists).</para>
-              </note>
-            </callout>
-          </calloutlist>
-        </example>
-      </section>
-
-      <section id="desc-pres-dyn-qry">
-        <title>Presenting the Results of a Dynamic Query (Query
-        Definition)</title>
-
-        <para>After defining the basic join on Library Application tables, the
-        next step is to define the search dialog and the presentation of the
-        search result. This is handled through the use of
-        <sgmltag>presentation</sgmltag> tag and its child tags under
-        <sgmltag>query-defn</sgmltag> tag.</para>
-
-        <example>
-          <title>Declaring the Search Dialog and Query Result
-          Presentation</title>
-
-          <programlisting>&lt;query-defn name="books"&gt;
-
- &lt;<emphasis>presentation</emphasis>&gt; <co
-              id="declare-qry-defn-pres-tags-eg-1" />
-   &lt;<emphasis>select-dialog</emphasis> name="searchBooksDialog" <emphasis>allow-debug</emphasis>="yes" <co
-              id="declare-qry-defn-pres-tags-eg-2" />
-                  <emphasis>hide-output-dests</emphasis>="no" <emphasis>hide-readonly-hints</emphasis>="yes" &gt; <emphasis>     
-                  </emphasis> 
-     &lt;<emphasis>frame</emphasis> heading="Search for Books" /&gt; <co
-              id="declare-qry-defn-pres-tags-eg-3" />
-     &lt;field type="text" name="book_id" caption="Book ID" /&gt;
-     &lt;field type="text" name="name" caption="Book Name"/&gt;
-     &lt;field type="text" name="author" caption="Author"/&gt;
-     &lt;field type="text" name="isbn" caption="ISBN"/&gt;
-     &lt;<emphasis>field</emphasis> type="select" style="list" name="genre" 
-                          caption="Genre" choices="<emphasis>schema-enum:Book_Type</emphasis>"/&gt; <co
-              id="declare-qry-defn-pres-tags-eg-4" />
-
-     &lt;<emphasis>select</emphasis> name="test"&gt; <co
-              id="declare-qry-defn-pres-tags-eg-5" />
-        &lt;display field="book_id"/&gt; 
-        &lt;display field="name"/&gt;
-        &lt;display field="author"/&gt;
-        &lt;<emphasis>display</emphasis> field="genre_caption"/&gt; <co
-              id="declare-qry-defn-pres-tags-eg-6" />
-        &lt;display field="isbn"/&gt;<emphasis>
-
-        &lt;condition field="book_id" allow-null="no" comparison="equals" </emphasis><co
-              id="declare-qry-defn-pres-tags-eg-7" />
-                                   <emphasis>value</emphasis>="field:book_id" <emphasis>connector</emphasis>="and"/&gt; 
-        &lt;condition field="name" allow-null="no" comparison="starts-with" 
-                                   value="field:name" connector="and"/&gt;
-        &lt;condition field="author" allow-null="no" comparison="equals" 
-                                   value="field:author" connector="and"/&gt;
-        &lt;condition field="genre_id" allow-null="no" comparison="equals" 
-                                   value="field:genre" connector="and"/&gt;
-
-        &lt;<emphasis>presentation</emphasis>&gt; <co
-              id="declare-qry-defn-pres-tags-eg-8" />
-           &lt;<emphasis>panel</emphasis> name="report"&gt; 
-            &lt;frame heading="static:Book Search Results"/&gt;
-             &lt;<emphasis>report</emphasis>&gt; <co
-              id="declare-qry-defn-pres-tags-eg-9" />
-               &lt;<emphasis>column</emphasis> heading="ID" format="plain" <emphasis>redirect</emphasis>="page-id:/edit?id=${0}"/&gt; <co
-              id="declare-qry-defn-pres-tags-eg-10" />
-               &lt;column heading="Name" /&gt;
-               &lt;column heading="Author"/&gt;
-               &lt;column heading="Genre"/&gt;
-               &lt;column heading="ISBN"/&gt;
-             &lt;/report&gt;
-           &lt;/panel&gt;
-        &lt;/presentation&gt;
-     &lt;/select&gt;
-   &lt;/select-dialog&gt;
- &lt;/presentation&gt;
-&lt;/query-defn&gt;</programlisting>
-
-          <calloutlist>
-            <callout arearefs="declare-qry-defn-pres-tags-eg-1">
-              <para>The search dialog and search field results are declared
-              under a <sgmltag>presentation</sgmltag> tag in the
-              <sgmltag>query-defn</sgmltag> hierarchy.</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-pres-tags-eg-2">
-              <para>The <sgmltag>select-dialog</sgmltag> tag is essentially a
-              dialog embedded inside a query definition. The purpose of this
-              dialog is to provide a user interface for the query definition.
-              Each select-dialog is uniquely identified through its
-              name.</para>
-
-              <note>
-                <para>One query definition can have multiple
-                <sgmltag>select-dialogs</sgmltag> declarations.</para>
-              </note>
-
-              <para>The <sgmltag>allow-debug</sgmltag> attribute of
-              <sgmltag>select-dialog</sgmltag> tag is used to specify the
-              query debug option. If it is set to "<literal>yes</literal>" (as
-              in this example), a debug check box is displayed (with the
-              caption <emphasis>View Generated SQL</emphasis>). When this
-              checkbox is checked and the dialog is submitted, the generated
-              SQL with its bind parameters is displayed for debugging purposes
-              instead of execution of the generated SQL</para>
-
-              <para>The <sgmltag>hide-output-dests</sgmltag> attribute is used
-              to give the user several output options: HTML output (pageable
-              report and row count per page), CSV output format, tab delimited
-              format. This is done by setting the value of this attribute to
-              "no". The <sgmltag>hide-readonly-hints</sgmltag> attribute is
-              used to show or hide the field hints (as is the case in this
-              example).</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-pres-tags-eg-3">
-              <para>The <sgmltag>frame</sgmltag> tag is used to draw a frame,
-              with appropriate heading, around the search dialog.</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-pres-tags-eg-4">
-              <para>The first part of a <sgmltag>select-dialog</sgmltag> is a
-              declaration of all the fields (and their corresponding UI
-              representations) that the <sgmltag>select-dialog</sgmltag> will
-              use for user input. Each field has associated
-              <sgmltag>name</sgmltag> and <sgmltag>caption</sgmltag>
-              attributes. The <literal>genre</literal> field is declared to be
-              a "<sgmltag>select</sgmltag>". The choices for this field are
-              populated with the values from <literal>Book_Type</literal>
-              table using <sgmltag>schema-enum</sgmltag> value source.</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-pres-tags-eg-5">
-              <para>The second part of a <sgmltag>select-dialog</sgmltag> is a
-              select section which has two parts in itself. The
-              <sgmltag>select</sgmltag> component is what determines which of
-              the select-dialog’s declared fields are actually displayed in
-              the dialog for this select-dialog. It also determines how each
-              field will be interpreted by the query definition engine once
-              the dialog is submitted. The select tag is uniquely identified
-              through its name (<literal>test</literal> in this case).</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-pres-tags-eg-6">
-              <para>The <sgmltag>display</sgmltag> tags have one attribute,
-              <sgmltag>field</sgmltag>, which points to the name of a field
-              declared in the main query definition.</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-pres-tags-eg-7">
-              <para>The <sgmltag>condition</sgmltag> tags determine how the
-              data input from the <sgmltag>select-dialog</sgmltag> will be
-              interpreted by the query definition engine. Basically, it
-              defines the search criteria.</para>
-
-              <para>Each condition tag represents a condition on a field
-              specified by the <sgmltag>field</sgmltag> attribute. The
-              <sgmltag>allow-null</sgmltag> attribute of the
-              <sgmltag>condition</sgmltag> tag determines the behavior of the
-              query definition engine if this field is left empty when the
-              dialog is submitted. The value of this attribute is set to
-              “<literal>no</literal>” in this case. That is why the select
-              generated will omit the field if the corresponding dialog field
-              happens to be empty. The <sgmltag>comparison</sgmltag> attribute
-              of the <sgmltag>condition</sgmltag> tag describes the relational
-              operator to use ("<emphasis>equals</emphasis>" in this
-              case).</para>
-
-              <para>The <sgmltag>value</sgmltag> attribute of the
-              <sgmltag>condition</sgmltag> tag describes the field from the
-              main query definition (<literal>book_id</literal> in this case)
-              with which this <sgmltag>select-dialog</sgmltag> field
-              (<literal>book_id</literal> in this case) is to be compared. The
-              select-dialog field is mentioned using the
-              <sgmltag>field</sgmltag> value source.</para>
-
-              <para>The <sgmltag>connector</sgmltag> attribute determines how
-              many field criteria each record in the database has to match
-              before it is selected. In this example, all the fields have a
-              connector value of “<sgmltag>and</sgmltag>” thus specifying that
-              a record would have to match all the field criteria to be
-              selected in the final result.</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-pres-tags-eg-8">
-              <para>The result of this dynamically generated and executed
-              query can be configured in different ways using
-              <sgmltag>presentation</sgmltag> tag hierarchy.</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-pres-tags-eg-9">
-              <para>The <sgmltag>report</sgmltag> tag customizes the displayed
-              query result fields.</para>
-            </callout>
-
-            <callout arearefs="declare-qry-defn-pres-tags-eg-10">
-              <para>Each <sgmltag>report</sgmltag> tag contains
-              <sgmltag>column</sgmltag> tags to customize the display of
-              individual query result fields. You may also provide a redirect
-              URL which a column through the <sgmltag>redirect</sgmltag>
-              attribute. In this example, the <literal>ID</literal> field of
-              the book record in the displayed result points to the
-              <literal>Edit Book</literal> page. Clicking on this link will
-              open the <literal>Edit Book</literal> page with the dialog
-              fields populated with the selected book's information.</para>
-            </callout>
-          </calloutlist>
-        </example>
-      </section>
-
-      <section>
-        <title>Unit Testing a Query Definition</title>
-
-        <para>To test your newly defined static query, go to the <guimenu>Data
-        Management</guimenu> | <guisubmenu>Dynamic Queries</guisubmenu>
-        section in the Console. This displays all the Dynamic SQL statements
-        defined in your <filename>project.xml</filename> file.</para>
-
-        <para></para>
-
-        <screenshot>
-          <graphic fileref="./resources/images/screen-console--dynamic-queries.gif" />
-        </screenshot>
-
-        <para>Click on the <literal>books</literal> query to see the details
-        of the query in a tabular form.</para>
-
-        <para></para>
-
-        <screenshot>
-          <graphic fileref="./resources/images/screen-console--dynamic-qry-doc.gif" />
-        </screenshot>
-
-        <para>Click on the <guimenuitem>Unit Test</guimenuitem> option in the
-        left menu bar. [TODO: Documentation to be made available when the
-        Dynamic Query Unit Test option is functional]</para>
       </section>
     </section>
   </section>
