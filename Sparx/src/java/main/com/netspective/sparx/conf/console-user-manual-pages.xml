@@ -1,6 +1,30 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <page name="manual" caption="User's Manual" require-login="no">
+
+        <page name="doc-book" caption="DocBook" heading="-" title="User Manual (DocBook HTML format)">
+            <redirect>servlet-context-uri:/console/manual/doc-book/</redirect>     <!-- be sure that URL ends in / because of relative paths in subsite -->
+            <body-handler handler="html-sub-site">
+                <root>C\:\Projects\Frameworks\Sparx\resources\content\manual\html</root>
+                <substitute>
+                    <perl-reg-ex>simple-expr:s!src="resources/!src="${servlet-context-uri:/sparx}/content/manual/resources/!g</perl-reg-ex>
+                </substitute>
+            </body-handler>
+        </page>
+
+        <!--
+        <page name="doc-book-manual" caption="DocBook Manual" require-login="no">
+            <body-handler handler="transform">
+                <source-file>C\:/Projects/Frameworks/Sparx/resources/content/console/manual/manual.xml</source-file>
+                <style-sheet-file>D\:/shared/utils/docbook-xsl-1.62.4/html/docbook.xsl"></style-sheet-file>
+
+                <system-property name="javax.xml.parsers.DocumentBuilderFactory" value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl"/>
+                <system-property name="javax.xml.parsers.SAXParserFactory" value="org.apache.xerces.jaxp.SAXParserFactoryImpl"/>
+                <system-property name="javax.xml.transform.TransformerFactory" value="org.apache.xalan.processor.TransformerFactoryImpl"/>
+            </body-handler>
+        </page>
+        -->
+
         <page name="overview" caption="Sparx Overview">
             <body config="console" source="console-page-content:documentation.ftl"/>
         </page>

@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.107 2003-10-24 03:21:47 shahid.shah Exp $
+  * $Id: console.xml,v 1.108 2003-10-24 21:59:33 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -262,34 +262,11 @@
             </page>
         </page>
 
-        <page name="manual-site" caption="Manual Site" require-login="no" heading="-" title="Manual Site">
-            <redirect>servlet-context-uri:/console/manual-site/</redirect>     <!-- be sure that URL ends in / because of relative paths in subsite -->
-            <body-handler handler="html-sub-site">
-                <root>C\:\Projects\Frameworks\Sparx\resources\content\manual\html</root>
-                <substitute>
-                    <perl-reg-ex>simple-expr:s!src="resources/!src="${servlet-context-uri:/sparx}/content/manual/resources/!g</perl-reg-ex>
-                </substitute>
-            </body-handler>
-        </page>
-
         <xdm:include resource="com/netspective/sparx/conf/console-user-manual-pages.xml"/>
 
         <page name="reference" caption="XDM Tags Reference" require-login="no" body-affects-navigation="yes">
             <body config="console" source="content/xdm-doc.ftl"/>
         </page>
-
-<!--
-        <page name="doc-book-manual" caption="DocBook Manual" require-login="no">
-            <body-handler handler="transform">
-                <source-file>C\:/Projects/Frameworks/Sparx/resources/content/console/manual/manual.xml</source-file>
-                <style-sheet-file>D\:/shared/utils/docbook-xsl-1.62.4/html/docbook.xsl"></style-sheet-file>
-
-                <system-property name="javax.xml.parsers.DocumentBuilderFactory" value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl"/>
-                <system-property name="javax.xml.parsers.SAXParserFactory" value="org.apache.xerces.jaxp.SAXParserFactoryImpl"/>
-                <system-property name="javax.xml.transform.TransformerFactory" value="org.apache.xalan.processor.TransformerFactoryImpl"/>
-            </body-handler>
-        </page>
--->
     </navigation-tree>
 
     <login-manager name="console">
