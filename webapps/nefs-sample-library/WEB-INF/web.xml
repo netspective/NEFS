@@ -21,6 +21,8 @@
     <classpath id='c:\Projects\Frameworks\Commons\src\java\main' compile='false'/>
     <classpath id='c:\Projects\Frameworks\Axiom\src\java\main' compile='false'/>
     <classpath id='c:\Projects\Frameworks\Sparx\src\java\main' compile='false'/>
+    <!-- needed to find java-doc-xml/* files -->
+    <classpath id='c:\Projects\Frameworks\Sparx'/>
 
 	<path-mapping url-pattern='/sparx/*' real-path='c:\Projects\Frameworks\Sparx\resources'/>
 
