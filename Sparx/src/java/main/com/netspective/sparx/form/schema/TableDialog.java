@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.4 2003-08-08 00:58:29 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.5 2003-08-17 00:24:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -220,7 +220,7 @@ public class TableDialog extends Dialog
                         ConnectionContext cc = null;
                         try
                         {
-                            cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
+                            cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false, ConnectionContext.OWNERSHIP_DEFAULT);
                             Row row = table.getRowByPrimaryKeys(cc, new Object[] { pkValue}, null);
                             if(row != null)
                             {
@@ -265,7 +265,7 @@ public class TableDialog extends Dialog
         ConnectionContext cc = null;
         try
         {
-            cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
+            cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false, ConnectionContext.OWNERSHIP_DEFAULT);
         }
         catch (Exception e)
         {

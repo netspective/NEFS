@@ -73,7 +73,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 
 
 /**
- * $Id: QuerySelectDialog.java,v 1.4 2003-08-06 04:50:28 aye.thu Exp $
+ * $Id: QuerySelectDialog.java,v 1.5 2003-08-17 00:24:55 shahid.shah Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -211,7 +211,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 {
                     QueryDefnSelect select = qdSelect;
                     ValueSource dataSource = getQueryDefn().getDataSrc();
-                    ConnectionContext cc = dc.getConnection(dataSource != null ? dataSource.getTextValue(dc) : null, false);
+                    ConnectionContext cc = dc.getConnection(dataSource != null ? dataSource.getTextValue(dc) : null, false, ConnectionContext.OWNERSHIP_DEFAULT);
                     String message = select.createExceptionMessage(cc, null);
                     cc.close();
                     writer.write("<p><pre><code>" + message + "</code></pre>");

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.8 2003-08-06 04:48:00 aye.thu Exp $
+ * $Id: QueryBuilderDialog.java,v 1.9 2003-08-17 00:24:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -606,7 +606,7 @@ public class QueryBuilderDialog extends Dialog
             {
                 QueryDefnSelect select = createSelect(dc);
                 ValueSource dataSource = queryDefn.getDataSrc();
-                ConnectionContext cc = dc.getConnection(dataSource != null ? dataSource.getTextValue(dc) : null, false);
+                ConnectionContext cc = dc.getConnection(dataSource != null ? dataSource.getTextValue(dc) : null, false, ConnectionContext.OWNERSHIP_DEFAULT);
                 String message = select.createExceptionMessage(cc, null);
                 cc.close();
                 writer.write("<p><pre><code>" + message + "</code></pre>");
