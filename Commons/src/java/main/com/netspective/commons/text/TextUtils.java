@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.7 2003-07-08 14:17:32 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.8 2003-10-24 03:17:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -47,6 +47,8 @@ package com.netspective.commons.text;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 import org.apache.oro.text.perl.Perl5Util;
 
@@ -479,6 +481,14 @@ public class TextUtils
             return perlUtil.substitute("s/" + replStr + "/\n/g", text).trim();
         else
             return text;
+    }
+
+    public static String getStackTrace(Throwable t)
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        t.printStackTrace(pw);
+        return sw.toString();
     }
 
     /**
