@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: popup.js,v 1.1 2003-08-22 14:29:41 shahid.shah Exp $
+ * $Id: popup.js,v 1.2 2004-02-25 23:19:48 shahid.shah Exp $
  */
 
 //****************************************************************************
@@ -146,7 +146,7 @@ function PopulateControlInfo_populateValue(value)
 		        var options = this.control.options;
                 for(var o = 0; o < options.length; o++)
                 {
-                    if(options[o].text == value)
+                    if(options[o].value == value)
                     {
                         options[o].selected = true;
                         return;
