@@ -43,6 +43,12 @@
  */
 package com.netspective.medigy.model;
 
+import com.netspective.medigy.util.HibernateConfiguration;
+import com.netspective.medigy.util.HibernateUtil;
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.HSQLDialect;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -50,13 +56,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.LogManager;
-
-import org.hibernate.HibernateException;
-import org.hibernate.cfg.Environment;
-import org.hibernate.dialect.HSQLDialect;
-
-import com.netspective.medigy.util.HibernateConfiguration;
-import com.netspective.medigy.util.HibernateUtil;
 
 public abstract class TestCase extends junit.framework.TestCase
 {
@@ -100,6 +99,9 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.session.ProcessSession.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
 
+        config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationship.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
         config.addAnnotatedClass(com.netspective.medigy.model.org.OrgIdentifierType.class);
 
@@ -107,6 +109,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.person.PersonIdentifier.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.MaritalStatus.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.ContactMechanism.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.Gender.class);
 
         return config;
     }

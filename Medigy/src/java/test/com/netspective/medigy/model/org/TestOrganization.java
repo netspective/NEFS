@@ -35,95 +35,43 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
+ * @author Aye Thu
  */
 
-/*
- * Copyright (c) 2005 Your Corporation. All Rights Reserved.
- */
-package com.netspective.medigy.model.person;
+package com.netspective.medigy.model.org;
 
 import com.netspective.medigy.model.TestCase;
-import com.netspective.medigy.model.session.ProcessSession;
+import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.session.Session;
+import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.SessionManager;
-import com.netspective.medigy.reference.type.GenderType;
-import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.util.HibernateUtil;
 
-import java.util.Calendar;
-import java.util.Date;
-
-public class TestPerson extends TestCase
+public class TestOrganization  extends TestCase
 {
-    public void testPerson()
+    public void testOrg()
     {
-        final Calendar calendar = Calendar.getInstance();
         HibernateUtil.beginTransaction();
 
         Session session = new ProcessSession();
-        session.setProcessName(TestPerson.class.getName() + ".testPerson()");
+        session.setProcessName(TestPerson.class.getName() + ".testOrg()");
         HibernateUtil.getSession().save(session);
         SessionManager.getInstance().setActiveSession(session);
 
-        Person newPerson = new Person();
-        newPerson.setFirstName("Ryan");
-        newPerson.setMiddleName("Bluegrass");
-        newPerson.setLastName("Hackett");
-        newPerson.setSsn("123456789");
+        Organization newOrg = new Organization();
+        newOrg.setName("American Red Cross");
+        newOrg.setEin("123456789");
 
-        final MaritalStatus singleStatus = new MaritalStatus();
-        singleStatus.setPerson(newPerson);
-        singleStatus.setType(MaritalStatusType.Cache.SINGLE.getEntity());
-        calendar.set(1990, 6, 14);
-        singleStatus.setThroughDate(calendar.getTime());
+        HibernateUtil.getSession().save(newOrg);
 
-        final MaritalStatus marriedStatus = new MaritalStatus();
-        marriedStatus.setPerson(newPerson);
-        marriedStatus.setType(MaritalStatusType.Cache.MARRIED.getEntity());
-        marriedStatus.setFromDate(calendar.getTime());
-
-        newPerson.getMaritalStatuses().add(singleStatus);
-        newPerson.getMaritalStatuses().add(marriedStatus);
-
-        final Gender gender = new Gender();
-        gender.setPerson(newPerson);
-        gender.setType(GenderType.Cache.MALE.getEntity());
-        newPerson.setGender(gender);
-
-        final Date birthDate = new Date();
-        newPerson.setBirthDate(birthDate);
-
-        HibernateUtil.getSession().save(newPerson);
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
 
-        final Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, newPerson.getPersonId());
-        assertEquals(persistedPerson.getFirstName(), "Ryan");
-        assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
-        assertEquals(persistedPerson.getLastName(), "Hackett");
-        assertEquals(persistedPerson.getPartyName(), "Ryan Bluegrass Hackett");
-        assertEquals(persistedPerson.getSsn(), "123456789");
+        final Organization persistedOrganization = (Organization) HibernateUtil.getSession().load(Organization.class,
+                newOrg.getOrgId());
+        assertEquals(persistedOrganization.getName(), "American Red Cross");
+        assertEquals(persistedOrganization.getPartyName(), "American Red Cross");
+        assertEquals(persistedOrganization.getEin(), "123456789");
 
-        HibernateUtil.beginTransaction();
-
-        ContactMechanism contactMechanism = new ContactMechanism();
-        contactMechanism.setPerson(persistedPerson);
-        //persistedPerson.getContactMechanisms().add(contactMechanism);
-
-        HibernateUtil.getSession().save(contactMechanism);
-        //HibernateUtil.getSession().save(persistedPerson);
-        HibernateUtil.commitTransaction();
-        HibernateUtil.closeSession();
-
-        final Person updatedPerson = (Person) HibernateUtil.getSession().load(Person.class, persistedPerson.getPersonId());
-        assertNotNull(updatedPerson);
-        assertEquals(1, updatedPerson.getContactMechanisms().size());
-        assertEquals(2, updatedPerson.getMaritalStatuses().size());
-        assertEquals(MaritalStatusType.Cache.MARRIED.getEntity(), updatedPerson.getCurrentMaritalStatus());
-        assertEquals(GenderType.Cache.MALE.getEntity(), updatedPerson.getGender().getType());
-        assertEquals(birthDate, updatedPerson.getBirthDate());
-
-        HibernateUtil.closeSession();
     }
 }
