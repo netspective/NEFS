@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.1 2003-06-26 16:05:57 shahid.shah Exp $
+ * $Id: Project.java,v 1.2 2003-06-26 16:35:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -74,12 +74,13 @@ import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 
 /**
- * The Sparx Project is the entry point for all Sparx component declarations and collections.
- * All Sparx class and instance declarations are performed in this container -- dialogs,
- * fields, validation rules, some conditional processing, all static SQL statements, dynamic queries,
- * database schemas, schema data declarations, configuration files, and many other resources are
- * declared here.
+ * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
+ * dynamic queries, database schemas, schema data declarations, access control lists, and configuration files.
+ * There is only one instance of a Project for each Servlet Context (application) and the components contained by the
+ * Project are cached for use by all users of the application. Instead of each user having a copy of each dialog,
+ * SQL statement, schema, and other components, all users (requests) of the Servlet reuse the same instances.
  */
+
 public class Project extends SqlManager implements NavigationTreesManager, ConsoleManager, DialogsManager
 {
     private static final Log log = LogFactory.getLog(Project.class);

@@ -2,10 +2,10 @@ package com.netspective.sparx;
 
 public class BuildLog
 {
-  public static final int    BUILD_NUMBER = 6;
+  public static final int    BUILD_NUMBER = 7;
   public static final String BUILD_HOST_NAME = "FLKV252KN8ZC945";
   public static final String BUILD_HOST_IP = "10.161.35.235";
-  public static final String BUILD_DATE = "Thu Jun 26 11:30:43 EDT 2003";
+  public static final String BUILD_DATE = "Thu Jun 26 12:40:04 EDT 2003";
 
   public static final String BUILD_OS_NAME = "Windows 2000";
   public static final String BUILD_OS_VERSION = "5.0";
