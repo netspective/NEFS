@@ -333,8 +333,8 @@
             <presentation>
                 <dialog class="com.netspective.sparx.form.schema.TableDialog"
                         name="${table.name}"
-                        schemaName="${table.getSchema().getName()}"
-                        tableName="${table.getName()}"
+                        bind-table="${table.schema.name}.${table.name}"
+                        auto-bind-fields-to-columns="yes"
                         primary-key-value-for-edit-or-delete="authenticated-user:user-id">
                     <frame heading="create-dialog-perspective-heading:My General Information"/>
                     <next-action-provider class="app.Util"/>
@@ -468,8 +468,8 @@
             <presentation>
                 <dialog class="com.netspective.sparx.form.schema.TableDialog"
                         name="${table.name}"
-                        schemaName="${table.getSchema().getName()}"
-                        tableName="${table.getName()}"
+                        bind-table="${table.schema.name}.${table.name}"
+                        auto-bind-fields-to-columns="yes"
                         allow-insert-if-edit-pk-not-found="yes"
                         primary-key-value-for-edit-or-delete="authenticated-user:user-id">
                     <frame heading="create-dialog-perspective-heading:Risk Management Environment"/>

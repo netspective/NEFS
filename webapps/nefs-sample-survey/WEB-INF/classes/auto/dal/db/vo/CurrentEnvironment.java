@@ -10,6 +10,10 @@ public interface CurrentEnvironment
     
     public java.lang.Integer getPin();
     
+    public int getPinInt();
+    
+    public int getPinInt(int defaultValue);
+    
     public java.lang.String getRisksDelta();
     
     public java.lang.String getRisksDeltaExpl();
@@ -31,6 +35,8 @@ public interface CurrentEnvironment
     public void setApproachExpl(java.lang.String approachExpl);
     
     public void setPin(java.lang.Integer pin);
+    
+    public void setPinInt(int pin);
     
     public void setRisksDelta(java.lang.String risksDelta);
     

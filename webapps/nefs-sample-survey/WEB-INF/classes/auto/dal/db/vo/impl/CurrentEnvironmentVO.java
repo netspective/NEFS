@@ -20,6 +20,16 @@ implements auto.dal.db.vo.CurrentEnvironment
         return pin;
     }
     
+    public int getPinInt()
+    {
+        return getPinInt(-1);
+    }
+    
+    public int getPinInt(int defaultValue)
+    {
+        return pin != null ? pin.intValue() : defaultValue;
+    }
+    
     public java.lang.String getRisksDelta()
     {
         return risksDelta;
@@ -73,6 +83,11 @@ implements auto.dal.db.vo.CurrentEnvironment
     public void setPin(java.lang.Integer pin)
     {
         this.pin = pin;
+    }
+    
+    public void setPinInt(int pin)
+    {
+        this.pin = new java.lang.Integer(pin);
     }
     
     public void setRisksDelta(java.lang.String risksDelta)
