@@ -39,50 +39,77 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.11 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: Query.java,v 1.1 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.sql;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.ApplicationManager;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
-import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.sparx.panel.QueryReportPanel;
+import com.netspective.axiom.sql.QueriesNameSpace;
 
-public class ConsoleServlet extends NavigationControllerServlet
+public class Query extends com.netspective.axiom.sql.Query
 {
-    protected Theme getTheme()
+    public class Presentation
     {
-        return Themes.getInstance().getTheme("console");
-    }
+        private Map reportPanels = new HashMap();
+        private QueryReportPanel defaultPanel;
 
-    protected NavigationTree getNavigationTree(ApplicationManager am)
-    {
-        return am.getConsoleNavigationTree();
-    }
-
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
-    {
-        long startTime = System.currentTimeMillis();
-        NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
-        if(nc.isRedirectToAlternateChildRequired())
+        public QueryReportPanel createPanel()
         {
-            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
-            return;
+            QueryReportPanel result = new QueryReportPanel();
+            result.setQuery(Query.this);
+            return result;
         }
 
-        nc.getEnvironmentFlags().setFlag(RuntimeEnvironmentFlags.CONSOLE_MODE);
-        renderPage(nc);
+        public void addPanel(QueryReportPanel panel)
+        {
+            if(reportPanels.size() == 0 || panel.isDefaultPanel())
+                defaultPanel = panel;
+            reportPanels.put(panel.getName(), panel);
+        }
 
-        long renderTime = System.currentTimeMillis() - startTime;
-        httpServletResponse.getWriter().write("Render time: " + renderTime + " milliseconds");
+        public QueryReportPanel getDefaultPanel()
+        {
+            return defaultPanel;
+        }
+
+        public QueryReportPanel getPanel(String name)
+        {
+            return (QueryReportPanel) reportPanels.get(name);
+        }
+
+        public void setDefaultPanel(QueryReportPanel defaultPanel)
+        {
+            this.defaultPanel = defaultPanel;
+        }
+
+        public int size()
+        {
+            return reportPanels.size();
+        }
+    }
+
+    private Presentation presentation = new Presentation();
+
+    public Query()
+    {
+    }
+
+    public Query(QueriesNameSpace nameSpace)
+    {
+        super(nameSpace);
+    }
+
+    public Presentation createPresentation()
+    {
+        return presentation;
+    }
+
+    public void addPresentation(Presentation presentation)
+    {
+        // do nothing, but this method is needed so XDM knows that "presentation" is a valid XML child
     }
 }

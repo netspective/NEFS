@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.6 2003-05-07 03:39:17 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.7 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -48,6 +48,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.sparx.navigate.NavigationTreesManager;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
@@ -63,6 +64,7 @@ import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.sql.QueriesPackage;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 
@@ -101,6 +103,21 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
     public ApplicationManager()
     {
     }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
+
+    public QueriesNameSpace createQueries()
+    {
+        activeNameSpace = new QueriesPackage(getQueries());
+        return activeNameSpace;
+    }
+
+    public com.netspective.axiom.sql.Query createQuery()
+    {
+        return new com.netspective.sparx.sql.Query();
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
 
     public Theme createRegisterTheme()
     {

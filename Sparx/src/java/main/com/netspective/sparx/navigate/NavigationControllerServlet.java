@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.1 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.2 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -59,10 +59,10 @@ import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.ApplicationManagerComponent;
 import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
-import com.netspective.sparx.console.ConsoleNavigationTree;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.xdm.XdmComponentFactory;
+import com.netspective.commons.RuntimeEnvironmentFlags;
 
 public class NavigationControllerServlet extends HttpServlet
 {
@@ -155,7 +155,7 @@ public class NavigationControllerServlet extends HttpServlet
             skin.renderPageMetaData(writer, nc);
             skin.renderPageHeader(writer, nc);
             writer.write("No page located for path '"+ nc.getActivePathFindResults().getSearchedForPath() +"'.");
-            if(nc.isDevelopmentEnvironment())
+            if(nc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT))
             {
                 writer.write("<pre>\n");
                 writer.write(tree.toString());

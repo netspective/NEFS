@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpServletCommand.java,v 1.2 2003-05-10 16:49:59 shahid.shah Exp $
+ * $Id: HttpServletCommand.java,v 1.3 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -53,6 +53,15 @@ import com.netspective.sparx.form.DialogContext;
 
 public interface HttpServletCommand extends ServletCommand
 {
+    /**
+     * Handle the command if it's being called in a Navigation (page) context. This is the "normal" mode.
+     */
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException;
+
+    /**
+     * Handle the command if it's being called after a dialog execute context. This is the "dialog" mode. This command
+     * handler should only be overridden if something special is done after dialog execution versus the "normal" command
+     * mode.
+     */
     public void handleCommand(Writer writer, DialogContext dc, boolean unitTest) throws CommandException, IOException;
 }

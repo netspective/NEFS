@@ -39,50 +39,23 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.11 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: QueriesPackage.java,v 1.1 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.sql;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
+import com.netspective.axiom.sql.Queries;
+import com.netspective.axiom.sql.Query;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.ApplicationManager;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
-import com.netspective.commons.RuntimeEnvironmentFlags;
-
-public class ConsoleServlet extends NavigationControllerServlet
+public class QueriesPackage extends com.netspective.axiom.sql.collection.QueriesPackage
 {
-    protected Theme getTheme()
+    public QueriesPackage(Queries queries)
     {
-        return Themes.getInstance().getTheme("console");
+        super(queries);
     }
 
-    protected NavigationTree getNavigationTree(ApplicationManager am)
+    public Query createQuery()
     {
-        return am.getConsoleNavigationTree();
-    }
-
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
-    {
-        long startTime = System.currentTimeMillis();
-        NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
-        if(nc.isRedirectToAlternateChildRequired())
-        {
-            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
-            return;
-        }
-
-        nc.getEnvironmentFlags().setFlag(RuntimeEnvironmentFlags.CONSOLE_MODE);
-        renderPage(nc);
-
-        long renderTime = System.currentTimeMillis() - startTime;
-        httpServletResponse.getWriter().write("Render time: " + renderTime + " milliseconds");
+        return new com.netspective.sparx.sql.Query(this);
     }
 }

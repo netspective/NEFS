@@ -51,17 +51,20 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReport.java,v 1.3 2003-04-05 14:14:59 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReport.java,v 1.4 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
-import com.netspective.sparx.panel.HtmlPanelBanner;
-import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.commons.report.tabular.AbstractTabularReport;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class BasicHtmlTabularReport extends AbstractTabularReport implements HtmlTabularReport
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
+    static
+    {
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[] { "record-add-caption", "record-add-url", "record-edit-url", "record-delete-url" });
+    }
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.1 2003-05-16 02:53:58 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.2 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -291,7 +291,6 @@ public class DateTimeField extends TextField
     public void setFormat(SimpleDateFormat format)
     {
         dateValidationRule.setFormat(format);
-        System.out.println(format.toPattern());
     }
 
     public void setMaxDate(ValueSource date) throws ParseException

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.4 2003-05-13 02:13:38 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.5 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -258,7 +258,7 @@ public class DialogCommand extends AbstractHttpServletCommand
 
         public String[] getEnums()
         {
-            //return (String[]) SkinFactory.getInstance().getDialogSkins().keySet().toArray(new String[SkinFactory.getInstance().getNavigationSkins().keySet().size()]);
+            //TODO: return (String[]) SkinFactory.getInstance().getDialogSkins().keySet().toArray(new String[SkinFactory.getInstance().getNavigationSkins().keySet().size()]);
             return null;
         }
     }

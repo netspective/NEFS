@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.10 2003-05-15 21:34:46 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.11 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -644,7 +644,7 @@ public class Dialog extends AbstractPanel
 
         if(dc.inExecuteMode())
         {
-            boolean debug = dc.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA);
+            boolean debug = debugFlags.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA);
             if(debug)
                 dc.setRedirectDisabled(true);
 

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: HtmlPanelBanner.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: HtmlPanelBanner.java,v 1.2 2003-05-16 21:23:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -67,11 +67,44 @@ import com.netspective.sparx.panel.HtmlPanelActions;
 
 public class HtmlPanelBanner
 {
+    public static class Style extends XdmEnumeratedAttribute
+    {
+        public static final int HORIZONTAL = 0;
+        public static final int VERTICAL = 1;
+
+        public static final String[] VALUES = new String[] { "horizontal", "vertical" };
+
+        public Style()
+        {
+        }
+
+        public Style(int valueIndex)
+        {
+            super(valueIndex);
+        }
+
+        public String[] getValues()
+        {
+            return VALUES;
+        }
+    }
+
     private HtmlPanelActions actions = new HtmlPanelActions();
     private ValueSource content;
+    private Style style = new Style(Style.HORIZONTAL);
 
     public HtmlPanelBanner()
     {
+    }
+
+    public Style getStyle()
+    {
+        return style;
+    }
+
+    public void setStyle(Style style)
+    {
+        this.style = style;
     }
 
     public ValueSource getContent()
@@ -94,8 +127,8 @@ public class HtmlPanelBanner
         return new HtmlPanelAction();
     }
 
-    public void addAction(HtmlPanelAction item)
+    public void addAction(HtmlPanelAction action)
     {
-        actions.add(item);
+        actions.add(action);
     }
 }

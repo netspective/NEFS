@@ -10,6 +10,7 @@
 * Add "concurrent users" into console (all people currently logged in, perhaps total time spent doing stuff, etc)
 * Add capability for HTTP request parameters to be automatically populate into beans for dialog context liks Struts does
 * Add permissions, conditionals, etc into navigation trees
+* Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
 * Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
 * Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
 * Add sorting to report data source (which should also use cookies to store active sort criteria)

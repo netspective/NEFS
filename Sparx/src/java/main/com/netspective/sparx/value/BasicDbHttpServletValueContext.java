@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.10 2003-05-10 16:50:02 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.11 2003-05-16 21:23:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -67,13 +67,15 @@ import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.RuntimeEnvironmentFlags;
 
 public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContext
                                       implements ServletValueContext, HttpServletValueContext,
                                                  DatabaseServletValueContext, DatabaseHttpServletValueContext
 {
-    public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT = "netspective-runtime-environment";
-    public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_MODE = "netspective-runtime-environment-mode";
+    public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS = "com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS";
+    public static final String CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS = INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS;
+    public static final String INITPARAMNAME_DEFAULT_DATA_SRC_ID = "com.netspective.sparx.DEFAULT_DATA_SOURCE";
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
 
     private NavigationContext navigationContext;
@@ -85,6 +87,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     private boolean isPopup;
     private boolean isPrint;
     private String rootUrl;
+    private RuntimeEnvironmentFlags contextEnvFlags;
 
     public BasicDbHttpServletValueContext()
     {
@@ -105,10 +108,38 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         rootUrl = ((HttpServletRequest) request).getContextPath();
     }
 
+    public RuntimeEnvironmentFlags getEnvironmentFlags()
+    {
+        if(contextEnvFlags == null)
+        {
+            contextEnvFlags = (RuntimeEnvironmentFlags) context.getAttribute(CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS);
+            String envFlagsText = context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS);
+            if(envFlagsText == null)
+                throw new RuntimeException("No environment flags specified. Check '"+ INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS +"' servlet context init parameter.");
+            contextEnvFlags = constructEnvironmentFlags();
+            contextEnvFlags.setValue(envFlagsText);
+            context.setAttribute(CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS, contextEnvFlags);
+        }
+        return contextEnvFlags;
+    }
+
     public void initialize(NavigationContext nc)
     {
         initialize(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse());
         setNavigationContext(nc);
+    }
+
+    public String getDefaultDataSource()
+    {
+        String dataSourceId = super.getDefaultDataSource();
+        if(dataSourceId != null && dataSourceId.length() > 0)
+            return dataSourceId;
+
+        dataSourceId = context.getInitParameter(INITPARAMNAME_DEFAULT_DATA_SRC_ID);
+        if(dataSourceId == null)
+            throw new RuntimeException("No default data source available. Check '"+ INITPARAMNAME_DEFAULT_DATA_SRC_ID +"' servlet context init parameter.");
+
+        return dataSourceId;
     }
 
     public NavigationContext getNavigationContext()
@@ -179,37 +210,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public ServletContext getServletContext()
     {
         return context;
-    }
-
-    public boolean isInMaintenanceMode()
-    {
-        return "maintenance".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT_MODE));
-    }
-
-    public boolean isDemonstrationEnvironment()
-    {
-        return "demonstration".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
-    }
-
-    public boolean isDevelopmentEnvironment()
-    {
-        String runtimeEnv = context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT);
-        return runtimeEnv == null || "development".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
-    }
-
-    public boolean isProductionEnvironment()
-    {
-        return "production".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
-    }
-
-    public boolean isTestEnvironment()
-    {
-        return "testing".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
-    }
-
-    public boolean isTrainingEnvironment()
-    {
-        return "training".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
     }
 
     public boolean isPopup()
