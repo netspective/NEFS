@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.8 2003-06-26 05:06:13 roque.hernandez Exp $
+ * $Id: SchemaColumnsTest.java,v 1.9 2003-07-19 00:39:49 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -348,6 +348,8 @@ public class SchemaColumnsTest extends TestCase
         //System.out.println("row: " + row.getColumnValues());
         //table.update(cc, row);
 
+        //TODO: Figure out why when we try to delete we get a SQL Exception
+
         table.delete(cc, row);
         result = query.execute(dbvc, this.getClass().getPackage().getName(), new Object[]{"def"}).getResultSet();
         assertTrue(!result.next());
@@ -387,7 +389,6 @@ public class SchemaColumnsTest extends TestCase
         //assertEquals(values.getByName("column_a").getTextValue(),"abc");
         //assertEquals(values.getByName("enum_set_column").getTextValue(),"2");
 
-
         //TODO: Figure out why when we try to update we get a SQL Exception
         //values.getByName("rec_stat_id").setTextValue("0");
         //values.getByName("text_set_column").setTextValue("a,b,c,d");
@@ -396,7 +397,7 @@ public class SchemaColumnsTest extends TestCase
 
         table.delete(cc, row);
         result = query.execute(dbvc, this.getClass().getPackage().getName(), new Object[]{"abc"}).getResultSet();
-        assertTrue(!result.next());
+        assertFalse(result.next());
     }
 
     public void testEnumIdRefColumn()
@@ -546,7 +547,7 @@ public class SchemaColumnsTest extends TestCase
 
         assertTrue(cols.contains(col2));
 
-        assertEquals("cr-stamp|rec-stat-id|auto-inc-column|text-set-column|enum-set-column|column-a|enumidref|column-b", cols.getOnlyXmlNodeNames("|"));
+        assertEquals("record-status-id|cr-stamp|auto-inc-column|text-set-column|enum-set-column|column-a|enumidref|column-b", cols.getOnlyXmlNodeNames("|"));
 
         int byName = cols.getColumnIndexInRowByName("column_a");
         int byXml = cols.getColumnIndexInRowByNameOrXmlNodeName("column-a");

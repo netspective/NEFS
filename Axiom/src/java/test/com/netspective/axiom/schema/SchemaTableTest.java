@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableTest.java,v 1.3 2003-06-29 18:40:47 roque.hernandez Exp $
+ * $Id: SchemaTableTest.java,v 1.4 2003-07-19 00:39:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -132,7 +132,7 @@ public class SchemaTableTest extends TestCase
 
         assertEquals("This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.",table.getDescription());
 
-        assertNotNull(table.getForeignKeyColumns().getByName("rec_stat_id"));
+        assertNotNull(table.getForeignKeyColumns().getByName("record_status_id"));
         assertNotNull(table.getForeignKeyColumns().getByName("enumIdRef"));
 
         try
