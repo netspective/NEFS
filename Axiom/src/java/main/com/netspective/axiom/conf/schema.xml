@@ -140,7 +140,7 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
             <define dbms="postgres" xdm:replace-template-expressions="no">timestamp</define>
             <define dbms="oracle" xdm:replace-template-expressions="no">timestamp</define>
-            <default dbms="oracle">sysdate</default>
+            <default dbms="oracle">SYSTIMESTAMP</default>
             <default dbms="hsqldb">'now'</default>
         </sql-ddl>
     </data-type>
