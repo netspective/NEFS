@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.57 2004-03-14 06:10:07 aye.thu Exp $
+ * $Id: Dialog.java,v 1.58 2004-03-18 17:39:56 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form;
@@ -211,7 +211,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     private List validationListeners = new ArrayList();
 
     /**
-     * Create a dialog
+     * Creates a dialog in the project.
+     *
+     * @param project the project in which the dialog is created
      */
     public Dialog(Project project)
     {
@@ -221,12 +223,23 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         debugFlags = createDebugFlags();
     }
 
+    /**
+     * Creates a dialog in the project.
+     *
+     * @param project the project in which the dialog is created
+     * @param pkg
+     */
     public Dialog(Project project, DialogsPackage pkg)
     {
         this(project);
         setNameSpace(pkg);
     }
 
+    /**
+     * Gets the project object.
+     *
+     * @return the project
+     */
     public Project getProject()
     {
         return project;
@@ -263,8 +276,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets the name of the dialog
-     * @return
+     * Gets the name of the dialog.
+     *
+     * @return dialog name
      */
     public String getName()
     {
@@ -276,6 +290,11 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         return translateNameForMapKey(getQualifiedName());
     }
 
+    /**
+     * Gets the complete qualified name of the dialog.
+     *
+     * @return qualified name of the dialog
+     */
     public String getQualifiedName()
     {
         return nameSpace != null ? nameSpace.getNameSpaceId() + "." + name : name;
@@ -284,7 +303,8 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     /**
      * Sets the name of the dialog. The name may only contain upper or lowercase letters, numbers, and underscores.
      * There should no punctuation characters or spaces and the name should be a valid JavaScript name.
-     * @param name
+     *
+     * @param name the name of the dialog
      */
     public void setName(String name)
     {
@@ -294,9 +314,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets the dialog name
+     * Gets the name of the dialog.
      *
-     * @return String name
+     * @return the dialog name
      */
     public String getHtmlFormName()
     {
@@ -304,7 +324,8 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Sets the dialog name
+     * Sets the name of the dialog. The name may only contain upper or lowercase letters, numbers, and underscores.
+     * There should no punctuation characters or spaces and the name should be a valid JavaScript name.
      *
      * @param newName dialog name
      */
@@ -364,7 +385,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Returns true if the heading should be hidden
+     * Checks whether or not the dialog heading is to be hidden.
+     *
+     * Returns <code>true</code> if the heading should be hidden; <code>false</code> otherwise
      */
     public boolean hideHeading(DialogContext dc)
     {
@@ -374,11 +397,21 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
             return false;
     }
 
+    /**
+     * Gets the context class associated with this dialog.
+     *
+     * @return dialog context class
+     */
     public Class getDialogContextClass()
     {
         return dialogContextClass;
     }
 
+    /**
+     * Sets a custom class as the context class for the dialog.
+     *
+     * @param dialogContextClass custom class to be set as the dialog context class
+     */
     public void setDialogContextClass(Class dialogContextClass)
     {
         this.dialogContextClass = dialogContextClass;
@@ -410,8 +443,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets the name of the Cancel button
-     * @return
+     * Gets the name of the Cancel button.
+     *
+     * @return name of the Cancel button
      */
     public String getCancelDataParamName()
     {
@@ -429,9 +463,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Get a list of dialog fields
+     * Gets a list of dialog fields.
      *
-     * @return List
+     * @return list of all dialog fields
      */
     public DialogFields getFields()
     {
@@ -439,9 +473,10 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Indicates whether or not to retain the HTTP request parameters as dialog fields
+     * Indicates whether or not to retain the HTTP request parameters as dialog fields.
      *
-     * @return boolean True if the request parameters are retained in the dialog
+     * @return <code>true</code> if the request parameters are retained in the dialog;
+     *         <code>false</code> otherwise
      */
     public boolean retainRequestParams()
     {
@@ -449,9 +484,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Get the retained request parameters as a string array
+     * Gets the retained request parameters as a string array.
      *
-     * @return String[]
+     * @return the request parameters that were retained
      */
     public String[] getRetainParams()
     {
@@ -459,9 +494,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Set the retained request parameters
+     * Sets the retained request parameters.
      *
-     * @param value array of string values
+     * @param value the retained request parameter values
      */
     public void setRetainParams(String value)
     {
@@ -490,6 +525,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      *   <li>Active page next action provider delegated class (using dc.NavigationContext().getNextActionProvider)</li>
      *   <li>The default url passed in</li>
      * </ol>
+     *
      * @param dc The dialog context for the dialog that just executed
      * @param defaultUrl The URL to use if no specific next actions are provided
      * @return URL string to use for the URL (to send in redirect)
@@ -525,8 +561,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets the dialog director object
-     * @return
+     * Gets the dialog director object.
+     *
+     * @return the dialog director object
      */
     public DialogDirector getDirector()
     {
@@ -535,7 +572,8 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Creates and returns the dialog director. Used mainly for XDM dialog creation.
-     * @return
+     *
+     * @return dialog director object
      */
     public DialogDirector createDirector()
     {
@@ -543,8 +581,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Sets the director for this dialog
-     * @param value
+     * Sets the director for the dialog.
+     *
+     * @param value the director to be set for the dialog
      */
     public void addDirector(DialogDirector value)
     {
@@ -552,10 +591,10 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         value.setOwner(this);
     }
 
-    /**
-	 * Gets all the javascript files to be included with this dialog
+        /**
+	 * Gets all the javascript files to be included with this dialog.
 	 *
-	 * @return ArrayList
+	 * @return all the client javascript files
 	 */
 	public List getClientJs()
 	{
@@ -563,8 +602,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 	}
 
     /**
-     * Adds a javascript file to be included
-     * @param clientJsFile
+     * Adds a javascript file to be included.
+     *
+     * @param clientJsFile the javascript file to be included
      */
     public void addClientJs(DialogIncludeJavascriptFile clientJsFile)
     {
@@ -572,8 +612,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets the package namespace to which this dialog belongs to
-     * @return
+     * Gets the package namespace to which this dialog belongs.
+     *
+     * @return package namespace of the dialog
      */
     public DialogsNameSpace getNameSpace()
     {
@@ -581,8 +622,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Sets the package namespace for this dialog
-     * @param nameSpace
+     * Sets the package namespace for the dialog.
+     *
+     * @param nameSpace the namespace to be set for the dialog
      */
     public void setNameSpace(DialogsNameSpace nameSpace)
     {
@@ -591,6 +633,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Creates a new DialogField object and returns it. Used mainly by XDM to create a dialog field.
+     *
      * @return a new dialog field object
      */
     public DialogField createField()
@@ -599,9 +642,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Add a dialog field
+     * Adds a dialog field.
      *
-     * @param field datlog field
+     * @param field a dialog field
      */
     public void addField(DialogField field)
     {
@@ -611,7 +654,8 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Creates a new composite field and returns it. This is used mainly by XDM to instantiate a composite field.
-     * @return
+     *
+     * @return the newly created composite field
      */
     public CompositeField createComposite()
     {
@@ -619,8 +663,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Adds a composite field to the dialog
-     * @param field CompositeField object
+     * Adds a composite field to the dialog.
+     *
+     * @param field the CompositeField object to be added to the dialog
      */
     public void addComposite(CompositeField field)
     {
@@ -629,13 +674,19 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Creates a new separator field. This is used mainly by XDM to instantiate a separator field.
-     * @return
+     *
+     * @return the newly created separator field
      */
     public SeparatorField createSeparator()
     {
         return new SeparatorField();
     }
 
+    /**
+     * Adds a separator field to the dialog.
+     *
+     * @param field the separator field to be added to the dialog
+     */
     public void addSeparator(SeparatorField field)
     {
         addField(field);
@@ -643,13 +694,19 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Creates a new grid field. This is used mainly by XDM to instantiate a grid field.
-     * @return
+     *
+     * @return the newly created grid field
      */
     public GridField createGrid()
     {
         return new GridField();
     }
 
+    /**
+     * Adds a grid field to the dialog.
+     *
+     * @param field the grid field to be added to the dialog
+     */
     public void addGrid(GridField field)
     {
         addField(field);
@@ -749,7 +806,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Checks each field to make see if the state of it needs to be changed or not
+     * Checks each field to see if its state needs to be changed or not
      * usually based on Conditionals.
      *
      * <b>IMPORTANT</b>: If any changes are made in this class, make sure
@@ -790,7 +847,8 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     /**
      * Creates a new <code>DialogExecuteDefaultHandler</code> object. This is used mainly by XDM to instantiate a
      * DialogExecuteHandler object.
-     * @return
+     *
+     * @return the newly created dialog execute handler object
      */
     public DialogExecuteHandler createOnExecute()
     {
@@ -800,6 +858,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     /**
      * Adds a new <code>DialogExecuteHandler</code> object to the list of execute handlers. These listeners that implement
      * the <code>DialogExecuteHandler</code> interface will be called at execution time to process custome dialog execute actions.
+     *
      * @param handler  execution handler object
      */
     public void addOnExecute(DialogExecuteHandler handler)
@@ -810,7 +869,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Gets all the dialog execute handlers
-     * @return
+     * @return all the execute handlers for the dialog
      */
     public DialogExecuteHandlers getExecuteHandlers()
     {
@@ -819,7 +878,8 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Ascertain whether or not this dialog should just auto-execute (not show any input) by default.
-     * @return True if auto executing by default
+     *
+     * @return <code>true</code> if auto executing by default
      */
     public boolean isAutoExecByDefault()
     {
@@ -828,10 +888,11 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * If this dialog is not auto-exec by default, then does the current state of the dialog (using the context)
-     * indicate that it should be auto-executed?
+     * indicate that it should be auto-executed.
+     *
      * @param dc The current dialog context
      * @param autoExecReqParamValue The value of the _d_exec request parameter
-     * @return True if the current state indicates auto-execution
+     * @return <code>true</code> if the current state indicates auto-execution; <code>false</code> otherwise
      */
     public boolean isAutoExec(DialogContext dc, String autoExecReqParamValue)
     {
@@ -840,8 +901,10 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Execute the actions of the dialog
+     *
      * @param writer stream for dialog execution output
      * @param dc dialog context
+     * @throws IOException, DialogExecuteException
      */
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
@@ -865,7 +928,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
     /**
      * Gets the next action provider of the dialog. The next action represents the action to be performed after dialog execution.
-     * @return
+     * @return the next action provider for the dialog
      */
     public DialogNextActionProvider getNextActionProvider()
     {
@@ -909,7 +972,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Logs the exeception and writes it to the Writer
+     * Logs the exeception and writes it to the Writer.
      * @param writer    Writer object related to the response buffer
      * @param dc        current dialog context
      * @param message   custom exception message
@@ -999,7 +1062,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Create and write the HTML for the dialog
+     * Creates and writes the HTML for the dialog
      *
      * @param writer                    stream to write the HTML
      * @param dc                        dialog context
@@ -1052,14 +1115,30 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         renderViewSource(writer, dc.getNavigationContext());
     }
 
+
     /**
+     * Creates and writes the HTML for the dialog using a dialog theme.
+     *
+     * @param writer  stream to write the HTML
+     * @param dc      dialog context
+     * @param theme   dialog theme
+     * @param flags
+     * @throws IOException
      */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
         render(writer, dc.getNavigationContext(), theme, flags);
     }
 
+
     /**
+     * Creates and writes the HTML for the dialog using a dialog theme.
+     *
+     * @param writer  stream to write the HTML
+     * @param nc      navigation context for the dialog
+     * @param theme   dialog theme
+     * @param flags
+     * @throws IOException when an error occurs while writing to HTML stream
      */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
@@ -1078,9 +1157,10 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     /**
      * Generates a custom java bean class file representing the context of the dialog.
      *
-     * @param destDir   the destibation directory to write the bean class
-     * @param pkgPrefix the package to which the bean class belongs to
+     * @param destDir   the destination directory to write the bean class
+     * @param pkgPrefix the package to which the bean class belongs
      * @return the bean class file
+     * @throws IOException when an error occurs during file or html stream I/O
      */
     public File generateDialogContextBean(File destDir, String pkgPrefix) throws IOException
     {
@@ -1182,10 +1262,10 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Indicates whether not the dialog needs validation
+     * Indicates whether or not the dialog needs validation.
      *
      * @param dc dialog context
-     * @return boolean
+     * @return <code>true</code> if the dialog needs validation; <code>false</code> otherwise
      */
     public boolean needsValidation(DialogContext dc)
     {
@@ -1202,10 +1282,10 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Checks whether or not the dailog is valid for the execution
+     * Checks whether or not the dailog is valid for execution.
      *
      * @param dc dialog context
-     * @return boolean
+     * @return <code>true</code> if the dialog is valid; <code>false</code> otherwise.
      */
     public boolean isValid(DialogContext dc)
     {
@@ -1234,6 +1314,13 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         return isValid;
     }
 
+    /**
+     * Formats and displays the error message in HTML format.
+     *
+     * @param writer  html stream
+     * @param e       error message
+     * @throws IOException
+     */
     protected void renderFormattedExceptionMessage(Writer writer, Exception e) throws IOException
     {
         writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
@@ -1241,11 +1328,23 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         writer.write("</pre>");
     }
 
+    /**
+     * Attaches a custom class to manage dialog events such as validation,
+     * execution and so on.  Creates a placeholder for the dynamic listener class.
+     *
+     * @return a placeholder for the dialog listener
+     */
     public DialogListener createListener()
     {
         return new DialogListenerPlaceholder();
     }
 
+  /**
+   * Registers a listener for the dialog.
+   *
+   * @param listeners list of listeners to which the listener is registered
+   * @param listener  the listener to be registered
+   */
     private void registerListener(List listeners, DialogListener listener)
     {
         if(! listeners.contains(listener))
@@ -1259,7 +1358,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      *      <li>DialogInitialPopulateForDisplayListener: processed during initial population of the dialog and the format type is set to display mode </li>
      *      <li>DialogInitialPopulateForSubmitListener: processed during initial population of the dialog  and the format type is set to submit mode </li>
      *      <li>DialogInitialPopulateListener</li>
-     *      <li>DialogPopulateForDisplayListener: processed during subsequent population of the diialog and the format type is set to display mode</li>
+     *      <li>DialogPopulateForDisplayListener: processed during subsequent population of the dialog and the format type is set to display mode</li>
      *      <li>DialogPopulateForSubmitListener: porcessed during subsequent population of the dialog and the format type is set to submit mode</li>
      *      <li>DialogPopulateListener</li>
      *      <li>DialogStateAfterValidationListener</li>
@@ -1269,7 +1368,8 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      *      <li>DialogExecuteHandler: </li>
      * </ul>
      * Implementing listeners classes can be registered to the dialog using the <code>&lt;listener&gt;</code> tag.
-     * @param listener
+     *
+     * @param listener the listener to be added for the dialog
      */
     public void addListener(DialogListener listener)
     {
@@ -1338,8 +1438,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets a list of all the initial dialog population listeners for display mode
-     * @return
+     * Gets a list of all the initial dialog population listeners for display mode.
+     *
+     * @return all the initial dialog population listeners, for display mode
      */
     public List getInitialPopulateForDisplayListeners()
     {
@@ -1347,8 +1448,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets a list of all the initial dialog population for submit mode
-     * @return
+     * Gets a list of all the initial dialog population for submit mode.
+     *
+     * @return all the initial dialog population, for submit mode
      */
     public List getInitialPopulateForSubmitListeners()
     {
@@ -1356,8 +1458,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets all the initial population listeners
-     * @return
+     * Gets all the initial population listeners for the dialog.
+     *
+     * @return all the initial population listeners
      */
     public List getInitialPopulateListeners()
     {
@@ -1365,8 +1468,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets all the subsequent population listeners for display mode
-     * @return
+     * Gets all the subsequent population listeners for display mode.
+     *
+     * @return all the population listeners, for display mode
      */
     public List getPopulateForDisplayListeners()
     {
@@ -1374,8 +1478,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets all the subsequent population listeners for submit mode
-     * @return
+     * Gets all the subsequent population listeners for submit mode.
+     *
+     * @return all the population listeners, for submit mode
      */
     public List getPopulateForSubmitListeners()
     {
@@ -1383,8 +1488,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets all the dialog population listeners
-     * @return
+     * Gets all the dialog population listeners.
+     *
+     * @return all the population listeners for the dialog
      */
     public List getPopulateListeners()
     {
@@ -1392,8 +1498,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets all the listeners for the dialog after validation stage
-     * @return
+     * Gets all the listeners for the dialog after validation stage.
+     *
+     * @return all the listeners for the dialog, after validation stage
      */
     public List getStateAfterValidationListeners()
     {
@@ -1401,8 +1508,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets all the listeners for the dialog before validation stage
-     * @return
+     * Gets all the listeners for the dialog before validation stage.
+     *
+     * @return all the listeners for the dialog, before validation stage
      */
     public List getStateBeforeValidationListeners()
     {
@@ -1410,8 +1518,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets all the dialog state listeners
-     * @return
+     * Gets all the dialog state listeners.
+     *
+     * @return all the state listeners for the dialog
      */
     public List getStateListeners()
     {
@@ -1419,8 +1528,9 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Gets all the dialog validation listeners
-     * @return
+     * Gets all the dialog validation listeners.
+     *
+     * @return all the validation listeners for the dialog
      */
     public List getValidationListeners()
     {
