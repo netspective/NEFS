@@ -90,6 +90,7 @@ public class MaritalStatus extends AbstractEntity implements Comparable
     }
 
     @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name = "person_id")
     public Person getPerson()
     {
         return person;

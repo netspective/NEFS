@@ -158,6 +158,7 @@ public class Person extends AbstractTopLevelEntity
     }
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id")
     public Set<ContactMechanism> getContactMechanisms()
     {
         return contactMechanisms;
@@ -181,6 +182,7 @@ public class Person extends AbstractTopLevelEntity
     }
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id")
     public Set<MaritalStatus> getMaritalStatuses()
     {
         return maritalStatuses;

@@ -61,6 +61,7 @@ public class ContactMechanism extends AbstractContactMechanism
     }
 
     @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name = "person_id")
     public Person getPerson()
     {
         return person;

@@ -43,17 +43,14 @@
  */
 package com.netspective.medigy.model.person;
 
-import java.util.Calendar;
-
-import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.model.TestCase;
-import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.type.MaritalStatusType;
-import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.util.HibernateUtil;
+
+import java.util.Calendar;
 
 public class TestPerson extends TestCase
 {
@@ -90,7 +87,7 @@ public class TestPerson extends TestCase
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
 
-        Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, newPerson.getPersonId());
+        final Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, newPerson.getPersonId());
         assertEquals(persistedPerson.getFirstName(), "Ryan");
         assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
         assertEquals(persistedPerson.getLastName(), "Hackett");
@@ -108,7 +105,8 @@ public class TestPerson extends TestCase
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
 
-        Person updatedPerson = (Person) HibernateUtil.getSession().load(Person.class, persistedPerson.getPersonId());
+        final Person updatedPerson = (Person) HibernateUtil.getSession().load(Person.class, persistedPerson.getPersonId());
+        assertNotNull(updatedPerson);
         assertEquals(1, updatedPerson.getContactMechanisms().size());
         assertEquals(2, updatedPerson.getMaritalStatuses().size());
         assertEquals(MaritalStatusType.Cache.MARRIED.getEntity(), updatedPerson.getCurrentMaritalStatus());

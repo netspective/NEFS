@@ -60,7 +60,7 @@ import com.netspective.medigy.util.HibernateUtil;
 
 public abstract class TestCase extends junit.framework.TestCase
 {
-    protected static final File DEFAULT_DB_DIR = new File("C:\\temp\\medigy-test-db-05");
+    protected static final File DEFAULT_DB_DIR = new File("C:\\temp\\medigy-test-db-01");
 
     protected String getClassNameWithoutPackage()
     {
