@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Role.java,v 1.1 2003-03-20 22:38:15 shahid.shah Exp $
+ * $Id: Role.java,v 1.2 2003-03-23 16:43:33 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.acl;
@@ -112,7 +112,6 @@ public class Role
     protected void setId(int id)
     {
         this.id = id;
-        permissions.set(id);
     }
 
     public String getName()
