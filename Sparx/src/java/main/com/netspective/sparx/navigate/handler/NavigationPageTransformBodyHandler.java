@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationPageTransformBodyHandler.java,v 1.1 2003-10-24 03:28:10 shahid.shah Exp $
+ * $Id: NavigationPageTransformBodyHandler.java,v 1.2 2003-11-14 19:50:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.handler;
@@ -88,7 +88,7 @@ public class NavigationPageTransformBodyHandler extends NavigationPageBodyDefaul
 
     public void setSource(ValueSource source)
     {
-        transform.setSource(source);
+        transform.setSourceResource(source);
     }
 
     public void setSourceFile(ValueSource source)
@@ -98,7 +98,7 @@ public class NavigationPageTransformBodyHandler extends NavigationPageBodyDefaul
 
     public void setStyleSheet(ValueSource styleSheet)
     {
-        transform.setStyleSheet(styleSheet);
+        transform.setStyleSheetResource(styleSheet);
     }
 
     public void setStyleSheetFile(ValueSource styleSheet)
@@ -108,6 +108,6 @@ public class NavigationPageTransformBodyHandler extends NavigationPageBodyDefaul
 
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        transform.render(writer, nc, null, nc.getRuntimeEnvironmentFlags().isDevelopmentOrTesting());
+        transform.render(writer, nc, null, null, nc.getRuntimeEnvironmentFlags().isDevelopmentOrTesting());
     }
 }
