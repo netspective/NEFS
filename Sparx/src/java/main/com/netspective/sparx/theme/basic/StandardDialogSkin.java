@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.12 2003-07-10 00:52:09 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.13 2003-07-17 20:55:58 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -575,6 +575,9 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             StringWriter writer = new StringWriter();
             field.renderControlHtml(writer, dc);
             fieldsHtml.append(writer);
+            // even if the field is hidden, you still need to register it in JS
+            if (field.getName() != null)
+			    fieldsJSDefn.append(field.getJavaScriptDefn(dc));
             return;
         }
 
