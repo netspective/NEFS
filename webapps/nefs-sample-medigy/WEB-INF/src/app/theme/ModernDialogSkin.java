@@ -85,7 +85,7 @@ import java.util.Map;
  *
  *
  * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.1 2004-02-26 16:23:32 shahid.shah Exp $
+ * @version $Id: ModernDialogSkin.java,v 1.2 2004-03-03 06:28:59 aye.thu Exp $
  */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -104,6 +104,8 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     private String fieldBlockWithErrorStyleClass = null;
     /* CSS class name for the hint of a field */
     private String fieldHintStyleClass = null;
+    /* CSS class name for the hint of a field */
+    private String fieldHiddenHintStyleClass = null;
     /* CSS class name foe the hint of a field that is hidden until the focus is on the field */
     private String fieldHintHiddenStyleClass = null;
     /* CSS style name for the error message element of a field */
@@ -195,6 +197,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         fieldBlockStyleClass            = "dialog-field-block";
         fieldBlockWithErrorStyleClass   = "dialog-field-block-errors";
         fieldHintStyleClass             = "dialog-field-hint";
+        fieldHiddenHintStyleClass       = "dialog-field-hint-hidden";
         fieldErrorStyleClass            = "dialog-field-errors";
         fieldControlAreaStyleClass      = "dialog-field-input";
         fieldControlAreaRequiredStyleClass = "dialog-field-input-required";
@@ -638,6 +641,16 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     public void setFieldHintStyleClass(String fieldHintStyleClass)
     {
         this.fieldHintStyleClass = fieldHintStyleClass;
+    }
+
+    public String getFieldHiddenHintStyleClass()
+    {
+        return fieldHiddenHintStyleClass;
+    }
+
+    public void setFieldHiddenHintStyleClass(String fieldHiddenHintStyleClass)
+    {
+        this.fieldHiddenHintStyleClass = fieldHiddenHintStyleClass;
     }
 
     /**
@@ -1374,11 +1387,11 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             else if (dialogFlags.flagIsSet(DialogFlags.HIDE_HINTS_UNTIL_FOCUS))
             {
                 // hide the hints until the field is being edited
-                hintHtml.append("<span id=\"" + field.getQualifiedName() + "_hint\" class=\"dialog-fields-hint-hidden\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>");
+                hintHtml.append("<span id=\"" + field.getQualifiedName() + "_hint\" class=\"" + getFieldHiddenHintStyleClass() +"\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>");
             }
             else
             {
-                hintHtml.append("<span id=\"" + field.getQualifiedName() + "_hint\" class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>");
+                hintHtml.append("<span id=\"" + field.getQualifiedName() + "_hint\" class=\"" + getFieldHintStyleClass() + "\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>");
             }
 
         }
