@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-05 02:13:54 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-05 14:03:52 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -3657,7 +3657,7 @@ id="value-source-eg-5" /></programlisting>
 
               <listitem>
                 <para>The <classname>com.netspective.commons.report.tabular.TabularReportValueContext</classname>
-                class </para>
+                class</para>
               </listitem>
             </varlistentry>
 
@@ -3666,7 +3666,7 @@ id="value-source-eg-5" /></programlisting>
 
               <listitem>
                 <para>The <classname>com.netspective.sparx.form.DialogContext</classname>
-                class </para>
+                class</para>
               </listitem>
             </varlistentry>
 
@@ -3675,7 +3675,7 @@ id="value-source-eg-5" /></programlisting>
 
               <listitem>
                 <para>The <classname>com.netspective.navigate.NavigationContext</classname>
-                class </para>
+                class</para>
               </listitem>
             </varlistentry>
           </variablelist>
@@ -3973,12 +3973,293 @@ id="value-source-eg-5" /></programlisting>
   <chapter>
     <title>Project Presentation Layer Declarations</title>
 
-    <para></para>
+    <para>The NEF&#39;s Sparx Application Platform is responsible for managing
+    the presentation layer of your application. The complete thin-client user
+    experience including navigation, forms management, visual validation, and
+    themes/skins are handled by Sparx.</para>
 
     <section>
       <title>Navigation</title>
 
-      <para></para>
+      <para>In Sparx, <emphasis>Navigation</emphasis> refers to the handling
+      of pages that an end user will see and the transforming the control from
+      one page to another using URIs and URLs. Once declared using XML, Sparx
+      can automatically manage the visual and operational end-user control of
+      the navigation from one area of your application to another. You simply
+      define the rules for what happens when a user visits a page and Sparx
+      takes care of the rest.</para>
+
+      <section>
+        <title>MVC</title>
+
+        <para>Most enterprise applications need to support multiple types of
+        users with varying content in pages/applications and with multiple
+        types interfaces. To help support complex applications, Sparx
+        implements the core components of Model-View-Controller (MVC<footnote><para>The
+        Model-View-Controller design pattern has been covered extensively in
+        periodicals, books, and online articles. Please visit one of the
+        following sites if you would like further information on the pattern.</para><itemizedlist><listitem><para><ulink
+        url="http://java.sun.com/blueprints/patterns/MVC-detailed.html">Java
+        BluePrints: Model-View-Controller (Sun)</ulink></para></listitem><listitem><para><ulink
+        url="http://st-www.cs.uiuc.edu/users/smarch/st-docs/mvc.html">How to
+        use Model-View-Controller (Steve Burbeck)</ulink></para></listitem></itemizedlist></footnote>)
+        and Model-View-Presenter (MVP<footnote><para>The Model_View-Presenter
+        is a more modern design pattern which probably more closely follows
+        MVC for web-based applications. Please visit one of the following
+        sites if you like further information on the pattern.</para><itemizedlist><listitem><para><ulink
+        url="http://www.object-arts.com/EducationCentre/Patterns/MVP.htm">Pattern:
+        Model-View-Presenter</ulink></para></listitem><listitem><para><ulink
+        url="http://www.object-arts.com/EducationCentre/Overviews/ModelViewPresenter.htm">Model-View-Presenter
+        Framework</ulink></para></listitem></itemizedlist></footnote>) design
+        patterns for isolating the display of information (the view) from its
+        control (the manner in which the user got to the view) and its model
+        (the business logic associated with the view). Sparx provides the
+        capability to fully separate the Model, View, and Controller for
+        sophisticated applications yet it also supports the ability to loosely
+        integrate them for smaller or more modest applications where speed of
+        delivery is paramount. </para>
+
+        <figure>
+          <title>MVC Pattern Overview</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/sparx-mvc-pattern.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <section>
+          <title>Sparx Controller</title>
+
+          <para>In the MVC paradigm for web-based applications, there is
+          always a Controller that manages the redirection of pages from one
+          URL to another which ultimately provides the capabilities for the
+          user to manipulate the application. When a menu item is chosen, it
+          is the Controller&#39;s job to parse the URL and find the proper
+          page object that will handle the work. In Sparx, the class that
+          handles that work is called <classname>com.netspective.sparx.navigate.NavigationControllerServlet</classname>.
+          This servlet is the starting point for all Sparx user interface and
+          application actions.</para>
+        </section>
+
+        <section>
+          <title>Sparx Views</title>
+
+          <para>The Views in the MVC pattern are the user interface which
+          displays information about the model to the user. In Sparx, the base
+          class that manages all user interface pages is called
+          <classname>com.netspective.sparx.navigate.NavigationPage</classname>.
+          All page rendering is managed by this NavigationPage class but the
+          actual rendering actions are delegated. Any given page may either
+          handle the rendering itself, may call a JSP page, a FreeMarker
+          template, or any other custom body handler. </para>
+        </section>
+
+        <section>
+          <title>Your Model</title>
+
+          <para>The Model in the MVC pattern is determined by your
+          application.</para>
+        </section>
+      </section>
+
+      <section>
+        <title>Overview of Navigation Tags</title>
+
+        <para>The following tags are used in the <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename>
+        file to declare navigation rules and actions.</para>
+
+        <variablelist>
+          <varlistentry>
+            <term><sgmltag class="starttag">navigation-tree</sgmltag></term>
+
+            <listitem>
+              <para>The <sgmltag class="starttag">navigation-tree</sgmltag>
+              tag starts out the definition and appears as a child of the
+              <sgmltag class="starttag">project</sgmltag> tag. The <sgmltag
+              class="attribute">name</sgmltag> attribute is required and must
+              be unique across all navigation trees. The <sgmltag
+              class="attribute">default</sgmltag> attribute may be set to
+              <sgmltag class="attvalue">yes</sgmltag> to make it the default
+              tree.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><sgmltag class="starttag">page</sgmltag></term>
+
+            <listitem>
+              <para>The <sgmltag class="starttag">page</sgmltag> tag begins a
+              definition of a single page and appears under the <sgmltag
+              class="starttag">navigation-tree</sgmltag> tag. The <sgmltag
+              class="attribute">name</sgmltag> attribute is required and must
+              be unique within the navigation tree in which it is defined.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><sgmltag class="starttag">body</sgmltag></term>
+
+            <listitem>
+              <para>The <sgmltag class="starttag">body</sgmltag> tag starts a
+              definition of a page body and appears under the <sgmltag
+              class="starttag">page</sgmltag> tag. Its contents are handled by
+              the FreeMarker templating engine.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><sgmltag class="starttag">panels</sgmltag></term>
+
+            <listitem>
+              <para>The <sgmltag class="starttag">panels</sgmltag> tag starts
+              a definition of a page body and appears under the <sgmltag
+              class="starttag">page</sgmltag> tag. Its contents are handled by
+              Sparx by laying out pre-defined panels similar to the way
+              portals lay out their content.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+...
+
+&#60;<emphasis role="bold">navigation-tree</emphasis> name=&#34;app&#34; default=&#34;yes&#34;&#62; 
+
+    &#60;<emphasis role="bold">page</emphasis> name=&#34;home&#34; default=&#34;yes&#34; caption=&#34;Hello&#34; heading=&#34;Hello World!&#34;&#62; 
+        &#60;<emphasis role="bold">body</emphasis>&#62; 
+            &#60;![CDATA[
+            This is the &#39;Hello World&#39; app. Click &#60;a href=&#34;next-steps&#34;&#62;here&#60;/a&#62; to see what&#39;s next.
+            ]]&#62;
+        &#60;/body&#62;
+    &#60;/page&#62;
+
+    &#60;page name=&#34;next-steps&#34; caption=&#34;Next Steps&#34; heading=&#34;What&#39;s next?&#34;&#62;
+        &#60;body <emphasis role="bold">source</emphasis>=&#34;next-steps.ftl&#34;/&#62; 
+    &#60;/page&#62;
+
+    &#60;page name=&#34;some-stuff&#34; caption=&#34;Panels instead of Body&#34;&#62;
+        &#60;<emphasis role="bold">panels</emphasis>&#62; 
+             &#60;panel type=&#34;command&#34; command=&#34;query,org.get-sponsor-info-by-id,-,-,-,detail-compressed&#34;/&#62;
+             &#60;panel type=&#34;command&#34; command=&#34;query,org.get-org-addresses-by-id,-,-,-,report-compressed&#34; /&#62;
+        &#60;/panels&#62;
+    &#60;/page&#62;
+
+    &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
+role="bold">redirect</emphasis>=&#34;vs-expr:${servlet-context-uri:server-root}/nefs-sampler&#34;/&#62; 
+    &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
+role="bold">include</emphasis>=&#34;/some/file.jsp&#34;/&#62; 
+    &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
+role="bold">forward</emphasis>=&#34;/some/file.jsp&#34;/&#62; 
+
+    &#60;page name=&#34;add&#34; caption=&#34;Add Book&#34; <emphasis
+role="bold">command</emphasis>=&#34;dialog,schema.db.Book_Info,add&#34;/&#62; 
+    &#60;page name=&#34;edit&#34; caption=&#34;Edit Book&#34; command=&#34;dialog,schema.db.Book_Info,edit&#34;
+          require-request-param=&#34;id&#34; retain-params=&#34;id&#34;&#62;
+        &#60;<emphasis role="bold">missing-params-body</emphasis>&#62; 
+           Please choose a book to edit from the &#38;lt;a href=&#39;home&#39;&#38;gt; books list&#38;lt;/a&#38;gt;.
+        &#60;/missing-params-body&#62;
+    &#60;/page&#62;</programlisting>
+      </section>
+
+      <section>
+        <title>Navigation Trees</title>
+
+        <para>You may declare as many navigation trees as your application
+        needs. Consider different trees for different users (based on
+        personalization) or a different tree for each access-control role (for
+        security) or any other criteria required by your application. Each
+        tree has a name and may be marked with <sgmltag class="attribute">default</sgmltag>=<sgmltag
+        class="attvalue">yes</sgmltag> if it is to be the default tree.</para>
+
+        <section>
+          <title>Specifying the Active Navigation Tree</title>
+
+          <para>If you have multiple navigation trees, which tree is actually
+          used by the application may be specfied as a servlet parameter or
+          chosen dynamically at runtime based on some processing rules. You
+          may choose which navigation tree is used either statically or
+          dynamically.</para>
+        </section>
+      </section>
+
+      <section>
+        <title>Paths and Pages</title>
+
+        <para>Each <sgmltag class="starttag">page</sgmltag> tag corresponds to
+        an HTML page and may contain other <sgmltag class="starttag">page</sgmltag>
+        tags that will be considered children of the container page. By
+        defining the pages in a hierarchical fashion</para>
+
+        <section>
+          <title>Page identifers and paths</title>
+
+          <para></para>
+        </section>
+
+        <section>
+          <title>Page Types</title>
+
+          <para></para>
+        </section>
+
+        <section>
+          <title>Page inheritance</title>
+
+          <para></para>
+        </section>
+      </section>
+
+      <section>
+        <title>Page Content (Bodies)</title>
+
+        <para></para>
+
+        <section>
+          <title>Panels</title>
+
+          <para></para>
+        </section>
+
+        <section>
+          <title>The <sgmltag class="starttag">body</sgmltag> tag </title>
+
+          <para>The <sgmltag class="starttag">body</sgmltag> tag starts begins
+          a definition of a page body appears under the <sgmltag
+          class="starttag">page</sgmltag> tag and its contents are handled by
+          the FreeMarker templating engine. The <sgmltag class="starttag">body</sgmltag>
+          tag is used when you want as much control over the content as
+          possible because the entire body will be processed by a FreeMarker
+          template. This means using a custom template, HTML, or other
+          processing system (in case you&#39;re not using FreeMarker). If you
+          don&#39;t specify a <sgmltag class="attribute">source</sgmltag>
+          attribute then you can include the body content directly in the XML
+          (but you will be responsible for escaping any tags that may
+          interfere with XML processing). If you specify a a <sgmltag
+          class="attribute">source</sgmltag> attribute then you may provide an
+          external template to load and execute. The external template&#39;s
+          location is relative to the APP_ROOT directory.</para>
+        </section>
+
+        <section>
+          <title>Body Handlers</title>
+
+          <para></para>
+        </section>
+      </section>
+
+      <section>
+        <title>Navigation Skins</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Custom Pages, Bodies, and Body Handlers</title>
+
+        <para></para>
+      </section>
     </section>
 
     <section>
