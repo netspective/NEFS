@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.2 2003-06-29 03:17:21 aye.thu Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.3 2003-08-01 05:55:33 aye.thu Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -189,6 +189,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
 
     public void setActiveRow(int rowNum)
     {
+
         try
         {
             if(scrollable)
@@ -213,6 +214,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
                     }
                 }
             }
+            activeRowIndex = rowNum;
         }
         catch (SQLException e)
         {
