@@ -25,6 +25,8 @@
             <exclude name="Commons/lib/redist/jdbc.jar"/>      <!-- already part of app servers -->
             <exclude name="Commons/lib/redist/XmlDoclet.jar"/> <!-- used only in development -->
             <exclude name="Commons/lib/redist/clover.jar"/>    <!-- used only in development -->
+            <exclude name="Commons/lib/redist/ant.jar"/>             <!-- conflicts with newer version of Ant -->
+            <exclude name="Commons/lib/redist/ant-optional.jar"/>    <!-- conflicts with newer version of Ant -->
 
             <include name="Sparx/lib/redist/*.jar"/>
             <exclude name="Sparx/lib/redist/servlet.jar"/>     <!-- needed only for builds/compiles of NEFS -->
@@ -49,26 +51,6 @@
 
     <target name="upgrade-nefs-sparx-jar" depends="init-web-app-jars">
         <copy file="${nefs.home}/Sparx/lib/netspective-sparx.jar" todir="${app.WEB-INF.lib.path}"/>
-    </target>
-
-    <target name="install-sparx-resources-into-web-app" depends="upgrade-nefs-sparx-jar,init-web-app-jars" description="Installs the Sparx HTML/web server resources by copying the files from WEB-INF/lib/netspective-sparx.jar into ${app.home}/sparx.">
-        <!-- We need to create a temporary directory, extract the data, and then copy it into the proper location.
-             The reason why we can't simply unjar directly into ${app.home}/sparx is that the files are stored in
-             the jar file under "resources".
-          -->
-        <property name="app.sparx.resources.path" value="${app.home}/sparx"/>
-        <tempfile property="temp.dir" prefix="nefs-" suffix="-sparx-resources" destdir="${app.home}"/>
-        <mkdir dir="${temp.dir}"/>
-        <unjar src="${app.WEB-INF.lib.path}/netspective-sparx.jar" dest="${temp.dir}">
-            <patternset>
-                <include name="resources/**"/>
-                <exclude name="resources/java-doc-xml/**"/>
-            </patternset>
-        </unjar>
-        <copy todir="${app.sparx.resources.path}">
-            <fileset dir="${temp.dir}/resources"/>
-        </copy>
-        <delete dir="${temp.dir}"/>
     </target>
 
     <target name="record-nefs-jar-versions" depends="init-web-app-jars">
