@@ -1,4 +1,4 @@
-Due to the lack of robust commercial offerings, today many developmetn teams choose to build their own frameworks and
+Due to the lack of robust commercial offerings, today many development teams choose to build their own frameworks and
 platforms. Your in-house and home-grown solutions tend to have a great deal of momentum behind them because they may
 be favored internally by the experienced and senior engineers that construct them. However, home-grown solutions exhibit
 the following shortcomings:

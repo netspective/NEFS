@@ -19,7 +19,7 @@ locators, extending classes using inheritance, and off-loading work to delegatio
 
 
 <h2>You want a toolset that takes your app development from A to Z.</h2>
-You don't have to cobble together a solution comprised of dozens of different open-source or commericial libraries.
+You don't have to cobble together a solution comprising dozens of different open-source or commercial libraries.
 Automate the generation of navigation, forms, validations, static/dynamic SQL, unit testing, statistics, security,
 documentation and more using a <i>single</i> suite from <i>one</i> company.
 <ul class="check-list">

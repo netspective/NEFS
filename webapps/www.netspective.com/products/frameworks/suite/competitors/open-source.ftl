@@ -1,5 +1,5 @@
 There are many freely-available open source frameworks that are quite useful for certain types of applications. There are a
-number of good tools in this category like Struts, Sofia, Enhydra, Expresso, and others; however, they all share the
+number of good tools in this category like Struts, Sofia, Enhydra, Expresso and others; however, they all share the
 following issues:
 
 <ul>
@@ -9,5 +9,5 @@ following issues:
     <li>Most open source tools are written <i>by</i> experienced programmers <i>for</i> experienced programmers and often require lots of code to do even simple tasks. This is because experienced programmers <i>like to code</i>.
     <li>While they save money in the beginning (since they are free) they end up costing much more because they often require engineers with a great deal of experience, usually require a higher number of engineers because the tools lack features you'll have to implement, and don't have the quality management and artifact generation tools built-in.
 </ul>
-NEF can complement or replace most frameworks like Struts, Sofia, or Expresso. And, you get complete source code just
+NEF can complement or replace most frameworks like Struts, Sofia or Expresso. And, you get complete source code just
 like all the open source solutions.

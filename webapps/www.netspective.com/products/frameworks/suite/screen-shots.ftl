@@ -4,7 +4,7 @@
 </#macro>
 
 <h1>Effortless Navigation and Skinable User Interfaces</h1>
-NEFS ships with several professionally-designed themes that you use use right out of the box and get great looking
+NEFS ships with several professionally-designed themes that you use right out of the box and get great looking
 apps without the help of any designers. As you can see from the examples below,
 NEFS UIs can appear any way that will appeal to your users. They can look like traditional websites, like
 desktop applications, or anything in between. Best of all, you can usually change looks and feel centrally with one

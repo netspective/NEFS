@@ -6,7 +6,7 @@ The solution is simple: rely on our tools that complement multiple paradigms. Ou
 your programming process by:
 <ul class="check-list-in-body">
     <li>Delivering powerful prototyping features which allow users to see what they're getting before coding begins.
-    <li>Keeping software soft (UI, database, and other components are kept in resource files instead of code).
+    <li>Keeping software soft (UI, database and other components are kept in resource files instead of code).
     <li>Handling changing requirements with relative ease (less Java code to deal with).
-    <li>Providing tools that help generate process artifacts like functional specs, metrics, and design documents.
+    <li>Providing tools that help generate process artifacts like functional specs, metrics and design documents.
 </ul>

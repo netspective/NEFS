@@ -1,6 +1,6 @@
 <h1>I have an application server, isn't that sufficient?</h1>
-Most J2EE application servers contain a great deal of common infrastructure code that helps contain, manage, deploy,
-and execute applications. They also have features the increase scalability, reliability, and availability of
+Most J2EE application servers contain a great deal of common infrastructure code that helps contain, manage, deploy
+and execute applications. They also have features the increase scalability, reliability and availability of
 applications by providing features like clustering and failover.
 <p>
 What they lack, because it's not part of their product
