@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.16 2003-11-13 22:49:31 aye.thu Exp $
+ * $Id: DialogDirector.java,v 1.17 2003-11-26 15:25:40 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.form;
@@ -122,8 +122,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
     public DialogDirector()
     {
         setName("director");
-        setSubmitCaption(ValueSources.getInstance().getValueSourceOrStatic("   OK   "));
-        setCancelCaption(ValueSources.getInstance().getValueSourceOrStatic(" Cancel "));
     }
 
     public DialogDirectorStyle getStyle()
@@ -297,8 +295,8 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
         Dialog dialog = dc.getDialog();
         String attrs = dc.getSkin().getDefaultControlAttrs();
 
-        String submitCaption = (this.submitCaption != null) ? this.submitCaption.getTextValue(dc) : null;
-        String cancelCaption = (this.cancelCaption != null) ? this.cancelCaption.getTextValue(dc) : null;
+        String submitCaption = "   OK   ";
+        String cancelCaption = " Cancel ";
 
         int dataCmd = (int) dc.getDialogState().getPerspectives().getFlags();
         switch(dataCmd)
@@ -317,6 +315,9 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
                 cancelCaption = "  No   ";
                 break;
         }
+
+        submitCaption = (this.submitCaption != null) ? this.submitCaption.getTextValue(dc) : submitCaption;
+        cancelCaption = (this.cancelCaption != null) ? this.cancelCaption.getTextValue(dc) : cancelCaption;
 
         writer.write("<center>");
 
@@ -338,7 +339,7 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
         writer.write(attrs);
         writer.write(">&nbsp;&nbsp;");
 
-        if(pendingCaption != null)
+        if(pendingCaption != null && cancelCaption.length() > 0)
         {
             writer.write("<input type='submit' class=\"dialog-button\" name='"+ dialog.getPendDataParamName() +"' value='");
             writer.write(pendingCaption.getTextValue(dc));
@@ -346,7 +347,7 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
             writer.write(attrs);
             writer.write(">&nbsp;&nbsp;");
         }
-        if (cancelCaption != null)
+        if (cancelCaption != null && cancelCaption.length() > 0)
         {
             if (dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_EXECUTE_WITH_CANCEL_BUTTON))
             {
