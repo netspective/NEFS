@@ -666,6 +666,12 @@ function DialogField_doPreSubmit()
 		// Select all items in multidual elements. If items aren't selected,
 		// they won't be posted.
 		var control = this.getControl(dialog);
+		// It's possible this control may not be rendered as a SELECT element
+		// even though the field type was set to SELECT.
+		// Depending on the browser, the evaluation of control.options.length could
+		// generate a run-time error.
+		if ( control.options == null )
+		    return;
 		for (var i = 0; i < control.options.length; i++)
 		{
 			control.options[i].selected = true;
