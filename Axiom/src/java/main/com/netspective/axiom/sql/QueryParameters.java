@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameters.java,v 1.2 2003-04-09 16:57:37 shahid.shah Exp $
+ * $Id: QueryParameters.java,v 1.3 2004-03-30 14:01:53 zahara.khan Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -52,6 +52,9 @@ import java.sql.SQLException;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
+/**
+ * Class for defining the parameters associated with a query.
+ */
 public class QueryParameters
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);

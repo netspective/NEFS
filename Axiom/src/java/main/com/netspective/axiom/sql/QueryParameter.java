@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameter.java,v 1.6 2003-08-25 15:59:10 shahid.shah Exp $
+ * $Id: QueryParameter.java,v 1.7 2004-03-30 14:01:54 zahara.khan Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -56,6 +56,9 @@ import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.axiom.ConnectionContext;
 
+/**
+ * Class for handling a parameter defined for a query.
+ */
 public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
@@ -104,6 +107,11 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
         return name;
     }
 
+    /**
+     * Sets the name of the query parameter.
+     *
+     * @param name query parameter name
+     */
     public void setName(String name)
     {
         this.name = name;
@@ -124,11 +132,21 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
         return sqlType;
     }
 
+    /**
+     * Sets an integer value corresponding to the JDBC type of this query parameter.
+     *
+     * @param type integer value corresponding to the JDBC type of query parameter
+     */
     public void setSqlTypeCode(int type)
     {
         this.sqlType = type;
     }
 
+    /**
+     * Sets the JDBC type for this query parameter.
+     *
+     * @param sqlType JDBC type for query parameter
+     */
     public void setSqlType(QueryParameterTypeEnumeratedAttribute sqlType)
     {
         String paramTypeName = sqlType.getValue();
@@ -147,6 +165,11 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
         return javaType;
     }
 
+    /**
+     * Sets the Java Type for this query parameter.
+     *
+     * @param javaType Java type for the query parameter
+     */
     public void setJavaType(Class javaType)
     {
         this.javaType = javaType;
@@ -157,11 +180,21 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
         return value;
     }
 
+    /**
+     * Sets the value for this query parameter using a value source object.
+     *
+     * @param value value source object containing the query parameter value
+     */
     public void setValue(ValueSource value)
     {
         this.value = value;
     }
 
+    /**
+     * Sets multiple values for this query parameter.
+     *
+     * @param values value source object containing list of values for this query parameter
+     */
     public void setValues(ValueSource values)
     {
         setValue(values);

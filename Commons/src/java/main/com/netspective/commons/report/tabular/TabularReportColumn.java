@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TabularReportColumn.java,v 1.9 2004-03-23 19:50:42 shahid.shah Exp $
+ * $Id: TabularReportColumn.java,v 1.10 2004-03-30 14:03:34 zahara.khan Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -67,19 +67,22 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import java.text.Format;
 import java.util.List;
 
+/**
+ * Interface for handling the report columns.
+ */
 public interface TabularReportColumn
 {
     public static final Flags.FlagDefn[] FLAG_DEFNS = new Flags.FlagDefn[]
     {
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN, "If set, the column is not displayed in the report."),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "HAS_COMMAND", Flags.HAS_COMMAND),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_PLACEHOLDERS", Flags.HAS_PLACEHOLDERS),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_OUTPUT_PATTERN", Flags.HAS_OUTPUT_PATTERN),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAVE_CONDITIONALS", Flags.HAVE_CONDITIONALS),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "PREVENT_WORD_WRAP", Flags.PREVENT_WORD_WRAP),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "PREVENT_WORD_WRAP", Flags.PREVENT_WORD_WRAP, "If set, the wordwrap option is turned off for the data in this column.  Otherwise, the column data is wrapped to fit the column width."),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "ALLOW_SORT", Flags.ALLOW_SORT),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "SORTED_ASCENDING", Flags.SORTED_ASCENDING),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "SORTED_DESCENDING", Flags.SORTED_DESCENDING)
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "SORTED_ASCENDING", Flags.SORTED_ASCENDING, "If set, a link image is displayed, in the column heading, for sorting the report in ascending order based on this column."),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "SORTED_DESCENDING", Flags.SORTED_DESCENDING, "If set, a link image is displayed, in the column heading, for sorting the report in descending order based on this column.")
     };
 
     public class Flags extends XdmBitmaskedFlagsAttribute
@@ -145,6 +148,11 @@ public interface TabularReportColumn
 
     public ValueSource getHeading();
 
+    /**
+     * Sets the heading of the column.
+     *
+     * @param value value source object containing the column heading
+     */
     public void setHeading(ValueSource value);
 
     public Command getHeadingCommand();
@@ -153,14 +161,31 @@ public interface TabularReportColumn
 
     public RedirectValueSource getRedirect();
 
+    /**
+     * Associates a redirect value (URL/URI) with the column data. When a value
+     * in this column is clicked by the user, the page is redirected to this associated
+     * URL/URI.
+     *
+     * @param redirect value source object containing the URL/URI to redirect to
+     */
     public void setRedirect(RedirectValueSource redirect);
 
     public int getWidth();
 
+    /**
+     * Sets the column width.
+     *
+     * @param value column width
+     */
     public void setWidth(int value);
 
     public int getAlign();
 
+    /**
+     * Sets the alignment option for column data.
+     *
+     * @param value alignment style for the column data. For example, right, left, center.
+     */
     public void setAlign(AlignStyle value);
 
     public Flags getFlags();
