@@ -155,7 +155,7 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
             }
         }
 
-        return advancedQuery.toString(defaultFieldName);
+        return advancedQuery.toString();
     }
 
     public SearchExpression getSearchExpression(NavigationContext nc)
