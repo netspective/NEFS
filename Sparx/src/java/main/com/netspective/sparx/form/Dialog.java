@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.60 2004-03-20 13:51:42 zahara.khan Exp $
+ * $Id: Dialog.java,v 1.61 2004-03-22 07:51:06 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -72,6 +72,7 @@ import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.CompositeField;
 import com.netspective.sparx.form.field.type.GridField;
+import com.netspective.sparx.form.field.type.SectionField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.form.handler.DialogExecuteDefaultHandler;
 import com.netspective.sparx.form.handler.DialogExecuteHandler;
@@ -740,6 +741,16 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     public CompositeField createComposite()
     {
         return new CompositeField();
+    }
+
+    public SectionField createSection()
+    {
+        return new SectionField();
+    }
+
+    public void addSection(SectionField field)
+    {
+        addField(field);
     }
 
     /**
