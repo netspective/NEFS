@@ -1,4 +1,5 @@
 * Take a look at http://xmljs.sourceforge.net/ for JavaScript XML parsing and record set management
+* Take a look at http://www.duncanlamb.com/sdba/ for SDBA Revolution Instant Messaging Application Server and see if it's useful to create Sparx-based IM apps
 * Incorporate features from http://www.irongrid.com (IronEye SQL and IronEye Cache) into Console
 * Take a look at http://www.softwareplanner.com to see what kinds of features from there can be added to Console, Beacon
 * Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
