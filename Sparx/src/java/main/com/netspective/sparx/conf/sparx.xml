@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.86 2004-08-20 01:28:16 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.87 2004-09-24 00:50:07 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -152,6 +152,9 @@
     <page-body-handler name="html-sub-site" class="com.netspective.sparx.navigate.handler.NavigationPageHtmlSubsiteBodyHandler"/>
     <page-body-handler name="transform" class="com.netspective.sparx.navigate.handler.NavigationPageTransformBodyHandler"/>
     <page-body-handler name="help" class="com.netspective.sparx.navigate.handler.NavigationPageHelpBodyHandler"/>
+    <page-body-handler name="command" class="com.netspective.sparx.navigate.handler.NavigationPageCommandBodyHandler"/>
+    <page-body-handler name="panels" class="com.netspective.sparx.navigate.handler.NavigationPagePanelsBodyHandler"/>
+    <page-body-handler name="role-based-content" class="com.netspective.sparx.navigate.handler.NavigationPageRoleBasedContentBodyHandler"/>
 
     <template-processor-type name="freemarker" class="com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor"/>
     <template-processor-type name="wiki" class="com.netspective.sparx.template.RadeoxTemplateProcessor"/>

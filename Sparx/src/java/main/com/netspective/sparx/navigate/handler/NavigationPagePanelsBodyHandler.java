@@ -30,30 +30,39 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-package com.netspective.sparx.navigate;
+package com.netspective.sparx.navigate.handler;
 
 import java.io.IOException;
 import java.io.Writer;
 
 import javax.servlet.ServletException;
 
-import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.panel.HtmlLayoutPanel;
+import com.netspective.sparx.panel.HtmlPanel;
 
-/**
- * Interface for implementing custom design for the rendering of a page's body content. The rendering of page
- * headers and footers are not included in this handler interface. Implementations of this class is
- * recommended for cases when the built-in page body handlers such as <i>commands</i>, <i>templates</i>,
- * and <i>includes</i> are not suitable.
- */
-public interface NavigationPageBodyHandler extends TemplateConsumer
+public class NavigationPagePanelsBodyHandler extends NavigationPageBodyDefaultHandler
 {
-    /**
-     * Method for generating the body of the page
-     *
-     * @param page   navigation page to which this handler belongs to
-     * @param writer the writer object to write the page body to
-     * @param nc     current navigation context
-     */
-    public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException;
+    private HtmlLayoutPanel panel;
+
+    public HtmlLayoutPanel createPanels()
+    {
+        return new HtmlLayoutPanel();
+    }
+
+    public void addPanels(HtmlLayoutPanel panel)
+    {
+        this.panel = panel;
+    }
+
+    public HtmlLayoutPanel getPanel()
+    {
+        return panel;
+    }
+
+    public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException
+    {
+        panel.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+    }
 }
