@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EntityPage.java,v 1.2 2004-08-09 22:15:14 shahid.shah Exp $
+ * $Id: EntityPage.java,v 1.3 2004-08-11 05:08:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.entity;
@@ -101,7 +101,8 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
 
         public Value getValue(ValueContext vc)
         {
-            return new GenericValue(((EntityPageState) ((NavigationContext) vc).getActiveState()).getActiveEntity().getEntityName());
+            final ActiveEntity activeEntity = ((EntityPageState) ((NavigationContext) vc).getActiveState()).getActiveEntity();
+            return new GenericValue(activeEntity != null ? activeEntity.getEntityName() : "No Active Entity");
         }
 
         public PresentationValue getPresentationValue(ValueContext vc)
