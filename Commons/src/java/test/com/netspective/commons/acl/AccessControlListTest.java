@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.12 2003-03-25 17:52:10 shahbaz.javeed Exp $
+ * $Id: AccessControlListTest.java,v 1.13 2003-08-08 00:52:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -455,7 +455,10 @@ public class AccessControlListTest extends TestCase
 
 		// Independently created User...
 	    ValueContext vcTwo = ValueSources.getInstance().createDefaultValueContext();
-	    AuthenticatedUser userTwo = new BasicAuthenticatedUser("Administrator", "admin", "Administrative Services, Inc.", "admin-org");
+	    AuthenticatedUser userTwo = new BasicAuthenticatedUser();
+        userTwo.setUserId("admin");
+        userTwo.setUserName("Administrator");
+
 
 		assertEquals("admin", userTwo.getUserId());
 		assertEquals("Administrator", userTwo.getUserName());
@@ -468,7 +471,9 @@ public class AccessControlListTest extends TestCase
 
 	    // Alternate constructor
 	    ValueContext vcThree = ValueSources.getInstance().createDefaultValueContext();
-	    AuthenticatedUser userThree = new BasicAuthenticatedUser("Administrator", "admin");
+	    AuthenticatedUser userThree = new BasicAuthenticatedUser();
+        userThree.setUserId("admin");
+        userThree.setUserName("Administrator");
 
 	    assertEquals("admin", userThree.getUserId());
 	    assertEquals("Administrator", userThree.getUserName());
@@ -506,7 +511,9 @@ public class AccessControlListTest extends TestCase
 
 		// Independently created User...
 	    ValueContext vcTwo = ValueSources.getInstance().createDefaultValueContext();
-	    AuthenticatedUser userTwo = new BasicAuthenticatedUser("Administrator", "admin", "Administrative Services, Inc.", "admin-org");
+	    AuthenticatedUser userTwo = new BasicAuthenticatedUser();
+        userTwo.setUserId("admin");
+        userTwo.setUserName("Administrator");
 
 		// Experiment with AuthenticatedUsers and Roles/Permissions
         assertNull(userTwo.getUserRoleNames());
@@ -556,7 +563,9 @@ public class AccessControlListTest extends TestCase
 
 		// Independently created User...
 	    ValueContext vcTwo = ValueSources.getInstance().createDefaultValueContext();
-	    AuthenticatedUser userTwo = new BasicAuthenticatedUser("Administrator", "admin", "Administrative Services, Inc.", "admin-org");
+	    AuthenticatedUser userTwo = new BasicAuthenticatedUser();
+        userTwo.setUserId("admin");
+        userTwo.setUserName("Administrator");
 
 		// Experiment with AuthenticatedUsers and Roles/Permissions
         assertNull(userTwo.getUserRoleNames());

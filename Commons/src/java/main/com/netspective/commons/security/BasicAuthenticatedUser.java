@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.7 2003-03-20 23:48:16 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.8 2003-08-08 00:52:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -58,6 +58,8 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
 {
     private String userName;
     private String userId;
+    private String encryptedPassword;
+    private boolean isRemembered;
     private String[] userRoleNames;
     private String[] userPermissionNames;
     private BitSet userPermissions;
@@ -69,22 +71,9 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
     {
     }
 
-    public BasicAuthenticatedUser(String name, String id)
-    {
-        userName = name;
-        userId = id;
-    }
-
-    public BasicAuthenticatedUser(String name, String id, String orgName, String orgId)
-    {
-        this(name, id);
-        userOrgName = orgName;
-        userOrgId = orgId;
-    }
-
     public String getUserName()
     {
-        return userName;
+        return userName != null ? userName : getUserId();
     }
 
     public void setUserName(String userName)
@@ -109,7 +98,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
 
     public String getUserOrgName()
     {
-        return userOrgName;
+        return userOrgName != null ? userOrgName : getUserOrgId();
     }
 
     public void setUserOrgName(String userOrgName)
@@ -125,6 +114,22 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
     public void setUserOrgId(String userOrgId)
     {
         this.userOrgId = userOrgId;
+    }
+
+    public String getEncryptedPassword()
+    {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword)
+    {
+        this.encryptedPassword = encryptedPassword;
+    }
+
+    public void setUnencryptedPassword(String unEncryptedPassword)
+    {
+        // never store the unencrypted password -- it will live in VM as plaintext
+        setEncryptedPassword(Crypt.crypt(PASSWORD_ENCRYPTION_SALT, unEncryptedPassword));
     }
 
     public BitSet getUserPermissions()
@@ -205,5 +210,15 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
     public void removeAttribute(String attrName)
     {
         attributes.remove(attrName);
+    }
+
+    public boolean isRemembered()
+    {
+        return isRemembered;
+    }
+
+    public void setRemembered(boolean isRemembered)
+    {
+        this.isRemembered = isRemembered;
     }
 }

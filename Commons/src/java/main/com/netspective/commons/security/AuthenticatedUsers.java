@@ -39,53 +39,44 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.6 2003-08-08 00:52:20 shahid.shah Exp $
+ * $Id: AuthenticatedUsers.java,v 1.1 2003-08-08 00:52:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
 
-import java.security.Principal;
-import java.util.BitSet;
+import java.util.List;
+import java.util.ArrayList;
 
-import com.netspective.commons.acl.PermissionNotFoundException;
-import com.netspective.commons.acl.AccessControlListsManager;
-import com.netspective.commons.acl.RoleNotFoundException;
-
-public interface AuthenticatedUser extends Principal
+public class AuthenticatedUsers
 {
-    String PASSWORD_ENCRYPTION_SALT = "NC";
+    private List users = new ArrayList();
 
-    public String getUserName();
-    public void setUserName(String userName);
+    public AuthenticatedUsers()
+    {
+    }
 
-    public String getUserId();
-    public void setUserId(String userId);
+    public boolean add(AuthenticatedUser user)
+    {
+        return users.add(user);
+    }
 
-    public BitSet getUserPermissions();
+    public boolean remove(AuthenticatedUser user)
+    {
+        return users.remove(user);
+    }
 
-    public String[] getUserRoleNames();
+    public AuthenticatedUser get(int index)
+    {
+        return (AuthenticatedUser) users.get(index);
+    }
 
-    public void setPermissions(AccessControlListsManager aclsManager, String[] permissions) throws PermissionNotFoundException;
+    public List getUsers()
+    {
+        return users;
+    }
 
-    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws RoleNotFoundException;
-
-    public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException;
-
-    public boolean hasAnyPermission(AccessControlListsManager aclsManager, String[] permissionNames) throws PermissionNotFoundException;
-
-    public Object getAttribute(String attrName);
-
-    public void setAttribute(String attrName, Object attrValue);
-
-    public void removeAttribute(String attrName);
-
-    public String getEncryptedPassword();
-
-    public void setEncryptedPassword(String encryptedPassword);
-
-    public void setUnencryptedPassword(String unEncryptedPassword);
-
-    public void setRemembered(boolean isRemembered);
-
-    public boolean isRemembered();
+    public int size()
+    {
+        return users.size();
+    }
 }
