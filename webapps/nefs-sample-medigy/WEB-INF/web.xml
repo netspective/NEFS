@@ -102,7 +102,7 @@
 	  <res-ref-name>jdbc/default</res-ref-name>
 	  <res-type>javax.sql.DataSource</res-type>
 	  <init-param driver-name="org.hsqldb.jdbcDriver"/>
-	  <init-param url="jdbc:hsqldb:${app.docDir}/WEB-INF/hsqldb-data/medspective"/>
+	  <init-param url="jdbc:hsqldb:${app.docDir}/WEB-INF/database/instance/db"/>
 	  <init-param user="sa"/>
 	  <init-param password=""/>
 	  <init-param max-connections="20"/>

@@ -2,7 +2,7 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
-<schema name="app">
+<schema name="db">
 
 	<xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 

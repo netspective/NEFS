@@ -1,63 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dal>
 
-	<!-- Test data for SqlManagerQueryTest Unit Test -->
-	<test column_a="abc" column_b="abc" column_c="this"/>
-	<test column_a="abc" column_b="def" column_c="that"/>
-	<test column_a="abc" column_b="ghi" column_c="this"/>
-	<test column_a="abc" column_b="jkl" column_c="that"/>
-	<test column_a="abc" column_b="mno" column_c="this"/>
-	<test column_a="abc" column_b="pqr" column_c="that"/>
-	<test column_a="abc" column_b="stu" column_c="this"/>
-	<test column_a="abc" column_b="vwx" column_c="that"/>
-	<test column_a="def" column_b="xyz" column_c="this"/>
-	<test column_a="def" column_b="abc" column_c="that"/>
-	<test column_a="def" column_b="def" column_c="this"/>
-	<test column_a="def" column_b="ghi" column_c="that"/>
-	<test column_a="def" column_b="jkl" column_c="this"/>
-	<test column_a="def" column_b="mno" column_c="that"/>
-	<test column_a="def" column_b="pqr" column_c="this"/>
-	<test column_a="def" column_b="stu" column_c="that"/>
-	<test column_a="abc" column_b="vwx" column_c="this"/>
-	<test column_a="abc" column_b="xyz" column_c="that"/>
-	<test column_a="abc" column_b="abc" column_c="this"/>
-	<test column_a="abc" column_b="def" column_c="that"/>
-	<test column_a="def" column_b="ghi" column_c="this"/>
-	<test column_a="def" column_b="jkl" column_c="that"/>
-	<test column_a="def" column_b="mno" column_c="this"/>
-	<test column_a="def" column_b="pqr" column_c="that"/>
-	<test column_a="abc" column_b="stu" column_c="this"/>
-	<test column_a="def" column_b="vwx" column_c="that"/>
-	<test column_a="ghi" column_b="xyz" column_c="this"/>
-
-	<test-two column_a="abc" column_b="abc" column_c="this"/>
-	<test-two column_a="abc" column_b="def" column_c="this"/>
-	<test-two column_a="abc" column_b="ghi" column_c="that"/>
-	<test-two column_a="abc" column_b="jkl" column_c="that"/>
-	<test-two column_a="abc" column_b="mno" column_c="this"/>
-	<test-two column_a="abc" column_b="pqr" column_c="this"/>
-	<test-two column_a="abc" column_b="stu" column_c="that"/>
-	<test-two column_a="abc" column_b="vwx" column_c="that"/>
-	<test-two column_a="def" column_b="xyz" column_c="this"/>
-	<test-two column_a="def" column_b="abc" column_c="this"/>
-	<test-two column_a="def" column_b="def" column_c="that"/>
-	<test-two column_a="def" column_b="ghi" column_c="that"/>
-	<test-two column_a="def" column_b="jkl" column_c="this"/>
-	<test-two column_a="def" column_b="mno" column_c="this"/>
-	<test-two column_a="def" column_b="pqr" column_c="that"/>
-	<test-two column_a="def" column_b="stu" column_c="that"/>
-	<test-two column_a="abc" column_b="vwx" column_c="this"/>
-	<test-two column_a="abc" column_b="xyz" column_c="this"/>
-	<test-two column_a="abc" column_b="abc" column_c="that"/>
-	<test-two column_a="abc" column_b="def" column_c="that"/>
-	<test-two column_a="def" column_b="ghi" column_c="this"/>
-	<test-two column_a="def" column_b="jkl" column_c="this"/>
-	<test-two column_a="def" column_b="mno" column_c="that"/>
-	<test-two column_a="def" column_b="pqr" column_c="that"/>
-	<test-two column_a="abc" column_b="stu" column_c="this"/>
-	<test-two column_a="def" column_b="vwx" column_c="this"/>
-	<test-two column_a="ghi" column_b="xyz" column_c="that"/>
-
 	<org org-code="MEDS" org-name="Medspective Inc." ID="ORG_0">
 		<rec-stat-id>Active</rec-stat-id>
 		<ownership-id>Private</ownership-id>
