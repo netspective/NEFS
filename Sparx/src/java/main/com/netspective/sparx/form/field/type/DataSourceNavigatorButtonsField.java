@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DataSourceNavigatorButtonsField.java,v 1.3 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: DataSourceNavigatorButtonsField.java,v 1.4 2003-06-26 07:05:37 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -129,18 +129,17 @@ public class DataSourceNavigatorButtonsField extends DialogField
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
         String attrs = dc.getSkin().getDefaultControlAttrs();
-        TabularReportDataSourceScrollState state = HtmlTabularReportDataSourceScrollStates.getInstance().getScrollStateByDialogTransactionId(dc);
-        if(state == null)
+        TabularReportDataSourceScrollState scrollState = HtmlTabularReportDataSourceScrollStates.getInstance().getScrollStateByDialogTransactionId(dc);
+        if(scrollState == null)
         {
             writer.write("<input type='submit' name='" + dc.getDialog().getResetContextParamName() + "' value='" + submitCaption.getTextValue(dc) + "' " + attrs + "> ");
             return;
         }
 
-        TabularReportDataSource dataSource = state.getDataSource();
+        TabularReportDataSource dataSource = scrollState.getDataSource();
         boolean isScrollable = dataSource.isScrollable();
-        int activePage = state.getActivePage();
-        int lastPage = state.getTotalPages();
-
+        int activePage = scrollState.getActivePage();
+        int lastPage = scrollState.getTotalPages();
         writer.write("<center>");
         if(lastPage > 0)
         {
@@ -176,13 +175,13 @@ public class DataSourceNavigatorButtonsField extends DialogField
             else if(hasMoreRows)
             {
                 writer.write("&nbsp;&nbsp;<nobr>");
-                writer.write(NumberFormat.getNumberInstance().format(state.getRowsProcessed()));
+                writer.write(NumberFormat.getNumberInstance().format(scrollState.getRowsProcessed()));
                 writer.write(" rows so far</nobr>");
             }
             else
             {
                 writer.write("&nbsp;&nbsp;<nobr>");
-                writer.write(NumberFormat.getNumberInstance().format(state.getRowsProcessed()));
+                writer.write(NumberFormat.getNumberInstance().format(scrollState.getRowsProcessed()));
                 writer.write(" total rows</nobr>");
             }
 
