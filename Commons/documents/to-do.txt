@@ -1,3 +1,5 @@
+* Use sample at http://www.sapia-oss.org/projects/utils/confix/home.html to document XDM (Confix is almost identical to XDM except it doesn't support Templates)
+* Use sample at http://www.sapia-oss.org/projects/vlad/home.html to document validation subsystem (Vlad is similar to Commons validation)
 * In all validators, convert validation errors messages to use Value Sources
 * Using some of the ideas from M7 (http://www.m7.com/products/personalization.html), create a Personalization subsystem/framework similar to AccessControl/Permissions subsystem
 * Use Jakarta Commons Attributes (http://jakarta.apache.org/commons/sandbox/attributes/index.html) to allow XDM to store additional information useful at runtime (like descriptions, etc)
