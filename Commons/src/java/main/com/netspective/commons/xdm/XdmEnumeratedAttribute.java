@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmEnumeratedAttribute.java,v 1.2 2003-04-01 01:45:33 shahid.shah Exp $
+ * $Id: XdmEnumeratedAttribute.java,v 1.3 2003-07-09 16:51:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -157,5 +157,10 @@ public abstract class XdmEnumeratedAttribute
     public final int getValueIndex()
     {
         return valueIndex;
+    }
+
+    public String toString()
+    {
+        return value;
     }
 }

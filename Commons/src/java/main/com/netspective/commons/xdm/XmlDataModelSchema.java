@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.25 2003-06-30 15:32:54 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.26 2003-07-09 16:51:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -596,6 +596,16 @@ public class XmlDataModelSchema
             this.flags = flags;
             this.flagAlias = flagAlias;
             this.required = getOptions().getRequiredAttributes().contains(name);
+        }
+
+        public boolean hasAccessor()
+        {
+            return attributeAccessors.get(attrName) != null;
+        }
+
+        public AttributeAccessor getAccessor()
+        {
+            return (AttributeAccessor) attributeAccessors.get(attrName);
         }
 
         public boolean isRequired()
