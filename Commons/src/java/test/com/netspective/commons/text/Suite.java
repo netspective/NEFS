@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Suite.java,v 1.1 2003-03-13 18:33:15 shahid.shah Exp $
+ * $Id: Suite.java,v 1.2 2003-03-19 08:17:03 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.text;
@@ -63,6 +63,7 @@ public class Suite
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(ExpressionTextTest.class));
         suite.addTest(new TestSuite(GloballyUniqueIdentifierTest.class));
+	    suite.addTest(new TestSuite(TextUtilsTest.class));
         return suite;
     }
 }
