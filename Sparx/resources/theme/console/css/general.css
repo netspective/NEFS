@@ -1,4 +1,4 @@
-a:Visited    { color: #483d8b; font-family: Tahoma; text-decoration: underline }
-a:Link    { color: #483d8b; font-family: Tahoma; text-decoration: underline }
-a:active   { color: #483d8b; font-family: Tahoma; text-decoration: underline }
-a:Hover { font-family: Tahoma; text-decoration: none }
+a:Visited     { color: #900; font-family: Tahoma; text-decoration: underline }
+a:Link     { color: #900; font-family: Tahoma; text-decoration: underline }
+a:active    { color: #900; font-family: Tahoma; text-decoration: underline }
+a:Hover  { color: #900; font-family: Tahoma; text-decoration: none }
