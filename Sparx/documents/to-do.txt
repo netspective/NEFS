@@ -46,6 +46,7 @@
 * Consider using XDoclet for generation of DTD files and XSDs.
 * Consider adding struts-style plugins?
 * Implement JavaScript menu system using http://www.cs.ucla.edu/~heng/JSCookMenu/ (free for use)
+* Add data browser like http://www.jetools.com/products/databrowser/ to Console (research other tools as well)
 * Review Jakarta Commons Messenger (http://jakarta.apache.org/commons/sandbox/messenger/index.html) for JMS processing via Servlet container (very cool)
 * Review Jakarta Commons Resources (http://jakarta.apache.org/commons/sandbox/resources/index.html) for internationalization (i18n) of message strings
 * Review Logidex Asset Center (http://www.logiclibrary.com) to see if we can use JavaDoc tags to create similar asset manager for Sparx code in Console
