@@ -49,5 +49,7 @@ public interface SearchExpression
     public Query getAdvancedQuery();
 
     public String getRewrittenExpressionRedirectParams();
+
+    public String getSortCriteria();
 }
 

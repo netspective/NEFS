@@ -209,6 +209,11 @@ public class FullTextSearchPage extends NavigationPage
         this.activeScrollPageParamName = activeScrollPageParamName;
     }
 
+    public String getSortCriteria(NavigationContext nc)
+    {
+        return null;
+    }
+
     public IndexSearcher getIndexSearcher()
     {
         return indexSearcher;
@@ -309,7 +314,7 @@ public class FullTextSearchPage extends NavigationPage
         return advancedQuery != null ? advancedQuery : parseQuery(expression.getExprText());
     }
 
-    protected SearchHits search(NavigationContext nc, final Query query) throws IOException
+    protected SearchHits search(final NavigationContext nc, final SearchExpression expression, final Query query) throws IOException
     {
         final Hits hits = indexSearcher.search(query);
         return new LuceneSearchHitsWrapper(hits);
@@ -383,7 +388,7 @@ public class FullTextSearchPage extends NavigationPage
                 final FullTextSearchResults searchResults = getSearchResultsManager().getActiveUserSearchResults(this, nc);
 
                 // if the search expression has not changed, reused the existing hits and go to another page
-                if(searchResults != null && expression.getExprText().equals(searchResults.getExpression().getExprText()))
+                if(searchResults != null && searchResults.getExpression().equals(expression))
                 {
                     searchResults.getScrollState().scrollToPage(Integer.parseInt(scrollToPage));
                     renderer.renderSearchResults(writer, nc, searchResults);
@@ -408,7 +413,7 @@ public class FullTextSearchPage extends NavigationPage
             final SearchHits hits;
             try
             {
-                hits = search(nc, query);
+                hits = search(nc, expression, query);
             }
             catch(IOException e)
             {
@@ -416,6 +421,7 @@ public class FullTextSearchPage extends NavigationPage
             }
             catch(Exception e)
             {
+                getLog().error(e);
                 renderer.renderSearchError(writer, nc, expression, e);
                 return;
             }

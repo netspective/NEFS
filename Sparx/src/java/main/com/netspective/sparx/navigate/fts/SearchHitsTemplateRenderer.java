@@ -211,15 +211,41 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
         return booleanQuery;
     }
 
-    public SearchExpression getSearchExpression(NavigationContext nc)
+    public SearchExpression getSearchExpression(final NavigationContext nc)
     {
         final ServletRequest request = nc.getRequest();
         final Query advancedQuery = getAdvancedSearchQuery(nc);
         final String exprText = advancedQuery != null
                                 ? advancedQuery.toString() : request.getParameter(getExpressionFormFieldName());
+        final String thisSortCriteria = ((FullTextSearchPage) nc.getActivePage()).getSortCriteria(nc);
 
         return exprText == null ? null : new SearchExpression()
         {
+            public boolean equals(Object obj)
+            {
+                if(obj == null)
+                    return false;
+
+                if(obj.getClass() != this.getClass())
+                    return false;
+
+                SearchExpression se = (SearchExpression) obj;
+                if(!exprText.equals(se.getExprText()))
+                    return false;
+
+                final String otherSortCriteria = se.getSortCriteria();
+                if(otherSortCriteria == null && thisSortCriteria == null)
+                    return true;
+
+                if(thisSortCriteria != null && thisSortCriteria.equals(otherSortCriteria))
+                    return true;
+
+                if(otherSortCriteria != null && otherSortCriteria.equals(thisSortCriteria))
+                    return true;
+
+                return false;
+            }
+
             public String getExprText()
             {
                 return exprText;
@@ -254,6 +280,11 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
             {
                 return isAdvancedQuery() && isRewriteAdvancedAsSimpleQuery()
                        ? getExpressionFormFieldName() + "=" + URLEncoder.encode(exprText) : null;
+            }
+
+            public String getSortCriteria()
+            {
+                return thisSortCriteria;
             }
         };
     }
