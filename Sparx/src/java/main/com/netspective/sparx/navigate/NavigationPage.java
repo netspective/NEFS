@@ -90,7 +90,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.75 2004-08-18 21:09:32 aye.thu Exp $
+ * @version $Id: NavigationPage.java,v 1.76 2004-09-06 19:28:08 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -297,8 +297,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Sets the page specific javascript file to include in the page metadata section
-     *
-     * @return
      */
     public ValueSource getCustomJsFile()
     {
@@ -317,8 +315,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Sets the page-specific css file to include in the page metadata section
-     *
-     * @param customCssFile
      */
     public void setCustomCssFile(ValueSource customCssFile)
     {
@@ -634,6 +630,22 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         ncaf.setFlags(flags);
         ncaf.setLackPermissions(permissions);
         addConditional(ncaf);
+    }
+
+    public boolean isReferencingPermission(String permissionId)
+    {
+        if(TextUtils.getInstance().contains(getPermissions(), permissionId, false))
+            return true;
+
+        final NavigationConditionalActions conditionals = getConditionals();
+        for(int i = 0; i < conditionals.size(); i++)
+        {
+            final NavigationConditionalAction conditional = conditionals.getAction(i);
+            if(conditional.isReferencingPermission(permissionId))
+                return true;
+        }
+
+        return false;
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/

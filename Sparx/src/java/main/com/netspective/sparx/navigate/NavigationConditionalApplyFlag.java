@@ -41,6 +41,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
 
 public class NavigationConditionalApplyFlag extends NavigationConditionalAction
@@ -109,6 +110,21 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
                 permsList.add(st.nextToken());
             lackPermissions = (String[]) permsList.toArray(new String[permsList.size()]);
         }
+    }
+
+    public boolean isReferencingPermission(String permissionId)
+    {
+        if(super.isReferencingPermission(permissionId))
+            return true;
+
+        final TextUtils textUtils = TextUtils.getInstance();
+        if(textUtils.contains(hasPermissions, permissionId, false))
+            return true;
+
+        if(textUtils.contains(lackPermissions, permissionId, false))
+            return true;
+
+        return false;
     }
 
     public NavigationPathFlags getFlags()

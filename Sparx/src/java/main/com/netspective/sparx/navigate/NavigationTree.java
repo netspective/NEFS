@@ -36,13 +36,17 @@ package com.netspective.sparx.navigate;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmParseContext;
@@ -183,6 +187,25 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public TemplateProducer getPageTypes()
     {
         return pageTypes;
+    }
+
+    public Map getPagesByQualifiedName()
+    {
+        return pagesByQualifiedName;
+    }
+
+    public Set getPagesReferencingPermission(String permissionId)
+    {
+        final TextUtils textUtils = TextUtils.getInstance();
+
+        Set pages = new TreeSet();
+        for(Iterator i = pagesByQualifiedName.values().iterator(); i.hasNext();)
+        {
+            NavigationPage page = (NavigationPage) i.next();
+            if(page.isReferencingPermission(permissionId))
+                pages.add(page);
+        }
+        return pages;
     }
 
     public void register(NavigationPath path)

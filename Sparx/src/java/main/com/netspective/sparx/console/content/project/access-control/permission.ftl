@@ -80,6 +80,27 @@
 
         <td>
             <@inspectObject object=activeItem heading="Permission '${activeItem.qualifiedName}' Inspector"/>
+            <p>
+            <@panel heading="Components Referencing this Permission">
+            <div class="textbox">
+                <#assign classSuffix="odd"/>
+                <table class="report" border="0" cellspacing="2" cellpadding="0" width="100%">
+                    <tr>
+                        <td class="report-column-heading">Scope</td>
+                        <td class="report-column-heading">ID</td>
+                        <td class="report-column-heading">Source</td>
+                    </tr>
+                <#list vc.project.navigationTrees.getPagesReferencingPermission(activeItemId).iterator() as page>
+                    <tr>
+                        <td class="report-column-${classSuffix}">Page</td>
+                        <td class="report-column-${classSuffix}"><code><b>${page.qualifiedNameIncludingTreeId}</b></code></td>
+                        <td class="report-column-${classSuffix}"><@objectXmlLocator object=page/></td>
+                    </tr>
+                    <#if classSuffix = 'odd'><#assign classSuffix='even'/><#else><#assign classSuffix='odd'/></#if>
+                </#list>
+                </table>
+            </div>
+            </@panel>
         </td>
         </table>
     <#else>

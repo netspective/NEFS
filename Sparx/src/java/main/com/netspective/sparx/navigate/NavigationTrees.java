@@ -37,6 +37,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -137,6 +139,17 @@ public class NavigationTrees implements MetricsProducer
     public String toString()
     {
         return trees.toString();
+    }
+
+    public Set getPagesReferencingPermission(String permissionId)
+    {
+        Set pages = new TreeSet();
+        for(Iterator i = trees.values().iterator(); i.hasNext();)
+        {
+            NavigationTree tree = (NavigationTree) i.next();
+            pages.addAll(tree.getPagesReferencingPermission(permissionId));
+        }
+        return pages;
     }
 
     /**

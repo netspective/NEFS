@@ -194,7 +194,11 @@ function HttpController()
     this.sendSetSessionAttribute = HttpController_sendSetSessionAttribute;
     this.sendAppendSessionAttribute = HttpController_sendAppendSessionAttribute;
     this.sendRemoveSessionAttribute = HttpController_sendRemoveSessionAttribute;
+
     this.callAuthenticatedUserClientService = HttpController_callAuthenticatedUserClientService;
+    this.callAuthenticatedUserClientServiceStatusOkCallback = null;
+    this.callAuthenticatedUserClientServiceStatusNotFoundCallback = null;
+    this.callAuthenticatedUserClientServiceOtherStatusCallback = null;
     return this;
 }
 
@@ -271,7 +275,7 @@ function HttpController_sendRemoveSessionAttribute(varName, varValue)
     this.sendSessionAttribute("remove", varName, varValue);
 }
 
-function HttpController_callAuthenticatedUserClientService()
+function HttpController_callAuthenticatedUserClientService(/** all arguments must be name/value pairs **/)
 {
     var serviceArgs = arguments;
     this.sendMessage("?service=HttpController.callAuthenticatedUserClientService",
@@ -280,7 +284,10 @@ function HttpController_callAuthenticatedUserClientService()
             xmlHttp.setRequestHeader("Sparx-Http-Controller", "callAuthenticatedUserClientService");
             for(var i = 0; i < serviceArgs.length; i += 2)
                 xmlHttp.setRequestHeader("Sparx-Http-Controller-callAuthenticatedUserClientService-" + serviceArgs[i+0], serviceArgs[i+1]);
-        }
+        },
+        this.callAuthenticatedUserClientServiceStatusOkCallback,
+        this.callAuthenticatedUserClientServiceStatusNotFoundCallback,
+        this.callAuthenticatedUserClientServiceOtherStatusCallback
     );
 }
 

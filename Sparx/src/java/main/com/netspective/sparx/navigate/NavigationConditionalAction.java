@@ -123,6 +123,11 @@ public class NavigationConditionalAction implements TemplateConsumer
         this.name = name;
     }
 
+    public boolean isReferencingPermission(String permissionId)
+    {
+        return false;
+    }
+
     public void execute(NavigationContext nc)
     {
 

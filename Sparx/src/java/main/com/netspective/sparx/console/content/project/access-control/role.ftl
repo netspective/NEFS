@@ -76,6 +76,40 @@
 
         <td>
             <@inspectObject object=activeItem heading="Role '${activeItem.qualifiedName}' Inspector"/>
+
+            <p>
+            <@panel heading="Components Referencing this Role">
+            <div class="textbox">
+                <#assign classSuffix="odd"/>
+                <table class="report" border="0" cellspacing="2" cellpadding="0" width="100%">
+                    <tr>
+                        <td class="report-column-heading">Permission</td>
+                        <td class="report-column-heading">Scope</td>
+                        <td class="report-column-heading">ID</td>
+                        <td class="report-column-heading">Source</td>
+                    </tr>
+                <#list activeItem.permissionNames.iterator() as permissionId>
+                    <#assign referencingPages = vc.project.navigationTrees.getPagesReferencingPermission(permissionId)/>
+                    <#assign pagesCount = referencingPages.size()/>
+                    <#if pagesCount &gt; 0>
+                        <#assign first = true/>
+                        <#list referencingPages.iterator() as page>
+                            <tr>
+                                <#if first>
+                                    <td class="report-column-${classSuffix}" rowspan="${pagesCount}">${permissionId}</td>
+                                </#if>
+                                <td class="report-column-${classSuffix}">Page</td>
+                                <td class="report-column-${classSuffix}"><code><b>${page.qualifiedNameIncludingTreeId}</b></code></td>
+                                <td class="report-column-${classSuffix}"><@objectXmlLocator object=page/></td>
+                            </tr>
+                            <#if classSuffix = 'odd'><#assign classSuffix='even'/><#else><#assign classSuffix='odd'/></#if>
+                            <#assign first = false/>
+                        </#list>
+                    </#if>
+                </#list>
+                </table>
+            </div>
+            </@panel>
         </td>
         </table>
     <#else>
