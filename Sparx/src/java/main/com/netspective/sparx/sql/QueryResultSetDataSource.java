@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.8 2004-03-14 00:57:50 aye.thu Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.9 2004-04-30 01:28:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -176,7 +176,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
         }
         catch (SQLException e)
         {
-            log.error("Unable to retrieve column data", e);
+            log.error("Unable to retrieve column data: columnIndex = " + columnIndex + ", row = "+ activeRowIndex +", flags = " + flags, e);
             return e.toString();
         }
     }
