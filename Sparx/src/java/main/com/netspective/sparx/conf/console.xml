@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.46 2003-06-13 23:50:00 shahid.shah Exp $
+  * $Id: console.xml,v 1.47 2003-06-14 22:16:21 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -22,6 +22,10 @@
         <body config="console" source="content/children-summaries.ftl"/>
     </panel-type>
 
+    <panel-type name="console-sibling-summaries" extends="html">
+        <body config="console" source="content/sibling-summaries.ftl"/>
+    </panel-type>
+
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" default="yes" sub-heading="trying something here">
             <panels style="horizontal">
@@ -34,9 +38,8 @@
                         <frame heading="Configuration Overview"/>
                         <body config="console" source="console-page-content:app-overview.ftl"/>
                     </panel>
-                    <panel type="html">
-                        <frame heading="Overview of Features"/>
-                        <body config="console" source="content/sibling-summaries.ftl"/>
+                    <panel type="console-sibling-summaries">
+                        <frame heading="Table of Contents"/>
                     </panel>
                 </panels>
 

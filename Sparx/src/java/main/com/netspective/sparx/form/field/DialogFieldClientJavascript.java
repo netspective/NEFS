@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldClientJavascript.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogFieldClientJavascript.java,v 1.2 2003-06-14 22:16:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -59,8 +59,7 @@ package com.netspective.sparx.form.field;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 /**
- * A <code>DialogFieldClientJavascript</code> object is created for custom JavaScript defined
- * as the action script for an event generated from a dialog field.
+ * Manages custom JavaScript defined as the action script for an event generated from a dialog field.
  */
 public class DialogFieldClientJavascript
 {
@@ -72,31 +71,52 @@ public class DialogFieldClientJavascript
     {
     }
 
+    /**
+     * Retrieve the event that the client javascript should handle.
+     */
     public ControlEvent getEvent()
     {
         return event;
     }
 
+    /**
+     * Specify the event that the client javascript should handle.
+     */
     public void setEvent(ControlEvent event)
     {
         this.event = event;
     }
 
+    /**
+     * Retrieve the actual JavaScript expression.
+     */
     public ValueSource getJsExpr()
     {
         return jsExpr;
     }
 
+    /**
+     * Specify the actual JavaScript expression. Although the expression is arbitrary, the programmer should usually
+     * define a JavaScript method and simply call that method in this expression.
+     * @xdm-param jsExpr
+     */
     public void setJsExpr(ValueSource jsExpr)
     {
         this.jsExpr = jsExpr;
     }
 
+    /**
+     * Retrieve the type of client java-script being provided.
+     */
     public ScriptType getType()
     {
         return type;
     }
 
+    /**
+     * Specify the type of client java-script being provided. The extends option will run the normal processing and
+     * then call your code. The overrides option only calls your code.
+     */
     public void setType(ScriptType type)
     {
         this.type = type;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.9 2003-06-12 14:36:10 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.10 2003-06-14 22:16:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -133,7 +133,9 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
         catch (Exception e)
         {
             log.error("Unable to process template", e);
+            writer.write("<pre>");
             writer.write(e.getMessage());
+            writer.write("</pre>");
         }
     }
 }

@@ -2,10 +2,10 @@ package com.netspective.axiom;
 
 public class BuildLog
 {
-  public static final int    BUILD_NUMBER = 7;
+  public static final int    BUILD_NUMBER = 13;
   public static final String BUILD_HOST_NAME = "moscow";
-  public static final String BUILD_HOST_IP = "192.168.0.101";
-  public static final String BUILD_DATE = "Sat Mar 22 19:07:16 EST 2003";
+  public static final String BUILD_HOST_IP = "192.168.0.103";
+  public static final String BUILD_DATE = "Thu Jun 12 22:18:39 EDT 2003";
 
   public static final String BUILD_OS_NAME = "Windows 2000";
   public static final String BUILD_OS_VERSION = "5.1";
@@ -21,6 +21,7 @@ public class BuildLog
       "C:/Projects/Frameworks/Axiom/conf/../../Commons/lib/redist/ant.jar", 
       "C:/Projects/Frameworks/Axiom/conf/../../Commons/lib/redist/ant-optional.jar", 
       "C:/Projects/Frameworks/Axiom/conf/../../Commons/lib/redist/junit.jar", 
+      "C:/Projects/Frameworks/Axiom/conf/../../Commons/lib/redist/clover.jar", 
       "C:/Projects/Frameworks/Axiom/conf/../../Commons/lib/redist/xerces.jar", 
       "C:/utils/java/jdk1.3.1/lib/tools.jar"      };
 }

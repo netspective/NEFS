@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.15 2003-05-17 17:51:04 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.16 2003-06-14 22:17:06 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -55,6 +55,11 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.TreeSet;
+import java.util.ArrayList;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.exception.UnsupportedAttributeException;
@@ -64,11 +69,11 @@ import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.io.InputSourceTracker;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandNotFoundException;
+import com.netspective.commons.lang.JavaDocXmlDocuments;
 
 /**
  * This class is used to introspect existing classes and allow parsing of XML
@@ -88,6 +93,8 @@ import com.netspective.commons.command.CommandNotFoundException;
  */
 public class XmlDataModelSchema
 {
+    private static final Log log = LogFactory.getLog(XmlDataModelSchema.class);
+
     public static final String XMLDATAMODEL_SCHEMA_OPTIONS_FIELD_NAME = "XML_DATA_MODEL_SCHEMA_OPTIONS";
     public static final String ADD_TEXT_DEFAULT_METHOD_NAME = "addText";
 
@@ -371,6 +378,193 @@ public class XmlDataModelSchema
         return propertyNames;
     }
 
+    public class AttributeDetail
+    {
+        private String attrName;
+        private Class attrType;
+        private String primaryFlagsAttrName;
+        private XdmBitmaskedFlagsAttribute flags;
+        private XdmBitmaskedFlagsAttribute.FlagDefn flagAlias;
+
+        public AttributeDetail(String name) throws DataModelException
+        {
+            this.attrName = name;
+            this.attrType = getAttributeType(name);
+        }
+
+        public AttributeDetail(String name, XdmBitmaskedFlagsAttribute flags)
+        {
+            this.attrName = name;
+            this.attrType = flags.getClass();
+            this.flags = flags;
+        }
+
+        public AttributeDetail(String name, String primaryFlagsAttrName, XdmBitmaskedFlagsAttribute flags, XdmBitmaskedFlagsAttribute.FlagDefn flagAlias)
+        {
+            this.attrName = name;
+            this.attrType = flags.getClass();
+            this.primaryFlagsAttrName = primaryFlagsAttrName;
+            this.flags = flags;
+            this.flagAlias = flagAlias;
+        }
+
+        public String getDescription()
+        {
+            return JavaDocXmlDocuments.getInstance().getMethodDescription(getBean(), "set"+ TextUtils.xmlTextToJavaIdentifier(attrName, true));
+        }
+
+        public boolean isFlagsPrimary()
+        {
+            return flags != null && flagAlias == null;
+        }
+
+        public boolean isFlagAlias()
+        {
+            return flags != null && flagAlias != null;
+        }
+
+        public XdmBitmaskedFlagsAttribute.FlagDefn getFlagAlias()
+        {
+            return flagAlias;
+        }
+
+        public XdmBitmaskedFlagsAttribute getFlags()
+        {
+            return flags;
+        }
+
+        public String getAttrName()
+        {
+            return attrName;
+        }
+
+        public Class getAttrType()
+        {
+            return attrType;
+        }
+
+        public String getPrimaryFlagsAttrName()
+        {
+            return primaryFlagsAttrName;
+        }
+
+        public boolean hasChoices()
+        {
+            if(attrType == null)
+                return false;
+
+            return isFlagAlias() ||
+                   isFlagsPrimary() ||
+                   XdmEnumeratedAttribute.class.isAssignableFrom(attrType) ||
+                   (Boolean.class.isAssignableFrom(attrType) || (attrType == boolean.class));
+        }
+
+        public String getChoices()
+        {
+            if(attrType == null)
+                return "";
+
+            if(isFlagAlias())
+                return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
+
+            if(isFlagsPrimary())
+                return TextUtils.join(flags.getFlagNamesWithXdmAccess(), " | ");
+
+            if(XdmEnumeratedAttribute.class.isAssignableFrom(attrType))
+            {
+                XdmEnumeratedAttribute ea = null;
+                try
+                {
+                    ea = (XdmEnumeratedAttribute) attrType.newInstance();
+                }
+                catch (Exception e)
+                {
+                    log.error("Error retrieving enumeration data", e);
+                    return e.toString();
+                }
+
+                return TextUtils.join(ea.getValues(), ", ");
+            }
+
+            if(Boolean.class.isAssignableFrom(attrType) || (attrType == boolean.class))
+                return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
+
+            return "";
+        }
+    }
+
+    public class AttributeDetailList extends ArrayList
+    {
+    }
+
+    public AttributeDetailList getSettableAttributesWithFlagsExpanded() throws IllegalAccessException, InstantiationException, InvocationTargetException, DataModelException
+    {
+        Map childPropertyNames = getPropertyNames();
+
+        Map flagSetterPrimaries = new HashMap();
+        Map flagSetterAliases = new HashMap();
+        for(Iterator i = getAttributes().iterator(); i.hasNext(); )
+        {
+            String attrName = (String) i.next();
+            Class attrType = getAttributeType(attrName);
+            if(! XdmBitmaskedFlagsAttribute.class.isAssignableFrom(attrType))
+                continue;
+
+            XdmBitmaskedFlagsAttribute bfa = null;
+            XmlDataModelSchema.NestedCreator creator = (XmlDataModelSchema.NestedCreator) getNestedCreators().get(attrName);
+            if(creator != null)
+            {
+                Object flagsGetterInstance = createInstance();
+                bfa = (XdmBitmaskedFlagsAttribute) creator.create(flagsGetterInstance);
+            }
+            else
+                bfa = (XdmBitmaskedFlagsAttribute) attrType.newInstance();
+
+            flagSetterPrimaries.put(attrName, bfa);
+            Map xmlNodeNames = bfa.getFlagSetterXmlNodeNames();
+            for(Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext(); )
+            {
+                String xmlNodeName = (String) xmliter.next();
+                if(! childPropertyNames.containsKey(xmlNodeName))
+                    flagSetterAliases.put(xmlNodeName, new Object[] { attrName, bfa, xmlNodeNames.get(xmlNodeName) });
+            }
+        }
+
+        AttributeDetailList result = new AttributeDetailList();
+
+        Set sortedChildPropertyNames = new TreeSet(getAttributes());
+        sortedChildPropertyNames.addAll(flagSetterAliases.keySet());
+        Iterator iterator = sortedChildPropertyNames.iterator();
+        while (iterator.hasNext())
+        {
+            String attrName = (String) iterator.next();
+
+            if(flagSetterAliases.containsKey(attrName))
+            {
+                Object[] flagSetterInfo = (Object[]) flagSetterAliases.get(attrName);
+                result.add(new AttributeDetail(attrName, (String) flagSetterInfo[0], (XdmBitmaskedFlagsAttribute) flagSetterInfo[1], (XdmBitmaskedFlagsAttribute.FlagDefn) flagSetterInfo[2]));
+                continue;
+            }
+
+            if(flagSetterPrimaries.containsKey(attrName))
+            {
+                result.add(new AttributeDetail(attrName, (XdmBitmaskedFlagsAttribute) flagSetterPrimaries.get(attrName)));
+                continue;
+            }
+
+            if(getOptions().ignoreAttribute(attrName))
+                continue;
+
+            XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
+            if(attrNames != null && ! attrNames.isPrimaryName(attrName))
+                continue;
+
+            result.add(new AttributeDetail(attrName));
+        }
+
+        return result;
+    }
+
     public Map getAttributeSetters()
     {
         return attributeSetters;
@@ -419,6 +613,11 @@ public class XmlDataModelSchema
     public Class getBean()
     {
         return bean;
+    }
+
+    public Object createInstance() throws IllegalAccessException, InstantiationException
+    {
+        return bean.newInstance();
     }
 
     private static Object getStaticFieldValue(final Class bean, final String name)

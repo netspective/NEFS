@@ -39,112 +39,38 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.6 2003-06-14 22:16:21 shahid.shah Exp $
+ * $Id: XmlDataModelSchemaMethod.java,v 1.1 2003-06-14 22:16:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
+import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
+import freemarker.ext.beans.BeansWrapper;
 
-import freemarker.template.Configuration;
-import freemarker.cache.FileTemplateLoader;
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.MultiTemplateLoader;
-import freemarker.cache.TemplateLoader;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
-public class FreeMarkerConfigurationAdapter
+public class XmlDataModelSchemaMethod implements TemplateMethodModel
 {
-    private Configuration configuration;
-    private boolean defaultAdapter;
-    private String name;
-    private File baseDir;
-    private Class baseClass;
-
-    public FreeMarkerConfigurationAdapter()
+    public TemplateModel exec(List args) throws TemplateModelException
     {
-    }
+        if (args.size() != 1)
+            throw new TemplateModelException("Wrong arguments: expect name of class.");
 
-    public boolean isDefault()
-    {
-        return defaultAdapter;
-    }
-
-    public void setDefault(boolean defaultAdapter)
-    {
-        this.defaultAdapter = defaultAdapter;
-        if(defaultAdapter)
-            Configuration.setDefaultConfiguration(configuration);
-    }
-
-    public Configuration getConfiguration()
-    {
-        if(configuration == null)
-        {
-            configuration = new Configuration();
-            configuration.setTemplateUpdateDelay(0);
-            configuration.setTemplateLoader(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
-            configuration.setSharedVariable("templateExists", new TemplateExistsMethod());
-            configuration.setSharedVariable("getXmlDataModelSchema", new XmlDataModelSchemaMethod());
-            SyntaxHighlightTransform.registerTransforms(configuration);
-        }
-        return configuration;
-    }
-
-    protected void updateConfiguration()
-    {
-        List tmplLoaders = new ArrayList();
-        tmplLoaders.add(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
-
+        String className = (String) args.get(0);
+        Class cls = null;
         try
         {
-            if(baseDir != null)
-                tmplLoaders.add(new FileTemplateLoader(baseDir));
+            cls = Class.forName(className);
         }
-        catch (IOException e)
+        catch (ClassNotFoundException e)
         {
-            throw new NestableRuntimeException(e);
+            throw new TemplateModelException("Provided class '"+ className +"' not found", e);
         }
 
-        if(baseClass != null)
-            tmplLoaders.add(new ClassTemplateLoader(baseClass));
-
-        getConfiguration().setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()])));
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public File getBaseDir()
-    {
-        return baseDir;
-    }
-
-    public void setBaseDir(File baseDir)
-    {
-        this.baseDir = baseDir;
-        updateConfiguration();
-    }
-
-    public Class getBaseClass()
-    {
-        return baseClass;
-    }
-
-    public void setBaseClass(Class baseClass)
-    {
-        this.baseClass = baseClass;
-        updateConfiguration();
+        return BeansWrapper.getDefaultInstance().wrap(XmlDataModelSchema.getSchema(cls));
     }
 }

@@ -31,7 +31,7 @@ Setup instructions:
         <property name="project.src.main.home" value="${project.home}/src/java/main"/>
         <property name="project.src.test.home" value="${project.home}/src/java/test"/>
         <property name="project.documents.javadoc-html.home" value="${project.documents.home}/java-doc"/>
-        <property name="project.documents.javadoc-xml.home" value="${project.src.main.home}/${project.package.base.dir}/conf/java-doc"/>
+        <property name="project.documents.javadoc-xml.home" value="${project.resources.home}/java-doc-xml"/>
 
         <property name="project.change-log.name" value="change-log"/>
         <property name="project.build.log.class.package" value="${project.package.base}"/>
@@ -145,6 +145,7 @@ Setup instructions:
     <!-- ==================== Documentation targets  ======================= -->
 
     <target name="javadoc-html" depends="init">
+        <delete dir="${project.documents.javadoc-html.home}" />
         <mkdir dir="${project.documents.javadoc-html.home}" />
         <javadoc packagenames="com.netspective.*"
              sourcepath="${project.src.main.home}"
@@ -160,6 +161,7 @@ Setup instructions:
     </target>
 
     <target name="javadoc-xml" depends="init">
+        <delete dir="${project.documents.javadoc-xml.home}" />
         <mkdir dir="${project.documents.javadoc-xml.home}" />
         <javadoc packagenames="com.netspective.*"
              sourcepath="${project.src.main.home}"
