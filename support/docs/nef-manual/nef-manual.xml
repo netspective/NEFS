@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-10-29 02:56:16 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-10-29 16:44:45 $)</releaseinfo>
 
     <authorgroup>
       <author>
@@ -1456,17 +1456,396 @@
       NEF&#39;s delcarative programming model allow you to change requirements
       and lets your customers change their minds without significant impact to
       your code.</para>
+
+      <section>
+        <title>Defining the Presentation Layer</title>
+
+        <section>
+          <title>Navigation</title>
+
+          <para>Define your application&#39;s hierarchy (the &#34;main&#34;
+          menu, submenus, and so on). Consider each navigation item a
+          &#34;page&#34;. Also consider how navigation should occur from one
+          page to another so that appropriate workflows may be specified in
+          forms and pages.</para>
+        </section>
+
+        <section>
+          <title>Forms and Data Collection</title>
+
+          <para>Define the manner in which data will be collected. This
+          includes what forms, fields, field types, validation, and other
+          related information might be required.</para>
+        </section>
+      </section>
+
+      <section>
+        <title>Defining the Data Management Layer</title>
+
+        <section>
+          <title>Static SQL Queries</title>
+
+          <para>Consider what SQL should be created manually.</para>
+        </section>
+
+        <section>
+          <title>Dynamic SQL Queries</title>
+
+          <para>Consider what type of searches your application should
+          perform.</para>
+        </section>
+
+        <section>
+          <title>Database Schema</title>
+
+          <para>Define the structures (tables, columns, relationships) needed
+          to store your data and consider where the data will be stored (the
+          type of database, location of the database, etc.). You may skip this
+          phase of database schema definition if you are connecting to a
+          legacy database or an existing data source.</para>
+        </section>
+      </section>
+
+      <section>
+        <title>Defining the Security Layer</title>
+
+        <para>Define the different security roles necessary and all the
+        permissions that will be assigned to roles.</para>
+      </section>
     </section>
 
     <section>
       <title>Declare</title>
 
       <para>Almost all facets of the software development process are covered
-      by the Sparx XML tags and Java APIs, including but not limited to, forms
-      declarations, data validation, page definition, template writing,
-      navigation, dynamic and static SQL, and database schemas. All of the
-      declarations are placed in the <literal><filename>APP_ROOT/WEB-INF/sparx/project.xml</filename></literal>
-      file.</para>
+      by the Commons, Axiom, and Sparx XML tags and Java APIs, including but
+      not limited to, forms declarations, data validation, page definition,
+      template writing, navigation, dynamic and static SQL, and database
+      schemas. All of the declarations are placed in the <literal><filename>APP_ROOT/WEB-INF/sparx/project.xml</filename></literal>
+      file (see <xref linkend="nef-project-file" />).</para>
+
+      <section>
+        <title>Presentation Layer Declaration and Descriptor Tags</title>
+
+        <para>The presentation layer tags are broken up into several groups:
+        navigation, forms/fields, on-screen validation, and conditional
+        processing. Once you define any of these tags you can immediately test
+        the functionality without any code either using a test application or
+        the Enterprise Console.</para>
+
+        <section>
+          <title>Navigation Declaration Tags</title>
+
+          <para>The navigation tags are comprised primarily of the <sgmltag
+          class="starttag">navigation-tree</sgmltag>, <sgmltag
+          class="starttag">page</sgmltag>, and <sgmltag class="starttag">body</sgmltag>
+          tags. These are very high-level tags that provide a great deal of
+          functionality without requiring any HTML or JSP. However, if you
+          need to customize the behavior you have full access to the APIs
+          through both inheritance and delegation. You focus on the hierarchy,
+          specify the structure and rules and NEF will do the rest.</para>
+
+          <example>
+            <title>Examples of Navigation Tags in the Presentation Layer</title>
+
+            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+...
+
+&#60;<emphasis role="bold">navigation-tree</emphasis> name=&#34;app&#34; default=&#34;yes&#34;&#62; <co
+id="declare-nav-tags-eg-1" />
+
+    &#60;<emphasis role="bold">page</emphasis> name=&#34;home&#34; default=&#34;yes&#34; caption=&#34;Hello&#34; heading=&#34;Hello World!&#34;&#62; <co
+id="declare-nav-tags-eg-2" />
+        &#60;<emphasis role="bold">body</emphasis>&#62; <co
+id="declare-nav-tags-eg-3" />
+            &#60;![CDATA[
+            This is the &#39;Hello World&#39; app. Click &#60;a href=&#34;next-steps&#34;&#62;here&#60;/a&#62; to see what&#39;s next.
+            ]]&#62;
+        &#60;/body&#62;
+    &#60;/page&#62;
+
+    &#60;page name=&#34;next-steps&#34; caption=&#34;Next Steps&#34; heading=&#34;What&#39;s next?&#34;&#62;
+        &#60;body <emphasis role="bold">source</emphasis>=&#34;next-steps.ftl&#34;/&#62; <co
+id="declare-nav-tags-eg-4" />
+    &#60;/page&#62;
+
+    &#60;page name=&#34;some-stuff&#34; caption=&#34;Panels instead of Body&#34;&#62;
+        &#60;<emphasis role="bold">panels</emphasis>&#62; <co
+id="declare-nav-tags-eg-5" />
+             &#60;panel type=&#34;command&#34; command=&#34;query,org.get-sponsor-info-by-id,-,-,-,detail-compressed&#34;/&#62;
+             &#60;panel type=&#34;command&#34; command=&#34;query,org.get-org-addresses-by-id,-,-,-,report-compressed&#34; /&#62;
+        &#60;/panels&#62;
+    &#60;/page&#62;
+
+    &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
+role="bold">redirect</emphasis>=&#34;vs-expr:${servlet-context-uri:server-root}/nefs-sampler&#34;/&#62; <co
+id="declare-nav-tags-eg-6" />
+    &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
+role="bold">include</emphasis>=&#34;/some/file.jsp&#34;/&#62; <co
+id="declare-nav-tags-eg-7" />
+    &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
+role="bold">forward</emphasis>=&#34;/some/file.jsp&#34;/&#62; <co
+id="declare-nav-tags-eg-8" />
+
+    &#60;page name=&#34;add&#34; caption=&#34;Add Book&#34; <emphasis
+role="bold">command</emphasis>=&#34;dialog,schema.db.Book_Info,add&#34;/&#62; <co
+id="declare-nav-tags-eg-9" />
+    &#60;page name=&#34;edit&#34; caption=&#34;Edit Book&#34; command=&#34;dialog,schema.db.Book_Info,edit&#34; 
+          require-request-param=&#34;id&#34; retain-params=&#34;id&#34;&#62;
+        &#60;<emphasis role="bold">missing-params-body</emphasis>&#62; <co
+id="declare-nav-tags-eg-10" />
+           Please choose a book to edit from the &#38;lt;a href=&#39;home&#39;&#38;gt; books list&#38;lt;/a&#38;gt;.
+        &#60;/missing-params-body&#62;
+    &#60;/page&#62;</programlisting>
+          </example>
+
+          <calloutlist>
+            <callout arearefs="declare-nav-tags-eg-1">
+              <para>The <sgmltag class="starttag">navigation-tree</sgmltag>
+              tag starts out the definition of a tree. You may declare as many
+              navigation trees as your application needs. Consider different
+              trees for different users (based on personalization) or a
+              different tree for each access-control role (for security) or
+              any other criteria required by your application. Each tree has a
+              name and may be marked with <sgmltag class="attribute">default</sgmltag>=<sgmltag
+              class="attvalue">yes</sgmltag> if it is to be the default tree.
+              Which tree is actually used by the application may be specfied
+              as a servlet parameter or chosen dynamically at runtime based on
+              some processing rules.</para>
+            </callout>
+
+            <callout arearefs="declare-nav-tags-eg-2">
+              <para>Each <sgmltag class="starttag">navigation-tree</sgmltag>
+              tag one or more <sgmltag class="starttag">page</sgmltag> tags
+              that define what pages should be visible to the user. Each
+              <sgmltag class="starttag">page</sgmltag> tag supports common
+              things like the page&#39;s name (unique identifier), a caption
+              (what might show up in a tab or menu), a heading, and title.
+              Almost all page attributes support Value Sources for their
+              values so they may be static or dynamic (see <xref
+              linkend="section-value-sources" />).</para>
+            </callout>
+
+            <callout arearefs="declare-nav-tags-eg-3">
+              <para>Each <sgmltag class="starttag">page</sgmltag> tag may have
+              an optional <sgmltag class="starttag">body</sgmltag> tag with
+              contents directly specified as XML content. You can use the
+              CDATA XML element to escape HTML tags. The content of the
+              <sgmltag class="starttag">body</sgmltag> tag is treated as a
+              <ulink url="http://www.freemarker.org">FreeMarker</ulink>
+              template by default.</para>
+            </callout>
+
+            <callout arearefs="declare-nav-tags-eg-4">
+              <para>The <sgmltag class="starttag">page</sgmltag> tag&#39;s
+              <sgmltag class="starttag">body</sgmltag> tag may instead specify
+              a <sgmltag class="attribute">source</sgmltag> attribute that
+              indicates the given file is a a <ulink
+              url="http://www.freemarker.org">FreeMarker</ulink> template
+              relative to the APP_ROOT directory. Other template engines like
+              JSP are also supported.</para>
+            </callout>
+
+            <callout arearefs="declare-nav-tags-eg-5">
+              <para>The <sgmltag class="starttag">page</sgmltag> tag&#39;s
+              <sgmltag class="starttag">body</sgmltag> tag may be replaced
+              with the <sgmltag class="starttag">panels</sgmltag> tag to have
+              automatic layouts of mutliple panels.</para>
+            </callout>
+
+            <callout arearefs="declare-nav-tags-eg-6">
+              <para>The <sgmltag class="starttag">page</sgmltag> tag may
+              specify a <sgmltag class="attribute">redirect</sgmltag>
+              attribute to automatically redirect to another page whenever it
+              is chosen.</para>
+            </callout>
+
+            <callout arearefs="declare-nav-tags-eg-7">
+              <para>The <sgmltag class="starttag">page</sgmltag> tag may
+              specify an <sgmltag class="attribute">include</sgmltag>
+              attribute to simply insert the contents of another web resource
+              directly into the body.</para>
+            </callout>
+
+            <callout arearefs="declare-nav-tags-eg-8">
+              <para>The <sgmltag class="starttag">page</sgmltag> tag may
+              specify a <sgmltag class="attribute">forward</sgmltag> attribute
+              to forward the request to another web resource (this is the same
+              as Servlet forwarding not HTTP forwarding).</para>
+            </callout>
+
+            <callout arearefs="declare-nav-tags-eg-9">
+              <para>The <sgmltag class="starttag">page</sgmltag> tag may
+              specify a <sgmltag class="attribute">command</sgmltag> attribute
+              to use the Command pattern and delegate the body to a
+              <classname>com.netspective.commons.command.Command</classname>
+              interface. These are very high-level commands like interacting
+              with a dialog and displaying the results of a query that can be
+              defined elsewhere and called on different pages.</para>
+            </callout>
+
+            <callout arearefs="declare-nav-tags-eg-10">
+              <para>The <sgmltag class="starttag">page</sgmltag> tag may
+              specify required request parameters and optionally produce
+              automatic error messages when they are not provided. </para>
+            </callout>
+          </calloutlist>
+        </section>
+
+        <section>
+          <title>Forms Declaration Tags</title>
+
+          <para>The forms tags are comprised primarily of the <sgmltag
+          class="starttag">dialogs</sgmltag>, <sgmltag class="starttag">dialog</sgmltag>,
+          and <sgmltag class="starttag">field</sgmltag> tags. These are very
+          high-level tags that provide a great deal of functionality without
+          requiring any HTML or JSP custom tags. You focus on the rules and
+          validatoin createria and NEF will do the rest. NEF ships with many
+          common controls and gives you the capability to add your own at any
+          time.</para>
+
+          <example>
+            <title>Examples of Form Tags in Presentation Layer</title>
+
+            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+...
+
+&#60;<emphasis role="bold">dialogs</emphasis> package=&#34;test&#34;&#62; <co
+id="declare-form-tags-eg-1" />
+    &#60;<emphasis role="bold">dialog</emphasis> name=&#34;DialogTest_01_A&#34; retain-params=&#34;*&#34; hide-hints-until-focus=&#34;yes&#34;&#62; <co
+id="declare-form-tags-eg-2" />
+        &#60;<emphasis role="bold">frame</emphasis> heading=&#34;Test String Fields&#34;/&#62; <co
+id="declare-form-tags-eg-3" />
+
+        &#60;<emphasis role="bold">field</emphasis> name=&#34;text_field_hidden&#34; <emphasis
+role="bold">type=&#34;text&#34;</emphasis> hidden=&#34;yes&#34; default=&#34;request:id&#34;/&#62; <co
+id="declare-form-tags-eg-4" />
+        &#60;field name=&#34;text_field&#34; type=&#34;text&#34; caption=&#34;Text&#34; hint=&#34;Text field optional (max-length=5, uppercase=yes)&#34; 
+               max-length=&#34;5&#34; uppercase=&#34;yes&#34;/&#62;
+        &#60;field name=&#34;text_field_regex&#34; type=&#34;text&#34; caption=&#34;Text Email&#34; hint=&#34;Text field with regular expression validation&#34;
+               display-pattern=&#34;/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/&#34;
+               invalid-reg-ex-message=&#34;Invalid email format.&#34;/&#62;
+
+         <co id="declare-form-tags-eg-5" />
+        &#60;field <emphasis role="bold">type=&#34;boolean&#34;</emphasis> name=&#34;bool_field_radio&#34; caption=&#34;Boolean Field (Radio)&#34; style=&#34;radio&#34; /&#62;
+        &#60;field name=&#34;email_field&#34; <emphasis role="bold">type=&#34;e-mail&#34;</emphasis> caption=&#34;Email&#34; hint=&#34;Email field&#34;/&#62;
+        &#60;field name=&#34;masked_field&#34; <emphasis role="bold">type=&#34;text&#34;</emphasis> caption=&#34;Masked Field&#34; mask-entry=&#34;yes&#34; hint=&#34;e.g password&#34;/&#62;
+        &#60;field <emphasis role="bold">type=&#34;integer&#34;</emphasis> name=&#34;integer_field&#34; caption=&#34;Integer Field&#34; hint=&#34;Integer field&#34; <emphasis
+role="bold">persist=&#34;yes&#34;</emphasis>/&#62;
+        &#60;field <emphasis role="bold">type=&#34;float&#34;</emphasis> name=&#34;float_field&#34; caption=&#34;Float Field&#34; hint=&#34;Float field&#34;/&#62;
+        &#60;field <emphasis role="bold">type=&#34;currency&#34;</emphasis> name=&#34;currency_field1&#34; caption=&#34;Currency&#34; decimals-required=&#34;2&#34; default=&#34;123.45&#34;
+               negative-pos=&#34;after-symbol&#34; hint=&#34;Currency field (US) with negative sign after the symbol&#34;/&#62;
+        &#60;field <emphasis role="bold">type=&#34;phone&#34;</emphasis> name=&#34;phone_field1&#34; caption=&#34;Phone Field (dash format)&#34; strip-brackets=&#34;yes&#34; style=&#34;dash&#34; 
+               hint=&#34;Phone field&#34; default=&#34;8001234567&#34;/&#62;
+        &#60;field <emphasis role="bold">type=&#34;zip-code&#34;</emphasis> name=&#34;zip_field&#34; caption=&#34;Zip Field&#34; hint=&#34;Zip code field&#34; default=&#34;12345&#34;/&#62;
+        &#60;field <emphasis role="bold">type=&#34;ssn&#34;</emphasis> name=&#34;ssn_field&#34; caption=&#34;SSN&#34; strip-dashes=&#34;yes&#34; default=&#34;999999999&#34;/&#62;
+
+        &#60;field <emphasis role="bold">type=&#34;select&#34;</emphasis> name=&#34;sel_field_combo_xml_items&#34; caption=&#34;Select Field (Combo with XML Items)&#34; 
+               style=&#34;combo&#34; default=&#34;A&#34; prepend-blank=&#34;yes&#34;&#62;
+            &#60;items&#62;
+                &#60;item value=&#34;A&#34; caption=&#34;Choice 1 (in XML Item)&#34;/&#62;
+                &#60;item value=&#34;B&#34; caption=&#34;Choice 2 (in XML Item)&#34;/&#62;
+                &#60;item value=&#34;C&#34; caption=&#34;Choice 3 (in XML Item)&#34;/&#62;
+                &#60;item value=&#34;D&#34; caption=&#34;Choice 4 (in XML Item)&#34;/&#62;
+                &#60;item value=&#34;E&#34; caption=&#34;Choice 5 (in XML Item)&#34;/&#62;
+            &#60;/items&#62;
+        &#60;/field&#62;
+
+        &#60;field name=&#34;text_field_required&#34; type=&#34;text&#34; caption=&#34;Text Required&#34;
+            hint=&#34;Text field is required when req param &#39;abc&#39; has value&#34;
+            default=&#34;conditional Required Text&#34; required=&#34;no&#34;&#62;
+            &#60;<emphasis role="bold">conditional</emphasis> action=&#34;apply-flags&#34; flags=&#34;required&#34; has-value=&#34;request:abc&#34;/&#62; <co
+id="declare-form-tags-eg-6" />
+        &#60;/field&#62;
+
+        &#60;field name=&#34;properties&#34; <emphasis role="bold">type=&#34;html&#34;</emphasis> caption=&#34;HTML Template Field&#34;&#62;
+            &#60;<emphasis role="bold">body</emphasis>&#62; <co
+id="declare-form-tags-eg-7" />
+                &#60;![CDATA[
+                &#60;div class=&#39;textbox&#39;&#62;
+                This is a FreeMarker template inside a dialog (1 + 1 = ${1 + 1}).
+                &#60;/div&#62;]]&#62;
+            &#60;/body&#62;
+        &#60;/field&#62;
+
+        &#60;<emphasis role="bold">director</emphasis> submit-caption=&#34;Submit&#34; style=&#34;acknowledge&#34;/&#62; <co
+id="declare-form-tags-eg-8" />
+    &#60;/dialog&#62;
+</programlisting>
+          </example>
+
+          <calloutlist>
+            <callout arearefs="declare-form-tags-eg-1">
+              <para>All dialogs are placed into packages using the <sgmltag
+              class="starttag">dialogs</sgmltag> tag so that they may be
+              organized appropriately.</para>
+            </callout>
+
+            <callout arearefs="declare-form-tags-eg-2">
+              <para>Each dialog is declared using a <sgmltag class="starttag">dialog</sgmltag>
+              tag and is uniquely identified with a name. The fully qualfied
+              name of the dialog becomes <replaceable>packageName</replaceable>.<replaceable>dialogName</replaceable>.</para>
+            </callout>
+
+            <callout arearefs="declare-form-tags-eg-3">
+              <para>Dialogs may contain a <sgmltag class="starttag">frame</sgmltag>
+              tag so that it can have an appropriate heading and borders if
+              desired.</para>
+            </callout>
+
+            <callout arearefs="declare-form-tags-eg-4">
+              <para>Dialogs must contain one or more <sgmltag class="starttag">field</sgmltag>
+              tags that declare the input that needs to be obtained. All
+              <sgmltag class="starttag">field</sgmltag> tags must specify a
+              <sgmltag class="attribute">type</sgmltag> attribute that
+              indicates the type of data that should be allowed along with one
+              or more other attributes that control validation, data entry,
+              and other rules.</para>
+            </callout>
+
+            <callout arearefs="declare-form-tags-eg-5">
+              <para>NEF ships with many different high-level field types, all
+              of which know how to render and validate themselves.</para>
+            </callout>
+
+            <callout arearefs="declare-form-tags-eg-6">
+              <para>The <sgmltag class="starttag">field</sgmltag> tags may
+              contain <sgmltag class="starttag">conditional</sgmltag> tags
+              that allow some of the behavior of the field to change at
+              runtime based on other field values, the request/response cycle,
+              session information, or other arbitrary rules.</para>
+            </callout>
+
+            <callout arearefs="declare-form-tags-eg-7">
+              <para>A special <sgmltag class="starttag">field</sgmltag>
+              <sgmltag class="attribute">type</sgmltag>=<sgmltag
+              class="attvalue">html</sgmltag> is provided so that the content
+              of the field may be completely customized using a templating
+              system or other means.</para>
+            </callout>
+
+            <callout arearefs="declare-form-tags-eg-8">
+              <para>A special <sgmltag class="starttag">director</sgmltag> tag
+              is provided to control navigation out of a dialog. Different
+              directors may be created and reused for various purposes such as
+              having a different set of buttons for confirm dialogs versus
+              data entry dialogs.</para>
+            </callout>
+          </calloutlist>
+        </section>
+      </section>
+
+      <section>
+        <title>Data Management Tags</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Security Tags</title>
+
+        <para></para>
+      </section>
     </section>
 
     <section>
@@ -1609,6 +1988,11 @@ id="project-file-basic-eg-7" />
           </callout>
         </calloutlist>
       </example>
+
+      <note>
+        <para>The <sgmltag class="starttag">xdm:include</sgmltag> tag is
+        explained further in <xref linkend="section-xdm-include" />.</para>
+      </note>
 
       <section>
         <title>Input Source</title>
@@ -1877,7 +2261,8 @@ id="project-file-basic-eg-7" />
       </section>
 
       <section>
-        <title>Including XML Files into Other XML Files</title>
+        <title id="section-xdm-include">Including XML Files into Other XML
+        Files</title>
 
         <para>The <sgmltag class="starttag">xdm:include</sgmltag> tag allows
         you to import to include the contents of other XML files into the
@@ -2155,7 +2540,7 @@ id="xdm-template-consume-generic" /></programlisting>
     </section>
 
     <section>
-      <title>Value Sources</title>
+      <title id="section-value-sources">Value Sources</title>
 
       <para>Value sources are implementations of the <classname>com.netspective.commons.value.ValueSource</classname>
       interface that allows dynamic data to be included in XML without
