@@ -124,8 +124,8 @@
                 <panel>
                     <frame heading="static:User Information"/>
                     <banner style="horizontal">
-                        <action  caption="Edit Info" redirect="vs-expr:${page-id:/home/person_info/edit}?person_id=${authenticated-user:person_id}"/>
-                        <action  caption="Change Password" redirect="vs-expr:${page-id:/home/person_info/change_password}?person_id=${authenticated-user:person_id}"/>
+                        <action  caption="Edit Info" redirect="vs-expr:${page-id:patient,/home/account/edit}?person_id=${authenticated-user:person_id}"/>
+                        <action  caption="Change Password" redirect="vs-expr:${page-id:patient,/home/account/change_password}?person_id=${authenticated-user:person_id}"/>
                     </banner>
                     <report >
                         <column heading="ID" align="left"/>
@@ -220,22 +220,24 @@
             <presentation>
                 <panel>
                     <frame heading="static:Contact Information"/>
-
-                    <report>
-                        <actions>
-                            <action type="add" caption="Add Contact" redirect="vs-expr:${page-id:/home/account/add_contact}?person_id=${authenticated-user:person_id}"/>
-                            <action type="edit" redirect="vs-expr:${page-id:/home/account/edit_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
-                            <action type="delete" redirect="vs-expr:${page-id:/home/account/delete_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/>
-                        </actions>
-                        <column heading="ID" hidden="yes"/>
-                        <column heading="Type" align="left"/>
-                        <column heading="Value" />
-                    </report>
                     <report name="coordinator-report">
                         <actions>
                             <action type="add" caption="Add Contact" redirect="vs-expr:${page-id:coordinator,/home/account/add_contact}?person_id=${authenticated-user:person_id}"/>
                             <action type="edit" redirect="vs-expr:${page-id:coordinator,/home/account/edit_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
                             <action type="delete" redirect="vs-expr:${page-id:coordinator,/home/account/delete_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/>
+                        </actions>
+                        <column heading="ID" hidden="yes"/>
+                        <column heading="Type" align="left"/>
+                        <column heading="Value" />
+                    </report>
+                </panel>
+                <panel name="subject-view">
+                    <frame heading="static:Contact Information"/>
+                    <report>
+                        <actions>
+                            <action type="add" caption="Add Contact" redirect="vs-expr:${page-id:patient,/home/account/contacts/add_contact}?person_id=${authenticated-user:person_id}"/>
+                            <action type="edit" redirect="vs-expr:${page-id:patient,/home/account/contacts/edit_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="vs-expr:${page-id:patient,/home/account/contacts/delete_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/>
                         </actions>
                         <column heading="ID" hidden="yes"/>
                         <column heading="Type" align="left"/>
