@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: PageIdValueSource.java,v 1.2 2003-10-02 03:58:10 aye.thu Exp $
+ * $Id: PageIdValueSource.java,v 1.3 2003-10-28 10:57:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
 
 import com.netspective.commons.value.source.AbstractValueSource;
-import com.netspective.commons.value.source.ExpressionValueSource;
+import com.netspective.commons.value.source.ValueSrcExpressionValueSource;
 import com.netspective.commons.value.*;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.sparx.navigate.NavigationPath;
@@ -219,7 +219,7 @@ public class PageIdValueSource  extends AbstractValueSource
         {
             pageId = valueKey.substring(0, endOfIdDelimPos);
             reqParamsSource = new ValueSourceSpecification(valueKey.substring(endOfIdDelimPos + 1));
-            reqParams = new ExpressionValueSource();
+            reqParams = new ValueSrcExpressionValueSource();
             reqParams.initialize(reqParamsSource);
         }
     }

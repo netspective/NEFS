@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesTest.java,v 1.4 2003-03-29 19:11:49 shahbaz.javeed Exp $
+ * $Id: ValueSourcesTest.java,v 1.5 2003-10-28 10:55:34 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -222,7 +222,7 @@ public class ValueSourcesTest extends TestCase
 
 		Set srcClassesSet = vs.getValueSourceClassesSet();
 		Class[] expectedClassesSet = new Class[] {
-			ExpressionValueSource.class,
+			ValueSrcExpressionValueSource.class,
 			FilesystemEntriesValueSource.class,
 			GloballyUniqueIdValueSource.class,
 			StaticValueSource.class,
@@ -285,7 +285,7 @@ public class ValueSourcesTest extends TestCase
     {
         ValueSource svs = ValueSources.getInstance().getValueSource("simple-expr:this is ${static:my world}", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
         assertNotNull(svs);
-        assertEquals(ExpressionValueSource.class, svs.getClass());
+        assertEquals(ValueSrcExpressionValueSource.class, svs.getClass());
 	    assertEquals("this is my world", svs.getTextValue(null));
 
 	    ValueContext vc = ValueSources.getInstance().createDefaultValueContext();
@@ -325,7 +325,7 @@ public class ValueSourcesTest extends TestCase
         String configExpr = "vs-expr:this is ${my.expr}";
         svs = ValueSources.getInstance().getValueSourceOrStatic(configExpr);
         assertNotNull(svs);
-        assertEquals(ExpressionValueSource.class, svs.getClass());
+        assertEquals(ValueSrcExpressionValueSource.class, svs.getClass());
     }
 
     public void testDumpMetrics()

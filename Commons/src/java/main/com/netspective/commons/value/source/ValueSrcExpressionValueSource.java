@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ExpressionValueSource.java,v 1.4 2003-10-01 03:35:19 aye.thu Exp $
+ * $Id: ValueSrcExpressionValueSource.java,v 1.1 2003-10-28 10:55:34 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -51,7 +51,7 @@ import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.text.ValueSourceExpressionText;
 
-public class ExpressionValueSource extends AbstractValueSource
+public class ValueSrcExpressionValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[] { "vs-expr", "simple-expr" };
 

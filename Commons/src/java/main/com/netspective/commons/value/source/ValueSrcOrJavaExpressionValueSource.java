@@ -39,33 +39,40 @@
  */
 
 /**
- * $Id: SqlExpressionValueSource.java,v 1.2 2003-10-28 10:57:03 shahid.shah Exp $
+ * $Id: ValueSrcOrJavaExpressionValueSource.java,v 1.1 2003-10-28 10:55:34 shahid.shah Exp $
  */
 
-package com.netspective.axiom.value.source;
+package com.netspective.commons.value.source;
 
-import com.netspective.commons.value.source.ValueSrcExpressionValueSource;
-import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.exception.ValueSourceException;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
 
-public class SqlExpressionValueSource extends ValueSrcExpressionValueSource
+public class ValueSrcOrJavaExpressionValueSource extends AbstractValueSource
 {
-    public static final String[] IDENTIFIERS = new String[] { "sql-expr" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "This is just like a simple-expr or vs-expr value source but is designed to hold SQL expressions when " +
-            "the application needs to construct SQL and pass it through to the database.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("path", true, "The expression (which can contain ${} variables)."),
-            }
-    );
+    public static final String[] IDENTIFIERS = new String[] { "vs-or-java-expr" };
 
     public static String[] getIdentifiers()
     {
         return IDENTIFIERS;
     }
 
-    public static ValueSourceDocumentation getDocumentation()
+    public Value getValue(ValueContext vc) throws ValueSourceException
     {
-        return DOCUMENTATION;
+        ValueSourceOrJavaExpressionText vset = new ValueSourceOrJavaExpressionText();
+        return new GenericValue(spec.isValid() ? vset.getFinalText(vc, spec.getParams()) : spec.getSpecificationText());
+    }
+
+    public PresentationValue getPresentationValue(ValueContext vc)
+    {
+        return new PresentationValue(getValue(vc));
+    }
+
+    public boolean hasValue(ValueContext vc) throws ValueSourceException
+    {
+        return spec.getParams() != null;
     }
 }
