@@ -149,6 +149,17 @@
     <!-- alias for date-time-range -->
     <data-type name="stamp-range" type="date-time-range"/>
 
+    <data-type name="creation-stamp" type="stamp">
+        <required>dbms</required>
+        <descr>Date/time record was created</descr>
+        <sql-ddl>
+            <default dbms="oracle">sysdate</default>
+        </sql-ddl>
+        <value-defn>
+            <default dbms="hsqldb">now()</default>
+        </value-defn>
+    </data-type>
+
     <!-- ***************************************************************************
          * Auto-generated data-types useful as primary keys                        *
          *************************************************************************** -->
@@ -318,6 +329,10 @@
             <enum id="99" abbrev="U">Unknown</enum>
         </enumerations>
     </table-type>
+
+    <table name="Record_Status" abbrev="RecStatus" type="Status">
+        <!-- nothing here yet, just a placeholder for later enhancements -->
+    </table>
 
     <!--
     *********************************************************************
