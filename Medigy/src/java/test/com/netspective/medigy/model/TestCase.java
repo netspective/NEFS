@@ -46,6 +46,7 @@ package com.netspective.medigy.model;
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.medigy.model.data.EntitySeedDataPopulator;
 import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
 import com.netspective.tool.graphviz.GraphvizLayoutType;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
@@ -153,6 +154,9 @@ public abstract class TestCase extends junit.framework.TestCase
         final HibernateConfiguration hibernateConfiguration = getHibernateConfiguration();
         HibernateUtil.setConfiguration(hibernateConfiguration);
         HibernateUtil.initReferenceEntityCaches(hibernateConfiguration.getReferenceEntitiesAndCachesMap());
+
+        EntitySeedDataPopulator populator = new EntitySeedDataPopulator(HibernateUtil.getSession());
+        populator.populateSeedData();
         HibernateUtil.initCustomReferenceEntityCaches(hibernateConfiguration.getCustomReferenceEntitiesAndCachesMap());
 
         // Generate the DDL into a file so we can review it
