@@ -35,7 +35,10 @@
             <integer>12</integer>
         </nested11>
 
-        <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test" text="CustomTestText12" integer="122"/>
+        <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test"
+                  text="CustomTestText12"
+                  integer="122"
+                  bit-mask="BIT_THREE | BIT_FIVE | BIT_EIGHT | BIT_TEN"/>
     </nested1>
 
     <!-- this element has been registered as an 'ignore' element so test to make sure it is ignored -->
@@ -63,7 +66,9 @@
             PCDATA in TestNested1Template.
             <nested11 text="${params.param1}" integer="${params.param2}"/>
             <nested11 type="type-A" text="TestText12" integer="12"/>
-            <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test" text="CustomTestText12" integer="122"/>
+            <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test"
+                      text="CustomTestText12"
+                      integer="122"/>
         </nested1>
     </xdm:template>
 

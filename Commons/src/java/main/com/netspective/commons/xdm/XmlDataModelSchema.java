@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.8 2003-04-01 13:08:36 shahbaz.javeed Exp $
+ * $Id: XmlDataModelSchema.java,v 1.9 2003-04-04 12:54:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1066,7 +1066,12 @@ public class XmlDataModelSchema
                 {
                     try
                     {
-                        XdmBitmaskedFlagsAttribute bfa = (XdmBitmaskedFlagsAttribute) arg.newInstance();
+                        XdmBitmaskedFlagsAttribute bfa = null;
+                        NestedCreator creator = (NestedCreator) nestedCreators.get(attrName);
+                        if(creator != null)
+                            bfa = (XdmBitmaskedFlagsAttribute) creator.create(parent);
+                        else
+                            bfa = (XdmBitmaskedFlagsAttribute) arg.newInstance();
                         bfa.setValue(pc, parent, attrName, value);
                         m.invoke(parent, new XdmBitmaskedFlagsAttribute[]{ bfa });
                     }
