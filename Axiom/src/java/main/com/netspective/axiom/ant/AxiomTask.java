@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.7 2003-07-17 13:49:20 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.8 2003-08-17 00:01:15 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -335,7 +335,7 @@ public class AxiomTask extends XdmComponentTask
 
         try
         {
-            cc = dbvc.getConnection(dataSourceId, true);
+            cc = dbvc.getConnection(dataSourceId, true, ConnectionContext.OWNERSHIP_DEFAULT);
         }
         catch (Exception e)
         {
@@ -440,7 +440,7 @@ public class AxiomTask extends XdmComponentTask
 
         try
         {
-            cc = dbvc.getConnection(dataSourceId, true);
+            cc = dbvc.getConnection(dataSourceId, true, ConnectionContext.OWNERSHIP_DEFAULT);
         }
         catch (Exception e)
         {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDatabaseConnValueContext.java,v 1.3 2003-04-10 13:04:48 shahbaz.javeed Exp $
+ * $Id: BasicDatabaseConnValueContext.java,v 1.4 2003-08-17 00:01:39 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value;
@@ -68,13 +68,13 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
     private ConnectionProvider provider = DEFAULT_CONN_PROVIDER;
 	protected String defaultDataSource = DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE;
 
-    public ConnectionContext getConnection(String dataSourceId, boolean transaction) throws NamingException, SQLException
+    public ConnectionContext getConnection(String dataSourceId, boolean transaction, int ownership) throws NamingException, SQLException
     {
         ConnectionContext result = null;
         if(transaction)
-            result = new TransactionConnectionContext(dataSourceId, this);
+            result = new TransactionConnectionContext(dataSourceId, this, ownership);
         else
-            result = new AutoCommitConnectionContext(dataSourceId, this);
+            result = new AutoCommitConnectionContext(dataSourceId, this, ownership);
 
         if(log.isTraceEnabled())
             log.trace("Obtained " + result + " for data source '"+ result.getDataSourceId() +"'.");

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.9 2003-07-19 00:39:49 shahid.shah Exp $
+ * $Id: SchemaColumnsTest.java,v 1.10 2003-08-17 00:02:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -325,7 +325,7 @@ public class SchemaColumnsTest extends TestCase
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
 
         //Asser the data inserted
         table.getAccessorByColumnEquality(colA);
@@ -371,7 +371,7 @@ public class SchemaColumnsTest extends TestCase
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
 
         //Asser the data inserted
         table.getAccessorByColumnEquality(colA);
@@ -479,7 +479,7 @@ public class SchemaColumnsTest extends TestCase
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
 
 
 

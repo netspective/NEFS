@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabaseConnValueContext.java,v 1.3 2003-04-10 13:04:48 shahbaz.javeed Exp $
+ * $Id: DatabaseConnValueContext.java,v 1.4 2003-08-17 00:01:39 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value;
@@ -70,8 +70,9 @@ public interface DatabaseConnValueContext extends ValueContext
      * be called when the connection is no longer needed.
      * @param dataSourceId the data source identifier to use -- it is passed through the translateDataSourceId() method before use
      * @param transaction true if this will be the start of a transaction (multiple SQL statements) or false for auto-commit
+     * @param ownership one of the ConnectionContext.OWNERSHIP_* values that indicates who owns the ConnectionContext
      */
-    public ConnectionContext getConnection(String dataSourceId, boolean transaction) throws NamingException, SQLException;
+    public ConnectionContext getConnection(String dataSourceId, boolean transaction, int ownership) throws NamingException, SQLException;
 
     /**
      * Returns a connection to the pool for the given dataSourceId. If the connection was retrieved for transaction
