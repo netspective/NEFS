@@ -39,36 +39,24 @@
  */
 
 /**
- * $Id: Suite.java,v 1.10 2004-03-26 03:57:43 shahid.shah Exp $
+ * $Id: ScheduleTemplateProvider.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.schedule.provider;
 
-import com.netspective.commons.acl.AccessControlListTest;
-import com.netspective.commons.config.ConfigurationTest;
-import com.netspective.commons.value.ValueSourcesTest;
-import com.netspective.commons.xdm.DataModelSchemaTest;
+import java.util.Date;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import com.netspective.commons.schedule.model.ScheduleParticipant;
+import com.netspective.commons.schedule.model.ScheduleTemplate;
 
-public class Suite
+public interface ScheduleTemplateProvider
 {
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite();
-	    suite.addTest(com.netspective.commons.set.Suite.suite());
-	    suite.addTest(com.netspective.commons.text.Suite.suite());
-		suite.addTest(com.netspective.commons.value.Suite.suite());
-		suite.addTest(com.netspective.commons.value.source.Suite.suite());
-		suite.addTest(com.netspective.commons.value.exception.Suite.suite());
-	    suite.addTest(com.netspective.commons.io.Suite.suite());
-	    suite.addTest(com.netspective.commons.report.Suite.suite());
-	    suite.addTest(com.netspective.commons.schedule.Suite.suite());
-        suite.addTest(new TestSuite(DataModelSchemaTest.class));
-        suite.addTest(new TestSuite(ValueSourcesTest.class));
-        suite.addTest(new TestSuite(ConfigurationTest.class));
-	    suite.addTest(new TestSuite(AccessControlListTest.class));
-        return suite;
-    }
+    /**
+     * Retrieve the list of templates associated with a given set of attendees (such as a physician) and a
+     * set of resources (like facilities).
+     * @param participants The list of participants for which templates should be retrieved
+     * @return The array of schedule templates associated with the given attendees and resources. The result is always
+     *         non-null but may have a zero length if no templates were located for the associated providers.
+     */
+    public ScheduleTemplate[] getScheduleTemplates(Date beginDate, Date endDate, ScheduleParticipant[] participants);
 }

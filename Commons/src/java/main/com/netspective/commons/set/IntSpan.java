@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: IntSpan.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: IntSpan.java,v 1.2 2004-03-26 03:57:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
@@ -237,6 +237,54 @@ public class IntSpan implements Cloneable
                 sb.append(",");
             int lower = edges.getI(i);
             sb.append(Integer.toString(lower + 1) + "-)");
+        }
+
+        return sb.toString();
+    }
+
+    public interface ElementFormatter
+    {
+        public String getFormattedElement(int element);
+        public String getElementDelimiter();
+    }
+
+    public String getFormattedRunList(ElementFormatter formatter)
+    {
+        if (empty()) return emptyString;
+        if (universal()) return "(-)";
+
+        StringBuffer sb = new StringBuffer();
+        int i = 0;
+
+        if (negInf)
+        {
+            int upper = edges.getI(0);
+            sb.append("(-" + formatter.getFormattedElement(upper));
+            i = 1;
+        }
+
+        while (i < edges.size() - 1)
+        {
+            if (i > 0) sb.append(formatter.getElementDelimiter());
+
+            int lower = edges.getI(i);
+            int upper = edges.getI(i + 1);
+
+            if (lower + 1 == upper)
+                sb.append(formatter.getFormattedElement(upper));
+            else
+                sb.append(formatter.getFormattedElement(lower + 1) + "-" +
+                          formatter.getFormattedElement(upper));
+
+            i += 2;
+        }
+
+        if (posInf)
+        {
+            if (i > 0)
+                sb.append(",");
+            int lower = edges.getI(i);
+            sb.append(formatter.getFormattedElement(lower + 1) + "-)");
         }
 
         return sb.toString();

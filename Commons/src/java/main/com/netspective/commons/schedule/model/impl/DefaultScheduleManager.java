@@ -39,36 +39,39 @@
  */
 
 /**
- * $Id: Suite.java,v 1.10 2004-03-26 03:57:43 shahid.shah Exp $
+ * $Id: DefaultScheduleManager.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.schedule.model.impl;
 
-import com.netspective.commons.acl.AccessControlListTest;
-import com.netspective.commons.config.ConfigurationTest;
-import com.netspective.commons.value.ValueSourcesTest;
-import com.netspective.commons.xdm.DataModelSchemaTest;
+import java.util.Date;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import com.netspective.commons.schedule.model.EventSlot;
+import com.netspective.commons.schedule.model.ScheduleManager;
+import com.netspective.commons.schedule.model.ScheduleSearchParameters;
+import com.netspective.commons.schedule.model.ScheduleSearchResults;
+import com.netspective.commons.schedule.model.TemplateSlot;
+import com.netspective.commons.schedule.provider.ParticipantProvider;
 
-public class Suite
+public class DefaultScheduleManager implements ScheduleManager
 {
-    public static Test suite()
+    public ScheduleSearchResults searchSchedule(ScheduleSearchParameters parameters)
     {
-        TestSuite suite = new TestSuite();
-	    suite.addTest(com.netspective.commons.set.Suite.suite());
-	    suite.addTest(com.netspective.commons.text.Suite.suite());
-		suite.addTest(com.netspective.commons.value.Suite.suite());
-		suite.addTest(com.netspective.commons.value.source.Suite.suite());
-		suite.addTest(com.netspective.commons.value.exception.Suite.suite());
-	    suite.addTest(com.netspective.commons.io.Suite.suite());
-	    suite.addTest(com.netspective.commons.report.Suite.suite());
-	    suite.addTest(com.netspective.commons.schedule.Suite.suite());
-        suite.addTest(new TestSuite(DataModelSchemaTest.class));
-        suite.addTest(new TestSuite(ValueSourcesTest.class));
-        suite.addTest(new TestSuite(ConfigurationTest.class));
-	    suite.addTest(new TestSuite(AccessControlListTest.class));
-        return suite;
+        return null;
+    }
+
+    public EventSlot[] getEvents(ParticipantProvider participants)
+    {
+        return new EventSlot[0];
+    }
+
+    public EventSlot createEventSlot(Date date, boolean available)
+    {
+        return new DefaultEventSlot(date, available);
+    }
+
+    public TemplateSlot createTemplateSlot(Date date, boolean available)
+    {
+        return new DefaultTemplateSlot(date, available);
     }
 }

@@ -39,36 +39,67 @@
  */
 
 /**
- * $Id: Suite.java,v 1.10 2004-03-26 03:57:43 shahid.shah Exp $
+ * $Id: DateSet.java,v 1.1 2004-03-26 03:57:43 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.schedule;
 
-import com.netspective.commons.acl.AccessControlListTest;
-import com.netspective.commons.config.ConfigurationTest;
-import com.netspective.commons.value.ValueSourcesTest;
-import com.netspective.commons.xdm.DataModelSchemaTest;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import com.netspective.commons.set.IntSpan;
 
-public class Suite
+public class DateSet
 {
-    public static Test suite()
+    private IntSpan daysSet = new IntSpan();
+
+    public DateSet()
     {
-        TestSuite suite = new TestSuite();
-	    suite.addTest(com.netspective.commons.set.Suite.suite());
-	    suite.addTest(com.netspective.commons.text.Suite.suite());
-		suite.addTest(com.netspective.commons.value.Suite.suite());
-		suite.addTest(com.netspective.commons.value.source.Suite.suite());
-		suite.addTest(com.netspective.commons.value.exception.Suite.suite());
-	    suite.addTest(com.netspective.commons.io.Suite.suite());
-	    suite.addTest(com.netspective.commons.report.Suite.suite());
-	    suite.addTest(com.netspective.commons.schedule.Suite.suite());
-        suite.addTest(new TestSuite(DataModelSchemaTest.class));
-        suite.addTest(new TestSuite(ValueSourcesTest.class));
-        suite.addTest(new TestSuite(ConfigurationTest.class));
-	    suite.addTest(new TestSuite(AccessControlListTest.class));
-        return suite;
+    }
+
+    public void insert(Calendar calendar, Date date)
+    {
+        insert(CalendarUtils.getInstance().getJulianDay(calendar, date));
+    }
+
+    public void insert(int julianDay)
+    {
+        daysSet.insert(julianDay);
+    }
+
+    public String toString(Calendar calendar, DateFormat format, String delim)
+    {
+        return daysSet.getFormattedRunList(new ElementDateFormatter(Calendar.getInstance(), format, delim));
+    }
+
+    public String toString()
+    {
+        return toString(Calendar.getInstance(), DateFormat.getDateInstance(), ", ");
+    }
+
+    private class ElementDateFormatter implements IntSpan.ElementFormatter
+    {
+        private Calendar calendar;
+        private DateFormat format;
+        private String delim;
+
+        public ElementDateFormatter(Calendar calendar, DateFormat format, String delim)
+        {
+            this.calendar = calendar;
+            this.format = format;
+            this.delim = delim;
+        }
+
+        public String getElementDelimiter()
+        {
+            return delim;
+        }
+
+        public String getFormattedElement(int element)
+        {
+            Date date = CalendarUtils.getInstance().getDateFromJulianDay(element, calendar);
+            return format.format(date);
+        }
     }
 }
