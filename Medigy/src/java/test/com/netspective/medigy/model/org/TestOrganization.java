@@ -72,17 +72,13 @@ public class TestOrganization  extends TestCase
         final Organization org2 = new Organization();
         org2.setOrganizationName("Acme Subsidiary");
 
-        // TODO: How to get the seed data back out?
         Criteria criteria = HibernateUtil.getSession().createCriteria(PartyRoleType.class);
-        criteria.add(Expression.eq("label", "Subsidiary"));
+        criteria.add(Expression.eq("code", PartyRoleType.Cache.SUBSIDIARY.getCode()));
         final PartyRoleType subsidiaryRoleType = (PartyRoleType) criteria.uniqueResult(); // we know that its unique for now
-        assertNotNull(subsidiaryRoleType);
-        assertEquals(subsidiaryRoleType.getLabel(), "Subsidiary");
 
         criteria = HibernateUtil.getSession().createCriteria(PartyRoleType.class);
-        criteria.add(Expression.eq("label", "Parent Organization"));
+        criteria.add(Expression.eq("code", PartyRoleType.Cache.PARENT_ORG.getCode()));
         final PartyRoleType parentRoleType = (PartyRoleType) criteria.uniqueResult(); // we know that its unique for now
-        assertEquals(parentRoleType.getLabel(), "Parent Organization");
 
         HibernateUtil.beginTransaction();
 
@@ -91,7 +87,6 @@ public class TestOrganization  extends TestCase
 
         HibernateUtil.commitTransaction();
         //HibernateUtil.closeSession();
-
 
         final Organization parentOrg = (Organization) HibernateUtil.getSession().load(Organization.class,
                 org1.getOrgId());
@@ -117,11 +112,9 @@ public class TestOrganization  extends TestCase
         childOrg.getPartyRoles().add(role2);
         HibernateUtil.getSession().update(childOrg);
 
-        PartyRelationshipType relType = new PartyRelationshipType();
-        relType.setLabel("Organization Relationship");
-        relType.setCode("ORG_REL");
-        relType.setParty(parentOrg);
-        HibernateUtil.getSession().save(relType);
+        final Criteria relCriteria =  HibernateUtil.getSession().createCriteria(PartyRelationshipType.class);
+        relCriteria.add(Expression.eq("code", PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getCode()));
+        PartyRelationshipType relType = (PartyRelationshipType) relCriteria.uniqueResult();
 
         PartyRelationship rel = new PartyRelationship();
         rel.setRelationshipType(relType);
@@ -161,7 +154,6 @@ public class TestOrganization  extends TestCase
         assertEquals(1, childOrgRoleRelationships.size());
 
         // verify that the two org's respective roles are involved in the same relationship?
-        // TODO: this is getting confusing and comparing the code is not good enough
         assertEquals(((PartyRelationship)parentOrgRoleRelationships.toArray()[0]).getRelationshipType().getCode(),
                 ((PartyRelationship)childOrgRoleRelationships.toArray()[0]).getRelationshipType().getCode()) ;
 
