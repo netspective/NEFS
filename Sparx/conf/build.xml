@@ -32,7 +32,7 @@ Setup instructions:
         <property name="project.lib.dir" value="${project.home}/lib"/>
         <property name="project.lib.redist.dir" value="${project.lib.dir}/redist"/>
 
-	    <property name="tools.home" value="../../tools"/>
+        <property name="tools.home" value="../../tools"/>
 
         <property name="downloads.path" value="../../webapps/www.netspective.com/resources/downloads"/>
 
@@ -131,7 +131,7 @@ Setup instructions:
         <javac srcdir="${project.src.test.home}" destdir="${project.build.test.classes.dir}"
             debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
             <classpath>
-            	<pathelement location="${project.build.main.classes.dir}"/>
+                <pathelement location="${project.build.main.classes.dir}"/>
             </classpath>
         </javac>
     </target>
@@ -139,33 +139,33 @@ Setup instructions:
     <!-- ==================== Documentation targets  ======================= -->
 
     <target name="javadoc-html" depends="init">
-        <delete dir="${project.documents.javadoc-html.home}" />
-        <mkdir dir="${project.documents.javadoc-html.home}" />
+        <delete dir="${project.documents.javadoc-html.home}"/>
+        <mkdir dir="${project.documents.javadoc-html.home}"/>
         <javadoc packagenames="com.netspective.*"
-             sourcepath="${project.src.main.home}"
-             classpathref="project.class.path"
-             destdir="${project.documents.javadoc-html.home}"
-             author="true"
-             version="true"
-             use="true"
-             windowtitle="Netspective Frameworks API"
-             doctitle="Netspective Frameworks API Documentation"
-             bottom="Copyright &#169; 2003 Netspective. All Rights Reserved."
-        />
+            sourcepath="${project.src.main.home}"
+            classpathref="project.class.path"
+            destdir="${project.documents.javadoc-html.home}"
+            author="true"
+            version="true"
+            use="true"
+            windowtitle="Netspective Frameworks API"
+            doctitle="Netspective Frameworks API Documentation"
+            bottom="Copyright &#169; 2003 Netspective. All Rights Reserved."
+            />
     </target>
 
     <target name="javadoc-xml" depends="init">
-        <delete dir="${project.documents.javadoc-xml.home}" />
-        <mkdir dir="${project.documents.javadoc-xml.home}" />
+        <delete dir="${project.documents.javadoc-xml.home}"/>
+        <mkdir dir="${project.documents.javadoc-xml.home}"/>
         <javadoc packagenames="com.netspective.*"
-             sourcepath="${project.src.main.home}"
-             classpathref="project.class.path"
-             destdir="${project.documents.javadoc-xml.home}"
-             author="true"
-             version="true"
-             docletpathref="project.class.path"
-             doclet="com.sun.xml.XmlDoclet"
-        />
+            sourcepath="${project.src.main.home}"
+            classpathref="project.class.path"
+            destdir="${project.documents.javadoc-xml.home}"
+            author="true"
+            version="true"
+            docletpathref="project.class.path"
+            doclet="com.sun.xml.XmlDoclet"
+            />
     </target>
 
     <!-- ==================== Test targets  ======================= -->
@@ -184,95 +184,95 @@ Setup instructions:
         </junit>
     </target>
 
-	<!-- ==================== Clover-specific targets  ======================= -->
+    <!-- ==================== Clover-specific targets  ======================= -->
 
-	<taskdef resource="clovertasks"/>
+    <taskdef resource="clovertasks"/>
 
-	<target name="init-clover" depends="setup-project-properties">
-	    <property name="tools.clover.home" value="${tools.home}/clover"/>
-	    <property name="tools.clover.db.home" value="${tools.clover.home}/db/Axiom"/>
-	    <property name="tools.clover.db.history" value="${tools.clover.db.home}/history"/>
-	    <property name="tools.clover.reports.home" value="${project.documents.home}/clover-reports"/>
-	    <property name="tools.clover.reports.html" value="${tools.clover.reports.home}/html"/>
-	    <property name="tools.clover.reports.history" value="${tools.clover.reports.home}/history"/>
-	    <property name="tools.clover.reports.xml" value="${tools.clover.reports.home}/xml"/>
-	    <property name="tools.clover.reports.pdf" value="${tools.clover.reports.home}"/>
+    <target name="init-clover" depends="setup-project-properties">
+        <property name="tools.clover.home" value="${tools.home}/clover"/>
+        <property name="tools.clover.db.home" value="${tools.clover.home}/db/Axiom"/>
+        <property name="tools.clover.db.history" value="${tools.clover.db.home}/history"/>
+        <property name="tools.clover.reports.home" value="${project.documents.home}/clover-reports"/>
+        <property name="tools.clover.reports.html" value="${tools.clover.reports.home}/html"/>
+        <property name="tools.clover.reports.history" value="${tools.clover.reports.home}/history"/>
+        <property name="tools.clover.reports.xml" value="${tools.clover.reports.home}/xml"/>
+        <property name="tools.clover.reports.pdf" value="${tools.clover.reports.home}"/>
 
-	    <mkdir dir="${tools.clover.home}"/>
-	    <mkdir dir="${tools.clover.db.home}"/>
-	    <mkdir dir="${tools.clover.db.history}"/>
-	    <mkdir dir="${tools.clover.reports.home}"/>
-	    <mkdir dir="${tools.clover.reports.html}"/>
-	    <mkdir dir="${tools.clover.reports.history}"/>
-	    <mkdir dir="${tools.clover.reports.xml}"/>
-	    <mkdir dir="${tools.clover.reports.pdf}"/>
+        <mkdir dir="${tools.clover.home}"/>
+        <mkdir dir="${tools.clover.db.home}"/>
+        <mkdir dir="${tools.clover.db.history}"/>
+        <mkdir dir="${tools.clover.reports.home}"/>
+        <mkdir dir="${tools.clover.reports.html}"/>
+        <mkdir dir="${tools.clover.reports.history}"/>
+        <mkdir dir="${tools.clover.reports.xml}"/>
+        <mkdir dir="${tools.clover.reports.pdf}"/>
 
-	    <clover-setup initstring="${tools.clover.db.home}/code-coverage.db">
-	        <files>
-	            <exclude name="**/*Test.java"/>
-	            <exclude name="**/*Suite.java"/>
-	            <exclude name="**/Suite.java"/>
-	            <exclude name="**/ant//**"/>
-		        <exclude name="**/app/dal//**"/>
-	        </files>
-	    </clover-setup>
-	</target>
+        <clover-setup initstring="${tools.clover.db.home}/code-coverage.db">
+            <files>
+                <exclude name="**/*Test.java"/>
+                <exclude name="**/*Suite.java"/>
+                <exclude name="**/Suite.java"/>
+                <exclude name="**/ant//**"/>
+                <exclude name="**/app/dal//**"/>
+            </files>
+        </clover-setup>
+    </target>
 
-	<target name="clover-swing" depends="init-clover">
-	    <clover-view/>
-	</target>
+    <target name="clover-swing" depends="init-clover">
+        <clover-view/>
+    </target>
 
-	<target name="clover-html" depends="init-clover">
-	    <!-- generate a historypoint for the current coverage -->
-	    <clover-historypoint historyDir="${tools.clover.db.history}"/>
+    <target name="clover-html" depends="init-clover">
+        <!-- generate a historypoint for the current coverage -->
+        <clover-historypoint historyDir="${tools.clover.db.history}"/>
 
-	    <clover-report>
-	        <!-- generate a current report -->
-	        <current outfile="${tools.clover.reports.html}">
-	            <format type="html"/>
-	        </current>
+        <clover-report>
+            <!-- generate a current report -->
+            <current outfile="${tools.clover.reports.html}">
+                <format type="html"/>
+            </current>
 
-	        <!-- generate a historical report -->
-	        <historical outfile="${tools.clover.reports.history}" historyDir="${tools.clover.db.history}">
-	            <format type="html"/>
-	        </historical>
-	    </clover-report>
-	</target>
+            <!-- generate a historical report -->
+            <historical outfile="${tools.clover.reports.history}" historyDir="${tools.clover.db.history}">
+                <format type="html"/>
+            </historical>
+        </clover-report>
+    </target>
 
-	<target name="clover-xml" depends="init-clover">
-	    <clover-report>
-	        <current outfile="${tools.clover.reports.xml}/coverage.xml">
-	            <format type="xml"/>
-	        </current>
-	    </clover-report>
-	</target>
+    <target name="clover-xml" depends="init-clover">
+        <clover-report>
+            <current outfile="${tools.clover.reports.xml}/coverage.xml">
+                <format type="xml"/>
+            </current>
+        </clover-report>
+    </target>
 
-	<target name="clover-pdf" depends="init-clover">
-	    <clover-report>
-	        <current outfile="${tools.clover.reports.pdf}/coverage.pdf">
-	            <format type="pdf"/>
-	        </current>
-	    </clover-report>
-	</target>
+    <target name="clover-pdf" depends="init-clover">
+        <clover-report>
+            <current outfile="${tools.clover.reports.pdf}/coverage.pdf">
+                <format type="pdf"/>
+            </current>
+        </clover-report>
+    </target>
 
-	<target name="clover-log" depends="init-clover">
-	    <clover-log/>
-	</target>
+    <target name="clover-log" depends="init-clover">
+        <clover-log/>
+    </target>
 
-	<target name="clover-test" depends="clover-compile-test">
-	    <junit filtertrace="yes" fork="yes">
-	        <classpath>
-	            <path refid="project.class.path"/>
-	            <pathelement location="${project.build.main.classes.dir}"/>
-	            <pathelement location="${project.build.test.classes.dir}"/>
-	        </classpath>
+    <target name="clover-test" depends="clover-compile-test">
+        <junit filtertrace="yes" fork="yes">
+            <classpath>
+                <path refid="project.class.path"/>
+                <pathelement location="${project.build.main.classes.dir}"/>
+                <pathelement location="${project.build.test.classes.dir}"/>
+            </classpath>
 
-	        <formatter type="plain" usefile="false"/>
+            <formatter type="plain" usefile="false"/>
 
-	        <test name="${project.package.base}.Suite"/>
-	    </junit>
+            <test name="${project.package.base}.Suite"/>
+        </junit>
 
-	</target>
+    </target>
 
     <!-- ==================== Kitting targets  ======================= -->
 
@@ -307,15 +307,15 @@ Setup instructions:
 
     <target name="all" depends="init,compile-main,javadoc-xml,jar"/>
 
-	<target name="clover-compile-main" depends="init-clover,init,compile-main,jar"/>
-	<target name="clover-compile-test" depends="clover-compile-main">
-		<javac srcdir="${project.src.test.home}" destdir="${project.build.test.classes.dir}"
-		    debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
-		    <classpath>
-			    <pathelement location="${project.build.main.classes.dir}"/>
-		    </classpath>
-		</javac>
-	</target>
+    <target name="clover-compile-main" depends="init-clover,init,compile-main,jar"/>
+    <target name="clover-compile-test" depends="clover-compile-main">
+        <javac srcdir="${project.src.test.home}" destdir="${project.build.test.classes.dir}"
+            debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
+            <classpath>
+                <pathelement location="${project.build.main.classes.dir}"/>
+            </classpath>
+        </javac>
+    </target>
 
     <target name="change-log" depends="init">
         <property name="change-log.dest.file" value="${project.home}/${project.change-log.name}.xml"/>

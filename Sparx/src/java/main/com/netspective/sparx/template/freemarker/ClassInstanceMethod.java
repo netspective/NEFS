@@ -42,7 +42,7 @@ public class ClassInstanceMethod implements TemplateMethodModel
 {
     public Object exec(List args) throws TemplateModelException
     {
-        if (args.size() != 1)
+        if(args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expect name of class.");
 
         String fullyQualifiedClassName = (String) args.get(0);
@@ -51,7 +51,7 @@ public class ClassInstanceMethod implements TemplateMethodModel
         {
             cls = Class.forName(fullyQualifiedClassName);
         }
-        catch (ClassNotFoundException e)
+        catch(ClassNotFoundException e)
         {
             throw new TemplateModelException("Provided class '" + fullyQualifiedClassName + "' not found", e);
         }
@@ -60,11 +60,11 @@ public class ClassInstanceMethod implements TemplateMethodModel
         {
             return BeansWrapper.getDefaultInstance().wrap(cls.newInstance());
         }
-        catch (InstantiationException e)
+        catch(InstantiationException e)
         {
             throw new TemplateModelException("Unable to construct " + cls, e);
         }
-        catch (IllegalAccessException e)
+        catch(IllegalAccessException e)
         {
             throw new TemplateModelException("Unable to construct " + cls, e);
         }

@@ -132,7 +132,7 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
 
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        if (root == null)
+        if(root == null)
         {
             writer.write("No root path specified.");
             return;
@@ -142,14 +142,14 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
 
         StringBuffer activePath = new StringBuffer(rootPath.getAbsolutePath());
         String relativePath = nc.getActivePathFindResults().getUnmatchedPath(0);
-        if (relativePath != null && relativePath.length() > 0)
+        if(relativePath != null && relativePath.length() > 0)
             activePath.append(relativePath);
 
         File activeFile = new File(activePath.toString());
-        if (activeFile.isDirectory())
+        if(activeFile.isDirectory())
             activeFile = new File(activeFile.getAbsolutePath() + "/" + indexFile.getTextValue(nc));
 
-        if (!activeFile.exists())
+        if(!activeFile.exists())
         {
             writer.write(MessageFormat.format(getFileNotFoundMessage(), new Object[]{activeFile.getAbsolutePath()}));
             return;
@@ -160,21 +160,21 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
 
         try
         {
-            if (substitutions.size() > 0)
+            if(substitutions.size() > 0)
             {
                 final Perl5Util perl5Util = new Perl5Util();
                 final String[] regExs = new String[substitutions.size()];
 
-                for (int i = 0; i < substitutions.size(); i++)
+                for(int i = 0; i < substitutions.size(); i++)
                 {
                     Substitute substitute = (Substitute) substitutions.get(i);
                     regExs[i] = substitute.getPerlRegEx().getTextValue(nc);
                 }
 
                 String rec;
-                while ((rec = br.readLine()) != null)
+                while((rec = br.readLine()) != null)
                 {
-                    for (int i = 0; i < regExs.length; i++)
+                    for(int i = 0; i < regExs.length; i++)
                         rec = perl5Util.substitute(regExs[i], rec);
                     writer.write(rec);
                     writer.write("\n");
@@ -183,7 +183,7 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
             else
             {
                 int c;
-                while ((c = br.read()) != -1)
+                while((c = br.read()) != -1)
                     writer.write(c);
             }
         }

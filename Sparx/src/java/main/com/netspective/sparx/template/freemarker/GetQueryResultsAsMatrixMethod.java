@@ -54,7 +54,7 @@ public class GetQueryResultsAsMatrixMethod implements TemplateMethodModel
 
     public Object exec(List args) throws TemplateModelException
     {
-        if (args.size() < 1)
+        if(args.size() < 1)
             throw new TemplateModelException("Wrong arguments: expected query identifier.");
 
         Environment env = Environment.getCurrentEnvironment();
@@ -63,7 +63,7 @@ public class GetQueryResultsAsMatrixMethod implements TemplateMethodModel
         {
             model = (StringModel) env.getDataModel().get("vc");
         }
-        catch (TemplateModelException e)
+        catch(TemplateModelException e)
         {
             log.error(e);
         }
@@ -73,14 +73,14 @@ public class GetQueryResultsAsMatrixMethod implements TemplateMethodModel
         String queryName = (String) args.get(0);
 
         Query query = vc.getSqlManager().getQuery(queryName);
-        if (query == null)
+        if(query == null)
             return null;
 
         Object[] params = null;
-        if (args.size() > 1)
+        if(args.size() > 1)
         {
             params = new Object[args.size() - 1];
-            for (int i = 1; i < args.size(); i++)
+            for(int i = 1; i < args.size(); i++)
                 params[i - 1] = args.get(i);
         }
 
@@ -88,16 +88,16 @@ public class GetQueryResultsAsMatrixMethod implements TemplateMethodModel
         {
             Object[][] matrix = null;
             QueryResultSet qrs = query.execute(vc, params, false);
-            if (qrs != null)
+            if(qrs != null)
             {
                 matrix = ResultSetUtils.getInstance().getResultSetRowsAsMatrix(qrs.getResultSet());
                 qrs.close(true);
             }
-            if (matrix == null)
+            if(matrix == null)
                 matrix = new Object[0][0];
             return BeansWrapper.getDefaultInstance().wrap(matrix);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new TemplateModelException(e);
         }

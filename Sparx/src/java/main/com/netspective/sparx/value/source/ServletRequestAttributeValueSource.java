@@ -48,10 +48,10 @@ public class ServletRequestAttributeValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"request-attr", "request-attribute"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides access to HTTP servlet request attributes.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("attribute-name", true, "The name of the request attribute.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("attribute-name", true, "The name of the request attribute.")
+                                                                                              });
 
     private String attributeName;
 
@@ -80,14 +80,14 @@ public class ServletRequestAttributeValueSource extends AbstractValueSource
     {
         final ServletValueContext svc = (ServletValueContext)
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
-                vc);
+                 vc);
 
         return new AbstractValue()
         {
             public String getTextValue()
             {
                 return svc.getRequest().getAttribute(attributeName) != null
-                        ? svc.getRequest().getAttribute(attributeName).toString() : null;
+                       ? svc.getRequest().getAttribute(attributeName).toString() : null;
             }
 
             public void setValue(Object value) throws ValueException
@@ -113,25 +113,25 @@ public class ServletRequestAttributeValueSource extends AbstractValueSource
     {
         final ServletValueContext svc = (ServletValueContext)
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
-                vc);
+                 vc);
         Object values = svc.getRequest().getAttribute(attributeName);
-        if (values instanceof String[])
+        if(values instanceof String[])
             return (String[]) values;
-        else if (values instanceof int[])
+        else if(values instanceof int[])
         {
             int[] ints = (int[]) values;
             String[] tmp = new String[ints.length];
-            for (int i = 0; i < ints.length; i++)
+            for(int i = 0; i < ints.length; i++)
             {
                 tmp[i] = Integer.toString(ints[i]);
             }
             return tmp;
         }
-        else if (values instanceof float[])
+        else if(values instanceof float[])
         {
             float[] floatList = (float[]) values;
             String[] tmp = new String[floatList.length];
-            for (int i = 0; i < floatList.length; i++)
+            for(int i = 0; i < floatList.length; i++)
             {
                 tmp[i] = Float.toString(floatList[i]);
             }

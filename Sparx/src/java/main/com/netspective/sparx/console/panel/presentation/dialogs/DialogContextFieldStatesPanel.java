@@ -129,7 +129,7 @@ public class DialogContextFieldStatesPanel extends DialogDetailPanel
             DialogField activeField = activeRow.getField();
             DialogField.State activeFieldState = selectedDialog.getDialogContext().getFieldStates().getState(activeField);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:
@@ -137,23 +137,23 @@ public class DialogContextFieldStatesPanel extends DialogDetailPanel
                     return super.getActiveRowColumnData(columnIndex, flags);
 
                 case 3:
-                    if (activeFieldState != null)
+                    if(activeFieldState != null)
                         return activeFieldState.getStateFlags().getFlagsText();
 
                 case 4:
-                    if (activeFieldState != null)
+                    if(activeFieldState != null)
                     {
                         DialogFieldValue value = activeFieldState.getValue();
                         // use the getListValue() since the toString() of Collection types
                         // return the array in square brackets
-                        if (value.isListValue())
+                        if(value.isListValue())
                             return value.getListValue();
                         else
                             return value.getTextValue();
                     }
 
                 case 5:
-                    if (activeFieldState != null)
+                    if(activeFieldState != null)
                         return activeFieldState.getAdjacentAreaValue();
 
                 default:

@@ -130,11 +130,11 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             super();
 
             QueryDefinitions customQueryDefns = sqlManager.getQueryDefns();
-            if (customQueryDefns.size() > 0)
+            if(customQueryDefns.size() > 0)
             {
                 rows.add("Custom");
                 Set sortedNames = new TreeSet(customQueryDefns.getNames());
-                for (Iterator i = sortedNames.iterator(); i.hasNext();)
+                for(Iterator i = sortedNames.iterator(); i.hasNext();)
                 {
                     String queryDefnName = (String) i.next();
                     rows.add(customQueryDefns.get(queryDefnName));
@@ -142,15 +142,15 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             }
 
             Schemas schemas = sqlManager.getSchemas();
-            for (int i = 0; i < schemas.size(); i++)
+            for(int i = 0; i < schemas.size(); i++)
             {
                 Schema schema = schemas.get(i);
                 QueryDefinitions tableQueryDefns = schema.getQueryDefinitions();
-                if (tableQueryDefns.size() > 0)
+                if(tableQueryDefns.size() > 0)
                 {
                     rows.add("Schema '" + schema.getName() + "'");
                     Set sortedNames = new TreeSet(tableQueryDefns.getNames());
-                    for (Iterator iter = sortedNames.iterator(); iter.hasNext();)
+                    for(Iterator iter = sortedNames.iterator(); iter.hasNext();)
                     {
                         String queryDefnName = (String) iter.next();
                         rows.add(tableQueryDefns.get(queryDefnName));
@@ -195,7 +195,7 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
         {
             activeRow = rowNum;
             Object item = rows.get(activeRow);
-            if (item instanceof QueryDefinition)
+            if(item instanceof QueryDefinition)
             {
                 activeRowHeading = null;
                 activeRowQueryDefn = (QueryDefinition) item;
@@ -209,7 +209,7 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -218,21 +218,21 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            if (activeRowHeading != null)
+            if(activeRowHeading != null)
             {
-                if (columnIndex == 0)
+                if(columnIndex == 0)
                     return activeRowHeading;
                 else
                     return null;
             }
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     StringBuffer href = new StringBuffer("detail?");
-                    if (activeRowQueryDefn instanceof TableQueryDefinition)
+                    if(activeRowQueryDefn instanceof TableQueryDefinition)
                         href.append(QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN_SOURCE + "=" + "schema," + ((TableQueryDefinition) activeRowQueryDefn).getOwner().getSchema().getName() +
-                                "&" + QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN + '=' + activeRowQueryDefn.getName());
+                                    "&" + QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN + '=' + activeRowQueryDefn.getName());
                     else
                         href.append(QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN + '=' + activeRowQueryDefn.getName());
 

@@ -104,8 +104,6 @@ public class DialogFieldConditionalAction implements TemplateConsumer
 
     /**
      * Gets the template cosumer object
-     *
-     * @return
      */
     public TemplateConsumerDefn getTemplateConsumerDefn()
     {
@@ -114,8 +112,6 @@ public class DialogFieldConditionalAction implements TemplateConsumer
 
     /**
      * Registers a template for consumption
-     *
-     * @param template
      */
     public void registerTemplateConsumption(Template template)
     {
@@ -132,9 +128,9 @@ public class DialogFieldConditionalAction implements TemplateConsumer
 
     public boolean isValid(DialogContext dc)
     {
-        if (isPartnerRequired())
+        if(isPartnerRequired())
         {
-            if (partnerFieldName == null || partnerFieldName.length() == 0)
+            if(partnerFieldName == null || partnerFieldName.length() == 0)
             {
                 sourceField.invalidate(dc, "Conditional " + this + " has no associated 'partner' (field).");
                 partnerFieldName = null;
@@ -178,7 +174,7 @@ public class DialogFieldConditionalAction implements TemplateConsumer
     public void setPartnerField(DialogField value)
     {
         partnerField = value;
-        if (partnerField != null)
+        if(partnerField != null)
             partnerField.getDependentConditions().addAction(this);
     }
 

@@ -95,8 +95,6 @@ public class DialogFieldPopup
 
     /**
      * Sets the  javascript expression that is evaluated before allowing the action
-     *
-     * @param preActionScript
      */
     public void setPreActionScript(String preActionScript)
     {
@@ -148,8 +146,6 @@ public class DialogFieldPopup
     /**
      * Sets the source path for the image that is displayed with the
      * popup's link.
-     *
-     * @param imageSrc
      */
     public void setImageSrc(ValueSource imageSrc)
     {
@@ -200,8 +196,6 @@ public class DialogFieldPopup
 
     /**
      * Sets the display style of the popup action
-     *
-     * @param style
      */
     public void setStyle(Style style)
     {
@@ -220,8 +214,6 @@ public class DialogFieldPopup
 
     /**
      * Sets the text associated with the display style
-     *
-     * @param displayText
      */
     public void setStyleText(ValueSource displayText)
     {

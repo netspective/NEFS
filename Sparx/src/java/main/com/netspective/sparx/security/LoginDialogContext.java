@@ -52,7 +52,7 @@ public class LoginDialogContext extends DialogContext
         LoginDialog loginDialog = (LoginDialog) aDialog;
         DialogField.State passwordField = getFieldStates().getState(loginDialog.getPasswordFieldName(), null);
         hasEncryptedPassword = passwordField == null
-                ? false : (passwordField.getField().getClientEncryption() != null);
+                               ? false : (passwordField.getField().getClientEncryption() != null);
     }
 
     public LoginDialog getLoginDialog()
@@ -90,8 +90,8 @@ public class LoginDialogContext extends DialogContext
         String rememberedUserId = loginManager.getRememberedUserId(this);
         String rememberedEncPassword = loginManager.getRememberedEncryptedPassword(this);
 
-        if (rememberedUserId != null && rememberedEncPassword != null &&
-                rememberedUserId.length() > 0 && rememberedEncPassword.length() > 0)
+        if(rememberedUserId != null && rememberedEncPassword != null &&
+           rememberedUserId.length() > 0 && rememberedEncPassword.length() > 0)
         {
             DialogFieldStates states = getFieldStates();
             LoginDialog loginDialog = (LoginDialog) getDialog();

@@ -64,17 +64,15 @@ public class DialogListCommand extends CommandListCommand
                 PAGE_COMMAND_REQUEST_PARAM_NAME
             };
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Displays a list of command items such as dialogs, queries, and query definitions to execute.",
-            new CommandDocumentation.Parameter[]
-            {
-                new CommandDocumentation.Parameter("dialog-pkg-name", true, "The name of the dialog package"),
-            });
+                                                                                      new CommandDocumentation.Parameter[]
+                                                                                      {
+                                                                                          new CommandDocumentation.Parameter("dialog-pkg-name", true, "The name of the dialog package"),
+                                                                                      });
 
     private String pkgName;
 
     /**
      * Gets the list of command aliases
-     *
-     * @return
      */
     public static String[] getIdentifiers()
     {
@@ -83,8 +81,6 @@ public class DialogListCommand extends CommandListCommand
 
     /**
      * Gets the documentation object
-     *
-     * @return
      */
     public static CommandDocumentation getDocumentation()
     {
@@ -93,8 +89,6 @@ public class DialogListCommand extends CommandListCommand
 
     /**
      * Gets the command parameters
-     *
-     * @return
      */
     public String getParameters()
     {
@@ -106,8 +100,6 @@ public class DialogListCommand extends CommandListCommand
 
     /**
      * Sets the command parameters
-     *
-     * @param params
      */
     public void setParameters(StringTokenizer params)
     {
@@ -116,7 +108,7 @@ public class DialogListCommand extends CommandListCommand
 
     public HtmlPanelValueContext getPanelContext(HttpServletValueContext vc)
     {
-        if (getPanel() == null)
+        if(getPanel() == null)
         {
             // need a panel instance so that a context can be passed to the skin.
             HtmlCommandPanel panel = new HtmlCommandPanel();
@@ -125,7 +117,7 @@ public class DialogListCommand extends CommandListCommand
             panel.setFrame(frame);
 
             return new BasicHtmlPanelValueContext(vc.getServlet(), vc.getRequest(),
-                    vc.getResponse(), panel);
+                                                  vc.getResponse(), panel);
         }
         else
             return super.getPanelContext(vc);
@@ -135,7 +127,7 @@ public class DialogListCommand extends CommandListCommand
     {
         List dialogs = vc.getDialogsManager().getDialogs(pkgName);
         List cmdItems = new ArrayList();
-        for (int i = 0; i < dialogs.size(); i++)
+        for(int i = 0; i < dialogs.size(); i++)
         {
             Dialog dialog = (Dialog) dialogs.get(i);
             Command dCommand = Commands.getInstance().getCommand(DialogCommand.IDENTIFIERS[0], dialog.getQualifiedName());

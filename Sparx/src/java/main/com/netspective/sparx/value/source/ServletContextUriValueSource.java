@@ -49,10 +49,10 @@ public class ServletContextUriValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"servlet-context-uri"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Creates a URI relative to the servlet context root.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("relative-path", true, "The relative path of the URI.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("relative-path", true, "The relative path of the URI.")
+                                                                                              });
 
     public final int URITYPE_ROOT = 0;
     public final int URITYPE_ACTIVE_SERVLET = 1;
@@ -77,15 +77,15 @@ public class ServletContextUriValueSource extends AbstractValueSource
         super.initialize(spec);
         String relativePath = spec.getParams();
         type = URITYPE_ROOT;
-        if (relativePath.equals("/"))
+        if(relativePath.equals("/"))
             type = URITYPE_ROOT;
-        else if (relativePath.equals("active-servlet"))
+        else if(relativePath.equals("active-servlet"))
             type = URITYPE_ACTIVE_SERVLET;
-        else if (relativePath.equals("server-root"))
+        else if(relativePath.equals("server-root"))
             type = URITYPE_SERVER_ROOT;
         else
         {
-            if (relativePath.startsWith("/"))
+            if(relativePath.startsWith("/"))
                 type = URITYPE_CUSTOM_FROM_ROOT;
             else
                 type = URITYPE_CUSTOM_FROM_SERVLET;
@@ -101,11 +101,11 @@ public class ServletContextUriValueSource extends AbstractValueSource
     {
         final HttpServletValueContext svc = (HttpServletValueContext)
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
-                vc);
+                 vc);
 
         HttpServletRequest request = svc.getHttpRequest();
         String contextPath = request.getContextPath();
-        switch (type)
+        switch(type)
         {
             case URITYPE_ROOT:
                 return new GenericValue(contextPath);

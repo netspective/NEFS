@@ -72,7 +72,7 @@ public class QueryDefnSelectsPanel extends QueryDefnDetailPanel
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         QueryDefnDetailPanel.SelectedQueryDefinition selectedQueryDefn = getSelectedQueryDefn(nc);
-        if (selectedQueryDefn.getDataSource() != null)
+        if(selectedQueryDefn.getDataSource() != null)
             return selectedQueryDefn.getDataSource();
         else
             return new QueryDefnSelectsDataSource(selectedQueryDefn);
@@ -93,7 +93,7 @@ public class QueryDefnSelectsPanel extends QueryDefnDetailPanel
         {
             super();
             queryDefnSelects = selectedQueryDefn.getQueryDefn().getSelects();
-            if (queryDefnSelects != null)
+            if(queryDefnSelects != null)
                 lastRow = queryDefnSelects.size() - 1;
             else
                 lastRow = -1;
@@ -126,7 +126,7 @@ public class QueryDefnSelectsPanel extends QueryDefnDetailPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -137,7 +137,7 @@ public class QueryDefnSelectsPanel extends QueryDefnDetailPanel
         {
             QueryDefnSelect queryDefnSelect = queryDefnSelects.get(activeRow);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return queryDefnSelect.getQualifiedName();

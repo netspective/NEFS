@@ -49,10 +49,10 @@ public class EncryptParameterValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"encrypt"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Encrypts a value that will be decrypted by the EncryptedParametersFilter.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("plain-text", true, "The text value to encrypt.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("plain-text", true, "The text value to encrypt.")
+                                                                                              });
 
     private String text;
 
@@ -81,7 +81,7 @@ public class EncryptParameterValueSource extends AbstractValueSource
     {
         final HttpServletValueContext svc = (HttpServletValueContext)
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
-                vc);
+                 vc);
         final String key = EncryptedParametersFilter.getUserKey(svc.getHttpRequest());
 
         return new AbstractValue()

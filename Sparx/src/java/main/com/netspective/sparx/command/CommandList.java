@@ -48,8 +48,6 @@ public class CommandList
 
     /**
      * Creates a command list item
-     *
-     * @return
      */
     public CommandListItem createItem()
     {
@@ -58,8 +56,6 @@ public class CommandList
 
     /**
      * Adds a command list item
-     *
-     * @param item
      */
     public void addItem(CommandListItem item)
     {
@@ -82,10 +78,6 @@ public class CommandList
 
     /**
      * Gets a command item defined in the list by its index
-     *
-     * @param i
-     *
-     * @return
      */
     public CommandListItem get(int i)
     {

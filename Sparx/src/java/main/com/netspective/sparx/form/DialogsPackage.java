@@ -84,7 +84,7 @@ public class DialogsPackage implements DialogsNameSpace
 
     public Dialog createDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (Dialog.class.isAssignableFrom(cls))
+        if(Dialog.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[]{Project.class, DialogsPackage.class});
             return (Dialog) c.newInstance(new Object[]{container.getProject(), this});

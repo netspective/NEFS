@@ -109,7 +109,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         {
             initializeBean();
         }
-        catch (NoSuchMethodException e)
+        catch(NoSuchMethodException e)
         {
             actionDialog.getLog().error(e);
             throw new DataModelException(pc, e);
@@ -126,10 +126,10 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     {
         DialogFields dialogFields = actionDialog.getFields();
 
-        if (dialogFields.getByQualifiedName(attrName) != null)
+        if(dialogFields.getByQualifiedName(attrName) != null)
         {
             FieldMutator fieldMutator = locateMutator(attrValue);
-            if (fieldMutator != null) fieldMutators.put(attrName, fieldMutator);
+            if(fieldMutator != null) fieldMutators.put(attrName, fieldMutator);
         }
         else
             schema.setAttribute(pc, parent, attrName, attrValue, true);
@@ -177,7 +177,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         {
             return actionSchema.getBean().getMethod(name, new Class[]{paramType});
         }
-        catch (NoSuchMethodException e)
+        catch(NoSuchMethodException e)
         {
             return null;
         }
@@ -189,7 +189,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         {
             return actionSchema.getBean().getMethod(name, paramTypes);
         }
-        catch (NoSuchMethodException e)
+        catch(NoSuchMethodException e)
         {
             return null;
         }
@@ -213,13 +213,13 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         try
         {
             final Method method = (Method) actionSchema.getAttributeSetterMethods().get(attributeName);
-            if (method != null)
+            if(method != null)
             {
                 Class[] args = method.getParameterTypes();
-                if (args.length == 1)
+                if(args.length == 1)
                 {
                     Class arg = args[0];
-                    if (java.lang.String.class.equals(arg) && arg.isArray())
+                    if(java.lang.String.class.equals(arg) && arg.isArray())
                     {
                         return new FieldMutator()
                         {
@@ -229,7 +229,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
                             }
                         };
                     }
-                    else if (Value.class.equals(arg))
+                    else if(Value.class.equals(arg))
                     {
                         return new FieldMutator()
                         {
@@ -239,7 +239,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
                             }
                         };
                     }
-                    else if (Date.class.equals(arg))
+                    else if(Date.class.equals(arg))
                     {
                         return new FieldMutator()
                         {
@@ -253,13 +253,13 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
                     else
                     {
                         final XmlDataModelSchema.AttributeSetter as = (XmlDataModelSchema.AttributeSetter) actionSchema.getAttributeSetters().get(attributeName);
-                        if (as != null)
+                        if(as != null)
                         {
                             return new FieldMutator()
                             {
                                 public void set(Object instance, Value value) throws Exception
                                 {
-                                    if (value.getTextValue() != null)
+                                    if(value.getTextValue() != null)
                                         as.set(null, instance, value.getTextValue());
                                 }
                             };
@@ -270,7 +270,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
             else
                 actionDialog.getLog().warn("No setter method found for field " + attributeName + " in " + actionSchema.getBean());
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             actionDialog.getLog().error("Unable to create mutator '" + attributeName + "' for " + actionSchema.getBean() + ": " + e.getMessage(), e);
             throw new NestableRuntimeException(e);
@@ -286,13 +286,13 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     {
         DialogFields dialogFields = actionDialog.getFields();
 
-        for (Iterator i = dialogFields.getFieldsMapByQualifiedName().keySet().iterator(); i.hasNext();)
+        for(Iterator i = dialogFields.getFieldsMapByQualifiedName().keySet().iterator(); i.hasNext();)
         {
             String fieldName = (String) i.next();
-            if (!fieldMutators.containsKey(fieldName))
+            if(!fieldMutators.containsKey(fieldName))
             {
                 FieldMutator fieldMutator = locateMutator(fieldName);
-                if (fieldMutator != null) fieldMutators.put(fieldName, fieldMutator);
+                if(fieldMutator != null) fieldMutators.put(fieldName, fieldMutator);
             }
         }
     }
@@ -300,10 +300,11 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     public void locateValidator() throws NoSuchMethodException
     {
         final Method isValidMethod = getMethod(isValidMethodName, List.class) == null
-                ? getMethod(isValidMethodName, (Class[]) null) : getMethod(isValidMethodName, List.class);
-        if (isValidMethod != null)
+                                     ? getMethod(isValidMethodName, (Class[]) null)
+                                     : getMethod(isValidMethodName, List.class);
+        if(isValidMethod != null)
         {
-            if (isValidMethod.getReturnType() == boolean.class)
+            if(isValidMethod.getReturnType() == boolean.class)
             {
                 actionValidator = new ActionValidator()
                 {
@@ -322,13 +323,14 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     public void locateExecutor() throws NoSuchMethodException
     {
         final Method execMethod = getMethod(executeMethodName, Writer.class) == null
-                ? getMethod(executeMethodName, (Class[]) null) : getMethod(executeMethodName, Writer.class);
-        if (execMethod == null)
+                                  ? getMethod(executeMethodName, (Class[]) null)
+                                  : getMethod(executeMethodName, Writer.class);
+        if(execMethod == null)
             throw new NoSuchMethodException("Unable to find " + executeMethodName + "() or " + executeMethodName + "(Writer) method in " + actionSchema.getBean());
 
-        if (execMethod.getParameterTypes().length > 0)
+        if(execMethod.getParameterTypes().length > 0)
         {
-            if (execMethod.getReturnType() == String.class)
+            if(execMethod.getReturnType() == String.class)
             {
                 actionExecutor = new ActionExecutor()
                 {
@@ -352,7 +354,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         }
         else
         {
-            if (execMethod.getReturnType() == String.class)
+            if(execMethod.getReturnType() == String.class)
             {
                 actionExecutor = new ActionExecutor()
                 {
@@ -378,17 +380,18 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
 
     protected void initInstance(Object instance, ActionDialogContext dc) throws Exception
     {
-        if (setActionDialogContextMethod != null) setActionDialogContextMethod.invoke(instance, new Object[]{dc});
-        if (setServletEnvironmentMethod != null) setServletEnvironmentMethod.invoke(instance, new Object[]{
-            dc.getServlet(), dc.getRequest(), dc.getResponse()
-        });
+        if(setActionDialogContextMethod != null) setActionDialogContextMethod.invoke(instance, new Object[]{dc});
+        if(setServletEnvironmentMethod != null)
+            setServletEnvironmentMethod.invoke(instance, new Object[]{
+                dc.getServlet(), dc.getRequest(), dc.getResponse()
+            });
     }
 
     protected void assignInstanceValues(Object instance, ActionDialogContext dc) throws Exception
     {
         DialogFieldStates dfs = dc.getFieldStates();
 
-        for (Iterator i = fieldMutators.entrySet().iterator(); i.hasNext();)
+        for(Iterator i = fieldMutators.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             String fieldName = (String) entry.getKey();
@@ -397,63 +400,65 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
             actionMutator.set(instance, dfs.getState(fieldName).getValue());
         }
 
-        if (assignRequestParams != null)
+        if(assignRequestParams != null)
             HttpUtils.assignParamsToInstance(dc.getHttpRequest(), instance, assignRequestParams);
     }
 
     protected void assignDatabaseConnection(Object instance, ActionDialogContext dc) throws Exception
     {
-        if (setConnectionContextMethod != null || setConnectionMethod != null)
+        if(setConnectionContextMethod != null || setConnectionMethod != null)
         {
             String dataSourceId = dc.getDefaultDataSource();
-            if (getDataSourceNameMethod != null)
+            if(getDataSourceNameMethod != null)
                 dataSourceId = (String) getDataSourceNameMethod.invoke(instance, null);
 
-            if (dataSourceId != null)
+            if(dataSourceId != null)
             {
                 ValueSource dataSourceIdValueSource = ValueSources.getInstance().getValueSourceOrStatic(dataSourceId);
                 dataSourceId = dataSourceIdValueSource.getTextValue(dc);
 
-                if (dataSourceId.equals("DEFAULT"))
+                if(dataSourceId.equals("DEFAULT"))
                     dataSourceId = null;
 
                 ConnectionContext cc = dc.openActionConnection(dataSourceId);
-                if (setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[]{cc});
-                if (setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[]{cc.getConnection()});
+                if(setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[]{cc});
+                if(setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[]{cc.getConnection()});
             }
             else
             {
-                if (getDataSourceInfoMethod != null)
+                if(getDataSourceInfoMethod != null)
                 {
                     Object dataSourceInfo = getDataSourceInfoMethod.invoke(instance, null);
-                    if (dataSourceInfo != null)
+                    if(dataSourceInfo != null)
                     {
                         DriverManagerConnectionProvider.DataSourceInfo dsInfo = DriverManagerConnectionProvider.PROVIDER.createDataSource();
-                        if (dataSourceInfo instanceof List)
+                        if(dataSourceInfo instanceof List)
                         {
-                            if (!dsInfo.setInfo((List) dataSourceInfo))
+                            if(!dsInfo.setInfo((List) dataSourceInfo))
                                 dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class and it returns type List but has fewer than two entries. Need at least driver class and URL.");
                         }
-                        else if (dataSourceInfo instanceof String[])
+                        else if(dataSourceInfo instanceof String[])
                         {
-                            if (!dsInfo.setInfo((String[]) dataSourceInfo))
+                            if(!dsInfo.setInfo((String[]) dataSourceInfo))
                                 dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class and it returns type String[] but has fewer than two entries. Need at least driver class and URL.");
                         }
-                        else if (dataSourceInfo instanceof Map)
+                        else if(dataSourceInfo instanceof Map)
                         {
-                            if (!dsInfo.setInfo((Map) dataSourceInfo, null))
+                            if(!dsInfo.setInfo((Map) dataSourceInfo, null))
                                 dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class and it returns type Map but does not have 'jdbc-driver-class' or 'jdbc-connection-url'.");
                         }
                         else
                             dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class but it returns an object (" + dataSourceInfo + ") that NEFS doesn't understand.");
 
                         ConnectionContext cc = dc.openActionConnection(dsInfo);
-                        if (setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[]{
-                            cc
-                        });
-                        if (setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[]{
-                            cc.getConnection()
-                        });
+                        if(setConnectionContextMethod != null)
+                            setConnectionContextMethod.invoke(instance, new Object[]{
+                                cc
+                            });
+                        if(setConnectionMethod != null)
+                            setConnectionMethod.invoke(instance, new Object[]{
+                                cc.getConnection()
+                            });
                     }
                 }
             }
@@ -467,7 +472,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         {
             result = actionConstructor.constructAction();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             actionDialog.getLog().error(e);
             throw new NestableRuntimeException(e);

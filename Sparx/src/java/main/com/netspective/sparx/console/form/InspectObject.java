@@ -78,24 +78,24 @@ public class InspectObject extends ConsoleDialog
         String jxPathExprValue = fieldStates.getState("jxpath-expr").getValue().getTextValue();
         String action = fieldStates.getState("action").getValue().getTextValue();
 
-        if (contextValue.equalsIgnoreCase("Project"))
+        if(contextValue.equalsIgnoreCase("Project"))
             jxPathContext = JXPathContext.newContext(dc.getProject());
-        else if (contextValue.equalsIgnoreCase("Servlet"))
+        else if(contextValue.equalsIgnoreCase("Servlet"))
             jxPathContext = JXPathContext.newContext(dc.getServlet());
-        else if (contextValue.equalsIgnoreCase("Application"))
+        else if(contextValue.equalsIgnoreCase("Application"))
             jxPathContext = JXPathServletContexts.getApplicationContext(dc.getServlet().getServletConfig().getServletContext());
-        else if (contextValue.equalsIgnoreCase("Request"))
+        else if(contextValue.equalsIgnoreCase("Request"))
             jxPathContext = JXPathServletContexts.getRequestContext(dc.getRequest(), dc.getServlet().getServletConfig().getServletContext());
-        else if (contextValue.equalsIgnoreCase("Session"))
+        else if(contextValue.equalsIgnoreCase("Session"))
             jxPathContext = JXPathServletContexts.getSessionContext(dc.getHttpRequest().getSession(), dc.getServlet().getServletConfig().getServletContext());
 
         Object jxPathValue = null;
-        if (action.equalsIgnoreCase("getValue"))
+        if(action.equalsIgnoreCase("getValue"))
             jxPathValue = jxPathContext.getValue(jxPathExprValue);
         else
             jxPathValue = jxPathContext.iterate(jxPathExprValue);
 
-        if (jxPathValue != null)
+        if(jxPathValue != null)
         {
             Map vars = new HashMap();
             vars.put("jxPathValue", jxPathValue);

@@ -117,13 +117,13 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
     {
         // First try to open as plain file (to bypass servlet container resource caches).
         String realPath = servletContext.getRealPath(name);
-        if (realPath != null)
+        if(realPath != null)
         {
             File file = new File(realPath);
-            if (!file.isFile())
+            if(!file.isFile())
                 return false;
 
-            if (file.canRead())
+            if(file.canRead())
                 return true;
         }
 
@@ -133,7 +133,7 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
         {
             url = servletContext.getResource(name);
         }
-        catch (MalformedURLException e)
+        catch(MalformedURLException e)
         {
             return false;
         }
@@ -148,7 +148,7 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
         {
             Map instanceVars = new HashMap();
             Map sharedVars = (Map) nc.getAttribute(TemplateProcessor.VCATTRNAME_SHARED_TEMPLATE_VARS);
-            if (sharedVars != null)
+            if(sharedVars != null)
                 instanceVars.putAll(sharedVars);
 
             TemplateModel ncModel = BeansWrapper.getDefaultInstance().wrap(nc);
@@ -163,11 +163,11 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
 
             // find the first ancestor that wants to override the template, that's where the "top" will start
             int overrideAtAncestor = -1;
-            if (ancestors.size() > 0)
+            if(ancestors.size() > 0)
             {
-                for (int i = ancestors.size() - 1; i >= 0; i--)
+                for(int i = ancestors.size() - 1; i >= 0; i--)
                 {
-                    if (templateAvailable(servletContext, ((NavigationPath) ancestors.get(i)).getAbsPathRelativeToThisPath(overrideName)))
+                    if(templateAvailable(servletContext, ((NavigationPath) ancestors.get(i)).getAbsPathRelativeToThisPath(overrideName)))
                     {
                         overrideAtAncestor = i;
                         break;
@@ -175,41 +175,41 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
                 }
             }
 
-            if (topDown)
+            if(topDown)
             {
                 // now, start from the first overridden template path or the top path and apply all the templates
-                for (int i = overrideAtAncestor != -1 ? overrideAtAncestor : 0; i < ancestors.size(); i++)
+                for(int i = overrideAtAncestor != -1 ? overrideAtAncestor : 0; i < ancestors.size(); i++)
                 {
                     NavigationPath ancestorPath = (NavigationPath) ancestors.get(i);
                     String name = ancestorPath.getAbsPathRelativeToThisPath(inheritName);
-                    if (templateAvailable(servletContext, name))
+                    if(templateAvailable(servletContext, name))
                         fmConfig.getTemplate(name).process(instanceVars, writer);
                 }
 
                 // now apply the template in the current page
                 String name = activePath.getAbsPathRelativeToThisPath(inheritName);
-                if (templateAvailable(servletContext, name))
+                if(templateAvailable(servletContext, name))
                     fmConfig.getTemplate(name).process(instanceVars, writer);
             }
             else
             {
                 // first apply the template in the current page (if any)
                 String name = activePath.getAbsPathRelativeToThisPath(inheritName);
-                if (templateAvailable(servletContext, name))
+                if(templateAvailable(servletContext, name))
                     fmConfig.getTemplate(name).process(instanceVars, writer);
 
                 // now, start from the first ancestor and go up the chain until the first override
-                for (int i = ancestors.size() - 1; i >= (overrideAtAncestor != -1 ? overrideAtAncestor : 0); i--)
+                for(int i = ancestors.size() - 1; i >= (overrideAtAncestor != -1 ? overrideAtAncestor : 0); i--)
                 {
                     NavigationPath ancestorPath = (NavigationPath) ancestors.get(i);
                     name = ancestorPath.getAbsPathRelativeToThisPath(inheritName);
-                    if (templateAvailable(servletContext, name))
+                    if(templateAvailable(servletContext, name))
                         fmConfig.getTemplate(name).process(instanceVars, writer);
                 }
             }
 
         }
-        catch (TemplateException e)
+        catch(TemplateException e)
         {
             log.error("Unable to process template", e);
             throw new TemplateProcessorException(e);

@@ -64,7 +64,7 @@ public abstract class AbstractLoginAuthenticator implements LoginAuthenticator
         {
             return (MutableAuthenticatedUser) getAuthenticatedUserClass().newInstance();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to create authenticated user " + getAuthenticatedUserClass(), e);
             return new HttpSessionAuthenticatedUser();

@@ -93,7 +93,7 @@ public class TemplateContentPanel extends AbstractPanel implements XmlDataModelS
             throws DataModelException, InvocationTargetException, IllegalAccessException, DataModelException
     {
         // if we don't know something about an attribute, save it for the template (pass it in)
-        if (templateVars == null)
+        if(templateVars == null)
             templateVars = new HashMap();
 
         templateVars.put(TextUtils.getInstance().xmlTextToJavaIdentifier(attrName, false), attrValue);

@@ -87,7 +87,8 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
             ConnectionProvider cp = ((DatabaseConnValueContext) vc).getConnectionProvider();
             Class underlyingImplementationClass = cp.getUnderlyingImplementationClass();
             return new GenericValue("Connection Provider: " + cp.getClass().getName() + "<br>" + "Underlying Implementation: " + (underlyingImplementationClass != null
-                    ? underlyingImplementationClass.getName() : "Unavailable"));
+                                                                                                                                  ? underlyingImplementationClass.getName()
+                                                                                                                                  : "Unavailable"));
         }
 
         public boolean hasValue(ValueContext vc)
@@ -153,7 +154,7 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(row + 1);
@@ -169,42 +170,42 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
         {
             ConnectionProviderEntry entry = entries[row];
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
-                    if ((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
+                    if((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
                         return entry.getDataSourceId();
                     else
                         return reportValueContext.getSkin().constructRedirect(reportValueContext, reportValueContext.getReport().getColumn(0).getRedirect(), entry.getDataSourceId(), entry.getDataSourceId(), null);
 
                 case 1:
                     return ((HtmlTabularReportValueContext) reportValueContext).getDefaultDataSource().equals(entry.getDataSourceId()) ?
-                            "Yes" : null;
+                           "Yes" : null;
 
                 case 2:
-                    if (!entry.isValid()) return entry.getException().getMessage();
+                    if(!entry.isValid()) return entry.getException().getMessage();
                     ConnectionProviderEntryStatistics stats = entry.getStatistics();
                     StringBuffer sb = new StringBuffer();
                     sb.append("<table>" +
-                            "<tr><td align=right class=property_name>Database:</td><td class=property_value><b>" + entry.getDatabaseProductName() + " Version " + entry.getDatabaseProductVersion() + "</b></td></tr>" +
-                            "<tr><td align=right class=property_name>Driver:</td><td class=property_value>" + entry.getDriverName() + " Version " + entry.getDriverVersion() + "</td></tr>" +
-                            "<tr><td align=right class=property_name>URL:</td><td class=property_value>" + entry.getURL() + "</td></tr>" +
-                            "<tr><td align=right class=property_name>User:</td><td class=property_value>" + entry.getUserName() + "</td></tr>" +
-                            "<tr><td align=right class=property_name>ResultSet Type:</td><td class=property_value>" + entry.getResultSetType() + "</td></tr>" +
-                            "<tr><td align=right class=property_name>Database Policy:</td><td class=property_value>" + entry.getDatabasePolicyClassName() + "</td></tr>" +
-                            "</table>");
+                              "<tr><td align=right class=property_name>Database:</td><td class=property_value><b>" + entry.getDatabaseProductName() + " Version " + entry.getDatabaseProductVersion() + "</b></td></tr>" +
+                              "<tr><td align=right class=property_name>Driver:</td><td class=property_value>" + entry.getDriverName() + " Version " + entry.getDriverVersion() + "</td></tr>" +
+                              "<tr><td align=right class=property_name>URL:</td><td class=property_value>" + entry.getURL() + "</td></tr>" +
+                              "<tr><td align=right class=property_name>User:</td><td class=property_value>" + entry.getUserName() + "</td></tr>" +
+                              "<tr><td align=right class=property_name>ResultSet Type:</td><td class=property_value>" + entry.getResultSetType() + "</td></tr>" +
+                              "<tr><td align=right class=property_name>Database Policy:</td><td class=property_value>" + entry.getDatabasePolicyClassName() + "</td></tr>" +
+                              "</table>");
 
-                    if (stats == null)
+                    if(stats == null)
                         sb.append("<b>No connection statistics provider class registered for connection pool.</b>");
                     else
                     {
                         sb.append("<br>Statistics");
                         sb.append("<table>" +
-                                "<tr><td align=right class=property_name>Provider:</td><td class=property_value>" + reportValueContext.getSkin().constructClassRef(stats.getClass()) + "</td></tr>" +
-                                "<tr><td align=right class=property_name>Active Connections:</td><td class=property_value>" + stats.getActiveConnections() + "</td></tr>" +
-                                "<tr><td align=right class=property_name>Max Connections:</td><td class=property_value>" + stats.getMaxConnections() + "</td></tr>" +
-                                "<tr><td align=right class=property_name>Total Connections:</td><td class=property_value>" + stats.getTotalConnections() + "</td></tr>" +
-                                "</table>");
+                                  "<tr><td align=right class=property_name>Provider:</td><td class=property_value>" + reportValueContext.getSkin().constructClassRef(stats.getClass()) + "</td></tr>" +
+                                  "<tr><td align=right class=property_name>Active Connections:</td><td class=property_value>" + stats.getActiveConnections() + "</td></tr>" +
+                                  "<tr><td align=right class=property_name>Max Connections:</td><td class=property_value>" + stats.getMaxConnections() + "</td></tr>" +
+                                  "<tr><td align=right class=property_name>Total Connections:</td><td class=property_value>" + stats.getTotalConnections() + "</td></tr>" +
+                                  "</table>");
                     }
                     return sb.toString();
 

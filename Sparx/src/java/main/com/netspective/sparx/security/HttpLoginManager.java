@@ -86,19 +86,19 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             LoginDialogContext ldc = (LoginDialogContext) dvc.getDialogContext();
 
             HttpLoginAttemptsManager attemptsManager = getLoginAttemptsManager();
-            if (!allowLoginAttempt(ldc))
+            if(!allowLoginAttempt(ldc))
             {
                 dvc.addError(attemptsManager.getMaxLoginAttemptsExceededMessage().getTextValue(ldc));
                 return;
             }
 
-            if (loginAuthenticator == null)
+            if(loginAuthenticator == null)
             {
                 dvc.addError("No login authenticator provided.");
                 return;
             }
 
-            if (!loginAuthenticator.isUserValid(HttpLoginManager.this, ldc))
+            if(!loginAuthenticator.isUserValid(HttpLoginManager.this, ldc))
                 dvc.addError(invalidUserMessage.getTextValue(ldc));
         }
     }
@@ -221,7 +221,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public String getRememberPasswordCookiePath(HttpServletValueContext vc)
     {
-        if (rememberPasswordCookiePath == null)
+        if(rememberPasswordCookiePath == null)
             return vc.getHttpRequest().getContextPath();
         else
             return rememberPasswordCookiePath.getTextValue(vc);
@@ -258,8 +258,6 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
      * @param ldc    If a 'remembered' (by cookie) id is being used, this will be null otherwise it will be the
      *               LoginDialogContext that was constructed by the LoginDialog.
      * @param userId The userId that was either remembered or entered by a user.
-     *
-     * @return
      */
     public MutableAuthenticatedUser createAuthenticatedUser(LoginDialogContext ldc, String userId, String encryptedPassword, boolean isRemembered)
     {
@@ -272,7 +270,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             loginAuthenticator.initAuthenticatedUser(this, ldc, authUser);
             return authUser;
         }
-        catch (AuthenticatedUserInitializationException e)
+        catch(AuthenticatedUserInitializationException e)
         {
             log.error("Error creating authenticated user", e);
             throw new NestableRuntimeException("Error creating authenticated user", e);
@@ -296,7 +294,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public boolean accessAllowed(NavigationContext nc)
     {
-        if (!nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.REQUIRE_LOGIN))
+        if(!nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.REQUIRE_LOGIN))
             return true;
 
         return getAuthenticatedUser(nc) != null;
@@ -305,12 +303,12 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     public String getRememberedUserId(HttpServletValueContext vc)
     {
         Cookie[] cookies = vc.getHttpRequest().getCookies();
-        if (cookies != null)
+        if(cookies != null)
         {
-            for (int i = 0; i < cookies.length; i++)
+            for(int i = 0; i < cookies.length; i++)
             {
                 Cookie cookie = cookies[i];
-                if (cookie.getName().equals(getRememberUserIdCookieName()))
+                if(cookie.getName().equals(getRememberUserIdCookieName()))
                     return cookie.getValue();
             }
         }
@@ -320,12 +318,12 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     public String getRememberedEncryptedPassword(HttpServletValueContext vc)
     {
         Cookie[] cookies = vc.getHttpRequest().getCookies();
-        if (cookies != null)
+        if(cookies != null)
         {
-            for (int i = 0; i < cookies.length; i++)
+            for(int i = 0; i < cookies.length; i++)
             {
                 Cookie cookie = cookies[i];
-                if (cookie.getName().equals(getRememberPasswordCookieName()))
+                if(cookie.getName().equals(getRememberPasswordCookieName()))
                     return cookie.getValue();
             }
         }
@@ -336,7 +334,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     {
         vc.getHttpRequest().getSession().setAttribute(getAuthenticatedUserSessionAttrName(), user);
 
-        if (isAllowRememberUserId() && rememberUserId)
+        if(isAllowRememberUserId() && rememberUserId)
         {
             Cookie cookie = new Cookie(getRememberUserIdCookieName(), user.getUserId().toString());
             cookie.setPath(getRememberPasswordCookiePath(vc));
@@ -355,7 +353,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     {
         vc.getProject().getScrollStates().removeActiveState(vc);
 
-        if (isAllowRememberUserId())
+        if(isAllowRememberUserId())
         {
             Cookie cookie = new Cookie(getRememberUserIdCookieName(), "");
             cookie.setPath(getRememberPasswordCookiePath(vc));
@@ -369,7 +367,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
         HttpServletRequest req = vc.getHttpRequest();
         MutableAuthenticatedUser user = (MutableAuthenticatedUser) getAuthenticatedUser(req);
-        if (user != null)
+        if(user != null)
         {
             registerLogout(vc, user);
             req.getSession().removeAttribute(getAuthenticatedUserSessionAttrName());
@@ -397,7 +395,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         activeUsers.add(user);
 
         HttpServletRequest req = hsvc.getHttpRequest();
-        if (log.isInfoEnabled())
+        if(log.isInfoEnabled())
         {
 
             String userId = user.getUserId().toString();
@@ -416,11 +414,11 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             info.append(perms != null ? user.getUserPermissions().toString() : "{}");
             info.append(MONITOR_ENTRY_FIELD_SEPARATOR);
             String[] roles = user.getUserRoleNames();
-            if (roles != null)
+            if(roles != null)
             {
-                for (int r = 0; r < roles.length; r++)
+                for(int r = 0; r < roles.length; r++)
                 {
-                    if (r > 0)
+                    if(r > 0)
                         info.append(MONITOR_ENTRY_FIELD_SEPARATOR);
                     info.append(roles[r]);
                 }
@@ -428,21 +426,21 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             log.info(info);
         }
 
-        if (log.isDebugEnabled())
+        if(log.isDebugEnabled())
         {
             String userId = user.getUserId().toString();
             log.debug("User '" + userId + "' (" + user.getUserName() + ") is now authenticated for Session ID '" + req.getSession().getId() + "'");
 
             BitSet perms = user.getUserPermissions();
-            if (perms != null)
+            if(perms != null)
                 log.debug("User '" + userId + "' has permissions " + user.getUserPermissions().toString());
             else
                 log.debug("User '" + userId + " has no permissions.");
 
             String[] roles = user.getUserRoleNames();
-            if (roles != null)
+            if(roles != null)
             {
-                for (int r = 0; r < roles.length; r++)
+                for(int r = 0; r < roles.length; r++)
                     log.debug("User '" + userId + "' has role " + roles[r]);
             }
             else
@@ -459,7 +457,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         user.registerLogout(hsvc, AuthenticatedUserLogoutType.USER_REQUEST);
         activeUsers.remove(user);
 
-        if (log.isInfoEnabled())
+        if(log.isInfoEnabled())
         {
             HttpServletRequest req = hsvc.getHttpRequest();
             String userId = user.getUserId().toString();
@@ -478,11 +476,11 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             info.append(perms != null ? user.getUserPermissions().toString() : "{}");
             info.append(MONITOR_ENTRY_FIELD_SEPARATOR);
             String[] roles = user.getUserRoleNames();
-            if (roles != null)
+            if(roles != null)
             {
-                for (int r = 0; r < roles.length; r++)
+                for(int r = 0; r < roles.length; r++)
                 {
-                    if (r > 0)
+                    if(r > 0)
                         info.append(MONITOR_ENTRY_FIELD_SEPARATOR);
                     info.append(roles[r]);
                 }
@@ -494,7 +492,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     public String toString()
     {
         return this.getClass().getName() + " Id " + getName() + ", AuthUserSessId " + getAuthenticatedUserSessionAttrName() +
-                ", UserCookieName " + getRememberUserIdCookieName() + ", PasswordCookieName " + getRememberPasswordCookieName();
+               ", UserCookieName " + getRememberUserIdCookieName() + ", PasswordCookieName " + getRememberPasswordCookieName();
     }
 
     public LoginAuthenticator createLoginAuthenticator()
@@ -524,7 +522,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public LoginDialog createLoginDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (LoginDialog.class.isAssignableFrom(cls))
+        if(LoginDialog.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[]{HttpLoginManager.class});
             return (LoginDialog) c.newInstance(new Object[]{this});
@@ -546,24 +544,24 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public LoginDialogMode getLoginDialogMode(NavigationContext nc) throws IOException, ServletException
     {
-        if (accessAllowed(nc))
+        if(accessAllowed(nc))
             return LoginDialogMode.ACCESS_ALLOWED;
 
         Theme theme = nc.getActiveTheme();
         LoginDialog loginDialog = getLoginDialog();
         LoginDialogContext ldc = (LoginDialogContext) loginDialog.createContext(nc, theme.getLoginDialogSkin());
 
-        if (ldc.hasRememberedValues(this))
+        if(ldc.hasRememberedValues(this))
             nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
         loginDialog.prepareContext(ldc);
 
         Writer writer = nc.getResponse().getWriter();
 
         // check to make sure the user's not locked out because of max attempts from before
-        if (allowLoginAttempt(ldc))
+        if(allowLoginAttempt(ldc))
         {
             // ok, we're not locked out so see if we're in execute mode
-            if (!ldc.getDialogState().isInExecuteMode())
+            if(!ldc.getDialogState().isInExecuteMode())
             {
                 // we're not in execute mode so we need to present the login dialog
                 nc.getSkin().renderPageMetaData(writer, nc);
@@ -577,7 +575,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
                 loginDialog.execute(writer, ldc);
                 return LoginDialogMode.LOGIN_ACCEPTED;
             }
-            catch (DialogExecuteException e)
+            catch(DialogExecuteException e)
             {
                 log.error("Unable to execute login dialog", e);
                 throw new ServletException(e);

@@ -56,8 +56,6 @@ public class ConsoleServletTest extends TestCase
     /**
      * Start a new web conversation, get the console login page, enter the login data and get the first reponse page
      * after logging in.
-     *
-     * @throws Exception
      */
     protected void setUp() throws Exception
     {

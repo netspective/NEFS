@@ -84,11 +84,11 @@ public class PanelEditorState implements Serializable
         {
             identifier = GloballyUniqueIdentifier.getRandomGUID(true);
         }
-        catch (NoSuchAlgorithmException e)
+        catch(NoSuchAlgorithmException e)
         {
             identifier = Integer.toString(hashCode());
         }
-        catch (UnknownHostException e)
+        catch(UnknownHostException e)
         {
             identifier = Integer.toString(hashCode());
         }
@@ -111,8 +111,6 @@ public class PanelEditorState implements Serializable
 
     /**
      * Sets the name of the content element that is currently active
-     *
-     * @param activeElement
      */
     public void setActiveElement(String activeElement)
     {

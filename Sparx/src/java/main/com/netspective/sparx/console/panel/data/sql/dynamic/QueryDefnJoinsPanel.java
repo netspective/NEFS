@@ -85,7 +85,7 @@ public class QueryDefnJoinsPanel extends QueryDefnDetailPanel
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         QueryDefnDetailPanel.SelectedQueryDefinition selectedQueryDefn = getSelectedQueryDefn(nc);
-        if (selectedQueryDefn.getDataSource() != null)
+        if(selectedQueryDefn.getDataSource() != null)
             return selectedQueryDefn.getDataSource();
         else
             return new QueryDefnJoinsDataSource(selectedQueryDefn);
@@ -106,7 +106,7 @@ public class QueryDefnJoinsPanel extends QueryDefnDetailPanel
         {
             super();
             queryDefnJoins = selectedQueryDefn.getQueryDefn().getJoins();
-            if (queryDefnJoins != null)
+            if(queryDefnJoins != null)
                 lastRow = queryDefnJoins.size() - 1;
             else
                 lastRow = -1;
@@ -139,7 +139,7 @@ public class QueryDefnJoinsPanel extends QueryDefnDetailPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -150,7 +150,7 @@ public class QueryDefnJoinsPanel extends QueryDefnDetailPanel
         {
             QueryDefnJoin queryDefnJoin = queryDefnJoins.get(activeRow);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return queryDefnJoin.getName();
@@ -168,19 +168,19 @@ public class QueryDefnJoinsPanel extends QueryDefnDetailPanel
                     try
                     {
                         QueryDefnJoin[] implied = queryDefnJoin.getImpliedJoins();
-                        if (implied != null)
+                        if(implied != null)
                         {
                             StringBuffer impliedJoins = new StringBuffer();
-                            for (int i = 0; i < implied.length; i++)
+                            for(int i = 0; i < implied.length; i++)
                             {
-                                if (i > 0)
+                                if(i > 0)
                                     impliedJoins.append(", ");
                                 impliedJoins.append(implied[i]);
                             }
                             return impliedJoins.toString();
                         }
                     }
-                    catch (QueryDefinitionException e)
+                    catch(QueryDefinitionException e)
                     {
                         return e.getMessage();
                     }

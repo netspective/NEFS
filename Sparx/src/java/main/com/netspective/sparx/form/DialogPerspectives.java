@@ -47,23 +47,23 @@ public class DialogPerspectives extends XdmBitmaskedFlagsAttribute
     public static final FlagDefn[] PERSPECTIVE_DEFNS = new FlagDefn[]
     {
         new FlagDefn(DialogFlags.ACCESS_XDM, "ADD", ADD,
-                "Indicates that the dialog should be processed for adding/inserting records.",
-                "Declare the ADD dialog data perspective (${xdmAttrDetailAliasComment})"),
+                     "Indicates that the dialog should be processed for adding/inserting records.",
+                     "Declare the ADD dialog data perspective (${xdmAttrDetailAliasComment})"),
         new FlagDefn(DialogFlags.ACCESS_XDM, "EDIT", EDIT, "Indicates that the dialog should be processed for " +
-            "editing/updating records. This perspective will automatically make any primary-keys read-only.",
-                "Declare the EDIT dialog data perspective (${xdmAttrDetailAliasComment})"),
+                                                           "editing/updating records. This perspective will automatically make any primary-keys read-only.",
+                     "Declare the EDIT dialog data perspective (${xdmAttrDetailAliasComment})"),
         new FlagDefn(DialogFlags.ACCESS_XDM, "DELETE", DELETE, "Indicates that the dialog should be processed for " +
-            "deleting/removing records. This perspective will automatically make all fields read-only " +
-            "(for confirmation) and allow submission.",
-                "Declare the DELETE dialog data perspective (${xdmAttrDetailAliasComment})"),
+                                                               "deleting/removing records. This perspective will automatically make all fields read-only " +
+                                                               "(for confirmation) and allow submission.",
+                     "Declare the DELETE dialog data perspective (${xdmAttrDetailAliasComment})"),
         new FlagDefn(DialogFlags.ACCESS_XDM, "PRINT", PRINT, "Indicates that the dialog should be processed for " +
-            "printing data. All the items become read-only and a few tweaks are made so that the dialog looks more " +
-            "like a report than a form.",
-                "Declare the PRINT dialog data perspective (${xdmAttrDetailAliasComment})"),
+                                                             "printing data. All the items become read-only and a few tweaks are made so that the dialog looks more " +
+                                                             "like a report than a form.",
+                     "Declare the PRINT dialog data perspective (${xdmAttrDetailAliasComment})"),
         new FlagDefn(DialogFlags.ACCESS_XDM, "CONFIRM", CONFIRM, "Indicates that the dialog should be processed for " +
-            "confirming data. This perspective will automatically make all fields read-only (for confirmation) but " +
-            "does not infer a further action.",
-                "Declare the CONFIRM dialog data perspective (${xdmAttrDetailAliasComment})"),
+                                                                 "confirming data. This perspective will automatically make all fields read-only (for confirmation) but " +
+                                                                 "does not infer a further action.",
+                     "Declare the CONFIRM dialog data perspective (${xdmAttrDetailAliasComment})"),
     };
 
     public DialogPerspectives()

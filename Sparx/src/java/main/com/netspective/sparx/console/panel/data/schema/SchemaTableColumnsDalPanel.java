@@ -96,7 +96,7 @@ public class SchemaTableColumnsDalPanel extends SchemaTableColumnsPanel
         {
             Column column = columns.get(row);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:
@@ -105,7 +105,7 @@ public class SchemaTableColumnsDalPanel extends SchemaTableColumnsPanel
 
                 case 3:
                     return reportValueContext.getSkin().constructClassRef(column.getClass()) + "<br>" +
-                            reportValueContext.getSkin().constructClassRef(column.constructValueInstance().getClass());
+                           reportValueContext.getSkin().constructClassRef(column.constructValueInstance().getClass());
 
                 default:
                     return null;

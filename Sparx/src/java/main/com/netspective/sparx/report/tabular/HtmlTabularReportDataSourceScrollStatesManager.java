@@ -62,7 +62,7 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
 
     public static void closeAllScrollStates(Log log)
     {
-        for (Iterator i = allScrollStateManagers.iterator(); i.hasNext();)
+        for(Iterator i = allScrollStateManagers.iterator(); i.hasNext();)
         {
             HtmlTabularReportDataSourceScrollStatesManager states = (HtmlTabularReportDataSourceScrollStatesManager) i.next();
             int count = states.closeAll();
@@ -104,7 +104,7 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
                 (HtmlTabularReportDataSourceScrollState) scrollStates.get(vc.getHttpRequest().getSession().getId() + "." + id);
 
         // since set the data source to auto close after a period of time, make sure the data source didn't close itself
-        if (state != null && !state.isClosed())
+        if(state != null && !state.isClosed())
             return state;
         else
             return null;
@@ -115,7 +115,7 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
         HtmlTabularReportDataSourceScrollState state = (HtmlTabularReportDataSourceScrollState) scrollStates.get(vc.getHttpRequest().getSession().getId() + "." + ATTRNAME_ACTIVE_SCROLL_STATE);
 
         // since set the data source to auto close after a period of time, make sure the data source didn't close itself
-        if (state != null && !state.isClosed())
+        if(state != null && !state.isClosed())
             return state;
         else
             return null;
@@ -141,7 +141,7 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
     public void removeActiveState(HttpServletValueContext vc)
     {
         TabularReportDataSourceScrollState state = getActiveScrollState(vc);
-        if (state != null)
+        if(state != null)
             removeActiveState(vc, state);
     }
 
@@ -149,12 +149,12 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
     {
         Set statesRetired = new HashSet();
 
-        for (Iterator i = scrollStates.entrySet().iterator(); i.hasNext();)
+        for(Iterator i = scrollStates.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             HtmlTabularReportDataSourceScrollState state = (HtmlTabularReportDataSourceScrollState) entry.getValue();
 
-            if (!statesRetired.contains(state))
+            if(!statesRetired.contains(state))
             {
                 statesRetired.add(state);
                 state.close();

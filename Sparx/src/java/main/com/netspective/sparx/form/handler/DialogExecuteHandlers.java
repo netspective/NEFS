@@ -50,7 +50,7 @@ public class DialogExecuteHandlers
 
     public boolean add(DialogExecuteHandler handler)
     {
-        if (!handlers.contains(handler))
+        if(!handlers.contains(handler))
             return handlers.add(handler);
         else
             return false;
@@ -73,7 +73,7 @@ public class DialogExecuteHandlers
 
     public void handleDialogExecute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        for (int i = 0; i < handlers.size(); i++)
+        for(int i = 0; i < handlers.size(); i++)
         {
             DialogExecuteHandler handler = (DialogExecuteHandler) handlers.get(i);
             handler.executeDialog(writer, dc);

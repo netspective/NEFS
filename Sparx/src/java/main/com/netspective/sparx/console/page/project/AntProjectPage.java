@@ -70,7 +70,7 @@ public class AntProjectPage extends ConsoleServletPage
         {
             antProject.getDialog().render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             writer.flush();
             throw new ServletException(e);

@@ -79,13 +79,13 @@ public class DialogFields
 
         // make sure to register field in both parent and owner so fields can be found just by querying the hierarchy
         owner.getFields().mapByQualifiedName.put(field.getQualifiedName(), field);
-        if (parent != null)
+        if(parent != null)
             parent.getChildren().mapByQualifiedName.put(field.getQualifiedName(), field);
     }
 
     public int add(DialogField field)
     {
-        if (parent == null)
+        if(parent == null)
             field.setQualifiedName(field.getName());
         else
             field.setQualifiedName(parent.getQualifiedName() + "." + field.getName());
@@ -114,9 +114,9 @@ public class DialogFields
     {
         StringBuffer result = new StringBuffer();
         List names = getOnlyNames();
-        for (int i = 0; i < names.size(); i++)
+        for(int i = 0; i < names.size(); i++)
         {
-            if (i > 0)
+            if(i > 0)
                 result.append(delimiter);
             result.append(names.get(i));
         }
@@ -126,9 +126,9 @@ public class DialogFields
     public String getNamesDelimited(String delimiter)
     {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < namesOnly.size(); i++)
+        for(int i = 0; i < namesOnly.size(); i++)
         {
-            if (i > 0)
+            if(i > 0)
                 sb.append(delimiter);
             sb.append(namesOnly.get(i));
         }
@@ -137,7 +137,7 @@ public class DialogFields
 
     public DialogField getSole()
     {
-        if (size() != 1)
+        if(size() != 1)
             throw new RuntimeException("Only a single field is expected in this collection (not " + size() + "): " + this);
         return (DialogField) fields.get(0);
     }
@@ -161,7 +161,7 @@ public class DialogFields
     {
         DialogFields sublist = parent != null ? new DialogFields(parent) : new DialogFields(owner);
         StringTokenizer st = new StringTokenizer(names, delimiter);
-        while (st.hasMoreTokens())
+        while(st.hasMoreTokens())
         {
             String colName = st.nextToken().trim();
             sublist.add(getByName(colName));
@@ -171,20 +171,20 @@ public class DialogFields
 
     public void clearFlags(long flags)
     {
-        for (int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < fields.size(); i++)
             ((DialogField) fields.get(i)).getFlags().clearFlag(flags);
     }
 
     public void setFlags(long flags)
     {
-        for (int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < fields.size(); i++)
             ((DialogField) fields.get(i)).getFlags().setFlag(flags);
     }
 
     public int totalSize()
     {
         int result = 0;
-        for (int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < fields.size(); i++)
         {
             DialogFields children = get(i).getChildren();
             result += children != null ? (get(i).getChildren().totalSize() + 1) : 1;
@@ -200,8 +200,8 @@ public class DialogFields
     public boolean requiresMultiPartEncoding()
     {
         // if any child requires multi part encoding, then return true (this will take of things recursively)
-        for (int i = 0; i < fields.size(); i++)
-            if (((DialogField) fields.get(i)).requiresMultiPartEncoding())
+        for(int i = 0; i < fields.size(); i++)
+            if(((DialogField) fields.get(i)).requiresMultiPartEncoding())
                 return true;
 
         return false;
@@ -213,17 +213,17 @@ public class DialogFields
      */
     public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo(DialogContextBeanMemberInfo parentMI)
     {
-        for (int i = 0; i < size(); i++)
+        for(int i = 0; i < size(); i++)
         {
             DialogField field = get(i);
             DialogContextBeanMemberInfo childMI = field.getDialogContextBeanMemberInfo();
-            if (childMI == null)
+            if(childMI == null)
                 continue;
 
             String[] childImports = childMI.getImportModules();
-            if (childImports != null)
+            if(childImports != null)
             {
-                for (int m = 0; m < childImports.length; m++)
+                for(int m = 0; m < childImports.length; m++)
                     parentMI.addImportModule(childImports[m]);
             }
 
@@ -235,7 +235,7 @@ public class DialogFields
 
     public void finalizeContents()
     {
-        for (int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < fields.size(); i++)
         {
             DialogField field = get(i);
             field.finalizeContents();
@@ -245,7 +245,7 @@ public class DialogFields
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < fields.size(); i++)
         {
             sb.append("  ");
             sb.append(fields.get(i).toString());

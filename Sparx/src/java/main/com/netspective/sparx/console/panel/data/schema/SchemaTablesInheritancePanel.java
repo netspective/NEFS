@@ -91,16 +91,16 @@ public class SchemaTablesInheritancePanel extends SchemaTablesPanel
         {
             Table activeTable = activeRow.getTable();
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return super.getActiveRowColumnData(columnIndex, flags);
 
                 case 1:
-                    if (activeTable != null)
+                    if(activeTable != null)
                     {
                         List tableTypes = activeTable.getTableTypes();
-                        if (tableTypes.size() > 0)
+                        if(tableTypes.size() > 0)
                             return TextUtils.getInstance().join((String[]) tableTypes.toArray(new String[tableTypes.size()]), ", ");
                         else
                             return null;

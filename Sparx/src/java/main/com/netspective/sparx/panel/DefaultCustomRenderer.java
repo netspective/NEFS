@@ -85,7 +85,7 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
     public void setDataType(CustomRendererDataType dataType)
     {
         this.dataType = dataType;
-        switch (dataType.getValueIndex())
+        switch(dataType.getValueIndex())
         {
             case CustomRendererDataType.QUERY_RESULT_SET:
                 dataPopulator = new QueryResultSetPopulator();
@@ -168,7 +168,7 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
             throws DataModelException, InvocationTargetException, IllegalAccessException, DataModelException
     {
         // if we don't know something about an attribute, save it for the template (pass it in)
-        if (templateVars == null)
+        if(templateVars == null)
             templateVars = new HashMap();
 
         templateVars.put(TextUtils.getInstance().xmlTextToJavaIdentifier(attrName, false), attrValue);
@@ -213,32 +213,32 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
             HtmlTabularReportDataSourceScrollState scrollState = (HtmlTabularReportDataSourceScrollState) rc.getScrollState();
             boolean paging = scrollState != null;
 
-            while (ds.next())
+            while(ds.next())
             {
                 // construct the HTML for the data columns
                 Object[] rowData = new Object[dataColsCount];
-                for (int i = 0; i < dataColsCount; i++)
+                for(int i = 0; i < dataColsCount; i++)
                     rowData[i] = ds.getActiveRowColumnData(i, 0);
 
-                if (hierarchical)
+                if(hierarchical)
                     list.add(new Object[]{ds.getActiveHierarchy(), rowData});
                 else
                     list.add(rowData);
 
                 rowsWritten++;
                 // check to see if this row should be the last
-                if (paging && rowsWritten == scrollState.getRowsPerPage())
+                if(paging && rowsWritten == scrollState.getRowsPerPage())
                     break;
 
             }
 
-            if (rowsWritten > 0 && paging)
+            if(rowsWritten > 0 && paging)
             {
                 // record the number of rows written to the total number of rows already displayed
                 scrollState.accumulateRowsProcessed(rowsWritten);
                 // if the total number of rows written is less than the scroll state's number of rows per page setting,
                 // this must be the last page
-                if (rowsWritten < scrollState.getRowsPerPage())
+                if(rowsWritten < scrollState.getRowsPerPage())
                     scrollState.setNoMoreRows();
             }
 
@@ -263,16 +263,16 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
             HtmlTabularReportDataSourceScrollState scrollState = (HtmlTabularReportDataSourceScrollState) rc.getScrollState();
             boolean paging = scrollState != null;
 
-            while (ds.next())
+            while(ds.next())
             {
                 // construct the HTML for the data columns
                 String[] rowData = new String[dataColsCount];
-                for (int i = 0; i < dataColsCount; i++)
+                for(int i = 0; i < dataColsCount; i++)
                 {
                     TabularReportColumn column = columns.getColumn(i);
                     TabularReportColumnState state = states[i];
 
-                    if (!state.isVisible())
+                    if(!state.isVisible())
                         continue;
 
                     String data =
@@ -280,7 +280,7 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
                             state.getOutputFormat() :
                             column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
                     RedirectValueSource redirect = column.getRedirect();
-                    if (data != null && redirect != null)
+                    if(data != null && redirect != null)
                     {
                         String newdata = rc.getSkin().constructRedirect(rc, redirect, data, null, null);
                         data = defn.replaceOutputPatterns(rc, ds, newdata);
@@ -289,25 +289,25 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
                     rowData[i] = data;
                 }
 
-                if (hierarchical)
+                if(hierarchical)
                     list.add(new Object[]{ds.getActiveHierarchy(), rowData});
                 else
                     list.add(rowData);
 
                 rowsWritten++;
                 // check to see if this row should be the last
-                if (paging && rowsWritten == scrollState.getRowsPerPage())
+                if(paging && rowsWritten == scrollState.getRowsPerPage())
                     break;
 
             }
 
-            if (rowsWritten > 0 && paging)
+            if(rowsWritten > 0 && paging)
             {
                 // record the number of rows written to the total number of rows already displayed
                 scrollState.accumulateRowsProcessed(rowsWritten);
                 // if the total number of rows written is less than the scroll state's number of rows per page setting,
                 // this must be the last page
-                if (rowsWritten < scrollState.getRowsPerPage())
+                if(rowsWritten < scrollState.getRowsPerPage())
                     scrollState.setNoMoreRows();
             }
 

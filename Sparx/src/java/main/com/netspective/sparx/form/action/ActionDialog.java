@@ -106,14 +106,14 @@ public class ActionDialog extends Dialog
         ActionDialogContext adc = ((ActionDialogContext) dc);
 
         // if any of the default validation failed, leave now
-        if (!super.isValid(dc))
+        if(!super.isValid(dc))
         {
             // since we're leaving (execute won't be called), be sure to close any open connections
             try
             {
                 adc.closeActionConnection(); // in case any database connection was opened
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 getLog().error(e);
                 throw new NestableRuntimeException(e);
@@ -122,7 +122,7 @@ public class ActionDialog extends Dialog
         }
 
         ActionWrapper.ActionValidator actionValidator = action.getActionValidator();
-        if (actionValidator == null)
+        if(actionValidator == null)
             return true;
 
         boolean valid = true;
@@ -130,24 +130,24 @@ public class ActionDialog extends Dialog
         try
         {
             valid = actionValidator.isValid(adc.getActionInstance(), messages);
-            if (!valid)
+            if(!valid)
             {
                 DialogValidationContext vc = dc.getValidationContext();
                 DialogFields dialogFields = getFields();
 
-                for (int i = 0; i < messages.size(); i++)
+                for(int i = 0; i < messages.size(); i++)
                 {
                     Object message = messages.get(i);
-                    if (message instanceof String)
+                    if(message instanceof String)
                         vc.addError((String) message);
-                    else if (message instanceof String[])
+                    else if(message instanceof String[])
                     {
                         String[] components = (String[]) message;
                         String fieldName = components[0];
                         String messageText = components[1];
 
                         DialogField field = dialogFields.getByQualifiedName(fieldName);
-                        if (field != null)
+                        if(field != null)
                             field.invalidate(dc, messageText);
                         else
                             vc.addError(messageText);
@@ -155,21 +155,21 @@ public class ActionDialog extends Dialog
                 }
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             getLog().error(e);
             throw new NestableRuntimeException(e);
         }
         finally
         {
-            if (!valid)
+            if(!valid)
             {
                 // since we're false (execute won't be called), be sure to close any open connections
                 try
                 {
                     adc.closeActionConnection(); // in case any database connection was opened
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     getLog().error(e);
                     throw new NestableRuntimeException(e);
@@ -182,7 +182,7 @@ public class ActionDialog extends Dialog
 
     public void execute(Writer writer, DialogContext dc) throws DialogExecuteException, IOException
     {
-        if (dc.executeStageHandled())
+        if(dc.executeStageHandled())
             return;
 
         ActionDialogContext adc = ((ActionDialogContext) dc);
@@ -192,7 +192,7 @@ public class ActionDialog extends Dialog
         try
         {
             String redirect = actionExecutor.execute(writer, instance);
-            if (redirect != null)
+            if(redirect != null)
             {
                 ValueSource vs = ValueSources.getInstance().getValueSourceOrStatic(redirect);
                 handlePostExecute(writer, dc, vs.getTextValue(adc));
@@ -200,7 +200,7 @@ public class ActionDialog extends Dialog
             else
                 handlePostExecute(writer, dc);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             handlePostExecuteException(writer, dc, "Action execution error", e);
         }
@@ -210,7 +210,7 @@ public class ActionDialog extends Dialog
             {
                 adc.closeActionConnection(); // in case any database connection was opened
             }
-            catch (Exception e1)
+            catch(Exception e1)
             {
                 getLog().error(e1);
                 throw new DialogExecuteException(e1);

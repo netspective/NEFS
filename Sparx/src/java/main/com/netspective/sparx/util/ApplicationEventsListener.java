@@ -61,17 +61,17 @@ public class ApplicationEventsListener implements ServletContextListener
         log.trace("Destroying context " + event.getServletContext().getServletContextName());
 
         Set connContextsWithOpenConnections = new HashSet(AbstractConnectionContext.getConnectionContextsWithOpenConnections());
-        for (Iterator i = connContextsWithOpenConnections.iterator(); i.hasNext();)
+        for(Iterator i = connContextsWithOpenConnections.iterator(); i.hasNext();)
         {
             ConnectionContext cc = (ConnectionContext) i.next();
 
             // if the cc is bound to a session, it will be cleaned up when session is closed if requested
-            if (!cc.isBoundToSession())
+            if(!cc.isBoundToSession())
             {
-                if (cc instanceof HttpSessionBindableConnectionContext)
+                if(cc instanceof HttpSessionBindableConnectionContext)
                 {
                     HttpSessionBindableConnectionContext bindableCC = (HttpSessionBindableConnectionContext) cc;
-                    if (!bindableCC.isCloseOnSessionUnbind())
+                    if(!bindableCC.isCloseOnSessionUnbind())
                         cc.rollbackAndCloseAndLogAsConnectionLeak(log, "** Connection leak detected: connection is marked as a sending bound CC but is not set to automatically close when unbound.");
                 }
             }

@@ -68,10 +68,10 @@ public class Dialogs implements MetricsProducer
         dialogs.add(dialog);
         byName.put(dialog.getNameForMapKey(), dialog);
         //TODO: Modify this to also use a method similar to getNameForMapKey() for case-insensitive namespaces
-        if (null != dialog.getNameSpace())
+        if(null != dialog.getNameSpace())
         {
             String nameSpaceId = dialog.getNameSpace().getNameSpaceId();
-            if (!byNameSpace.containsKey(nameSpaceId))
+            if(!byNameSpace.containsKey(nameSpaceId))
                 byNameSpace.put(nameSpaceId, new ArrayList());
             ((ArrayList) byNameSpace.get(nameSpaceId)).add(dialog);
             nameSpaceNames.add(dialog.getNameSpace().getNameSpaceId());
@@ -90,14 +90,10 @@ public class Dialogs implements MetricsProducer
 
     /**
      * Gets a subset of dialogs belonging to one name space
-     *
-     * @param nameSpace
-     *
-     * @return
      */
     public List getByNameSpace(String nameSpace)
     {
-        if (byNameSpace.containsKey(nameSpace))
+        if(byNameSpace.containsKey(nameSpace))
             return (ArrayList) byNameSpace.get(nameSpace);
         return null;
     }
@@ -124,8 +120,6 @@ public class Dialogs implements MetricsProducer
 
     /**
      * Generates various metrics associated with the dialogs
-     *
-     * @param parent
      */
     public void produceMetrics(Metric parent)
     {
@@ -137,7 +131,7 @@ public class Dialogs implements MetricsProducer
         AverageMetric avgFieldCountMetric = parent.addAverageMetric("Avg Fields Per Dialog");
         CountMetric fieldCountMetric = parent.addCountMetric("Total Fields");
 
-        for (int i = 0; i < dialogs.size(); i++)
+        for(int i = 0; i < dialogs.size(); i++)
         {
             int fCount = ((Dialog) dialogs.get(i)).getFields().size();
             fieldCountMetric.incrementCount(fCount);

@@ -65,7 +65,7 @@ public class DialogFieldStates
     public DialogField.State getState(DialogField field)
     {
         DialogField.State state = (DialogField.State) statesByQualifiedName.get(field.getQualifiedName());
-        if (state == null)
+        if(state == null)
         {
             state = field.constructStateInstance(dialogContext);
             statesByQualifiedName.put(field.getQualifiedName(), state);
@@ -77,7 +77,7 @@ public class DialogFieldStates
     public DialogField.State getState(String qualifiedName)
     {
         DialogField field = dialogContext.getDialog().getFields().getByQualifiedName(qualifiedName);
-        if (field == null)
+        if(field == null)
             throw new RuntimeException("Field '" + qualifiedName + "' not found in dialog '" + dialogContext.getDialog().getName() + "'.");
         else
             return getState(field);
@@ -86,7 +86,7 @@ public class DialogFieldStates
     public DialogField.State getState(String qualifiedName, DialogField.State defaultValue)
     {
         DialogField field = dialogContext.getDialog().getFields().getByQualifiedName(qualifiedName);
-        if (field == null)
+        if(field == null)
             return defaultValue;
         else
             return getState(field);
@@ -95,7 +95,7 @@ public class DialogFieldStates
     public void persistValues()
     {
         Iterator i = statesByQualifiedName.values().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             DialogField.State state = (DialogField.State) i.next();
             state.persistValue();
@@ -112,7 +112,7 @@ public class DialogFieldStates
     public void assignFieldValues(DialogContext dc, Map values)
     {
         DialogFields dialogFields = dc.getDialog().getFields();
-        for (Iterator i = values.entrySet().iterator(); i.hasNext();)
+        for(Iterator i = values.entrySet().iterator(); i.hasNext();)
         {
             String fieldName = (String) ((Map.Entry) i.next()).getKey();
             DialogField field = dialogFields.getByQualifiedName(fieldName);
@@ -126,9 +126,9 @@ public class DialogFieldStates
         DialogField.State state = getState(field);
         state.getStateFlags().setFlag(flag);
         DialogFields children = field.getChildren();
-        if (children != null)
+        if(children != null)
         {
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
                 setStateFlag(children.get(i), flag);
         }
     }
@@ -138,9 +138,9 @@ public class DialogFieldStates
         DialogField.State state = getState(field);
         state.getStateFlags().clearFlag(flag);
         DialogFields children = field.getChildren();
-        if (children != null)
+        if(children != null)
         {
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
                 clearStateFlag(children.get(i), flag);
         }
     }
@@ -148,15 +148,15 @@ public class DialogFieldStates
     public void importFromXml(Element parent)
     {
         NodeList children = parent.getChildNodes();
-        for (int n = 0; n < children.getLength(); n++)
+        for(int n = 0; n < children.getLength(); n++)
         {
             Node node = children.item(n);
-            if (node.getNodeName().equals("field-state"))
+            if(node.getNodeName().equals("field-state"))
             {
                 Element fieldElem = (Element) node;
                 String fieldName = fieldElem.getAttribute("name");
                 DialogField.State state = getState(fieldName);
-                if (state != null)
+                if(state != null)
                     state.importFromXml(fieldElem);
             }
         }
@@ -165,7 +165,7 @@ public class DialogFieldStates
     public void exportToXml(Element parent)
     {
         Iterator i = statesByQualifiedName.values().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             DialogField.State state = (DialogField.State) i.next();
             state.exportToXml(parent);
@@ -176,9 +176,9 @@ public class DialogFieldStates
     {
         StringBuffer sb = new StringBuffer();
         Iterator i = statesByQualifiedName.values().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
-            if (sb.length() > 0)
+            if(sb.length() > 0)
                 sb.append('&');
 
             DialogField.State state = (DialogField.State) i.next();
@@ -192,9 +192,9 @@ public class DialogFieldStates
         Map result = new HashMap();
         Iterator i = statesByQualifiedName.values().iterator();
 
-        if (fieldNamePrefix == null)
+        if(fieldNamePrefix == null)
         {
-            while (i.hasNext())
+            while(i.hasNext())
             {
                 DialogField.State state = (DialogField.State) i.next();
                 result.put(state.getField().getQualifiedName(), state.getValue().getTextValue());
@@ -202,7 +202,7 @@ public class DialogFieldStates
         }
         else
         {
-            while (i.hasNext())
+            while(i.hasNext())
             {
                 DialogField.State state = (DialogField.State) i.next();
                 result.put(fieldNamePrefix + state.getField().getQualifiedName(), state.getValue().getTextValue());

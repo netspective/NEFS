@@ -59,8 +59,6 @@ public class SectionField extends DialogField
 
     /**
      * Gets the dialog context bean information of all the children contained in this field
-     *
-     * @return
      */
     public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo()
     {

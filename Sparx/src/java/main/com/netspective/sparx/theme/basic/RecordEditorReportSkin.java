@@ -46,7 +46,7 @@ import com.netspective.sparx.theme.Theme;
 
 /**
  * @author aye
- *         $Id: RecordEditorReportSkin.java,v 1.13 2004-08-15 01:47:11 shahid.shah Exp $
+ *         $Id: RecordEditorReportSkin.java,v 1.14 2004-08-15 02:27:29 shahid.shah Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -64,13 +64,13 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report
             return;
         }
         HtmlReportAction[] deleteReportActions = actions.getByType(HtmlReportAction.Type.RECORD_DELETE);
-        if (deleteReportActions != null && deleteReportActions.length > 0)
+        if(deleteReportActions != null && deleteReportActions.length > 0)
         {
             ValueSource redirect = deleteReportActions[0].getRedirect();
             Theme theme = getTheme();
@@ -99,19 +99,19 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
         super.produceDataRowDecoratorPrepend(writer, rc, ds, rowData, isOddRow);
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report
             return;
         }
         HtmlReportAction[] editReportActions = actions.getByType(HtmlReportAction.Type.RECORD_EDIT);
-        if (editReportActions != null && editReportActions.length > 0)
+        if(editReportActions != null && editReportActions.length > 0)
         {
             ValueSource redirect = editReportActions[0].getRedirect();
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-edit.gif") + "\" " +
-                    "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+                           "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
@@ -122,23 +122,19 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 
     /**
      * Gets the additional number of columns to append after the data columns
-     *
-     * @param rc
-     *
-     * @return
      */
     protected int getRowDecoratorAppendColsCount(HtmlTabularReportValueContext rc)
     {
         int cols = super.getRowDecoratorAppendColsCount(rc);
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report so return 0
             return cols;
         }
         HtmlReportAction[] deleteReportActions = actions.getByType(HtmlReportAction.Type.RECORD_DELETE);
-        if (deleteReportActions != null && deleteReportActions.length > 0)
+        if(deleteReportActions != null && deleteReportActions.length > 0)
             return cols + 1;
         else
             return cols;
@@ -147,23 +143,19 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 
     /**
      * Gets the additional number of columns to prepend to the data
-     *
-     * @param rc
-     *
-     * @return
      */
     protected int getRowDecoratorPrependColsCount(HtmlTabularReportValueContext rc)
     {
         int cols = super.getRowDecoratorPrependColsCount(rc);
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report so return 0
             return cols;
         }
         HtmlReportAction[] editReportActions = actions.getByType(HtmlReportAction.Type.RECORD_EDIT);
-        if (editReportActions != null)
+        if(editReportActions != null)
             return cols + 1;
         else
             return cols;

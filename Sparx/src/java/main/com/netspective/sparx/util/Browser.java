@@ -105,7 +105,7 @@ public class Browser implements java.io.Serializable
     private Browser(javax.servlet.http.HttpServletRequest request)
     {
         this.origUa = request.getHeader("User-Agent");
-        if (origUa == null || origUa.length() == 0)
+        if(origUa == null || origUa.length() == 0)
             return;
 
         this.ua = origUa.toLowerCase();
@@ -114,7 +114,7 @@ public class Browser implements java.io.Serializable
         this.mac = ua.indexOf("mac") >= 0;
         this.win = ua.indexOf("win") >= 0;
 
-        if (win)
+        if(win)
         { // whole bunch of windows browsers.
             this.win95 = (ua.indexOf("95") > 0);
             this.win98 = (ua.indexOf("98") > 0);
@@ -125,21 +125,21 @@ public class Browser implements java.io.Serializable
 
 
         this.webTV = ua.indexOf("webtv") > 0;
-        if (this.webTV) return;
+        if(this.webTV) return;
 
         this.unix = (!win && !mac && !webTV);
-        if (unix)
+        if(unix)
         { // bunch of 'nix browsers.
             this.OS2 = ua.indexOf("os/2") > 0;
             this.sun = ua.indexOf("sunos") > 0;
             this.irix = ua.indexOf("irix") > 0;
             this.hpux = ua.indexOf("hpux") > 0
-                    || ua.indexOf("hp-ux") > 0;
+                        || ua.indexOf("hp-ux") > 0;
             this.aix = ua.indexOf("aix") > 0;
             this.dec = (ua.indexOf("dec") > 0
-                    || ua.indexOf("alpha") > 0
-                    || ua.indexOf("osf1") > 0
-                    || ua.indexOf("ultrix") > 0);
+                        || ua.indexOf("alpha") > 0
+                        || ua.indexOf("osf1") > 0
+                        || ua.indexOf("ultrix") > 0);
             this.SCO = (ua.indexOf("sco") > 0 || ua.indexOf("unix_sv") > 0);
             this.VMS = (ua.indexOf("vax") > 0 || ua.indexOf("openvms") > 0);
             this.linux = ua.indexOf("linux") > 0;
@@ -160,7 +160,7 @@ public class Browser implements java.io.Serializable
         this.opera6 = ua.indexOf("opera 6") >= 0;
         this.opera7 = ua.indexOf("opera 7") >= 0;
         // eliminate browsers that lie.
-        if (this.opera) return;
+        if(this.opera) return;
 
 
         this.konqueror = ua.indexOf("konqueror") >= 0;
@@ -168,17 +168,17 @@ public class Browser implements java.io.Serializable
         this.konqueror3 = ua.indexOf("konqueror/3") >= 0;
 
         // eliminate browsers that lie.
-        if (this.konqueror) return;
+        if(this.konqueror) return;
 
         this.safari = ua.indexOf("safari") >= 0;
 
         // eliminate browsers that lie.
-        if (this.safari) return;
+        if(this.safari) return;
 
         this.AOL = ua.indexOf("aol") > 0;
 
         this.omniweb = ua.indexOf("omniweb") > 0;
-        if (this.omniweb) return;
+        if(this.omniweb) return;
 
         this.galeon = ua.indexOf("galeon") > 0;
 
@@ -189,9 +189,9 @@ public class Browser implements java.io.Serializable
         this.gecko = ua.indexOf("gecko") > 0;
         this.moz = (gecko && !NS6);
         this.firefly = ua.indexOf("firefly/") >= 0;
-        if (firefly) return;
-        if (moz) return;
-        if (galeon) return;
+        if(firefly) return;
+        if(moz) return;
+        if(galeon) return;
 
         this.IE = ua.indexOf("msie") > 0;
         this.IEVersion = getLocalIEVersion();
@@ -216,7 +216,7 @@ public class Browser implements java.io.Serializable
         this.ia_archiver = ua.indexOf("ia_archiver") >= 0;
 
         this.NS4 = (ua.indexOf("mozilla/4") == 0
-                && ua.indexOf("compatible") == -1 && !IE && !opera && !gecko && !icab && !konqueror && !firefly);
+                    && ua.indexOf("compatible") == -1 && !IE && !opera && !gecko && !icab && !konqueror && !firefly);
 
         this.w3cValidator = (ua.indexOf("w3c_validator") == 0);
         this.unknown = (!IE && !gecko && !NS4 && !AOL && !icab && !konqueror && !firefly);
@@ -225,21 +225,21 @@ public class Browser implements java.io.Serializable
 
     private String getLocalIEVersion()
     {
-        if (!this.IE) return "-1";
+        if(!this.IE) return "-1";
         int startNum = ua.indexOf("msie") + 4;
-        if (ua.length() < startNum) return "-1";
+        if(ua.length() < startNum) return "-1";
 
         String IEVer = ua.substring(startNum).trim();
 
         try
         {
             IEVer = IEVer.substring(0, IEVer.indexOf(" "));
-            if (IEVer.indexOf(";") > 0 && IEVer.indexOf(";") <= 4)
+            if(IEVer.indexOf(";") > 0 && IEVer.indexOf(";") <= 4)
                 IEVer = IEVer.substring(0, IEVer.indexOf(";"));
 
             return (IEVer);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             this.unknown = true;
             return "-1";
@@ -260,7 +260,7 @@ public class Browser implements java.io.Serializable
 
         Browser browser = (Browser) session.getAttribute(sessionBrowserNS);
 
-        if (browser == null)
+        if(browser == null)
         {
             browser = new Browser(request);
             session.setAttribute(sessionBrowserNS, browser);
@@ -278,23 +278,23 @@ public class Browser implements java.io.Serializable
     public String getBrowserName()
     {
         return opera ? "Opera" :
-                omniweb ? "Omniweb" :
-                konqueror ? "Konqueror" :
-                icab ? "iCab" :
-                gecko ? NS6 ? minNS61 ? "Netscape 6.1 or higher" : "Netscape 6" : "Gecko" :
-                NS4 ? "Netscape 4" :
+               omniweb ? "Omniweb" :
+               konqueror ? "Konqueror" :
+               icab ? "iCab" :
+               gecko ? NS6 ? minNS61 ? "Netscape 6.1 or higher" : "Netscape 6" : "Gecko" :
+               NS4 ? "Netscape 4" :
 
-                firefly ? "FireFly" :
-                win && IE ?
-                IE6 ? "IE6" :
-                IE56 ? "IE5.6" :
-                IE55 ? "IE5.5" :
-                winIE5 && IE5 ? "Win IE5.0" : "Win IE" + getIEVersion() :
+               firefly ? "FireFly" :
+               win && IE ?
+               IE6 ? "IE6" :
+               IE56 ? "IE5.6" :
+               IE55 ? "IE5.5" :
+               winIE5 && IE5 ? "Win IE5.0" : "Win IE" + getIEVersion() :
 
-                mac && IE ?
-                macIE5 ? IE51b ? "Mac IE 5.1 beta" : IE51 ? "Mac IE 5.1" : "Mac IE 5.0" :
-                "Mac IE" + getIEVersion() :
-                "unknown";
+               mac && IE ?
+               macIE5 ? IE51b ? "Mac IE 5.1 beta" : IE51 ? "Mac IE 5.1" : "Mac IE 5.0" :
+               "Mac IE" + getIEVersion() :
+               "unknown";
     }
 
     /**

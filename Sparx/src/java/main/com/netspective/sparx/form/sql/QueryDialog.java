@@ -166,9 +166,9 @@ public class QueryDialog extends Dialog
     public void createParamFields()
     {
         QueryParameters params = query.getParams();
-        if (params != null)
+        if(params != null)
         {
-            for (int i = 0; i < query.getParams().size(); i++)
+            for(int i = 0; i < query.getParams().size(); i++)
             {
                 QueryParameter param = query.getParams().get(i);
                 DialogField field = new TextField();
@@ -204,11 +204,6 @@ public class QueryDialog extends Dialog
 
     /**
      * Creates the dialog context associated with the dialog
-     *
-     * @param nc
-     * @param skin
-     *
-     * @return
      */
     public DialogContext createContext(NavigationContext nc, DialogSkin skin)
     {
@@ -235,7 +230,7 @@ public class QueryDialog extends Dialog
         {
             render(writer, dc, false);
         }
-        catch (DialogExecuteException e)
+        catch(DialogExecuteException e)
         {
             log.error("Dialog execute error", e);
             writer.write(e.toString());
@@ -244,8 +239,6 @@ public class QueryDialog extends Dialog
 
     /**
      * Gets the report panel associated with the report
-     *
-     * @return
      */
     public HtmlTabularReportPanel getReportPanel()
     {
@@ -254,8 +247,6 @@ public class QueryDialog extends Dialog
 
     /**
      * Sets the report panel associated with the report
-     *
-     * @param reportPanel
      */
     public void setReportPanel(HtmlTabularReportPanel reportPanel)
     {
@@ -294,8 +285,6 @@ public class QueryDialog extends Dialog
 
     /**
      * Gets the name of the dialog field containing the report rows per page value
-     *
-     * @return
      */
     public String getRowsPerPageParamName()
     {
@@ -304,8 +293,6 @@ public class QueryDialog extends Dialog
 
     /**
      * Gets the name of the dialog field containing the selectable report flag
-     *
-     * @return
      */
     public String getSelectableParamName()
     {
@@ -314,8 +301,6 @@ public class QueryDialog extends Dialog
 
     /**
      * Gets the name of the dialog field containing the report panel name
-     *
-     * @return
      */
     public String getReportPanelParamName()
     {
@@ -324,31 +309,24 @@ public class QueryDialog extends Dialog
 
     /**
      * Renders the report of the dialog query
-     *
-     * @param writer
-     * @param dc
-     * @param reportSkin
-     *
-     * @throws IOException
-     * @throws QueryDefinitionException
      */
     public void renderReport(Writer writer, DialogContext dc, HtmlTabularReportSkin reportSkin) throws IOException, QueryDefinitionException
     {
         HtmlTabularReportPanel reportPanel = null;
         QueryDialogContext qdc = (QueryDialogContext) dc;
-        if (qdc.getRowsPerPage() > 0)
+        if(qdc.getRowsPerPage() > 0)
         {
             HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
-            if (scrollStateById == null)
+            if(scrollStateById == null)
             {
                 // if our transaction does not have a scroll state, but there is an active scroll state available, then it
                 // means that we need to close the previous one and remove the attribute so that the connection can be
                 // closed and returned to the pool
                 HtmlTabularReportDataSourceScrollState activeScrollState = scrollStatesManager.getActiveScrollState(dc);
 
-                if (activeScrollState != null && !getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
+                if(activeScrollState != null && !getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
                     scrollStatesManager.removeActiveState(dc, activeScrollState);
                 reportPanel = qdc.getReportPanel();
                 reportPanel.setScrollRowsPerPage(qdc.getRowsPerPage());
@@ -371,22 +349,19 @@ public class QueryDialog extends Dialog
 
     /**
      * Initiates state changes to each individual field of the dialog
-     *
-     * @param dc
-     * @param stage
      */
     public void makeStateChanges(DialogContext dc, int stage)
     {
         QueryDialogContext qdc = (QueryDialogContext) dc;
         DialogFieldStates states = dc.getFieldStates();
-        if (dc.getDialogState().isInExecuteMode())
+        if(dc.getDialogState().isInExecuteMode())
         {
             //DialogField.State state = dc.getFieldStates().getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME);
             //rowsPerPage =  state.getValue().getIntValue();
 
             // hide all the dialog fields
             DialogFields fields = getFields();
-            for (int i = 0; i < fields.size(); i++)
+            for(int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
                 field.makeStateChanges(dc, stage);
@@ -397,7 +372,7 @@ public class QueryDialog extends Dialog
             states.getState(getDirector()).getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
             states.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
             // display the Navigation buttons
-            if (qdc.getRowsPerPage() > 0)
+            if(qdc.getRowsPerPage() > 0)
             {
                 states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
             }
@@ -410,7 +385,7 @@ public class QueryDialog extends Dialog
         {
             states.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
             // if the dialog isnt in execute mode, do not display the result navigation buttons
-            if (qdc.getRowsPerPage() > 0)
+            if(qdc.getRowsPerPage() > 0)
             {
                 states.getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
                 states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
@@ -420,12 +395,6 @@ public class QueryDialog extends Dialog
 
     /**
      * Executes the query associated with the dialog and displays the report
-     *
-     * @param writer
-     * @param dc
-     *
-     * @throws IOException
-     * @throws DialogExecuteException
      */
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
@@ -433,7 +402,7 @@ public class QueryDialog extends Dialog
         {
             renderReport(writer, dc, reportSkin);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Exception while trying to render report", e);
             throw new DialogExecuteException(e);

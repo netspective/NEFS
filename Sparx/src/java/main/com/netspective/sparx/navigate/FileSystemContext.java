@@ -88,10 +88,10 @@ public class FileSystemContext implements FilenameFilter
     public void setRelativePath(String value)
     {
         relativePathStr = value;
-        if (relativePathStr != null && (relativePathStr.equals("") || relativePathStr.equals("/")))
+        if(relativePathStr != null && (relativePathStr.equals("") || relativePathStr.equals("/")))
             relativePathStr = null;
 
-        if (relativePathStr != null)
+        if(relativePathStr != null)
             activePath = new FileSystemEntry(0, rootPath, new File(rootPath.getFile().getAbsolutePath() + rootPath.getFile().separator + relativePathStr));
         else
             activePath = rootPath;

@@ -89,7 +89,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         setPanelClassNamePrefix(panelClassNamePrefix);
         setPanelResourcesPrefix(panelResourcesPrefix);
         flags.setFlag(Flags.SHOW_BANNER);
-        if (fullWidth)
+        if(fullWidth)
             flags.setFlag(Flags.FULL_WIDTH);
     }
 
@@ -152,16 +152,16 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
     {
         HtmlPanelActions actions = frame.getActions();
 
-        if (actions != null && actions.size() > 0)
+        if(actions != null && actions.size() > 0)
         {
             Theme theme = getTheme();
             int colCount = 0;
 
             // create a temporary string buffer for the HTML of the heading action items
             StringBuffer itemBuffer = new StringBuffer();
-            for (int i = 0; i < actions.size(); i++)
+            for(int i = 0; i < actions.size(); i++)
             {
-                if (i != 0)
+                if(i != 0)
                 {
                     itemBuffer.append("            <td bgcolor=\"white\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
                     colCount++;
@@ -170,7 +170,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 String itemUrl = "TODO"; //item.getParameters();
                 String itemCaption = item.getCaption().getTextValue(vc);
                 ValueSource itemIcon = item.getIcon();
-                if (itemIcon != null)
+                if(itemIcon != null)
                 {
                     // icon for this item is defined so use the passed in image INSTEAD of using the CSS based background image
                     itemBuffer.append("            <td class=\"" + panelClassNamePrefix + "-frame-action-item\" width=\"18\"></td>");
@@ -182,11 +182,11 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                     colCount++;
                 }
                 itemBuffer.append("            <td class=\"" + panelClassNamePrefix + "-frame-action-box\">" +
-                        "<a class=\"" + panelClassNamePrefix + "-frame-action\" href=\"" + itemUrl + "\">&nbsp;" + itemCaption + "&nbsp;</a></td>");
+                                  "<a class=\"" + panelClassNamePrefix + "-frame-action\" href=\"" + itemUrl + "\">&nbsp;" + itemCaption + "&nbsp;</a></td>");
                 colCount++;
             }
 
-            if (itemBuffer.length() > 0)
+            if(itemBuffer.length() > 0)
                 writer.write(itemBuffer.toString());
         }
     }
@@ -206,45 +206,46 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         Theme theme = getTheme();
 
         writer.write("<table id=\"" + panel.getPanelIdentifier() + "_frame\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap ");
-        if (flags.flagIsSet(Flags.FULL_WIDTH))
+        if(flags.flagIsSet(Flags.FULL_WIDTH))
             writer.write("width='100%' ");
         writer.write(">\n");
 
-        if (frame.hasHeadingOrFooting())
+        if(frame.hasHeadingOrFooting())
         {
             String heading = null;
             ValueSource hvs = frame.getHeading();
-            if (hvs != null)
+            if(hvs != null)
                 heading = hvs.getValue(vc).getTextValue();
-            if (heading != null && !frame.isHideHeading(vc))
+            if(heading != null && !frame.isHideHeading(vc))
             {
                 writer.write("<tr>\n");
                 writer.write("    <td class=\"" + panelClassNamePrefix + "\">\n");
                 writer.write("    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap>\n");
                 writer.write("        <tr>\n");
-                if (frame.getFlags().flagIsSet(HtmlPanelFrame.Flags.ALLOW_COLLAPSE))
+                if(frame.getFlags().flagIsSet(HtmlPanelFrame.Flags.ALLOW_COLLAPSE))
                 {
-                    if (vc.isMinimized())
+                    if(vc.isMinimized())
                         writer.write("            <td id=\"" + panel.getPanelIdentifier() + "_action\" class=\"" + panelClassNamePrefix + "-frame-heading-action-expand\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('" + panel.getPanelIdentifier() + "')\">" +
-                                "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
+                                     "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
                     else
                         writer.write("            <td id=\"" + panel.getPanelIdentifier() + "_action\" class=\"" + panelClassNamePrefix + "-frame-heading-action-collapse\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('" + panel.getPanelIdentifier() + "')\">" +
-                                "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
+                                     "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
 
                     writer.write("<script>ALL_PANELS.getPanel(\"" + panel.getPanelIdentifier() + "\").minimized = " + (vc.isMinimized()
-                            ? "true" : "false") + "</script>");
+                                                                                                                       ? "true"
+                                                                                                                       : "false") + "</script>");
                 }
                 else
                 {
                     writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-heading-action-left-blank\" align=\"left\" valign=\"middle\" nowrap width=\"17\">" +
-                            "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
+                                 "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
                 }
                 writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-heading\" align=\"left\" valign=\"middle\" nowrap>" + heading +
-                        "</td>\n");
+                             "</td>\n");
                 writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-heading-action-right-blank\" align=\"center\" valign=\"middle\" nowrap width=\"17\">" +
-                        "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
+                             "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
                 writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-mid\" align=\"right\" valign=\"top\" nowrap width=\"100%\">" +
-                        "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"100%\" border=\"0\">--></td>\n");
+                             "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"100%\" border=\"0\">--></td>\n");
                 writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\"></td>\n");
                 produceHeadingExtras(writer, vc, frame);
                 writer.write("        </tr>\n");
@@ -272,12 +273,12 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
         renderBanner(writer, vc);
         String contentClassName = panelClassNamePrefix + "-content";
-        if (!renderedFrame)
+        if(!renderedFrame)
             contentClassName += "-no-frame";
 
         int height = panel.getHeight();
         int width = panel.getWidth();
-        if (height > 0)
+        if(height > 0)
             writer.write("<tr id=\"" + panel.getPanelIdentifier() + "_content\">\n     <td class=\"" + contentClassName + "\"><div class='" + contentDivClass + "' style=\"width: " + width + "; height: " + height + "; overflow: auto;\">\n");
         else
             writer.write("<tr id=\"" + panel.getPanelIdentifier() + "_content\">\n     <td class=\"" + contentClassName + "\"><div class='" + contentDivClass + "' style=\"width: " + width + ";\">\n");
@@ -291,10 +292,10 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         writer.write("    </div></td>\n");
         writer.write("</tr>\n");
 
-        if (frame.hasHeadingOrFooting())
+        if(frame.hasHeadingOrFooting())
         {
             ValueSource fvs = frame.getFooting();
-            if (fvs != null)
+            if(fvs != null)
             {
                 writer.write("<tr id=\"" + panel.getPanelIdentifier() + "_banner_footer\">\n");
                 writer.write("    <td class=\"" + panelClassNamePrefix + "-banner-footer\">" + fvs.getTextValue(vc) + "</td>\n");
@@ -307,22 +308,15 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
     /**
      * Generates the html for banner action items
-     *
-     * @param writer
-     * @param rc
-     * @param actions
-     *
-     * @throws IOException
-     * @throws CommandNotFoundException
      */
     protected void produceBannerActionsHtml(Writer writer, HtmlPanelValueContext rc, HtmlPanelActions actions) throws IOException, CommandNotFoundException
     {
         int actionsCount = actions.size();
-        if (actionsCount == 0) return;
+        if(actionsCount == 0) return;
 
-        if (actions.getStyle().getValueIndex() == HtmlPanelActions.Style.HORIZONTAL)
+        if(actions.getStyle().getValueIndex() == HtmlPanelActions.Style.HORIZONTAL)
         {
-            for (int i = 0; i < actionsCount; i++)
+            for(int i = 0; i < actionsCount; i++)
             {
                 HtmlPanelAction action = actions.get(i);
                 ValueSource itemCaption = action.getCaption();
@@ -330,7 +324,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 String caption = "";
                 RedirectValueSource itemRedirect = action.getRedirect();
 
-                if (itemRedirect == null)
+                if(itemRedirect == null)
                 {
                     caption = itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i;
                 }
@@ -338,12 +332,13 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 {
                     String hint = action.getHint() != null ? action.getHint().getValue(rc).getTextValue() : "";
                     caption = constructRedirect(rc, itemRedirect, itemCaption != null
-                            ? itemCaption.getValue(rc).getTextValue() : "item" + i,
-                            hint, null);
+                                                                  ? itemCaption.getValue(rc).getTextValue()
+                                                                  : "item" + i,
+                                                hint, null);
                 }
-                if (i > 0)
+                if(i > 0)
                     writer.write(", ");
-                if (itemIcon != null)
+                if(itemIcon != null)
                     writer.write("<img src='" + itemIcon.getValue(rc) + "'>");
                 writer.write(caption);
             }
@@ -351,7 +346,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         else
         {
             writer.write("<table border=0 cellspacing=0>");
-            for (int i = 0; i < actionsCount; i++)
+            for(int i = 0; i < actionsCount; i++)
             {
                 HtmlPanelAction action = actions.get(i);
                 RedirectValueSource itemRedirect = action.getRedirect();
@@ -359,7 +354,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 ValueSource itemIcon = action.getIcon();
                 HtmlPanelActions childItems = action.getChildren();
                 String caption = "";
-                if (itemRedirect == null)
+                if(itemRedirect == null)
                 {
                     caption = itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i;
                 }
@@ -367,16 +362,17 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 {
                     String hint = action.getHint() != null ? action.getHint().getValue(rc).getTextValue() : "";
                     caption = constructRedirect(rc, itemRedirect, itemCaption != null
-                            ? itemCaption.getValue(rc).getTextValue() : "item" + i,
-                            hint, null);
+                                                                  ? itemCaption.getValue(rc).getTextValue()
+                                                                  : "item" + i,
+                                                hint, null);
                 }
                 writer.write("<tr><td>");
                 writer.write(itemIcon != null ? "<img src='" + itemIcon.getValue(rc) + "'>" : "-");
                 writer.write("</td>");
                 writer.write("<td>");
-                if (caption != null)
+                if(caption != null)
                     writer.write(caption);
-                if (childItems != null && childItems.size() > 0)
+                if(childItems != null && childItems.size() > 0)
                     produceBannerActionsHtml(writer, rc, childItems);
                 writer.write("</td>");
                 writer.write("</tr>");
@@ -387,23 +383,18 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
     /**
      * Displays the report banner html. Utilizes the THEME
-     *
-     * @param writer
-     * @param vc
-     *
-     * @throws java.io.IOException
      */
     protected void renderBanner(Writer writer, HtmlPanelValueContext vc) throws IOException
     {
         HtmlPanel panel = vc.getPanel();
         HtmlPanelBanner banner = panel.getBanner();
-        if (banner == null)
+        if(banner == null)
             return;
         HtmlPanelActions actions = banner.getActions();
         ValueSource content = banner.getContent();
-        if (content == null && (actions == null || actions.size() == 0))
+        if(content == null && (actions == null || actions.size() == 0))
             return;
-        if (content != null)
+        if(content != null)
         {
             writer.write("<tr id=\"" + panel.getPanelIdentifier() + "_banner\"><td class=\"" + panelClassNamePrefix + "-banner\">\n" + content.getTextValue(vc) + "</td></tr>\n");
         }
@@ -415,13 +406,13 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 // on them
                 StringWriter sw = new StringWriter();
                 produceBannerActionsHtml(sw, vc, actions);
-                if (sw.getBuffer().length() > 0)
+                if(sw.getBuffer().length() > 0)
                 {
                     writer.write("<tr id=\"" + panel.getPanelIdentifier() + "_banner\"><td class=\"" + panelClassNamePrefix + "-banner\">\n" +
-                            sw.getBuffer() + "</td></tr>\n");
+                                 sw.getBuffer() + "</td></tr>\n");
                 }
             }
-            catch (CommandNotFoundException e)
+            catch(CommandNotFoundException e)
             {
                 writer.write("<tr id=\"" + panel.getPanelIdentifier() + "_banner\"><td class=\"" + panelClassNamePrefix + "-banner\">\n" + e.toString() + "</td></tr>\n");
             }
@@ -430,23 +421,15 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
     /**
      * Constructs the redirect URL from the passed in command
-     *
-     * @param rc
-     * @param redirect
-     * @param label
-     * @param hint
-     * @param target
-     *
-     * @return
      */
     // TODO: This is the same as the one in BasicHtmlTabularReportSkin. Need to refactor!
     public String constructRedirect(ValueContext rc, ValueSource redirect, String label, String hint, String target)
     {
-        if (redirect instanceof RedirectValueSource)
+        if(redirect instanceof RedirectValueSource)
         {
             StringBuffer sb = new StringBuffer();
             String url = ((RedirectValueSource) redirect).getUrl(rc);
-            if (url.startsWith("javascript"))
+            if(url.startsWith("javascript"))
             {
                 sb.append("<a href=\"#\" onclick=\"" + url + "\"");
             }
@@ -455,9 +438,9 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 sb.append("<a href='" + url + "'");
 
             }
-            if (hint != null)
+            if(hint != null)
                 sb.append(" title=\"" + hint + "\"");
-            if (target != null)
+            if(target != null)
                 sb.append(" target=\"" + target + "\"");
             sb.append(">" + label + "</a>");
             return sb.toString();

@@ -77,7 +77,7 @@ public class DialogContextBeanMemberInfo
 
     public void addImportModule(String module)
     {
-        if (imports == null)
+        if(imports == null)
             imports = new ArrayList();
         imports.add(module);
     }

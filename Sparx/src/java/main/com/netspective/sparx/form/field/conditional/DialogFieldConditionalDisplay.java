@@ -63,7 +63,7 @@ public class DialogFieldConditionalDisplay extends DialogFieldConditionalAction
 
     public boolean isValid(DialogContext dc)
     {
-        if (javaScriptExpression == null || javaScriptExpression.length() == 0)
+        if(javaScriptExpression == null || javaScriptExpression.length() == 0)
         {
             getSourceField().invalidate(dc, "Conditional " + this + " has no associated 'js-expr' (JavaScript Expression).");
             return false;

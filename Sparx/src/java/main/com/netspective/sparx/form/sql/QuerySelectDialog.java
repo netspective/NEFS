@@ -69,7 +69,7 @@ import com.netspective.sparx.sql.QueryDefnSelect;
  * <code>QueryBuilderDialog</code> and can handle pageable reporting by keeping track of
  * the scrolled state of the result set.
  *
- * @version $Id: QuerySelectDialog.java,v 1.13 2004-08-15 01:47:08 shahid.shah Exp $
+ * @version $Id: QuerySelectDialog.java,v 1.14 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -107,7 +107,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         options.getFlags().setFlag(DialogFieldFlags.SHOW_CAPTION_AS_CHILD);
         addField(options);
 
-        if (getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
+        if(getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
         {
             BooleanField debugField = new BooleanField();
             debugField.setName("debug");
@@ -133,8 +133,6 @@ public class QuerySelectDialog extends QueryBuilderDialog
 
     /**
      * Create a query definition based select object
-     *
-     * @return
      */
     public QueryDefnSelect createSelect()
     {
@@ -157,7 +155,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
     {
         DialogField field = null;
         DialogFields fields = this.getFields();
-        for (int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < fields.size(); i++)
         {
             field = fields.get(i);
             field.makeStateChanges(dc, stage);
@@ -166,17 +164,17 @@ public class QuerySelectDialog extends QueryBuilderDialog
         fieldStates.getState(QSDIALOG_QUERYDEFN_NAME_PASSTHRU_FIELDNAME).getValue().setTextValue(getQueryDefn().getName());
         fieldStates.getState(QSDIALOG_DIALOG_NAME_PASSTHRU_FIELDNAME).getValue().setTextValue(getName());
         QueryBuilderDialogFlags dFlags = (QueryBuilderDialogFlags) getDialogFlags();
-        if (dc.getDialogState().isInExecuteMode())
+        if(dc.getDialogState().isInExecuteMode())
         {
             int flag =
                     dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA)
                     ? DialogFieldFlags.UNAVAILABLE : DialogFieldFlags.READ_ONLY;
-            for (int i = 0; i < fields.size(); i++)
+            for(int i = 0; i < fields.size(); i++)
             {
                 fieldStates.getState(fields.get(i)).getStateFlags().setFlag(flag);
             }
             fieldStates.getState("output").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
-            if (dFlags.flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
+            if(dFlags.flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
                 fieldStates.getState("options").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
 
             fieldStates.getState(getDirector()).getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
@@ -187,7 +185,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         else
         {
             fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
-            if (dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_OUTPUT_DESTS))
+            if(dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_OUTPUT_DESTS))
                 fieldStates.getState("output").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
             fieldStates.getState("ds_nav_buttons").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
         }
@@ -199,17 +197,14 @@ public class QuerySelectDialog extends QueryBuilderDialog
      *
      * @param writer the writer object to write any output to
      * @param dc     current dialog context
-     *
-     * @throws IOException
-     * @throws DialogExecuteException
      */
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         DialogFieldStates states = dc.getFieldStates();
-        if (getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
+        if(getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
         {
             String debugStr = states.getState("options.debug").getValue().getTextValue();
-            if (debugStr != null && debugStr.equals("1"))
+            if(debugStr != null && debugStr.equals("1"))
             {
                 ConnectionContext cc = null;
                 try
@@ -221,7 +216,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
                     writer.write("<p><pre><code>" + message + "</code></pre>");
                     return;
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     getLog().error("Error trying to get debug SQL", e);
                     throw new DialogExecuteException(e);
@@ -230,9 +225,9 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 {
                     try
                     {
-                        if (cc != null) cc.close();
+                        if(cc != null) cc.close();
                     }
-                    catch (SQLException e)
+                    catch(SQLException e)
                     {
                         getLog().error("Error while trying to close the connection", e);
                         throw new DialogExecuteException(e);
@@ -254,7 +249,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         HtmlTabularReportDestination destination = null;
         HtmlTabularReportSkin reportSkin = null;
 
-        switch (outputDest)
+        switch(outputDest)
         {
             case DESTINATION_BROWSER:
                 HtmlTabularReportBrowserDestination browserDest = desintations.createBrowserDestination(writer, dc);
@@ -284,7 +279,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 return;
         }
 
-        switch (outputStyle)
+        switch(outputStyle)
         {
             case OUTPUTSTYLE_HTML:
                 String reportSkinName = getFirstAvailableFieldValue(dc, new String[]{
@@ -310,7 +305,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         {
             renderReport(dc, destination, reportSkin);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             getLog().error("Exception while trying to render report", e);
             throw new DialogExecuteException(e);
@@ -323,21 +318,18 @@ public class QuerySelectDialog extends QueryBuilderDialog
      * @param dc          curent dialog context in which the query was executed
      * @param destination the output format such as html, csv, etc
      * @param reportSkin  the skin for the output
-     *
-     * @throws IOException
-     * @throws QueryDefinitionException
      */
     public void renderReport(DialogContext dc, HtmlTabularReportDestination destination, HtmlTabularReportSkin reportSkin) throws IOException, QueryDefinitionException
     {
         QueryReportPanel reportPanel = null;
 
-        if (destination instanceof HtmlTabularReportBrowserDestination)
+        if(destination instanceof HtmlTabularReportBrowserDestination)
         {
             HtmlTabularReportBrowserDestination browserDest = (HtmlTabularReportBrowserDestination) destination;
             HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
-            if (scrollStateById == null)
+            if(scrollStateById == null)
             {
                 // if our transaction does not have a scroll state, but there is an active scroll state available, then it
                 // means that we need to close the previous one and remove the attribute so that the connection can be
@@ -345,18 +337,18 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 HtmlTabularReportDataSourceScrollState activeScrollState = scrollStatesManager.getActiveScrollState(dc);
 
                 String resortBy = dc.getRequest().getParameter(QBDIALOG_RESORT_PARAMNAME);
-                if (activeScrollState != null && resortBy != null)
+                if(activeScrollState != null && resortBy != null)
                 {
                     // TODO
                     //handleSortOrderChange(dc, activeState, resortBy);
                 }
 
-                if (activeScrollState != null && !getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
+                if(activeScrollState != null && !getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
                     scrollStatesManager.removeActiveState(dc, activeScrollState);
 
                 reportPanel = qdSelect.getPresentation().getDefaultPanel();
                 reportPanel.setQuery(qdSelect);
-                if (browserDest.isScrollable())
+                if(browserDest.isScrollable())
                 {
                     reportPanel.setScrollable(true);
                     reportPanel.setScrollRowsPerPage(browserDest.getPageSize());

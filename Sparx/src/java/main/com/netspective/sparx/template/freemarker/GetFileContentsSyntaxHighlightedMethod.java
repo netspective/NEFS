@@ -51,7 +51,7 @@ public class GetFileContentsSyntaxHighlightedMethod implements TemplateMethodMod
 
     public Object exec(List args) throws TemplateModelException
     {
-        if (args.size() != 1)
+        if(args.size() != 1)
         {
             throw new TemplateModelException("Wrong arguments: expect file name to prepare syntax highlighted output.");
         }
@@ -62,12 +62,12 @@ public class GetFileContentsSyntaxHighlightedMethod implements TemplateMethodMod
         {
             HtmlSyntaxHighlightPanel.emitHtml(file, output);
             String outputHtml = output.toString();
-            if (outputHtml.length() == 0)
+            if(outputHtml.length() == 0)
                 return new SimpleScalar("Unable to display " + file + ": type of file not understood.");
             else
                 return new SimpleScalar(output.toString());
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error occurred", e);
             return new SimpleScalar("Unable to syntax highlight " + file + "<p>" + e);

@@ -58,7 +58,7 @@ public abstract class DialogExecuteRecordEditorHandler extends DialogExecuteDefa
         {
             cc = dc.getConnection(null, true);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             dialog.getLog().error("Failed to get connection", e);
             dialog.handlePostExecuteException(writer, dc, "Failed to get connection.", e);
@@ -68,21 +68,21 @@ public abstract class DialogExecuteRecordEditorHandler extends DialogExecuteDefa
         try
         {
 
-            if (dc.addingData())
+            if(dc.addingData())
             {
                 addRecord(dc, cc);
             }
-            else if (dc.editingData())
+            else if(dc.editingData())
             {
                 editRecord(dc, cc);
             }
-            else if (dc.deletingData())
+            else if(dc.deletingData())
             {
                 deleteRecord(dc, cc);
             }
             dc.setExecuteStageHandled(true);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             dialog.handlePostExecuteException(writer, dc, "Error occurred during execution.", e);
         }
@@ -90,10 +90,10 @@ public abstract class DialogExecuteRecordEditorHandler extends DialogExecuteDefa
         {
             try
             {
-                if (cc != null)
+                if(cc != null)
                     cc.close();
             }
-            catch (SQLException se)
+            catch(SQLException se)
             {
                 dialog.handlePostExecuteException(writer, dc, "Unable to close connection", se);
             }

@@ -99,10 +99,10 @@ public class DialogsCatalogClassesPanel extends DialogsCatalogPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            if (activeNameSpace != null)
+            if(activeNameSpace != null)
                 return super.getActiveRowColumnData(columnIndex, flags);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:

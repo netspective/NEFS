@@ -84,11 +84,11 @@ public class DialogState implements Serializable
         {
             identifier = GloballyUniqueIdentifier.getRandomGUID(true);
         }
-        catch (NoSuchAlgorithmException e)
+        catch(NoSuchAlgorithmException e)
         {
             identifier = Integer.toString(hashCode());
         }
-        catch (UnknownHostException e)
+        catch(UnknownHostException e)
         {
             identifier = Integer.toString(hashCode());
         }
@@ -96,8 +96,6 @@ public class DialogState implements Serializable
 
     /**
      * Initialize the state immediately after creating it.
-     *
-     * @param vc
      */
     public void initialize(HttpServletValueContext vc)
     {
@@ -109,11 +107,11 @@ public class DialogState implements Serializable
         referer = request.getHeader("Referer");
 
         String dataCmdStr = (String) request.getAttribute(PARAMNAME_PERSPECTIVE);
-        if (dataCmdStr == null)
+        if(dataCmdStr == null)
             dataCmdStr = request.getParameter(PARAMNAME_PERSPECTIVE);
 
         String debugFlagsStr = (String) request.getAttribute(PARAMNAME_DEBUG_FLAGS);
-        if (debugFlagsStr == null)
+        if(debugFlagsStr == null)
             debugFlagsStr = request.getParameter(PARAMNAME_DEBUG_FLAGS);
 
         perspectives.setValue(dataCmdStr);
@@ -122,8 +120,6 @@ public class DialogState implements Serializable
 
     /**
      * Reset the state so that it looks like it was called at the start of the first call in a dialog context
-     *
-     * @param vc
      */
     public void reset(HttpServletValueContext vc)
     {
@@ -169,8 +165,6 @@ public class DialogState implements Serializable
 
     /**
      * Checks to see if the dialog has already been executed once.
-     *
-     * @return
      */
     public boolean isAlreadyExecuted()
     {
@@ -239,7 +233,7 @@ public class DialogState implements Serializable
         {
             initialFieldStatesXml = dc.getAsXml();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to store initial states", e);
             initialFieldStatesXml = null;
@@ -248,16 +242,11 @@ public class DialogState implements Serializable
 
     /**
      * Creates a map of initial field states
-     *
-     * @throws javax.xml.parsers.ParserConfigurationException
-     *
-     * @throws org.xml.sax.SAXException
-     * @throws java.io.IOException
      */
     public DialogFieldStates getInitialStateFields(DialogContext dc) throws ParserConfigurationException, SAXException, IOException
     {
         DialogFieldStates initialFieldStates = new DialogFieldStates(dc);
-        if (initialFieldStatesXml == null)
+        if(initialFieldStatesXml == null)
         {
             log.error("No initial states available.");
             return initialFieldStates;
@@ -269,19 +258,19 @@ public class DialogState implements Serializable
         InputStream is = new java.io.ByteArrayInputStream(initialFieldStatesXml.getBytes());
         Document doc = builder.parse(is);
         NodeList dcList = doc.getDocumentElement().getElementsByTagName("dialog-context");
-        if (dcList.getLength() > 0)
+        if(dcList.getLength() > 0)
         {
             Element dcElem = (Element) dcList.item(0);
             NodeList children = dcElem.getChildNodes();
-            for (int n = 0; n < children.getLength(); n++)
+            for(int n = 0; n < children.getLength(); n++)
             {
                 Node node = children.item(n);
-                if (node.getNodeName().equals("field"))
+                if(node.getNodeName().equals("field"))
                 {
                     Element fieldElem = (Element) node;
                     String fieldName = fieldElem.getAttribute("name");
                     DialogField field = dc.getDialog().getFields().getByName(fieldName);
-                    if (field != null)
+                    if(field != null)
                     {
                         DialogField.State state = field.constructStateInstance(dc);
                         state.importFromXml(fieldElem);

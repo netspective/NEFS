@@ -66,11 +66,11 @@ public class CryptCalcDialog extends Dialog
         DialogFieldStates states = dc.getFieldStates();
         final String salt = states.getState("salt").getValue().getTextValue();
         final String textValue = states.getState("original").getValue().getTextValue();
-        if (textValue != null && textValue.length() > 0)
+        if(textValue != null && textValue.length() > 0)
         {
             String[] original = TextUtils.getInstance().split(textValue, "\n", true);
 
-            for (int i = 0; i < original.length; i++)
+            for(int i = 0; i < original.length; i++)
             {
                 writer.write(original[i] + " = " + Crypt.crypt(salt, original[i]));
                 writer.write("<br>");

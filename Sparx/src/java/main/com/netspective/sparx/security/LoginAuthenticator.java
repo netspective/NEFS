@@ -52,11 +52,6 @@ public interface LoginAuthenticator
     /**
      * Once a user is considered valid, create the user instance that will hold the user's information,
      * credentials, etc.
-     *
-     * @param loginManager
-     * @param loginDialogContext
-     *
-     * @return
      */
     public MutableAuthenticatedUser constructAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
 

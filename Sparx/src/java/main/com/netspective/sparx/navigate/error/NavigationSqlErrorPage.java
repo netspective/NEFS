@@ -87,10 +87,10 @@ public class NavigationSqlErrorPage extends NavigationErrorPage
 
     public boolean canHandle(Throwable t, boolean checkSuperClasses)
     {
-        if (t instanceof SQLException)
+        if(t instanceof SQLException)
         {
             int sqlErrorCode = ((SQLException) t).getErrorCode();
-            if (sqlErrorCode >= startSqlCode && sqlErrorCode <= endSqlCode)
+            if(sqlErrorCode >= startSqlCode && sqlErrorCode <= endSqlCode)
                 return true;
         }
 

@@ -83,10 +83,10 @@ public class PanelTransform implements TemplateTransformModel
             public TransformPanel()
             {
                 Object heading = args.get("heading");
-                if (heading != null)
+                if(heading != null)
                     getFrame().setHeading(new StaticValueSource(heading.toString()));
                 Object skin = args.get("skin");
-                if (skin != null)
+                if(skin != null)
                     panelSkinName = skin.toString();
             }
 
@@ -111,7 +111,7 @@ public class PanelTransform implements TemplateTransformModel
             {
                 model = (freemarker.ext.beans.StringModel) env.getDataModel().get("vc");
             }
-            catch (TemplateModelException e)
+            catch(TemplateModelException e)
             {
                 log.error(e);
             }
@@ -119,14 +119,14 @@ public class PanelTransform implements TemplateTransformModel
             vc = (HttpServletValueContext) model.getWrappedObject();
             pvc = new BasicHtmlPanelValueContext(vc.getServlet(), vc.getRequest(), vc.getResponse(), panel);
             tabbedPanelSkin = panelSkinName == null
-                    ? vc.getActiveTheme().getTabbedPanelSkin()
-                    : (HtmlPanelSkin) vc.getActiveTheme().getPanelSkins().get(panelSkinName);
+                              ? vc.getActiveTheme().getTabbedPanelSkin()
+                              : (HtmlPanelSkin) vc.getActiveTheme().getPanelSkins().get(panelSkinName);
             try
             {
                 tabbedPanelSkin.renderPanelRegistration(out, pvc);
                 tabbedPanelSkin.renderFrameBegin(out, pvc);
             }
-            catch (IOException e)
+            catch(IOException e)
             {
                 log.error(e);
             }

@@ -98,7 +98,7 @@ public class SchemaTableColumnsInheritancePanel extends SchemaTableColumnsPanel
         {
             Column column = columns.get(row);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:
@@ -107,12 +107,12 @@ public class SchemaTableColumnsInheritancePanel extends SchemaTableColumnsPanel
 
                 case 3:
                     List dataTypes = column.getDataTypeNames();
-                    if (dataTypes.size() > 1)
+                    if(dataTypes.size() > 1)
                     {
                         StringBuffer inh = new StringBuffer();
-                        for (int i = 0; i < dataTypes.size(); i++)
+                        for(int i = 0; i < dataTypes.size(); i++)
                         {
-                            if (i > 0)
+                            if(i > 0)
                                 inh.append(" -> ");
                             inh.append(dataTypes.get(i).toString());
                         }

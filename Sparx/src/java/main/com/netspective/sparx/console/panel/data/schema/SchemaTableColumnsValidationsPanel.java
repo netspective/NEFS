@@ -86,10 +86,10 @@ public class SchemaTableColumnsValidationsPanel extends SchemaTableColumnsPanel
     public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
         Columns valColumns = new ColumnsCollection();
-        for (int i = 0; i < table.getColumns().size(); i++)
+        for(int i = 0; i < table.getColumns().size(); i++)
         {
             Column col = table.getColumns().get(i);
-            if (col.getValidationRules() != null && col.getValidationRules().size() > 0)
+            if(col.getValidationRules() != null && col.getValidationRules().size() > 0)
                 valColumns.add(col);
         }
 
@@ -112,7 +112,7 @@ public class SchemaTableColumnsValidationsPanel extends SchemaTableColumnsPanel
         {
             Column column = columns.get(row);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:

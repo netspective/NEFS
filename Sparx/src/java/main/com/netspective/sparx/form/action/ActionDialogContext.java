@@ -53,21 +53,21 @@ public class ActionDialogContext extends DialogContext
 
     public Object getActionInstance()
     {
-        if (actionInstance == null)
+        if(actionInstance == null)
         {
             ActionDialog actionDialog = ((ActionDialog) getDialog());
             try
             {
                 actionInstance = actionDialog.getAction().constructInstance(this);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 actionDialog.getLog().error(e);
                 try
                 {
                     closeActionConnection(); // in case any database connection was opened
                 }
-                catch (Exception e1)
+                catch(Exception e1)
                 {
                     actionDialog.getLog().error(e1);
                     throw new NestableRuntimeException(e1);
@@ -108,7 +108,7 @@ public class ActionDialogContext extends DialogContext
 
     public void closeActionConnection() throws NamingException, SQLException
     {
-        if (actionConnectionContext != null)
+        if(actionConnectionContext != null)
             actionConnectionContext.close();
     }
 }

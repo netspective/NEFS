@@ -76,23 +76,23 @@ public class HttpUtils
     public static void assignParamToInstance(HttpServletRequest req, XmlDataModelSchema schema, Object instance, String paramName, String defaultValue) throws IllegalAccessException, InvocationTargetException, DataModelException
     {
         boolean required = false;
-        if (paramName.endsWith("!"))
+        if(paramName.endsWith("!"))
         {
             required = true;
             paramName = paramName.substring(0, paramName.length() - 1);
         }
 
         Method method = (Method) schema.getAttributeSetterMethods().get(paramName);
-        if (method != null)
+        if(method != null)
         {
             Class[] args = method.getParameterTypes();
-            if (args.length == 1)
+            if(args.length == 1)
             {
                 Class arg = args[0];
-                if (java.lang.String.class.equals(arg) && arg.isArray())
+                if(java.lang.String.class.equals(arg) && arg.isArray())
                 {
                     String[] paramValues = req.getParameterValues(paramName);
-                    if ((paramValues == null || paramValues.length == 0) && required)
+                    if((paramValues == null || paramValues.length == 0) && required)
                         throw new ServletParameterRequiredException("Servlet parameter list '" + paramName + "' is required but not available.");
                     method.invoke(instance, new Object[]{paramValues});
                 }
@@ -100,9 +100,9 @@ public class HttpUtils
                 {
                     XmlDataModelSchema.AttributeSetter as = (XmlDataModelSchema.AttributeSetter) schema.getAttributeSetters().get(paramName);
                     String paramValue = req.getParameter(paramName);
-                    if (paramValue == null)
+                    if(paramValue == null)
                     {
-                        if (required)
+                        if(required)
                             throw new ServletParameterRequiredException("Servlet parameter '" + paramName + "' is required but not available.");
 
                         paramValue = defaultValue;
@@ -110,10 +110,10 @@ public class HttpUtils
                     as.set(null, instance, paramValue);
                 }
             }
-            else if (log.isDebugEnabled())
+            else if(log.isDebugEnabled())
                 log.debug("Attempting to assign '" + paramName + "' to a method in '" + instance.getClass() + "' but the method has more than one argument.");
         }
-        else if (log.isDebugEnabled())
+        else if(log.isDebugEnabled())
             log.debug("Attempting to assign '" + paramName + "' to a method in '" + instance.getClass() + "' but there is no mutator available.");
     }
 
@@ -130,17 +130,14 @@ public class HttpUtils
      *                   is thrown if the parameter is unavailable. For example, "a,b!,c" would mean that parameter
      *                   'a', 'b' and 'c' should be assigned using setA(), setB() and setC() if available but an
      *                   exception should be thrown if 'b' is not available as a request parameter.
-     *
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
     public static void assignParamsToInstance(HttpServletRequest req, Object instance, String paramNames) throws IllegalAccessException, InvocationTargetException, DataModelException
     {
         XmlDataModelSchema schema = XmlDataModelSchema.getSchema(instance.getClass());
 
-        if (paramNames.equals("*"))
+        if(paramNames.equals("*"))
         {
-            for (Enumeration e = req.getParameterNames(); e.hasMoreElements();)
+            for(Enumeration e = req.getParameterNames(); e.hasMoreElements();)
             {
                 String paramName = (String) e.nextElement();
                 assignParamToInstance(req, schema, instance, paramName, null);
@@ -149,11 +146,11 @@ public class HttpUtils
         else
         {
             String[] retainParams = TextUtils.getInstance().split(paramNames, ",", true);
-            for (int i = 0; i < retainParams.length; i++)
+            for(int i = 0; i < retainParams.length; i++)
             {
                 String paramName = retainParams[i];
                 int defaultValuePos = paramName.indexOf('=');
-                if (defaultValuePos > 0)
+                if(defaultValuePos > 0)
                     assignParamToInstance(req, schema, instance, paramName.substring(0, defaultValuePos), paramName.substring(defaultValuePos + 1));
                 else
                     assignParamToInstance(req, schema, instance, paramName, null);
@@ -166,16 +163,16 @@ public class HttpUtils
         StringBuffer result = new StringBuffer(url);
         boolean hasQueryChar = url.indexOf('?') >= 0;
 
-        if (paramNames.equals("*"))
+        if(paramNames.equals("*"))
         {
             int i = 0;
-            for (Enumeration e = req.getParameterNames(); e.hasMoreElements();)
+            for(Enumeration e = req.getParameterNames(); e.hasMoreElements();)
             {
                 String paramName = (String) e.nextElement();
                 String paramValue = req.getParameter(paramName);
-                if (paramValue != null)
+                if(paramValue != null)
                 {
-                    if (i > 0 || hasQueryChar)
+                    if(i > 0 || hasQueryChar)
                         result.append("&");
                     else
                         result.append("?");
@@ -190,13 +187,13 @@ public class HttpUtils
         else
         {
             String[] retainParams = TextUtils.getInstance().split(paramNames, ",", true);
-            for (int i = 0; i < retainParams.length; i++)
+            for(int i = 0; i < retainParams.length; i++)
             {
                 String paramName = retainParams[i];
                 String paramValue = req.getParameter(paramName);
-                if (paramValue != null)
+                if(paramValue != null)
                 {
-                    if (i > 0 || hasQueryChar)
+                    if(i > 0 || hasQueryChar)
                         result.append("&");
                     else
                         result.append("?");
@@ -213,11 +210,11 @@ public class HttpUtils
 
     public static void renderDevelopmentEnvironmentHeader(Writer writer, NavigationContext nc) throws IOException
     {
-        if (!nc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
+        if(!nc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
             return;
 
         final ProjectComponent projectComponent = nc.getProjectComponent();
-        if (projectComponent.hasErrors())
+        if(projectComponent.hasErrors())
         {
             int errorsCount = projectComponent.getErrors().size() + projectComponent.getWarnings().size();
 
@@ -228,7 +225,7 @@ public class HttpUtils
         }
 
         final NavigationPage.Flags flags = (NavigationPage.Flags) nc.getActiveState().getFlags();
-        if (flags.isDebuggingRequest())
+        if(flags.isDebuggingRequest())
             develEnvironmentHeader.process(writer, nc, null);
     }
 
@@ -239,7 +236,7 @@ public class HttpUtils
 
         RequestDispatcher rd = request.getRequestDispatcher(includePath);
 
-        if (writer != response.getWriter())
+        if(writer != response.getWriter())
             response = new AlternateOutputDestServletResponse(writer, response);
 
         request.setAttribute(valueContextAttrName, vc);
@@ -253,7 +250,7 @@ public class HttpUtils
         URLConnection urlConn = url.openConnection();
         InputStream urlIn = urlConn.getInputStream();
         int iRead = urlIn.read();
-        while (iRead != -1)
+        while(iRead != -1)
         {
             writer.write((char) iRead);
             iRead = urlIn.read();

@@ -60,7 +60,7 @@ public class EncryptedParametersRequestWrapper extends HttpServletRequestWrapper
     public String getParameter(String s)
     {
         String encrValue = super.getParameter("_ep." + s);
-        if (encrValue != null)
+        if(encrValue != null)
             return SimpleSymmetricEncryptor.decrypt(encryptionKey, encrValue);
 
         return super.getParameter(s);

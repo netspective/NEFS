@@ -114,8 +114,6 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
     /**
      * Gets the dialog associated with the panel editor
-     *
-     * @return
      */
     public Dialog getDialog()
     {
@@ -124,8 +122,6 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
     /**
      * Adds a dialog to the panel editor.
-     *
-     * @param dialog
      */
     public void addDialog(Dialog dialog)
     {
@@ -172,8 +168,6 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
     /**
      * Creates a dialog object. Mainly used by XDM to construct a child element dialog.
-     *
-     * @return
      */
     public Dialog createDialog()
     {
@@ -182,15 +176,6 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
     /**
      * Creates a dialog object. Mainly used by XDM to construct a child element dialog.
-     *
-     * @param cls
-     *
-     * @return
-     *
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
     public Dialog createDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
@@ -222,8 +207,6 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
     /**
      * Sets the column index to use as the primary key when a record is to be edited
-     *
-     * @param pkColumnIndex
      */
     public void setPkColumnIndex(int pkColumnIndex)
     {
@@ -242,10 +225,10 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
     public static String getPkValueFromState(PanelEditorState state)
     {
-        if (state.getActiveElementInfo() != null)
+        if(state.getActiveElementInfo() != null)
         {
             StringTokenizer st = new StringTokenizer(state.getActiveElementInfo());
-            if (st.hasMoreTokens())
+            if(st.hasMoreTokens())
                 return st.nextToken();
         }
         return null;
@@ -257,16 +240,16 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
      */
     public void initialize()
     {
-        if (dialog == null)
+        if(dialog == null)
         {
             dialog = getParent().getProject().getDialog(dialogRef);
-            if (dialog == null)
+            if(dialog == null)
             {
                 throw new RuntimeException("No valid dialog defined");
             }
         }
         QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
-        if (qrp == null)
+        if(qrp == null)
         {
             qrp = new QueryReportPanel();
             qrp.setQuery(getQuery());
@@ -280,7 +263,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         setInitialized(true);
 
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) qrp.getReport();
-        if (report == null)
+        if(report == null)
         {
             report = new BasicHtmlTabularReport();
             qrp.addReport(report);
@@ -292,8 +275,6 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
     /**
      * Creates actions for the report banner.  NO IMPLEMENTATION CURRENTLY.
-     *
-     * @param qrp
      */
     public void createPanelFrameActions(QueryReportPanel qrp)
     {
@@ -302,13 +283,11 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
     /**
      * Creates actions for the report banner
-     *
-     * @param qrp
      */
     public void createPanelBannerActions(QueryReportPanel qrp)
     {
         // Calculate what to display in the banner
-        if (qrp.getBanner() == null)
+        if(qrp.getBanner() == null)
             qrp.setBanner(new HtmlPanelBanner());
 
         HtmlPanelBanner banner = qrp.getBanner();
@@ -367,7 +346,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         HtmlPanelActionStates actionStates = vc.getPanelActionStates();
 
         // currently only two actions are registered within the report content element and they are EDIT and DELETE
-        if (mode == PanelEditor.MODE_DISPLAY)
+        if(mode == PanelEditor.MODE_DISPLAY)
         {
             actionStates.getState("Delete").getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
         }
@@ -384,34 +363,28 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     public String appendElementInfoToActionUrl(String url, int actionMode)
     {
         url = super.appendElementInfoToActionUrl(url, actionMode);
-        if (actionMode == PanelEditor.MODE_EDIT || actionMode == PanelEditor.MODE_DELETE)
+        if(actionMode == PanelEditor.MODE_EDIT || actionMode == PanelEditor.MODE_DELETE)
             url = url + ",${" + pkColumnIndex + "}";
         return url;
     }
 
     /**
      * Renders the element's editor context content.
-     *
-     * @param writer
-     * @param nc
-     * @param state
-     *
-     * @throws IOException
      */
     public void renderEditorContent(Writer writer, NavigationContext nc, PanelEditorState state) throws IOException
     {
         int mode = state.getCurrentMode();
         // set the dialog perspective using the requested mode.
-        if (mode == PanelEditor.MODE_ADD)
+        if(mode == PanelEditor.MODE_ADD)
             nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "add");
-        else if (mode == PanelEditor.MODE_EDIT)
+        else if(mode == PanelEditor.MODE_EDIT)
             nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "edit");
-        else if (mode == PanelEditor.MODE_DELETE)
+        else if(mode == PanelEditor.MODE_DELETE)
             nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "delete");
-        if (dialogRef != null)
+        if(dialogRef != null)
         {
             dialog = getParent().getProject().getDialog(dialogRef);
-            if (dialog == null)
+            if(dialog == null)
             {
                 log.error("Failed to find dialog '" + dialogRef + "' of element '" + getName() + "' in panel editor '" + getParent().getQualifiedName() + "'.");
                 throw new RuntimeException("Failed to find dialog '" + dialogRef + "' of element '" + getName() + "' in panel editor '" + getParent().getQualifiedName() + "'.");
@@ -426,7 +399,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         {
             dialog.render(writer, dc, true);
         }
-        catch (DialogExecuteException dee)
+        catch(DialogExecuteException dee)
         {
             log.error("Failed to render dialog of element '" + getName() + "' in panel editor '" + getParent().getQualifiedName() + "'.");
             throw new RuntimeException("Failed to render dialog of element '" + getName() + "' in panel editor '" + getParent().getQualifiedName() + "'.");
@@ -435,24 +408,18 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
     /**
      * Renders the element's display context content.
-     *
-     * @param writer
-     * @param nc
-     * @param state
-     *
-     * @throws IOException
      */
     public void renderDisplayContent(Writer writer, NavigationContext nc, PanelEditorState state) throws IOException
     {
         int mode = state.getCurrentMode();
 
         HtmlTabularReportSkin skin = null;
-        if (mode == PanelEditor.MODE_MANAGE)
+        if(mode == PanelEditor.MODE_MANAGE)
             skin = nc.getActiveTheme().getReportSkin("panel-editor-compressed");
         else
             skin = nc.getActiveTheme().getReportSkin("panel-editor");
 
-        if (!isInitialized())
+        if(!isInitialized())
             initialize();
         QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
         qrp.setScrollable(true);
@@ -460,9 +427,9 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         String activeElement = state.getActiveElement();
         QueryResultSetDataSource dataRoot = (QueryResultSetDataSource) qrp.createDataSource(nc);
 
-        if (activeElement != null && activeElement.equals(getName()))
+        if(activeElement != null && activeElement.equals(getName()))
         {
-            if (getPkColumnIndex() != -1)
+            if(getPkColumnIndex() != -1)
                 dataRoot.setSelectedRowRule(getPkColumnIndex(), ReportPanelEditorContentElement.getPkValueFromState(state));
 
             context.setPanelRenderFlags(HtmlPanel.RENDERFLAG_NOFRAME | PanelEditorContentElement.HIGHLIGHT_ACTIVE_ITEM);
@@ -472,7 +439,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
 
         int totalRows = dataRoot.getTotalRows();
         PanelEditorContentState elementState = constructStateObject();
-        if (totalRows == 0)
+        if(totalRows == 0)
             elementState.setEmptyContent(true);
         state.addElementState(elementState);
         // process the context to calculate the states of the panel actions

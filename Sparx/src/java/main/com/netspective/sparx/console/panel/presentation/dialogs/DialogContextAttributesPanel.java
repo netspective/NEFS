@@ -109,10 +109,10 @@ public class DialogContextAttributesPanel extends DialogDetailPanel
             try
             {
                 TODO: XML = dialogContext.getAsXml();
-                if (XML != null)
+                if(XML != null)
                     XML = TextUtils.getInstance().escapeHTML(XML);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 XML = e.toString() + "\n" + TextUtils.getInstance().getStackTrace(e);
             }

@@ -54,14 +54,14 @@ public class EncryptedParametersFilter implements javax.servlet.Filter
     {
         HttpSession session = ((HttpServletRequest) request).getSession();
         String result = (String) session.getAttribute(SESSATTRNAME_ENCRYPTION_KEY);
-        if (result == null)
+        if(result == null)
         {
             try
             {
                 result = GloballyUniqueIdentifier.getRandomGUID(true);
                 session.setAttribute(SESSATTRNAME_ENCRYPTION_KEY, result);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Error creating key", e);
                 result = "really bad key (unsecure and not random)";
@@ -71,7 +71,7 @@ public class EncryptedParametersFilter implements javax.servlet.Filter
     }
 
     public void doFilter(final ServletRequest request, final ServletResponse response, FilterChain chain) throws java.io.IOException,
-            javax.servlet.ServletException
+                                                                                                                 javax.servlet.ServletException
     {
         chain.doFilter(new EncryptedParametersRequestWrapper((HttpServletRequest) request, getUserKey(request)), response);
     }

@@ -72,8 +72,6 @@ public class CommandField extends DialogField
     /**
      * A value source that will be evaluated and the result of the evaluation will be treated as a command
      * specification. This method allows the actual command that will be executed to be dynamic.
-     *
-     * @param commandExpr
      */
     public void setCommandExpr(ValueSource commandExpr)
     {
@@ -83,10 +81,10 @@ public class CommandField extends DialogField
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
         ValueSource commandExpr = getCommandExpr();
-        if (commandExpr != null)
+        if(commandExpr != null)
         {
             String commandText = commandExpr.getTextValue(dc);
-            if (commandText != null)
+            if(commandText != null)
             {
                 try
                 {
@@ -94,7 +92,7 @@ public class CommandField extends DialogField
                     httpCommand.handleCommand(writer, dc, false);
                     return;
                 }
-                catch (CommandException e)
+                catch(CommandException e)
                 {
                     dc.getDialog().getLog().error("Command error in " + this.getClass().getName(), e);
                     throw new NestableRuntimeException(e);
@@ -107,12 +105,12 @@ public class CommandField extends DialogField
 
         try
         {
-            if (command != null)
+            if(command != null)
                 command.handleCommand(writer, dc.getNavigationContext(), false);
             else
                 writer.write("Command was not provided.");
         }
-        catch (CommandException e)
+        catch(CommandException e)
         {
             throw new NestableRuntimeException(e);
         }

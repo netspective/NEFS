@@ -148,7 +148,7 @@ public class AntProject
 
     public Project getProject(ValueContext vc)
     {
-        if (this.file == null)
+        if(this.file == null)
             return null;
 
         return getConfiguredProject(new File(this.file.getTextValue(vc)));
@@ -166,7 +166,7 @@ public class AntProject
 
     public AntBuildDialog createDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (AntBuildDialog.class.isAssignableFrom(cls))
+        if(AntBuildDialog.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[]{AntProject.class});
             return (AntBuildDialog) c.newInstance(new Object[]{this});
@@ -193,7 +193,7 @@ public class AntProject
             PresentationValue.Items items = result.createItems();
 
             File projectFile = new File(file.getTextValue(vc));
-            if (!projectFile.exists())
+            if(!projectFile.exists())
             {
                 items.addItem(projectFile + " not found.");
                 return result;
@@ -203,12 +203,12 @@ public class AntProject
 
             String defaultTargetName = project.getDefaultTarget();
             Set sortedTargetNames = new TreeSet(project.getTargets().keySet());
-            for (Iterator i = sortedTargetNames.iterator(); i.hasNext();)
+            for(Iterator i = sortedTargetNames.iterator(); i.hasNext();)
             {
                 String targetName = (String) i.next();
-                if (!isShowPrivateTargets() && isPrivateTargetName(targetName))
+                if(!isShowPrivateTargets() && isPrivateTargetName(targetName))
                     continue;
-                if (targetName.equals(defaultTargetName))
+                if(targetName.equals(defaultTargetName))
                     items.addItem(targetName + " (default)", targetName);
                 else
                     items.addItem(targetName);
@@ -220,7 +220,7 @@ public class AntProject
         public Value getValue(ValueContext vc)
         {
             final File projectFile = new File(file.getTextValue(vc));
-            if (!projectFile.exists())
+            if(!projectFile.exists())
             {
                 return new AbstractValue()
                 {

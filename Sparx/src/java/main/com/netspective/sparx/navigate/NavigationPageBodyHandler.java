@@ -46,7 +46,7 @@ import com.netspective.commons.xml.template.TemplateConsumer;
  * recommended for cases when the built-in page body handlers such as <i>commands</i>, <i>templates</i>,
  * and <i>includes</i> are not suitable.
  *
- * @version $Id: NavigationPageBodyHandler.java,v 1.4 2004-08-15 01:47:09 shahid.shah Exp $
+ * @version $Id: NavigationPageBodyHandler.java,v 1.5 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public interface NavigationPageBodyHandler extends TemplateConsumer
 {
@@ -56,9 +56,6 @@ public interface NavigationPageBodyHandler extends TemplateConsumer
      * @param page   navigation page to which this handler belongs to
      * @param writer the writer object to write the page body to
      * @param nc     current navigation context
-     *
-     * @throws ServletException
-     * @throws IOException
      */
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException;
 }

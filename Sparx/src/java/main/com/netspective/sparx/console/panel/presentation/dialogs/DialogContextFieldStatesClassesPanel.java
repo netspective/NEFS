@@ -124,7 +124,7 @@ public class DialogContextFieldStatesClassesPanel extends DialogDetailPanel
             DialogField activeField = activeRow.getField();
             DialogField.State activeFieldState = selectedDialog.getDialogContext().getFieldStates().getState(activeField);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:
@@ -132,11 +132,11 @@ public class DialogContextFieldStatesClassesPanel extends DialogDetailPanel
                     return super.getActiveRowColumnData(columnIndex, flags);
 
                 case 3:
-                    if (activeFieldState != null)
+                    if(activeFieldState != null)
                         return reportValueContext.getSkin().constructClassRef(activeFieldState.getClass());
 
                 case 4:
-                    if (activeFieldState != null)
+                    if(activeFieldState != null)
                         return reportValueContext.getSkin().constructClassRef(activeFieldState.getValue().getClass());
 
                 default:

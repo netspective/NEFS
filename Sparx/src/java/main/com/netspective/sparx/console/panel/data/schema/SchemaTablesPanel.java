@@ -137,10 +137,10 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
         public Table getTable()
         {
-            if (tableTreeNode != null)
+            if(tableTreeNode != null)
                 return tableTreeNode.getTable();
 
-            if (enumTable != null)
+            if(enumTable != null)
                 return enumTable;
 
             return null;
@@ -152,12 +152,12 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             String schemaName = schemaAndTableNameArray[0];
             String tableName = schemaAndTableNameArray[1];
 
-            if (tableTreeNode != null && tableTreeNode.getTable().getName().equalsIgnoreCase(tableName) &&
-                    tableTreeNode.getTable().getSchema().getName().equalsIgnoreCase(schemaName))
+            if(tableTreeNode != null && tableTreeNode.getTable().getName().equalsIgnoreCase(tableName) &&
+               tableTreeNode.getTable().getSchema().getName().equalsIgnoreCase(schemaName))
                 return true;
 
-            if (enumTable != null && enumTable.getName().equalsIgnoreCase(tableName) &&
-                    enumTable.getSchema().getName().equalsIgnoreCase(schemaName))
+            if(enumTable != null && enumTable.getName().equalsIgnoreCase(tableName) &&
+               enumTable.getSchema().getName().equalsIgnoreCase(schemaName))
                 return true;
 
             return false;
@@ -177,9 +177,9 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
         StructureRow activeStructureRow = new StructureRow(level, treeNode, ancestors);
         rows.add(activeStructureRow);
         List children = treeNode.getChildren();
-        if (children != null)
+        if(children != null)
         {
-            for (int c = 0; c < children.size(); c++)
+            for(int c = 0; c < children.size(); c++)
             {
                 List childAncestors = new ArrayList();
                 childAncestors.add(activeStructureRow);
@@ -192,11 +192,11 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
     public static List createStructureRows(Schemas schemas)
     {
         List rows = (List) rowsCache.get(schemas);
-        if (rows != null)
+        if(rows != null)
             return rows;
 
         rows = new ArrayList();
-        for (int i = 0; i < schemas.size(); i++)
+        for(int i = 0; i < schemas.size(); i++)
         {
             Schema schema = schemas.get(i);
             Schema.TableTree tree = schema.getStructure();
@@ -212,7 +212,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             appTableAncestors.add(appTablesRow);
 
             List children = tree.getChildren();
-            for (int c = 0; c < children.size(); c++)
+            for(int c = 0; c < children.size(); c++)
                 addStructurRow(rows, 2, (Schema.TableTreeNode) children.get(c), appTableAncestors);
 
             StructureRow enumTablesRow = new StructureRow(1, schemaRow, "Enumeration Tables");
@@ -224,13 +224,13 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
             Set sortedEnumTables = new TreeSet(BasicSchema.TABLE_COMPARATOR);
             Tables tables = schema.getTables();
-            for (int c = 0; c < tables.size(); c++)
+            for(int c = 0; c < tables.size(); c++)
             {
                 Table table = tables.get(c);
-                if (table instanceof EnumerationTable)
+                if(table instanceof EnumerationTable)
                     sortedEnumTables.add(table);
             }
-            for (Iterator iter = sortedEnumTables.iterator(); iter.hasNext();)
+            for(Iterator iter = sortedEnumTables.iterator(); iter.hasNext();)
                 rows.add(new StructureRow(2, (EnumerationTable) iter.next(), enumTableAncestors));
         }
 
@@ -258,11 +258,11 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
         List rows = createStructureRows(nc.getSqlManager().getSchemas());
         StructureRow selectedRow = getSelectedStructureRow(nc, rows);
 
-        if (view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ALL)
+        if(view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ALL)
             return new StructureDataSource(createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
         else
         {
-            if (selectedRow == null)
+            if(selectedRow == null)
                 return new SimpleMessageDataSource(noTableSelected);
             else
                 return new StructureDataSource(createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
@@ -277,17 +277,17 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
     public static StructureRow getSelectedStructureRow(NavigationContext nc, List structureRows)
     {
         String selectedTable = nc.getRequest().getParameter(REQPARAMNAME_SHOW_DETAIL_TABLE);
-        if (selectedTable == null)
+        if(selectedTable == null)
             return null;
 
-        for (int i = 0; i < structureRows.size(); i++)
+        for(int i = 0; i < structureRows.size(); i++)
         {
             StructureRow structureRow = (StructureRow) structureRows.get(i);
-            if (structureRow.isTable(selectedTable))
+            if(structureRow.isTable(selectedTable))
             {
                 String abbrev = structureRow.getTable().getAbbrev();
                 nc.setPageHeading(abbrev.equals(structureRow.getTable().getName())
-                        ? selectedTable : (selectedTable + " (" + abbrev + ")"));
+                                  ? selectedTable : (selectedTable + " (" + abbrev + ")"));
                 return structureRow;
             }
         }
@@ -339,16 +339,16 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             this.selectedRow = selectedRow;
             lastRow = structureRows.size() - 1;
 
-            if (view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ACTIVE_TABLE)
+            if(view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ACTIVE_TABLE)
             {
                 this.rows = new ArrayList();
 
-                if (selectedRow != null)
+                if(selectedRow != null)
                 {
-                    for (int i = 0; i < structureRows.size(); i++)
+                    for(int i = 0; i < structureRows.size(); i++)
                     {
                         StructureRow checkRow = (StructureRow) structureRows.get(i);
-                        if (checkRow == selectedRow || selectedRow.ancestors.contains(checkRow) || (checkRow.ancestors != null && checkRow.ancestors.contains(selectedRow)))
+                        if(checkRow == selectedRow || selectedRow.ancestors.contains(checkRow) || (checkRow.ancestors != null && checkRow.ancestors.contains(selectedRow)))
                             this.rows.add(structureRows.get(i));
                     }
                 }
@@ -366,36 +366,36 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
         {
             Table activeTable = activeRow.getTable();
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
-                    if (activeTable != null)
+                    if(activeTable != null)
                         return createTableHref(activeTable);
                     else
                         return "<b>" + activeRow.heading + "</b>";
 
                 case 1:
-                    if (activeTable != null)
+                    if(activeTable != null)
                         return activeTable.getXmlNodeName();
 
                 case 2:
-                    if (activeTable != null)
+                    if(activeTable != null)
                         return new Integer(activeTable.getColumns().size());
 
                 case 3:
-                    if (activeTable != null)
+                    if(activeTable != null)
                         return new Integer(activeTable.getIndexes().size());
 
                 case 4:
                     Rows rows = null;
-                    if (activeTable != null)
+                    if(activeTable != null)
                         rows = activeTable.getData();
                     return rows != null ? new Integer(rows.size()) : null;
 
                 case 5:
-                    if (activeRow.tableTreeNode != null && (selectedRow == activeRow || activeRow.tableTreeNode.getTable().getClass() != BasicTable.class))
+                    if(activeRow.tableTreeNode != null && (selectedRow == activeRow || activeRow.tableTreeNode.getTable().getClass() != BasicTable.class))
                         return reportValueContext.getSkin().constructClassRef(activeRow.tableTreeNode.getTable().getClass());
-                    else if (activeRow.enumTable != null && (selectedRow == activeRow || activeRow.enumTable.getClass() != EnumerationTable.class))
+                    else if(activeRow.enumTable != null && (selectedRow == activeRow || activeRow.enumTable.getClass() != EnumerationTable.class))
                         return reportValueContext.getSkin().constructClassRef(activeRow.enumTable.getClass());
 
                 default:
@@ -426,7 +426,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(row + 1);

@@ -105,8 +105,6 @@ public class HtmlPanelAction
 
         /**
          * Gets the state flags associated with the action
-         *
-         * @return
          */
         public HtmlPanelAction.Flags getStateFlags()
         {
@@ -223,8 +221,6 @@ public class HtmlPanelAction
      * Creates a new state object for this panel action
      *
      * @param vc The dialog context which is the state of the dialog
-     *
-     * @return
      */
     public State constructStateInstance(HtmlPanelValueContext vc)
     {
@@ -233,8 +229,6 @@ public class HtmlPanelAction
 
     /**
      * Create flags for the panel object
-     *
-     * @return
      */
     public HtmlPanelAction.Flags createFlags()
     {
@@ -248,8 +242,6 @@ public class HtmlPanelAction
 
     /**
      * Sets the flags for the panel action
-     *
-     * @param flags
      */
     public void setFlags(Flags flags)
     {

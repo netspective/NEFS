@@ -143,8 +143,6 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
 
     /**
      * Sets the dialog field this flag is associated with.
-     *
-     * @param field
      */
     public void setField(DialogField field)
     {
@@ -164,17 +162,15 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     /**
      * Clears a flag. If this flag object belongs to a field and the flag is one of the carry over flags,
      * then all children fields will have their corresponding flags cleared.
-     *
-     * @param flag
      */
     public void clearFlag(long flag)
     {
         super.clearFlag(flag);
         // check to see if the flag object is related to the state or the field itself
-        if (field != null && field.carryFlag(flag))
+        if(field != null && field.carryFlag(flag))
         {
             // check to see if the flag should be carried to the children
-            if (field.getChildren() != null)
+            if(field.getChildren() != null)
                 field.getChildren().clearFlags(flag);
         }
     }
@@ -182,17 +178,15 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     /**
      * Sets a flag. If this flag object belongs to a field and the flag is one of the carry over flags,
      * then all children fields will have their corresponding flags set.
-     *
-     * @param flag
      */
     public void setFlag(long flag)
     {
         super.setFlag(flag);
         // check to see if the flag object is related to the state or the field itself
-        if (field != null && field.carryFlag(flag))
+        if(field != null && field.carryFlag(flag))
         {
             // check to see if the flag should be carried to the children
-            if (field.getChildren() != null)
+            if(field.getChildren() != null)
                 field.getChildren().setFlags(flag);
         }
     }

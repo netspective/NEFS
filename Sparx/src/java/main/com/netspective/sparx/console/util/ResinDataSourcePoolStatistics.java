@@ -63,7 +63,7 @@ public class ResinDataSourcePoolStatistics implements ConnectionProviderEntrySta
         {
             return ((Integer) activeConnsMethod.invoke(entry.getDataSource(), null)).intValue();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             return -1;
         }
@@ -80,7 +80,7 @@ public class ResinDataSourcePoolStatistics implements ConnectionProviderEntrySta
         {
             return ((Integer) maxConnsMethod.invoke(entry.getDataSource(), null)).intValue();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             return -1;
         }
@@ -92,7 +92,7 @@ public class ResinDataSourcePoolStatistics implements ConnectionProviderEntrySta
         {
             return ((Integer) totalConnsMethod.invoke(entry.getDataSource(), null)).intValue();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             return -1;
         }
@@ -102,10 +102,10 @@ public class ResinDataSourcePoolStatistics implements ConnectionProviderEntrySta
     {
         this.entry = entry;
 
-        if (entry != null)
+        if(entry != null)
         {
             DataSource ds = entry.getDataSource();
-            if (ds == null)
+            if(ds == null)
                 throw new RuntimeException("DataSource is NULL");
 
             try
@@ -114,7 +114,7 @@ public class ResinDataSourcePoolStatistics implements ConnectionProviderEntrySta
                 maxConnsMethod = ds.getClass().getMethod("getMaxConnections", null);
                 totalConnsMethod = ds.getClass().getMethod("getTotalConnections", null);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new NestableRuntimeException(e);
             }

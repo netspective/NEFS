@@ -75,7 +75,7 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
     {
         this.configName = config;
         FreeMarkerConfigurationAdapter adapter = FreeMarkerConfigurationAdapters.getInstance().getConfiguration(config);
-        if (adapter == null)
+        if(adapter == null)
             throw new RuntimeException("FreeMarkerConfigurationAdapter '" + config + "' not found.");
         else
             fmConfigAdapter = adapter;
@@ -99,23 +99,24 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
 
     public void finalizeContents()
     {
-        if (source == null)
+        if(source == null)
             FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader().addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
     }
 
     public void process(Writer writer, ValueContext vc, Map templateVars) throws IOException, TemplateProcessorException
     {
         Configuration fmConfig = fmConfigAdapter == null ?
-                ((vc instanceof ServletValueContext) ? ((ServletValueContext) vc).getFreeMarkerConfiguration() : null) :
-                fmConfigAdapter.getConfiguration();
+                                 ((vc instanceof ServletValueContext)
+                                  ? ((ServletValueContext) vc).getFreeMarkerConfiguration() : null) :
+                                 fmConfigAdapter.getConfiguration();
 
         // if we have a shared configuration (like from a theme or something) then use it
         Configuration sharedConfig = (Configuration) vc.getAttribute(VCATTRNAME_SHARED_FM_CONFIG);
-        if (sharedConfig != null)
+        if(sharedConfig != null)
             fmConfig = sharedConfig;
 
         // fmConfig may be null if not running from a Servlet or other templating environment (like within Ant)
-        if (fmConfig == null)
+        if(fmConfig == null)
         {
             FreeMarkerConfigurationAdapter adapter = FreeMarkerConfigurationAdapters.getInstance().createConfigurationAdapter();
             fmConfig = adapter.getConfiguration();
@@ -125,13 +126,13 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
         {
             Map instanceVars = new HashMap();
             Map sharedVars = (Map) vc.getAttribute(VCATTRNAME_SHARED_TEMPLATE_VARS);
-            if (sharedVars != null)
+            if(sharedVars != null)
                 instanceVars.putAll(sharedVars);
-            if (templateVars != null)
+            if(templateVars != null)
                 instanceVars.putAll(templateVars);
 
             Template template = null;
-            if (source != null)
+            if(source != null)
             {
                 String sourceText = source.getTextValue(vc);
                 template = fmConfig.getTemplate(sourceText);
@@ -143,7 +144,7 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
             instanceVars.put("vc", BeansWrapper.getDefaultInstance().wrap(vc));
             template.process(instanceVars, writer);
         }
-        catch (TemplateException e)
+        catch(TemplateException e)
         {
             log.error("Unable to process template", e);
             throw new TemplateProcessorException(e);

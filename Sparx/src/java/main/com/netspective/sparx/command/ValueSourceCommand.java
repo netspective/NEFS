@@ -54,10 +54,10 @@ public class ValueSourceCommand extends AbstractHttpServletCommand
     private static final Log log = LogFactory.getLog(ValueSourceCommand.class);
     public static final String[] IDENTIFIERS = new String[]{"dynamic"};
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Wraps a dynamic command by evaluating the parameter as a value source.",
-            new CommandDocumentation.Parameter[]
-            {
-                new CommandDocumentation.Parameter("value-source", true, "The command that will be evaluated as a value source."),
-            });
+                                                                                      new CommandDocumentation.Parameter[]
+                                                                                      {
+                                                                                          new CommandDocumentation.Parameter("value-source", true, "The command that will be evaluated as a value source."),
+                                                                                      });
 
     public static String[] getIdentifiers()
     {
@@ -91,7 +91,7 @@ public class ValueSourceCommand extends AbstractHttpServletCommand
     {
         vs = ValueSources.getInstance().getValueSourceOrStatic(params);
         isStatic = vs instanceof StaticValueSource;
-        if (isStatic)
+        if(isStatic)
             staticCommand = Commands.getInstance().getCommand(vs.getTextValue(null));
     }
 
@@ -102,12 +102,12 @@ public class ValueSourceCommand extends AbstractHttpServletCommand
 
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
-        if (isStatic)
+        if(isStatic)
             ((HttpServletCommand) staticCommand).handleCommand(writer, nc, unitTest);
         else
         {
             String commandSpec = vs.getTextValue(nc);
-            if (commandSpec == null || commandSpec.length() == 0)
+            if(commandSpec == null || commandSpec.length() == 0)
             {
                 writer.write("Command value source '" + vs.getSpecification() + "' evaluated to empty text.");
                 return;
@@ -118,7 +118,7 @@ public class ValueSourceCommand extends AbstractHttpServletCommand
                 HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand(commandSpec);
                 command.handleCommand(writer, nc, false);
             }
-            catch (CommandNotFoundException e)
+            catch(CommandNotFoundException e)
             {
                 log.error("error handling command", e);
                 writer.write(e.toString());

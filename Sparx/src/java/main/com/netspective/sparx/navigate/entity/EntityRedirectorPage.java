@@ -106,7 +106,7 @@ public class EntityRedirectorPage extends NavigationPage
             entitySubtypeName = name;
 
             setEntitySubtype(getEntitySubtypeInfoById(id));
-            if (getEntitySubtype() == null && name != null)
+            if(getEntitySubtype() == null && name != null)
                 setEntitySubtype(getEntitySubtypeInfoByName(name));
         }
     }
@@ -193,8 +193,6 @@ public class EntityRedirectorPage extends NavigationPage
         /**
          * Sets the retain parameters for the entity subtype. Protected because it should only be called from Java
          * and not XDM.
-         *
-         * @param retainParams
          */
         protected void setRetainParams(String[] retainParams)
         {
@@ -231,12 +229,12 @@ public class EntityRedirectorPage extends NavigationPage
 
     public ActiveEntity getActiveEntity(NavigationContext nc, ConnectionContext cc) throws NamingException, SQLException
     {
-        if (activeEntityQuery != null)
+        if(activeEntityQuery != null)
         {
             try
             {
                 QueryResultSet qrs = activeEntityQuery.execute(nc, new Object[]{getEntityIdRequestParamValue(nc)}, false);
-                if (qrs != null)
+                if(qrs != null)
                 {
                     ActiveEntity activeEntity = (ActiveEntity) activeEntityClass.newInstance();
                     ResultSetUtils.getInstance().assignColumnValuesToInstance(qrs.getResultSet(), activeEntity, "*", true);
@@ -245,7 +243,7 @@ public class EntityRedirectorPage extends NavigationPage
                     return activeEntity;
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Error assigning primary org to user", e);
             }
@@ -256,12 +254,12 @@ public class EntityRedirectorPage extends NavigationPage
 
     protected boolean isEntityValid(NavigationContext nc, ConnectionContext cc) throws NamingException, SQLException
     {
-        if (activeEntityQuery != null)
+        if(activeEntityQuery != null)
         {
             try
             {
                 QueryResultSet qrs = activeEntityQuery.execute(nc, null, false);
-                if (qrs != null)
+                if(qrs != null)
                 {
                     ActiveEntity activeEntity = (ActiveEntity) activeEntityClass.newInstance();
                     ResultSetUtils.getInstance().assignColumnValuesToInstance(qrs.getResultSet(), activeEntity, "*", true);
@@ -274,7 +272,7 @@ public class EntityRedirectorPage extends NavigationPage
                     return isEntityValid(nc, activeEntity);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Error assigning primary org to user", e);
             }
@@ -345,23 +343,23 @@ public class EntityRedirectorPage extends NavigationPage
 
     public void addEntitySubtype(EntitySubtypeInfo subtypeInfo)
     {
-        if (subtypeInfo.getSchemaEnum() != null)
+        if(subtypeInfo.getSchemaEnum() != null)
         {
             String[] params = TextUtils.getInstance().split(subtypeInfo.getSchemaEnum(), ",", true);
-            if (params.length != 2)
+            if(params.length != 2)
                 log.error("the schema-enum attribute in <sub-type> of entity redirector requires 2 params: schema.enum-table,enum-id-or-caption");
             else
             {
                 Project project = getOwner().getProject();
                 Table table = project.getSchemas().getTable(params[0]);
-                if (table == null || !(table instanceof EnumerationTable))
+                if(table == null || !(table instanceof EnumerationTable))
                     log.error("the schema-enum attribute in <sub-type> of entity redirector has an invalid schema.enum-table: " + params[0]);
                 else
                 {
                     EnumerationTable enumTable = (EnumerationTable) table;
                     EnumerationTableRows enumRows = (EnumerationTableRows) enumTable.getData();
                     EnumerationTableRow enumRow = enumRows.getByIdOrCaptionOrAbbrev(params[1]);
-                    if (enumRow == null)
+                    if(enumRow == null)
                         log.error("the schema-enum attribute in <sub-type> of entity redirector has an invalid enum value for " + params[0] + ": " + params[1]);
                     else
                         subtypeInfo.setId(enumRow.getId());
@@ -369,10 +367,10 @@ public class EntityRedirectorPage extends NavigationPage
             }
         }
 
-        if (subtypeInfo.getId() != ID_UNKNOWN)
+        if(subtypeInfo.getId() != ID_UNKNOWN)
             subtypeInfoByIdMap.put(new Integer(subtypeInfo.getId()), subtypeInfo);
 
-        if (subtypeInfo.getName() != null)
+        if(subtypeInfo.getName() != null)
             subtypeInfoByNameMap.put(subtypeInfo.getName(), subtypeInfo);
     }
 
@@ -391,7 +389,7 @@ public class EntityRedirectorPage extends NavigationPage
         HttpSession session = nc.getHttpRequest().getSession();
         EntitySubtypeRedirectInfo esri = (EntitySubtypeRedirectInfo) session.getAttribute(SESSATTRNAME_ESRI);
         session.removeAttribute(SESSATTRNAME_ESRI); // get rid of it so it's not hanging around for next call
-        if (esri != null && esri.getId().equals(id))
+        if(esri != null && esri.getId().equals(id))
             return esri;
         else
             return null;
@@ -405,7 +403,7 @@ public class EntityRedirectorPage extends NavigationPage
 
     public boolean isValid(NavigationContext nc)
     {
-        if (!super.isValid(nc))
+        if(!super.isValid(nc))
             return false;
 
         ConnectionContext cc;
@@ -413,7 +411,7 @@ public class EntityRedirectorPage extends NavigationPage
         {
             cc = nc.getConnection(null, false);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error(e);
             throw new NestableRuntimeException(e);
@@ -421,11 +419,11 @@ public class EntityRedirectorPage extends NavigationPage
 
         try
         {
-            if (!isEntityValid(nc, cc))
+            if(!isEntityValid(nc, cc))
                 return false;
 
             EntityRedirectorPageState state = (EntityRedirectorPageState) nc.getActiveState();
-            if (state.getEntitySubtype() != null)
+            if(state.getEntitySubtype() != null)
             {
                 // set this to true so that the navigation controller will ask us later for the URL we want to redirect to
                 nc.setRedirectRequired(true);
@@ -437,7 +435,7 @@ public class EntityRedirectorPage extends NavigationPage
             // if we get to here then we'll be handling the body since no other page matched
             return true;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error(e);
             throw new NestableRuntimeException(e);
@@ -448,7 +446,7 @@ public class EntityRedirectorPage extends NavigationPage
             {
                 cc.close();
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 log.error(e);
                 throw new NestableRuntimeException(e);
@@ -459,7 +457,7 @@ public class EntityRedirectorPage extends NavigationPage
     public String getUrl(HttpServletValueContext vc)
     {
         EntityRedirectorPageState state = (EntityRedirectorPageState) ((NavigationContext) vc).getActiveState();
-        if (state.getEntitySubtype() != null)
+        if(state.getEntitySubtype() != null)
             return state.getEntitySubtype().getRedirect().getTextValue(vc);
         else
             return super.getUrl(vc);

@@ -173,23 +173,23 @@ public class HtmlLayoutPanel implements HtmlPanel
 
     public HtmlPanelFrame createFrame()
     {
-        if (frame == null)
+        if(frame == null)
             frame = new HtmlPanelFrame();
         return frame;
     }
 
     public HtmlPanelBanner createBanner()
     {
-        if (banner == null)
+        if(banner == null)
             banner = new HtmlPanelBanner();
         return banner;
     }
 
     public boolean affectsNavigationContext(NavigationContext nc)
     {
-        for (int i = 0; i < children.size(); i++)
+        for(int i = 0; i < children.size(); i++)
         {
-            if (children.get(i).affectsNavigationContext(nc))
+            if(children.get(i).affectsNavigationContext(nc))
                 return true;
         }
 
@@ -252,10 +252,10 @@ public class HtmlLayoutPanel implements HtmlPanel
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        switch (getStyle())
+        switch(getStyle())
         {
             case HtmlPanelsStyleEnumeratedAttribute.VERTICAL:
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     writer.write("<div style='padding-bottom: 12'>");
                     children.get(i).render(writer, nc, theme, flags);
@@ -265,7 +265,7 @@ public class HtmlLayoutPanel implements HtmlPanel
 
             case HtmlPanelsStyleEnumeratedAttribute.HORIZONTAL:
                 writer.write("<table cellspacing=0 cellpadding=9><tr valign=top>");
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     writer.write("<td>");
                     children.get(i).render(writer, nc, theme, flags);
@@ -276,16 +276,16 @@ public class HtmlLayoutPanel implements HtmlPanel
             case HtmlPanelsStyleEnumeratedAttribute.TWO_COLUMNS:
                 writer.write("<table cellspacing=0 cellpadding=9>");
                 int counter = 0;
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     counter++;
-                    if (counter == 1)
+                    if(counter == 1)
                     {
                         writer.write("<tr valign=top><td>");
                         children.get(i).render(writer, nc, theme, flags);
                         writer.write("</td>");
                     }
-                    else if (counter == 2)
+                    else if(counter == 2)
                     {
                         writer.write("<td>");
                         children.get(i).render(writer, nc, theme, flags);
@@ -293,7 +293,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                         counter = 0;
                     }
                 }
-                if (counter != 0)
+                if(counter != 0)
                     writer.write("<td>&nbsp;</td></tr>");
                 writer.write("</table>");
                 break;
@@ -302,16 +302,16 @@ public class HtmlLayoutPanel implements HtmlPanel
                 StringWriter columnOne = new StringWriter();
                 StringWriter columnTwo = new StringWriter();
                 int column = 0;
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     column++;
-                    if (column == 1)
+                    if(column == 1)
                     {
                         columnOne.write("<div class=\"panel-layout-column\">");
                         children.get(i).render(columnOne, nc, theme, flags);
                         columnOne.write("</div>");
                     }
-                    else if (column == 2)
+                    else if(column == 2)
                     {
                         columnTwo.write("<div class=\"panel-layout-column\">");
                         children.get(i).render(columnTwo, nc, theme, flags);
@@ -333,7 +333,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                 writer.write("<script>startParentPanel(ALL_PANELS.getPanel(\"" + getPanelIdentifier() + "\"))</script>\n");
                 writer.write("<div class=\"panel-output-tabs\">");
                 writer.write("<table id=\"" + getPanelIdentifier() + "_tabs\" class=\"panel-output-tabs\"><tr>");
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
                     writer.write("<td>");
@@ -343,7 +343,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                 }
                 writer.write("</tr></table></div>");
 
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
                     writer.write("<div id=\"" + panel.getPanelIdentifier() + "_container\" style='display: none'>");
@@ -359,10 +359,10 @@ public class HtmlLayoutPanel implements HtmlPanel
 
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
-        switch (getStyle())
+        switch(getStyle())
         {
             case HtmlPanelsStyleEnumeratedAttribute.VERTICAL:
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     writer.write("<div style='padding-bottom: 12'>");
                     children.get(i).render(writer, dc, theme, flags);
@@ -372,7 +372,7 @@ public class HtmlLayoutPanel implements HtmlPanel
 
             case HtmlPanelsStyleEnumeratedAttribute.HORIZONTAL:
                 writer.write("<table cellspacing=0 cellpadding=9><tr valign=top>");
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     writer.write("<td>");
                     children.get(i).render(writer, dc, theme, flags);
@@ -384,16 +384,16 @@ public class HtmlLayoutPanel implements HtmlPanel
             case HtmlPanelsStyleEnumeratedAttribute.TWO_COLUMNS:
                 writer.write("<table cellspacing=0 cellpadding=9>");
                 int counter = 0;
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     counter++;
-                    if (counter == 1)
+                    if(counter == 1)
                     {
                         writer.write("<tr valign=top><td>");
                         children.get(i).render(writer, dc, theme, flags);
                         writer.write("</td>");
                     }
-                    else if (counter == 2)
+                    else if(counter == 2)
                     {
                         writer.write("<td>");
                         children.get(i).render(writer, dc, theme, flags);
@@ -401,7 +401,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                         counter = 0;
                     }
                 }
-                if (counter != 0)
+                if(counter != 0)
                     writer.write("<td>&nbsp;</td></tr>");
                 writer.write("</table>");
                 break;
@@ -415,7 +415,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                 writer.write("<script>startParentPanel(ALL_PANELS.getPanel(\"" + getPanelIdentifier() + "\"))</script>\n");
                 writer.write("<div class=\"panel-output-tabs\">");
                 writer.write("<table id=\"" + getPanelIdentifier() + "_tabs\" class=\"panel-output-tabs\"><tr>");
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
                     writer.write("<td>");
@@ -425,7 +425,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                 }
                 writer.write("</tr></table></div>");
 
-                for (int i = 0; i < children.size(); i++)
+                for(int i = 0; i < children.size(); i++)
                 {
                     HtmlPanel panel = children.get(i);
                     writer.write("<div id=\"" + panel.getPanelIdentifier() + "_container\" style='display: none'>");

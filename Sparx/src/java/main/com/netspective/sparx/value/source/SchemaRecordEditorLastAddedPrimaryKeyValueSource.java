@@ -45,10 +45,10 @@ public class SchemaRecordEditorLastAddedPrimaryKeyValueSource extends AbstractVa
 {
     public static final String[] IDENTIFIERS = new String[]{"record-editor-added-row-pk"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides access to a SchemaRecordEditorContext's added row's primary key.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("row-number", true, "The row number to retrieve PK for ('last' for last added).")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("row-number", true, "The row number to retrieve PK for ('last' for last added).")
+                                                                                              });
 
     private int rowNumber = -1;
 
@@ -66,9 +66,9 @@ public class SchemaRecordEditorLastAddedPrimaryKeyValueSource extends AbstractVa
     {
         super.initialize(spec);
         String rowNumStr = spec.getParams();
-        if (rowNumStr != null)
+        if(rowNumStr != null)
         {
-            if (rowNumStr.equals("last"))
+            if(rowNumStr.equals("last"))
                 rowNumber = -1;
             else
                 rowNumber = Integer.valueOf(rowNumStr).intValue();
@@ -82,10 +82,10 @@ public class SchemaRecordEditorLastAddedPrimaryKeyValueSource extends AbstractVa
 
     public Value getValue(final ValueContext vc)
     {
-        if (vc instanceof SchemaRecordEditorDialogContext)
+        if(vc instanceof SchemaRecordEditorDialogContext)
         {
             SchemaRecordEditorDialogContext sredc = (SchemaRecordEditorDialogContext) vc;
-            if (rowNumber == -1)
+            if(rowNumber == -1)
                 return sredc.getAddedRowPrimaryKeyValue(sredc.getRowsAdded().size() - 1);
             else
                 return sredc.getAddedRowPrimaryKeyValue(rowNumber);
@@ -96,7 +96,7 @@ public class SchemaRecordEditorLastAddedPrimaryKeyValueSource extends AbstractVa
 
     public boolean hasValue(ValueContext vc)
     {
-        if (vc instanceof SchemaRecordEditorDialogContext)
+        if(vc instanceof SchemaRecordEditorDialogContext)
         {
             SchemaRecordEditorDialogContext sredc = (SchemaRecordEditorDialogContext) vc;
             return sredc.getRowsAdded().size() > 0;

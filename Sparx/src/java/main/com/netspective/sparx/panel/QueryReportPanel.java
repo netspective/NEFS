@@ -148,27 +148,23 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Executes the query and assigns the result set to a new report data source object
-     *
-     * @param nc
-     *
-     * @return
      */
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         try
         {
             QueryResultSet resultSet = (QueryResultSet) nc.getAttribute(getCachedResultSetAttributeId());
-            if (resultSet == null)
+            if(resultSet == null)
             {
-                if (isScrollable())
+                if(isScrollable())
                     resultSet = query.execute(nc, null, true);
                 else
                     resultSet = query.execute(nc, null, false);
             }
             QueryResultSetDataSource qrsds = new QueryResultSetDataSource(noDataMsg != null ? noDataMsg : NO_DATA_MSG);
-            if (getSelectedRowColumnSpecifier() != -1)
+            if(getSelectedRowColumnSpecifier() != -1)
             {
-                if (isSelectedRowCompareValueAsText())
+                if(isSelectedRowCompareValueAsText())
                     qrsds.setSelectedRowRule(getSelectedRowColumnSpecifier(), getSelectedRowColumnValue().getValue(nc).getTextValue());
                 else
                     qrsds.setSelectedRowRule(getSelectedRowColumnSpecifier(), getSelectedRowColumnValue().getValue(nc).getValue());
@@ -176,7 +172,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             qrsds.setQueryResultSet(resultSet);
             return qrsds;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to create data source", e);
             throw new NestableRuntimeException(e);
@@ -186,7 +182,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
     public HtmlTabularReport getReport(NavigationContext nc)
     {
         HtmlTabularReport activeReport = getReport();
-        if (activeReport == null)
+        if(activeReport == null)
         {
             // if the report is null, we need to create it by running the query and getting the meta data
             activeReport = new BasicHtmlTabularReport();
@@ -194,19 +190,19 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         }
 
         // NO COLUMNS are defined for the report so use the result set to get the column information
-        if (activeReport.getColumns().isEmpty())
+        if(activeReport.getColumns().isEmpty())
         {
             try
             {
                 QueryResultSet resultSet = null;
-                if (isScrollable())
+                if(isScrollable())
                     resultSet = query.execute(nc, null, true);
                 else
                     resultSet = query.execute(nc, null, false);
                 resultSet.fillReportFromMetaData(activeReport);
                 nc.setAttribute(getCachedResultSetAttributeId(), resultSet); // store the result set so we don't run it again
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Unable to create report for query ", e);
                 throw new NestableRuntimeException(e);

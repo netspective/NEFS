@@ -59,7 +59,7 @@ public class SchemaTableDataPanel extends AbstractHtmlTabularReportPanel
     {
         HtmlTabularReport dataReport = new BasicHtmlTabularReport();
         Columns columns = table.getColumns();
-        for (int i = 0; i < columns.size(); i++)
+        for(int i = 0; i < columns.size(); i++)
         {
             GeneralColumn reportColumn = new GeneralColumn();
             reportColumn.setHeading(new StaticValueSource(columns.get(i).getName()));
@@ -78,17 +78,17 @@ public class SchemaTableDataPanel extends AbstractHtmlTabularReportPanel
         List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
         SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
-        if (selectedRow == null)
+        if(selectedRow == null)
             return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
         {
             Table table = selectedRow.getTable();
-            if (table == null)
+            if(table == null)
                 return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
             else
             {
                 Rows data = table.getData();
-                if (data == null)
+                if(data == null)
                     return new SimpleMessageDataSource("Table has no static data");
                 else
                     return new TableDataSource(data);
@@ -101,12 +101,12 @@ public class SchemaTableDataPanel extends AbstractHtmlTabularReportPanel
         List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
         SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
-        if (selectedRow == null)
+        if(selectedRow == null)
             return new BasicHtmlTabularReport();
         else
         {
             Table table = selectedRow.getTable();
-            if (table != null && table.getData() != null)
+            if(table != null && table.getData() != null)
                 return createDataReport(table);
             else
                 return new BasicHtmlTabularReport();
@@ -154,7 +154,7 @@ public class SchemaTableDataPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(row + 1);

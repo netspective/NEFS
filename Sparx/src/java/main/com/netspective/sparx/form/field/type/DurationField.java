@@ -59,7 +59,7 @@ public class DurationField extends DialogField
         public void flagsChanged()
         {
             super.flagsChanged();
-            if (beginField != null)
+            if(beginField != null)
             {
                 DateTimeField.Flags flags = (DateTimeField.Flags) beginField.getFlags();
                 flags.updateFlag(REQUIRED, flagIsSet(REQUIRED));
@@ -67,7 +67,7 @@ public class DurationField extends DialogField
                 flags.updateFlag(DateTimeField.Flags.POPUP_CALENDAR, flagIsSet(DateTimeField.Flags.POPUP_CALENDAR));
             }
 
-            if (endField != null)
+            if(endField != null)
             {
                 DateTimeField.Flags flags = (DateTimeField.Flags) endField.getFlags();
                 flags.updateFlag(REQUIRED, flagIsSet(REQUIRED));
@@ -145,7 +145,7 @@ public class DurationField extends DialogField
     public void validate(DialogValidationContext dvc)
     {
         super.validate(dvc);
-        if (!dvc.isValid())
+        if(!dvc.isValid())
             return;
 
         DialogContext dc = dvc.getDialogContext();
@@ -155,13 +155,13 @@ public class DurationField extends DialogField
         Date endDate = (Date) states.getState(endField).getValue().getValue();
 
         // if only one value is provided, show error
-        if ((beginDate == null && endDate != null) || (beginDate != null && endDate == null))
+        if((beginDate == null && endDate != null) || (beginDate != null && endDate == null))
         {
             invalidate(dc, "Both beginning and ending values should be provided.");
             return;
         }
         // check the relationship only when both values are present
-        if (beginDate != null && endDate != null && beginDate.after(endDate))
+        if(beginDate != null && endDate != null && beginDate.after(endDate))
         {
             invalidate(dc, "Beginning value should be before ending value.");
             return;

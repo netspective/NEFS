@@ -185,8 +185,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Creates the dialog field state object with the associated context and default flag objects
-         *
-         * @param dc
          */
         public State(DialogContext dc, DialogField field)
         {
@@ -200,22 +198,20 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         /**
          * Initializes the state object by copying field flag values and setting additional flags based
          * on dialog perspectives. Also sets the state value based on cookies if the 'persist' flag is set.
-         *
-         * @param dc
          */
         private void initialize(DialogContext dc)
         {
             stateFlags.copy(getFlags());
 
-            if (stateFlags.flagIsSet(DialogFieldFlags.PERSIST) && dc.getDialogState().isInLoadPersistentFieldDataMode())
+            if(stateFlags.flagIsSet(DialogFieldFlags.PERSIST) && dc.getDialogState().isInLoadPersistentFieldDataMode())
             {
                 Cookie[] cookies = dc.getHttpRequest().getCookies();
-                if (cookies != null)
+                if(cookies != null)
                 {
-                    for (int i = 0; i < cookies.length; i++)
+                    for(int i = 0; i < cookies.length; i++)
                     {
                         Cookie cookie = cookies[i];
-                        if (cookie.getName().equals(getCookieName()))
+                        if(cookie.getName().equals(getCookieName()))
                         {
                             value.setTextValue(URLDecoder.decode(cookie.getValue()));
                             setLoadedPersistentValue(true);
@@ -224,17 +220,17 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                 }
             }
 
-            switch ((int) dc.getDialogState().getPerspectives().getFlags())
+            switch((int) dc.getDialogState().getPerspectives().getFlags())
             {
                 case DialogPerspectives.ADD:
                     // when in "add" mode, auto generated primary keys should not be on the form
-                    if (stateFlags.flagIsSet(DialogFieldFlags.PRIMARY_KEY_GENERATED))
+                    if(stateFlags.flagIsSet(DialogFieldFlags.PRIMARY_KEY_GENERATED))
                         stateFlags.setFlag(DialogFieldFlags.UNAVAILABLE);
                     break;
 
                 case DialogPerspectives.EDIT:
                     // when in "edit" mode, the primary key should be read-only
-                    if (stateFlags.flagIsSet(DialogFieldFlags.PRIMARY_KEY | DialogFieldFlags.PRIMARY_KEY_GENERATED))
+                    if(stateFlags.flagIsSet(DialogFieldFlags.PRIMARY_KEY | DialogFieldFlags.PRIMARY_KEY_GENERATED))
                         stateFlags.setFlag(DialogFieldFlags.READ_ONLY);
                     break;
 
@@ -249,8 +245,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Constructs a DialogFieldVale object
-         *
-         * @return
          */
         public DialogFieldValue constructValueInstance()
         {
@@ -259,8 +253,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Gets the dialog context
-         *
-         * @return
          */
         public DialogContext getDialogContext()
         {
@@ -269,8 +261,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Checks to see if the field value is required
-         *
-         * @return
          */
         public boolean hasRequiredValue()
         {
@@ -279,8 +269,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Gets the dialog field value
-         *
-         * @return
          */
         public DialogFieldValue getValue()
         {
@@ -289,8 +277,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Gets the field's adjacent area's value
-         *
-         * @return
          */
         public String getAdjacentAreaValue()
         {
@@ -299,8 +285,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Sets the adjacent area's value
-         *
-         * @param adjacentAreaValue
          */
         public void setAdjacentAreaValue(String adjacentAreaValue)
         {
@@ -319,8 +303,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Gets the state flags associated with the field
-         *
-         * @return
          */
         public DialogFieldFlags getStateFlags()
         {
@@ -329,8 +311,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Returns the dialog field object to which this state belongs to.
-         *
-         * @return
          */
         public final DialogField getField()
         {
@@ -342,7 +322,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
          */
         public void persistValue()
         {
-            if (getStateFlags().flagIsSet(DialogFieldFlags.PERSIST) && value.hasValue())
+            if(getStateFlags().flagIsSet(DialogFieldFlags.PERSIST) && value.hasValue())
             {
                 Cookie cookie = new Cookie(getCookieName(), URLEncoder.encode(value.getTextValue()));
                 cookie.setMaxAge(60 * 60 * 24 * 365); // 1 year
@@ -352,8 +332,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Return the object that will be used to store the validation error messages in the ValidationContext
-         *
-         * @return
          */
         public Object getValidationContextScope()
         {
@@ -362,40 +340,36 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
         /**
          * Imports the field's related information from an XML element
-         *
-         * @param fieldStateElem
          */
         public void importFromXml(Element fieldStateElem)
         {
             String fieldName = fieldStateElem.getAttribute("name");
-            if (fieldName == null)
+            if(fieldName == null)
                 return;
-            if (!fieldName.equals(getQualifiedName()))
+            if(!fieldName.equals(getQualifiedName()))
                 throw new RuntimeException("Attempting to assign field state for '" + fieldName + "' into '" + getQualifiedName() + "'.");
             getStateFlags().setValue(fieldStateElem.getAttribute("flags"));
             String adjAreaValue = fieldStateElem.getAttribute("adjacent-area-value");
-            if (!adjAreaValue.equals("-NULL-"))
+            if(!adjAreaValue.equals("-NULL-"))
                 setAdjacentAreaValue(adjAreaValue);
             value.importFromXml(fieldStateElem);
         }
 
         /**
          * Exports the field's related information as an XML element
-         *
-         * @param parent
          */
         public void exportToXml(Element parent)
         {
             Document doc = parent.getOwnerDocument();
             Element fieldStateElem = doc.createElement("field-state");
             String fieldName = getQualifiedName();
-            if (fieldName != null)
+            if(fieldName != null)
             {
                 fieldStateElem.setAttribute("name", getQualifiedName());
                 String flagsText = getStateFlags().getFlagsText();
                 fieldStateElem.setAttribute("flags", flagsText);
                 fieldStateElem.setAttribute("adjacent-area-value", adjacentAreaValue != null
-                        ? adjacentAreaValue : "-NULL-");
+                                                                   ? adjacentAreaValue : "-NULL-");
                 value.exportToXml(fieldStateElem);
                 parent.appendChild(fieldStateElem);
             }
@@ -404,17 +378,13 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         public void appendAsUrlParam(StringBuffer sb)
         {
             String fieldName = getQualifiedName();
-            if (fieldName != null)
+            if(fieldName != null)
                 value.appendAsUrlParamValue(getHtmlFormControlId(), sb);
         }
     }
 
     /**
      * Translates the passed in name into lower case values
-     *
-     * @param name
-     *
-     * @return
      */
     public static final String translateFieldNameForMapKey(final String name)
     {
@@ -524,8 +494,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
      * Creates a new field state object for this field
      *
      * @param dc The dialog context which is the state of the dialog
-     *
-     * @return
      */
     public State constructStateInstance(DialogContext dc)
     {
@@ -534,8 +502,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Gets the class of the field's state
-     *
-     * @return
      */
     public Class getStateClass()
     {
@@ -544,8 +510,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Gets the class of the field's state value
-     *
-     * @return
      */
     public Class getStateValueClass()
     {
@@ -554,8 +518,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Creates a new validation  class for the field
-     *
-     * @return
      */
     public DialogFieldValidations constructValidationRules()
     {
@@ -564,8 +526,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Gets the validation object for this field
-     *
-     * @return
      */
     public DialogFieldValidations getValidationRules()
     {
@@ -574,8 +534,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Gets the validation object for this field. This is used by XDM.
-     *
-     * @return
      */
     public DialogFieldValidations createValidation()
     {
@@ -584,8 +542,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Empty method.  Thiis is used by  XDM  to know that validation rules are allowed for fields
-     *
-     * @param rules
      */
     public void addValidation(DialogFieldValidations rules)
     {
@@ -594,8 +550,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Create flags for the field object
-     *
-     * @return
      */
     public DialogFieldFlags createFlags()
     {
@@ -604,10 +558,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Create flags for the field state object
-     *
-     * @param state
-     *
-     * @return
      */
     public DialogFieldFlags createFlags(State state)
     {
@@ -632,19 +582,15 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Checks to see if the flag should be carried to children fields
-     *
-     * @param flag
-     *
-     * @return
      */
     public boolean carryFlag(long flag)
     {
         boolean carryFlag = false;
 
         int[] childCarryFlags = getChildCarryFlags();
-        for (int i = 0; i < childCarryFlags.length; i++)
+        for(int i = 0; i < childCarryFlags.length; i++)
         {
-            if (flag == childCarryFlags[i])
+            if(flag == childCarryFlags[i])
             {
                 carryFlag = true;
                 break;
@@ -662,8 +608,8 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     public boolean requiresMultiPartEncoding()
     {
         // if any child requires multi part encoding, then return true (this will take of things recursively)
-        if (children != null)
-            if (children.requiresMultiPartEncoding())
+        if(children != null)
+            if(children.requiresMultiPartEncoding())
                 return true;
 
         // no child requires it and we don't require it by default, either
@@ -682,8 +628,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Add a conditional action for this field
-     *
-     * @param action
      */
     public void addConditional(DialogFieldConditionalAction action)
     {
@@ -705,17 +649,10 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
      * Creates a new custom conditional action class for this field
      *
      * @param cls Custom class
-     *
-     * @return
-     *
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
     public DialogFieldConditionalAction createConditional(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (DialogFieldConditionalAction.class.isAssignableFrom(cls))
+        if(DialogFieldConditionalAction.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[]{DialogField.class});
             return (DialogFieldConditionalAction) c.newInstance(new Object[]{this});
@@ -726,8 +663,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Gets the associated popup field
-     *
-     * @return
      *
      * @deprecated Multiple popups are allowed now and this method needs to be removed.
      */
@@ -744,7 +679,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     public DialogFieldPopup[] getPopups()
     {
         DialogFieldPopup[] popups = new DialogFieldPopup[popupList.size()];
-        for (int i = 0; i < popupList.size(); i++)
+        for(int i = 0; i < popupList.size(); i++)
         {
             popups[i] = (DialogFieldPopup) popupList.get(i);
         }
@@ -753,12 +688,10 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Sets the associated popup field
-     *
-     * @param popup
      */
     public void addPopup(DialogFieldPopup popup)
     {
-        if (popup.getFill() == null)
+        if(popup.getFill() == null)
             popup.setFill(getQualifiedName());
         this.popup = popup;
         this.popupList.add(popup);
@@ -781,8 +714,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Adds a custom javascript handler for this field
-     *
-     * @param clientJs
      */
     public void addClientJs(DialogFieldClientJavascript clientJs)
     {
@@ -821,8 +752,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Get the keyboard shortcut key for the field
-     *
-     * @return
      */
     public String getAccessKey()
     {
@@ -831,8 +760,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Set the keyboard shortcut key for the field
-     *
-     * @param accessKey
      */
     public void setAccessKey(String accessKey)
     {
@@ -919,7 +846,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     public void setName(String newName)
     {
         name = newName;
-        if (name != null)
+        if(name != null)
         {
             setHtmlFormControlId(Dialog.PARAMNAME_CONTROLPREFIX + TextUtils.getInstance().xmlTextToJavaIdentifier(name, false));
             setQualifiedName(name);
@@ -934,7 +861,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     public void setQualifiedName(String newName)
     {
         qualifiedName = newName;
-        if (qualifiedName != null)
+        if(qualifiedName != null)
             setHtmlFormControlId(Dialog.PARAMNAME_CONTROLPREFIX + TextUtils.getInstance().xmlTextToJavaIdentifier(qualifiedName, false));
     }
 
@@ -957,8 +884,8 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     public String getCookieName()
     {
         return cookieName == null
-                ? (Dialog.PARAMNAME_CONTROLPREFIX + getOwner().getQualifiedName() + "." + getQualifiedName())
-                : cookieName;
+               ? (Dialog.PARAMNAME_CONTROLPREFIX + getOwner().getQualifiedName() + "." + getQualifiedName())
+               : cookieName;
     }
 
     /**
@@ -995,7 +922,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     public ValueSource getErrorCaption()
     {
         return errorCaption != ValueSource.NULL_VALUE_SOURCE ?
-                errorCaption : getCaption();
+               errorCaption : getCaption();
     }
 
     /**
@@ -1097,26 +1024,24 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
      */
     public void addField(DialogField field)
     {
-        for (int i = 0; i < CHILD_CARRY_FLAGS.length; i++)
+        for(int i = 0; i < CHILD_CARRY_FLAGS.length; i++)
         {
             int flag = CHILD_CARRY_FLAGS[i];
-            if (flags.flagIsSet(flag))
+            if(flags.flagIsSet(flag))
                 field.flags.setFlag(flag);
         }
 
-        if (children == null) children = new DialogFields(this);
+        if(children == null) children = new DialogFields(this);
         field.setParent(this);
         children.add(field);
 
         field.setParent(this);
-        if (qualifiedName != null)
+        if(qualifiedName != null)
             field.setQualifiedName(qualifiedName + "." + field.getName());
     }
 
     /**
      * Adds a composite field as a child
-     *
-     * @param field
      */
     public void addComposite(DialogField field)
     {
@@ -1144,23 +1069,23 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
      */
     public void finalizeContents()
     {
-        for (int i = 0; i < conditionalActions.size(); i++)
+        for(int i = 0; i < conditionalActions.size(); i++)
         {
             DialogFieldConditionalAction action = conditionalActions.getAction(i);
             DialogField partnerField = owner.getFields().getByQualifiedName(action.getPartnerFieldName());
-            if (partnerField != null)
+            if(partnerField != null)
                 action.setPartnerField(partnerField);
-            else if (action.isPartnerRequired())
+            else if(action.isPartnerRequired())
                 log.error("Unknown partner supplied for conditional action " + action.getSourceField().getQualifiedName());
         }
 
-        if (children != null)
+        if(children != null)
             children.finalizeContents();
 
-        if (flags.flagIsSet(DialogFieldFlags.DOUBLE_ENTRY))
+        if(flags.flagIsSet(DialogFieldFlags.DOUBLE_ENTRY))
             this.setupDoubleEntry();
 
-        if (requiresMultiPartEncoding())
+        if(requiresMultiPartEncoding())
             getOwner().getDialogFlags().setFlag(DialogFlags.ENCTYPE_MULTIPART_FORMDATA);
     }
 
@@ -1185,8 +1110,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Gets the dependent conditions of this field
-     *
-     * @return
      */
     public DialogFieldConditionalActions getDependentConditions()
     {
@@ -1201,7 +1124,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
      */
     public boolean isRequired(DialogContext dc)
     {
-        if (dc.getFieldStates().getState(this).getStateFlags().flagIsSet(DialogFieldFlags.REQUIRED))
+        if(dc.getFieldStates().getState(this).getStateFlags().flagIsSet(DialogFieldFlags.REQUIRED))
             return true;
 /*
 		if (children != null)
@@ -1218,8 +1141,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Returns a required field missin message
-     *
-     * @return
      */
     public String getRequiredFieldMissingMessage()
     {
@@ -1228,8 +1149,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Sets the display error message for use when a field is required and no value is entered for it
-     *
-     * @param requiredFieldMissingMessage
      */
     public void setRequiredFieldMissingMessage(String requiredFieldMissingMessage)
     {
@@ -1247,15 +1166,15 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
      */
     public boolean isAvailable(DialogContext dc)
     {
-        for (int i = 0; i < conditionalActions.size(); i++)
+        for(int i = 0; i < conditionalActions.size(); i++)
         {
             DialogFieldConditionalAction action = conditionalActions.getAction(i);
-            if (action instanceof DialogFieldConditionalData)
+            if(action instanceof DialogFieldConditionalData)
             {
 // if the partner field doesn't have data yet, hide this field
-                if (isRequired(dc))
+                if(isRequired(dc))
                 {
-                    if (!dc.getFieldStates().getState(action.getPartnerField()).hasRequiredValue())
+                    if(!dc.getFieldStates().getState(action.getPartnerField()).hasRequiredValue())
                         return false;
                 }
             }
@@ -1264,16 +1183,16 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         DialogField.State state = dc.getFieldStates().getState(this);
         DialogFieldFlags stateFlags = state.getStateFlags();
 
-        if (stateFlags.flagIsSet(DialogFieldFlags.UNAVAILABLE))
+        if(stateFlags.flagIsSet(DialogFieldFlags.UNAVAILABLE))
             return false;
 
-        if (children == null && stateFlags.flagIsSet(DialogFieldFlags.READ_ONLY) &&
-                (stateFlags.flagIsSet(DialogFieldFlags.READONLY_UNAVAILABLE_UNLESS_HAS_DATA) ||
-                dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA)))
+        if(children == null && stateFlags.flagIsSet(DialogFieldFlags.READ_ONLY) &&
+           (stateFlags.flagIsSet(DialogFieldFlags.READONLY_UNAVAILABLE_UNLESS_HAS_DATA) ||
+            dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA)))
         {
             Object value = state.getValue().getValue();
             return value == null
-                    ? false : (value instanceof String ? (((String) value).length() == 0 ? false : true) : true);
+                   ? false : (value instanceof String ? (((String) value).length() == 0 ? false : true) : true);
         }
         else
             return true;
@@ -1281,10 +1200,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Checks to see if the field state's  has a read only flag set
-     *
-     * @param dc
-     *
-     * @return
      */
     public boolean isReadOnly(DialogContext dc)
     {
@@ -1295,10 +1210,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     /**
      * Checks to see if the field state's has a browser read-only flag set. The browser read-only is same as read-only but
      * the display style is different
-     *
-     * @param dc
-     *
-     * @return
      */
     public boolean isBrowserReadOnly(DialogContext dc)
     {
@@ -1308,10 +1219,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Checks to see if the field state's  hidden flag is set
-     *
-     * @param dc
-     *
-     * @return
      */
     public boolean isInputHiddenFlagSet(DialogContext dc)
     {
@@ -1321,22 +1228,18 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Checks to see if the field should be hidden based on all flags
-     *
-     * @param dc
-     *
-     * @return
      */
     public boolean isInputHidden(DialogContext dc)
     {
         DialogField.State state = dc.getFieldStates().getState(this);
         DialogFieldFlags stateFlags = state.getStateFlags();
 
-        if (stateFlags.flagIsSet(DialogFieldFlags.INPUT_HIDDEN))
+        if(stateFlags.flagIsSet(DialogFieldFlags.INPUT_HIDDEN))
             return true;
 
-        if (children == null && stateFlags.flagIsSet(DialogFieldFlags.READ_ONLY) &&
-                (stateFlags.flagIsSet(DialogFieldFlags.READONLY_HIDDEN_UNLESS_HAS_DATA) ||
-                dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA)))
+        if(children == null && stateFlags.flagIsSet(DialogFieldFlags.READ_ONLY) &&
+           (stateFlags.flagIsSet(DialogFieldFlags.READONLY_HIDDEN_UNLESS_HAS_DATA) ||
+            dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA)))
         {
             return !state.hasRequiredValue();
         }
@@ -1346,8 +1249,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Checks to see if the field value should be persistent across dialog states
-     *
-     * @return
      */
     public boolean persistValue()
     {
@@ -1356,8 +1257,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Checks to see if captions of child fields should be shown
-     *
-     * @return
      */
     public boolean showCaptionAsChild()
     {
@@ -1369,27 +1268,22 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         DialogField.State state = dc.getFieldStates().getState(this);
         String value = state.getValue() != null ? state.getValue().getTextValue() : null;
         return "<input type='hidden' id=\"" + getHtmlFormControlId() + "\" name='" +
-                getHtmlFormControlId() + "' value=\"" + (value != null
-                ? TextUtils.getInstance().escapeHTML(value) : "") + "\">";
+               getHtmlFormControlId() + "' value=\"" + (value != null
+                                                        ? TextUtils.getInstance().escapeHTML(value) : "") + "\">";
     }
 
     /**
      * Renders the input part of the field
-     *
-     * @param writer
-     * @param dc
-     *
-     * @throws IOException
      */
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-        if (isInputHidden(dc))
+        if(isInputHidden(dc))
         {
             getHiddenControlHtml(dc);
             return;
         }
 
-        if (children == null)
+        if(children == null)
             return;
 
         dc.getSkin().renderCompositeControlsHtml(writer, dc, this);
@@ -1404,17 +1298,17 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
      */
     public boolean needsValidation(DialogContext dc)
     {
-        if (flags.flagIsSet(DialogFieldFlags.HAS_CONDITIONAL_DATA) || validationRules.size() > 0)
+        if(flags.flagIsSet(DialogFieldFlags.HAS_CONDITIONAL_DATA) || validationRules.size() > 0)
             return true;
 
-        if (children == null)
+        if(children == null)
             return isRequired(dc);
 
         int validateFieldsCount = 0;
-        for (int i = 0; i < children.size(); i++)
+        for(int i = 0; i < children.size(); i++)
         {
             DialogField field = children.get(i);
-            if (field.isAvailable(dc) && field.needsValidation(dc))
+            if(field.isAvailable(dc) && field.needsValidation(dc))
                 validateFieldsCount++;
         }
 
@@ -1423,23 +1317,21 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Performs the validation of the field
-     *
-     * @param dvc
      */
     public void validate(DialogValidationContext dvc)
     {
         DialogContext dc = dvc.getDialogContext();
         State fieldState = dc.getFieldStates().getState(this);
 
-        for (int i = 0; i < conditionalActions.size(); i++)
+        for(int i = 0; i < conditionalActions.size(); i++)
         {
             DialogFieldConditionalAction action = conditionalActions.getAction(i);
-            if (action instanceof DialogFieldConditionalData)
+            if(action instanceof DialogFieldConditionalData)
             {
 // if the partner field doesn't have data, then this field is "invalid"
-                if (isRequired(dc))
+                if(isRequired(dc))
                 {
-                    if (!dc.getFieldStates().getState(action.getPartnerField()).hasRequiredValue())
+                    if(!dc.getFieldStates().getState(action.getPartnerField()).hasRequiredValue())
                     {
                         dvc.addValidationError(fieldState.getValidationContextScope(), getRequiredFieldMissingMessage(), new Object[]{
                             action.getPartnerField().getErrorCaption().getTextValue(dc)
@@ -1450,9 +1342,9 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             }
         }
 
-        if (isRequired(dvc.getDialogContext()))
+        if(isRequired(dvc.getDialogContext()))
         {
-            if (!fieldState.hasRequiredValue())
+            if(!fieldState.hasRequiredValue())
             {
                 dvc.addValidationError(fieldState.getValidationContextScope(), getRequiredFieldMissingMessage(), new Object[]{
                     getErrorCaption().getTextValue(dc)
@@ -1461,15 +1353,15 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             }
         }
 
-        if (validationRules.size() > 0)
+        if(validationRules.size() > 0)
             validationRules.validateValue(dvc, fieldState.getValue());
 
-        if (children != null)
+        if(children != null)
         {
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
             {
                 DialogField field = children.get(i);
-                if (field.isAvailable(dc)) field.validate(dvc);
+                if(field.isAvailable(dc)) field.validate(dvc);
             }
         }
     }
@@ -1500,25 +1392,22 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Performs the state change of the field in accordance with the dialog state change
-     *
-     * @param dc
-     * @param stage
      */
     public void makeStateChanges(DialogContext dc, int stage)
     {
-        if (stage == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION)
+        if(stage == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION)
         {
-            for (int i = 0; i < conditionalActions.size(); i++)
+            for(int i = 0; i < conditionalActions.size(); i++)
             {
                 DialogFieldConditionalAction action = conditionalActions.getAction(i);
-                if (action instanceof DialogFieldConditionalApplyFlag)
+                if(action instanceof DialogFieldConditionalApplyFlag)
                     ((DialogFieldConditionalApplyFlag) action).applyFlags(dc);
             }
         }
 
-        if (children != null)
+        if(children != null)
         {
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
             {
                 DialogField field = children.get(i);
                 field.makeStateChanges(dc, stage);
@@ -1528,46 +1417,43 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
     /**
      * Fills the field with value
-     *
-     * @param dc
-     * @param formatType
      */
     public void populateValue(DialogContext dc, int formatType)
     {
-        if (htmlFormControlId == null) return;
+        if(htmlFormControlId == null) return;
 
         DialogField.State state = dc.getFieldStates().getState(this);
         DialogFieldValue dfValue = state.getValue();
         String textValue = dfValue.getTextValue();
 
-        if (state.isLoadedPersistentValue())
+        if(state.isLoadedPersistentValue())
         {
             // if we loaded a value from a cookie but there is an override param, the param takes precedence
             String overrideParam = dc.getRequest().getParameter(htmlFormControlId);
-            if (overrideParam != null)
+            if(overrideParam != null)
                 textValue = overrideParam;
         }
-        else if (textValue == null)
+        else if(textValue == null)
             textValue = dc.getRequest().getParameter(htmlFormControlId);
 
-        if (dc.getDialogState().getRunSequence() == 1)
+        if(dc.getDialogState().getRunSequence() == 1)
         {
-            if ((textValue != null && textValue.length() == 0 && defaultValue != null) ||
-                    (textValue == null && defaultValue != null))
+            if((textValue != null && textValue.length() == 0 && defaultValue != null) ||
+               (textValue == null && defaultValue != null))
                 textValue = defaultValue.getTextValueOrBlank(dc);
         }
 
-        if (formatType == DialogField.DISPLAY_FORMAT)
+        if(formatType == DialogField.DISPLAY_FORMAT)
             dfValue.setTextValue(formatDisplayValue(textValue));
-        else if (formatType == DialogField.SUBMIT_FORMAT)
+        else if(formatType == DialogField.SUBMIT_FORMAT)
             dfValue.setTextValue(formatSubmitValue(textValue));
 
-        if (children == null) return;
+        if(children == null) return;
 
-        for (int i = 0; i < children.size(); i++)
+        for(int i = 0; i < children.size(); i++)
         {
             DialogField field = children.get(i);
-            if (field.isAvailable(dc)) field.populateValue(dc, formatType);
+            if(field.isAvailable(dc)) field.populateValue(dc, formatType);
         }
     }
 
@@ -1583,60 +1469,60 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                 "field = new DialogField(\"" + fieldClassName + "\", \"" + this.getHtmlFormControlId() + "\", \"" + this.getName() + "\", \"" + fieldQualfName + "\", \"" + fieldCaption + "\", " + dc.getFieldStates().getState(this).getStateFlags().getFlags() + ");\n" +
                 "dialog.registerField(field);\n";
 // if the field has a parent field, set the parent name
-        if (getParent() != null)
+        if(getParent() != null)
             js = js + "field.parentName = '" + getParent().getQualifiedName() + "';\n";
         String customStr = this.getEventJavaScriptFunctions(dc);
         customStr += this.getCustomJavaScriptDefn(dc);
-        if (customStr != null)
+        if(customStr != null)
             js += customStr;
 
-        if (dependentConditions.size() > 0)
+        if(dependentConditions.size() > 0)
         {
             StringBuffer dcJs = new StringBuffer();
-            for (int i = 0; i < dependentConditions.size(); i++)
+            for(int i = 0; i < dependentConditions.size(); i++)
             {
                 DialogFieldConditionalAction o = dependentConditions.getAction(i);
-                if (o instanceof DialogFieldConditionalClear)
+                if(o instanceof DialogFieldConditionalClear)
                 {
                     DialogFieldConditionalClear action = (DialogFieldConditionalClear) o;
-                    if (action.getPartnerField().isAvailable(dc))
+                    if(action.getPartnerField().isAvailable(dc))
                         dcJs.append("field.dependentConditions[field.dependentConditions.length] = new DialogFieldConditionalClear(\"" + action.getSourceField().getQualifiedName()
-                                + "\", \"" + action.getPartnerField().getQualifiedName() + "\", \"" + action.getExpression() + "\");\n");
+                                    + "\", \"" + action.getPartnerField().getQualifiedName() + "\", \"" + action.getExpression() + "\");\n");
                     else
                         log.warn("Javascript dependent condition was not added because the partner field with name '" + action.getPartnerFieldName() + "' was not available.");
 
                 }
-                else if (o instanceof DialogFieldConditionalDisplay)
+                else if(o instanceof DialogFieldConditionalDisplay)
                 {
                     DialogFieldConditionalDisplay action = (DialogFieldConditionalDisplay) o;
-                    if (action.getPartnerField().isAvailable(dc))
+                    if(action.getPartnerField().isAvailable(dc))
                         dcJs.append("field.dependentConditions[field.dependentConditions.length] = new DialogFieldConditionalDisplay(\"" + action.getSourceField().getQualifiedName()
-                                + "\", \"" + action.getPartnerField().getQualifiedName() + "\", \"" + action.getExpression() + "\");\n");
+                                    + "\", \"" + action.getPartnerField().getQualifiedName() + "\", \"" + action.getExpression() + "\");\n");
                     else
                         log.warn("Javascript dependent condition was not added because the partner field with name '" + action.getPartnerFieldName() + "' was not available.");
                 }
-                else if (o instanceof DialogFieldConditionalApplyFlag)
+                else if(o instanceof DialogFieldConditionalApplyFlag)
                 {
                     DialogFieldConditionalApplyFlag condition = (DialogFieldConditionalApplyFlag) o;
                     DialogFieldFlags flags = condition.getFlags();
-                    if (flags.flagIsSet(DialogFieldFlags.INPUT_HIDDEN) || flags.flagIsSet(DialogFieldFlags.REQUIRED) || flags.flagIsSet(DialogFieldFlags.BROWSER_READONLY))
+                    if(flags.flagIsSet(DialogFieldFlags.INPUT_HIDDEN) || flags.flagIsSet(DialogFieldFlags.REQUIRED) || flags.flagIsSet(DialogFieldFlags.BROWSER_READONLY))
                     {
                         // the INPUT HIDDEN flag needs to be handled on both the client side and the server side if the
                         // condition is based on client-side actions
                         ValueSource hasValue = condition.getHasValue();
-                        if (hasValue != null && hasValue instanceof DialogFieldValueSource)
+                        if(hasValue != null && hasValue instanceof DialogFieldValueSource)
                         {
                             // based on another field
-                            if (condition.getPartnerField().isAvailable(dc))
+                            if(condition.getPartnerField().isAvailable(dc))
                             {
                                 dcJs.append("field.dependentConditions[field.dependentConditions.length] = new DialogFieldConditionalFlag(\"" +
-                                        condition.getSourceField().getQualifiedName() + "\", \"" +
-                                        condition.getPartnerField().getQualifiedName() + "\", \"" +
-                                        condition.getExpression(dc) + "\", " + flags.getFlags() + ", " + !condition.isClear() + ");\n");
+                                            condition.getSourceField().getQualifiedName() + "\", \"" +
+                                            condition.getPartnerField().getQualifiedName() + "\", \"" +
+                                            condition.getExpression(dc) + "\", " + flags.getFlags() + ", " + !condition.isClear() + ");\n");
                             }
                             else
                                 log.warn("Javascript dependent condition was not added because " +
-                                        "the field with name '" + condition.getPartnerFieldName() + "' set in has-value attribute was not available.");
+                                         "the field with name '" + condition.getPartnerFieldName() + "' set in has-value attribute was not available.");
                         }
 
                     }
@@ -1646,10 +1532,10 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             js = js + dcJs.toString();
         }
 
-        if (children != null)
+        if(children != null)
         {
             StringBuffer childJs = new StringBuffer();
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
             {
                 DialogField child = children.get(i);
                 childJs.append(child.getJavaScriptDefn(dc));
@@ -1669,22 +1555,22 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         String ret = "";
 
         List jsList = this.getClientJavascripts();
-        if (jsList != null && !jsList.isEmpty())
+        if(jsList != null && !jsList.isEmpty())
         {
             String eventName = "";
 
             StringBuffer jsBuffer = new StringBuffer();
             Iterator i = jsList.iterator();
-            while (i.hasNext())
+            while(i.hasNext())
             {
                 DialogFieldClientJavascript jsObject = (DialogFieldClientJavascript) i.next();
                 String script = (jsObject.getJsExpr() != null ? jsObject.getJsExpr().getTextValue(dc) : null);
                 eventName = TextUtils.getInstance().xmlTextToJavaIdentifier(jsObject.getEvent().getValue(), false);
                 // append function signature
-                if (script != null)
+                if(script != null)
                 {
                     jsBuffer.append("field.customHandlers." + eventName + " = new Function(\"field\", \"control\", \"" +
-                            jsObject.getJsExpr().getTextValue(dc) + "\");\n");
+                                    jsObject.getJsExpr().getTextValue(dc) + "\");\n");
                     jsBuffer.append("field.customHandlers." + eventName + "Type = '" + jsObject.getType().getValue() + "';\n");
                 }
             }
@@ -1704,24 +1590,24 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     {
         StringBuffer sb = new StringBuffer();
 
-        if (this.isBrowserReadOnly(dc))
+        if(this.isBrowserReadOnly(dc))
             sb.append("field.readonly = 'yes';\n");
         else
             sb.append("field.readonly = 'no';\n");
 
-        if (flags.flagIsSet(DialogFieldFlags.IDENTIFIER))
+        if(flags.flagIsSet(DialogFieldFlags.IDENTIFIER))
             sb.append("field.identifier = 'yes';\n");
         else
             sb.append("field.identifier = 'no';\n");
 
-        if (flags.flagIsSet(DialogFieldFlags.DOUBLE_ENTRY))
+        if(flags.flagIsSet(DialogFieldFlags.DOUBLE_ENTRY))
         {
             sb.append("field.doubleEntry = 'yes';\n");
             sb.append("field.firstEntryValue = '';\n");
             sb.append("field.successfulEntry = true;\n");
         }
 
-        if (flags.flagIsSet(DialogFieldFlags.SCANNABLE))
+        if(flags.flagIsSet(DialogFieldFlags.SCANNABLE))
         {
             sb.append("field.scannable = 'yes';\n");
             sb.append("field.scanStartCode = '" + scanEntry.getStartCode() + "';\n");
@@ -1729,13 +1615,13 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             sb.append("field.scanCodeIgnoreCase = '" + scanEntry.getIgnoreCase() + "';\n");
             sb.append("field.isScanned = false;\n");
             sb.append("field.scanPartnerField = '" + scanEntry.getPartnerField() + "';\n");
-            if (scanEntry.getCustomScript() != null && scanEntry.getCustomScript().length() > 0)
+            if(scanEntry.getCustomScript() != null && scanEntry.getCustomScript().length() > 0)
                 sb.append("field.scanFieldCustomScript = new Function(\"field\", \"control\", \"inputString\", \"" + scanEntry.getCustomScript() + "\");\n");
             else
                 sb.append("field.scanFieldCustomScript = '';\n");
         }
 
-        if (flags.flagIsSet(DialogFieldFlags.AUTO_BLUR))
+        if(flags.flagIsSet(DialogFieldFlags.AUTO_BLUR))
         {
             sb.append("field.autoBlur = 'yes';\n");
             sb.append("field.autoBlurLength = " + autoBlur.getLength() + ";\n");
@@ -1743,18 +1629,18 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             sb.append("field.numCharsEntered = 0;\n");
         }
 
-        if (flags.flagIsSet(DialogFieldFlags.SUBMIT_ONBLUR))
+        if(flags.flagIsSet(DialogFieldFlags.SUBMIT_ONBLUR))
         {
             sb.append("field.submitOnBlur = true;\n");
-            if (submitOnBlur.getPartner() != null)
+            if(submitOnBlur.getPartner() != null)
                 sb.append("field.submitOnBlurPartnerField = '" + submitOnBlur.getPartner() + "';\n");
-            if (submitOnBlur.getCustomScript() != null && submitOnBlur.getCustomScript().length() > 0)
+            if(submitOnBlur.getCustomScript() != null && submitOnBlur.getCustomScript().length() > 0)
                 sb.append("field.submitOnBlurCustomScript = new Function(\"field\", \"control\", \"" + submitOnBlur.getCustomScript() + "\");\n");
             else
                 sb.append("field.submitOnBlurCustomScript = '';\n");
         }
 
-        if (encryption != null)
+        if(encryption != null)
             encryption.addCustomJavaScriptDefn(dc, sb);
 
         return sb.toString();
@@ -1770,14 +1656,14 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         String memberName = mi.getMemberName();
         String fieldName = mi.getFieldName();
 
-        if (memberName == null || fieldName == null)
+        if(memberName == null || fieldName == null)
             return mi;
 
         String fieldClassName = this.getClass().getName().replace('$', '.');
         String stateClassName = getStateClass().getName().replace('$', '.');
         String stateValueClassName = getStateValueClass().getName().replace('$', '.');
 
-        if (stateClassName != DialogField.State.class.getName())
+        if(stateClassName != DialogField.State.class.getName())
             mi.addJavaCode("\tpublic " + stateClassName + " get" + mi.getMemberName() + "State() { return (" + stateClassName + ") fieldStates.getState(\"" + mi.getFieldName() + "\"); }\n");
         else
             mi.addJavaCode("\tpublic DialogField.State get" + mi.getMemberName() + "State() { return fieldStates(\"" + mi.getFieldName() + "\"); }\n");

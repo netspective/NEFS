@@ -46,7 +46,7 @@ public class QueryBuilderDialogFlags extends DialogFlags
 
     static
     {
-        for (int i = 0; i < DialogFlags.FLAG_DEFNS.length; i++)
+        for(int i = 0; i < DialogFlags.FLAG_DEFNS.length; i++)
             QBD_FLAG_DEFNS[i] = DialogFlags.FLAG_DEFNS[i];
         QBD_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 0] = new FlagDefn(ACCESS_XDM, "HIDE_OUTPUT_DESTS", HIDE_OUTPUT_DESTS);
         QBD_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "ALLOW_DEBUG", ALLOW_DEBUG);

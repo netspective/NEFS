@@ -63,11 +63,11 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
     };
     public static final String[] IDENTIFIERS = new String[]{"authenticated-user"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides access to the attributes in the currently authenticated user.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("login-manager", false, "active", "The login manager to use."),
-                new ValueSourceDocumentation.Parameter("attribute-name", true, ATTR_TYPE_VALUES, null, "An attribute of the user. If one of the enumerated attributes is not provide, then the AuthenticatedUser.getAttribute([custom]) method will be used."),
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("login-manager", false, "active", "The login manager to use."),
+                                                                                                  new ValueSourceDocumentation.Parameter("attribute-name", true, ATTR_TYPE_VALUES, null, "An attribute of the user. If one of the enumerated attributes is not provide, then the AuthenticatedUser.getAttribute([custom]) method will be used."),
+                                                                                              });
 
     private AttributeType attrType = new AttributeType();
     private String loginManagerName;
@@ -99,10 +99,10 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
         String attrNameParam = null;
 
         StringTokenizer st = new StringTokenizer(spec.getParams(), ",");
-        if (st.hasMoreTokens())
+        if(st.hasMoreTokens())
             loginManagerName = st.nextToken();
 
-        if (st.hasMoreTokens())
+        if(st.hasMoreTokens())
             attrNameParam = st.nextToken();
         else
         {
@@ -114,7 +114,7 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
         {
             attrType.setValue(attrNameParam);
         }
-        catch (InvalidXdmEnumeratedAttributeValueException e)
+        catch(InvalidXdmEnumeratedAttributeValueException e)
         {
             attrType.setValue(AttributeType.CUSTOM);
             customAttrName = spec.getParams();
@@ -124,9 +124,9 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
 
     public Value getAuthenticatedUserAttrValue(AuthenticatedUser authUser)
     {
-        if (authUser == null)
+        if(authUser == null)
             return new GenericValue("No active user");
-        switch (attrType.getValueIndex())
+        switch(attrType.getValueIndex())
         {
             case AttributeType.USER_ID:
                 return new GenericValue(authUser.getUserId());
@@ -148,13 +148,13 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
             case AttributeType.CUSTOM:
                 XmlDataModelSchema schema = XmlDataModelSchema.getSchema(authUser.getClass());
                 AttributeAccessor accessor = (AttributeAccessor) schema.getAttributeAccessors().get(customAttrName);
-                if (accessor != null)
+                if(accessor != null)
                 {
                     try
                     {
                         return new GenericValue(accessor.get(null, authUser));
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         log.error(e);
                         return new GenericValue("Error accessing " + customAttrName);
@@ -170,7 +170,7 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
 
     public Value getValue(ValueContext vc)
     {
-        if (loginManagerName != null)
+        if(loginManagerName != null)
         {
             HttpServletValueContext hsvc = ((HttpServletValueContext) vc);
             HttpLoginManager loginManager = hsvc.getProject().getLoginManagers().getLoginManager(loginManagerName);

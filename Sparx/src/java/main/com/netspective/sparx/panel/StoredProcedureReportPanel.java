@@ -50,7 +50,7 @@ import com.netspective.sparx.sql.StoredProcedure;
 
 /**
  * @author Aye Thu
- * @version $Id: StoredProcedureReportPanel.java,v 1.5 2004-08-15 01:47:09 shahid.shah Exp $
+ * @version $Id: StoredProcedureReportPanel.java,v 1.6 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 {
@@ -65,8 +65,6 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Creates a new basic html tabulare report
-     *
-     * @return
      */
     public HtmlTabularReport createReport()
     {
@@ -75,8 +73,6 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Sets the report for this panel
-     *
-     * @param report
      */
     public void addReport(HtmlTabularReport report)
     {
@@ -90,8 +86,6 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Sets the stored procedure associated with this report panel
-     *
-     * @param sp
      */
     public void setStoredProcedure(StoredProcedure sp)
     {
@@ -120,8 +114,6 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Sets the current report panel to be the default one
-     *
-     * @param defaultPanel
      */
     public void setDefault(boolean defaultPanel)
     {
@@ -130,8 +122,6 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Gets the name of the repot panel
-     *
-     * @return
      */
     public String getName()
     {
@@ -140,8 +130,6 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Sets the name of the report panel
-     *
-     * @param name
      */
     public void setName(String name)
     {
@@ -155,32 +143,28 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Executes the query and assigns the result set to a new report data source object
-     *
-     * @param nc
-     *
-     * @return
      */
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         try
         {
             QueryResultSet resultSet = (QueryResultSet) nc.getAttribute(getCachedResultSetAttributeId());
-            if (resultSet == null)
+            if(resultSet == null)
             {
-                if (isScrollable())
+                if(isScrollable())
                     resultSet = parentProcedure.execute(nc, null, null, true);
                 else
                     resultSet = parentProcedure.execute(nc, null, null, false);
             }
             QueryResultSetDataSource qrsds = new QueryResultSetDataSource(NO_DATA_MSG);
-            if (resultSet != null)
+            if(resultSet != null)
             {
                 qrsds.setQueryResultSet(resultSet);
             }
             return qrsds;
 
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to create data source", e);
             throw new NestableRuntimeException(e);
@@ -195,14 +179,14 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
     public HtmlTabularReport getReport(NavigationContext nc)
     {
         HtmlTabularReport activeReport = getReport();
-        if (activeReport == null)
+        if(activeReport == null)
         {
             // if the report is null, we need to create it by running the query and getting the meta data
             activeReport = new BasicHtmlTabularReport();
             try
             {
                 QueryResultSet resultSet = null;
-                if (isScrollable())
+                if(isScrollable())
                     resultSet = parentProcedure.execute(nc, null, null, true);
                 else
                     resultSet = parentProcedure.execute(nc, null, null, false);
@@ -210,7 +194,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
                 resultSet.fillReportFromMetaData(activeReport);
                 nc.setAttribute(getCachedResultSetAttributeId(), resultSet); // store the result set so we don't run it again
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Unable to create report for query ", e);
                 throw new NestableRuntimeException(e);

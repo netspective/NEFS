@@ -64,8 +64,6 @@ public class HtmlCommandListPanel extends AbstractPanel
 
     /**
      * Gets the command list defined for this panel
-     *
-     * @return
      */
     public CommandList getCommandList()
     {
@@ -74,15 +72,13 @@ public class HtmlCommandListPanel extends AbstractPanel
 
     public CommandList createCommandList()
     {
-        if (list == null)
+        if(list == null)
             list = new CommandList();
         return list;
     }
 
     /**
      * Sets the command list defined for this panel
-     *
-     * @param list
      */
     public void setCommandList(CommandList list)
     {
@@ -91,13 +87,6 @@ public class HtmlCommandListPanel extends AbstractPanel
 
     /**
      * Handles the rendering of the html panel
-     *
-     * @param writer
-     * @param nc
-     * @param theme
-     * @param flags
-     *
-     * @throws IOException
      */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
@@ -108,7 +97,7 @@ public class HtmlCommandListPanel extends AbstractPanel
         {
             command.handleCommand(writer, nc, false);
         }
-        catch (CommandException e)
+        catch(CommandException e)
         {
             log.error("Failed to handle the comannd list.", e);
             throw new NestableRuntimeException(e);
@@ -117,13 +106,6 @@ public class HtmlCommandListPanel extends AbstractPanel
 
     /**
      * Handles the rendering of the html panel
-     *
-     * @param writer
-     * @param dc
-     * @param theme
-     * @param flags
-     *
-     * @throws IOException
      */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
@@ -134,7 +116,7 @@ public class HtmlCommandListPanel extends AbstractPanel
         {
             command.handleCommand(writer, dc, false);
         }
-        catch (CommandException e)
+        catch(CommandException e)
         {
             log.error("Failed to handle the comannd list.", e);
             throw new NestableRuntimeException(e);

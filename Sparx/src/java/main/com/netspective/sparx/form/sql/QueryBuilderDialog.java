@@ -132,7 +132,7 @@ public class QueryBuilderDialog extends Dialog
             addField(compareSelect);
             addField(valueText);
 
-            if (index != lastConditionNum)
+            if(index != lastConditionNum)
             {
                 SelectField joinSelect = new SelectField();
                 joinSelect.setName("join");
@@ -140,7 +140,7 @@ public class QueryBuilderDialog extends Dialog
                 addField(joinSelect);
             }
 
-            if (index > 0)
+            if(index > 0)
             {
 
                 addConditional(new DialogFieldConditionalDisplay(this, "condition_" + (index - 1) + ".join", "control.value != ' '"));
@@ -149,11 +149,11 @@ public class QueryBuilderDialog extends Dialog
 
         public boolean isAvailable(DialogContext dc)
         {
-            if (!super.isAvailable(dc))
+            if(!super.isAvailable(dc))
                 return false;
 
             State condState = dc.getFieldStates().getState(this);
-            if (condState.getStateFlags().flagIsSet(DialogFieldFlags.UNAVAILABLE))
+            if(condState.getStateFlags().flagIsSet(DialogFieldFlags.UNAVAILABLE))
                 return false;
 
             State valueState = dc.getFieldStates().getState(valueText);
@@ -217,7 +217,7 @@ public class QueryBuilderDialog extends Dialog
         separator.setHeading(new StaticValueSource("Conditions"));
         addField(separator);
 
-        for (int i = 0; i < maxConditions; i++)
+        for(int i = 0; i < maxConditions; i++)
         {
             // condition field will add itself
             new ConditionField(i, lastConditionNum, fieldsList, compList);
@@ -269,7 +269,7 @@ public class QueryBuilderDialog extends Dialog
 
         SelectField predefinedSels = null;
         QueryDefnSelects predefinedSelects = queryDefn.getSelects();
-        if (predefinedSelects.size() > 0)
+        if(predefinedSelects.size() > 0)
         {
             predefinedSels = new SelectField();
             predefinedSels.setName("predefined_select");
@@ -293,7 +293,7 @@ public class QueryBuilderDialog extends Dialog
         sortFields.setSize(5);
         sortFields.setChoices(fieldsList);
 
-        if (predefinedSels != null)
+        if(predefinedSels != null)
         {
             displayFields.addConditional(new DialogFieldConditionalDisplay(displayFields, "options.predefined_select", "control.options[control.selectedIndex].value == '" + QueryDefnSelectsValueSource.CUSTOMIZE_TEXT + "'"));
             sortFields.addConditional(new DialogFieldConditionalDisplay(sortFields, "options.predefined_select", "control.options[control.selectedIndex].value == '" + QueryDefnSelectsValueSource.CUSTOMIZE_TEXT + "'"));
@@ -304,10 +304,10 @@ public class QueryBuilderDialog extends Dialog
         options.getFlags().setFlag(DialogFieldFlags.SHOW_CAPTION_AS_CHILD);
         addField(options);
 
-        if (predefinedSels != null)
+        if(predefinedSels != null)
             options.addField(predefinedSels);
 
-        if (getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
+        if(getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
         {
             BooleanField debugField = new BooleanField();
             debugField.setName("debug");
@@ -370,7 +370,7 @@ public class QueryBuilderDialog extends Dialog
     public void makeStateChanges(DialogContext dc, int stage)
     {
         DialogFields fields = getFields();
-        for (int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
             field.makeStateChanges(dc, stage);
@@ -379,7 +379,7 @@ public class QueryBuilderDialog extends Dialog
         QueryBuilderDialogFlags dFlags = (QueryBuilderDialogFlags) getDialogFlags();
         DialogFieldStates states = dc.getFieldStates();
 
-        if (dc.getDialogState().isInExecuteMode())
+        if(dc.getDialogState().isInExecuteMode())
         {
             states.getState("conditions_separator").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
             states.getState("results_separator").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
@@ -391,8 +391,8 @@ public class QueryBuilderDialog extends Dialog
             states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
 
             int flag = dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA)
-                    ? DialogFieldFlags.UNAVAILABLE : DialogFieldFlags.READ_ONLY;
-            for (int i = 0; i < maxConditions; i++)
+                       ? DialogFieldFlags.UNAVAILABLE : DialogFieldFlags.READ_ONLY;
+            for(int i = 0; i < maxConditions; i++)
             {
                 // this will also set the flags of all children fields
                 states.getState("condition_" + i).getStateFlags().setFlag(flag);
@@ -401,7 +401,7 @@ public class QueryBuilderDialog extends Dialog
         }
         else
         {
-            if (dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_OUTPUT_DESTS))
+            if(dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_OUTPUT_DESTS))
                 states.getState("output").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
             states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
         }
@@ -413,17 +413,17 @@ public class QueryBuilderDialog extends Dialog
         QueryDefnSelect result = new QueryDefnSelect(queryDefn);
 
         boolean customizing = true;
-        if (queryDefn.getSelects().size() > 0)
+        if(queryDefn.getSelects().size() > 0)
         {
             DialogField.State predefinedSelState = states.getState("options.predefined_select");
-            if (predefinedSelState.hasRequiredValue())
+            if(predefinedSelState.hasRequiredValue())
             {
                 String predefinedSel = predefinedSelState.getValue().getTextValue();
-                if (!predefinedSel.equals(QueryDefnSelectsValueSource.CUSTOMIZE_TEXT))
+                if(!predefinedSel.equals(QueryDefnSelectsValueSource.CUSTOMIZE_TEXT))
                 {
                     customizing = false;
                     QueryDefnSelect sel = queryDefn.getSelects().get(predefinedSel);
-                    if (sel != null)
+                    if(sel != null)
                         result.copy(sel);
                     else
                         throw new RuntimeException("QueryDefnSelect '" + predefinedSel + "' not found.");
@@ -431,12 +431,12 @@ public class QueryBuilderDialog extends Dialog
             }
         }
 
-        if (customizing)
+        if(customizing)
         {
             String[] display = states.getState("display_fields").getValue().getTextValues();
-            if (display != null && display.length > 0)
+            if(display != null && display.length > 0)
             {
-                for (int i = 0; i < display.length; i++)
+                for(int i = 0; i < display.length; i++)
                 {
                     QueryDefnFieldReference ref = new QueryDefnFieldReference(getQueryDefn());
                     ref.setField(display[i]);
@@ -446,13 +446,13 @@ public class QueryBuilderDialog extends Dialog
         }
         // get all the possible condition count. this doesn't mean all conditions were used.
         int lastCondIndex = maxConditions - 1;
-        for (int i = 0; i < maxConditions; i++)
+        for(int i = 0; i < maxConditions; i++)
         {
             String conditionId = "condition_" + i;
             String value = states.getState(conditionId + ".value").getValue().getTextValue();
             String join = i < lastCondIndex ? states.getState(conditionId + ".join").getValue().getTextValue() : null;
             boolean connectorAdded = false;
-            if (value != null && value.length() > 0)
+            if(value != null && value.length() > 0)
             {
                 QueryDefnCondition cond = result.createCondition();
                 cond.setField(states.getState(conditionId + ".field").getValue().getTextValue());
@@ -460,7 +460,7 @@ public class QueryBuilderDialog extends Dialog
                 comparison.setValue(states.getState(conditionId + ".compare").getValue().getTextValue());
                 cond.setComparison(comparison);
                 cond.setValue(new StaticValueSource(value));
-                if (join != null && join.length() > 0 && !join.equals(" "))
+                if(join != null && join.length() > 0 && !join.equals(" "))
                 {
                     QueryDefnConditionConnectorEnumeratedAttribute conn = new QueryDefnConditionConnectorEnumeratedAttribute();
                     conn.setValue(join);
@@ -470,16 +470,16 @@ public class QueryBuilderDialog extends Dialog
                 result.addCondition(cond);
             }
             // if no connector was added to the condition, then this must be the last condition
-            if (!connectorAdded)
+            if(!connectorAdded)
                 break;
         }
 
-        if (customizing)
+        if(customizing)
         {
             String[] sort = states.getState("sort_fields").getValue().getTextValues();
-            if (sort != null && sort.length > 0)
+            if(sort != null && sort.length > 0)
             {
-                for (int i = 0; i < sort.length; i++)
+                for(int i = 0; i < sort.length; i++)
                 {
                     QueryDefnSortFieldReference sortFieldRef = new QueryDefnSortFieldReference(queryDefn);
                     sortFieldRef.setField(new StaticValueSource(sort[i]));
@@ -496,14 +496,14 @@ public class QueryBuilderDialog extends Dialog
         DialogFields fields = getFields();
         DialogFieldStates dfStates = dc.getFieldStates();
 
-        for (int i = 0; i < fieldNames.length; i++)
+        for(int i = 0; i < fieldNames.length; i++)
         {
             String fieldName = fieldNames[i];
             DialogField field = fields.getByQualifiedName(fieldName);
-            if (field != null)
+            if(field != null)
             {
                 String value = dfStates.getState(field).getValue().getTextValue();
-                if (value != null && value.length() > 0)
+                if(value != null && value.length() > 0)
                     return value;
             }
         }
@@ -537,30 +537,30 @@ public class QueryBuilderDialog extends Dialog
     {
         QueryReportPanel reportPanel = null;
 
-        if (destination instanceof HtmlTabularReportBrowserDestination)
+        if(destination instanceof HtmlTabularReportBrowserDestination)
         {
             HtmlTabularReportBrowserDestination browserDest = (HtmlTabularReportBrowserDestination) destination;
             HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
-            if (scrollStateById == null)
+            if(scrollStateById == null)
             {
                 HtmlTabularReportDataSourceScrollState activeScrollState = scrollStatesManager.getActiveScrollState(dc);
 
                 String resortBy = dc.getRequest().getParameter(QBDIALOG_RESORT_PARAMNAME);
-                if (activeScrollState != null && resortBy != null)
+                if(activeScrollState != null && resortBy != null)
                 {
                     // TODO
                     //handleSortOrderChange(dc, activeState, resortBy);
                 }
 
-                if (activeScrollState != null && !getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
+                if(activeScrollState != null && !getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
                     scrollStatesManager.removeActiveState(dc, activeScrollState);
 
                 QueryDefnSelect select = createSelect(dc);
                 reportPanel = new QueryReportPanel();
                 reportPanel.setQuery(select);
-                if (browserDest.isScrollable())
+                if(browserDest.isScrollable())
                 {
                     reportPanel.setScrollable(true);
                     reportPanel.setScrollRowsPerPage(browserDest.getPageSize());
@@ -585,7 +585,7 @@ public class QueryBuilderDialog extends Dialog
     {
         DialogFieldStates states = dc.getFieldStates();
         String debugStr = states.getState("options.debug").getValue().getTextValue();
-        if (debugStr != null && debugStr.equals("1"))
+        if(debugStr != null && debugStr.equals("1"))
         {
             ConnectionContext cc = null;
             try
@@ -597,7 +597,7 @@ public class QueryBuilderDialog extends Dialog
                 writer.write("<p><pre><code>" + message + "</code></pre>");
                 return;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 getLog().error("Error trying to get debug SQL", e);
                 throw new DialogExecuteException(e);
@@ -606,9 +606,9 @@ public class QueryBuilderDialog extends Dialog
             {
                 try
                 {
-                    if (cc != null) cc.close();
+                    if(cc != null) cc.close();
                 }
-                catch (SQLException e)
+                catch(SQLException e)
                 {
                     getLog().error("Error while trying to close the connection", e);
                     throw new DialogExecuteException(e);
@@ -630,7 +630,7 @@ public class QueryBuilderDialog extends Dialog
         HtmlTabularReportDestination destination = null;
         HtmlTabularReportSkin reportSkin = null;
 
-        switch (outputDest)
+        switch(outputDest)
         {
             case DESTINATION_BROWSER:
                 HtmlTabularReportBrowserDestination browserDest = desintations.createBrowserDestination(writer, dc);
@@ -660,7 +660,7 @@ public class QueryBuilderDialog extends Dialog
                 return;
         }
 
-        switch (outputStyle)
+        switch(outputStyle)
         {
             case OUTPUTSTYLE_HTML:
                 String reportSkinName = getFirstAvailableFieldValue(dc, new String[]{
@@ -686,7 +686,7 @@ public class QueryBuilderDialog extends Dialog
         {
             renderReport(dc, destination, reportSkin);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             getLog().error("Exception while trying to render report", e);
             throw new DialogExecuteException(e);
@@ -702,20 +702,20 @@ public class QueryBuilderDialog extends Dialog
 
     public void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
-        if (!contextPreparedAlready)
+        if(!contextPreparedAlready)
             prepareContext(dc);
 
-        if (dc.getDialogState().isInExecuteMode())
+        if(dc.getDialogState().isInExecuteMode())
         {
             execute(writer, dc);
 
             HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollState = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
-            if (scrollState != null)
+            if(scrollState != null)
             {
                 int totalPages = scrollState.getTotalPages();
-                if (getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALWAYS_SHOW_DSNAV) || (totalPages == -1 || totalPages > 1))
+                if(getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALWAYS_SHOW_DSNAV) || (totalPages == -1 || totalPages > 1))
                 {
                     writer.write(getLoopSeparator());
                     dc.getSkin().renderHtml(writer, dc);

@@ -74,45 +74,46 @@ public class PanelEditorSkin extends RecordEditorReportSkin
         Theme theme = getTheme();
 
         writer.write("<table id=\"" + panel.getPanelIdentifier() + "_frame\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap ");
-        if (flags.flagIsSet(BasicHtmlPanelSkin.Flags.FULL_WIDTH))
+        if(flags.flagIsSet(BasicHtmlPanelSkin.Flags.FULL_WIDTH))
             writer.write("width='100%' ");
         writer.write(">\n");
 
-        if (frame.hasHeadingOrFooting())
+        if(frame.hasHeadingOrFooting())
         {
             String heading = null;
             ValueSource hvs = frame.getHeading();
-            if (hvs != null)
+            if(hvs != null)
                 heading = hvs.getValue(vc).getTextValue();
-            if (heading != null && !frame.isHideHeading(vc))
+            if(heading != null && !frame.isHideHeading(vc))
             {
                 writer.write("<tr>\n");
                 writer.write("    <td class=\"" + panelClassNamePrefix + "\">\n");
                 writer.write("    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap>\n");
                 writer.write("        <tr>\n");
-                if (frame.getFlags().flagIsSet(HtmlPanelFrame.Flags.ALLOW_COLLAPSE))
+                if(frame.getFlags().flagIsSet(HtmlPanelFrame.Flags.ALLOW_COLLAPSE))
                 {
-                    if (vc.isMinimized())
+                    if(vc.isMinimized())
                         writer.write("            <td id=\"" + panel.getPanelIdentifier() + "_action\" class=\"" + panelClassNamePrefix + "-frame-heading-action-expand\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('" + panel.getPanelIdentifier() + "')\">" +
-                                "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
+                                     "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
                     else
                         writer.write("            <td id=\"" + panel.getPanelIdentifier() + "_action\" class=\"" + panelClassNamePrefix + "-frame-heading-action-collapse\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('" + panel.getPanelIdentifier() + "')\">" +
-                                "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
+                                     "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
 
                     writer.write("<script>ALL_PANELS.getPanel(\"" + panel.getPanelIdentifier() + "\").minimized = " + (vc.isMinimized()
-                            ? "true" : "false") + "</script>");
+                                                                                                                       ? "true"
+                                                                                                                       : "false") + "</script>");
                 }
                 else
                 {
                     writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-heading-action-left-blank\" align=\"left\" valign=\"middle\" nowrap width=\"17\">" +
-                            "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
+                                 "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
                 }
                 writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-heading\" align=\"left\" valign=\"middle\" nowrap>" + heading +
-                        "</td>\n");
+                             "</td>\n");
                 writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-heading-action-right-blank\" align=\"center\" valign=\"middle\" nowrap width=\"17\">" +
-                        "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
+                             "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
                 writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-mid\" align=\"right\" valign=\"top\" nowrap width=\"100%\">" +
-                        "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"100%\" border=\"0\">--></td>\n");
+                             "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"100%\" border=\"0\">--></td>\n");
                 //writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\"></td>\n");
                 produceHeadingExtras(writer, vc, frame);
                 writer.write("        </tr>\n");
@@ -140,7 +141,7 @@ public class PanelEditorSkin extends RecordEditorReportSkin
 
         int height = panel.getHeight();
         int width = panel.getWidth();
-        if (height > 0)
+        if(height > 0)
             writer.write("<tr id=\"" + panel.getPanelIdentifier() + "_content\">\n     <td class=\"" + panelClassNamePrefix + "-content\"><div class='" + contentDivClass + "' style=\"width: " + width + "; height: " + height + "; overflow: auto;\">\n");
         else
             writer.write("<tr id=\"" + panel.getPanelIdentifier() + "_content\">\n     <td class=\"" + panelClassNamePrefix + "-content\"><div class='" + contentDivClass + "' style=\"width: " + width + ";\">\n");
@@ -150,21 +151,21 @@ public class PanelEditorSkin extends RecordEditorReportSkin
     {
         HtmlPanelActions actions = frame.getActions();
         HtmlPanelActionStates actionStates = vc.getPanelActionStates();
-        if (actions != null && actions.size() > 0)
+        if(actions != null && actions.size() > 0)
         {
             Theme theme = getTheme();
             int displayedItems = 0;
 
             // create a temporary string buffer for the HTML of the heading action items
             StringBuffer itemBuffer = new StringBuffer();
-            for (int i = 0; i < actions.size(); i++)
+            for(int i = 0; i < actions.size(); i++)
             {
                 HtmlPanelAction item = actions.get(i);
                 HtmlPanelAction.State state = actionStates.getState(item);
-                if (state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
+                if(state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
                     continue;
 
-                if (displayedItems == 0)
+                if(displayedItems == 0)
                 {
                     itemBuffer.append("            <td class=\"" + panelClassNamePrefix + "-frame-mid\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"25\" height=\"5\"></td>");
                     displayedItems++;
@@ -178,13 +179,13 @@ public class PanelEditorSkin extends RecordEditorReportSkin
                 itemUrl = vs.getTextValue(vc);
                 String itemCaption = item.getCaption().getTextValue(vc);
                 itemBuffer.append("            <td class=\"" + panelClassNamePrefix + "-frame-action-item\">" +
-                        "<a  href=\"" + itemUrl + "\">&nbsp;" + itemCaption + "&nbsp;</a></td>");
+                                  "<a  href=\"" + itemUrl + "\">&nbsp;" + itemCaption + "&nbsp;</a></td>");
                 displayedItems++;
             }
-            if (itemBuffer.length() > 0)
+            if(itemBuffer.length() > 0)
                 writer.write(itemBuffer.toString());
             writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\">" +
-                    "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"2\" height=\"5\"></td>\n");
+                         "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"2\" height=\"5\"></td>\n");
 
         }
     }
@@ -193,15 +194,15 @@ public class PanelEditorSkin extends RecordEditorReportSkin
     protected void produceBannerActionsHtml(Writer writer, HtmlPanelValueContext rc, HtmlPanelActions actions) throws IOException, CommandNotFoundException
     {
         int actionsCount = actions.size();
-        if (actionsCount == 0) return;
+        if(actionsCount == 0) return;
 
         HtmlPanelActionStates actionStates = rc.getPanelActionStates();
 
-        for (int i = 0; i < actionsCount; i++)
+        for(int i = 0; i < actionsCount; i++)
         {
             HtmlPanelAction action = actions.get(i);
             HtmlPanelAction.State state = actionStates.getState(action);
-            if (state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
+            if(state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
                 continue;
 
             ValueSource itemCaption = action.getCaption();
@@ -213,7 +214,7 @@ public class PanelEditorSkin extends RecordEditorReportSkin
             RedirectValueSource itemRedirect = action.getRedirect();
 
             // Instead of using the caption use the icons/images as the labels
-            if (itemRedirect == null)
+            if(itemRedirect == null)
             {
                 writer.write(caption);
             }
@@ -229,19 +230,19 @@ public class PanelEditorSkin extends RecordEditorReportSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report
             return;
         }
         HtmlReportAction[] editReportActions = actions.getByType(HtmlReportAction.Type.RECORD_EDIT);
-        if (editReportActions != null && editReportActions.length > 0)
+        if(editReportActions != null && editReportActions.length > 0)
         {
             ValueSource redirect = editReportActions[0].getRedirect();
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/panel-editor-action-edit.gif") + "\" " +
-                    "alt=\"\" height=\"7\" width=\"7\" border=\"0\">";
+                           "alt=\"\" height=\"7\" width=\"7\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
@@ -256,16 +257,16 @@ public class PanelEditorSkin extends RecordEditorReportSkin
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
         HtmlPanelActionStates actionStates = rc.getPanelActionStates();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report
             return;
         }
         HtmlReportAction[] deleteReportActions = actions.getByType(HtmlReportAction.Type.RECORD_DELETE);
-        if (deleteReportActions != null && deleteReportActions.length > 0)
+        if(deleteReportActions != null && deleteReportActions.length > 0)
         {
             HtmlPanelAction.State state = actionStates.getState(deleteReportActions[0]);
-            if (state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
+            if(state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
                 return;
             ValueSource redirect = deleteReportActions[0].getRedirect();
             Theme theme = getTheme();
@@ -283,10 +284,6 @@ public class PanelEditorSkin extends RecordEditorReportSkin
 
     /**
      * Gets the additional number of columns to append after the data columns
-     *
-     * @param rc
-     *
-     * @return
      */
     protected int getRowDecoratorAppendColsCount(HtmlTabularReportValueContext rc)
     {
@@ -294,16 +291,16 @@ public class PanelEditorSkin extends RecordEditorReportSkin
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlPanelActionStates actionStates = rc.getPanelActionStates();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report so return 0
             return cols;
         }
         HtmlReportAction[] deleteReportActions = actions.getByType(HtmlReportAction.Type.RECORD_DELETE);
-        if (deleteReportActions != null && deleteReportActions.length > 0)
+        if(deleteReportActions != null && deleteReportActions.length > 0)
         {
             HtmlPanelAction.State state = actionStates.getState(deleteReportActions[0]);
-            if (state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
+            if(state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
                 return cols;
             else
                 return cols + 1;
@@ -315,10 +312,6 @@ public class PanelEditorSkin extends RecordEditorReportSkin
 
     /**
      * Gets the additional number of columns to prepend to the data
-     *
-     * @param rc
-     *
-     * @return
      */
     protected int getRowDecoratorPrependColsCount(HtmlTabularReportValueContext rc)
     {
@@ -326,16 +319,16 @@ public class PanelEditorSkin extends RecordEditorReportSkin
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlPanelActionStates actionStates = rc.getPanelActionStates();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report so return 0
             return cols;
         }
         HtmlReportAction[] editReportActions = actions.getByType(HtmlReportAction.Type.RECORD_EDIT);
-        if (editReportActions != null && editReportActions.length > 0)
+        if(editReportActions != null && editReportActions.length > 0)
         {
             HtmlPanelAction.State state = actionStates.getState(editReportActions[0]);
-            if (state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
+            if(state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
                 return cols;
             else
                 return cols + 1;

@@ -50,10 +50,10 @@ public class ServletRequestParameterValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"request", "request-param"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides access to HTTP servlet request parameters.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("parameter-name", true, "The name of the request parameter.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("parameter-name", true, "The name of the request parameter.")
+                                                                                              });
 
     private String parameterName;
 
@@ -82,7 +82,7 @@ public class ServletRequestParameterValueSource extends AbstractValueSource
     {
         final ServletValueContext svc = (ServletValueContext)
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
-                vc);
+                 vc);
 
         return new AbstractValue()
         {
@@ -105,7 +105,7 @@ public class ServletRequestParameterValueSource extends AbstractValueSource
             {
                 List list = new ArrayList();
                 String[] values = svc.getRequest().getParameterValues(parameterName);
-                for (int i = 0; i < values.length; i++)
+                for(int i = 0; i < values.length; i++)
                     list.add(values[i]);
                 return list;
             }

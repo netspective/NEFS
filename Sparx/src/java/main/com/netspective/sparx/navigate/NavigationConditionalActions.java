@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * List class to save navigation conditional actions defined for a page
  *
- * @version $Id: NavigationConditionalActions.java,v 1.3 2004-08-15 01:47:09 shahid.shah Exp $
+ * @version $Id: NavigationConditionalActions.java,v 1.4 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class NavigationConditionalActions
 {
@@ -47,8 +47,6 @@ public class NavigationConditionalActions
 
     /**
      * Gets all the conditional actions as a list
-     *
-     * @return
      */
     public List getActions()
     {
@@ -67,8 +65,6 @@ public class NavigationConditionalActions
 
     /**
      * Adds a conditional action to the list
-     *
-     * @param action
      */
     public void addAction(NavigationConditionalAction action)
     {
@@ -77,10 +73,6 @@ public class NavigationConditionalActions
 
     /**
      * Gets a conditional action based on its index
-     *
-     * @param index
-     *
-     * @return
      */
     public NavigationConditionalAction getAction(int index)
     {
@@ -90,8 +82,6 @@ public class NavigationConditionalActions
 
     /**
      * Gets the total count of navigation conditional actions
-     *
-     * @return
      */
     public int size()
     {

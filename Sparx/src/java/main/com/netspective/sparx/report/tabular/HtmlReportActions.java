@@ -40,7 +40,7 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 /**
  * Class for html report actions
  * <p/>
- * $Id: HtmlReportActions.java,v 1.5 2004-08-15 01:47:10 shahid.shah Exp $
+ * $Id: HtmlReportActions.java,v 1.6 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class HtmlReportActions
 {
@@ -54,8 +54,6 @@ public class HtmlReportActions
 
     /**
      * Creates a new generic html report action
-     *
-     * @return
      */
     public HtmlReportAction createAction()
     {
@@ -64,10 +62,6 @@ public class HtmlReportActions
 
     /**
      * Creates a specific report action
-     *
-     * @param type
-     *
-     * @return
      */
     public HtmlReportAction createAction(int type)
     {
@@ -78,10 +72,6 @@ public class HtmlReportActions
 
     /**
      * Gets a report action by index
-     *
-     * @param index
-     *
-     * @return
      */
     public HtmlReportAction getByIndex(int index)
     {
@@ -99,16 +89,16 @@ public class HtmlReportActions
     {
         List newList = new ArrayList();
         int listSize = actions.size();
-        for (int i = 0; i < listSize; i++)
+        for(int i = 0; i < listSize; i++)
         {
             HtmlReportAction action = (HtmlReportAction) actions.get(i);
-            if (action.getType().getValueIndex() == type)
+            if(action.getType().getValueIndex() == type)
                 newList.add(action);
         }
 
         int newListSize = newList.size();
         HtmlReportAction[] actionList = new HtmlReportAction[newListSize];
-        for (int j = 0; j < newListSize; j++)
+        for(int j = 0; j < newListSize; j++)
         {
             actionList[j] = (HtmlReportAction) newList.get(j);
         }
@@ -117,13 +107,11 @@ public class HtmlReportActions
 
     /**
      * Gets all the actions as an array
-     *
-     * @return
      */
     public HtmlReportAction[] getAll()
     {
         HtmlReportAction[] actionList = new HtmlReportAction[actions.size()];
-        for (int i = 0; i < actionList.length; i++)
+        for(int i = 0; i < actionList.length; i++)
         {
             actionList[i] = (HtmlReportAction) actions.get(i);
         }
@@ -133,8 +121,6 @@ public class HtmlReportActions
 
     /**
      * Adds a report action using its type as the index
-     *
-     * @param action
      */
     public void addAction(HtmlReportAction action)
     {

@@ -52,7 +52,7 @@ import com.netspective.sparx.theme.Theme;
 
 /**
  * @author aye
- *         $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.8 2004-08-15 01:47:11 shahid.shah Exp $
+ *         $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.9 2004-08-15 02:27:29 shahid.shah Exp $
  */
 public class SelectableHtmlTabularReportPanelSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -76,21 +76,21 @@ public class SelectableHtmlTabularReportPanelSkin extends BasicHtmlTabularReport
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
         HtmlPanelActions frameActions = frame.getActions();
-        if (actions != null)
+        if(actions != null)
         {
             HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
-            if (selectReportActions != null && selectReportActions.length > 0)
+            if(selectReportActions != null && selectReportActions.length > 0)
             {
                 Theme theme = rc.getActiveTheme();
                 RedirectValueSource redirect = (RedirectValueSource) selectReportActions[0].getRedirect();
-                if (frameActions.size() > 0)
+                if(frameActions.size() > 0)
                     writer.write("            <td bgcolor=\"white\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
                 writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-action-item\" width=\"18\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");
-                if (redirect != null)
+                if(redirect != null)
                 {
                     writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-action-box\">" +
-                            "<a class=\"" + panelClassNamePrefix + "-frame-action\" href=\"" + redirect.getUrl(rc) +
-                            "\">&nbsp;" + selectReportActions[0].getCaption().getTextValue(vc) + "&nbsp;</a></td>");
+                                 "<a class=\"" + panelClassNamePrefix + "-frame-action\" href=\"" + redirect.getUrl(rc) +
+                                 "\">&nbsp;" + selectReportActions[0].getCaption().getTextValue(vc) + "&nbsp;</a></td>");
                 }
             }
         }
@@ -98,12 +98,6 @@ public class SelectableHtmlTabularReportPanelSkin extends BasicHtmlTabularReport
 
     /**
      * Renders the html report
-     *
-     * @param writer
-     * @param rc
-     * @param ds
-     *
-     * @throws IOException
      */
     public void render(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
@@ -131,13 +125,13 @@ public class SelectableHtmlTabularReportPanelSkin extends BasicHtmlTabularReport
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report so return 0
             return 0;
         }
         HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
-        if (selectReportActions != null && selectReportActions.length > 0)
+        if(selectReportActions != null && selectReportActions.length > 0)
             return 1;
         else
             return 0;
@@ -145,18 +139,12 @@ public class SelectableHtmlTabularReportPanelSkin extends BasicHtmlTabularReport
 
     /**
      * Produces html to prepend to the data row
-     *
-     * @param writer
-     * @param rc
-     * @param isOddRow
-     *
-     * @throws IOException
      */
     public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, boolean isOddRow) throws IOException
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report
             return;
@@ -165,15 +153,15 @@ public class SelectableHtmlTabularReportPanelSkin extends BasicHtmlTabularReport
         String rowData = report.getColumn(0).getOutput();
         writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
         writer.write("<input type=\"checkbox\" value=\"" + rowData + "\" name=\"checkbox_" + rowData +
-                "\" title=\"Click here to select the row.\" ");
+                     "\" title=\"Click here to select the row.\" ");
         HttpServletRequest request = (HttpServletRequest) rc.getRequest();
         String[] selectedValues = request.getParameterValues("_dc.selected_item_list");
-        if (selectedValues != null)
+        if(selectedValues != null)
         {
-            for (int i = 0; i < selectedValues.length; i++)
+            for(int i = 0; i < selectedValues.length; i++)
             {
                 //System.out.println(selectedValues[i] + " " + rowData[0]);
-                if (selectedValues[i].equalsIgnoreCase(rowData.toString()))
+                if(selectedValues[i].equalsIgnoreCase(rowData.toString()))
                 {
                     writer.write("checked");
                     highlightRow = true;

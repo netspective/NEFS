@@ -156,15 +156,15 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
             //TODO: this does not account for queries that are not contained within a namespace
             Set sortedNamesSpaces = new TreeSet(queries.getNameSpaceNames());
-            for (Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext();)
+            for(Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext();)
             {
                 String nameSpaceId = (String) nsi.next();
                 Set sortedQueryNamesInNameSpace = new TreeSet();
 
-                for (int i = 0; i < queries.size(); i++)
+                for(int i = 0; i < queries.size(); i++)
                 {
                     Query query = queries.get(i);
-                    if (nameSpaceId.equals(query.getNameSpace().getNameSpaceId()))
+                    if(nameSpaceId.equals(query.getNameSpace().getNameSpaceId()))
                     {
                         sortedQueryNamesInNameSpace.add(query.getQualifiedName());
                     }
@@ -184,7 +184,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean isActiveRowSelected()
         {
-            if (activeRowQuery == null)
+            if(activeRowQuery == null)
                 return false;
 
             return activeRowQuery.getQualifiedName().equals(selectedQueryName);
@@ -220,7 +220,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             activeRow = rowNum;
             String itemName = (String) rows.get(activeRow);
             activeRowQuery = queries.get(itemName);
-            if (activeRowQuery == null)
+            if(activeRowQuery == null)
                 activeNameSpace = itemName;
             else
                 activeNameSpace = null;
@@ -228,7 +228,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -237,9 +237,9 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            if (activeNameSpace != null)
+            if(activeNameSpace != null)
             {
-                switch (columnIndex)
+                switch(columnIndex)
                 {
                     case 0:
                         return activeNameSpace;
@@ -249,7 +249,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
                 }
             }
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return reportValueContext.getSkin().constructRedirect(reportValueContext, queryIdColumn.getRedirect(), activeRowQuery.getName(), activeRowQuery.getQualifiedName(), null);
@@ -270,7 +270,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
                     QueryExecutionLog execLog = activeRowQuery.getExecLog();
                     QueryExecutionLog.QueryExecutionStatistics stats = execLog.getStatistics();
 
-                    switch (columnIndex)
+                    switch(columnIndex)
                     {
                         case 3:
                             return stats.totalExecutions > 0 ? new Integer(stats.totalExecutions) : null;
@@ -280,7 +280,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
                             return stats.averageTotalExecTime > 0 ? new Long(stats.averageTotalExecTime) : null;
                         case 6:
                             return stats.averageConnectionEstablishTime > 0
-                                    ? new Long(stats.averageConnectionEstablishTime) : null;
+                                   ? new Long(stats.averageConnectionEstablishTime) : null;
                         case 7:
                             return stats.averageBindParamsTime > 0 ? new Long(stats.averageBindParamsTime) : null;
                         case 8:

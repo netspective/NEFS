@@ -74,11 +74,12 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
         List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
         SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
-        if (selectedRow == null)
+        if(selectedRow == null)
             return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
             return new IndexesDataSource(selectedRow.tableTreeNode != null
-                    ? selectedRow.tableTreeNode.getTable().getIndexes() : selectedRow.enumTable.getIndexes());
+                                         ? selectedRow.tableTreeNode.getTable().getIndexes()
+                                         : selectedRow.enumTable.getIndexes());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -103,7 +104,7 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
         {
             Index index = indexes.get(row);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return index.getName();
@@ -141,7 +142,7 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(row + 1);

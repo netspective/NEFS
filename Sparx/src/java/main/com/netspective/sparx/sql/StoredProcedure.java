@@ -58,8 +58,6 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
         /**
          * Creates a display report panel for the query
-         *
-         * @return
          */
         public StoredProcedureReportPanel createPanel()
         {
@@ -86,12 +84,10 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
         /**
          * Adds a display report panel for the stored procedure. Multiple report panels representing different presentations
          * of the results of the stored procedure can be added.
-         *
-         * @param panel
          */
         public void addPanel(StoredProcedureReportPanel panel)
         {
-            if (reportPanels.size() == 0 || panel.isDefaultPanel())
+            if(reportPanels.size() == 0 || panel.isDefaultPanel())
                 defaultPanel = panel;
             reportPanels.put(panel.getName(), panel);
         }
@@ -99,12 +95,10 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
         /**
          * Gets the default report panel for the stored procedure. Usually the default panel is the one that is defined without
          * a name associated with it.
-         *
-         * @return
          */
         public StoredProcedureReportPanel getDefaultPanel()
         {
-            if (defaultPanel == null)
+            if(defaultPanel == null)
             {
                 defaultPanel = new StoredProcedureReportPanel();
                 defaultPanel.setStoredProcedure(StoredProcedure.this);
@@ -127,8 +121,6 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
         /**
          * Gets a map of all the report panels of this stored procedure
-         *
-         * @return
          */
         public Map getPanels()
         {
@@ -137,8 +129,6 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
         /**
          * Sets the default report panel for this stored procedure
-         *
-         * @param defaultPanel
          */
         public void setDefaultPanel(StoredProcedureReportPanel defaultPanel)
         {
@@ -147,8 +137,6 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
         /**
          * Gets the number of report panels for this stored procedure
-         *
-         * @return
          */
         public int size()
         {
@@ -183,8 +171,6 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
     /**
      * Gets the Presentation object of this stored procedure.
-     *
-     * @return
      */
     public Presentation getPresentation()
     {
@@ -193,8 +179,6 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
     /**
      * Returns the Presentation object of this stored procedure. This is used by XDM.
-     *
-     * @return
      */
     public Presentation createPresentation()
     {
@@ -203,8 +187,6 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
     /**
      * Empty method. This  method is needed so XDM knows that "presentation" is a valid XML child
-     *
-     * @param presentation
      */
     public void addPresentation(Presentation presentation)
     {

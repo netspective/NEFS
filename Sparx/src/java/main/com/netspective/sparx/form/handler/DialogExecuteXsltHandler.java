@@ -118,9 +118,9 @@ public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
         {
             Map textValuesMap = dc.getFieldStates().createTextValuesMap("field.");
             transform.render(writer, dc, transform.getSource() != null ? null :
-                    new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()), textValuesMap, writeErrorsToOutput);
+                                         new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()), textValuesMap, writeErrorsToOutput);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             dc.getDialog().getLog().error("XSLT error in " + dc.getDialog().getQualifiedName(), e);
             throw new DialogExecuteException(e);

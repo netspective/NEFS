@@ -61,7 +61,7 @@ public class JakartaCommonsDbcpDataSourcePoolStatistics implements ConnectionPro
         {
             return pool.getNumActive();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             return -1;
         }
@@ -78,7 +78,7 @@ public class JakartaCommonsDbcpDataSourcePoolStatistics implements ConnectionPro
         {
             return pool.getMaxActive();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             return -1;
         }
@@ -90,7 +90,7 @@ public class JakartaCommonsDbcpDataSourcePoolStatistics implements ConnectionPro
         {
             return pool.getNumActive() + pool.getNumIdle();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             return -1;
         }
@@ -100,18 +100,18 @@ public class JakartaCommonsDbcpDataSourcePoolStatistics implements ConnectionPro
     {
         this.entry = entry;
 
-        if (entry != null)
+        if(entry != null)
         {
             DataSource ds = entry.getDataSource();
             JakartaCommonsDbcpConnectionProvider.DbcpPoolingDataSource dbcpDs = (JakartaCommonsDbcpConnectionProvider.DbcpPoolingDataSource) ds;
-            if (ds == null)
+            if(ds == null)
                 throw new RuntimeException("DataSource is NULL");
 
             try
             {
                 pool = (GenericObjectPool) dbcpDs.getPool();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new NestableRuntimeException(e);
             }

@@ -64,17 +64,17 @@ public class HttpServletResponseCache
     {
         // Only do caching for GET requests
         String method = req.getMethod();
-        if (!method.equals("GET"))
+        if(!method.equals("GET"))
             return false;
 
         // A last modified of -1 means we shouldn't use any cache logic
-        if (lastModfTime == -1)
+        if(lastModfTime == -1)
             return false;
 
         // If the client sent an If-Modified-Since header equal or after the
         // servlet's last modified time, send a short "Not Modified" status code
         // Round down to the nearest second since client headers are in seconds
-        if ((lastModfTime / 1000 * 1000) <= req.getDateHeader("If-Modified-Since"))
+        if((lastModfTime / 1000 * 1000) <= req.getDateHeader("If-Modified-Since"))
         {
             res.setStatus(res.SC_NOT_MODIFIED);
             return true;
@@ -84,7 +84,7 @@ public class HttpServletResponseCache
         CacheData cacheData = (CacheData) pageCache.get(cacheKey);
 
         // Use the existing cache if it's current and valid
-        if (cacheData != null && (lastModfTime <= cacheData.lastModf && cacheData.response.isValid()))
+        if(cacheData != null && (lastModfTime <= cacheData.lastModf && cacheData.response.isValid()))
         {
             cacheData.response.writeTo(res);
             return true;
@@ -100,7 +100,7 @@ public class HttpServletResponseCache
 
     public void cacheResponse(long servletLastModf, HttpServletRequest req, ResponseCache res)
     {
-        synchronized (pageCache)
+        synchronized(pageCache)
         {
             String cacheKey = req.getServletPath() + req.getPathInfo() + req.getQueryString();
             pageCache.put(cacheKey, new CacheData(res, servletLastModf, req.getServletPath(), req.getPathInfo(), req.getQueryString()));
@@ -175,7 +175,7 @@ public class HttpServletResponseCache
             {
                 out = new CacheServletOutputStream(res.getOutputStream());
             }
-            catch (IOException e)
+            catch(IOException e)
             {
                 System.out.println("Got IOException constructing cached response: " + e.getMessage());
             }
@@ -213,7 +213,7 @@ public class HttpServletResponseCache
         private void internalAddHeader(String name, Object value)
         {
             Vector v = (Vector) headers.get(name);
-            if (v == null)
+            if(v == null)
             {
                 v = new Vector();
             }
@@ -226,34 +226,34 @@ public class HttpServletResponseCache
             // Write status code
             res.setStatus(status);
             // Write convenience headers
-            if (contentType != null) res.setContentType(contentType);
-            if (locale != null) res.setLocale(locale);
+            if(contentType != null) res.setContentType(contentType);
+            if(locale != null) res.setLocale(locale);
             // Write cookies
             Enumeration enum = cookies.elements();
-            while (enum.hasMoreElements())
+            while(enum.hasMoreElements())
             {
                 Cookie c = (Cookie) enum.nextElement();
                 res.addCookie(c);
             }
             // Write standard headers
             enum = headers.keys();
-            while (enum.hasMoreElements())
+            while(enum.hasMoreElements())
             {
                 String name = (String) enum.nextElement();
                 Vector values = (Vector) headers.get(name); // may have multiple values
                 Enumeration enum2 = values.elements();
-                while (enum2.hasMoreElements())
+                while(enum2.hasMoreElements())
                 {
                     Object value = enum2.nextElement();
-                    if (value instanceof String)
+                    if(value instanceof String)
                     {
                         res.setHeader(name, (String) value);
                     }
-                    if (value instanceof Integer)
+                    if(value instanceof Integer)
                     {
                         res.setIntHeader(name, ((Integer) value).intValue());
                     }
-                    if (value instanceof Long)
+                    if(value instanceof Long)
                     {
                         res.setDateHeader(name, ((Long) value).longValue());
                     }
@@ -266,7 +266,7 @@ public class HttpServletResponseCache
             {
                 out.getBuffer().writeTo(res.getOutputStream());
             }
-            catch (IOException e)
+            catch(IOException e)
             {
                 System.out.println("Got IOException writing cached response: " + e.getMessage());
             }
@@ -274,7 +274,7 @@ public class HttpServletResponseCache
 
         public ServletOutputStream getOutputStream() throws IOException
         {
-            if (gotWriter)
+            if(gotWriter)
             {
                 throw new IllegalStateException("Cannot get output stream after getting writer");
             }
@@ -284,12 +284,12 @@ public class HttpServletResponseCache
 
         public PrintWriter getWriter() throws UnsupportedEncodingException
         {
-            if (gotStream)
+            if(gotStream)
             {
                 throw new IllegalStateException("Cannot get writer after getting output stream");
             }
             gotWriter = true;
-            if (writer == null)
+            if(writer == null)
             {
                 OutputStreamWriter w =
                         new OutputStreamWriter(out, getCharacterEncoding());

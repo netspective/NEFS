@@ -127,7 +127,7 @@ public class LoginDialog extends Dialog
         LoginDialogContext ldc = (LoginDialogContext) dc;
         HttpLoginManager loginManager = getLoginManager();
         MutableAuthenticatedUser user = loginManager.createAuthenticatedUser(ldc, ldc.getUserIdInput(),
-                ldc.getPasswordInput(!ldc.hasEncryptedPassword()), ((LoginDialogContext) dc).hasRememberedValues());
+                                                                             ldc.getPasswordInput(!ldc.hasEncryptedPassword()), ((LoginDialogContext) dc).hasRememberedValues());
         loginManager.login(dc, user, ldc.getRememberIdInput());
     }
 }

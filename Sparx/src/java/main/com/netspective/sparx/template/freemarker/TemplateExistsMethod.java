@@ -50,7 +50,7 @@ public class TemplateExistsMethod implements TemplateMethodModel
 
     public Object exec(List args) throws TemplateModelException
     {
-        if (args.size() != 1)
+        if(args.size() != 1)
         {
             throw new TemplateModelException("Wrong arguments: expect name of template to check existence.");
         }
@@ -61,11 +61,11 @@ public class TemplateExistsMethod implements TemplateMethodModel
         {
             found = env.getConfiguration().getTemplate((String) args.get(0)) != null;
         }
-        catch (FileNotFoundException e)
+        catch(FileNotFoundException e)
         {
             found = false;
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             log.error("Unable to check template existence.", e);
             found = false;

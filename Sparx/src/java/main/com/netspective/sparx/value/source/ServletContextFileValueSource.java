@@ -50,10 +50,10 @@ public class ServletContextFileValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"servlet-context-file", "servlet-context-path"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Creates a file/directory path relative to the servlet context root.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("relative-path", true, "The relative path of the file or directory.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("relative-path", true, "The relative path of the file or directory.")
+                                                                                              });
 
     private boolean root;
 
@@ -82,23 +82,23 @@ public class ServletContextFileValueSource extends AbstractValueSource
     {
         final HttpServletValueContext svc = (HttpServletValueContext)
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
-                vc);
+                 vc);
 
-        if (vc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.ANT_BUILD))
+        if(vc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.ANT_BUILD))
         {
             String simulatingProp = System.getProperty("com.netspective.sparx.value.source.ServletContextPathValue.simulate");
-            if (simulatingProp == null)
+            if(simulatingProp == null)
                 throw new RuntimeException("Running inside Ant but no 'com.netspective.sparx.value.source.ServletContextPathValue.simulate' system property provided.");
             File simulatedPath = new File(simulatingProp);
             return new GenericValue(root ?
-                    simulatedPath.getAbsolutePath() :
-                    new File(simulatedPath, spec.getParams()).getAbsolutePath());
+                                    simulatedPath.getAbsolutePath() :
+                                    new File(simulatedPath, spec.getParams()).getAbsolutePath());
         }
         else
         {
             return new GenericValue(root ?
-                    svc.getHttpServlet().getServletContext().getRealPath("") :
-                    svc.getHttpServlet().getServletContext().getRealPath(spec.getParams()));
+                                    svc.getHttpServlet().getServletContext().getRealPath("") :
+                                    svc.getHttpServlet().getServletContext().getRealPath(spec.getParams()));
         }
     }
 

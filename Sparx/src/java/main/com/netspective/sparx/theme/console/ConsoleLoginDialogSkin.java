@@ -63,20 +63,20 @@ public class ConsoleLoginDialogSkin extends StandardLoginDialogSkin
         writer.write("                                <table border=\"0\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
         writer.write("                                    <tr>");
         writer.write("                                        <td align=\"left\" valign=\"bottom\">" +
-                "<img src=\"" + theme.getResourceUrl("/images/login/" + getLoginImage()) + "\" " +
-                "alt=\"\" border=\"0\"></td>");
+                     "<img src=\"" + theme.getResourceUrl("/images/login/" + getLoginImage()) + "\" " +
+                     "alt=\"\" border=\"0\"></td>");
         writer.write("                                        <td align=\"left\" valign=\"middle\">");
 
         writer.write("          <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
 
-        if (summarizeErrors)
+        if(summarizeErrors)
             writer.write(errorMsgsHtml.toString());
 
         writer.write("<form id='" + dialogName + "' name='" + dialogName + "' action='" + actionURL + "' method='post' " +
-                encType + " onsubmit='return(activeDialog.isValid())'>\n" +
-                dc.getStateHiddens() + "\n" +
-                fieldsHtml +
-                "</form>\n");
+                     encType + " onsubmit='return(activeDialog.isValid())'>\n" +
+                     dc.getStateHiddens() + "\n" +
+                     fieldsHtml +
+                     "</form>\n");
 
         writer.write("          </table>\n");
 
@@ -101,11 +101,6 @@ public class ConsoleLoginDialogSkin extends StandardLoginDialogSkin
     /**
      * We typically take over the entire page for login dialog so lets give some spacing at the top and center
      * ourselves.
-     *
-     * @param writer
-     * @param dc
-     *
-     * @throws IOException
      */
     public void renderHtml(Writer writer, DialogContext dc) throws IOException
     {

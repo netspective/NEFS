@@ -49,7 +49,7 @@ public class SyntaxHighlightTransform implements TemplateTransformModel
     public static void registerTransforms(Configuration config)
     {
         Iterator lexers = HtmlSyntaxHighlightPanel.getLexers().keySet().iterator();
-        while (lexers.hasNext())
+        while(lexers.hasNext())
         {
             String lexerType = (String) lexers.next();
             config.setSharedVariable(lexerType + "Code", new SyntaxHighlightTransform(lexerType));

@@ -47,7 +47,7 @@ public class GetXmlDocumentMethod implements TemplateMethodModel
 
     public Object exec(List args) throws TemplateModelException
     {
-        if (args.size() != 1)
+        if(args.size() != 1)
         {
             throw new TemplateModelException("Wrong arguments: expect name of template to check existence.");
         }
@@ -56,7 +56,7 @@ public class GetXmlDocumentMethod implements TemplateMethodModel
         {
             return freemarker.ext.dom.NodeModel.parse(new File((String) args.get(0)));
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error(e);
             throw new TemplateModelException(e);

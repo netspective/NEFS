@@ -124,7 +124,7 @@ public class TransformPanel extends AbstractPanel
         {
             transform.render(writer, nc, null, null, writeErrorsToOutput);
         }
-        catch (TransformerException e)
+        catch(TransformerException e)
         {
             log.error(e);
             throw new NestableRuntimeException(e);
@@ -145,7 +145,7 @@ public class TransformPanel extends AbstractPanel
         {
             transform.render(writer, dc, null, null, writeErrorsToOutput);
         }
-        catch (TransformerException e)
+        catch(TransformerException e)
         {
             log.error(e);
             throw new NestableRuntimeException(e);

@@ -87,7 +87,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
 
     public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext ldc)
     {
-        if (passwordQuery == null)
+        if(passwordQuery == null)
         {
             ldc.getValidationContext().addError("No password query defined in DatabaseLoginAuthenticator");
             return false;
@@ -96,7 +96,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         try
         {
             QueryResultSet qrs = passwordQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
-            if (qrs == null)
+            if(qrs == null)
                 return false;
 
             Map passwordQueryResultRow = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet(), true);
@@ -107,19 +107,19 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
             // make sure the password doesn't stay in the map as it's passed around the system
             passwordQueryResultRow.remove(passwordQueryPasswordColumnLabel);
 
-            if (loginPasswordObj == null)
+            if(loginPasswordObj == null)
                 return false;
 
             String loginPasswordText = loginPasswordObj.toString();
             // if the password is not encrypted in the database, then encrypt it now because we deal with encrypted passwords internally
-            if (!passwordEncrypted)
+            if(!passwordEncrypted)
                 loginPasswordText = ldc.encryptPlainTextPassword(loginPasswordText);
 
             // now we check if this is a valid user
-            if (!loginPasswordText.equals(ldc.getPasswordInput(!ldc.hasEncryptedPassword())))
+            if(!loginPasswordText.equals(ldc.getPasswordInput(!ldc.hasEncryptedPassword())))
                 return false;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error validating login", e);
             return false;
@@ -145,9 +145,6 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
      * Take all of the columns that were selected by the passwordQuery and assign them using the setXXX() methods
      * of the AuthenticatedUser object. Using reflection, the assignUserInfo() method will take the labels assigned
      * in the query and find the appropriate setXXXX() method (where XXXX is the column label in the SQL query).
-     *
-     * @param ldc
-     * @param user
      */
     protected void assignUserInfo(LoginDialogContext ldc, AuthenticatedUser user)
     {
@@ -156,7 +153,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         {
             schema.assignMapValues(user, (Map) ldc.getAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS), "*");
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error(e);
         }
@@ -164,20 +161,20 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
 
     protected void assignUserRoles(LoginDialogContext ldc, MutableAuthenticatedUser user)
     {
-        if (roleQuery != null)
+        if(roleQuery != null)
         {
             try
             {
                 QueryResultSet qrs = roleQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
-                if (qrs != null)
+                if(qrs != null)
                 {
                     String[] roleNames = ResultSetUtils.getInstance().getResultSetRowsAsStrings(qrs.getResultSet());
-                    if (roleNames != null && roleNames.length > 0)
+                    if(roleNames != null && roleNames.length > 0)
                         user.setRoles(ldc.getAccessControlListsManager(), roleNames);
                     qrs.close(true);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Error assigning roles to user", e);
             }
@@ -186,25 +183,25 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
 
     protected void retrievePreferences(LoginDialogContext ldc, Query query, Object[] queryParams, MutableAttributes preferences, String resultsAttrName)
     {
-        if (query != null)
+        if(query != null)
         {
             try
             {
                 QueryResultSet qrs = query.execute(ldc, queryParams, false);
-                if (qrs != null)
+                if(qrs != null)
                 {
                     Map[] prefsResult = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(qrs.getResultSet(), true);
-                    if (prefsResult != null)
+                    if(prefsResult != null)
                     {
                         ldc.setAttribute(resultsAttrName, prefsResult);
 
                         preferences.setObserving(false); // make sure add/update/remove announcements aren't made
                         try
                         {
-                            for (int rowIndex = 0; rowIndex < prefsResult.length; rowIndex++)
+                            for(int rowIndex = 0; rowIndex < prefsResult.length; rowIndex++)
                             {
                                 final Attribute attribute = preferences.createAttribute(prefsResult[rowIndex]);
-                                if (attribute != null)
+                                if(attribute != null)
                                     preferences.addAttribute(attribute);
                             }
                         }
@@ -216,11 +213,11 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                     qrs.close(true);
                 }
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 log.error("Error retrieving preferences", e);
             }
-            catch (NamingException e)
+            catch(NamingException e)
             {
                 log.error("Error retrieving preferences", e);
             }
@@ -231,17 +228,17 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     {
         MutableAuthenticatedOrganizations mutableOrgs = (MutableAuthenticatedOrganizations) user.getOrganizations();
 
-        if (orgsQuery != null)
+        if(orgsQuery != null)
         {
             try
             {
                 QueryResultSet qrs = orgsQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
-                if (qrs != null)
+                if(qrs != null)
                 {
                     Map[] orgsResult = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(qrs.getResultSet(), true);
                     ldc.setAttribute(ATTRNAME_ORGS_QUERY_RESULTS, orgsResult);
 
-                    for (int rowIndex = 0; rowIndex < orgsResult.length; rowIndex++)
+                    for(int rowIndex = 0; rowIndex < orgsResult.length; rowIndex++)
                     {
                         MutableAuthenticatedOrganization org = mutableOrgs.createOrganization();
                         XmlDataModelSchema schema = XmlDataModelSchema.getSchema(org.getClass());
@@ -255,18 +252,18 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                     qrs.close(true);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Error assigning orgs to user", e);
             }
         }
 
-        if (primaryOrgQuery != null)
+        if(primaryOrgQuery != null)
         {
             try
             {
                 QueryResultSet qrs = primaryOrgQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
-                if (qrs != null)
+                if(qrs != null)
                 {
                     Map orgResult = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet(), true);
                     ldc.setAttribute(ATTRNAME_PRIMARY_ORG_QUERY_RESULTS, orgResult);
@@ -283,7 +280,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                     qrs.close(true);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Error assigning primary org to user", e);
             }

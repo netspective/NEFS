@@ -52,7 +52,7 @@ import com.netspective.sparx.panel.QueryReportPanel;
  * is submitted
  *
  * @author aye
- *         $Id: QueryDefnSelect.java,v 1.4 2004-08-15 01:47:10 shahid.shah Exp $
+ *         $Id: QueryDefnSelect.java,v 1.5 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class QueryDefnSelect extends com.netspective.axiom.sql.dynamic.QueryDefnSelect
 {
@@ -84,14 +84,14 @@ public class QueryDefnSelect extends com.netspective.axiom.sql.dynamic.QueryDefn
 
         public void addPanel(QueryReportPanel panel)
         {
-            if (reportPanels.size() == 0 || panel.isDefaultPanel())
+            if(reportPanels.size() == 0 || panel.isDefaultPanel())
                 defaultPanel = panel;
             reportPanels.put(panel.getName(), panel);
         }
 
         public QueryReportPanel getDefaultPanel()
         {
-            if (defaultPanel == null)
+            if(defaultPanel == null)
             {
                 defaultPanel = new QueryReportPanel();
                 defaultPanel.setQuery(QueryDefnSelect.this);

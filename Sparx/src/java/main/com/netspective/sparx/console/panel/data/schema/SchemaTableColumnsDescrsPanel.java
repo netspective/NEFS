@@ -96,7 +96,7 @@ public class SchemaTableColumnsDescrsPanel extends SchemaTableColumnsPanel
         {
             Column column = columns.get(row);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:

@@ -44,7 +44,7 @@ public class XmlDataModelSchemaMethod implements TemplateMethodModel
 {
     public Object exec(List args) throws TemplateModelException
     {
-        if (args.size() != 1)
+        if(args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expect name of class.");
 
         String className = (String) args.get(0);
@@ -53,7 +53,7 @@ public class XmlDataModelSchemaMethod implements TemplateMethodModel
         {
             cls = Class.forName(className);
         }
-        catch (ClassNotFoundException e)
+        catch(ClassNotFoundException e)
         {
             throw new TemplateModelException("Provided class '" + className + "' not found", e);
         }

@@ -57,7 +57,7 @@ public class DateTimeField extends TextField
 
     static
     {
-        for (int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
+        for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
             DATE_TIME_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
         DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(Flags.ACCESS_XDM, "FUTURE_ONLY", Flags.FUTURE_ONLY);
         DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 1] = new Flags.FlagDefn(Flags.ACCESS_XDM, "PAST_ONLY", Flags.PAST_ONLY);
@@ -83,10 +83,10 @@ public class DateTimeField extends TextField
         public void flagsChanged()
         {
             super.flagsChanged();
-            if (getField() != null)
+            if(getField() != null)
             {
                 DateValueValidationRule dateValidationRule = ((DateTimeField) getField()).getDateValidationRule();
-                if (dateValidationRule != null)
+                if(dateValidationRule != null)
                 {
                     dateValidationRule.setFutureOnly(flagIsSet(FUTURE_ONLY));
                     dateValidationRule.setPastOnly(flagIsSet(PAST_ONLY));
@@ -162,13 +162,13 @@ public class DateTimeField extends TextField
 
             public void setTextValue(String value) throws ValueException
             {
-                if (value == null || value.length() == 0)
+                if(value == null || value.length() == 0)
                 {
                     setValue((Date) null);
                     return;
                 }
 
-                switch (getDataType().getValueIndex())
+                switch(getDataType().getValueIndex())
                 {
                     case DataType.DATE_ONLY:
                     case DataType.BOTH:
@@ -186,7 +186,7 @@ public class DateTimeField extends TextField
                 {
                     setValue(dateValidationRule.parse(value));
                 }
-                catch (ParseException e)
+                catch(ParseException e)
                 {
                     setInvalidText(value);
                     invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in date format (" + dateValidationRule.toPattern() + ").");
@@ -261,11 +261,11 @@ public class DateTimeField extends TextField
 
         // hang onto the text validation rule since we're going to need it for javascript definition and rendering
         boolean found = false;
-        for (int i = 0; i < rules.size(); i++)
+        for(int i = 0; i < rules.size(); i++)
         {
-            if (rules.get(i) instanceof DateValueValidationRule)
+            if(rules.get(i) instanceof DateValueValidationRule)
             {
-                if (found)
+                if(found)
                     throw new RuntimeException("Multiple date validation rules not allowed.");
 
                 dateValidationRule = (DateValueValidationRule) rules.get(i);
@@ -281,7 +281,7 @@ public class DateTimeField extends TextField
 
     public void setDataType(DataType value)
     {
-        if (value.getValueIndex() == DataType.TIME_ONLY)
+        if(value.getValueIndex() == DataType.TIME_ONLY)
             this.getFlags().clearFlag(Flags.POPUP_CALENDAR);
         dataType = value;
         setFormat(dataType.getFormat());
@@ -326,12 +326,12 @@ public class DateTimeField extends TextField
      */
     public String formatTimeValue(String value)
     {
-        if (value == null)
+        if(value == null)
             return value;
 
         StringBuffer timeValueStr = new StringBuffer();
         StringTokenizer tokens = new StringTokenizer(value, ":");
-        while (tokens.hasMoreTokens())
+        while(tokens.hasMoreTokens())
             timeValueStr.append(tokens.nextToken());
 
         return timeValueStr.toString();
@@ -346,14 +346,14 @@ public class DateTimeField extends TextField
         buf.append("field.dateDataType = " + this.getDataType().getValueIndex() + ";\n");
         buf.append("field.dateFormat = '" + dateValidationRule.toPattern() + "';\n");
 
-        if (getFlags().flagIsSet(Flags.STRICT_YEAR))
+        if(getFlags().flagIsSet(Flags.STRICT_YEAR))
             buf.append("field.dateStrictYear = true;\n");
         else
             buf.append("field.dateStrictYear = false;\n");
 
-        if (getDataType().getValueIndex() == DataType.TIME_ONLY)
+        if(getDataType().getValueIndex() == DataType.TIME_ONLY)
         {
-            if (getFlags().flagIsSet(Flags.STRICT_TIME))
+            if(getFlags().flagIsSet(Flags.STRICT_TIME))
                 buf.append("field.timeStrict = true;\n");
             else
                 buf.append("field.timeStrict = false;\n");
@@ -364,15 +364,10 @@ public class DateTimeField extends TextField
 
     /**
      * Produces the control html associated with the field
-     *
-     * @param writer
-     * @param dc
-     *
-     * @throws IOException
      */
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-        if (isInputHidden(dc))
+        if(isInputHidden(dc))
         {
             writer.write(getHiddenControlHtml(dc));
             return;
@@ -382,39 +377,39 @@ public class DateTimeField extends TextField
         DateTimeField.Flags stateFlags = (DateTimeField.Flags) state.getStateFlags();
         String textValue = state.getValue().getTextValue();
 
-        if (textValue == null)
+        if(textValue == null)
             textValue = "";
         else
             textValue = TextUtils.getInstance().escapeHTML(textValue);
 
         String className = isRequired(dc)
-                ? dc.getSkin().getControlAreaRequiredStyleClass() : dc.getSkin().getControlAreaStyleClass();
+                           ? dc.getSkin().getControlAreaRequiredStyleClass() : dc.getSkin().getControlAreaStyleClass();
 
         String controlAreaStyle = dc.getSkin().getControlAreaStyleAttrs();
-        if (isReadOnly(dc))
+        if(isReadOnly(dc))
         {
             writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value=\"" + textValue + "\">" +
-                    "<span id='" + getQualifiedName() + "'>" + textValue + "</span>");
+                         "<span id='" + getQualifiedName() + "'>" + textValue + "</span>");
         }
-        else if (isBrowserReadOnly(dc))
+        else if(isBrowserReadOnly(dc))
         {
             className = dc.getSkin().getControlAreaReadonlyStyleClass();
             writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" readonly value=\"" +
-                    textValue + "\" maxlength=\"" + getMaxLength() + "\" size=\"" +
-                    getSize() + "\" " + controlAreaStyle +
-                    " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
+                         textValue + "\" maxlength=\"" + getMaxLength() + "\" size=\"" +
+                         getSize() + "\" " + controlAreaStyle +
+                         " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
         }
-        else if (!stateFlags.flagIsSet(TextField.Flags.MASK_ENTRY))
+        else if(!stateFlags.flagIsSet(TextField.Flags.MASK_ENTRY))
         {
             writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
-                    getMaxLength() + "\" size=\"" + getSize() + "\" " +
-                    controlAreaStyle + " class=\"" + className + "\" " +
-                    dc.getSkin().getDefaultControlAttrs() + ">");
+                         getMaxLength() + "\" size=\"" + getSize() + "\" " +
+                         controlAreaStyle + " class=\"" + className + "\" " +
+                         dc.getSkin().getDefaultControlAttrs() + ">");
         }
 
-        if ((isInputHidden(dc) || isReadOnly(dc)) || !getFlags().flagIsSet(Flags.POPUP_CALENDAR))
+        if((isInputHidden(dc) || isReadOnly(dc)) || !getFlags().flagIsSet(Flags.POPUP_CALENDAR))
             return;
-        if (getDataType().getValueIndex() != DataType.TIME_ONLY)
+        if(getDataType().getValueIndex() != DataType.TIME_ONLY)
         {
             Theme theme = dc.getSkin().getTheme();
             writer.write("<script src='" + theme.getResourceUrl("/jscalendar-0.9.6/calendar.js") + "'></script>\n");
@@ -422,7 +417,7 @@ public class DateTimeField extends TextField
             writer.write("<script src='" + theme.getResourceUrl("/scripts/calendar-helper.js") + "'></script>\n");
 
             writer.write("<span style='cursor:hand' onclick='showCalendar(\"" + getQualifiedName() + "\", \"" + getClientCalendarFormat() + "\")'>" +
-                    "<img src='" + theme.getResourceUrl("/images/calendar.gif") + "' title='Select from Calendar' border=0 alt='calendar'></span>");
+                         "<img src='" + theme.getResourceUrl("/images/calendar.gif") + "' title='Select from Calendar' border=0 alt='calendar'></span>");
         }
     }
 }

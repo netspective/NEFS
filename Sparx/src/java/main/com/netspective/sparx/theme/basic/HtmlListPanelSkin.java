@@ -60,19 +60,13 @@ public class HtmlListPanelSkin extends BasicHtmlPanelSkin
 
     /**
      * Renders the panel with the presentation item list
-     *
-     * @param writer
-     * @param nc
-     * @param itemList
-     *
-     * @throws IOException
      */
     public void renderHtml(Writer writer, HtmlPanelValueContext nc, List itemList) throws IOException
     {
         renderPanelRegistration(writer, nc);
 
         int panelRenderFlags = nc.getPanelRenderFlags();
-        if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+        if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
         {
             renderFrameBegin(writer, nc);
             writer.write("\t<table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
@@ -80,25 +74,25 @@ public class HtmlListPanelSkin extends BasicHtmlPanelSkin
         else
         {
             writer.write("\t<table id=\"" + ((HtmlPanelValueContext) nc).getPanel().getPanelIdentifier() +
-                    "_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" " +
-                    "cellpadding=\"0\">\n");
+                         "_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" " +
+                         "cellpadding=\"0\">\n");
         }
         writer.write("\t\t<tr><td>\n");
-        if (itemList != null && itemList.size() > 0)
+        if(itemList != null && itemList.size() > 0)
         {
             writer.write("\t\t\t<ul>\n");
-            for (int i = 0; i < itemList.size(); i++)
+            for(int i = 0; i < itemList.size(); i++)
             {
                 Object item = itemList.get(i);
-                if (item instanceof CommandListItem)
+                if(item instanceof CommandListItem)
                 {
                     writer.write("\t\t\t\t<li><a href=\"" + ((CommandListItem) item).getUrl((HttpServletValueContext) nc) + "\">" +
-                            ((CommandListItem) item).getCaption().getTextValue(nc) + "</a>");
-                    if (((CommandListItem) item).getDescription() != null)
+                                 ((CommandListItem) item).getCaption().getTextValue(nc) + "</a>");
+                    if(((CommandListItem) item).getDescription() != null)
                         writer.write(":&nbsp;" + ((CommandListItem) item).getDescription().getTextValue(nc));
                     writer.write("</li>\n");
                 }
-                else if (item instanceof String)
+                else if(item instanceof String)
                 {
                     writer.write("\t\t\t\t<li><a href=\"" + item + "\">" + item + "</a></li>\n");
                 }
@@ -112,7 +106,7 @@ public class HtmlListPanelSkin extends BasicHtmlPanelSkin
         writer.write("\t\t</td></tr>\n");
 
         writer.write("\t</table>\n");
-        if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+        if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
             renderFrameEnd(writer, (HtmlPanelValueContext) nc);
 
     }

@@ -97,20 +97,20 @@ public class HtmlIncludePanel extends AbstractPanel
         HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
         templatePanelSkin.renderFrameBegin(writer, vc);
 
-        if (path == null)
+        if(path == null)
         {
             writer.write("No path to resource or URL provided.");
             return;
         }
 
         String includePath = getPath().getTextValue(nc);
-        if (local)
+        if(local)
         {
             try
             {
                 HttpUtils.includeServletResourceContent(writer, nc, includePath, REQATTRNAME_NAVIGATION_CONTEXT);
             }
-            catch (ServletException e)
+            catch(ServletException e)
             {
                 log.error(e);
                 throw new NestableRuntimeException("Error including '" + includePath + "'", e);
@@ -130,20 +130,20 @@ public class HtmlIncludePanel extends AbstractPanel
         HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
         templatePanelSkin.renderFrameBegin(writer, vc);
 
-        if (path == null)
+        if(path == null)
         {
             writer.write("No path to resource or URL provided.");
             return;
         }
 
         String includePath = getPath().getTextValue(dc);
-        if (local)
+        if(local)
         {
             try
             {
                 HttpUtils.includeServletResourceContent(writer, dc, includePath, REQATTRNAME_DIALOG_CONTEXT);
             }
-            catch (ServletException e)
+            catch(ServletException e)
             {
                 log.error(e);
                 throw new NestableRuntimeException("Error including '" + includePath + "'", e);

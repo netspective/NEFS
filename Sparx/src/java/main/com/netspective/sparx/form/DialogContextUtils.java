@@ -79,12 +79,12 @@ public class DialogContextUtils
         Map params = request.getParameterMap();
         DialogFieldStates fieldStates = dc.getFieldStates();
         Iterator i = params.entrySet().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             Map.Entry entry = (Map.Entry) i.next();
             String name = (String) entry.getKey();
             DialogField.State state = fieldStates.getState(name, null);
-            if (state != null)
+            if(state != null)
             {
                 String[] values = (String[]) entry.getValue();
                 state.getValue().setValue(values);
@@ -92,11 +92,11 @@ public class DialogContextUtils
         }
 
         Enumeration e = request.getAttributeNames();
-        while (e.hasMoreElements())
+        while(e.hasMoreElements())
         {
             String name = (String) e.nextElement();
             DialogField.State state = fieldStates.getState(name, null);
-            if (state != null)
+            if(state != null)
                 state.getValue().setValue(request.getAttribute(name));
         }
     }
@@ -113,20 +113,20 @@ public class DialogContextUtils
 
     public void populateFieldValuesFromResultSet(DialogContext dc, ResultSet rs) throws SQLException
     {
-        if (rs.next())
+        if(rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
             DialogFieldStates fieldStates = dc.getFieldStates();
-            for (int i = 1; i <= colsCount; i++)
+            for(int i = 1; i <= colsCount; i++)
             {
                 String fieldName = rsmd.getColumnName(i).toLowerCase();
                 DialogField.State state = fieldStates.getState(fieldName, null);
-                if (state != null)
+                if(state != null)
                 {
                     // for columns that are Date objects, use the object setter instead of the text setter
                     // because we don't need to do unnecessary formatting/parsing
-                    if (rsmd.getColumnType(i) == Types.DATE)
+                    if(rsmd.getColumnType(i) == Types.DATE)
                         state.getValue().setValue(rs.getDate(i));
                     else
                         state.getValue().setTextValue(rs.getString(i));
@@ -151,7 +151,7 @@ public class DialogContextUtils
             queryResultSet = query.execute(dc, dataSourceId, params);
             populateFieldValuesFromResultSet(dc, queryResultSet);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to populate values from statement", e);
         }
@@ -159,10 +159,10 @@ public class DialogContextUtils
         {
             try
             {
-                if (queryResultSet != null)
+                if(queryResultSet != null)
                     queryResultSet.close(true);
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 log.error("Unable to close query result set", e);
             }
@@ -180,7 +180,7 @@ public class DialogContextUtils
             queryResultSet = query.execute(cc, params, false);
             populateFieldValuesFromResultSet(dc, queryResultSet);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to populate values from statement", e);
         }
@@ -188,10 +188,10 @@ public class DialogContextUtils
         {
             try
             {
-                if (queryResultSet != null)
+                if(queryResultSet != null)
                     queryResultSet.close(false);
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 log.error("Unable to close query result set", e);
             }
@@ -217,7 +217,7 @@ public class DialogContextUtils
         {
             query.setName("populateFieldValuesFromSql-" + GloballyUniqueIdentifier.getRandomGUID(false));
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to set the query name", e);
         }
@@ -232,7 +232,7 @@ public class DialogContextUtils
             queryResultSet = query.execute(dc, dataSourceId, params);
             populateFieldValuesFromResultSet(dc, queryResultSet);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to populate values from statement", e);
         }
@@ -240,10 +240,10 @@ public class DialogContextUtils
         {
             try
             {
-                if (queryResultSet != null)
+                if(queryResultSet != null)
                     queryResultSet.close(true);
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 log.error("Unable to close query result set", e);
             }
@@ -259,7 +259,7 @@ public class DialogContextUtils
         {
             query.setName("populateFieldValuesFromSql-" + GloballyUniqueIdentifier.getRandomGUID(false));
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to set the query name", e);
         }
@@ -274,7 +274,7 @@ public class DialogContextUtils
             queryResultSet = query.execute(cc, params, false);
             populateFieldValuesFromResultSet(dc, queryResultSet);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to populate values from statement", e);
         }
@@ -282,10 +282,10 @@ public class DialogContextUtils
         {
             try
             {
-                if (queryResultSet != null)
+                if(queryResultSet != null)
                     queryResultSet.close(false);
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 log.error("Unable to close query result set", e);
             }
@@ -296,7 +296,7 @@ public class DialogContextUtils
     {
         DialogFieldStates states = dc.getFieldStates();
         DialogField.State state = states.getState(fieldName);
-        if (state != null)
+        if(state != null)
             columnValue.copyValueByReference(state.getValue());
         else
             dc.getDialog().getLog().error("Unable to find fieldName '" + fieldName + "' to populate column value with.");

@@ -65,7 +65,7 @@ public class FileSystemEntry
         rootPath = aRootPath;
         entryCaption = file.getName().replace('_', ' ');
         int extnIndex = entryCaption.lastIndexOf('.');
-        if (extnIndex > -1)
+        if(extnIndex > -1)
         {
             entryExtension = entryCaption.substring(extnIndex + 1);
             entryCaption = entryCaption.substring(0, extnIndex);
@@ -74,7 +74,7 @@ public class FileSystemEntry
             entryExtension = "";
 
         // find the "relative" portion of the path (everything but the root path)
-        if (rootPath != null)
+        if(rootPath != null)
         {
             String absPath = file.getAbsolutePath();
             entryURI = absPath.substring(rootPath.file.getAbsolutePath().length()).replace('\\', '/');
@@ -134,16 +134,16 @@ public class FileSystemEntry
     public List getParents()
     {
         ArrayList result = new ArrayList();
-        if (rootPath == null)
+        if(rootPath == null)
             return result;
 
         String rootPathStr = rootPath.file.getAbsolutePath();
         int parentLevel = level - 1;
         File parent = file.getParentFile();
-        while (parent != null)
+        while(parent != null)
         {
             boolean isRootPath = parent.getAbsolutePath().equals(rootPathStr);
-            if (isRootPath)
+            if(isRootPath)
             {
                 result.add(0, rootPath);
                 break;
@@ -161,21 +161,21 @@ public class FileSystemEntry
 
     public static void getDirectoryFileTypes(Set types, File dir, boolean recursive)
     {
-        if (!dir.isDirectory())
+        if(!dir.isDirectory())
             return;
 
         File[] children = dir.listFiles();
-        if (children == null)
+        if(children == null)
             return;
 
-        for (int i = 0; i < children.length; i++)
+        for(int i = 0; i < children.length; i++)
         {
             File child = children[i];
             int extnIndex = child.getName().lastIndexOf('.');
-            if (extnIndex > -1)
+            if(extnIndex > -1)
                 types.add(child.getName().substring(extnIndex + 1));
 
-            if (recursive)
+            if(recursive)
                 getDirectoryFileTypes(types, child, recursive);
         }
     }
@@ -191,7 +191,7 @@ public class FileSystemEntry
     {
         ArrayList result = new ArrayList();
         File[] children = file.listFiles();
-        for (int i = 0; i < children.length; i++)
+        for(int i = 0; i < children.length; i++)
         {
             File child = children[i];
             result.add(new FileSystemEntry(level + 1, rootPath, child));
@@ -202,21 +202,21 @@ public class FileSystemEntry
     public String findInPath(String fileName)
     {
         String testFile = file.getAbsolutePath() + file.separator + fileName;
-        if (new File(testFile).exists())
+        if(new File(testFile).exists())
             return testFile;
 
-        if (rootPath == null)
+        if(rootPath == null)
             return null;
 
         String rootPathStr = rootPath.file.getAbsolutePath();
         File parent = file.getParentFile();
-        while (parent != null)
+        while(parent != null)
         {
             testFile = parent.getAbsolutePath() + parent.separator + fileName;
-            if (new File(testFile).exists())
+            if(new File(testFile).exists())
                 return testFile;
 
-            if (parent.getAbsolutePath().equals(rootPathStr))
+            if(parent.getAbsolutePath().equals(rootPathStr))
                 break;
             else
                 parent = parent.getParentFile();
@@ -239,7 +239,7 @@ public class FileSystemEntry
         int readlen;
         byte buffer[] = new byte[256];
 
-        while ((readlen = in.read(buffer)) != -1)
+        while((readlen = in.read(buffer)) != -1)
         {
             // throws IOException: broken pipe when download is canceled.
             out.write(buffer, 0, readlen);

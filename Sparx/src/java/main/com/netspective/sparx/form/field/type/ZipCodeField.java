@@ -46,7 +46,7 @@ public class ZipCodeField extends TextField
 
     static
     {
-        for (int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
+        for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
             ZIP_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
         ZIP_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "STRIP_DASHES", Flags.STRIP_DASHES);
     }

@@ -104,30 +104,30 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
 
             InputSourceTracker parentFt = inputSourceTracker.getParent();
             String parentPath = parentFt != null && parentFt instanceof FileTracker
-                    ? ((FileTracker) inputSourceTracker.getParent()).getFile().getParent() : "--";
+                                ? ((FileTracker) inputSourceTracker.getParent()).getFile().getParent() : "--";
             String thisPath = inputSourceTracker.getIdentifier();
 
-            if (thisPath.startsWith(parentPath))
+            if(thisPath.startsWith(parentPath))
                 src.append("." + thisPath.substring(parentPath.length()));
             else
                 src.append(inputSourceTracker.getIdentifier());
 
-            if (inputSourceTracker.getDependenciesCount() > 0)
+            if(inputSourceTracker.getDependenciesCount() > 0)
                 src.append(" (Dependencies: " + inputSourceTracker.getDependenciesCount() + ")");
             List preProcs = inputSourceTracker.getPreProcessors();
-            if (preProcs != null && preProcs.size() > 0)
+            if(preProcs != null && preProcs.size() > 0)
             {
                 src.append("<ul>");
-                for (int i = 0; i < preProcs.size(); i++)
+                for(int i = 0; i < preProcs.size(); i++)
                     src.append("<li>" + getHtml((InputSourceTracker) preProcs.get(i)) + " (pre-processors)</li>");
                 src.append("</ul>");
             }
 
             List dependencies = inputSourceTracker.getIncludes();
-            if (dependencies != null && dependencies.size() > 0)
+            if(dependencies != null && dependencies.size() > 0)
             {
                 src.append("<ul>");
-                for (int i = 0; i < dependencies.size(); i++)
+                for(int i = 0; i < dependencies.size(); i++)
                     src.append("<li>" + getHtml((InputSourceTracker) dependencies.get(i)) + "</li>");
                 src.append("</ul>");
             }
@@ -138,10 +138,10 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
         public String getErrorsHtml(List errors)
         {
             StringBuffer src = new StringBuffer();
-            if (errors.size() > 0)
+            if(errors.size() > 0)
             {
                 src.append("Errors<ul>");
-                for (int i = 0; i < errors.size(); i++)
+                for(int i = 0; i < errors.size(); i++)
                     src.append("<li>" + errors.get(i) + "</li>");
                 src.append("</ul>");
             }
@@ -151,7 +151,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return new Integer(getActiveRowNumber());
@@ -162,7 +162,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
                 case 2:
                     StringBuffer sb = new StringBuffer();
                     InputSourceTracker ist = component.getInputSource();
-                    if (ist instanceof FileTracker)
+                    if(ist instanceof FileTracker)
                         sb.append(getHtml((FileTracker) ist));
                     else
                         sb.append(ist.getIdentifier() + " (Dependencies: " + ist.getDependenciesCount() + ")");
@@ -203,7 +203,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(row + 1);

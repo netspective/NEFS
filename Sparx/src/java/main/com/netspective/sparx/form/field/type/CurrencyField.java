@@ -81,10 +81,10 @@ public class CurrencyField extends TextField
 
             public String getTextValue()
             {
-                if (!isValid())
+                if(!isValid())
                     return getInvalidText();
 
-                if (getValue() instanceof Double)
+                if(getValue() instanceof Double)
                 {
                     // sets the format for the currency value bacause toString() of a double produces
                     // exponential formats when the value is large
@@ -96,12 +96,10 @@ public class CurrencyField extends TextField
 
             /**
              * @param value the value passed here should have been verified already using either the display pattern or the submit pattern
-             *
-             * @throws ValueException
              */
             public void setTextValue(String value) throws ValueException
             {
-                if (value == null || value.length() == 0)
+                if(value == null || value.length() == 0)
                 {
                     setValue((Double) null);
                     return;
@@ -114,7 +112,7 @@ public class CurrencyField extends TextField
                     // positive values and ($123.11) for negative values.   So, the following values -$123.11, $-123.11,
                     // 123.11, and -123.11 will not work and will throw a ParseException.
                     //Number number = format.parse(value);
-                    if (value.indexOf(currencySymbol) >= 0)
+                    if(value.indexOf(currencySymbol) >= 0)
                     {
                         // display value can contain the currency symbol
                         setValue(value);
@@ -125,7 +123,7 @@ public class CurrencyField extends TextField
                         setValue(new Double(value));
                     }
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     setInvalidText(value);
                     invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in currency format (" + e.getMessage() + ").");
@@ -175,11 +173,11 @@ public class CurrencyField extends TextField
 
     protected void setupPatterns()
     {
-        if (decimalsRequired < 0)
+        if(decimalsRequired < 0)
             setDecimalsRequired(0);
 
         format = NumberFormat.getCurrencyInstance(locale);
-        if (decimalsRequired >= 0)
+        if(decimalsRequired >= 0)
         {
             format.setMinimumFractionDigits(decimalsRequired);
             format.setMaximumFractionDigits(decimalsRequired);
@@ -190,30 +188,30 @@ public class CurrencyField extends TextField
         decimalSymbol = cSymbol.getDecimalSeparator();
 
         String decimalExpr = "";
-        if (decimalsRequired > 0)
+        if(decimalsRequired > 0)
             decimalExpr = "([" + decimalSymbol + "][\\d]{1," + decimalsRequired + "})?";
         else
             decimalExpr = "";
 
-        if (negativePos == null || negativePos.getValueIndex() == NegativePosLocation.BEFORE_SYMBOL)
+        if(negativePos == null || negativePos.getValueIndex() == NegativePosLocation.BEFORE_SYMBOL)
         {
             setRegExpr("^([-])?([\\" + currencySymbol + "])?([\\d]+)" + decimalExpr + "$");
             setDisplayPattern("s/^([-])?([\\" + currencySymbol +
-                    "])?([\\d]+)" + decimalExpr + "$/$1\\" + currencySymbol + "$3$4/g");
+                              "])?([\\d]+)" + decimalExpr + "$/$1\\" + currencySymbol + "$3$4/g");
             setSubmitPattern("s/" + "^([-])?([\\" + currencySymbol + "])?([\\d]+)" + decimalExpr +
-                    "$/$1$3$4/g");
+                             "$/$1$3$4/g");
             setInvalidRegExMessage("Currency values must have the format " +
-                    currencySymbol + "xxx.xx for positive values and " +
-                    "-" + currencySymbol + "xxx.xx for negative values. (decimals = " + decimalsRequired + ")");
+                                   currencySymbol + "xxx.xx for positive values and " +
+                                   "-" + currencySymbol + "xxx.xx for negative values. (decimals = " + decimalsRequired + ")");
         }
-        else if (negativePos.getValueIndex() == NegativePosLocation.AFTER_SYMBOL)
+        else if(negativePos.getValueIndex() == NegativePosLocation.AFTER_SYMBOL)
         {
             setRegExpr("^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$");
             setDisplayPattern("s/" + "^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$/\\" + currencySymbol + "$2$3/g");
             setSubmitPattern("s/" + "^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$" + "/$2$3/g");
             setInvalidRegExMessage("Currency values must have the format " +
-                    currencySymbol + "xxx.xx for positive values and " +
-                    currencySymbol + "-xxx.xx for negative values. (decimals = " + decimalsRequired + ")");
+                                   currencySymbol + "xxx.xx for positive values and " +
+                                   currencySymbol + "-xxx.xx for negative values. (decimals = " + decimalsRequired + ")");
         }
     }
 

@@ -99,7 +99,7 @@ public class DialogValidationContext extends BasicValidationContext
     {
         DialogFieldValue dfValue = (DialogFieldValue) key;
         DialogField parent = dfValue.getField().getParent();
-        if (parent != null)
+        if(parent != null)
         {
             DialogContext dc = getDialogContext();
             super.addError(dc.getFieldStates().getState(parent).getValue(), message);

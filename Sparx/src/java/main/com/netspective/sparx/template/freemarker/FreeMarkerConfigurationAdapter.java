@@ -75,7 +75,7 @@ public class FreeMarkerConfigurationAdapter
     public void setDefault(boolean defaultAdapter)
     {
         this.defaultAdapter = defaultAdapter;
-        if (defaultAdapter)
+        if(defaultAdapter)
             Configuration.setDefaultConfiguration(configuration);
     }
 
@@ -86,10 +86,10 @@ public class FreeMarkerConfigurationAdapter
 
     protected TemplateLoader getClassTemplateLoader()
     {
-        if (baseClass == null)
+        if(baseClass == null)
             return null;
 
-        if (baseClassPath == null)
+        if(baseClassPath == null)
             return new ClassTemplateLoader(baseClass);
 
         return new ClassTemplateLoader(baseClass, baseClassPath);
@@ -102,15 +102,15 @@ public class FreeMarkerConfigurationAdapter
 
         try
         {
-            if (baseDir != null)
+            if(baseDir != null)
                 tmplLoaders.add(new FileTemplateLoader(baseDir));
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             throw new NestableRuntimeException(e);
         }
 
-        if (baseClass != null)
+        if(baseClass != null)
             tmplLoaders.add(getClassTemplateLoader());
 
         TemplateLoader[] templateLoaders = (TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()]);

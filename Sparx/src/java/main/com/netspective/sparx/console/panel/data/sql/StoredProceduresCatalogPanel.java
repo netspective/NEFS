@@ -156,15 +156,15 @@ public class StoredProceduresCatalogPanel extends AbstractHtmlTabularReportPanel
 
             //TODO: this does not account for storedProcs that are not contained within a namespace
             Set sortedNamesSpaces = new TreeSet(storedProcs.getNameSpaceNames());
-            for (Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext();)
+            for(Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext();)
             {
                 String nameSpaceId = (String) nsi.next();
                 Set sortedQueryNamesInNameSpace = new TreeSet();
 
-                for (int i = 0; i < storedProcs.size(); i++)
+                for(int i = 0; i < storedProcs.size(); i++)
                 {
                     StoredProcedure sp = storedProcs.get(i);
-                    if (nameSpaceId.equals(sp.getNameSpace().getNameSpaceId()))
+                    if(nameSpaceId.equals(sp.getNameSpace().getNameSpaceId()))
                     {
                         sortedQueryNamesInNameSpace.add(sp.getQualifiedName());
                     }
@@ -184,7 +184,7 @@ public class StoredProceduresCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean isActiveRowSelected()
         {
-            if (activeRowStoredProc == null)
+            if(activeRowStoredProc == null)
                 return false;
 
             return activeRowStoredProc.getQualifiedName().equals(selectedStoredProcName);
@@ -220,7 +220,7 @@ public class StoredProceduresCatalogPanel extends AbstractHtmlTabularReportPanel
             activeRow = rowNum;
             String itemName = (String) rows.get(activeRow);
             activeRowStoredProc = storedProcs.get(itemName);
-            if (activeRowStoredProc == null)
+            if(activeRowStoredProc == null)
                 activeNameSpace = itemName;
             else
                 activeNameSpace = null;
@@ -228,7 +228,7 @@ public class StoredProceduresCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -237,9 +237,9 @@ public class StoredProceduresCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            if (activeNameSpace != null)
+            if(activeNameSpace != null)
             {
-                switch (columnIndex)
+                switch(columnIndex)
                 {
                     case 0:
                         return activeNameSpace;
@@ -249,18 +249,18 @@ public class StoredProceduresCatalogPanel extends AbstractHtmlTabularReportPanel
                 }
             }
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return reportValueContext.getSkin().constructRedirect(reportValueContext, spIdColumn.getRedirect(),
-                            activeRowStoredProc.getName(), activeRowStoredProc.getQualifiedName(), null);
+                                                                          activeRowStoredProc.getName(), activeRowStoredProc.getQualifiedName(), null);
 
                 case 1:
                     return activeRowStoredProc.getQualifiedName();
 
                 case 2:
                     return activeRowStoredProc.getParams() != null
-                            ? new Integer(activeRowStoredProc.getParams().size()) : null;
+                           ? new Integer(activeRowStoredProc.getParams().size()) : null;
 
                 case 3:
                 case 4:
@@ -272,7 +272,7 @@ public class StoredProceduresCatalogPanel extends AbstractHtmlTabularReportPanel
                     QueryExecutionLog execLog = activeRowStoredProc.getExecLog();
                     QueryExecutionLog.QueryExecutionStatistics stats = execLog.getStatistics();
 
-                    switch (columnIndex)
+                    switch(columnIndex)
                     {
                         case 3:
                             return stats.totalExecutions > 0 ? new Integer(stats.totalExecutions) : null;
@@ -282,7 +282,7 @@ public class StoredProceduresCatalogPanel extends AbstractHtmlTabularReportPanel
                             return stats.averageTotalExecTime > 0 ? new Long(stats.averageTotalExecTime) : null;
                         case 6:
                             return stats.averageConnectionEstablishTime > 0
-                                    ? new Long(stats.averageConnectionEstablishTime) : null;
+                                   ? new Long(stats.averageConnectionEstablishTime) : null;
                         case 7:
                             return stats.averageBindParamsTime > 0 ? new Long(stats.averageBindParamsTime) : null;
                         case 8:

@@ -48,11 +48,11 @@ public class RedirectCommand extends AbstractHttpServletCommand
     public static final String[] IDENTIFIERS = new String[]{"redirect"};
     public static final String IS_NAV_ID_FLAG = "IS_NAV_ID";
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Redirects the current page to another page via an URL.",
-            new CommandDocumentation.Parameter[]
-            {
-                new CommandDocumentation.Parameter("location", true, "The URL or navigation id."),
-                new CommandDocumentation.Parameter("flags", false, "Set to '" + IS_NAV_ID_FLAG + "' if the location is a Sparx navigation id.")
-            });
+                                                                                      new CommandDocumentation.Parameter[]
+                                                                                      {
+                                                                                          new CommandDocumentation.Parameter("location", true, "The URL or navigation id."),
+                                                                                          new CommandDocumentation.Parameter("flags", false, "Set to '" + IS_NAV_ID_FLAG + "' if the location is a Sparx navigation id.")
+                                                                                      });
 
     public static String[] getIdentifiers()
     {
@@ -75,10 +75,10 @@ public class RedirectCommand extends AbstractHttpServletCommand
     public String getParameters()
     {
         String result = location instanceof StaticValueSource ?
-                location.getTextValue(null) :
-                location.getSpecification().getSpecificationText();
+                        location.getTextValue(null) :
+                        location.getSpecification().getSpecificationText();
 
-        if (isNavId)
+        if(isNavId)
             return result + getParametersDelimiter() + IS_NAV_ID_FLAG;
         else
             return result;
@@ -86,12 +86,12 @@ public class RedirectCommand extends AbstractHttpServletCommand
 
     public void setParameters(StringTokenizer params)
     {
-        if (!params.hasMoreTokens())
+        if(!params.hasMoreTokens())
             throw new RuntimeException("Expected location");
 
         location = ValueSources.getInstance().getValueSourceOrStatic(params.nextToken());
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
             isNavId = params.nextToken().equals(IS_NAV_ID_FLAG);
     }
 

@@ -102,11 +102,11 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
         {
             super();
             antBuildDialog = (AntBuildDialog) nc.getRequest().getAttribute(AntBuildDialog.REQATTRPARAMNAME_ACTIVE_ANT_BUILD_DIALOG);
-            if (antBuildDialog == null)
+            if(antBuildDialog == null)
                 throw new RuntimeException("Unable to find console.ant-build dialog!");
 
             File projectFile = new File(antBuildDialog.getAntProject().getFile().getTextValue(nc));
-            if (!projectFile.exists())
+            if(!projectFile.exists())
             {
                 lastRowIndex = activeRowIndex;
                 return;
@@ -114,10 +114,10 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
 
             antProject = AntProject.getConfiguredProject(projectFile);
             Set sortedTargetNames = new TreeSet(antProject.getTargets().keySet());
-            for (Iterator i = sortedTargetNames.iterator(); i.hasNext();)
+            for(Iterator i = sortedTargetNames.iterator(); i.hasNext();)
             {
                 String targetName = (String) i.next();
-                if (!antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
+                if(!antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
                     continue;
                 targets.add(antProject.getTargets().get(targetName));
             }
@@ -137,11 +137,11 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return "<code>" + (isActiveTargetDefault()
-                            ? ("<b>" + activeTarget.getName() + "</b>") : activeTarget.getName()) + "</code>";
+                                       ? ("<b>" + activeTarget.getName() + "</b>") : activeTarget.getName()) + "</code>";
 
                 case 1:
                     return activeTarget.getDescription();
@@ -149,12 +149,12 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
                 case 2:
                     StringBuffer dep = new StringBuffer();
                     boolean first = true;
-                    for (Enumeration e = activeTarget.getDependencies(); e.hasMoreElements();)
+                    for(Enumeration e = activeTarget.getDependencies(); e.hasMoreElements();)
                     {
                         String targetName = e.nextElement().toString();
-                        if (!antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
+                        if(!antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
                             continue;
-                        if (!first)
+                        if(!first)
                             dep.append(", ");
                         dep.append(targetName);
                         first = false;
@@ -189,7 +189,7 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRowIndex + 1);

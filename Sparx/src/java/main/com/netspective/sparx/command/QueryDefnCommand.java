@@ -57,17 +57,17 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
     public static final String[] IDENTIFIERS = new String[]{"query-defn"};
 
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Displays results of a Query definition.",
-            new CommandDocumentation.Parameter[]
-            {
-                new CommandDocumentation.Parameter("query-defn-name", true, "The fully qualified name of the Query Definition."),
-                new CommandDocumentation.Parameter("query-defn-select-id", false, "The name of the query definition select or '-' for the standard query builder dialog."),
-                new CommandDocumentation.Parameter("query-defn-select-dialog-id", false, "The name of a specific query definition select dialog or '-' for the standard query builder dialog."),
-                new CommandDocumentation.Parameter("report-id", false, "The name of a specific report element in the query definition select or '-' for the default report-id."),
-                new CommandDocumentation.Parameter("rows-per-page", false, "-", "The number of rows per page to display ('-' means single page, any other number means a pageable report."),
-                new QueryCommand.SkinParameter(),
-                new CommandDocumentation.Parameter("url-formats", false, "The url-formats parameter is one or more " +
-            "semicolon-separated URL formats that may override those within a report."),
-            });
+                                                                                      new CommandDocumentation.Parameter[]
+                                                                                      {
+                                                                                          new CommandDocumentation.Parameter("query-defn-name", true, "The fully qualified name of the Query Definition."),
+                                                                                          new CommandDocumentation.Parameter("query-defn-select-id", false, "The name of the query definition select or '-' for the standard query builder dialog."),
+                                                                                          new CommandDocumentation.Parameter("query-defn-select-dialog-id", false, "The name of a specific query definition select dialog or '-' for the standard query builder dialog."),
+                                                                                          new CommandDocumentation.Parameter("report-id", false, "The name of a specific report element in the query definition select or '-' for the default report-id."),
+                                                                                          new CommandDocumentation.Parameter("rows-per-page", false, "-", "The number of rows per page to display ('-' means single page, any other number means a pageable report."),
+                                                                                          new QueryCommand.SkinParameter(),
+                                                                                          new CommandDocumentation.Parameter("url-formats", false, "The url-formats parameter is one or more " +
+                                                                                                                                                   "semicolon-separated URL formats that may override those within a report."),
+                                                                                      });
     public static final int MAXIMUM_CONDITIONS = 5;
 
     public static String[] getIdentifiers()
@@ -93,37 +93,37 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
     {
         queryDefnName = params.nextToken();
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             queryDefnSelectName = params.nextToken();
-            if (queryDefnSelectName.length() == 0 || queryDefnSelectName.equals(PARAMVALUE_DEFAULT))
+            if(queryDefnSelectName.length() == 0 || queryDefnSelectName.equals(PARAMVALUE_DEFAULT))
                 queryDefnSelectName = null;
         }
         else
             queryDefnSelectName = null;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             queryDefnSelectDialogName = params.nextToken();
-            if (queryDefnSelectDialogName.length() == 0 || queryDefnSelectDialogName.equals(PARAMVALUE_DEFAULT))
+            if(queryDefnSelectDialogName.length() == 0 || queryDefnSelectDialogName.equals(PARAMVALUE_DEFAULT))
                 queryDefnSelectDialogName = null;
         }
         else
             queryDefnSelectDialogName = null;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             reportId = params.nextToken();
-            if (reportId.length() == 0 || reportId.equals(PARAMVALUE_DEFAULT))
+            if(reportId.length() == 0 || reportId.equals(PARAMVALUE_DEFAULT))
                 reportId = null;
         }
         else
             reportId = null;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             String rowsPerPageStr = params.nextToken();
-            if (rowsPerPageStr.length() == 0 || rowsPerPageStr.equals(PARAMVALUE_DEFAULT))
+            if(rowsPerPageStr.length() == 0 || rowsPerPageStr.equals(PARAMVALUE_DEFAULT))
                 rowsPerPage = UNLIMITED_ROWS;
             else
                 rowsPerPage = Integer.parseInt(rowsPerPageStr);
@@ -131,28 +131,28 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
         else
             rowsPerPage = UNLIMITED_ROWS;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             reportSkinName = params.nextToken();
-            if (reportSkinName.length() == 0 || reportSkinName.equals(PARAMVALUE_DEFAULT))
+            if(reportSkinName.length() == 0 || reportSkinName.equals(PARAMVALUE_DEFAULT))
                 reportSkinName = null;
         }
         else
             reportSkinName = null;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             String urlFormatsStr = params.nextToken();
-            if (urlFormatsStr.length() == 0 || urlFormatsStr.equals(PARAMVALUE_DEFAULT))
+            if(urlFormatsStr.length() == 0 || urlFormatsStr.equals(PARAMVALUE_DEFAULT))
                 setUrlFormats(null);
             else
             {
                 StringTokenizer urlFmtTokenizer = new StringTokenizer(urlFormatsStr, ";");
                 List urlFormatsList = new ArrayList();
-                while (urlFmtTokenizer.hasMoreTokens())
+                while(urlFmtTokenizer.hasMoreTokens())
                 {
                     String urlFormat = urlFmtTokenizer.nextToken();
-                    if (urlFormat.length() == 0 || urlFormat.equals(PARAMVALUE_DEFAULT))
+                    if(urlFormat.length() == 0 || urlFormat.equals(PARAMVALUE_DEFAULT))
                         urlFormatsList.add(null);
                     else
                         urlFormatsList.add(urlFormat);
@@ -209,11 +209,11 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
         sb.append(delim);
         sb.append(reportSkinName != null ? reportSkinName : PARAMVALUE_DEFAULT);
         sb.append(delim);
-        if (urlFormats != null)
+        if(urlFormats != null)
         {
-            for (int i = 0; i < urlFormats.length; i++)
+            for(int i = 0; i < urlFormats.length; i++)
             {
-                if (i > 0) sb.append(";");
+                if(i > 0) sb.append(";");
                 sb.append(urlFormats[i]);
             }
         }
@@ -226,16 +226,16 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
     {
         // get the registered query definition
         com.netspective.sparx.sql.QueryDefinition queryDefn = (com.netspective.sparx.sql.QueryDefinition) sqlManager.getQueryDefinition(queryDefnName, true);
-        if (queryDefn == null)
+        if(queryDefn == null)
         {
             writer.write("Query definition " + queryDefnName + " not found.");
             return null;
         }
         QueryBuilderDialog result = null;
-        if (queryDefnSelectDialogName != null && !queryDefnSelectDialogName.equals(PARAMVALUE_DEFAULT))
+        if(queryDefnSelectDialogName != null && !queryDefnSelectDialogName.equals(PARAMVALUE_DEFAULT))
         {
             result = queryDefn.getPresentation().getSelectDialog(queryDefnSelectDialogName);
-            if (result == null)
+            if(result == null)
             {
                 writer.write("Query select dialog '" + queryDefnSelectDialogName + "' not found.");
                 return null;
@@ -260,7 +260,7 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
         SqlManager sqlManager = dc.getSqlManager();
         Theme theme = dc.getActiveTheme();
         QueryBuilderDialog dialog = createQueryDefnDialog(writer, sqlManager, theme);
-        if (dialog != null)
+        if(dialog != null)
             dialog.render(writer, dc.getNavigationContext(), theme, HtmlPanel.RENDERFLAGS_DEFAULT);
     }
 
@@ -269,7 +269,7 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
         SqlManager sqlManager = nc.getSqlManager();
         Theme theme = nc.getActiveTheme();
         QueryBuilderDialog dialog = createQueryDefnDialog(writer, sqlManager, theme);
-        if (dialog != null)
+        if(dialog != null)
             dialog.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
     }
 }

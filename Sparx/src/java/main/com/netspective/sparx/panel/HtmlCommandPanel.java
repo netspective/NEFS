@@ -98,8 +98,6 @@ public class HtmlCommandPanel extends AbstractPanel
     /**
      * A value source that will be evaluated and the result of the evaluation will be treated as a command
      * specification. This method allows the actual command that will be executed to be dynamic.
-     *
-     * @param commandExpr
      */
     public void setCommandExpr(ValueSource commandExpr)
     {
@@ -113,16 +111,14 @@ public class HtmlCommandPanel extends AbstractPanel
      * @param nc     the navigation context in which the panel is being used
      * @param theme  current theme
      * @param flags  the panel flags
-     *
-     * @throws IOException
      */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         ValueSource commandExpr = getCommandExpr();
-        if (commandExpr != null)
+        if(commandExpr != null)
         {
             String commandText = commandExpr.getTextValue(nc);
-            if (commandText != null)
+            if(commandText != null)
             {
                 try
                 {
@@ -130,7 +126,7 @@ public class HtmlCommandPanel extends AbstractPanel
                     httpCommand.handleCommand(writer, nc, false);
                     return;
                 }
-                catch (CommandException e)
+                catch(CommandException e)
                 {
                     log.error("Command error in " + this.getClass().getName(), e);
                     throw new NestableRuntimeException(e);
@@ -141,7 +137,7 @@ public class HtmlCommandPanel extends AbstractPanel
         // if we get to here, we don't have an expression or the expression returned null so see if we have static
         // command supplied
 
-        if (command == null)
+        if(command == null)
         {
             writer.write("No command provided.");
             return;
@@ -151,7 +147,7 @@ public class HtmlCommandPanel extends AbstractPanel
         {
             ((HttpServletCommand) command).handleCommand(writer, nc, false);
         }
-        catch (CommandException e)
+        catch(CommandException e)
         {
             log.error("Command error in " + this.getClass().getName(), e);
             throw new NestableRuntimeException(e);
@@ -165,16 +161,14 @@ public class HtmlCommandPanel extends AbstractPanel
      * @param dc     Dialog context in which the panel is being used
      * @param theme  Current theme
      * @param flags  Panel flags
-     *
-     * @throws IOException
      */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
         ValueSource commandExpr = getCommandExpr();
-        if (commandExpr != null)
+        if(commandExpr != null)
         {
             String commandText = commandExpr.getTextValue(dc);
-            if (commandText != null)
+            if(commandText != null)
             {
                 try
                 {
@@ -182,7 +176,7 @@ public class HtmlCommandPanel extends AbstractPanel
                     httpCommand.handleCommand(writer, dc, false);
                     return;
                 }
-                catch (CommandException e)
+                catch(CommandException e)
                 {
                     log.error("Command error in " + this.getClass().getName(), e);
                     throw new NestableRuntimeException(e);
@@ -190,7 +184,7 @@ public class HtmlCommandPanel extends AbstractPanel
             }
         }
 
-        if (command == null)
+        if(command == null)
         {
             writer.write("No command provided.");
             return;
@@ -200,7 +194,7 @@ public class HtmlCommandPanel extends AbstractPanel
         {
             ((HttpServletCommand) command).handleCommand(writer, dc, false);
         }
-        catch (CommandException e)
+        catch(CommandException e)
         {
             log.error("Command error in " + this.getClass().getName(), e);
             throw new NestableRuntimeException(e);

@@ -55,14 +55,14 @@ public abstract class QueryDetailPanel extends AbstractHtmlTabularReportPanel
         {
             this.queryName = queryName;
 
-            if (queryName == null)
+            if(queryName == null)
             {
                 dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(noQueryParamAvailSource);
                 return;
             }
 
             query = queries.get(queryName);
-            if (query == null)
+            if(query == null)
                 dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Query '" + queryName + "' not found.");
         }
 
@@ -85,9 +85,9 @@ public abstract class QueryDetailPanel extends AbstractHtmlTabularReportPanel
     public SelectedQuery getSelectedQuery(NavigationContext nc)
     {
         String name = (String) nc.getHttpRequest().getAttribute(REQPARAMNAME_QUERY);
-        if (name == null)
+        if(name == null)
             name = nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY);
-        if (name != null)
+        if(name != null)
             return new SelectedQuery(nc.getSqlManager().getQueries(), name);
         else
             return null;

@@ -145,23 +145,21 @@ public class BooleanField extends DialogField
              * a -1 integer value is used.
              *
              * @param value a numeric text
-             *
-             * @throws ValueException
              */
             public void setTextValue(String value) throws ValueException
             {
                 // TODO: convert the neither value to a constant
-                if (value == null || value.length() == 0)
+                if(value == null || value.length() == 0)
                 {
                     // the 'neither' value is the default if the style allows it
-                    if (allowNeither())
+                    if(allowNeither())
                         setValue(new Integer(2));
                     else
                         setValue(new Integer(-1));
                 }
                 else
                 {
-                    if (allowNeither() && value.equals("2"))
+                    if(allowNeither() && value.equals("2"))
                     {
                         setValue(new Integer(2));
                     }
@@ -190,12 +188,10 @@ public class BooleanField extends DialogField
 
             /**
              * Checks to seee if the value is neither true nor false
-             *
-             * @return
              */
             public boolean isNeither()
             {
-                if (allowNeither())
+                if(allowNeither())
                 {
                     Integer value = (Integer) getValue();
                     return value == null ? false : (value.intValue() == 2 ? true : false);
@@ -206,14 +202,12 @@ public class BooleanField extends DialogField
             /**
              * Check to see if the field's style allows a value to indicate neither
              * true nor false.
-             *
-             * @return
              */
             public boolean allowNeither()
             {
                 BooleanField booleanField = (BooleanField) getField();
-                if (booleanField.getStyle().getValueIndex() == Style.RADIO &&
-                        booleanField.getNoneText() != null)
+                if(booleanField.getStyle().getValueIndex() == Style.RADIO &&
+                   booleanField.getNoneText() != null)
                 {
                     // the radio buttons have a third option aside from true/false
                     return true;
@@ -325,7 +319,7 @@ public class BooleanField extends DialogField
 
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-        if (isInputHidden(dc))
+        if(isInputHidden(dc))
         {
             writer.write(getHiddenControlHtml(dc));
             return;
@@ -340,53 +334,57 @@ public class BooleanField extends DialogField
         String strValue = value == -1 ? "" : Integer.toString(value);
         String boolValueCaption = value == -1 ? "" : (value == 1 ? trueTextStr : falseTextStr);
 
-        if (isReadOnly(dc))
+        if(isReadOnly(dc))
         {
-            if (this.noneText == null)
+            if(this.noneText == null)
             {
                 writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value='" + (strValue != null
-                        ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" + (value == 1
-                        ? trueTextStr : falseTextStr) + "</span>");
+                                                                                                     ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" + (value == 1
+                                                                                                                                                                      ? trueTextStr
+                                                                                                                                                                      : falseTextStr) + "</span>");
             }
             else
             {
                 writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value='" +
-                        (strValue != null ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" +
-                        boolValueCaption +
-                        "</span>");
+                             (strValue != null ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" +
+                             boolValueCaption +
+                             "</span>");
             }
             return;
         }
 
         String id = getHtmlFormControlId();
         String defaultControlAttrs = dc.getSkin().getDefaultControlAttrs();
-        switch (style.getValueIndex())
+        switch(style.getValueIndex())
         {
             case Style.RADIO:
                 // according to HTML 4.01 spec:
                 // At all times, exactly one of the radio buttons in a set is checked. If none of the <INPUT>
                 // elements of a set of radio buttons specifies `CHECKED', then the user agent must check the first
                 // radio button of the set initially.
-                if (bfValue.allowNeither())
+                if(bfValue.allowNeither())
                 {
                     String[] val = {"", "", ""};
                     setChecked(strValue, val);
                     writer.write("<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + val[0] + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
-                            "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + val[1] + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr> " +
-                            "<nobr><input type='radio' name='" + id + "' id='" + id + "2' value='2' " + val[2] + defaultControlAttrs + "> <label for='" + id + "2'>" + noneTextStr + "</label></nobr>");
+                                 "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + val[1] + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr> " +
+                                 "<nobr><input type='radio' name='" + id + "' id='" + id + "2' value='2' " + val[2] + defaultControlAttrs + "> <label for='" + id + "2'>" + noneTextStr + "</label></nobr>");
                 }
                 else
                 {
                     writer.write("<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + (bfValue.getBoolValue() == false
-                            ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
-                            "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + (bfValue.getBoolValue() == true
-                            ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr>");
+                                                                                                              ? "checked "
+                                                                                                              : "") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
+                                 "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + (bfValue.getBoolValue() == true
+                                                                                                              ? "checked "
+                                                                                                              : "") + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr>");
                 }
                 break;
 
             case Style.CHECK:
                 writer.write("<nobr><input type='checkbox' name='" + id + "' id='" + id + "' value='1' " + (value == 1
-                        ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "'>" + getCheckLabel().getTextValue(dc) + "</label></nobr>");
+                                                                                                            ? "checked "
+                                                                                                            : "") + defaultControlAttrs + "> <label for='" + id + "'>" + getCheckLabel().getTextValue(dc) + "</label></nobr>");
                 break;
 
             case Style.CHECKALONE:
@@ -395,9 +393,9 @@ public class BooleanField extends DialogField
 
             case Style.COMBO:
                 writer.write("<select name='" + id + "' " + defaultControlAttrs + ">" +
-                        "<option " + (value == 0 ? "" : "selected") + " value='0'>" + falseTextStr + "</option>" +
-                        "<option " + (value == 1 ? "selected" : "") + " value='1'>" + trueTextStr + "</option>" +
-                        "</select>");
+                             "<option " + (value == 0 ? "" : "selected") + " value='0'>" + falseTextStr + "</option>" +
+                             "<option " + (value == 1 ? "selected" : "") + " value='1'>" + trueTextStr + "</option>" +
+                             "</select>");
                 break;
 
             default:
@@ -408,14 +406,14 @@ public class BooleanField extends DialogField
     private void setChecked(String strValue, String[] val)
     {
         int index;
-        if (strValue != null)
+        if(strValue != null)
         {
             try
             {
                 index = Integer.parseInt(strValue);
                 val[index] = " checked ";
             }
-            catch (NumberFormatException e)
+            catch(NumberFormatException e)
             {
             }
         }

@@ -45,7 +45,7 @@ public class SchemaRecordEditorDialogFlags extends DialogFlags
 
     static
     {
-        for (int i = 0; i < DialogFlags.FLAG_DEFNS.length; i++)
+        for(int i = 0; i < DialogFlags.FLAG_DEFNS.length; i++)
             TABLE_DIALOG_FLAG_DEFNS[i] = DialogFlags.FLAG_DEFNS[i];
         TABLE_DIALOG_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND", ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND);
         TABLE_DIALOG_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "DONT_POPULATE_USING_REQUEST_PARAMS", DONT_POPULATE_USING_REQUEST_PARAMS);

@@ -113,7 +113,7 @@ public class NavigationPageTransformBodyHandler extends NavigationPageBodyDefaul
         {
             transform.render(writer, nc, null, null, writeErrorsToOutput);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new ServletException(e);
         }

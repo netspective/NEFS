@@ -42,7 +42,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
  * Dialog state class for the query builder dialog and its child classes.
  *
  * @author Aye Thu
- * @version $Id: QueryBuilderDialogState.java,v 1.2 2004-08-15 01:47:08 shahid.shah Exp $
+ * @version $Id: QueryBuilderDialogState.java,v 1.3 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class QueryBuilderDialogState extends DialogState
 {
@@ -62,7 +62,7 @@ public class QueryBuilderDialogState extends DialogState
         HtmlTabularReportDataSourceScrollStates scrollStatesManager = vc.getProject().getScrollStates();
         HtmlTabularReportDataSourceScrollState scrollStateById =
                 scrollStatesManager.getScrollStateByDialogTransactionId(vc, getIdentifier());
-        if (scrollStateById != null)
+        if(scrollStateById != null)
             scrollStatesManager.removeActiveState(vc, scrollStateById);
     }
 }

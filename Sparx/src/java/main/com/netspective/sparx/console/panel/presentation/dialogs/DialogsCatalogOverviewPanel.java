@@ -115,10 +115,10 @@ public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            if (activeNameSpace != null)
+            if(activeNameSpace != null)
                 return super.getActiveRowColumnData(columnIndex, flags);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:
@@ -127,22 +127,22 @@ public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
 
                 case 3:
                     return activeRowDialog.getFrame().getHeading() != null && activeRowDialog.getFrame().getHeading() != ValueSource.NULL_VALUE_SOURCE ?
-                            activeRowDialog.getFrame().getHeading().getSpecification() :
-                            null;
+                           activeRowDialog.getFrame().getHeading().getSpecification() :
+                           null;
 
                 case 4:
                     return activeRowDialog.getFields() != null
-                            ? new Integer(activeRowDialog.getFields().totalSize()) : null;
+                           ? new Integer(activeRowDialog.getFields().totalSize()) : null;
 
                 case 5:
                     return activeRowDialog.getLoop().getValue();
 
                 case 6:
                     return activeRowDialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS)
-                            ?
-                            "ALL"
-                            :
-                            (activeRowDialog.getRetainParams() != null
+                           ?
+                           "ALL"
+                           :
+                           (activeRowDialog.getRetainParams() != null
                             ? TextUtils.getInstance().join(activeRowDialog.getRetainParams(), ", ") : null);
 
                 case 7:

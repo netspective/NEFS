@@ -94,28 +94,28 @@ public class SparxTask extends AxiomTask
 
     public boolean generateDialogContextBeans(DialogsManager dialogsManager) throws BuildException
     {
-        if (getDestDir() != null || dcbPackage != null)
+        if(getDestDir() != null || dcbPackage != null)
         {
-            if (getDestDir() == null || dcbPackage == null)
+            if(getDestDir() == null || dcbPackage == null)
                 throw new BuildException("dcbPackage is required to generate dialog context beans.");
 
-            if (isCleanFirst())
+            if(isCleanFirst())
                 delete(new File(getDestDir(), dcbPackage.replace('.', '/')));
 
             try
             {
                 Dialogs dialogs = dialogsManager.getDialogs();
-                for (int i = 0; i < dialogs.size(); i++)
+                for(int i = 0; i < dialogs.size(); i++)
                 {
                     Dialog dialog = dialogs.get(i);
-                    if (dialog.getQualifiedName().startsWith(ConsoleServlet.CONSOLE_ID))
+                    if(dialog.getQualifiedName().startsWith(ConsoleServlet.CONSOLE_ID))
                         continue;
 
-                    if (dialog.getDialogFlags().flagIsSet(DialogFlags.GENERATE_DCB))
+                    if(dialog.getDialogFlags().flagIsSet(DialogFlags.GENERATE_DCB))
                         dialog.generateDialogContextBean(getDestDir(), dcbPackage);
                 }
             }
-            catch (IOException e)
+            catch(IOException e)
             {
                 throw new BuildException(e);
             }

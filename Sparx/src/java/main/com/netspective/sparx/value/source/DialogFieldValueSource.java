@@ -51,10 +51,10 @@ public class DialogFieldValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"field", "dialog-field"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides access to a specific field of a dialog.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("field-name", true, "The name of the field.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("field-name", true, "The name of the field.")
+                                                                                              });
 
     private String fieldName;
     private ServletRequestParameterValueSource servletRequestParameterValueSource;
@@ -89,23 +89,23 @@ public class DialogFieldValueSource extends AbstractValueSource
 
     public Value getValue(final ValueContext vc)
     {
-        if (vc instanceof DialogContext)
+        if(vc instanceof DialogContext)
         {
             return ((DialogContext) vc).getFieldStates().getState(fieldName).getValue();
         }
         else
         {
-            if (vc instanceof ConnectionContext)
+            if(vc instanceof ConnectionContext)
             {
                 DatabaseConnValueContext databaseValueContext = ((ConnectionContext) vc).getDatabaseValueContext();
-                if (databaseValueContext instanceof DialogContext)
+                if(databaseValueContext instanceof DialogContext)
                     return ((DialogContext) databaseValueContext).getFieldStates().getState(fieldName).getValue();
                 else
                 {
                     ServletValueContext svc = (ServletValueContext) databaseValueContext;
                     ServletRequest request = svc.getRequest();
                     DialogContext dc = (DialogContext) request.getAttribute(DialogContext.DIALOG_CONTEXT_ATTR_NAME);
-                    if (dc != null)
+                    if(dc != null)
                         return dc.getFieldStates().getState(fieldName).getValue();
                     else
                         return servletRequestParameterValueSource.getValue(vc);
@@ -115,7 +115,7 @@ public class DialogFieldValueSource extends AbstractValueSource
             {
                 ServletRequest request = ((ServletValueContext) vc).getRequest();
                 DialogContext dc = (DialogContext) request.getAttribute(DialogContext.DIALOG_CONTEXT_ATTR_NAME);
-                if (dc != null)
+                if(dc != null)
                     return dc.getFieldStates().getState(fieldName).getValue();
                 else
                     return servletRequestParameterValueSource.getValue(vc);

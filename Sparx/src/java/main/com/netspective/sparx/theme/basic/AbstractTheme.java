@@ -120,14 +120,12 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
      *
      * @param themeName   the name of the theme
      * @param relativeUrl the relative URL of the resource with respect to the theme's location
-     *
-     * @return
      */
     protected String getResourceUrlWithThemePrefix(final String themeName, final String relativeUrl)
     {
         StringBuffer themeRelativeUrlBuf = new StringBuffer("theme/");
         themeRelativeUrlBuf.append(themeName);
-        if (!relativeUrl.startsWith("/"))
+        if(!relativeUrl.startsWith("/"))
             themeRelativeUrlBuf.append('/');
         themeRelativeUrlBuf.append(relativeUrl);
         return themeRelativeUrlBuf.toString();
@@ -135,16 +133,12 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
 
     /**
      * Gets the URL of the resource  related to the theme
-     *
-     * @param relativeUrl
-     *
-     * @return
      */
     public String getResourceUrl(final String relativeUrl)
     {
         String themeRelativeUrl = getResourceUrlWithThemePrefix(name, relativeUrl);
 
-        if (resourceLocator == null)
+        if(resourceLocator == null)
         {
             System.err.println("No resource locator set for theme " + this);
             return themeRelativeUrl;
@@ -153,23 +147,23 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         try
         {
             UriAddressableFile resource = resourceLocator.findUriAddressableFile(themeRelativeUrl);
-            if (resource != null)
+            if(resource != null)
                 return resource.getUrl();
 
-            for (int i = 0; i < inheritResourcesFromThemes.length; i++)
+            for(int i = 0; i < inheritResourcesFromThemes.length; i++)
             {
                 resource = resourceLocator.findUriAddressableFile(getResourceUrlWithThemePrefix(inheritResourcesFromThemes[i], relativeUrl));
-                if (resource != null)
+                if(resource != null)
                     return resource.getUrl();
             }
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             log.error("Unable to retrieve resource information for URL " + themeRelativeUrl, e);
             return themeRelativeUrl;
         }
 
-        if (log.isWarnEnabled()) log.warn("Resource '" + themeRelativeUrl + "' not located in resource locator " + resourceLocator);
+        if(log.isWarnEnabled()) log.warn("Resource '" + themeRelativeUrl + "' not located in resource locator " + resourceLocator);
         return themeRelativeUrl;
     }
 
@@ -183,7 +177,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
      */
     public String getResourceUrl(final String relativeUrl, final String defaultUrl)
     {
-        if (resourceLocator == null)
+        if(resourceLocator == null)
         {
             System.err.println("No resource locator set for theme " + this);
             return defaultUrl;
@@ -194,17 +188,17 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
             String themeRelativeUrl = getResourceUrlWithThemePrefix(name, relativeUrl);
 
             UriAddressableFile resource = resourceLocator.findUriAddressableFile(themeRelativeUrl);
-            if (resource != null)
+            if(resource != null)
                 return resource.getUrl();
 
-            for (int i = 0; i < inheritResourcesFromThemes.length; i++)
+            for(int i = 0; i < inheritResourcesFromThemes.length; i++)
             {
                 resource = resourceLocator.findUriAddressableFile(getResourceUrlWithThemePrefix(inheritResourcesFromThemes[i], relativeUrl));
-                if (resource != null)
+                if(resource != null)
                     return resource.getUrl();
             }
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             return defaultUrl;
         }
@@ -231,9 +225,9 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     {
         List themeNamesList = new ArrayList();
         String[] themeNames = TextUtils.getInstance().split(delimitedThemeNames, ",", true);
-        for (int i = 0; i < themeNames.length; i++)
+        for(int i = 0; i < themeNames.length; i++)
             themeNamesList.add(themeNames[i]);
-        for (int i = 0; i < inheritResourcesFromThemes.length; i++)
+        for(int i = 0; i < inheritResourcesFromThemes.length; i++)
             themeNamesList.add(inheritResourcesFromThemes[i]);
         inheritResourcesFromThemes = (String[]) themeNamesList.toArray(new String[themeNamesList.size()]);
     }
@@ -312,8 +306,6 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
 
     /**
      * Gets a tabbed html panel skin
-     *
-     * @return
      */
     public HtmlPanelSkin getTabbedPanelSkin()
     {
@@ -322,8 +314,6 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
 
     /**
      * Gets a template panel skin
-     *
-     * @return
      */
     public HtmlPanelSkin getTemplatePanelSkin()
     {
@@ -377,8 +367,6 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
 
     /**
      * Gets the login dialog skin
-     *
-     * @return
      */
     public LoginDialogSkin getLoginDialogSkin()
     {
@@ -416,14 +404,12 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     {
         skin.setTheme(this);
         dialogSkins.put(skin.getName(), skin);
-        if (skin.isDefault())
+        if(skin.isDefault())
             defaultDialogSkin = skin;
     }
 
     /**
      * Creates a new navigation skin. This class implementation returns a null.
-     *
-     * @return
      */
     public NavigationSkin createNavigationSkin()
     {
@@ -440,7 +426,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     {
         skin.setTheme(this);
         navigationSkins.put(skin.getName(), skin);
-        if (skin.isDefault())
+        if(skin.isDefault())
             defaultNavigationSkin = skin;
     }
 
@@ -464,7 +450,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     {
         skin.setTheme(this);
         tabularReportSkins.put(skin.getName(), skin);
-        if (skin.isDefault())
+        if(skin.isDefault())
             defaultReportSkin = skin;
     }
 
@@ -505,8 +491,6 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
 
     /**
      * Sets the default flag of the theme
-     *
-     * @param defaultTheme
      */
     public void setDefault(boolean defaultTheme)
     {

@@ -90,7 +90,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.73 2004-08-15 01:47:09 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.74 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -104,7 +104,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     static
     {
-        for (int i = 0; i < NavigationPathFlags.FLAG_DEFNS.length; i++)
+        for(int i = 0; i < NavigationPathFlags.FLAG_DEFNS.length; i++)
             PAGE_FLAG_DEFNS[i] = NavigationPathFlags.FLAG_DEFNS[i];
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "REQUIRE_LOGIN", Flags.REQUIRE_LOGIN);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "STATIC", Flags.STATIC_CONTENT);
@@ -184,32 +184,26 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
         /**
          * Clears the passed in flag
-         *
-         * @param flag
          */
         public void clearFlag(long flag)
         {
             super.clearFlag(flag);
-            if ((flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
+            if((flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
                 clearFlagRecursively(flag);
         }
 
         /**
          * Sets the passed in flag
-         *
-         * @param flag
          */
         public void setFlag(long flag)
         {
             super.setFlag(flag);
-            if ((flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
+            if((flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
                 setFlagRecursively(flag);
         }
 
         /**
          * Checks to see if the page is in popup mode
-         *
-         * @return
          */
         public boolean isPopup()
         {
@@ -218,8 +212,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
         /**
          * Checks to see if page is in hidden mode
-         *
-         * @return
          */
         public boolean isHidden()
         {
@@ -228,8 +220,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
         /**
          * Checks to see if page is in hidden mode
-         *
-         * @return
          */
         public boolean isHiddenUnlessActive()
         {
@@ -238,8 +228,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
         /**
          * Checks to see if page is in reject focus mode
-         *
-         * @return
          */
         public boolean isRejectFocus()
         {
@@ -254,8 +242,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         /**
          * Checks to see if page's XML source is allowed to be viewed. This method is mainly used for
          * display page XML source for tutorial purposes.
-         *
-         * @return
          */
         public boolean isAllowViewSource()
         {
@@ -325,9 +311,9 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public void addListener(NavigationPathListener listener)
     {
         super.addListener(listener);
-        if (listener instanceof NavigationPageEnterListener)
+        if(listener instanceof NavigationPageEnterListener)
             enterListeners.add(listener);
-        else if (listener instanceof NavigationPageExitListener)
+        else if(listener instanceof NavigationPageExitListener)
             exitListeners.add(listener);
     }
 
@@ -335,7 +321,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
     {
-        if (templateConsumer == null)
+        if(templateConsumer == null)
             templateConsumer = new PageTypeTemplateConsumerDefn();
         return templateConsumer;
     }
@@ -355,7 +341,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     public NavigationPage createPage(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (NavigationPage.class.isAssignableFrom(cls))
+        if(NavigationPage.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[]{NavigationTree.class});
             NavigationPage result = (NavigationPage) c.newInstance(new Object[]{getOwner()});
@@ -368,8 +354,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Adds a child page
-     *
-     * @param page
      */
     public void addPage(NavigationPage page)
     {
@@ -378,8 +362,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Creates a default navigation error page
-     *
-     * @return
      */
     public NavigationErrorPage createErrorPage()
     {
@@ -390,17 +372,10 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      * Creates a custom navigation error page
      *
      * @param cls The custom error page class
-     *
-     * @return
-     *
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
     public NavigationErrorPage createErrorPage(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (NavigationErrorPage.class.isAssignableFrom(cls))
+        if(NavigationErrorPage.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[]{NavigationTree.class});
             return (NavigationErrorPage) c.newInstance(new Object[]{getOwner()});
@@ -411,34 +386,28 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Registers the error page to all pages related to the current page such as the parent and owner of this page
-     *
-     * @param errorPage
      */
     public void registerErrorPage(NavigationErrorPage errorPage)
     {
         errorPageDescendantsByQualifiedName.put(errorPage.getQualifiedName(), errorPage);
-        if (getParent() != null)
+        if(getParent() != null)
             ((NavigationPage) getParent()).registerErrorPage(errorPage);
         getOwner().registerErrorPage(errorPage);
     }
 
     /**
      * Unregisters the error page from all pages related to the current page such as the parent and owner of this page
-     *
-     * @param errorPage
      */
     public void unregisterErrorPage(NavigationErrorPage errorPage)
     {
         errorPageDescendantsByQualifiedName.remove(errorPage.getQualifiedName());
-        if (getParent() != null)
+        if(getParent() != null)
             ((NavigationPage) getParent()).unregisterErrorPage(errorPage);
         getOwner().unregisterErrorPage(errorPage);
     }
 
     /**
      * Returns a list of error pages defined for this page
-     *
-     * @return
      */
     public List getErrorPagesList()
     {
@@ -447,8 +416,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Returns a map of error pages defined for this page
-     *
-     * @return
      */
     public Map getErrorPagesMap()
     {
@@ -457,8 +424,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Adds and registers an error page to the list of error pages defined for this page.
-     *
-     * @param errorPage
      */
     public void addErrorPage(NavigationErrorPage errorPage)
     {
@@ -470,8 +435,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Removes abd ubnregisters an error page to the list of error pages defined for this page.
-     *
-     * @param errorPage
      */
     public void removeErrorPage(NavigationErrorPage errorPage)
     {
@@ -493,41 +456,41 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      */
     public boolean findErrorPage(NavigationContext nc, Throwable t)
     {
-        if (t instanceof ServletException)
+        if(t instanceof ServletException)
         {
             ServletException se = (ServletException) t;
             Throwable rootCause = se.getRootCause();
-            if (rootCause != null)
+            if(rootCause != null)
             {
-                if (findErrorPage(nc, rootCause))
+                if(findErrorPage(nc, rootCause))
                     return true;
             }
         }
 
         // if we're dealing with a nested exception, check to see if one of the nested exceptions is something we
         // need to handle
-        if (t instanceof NestableException)
+        if(t instanceof NestableException)
         {
             NestableException ne = (NestableException) t;
             Throwable[] throwables = ne.getThrowables();
-            for (int i = 0; i < throwables.length; i++)
+            for(int i = 0; i < throwables.length; i++)
             {
                 Throwable nestedException = throwables[i];
-                if (t.getClass() == nestedException.getClass()) // don't get stuck in an infinite loop
+                if(t.getClass() == nestedException.getClass()) // don't get stuck in an infinite loop
                     continue;
 
-                if (findErrorPage(nc, nestedException))
+                if(findErrorPage(nc, nestedException))
                     return true;
             }
         }
 
         Class exceptionClass = t.getClass();
-        while (exceptionClass != null)
+        while(exceptionClass != null)
         {
-            for (int i = 0; i < errorPagesList.size(); i++)
+            for(int i = 0; i < errorPagesList.size(); i++)
             {
                 NavigationErrorPage errorPage = (NavigationErrorPage) errorPagesList.get(i);
-                if (errorPage.canHandle(t, false) || errorPage.canHandle(exceptionClass, false))
+                if(errorPage.canHandle(t, false) || errorPage.canHandle(exceptionClass, false))
                 {
                     nc.setErrorPageException(errorPage, t, exceptionClass);
                     return true;
@@ -535,10 +498,10 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
                 // check if we can handle of the interfaces of the current exception class
                 Class[] interfaces = exceptionClass.getInterfaces();
-                for (int intf = 0; intf < interfaces.length; intf++)
+                for(int intf = 0; intf < interfaces.length; intf++)
                 {
                     Class interfaceClass = interfaces[intf];
-                    if (errorPage.canHandle(interfaceClass, false))
+                    if(errorPage.canHandle(interfaceClass, false))
                     {
                         nc.setErrorPageException(errorPage, t, interfaceClass);
                         return true;
@@ -547,14 +510,14 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             }
 
             exceptionClass = exceptionClass.getSuperclass();
-            if (!Throwable.class.isAssignableFrom(exceptionClass))
+            if(!Throwable.class.isAssignableFrom(exceptionClass))
                 break;
         }
 
         NavigationPage parentPage = (NavigationPage) getParent();
-        if (parentPage != null)
+        if(parentPage != null)
         {
-            if (parentPage.findErrorPage(nc, t))
+            if(parentPage.findErrorPage(nc, t))
                 return true;
         }
 
@@ -578,19 +541,19 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     {
         super.finalizeContents();
 
-        for (int i = 0; i < errorPagesList.size(); i++)
+        for(int i = 0; i < errorPagesList.size(); i++)
             ((NavigationErrorPage) errorPagesList.get(i)).finalizeContents();
 
-        if (dialogNextActionProvider == null)
+        if(dialogNextActionProvider == null)
         {
             NavigationPage parent = (NavigationPage) getParent();
-            while (parent != null && dialogNextActionProvider == null)
+            while(parent != null && dialogNextActionProvider == null)
             {
                 dialogNextActionProvider = parent.getDialogNextActionProvider();
                 parent = (NavigationPage) parent.getParent();
             }
 
-            if (dialogNextActionProvider == null)
+            if(dialogNextActionProvider == null)
                 dialogNextActionProvider = getOwner().getDialogNextActionProvider();
         }
     }
@@ -604,7 +567,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public void setRequireRequestParams(String params)
     {
         String[] paramNames = TextUtils.getInstance().split(params, ",", true);
-        for (int i = 0; i < paramNames.length; i++)
+        for(int i = 0; i < paramNames.length; i++)
             requireRequestParams.add(paramNames[i]);
     }
 
@@ -654,13 +617,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public boolean isValid(NavigationContext nc)
     {
         List reqParams = getRequireRequestParams();
-        if (reqParams.size() > 0)
+        if(reqParams.size() > 0)
         {
             ServletRequest request = nc.getRequest();
-            for (int i = 0; i < reqParams.size(); i++)
+            for(int i = 0; i < reqParams.size(); i++)
             {
                 String name = (String) reqParams.get(i);
-                if (request.getParameter(name) == null)
+                if(request.getParameter(name) == null)
                 {
                     nc.setMissingRequiredReqParam(name);
                     return false;
@@ -668,10 +631,10 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             }
         }
 
-        if (permissions != null)
+        if(permissions != null)
         {
             AuthenticatedUser user = nc.getAuthenticatedUser();
-            if (user == null)
+            if(user == null)
             {
                 nc.setMissingRequiredPermissions(permissions);
                 return false;
@@ -679,13 +642,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
             try
             {
-                if (!user.hasAnyPermission(nc.getAccessControlListsManager(), permissions))
+                if(!user.hasAnyPermission(nc.getAccessControlListsManager(), permissions))
                 {
                     nc.setMissingRequiredPermissions(permissions);
                     return false;
                 }
             }
-            catch (PermissionNotFoundException e)
+            catch(PermissionNotFoundException e)
             {
                 getLog().error(e);
                 nc.setMissingRequiredPermissions(permissions);
@@ -713,14 +676,14 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         //get the current NavigationPath
         NavigationPath activePath = nc.getActivePage();
 
-        if (getQualifiedName().equals(activePath.getQualifiedName())) return true;
+        if(getQualifiedName().equals(activePath.getQualifiedName())) return true;
 
         //get the parents and for each set the property of current to true
         List ancestors = activePath.getAncestorsList();
-        for (int i = 0; i < ancestors.size(); i++)
+        for(int i = 0; i < ancestors.size(); i++)
         {
             NavigationPath checkPath = (NavigationPath) ancestors.get(i);
-            if (getQualifiedName().equals(checkPath.getQualifiedName())) return true;
+            if(getQualifiedName().equals(checkPath.getQualifiedName())) return true;
         }
 
         /*
@@ -748,40 +711,40 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public void enterPage(NavigationContext nc) throws NavigationException
     {
         ValueSource assignParamsVS = getAssignStateParams();
-        if (assignParamsVS != null)
+        if(assignParamsVS != null)
         {
             String assignParams = assignParamsVS.getTextValue(nc);
-            if (assignParams != null)
+            if(assignParams != null)
             {
                 NavigationPath.State state = nc.getActiveState();
                 try
                 {
                     HttpUtils.assignParamsToInstance(nc.getHttpRequest(), state, assignParams);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     throw new NavigationException(e);
                 }
             }
         }
 
-        for (int i = 0; i < enterListeners.size(); i++)
+        for(int i = 0; i < enterListeners.size(); i++)
             ((NavigationPageEnterListener) enterListeners.get(i)).enterNavigationPage(this, nc);
 
-        if (getFlags().flagIsSet(Flags.ANNOUNCE_PAGE_VISIT_ACTIVITY))
+        if(getFlags().flagIsSet(Flags.ANNOUNCE_PAGE_VISIT_ACTIVITY))
             nc.getProject().broadcastActivity(nc);
     }
 
     public void exitPage(NavigationContext nc)
     {
-        for (int i = 0; i < exitListeners.size(); i++)
+        for(int i = 0; i < exitListeners.size(); i++)
             ((NavigationPageExitListener) exitListeners.get(i)).exitNavigationPage(this, nc);
     }
 
     public void makeStateChanges(NavigationContext nc)
     {
         String pageFlagsParamValue = nc.getRequest().getParameter(getPageFlagsParamName());
-        if (pageFlagsParamValue != null)
+        if(pageFlagsParamValue != null)
             nc.getActiveState().getFlags().setValue(pageFlagsParamValue, false);
         super.makeStateChanges(nc);
     }
@@ -794,12 +757,12 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public NavigationPage getFirstFocusableChild()
     {
         List childrenList = getChildrenList();
-        if (childrenList.size() > 0)
+        if(childrenList.size() > 0)
         {
-            for (int i = 0; i < childrenList.size(); i++)
+            for(int i = 0; i < childrenList.size(); i++)
             {
                 NavigationPage child = (NavigationPage) childrenList.get(i);
-                if (!child.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN | Flags.HIDDEN_UNLESS_ACTIVE))
+                if(!child.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN | Flags.HIDDEN_UNLESS_ACTIVE))
                     return child;
                 else
                     return child.getNextPath();
@@ -816,18 +779,18 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     {
         // if we get to here we either have no children or all our children don't allow focus
         NavigationPath parent = getParent();
-        if (parent != null)
+        if(parent != null)
         {
             List siblings = parent.getChildrenList();
             int thisIndex = siblings.indexOf(this);
-            if (thisIndex == -1)
+            if(thisIndex == -1)
                 throw new RuntimeException("Unable to find " + this + " in siblings list.");
 
             // find the first sibling that allows focus
-            for (int i = thisIndex + 1; i < siblings.size(); i++)
+            for(int i = thisIndex + 1; i < siblings.size(); i++)
             {
                 NavigationPage sibling = (NavigationPage) siblings.get(i);
-                if (!sibling.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN | Flags.HIDDEN_UNLESS_ACTIVE))
+                if(!sibling.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN | Flags.HIDDEN_UNLESS_ACTIVE))
                     return sibling;
                 else
                     return sibling.getNextPath();
@@ -845,10 +808,10 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     {
         NavigationPage parent = (NavigationPage) getParent();
         NavigationPage nextPath = checkChildren ? getFirstFocusableChild() : null;
-        if (nextPath == null)
+        if(nextPath == null)
         {
             nextPath = getNextFocusableSibling();
-            if (nextPath == null && parent != null)
+            if(nextPath == null && parent != null)
                 nextPath = parent.getNextPath(false);
         }
         return nextPath;
@@ -920,8 +883,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      * An optional attribute representing static string or dynamic text to be used
      * as the browser window's title. This is the text that will usually be used
      * by the browser when it bookmarks a page.
-     *
-     * @param title
      */
     public void setTitle(ValueSource title)
     {
@@ -1053,7 +1014,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public String getCaption(ValueContext vc)
     {
         ValueSource vs = getCaption();
-        if (vs == null)
+        if(vs == null)
             return getName();
         else
             return vs.getTextValue(vc);
@@ -1062,7 +1023,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public String getHeading(ValueContext vc)
     {
         ValueSource vs = getHeading();
-        if (vs == null)
+        if(vs == null)
             return getCaption(vc);
         else
             return vs.getTextValue(vc);
@@ -1071,7 +1032,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public String getTitle(ValueContext vc)
     {
         ValueSource vs = getTitle();
-        if (vs == null)
+        if(vs == null)
             return getHeading(vc);
         else
             return vs.getTextValue(vc);
@@ -1080,7 +1041,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public String getSubHeading(ValueContext vc)
     {
         ValueSource vs = getSubHeading();
-        if (vs == null)
+        if(vs == null)
             return null;
         else
             return vs.getTextValue(vc);
@@ -1090,7 +1051,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     {
         String result;
         ValueSource vs = getRedirect();
-        if (vs == null)
+        if(vs == null)
         {
             HttpServletRequest request = vc.getHttpRequest();
             result = request.getContextPath() + request.getServletPath() + getQualifiedName();
@@ -1099,7 +1060,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             result = vs.getTextValue(vc);
 
         ValueSource retainParamsVS = getRetainParams();
-        if (retainParamsVS != null)
+        if(retainParamsVS != null)
             result = HttpUtils.appendParams(vc.getHttpRequest(), result, retainParamsVS.getTextValue(vc));
 
         return result;
@@ -1109,21 +1070,21 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     {
         StringBuffer sb = new StringBuffer("HREF=\"" + getUrl(vc) + "\"");
         String target = getRedirectTarget();
-        if (target != null)
+        if(target != null)
             sb.append("TARGET=\"" + target + "\"");
         return sb.toString();
     }
 
     public ValueSource getAssignStateParams()
     {
-        if (assignStateParams != null)
+        if(assignStateParams != null)
             return assignStateParams;
 
-        if (!getFlags().flagIsSet(Flags.INHERIT_ASSIGN_STATE_PARAMS))
+        if(!getFlags().flagIsSet(Flags.INHERIT_ASSIGN_STATE_PARAMS))
             return null;
 
         NavigationPage parentPage = (NavigationPage) getParent();
-        if (parentPage != null)
+        if(parentPage != null)
             return parentPage.getAssignStateParams();
 
         return null;
@@ -1136,19 +1097,17 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Gets the parameters to be retained for the page
-     *
-     * @return
      */
     public ValueSource getRetainParams()
     {
-        if (retainParams != null)
+        if(retainParams != null)
             return retainParams;
 
-        if (!getFlags().flagIsSet(Flags.INHERIT_RETAIN_PARAMS))
+        if(!getFlags().flagIsSet(Flags.INHERIT_RETAIN_PARAMS))
             return null;
 
         NavigationPage parentPage = (NavigationPage) getParent();
-        if (parentPage != null)
+        if(parentPage != null)
             return parentPage.getRetainParams();
 
         return null;
@@ -1186,7 +1145,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     {
         this.bodyCommand = command;
         getBodyType().setValue(NavigationPageBodyType.COMMAND);
-        if (command instanceof HttpServletCommand && ((HttpServletCommand) command).isAbleToAffectNavigation())
+        if(command instanceof HttpServletCommand && ((HttpServletCommand) command).isAbleToAffectNavigation())
             getFlags().setFlag(Flags.BODY_AFFECTS_NAVIGATION);
     }
 
@@ -1198,8 +1157,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     /**
      * Sets the command expression to be used by the <code>Command</code> interface for generating
      * the page body.
-     *
-     * @param bodyCommandExpr
      */
     public void setCommandExpr(ValueSource bodyCommandExpr)
     {
@@ -1247,8 +1204,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     /**
      * Gets the next action provider for this particular page. The next action represents the action to be performed
      * after dialog execution.
-     *
-     * @return
      */
     public DialogNextActionProvider getDialogNextActionProvider()
     {
@@ -1257,8 +1212,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Sets the next action provider for all dialogs executed by this navigation tree and all children
-     *
-     * @param nextActionProvider
      */
     public void addDialogNextActionProvider(DialogNextActionProvider nextActionProvider)
     {
@@ -1307,8 +1260,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     /**
      * Adds a template body for the page
-     *
-     * @param templateProcessor
      */
     public void addBody(TemplateProcessor templateProcessor)
     {
@@ -1366,14 +1317,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      *
      * @param writer writer object to write the output to
      * @param nc     current navigation context
-     *
-     * @throws ServletException
-     * @throws IOException
      */
     public void handlePageMetaData(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         NavigationSkin skin = nc.getSkin();
-        if (skin != null) skin.renderPageMetaData(writer, nc);
+        if(skin != null) skin.renderPageMetaData(writer, nc);
     }
 
     /**
@@ -1381,14 +1329,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      *
      * @param writer writer object to write the output to
      * @param nc     current navigation context
-     *
-     * @throws ServletException
-     * @throws IOException
      */
     public void handlePageHeader(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         NavigationSkin skin = nc.getSkin();
-        if (skin != null) skin.renderPageHeader(writer, nc);
+        if(skin != null) skin.renderPageHeader(writer, nc);
     }
 
     /**
@@ -1396,28 +1341,25 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      *
      * @param writer writer object to write the output to
      * @param nc     current navigation context
-     *
-     * @throws ServletException
-     * @throws IOException
      */
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         // see if dynamic commands should be allowed
         HttpServletRequest request = nc.getHttpRequest();
         String panelEditorCommandSpec = request.getParameter(PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME);
-        if (panelEditorCommandSpec != null && getFlags().flagIsSet(Flags.ALLOW_PANEL_EDITING))
+        if(panelEditorCommandSpec != null && getFlags().flagIsSet(Flags.ALLOW_PANEL_EDITING))
         {
             PanelEditorCommand command = new PanelEditorCommand();
             command.setParameters(panelEditorCommandSpec);
             Object panelEditorSource = null;
             // verify that this command is configured to be in this pae
-            if (!getFlags().flagIsSet(Flags.VALIDATE_PANEL_EDITOR_IN_PAGE) || verifyPanelEditorInPage(nc, command))
+            if(!getFlags().flagIsSet(Flags.VALIDATE_PANEL_EDITOR_IN_PAGE) || verifyPanelEditorInPage(nc, command))
             {
                 try
                 {
                     command.handleCommand(writer, nc, false);
                 }
-                catch (CommandException e)
+                catch(CommandException e)
                 {
                     getLog().error("Command error in body", e);
                     throw new ServletException(e);
@@ -1430,17 +1372,17 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             }
         }
 
-        if (getFlags().flagIsSet(Flags.ALLOW_PAGE_CMD_PARAM))
+        if(getFlags().flagIsSet(Flags.ALLOW_PAGE_CMD_PARAM))
         {
             String commandSpec = request.getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
-            if (commandSpec != null)
+            if(commandSpec != null)
             {
                 HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand(commandSpec);
                 try
                 {
                     command.handleCommand(writer, nc, false);
                 }
-                catch (CommandException e)
+                catch(CommandException e)
                 {
                     getLog().error("Command error in body", e);
                     throw new ServletException(e);
@@ -1449,7 +1391,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             }
         }
 
-        switch (getBodyType().getValueIndex())
+        switch(getBodyType().getValueIndex())
         {
             case NavigationPageBodyType.NONE:
                 writer.write("Path '" + nc.getActivePathFindResults().getSearchedForPath() + "' is a " + this.getClass().getName() + " class but has no body.");
@@ -1460,16 +1402,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 break;
 
             case NavigationPageBodyType.CUSTOM_HANDLER:
-                for (int i = 0; i < customHandlers.size(); i++)
+                for(int i = 0; i < customHandlers.size(); i++)
                     ((NavigationPageBodyHandler) customHandlers.get(i)).handleNavigationPageBody(this, writer, nc);
                 break;
 
             case NavigationPageBodyType.COMMAND:
                 ValueSource commandExpr = getCommandExpr();
-                if (commandExpr != null)
+                if(commandExpr != null)
                 {
                     String commandText = commandExpr.getTextValue(nc);
-                    if (commandText != null)
+                    if(commandText != null)
                     {
                         try
                         {
@@ -1477,7 +1419,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                             httpCommand.handleCommand(writer, nc, false);
                             break;
                         }
-                        catch (Exception e)
+                        catch(Exception e)
                         {
                             getLog().error("Command error in " + this.getClass().getName(), e);
                             throw new ServletException(e);
@@ -1491,7 +1433,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 {
                     ((HttpServletCommand) getCommand()).handleCommand(writer, nc, false);
                 }
-                catch (CommandException e)
+                catch(CommandException e)
                 {
                     getLog().error("Command error in body", e);
                     throw new ServletException(e);
@@ -1516,7 +1458,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                     String includeUrl = getInclude().getTextValue(nc);
                     RequestDispatcher rd = request.getRequestDispatcher(includeUrl);
                     ServletResponse response = nc.getResponse();
-                    if (writer != response.getWriter())
+                    if(writer != response.getWriter())
                         response = new AlternateOutputDestServletResponse(writer, response);
                     request.setAttribute(REQATTRNAME_NAVIGATION_CONTEXT, nc);
                     rd.include(request, response);
@@ -1532,18 +1474,12 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     /**
      * Handles the display of the page's footer by using the skin defined for the page. This method will also
      * include the page's XML source if the <code>ALLOW_VIEW_SOURCE</code> flag is set.
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws ServletException
-     * @throws IOException
      */
     public void handlePageFooter(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         renderViewSource(writer, nc);
         NavigationSkin skin = nc.getSkin();
-        if (skin != null) skin.renderPageFooter(writer, nc);
+        if(skin != null) skin.renderPageFooter(writer, nc);
     }
 
     /**
@@ -1557,7 +1493,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      */
     public boolean bodyAffectsNavigationContext(NavigationContext nc)
     {
-        if (bodyPanel != null && bodyPanel.affectsNavigationContext(nc))
+        if(bodyPanel != null && bodyPanel.affectsNavigationContext(nc))
             return true;
         else
             return nc.getActiveState().getFlags().flagIsSet(Flags.BODY_AFFECTS_NAVIGATION);
@@ -1571,16 +1507,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      *
      * @param writer Writer object to write the page output to
      * @param nc     current navigation context
-     *
-     * @throws ServletException
-     * @throws IOException
      */
     public void handlePage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         Flags flags = (Flags) nc.getActiveState().getFlags();
 
         enterPage(nc);
-        if (getBodyType().getValueIndex() == NavigationPageBodyType.FORWARD)
+        if(getBodyType().getValueIndex() == NavigationPageBodyType.FORWARD)
         {
             // if we're forwarding to another resource we don't want to put anything into the response otherwise
             // there will be an illegal state exception -- so, we don't create headers, footers, etc because that's
@@ -1593,7 +1526,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             rd.forward(req, nc.getResponse());
             req.removeAttribute(REQATTRNAME_NAVIGATION_CONTEXT);
         }
-        else if (bodyAffectsNavigationContext(nc))
+        else if(bodyAffectsNavigationContext(nc))
         {
             // render the body first and let it modify the navigation context
             StringWriter body = new StringWriter();
@@ -1602,23 +1535,23 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             {
                 handlePageBody(body, nc);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 getLog().error("Error occurred while handling the page.", e);
-                if (!findErrorPage(nc, e))
+                if(!findErrorPage(nc, e))
                     nc.setErrorPageException(getOwner().getDefaultErrorPage(), e, e.getClass());
                 nc.getErrorPage().handlePageBody(writer, nc);
                 hasError = true;
             }
 
-            if (!hasError && !nc.isRedirected())
+            if(!hasError && !nc.isRedirected())
             {
-                if (flags.flagIsSet(Flags.HANDLE_META_DATA))
+                if(flags.flagIsSet(Flags.HANDLE_META_DATA))
                     handlePageMetaData(writer, nc);
-                if (flags.flagIsSet(Flags.HANDLE_HEADER))
+                if(flags.flagIsSet(Flags.HANDLE_HEADER))
                     handlePageHeader(writer, nc);
                 writer.write(body.getBuffer().toString());
-                if (flags.flagIsSet(Flags.HANDLE_FOOTER))
+                if(flags.flagIsSet(Flags.HANDLE_FOOTER))
                     handlePageFooter(writer, nc);
             }
 
@@ -1627,22 +1560,22 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         }
         else
         {
-            if (flags.flagIsSet(Flags.HANDLE_META_DATA))
+            if(flags.flagIsSet(Flags.HANDLE_META_DATA))
                 handlePageMetaData(writer, nc);
-            if (flags.flagIsSet(Flags.HANDLE_HEADER))
+            if(flags.flagIsSet(Flags.HANDLE_HEADER))
                 handlePageHeader(writer, nc);
             try
             {
                 handlePageBody(writer, nc);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 getLog().error("Error occurred while handling the page.", e);
-                if (!findErrorPage(nc, e))
+                if(!findErrorPage(nc, e))
                     nc.setErrorPageException(getOwner().getDefaultErrorPage(), e, e.getClass());
                 nc.getErrorPage().handlePageBody(writer, nc);
             }
-            if (flags.flagIsSet(Flags.HANDLE_FOOTER))
+            if(flags.flagIsSet(Flags.HANDLE_FOOTER))
                 handlePageFooter(writer, nc);
         }
         exitPage(nc);
@@ -1653,50 +1586,44 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      * validation check. This will generate the page metadata, header, and footer sections and a special message
      * body sections. The message body will contain a custom message if there is one (using the &lt;missing-params-body&gt; XML tag)
      * else it will display a default message indicating that there are missing required request parameters.
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws ServletException
-     * @throws IOException
      */
     public void handleInvalidPage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         Flags flags = (Flags) nc.getActiveState().getFlags();
 
         enterPage(nc);
-        if (flags.flagIsSet(Flags.HANDLE_META_DATA))
+        if(flags.flagIsSet(Flags.HANDLE_META_DATA))
             handlePageMetaData(writer, nc);
-        if (flags.flagIsSet(Flags.HANDLE_HEADER))
+        if(flags.flagIsSet(Flags.HANDLE_HEADER))
             handlePageHeader(writer, nc);
 
-        if (nc.isMissingRequiredReqParams())
+        if(nc.isMissingRequiredReqParams())
         {
             TemplateProcessor templateProcessor = getMissingParamsBody();
-            if (templateProcessor != null)
+            if(templateProcessor != null)
                 templateProcessor.process(writer, nc, null);
             else
                 writer.write("This page is missing some required parameters.");
         }
 
-        if (nc.isMissingRequiredPermissions())
+        if(nc.isMissingRequiredPermissions())
         {
             TemplateProcessor templateProcessor = getMissingPermissionsBody();
-            if (templateProcessor != null)
+            if(templateProcessor != null)
                 templateProcessor.process(writer, nc, null);
             else
                 writer.write("You do not have permissions to view this page.");
             getSecurityLog().error(new NavigationPageSecurityAccessViolationException(nc));
         }
 
-        if (flags.flagIsSet(Flags.HANDLE_FOOTER))
+        if(flags.flagIsSet(Flags.HANDLE_FOOTER))
             handlePageFooter(writer, nc);
         exitPage(nc);
     }
 
     public void renderViewSource(Writer writer, NavigationContext nc) throws IOException
     {
-        if (getFlags().flagIsSet(Flags.ALLOW_VIEW_SOURCE))
+        if(getFlags().flagIsSet(Flags.ALLOW_VIEW_SOURCE))
         {
             writer.write("<p>");
             AbstractPanel.renderXdmObjectViewSource(writer, nc, getQualifiedNameIncludingTreeId() + " Page XDM Code", this.getClass(), getQualifiedNameIncludingTreeId(), getInputSourceLocator());
@@ -1719,12 +1646,12 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     {
         int bodyType = getBodyType().getValueIndex();
         String requestedPanelEditorName = peCommand.getPanelEditorName();
-        if (bodyType == NavigationPageBodyType.COMMAND)
+        if(bodyType == NavigationPageBodyType.COMMAND)
         {
             Command command = null;
             // check if command expression is defined for the page (command expression is used for dynamically defining
             // the page command using a value source
-            if (getCommandExpr() != null)
+            if(getCommandExpr() != null)
             {
                 ValueSource commandExpr = getCommandExpr();
                 String commandText = commandExpr.getTextValue(nc);
@@ -1732,25 +1659,25 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 {
                     command = Commands.getInstance().getCommand(commandText);
                 }
-                catch (CommandNotFoundException e)
+                catch(CommandNotFoundException e)
                 {
                     getLog().error("The command expression defined for the page body is not a valid command: " + commandText, e);
                 }
             }
-            else if (getCommand() != null)
+            else if(getCommand() != null)
             {
                 command = getCommand();
             }
-            if (command != null)
+            if(command != null)
             {
-                if (command instanceof PanelEditorCommand)
+                if(command instanceof PanelEditorCommand)
                 {
                     String peName = ((PanelEditorCommand) command).getPanelEditorName();
-                    if (requestedPanelEditorName.equals(peName))
+                    if(requestedPanelEditorName.equals(peName))
                         return true;
                     else
                         getLog().error("The requested panel editor '" + requestedPanelEditorName + "' is not the same as " +
-                                " the panel editor '" + peName + "' defined in the page.");
+                                       " the panel editor '" + peName + "' defined in the page.");
                 }
                 else
                 {
@@ -1763,21 +1690,21 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 getLog().error("There are no valid commands defined in the page body.");
             }
         }
-        else if (bodyType == NavigationPageBodyType.PANEL)
+        else if(bodyType == NavigationPageBodyType.PANEL)
         {
             // this is the layout panel defined for the page
             HtmlPanels panels = getBodyPanel().getChildren();
             HtmlPanel panel = null;
-            for (int i = 0; i < panels.size(); i++)
+            for(int i = 0; i < panels.size(); i++)
             {
                 panel = panels.get(i);
-                if (panel instanceof HtmlCommandPanel)
+                if(panel instanceof HtmlCommandPanel)
                 {
                     Command command = ((HtmlCommandPanel) panel).getCommand();
-                    if (command instanceof PanelEditorCommand)
+                    if(command instanceof PanelEditorCommand)
                     {
                         String peName = ((PanelEditorCommand) command).getPanelEditorName();
-                        if (requestedPanelEditorName.equals(peName))
+                        if(requestedPanelEditorName.equals(peName))
                         {
                             return true;
                         }

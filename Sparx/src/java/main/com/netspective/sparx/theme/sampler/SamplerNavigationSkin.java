@@ -103,11 +103,6 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
 
     /**
      * Render the authenticated user information and the logout navigation link
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws java.io.IOException
      */
     public void renderAuthenticatedUser(Writer writer, NavigationContext nc) throws IOException
     {
@@ -117,12 +112,12 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
         String personName = authUser != null ? authUser.getUserName() : "Not logged in";
         AuthenticatedOrganization authOrg = authUser.getOrganizations().getPrimaryOrganization();
 
-        if (authUser != null && authUser.isRemembered())
+        if(authUser != null && authUser.isRemembered())
             personName += " (remembered)";
 
         Object orgId = null;
         String orgName = null;
-        if (authOrg != null)
+        if(authOrg != null)
         {
             orgId = authOrg.getOrgId();
             orgName = authOrg.getOrgName();
@@ -135,7 +130,7 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
         writer.write("<tr>\n");
         writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"10\" border=\"0\"></td>\n");
 
-        if (isShowProductVersion())
+        if(isShowProductVersion())
         {
             final Product product = nc.getProject().getProduct();
             writer.write("	<td nowrap><span class=\"active-user-heading\">&nbsp;<a class=\"active-user\" href=\"" + productVersionHref.getTextValue(nc) + "\" title=\"" + product.getProductName() + " " + product.getVersionAndBuild() + "\">&nbsp;&nbsp;" + product.getVersionAndBuildShort() + "</a></span></td>");
@@ -146,10 +141,10 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
         writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("			<tr>\n");
         writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" " +
-                "height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+                     "height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;User&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + activeUserHref.getTextValue(nc) + "\" title=\"User ID is '" + personId + "'\">&nbsp;&nbsp;" +
-                personName + "</a></td>\n");
+                     personName + "</a></td>\n");
         writer.write("			</tr>\n");
         writer.write("		</table>\n");
         writer.write("	</td>\n");
@@ -157,7 +152,7 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
         ProjectComponent projectManager = nc.getProjectComponent();
         boolean haveErrors = projectManager.hasErrorsOrWarnings();
 
-        if (orgName != null && !orgName.equals(personName))
+        if(orgName != null && !orgName.equals(personName))
         {
             writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
             writer.write(haveErrors ? "	<td>\n" : "	<td width=100%>\n");
@@ -171,7 +166,7 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
             writer.write("	</td>\n");
         }
 
-        if (haveErrors)
+        if(haveErrors)
         {
             int errorsCount = projectManager.getErrors().size() + projectManager.getWarnings().size();
 
@@ -183,7 +178,7 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
             writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\"><span class=\"error-alert-heading\">&nbsp;Errors/Warnings&nbsp;</span></a></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\">&nbsp;&nbsp;" +
-                    errorsCount + "</a></td>\n");
+                         errorsCount + "</a></td>\n");
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
             writer.write("	</td>\n");
@@ -193,7 +188,7 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
         writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("			<tr>\n");
         writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" +
-                theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+                     theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Action&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "?_logout=yes\">&nbsp;&nbsp;Logout&nbsp;</a></td>\n");
         writer.write("			</tr>\n");

@@ -65,22 +65,22 @@ public class QueryCommand extends AbstractHttpServletCommand
     public static final String[] IDENTIFIERS = new String[]{"query"};
 
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Displays results of a SQL statement and optionally allows a dialog to be executed along with it.",
-            new CommandDocumentation.Parameter[]
-            {
-                new CommandDocumentation.Parameter("query-name", true, "The fully qualified name of the statement (package-name.statement-name)."),
-                new CommandDocumentation.Parameter("query-dialog-id", false, "The name of a specific query dialog or '-' for no query dialog or 'DEFAULT' for default query dialog."),
-                new CommandDocumentation.Parameter("report-id", false, "The name of a specific report element in the query declaration or '-' for the default report-id."),
-                new CommandDocumentation.Parameter("rows-per-page", false, "-", "The number of rows per page to display ('-' means single page, any other number means a pageable report."),
-                new SkinParameter(),
-                new CommandDocumentation.Parameter("url-formats", false, "The url-formats parameter is one or more " +
-            "semicolon-separated URL formats that may override those within a report."),
+                                                                                      new CommandDocumentation.Parameter[]
+                                                                                      {
+                                                                                          new CommandDocumentation.Parameter("query-name", true, "The fully qualified name of the statement (package-name.statement-name)."),
+                                                                                          new CommandDocumentation.Parameter("query-dialog-id", false, "The name of a specific query dialog or '-' for no query dialog or 'DEFAULT' for default query dialog."),
+                                                                                          new CommandDocumentation.Parameter("report-id", false, "The name of a specific report element in the query declaration or '-' for the default report-id."),
+                                                                                          new CommandDocumentation.Parameter("rows-per-page", false, "-", "The number of rows per page to display ('-' means single page, any other number means a pageable report."),
+                                                                                          new SkinParameter(),
+                                                                                          new CommandDocumentation.Parameter("url-formats", false, "The url-formats parameter is one or more " +
+                                                                                                                                                   "semicolon-separated URL formats that may override those within a report."),
 
-                // the following are the same as the ones in DialogComponentCommand so be sure to make them look the same
-                new CommandDocumentation.Parameter("additional-dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
-                new CommandDocumentation.Parameter("additional-dialog-perspective", false, new DialogPerspectives(), null, "The dialog perspective to send to DialogContext."),
-                new DialogCommand.SkinParameter(),
-                new CommandDocumentation.Parameter("additional-dialog-debug-flags", false, new DialogDebugFlags(), null, "The debug flags.")
-            });
+                                                                                          // the following are the same as the ones in DialogComponentCommand so be sure to make them look the same
+                                                                                          new CommandDocumentation.Parameter("additional-dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
+                                                                                          new CommandDocumentation.Parameter("additional-dialog-perspective", false, new DialogPerspectives(), null, "The dialog perspective to send to DialogContext."),
+                                                                                          new DialogCommand.SkinParameter(),
+                                                                                          new CommandDocumentation.Parameter("additional-dialog-debug-flags", false, new DialogDebugFlags(), null, "The debug flags.")
+                                                                                      });
 
     public static String[] getIdentifiers()
     {
@@ -104,28 +104,28 @@ public class QueryCommand extends AbstractHttpServletCommand
     {
         queryName = params.nextToken();
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             queryDialogName = params.nextToken();
-            if (queryDialogName.length() == 0 || queryDialogName.equals(PARAMVALUE_DEFAULT))
+            if(queryDialogName.length() == 0 || queryDialogName.equals(PARAMVALUE_DEFAULT))
                 queryDialogName = null;
         }
         else
             queryDialogName = null;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             reportId = params.nextToken();
-            if (reportId.length() == 0 || reportId.equals(PARAMVALUE_DEFAULT))
+            if(reportId.length() == 0 || reportId.equals(PARAMVALUE_DEFAULT))
                 reportId = null;
         }
         else
             reportId = null;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             String rowsPerPageStr = params.nextToken();
-            if (rowsPerPageStr.length() == 0 || rowsPerPageStr.equals(PARAMVALUE_DEFAULT))
+            if(rowsPerPageStr.length() == 0 || rowsPerPageStr.equals(PARAMVALUE_DEFAULT))
                 rowsPerPage = UNLIMITED_ROWS;
             else
             {
@@ -133,7 +133,7 @@ public class QueryCommand extends AbstractHttpServletCommand
                 {
                     rowsPerPage = Integer.parseInt(rowsPerPageStr);
                 }
-                catch (NumberFormatException e)
+                catch(NumberFormatException e)
                 {
                     log.error("Invalid rows per page value for query command", e);
                 }
@@ -142,28 +142,28 @@ public class QueryCommand extends AbstractHttpServletCommand
         else
             rowsPerPage = UNLIMITED_ROWS;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             reportSkinName = params.nextToken();
-            if (reportSkinName.length() == 0 || reportSkinName.equals(PARAMVALUE_DEFAULT))
+            if(reportSkinName.length() == 0 || reportSkinName.equals(PARAMVALUE_DEFAULT))
                 reportSkinName = null;
         }
         else
             reportSkinName = null;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             String urlFormatsStr = params.nextToken();
-            if (urlFormatsStr.length() == 0 || urlFormatsStr.equals(PARAMVALUE_DEFAULT))
+            if(urlFormatsStr.length() == 0 || urlFormatsStr.equals(PARAMVALUE_DEFAULT))
                 setUrlFormats(null);
             else
             {
                 StringTokenizer urlFmtTokenizer = new StringTokenizer(urlFormatsStr, ";");
                 List urlFormatsList = new ArrayList();
-                while (urlFmtTokenizer.hasMoreTokens())
+                while(urlFmtTokenizer.hasMoreTokens())
                 {
                     String urlFormat = urlFmtTokenizer.nextToken();
-                    if (urlFormat.length() == 0 || urlFormat.equals(PARAMVALUE_DEFAULT))
+                    if(urlFormat.length() == 0 || urlFormat.equals(PARAMVALUE_DEFAULT))
                         urlFormatsList.add(null);
                     else
                         urlFormatsList.add(urlFormat);
@@ -174,7 +174,7 @@ public class QueryCommand extends AbstractHttpServletCommand
         else
             setUrlFormats(null);
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             additionalDialogCommand = new DialogCommand();
             additionalDialogCommand.setParameters(params);
@@ -224,17 +224,17 @@ public class QueryCommand extends AbstractHttpServletCommand
         sb.append(delim);
         sb.append(reportSkinName != null ? reportSkinName : PARAMVALUE_DEFAULT);
         sb.append(delim);
-        if (urlFormats != null)
+        if(urlFormats != null)
         {
-            for (int i = 0; i < urlFormats.length; i++)
+            for(int i = 0; i < urlFormats.length; i++)
             {
-                if (i > 0) sb.append(";");
+                if(i > 0) sb.append(";");
                 sb.append(urlFormats[i]);
             }
         }
         else
             sb.append(PARAMVALUE_DEFAULT);
-        if (additionalDialogCommand != null)
+        if(additionalDialogCommand != null)
         {
             sb.append(delim);
             sb.append(additionalDialogCommand.getParameters());
@@ -244,25 +244,17 @@ public class QueryCommand extends AbstractHttpServletCommand
 
     /**
      * Gets the query dialog associated with the query
-     *
-     * @param writer
-     * @param sqlManager
-     * @param theme
-     *
-     * @return
-     *
-     * @throws IOException
      */
     public com.netspective.sparx.form.sql.QueryDialog createQueryDialog(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
         Query query = (com.netspective.sparx.sql.Query) sqlManager.getQuery(queryName);
-        if (query == null)
+        if(query == null)
         {
             writer.write("Query " + queryName + " not found.");
             return null;
         }
 
-        if (queryDialogName == null || queryDialogName.equals("default"))
+        if(queryDialogName == null || queryDialogName.equals("default"))
             return query.getPresentation().getDefaultDialog();
         else
             return query.getPresentation().getDialog(queryDialogName);
@@ -270,30 +262,22 @@ public class QueryCommand extends AbstractHttpServletCommand
 
     /**
      * Gets the report panel associated with the query
-     *
-     * @param writer
-     * @param sqlManager
-     * @param theme
-     *
-     * @return
-     *
-     * @throws IOException
      */
     public QueryReportPanel createQueryReportPanel(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
         Query query = (com.netspective.sparx.sql.Query) sqlManager.getQuery(queryName);
-        if (query == null)
+        if(query == null)
         {
             log.error("Query " + queryName + " not found in " + this + ".");
             throw new RuntimeException("Query " + queryName + " not found in " + this + ".");
         }
         QueryReportPanel result = null;
-        if (reportId != null)
+        if(reportId != null)
         {
             result = query.getPresentation().getPanel(reportId);
         }
 
-        if (result == null)
+        if(result == null)
         {
             result = query.getPresentation().getDefaultPanel();
         }
@@ -307,23 +291,23 @@ public class QueryCommand extends AbstractHttpServletCommand
         SqlManager sqlManager = dc.getSqlManager();
         Theme theme = dc.getActiveTheme();
 
-        if (additionalDialogCommand != null)
+        if(additionalDialogCommand != null)
             writer.write("<table><tr valign='top'><td>");
 
-        if (queryDialogName != null)
+        if(queryDialogName != null)
         {
             com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
-            if (queryDialog != null)
+            if(queryDialog != null)
                 queryDialog.render(writer, dc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
         }
         else
         {
             HtmlTabularReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
-            if (panel != null)
+            if(panel != null)
                 panel.render(writer, dc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
         }
 
-        if (additionalDialogCommand != null)
+        if(additionalDialogCommand != null)
         {
             writer.write("</td><td>");
             additionalDialogCommand.handleCommand(writer, dc, unitTest);
@@ -333,26 +317,19 @@ public class QueryCommand extends AbstractHttpServletCommand
 
     /**
      * Handles the "query" command based on navigation context
-     *
-     * @param writer
-     * @param nc
-     * @param unitTest
-     *
-     * @throws CommandException
-     * @throws IOException
      */
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
         SqlManager sqlManager = nc.getSqlManager();
         Theme theme = nc.getActiveTheme();
 
-        if (additionalDialogCommand != null)
+        if(additionalDialogCommand != null)
             writer.write("<table><tr valign='top'><td>");
 
         boolean autoExecute = false;
         // NOTE: if query dialog name was not specified then the report will be auto-executed without
         // displaying a dialog.
-        if (queryDialogName == null && (rowsPerPage > 0 && rowsPerPage < UNLIMITED_ROWS))
+        if(queryDialogName == null && (rowsPerPage > 0 && rowsPerPage < UNLIMITED_ROWS))
         {
             // if rows per page was specified without a dialog name, use the default dialog to handle the report
             queryDialogName = "default";
@@ -360,19 +337,19 @@ public class QueryCommand extends AbstractHttpServletCommand
         }
 
         // before executing the query dialog, a query report panel MUST be assigned to it
-        if (queryDialogName != null)
+        if(queryDialogName != null)
         {
             // a non-default  query dialog name was specified or the default one was specified (explicitly or implied)
             com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
-            if (queryDialog != null)
+            if(queryDialog != null)
             {
-                if (autoExecute)
+                if(autoExecute)
                     nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
 
                 QueryReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
                 // create the context for which the dialog can run in
                 QueryDialogContext qdc = (QueryDialogContext) queryDialog.createContext(nc, theme.getDefaultDialogSkin());
-                if (rowsPerPage < UNLIMITED_ROWS && rowsPerPage > 0)
+                if(rowsPerPage < UNLIMITED_ROWS && rowsPerPage > 0)
                     qdc.setRowsPerPage(rowsPerPage);
                 qdc.setReportPanel(panel);
                 queryDialog.render(writer, qdc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
@@ -383,7 +360,7 @@ public class QueryCommand extends AbstractHttpServletCommand
             QueryReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
             TabularReport.Flags flags = panel.getReport(nc).getFlags();
             boolean isSelectable = flags != null ? flags.flagIsSet(HtmlTabularReport.Flags.SELECTABLE) : false;
-            if (isSelectable)
+            if(isSelectable)
             {
                 nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
                 com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
@@ -398,7 +375,7 @@ public class QueryCommand extends AbstractHttpServletCommand
             }
         }
 
-        if (additionalDialogCommand != null)
+        if(additionalDialogCommand != null)
         {
             writer.write("</td><td>");
             additionalDialogCommand.handleCommand(writer, nc, unitTest);

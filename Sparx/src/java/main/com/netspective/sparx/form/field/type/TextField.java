@@ -60,7 +60,7 @@ public class TextField extends DialogField
 
     static
     {
-        for (int i = 0; i < DialogFieldFlags.FLAG_DEFNS.length; i++)
+        for(int i = 0; i < DialogFieldFlags.FLAG_DEFNS.length; i++)
             TEXT_FIELD_FLAG_DEFNS[i] = DialogFieldFlags.FLAG_DEFNS[i];
         TEXT_FIELD_FLAG_DEFNS[DialogFieldFlags.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "MASK_ENTRY", Flags.MASK_ENTRY);
         TEXT_FIELD_FLAG_DEFNS[DialogFieldFlags.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "UPPERCASE", Flags.UPPERCASE);
@@ -203,11 +203,11 @@ public class TextField extends DialogField
 
         // hang onto the text validation rule since we're going to need it for javascript definition and rendering
         boolean found = false;
-        for (int i = 0; i < rules.size(); i++)
+        for(int i = 0; i < rules.size(); i++)
         {
-            if (rules.get(i) instanceof TextValueValidationRule)
+            if(rules.get(i) instanceof TextValueValidationRule)
             {
-                if (found)
+                if(found)
                     throw new RuntimeException("Multiple text validation rules not allowed.");
 
                 textValidationRule = (TextValueValidationRule) rules.get(i);
@@ -266,23 +266,23 @@ public class TextField extends DialogField
      */
     public String formatDisplayValue(String value)
     {
-        if (value == null) return null;
+        if(value == null) return null;
 
         long flags = getFlags().getFlags();
-        if ((flags & Flags.UPPERCASE) != 0) value = value.toUpperCase();
-        if ((flags & Flags.LOWERCASE) != 0) value = value.toLowerCase();
-        if ((flags & Flags.TRIM) != 0) value = value.trim();
+        if((flags & Flags.UPPERCASE) != 0) value = value.toUpperCase();
+        if((flags & Flags.LOWERCASE) != 0) value = value.toLowerCase();
+        if((flags & Flags.TRIM) != 0) value = value.trim();
 
         String pattern = getDisplayPattern();
-        if (pattern != null)
+        if(pattern != null)
         {
-            synchronized (perlUtil)
+            synchronized(perlUtil)
             {
                 try
                 {
                     value = perlUtil.substitute(pattern, value);
                 }
-                catch (MalformedPerl5PatternException e)
+                catch(MalformedPerl5PatternException e)
                 {
                     value = e.toString();
                     log.error("Unable to format display value " + value, e);
@@ -301,23 +301,23 @@ public class TextField extends DialogField
      */
     public String formatSubmitValue(String value)
     {
-        if (value == null) return null;
+        if(value == null) return null;
 
         long flags = getFlags().getFlags();
-        if ((flags & Flags.UPPERCASE) != 0) value = value.toUpperCase();
-        if ((flags & Flags.LOWERCASE) != 0) value = value.toLowerCase();
-        if ((flags & Flags.TRIM) != 0) value = value.trim();
+        if((flags & Flags.UPPERCASE) != 0) value = value.toUpperCase();
+        if((flags & Flags.LOWERCASE) != 0) value = value.toLowerCase();
+        if((flags & Flags.TRIM) != 0) value = value.trim();
 
         String pattern = getSubmitPattern();
-        if (pattern != null)
+        if(pattern != null)
         {
-            synchronized (perlUtil)
+            synchronized(perlUtil)
             {
                 try
                 {
                     value = perlUtil.substitute(pattern, value);
                 }
-                catch (MalformedPerl5PatternException e)
+                catch(MalformedPerl5PatternException e)
                 {
                     value = e.toString();
                     log.error("Unable to format submit value " + value, e);
@@ -329,7 +329,7 @@ public class TextField extends DialogField
 
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-        if (isInputHidden(dc))
+        if(isInputHidden(dc))
         {
             writer.write(getHiddenControlHtml(dc));
             return;
@@ -339,37 +339,37 @@ public class TextField extends DialogField
         DialogFieldFlags stateFlags = state.getStateFlags();
         String textValue = state.getValue().getTextValue();
 
-        if (textValue == null)
+        if(textValue == null)
             textValue = "";
         else
             textValue = TextUtils.getInstance().escapeHTML(textValue);
 
         String className = isRequired(dc)
-                ? dc.getSkin().getControlAreaRequiredStyleClass() : dc.getSkin().getControlAreaStyleClass();
+                           ? dc.getSkin().getControlAreaRequiredStyleClass() : dc.getSkin().getControlAreaStyleClass();
 
         String controlAreaStyle = dc.getSkin().getControlAreaStyleAttrs();
-        if (isReadOnly(dc))
+        if(isReadOnly(dc))
         {
             writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value=\"" + textValue + "\"><span id='" + getQualifiedName() + "'>" + textValue + "</span>");
         }
-        else if (isBrowserReadOnly(dc))
+        else if(isBrowserReadOnly(dc))
         {
             className = dc.getSkin().getControlAreaReadonlyStyleClass();
             writer.write("<input type=\"text\" id=\"" + getHtmlFormControlId() + "\" name=\"" + getHtmlFormControlId() + "\" readonly value=\"" +
-                    textValue + "\" maxlength=\"" + textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle +
-                    " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
+                         textValue + "\" maxlength=\"" + textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle +
+                         " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
         }
-        else if (!stateFlags.flagIsSet(Flags.MASK_ENTRY))
+        else if(!stateFlags.flagIsSet(Flags.MASK_ENTRY))
         {
             writer.write("<input type=\"text\" id=\"" + getHtmlFormControlId() + "\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
-                    textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle + " class=\"" + className + "\" " +
-                    dc.getSkin().getDefaultControlAttrs() + ">");
+                         textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle + " class=\"" + className + "\" " +
+                         dc.getSkin().getDefaultControlAttrs() + ">");
         }
         else
         {
             writer.write("<input type=\"password\" id=\"" + getHtmlFormControlId() + "\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
-                    textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle + " class=\"" + className + "\" " +
-                    dc.getSkin().getDefaultControlAttrs() + ">");
+                         textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle + " class=\"" + className + "\" " +
+                         dc.getSkin().getDefaultControlAttrs() + ">");
         }
     }
 
@@ -382,27 +382,27 @@ public class TextField extends DialogField
 
         DialogFieldFlags flags = getFlags();
 
-        if (flags.flagIsSet(Flags.UPPERCASE))
+        if(flags.flagIsSet(Flags.UPPERCASE))
             buf.append("field.uppercase = 'yes';\n");
         else
             buf.append("field.uppercase = 'no';\n");
 
-        if (flags.flagIsSet(Flags.LOWERCASE))
+        if(flags.flagIsSet(Flags.LOWERCASE))
             buf.append("field.lowercase = 'yes';\n");
         else
             buf.append("field.lowercase = 'no';\n");
 
-        if (flags.flagIsSet(Flags.TRIM))
+        if(flags.flagIsSet(Flags.TRIM))
             buf.append("field.trim = 'yes';\n");
         else
             buf.append("field.trim = 'no';\n");
 
-        if (textValidationRule != null)
+        if(textValidationRule != null)
         {
-            if (textValidationRule.getRegExpr() != null)
+            if(textValidationRule.getRegExpr() != null)
             {
                 buf.append("field.text_format_pattern = /" + textValidationRule.getRegExpr() + "/;\n");
-                if (textValidationRule.getInvalidRegExMessage() != null)
+                if(textValidationRule.getInvalidRegExMessage() != null)
                     buf.append("field.text_format_err_msg = \"" + textValidationRule.getInvalidRegExMessage() + "\";\n");
             }
         }

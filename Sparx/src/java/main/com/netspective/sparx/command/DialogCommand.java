@@ -60,13 +60,13 @@ public class DialogCommand extends AbstractHttpServletCommand
                 PAGE_COMMAND_REQUEST_PARAM_NAME
             };
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Displays and executes a dialog box.",
-            new CommandDocumentation.Parameter[]
-            {
-                new CommandDocumentation.Parameter("dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
-                new CommandDocumentation.Parameter("dialog-perspective", false, new DialogPerspectives(), null, "The dialog perspective to send to DialogContext."),
-                new SkinParameter(),
-                new CommandDocumentation.Parameter("debug-flags", false, new DialogDebugFlags(), null, "The debug flags.")
-            });
+                                                                                      new CommandDocumentation.Parameter[]
+                                                                                      {
+                                                                                          new CommandDocumentation.Parameter("dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
+                                                                                          new CommandDocumentation.Parameter("dialog-perspective", false, new DialogPerspectives(), null, "The dialog perspective to send to DialogContext."),
+                                                                                          new SkinParameter(),
+                                                                                          new CommandDocumentation.Parameter("debug-flags", false, new DialogDebugFlags(), null, "The debug flags.")
+                                                                                      });
 
     public static String[] getIdentifiers()
     {
@@ -94,12 +94,12 @@ public class DialogCommand extends AbstractHttpServletCommand
         StringBuffer sb = new StringBuffer(dialogName);
         sb.append(delim);
         sb.append(perspective != null ? perspective.getFlagsText() : PARAMVALUE_DEFAULT);
-        if (skinName != null)
+        if(skinName != null)
         {
             sb.append(delim);
             sb.append(skinName);
         }
-        if (debugFlags != null)
+        if(debugFlags != null)
         {
             sb.append(delim);
             sb.append(debugFlags.getFlagsText());
@@ -111,12 +111,12 @@ public class DialogCommand extends AbstractHttpServletCommand
     {
         dialogName = params.nextToken();
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             String dataCmdText = params.nextToken();
-            if (dataCmdText.length() == 0 || dataCmdText.equals(PARAMVALUE_DEFAULT))
+            if(dataCmdText.length() == 0 || dataCmdText.equals(PARAMVALUE_DEFAULT))
                 dataCmdText = null;
-            if (dataCmdText != null)
+            if(dataCmdText != null)
             {
                 perspective = new DialogPerspectives();
                 perspective.setValue(dataCmdText);
@@ -125,19 +125,19 @@ public class DialogCommand extends AbstractHttpServletCommand
         else
             perspective = null;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             skinName = params.nextToken();
-            if (skinName.length() == 0 || skinName.equals(PARAMVALUE_DEFAULT))
+            if(skinName.length() == 0 || skinName.equals(PARAMVALUE_DEFAULT))
                 skinName = null;
         }
         else
             skinName = null;
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             String debugFlagsSpec = params.nextToken();
-            if (debugFlagsSpec.length() == 0 || debugFlagsSpec.equals(PARAMVALUE_DEFAULT))
+            if(debugFlagsSpec.length() == 0 || debugFlagsSpec.equals(PARAMVALUE_DEFAULT))
                 debugFlagsSpec = null;
             debugFlags = new DialogDebugFlags();
             debugFlags.setValue(debugFlagsSpec);
@@ -188,11 +188,11 @@ public class DialogCommand extends AbstractHttpServletCommand
 
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
-        if (perspective != null)
+        if(perspective != null)
             nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, perspective.getFlagsText());
 
         Dialog dialog = nc.getDialogsManager().getDialog(dialogName);
-        if (dialog == null)
+        if(dialog == null)
         {
             writer.write("Dialog '" + dialogName + "' not found in navigation context.");
             return;
@@ -200,14 +200,14 @@ public class DialogCommand extends AbstractHttpServletCommand
 
         Theme theme = nc.getActiveTheme();
         DialogSkin skin = skinName != null ? theme.getDialogSkin(skinName) : theme.getDefaultDialogSkin();
-        if (skin == null)
+        if(skin == null)
         {
             writer.write("DialogSkin '" + skinName + "' not found in skin factory.");
             return;
         }
 
         DialogContext dc = dialog.createContext(nc, skin);
-        if (debugFlags != null)
+        if(debugFlags != null)
             dc.getDialogState().getDebugFlags().setFlag(debugFlags.getFlags());
 
         dc.addRetainRequestParams(DIALOG_COMMAND_RETAIN_PARAMS);
@@ -223,14 +223,14 @@ public class DialogCommand extends AbstractHttpServletCommand
         */
 
         dialog.prepareContext(dc);
-        if (unitTest || (debugFlags != null && debugFlags.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA)))
+        if(unitTest || (debugFlags != null && debugFlags.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA)))
             dc.setRedirectDisabled(true);
 
         try
         {
             dialog.render(writer, dc, true);
         }
-        catch (DialogExecuteException e)
+        catch(DialogExecuteException e)
         {
             log.error("Unable to execute dialog", e);
             throw new CommandException(e, this);

@@ -106,7 +106,7 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
         {
             Column column = columns.get(row);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:
@@ -115,17 +115,17 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
 
                 case 3:
                     ForeignKey fKey = column.getForeignKey();
-                    if (fKey == null) return null;
+                    if(fKey == null) return null;
                     Table fKeyTable = fKey.getReferencedColumns().getFirst().getTable();
                     return "<a href=\"?" + REQPARAMNAME_SHOW_DETAIL_TABLE + "=" +
-                            fKeyTable.getSchema().getName() + "." +
-                            fKeyTable.getName() + "\">" + fKey.getReference().getReference() +
-                            "</a>";
+                           fKeyTable.getSchema().getName() + "." +
+                           fKeyTable.getName() + "\">" + fKey.getReference().getReference() +
+                           "</a>";
 
                 case 4:
                     fKey = column.getForeignKey();
-                    if (fKey == null) return null;
-                    switch (fKey.getType())
+                    if(fKey == null) return null;
+                    switch(fKey.getType())
                     {
                         case ForeignKey.FKEYTYPE_LOOKUP:
                             return "Lookup" + (fKey.isLogical() ? " (logical)" : "");
@@ -142,15 +142,15 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
 
                 case 5:
                     fKey = column.getForeignKey();
-                    if (fKey == null) return null;
+                    if(fKey == null) return null;
                     fKeyTable = fKey.getReferencedColumns().getFirst().getTable();
 
-                    if (fKeyTable instanceof EnumerationTable && fKeyTable.getData() != null && fKeyTable.getData().size() > 0)
+                    if(fKeyTable instanceof EnumerationTable && fKeyTable.getData() != null && fKeyTable.getData().size() > 0)
                     {
                         HtmlTabularReportValueContext thisVC = (HtmlTabularReportValueContext) reportValueContext;
                         HtmlTabularReportValueContext dataVC = new HtmlTabularReportValueContext(thisVC.getServlet(),
-                                thisVC.getRequest(), thisVC.getResponse(), dataPanel, dataPanel.createDataReport(fKeyTable),
-                                thisVC.getSkin());
+                                                                                                 thisVC.getRequest(), thisVC.getResponse(), dataPanel, dataPanel.createDataReport(fKeyTable),
+                                                                                                 thisVC.getSkin());
                         StringWriter sw = new StringWriter();
                         try
                         {
@@ -159,7 +159,7 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
                             dataVC.produceReport(sw, ds);
                             ds.close();
                         }
-                        catch (IOException e)
+                        catch(IOException e)
                         {
                             return e.toString();
                         }

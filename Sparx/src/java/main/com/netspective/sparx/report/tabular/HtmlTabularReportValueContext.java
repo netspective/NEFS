@@ -93,11 +93,11 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
         this.rowCurrent = 0;
         this.visibleColsCount = -1; // calculate on first-call (could change)
 
-        if (servlet instanceof TabularReportContextListener)
+        if(servlet instanceof TabularReportContextListener)
             listeners.add(servlet);
 
         Object listener = request.getAttribute(REQUESTATTRNAME_LISTENER);
-        if (listener != null)
+        if(listener != null)
             listeners.add(listener);
 
         TabularReportColumns columns = reportDefn.getColumns();
@@ -105,10 +105,10 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
 
         calcsCount = 0;
         states = new TabularReportColumnState[columnsCount];
-        for (int i = 0; i < columns.size(); i++)
+        for(int i = 0; i < columns.size(); i++)
         {
             TabularReportColumnState state = columns.getColumn(i).constructState(this);
-            if (state.haveCalc())
+            if(state.haveCalc())
                 calcsCount++;
             states[i] = state;
         }
@@ -116,17 +116,17 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
         HtmlPanelActions bannerActions = panel.getBanner().getActions();
         HtmlPanelActions frameActions = panel.getFrame().getActions();
         HtmlReportActions reportActions = reportDefn.getActions();
-        for (int k = 0; k < bannerActions.size(); k++)
+        for(int k = 0; k < bannerActions.size(); k++)
         {
             HtmlPanelAction.State state = bannerActions.get(k).constructStateInstance(this);
             panelActionStates.addState(state);
         }
-        for (int j = 0; j < frameActions.size(); j++)
+        for(int j = 0; j < frameActions.size(); j++)
         {
             HtmlPanelAction.State state = frameActions.get(j).constructStateInstance(this);
             panelActionStates.addState(state);
         }
-        for (int k = 0; k < reportActions.size(); k++)
+        for(int k = 0; k < reportActions.size(); k++)
         {
             HtmlPanelAction.State state = reportActions.getByIndex(k).constructStateInstance(this);
             panelActionStates.addState(state);
@@ -195,16 +195,16 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
 
     public final int getVisibleColsCount()
     {
-        if (visibleColsCount != -1)
+        if(visibleColsCount != -1)
             return visibleColsCount;
 
         TabularReportColumns columns = report.getColumns();
         int columnsCount = columns.size();
 
         visibleColsCount = 0;
-        for (int i = 0; i < columnsCount; i++)
+        for(int i = 0; i < columnsCount; i++)
         {
-            if (states[i].isVisible())
+            if(states[i].isVisible())
                 visibleColsCount++;
         }
         return visibleColsCount;

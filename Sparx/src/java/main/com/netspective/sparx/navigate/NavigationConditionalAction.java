@@ -78,8 +78,6 @@ public class NavigationConditionalAction implements TemplateConsumer
 
     /**
      * Gets the navigation path item the conditional belongs to
-     *
-     * @return
      */
     public NavigationPath getPath()
     {
@@ -88,8 +86,6 @@ public class NavigationConditionalAction implements TemplateConsumer
 
     /**
      * Sets the navigation path item the conditional belongs to
-     *
-     * @param path
      */
     public void setPath(NavigationPath path)
     {

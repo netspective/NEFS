@@ -55,7 +55,7 @@ public class PhoneField extends TextField
 
     static
     {
-        for (int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
+        for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
             PHONE_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
         PHONE_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(Flags.ACCESS_XDM, "STRIP_BRACKETS", Flags.STRIP_BRACKETS);
     }
@@ -143,7 +143,7 @@ public class PhoneField extends TextField
     public void setStyle(PhoneField.Style style)
     {
         this.style = style;
-        switch (this.style.getValueIndex())
+        switch(this.style.getValueIndex())
         {
             case Style.DASH:
                 setRegExpr(DASH_VALIDATE_PATTERN);

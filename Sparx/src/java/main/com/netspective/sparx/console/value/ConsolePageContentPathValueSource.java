@@ -50,10 +50,10 @@ public class ConsolePageContentPathValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"console-page-content"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides the relative path of a Console page's content.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("source", true, "The source to locate in the console page content path. If the source starts with ../ it will be assumed to be in the parent's path.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("source", true, "The source to locate in the console page content path. If the source starts with ../ it will be assumed to be in the parent's path.")
+                                                                                              });
 
     private boolean inParent;
     private String source;
@@ -72,7 +72,7 @@ public class ConsolePageContentPathValueSource extends AbstractValueSource
     {
         super.initialize(spec);
         source = spec.getParams();
-        if (source.startsWith("../"))
+        if(source.startsWith("../"))
         {
             inParent = true;
             source = source.substring(3);
@@ -88,12 +88,12 @@ public class ConsolePageContentPathValueSource extends AbstractValueSource
     {
         final NavigationContext nc =
                 (vc instanceof NavigationContext ? (NavigationContext) vc :
-                (
-                vc instanceof BasicHtmlPanelValueContext ? ((BasicHtmlPanelValueContext) vc).getNavigationContext() :
-                null
-                ));
+                 (
+                     vc instanceof BasicHtmlPanelValueContext ? ((BasicHtmlPanelValueContext) vc).getNavigationContext() :
+                     null
+                 ));
 
-        if (nc == null)
+        if(nc == null)
             throw new RuntimeException("No navigation context available!");
 
         return new AbstractValue()
@@ -101,7 +101,8 @@ public class ConsolePageContentPathValueSource extends AbstractValueSource
             public Object getValue()
             {
                 return "content" + (inParent
-                        ? nc.getActivePage().getParent().getQualifiedName() : nc.getActivePage().getQualifiedName()) + "/" + source;
+                                    ? nc.getActivePage().getParent().getQualifiedName()
+                                    : nc.getActivePage().getQualifiedName()) + "/" + source;
             }
 
             public String getTextValue()

@@ -47,7 +47,7 @@ public class AntBuildProjectMethod implements TemplateMethodModel
 {
     public Object exec(List args) throws TemplateModelException
     {
-        if (args.size() != 1)
+        if(args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expecting name of ant build project file.");
 
         Project project = AntProject.getConfiguredProject(new File((String) args.get(0)));

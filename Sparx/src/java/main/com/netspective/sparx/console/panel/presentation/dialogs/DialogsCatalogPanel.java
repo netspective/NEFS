@@ -92,18 +92,18 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 
             //TODO: this does not account for dialogs that are not contained within a namespace
             Set sortedNamesSpaces = new TreeSet(dialogs.getNameSpaceNames());
-            for (Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext();)
+            for(Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext();)
             {
                 String nameSpaceId = (String) nsi.next();
-                if (nameSpaceId.startsWith(ConsoleServlet.CONSOLE_ID) && !doingFrameworkDeveploment)
+                if(nameSpaceId.startsWith(ConsoleServlet.CONSOLE_ID) && !doingFrameworkDeveploment)
                     continue;
 
                 Set sortedDialogNamesInNameSpace = new TreeSet();
 
-                for (int i = 0; i < dialogs.size(); i++)
+                for(int i = 0; i < dialogs.size(); i++)
                 {
                     Dialog dialog = dialogs.get(i);
-                    if (dialog.getNameSpace() != null && nameSpaceId.equals(dialog.getNameSpace().getNameSpaceId()))
+                    if(dialog.getNameSpace() != null && nameSpaceId.equals(dialog.getNameSpace().getNameSpaceId()))
                     {
                         sortedDialogNamesInNameSpace.add(dialog.getQualifiedName());
                     }
@@ -123,7 +123,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean isActiveRowSelected()
         {
-            if (activeRowDialog == null)
+            if(activeRowDialog == null)
                 return false;
 
             return activeRowDialog.getQualifiedName().equals(selectedDialogName);
@@ -159,7 +159,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
             activeRow = rowNum;
             String itemName = (String) rows.get(activeRow);
             activeRowDialog = dialogs.get(itemName);
-            if (activeRowDialog == null)
+            if(activeRowDialog == null)
                 activeNameSpace = itemName;
             else
                 activeNameSpace = null;
@@ -167,7 +167,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -176,9 +176,9 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            if (activeNameSpace != null)
+            if(activeNameSpace != null)
             {
-                switch (columnIndex)
+                switch(columnIndex)
                 {
                     case 0:
                         return activeNameSpace;
@@ -188,7 +188,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
                 }
             }
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return reportValueContext.getSkin().constructRedirect(reportValueContext, reportValueContext.getReport().getColumn(0).getRedirect(), activeRowDialog.getName(), activeRowDialog.getQualifiedName(), null);

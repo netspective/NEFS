@@ -133,20 +133,20 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
     public void setEntitySubtypeSchemaEnum(String schemaEnumId)
     {
         String[] params = TextUtils.getInstance().split(schemaEnumId, ",", true);
-        if (params.length != 2)
+        if(params.length != 2)
             log.error("the entity-subtype-schema-enum attribute in the entity page requires 2 params: schema.enum-table,enum-id-or-caption");
         else
         {
             Project project = getOwner().getProject();
             Table table = project.getSchemas().getTable(params[0]);
-            if (table == null || !(table instanceof EnumerationTable))
+            if(table == null || !(table instanceof EnumerationTable))
                 log.error("the entity-subtype-schema-enum attribute in the entity page has an invalid schema.enum-table: " + params[0]);
             else
             {
                 EnumerationTable enumTable = (EnumerationTable) table;
                 EnumerationTableRows enumRows = (EnumerationTableRows) enumTable.getData();
                 EnumerationTableRow enumRow = enumRows.getByIdOrCaptionOrAbbrev(params[1]);
-                if (enumRow == null)
+                if(enumRow == null)
                     log.error("the entity-subtype-schema-enum attribute in the entity page has an invalid enum value for " + params[0] + ": " + params[1]);
                 else
                 {
@@ -170,7 +170,7 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
     public void setEntityRedirectorPageId(String redirectPageId)
     {
         redirectorPage = (EntityRedirectorPage) getOwner().findPath(redirectPageId).getMatchedPath();
-        if (redirectorPage == null)
+        if(redirectorPage == null)
             throw new RuntimeException("Redirector page with id '" + redirectPageId + "' not found.");
 
         setRequireRequestParam(redirectorPage.getEntityIdRequestParamName());
@@ -179,21 +179,21 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
 
     public boolean isValid(NavigationContext nc)
     {
-        if (!super.isValid(nc))
+        if(!super.isValid(nc))
             return false;
 
         ActiveEntity activeEntity;
 
         // if we're coming from a redirector then it means that we may not need to rerun our queries
         final EntityRedirectorPage redirectorPage = getRedirectorPage();
-        if (redirectorPage == null)
+        if(redirectorPage == null)
         {
             log.error("No redirector page specified for entity page " + getQualifiedNameIncludingTreeId());
             return false;
         }
 
         EntitySubtypeRedirectInfo esri = EntityRedirectorPage.getEntitySubtypeRedirectInfo(nc, redirectorPage.getEntityIdRequestParamValue(nc));
-        if (esri != null)
+        if(esri != null)
             activeEntity = (ActiveEntity) esri.getData();
         else
         {
@@ -203,7 +203,7 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
             {
                 cc = nc.getConnection(null, false);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error(e);
                 throw new NestableRuntimeException(e);
@@ -213,7 +213,7 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
             {
                 activeEntity = this.redirectorPage.getActiveEntity(nc, cc);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error(e);
                 throw new NestableRuntimeException(e);
@@ -224,7 +224,7 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
                 {
                     cc.close();
                 }
-                catch (SQLException e)
+                catch(SQLException e)
                 {
                     log.error(e);
                     throw new NestableRuntimeException(e);

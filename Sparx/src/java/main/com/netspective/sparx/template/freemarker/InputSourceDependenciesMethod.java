@@ -60,7 +60,7 @@ public class InputSourceDependenciesMethod implements TemplateMethodModel
         {
             model = (freemarker.ext.beans.StringModel) env.getDataModel().get("vc");
         }
-        catch (TemplateModelException e)
+        catch(TemplateModelException e)
         {
             log.error(e);
         }
@@ -70,7 +70,7 @@ public class InputSourceDependenciesMethod implements TemplateMethodModel
         XdmComponent component = vc.getProjectComponent();
         StringBuffer sb = new StringBuffer();
         InputSourceTracker ist = component.getInputSource();
-        if (ist instanceof FileTracker)
+        if(ist instanceof FileTracker)
             sb.append(getHtml(vc, ist));
         else
             sb.append("<code>" + ist.getIdentifier() + "</code> (Dependencies: " + ist.getDependenciesCount() + ")");
@@ -84,30 +84,30 @@ public class InputSourceDependenciesMethod implements TemplateMethodModel
 
         InputSourceTracker parentFt = inputSourceTracker.getParent();
         String parentPath = parentFt != null && parentFt instanceof FileTracker
-                ? ((FileTracker) inputSourceTracker.getParent()).getFile().getParent() : "--";
+                            ? ((FileTracker) inputSourceTracker.getParent()).getFile().getParent() : "--";
         String thisPath = inputSourceTracker.getIdentifier();
 
-        if (thisPath.startsWith(parentPath))
+        if(thisPath.startsWith(parentPath))
             src.append("." + vc.getConsoleFileBrowserLinkShowAlt(thisPath, thisPath.substring(parentPath.length())));
         else
             src.append(vc.getConsoleFileBrowserLink(thisPath, false));
 
-        if (inputSourceTracker.getDependenciesCount() > 0)
+        if(inputSourceTracker.getDependenciesCount() > 0)
             src.append(" (Dependencies: " + inputSourceTracker.getDependenciesCount() + ")");
         List preProcs = inputSourceTracker.getPreProcessors();
-        if (preProcs != null && preProcs.size() > 0)
+        if(preProcs != null && preProcs.size() > 0)
         {
             src.append("<ul>");
-            for (int i = 0; i < preProcs.size(); i++)
+            for(int i = 0; i < preProcs.size(); i++)
                 src.append("<li>" + getHtml(vc, (InputSourceTracker) preProcs.get(i)) + " (pre-processors)</li>");
             src.append("</ul>");
         }
 
         List dependencies = inputSourceTracker.getIncludes();
-        if (dependencies != null && dependencies.size() > 0)
+        if(dependencies != null && dependencies.size() > 0)
         {
             src.append("<ul>");
-            for (int i = 0; i < dependencies.size(); i++)
+            for(int i = 0; i < dependencies.size(); i++)
                 src.append("<li>" + getHtml(vc, (InputSourceTracker) dependencies.get(i)) + "</li>");
             src.append("</ul>");
         }

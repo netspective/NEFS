@@ -46,7 +46,7 @@ public class ConsoleServletOptions extends NavigationControllerServletOptions
     public String getNavigationTreeName()
     {
         String result = super.getNavigationTreeName();
-        if (result == null)
+        if(result == null)
             return ConsoleServlet.CONSOLE_ID;
         else
             return result;
@@ -55,7 +55,7 @@ public class ConsoleServletOptions extends NavigationControllerServletOptions
     public String getThemeName()
     {
         String result = super.getThemeName();
-        if (result == null)
+        if(result == null)
             return ConsoleServlet.CONSOLE_ID;
         else
             return result;

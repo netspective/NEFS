@@ -69,8 +69,6 @@ public class SchemaRecordEditorDialogContext extends DialogContext
 
     /**
      * Gets a List object of recently added rows
-     *
-     * @return
      */
     public List getRowsAdded()
     {
@@ -79,8 +77,6 @@ public class SchemaRecordEditorDialogContext extends DialogContext
 
     /**
      * Gets a List object of recently updated rows
-     *
-     * @return
      */
     public List getRowsUpdated()
     {
@@ -89,8 +85,6 @@ public class SchemaRecordEditorDialogContext extends DialogContext
 
     /**
      * Gets a List object of recently deleted rows
-     *
-     * @return
      */
     public List getRowsDeleted()
     {
@@ -101,8 +95,6 @@ public class SchemaRecordEditorDialogContext extends DialogContext
      * Gets the primary key values of the row that was added
      *
      * @param rowNum Row number
-     *
-     * @return
      */
     public ColumnValues getAddedRowPrimaryKeyValues(int rowNum)
     {
@@ -113,8 +105,6 @@ public class SchemaRecordEditorDialogContext extends DialogContext
     /**
      * Gets the primary key value of the row that was recently added. If there are more than
      * one primary key, the first primary key column is used.
-     *
-     * @param rowNum
      *
      * @return A NULL object is returned if there are not primary keys
      */

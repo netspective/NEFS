@@ -50,8 +50,6 @@ public class SimpleTabularReportDataSource extends AbstractHtmlTabularReportData
 
     /**
      * Adds row data
-     *
-     * @param beanData
      */
     public void addRowData(String[] beanData)
     {
@@ -76,7 +74,7 @@ public class SimpleTabularReportDataSource extends AbstractHtmlTabularReportData
 
     public boolean hasMoreRows()
     {
-        if (activeRow < getTotalRows() - 1)
+        if(activeRow < getTotalRows() - 1)
             return true;
         else
             return false;
@@ -84,7 +82,7 @@ public class SimpleTabularReportDataSource extends AbstractHtmlTabularReportData
 
     public boolean next()
     {
-        if (!hasMoreRows())
+        if(!hasMoreRows())
             return false;
 
         setActiveRow(activeRow + 1);

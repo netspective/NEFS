@@ -56,19 +56,15 @@ public class GridFieldRow extends DialogField
 
     /**
      * Generates custom javascript definitions
-     *
-     * @param dc
-     *
-     * @return
      */
     public String getCustomJavaScriptDefn(DialogContext dc)
     {
         StringBuffer sb = new StringBuffer("field.childrenNames = [");
         DialogFields columns = getChildren();
 
-        for (int k = 0; k < columns.size(); k++)
+        for(int k = 0; k < columns.size(); k++)
         {
-            if (k > 0)
+            if(k > 0)
                 sb.append(", ");
             sb.append("'" + columns.get(k).getQualifiedName() + "'");
         }

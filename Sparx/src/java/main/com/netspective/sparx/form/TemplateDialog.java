@@ -80,9 +80,9 @@ public class TemplateDialog extends Dialog
 
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        if (html != null)
+        if(html != null)
             writer.write(html.getTextValue(dc));
-        else if (bodyTemplate != null)
+        else if(bodyTemplate != null)
             bodyTemplate.process(writer, dc, null);
         else
             writer.write("Neither an html value source nor a body template was provided.");

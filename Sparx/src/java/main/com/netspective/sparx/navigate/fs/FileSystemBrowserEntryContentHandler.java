@@ -60,9 +60,8 @@ public interface FileSystemBrowserEntryContentHandler
     /**
      * If this content handler can write content to a browser, then this method should do that work
      *
-     * @param writer          The writer to which content should be written
-     * @param nc              The navigation content for the content
-     * @param fileSystemEntry
+     * @param writer The writer to which content should be written
+     * @param nc     The navigation content for the content
      */
     public void handleContent(Writer writer, NavigationContext nc, FileSystemEntry fileSystemEntry) throws IOException;
 }

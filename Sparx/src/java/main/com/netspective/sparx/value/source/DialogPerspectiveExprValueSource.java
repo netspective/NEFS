@@ -50,13 +50,13 @@ public class DialogPerspectiveExprValueSource extends AbstractValueSource
 
     public static final String[] IDENTIFIERS = new String[]{"create-dialog-perspective-heading"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Returns the current dialog data perspective identifier plus the text provided that would be suitable for use " +
-            "as the heading of a multi-purpose dialog (a dialog that can be used for adding, updating, and deleting). For " +
-            "example, if <code><u>Person</u></code> is the text, and the current dialog's data_cmd is <code><u>add</u></code> then this SVS would return " +
-            "<code><u>Add Person</u></code>.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("text", true, "The text to use in the dialog data perspective expression."),
-            });
+                                                                                              "as the heading of a multi-purpose dialog (a dialog that can be used for adding, updating, and deleting). For " +
+                                                                                              "example, if <code><u>Person</u></code> is the text, and the current dialog's data_cmd is <code><u>add</u></code> then this SVS would return " +
+                                                                                              "<code><u>Add Person</u></code>.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("text", true, "The text to use in the dialog data perspective expression."),
+                                                                                              });
 
     public static String[] getIdentifiers()
     {
@@ -75,10 +75,10 @@ public class DialogPerspectiveExprValueSource extends AbstractValueSource
     public Value getValue(ValueContext vc)
     {
         String expr = getSpecification().getParams();
-        if (vc instanceof DialogContext)
+        if(vc instanceof DialogContext)
         {
             DialogPerspectives ddc = ((DialogContext) vc).getDialogState().getPerspectives();
-            switch ((int) ddc.getFlags())
+            switch((int) ddc.getFlags())
             {
                 case DialogPerspectives.ADD:
                     expr = "Add " + expr;

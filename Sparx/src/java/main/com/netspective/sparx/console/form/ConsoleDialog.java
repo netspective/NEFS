@@ -60,7 +60,7 @@ public class ConsoleDialog extends Dialog
 
     public void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
-        if (!(dc.getServlet() instanceof ConsoleServlet))
+        if(!(dc.getServlet() instanceof ConsoleServlet))
         {
             writer.write("This is a privileged form and may only execute within the Netspective Enterprise Console.");
             return;

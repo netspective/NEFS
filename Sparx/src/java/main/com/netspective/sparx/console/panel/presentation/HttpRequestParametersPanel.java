@@ -106,13 +106,13 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
             public ParameterRows()
             {
                 List paramNamesList = new ArrayList();
-                for (Enumeration e = request.getParameterNames(); e.hasMoreElements();)
+                for(Enumeration e = request.getParameterNames(); e.hasMoreElements();)
                     paramNamesList.add(e.nextElement());
 
                 String[] paramNames = (String[]) paramNamesList.toArray(new String[paramNamesList.size()]);
                 Arrays.sort(paramNames);
 
-                for (int i = 0; i < paramNames.length; i++)
+                for(int i = 0; i < paramNames.length; i++)
                 {
                     String name = paramNames[i];
                     String[] values = request.getParameterValues(name);
@@ -122,14 +122,14 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
 
             public void add(int level, String name, String[] values)
             {
-                if (values.length > 1)
+                if(values.length > 1)
                 {
                     ParameterRow activeRow = new ParameterRow(level, name, null, null);
                     rows.add(activeRow);
-                    for (int i = 0; i < values.length; i++)
+                    for(int i = 0; i < values.length; i++)
                         rows.add(new ParameterRow(level + 1, name + "[" + i + "]", values[i], activeRow));
                 }
-                else if (values.length == 1)
+                else if(values.length == 1)
                     rows.add(new ParameterRow(level, name, values[0], null));
             }
 
@@ -194,7 +194,7 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return activeRow.name;
@@ -230,7 +230,7 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRowIndex + 1);

@@ -62,7 +62,7 @@ public class PanelsField extends DialogField
 
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-        if (panel != null)
+        if(panel != null)
             panel.render(writer, dc, dc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
         else
             writer.write("Panel was not provided.");

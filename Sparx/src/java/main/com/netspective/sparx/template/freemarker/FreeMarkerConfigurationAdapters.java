@@ -96,7 +96,7 @@ public class FreeMarkerConfigurationAdapters
     public void addConfiguration(FreeMarkerConfigurationAdapter adapter)
     {
         configs.put(adapter.getName(), adapter);
-        if (adapter.isDefault())
+        if(adapter.isDefault())
             setDefaultAdapter(adapter);
     }
 
@@ -145,15 +145,16 @@ public class FreeMarkerConfigurationAdapters
 
         try
         {
-            if (templatePathsText != null)
+            if(templatePathsText != null)
             {
                 String[] templatePaths = TextUtils.getInstance().split(templatePathsText, templatePathsDelim == null
-                        ? File.pathSeparator : templatePathsDelim, true);
-                for (int i = 0; i < templatePaths.length; i++)
+                                                                                          ? File.pathSeparator
+                                                                                          : templatePathsDelim, true);
+                for(int i = 0; i < templatePaths.length; i++)
                     templateLoaders.add(new FileTemplateLoader(new File(servletContext.getRealPath(templatePaths[i]))));
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to setup file templates loader.", e);
             throw new NestableRuntimeException(e);

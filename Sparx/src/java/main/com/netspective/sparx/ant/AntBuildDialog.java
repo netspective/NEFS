@@ -102,23 +102,23 @@ public class AntBuildDialog extends ConsoleDialog
     public void populateValues(DialogContext dc, int formatType)
     {
         super.populateValues(dc, formatType);
-        if (dc.getDialogState().isInitialEntry() && formatType == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION)
+        if(dc.getDialogState().isInitialEntry() && formatType == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION)
         {
             Project project = antProject.getProject(dc);
             dc.getFieldStates().getState("target").getValue().setTextValue(project.getDefaultTarget());
 
             DialogFields fields = getFields();
-            for (int i = 0; i < fields.size(); i++)
+            for(int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
-                if (field instanceof AntBuildDialogPropertyField)
+                if(field instanceof AntBuildDialogPropertyField)
                 {
                     AntBuildDialogPropertyField propertyField = (AntBuildDialogPropertyField) field;
                     String propertyName = propertyField.getProperty();
                     String propertyValue = project.getUserProperty(propertyName);
-                    if (propertyValue == null)
+                    if(propertyValue == null)
                         propertyValue = project.getProperty(propertyName);
-                    if (propertyValue != null)
+                    if(propertyValue != null)
                         dc.getFieldStates().getState(propertyField).getValue().setTextValue(propertyValue);
                 }
             }
@@ -153,21 +153,21 @@ public class AntBuildDialog extends ConsoleDialog
         try
         {
             DialogFields fields = getFields();
-            for (int i = 0; i < fields.size(); i++)
+            for(int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
-                if (field instanceof AntBuildDialogPropertyField)
+                if(field instanceof AntBuildDialogPropertyField)
                 {
                     AntBuildDialogPropertyField propertyField = (AntBuildDialogPropertyField) field;
                     String propertyName = propertyField.getProperty();
                     String propertyValue = dc.getFieldStates().getState(propertyField).getValue().getTextValue();
-                    if (propertyValue != null)
+                    if(propertyValue != null)
                         antProject.setUserProperty(propertyName, propertyValue);
                 }
             }
             antProject.executeTarget(targetValue.getTextValue());
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             exceptionThrown = e;
         }
@@ -176,7 +176,7 @@ public class AntBuildDialog extends ConsoleDialog
         writer.write(ostream.toString());
         writer.write("</pre>");
 
-        if (exceptionThrown != null)
+        if(exceptionThrown != null)
             renderFormattedExceptionMessage(writer, exceptionThrown);
 
         System.setOut(saveOut);
@@ -187,7 +187,7 @@ public class AntBuildDialog extends ConsoleDialog
     {
         super.render(writer, nc, theme, flags);
         File projectFile = new File(antProject.getFile().getTextValue(nc));
-        if (!projectFile.exists())
+        if(!projectFile.exists())
             return;
 
         writer.write("<p>");

@@ -41,22 +41,16 @@ public interface ThemeSkin
 
     /**
      * Return the name of this skin
-     *
-     * @return
      */
     public String getName();
 
     /**
      * Return the theme that this skin belongs to
-     *
-     * @return
      */
     public Theme getTheme();
 
     /**
      * Sets the theme that this skin belongs to
-     *
-     * @param theme
      */
     public void setTheme(Theme theme);
 }

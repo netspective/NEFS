@@ -48,7 +48,7 @@ import com.netspective.sparx.form.field.DialogFields;
 /**
  * Logical dialog field class to allow creation of grids.
  *
- * @version $Id: GridField.java,v 1.11 2004-08-15 01:47:07 shahid.shah Exp $
+ * @version $Id: GridField.java,v 1.12 2004-08-15 02:27:27 shahid.shah Exp $
  */
 public class GridField extends DialogField
 {
@@ -70,13 +70,11 @@ public class GridField extends DialogField
          *
          * @param row    row index
          * @param column column index
-         *
-         * @return
          */
         public DialogFieldValue getValue(int row, int column)
         {
             DialogFields rows = getField().getChildren();
-            if (row > rows.size())
+            if(row > rows.size())
                 return null;
             DialogFields rowChildren = rows.get(row).getChildren();
             DialogField field = rowChildren.get(column);
@@ -91,10 +89,6 @@ public class GridField extends DialogField
 
     /**
      * Creates a new instance of the grid field's state
-     *
-     * @param dc
-     *
-     * @return
      */
     public DialogField.State constructStateInstance(DialogContext dc)
     {
@@ -103,8 +97,6 @@ public class GridField extends DialogField
 
     /**
      * Gets the class to use for the state of the grid field
-     *
-     * @return
      */
     public Class getStateClass()
     {
@@ -140,29 +132,27 @@ public class GridField extends DialogField
      * Returns an array of caption names for the grid columns
      *
      * @param dc current dialog context
-     *
-     * @return
      */
     public String[] getCaptions(DialogContext dc)
     {
         String[] result = null;
 
-        if (captions == null)
+        if(captions == null)
         {
             DialogFields rows = getChildren();
-            if (rows == null)
+            if(rows == null)
                 return null;
 
             DialogField firstRow = rows.get(0);
-            if (firstRow == null)
+            if(firstRow == null)
                 return null;
 
             DialogFields firstRowChildren = firstRow.getChildren();
             result = new String[firstRowChildren.size()];
-            for (int i = 0; i < firstRowChildren.size(); i++)
+            for(int i = 0; i < firstRowChildren.size(); i++)
             {
                 DialogField field = firstRowChildren.get(i);
-                if (field.isAvailable(dc))
+                if(field.isAvailable(dc))
                     result[i] = field.getCaption().getTextValue(dc);
             }
         }
@@ -189,33 +179,33 @@ public class GridField extends DialogField
         String memberName = mi.getMemberName();
         String fieldName = mi.getFieldName();
 
-        if (memberName == null || fieldName == null)
+        if(memberName == null || fieldName == null)
             return mi;
 
         String stateClassName = getStateClass().getName().replace('$', '.');
         mi.addJavaCode("\tpublic com.netspective.sparx.form.field.DialogFieldValue get" + mi.getMemberName() + "GridMemberFieldValue(int row, int column)\n" +
-                "\t{\n " +
-                "\t\tDialogFields rows = get" + mi.getMemberName() + "State().getField().getChildren();\n" +
-                "\t\tif (row > rows.size())\n" +
-                "\t\t\treturn null;\n" +
-                "\t\tDialogFields rowChildren = rows.get(row).getChildren();\n" +
-                "\t\tDialogField field = rowChildren.get(column);\n" +
-                "\t\treturn this.dialogContext.getFieldStates().getState(field).getValue();\n" +
-                "\t}\n");
+                       "\t{\n " +
+                       "\t\tDialogFields rows = get" + mi.getMemberName() + "State().getField().getChildren();\n" +
+                       "\t\tif (row > rows.size())\n" +
+                       "\t\t\treturn null;\n" +
+                       "\t\tDialogFields rowChildren = rows.get(row).getChildren();\n" +
+                       "\t\tDialogField field = rowChildren.get(column);\n" +
+                       "\t\treturn this.dialogContext.getFieldStates().getState(field).getValue();\n" +
+                       "\t}\n");
         DialogFields rows = getChildren();
-        if (rows.size() > 0)
+        if(rows.size() > 0)
         {
             // get the first row and use it as if it represents every row (assume that every row has the same number of columns)
             GridFieldRow row = (GridFieldRow) rows.get(0);
             DialogFields columns = row.getChildren();
-            for (int i = 0; i < columns.size(); i++)
+            for(int i = 0; i < columns.size(); i++)
             {
                 DialogField columnField = columns.get(i);
                 mi.addJavaCode("\tpublic DialogFieldValue get" + mi.getMemberName() + TextUtils.getInstance().xmlTextToJavaIdentifier(columnField.getName(), true) + "ValueByRow(int rowNumber)\n" +
-                        "\t{\n" +
-                        "\t\t" + stateClassName + " state = get" + mi.getMemberName() + "State();\n" +
-                        "\t\treturn state.getValue(rowNumber, " + i + ");\n" +
-                        "\t}\n");
+                               "\t{\n" +
+                               "\t\t" + stateClassName + " state = get" + mi.getMemberName() + "State();\n" +
+                               "\t\treturn state.getValue(rowNumber, " + i + ");\n" +
+                               "\t}\n");
             }
         }
         return getChildren().getDialogContextBeanMemberInfo(mi);

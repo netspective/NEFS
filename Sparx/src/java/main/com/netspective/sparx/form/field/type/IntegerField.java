@@ -52,7 +52,7 @@ public class IntegerField extends TextField
 
             public void setTextValue(String value) throws ValueException
             {
-                if (value == null || value.length() == 0)
+                if(value == null || value.length() == 0)
                 {
                     setValue((Integer) null);
                     return;
@@ -62,7 +62,7 @@ public class IntegerField extends TextField
                 {
                     setValue(new Integer(Integer.parseInt(value)));
                 }
-                catch (NumberFormatException e)
+                catch(NumberFormatException e)
                 {
                     setInvalidText(value);
                     invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in integer format (" + e.getMessage() + ").");
@@ -72,7 +72,7 @@ public class IntegerField extends TextField
             public int getIntValue(int defaultValue)
             {
                 Integer integerValue = (Integer) getValue();
-                if (integerValue != null)
+                if(integerValue != null)
                     return integerValue.intValue();
                 else
                     return defaultValue;
@@ -159,11 +159,11 @@ public class IntegerField extends TextField
 
         // hang onto the integer validation rule since we're going to need it for javascript definition and rendering
         boolean found = false;
-        for (int i = 0; i < rules.size(); i++)
+        for(int i = 0; i < rules.size(); i++)
         {
-            if (rules.get(i) instanceof IntegerValueValidationRule)
+            if(rules.get(i) instanceof IntegerValueValidationRule)
             {
-                if (found)
+                if(found)
                     throw new RuntimeException("Multiple integer validation rules not allowed.");
 
                 integerValidationRule = (IntegerValueValidationRule) rules.get(i);
@@ -176,9 +176,9 @@ public class IntegerField extends TextField
     {
         StringBuffer buf = new StringBuffer(super.getCustomJavaScriptDefn(dc));
 
-        if (integerValidationRule.getMin() != java.lang.Integer.MIN_VALUE)
+        if(integerValidationRule.getMin() != java.lang.Integer.MIN_VALUE)
             buf.append("field.minValue = " + integerValidationRule.getMin() + ";\n");
-        if (integerValidationRule.getMax() != java.lang.Integer.MAX_VALUE)
+        if(integerValidationRule.getMax() != java.lang.Integer.MAX_VALUE)
             buf.append("field.maxValue = " + integerValidationRule.getMax() + ";\n");
 
         return buf.toString();

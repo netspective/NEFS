@@ -59,7 +59,7 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
 
         static
         {
-            for (int i = 0; i < BasicHtmlTabularReportPanelSkin.Flags.FLAGDEFNS.length; i++)
+            for(int i = 0; i < BasicHtmlTabularReportPanelSkin.Flags.FLAGDEFNS.length; i++)
                 FLAGDEFNS[i] = BasicHtmlTabularReportPanelSkin.Flags.FLAGDEFNS[i];
             FLAGDEFNS[BasicHtmlTabularReportPanelSkin.Flags.FLAGDEFNS.length + 0] = new FlagDefn(ACCESS_XDM, "SKIP_NULL_COLUMNS", SKIP_NULL_COLUMNS);
         }
@@ -98,7 +98,7 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
 
     public int produceDataRows(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds) throws IOException
     {
-        if (!ds.next())
+        if(!ds.next())
         {
             writer.write("<tr><td class=\"report-detail\">No data found.</td></tr>");
             return 0;
@@ -110,14 +110,14 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
         TabularReportColumnState[] states = rc.getStates();
 
         StringBuffer dataTable = new StringBuffer();
-        if (horizontalLayout)
+        if(horizontalLayout)
         {
             int colCount = 0;
             dataTable.append("<tr>");
-            for (int i = 0; i < dataColsCount; i++)
+            for(int i = 0; i < dataColsCount; i++)
             {
                 TabularReportColumn column = columns.getColumn(i);
-                if (column.getBreak() != null)
+                if(column.getBreak() != null)
                 {
                     // TODO: Need to define the style for the column break font style
                     dataTable.append("<td height='10'></td></tr><tr><td align='left' bgcolor='#FFFBA5' colspan='2'><table border=0 cellspacing=0>");
@@ -126,10 +126,10 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
                 }
 
                 TabularReportColumnState state = states[i];
-                if (!state.isVisible())
+                if(!state.isVisible())
                     continue;
 
-                if (flags.flagIsSet(Flags.SKIP_NULL_COLUMNS) && ds.getActiveRowColumnData(column.getColIndex(), 0) == null)
+                if(flags.flagIsSet(Flags.SKIP_NULL_COLUMNS) && ds.getActiveRowColumnData(column.getColIndex(), 0) == null)
                     continue;
 
                 String data =
@@ -137,19 +137,19 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_FOR_URL);
                 RedirectValueSource redirect = (RedirectValueSource) column.getRedirect();
-                if (redirect != null)
+                if(redirect != null)
                 {
                     data = rc.getSkin().constructRedirect(rc, redirect, data, null, null);
                 }
 
                 String heading = column.getHeading() != null
-                        ? column.getHeading().getValue(rc).getTextValue() : "&nbsp;";
+                                 ? column.getHeading().getValue(rc).getTextValue() : "&nbsp;";
                 dataTable.append("<td class=\"report-column-heading\"><nobr>" + heading + "</nobr></td>");
                 dataTable.append("<td class=\"report-column-even\" style=\"" + state.getCssStyleAttrValue() + "\">" +
-                        data + "</td>");
+                                 data + "</td>");
 
                 colCount++;
-                if (colCount >= tableCols)
+                if(colCount >= tableCols)
                 {
                     dataTable.append("</tr><tr>");
                     colCount = 0;

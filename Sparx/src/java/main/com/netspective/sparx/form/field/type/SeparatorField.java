@@ -48,7 +48,7 @@ public class SeparatorField extends DialogField
 
     static
     {
-        for (int i = 0; i < DialogFieldFlags.FLAG_DEFNS.length; i++)
+        for(int i = 0; i < DialogFieldFlags.FLAG_DEFNS.length; i++)
             SEPARATOR_FIELD_FLAG_DEFNS[i] = DialogFieldFlags.FLAG_DEFNS[i];
         SEPARATOR_FIELD_FLAG_DEFNS[DialogFieldFlags.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(TextField.Flags.ACCESS_XDM, "RULE", Flags.RULE);
     }
@@ -103,7 +103,7 @@ public class SeparatorField extends DialogField
 
     public void addText(String text)
     {
-        if (banner == null)
+        if(banner == null)
             banner = new StaticValueSource(text);
         else
             banner = new StaticValueSource(banner.getSpecification().getSpecificationText() + text);

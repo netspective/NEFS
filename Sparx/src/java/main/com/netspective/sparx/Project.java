@@ -251,7 +251,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     public void addListener(EventListener listener)
     {
-        if (listener instanceof ProjectLifecyleListener)
+        if(listener instanceof ProjectLifecyleListener)
             lifecycleListeners.add(listener);
         else
             log.error("Unknown listener type: " + listener.getClass());
@@ -267,7 +267,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         {
             handler.executeDynamicTemplates();
         }
-        catch (SAXException e)
+        catch(SAXException e)
         {
             throw new DataModelException(pc, e);
         }
@@ -445,8 +445,6 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /**
      * Sets the default navigation tree for the project
-     *
-     * @param name
      */
     public void setDefaultNavigationTree(String name)
     {
@@ -480,7 +478,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         String actualName = PanelEditor.translateNameForMapKey(name);
         PanelEditor pe = panelEditors.get(actualName);
 
-        if (pe == null && log.isDebugEnabled())
+        if(pe == null && log.isDebugEnabled())
         {
             log.debug("Unable to find panel editor '" + name + "' as '" + actualName + "'. Available: " + panelEditors);
             return null;
@@ -516,7 +514,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         String actualName = Dialog.translateNameForMapKey(name);
         Dialog dialog = dialogs.get(actualName);
 
-        if (dialog == null && log.isDebugEnabled())
+        if(dialog == null && log.isDebugEnabled())
         {
             log.debug("Unable to find dialog '" + name + "' as '" + actualName + "'. Available: " + dialogs);
             return null;
@@ -576,8 +574,6 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     /* ------------------------------------------------------------------------------------------------------------- */
     /**
      * Generates the metrics for the different components defined within the project
-     *
-     * @param parent
      */
     public void produceMetrics(Metric parent)
     {
@@ -599,9 +595,6 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /**
      * Creates the various metric associated with the project files
-     *
-     * @param parentMetric
-     * @param path
      */
     public void createFileSystemMetrics(Metric parentMetric, File path)
     {
@@ -630,10 +623,10 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         avgDepthMetric.incrementAverage(depth);
 
         File[] entries = path.listFiles();
-        for (int i = 0; i < entries.length; i++)
+        for(int i = 0; i < entries.length; i++)
         {
             File entry = entries[i];
-            if (entry.isDirectory())
+            if(entry.isDirectory())
             {
                 totalDirsMetric.incrementCount();
                 File[] childEntries = entry.listFiles();
@@ -645,26 +638,26 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
                 String entryCaption = entry.getName();
                 String entryExtension = "(no extension)";
                 int extnIndex = entryCaption.lastIndexOf('.');
-                if (extnIndex > -1)
+                if(extnIndex > -1)
                     entryExtension = entryCaption.substring(extnIndex);
-                if (ignoreCaseInFileExtn)
+                if(ignoreCaseInFileExtn)
                     entryExtension = entryExtension.toLowerCase();
 
                 CountMetric fileMetric = allFileMetrics.addCountMetric(entryExtension);
                 //fileMetric.setFlag(Metric.METRICFLAG_SHOW_PCT_OF_PARENT);
                 fileMetric.incrementCount();
 
-                if (countLinesInFileExtn.contains(entryExtension))
+                if(countLinesInFileExtn.contains(entryExtension))
                 {
                     FileTypeMetric ftMetric = (FileTypeMetric) codeFileMetrics.getChild(entryExtension);
-                    if (ftMetric == null)
+                    if(ftMetric == null)
                         ftMetric = codeFileMetrics.addFileTypeMetric(entryExtension, true);
                     ftMetric.incrementCount(entry);
                 }
                 else
                 {
                     FileTypeMetric ftMetric = (FileTypeMetric) appFileMetrics.getChild(entryExtension);
-                    if (ftMetric == null)
+                    if(ftMetric == null)
                         ftMetric = appFileMetrics.addFileTypeMetric(entryExtension, false);
                     ftMetric.incrementCount(entry);
                 }
@@ -730,10 +723,10 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         public void defineConstants(Map constants, NavigationPath navigationPath)
         {
             List children = navigationPath.getChildrenList();
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
             {
                 NavigationPath path = (NavigationPath) children.get(i);
-                if (path.getQualifiedName() != null)
+                if(path.getQualifiedName() != null)
                     constants.put(getNavigationPackage(path), path.getQualifiedName());
                 defineConstants(constants, path);
             }
@@ -741,10 +734,10 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
         public void defineConstants(Map constants, NavigationTrees navigationTrees)
         {
-            for (Iterator i = navigationTrees.getTrees().values().iterator(); i.hasNext();)
+            for(Iterator i = navigationTrees.getTrees().values().iterator(); i.hasNext();)
             {
                 NavigationTree tree = (NavigationTree) i.next();
-                if (tree.getName().startsWith(ConsoleServlet.CONSOLE_ID))
+                if(tree.getName().startsWith(ConsoleServlet.CONSOLE_ID))
                     continue;
 
                 constants.put(getNavigationPackage(tree), tree.getName());
@@ -754,18 +747,18 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
         public void defineConstants(Map constants, Dialogs dialogs)
         {
-            for (int i = 0; i < dialogs.size(); i++)
+            for(int i = 0; i < dialogs.size(); i++)
             {
                 Dialog dialog = dialogs.get(i);
-                if (dialog.getQualifiedName().startsWith(ConsoleServlet.CONSOLE_ID))
+                if(dialog.getQualifiedName().startsWith(ConsoleServlet.CONSOLE_ID))
                     continue;
 
                 constants.put(getFormPackage(dialog), dialog.getQualifiedName());
                 DialogFields fields = dialog.getFields();
-                for (int j = 0; j < fields.size(); j++)
+                for(int j = 0; j < fields.size(); j++)
                 {
                     DialogField field = fields.get(j);
-                    if (field.getQualifiedName() != null)
+                    if(field.getQualifiedName() != null)
                         constants.put(getFormPackage(field), field.getQualifiedName());
                 }
             }
@@ -791,8 +784,8 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
         XdmIdentifierConstantsGenerator xicg =
                 new XdmIdentifierConstantsGenerator(rootPath,
-                        rootPkgAndClassName,
-                        getPresentationIdentifiersConstantsDecls().createConstants());
+                                                    rootPkgAndClassName,
+                                                    getPresentationIdentifiersConstantsDecls().createConstants());
         xicg.generateCode();
     }
 }

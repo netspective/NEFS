@@ -97,13 +97,13 @@ public class DefaultFileSystemBrowserImages implements FileSystemBrowserImages
 
     public String getImage(Theme theme, FileSystemEntry fileSystemEntry)
     {
-        if (fileSystemEntry.getFile().isDirectory())
+        if(fileSystemEntry.getFile().isDirectory())
             return theme.getResourceUrl(folderClosed);
 
         String imageSrc = constructImageSrc(fileSystemEntry);
         String imageSrcUrl = theme.getResourceUrl(imageSrc, null);
 
-        if (imageSrcUrl == null)
+        if(imageSrcUrl == null)
         {
             String image = (String) fileTypes.get(fileSystemEntry.getEntryType().toLowerCase());
             return theme.getResourceUrl(image != null ? image : defaultFile);

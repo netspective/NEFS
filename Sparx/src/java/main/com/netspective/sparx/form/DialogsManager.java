@@ -54,24 +54,16 @@ public interface DialogsManager
 
     /**
      * Gets a dialog by its fully qualified name (e.g. packageName.dialogName)
-     *
-     * @param name
-     *
-     * @return
      */
     Dialog getDialog(String name);
 
     /**
      * Creates a dialogs package
-     *
-     * @return
      */
     DialogsPackage createDialogs();
 
     /**
      * Adds a dialog package
-     *
-     * @param pkg
      */
     void addDialogs(DialogsPackage pkg);
 }

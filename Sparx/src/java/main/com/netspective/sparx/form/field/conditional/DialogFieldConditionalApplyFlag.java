@@ -120,36 +120,36 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
     {
         StringBuffer buffer = new StringBuffer();
         DialogField partnerField = getPartnerField();
-        if (partnerField != null)
+        if(partnerField != null)
         {
-            if (partnerField instanceof TextField)
+            if(partnerField instanceof TextField)
             {
-                if (value == null)
+                if(value == null)
                     buffer.append("control.value != ''");
                 else
                     buffer.append("control.value == '" + value.getTextValue(vc) + "'");
             }
-            else if (partnerField instanceof SelectField)
+            else if(partnerField instanceof SelectField)
             {
                 SelectField select = (SelectField) partnerField;
                 int style = select.getStyle().getValueIndex();
-                if (style == SelectField.Style.RADIO)
+                if(style == SelectField.Style.RADIO)
                 {
-                    if (value == null)
+                    if(value == null)
                         buffer.append("control.value != ''");
                     else
                         buffer.append("control.value == '" + value.getTextValue(vc) + "'");
                 }
-                else if (style == SelectField.Style.LIST)
+                else if(style == SelectField.Style.LIST)
                 {
-                    if (value == null)
+                    if(value == null)
                         buffer.append("control.options[control.selectedIndex] != ''");
                     else
                         buffer.append("control.options[control.selectedIndex] == '" + value.getTextValue(vc) + "'");
                 }
-                else if (style == SelectField.Style.MULTICHECK)
+                else if(style == SelectField.Style.MULTICHECK)
                 {
-                    if (value == null)
+                    if(value == null)
                         buffer.append("control.value != ''");
                     else
                         buffer.append("checkedCheckedValue(control," + value + "')");
@@ -178,8 +178,6 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
 
     /**
      * Sub-condition that is related to the {@link DialogFieldConditionalApplyFlag#setHasValue} condition
-     *
-     * @param value
      */
     public void setValue(ValueSource value)
     {
@@ -199,13 +197,11 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
      * <pre>&lt;conditional ... has-value="field:id" value="123"/&gt;</pre>
      * <p/>
      * This means that the condition is deemed to be true if the field called 'id' contains a value of 123.
-     *
-     * @param hasValue
      */
     public void setHasValue(ValueSource hasValue)
     {
         this.hasValue = hasValue;
-        if (hasValue instanceof DialogFieldValueSource)
+        if(hasValue instanceof DialogFieldValueSource)
             setPartnerFieldName(((DialogFieldValueSource) hasValue).getFieldName());
     }
 
@@ -216,8 +212,6 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
 
     /**
      * Condition used to check if the value source contains a boolean value of TRUE.
-     *
-     * @param aTrue
      */
     public void setIsTrue(ValueSource aTrue)
     {
@@ -324,68 +318,68 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         // the keep checking things until the status is set to false -- if it's false, we're going to just leave
         // and not do anything
 
-        if (status && perspective.getFlags() != 0)
+        if(status && perspective.getFlags() != 0)
             status = dc.matchesPerspective((int) perspective.getFlags());
 
         boolean hasPermissionFlg = true;
         boolean lackPermissionFlg = false;
-        if (status && (this.hasPermissions != null || this.lackPermissions != null))
+        if(status && (this.hasPermissions != null || this.lackPermissions != null))
         {
-            if (dc.getServlet() instanceof ConsoleServlet)
+            if(dc.getServlet() instanceof ConsoleServlet)
             {
                 // if the dialog is being run in the console, don't allow conditionals to be executed since
                 // conditionals can contain permission checking which is dependent upon the application
                 getSourceField().invalidate(dc,
-                        "Conditionals using permission checking are not allowed to run in ACE since " +
-                        "they are dependent on the application's security settings.");
+                                            "Conditionals using permission checking are not allowed to run in ACE since " +
+                                            "they are dependent on the application's security settings.");
                 return;
             }
 
             AuthenticatedUser user = dc.getAuthenticatedUser();
             try
             {
-                if (this.hasPermissions != null)
+                if(this.hasPermissions != null)
                     hasPermissionFlg = user.hasAnyPermission(dc.getAccessControlListsManager(), this.hasPermissions);
-                if (this.lackPermissions != null)
+                if(this.lackPermissions != null)
                     lackPermissionFlg = user.hasAnyPermission(dc.getAccessControlListsManager(), this.lackPermissions);
             }
-            catch (PermissionNotFoundException e)
+            catch(PermissionNotFoundException e)
             {
                 log.error("Permission error", e);
             }
 
             // set 'status' to true only if the user lacks certain permissions and
             // has certain permissions
-            if (lackPermissionFlg == false && hasPermissionFlg == true)
+            if(lackPermissionFlg == false && hasPermissionFlg == true)
                 status = true;
             else
                 status = false;
         }
 
         // check the hasValue attribute
-        if (status && hasValue != null)
+        if(status && hasValue != null)
         {
             Value hasValueItem = hasValue.getValue(dc);
-            if (value == null)
+            if(value == null)
                 status = hasValueItem.getTextValue() != null && hasValueItem.getTextValue().trim().length() > 0
-                        ? true : false;
+                         ? true : false;
             else
             {
                 String valueCheck = value.getTextValue(dc);
-                if (valueCheck != null && valueCheck.equals(hasValueItem.getTextValue()))
+                if(valueCheck != null && valueCheck.equals(hasValueItem.getTextValue()))
                     status = true;
                 else
                     status = false;
             }
         }
         // check the isTrue attribute
-        if (status && isTrue != null)
+        if(status && isTrue != null)
         {
             Value value = isTrue.getValue(dc);
-            if (value.getValue() instanceof Boolean)
+            if(value.getValue() instanceof Boolean)
             {
                 boolean isTrueValue = ((Boolean) value.getValue()).booleanValue();
-                if (isTrueValue)
+                if(isTrueValue)
                     status = true;
                 else
                     status = false;
@@ -396,16 +390,16 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
             }
         }
 
-        if (status && clear)
+        if(status && clear)
         {
             dc.getFieldStates().clearStateFlag(getSourceField(), flags.getFlags());
         }
-        else if (status)
+        else if(status)
         {
             dc.getFieldStates().setStateFlag(getSourceField(), flags.getFlags());
         }
 
-        if (status && conditionalValueSource != null)
+        if(status && conditionalValueSource != null)
             dc.getFieldStates().getState(getSourceField()).getValue().copyValueByReference(valueSource.getValue(dc));
     }
 }

@@ -38,7 +38,7 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.sparx.panel.HtmlPanelAction;
 
 /**
- * @version $Id: HtmlReportAction.java,v 1.10 2004-08-15 01:47:10 shahid.shah Exp $
+ * @version $Id: HtmlReportAction.java,v 1.11 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class HtmlReportAction extends HtmlPanelAction
 {
@@ -83,8 +83,6 @@ public class HtmlReportAction extends HtmlPanelAction
     /**
      * Returns the caption of the report action. If there is no caption defined, then the
      * type description is used as the caption.
-     *
-     * @return
      */
     public ValueSource getCaption()
     {
@@ -103,8 +101,6 @@ public class HtmlReportAction extends HtmlPanelAction
 
     /**
      * Creates an instance of the class
-     *
-     * @return
      */
     public HtmlPanelAction createAction()
     {
@@ -116,8 +112,6 @@ public class HtmlReportAction extends HtmlPanelAction
      * <p/>
      * NOTE: This method is the same as the getHint() method. This became redundant once
      * the class was refactored to extend from the HtmlPanelAction class.
-     *
-     * @return
      *
      * @deprecated
      */
@@ -131,8 +125,6 @@ public class HtmlReportAction extends HtmlPanelAction
      * <p/>
      * NOTE: This method is the same as the setHint() method. This became redundant once
      * the class was refactored to extend from the HtmlPanelAction class.
-     *
-     * @param title
      *
      * @deprecated
      */

@@ -63,9 +63,9 @@ public class CommandListCommand extends AbstractListCommand
                 PAGE_COMMAND_REQUEST_PARAM_NAME
             };
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Displays a list of command items such as dialogs, queries, and query definitions to execute.",
-            new CommandDocumentation.Parameter[]
-            {
-            });
+                                                                                      new CommandDocumentation.Parameter[]
+                                                                                      {
+                                                                                      });
 
     /* command list object */
     private CommandList list;
@@ -79,8 +79,6 @@ public class CommandListCommand extends AbstractListCommand
 
     /**
      * Sets the panel to present the list items in
-     *
-     * @param panel
      */
     public void setPanel(HtmlPanel panel)
     {
@@ -89,8 +87,6 @@ public class CommandListCommand extends AbstractListCommand
 
     /**
      * Gets the panel to present the list in
-     *
-     * @return
      */
     public HtmlPanel getPanel()
     {
@@ -99,8 +95,6 @@ public class CommandListCommand extends AbstractListCommand
 
     /**
      * Sets the command list
-     *
-     * @param list
      */
     public void setCommandList(CommandList list)
     {
@@ -109,8 +103,6 @@ public class CommandListCommand extends AbstractListCommand
 
     /**
      * Gets the identifiers (aliases) available for the command
-     *
-     * @return
      */
     public static String[] getIdentifiers()
     {
@@ -133,8 +125,6 @@ public class CommandListCommand extends AbstractListCommand
      * <i>Currently command-list command does not have any parameters
      * passed to it since it is dependent upon the panel to set the command list object.
      * </i>
-     *
-     * @return
      */
     public String getParameters()
     {
@@ -147,8 +137,6 @@ public class CommandListCommand extends AbstractListCommand
      * <i>Currently command-list command does not have any parameters
      * passed to it since it is dependent upon the panel to set the command list object.
      * </i>
-     *
-     * @param params
      */
     public void setParameters(StringTokenizer params)
     {
@@ -157,8 +145,6 @@ public class CommandListCommand extends AbstractListCommand
 
     /**
      * Gets the list of commands
-     *
-     * @return
      */
     public List getItems(HttpServletValueContext vc)
     {
@@ -168,7 +154,7 @@ public class CommandListCommand extends AbstractListCommand
     public HtmlPanelValueContext getPanelContext(HttpServletValueContext vc)
     {
         return new BasicHtmlPanelValueContext(vc.getServlet(), vc.getRequest(),
-                vc.getResponse(), getPanel());
+                                              vc.getResponse(), getPanel());
     }
 
     /**
@@ -178,11 +164,6 @@ public class CommandListCommand extends AbstractListCommand
      * If this method is modified, the sibling renderListItem(Writer, DialogContext, String)
      * also needs to be modified.
      * </i>
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws IOException
      */
     protected void renderList(Writer writer, NavigationContext nc) throws IOException
     {
@@ -198,11 +179,6 @@ public class CommandListCommand extends AbstractListCommand
      * If this method is modified, the sibling renderListItem(Writer, DialogContext, String)
      * also needs to be modified.
      * </i>
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws java.io.IOException
      */
     protected void renderListItem(Writer writer, NavigationContext nc, String activeItem) throws IOException
     {
@@ -221,11 +197,6 @@ public class CommandListCommand extends AbstractListCommand
      * If this method is modified, the sibling renderListItem(Writer, NavigationContext, String)
      * also needs to be modified.
      * </i>
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws IOException
      */
     protected void renderList(Writer writer, DialogContext nc) throws IOException
     {
@@ -241,11 +212,6 @@ public class CommandListCommand extends AbstractListCommand
      * If this method is modified, the sibling renderListItem(Writer, NavigationContext, String)
      * also needs to be modified.
      * </i>
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws java.io.IOException
      */
     protected void renderListItem(Writer writer, DialogContext nc, String activeItem) throws IOException
     {

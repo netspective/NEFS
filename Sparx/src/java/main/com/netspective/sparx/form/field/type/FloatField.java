@@ -52,7 +52,7 @@ public class FloatField extends TextField
 
             public void setTextValue(String value) throws ValueException
             {
-                if (value == null || value.length() == 0)
+                if(value == null || value.length() == 0)
                 {
                     setValue((Float) null);
                     return;
@@ -62,7 +62,7 @@ public class FloatField extends TextField
                 {
                     setValue(new Float(Float.parseFloat(value)));
                 }
-                catch (NumberFormatException e)
+                catch(NumberFormatException e)
                 {
                     setInvalidText(value);
                     invalidate(getDialogContext(), getErrorCaption().getTextValue(getDialogContext()) + " requires a value in float format (" + e.getMessage() + ").");
@@ -72,7 +72,7 @@ public class FloatField extends TextField
             public float getFloatValue()
             {
                 Float floatValue = (Float) getValue();
-                if (floatValue != null)
+                if(floatValue != null)
                     return floatValue.floatValue();
                 else
                     return (float) 0.0;
@@ -159,11 +159,11 @@ public class FloatField extends TextField
 
         // hang onto the float validation rule since we're going to need it for javascript definition and rendering
         boolean found = false;
-        for (int i = 0; i < rules.size(); i++)
+        for(int i = 0; i < rules.size(); i++)
         {
-            if (rules.get(i) instanceof FloatValueValidationRule)
+            if(rules.get(i) instanceof FloatValueValidationRule)
             {
-                if (found)
+                if(found)
                     throw new RuntimeException("Multiple float validation rules not allowed.");
 
                 floatValidationRule = (FloatValueValidationRule) rules.get(i);
@@ -176,9 +176,9 @@ public class FloatField extends TextField
     {
         StringBuffer buf = new StringBuffer(super.getCustomJavaScriptDefn(dc));
 
-        if (floatValidationRule.getMin() != Float.MIN_VALUE)
+        if(floatValidationRule.getMin() != Float.MIN_VALUE)
             buf.append("field.minValue = " + floatValidationRule.getMin() + ";\n");
-        if (floatValidationRule.getMax() != Float.MAX_VALUE)
+        if(floatValidationRule.getMax() != Float.MAX_VALUE)
             buf.append("field.maxValue = " + floatValidationRule.getMax() + ";\n");
 
         return buf.toString();

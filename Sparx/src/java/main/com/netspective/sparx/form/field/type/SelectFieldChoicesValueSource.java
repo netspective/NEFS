@@ -139,7 +139,7 @@ public class SelectFieldChoicesValueSource extends AbstractValueSource
 
     public void setItems(String[] choices)
     {
-        for (int i = 0; i < choices.length; i++)
+        for(int i = 0; i < choices.length; i++)
         {
             Items.Item item = items.createItem();
             ValueSource vs = new StaticValueSource(choices[i]);
@@ -153,7 +153,7 @@ public class SelectFieldChoicesValueSource extends AbstractValueSource
     {
         PresentationValue pValue = new PresentationValue();
         PresentationValue.Items choices = pValue.createItems();
-        for (int i = 0; i < items.size(); i++)
+        for(int i = 0; i < items.size(); i++)
         {
             Items.Item item = items.getItem(i);
             choices.addItem(item.getCaption().getTextValue(vc), item.getValue().getTextValue(vc));
@@ -164,7 +164,7 @@ public class SelectFieldChoicesValueSource extends AbstractValueSource
     public String[] getTextValues(ValueContext vc)
     {
         String[] values = new String[items.size()];
-        for (int i = 0; i < items.size(); i++)
+        for(int i = 0; i < items.size(); i++)
         {
             Items.Item item = items.getItem(i);
             values[i] = item.getValue().getTextValue(vc);

@@ -57,18 +57,11 @@ public interface NavigationSkin extends ThemeSkin
      *
      * @param writer The output destination
      * @param nc     The current navigation context
-     *
-     * @throws IOException
      */
     public void renderPageMetaData(Writer writer, NavigationContext nc) throws IOException;
 
     /**
      * Render the information contained in the page header (anything before the body)
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws IOException
      */
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException;
 
@@ -77,8 +70,6 @@ public interface NavigationSkin extends ThemeSkin
      *
      * @param writer The output writer
      * @param nc     The current navigation context
-     *
-     * @throws java.io.IOException
      */
     public void renderPageFooter(Writer writer, NavigationContext nc) throws IOException;
 

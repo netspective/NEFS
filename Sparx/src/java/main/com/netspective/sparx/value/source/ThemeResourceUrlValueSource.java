@@ -48,10 +48,10 @@ public class ThemeResourceUrlValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"theme-resource"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Gets the URL of a theme resource (asset like .js, .jpg, etc).",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("relative-url", true, "The relative resource URL")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("relative-url", true, "The relative resource URL")
+                                                                                              });
 
     private String relativeResourceUrl;
 
@@ -83,7 +83,8 @@ public class ThemeResourceUrlValueSource extends AbstractValueSource
     public Value getValue(ValueContext vc)
     {
         BasicDbHttpServletValueContext svc = (BasicDbHttpServletValueContext) (vc instanceof ConnectionContext
-                ? ((ConnectionContext) vc).getDatabaseValueContext() : vc);
+                                                                               ? ((ConnectionContext) vc).getDatabaseValueContext()
+                                                                               : vc);
         return new GenericValue(svc.getThemeResourceUrl(relativeResourceUrl));
     }
 

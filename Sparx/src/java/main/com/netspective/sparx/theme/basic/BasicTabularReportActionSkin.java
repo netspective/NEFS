@@ -79,22 +79,22 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
         StringBuffer reportActionHtml = new StringBuffer();
-        if (actions != null)
+        if(actions != null)
         {
             HtmlReportAction[] submitReportActions = actions.getByType(HtmlReportAction.Type.REPORT_SUBMIT);
             reportActionHtml.append("<script>\n");
             String reportName = rc.getReport().getName();
             reportActionHtml.append(reportName + " = new ReportAction('" + rc.getReport().getName() + "'); \n");
-            for (int i = 0; i < submitReportActions.length; i++)
+            for(int i = 0; i < submitReportActions.length; i++)
             {
                 reportActionHtml.append(reportName + ".registerSubmitAction('" + submitReportActions[i].getCaption().getTextValue(rc) + "', " +
-                        "'" + submitReportActions[i].getRedirect().getUrl(rc) + "');\n");
+                                        "'" + submitReportActions[i].getRedirect().getUrl(rc) + "');\n");
             }
             reportActionHtml.append("</script>\n");
             reportActionHtml.append("<form name=\"" + rc.getReport().getName() + "ReportActionForm\" " +
-                    "action=\"\" style=\"margin: 0\">");
+                                    "action=\"\" style=\"margin: 0\">");
         }
-        if (reportActionHtml.length() > 0)
+        if(reportActionHtml.length() > 0)
             writer.write(reportActionHtml.toString());
         final HtmlTabularReportValueContext rvc = (HtmlTabularReportValueContext) rc;
         renderPanelRegistration(writer, rvc);
@@ -103,32 +103,32 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
         final HtmlTabularReportPanel.CustomRenderer customRenderer = htmlTabularReportPanel.getRenderer();
         int panelRenderFlags = rvc.getPanelRenderFlags();
 
-        if (customRenderer != null)
+        if(customRenderer != null)
         {
             boolean handleContainerTableTag = customRenderer.isRenderContainerTableTag();
-            if (!customRenderer.isRenderFrame())
+            if(!customRenderer.isRenderFrame())
                 panelRenderFlags |= HtmlPanel.RENDERFLAG_NOFRAME;
 
-            if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
             {
                 renderFrameBegin(writer, rvc);
-                if (handleContainerTableTag)
+                if(handleContainerTableTag)
                     writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
             }
-            else if (handleContainerTableTag)
+            else if(handleContainerTableTag)
                 writer.write("    <table id=\"" + rvc.getPanel().getPanelIdentifier() + "_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
             customRenderer.getTemplateProcessor().process(writer, rc, customRenderer.getTemplateVars(rvc, ds));
 
-            if (handleContainerTableTag)
+            if(handleContainerTableTag)
                 writer.write("    </table>\n");
 
-            if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
                 renderFrameEnd(writer, rvc);
         }
         else
         {
-            if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
             {
                 renderFrameBegin(writer, rvc);
                 writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
@@ -136,7 +136,7 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
             else
                 writer.write("    <table id=\"" + rvc.getPanel().getPanelIdentifier() + "_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
-            if (flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
+            if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
                 produceHeadingRow(writer, rvc, (HtmlTabularReportDataSource) ds);
             produceDataRows(writer, rvc, (HtmlTabularReportDataSource) ds);
 
@@ -144,10 +144,10 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
             produceFootRow(writer, rvc);
             writer.write("    </table>\n");
 
-            if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
                 renderFrameEnd(writer, rvc);
         }
-        if (reportActionHtml.length() > 0)
+        if(reportActionHtml.length() > 0)
             writer.write("</form>");
     }
 
@@ -163,27 +163,27 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
 
         writer.write("<tr>");
         int prependColCount = getRowDecoratorPrependColsCount(rc);
-        if (prependColCount > 0)
+        if(prependColCount > 0)
         {
-            for (int k = 0; k < prependColCount; k++)
+            for(int k = 0; k < prependColCount; k++)
             {
                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">" +
-                        "<input type=\"checkbox\" name=\"checkAll\" onclick=\"reportEventOnClick(" + rc.getReport().getName() + ", this, event)\"" +
-                        "</th>");
+                             "<input type=\"checkbox\" name=\"checkAll\" onclick=\"reportEventOnClick(" + rc.getReport().getName() + ", this, event)\"" +
+                             "</th>");
             }
         }
-        for (int i = 0; i < dataColsCount; i++)
+        for(int i = 0; i < dataColsCount; i++)
         {
             TabularReportColumnState rcs = rc.getState(i);
-            if (!states[i].isVisible())
+            if(!states[i].isVisible())
                 continue;
 
             String colHeading = ds.getHeadingRowColumnData(i);
-            if (colHeading != null)
+            if(colHeading != null)
             {
-                if (rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_ASCENDING))
+                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_ASCENDING))
                     colHeading += sortAscImgTag;
-                if (rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
+                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
                     colHeading += sortDescImgTag;
 
                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">" + colHeading + "</th>");
@@ -192,9 +192,9 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">&nbsp;&nbsp;</th>");
         }
         int appendColCount = getRowDecoratorAppendColsCount(rc);
-        if (appendColCount > 0)
+        if(appendColCount > 0)
         {
-            for (int k = 0; k < appendColCount; k++)
+            for(int k = 0; k < appendColCount; k++)
             {
                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">&nbsp;&nbsp;</th>");
             }
@@ -206,13 +206,13 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report so return 0
             return 0;
         }
         HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
-        if (selectReportActions != null && selectReportActions.length > 0)
+        if(selectReportActions != null && selectReportActions.length > 0)
             return 1;
         else
             return 0;
@@ -222,13 +222,13 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report
             return;
         }
         HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
-        if (selectReportActions != null && selectReportActions.length > 0)
+        if(selectReportActions != null && selectReportActions.length > 0)
         {
             // use the active row rumber within the result set as the checkbox name
             int activeRowNumber = ds.getActiveRowNumber();
@@ -246,7 +246,7 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
 
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
             writer.write("<input type=\"checkbox\" value=\"" + rowData[0] + "\" name=\"selectedItemList\" " +
-                    "title=\"Click here to select the row.\" ");
+                         "title=\"Click here to select the row.\" ");
 
             writer.write(" onClick=\"reportEventOnClick(" + report.getName() + ", this, event)\">\n");
             writer.write("</td>");
@@ -261,15 +261,15 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
 
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions.size() > 0)
+        if(actions.size() > 0)
         {
             HtmlReportAction[] submitReportActions = actions.getByType(HtmlReportAction.Type.REPORT_SUBMIT);
             writer.write("<tr>\n");
-            for (int i = 0; i < submitReportActions.length; i++)
+            for(int i = 0; i < submitReportActions.length; i++)
             {
                 writer.write("<td colspan=\"" + colsCount + "\"><input type=\"button\" name=\"submitAction\" value=\"" +
-                        submitReportActions[i].getCaption().getTextValue(rc) + "\" " +
-                        "onclick=\"reportEventOnClick(" + report.getName() + ", this, event)\"/></td>");
+                             submitReportActions[i].getCaption().getTextValue(rc) + "\" " +
+                             "onclick=\"reportEventOnClick(" + report.getName() + ", this, event)\"/></td>");
             }
             writer.write("</tr>\n");
         }

@@ -87,16 +87,16 @@ public class ProjectComponent extends DefaultXdmComponent
         try
         {
             super.addedToCache(cache, key, flags);
-            if (project != null)
+            if(project != null)
             {
                 List listeners = project.getLifecycleListeners();
                 ProjectEvent event = new ProjectEvent(project);
-                for (int i = 0; i < listeners.size(); i++)
+                for(int i = 0; i < listeners.size(); i++)
                     ((ProjectLifecyleListener) listeners.get(i)).projectAddedToCache(event);
 
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             getErrors().add(e);
         }
@@ -107,16 +107,16 @@ public class ProjectComponent extends DefaultXdmComponent
         try
         {
             super.removedFromCache(cache, key, flags);
-            if (project != null)
+            if(project != null)
             {
                 List listeners = project.getLifecycleListeners();
                 ProjectEvent event = new ProjectEvent(project);
-                for (int i = 0; i < listeners.size(); i++)
+                for(int i = 0; i < listeners.size(); i++)
                     ((ProjectLifecyleListener) listeners.get(i)).projectRemovedFromCache(event);
 
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             getErrors().add(e);
         }
@@ -127,16 +127,16 @@ public class ProjectComponent extends DefaultXdmComponent
         try
         {
             super.loadedFromXml(flags);
-            if (project != null)
+            if(project != null)
             {
                 List listeners = project.getLifecycleListeners();
                 ProjectEvent event = new ProjectEvent(project);
-                for (int i = 0; i < listeners.size(); i++)
+                for(int i = 0; i < listeners.size(); i++)
                     ((ProjectLifecyleListener) listeners.get(i)).projectLoadedFromXml(event);
 
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             getErrors().add(e);
         }

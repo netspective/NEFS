@@ -60,11 +60,11 @@ public class PresentationValueDataSource extends AbstractHtmlTabularReportDataSo
     public Object getActiveRowColumnData(int columnIndex, int flags)
     {
         PresentationValue.Items.Item activeRow = presentationValue.getItems().getItem(activeRowIndex);
-        if (activeRow != null)
+        if(activeRow != null)
         {
-            if (columnIndex == 0)
+            if(columnIndex == 0)
                 return activeRow.getValue();
-            else if (columnIndex == 1)
+            else if(columnIndex == 1)
                 return activeRow.getCaption();
         }
         return null;
@@ -77,7 +77,7 @@ public class PresentationValueDataSource extends AbstractHtmlTabularReportDataSo
 
     public boolean next()
     {
-        if (activeRowIndex < lastRowIndex)
+        if(activeRowIndex < lastRowIndex)
         {
             activeRowIndex++;
             return true;

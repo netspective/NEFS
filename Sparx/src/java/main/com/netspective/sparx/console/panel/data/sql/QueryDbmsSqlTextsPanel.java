@@ -84,7 +84,7 @@ public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(nc);
-        if (selectedQuery.getDataSource() != null)
+        if(selectedQuery.getDataSource() != null)
             return selectedQuery.getDataSource();
         else
         {
@@ -110,7 +110,7 @@ public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
             DbmsSqlTexts texts = selectedQuery.getQuery().getSqlTexts();
             Set availableDbmsIds = new TreeSet(texts.getAvailableDbmsIds());
 
-            for (Iterator i = availableDbmsIds.iterator(); i.hasNext();)
+            for(Iterator i = availableDbmsIds.iterator(); i.hasNext();)
             {
                 String dbmsId = (String) i.next();
                 rows.add(new Object[]{dbmsId, texts.getByDbmsId(dbmsId)});
@@ -146,7 +146,7 @@ public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -155,7 +155,7 @@ public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return ((Object[]) rows.get(activeRow))[0];
@@ -169,7 +169,7 @@ public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
                     {
                         HtmlSyntaxHighlightPanel.emitHtml("sql", reader, writer);
                     }
-                    catch (IOException e)
+                    catch(IOException e)
                     {
                         return e.getMessage();
                     }

@@ -57,7 +57,7 @@ public class HttpLoginManagers
     public void addLoginManager(HttpLoginManager manager)
     {
         loginManagers.put(manager.getName().toUpperCase(), manager);
-        if (manager.isDefault())
+        if(manager.isDefault())
             setDefaultManager(manager);
     }
 

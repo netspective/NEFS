@@ -120,27 +120,27 @@ public class SingleUserServletLoginAuthenticator extends AbstractLoginAuthentica
     {
         Options authenticatorOptions = new Options();
         authenticatorOptions.addOption(OptionBuilder.withLongOpt("help")
-                .withDescription("Print options to stdout")
-                .create('?'));
+                                       .withDescription("Print options to stdout")
+                                       .create('?'));
         authenticatorOptions.addOption(OptionBuilder.withLongOpt("user-id")
-                .hasArg().withArgName("id")
-                .withDescription("The user id that should be used to log the user in")
-                .isRequired()
-                .create('u'));
+                                       .hasArg().withArgName("id")
+                                       .withDescription("The user id that should be used to log the user in")
+                                       .isRequired()
+                                       .create('u'));
         authenticatorOptions.addOption(OptionBuilder.withLongOpt("show-encrypted-password")
-                .withDescription("Prints the encrypted version of plain-text password to stdout")
-                .create('s'));
+                                       .withDescription("Prints the encrypted version of plain-text password to stdout")
+                                       .create('s'));
 
         OptionGroup passwordOptionGroup = new OptionGroup();
         passwordOptionGroup.setRequired(true);
         passwordOptionGroup.addOption(OptionBuilder.withLongOpt("plain-text-password")
-                .hasArg().withArgName("plain-text")
-                .withDescription("The plain-text password for the user")
-                .create('p'));
+                                      .hasArg().withArgName("plain-text")
+                                      .withDescription("The plain-text password for the user")
+                                      .create('p'));
         passwordOptionGroup.addOption(OptionBuilder.withLongOpt("encrypted-password")
-                .hasArg().withArgName("encrypted-text")
-                .withDescription("The encrypted password for the user")
-                .create('P'));
+                                      .hasArg().withArgName("encrypted-text")
+                                      .withDescription("The encrypted password for the user")
+                                      .create('P'));
 
         authenticatorOptions.addOptionGroup(passwordOptionGroup);
         return authenticatorOptions;
@@ -154,11 +154,11 @@ public class SingleUserServletLoginAuthenticator extends AbstractLoginAuthentica
         try
         {
             result = parser.parse(authenticatorOptions, optionsText != null
-                    ? TextUtils.getInstance().split(optionsText) : new String[0]);
-            if (result.hasOption('?'))
+                                                        ? TextUtils.getInstance().split(optionsText) : new String[0]);
+            if(result.hasOption('?'))
                 printHelp(authenticatorOptions);
         }
-        catch (ParseException e)
+        catch(ParseException e)
         {
             log.error("Error parsing command line " + optionsText, e);
             printHelp(authenticatorOptions);
@@ -170,16 +170,16 @@ public class SingleUserServletLoginAuthenticator extends AbstractLoginAuthentica
 
     public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
-        if (userId != null && (plainTextPassword != null || encryptedPassword != null))
+        if(userId != null && (plainTextPassword != null || encryptedPassword != null))
         {
             String loginPasswordEncrypted = encryptedPassword;
-            if (loginPasswordEncrypted == null)
+            if(loginPasswordEncrypted == null)
                 loginPasswordEncrypted = loginDialogContext.encryptPlainTextPassword(plainTextPassword);
 
-            if (!userId.equals(loginDialogContext.getUserIdInput()))
+            if(!userId.equals(loginDialogContext.getUserIdInput()))
                 return false;
 
-            if (!loginPasswordEncrypted.equals(loginDialogContext.getPasswordInput(!loginDialogContext.hasEncryptedPassword())))
+            if(!loginPasswordEncrypted.equals(loginDialogContext.getPasswordInput(!loginDialogContext.hasEncryptedPassword())))
                 return false;
         }
         else
@@ -187,7 +187,7 @@ public class SingleUserServletLoginAuthenticator extends AbstractLoginAuthentica
             ServletConfig servletConfig = loginDialogContext.getServlet().getServletConfig();
             LoginDialog loginDialog = loginDialogContext.getLoginDialog();
             String optionsText = servletConfig.getInitParameter(optionsInitParamsName);
-            if (optionsText == null)
+            if(optionsText == null)
             {
                 log.error("Servlet param " + optionsInitParamsName + " not specified.");
                 loginDialog.getUserIdField().invalidate(loginDialogContext, "Servlet param " + optionsInitParamsName + " not specified.");
@@ -195,25 +195,25 @@ public class SingleUserServletLoginAuthenticator extends AbstractLoginAuthentica
             }
 
             CommandLine commandLine = getOptionsCommandLine(loginDialogContext, optionsText);
-            if (commandLine == null)
+            if(commandLine == null)
                 return false;
 
             String loginUserId = commandLine.getOptionValue('u');
             String loginPasswordEncrypted = commandLine.getOptionValue('P');
-            if (loginPasswordEncrypted == null)
+            if(loginPasswordEncrypted == null)
             {
                 String loginPasswordUnencrypted = commandLine.getOptionValue('p');
-                if (loginPasswordUnencrypted != null)
+                if(loginPasswordUnencrypted != null)
                     loginPasswordEncrypted = loginDialogContext.encryptPlainTextPassword(loginPasswordUnencrypted);
             }
 
-            if (commandLine.hasOption('s'))
+            if(commandLine.hasOption('s'))
                 System.out.println(TextUtils.getInstance().getClassNameWithoutPackage(getClass().getName()) + " encrypted password is " + loginPasswordEncrypted);
 
-            if (!loginUserId.equals(loginDialogContext.getUserIdInput()))
+            if(!loginUserId.equals(loginDialogContext.getUserIdInput()))
                 return false;
 
-            if (!loginPasswordEncrypted.equals(loginDialogContext.getPasswordInput(!loginDialogContext.hasEncryptedPassword())))
+            if(!loginPasswordEncrypted.equals(loginDialogContext.getPasswordInput(!loginDialogContext.hasEncryptedPassword())))
                 return false;
         }
         return true;

@@ -103,13 +103,13 @@ public class DialogExecuteSendMailHandler extends SendMail implements DialogExec
         {
             send(dc, bodyTemplateVars);
 
-            if (successMessage != null)
+            if(successMessage != null)
                 successMessage.process(writer, dc, bodyTemplateVars);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to send mail", e);
-            if (failureMessage != null)
+            if(failureMessage != null)
             {
                 bodyTemplateVars.put("exception", e);
                 failureMessage.process(writer, dc, bodyTemplateVars);

@@ -110,9 +110,9 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
 
     public boolean isActiveRowSelected()
     {
-        if (selectedRowColumnValue == null || selectedRowColumnSpecifier == -1)
+        if(selectedRowColumnValue == null || selectedRowColumnSpecifier == -1)
             return false;
-        else if (selectedRowCompareValueAsText)
+        else if(selectedRowCompareValueAsText)
             return selectedRowColumnValue.equals(getActiveRowColumnData(selectedRowColumnSpecifier, 0).toString());
         else
             return (selectedRowColumnValue.equals(getActiveRowColumnData(selectedRowColumnSpecifier, 0)));
@@ -120,14 +120,14 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
 
     public void close()
     {
-        if (!isClosed())
+        if(!isClosed())
         {
             super.close();
             try
             {
                 queryResultSet.close(true);
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 log.error("Unable to close result set", e);
                 throw new NestableRuntimeException(e);
@@ -138,13 +138,13 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
                 try
                 {
                     // if the result set was closed properly, then the connection context would be NULL
-                    if (queryResultSet.getConnectionContext() != null)
+                    if(queryResultSet.getConnectionContext() != null)
                     {
                         ConnectionContext cc = queryResultSet.getConnectionContext();
                         cc.getDatabaseValueContext().returnConnection(cc);
                     }
                 }
-                catch (SQLException e)
+                catch(SQLException e)
                 {
                     log.error("Unable to close connection", e);
                 }
@@ -169,7 +169,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
 
         try
         {
-            if (cacheColumnData)
+            if(cacheColumnData)
             {
                 final ResultSetMetaData metaData = resultSet.getMetaData();
                 retrievedColumnData = new boolean[metaData.getColumnCount()];
@@ -177,7 +177,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
             }
             scrollable = resultSet.getType() != ResultSet.TYPE_FORWARD_ONLY ? true : false;
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             log.error("Unable to set result set", e);
             throw new NestableRuntimeException(e);
@@ -191,9 +191,9 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     {
         try
         {
-            if (cacheColumnData)
+            if(cacheColumnData)
             {
-                if (retrievedColumnData[columnIndex])
+                if(retrievedColumnData[columnIndex])
                     return cachedColumnData[columnIndex];
 
                 cachedColumnData[columnIndex] = resultSet.getObject(columnIndex + 1);
@@ -203,7 +203,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
             else
                 return resultSet.getObject(columnIndex + 1);
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             log.error("Unable to retrieve column data: columnIndex = " + columnIndex + ", row = " + activeRowIndex + ", flags = " + flags, e);
             return e.toString();
@@ -213,23 +213,21 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     /**
      * Calculates the total number of rows in the result set by moving the cursor to the last row and getting
      * the row number. It then returns the cursor to the original row position.
-     *
-     * @return
      */
     public int getTotalRows()
     {
-        if (calculatedTotalRows)
+        if(calculatedTotalRows)
             return totalRows;
 
         try
         {
-            if (scrollable)
+            if(scrollable)
             {
                 // get the current row number
                 int currentRow = resultSet.getRow();
                 resultSet.last();
                 totalRows = resultSet.getRow();
-                if (currentRow == 0)
+                if(currentRow == 0)
                 {
                     // there is no current row so THE DEFAULT BEHAVIOR is to send the cursor to before the first row
                     resultSet.beforeFirst();
@@ -245,7 +243,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
                 log.error("The result set cursor may move only forward, thus unable to obtain total rows.");
             }
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             log.error("Unable to get total rows", e);
             throw new NestableRuntimeException(e);
@@ -261,7 +259,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
         {
             return !resultSet.isAfterLast();
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             log.error("Unable to check if more rows are available", e);
             throw new NestableRuntimeException(e);
@@ -278,7 +276,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
 
         try
         {
-            if (scrollable)
+            if(scrollable)
             {
                 resultSet.absolute(rowNum);
                 resultSet.previous();
@@ -288,12 +286,12 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
                 queryResultSet.reExecute();
                 setResultSet(queryResultSet.getResultSet());
 
-                if (rowNum > 0)
+                if(rowNum > 0)
                 {
                     int atRow = 0;
-                    while (resultSet.next())
+                    while(resultSet.next())
                     {
-                        if (atRow >= rowNum)
+                        if(atRow >= rowNum)
                             break;
 
                         atRow++;
@@ -302,7 +300,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
             }
             activeRowIndex = rowNum;
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             log.error("Unable to set active row", e);
             throw new NestableRuntimeException(e);
@@ -313,19 +311,19 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     {
         try
         {
-            if (cacheColumnData)
+            if(cacheColumnData)
             {
-                for (int i = 0; i < retrievedColumnData.length; i++)
+                for(int i = 0; i < retrievedColumnData.length; i++)
                     retrievedColumnData[i] = false;
             }
 
-            if (resultSet.next())
+            if(resultSet.next())
             {
                 activeRowIndex++;
                 return true;
             }
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             log.error("Unable to move to next row", e);
             throw new NestableRuntimeException(e);

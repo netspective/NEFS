@@ -58,12 +58,12 @@ public class BasicHtmlPanelValueContext extends BasicDbHttpServletValueContext i
 
         HtmlPanelActions bannerActions = panel.getBanner().getActions();
         HtmlPanelActions frameActions = panel.getFrame().getActions();
-        for (int k = 0; k < bannerActions.size(); k++)
+        for(int k = 0; k < bannerActions.size(); k++)
         {
             HtmlPanelAction.State state = bannerActions.get(k).constructStateInstance(this);
             panelActionStates.addState(state);
         }
-        for (int j = 0; j < frameActions.size(); j++)
+        for(int j = 0; j < frameActions.size(); j++)
         {
             HtmlPanelAction.State state = frameActions.get(j).constructStateInstance(this);
             panelActionStates.addState(state);

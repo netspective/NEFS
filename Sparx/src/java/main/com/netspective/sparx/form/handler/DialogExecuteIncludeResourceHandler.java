@@ -85,20 +85,20 @@ public class DialogExecuteIncludeResourceHandler extends DialogExecuteDefaultHan
 
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        if (path == null)
+        if(path == null)
         {
             writer.write("No path to resource or URL provided.");
             return;
         }
 
         String includePath = getPath().getTextValue(dc);
-        if (local)
+        if(local)
         {
             try
             {
                 HttpUtils.includeServletResourceContent(writer, dc, includePath, REQATTRNAME_DIALOG_CONTEXT);
             }
-            catch (ServletException e)
+            catch(ServletException e)
             {
                 log.error(e);
                 throw new DialogExecuteException("Error including '" + includePath + "'", e);

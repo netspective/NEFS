@@ -74,13 +74,13 @@ public class AlternateOutputDestServletResponse implements HttpServletResponse
 
         public void write(byte b[]) throws IOException
         {
-            for (int i = 0; i < b.length; i++)
+            for(int i = 0; i < b.length; i++)
                 writer.write(b[i]);
         }
 
         public void write(byte b[], int off, int len) throws IOException
         {
-            for (int i = off; i < len; i++)
+            for(int i = off; i < len; i++)
                 writer.write(b[i]);
         }
 

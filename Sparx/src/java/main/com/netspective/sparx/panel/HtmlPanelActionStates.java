@@ -53,7 +53,7 @@ public class HtmlPanelActionStates
     public HtmlPanelAction.State getState(HtmlPanelAction field)
     {
         HtmlPanelAction.State state = (HtmlPanelAction.State) statesByQualifiedName.get(field.getCaption().getTextValue(panelContext));
-        if (state == null)
+        if(state == null)
         {
             state = field.constructStateInstance(panelContext);
             statesByQualifiedName.put(field.getCaption().getTextValue(panelContext), state);
@@ -64,7 +64,7 @@ public class HtmlPanelActionStates
     public HtmlPanelAction.State getState(String caption)
     {
         HtmlPanelAction.State state = (HtmlPanelAction.State) statesByQualifiedName.get(caption);
-        if (state == null)
+        if(state == null)
             throw new RuntimeException("State for panel action with caption '" + caption + "' was not found.");
         else
             return state;

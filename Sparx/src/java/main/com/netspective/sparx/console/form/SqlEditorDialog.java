@@ -73,7 +73,7 @@ public class SqlEditorDialog extends ConsoleDialog
 
         DialogFieldStates states = dc.getFieldStates();
         Value name = states.getState("name").getValue();
-        if (!name.hasValue())
+        if(!name.hasValue())
             name.setValue("temp-query-" + dc.hashCode());
     }
 
@@ -104,18 +104,18 @@ public class SqlEditorDialog extends ConsoleDialog
                 HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand("query," + query.getQualifiedName());
                 command.handleCommand(writer, dc, false);
             }
-            catch (CommandNotFoundException e)
+            catch(CommandNotFoundException e)
             {
                 log.error("Unable to find query command -- this should never happen.", e);
                 throw new DialogExecuteException(e);
             }
-            catch (CommandException e)
+            catch(CommandException e)
             {
                 log.error("Error executing query command.", e);
                 throw new DialogExecuteException(e);
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             renderFormattedExceptionMessage(writer, e);
         }

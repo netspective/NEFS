@@ -37,7 +37,7 @@ import com.netspective.sparx.panel.HtmlTabularReportPanel;
 
 /**
  * @author Aye Thu
- * @version $Id: QueryDialogContext.java,v 1.5 2004-08-15 01:47:08 shahid.shah Exp $
+ * @version $Id: QueryDialogContext.java,v 1.6 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class QueryDialogContext extends DialogContext
 {
@@ -46,8 +46,6 @@ public class QueryDialogContext extends DialogContext
 
     /**
      * Gets the rows per page set for the report
-     *
-     * @return
      */
     public int getRowsPerPage()
     {
@@ -56,8 +54,6 @@ public class QueryDialogContext extends DialogContext
 
     /**
      * Sets the number of rows per page for the report
-     *
-     * @param rowsPerPage
      */
     public void setRowsPerPage(int rowsPerPage)
     {
@@ -71,7 +67,7 @@ public class QueryDialogContext extends DialogContext
     {
         QueryDialog qDialog = (QueryDialog) getDialog();
         StringBuffer sb = new StringBuffer();
-        if (rowsPerPage > 0)
+        if(rowsPerPage > 0)
             sb.append("<input type='hidden' name='" + qDialog.getRowsPerPageParamName() + "' value='" + rowsPerPage + "'>\n");
 
         return (super.getStateHiddens() + sb.toString());
@@ -79,8 +75,6 @@ public class QueryDialogContext extends DialogContext
 
     /**
      * Sets the report panel
-     *
-     * @param reportPanel
      */
     public void setReportPanel(HtmlTabularReportPanel reportPanel)
     {
@@ -89,8 +83,6 @@ public class QueryDialogContext extends DialogContext
 
     /**
      * Gets the report panel for the current context
-     *
-     * @return
      */
     public HtmlTabularReportPanel getReportPanel()
     {

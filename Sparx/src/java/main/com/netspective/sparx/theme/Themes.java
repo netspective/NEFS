@@ -56,10 +56,10 @@ public class Themes implements MetricsProducer
     public void registerTheme(Theme theme)
     {
         themesByName.put(theme.getName(), theme);
-        if (log.isTraceEnabled())
+        if(log.isTraceEnabled())
             log.trace("Registered theme " + theme.getClass().getName() + " as '" + theme.getName() + "'.");
 
-        if (theme.isDefault())
+        if(theme.isDefault())
         {
             setDefaultTheme(theme);
         }
@@ -68,7 +68,7 @@ public class Themes implements MetricsProducer
     public void setDefaultTheme(Theme theme)
     {
         defaultTheme = theme;
-        if (log.isTraceEnabled())
+        if(log.isTraceEnabled())
             log.trace("Default theme is " + theme.getClass().getName() + " (" + theme.getName() + ").");
     }
 
@@ -80,7 +80,7 @@ public class Themes implements MetricsProducer
     public Theme getTheme(String name)
     {
         Theme result = (Theme) themesByName.get(name);
-        if (result == null && log.isDebugEnabled())
+        if(result == null && log.isDebugEnabled())
         {
             log.debug("Unable to find theme '" + name + "'. Available: " + themesByName);
             return null;
@@ -92,7 +92,7 @@ public class Themes implements MetricsProducer
     public void setDefaultTheme(String themeName)
     {
         Theme theme = getTheme(themeName);
-        if (theme != null)
+        if(theme != null)
             setDefaultTheme(theme);
         else
             log.error("Unable to set default theme to '" + themeName + "' since it does not exist.");
@@ -101,7 +101,7 @@ public class Themes implements MetricsProducer
     public Theme getDefaultTheme()
     {
         Theme result = defaultTheme;
-        if (result == null && log.isDebugEnabled())
+        if(result == null && log.isDebugEnabled())
         {
             log.debug("No theme defined using the 'default' attribute was found. Available: " + themesByName);
             return null;
@@ -117,8 +117,6 @@ public class Themes implements MetricsProducer
 
     /**
      * Generates various metrics associated with the project themese
-     *
-     * @param parent
      */
     public void produceMetrics(Metric parent)
     {

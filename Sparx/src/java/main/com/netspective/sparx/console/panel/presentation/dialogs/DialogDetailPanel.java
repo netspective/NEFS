@@ -63,14 +63,14 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
         {
             this.dialogName = dialogName;
 
-            if (dialogName == null)
+            if(dialogName == null)
             {
                 dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(noDialogParamAvailSource);
                 return;
             }
 
             dialog = dialogs.get(dialogName);
-            if (dialog == null)
+            if(dialog == null)
                 dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Dialog '" + dialogName + "' not found. Available: " + dialogs.getNames());
         }
 
@@ -160,7 +160,7 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
 
         public DialogField getField()
         {
-            if (field != null)
+            if(field != null)
                 return field;
 
             return null;
@@ -179,7 +179,7 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
         {
             DialogFields children = dialog.getFields();
             FieldRows ancestors = new FieldRows();
-            for (int c = 0; c < children.size(); c++)
+            for(int c = 0; c < children.size(); c++)
                 add(0, children.get(c), ancestors);
         }
 
@@ -188,9 +188,9 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
             FieldRow activeRow = new FieldRow(level, field, ancestors);
             rows.add(activeRow);
             DialogFields children = field.getChildren();
-            if (children != null)
+            if(children != null)
             {
-                for (int c = 0; c < children.size(); c++)
+                for(int c = 0; c < children.size(); c++)
                 {
                     FieldRows childAncestors = new FieldRows();
                     childAncestors.rows.add(activeRow);
@@ -268,43 +268,43 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
         {
             DialogField activeField = activeRow.getField();
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
-                    if (activeField != null)
+                    if(activeField != null)
                         return activeField.getQualifiedName();
                     else
                         return activeRow.heading;
 
                 case 1:
-                    if (activeField != null)
+                    if(activeField != null)
                         return activeField.getFieldTypes().size() > 0 ? activeField.getFieldTypes().get(0) : null;
 
                 case 2:
-                    if (activeField != null)
+                    if(activeField != null)
                         return activeField.getHtmlFormControlId();
 
                 case 3:
-                    if (activeField != null)
+                    if(activeField != null)
                         return activeField.getCaption() != ValueSource.NULL_VALUE_SOURCE ?
-                                activeField.getCaption().getSpecification() :
-                                null;
+                               activeField.getCaption().getSpecification() :
+                               null;
 
                 case 4:
-                    if (activeField != null)
+                    if(activeField != null)
                         return activeField.getFlags().getFlagsText();
 
                 case 5:
-                    if (activeField != null)
+                    if(activeField != null)
                         return activeField.getDefault() != null && activeField.getDefault() != ValueSource.NULL_VALUE_SOURCE ?
-                                activeField.getDefault().getSpecification() :
-                                null;
+                               activeField.getDefault().getSpecification() :
+                               null;
 
                 case 6:
-                    if (activeField != null)
+                    if(activeField != null)
                         return activeField.getHint() != null && activeField.getHint() != ValueSource.NULL_VALUE_SOURCE ?
-                                activeField.getHint().getSpecification() :
-                                null;
+                               activeField.getHint().getSpecification() :
+                               null;
 
                 default:
                     return null;
@@ -334,7 +334,7 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRowIndex + 1);

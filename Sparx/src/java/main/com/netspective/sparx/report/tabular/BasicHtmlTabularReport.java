@@ -67,10 +67,10 @@ public class BasicHtmlTabularReport extends AbstractTabularReport implements Htm
     public void finalizeContents()
     {
         super.finalizeContents();
-        if (actions != null && actions.size() > 0)
+        if(actions != null && actions.size() > 0)
         {
             HtmlReportAction[] selectableAction = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
-            if (selectableAction != null && selectableAction.length > 0)
+            if(selectableAction != null && selectableAction.length > 0)
             {
                 this.getFlags().setFlag(HtmlTabularReport.Flags.SELECTABLE);
             }

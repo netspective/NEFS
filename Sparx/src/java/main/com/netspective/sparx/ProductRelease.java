@@ -82,7 +82,7 @@ public class ProductRelease implements Product
     public final String getBuildFilePrefix(boolean includeBuildNumber)
     {
         String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if (includeBuildNumber)
+        if(includeBuildNumber)
             filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
         return filePrefix;
     }

@@ -57,7 +57,7 @@ public class AntBuildProjectsPage extends ConsoleServletPage
         removeAllChildren();
 
         AntProjects antProjects = getOwner().getProject().getAntProjects();
-        for (int i = 0; i < antProjects.size(); i++)
+        for(int i = 0; i < antProjects.size(); i++)
         {
             AntProject antProject = antProjects.getByIndex(i);
             AntProjectPage page = new AntProjectPage(getOwner());
@@ -67,7 +67,7 @@ public class AntBuildProjectsPage extends ConsoleServletPage
             page.setHeading(new StaticValueSource(antProject.getCaptionOrId() + " Ant Build"));
             appendChild(page);
 
-            if (antProject.isDefault())
+            if(antProject.isDefault())
                 page.setDefault(true);
         }
     }

@@ -79,7 +79,7 @@ public class DialogSkinWrapper extends BasicHtmlPanelSkin implements DialogSkin,
         StringWriter pageMetaDataHtml = new StringWriter();
         StringWriter dialogHtml = new StringWriter();
 
-        if (pageMetaDataHtmlVarName != null && pageMetaDataHtmlVarName.length() > 0)
+        if(pageMetaDataHtmlVarName != null && pageMetaDataHtmlVarName.length() > 0)
         {
             final NavigationContext navigationContext = dc.getNavigationContext();
             navigationContext.getSkin().renderPageMetaData(pageMetaDataHtml, navigationContext);
@@ -100,7 +100,7 @@ public class DialogSkinWrapper extends BasicHtmlPanelSkin implements DialogSkin,
 
     public void renderHtml(Writer writer, DialogContext dc) throws IOException
     {
-        if (body != null)
+        if(body != null)
             body.process(writer, dc, createDefaultBodyTemplateVars(dc));
         else
             wrappedSkin.renderHtml(writer, dc);

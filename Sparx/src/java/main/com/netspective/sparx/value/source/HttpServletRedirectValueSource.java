@@ -41,10 +41,10 @@ public class HttpServletRedirectValueSource extends RedirectValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"url"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(".",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("Http url", true, "")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("Http url", true, "")
+                                                                                              });
 
     public static String[] getIdentifiers()
     {

@@ -63,28 +63,28 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
             this.queryDefnSource = queryDefnSource;
             this.queryDefnName = queryDefnName;
 
-            if (queryDefnName == null)
+            if(queryDefnName == null)
             {
                 dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(noQueryDefnParamAvailSource);
                 return;
             }
 
-            if (queryDefnSource == null || "dynamic".equalsIgnoreCase(queryDefnSource))
+            if(queryDefnSource == null || "dynamic".equalsIgnoreCase(queryDefnSource))
             {
                 queryDefn = sqlManager.getQueryDefns().get(queryDefnName);
-                if (queryDefn == null)
+                if(queryDefn == null)
                     dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Custom query definition '" + queryDefnName + "' not found.");
                 else
                     pageHeading = "Custom Dynamic Query: " + queryDefn.getName();
             }
-            else if (queryDefnSource.startsWith("schema"))
+            else if(queryDefnSource.startsWith("schema"))
             {
                 String[] querySourceParams = TextUtils.getInstance().split(queryDefnSource, ",", true);
                 Schema schema = sqlManager.getSchema(querySourceParams[1]);
-                if (schema != null)
+                if(schema != null)
                 {
                     Table table = schema.getTables().getByName(queryDefnName);
-                    if (table != null)
+                    if(table != null)
                     {
                         queryDefn = table.getQueryDefinition();
                         pageHeading = "Schema Dynamic Query: " + querySourceParams[1] + "." + queryDefnName;
@@ -128,14 +128,14 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
     public SelectedQueryDefinition getSelectedQueryDefn(NavigationContext nc)
     {
         String schemaTable = nc.getHttpRequest().getParameter(SchemaTableColumnsPanel.REQPARAMNAME_SHOW_DETAIL_TABLE);
-        if (schemaTable != null)
+        if(schemaTable != null)
         {
             String[] items = TextUtils.getInstance().split(schemaTable, ".", false);
             return new SelectedQueryDefinition(nc.getSqlManager(), "schema," + items[0], items[1]);
         }
         else
             return new SelectedQueryDefinition(nc.getSqlManager(),
-                    nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN_SOURCE),
-                    nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN));
+                                               nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN_SOURCE),
+                                               nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN));
     }
 }

@@ -90,28 +90,28 @@ public class DefaultLoginAttemptsManager implements HttpLoginAttemptsManager
     public boolean allowLoginAttempt(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
         HttpSession session = loginDialogContext.getHttpRequest().getSession();
-        if (session.getAttribute(SESSATTRNAME_MAX_LOGIN_ATTEMPTS_EXCEEDED) != null)
+        if(session.getAttribute(SESSATTRNAME_MAX_LOGIN_ATTEMPTS_EXCEEDED) != null)
             return false;
 
         Integer attemptCountTemp = (Integer) session.getAttribute(SESSATTRNAME_LOGIN_ATTEMPT_COUNT);
         int attemptCount = (attemptCountTemp == null ? 0 : attemptCountTemp.intValue()) + 1;
 
         // only store the attempt count increase if the dialog is past "input" mode (meaning it was submitted)
-        if (loginDialogContext.getDialogState().getRunSequence() > 1)
+        if(loginDialogContext.getDialogState().getRunSequence() > 1)
         {
             Integer saveAttemptCount = new Integer(attemptCount);
 
             // make sure that we don't double-count the login attempt -- once we have stored the count for this
             // request we save the counter in a request attribute
             final ServletRequest request = loginDialogContext.getRequest();
-            if (request.getAttribute(SESSATTRNAME_LOGIN_ATTEMPT_COUNT) == null)
+            if(request.getAttribute(SESSATTRNAME_LOGIN_ATTEMPT_COUNT) == null)
             {
                 request.setAttribute(SESSATTRNAME_LOGIN_ATTEMPT_COUNT, saveAttemptCount);
                 session.setAttribute(SESSATTRNAME_LOGIN_ATTEMPT_COUNT, saveAttemptCount);
             }
         }
 
-        if (attemptCount > getMaxLoginAttempts())
+        if(attemptCount > getMaxLoginAttempts())
         {
             maxLoginAttemptsExceeeded(loginManager, loginDialogContext);
             return false;
@@ -127,9 +127,9 @@ public class DefaultLoginAttemptsManager implements HttpLoginAttemptsManager
 
     public void renderLoginAttemptDeniedHtml(Writer writer, HttpLoginManager loginManager, LoginDialogContext loginDialogContext) throws IOException
     {
-        if (denialBody != null)
+        if(denialBody != null)
             denialBody.process(writer, loginDialogContext.getNavigationContext(), null);
-        else if (maxLoginAttemptsExceededMessage != null)
+        else if(maxLoginAttemptsExceededMessage != null)
             writer.write(maxLoginAttemptsExceededMessage.getTextValue(loginDialogContext));
         else
             writer.write("<p>&nbsp;<p>&nbsp;<p>&nbsp;<p>&nbsp;<center>You have exceeded your maximum login attempts.</center>");

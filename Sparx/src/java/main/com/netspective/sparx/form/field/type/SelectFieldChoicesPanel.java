@@ -91,8 +91,6 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
     /**
      * Sets the datasource with the select choices data
-     *
-     * @param ds
      */
     public void setDataSource(TabularReportDataSource ds)
     {
@@ -101,22 +99,18 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
     /**
      * Creates the datasource containing the data to fill the report with
-     *
-     * @param nc
-     *
-     * @return
      */
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(nc);
-        if (selectedQuery == null && dataSource != null)
+        if(selectedQuery == null && dataSource != null)
         {
             // There is no query associated with this
             return dataSource;
         }
         else
         {
-            if (selectedQuery.getDataSource() != null)
+            if(selectedQuery.getDataSource() != null)
                 return selectedQuery.getDataSource();
             else
             {
@@ -128,10 +122,6 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
     /**
      * Gets the associated report object
-     *
-     * @param nc
-     *
-     * @return
      */
     public HtmlTabularReport getReport(NavigationContext nc)
     {
@@ -140,8 +130,6 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
     /**
      * Gets the <i>Id</i> report column
-     *
-     * @return
      */
     public TabularReportColumn getIdReportColumn()
     {
@@ -150,8 +138,6 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
     /**
      * Gets the <i>Caption</i> report column
-     *
-     * @return
      */
     public TabularReportColumn getCaptionReportColumn()
     {
@@ -199,7 +185,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
             DbmsSqlTexts texts = selectedQuery.getQuery().getSqlTexts();
             Set availableDbmsIds = new TreeSet(texts.getAvailableDbmsIds());
 
-            for (Iterator i = availableDbmsIds.iterator(); i.hasNext();)
+            for(Iterator i = availableDbmsIds.iterator(); i.hasNext();)
             {
                 String dbmsId = (String) i.next();
                 rows.add(new Object[]{dbmsId, texts.getByDbmsId(dbmsId)});
@@ -235,7 +221,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -244,7 +230,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return ((Object[]) rows.get(activeRow))[0];
@@ -258,7 +244,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
                     {
                         HtmlSyntaxHighlightPanel.emitHtml("sql", reader, writer);
                     }
-                    catch (IOException e)
+                    catch(IOException e)
                     {
                         return e.getMessage();
                     }

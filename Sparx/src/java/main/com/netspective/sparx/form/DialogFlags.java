@@ -119,8 +119,6 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
 
     /**
      * Clear the flag
-     *
-     * @param flag
      */
     public void clearFlag(long flag)
     {
@@ -131,8 +129,6 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
 
     /**
      * Sets the flag
-     *
-     * @param flag
      */
     public void setFlag(long flag)
     {

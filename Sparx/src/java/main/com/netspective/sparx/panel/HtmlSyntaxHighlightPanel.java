@@ -101,12 +101,12 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        if (text != null)
+        if(text != null)
         {
             Reader reader = new StringReader(text);
             emitHtml(lexerType, reader, writer);
         }
-        else if (file != null)
+        else if(file != null)
         {
             emitHtml(file, writer);
         }
@@ -122,58 +122,58 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
     static
     {
         register(com.Ostermiller.Syntax.Lexer.HTMLLexer1.class,
-                new String[]{
-                    "htm",
-                    "html",
-                    "xml",
-                    "ftl",
-                    "jsp",
-                    "xsl",
-                });
+                 new String[]{
+                     "htm",
+                     "html",
+                     "xml",
+                     "ftl",
+                     "jsp",
+                     "xsl",
+                 });
         register(com.Ostermiller.Syntax.Lexer.JavaLexer.class,
-                new String[]{
-                    "jav",
-                    "java",
-                });
+                 new String[]{
+                     "jav",
+                     "java",
+                 });
         register(com.Ostermiller.Syntax.Lexer.JavaScriptLexer.class,
-                new String[]{
-                    "js",
-                });
+                 new String[]{
+                     "js",
+                 });
         register(com.Ostermiller.Syntax.Lexer.SQLLexer.class,
-                new String[]{
-                    "sql",
-                });
+                 new String[]{
+                     "sql",
+                 });
         register(com.Ostermiller.Syntax.Lexer.CLexer.class,
-                new String[]{
-                    "c",
-                    "h",
-                    "cc",
-                    "cpp",
-                    "cxx",
-                    "c++",
-                    "hpp",
-                    "hxx",
-                    "hh",
-                });
+                 new String[]{
+                     "c",
+                     "h",
+                     "cc",
+                     "cpp",
+                     "cxx",
+                     "c++",
+                     "hpp",
+                     "hxx",
+                     "hh",
+                 });
         register(com.Ostermiller.Syntax.Lexer.PropertiesLexer.class,
-                new String[]{
-                    "props",
-                    "properties",
-                });
+                 new String[]{
+                     "props",
+                     "properties",
+                 });
         register(com.Ostermiller.Syntax.Lexer.LatexLexer.class,
-                new String[]{
-                    "tex",
-                    "sty",
-                    "cls",
-                    "dtx",
-                    "ins",
-                    "latex",
-                });
+                 new String[]{
+                     "tex",
+                     "sty",
+                     "cls",
+                     "dtx",
+                     "ins",
+                     "latex",
+                 });
         register(com.Ostermiller.Syntax.Lexer.PlainLexer.class,
-                new String[]{
-                    "txt",
-                    "text",
-                });
+                 new String[]{
+                     "txt",
+                     "text",
+                 });
     }
 
     /**
@@ -188,7 +188,7 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
      */
     public static void register(Class lexer, String[] fileExtensions)
     {
-        for (int i = 0; i < fileExtensions.length; i++)
+        for(int i = 0; i < fileExtensions.length; i++)
         {
             lexers.put(fileExtensions[i].toLowerCase(), lexer);
         }
@@ -229,25 +229,25 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
         String currentDescription = null;
         Token token;
         out.write("<pre>");
-        while ((token = lexer.getNextToken()) != null)
+        while((token = lexer.getNextToken()) != null)
         {
             // optimization implemented here:
             // ignored white space can be put in the same span as the stuff
             // around it.  This saves space because spans don't have to be
             // opened and closed.
-            if ((token.isWhiteSpace()) || (currentDescription != null && token.getDescription().equals(currentDescription)))
+            if((token.isWhiteSpace()) || (currentDescription != null && token.getDescription().equals(currentDescription)))
             {
                 writeEscapedHTML(token.getContents(), out);
             }
             else
             {
-                if (currentDescription != null) closeSpan(currentDescription, out);
+                if(currentDescription != null) closeSpan(currentDescription, out);
                 currentDescription = token.getDescription();
                 openSpan(currentDescription, out);
                 writeEscapedHTML(token.getContents(), out);
             }
         }
-        if (currentDescription != null) closeSpan(currentDescription, out);
+        if(currentDescription != null) closeSpan(currentDescription, out);
         out.write("</pre>");
     }
 
@@ -264,7 +264,7 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
     public static boolean emitHtml(String type, Reader in, Writer out) throws IOException
     {
         Class lexerClass = (Class) lexers.get(type);
-        if (lexerClass != null)
+        if(lexerClass != null)
         {
             try
             {
@@ -272,7 +272,7 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
                 Lexer lexer = (Lexer) cons.newInstance(new Object[]{in});
                 emitHtml(lexer, out);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new IOException(e.getMessage());
             }
@@ -295,7 +295,7 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
     public static boolean emitHtml(File file, Writer out) throws IOException
     {
         String fileName = file.getAbsolutePath();
-        if (file.exists())
+        if(file.exists())
         {
             String extn = fileName.substring(fileName.lastIndexOf('.') + 1);
             return emitHtml(extn, new FileReader(file), out);
@@ -328,10 +328,10 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
      */
     private static void writeEscapedHTML(String text, Writer out) throws IOException
     {
-        for (int i = 0; i < text.length(); i++)
+        for(int i = 0; i < text.length(); i++)
         {
             char ch = text.charAt(i);
-            switch (ch)
+            switch(ch)
             {
                 case '<':
                     out.write("&lt;");

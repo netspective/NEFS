@@ -54,12 +54,12 @@ public class ExecuteCommandMethod implements TemplateMethodModel
 
     public Object exec(List args) throws TemplateModelException
     {
-        if (args.size() != 1)
+        if(args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expected command specification.");
 
         String commandSpec = (String) args.get(0);
         HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand(commandSpec);
-        if (command != null)
+        if(command != null)
         {
             StringWriter writer = new StringWriter();
             Environment env = Environment.getCurrentEnvironment();
@@ -68,7 +68,7 @@ public class ExecuteCommandMethod implements TemplateMethodModel
             {
                 model = (freemarker.ext.beans.StringModel) env.getDataModel().get("vc");
             }
-            catch (TemplateModelException e)
+            catch(TemplateModelException e)
             {
                 log.error(e);
             }
@@ -79,7 +79,7 @@ public class ExecuteCommandMethod implements TemplateMethodModel
                 command.handleCommand(writer, nc, false);
                 return new SimpleScalar(writer.toString());
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new TemplateModelException(e);
             }

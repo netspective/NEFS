@@ -56,14 +56,14 @@ public class ThemesPage extends ConsoleServletPage
 
     public boolean isValid(NavigationContext nc)
     {
-        if (!super.isValid(nc))
+        if(!super.isValid(nc))
             return false;
 
         // check to see if all the themes are loaded
         List children = getChildrenList();
         Map themes = nc.getProject().getThemes().getThemesByName();
 
-        if (children.size() != themes.size())
+        if(children.size() != themes.size())
             synchronize(nc);
 
         return true;
@@ -74,7 +74,7 @@ public class ThemesPage extends ConsoleServletPage
         removeAllChildren();
 
         Map themes = nc.getProject().getThemes().getThemesByName();
-        for (Iterator i = themes.entrySet().iterator(); i.hasNext();)
+        for(Iterator i = themes.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             Theme theme = (Theme) entry.getValue();
@@ -82,7 +82,7 @@ public class ThemesPage extends ConsoleServletPage
             String name = theme.getName();
             page.setTheme(theme);
             page.setName(name != null ? name : "default");
-            if (name.equalsIgnoreCase("sampler"))
+            if(name.equalsIgnoreCase("sampler"))
                 page.setDefault(true);
             FreeMarkerTemplateProcessor templateProcessor = new FreeMarkerTemplateProcessor();
             templateProcessor.setConfig("console");

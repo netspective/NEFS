@@ -48,10 +48,10 @@ public class ActivePageUrlValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"active-page"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Gets the URL of the active page with configured retain parameters.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("query-params", true, "Query parameters to append to the acitve page URL.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("query-params", true, "Query parameters to append to the acitve page URL.")
+                                                                                              });
 
     private String queryParams;
 
@@ -74,9 +74,10 @@ public class ActivePageUrlValueSource extends AbstractValueSource
     public Value getValue(ValueContext vc)
     {
         HttpServletValueContext svc = (HttpServletValueContext) (vc instanceof ConnectionContext
-                ? ((ConnectionContext) vc).getDatabaseValueContext() : vc);
+                                                                 ? ((ConnectionContext) vc).getDatabaseValueContext()
+                                                                 : vc);
         String url = svc.getNavigationContext().getActivePage().getUrl(svc);
-        if (url.indexOf("?") != -1)
+        if(url.indexOf("?") != -1)
             url = url + "&" + queryParams;
         else
             url = url + "?" + queryParams;

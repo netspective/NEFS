@@ -103,7 +103,7 @@ public class RadeoxTemplateProcessor extends AbstractTemplateProcessor
 
     public void finalizeContents()
     {
-        if (source == null)
+        if(source == null)
             FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader().addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
     }
 
@@ -131,7 +131,7 @@ public class RadeoxTemplateProcessor extends AbstractTemplateProcessor
 
         String content = null;
 
-        switch (contentType)
+        switch(contentType)
         {
             case CONTENTTYPE_FILE:
                 String fileName = source.getTextValue(vc);

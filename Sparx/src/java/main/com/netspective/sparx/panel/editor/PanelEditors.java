@@ -73,17 +73,15 @@ public class PanelEditors implements MetricsProducer
 
     /**
      * Adds a panel editor
-     *
-     * @param panel
      */
     public void add(PanelEditor panel)
     {
         panels.add(panel);
         byName.put(panel.getNameForMapKey(), panel);
-        if (null != panel.getNameSpace())
+        if(null != panel.getNameSpace())
         {
             String nameSpaceId = panel.getNameSpace().getNameSpaceId();
-            if (!byNameSpace.containsKey(nameSpaceId))
+            if(!byNameSpace.containsKey(nameSpaceId))
                 byNameSpace.put(nameSpaceId, new ArrayList());
             ((ArrayList) byNameSpace.get(nameSpaceId)).add(panel);
             nameSpaceNames.add(panel.getNameSpace().getNameSpaceId());
@@ -92,10 +90,6 @@ public class PanelEditors implements MetricsProducer
 
     /**
      * Gets a panel editor by its index
-     *
-     * @param i
-     *
-     * @return
      */
     public PanelEditor get(int i)
     {
@@ -104,10 +98,6 @@ public class PanelEditors implements MetricsProducer
 
     /**
      * Gets a panel editor by its name
-     *
-     * @param name
-     *
-     * @return
      */
     public PanelEditor get(String name)
     {
@@ -116,14 +106,10 @@ public class PanelEditors implements MetricsProducer
 
     /**
      * Gets a subset of panels belonging to one name space
-     *
-     * @param nameSpace
-     *
-     * @return
      */
     public List getByNameSpace(String nameSpace)
     {
-        if (byNameSpace.containsKey(nameSpace))
+        if(byNameSpace.containsKey(nameSpace))
             return (ArrayList) byNameSpace.get(nameSpace);
         return null;
     }
@@ -151,8 +137,6 @@ public class PanelEditors implements MetricsProducer
     /**
      * Gets all the namespaces of the panel editors (panel editor names are of the "pkg.name" format so
      * this mehtod returns all the 'pkg' names)
-     *
-     * @return
      */
     public Set getNameSpaceNames()
     {
@@ -161,8 +145,6 @@ public class PanelEditors implements MetricsProducer
 
     /**
      * Gets the total of all the panel editors
-     *
-     * @return
      */
     public int size()
     {
@@ -171,8 +153,6 @@ public class PanelEditors implements MetricsProducer
 
     /**
      * Generates various metrics associated with the dialogs
-     *
-     * @param parent
      */
     public void produceMetrics(Metric parent)
     {

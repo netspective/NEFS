@@ -46,7 +46,7 @@ public class SyntaxHighlightingContentHandler extends DefaultFileSystemEntryCont
     public static void registerAll(DefaultFileSystemBrowserEntryContentHandlers handlers)
     {
         Set extensions = HtmlSyntaxHighlightPanel.getLexers().keySet();
-        for (Iterator i = extensions.iterator(); i.hasNext();)
+        for(Iterator i = extensions.iterator(); i.hasNext();)
         {
             String extn = (String) i.next();
             SyntaxHighlightingContentHandler handler = new SyntaxHighlightingContentHandler();

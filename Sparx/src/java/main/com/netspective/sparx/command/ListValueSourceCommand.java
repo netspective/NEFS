@@ -61,15 +61,15 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
     static public final int LVSTYPE_INSTANCE = 2;
     public static final String[] IDENTIFIERS = new String[]{"list", "list-value"};
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Displays the contents of a StaticListValueSource. Useful for displaying in a popup window and retrieving values. Parameters are delimited with '|'.",
-            new CommandDocumentation.Parameter[]
-            {
-                new CommandDocumentation.Parameter("value-source-type", true, "The value-source-type parameter may be either 'reference' or 'instance'. When it is set " +
-            "to 'instance', the value-source-spec parameter is basically the value-source spefication like xxx:yyy. " +
-            "When the value-source-type parameter is set to 'reference' it means that the value-source-spec is actually " +
-            "a single value source that points to an actual ListValueSource at runtime)."),
-                new CommandDocumentation.Parameter("value-source-spec", true, "The value source specification (depends upon value-source-type)."),
-                new QueryCommand.SkinParameter(),
-            });
+                                                                                      new CommandDocumentation.Parameter[]
+                                                                                      {
+                                                                                          new CommandDocumentation.Parameter("value-source-type", true, "The value-source-type parameter may be either 'reference' or 'instance'. When it is set " +
+                                                                                                                                                        "to 'instance', the value-source-spec parameter is basically the value-source spefication like xxx:yyy. " +
+                                                                                                                                                        "When the value-source-type parameter is set to 'reference' it means that the value-source-spec is actually " +
+                                                                                                                                                        "a single value source that points to an actual ListValueSource at runtime)."),
+                                                                                          new CommandDocumentation.Parameter("value-source-spec", true, "The value source specification (depends upon value-source-type)."),
+                                                                                          new QueryCommand.SkinParameter(),
+                                                                                      });
 
     private int valueSourceType;
     private String valueSourceSpec;
@@ -101,7 +101,7 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
         setValueSourceType(params.nextToken());
         setValueSourceSpec(params.nextToken());
 
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             skinName = params.nextToken();
         }
@@ -113,7 +113,7 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
         StringBuffer sb = new StringBuffer(valueSourceType);
         sb.append(delim);
         sb.append(valueSourceSpec);
-        if (skinName != null)
+        if(skinName != null)
         {
             sb.append(delim);
             sb.append(skinName);
@@ -128,7 +128,7 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
 
     public void setValueSourceType(String valueSourceType)
     {
-        if (valueSourceType.equals(LVSTYPENAME_REFERENCE))
+        if(valueSourceType.equals(LVSTYPENAME_REFERENCE))
             setValueSourceType(LVSTYPE_REFERENCE);
         else
             setValueSourceType(LVSTYPE_INSTANCE);
@@ -167,10 +167,10 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
         Theme theme = nc.getActiveTheme();
-        switch (valueSourceType)
+        switch(valueSourceType)
         {
             case LVSTYPE_INSTANCE:
-                if (valueSource != null)
+                if(valueSource != null)
                 {
                     SelectFieldChoicesPanel panel = new SelectFieldChoicesPanel();
                     panel.setReportSkin(skinName);
@@ -183,7 +183,7 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
                 break;
 
             case LVSTYPE_REFERENCE:
-                if (valueSource != null)
+                if(valueSource != null)
                 {
                     SelectFieldChoicesPanel panel = new SelectFieldChoicesPanel();
                     panel.setReportSkin(skinName);

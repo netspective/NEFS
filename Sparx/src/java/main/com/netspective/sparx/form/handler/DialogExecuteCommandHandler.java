@@ -63,8 +63,6 @@ public class DialogExecuteCommandHandler extends DialogExecuteDefaultHandler
 
     /**
      * Specify a particular command that will be executed when the dialog completes input and validation phases.
-     *
-     * @param command
      */
     public void setCommand(Command command)
     {
@@ -79,8 +77,6 @@ public class DialogExecuteCommandHandler extends DialogExecuteDefaultHandler
     /**
      * A value source that will be evaluated and the result of the evaluation will be treated as a command
      * specification. This method allows the actual command that will be executed to be dynamic.
-     *
-     * @param commandExpr
      */
     public void setCommandExpr(ValueSource commandExpr)
     {
@@ -90,10 +86,10 @@ public class DialogExecuteCommandHandler extends DialogExecuteDefaultHandler
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         ValueSource commandExpr = getCommandExpr();
-        if (commandExpr != null)
+        if(commandExpr != null)
         {
             String commandText = commandExpr.getTextValue(dc);
-            if (commandText != null)
+            if(commandText != null)
             {
                 try
                 {
@@ -101,7 +97,7 @@ public class DialogExecuteCommandHandler extends DialogExecuteDefaultHandler
                     httpCommand.handleCommand(writer, dc, false);
                     return;
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     log.error("Command error in " + this.getClass().getName(), e);
                     throw new DialogExecuteException(e);
@@ -113,7 +109,7 @@ public class DialogExecuteCommandHandler extends DialogExecuteDefaultHandler
         // command supplied
 
         HttpServletCommand httpCommand = (HttpServletCommand) getCommand();
-        if (httpCommand == null)
+        if(httpCommand == null)
         {
             writer.write("No command provided.");
             return;
@@ -123,7 +119,7 @@ public class DialogExecuteCommandHandler extends DialogExecuteDefaultHandler
         {
             httpCommand.handleCommand(writer, dc, false);
         }
-        catch (CommandException e)
+        catch(CommandException e)
         {
             log.error("Command error in " + this.getClass().getName(), e);
             throw new DialogExecuteException(e);

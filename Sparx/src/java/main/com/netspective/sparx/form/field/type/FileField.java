@@ -50,17 +50,17 @@ public class FileField extends TextField
 
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-        if (isInputHidden(dc))
+        if(isInputHidden(dc))
         {
             writer.write(getHiddenControlHtml(dc));
             return;
         }
 
-        if ((!isReadOnly(dc)) && (!getFlags().flagIsSet(Flags.MASK_ENTRY)))
+        if((!isReadOnly(dc)) && (!getFlags().flagIsSet(Flags.MASK_ENTRY)))
         {
             writer.write("<input type=\"file\" name=\"" + getHtmlFormControlId() + "\" size=\"" + getSize() + "\" " +
-                    (isRequired(dc) ? " class=\"" + dc.getSkin().getControlAreaRequiredStyleClass() + "\" " : " ") +
-                    dc.getSkin().getDefaultControlAttrs() + ">");
+                         (isRequired(dc) ? " class=\"" + dc.getSkin().getControlAreaRequiredStyleClass() + "\" " : " ") +
+                         dc.getSkin().getDefaultControlAttrs() + ">");
         }
         else
         {

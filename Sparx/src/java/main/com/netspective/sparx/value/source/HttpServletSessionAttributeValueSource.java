@@ -53,10 +53,10 @@ public class HttpServletSessionAttributeValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"session", "session-attr"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides access to HTTP session attributes. Intelligently handles object of types String, String[], and List.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("attribute-name", true, "The name of the request parameter.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("attribute-name", true, "The name of the request parameter.")
+                                                                                              });
 
     private String attributeName;
 
@@ -85,7 +85,7 @@ public class HttpServletSessionAttributeValueSource extends AbstractValueSource
     {
         final ServletValueContext svc = (ServletValueContext)
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
-                vc);
+                 vc);
 
         return new AbstractValue()
         {
@@ -109,10 +109,10 @@ public class HttpServletSessionAttributeValueSource extends AbstractValueSource
             {
                 Object o = getValue();
 
-                if (o instanceof String[])
+                if(o instanceof String[])
                     return (String[]) o;
 
-                if (o instanceof List)
+                if(o instanceof List)
                 {
                     List list = (List) o;
                     return (String[]) list.toArray(new String[list.size()]);
@@ -125,14 +125,14 @@ public class HttpServletSessionAttributeValueSource extends AbstractValueSource
             {
                 Object o = getValue();
 
-                if (o instanceof List)
+                if(o instanceof List)
                     return (List) o;
 
-                if (o instanceof String[])
+                if(o instanceof String[])
                 {
                     String[] values = (String[]) o;
                     List list = new ArrayList();
-                    for (int i = 0; i < values.length; i++)
+                    for(int i = 0; i < values.length; i++)
                         list.add(values[i]);
                     return list;
                 }

@@ -109,11 +109,11 @@ public class DataSourceNavigatorButtonsField extends DialogField
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
         boolean selectableReport = false;
-        if (dc instanceof QueryDialogContext)
+        if(dc instanceof QueryDialogContext)
         {
             QueryDialogContext qdc = (QueryDialogContext) dc;
             HtmlTabularReport reportPanel = qdc.getReportPanel().getReport(dc.getNavigationContext());
-            if (reportPanel != null && reportPanel.getFlags().flagIsSet(HtmlTabularReport.Flags.SELECTABLE))
+            if(reportPanel != null && reportPanel.getFlags().flagIsSet(HtmlTabularReport.Flags.SELECTABLE))
             {
                 selectableReport = true;
             }
@@ -121,7 +121,7 @@ public class DataSourceNavigatorButtonsField extends DialogField
 
         String attrs = dc.getSkin().getDefaultControlAttrs();
         TabularReportDataSourceScrollState scrollState = dc.getProject().getScrollStates().getScrollStateByDialogTransactionId(dc);
-        if (scrollState == null)
+        if(scrollState == null)
         {
             writer.write("<input type='submit' class=\"dialog-button\" name='" + dc.getDialog().getResetContextParamName() + "' value='" + submitCaption.getTextValue(dc) + "' " + attrs + "> ");
             return;
@@ -132,39 +132,39 @@ public class DataSourceNavigatorButtonsField extends DialogField
         int activePage = scrollState.getActivePage();
         int lastPage = scrollState.getTotalPages();
         writer.write("<span class=\"textbox\"><center>");
-        if (lastPage > 0)
+        if(lastPage > 0)
         {
             writer.write("<nobr>Page ");
             writer.write(Integer.toString(activePage));
-            if (isScrollable)
+            if(isScrollable)
             {
                 writer.write(" of ");
                 writer.write(Integer.toString(lastPage));
             }
             writer.write("</nobr>&nbsp;&nbsp;");
-            if (activePage > 1)
+            if(activePage > 1)
                 writer.write("<input type='submit' class=\"dialog-button\" name='" + RSNAV_BUTTONNAME_FIRST + "' value='" + firstCaption.getTextValue(dc) + "' " + attrs + "> ");
 
-            if (activePage > 2)
+            if(activePage > 2)
                 writer.write("<input type='submit' class=\"dialog-button\" name='" + RSNAV_BUTTONNAME_PREV + "' value='" + prevCaption.getTextValue(dc) + "' " + attrs + "> ");
 
             boolean hasMoreRows = false;
             //dataSource.hasMoreRows()
-            if (activePage != lastPage)
+            if(activePage != lastPage)
             {
                 writer.write("<input type='submit' class=\"dialog-button\" name='" + RSNAV_BUTTONNAME_NEXT + "' value='" + nextCaption.getTextValue(dc) + "' " + attrs + "> ");
                 hasMoreRows = true;
             }
 
-            if (isScrollable)
+            if(isScrollable)
             {
-                if (activePage < lastPage)
+                if(activePage < lastPage)
                     writer.write("<input type='submit' class=\"dialog-button\" name='" + RSNAV_BUTTONNAME_LAST + "' value='" + lastCaption.getTextValue(dc) + "' " + attrs + "> ");
                 writer.write("&nbsp;&nbsp;<nobr>");
                 writer.write(NumberFormat.getNumberInstance().format(dataSource.getTotalRows()));
                 writer.write(" total rows</nobr>");
             }
-            else if (hasMoreRows)
+            else if(hasMoreRows)
             {
                 writer.write("&nbsp;&nbsp;<nobr>");
                 writer.write(NumberFormat.getNumberInstance().format(scrollState.getRowsProcessed()));
@@ -179,13 +179,13 @@ public class DataSourceNavigatorButtonsField extends DialogField
 
         }
 
-        if (doneCaption != null)
+        if(doneCaption != null)
         {
-            if (doneUrl == null)
+            if(doneUrl == null)
                 writer.write("&nbsp;&nbsp;<input type='submit' class=\"dialog-button\" name='" + dc.getDialog().getResetContextParamName() + "' value='" + doneCaption.getTextValue(dc) + "' " + attrs + "> ");
             else
                 writer.write("&nbsp;&nbsp;<input type='button' class=\"dialog-button\" name='jump' value='" + doneCaption.getTextValue(dc) +
-                        "' onclick='this.form.action=\"" + doneUrl.getTextValue(dc) + "\";this.form.submit();'" + attrs + "> ");
+                             "' onclick='this.form.action=\"" + doneUrl.getTextValue(dc) + "\";this.form.submit();'" + attrs + "> ");
         }
         writer.write("</center></span>");
     }

@@ -50,7 +50,7 @@ public class DirectorNextActionsSelectField extends SelectField implements Dialo
 
     static
     {
-        for (int i = 0; i < SelectField.SELECT_FIELD_FLAG_DEFNS.length; i++)
+        for(int i = 0; i < SelectField.SELECT_FIELD_FLAG_DEFNS.length; i++)
             NEXT_ACTION_FIELD_FLAG_DEFNS[i] = SelectField.SELECT_FIELD_FLAG_DEFNS[i];
         NEXT_ACTION_FIELD_FLAG_DEFNS[SelectField.SELECT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(Flags.ACCESS_XDM, "DISPLAY_SINGLE_ACTION", Flags.DISPLAY_SINGLE_ACTION);
     }
@@ -91,7 +91,7 @@ public class DirectorNextActionsSelectField extends SelectField implements Dialo
     public void setParent(DialogField newParent)
     {
         super.setParent(newParent);
-        if (getName() == null)
+        if(getName() == null)
             setName(DEFAULT_NAME);
     }
 
@@ -103,13 +103,13 @@ public class DirectorNextActionsSelectField extends SelectField implements Dialo
     public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
     {
         String value = dc.getRequest().getParameter(getHtmlFormControlId());
-        if (value == null)
+        if(value == null)
             return defaultUrl;
         ValueSource svs = ValueSources.getInstance().getValueSourceOrStatic(value);
-        if (svs == null)
+        if(svs == null)
             return defaultUrl;
         String url = svs.getTextValue(dc);
-        if (url.equals("-"))
+        if(url.equals("-"))
             return defaultUrl;
         return url;
     }
@@ -117,7 +117,7 @@ public class DirectorNextActionsSelectField extends SelectField implements Dialo
     public void makeStateChanges(DialogContext dc, int stage)
     {
         super.makeStateChanges(dc, stage);
-        if (stage != DialogContext.STATECALCSTAGE_AFTER_VALIDATION)
+        if(stage != DialogContext.STATECALCSTAGE_AFTER_VALIDATION)
             return;
 
         ValueSource choices = getChoices();
@@ -125,11 +125,11 @@ public class DirectorNextActionsSelectField extends SelectField implements Dialo
         PresentationValue.Items items = pValue != null ? pValue.getItems() : null;
 
         int listSize = items != null ? items.size() : 0;
-        if (listSize == 0)
+        if(listSize == 0)
             return;
 
         // if there's only a single item but we don't want to display "one item only" then get the value but hide the field
-        if (listSize == 1 && !getFlags().flagIsSet(Flags.DISPLAY_SINGLE_ACTION))
+        if(listSize == 1 && !getFlags().flagIsSet(Flags.DISPLAY_SINGLE_ACTION))
         {
             SelectFieldState state = (SelectFieldState) dc.getFieldStates().getState(this);
             state.getValue().setTextValue(((PresentationValue.Items.Item) items.get(0)).getValue());
@@ -145,7 +145,7 @@ public class DirectorNextActionsSelectField extends SelectField implements Dialo
     public void setPerspective(DialogPerspectives perspective)
     {
         this.perspective.copy(perspective);
-        if (this.perspective.getFlags() != DialogPerspectives.NONE)
+        if(this.perspective.getFlags() != DialogPerspectives.NONE)
         {
             getFlags().setFlag(Flags.INPUT_HIDDEN);
             DialogFieldConditionalApplyFlag dataCmdAction = new DialogFieldConditionalApplyFlag(this);

@@ -62,21 +62,19 @@ public class PageIdValueSource extends AbstractValueSource
 
     public static final String[] IDENTIFIERS = new String[]{"page-id"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides access to the URL defined in a NavigationTree. If " +
-            "no source-name is provided the navigation-id requested is read from the default NavigationTreeManager " +
-            "of the default configuration file. If a source-name is provided, then the property-name is read from the " +
-            "NavigationTreeManager named source-name in the default configuration file.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("navigation id", true, "The relative path of the URI.")
-            });
+                                                                                              "no source-name is provided the navigation-id requested is read from the default NavigationTreeManager " +
+                                                                                              "of the default configuration file. If a source-name is provided, then the property-name is read from the " +
+                                                                                              "NavigationTreeManager named source-name in the default configuration file.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("navigation id", true, "The relative path of the URI.")
+                                                                                              });
 
     public static final char TREE_SOURCE_SEPARATOR = ',';
     public static final char QUERY_STRING_SEPARATOR = '?';
 
     /**
      * Gets the static identifiers defined for the navigation page value source class
-     *
-     * @return
      */
     public static String[] getIdentifiers()
     {
@@ -85,8 +83,6 @@ public class PageIdValueSource extends AbstractValueSource
 
     /**
      * Gets the static documentation object defined for the navigation page value source class
-     *
-     * @return
      */
     public static ValueSourceDocumentation getDocumentation()
     {
@@ -111,38 +107,35 @@ public class PageIdValueSource extends AbstractValueSource
     /**
      * Gets the navigation page's URL as a Value object. If the navigation tree or the page itself
      * was not found, a GenericValue object with the error message is returned.
-     *
-     * @param vc
-     *
-     * @return
      */
     public Value getValue(ValueContext vc)
     {
         NavigationTree navTree = null;
         HttpServletValueContext svc = (HttpServletValueContext) (vc instanceof ConnectionContext
-                ? ((ConnectionContext) vc).getDatabaseValueContext() : vc);
+                                                                 ? ((ConnectionContext) vc).getDatabaseValueContext()
+                                                                 : vc);
         HttpServletRequest request = svc.getHttpRequest();
         String contextPath = request.getContextPath();
         String servletPath = request.getServletPath();
 
-        if (treeSource == null || treeSource.length() == 0)
+        if(treeSource == null || treeSource.length() == 0)
         {
             navTree = svc.getProject().getDefaultNavigationTree();
-            if (navTree == null)
+            if(navTree == null)
                 return new GenericValue("No default NavigationTree found");
         }
         else
         {
             navTree = navTree = svc.getProject().getNavigationTree(treeSource);
-            if (navTree == null)
+            if(navTree == null)
                 return new GenericValue("No navigation tree named '" + treeSource + "' was found");
         }
 
-        if (!pageId.startsWith("/"))
+        if(!pageId.startsWith("/"))
         {
             // relative page ID
             NavigationPage activePage = svc.getNavigationContext().getActivePage();
-            if (activePage != null)
+            if(activePage != null)
                 pageId = activePage.getQualifiedName() + "/" + pageId;
             else
             {
@@ -153,7 +146,7 @@ public class PageIdValueSource extends AbstractValueSource
         // find a matching path with respect to the nav id
         NavigationTree.FindResults pathResults = navTree.findPath(pageId);
         NavigationPath path = pathResults.getMatchedPath();
-        if (path == null)
+        if(path == null)
         {
             // a matching path was not found
             log.error("Navigation page ID '" + pageId + "' was not found.");
@@ -162,13 +155,13 @@ public class PageIdValueSource extends AbstractValueSource
         else
         {
             String localParams = null;
-            if (reqParams != null)
+            if(reqParams != null)
             {
                 // process the request parameters
                 localParams = reqParams.getValue(vc).getTextValue();
             }
             return new GenericValue(contextPath + servletPath + path.getQualifiedName() + (localParams != null
-                    ? "?" + localParams : ""));
+                                                                                           ? "?" + localParams : ""));
         }
     }
 
@@ -178,8 +171,6 @@ public class PageIdValueSource extends AbstractValueSource
      * the page ID will also be extracted for translation.
      *
      * @param spec value source specification object
-     *
-     * @throws ValueSourceInitializeException
      */
     public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
     {
@@ -188,10 +179,10 @@ public class PageIdValueSource extends AbstractValueSource
         String srcParams = spec.getParams();
         int delimPos = srcParams.indexOf(TREE_SOURCE_SEPARATOR);
 
-        if (delimPos > 0)
+        if(delimPos > 0)
         {
             int queryStrPos = srcParams.indexOf(QUERY_STRING_SEPARATOR);
-            if (queryStrPos > 0 && delimPos > queryStrPos)
+            if(queryStrPos > 0 && delimPos > queryStrPos)
             {
                 // if the ',' comes after the '?' then it is probably a part of the query string and not the tree delimiter
                 valueKey = srcParams;
@@ -208,7 +199,7 @@ public class PageIdValueSource extends AbstractValueSource
         }
         int endOfIdDelimPos = valueKey.indexOf(QUERY_STRING_SEPARATOR);
         // the rest of the string might contain other information aside from the navigation page ID (such as request parameters)
-        if (endOfIdDelimPos < 0)
+        if(endOfIdDelimPos < 0)
         {
             // no url query string attached
             pageId = valueKey;

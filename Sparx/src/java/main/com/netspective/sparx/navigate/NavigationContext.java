@@ -79,17 +79,17 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
         NavigationPage firstDescendantWithBody = findFirstMemberWithBody(activePage);
 
-        if (firstDescendantWithBody != null)
+        if(firstDescendantWithBody != null)
         {
-            if (firstDescendantWithBody != activePage || (activePathId == null || activePathId.equals("/")))
+            if(firstDescendantWithBody != activePage || (activePathId == null || activePathId.equals("/")))
                 redirectRequired = true;
             activePage = firstDescendantWithBody;
         }
 
-        if (activePage != null)
+        if(activePage != null)
         {
             activePageValid = activePage.isValid(this);
-            if (activePage.getRedirect() != null)
+            if(activePage.getRedirect() != null)
                 redirectRequired = true;
         }
     }
@@ -151,13 +151,13 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getErrorPageExceptionStackStrace()
     {
-        if (errorPageException == null)
+        if(errorPageException == null)
             return null;
 
-        if (errorPageException instanceof ServletException)
+        if(errorPageException instanceof ServletException)
         {
             Throwable rootCause = ((ServletException) errorPageException).getRootCause();
-            if (rootCause != null)
+            if(rootCause != null)
                 return TextUtils.getInstance().getStackTrace(rootCause);
         }
 
@@ -186,11 +186,11 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public NavigationPage findFirstMemberWithBody(NavigationPage parent)
     {
-        if (parent == null || (parent != null && parent.getBodyType().getValueIndex() != NavigationPageBodyType.NONE))
+        if(parent == null || (parent != null && parent.getBodyType().getValueIndex() != NavigationPageBodyType.NONE))
             return parent;
 
         NavigationPage defNavigationPage = (NavigationPage) parent.getDefaultChild();
-        if (defNavigationPage == null)
+        if(defNavigationPage == null)
             defNavigationPage = parent.getFirstFocusableChild();
         return findFirstMemberWithBody(defNavigationPage);
     }
@@ -232,10 +232,10 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getPageHeading()
     {
-        if (errorPage != null)
+        if(errorPage != null)
             return errorPage.getHeading(this);
 
-        if (pageHeading != null)
+        if(pageHeading != null)
             return pageHeading;
 
         return activePage.getHeading(this);
@@ -243,10 +243,10 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getPageSubheading()
     {
-        if (errorPage != null)
+        if(errorPage != null)
             return errorPage.getSubHeading(this);
 
-        if (pageSubheading != null)
+        if(pageSubheading != null)
             return pageSubheading;
 
         return activePage.getSubHeading(this);
@@ -254,13 +254,13 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public String getPageTitle()
     {
-        if (errorPage != null)
+        if(errorPage != null)
             return errorPage.getTitle(this);
 
-        if (pageTitle != null)
+        if(pageTitle != null)
             return pageTitle;
 
-        if (pageHeading != null)
+        if(pageHeading != null)
             return pageHeading;
 
         return activePage.getTitle(this);
@@ -294,7 +294,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     public NavigationPath.State getState(NavigationPath path)
     {
         NavigationPath.State state = (NavigationPath.State) navigationStates.get(path.getQualifiedName());
-        if (state == null)
+        if(state == null)
         {
             state = path.constructState();
             navigationStates.put(path.getQualifiedName(), state);

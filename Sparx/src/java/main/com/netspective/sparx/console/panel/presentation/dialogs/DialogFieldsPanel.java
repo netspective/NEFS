@@ -83,7 +83,7 @@ public class DialogFieldsPanel extends DialogDetailPanel
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
-        if (selectedDialog.getDataSource() != null)
+        if(selectedDialog.getDataSource() != null)
             return selectedDialog.getDataSource();
         else
             return new DialogFieldsDataSource(selectedDialog);

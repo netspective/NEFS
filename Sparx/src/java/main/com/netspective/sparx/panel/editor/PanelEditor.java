@@ -138,10 +138,6 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Create the state object for the panel editor
-     *
-     * @param nc
-     *
-     * @return
      */
     public PanelEditorState constructPanelEditorState(NavigationContext nc)
     {
@@ -150,8 +146,6 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Creates a child content element
-     *
-     * @return
      */
     public PanelEditorContentElement createElement()
     {
@@ -160,7 +154,7 @@ public class PanelEditor extends AbstractPanel
 
     public PanelEditorContentElement createElement(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (PanelEditorContentElement.class.isAssignableFrom(cls))
+        if(PanelEditorContentElement.class.isAssignableFrom(cls))
         {
             return (PanelEditorContentElement) cls.newInstance();
         }
@@ -171,8 +165,6 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Adds a child content element
-     *
-     * @param element
      */
     public void addElement(PanelEditorContentElement element)
     {
@@ -182,8 +174,6 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Gets the content elements
-     *
-     * @return
      */
     public Map getElementsAsMap()
     {
@@ -197,15 +187,13 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Gets the content elements
-     *
-     * @return
      */
     public PanelEditorContentElement[] getElementsAsArray()
     {
         int i = 0;
         PanelEditorContentElement[] list = new PanelEditorContentElement[elements.keySet().size()];
         Iterator itr = elements.keySet().iterator();
-        while (itr.hasNext())
+        while(itr.hasNext())
         {
             list[i++] = (PanelEditorContentElement) elements.get(itr.next());
         }
@@ -231,8 +219,8 @@ public class PanelEditor extends AbstractPanel
     {
         int mode = translateMode(panelMode);
         // if mode is supposed to be in add, edit, or delete then the recordKey should have been provided.
-        if ((mode == PanelEditor.MODE_EDIT ||
-                mode == MODE_DELETE) && recordKey == null)
+        if((mode == PanelEditor.MODE_EDIT ||
+            mode == MODE_DELETE) && recordKey == null)
         {
             mode = UNKNOWN_MODE;
         }
@@ -241,23 +229,19 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Translates the mode name into a mode value. This doesn't do any validation checking of the mode.
-     *
-     * @param modeName
-     *
-     * @return
      */
     public static int translateMode(String modeName)
     {
         int mode = MODE_DISPLAY;
-        if (modeName == null || modeName.equals("display"))
+        if(modeName == null || modeName.equals("display"))
             mode = MODE_DISPLAY;
-        else if (modeName.equals("add"))
+        else if(modeName.equals("add"))
             mode = MODE_ADD;
-        else if (modeName.equals("edit"))
+        else if(modeName.equals("edit"))
             mode = MODE_EDIT;
-        else if (modeName.equals("delete"))
+        else if(modeName.equals("delete"))
             mode = MODE_DELETE;
-        else if (modeName.equals("manage"))
+        else if(modeName.equals("manage"))
             mode = MODE_MANAGE;
         else
             mode = UNKNOWN_MODE;
@@ -267,23 +251,19 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Translates the mode integer to its string version
-     *
-     * @param mode
-     *
-     * @return
      */
     public static String translateModeToString(int mode)
     {
         String modeName = null;
-        if (mode == MODE_DISPLAY)
+        if(mode == MODE_DISPLAY)
             modeName = "display";
-        else if (mode == MODE_ADD)
+        else if(mode == MODE_ADD)
             modeName = "add";
-        else if (mode == MODE_EDIT)
+        else if(mode == MODE_EDIT)
             modeName = "edit";
-        else if (mode == MODE_DELETE)
+        else if(mode == MODE_DELETE)
             modeName = "delete";
-        else if (mode == MODE_MANAGE)
+        else if(mode == MODE_MANAGE)
             modeName = "manage";
 
         return modeName;
@@ -311,8 +291,6 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Sets the request parameter that is required for this panel editor
-     *
-     * @param requireRequestParam
      */
     public void setRequireRequestParam(String requireRequestParam)
     {
@@ -366,8 +344,6 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Gets the name to use when saving this panel editor in a collection map
-     *
-     * @return
      */
     public String getNameForMapKey()
     {
@@ -402,24 +378,24 @@ public class PanelEditor extends AbstractPanel
     public String generatePanelActionUrl(int actionMode)
     {
         String url = "active-page:";
-        if (actionMode == PanelEditor.MODE_EDIT)
+        if(actionMode == PanelEditor.MODE_EDIT)
         {
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + getQualifiedName() +
-                    ",edit,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
+                  ",edit,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
         }
-        else if (actionMode == MODE_DELETE)
+        else if(actionMode == MODE_DELETE)
         {
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() +
-                    ",delete,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
+                  ",delete,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
         }
-        else if (actionMode == MODE_ADD)
+        else if(actionMode == MODE_ADD)
         {
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() +
-                    ",add,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
+                  ",add,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
         }
-        else if (actionMode == MODE_MANAGE)
+        else if(actionMode == MODE_MANAGE)
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() +
-                    ",manage,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
+                  ",manage,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
 
         return url;
     }
@@ -429,7 +405,7 @@ public class PanelEditor extends AbstractPanel
     {
         String url = "active-page:";
         String currentUrl = dc.getNavigationContext().getActivePage().getUrl(dc);
-        if (previousMode != MODE_DISPLAY)
+        if(previousMode != MODE_DISPLAY)
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName + ",manage";
         else
             url = currentUrl;
@@ -474,7 +450,7 @@ public class PanelEditor extends AbstractPanel
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         PanelEditorState state = (PanelEditorState) nc.getAttribute("");
-        if (state != null)
+        if(state != null)
             render(writer, nc, state);
 
     }
@@ -487,18 +463,16 @@ public class PanelEditor extends AbstractPanel
      *
      * @param writer writer to render the output to
      * @param nc     current navigation context
-     *
-     * @throws IOException
      */
     public void render(Writer writer, NavigationContext nc, PanelEditorState state) throws IOException
     {
-        if (getRequireRequestParam() != null)
+        if(getRequireRequestParam() != null)
         {
-            if (nc.getHttpRequest().getParameter(getRequireRequestParam()) == null)
+            if(nc.getHttpRequest().getParameter(getRequireRequestParam()) == null)
                 throw new RuntimeException("Record editor panel '" + getQualifiedName() + "' requires the request " +
-                        "parameter '" + getRequireRequestParam() + "'.");
+                                           "parameter '" + getRequireRequestParam() + "'.");
         }
-        if (!isInitialized())
+        if(!isInitialized())
             initialize();
         int mode = state.getCurrentMode();
         BasicHtmlPanelValueContext pvc = new BasicHtmlPanelValueContext(nc, this);
@@ -524,9 +498,9 @@ public class PanelEditor extends AbstractPanel
         StringWriter activeDisplayWriter = new StringWriter();
         StringWriter inactiveWriter = new StringWriter();
         PanelEditorContentElement[] elements = getElementsAsArray();
-        for (int i = 0; i < elements.length; i++)
+        for(int i = 0; i < elements.length; i++)
         {
-            if (activeElement != null && elements[i].getName().equals(activeElement))
+            if(activeElement != null && elements[i].getName().equals(activeElement))
             {
                 elements[i].renderEditorContent(activeEditorWriter, nc, state);
                 elements[i].renderDisplayContent(activeDisplayWriter, nc, state);
@@ -538,14 +512,14 @@ public class PanelEditor extends AbstractPanel
         }
         preparePanelActionStates(nc, pvc, state, mode);
         writer.write("<table class=\"panel-editor-table\"><tr>\n");
-        if (activeElement != null)
+        if(activeElement != null)
             writer.write("<td class=\"active-content\">" + activeEditorWriter.getBuffer().toString() + "</td>");
 
         writer.write("<td class=\"display-content\">");
         skin.renderPanelRegistration(writer, pvc);
         skin.renderFrameBegin(writer, pvc);
         writer.write((activeElement != null ? activeDisplayWriter.getBuffer().toString() : "") +
-                inactiveWriter.getBuffer().toString());
+                     inactiveWriter.getBuffer().toString());
         skin.renderFrameEnd(writer, pvc);
         writer.write("</td></tr></table>\n");
     }
@@ -560,25 +534,25 @@ public class PanelEditor extends AbstractPanel
     public void preparePanelActionStates(NavigationContext nc, HtmlPanelValueContext vc, PanelEditorState state, int mode)
     {
         HtmlPanelActionStates actionStates = vc.getPanelActionStates();
-        if (mode == MODE_DISPLAY)
+        if(mode == MODE_DISPLAY)
         {
             actionStates.getState("Done").getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             PanelEditorContentElement[] elements = getElementsAsArray();
             String caption = null;
-            for (int i = 0; i < elements.length; i++)
+            for(int i = 0; i < elements.length; i++)
             {
                 caption = elements[i].getCaption();
                 PanelEditorContentElement.PanelEditorContentState elementState = state.getElementState(elements[i].getName());
                 // hide the ADD action only if there is content in the content element and we're not always showing add action
-                if (!alwaysShowAddAction && !elementState.isEmptyContent())
+                if(!alwaysShowAddAction && !elementState.isEmptyContent())
                     actionStates.getState("Add " + (caption != null ? caption : "")).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             }
         }
-        else if (mode == MODE_ADD || mode == MODE_EDIT || mode == MODE_DELETE)
+        else if(mode == MODE_ADD || mode == MODE_EDIT || mode == MODE_DELETE)
         {
             actionStates.getState(PANEL_CONTENT_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
         }
-        else if (mode == MODE_MANAGE)
+        else if(mode == MODE_MANAGE)
         {
             actionStates.getState(PANEL_CONTENT_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
         }
@@ -591,7 +565,7 @@ public class PanelEditor extends AbstractPanel
     public void createPanelFrameActions()
     {
         HtmlPanelFrame frame = getFrame();
-        if (frame == null)
+        if(frame == null)
         {
             setFrame(createFrame());
         }
@@ -614,14 +588,14 @@ public class PanelEditor extends AbstractPanel
     public void createPanelBannerActions()
     {
         // Calculate what to display in the banner
-        if (getBanner() == null)
+        if(getBanner() == null)
             setBanner(new HtmlPanelBanner());
 
         HtmlPanelBanner banner = getBanner();
         HtmlPanelActions actions = new HtmlPanelActions();
 
         PanelEditorContentElement[] elements = getElementsAsArray();
-        for (int i = 0; i < elements.length; i++)
+        for(int i = 0; i < elements.length; i++)
         {
             HtmlPanelAction addAction = banner.createAction();
             PanelEditorContentElement element = elements[i];

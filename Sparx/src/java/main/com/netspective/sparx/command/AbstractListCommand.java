@@ -59,10 +59,6 @@ public abstract class AbstractListCommand extends AbstractHttpServletCommand
 
     /**
      * Gets the list
-     *
-     * @param vc
-     *
-     * @return
      */
     public abstract List getItems(HttpServletValueContext vc);
 
@@ -75,10 +71,6 @@ public abstract class AbstractListCommand extends AbstractHttpServletCommand
 
     /**
      * Gets the active (selected) item from the request
-     *
-     * @param vc
-     *
-     * @return
      */
     public String getActiveItem(HttpServletValueContext vc)
     {
@@ -87,54 +79,31 @@ public abstract class AbstractListCommand extends AbstractHttpServletCommand
 
     /**
      * Renders the item list
-     *
-     * @param writer
-     * @param nc
      */
     protected abstract void renderList(Writer writer, NavigationContext nc) throws IOException;
 
     /**
      * Render the selected item component from the list
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws IOException
      */
     protected abstract void renderListItem(Writer writer, NavigationContext nc, String activeItem) throws IOException;
 
     /**
      * Renders the item list
-     *
-     * @param writer
-     * @param nc
      */
     protected abstract void renderList(Writer writer, DialogContext nc) throws IOException;
 
     /**
      * Render the selected item component from the list
-     *
-     * @param writer
-     * @param nc
-     *
-     * @throws IOException
      */
     protected abstract void renderListItem(Writer writer, DialogContext nc, String activeItem) throws IOException;
 
     /**
      * Handles the command
-     *
-     * @param writer
-     * @param nc
-     * @param unitTest
-     *
-     * @throws CommandException
-     * @throws IOException
      */
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
         String activeItem = getActiveItem(nc);
-        if (activeItem != null && activeItem.length() > 0)
+        if(activeItem != null && activeItem.length() > 0)
             renderListItem(writer, nc, activeItem);
         else
             renderList(writer, nc);
@@ -142,18 +111,11 @@ public abstract class AbstractListCommand extends AbstractHttpServletCommand
 
     /**
      * Handles the command
-     *
-     * @param writer
-     * @param dc
-     * @param unitTest
-     *
-     * @throws CommandException
-     * @throws IOException
      */
     public void handleCommand(Writer writer, DialogContext dc, boolean unitTest) throws CommandException, IOException
     {
         String activeItem = getActiveItem(dc);
-        if (activeItem != null && activeItem.length() > 0)
+        if(activeItem != null && activeItem.length() > 0)
             renderListItem(writer, dc, activeItem);
         else
             renderList(writer, dc);

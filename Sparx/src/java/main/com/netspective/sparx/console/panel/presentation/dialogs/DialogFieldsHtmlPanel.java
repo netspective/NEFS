@@ -76,7 +76,7 @@ public class DialogFieldsHtmlPanel extends DialogDetailPanel
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
-        if (selectedDialog.getDataSource() != null)
+        if(selectedDialog.getDataSource() != null)
             return selectedDialog.getDataSource();
         else
             return new DialogFieldsHtmlPanelDataSource(selectedDialog);
@@ -98,7 +98,7 @@ public class DialogFieldsHtmlPanel extends DialogDetailPanel
         {
             DialogField activeField = activeRow.getField();
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:
@@ -106,11 +106,11 @@ public class DialogFieldsHtmlPanel extends DialogDetailPanel
                     return super.getActiveRowColumnData(columnIndex, flags);
 
                 case 3:
-                    if (activeField != null)
+                    if(activeField != null)
                         return activeField.requiresMultiPartEncoding() ? "Yes" : null;
 
                 case 4:
-                    if (activeField != null)
+                    if(activeField != null)
                         return activeField.getCookieName();
 
                 default:

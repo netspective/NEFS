@@ -208,7 +208,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         nc.getRequest().setAttribute(DIALOG_CONTEXT_ATTR_NAME, this);
 
         String overrideSkin = request.getParameter(Dialog.PARAMNAME_OVERRIDE_SKIN);
-        if (overrideSkin != null)
+        if(overrideSkin != null)
             aSkin = nc.getActiveTheme().getDialogSkin(overrideSkin);
 
         dialog = aDialog;
@@ -219,7 +219,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         state.incRunSequence();
 
         String resetContext = request.getParameter(dialog.getResetContextParamName());
-        if (resetContext != null)
+        if(resetContext != null)
         {
             state.reset(nc);
             this.resetContext = true;
@@ -227,14 +227,14 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
         // check to see if the dialog was submitted using the cancel button
         String cancelValue = request.getParameter("cancelButton");
-        if (cancelValue != null && cancelValue.length() > 0)
+        if(cancelValue != null && cancelValue.length() > 0)
             setCancelButtonPressed(true);
 
         ValueSource ncRetainVS = nc.getActivePage().getRetainParams();
-        if (ncRetainVS != null)
+        if(ncRetainVS != null)
         {
             String ncRetain = ncRetainVS.getTextValue(this);
-            if (ncRetain != null && ncRetain.length() > 0)
+            if(ncRetain != null && ncRetain.length() > 0)
                 addRetainRequestParams(TextUtils.getInstance().split(ncRetain, ",", true));
         }
 
@@ -253,8 +253,6 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
     /**
      * Sets the flag for the cancel button press
-     *
-     * @param cancelButtonPressed
      */
     public void setCancelButtonPressed(boolean cancelButtonPressed)
     {
@@ -291,19 +289,19 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
     public void performDefaultRedirect(Writer writer, String redirect) throws IOException
     {
-        if (!redirectAfterExecute)
+        if(!redirectAfterExecute)
             return;
 
         ServletRequest request = getRequest();
         String redirectToUrl = redirect != null ? redirect : request.getParameter(DEFAULT_REDIRECT_PARAM_NAME);
-        if (redirectToUrl == null)
+        if(redirectToUrl == null)
         {
             redirectToUrl = request.getParameter(dialog.getPostExecuteRedirectUrlParamName());
-            if (redirectToUrl == null)
+            if(redirectToUrl == null)
                 redirectToUrl = getNextActionUrl(state.getReferer());
         }
 
-        if (redirectDisabled || redirectToUrl == null)
+        if(redirectDisabled || redirectToUrl == null)
         {
             writer.write("<p><b>Redirect is disabled</b>.");
             writer.write("<br><code>redirect</code> method parameter is <code>" + redirect + "</code>");
@@ -316,7 +314,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         }
 
         HttpServletResponse response = (HttpServletResponse) getResponse();
-        if (response.isCommitted())
+        if(response.isCommitted())
             skin.renderRedirectHtml(writer, this, response.encodeRedirectURL(redirectToUrl));
         else
             sendRedirect(redirectToUrl);
@@ -333,14 +331,14 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
      */
     public boolean matchesPerspective(int perspectives)
     {
-        if (perspectives == DialogPerspectives.NONE || state.getPerspectives().getFlags() == DialogPerspectives.NONE)
+        if(perspectives == DialogPerspectives.NONE || state.getPerspectives().getFlags() == DialogPerspectives.NONE)
             return false;
 
         int lastDataCmd = DialogPerspectives.LAST;
-        for (int i = 1; i <= lastDataCmd; i *= 2)
+        for(int i = 1; i <= lastDataCmd; i *= 2)
         {
             // if the dataCmdCondition's dataCmd i is set, it means we need to check our dataCmd to see if we're set
-            if ((perspectives & i) != 0 && state.getPerspectives().flagIsSet(i))
+            if((perspectives & i) != 0 && state.getPerspectives().flagIsSet(i))
                 return true;
         }
 
@@ -368,7 +366,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     public void importFromXml(Element parent)
     {
         NodeList dcList = parent.getElementsByTagName("dialog-context");
-        if (dcList.getLength() > 0)
+        if(dcList.getLength() > 0)
         {
             Element dcElem = (Element) dcList.item(0);
             fieldStates.importFromXml(dcElem);
@@ -380,11 +378,11 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         Document doc = parent.getOwnerDocument();
         Element fieldElem = doc.createElement("request-param");
         fieldElem.setAttribute("name", name);
-        if (values != null && values.length > 1)
+        if(values != null && values.length > 1)
         {
             fieldElem.setAttribute("value-type", "strings");
             Element valuesElem = doc.createElement("values");
-            for (int i = 0; i < values.length; i++)
+            for(int i = 0; i < values.length; i++)
             {
                 Element valueElem = doc.createElement("value");
                 valueElem.appendChild(doc.createTextNode(values[i]));
@@ -393,7 +391,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             fieldElem.appendChild(valuesElem);
             parent.appendChild(fieldElem);
         }
-        else if (values != null)
+        else if(values != null)
         {
             fieldElem.setAttribute("value-type", "string");
             Element valueElem = doc.createElement("value");
@@ -405,7 +403,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
     static public void exportParamAsUrlParam(StringBuffer sb, String name, String[] values)
     {
-        for (int v = 0; v < values.length; v++)
+        for(int v = 0; v < values.length; v++)
         {
             sb.append("&");
             sb.append(name + "=" + URLEncoder.encode(values[v]));
@@ -421,30 +419,30 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         fieldStates.exportToXml(dcElem);
 
         Set retainedParams = null;
-        if (retainReqParams != null)
+        if(retainReqParams != null)
         {
             retainedParams = new HashSet();
-            for (int i = 0; i < retainReqParams.length; i++)
+            for(int i = 0; i < retainReqParams.length; i++)
             {
                 String paramName = retainReqParams[i];
                 String[] paramValues = request.getParameterValues(paramName);
-                if (paramValues != null)
+                if(paramValues != null)
                     exportParamToXml(dcElem, paramName, paramValues);
                 retainedParams.add(paramName);
             }
         }
         boolean retainedAnyParams = retainedParams != null;
 
-        if (dialog.retainRequestParams())
+        if(dialog.retainRequestParams())
         {
-            if (dialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS))
+            if(dialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS))
             {
-                for (Enumeration e = request.getParameterNames(); e.hasMoreElements();)
+                for(Enumeration e = request.getParameterNames(); e.hasMoreElements();)
                 {
                     String paramName = (String) e.nextElement();
-                    if (paramName.startsWith(Dialog.PARAMNAME_DIALOGPREFIX) ||
-                            paramName.startsWith(Dialog.PARAMNAME_CONTROLPREFIX) ||
-                            (retainedAnyParams && retainedParams.contains(paramName)))
+                    if(paramName.startsWith(Dialog.PARAMNAME_DIALOGPREFIX) ||
+                       paramName.startsWith(Dialog.PARAMNAME_CONTROLPREFIX) ||
+                       (retainedAnyParams && retainedParams.contains(paramName)))
                         continue;
 
                     exportParamToXml(dcElem, paramName, request.getParameterValues(paramName));
@@ -455,10 +453,10 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                 String[] retainParams = dialog.getRetainParams();
                 int retainParamsCount = retainParams.length;
 
-                for (int i = 0; i < retainParamsCount; i++)
+                for(int i = 0; i < retainParamsCount; i++)
                 {
                     String paramName = retainParams[i];
-                    if (retainedAnyParams && retainedParams.contains(paramName))
+                    if(retainedAnyParams && retainedParams.contains(paramName))
                         continue;
 
                     exportParamToXml(dcElem, paramName, request.getParameterValues(paramName));
@@ -478,30 +476,30 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         sb.append(fieldStates.getAsUrlParams());
 
         Set retainedParams = null;
-        if (retainReqParams != null)
+        if(retainReqParams != null)
         {
             retainedParams = new HashSet();
-            for (int i = 0; i < retainReqParams.length; i++)
+            for(int i = 0; i < retainReqParams.length; i++)
             {
                 String paramName = retainReqParams[i];
                 String[] paramValues = request.getParameterValues(paramName);
-                if (paramValues != null)
+                if(paramValues != null)
                     exportParamAsUrlParam(sb, paramName, paramValues);
                 retainedParams.add(paramName);
             }
         }
         boolean retainedAnyParams = retainedParams != null;
 
-        if (dialog.retainRequestParams())
+        if(dialog.retainRequestParams())
         {
-            if (dialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS))
+            if(dialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS))
             {
-                for (Enumeration e = request.getParameterNames(); e.hasMoreElements();)
+                for(Enumeration e = request.getParameterNames(); e.hasMoreElements();)
                 {
                     String paramName = (String) e.nextElement();
-                    if (paramName.startsWith(Dialog.PARAMNAME_DIALOGPREFIX) ||
-                            paramName.startsWith(Dialog.PARAMNAME_CONTROLPREFIX) ||
-                            (retainedAnyParams && retainedParams.contains(paramName)))
+                    if(paramName.startsWith(Dialog.PARAMNAME_DIALOGPREFIX) ||
+                       paramName.startsWith(Dialog.PARAMNAME_CONTROLPREFIX) ||
+                       (retainedAnyParams && retainedParams.contains(paramName)))
                         continue;
 
                     exportParamAsUrlParam(sb, paramName, request.getParameterValues(paramName));
@@ -512,10 +510,10 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                 String[] retainParams = dialog.getRetainParams();
                 int retainParamsCount = retainParams.length;
 
-                for (int i = 0; i < retainParamsCount; i++)
+                for(int i = 0; i < retainParamsCount; i++)
                 {
                     String paramName = retainParams[i];
-                    if (retainedAnyParams && retainedParams.contains(paramName))
+                    if(retainedAnyParams && retainedParams.contains(paramName))
                         continue;
 
                     exportParamAsUrlParam(sb, paramName, request.getParameterValues(paramName));
@@ -587,10 +585,10 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         DialogFlags dialogFlags = dialog.getDialogFlags();
 
         boolean ignoreValidation = false;
-        if (dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_PENDING_DATA))
+        if(dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_PENDING_DATA))
         {
             String ignoreValidationOption = request.getParameter(dialog.getPendDataParamName());
-            if (ignoreValidationOption != null && !ignoreValidationOption.equals("no"))
+            if(ignoreValidationOption != null && !ignoreValidationOption.equals("no"))
             {
                 ignoreValidation = true;
                 validationContext.setValidationStage(DialogValidationContext.VALSTAGE_IGNORE);
@@ -598,29 +596,29 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         }
 
         boolean autoExec = dialog.isAutoExecByDefault();
-        if (!autoExec && !dialog.getDialogFlags().flagIsSet(DialogFlags.DISABLE_AUTO_EXECUTE))
+        if(!autoExec && !dialog.getDialogFlags().flagIsSet(DialogFlags.DISABLE_AUTO_EXECUTE))
         {
             String autoExecOption = request.getParameter(Dialog.PARAMNAME_AUTOEXECUTE);
-            if (autoExecOption == null || autoExecOption.length() == 0)
+            if(autoExecOption == null || autoExecOption.length() == 0)
             // if no autoexec is defined in the request parameter, look for it also in the request attribute
                 autoExecOption = (String) request.getAttribute(Dialog.PARAMNAME_AUTOEXECUTE);
 
-            if (dialog.isAutoExec(this, autoExecOption))
+            if(dialog.isAutoExec(this, autoExecOption))
                 autoExec = true;
         }
         boolean executeButtonPressed =
                 (request.getParameter(dialog.getSubmitDataParamName()) != null) ||
                 (request.getParameter(dialog.getCancelDataParamName()) != null && dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_EXECUTE_WITH_CANCEL_BUTTON));
-        if (autoExec || executeButtonPressed || ignoreValidation)
+        if(autoExec || executeButtonPressed || ignoreValidation)
         {
-            if (!dialogFlags.flagIsSet(DialogFlags.ALLOW_MULTIPLE_EXECUTES) && state.isAlreadyExecuted())
+            if(!dialogFlags.flagIsSet(DialogFlags.ALLOW_MULTIPLE_EXECUTES) && state.isAlreadyExecuted())
             {
                 getValidationContext().addError(dialog.getMultipleExecErrorMessage().getTextValue(this));
                 state.reset(this);
                 return;
             }
 
-            if (dialog.isValid(this))
+            if(dialog.isValid(this))
             {
                 state.setExecuteMode();
                 autoExecuted = autoExec;
@@ -737,15 +735,15 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
      */
     public void addRetainRequestParams(String[] params)
     {
-        if (retainReqParams == null)
+        if(retainReqParams == null)
             retainReqParams = params;
         else
         {
             String[] oldReqParams = retainReqParams;
             retainReqParams = new String[oldReqParams.length + params.length];
-            for (int i = 0; i < oldReqParams.length; i++)
+            for(int i = 0; i < oldReqParams.length; i++)
                 retainReqParams[i] = oldReqParams[i];
-            for (int i = 0; i < params.length; i++)
+            for(int i = 0; i < params.length; i++)
                 retainReqParams[oldReqParams.length + i] = params[i];
         }
     }
@@ -761,27 +759,27 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         hiddens.append("<input type='hidden' name='" + dialog.getDialogStateIdentifierParamName() + "' value='" + state.getIdentifier() + "'>\n");
 
         String pageCmd = request.getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
-        if (pageCmd != null)
+        if(pageCmd != null)
             hiddens.append("<input type='hidden' name='" + AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME + "' value='" + pageCmd + "'>\n");
 
         // this hidden field should be filled in by the 'triggering' form field before submission of the form
         hiddens.append("<input type=\"hidden\" name=\"" + dialog.getDialogValidateTriggerFieldParamName() + "\" value=\"\"/>");
 
         String redirectUrlParamValue = (state.isInitialEntry()
-                ? request.getParameter(dialog.getPostExecuteRedirectUrlParamName())
-                : request.getParameter(DialogContext.DEFAULT_REDIRECT_PARAM_NAME));
-        if (redirectUrlParamValue != null)
+                                        ? request.getParameter(dialog.getPostExecuteRedirectUrlParamName())
+                                        : request.getParameter(DialogContext.DEFAULT_REDIRECT_PARAM_NAME));
+        if(redirectUrlParamValue != null)
             hiddens.append("<input type='hidden' name='" + dialog.getPostExecuteRedirectUrlParamName() + "' value='" + redirectUrlParamValue + "'>\n");
 
         Set retainedParams = null;
-        if (retainReqParams != null)
+        if(retainReqParams != null)
         {
             retainedParams = new HashSet();
-            for (int i = 0; i < retainReqParams.length; i++)
+            for(int i = 0; i < retainReqParams.length; i++)
             {
                 String paramName = retainReqParams[i];
                 Object paramValue = request.getParameter(paramName);
-                if (paramValue == null)
+                if(paramValue == null)
                     continue;
 
                 hiddens.append("<input type='hidden' name='");
@@ -794,16 +792,16 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         }
         boolean retainedAnyParams = retainedParams != null;
 
-        if (dialog.retainRequestParams())
+        if(dialog.retainRequestParams())
         {
-            if (dialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS))
+            if(dialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS))
             {
-                for (Enumeration e = request.getParameterNames(); e.hasMoreElements();)
+                for(Enumeration e = request.getParameterNames(); e.hasMoreElements();)
                 {
                     String paramName = (String) e.nextElement();
-                    if (paramName.startsWith(Dialog.PARAMNAME_DIALOGPREFIX) ||
-                            paramName.startsWith(Dialog.PARAMNAME_CONTROLPREFIX) ||
-                            (retainedAnyParams && retainedParams.contains(paramName)))
+                    if(paramName.startsWith(Dialog.PARAMNAME_DIALOGPREFIX) ||
+                       paramName.startsWith(Dialog.PARAMNAME_CONTROLPREFIX) ||
+                       (retainedAnyParams && retainedParams.contains(paramName)))
                         continue;
 
                     hiddens.append("<input type='hidden' name='");
@@ -818,10 +816,10 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                 String[] retainParams = dialog.getRetainParams();
                 int retainParamsCount = retainParams.length;
 
-                for (int i = 0; i < retainParamsCount; i++)
+                for(int i = 0; i < retainParamsCount; i++)
                 {
                     String paramName = retainParams[i];
-                    if (retainedAnyParams && retainedParams.contains(paramName))
+                    if(retainedAnyParams && retainedParams.contains(paramName))
                         continue;
 
                     hiddens.append("<input type='hidden' name='");

@@ -121,7 +121,7 @@ public class ReverseEngineerSchemaAction
      */
     public String getDataSourceName()
     {
-        if (dataSourceName != null && dataSourceName.trim().length() == 0)
+        if(dataSourceName != null && dataSourceName.trim().length() == 0)
             return null;
 
         return dataSourceName;
@@ -166,7 +166,7 @@ public class ReverseEngineerSchemaAction
             connectionContext.getDatabasePolicy().reverseEngineer(destination, connectionContext.getConnection(), catalogName, schemaPattern);
             writer.write(destination + " created.");
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error(e);
             throw new NestableRuntimeException(e);

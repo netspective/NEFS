@@ -74,17 +74,17 @@ public class CommandListItem
      */
     public ValueSource getCaption()
     {
-        if (this.caption == null)
+        if(this.caption == null)
         {
             String caption = null;
-            if (command instanceof DialogCommand)
+            if(command instanceof DialogCommand)
                 caption = ((DialogCommand) command).getDialogName();
-            else if (command instanceof QueryCommand)
+            else if(command instanceof QueryCommand)
                 caption = ((QueryCommand) command).getQueryName();
-            else if (command instanceof QueryDefnCommand)
+            else if(command instanceof QueryDefnCommand)
                 caption = ((QueryDefnCommand) command).getQueryDefnName();
 
-            if (caption != null)
+            if(caption != null)
                 this.caption = ValueSources.getInstance().createValueSourceOrStatic("caption");
         }
 
@@ -105,8 +105,6 @@ public class CommandListItem
 
     /**
      * Gets the more detailed information (compared to the caption) about the command item
-     *
-     * @return
      */
     public ValueSource getDescription()
     {
@@ -115,8 +113,6 @@ public class CommandListItem
 
     /**
      * Sets the detailed description to display with the command caption
-     *
-     * @param itemDescription
      */
     public void setDescription(ValueSource itemDescription)
     {
@@ -125,8 +121,6 @@ public class CommandListItem
 
     /**
      * Gets the command
-     *
-     * @return
      */
     public Command getCommand()
     {
@@ -135,8 +129,6 @@ public class CommandListItem
 
     /**
      * Sets the command
-     *
-     * @param command
      */
     public void setCommand(Command command)
     {
@@ -145,8 +137,6 @@ public class CommandListItem
 
     /**
      * Gets the index (position) of this item in the list
-     *
-     * @return
      */
     public int getIndex()
     {
@@ -155,8 +145,6 @@ public class CommandListItem
 
     /**
      * Sets the index (position) of this item in the list
-     *
-     * @param index
      */
     public void setIndex(int index)
     {

@@ -84,7 +84,7 @@ public class QueryParametersPanel extends QueryDetailPanel
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(nc);
-        if (selectedQuery.getDataSource() != null)
+        if(selectedQuery.getDataSource() != null)
             return selectedQuery.getDataSource();
         else
             return new SqlParamsDataSource(selectedQuery);
@@ -105,7 +105,7 @@ public class QueryParametersPanel extends QueryDetailPanel
         {
             super();
             params = selectedQuery.getQuery().getParams();
-            if (params != null)
+            if(params != null)
                 lastRow = params.size() - 1;
             else
                 lastRow = -1;
@@ -138,7 +138,7 @@ public class QueryParametersPanel extends QueryDetailPanel
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -149,7 +149,7 @@ public class QueryParametersPanel extends QueryDetailPanel
         {
             QueryParameter param = params.get(activeRow);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return new Integer(activeRow + 1);
@@ -165,14 +165,14 @@ public class QueryParametersPanel extends QueryDetailPanel
 
                 case 4:
                     ValueSource vs = param.getValue();
-                    if (vs != null)
+                    if(vs != null)
                         return vs.getSpecification();
                     else
                         return null;
 
                 case 5:
                     vs = param.getValue();
-                    if (vs != null)
+                    if(vs != null)
                         return reportValueContext.getSkin().constructClassRef(vs.getClass());
                     else
                         return null;

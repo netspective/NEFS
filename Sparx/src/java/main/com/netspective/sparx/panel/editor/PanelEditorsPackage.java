@@ -84,8 +84,6 @@ public class PanelEditorsPackage
     /**
      * Sets the name space (package) id. This name will also be used to assign name space IDs to the
      * associated dialogs and queries namespaces.
-     *
-     * @param identifier
      */
     public void setNameSpaceId(String identifier)
     {

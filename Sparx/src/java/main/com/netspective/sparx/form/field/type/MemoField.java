@@ -104,7 +104,7 @@ public class MemoField extends TextField
 
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-        if (isInputHidden(dc))
+        if(isInputHidden(dc))
         {
             writer.write(getHiddenControlHtml(dc));
             return;
@@ -114,7 +114,7 @@ public class MemoField extends TextField
         String value = state.getValue().getTextValue();
         String id = getHtmlFormControlId();
 
-        if (isReadOnly(dc))
+        if(isReadOnly(dc))
         {
             String valueStr = value != null ? TextUtils.getInstance().escapeHTML(value) : "";
             writer.write("<input type='hidden' name='" + id + "' value=\"" + valueStr + "\">" + valueStr);
@@ -122,10 +122,11 @@ public class MemoField extends TextField
         else
         {
             writer.write("<textarea maxlength=\"" + getMaxLength() + "\" id=\"" + id + "\" name=\"" + id + "\" rows=\"" + rows + "\" cols=\"" + cols + "\" wrap=\"" +
-                    wordWrap.getValue() + "\"" + (isRequired(dc)
-                    ? " class=\"" + dc.getSkin().getControlAreaRequiredStyleClass() + "\" " : " ") +
-                    dc.getSkin().getDefaultControlAttrs() +
-                    ">" + (value != null ? TextUtils.getInstance().escapeHTML(value) : "") + "</textarea>");
+                         wordWrap.getValue() + "\"" + (isRequired(dc)
+                                                       ? " class=\"" + dc.getSkin().getControlAreaRequiredStyleClass() + "\" "
+                                                       : " ") +
+                         dc.getSkin().getDefaultControlAttrs() +
+                         ">" + (value != null ? TextUtils.getInstance().escapeHTML(value) : "") + "</textarea>");
         }
     }
 

@@ -136,9 +136,9 @@ public class NavigationPath
     public String getAbsPathRelativeToThisPath(String relativePath)
     {
         StringBuffer result = new StringBuffer(getQualifiedName());
-        if (!(result.charAt(result.length() - 1) == '/'))
+        if(!(result.charAt(result.length() - 1) == '/'))
             result.append('/');
-        if (relativePath.startsWith("/"))
+        if(relativePath.startsWith("/"))
             result.append(relativePath.substring(1));
         else
             result.append(relativePath);
@@ -148,7 +148,7 @@ public class NavigationPath
     public int size()
     {
         int result = 1; // start with self
-        for (int i = 0; i < childrenList.size(); i++)
+        for(int i = 0; i < childrenList.size(); i++)
             result += ((NavigationPath) childrenList.get(i)).size();
 
         return result;
@@ -161,18 +161,18 @@ public class NavigationPath
 
     public void addListener(NavigationPathListener listener)
     {
-        if (listener instanceof NavigationPathFinalizeContentsListener)
+        if(listener instanceof NavigationPathFinalizeContentsListener)
             finalizeContentsListeners.add(listener);
-        else if (listener instanceof NavigationPathMakeStateChangesListener)
+        else if(listener instanceof NavigationPathMakeStateChangesListener)
             makeStateChangesListeners.add(listener);
     }
 
     public void finalizeContents()
     {
-        for (int i = 0; i < childrenList.size(); i++)
+        for(int i = 0; i < childrenList.size(); i++)
             ((NavigationPath) childrenList.get(i)).finalizeContents();
 
-        for (int i = 0; i < finalizeContentsListeners.size(); i++)
+        for(int i = 0; i < finalizeContentsListeners.size(); i++)
             ((NavigationPathFinalizeContentsListener) finalizeContentsListeners.get(i)).finalizeNavigationPathContents(this);
 
         final String logName = getClass().getName() + "." + (getOwner().getName() + getQualifiedName()).replace('/', '.');
@@ -183,41 +183,41 @@ public class NavigationPath
     public void makeStateChanges(NavigationContext nc)
     {
         //The make state changes should affect the current navPath, its sibilings, its ancestors and the ancestor's sibilings and its children
-        if (getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+        if(getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
             applyConditionals(conditionalActions.getActions(), nc);
 
         List sibilings = this.getSibilingList();
-        for (int i = 0; sibilings != null && i < sibilings.size(); i++)
+        for(int i = 0; sibilings != null && i < sibilings.size(); i++)
         {
             NavigationPath sibiling = (NavigationPath) sibilings.get(i);
-            if (sibiling.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+            if(sibiling.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
                 applyConditionals(sibiling.getConditionals().getActions(), nc);
         }
 
         List ancestors = this.getAncestorsList();
-        for (int i = 0; ancestors != null && i < ancestors.size(); i++)
+        for(int i = 0; ancestors != null && i < ancestors.size(); i++)
         {
             NavigationPath ancestor = (NavigationPath) ancestors.get(i);
-            if (ancestor.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+            if(ancestor.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
                 applyConditionals(ancestor.getConditionals().getActions(), nc);
             List ancestorSibilings = ancestor.getSibilingList();
-            for (int j = 0; ancestorSibilings != null && j < ancestorSibilings.size(); j++)
+            for(int j = 0; ancestorSibilings != null && j < ancestorSibilings.size(); j++)
             {
                 NavigationPath ancestorSibiling = (NavigationPath) ancestorSibilings.get(j);
-                if (ancestorSibiling.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+                if(ancestorSibiling.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
                     applyConditionals(ancestorSibiling.getConditionals().getActions(), nc);
             }
         }
 
         List children = this.getChildrenList();
-        for (int i = 0; children != null && i < children.size(); i++)
+        for(int i = 0; children != null && i < children.size(); i++)
         {
             NavigationPath child = (NavigationPath) children.get(i);
-            if (child.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+            if(child.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
                 applyConditionals(child.getConditionals().getActions(), nc);
         }
 
-        for (int i = 0; i < makeStateChangesListeners.size(); i++)
+        for(int i = 0; i < makeStateChangesListeners.size(); i++)
             ((NavigationPathMakeStateChangesListener) makeStateChangesListeners.get(i)).makeNavigationPathStateChanges(this, nc);
     }
 
@@ -228,13 +228,13 @@ public class NavigationPath
 
     public String getQualifiedName()
     {
-        if (null == qualifiedName)
+        if(null == qualifiedName)
         {
             StringBuffer sb = new StringBuffer();
-            if (parent != null)
+            if(parent != null)
                 sb.append(parent.getQualifiedName());
 
-            if (sb.length() == 0 || sb.charAt(sb.length() - 1) != '/')
+            if(sb.length() == 0 || sb.charAt(sb.length() - 1) != '/')
                 sb.append(PATH_SEPARATOR);
 
             sb.append(getName());
@@ -282,11 +282,11 @@ public class NavigationPath
 
     public void setParent(NavigationPath value)
     {
-        if (value != this)
+        if(value != this)
         {
             parent = value;
             setLevel(parent.getLevel() + 1);
-            if (defaultChildOfParent)
+            if(defaultChildOfParent)
                 parent.setDefaultChild(this);
             generateAncestorList();
         }
@@ -303,7 +303,7 @@ public class NavigationPath
     {
         this.level = level;
         setMaxChildLevel(level);
-        for (NavigationPath activeParent = getParent(); activeParent != null;)
+        for(NavigationPath activeParent = getParent(); activeParent != null;)
         {
             activeParent.setMaxChildLevel(level);
             activeParent = activeParent.getParent();
@@ -317,7 +317,7 @@ public class NavigationPath
 
     public void setMaxChildLevel(int maxChildLevel)
     {
-        if (maxChildLevel > this.maxChildLevel)
+        if(maxChildLevel > this.maxChildLevel)
             this.maxChildLevel = maxChildLevel;
         owner.setMaxLevel(level);
     }
@@ -345,7 +345,7 @@ public class NavigationPath
 
     public NavigationConditionalAction createConditional(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (NavigationConditionalAction.class.isAssignableFrom(cls))
+        if(NavigationConditionalAction.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[]{NavigationPath.class});
             return (NavigationConditionalAction) c.newInstance(new Object[]{this});
@@ -356,9 +356,9 @@ public class NavigationPath
 
     public void applyConditionals(List conditionals, NavigationContext nc)
     {
-        if (conditionals != null)
+        if(conditionals != null)
         {
-            for (int i = 0; i < conditionals.size(); i++)
+            for(int i = 0; i < conditionals.size(); i++)
             {
                 NavigationConditionalAction action = (NavigationConditionalAction) conditionals.get(i);
                 action.execute(nc);
@@ -384,10 +384,10 @@ public class NavigationPath
     public void setFlagRecursively(long flag)
     {
         //flags.setFlag(flag);
-        if (childrenList.size() > 0)
+        if(childrenList.size() > 0)
         {
             Iterator i = childrenList.iterator();
-            while (i.hasNext())
+            while(i.hasNext())
                 ((NavigationPath) i.next()).getFlags().setFlag(flag);
         }
     }
@@ -395,10 +395,10 @@ public class NavigationPath
     public void clearFlagRecursively(long flag)
     {
         //flags.clearFlag(flag);
-        if (childrenList.size() > 0)
+        if(childrenList.size() > 0)
         {
             Iterator i = childrenList.iterator();
-            while (i.hasNext())
+            while(i.hasNext())
                 ((NavigationPath) i.next()).getFlags().clearFlag(flag);
         }
     }
@@ -411,7 +411,7 @@ public class NavigationPath
      */
     public Map getSibilingMap()
     {
-        if (parent != null)
+        if(parent != null)
             return parent.getChildrenMap();
 
         return null;
@@ -425,7 +425,7 @@ public class NavigationPath
      */
     public List getSibilingList()
     {
-        if (parent != null)
+        if(parent != null)
             return parent.getChildrenList();
 
         return null;
@@ -434,7 +434,7 @@ public class NavigationPath
     public void registerChild(NavigationPath path)
     {
         descendantsByQualifiedName.put(path.getQualifiedName(), path);
-        if (parent != null)
+        if(parent != null)
             parent.registerChild(path);
         owner.register(path);
     }
@@ -442,7 +442,7 @@ public class NavigationPath
     public void unregisterChild(NavigationPath path)
     {
         descendantsByQualifiedName.remove(path.getQualifiedName());
-        if (parent != null)
+        if(parent != null)
             parent.unregisterChild(path);
         owner.unregister(path);
     }
@@ -464,18 +464,16 @@ public class NavigationPath
 
     public void removeAllChildren()
     {
-        if (childrenList.size() == 0)
+        if(childrenList.size() == 0)
             return;
 
         NavigationPath[] children = (NavigationPath[]) childrenList.toArray(new NavigationPath[childrenList.size()]);
-        for (int i = 0; i < children.length; i++)
+        for(int i = 0; i < children.length; i++)
             removeChild(children[i]);
     }
 
     /**
      * Get a child by its ID
-     *
-     * @param id
      *
      * @return NavigationPath
      */
@@ -512,7 +510,7 @@ public class NavigationPath
     public void setDefault(boolean defaultChildOfParent)
     {
         this.defaultChildOfParent = defaultChildOfParent;
-        if (defaultChildOfParent && getParent() != null)
+        if(defaultChildOfParent && getParent() != null)
             getParent().setDefaultChild(this);
     }
 
@@ -544,11 +542,11 @@ public class NavigationPath
     protected void generateAncestorList()
     {
         NavigationPath activePath = this.getParent();
-        if (getParent() != null)
+        if(getParent() != null)
         {
             List ancestorListReversed = new ArrayList();
             Map ancestorMap = new HashMap();
-            while (activePath != null)
+            while(activePath != null)
             {
                 ancestorMap.put(activePath.getQualifiedName(), activePath);
                 ancestorListReversed.add(activePath);
@@ -557,7 +555,7 @@ public class NavigationPath
             setAncestorMap(ancestorMap);
 
             List ancestorList = new ArrayList();
-            for (int i = ancestorListReversed.size() - 1; i >= 0; i--)
+            for(int i = ancestorListReversed.size() - 1; i >= 0; i--)
             {
                 NavigationPath NavigationPath = (NavigationPath) ancestorListReversed.get(i);
                 ancestorList.add(NavigationPath);
@@ -570,15 +568,15 @@ public class NavigationPath
     {
         StringBuffer html = new StringBuffer();
         int atLevel = getLevel();
-        for (int i = 0; i < atLevel; i++)
+        for(int i = 0; i < atLevel; i++)
             html.append("  ");
 
         html.append(getQualifiedName() + ": level " + getLevel() + " (max " + getMaxChildLevel() + "), class: " + getClass().getName() + "\n");
 
-        if (childrenList != null && childrenList.size() > 0)
+        if(childrenList != null && childrenList.size() > 0)
         {
             Iterator i = childrenList.iterator();
-            while (i.hasNext())
+            while(i.hasNext())
             {
                 NavigationPath path = (NavigationPath) i.next();
                 html.append(path.toString());

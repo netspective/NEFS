@@ -75,7 +75,7 @@ public class HttpSessionBindableAutoCommitConnectionContext extends AutoCommitCo
 
     public void valueUnbound(HttpSessionBindingEvent event)
     {
-        if (!isCloseOnSessionUnbind())
+        if(!isCloseOnSessionUnbind())
             return;
 
         log.debug("Closing connection context " + this + " in session unbind event.");
@@ -83,7 +83,7 @@ public class HttpSessionBindableAutoCommitConnectionContext extends AutoCommitCo
         {
             close();
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             log.error("Unable to close connection in session unbinding event.");
         }

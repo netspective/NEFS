@@ -63,16 +63,14 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the has-permissions attribute values
-     *
-     * @param permissionsStr
      */
     public void setHasPermissions(String permissionsStr)
     {
-        if (permissionsStr != null && permissionsStr.length() > 0)
+        if(permissionsStr != null && permissionsStr.length() > 0)
         {
             List permsList = new ArrayList();
             StringTokenizer st = new StringTokenizer(permissionsStr, ",");
-            while (st.hasMoreTokens())
+            while(st.hasMoreTokens())
                 permsList.add(st.nextToken());
             hasPermissions = (String[]) permsList.toArray(new String[permsList.size()]);
         }
@@ -100,16 +98,14 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the lack-permissions attribute value
-     *
-     * @param lackPermissionsStr
      */
     public void setLackPermissions(String lackPermissionsStr)
     {
-        if (lackPermissionsStr != null && lackPermissionsStr.length() > 0)
+        if(lackPermissionsStr != null && lackPermissionsStr.length() > 0)
         {
             List permsList = new ArrayList();
             StringTokenizer st = new StringTokenizer(lackPermissionsStr, ",");
-            while (st.hasMoreTokens())
+            while(st.hasMoreTokens())
                 permsList.add(st.nextToken());
             lackPermissions = (String[]) permsList.toArray(new String[permsList.size()]);
         }
@@ -127,8 +123,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the has-value attribute value
-     *
-     * @param value
      */
     public void setHasValue(ValueSource value)
     {
@@ -137,8 +131,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the has-value attribute value
-     *
-     * @return
      */
     public ValueSource getHasValue()
     {
@@ -147,8 +139,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the lack-value attribute value
-     *
-     * @return
      */
     public ValueSource getLackValue()
     {
@@ -157,8 +147,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the lack-value attribute
-     *
-     * @param lackValue
      */
     public void setLackValue(ValueSource lackValue)
     {
@@ -167,8 +155,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the is-true attribute value
-     *
-     * @return
      */
     public ValueSource getIsTrue()
     {
@@ -177,8 +163,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the is-true attribute value
-     *
-     * @param aTrue
      */
     public void setIsTrue(ValueSource aTrue)
     {
@@ -187,8 +171,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the data command to check for
-     *
-     * @return
      */
     public String getDataCommand()
     {
@@ -197,8 +179,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the data command to check for
-     *
-     * @param dataCmd
      */
     public void setDataCommand(String dataCmd)
     {
@@ -219,34 +199,34 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
         boolean lackPermissionFlg = false;
 
         // handle any configured permissions
-        if (status && (this.hasPermissions != null || this.lackPermissions != null))
+        if(status && (this.hasPermissions != null || this.lackPermissions != null))
         {
             AuthenticatedUser authUser = nc.getAuthenticatedUser();
-            if (authUser != null)
+            if(authUser != null)
             {
                 try
                 {
-                    if (this.hasPermissions != null && this.lackPermissions != null)
+                    if(this.hasPermissions != null && this.lackPermissions != null)
                     {
                         // if both has-permissions and lack-permissions are set then both conditions need to be satisfied
                         // for the flag to be applied
                         hasPermissionFlg = authUser.hasAnyPermission(nc.getProject(), this.hasPermissions);
                         lackPermissionFlg = authUser.hasAnyPermission(nc.getProject(), this.lackPermissions);
-                        if (hasPermissionFlg && !lackPermissionFlg)
+                        if(hasPermissionFlg && !lackPermissionFlg)
                             status = true;
                         else
                             status = false;
                     }
-                    else if (this.lackPermissions != null)
+                    else if(this.lackPermissions != null)
                     {
                         status = !authUser.hasAnyPermission(nc.getProject(), this.lackPermissions);
                     }
-                    else if (this.hasPermissions != null)
+                    else if(this.hasPermissions != null)
                     {
                         status = authUser.hasAnyPermission(nc.getProject(), this.hasPermissions);
                     }
                 }
-                catch (PermissionNotFoundException e)
+                catch(PermissionNotFoundException e)
                 {
                     log.error("Permission error", e);
                 }
@@ -255,26 +235,26 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
                 status = false;
         }
         // handle any configured  'value' checks
-        if (status && isTrue != ValueSource.NULL_VALUE_SOURCE)
+        if(status && isTrue != ValueSource.NULL_VALUE_SOURCE)
         {
             // handle the is-true boolean check
             Object value = isTrue.getValue(nc).getValue();
-            if (value instanceof Boolean)
+            if(value instanceof Boolean)
                 status = ((Boolean) value).booleanValue();
             else
                 status = value != null;
         }
-        if (status && hasValue != ValueSource.NULL_VALUE_SOURCE)
+        if(status && hasValue != ValueSource.NULL_VALUE_SOURCE)
         {
             String textVal = hasValue.getValue(nc).getTextValue();
             status = textVal != null && textVal.length() > 0;
         }
-        if (status && lackValue != ValueSource.NULL_VALUE_SOURCE)
+        if(status && lackValue != ValueSource.NULL_VALUE_SOURCE)
         {
             String textVal = lackValue.getValue(nc).getTextValue();
             status = textVal == null || textVal.length() == 0;
         }
-        if (status)
+        if(status)
         {
             //TODO: check to see if our flags should overwrite the other flags or only update them
             nc.getState(this.getPath()).getFlags().setFlag(flags.getFlags());

@@ -46,25 +46,25 @@ public class ClassSourceMethod extends ClassReferenceMethod
 {
     public Object exec(List args) throws TemplateModelException
     {
-        if (args.size() != 1)
+        if(args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expect name of class.");
 
         Class cls = null;
 
         String fullyQualifiedClassName = (String) args.get(0);
-        for (int i = 0; i < PRIMITIVES.length; i += 2)
+        for(int i = 0; i < PRIMITIVES.length; i += 2)
         {
-            if (PRIMITIVES[i].equals(fullyQualifiedClassName))
+            if(PRIMITIVES[i].equals(fullyQualifiedClassName))
                 cls = (Class) PRIMITIVES[i + 1];
         }
 
-        if (cls == null)
+        if(cls == null)
         {
             try
             {
                 cls = Class.forName(fullyQualifiedClassName);
             }
-            catch (ClassNotFoundException e)
+            catch(ClassNotFoundException e)
             {
                 throw new TemplateModelException("Provided class '" + fullyQualifiedClassName + "' not found", e);
             }
@@ -72,15 +72,15 @@ public class ClassSourceMethod extends ClassReferenceMethod
 
         String sourceName = cls.getName().replace('.', '/') + ".java";
         URL url = ResourceLoader.getResource(sourceName);
-        if (url != null && url.getFile() != null)
+        if(url != null && url.getFile() != null)
         {
             File file = new File(url.getFile());
-            if (file.exists())
+            if(file.exists())
                 return BeansWrapper.getDefaultInstance().wrap(file);
             else
                 return new SimpleScalar("");
         }
-        else if (url != null)
+        else if(url != null)
             return new SimpleScalar(url.toString());
         else
             return new SimpleScalar("");

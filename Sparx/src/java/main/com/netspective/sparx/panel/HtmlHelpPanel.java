@@ -110,7 +110,7 @@ public class HtmlHelpPanel extends TemplateContentPanel
     public String getPopupHtml(DialogContext dc, Theme theme)
     {
         String imageUrl = getPopupImageSrc().getTextValue(dc);
-        if (imageUrl == null)
+        if(imageUrl == null)
             imageUrl = theme.getResourceUrl("/images/item-help.gif");
 
         return "<a href='#' style='cursor:hand;' onclick=\"javascript:showHelp('" + popupHelpUrl.getTextValue(dc) + "/dialog/" + dc.getDialog().getQualifiedName() + "/" + field.getQualifiedName() + "', '" + popupWindowName.getTextValue(dc) + "', '" + popupWindowFeatures.getTextValue(dc) + "');return false;\"><img border='0' src='" + imageUrl + "' alt='Help'></a>&nbsp;";
@@ -119,7 +119,7 @@ public class HtmlHelpPanel extends TemplateContentPanel
     public String getInlineHtml(DialogContext dc, Theme theme)
     {
         String imageUrl = getPopupImageSrc().getTextValue(dc);
-        if (imageUrl == null)
+        if(imageUrl == null)
             imageUrl = theme.getResourceUrl("/images/item-help.gif");
 
         StringWriter sw = new StringWriter();
@@ -129,7 +129,7 @@ public class HtmlHelpPanel extends TemplateContentPanel
             render(sw, dc, theme, 0);
             html = sw.toString();
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             html = e.toString();
         }

@@ -117,9 +117,9 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
     public void finalizeContents()
     {
-        if (root != null)
+        if(root != null)
         {
-            if (popupPage == null)
+            if(popupPage == null)
             {
                 try
                 {
@@ -130,7 +130,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
                     popupPage.setName("popup");
                     root.addPage(popupPage);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     log.warn("Failed to create default popup page", e);
                 }
@@ -172,7 +172,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
     public TemplateProducers getTemplateProducers()
     {
-        if (templateProducers == null)
+        if(templateProducers == null)
         {
             templateProducers = new TemplateProducers();
             pageTypes = new TemplateProducer(getPageTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_PAGE_TYPE, "name", "type", false, false);
@@ -189,7 +189,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public void register(NavigationPath path)
     {
         pagesByQualifiedName.put(path.getQualifiedName(), path);
-        if (path instanceof ActivityObserver)
+        if(path instanceof ActivityObserver)
             getProject().addActivityObserver((ActivityObserver) path);
     }
 
@@ -256,7 +256,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public void addPage(NavigationPage page)
     {
         root.addPage(page);
-        if (page.isDefault())
+        if(page.isDefault())
         {
             pagesByQualifiedName.put("/", page);
             homePage = page;
@@ -276,7 +276,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public void addErrorPage(NavigationErrorPage page)
     {
         root.addErrorPage(page);
-        if (page.isDefault())
+        if(page.isDefault())
             defaultErrorPage = page;
     }
 
@@ -340,8 +340,6 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     /**
      * Gets the next action provider for all dialogs in this navigation tree. The next action represents the action
      * to be performed after dialog execution.
-     *
-     * @return
      */
     public DialogNextActionProvider getDialogNextActionProvider()
     {
@@ -350,8 +348,6 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
     /**
      * Sets the next action provider for all dialogs executed by this navigation tree
-     *
-     * @param nextActionProvider
      */
     public void addDialogNextActionProvider(DialogNextActionProvider nextActionProvider)
     {
@@ -376,7 +372,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
          */
         public FindResults(String path)
         {
-            if (path == null || path.length() == 0)
+            if(path == null || path.length() == 0)
                 path = "/";
 
             searchForPath = path;
@@ -384,19 +380,19 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
 
             matchedPath = (NavigationPath) pagesByQualifiedName.get(path);
 
-            if (matchedPath != null)
+            if(matchedPath != null)
                 return;
 
             List unmatchedItemsList = new ArrayList();
             String partialPath = path;
             boolean finished = false;
-            while (matchedPath == null && !finished)
+            while(matchedPath == null && !finished)
             {
                 int partialItemIndex = partialPath.lastIndexOf(NavigationPath.PATH_SEPARATOR);
-                if (partialItemIndex == -1)
+                if(partialItemIndex == -1)
                 {
                     matchedPath = (NavigationPath) pagesByQualifiedName.get(partialPath);
-                    if (matchedPath == null)
+                    if(matchedPath == null)
                         unmatchedItemsList.add(0, partialPath);
                     finished = true;
                 }
@@ -466,11 +462,11 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
          */
         public String getUnmatchedPath(int startItem)
         {
-            if (unmatchedItems == null || unmatchedItems.length == 0)
+            if(unmatchedItems == null || unmatchedItems.length == 0)
                 return null;
 
             StringBuffer result = new StringBuffer();
-            for (int i = startItem; i < unmatchedItems.length; i++)
+            for(int i = startItem; i < unmatchedItems.length; i++)
             {
                 result.append(NavigationPath.PATH_SEPARATOR);
                 result.append(unmatchedItems[i]);

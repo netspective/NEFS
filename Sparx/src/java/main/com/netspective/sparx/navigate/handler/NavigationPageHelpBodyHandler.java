@@ -52,23 +52,23 @@ public class NavigationPageHelpBodyHandler extends NavigationPageBodyDefaultHand
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         String[] unmatchedPathItems = nc.getActivePathFindResults().getUnmatchedPathItems();
-        if (unmatchedPathItems == null || unmatchedPathItems.length == 0)
+        if(unmatchedPathItems == null || unmatchedPathItems.length == 0)
         {
             writer.write("No unmatched path items.");
             return;
         }
 
-        if (unmatchedPathItems[0].equals("dialog"))
+        if(unmatchedPathItems[0].equals("dialog"))
         {
             String dialogName = unmatchedPathItems[1];
             Dialog dialog = nc.getProject().getDialog(dialogName);
-            if (dialog != null)
+            if(dialog != null)
             {
-                if (unmatchedPathItems.length > 2)
+                if(unmatchedPathItems.length > 2)
                 {
                     String fieldName = unmatchedPathItems[2];
                     DialogField field = dialog.getFields().getByQualifiedName(fieldName);
-                    if (field != null && field.isHelpAvailable())
+                    if(field != null && field.isHelpAvailable())
                         field.getHelpPanel().render(writer, nc, nc.getActiveTheme(), 0);
                     else
                         writer.write("Dialog '" + dialogName + "' does not have a field called '" + fieldName + "'. No help available.");

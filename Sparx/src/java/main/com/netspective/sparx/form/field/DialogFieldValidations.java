@@ -53,17 +53,17 @@ public class DialogFieldValidations extends ValidationRulesCollection
 
     public void updateCaptions()
     {
-        for (int i = 0; i < size(); i++)
+        for(int i = 0; i < size(); i++)
         {
             ValidationRule rule = get(i);
-            if (rule.getCaption() == null)
+            if(rule.getCaption() == null)
                 rule.setCaption(field.getErrorCaption());
         }
     }
 
     public void addRule(ValidationRule rule)
     {
-        if (rule.getCaption() == null && field.getErrorCaption() != ValueSource.NULL_VALUE_SOURCE)
+        if(rule.getCaption() == null && field.getErrorCaption() != ValueSource.NULL_VALUE_SOURCE)
             rule.setCaption(field.getErrorCaption());
 
         super.addRule(rule);

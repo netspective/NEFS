@@ -76,8 +76,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
         /**
          * Gets the list of styles
-         *
-         * @return
          */
         public String[] getValues()
         {
@@ -117,13 +115,11 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Sets the style for the dialog director. Currently available styles are data, confirm, and acknowledge.
-     *
-     * @param style
      */
     public void setStyle(DialogDirectorStyle style)
     {
         this.style = style;
-        switch (this.style.getValueIndex())
+        switch(this.style.getValueIndex())
         {
             case DialogDirectorStyle.DATA:
                 setSubmitCaption(ValueSources.getInstance().getValueSourceOrStatic("  Save  "));
@@ -148,8 +144,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Sets the cancel action URl
-     *
-     * @param cancelActionUrl
      */
     public void setCancelActionUrl(ValueSource cancelActionUrl)
     {
@@ -163,8 +157,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Sets the cancel action caption
-     *
-     * @param cancelCaption
      */
     public void setCancelCaption(ValueSource cancelCaption)
     {
@@ -178,8 +170,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Sets the pending URL
-     *
-     * @param pendingActionUrl
      */
     public void setPendingActionUrl(ValueSource pendingActionUrl)
     {
@@ -193,8 +183,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Sets the caption for the submit button during pending stage
-     *
-     * @param pendingCaption
      */
     public void setPendingCaption(ValueSource pendingCaption)
     {
@@ -208,8 +196,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Sets the URL for the submit button
-     *
-     * @param submitActionUrl
      */
     public void setSubmitActionUrl(ValueSource submitActionUrl)
     {
@@ -223,8 +209,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Sets the caption for the submit button
-     *
-     * @param submitCaption
      */
     public void setSubmitCaption(ValueSource submitCaption)
     {
@@ -238,8 +222,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Sets the select field used for showing the next actions
-     *
-     * @param nextActionsField
      */
     public void setNextActionsField(DirectorNextActionsSelectField nextActionsField)
     {
@@ -253,10 +235,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Gets the next action URL based on the selected next action item
-     *
-     * @param dc
-     *
-     * @return
      */
     public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
     {
@@ -265,8 +243,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
     /**
      * Adds a next action item
-     *
-     * @param nextActionsField
      */
     public void addNextActions(DirectorNextActionsSelectField nextActionsField)
     {
@@ -277,7 +253,7 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
     public void makeStateChanges(DialogContext dc, int stage)
     {
         super.makeStateChanges(dc, stage);
-        if (nextActionsField != null)
+        if(nextActionsField != null)
             nextActionsField.makeStateChanges(dc, stage);
     }
 
@@ -286,8 +262,6 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
      *
      * @param writer the Writer object associated with the response buffer
      * @param dc     dialog context
-     *
-     * @throws IOException
      */
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
@@ -298,7 +272,7 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
         String cancelCaption = " Cancel ";
 
         int dataCmd = (int) dc.getDialogState().getPerspectives().getFlags();
-        switch (dataCmd)
+        switch(dataCmd)
         {
             case DialogPerspectives.ADD:
             case DialogPerspectives.EDIT:
@@ -320,19 +294,19 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
 
         writer.write("<center>");
 
-        if (nextActionsField != null && nextActionsField.isAvailable(dc))
+        if(nextActionsField != null && nextActionsField.isAvailable(dc))
         {
             String caption = nextActionsField.getCaption().getTextValue(dc);
-            if (caption != null && !nextActionsField.isInputHidden(dc))
+            if(caption != null && !nextActionsField.isInputHidden(dc))
                 writer.write(caption);
 
             nextActionsField.renderControlHtml(writer, dc);
 
-            if (caption != null && !nextActionsField.isInputHidden(dc))
+            if(caption != null && !nextActionsField.isInputHidden(dc))
                 writer.write("&nbsp;&nbsp;");
         }
 
-        if (showReset)
+        if(showReset)
             writer.write("<input type=\"reset\" name=\"reset\" class=\"dialog-button\" />&nbsp;&nbsp;");
 
         writer.write("<input type='submit' name='" + dialog.getSubmitDataParamName() + "' class=\"dialog-button\" value='");
@@ -341,7 +315,7 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
         writer.write(attrs);
         writer.write(">&nbsp;&nbsp;");
 
-        if (pendingCaption != null && pendingCaption.getTextValue(dc) != null && pendingCaption.getTextValue(dc).length() > 0)
+        if(pendingCaption != null && pendingCaption.getTextValue(dc) != null && pendingCaption.getTextValue(dc).length() > 0)
         {
             writer.write("<input type='submit' class=\"dialog-button\" name='" + dialog.getPendDataParamName() + "' value='");
             writer.write(pendingCaption.getTextValue(dc));
@@ -349,9 +323,9 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
             writer.write(attrs);
             writer.write(">&nbsp;&nbsp;");
         }
-        if (cancelCaption != null && cancelCaption.length() > 0)
+        if(cancelCaption != null && cancelCaption.length() > 0)
         {
-            if (dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_EXECUTE_WITH_CANCEL_BUTTON))
+            if(dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_EXECUTE_WITH_CANCEL_BUTTON))
             {
                 // treat the cancel button as a submit button
                 writer.write("<input type='submit' name='" + dialog.getCancelDataParamName() + "' class=\"dialog-button\" value='");
@@ -365,10 +339,10 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
                 writer.write("<input type='button' name='" + dialog.getCancelDataParamName() + "' class=\"dialog-button\" value='");
                 writer.write(cancelCaption);
                 writer.write("' ");
-                if (cancelActionUrl == null)
+                if(cancelActionUrl == null)
                 {
                     String referer = dc.getDialogState().getReferer();
-                    if (referer != null)
+                    if(referer != null)
                     {
                         writer.write("onclick=\"document.location = '");
                         writer.write(referer);
@@ -382,11 +356,11 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
                 else
                 {
                     String cancelStr = cancelActionUrl != null ? cancelActionUrl.getTextValue(dc) : null;
-                    if ("back".equals(cancelStr))
+                    if("back".equals(cancelStr))
                     {
                         writer.write("onclick=\"history.back()\" ");
                     }
-                    else if (cancelStr != null && cancelStr.startsWith("javascript:"))
+                    else if(cancelStr != null && cancelStr.startsWith("javascript:"))
                     {
                         writer.write("onclick=\"");
                         writer.write(cancelStr);

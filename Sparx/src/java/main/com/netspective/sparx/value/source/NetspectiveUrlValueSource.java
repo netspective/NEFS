@@ -51,10 +51,10 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"netspective-url"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Creates a URL specific to a particular Netspective site.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("site-id", true, "The site identifier (www, nefs-sample-apps-home, nefs-sample-apps-server, or docs, downloads).")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("site-id", true, "The site identifier (www, nefs-sample-apps-home, nefs-sample-apps-server, or docs, downloads).")
+                                                                                              });
 
     public static final int URITYPE_WWW = 0;
     public static final int URITYPE_NEFS_SAMPLE_APPS_HOME = 1;
@@ -92,15 +92,15 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
 
     public static int getNetspectiveUrlType(String typeId)
     {
-        if (typeId.equals("main"))
+        if(typeId.equals("main"))
             return URITYPE_WWW;
-        else if (typeId.equals("nefs-sample-apps-home"))
+        else if(typeId.equals("nefs-sample-apps-home"))
             return URITYPE_NEFS_SAMPLE_APPS_HOME;
-        else if (typeId.equals("nefs-sample-apps-server"))
+        else if(typeId.equals("nefs-sample-apps-server"))
             return URITYPE_NEFS_SAMPLE_APPS_SERVER;
-        else if (typeId.equals("docs"))
+        else if(typeId.equals("docs"))
             return URITYPE_DOCS;
-        else if (typeId.equals("downloads"))
+        else if(typeId.equals("downloads"))
             return URITYPE_DOWNLOADS;
         else
             return URITYPE_WWW;
@@ -110,7 +110,7 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
     {
         final HttpServletValueContext svc = (HttpServletValueContext)
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
-                vc);
+                 vc);
 
         final String wwwPublicContextUri = "http://www.netspective.com/corp";
         final String[] wwwContextNames = new String[]{"corp", "www.netspective.com"};
@@ -119,9 +119,9 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
         final File contextPath = new File(svc.getServlet().getServletConfig().getServletContext().getRealPath("/"));
 
         boolean isInWWW = false;
-        for (int i = 0; i < wwwContextNames.length; i++)
+        for(int i = 0; i < wwwContextNames.length; i++)
         {
-            if (contextPath.getAbsolutePath().endsWith(wwwContextNames[i]))
+            if(contextPath.getAbsolutePath().endsWith(wwwContextNames[i]))
             {
                 isInWWW = true;
                 break;
@@ -130,9 +130,9 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
 
         String wwwLocalContextUri = null;
         boolean wwwIsLocal = false;
-        for (int i = 0; i < wwwContextNames.length; i++)
+        for(int i = 0; i < wwwContextNames.length; i++)
         {
-            if (new File(contextPath.getParentFile(), wwwContextNames[i]).exists())
+            if(new File(contextPath.getParentFile(), wwwContextNames[i]).exists())
             {
                 wwwIsLocal = true;
                 wwwLocalContextUri = request.getContextPath() + "/../" + wwwContextNames[i];
@@ -141,9 +141,10 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
         }
 
         final String wwwContextUrl = isInWWW
-                ? request.getContextPath() : (wwwIsLocal ? wwwLocalContextUri : wwwPublicContextUri);
+                                     ? request.getContextPath()
+                                     : (wwwIsLocal ? wwwLocalContextUri : wwwPublicContextUri);
 
-        switch (type)
+        switch(type)
         {
             case URITYPE_WWW:
                 return wwwContextUrl;

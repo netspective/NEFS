@@ -11,7 +11,7 @@
                 <version>2.3</version>
                 <class-path>servlet.jar</class-path>
                 <source home-uri="http://java.sun.com"
-                        license="Sun Microsystems"/>
+                    license="Sun Microsystems"/>
             </library>
 
             <library>
@@ -19,8 +19,8 @@
                 <version>1.1.1</version>
                 <class-path>syntax.jar</class-path>
                 <source home-uri="http://ostermiller.org/syntax"
-                        license="GNU GPL"
-                        license-uri="http://ostermiller.org/syntax/license.html"/>
+                    license="GNU GPL"
+                    license-uri="http://ostermiller.org/syntax/license.html"/>
             </library>
 
             <library>
@@ -28,7 +28,7 @@
                 <version>2.3</version>
                 <class-path>freemarker.jar</class-path>
                 <source home-uri="http://www.freemarker.org"
-                        license="BSD, OSI Certified"/>
+                    license="BSD, OSI Certified"/>
             </library>
 
             <library>
@@ -36,7 +36,7 @@
                 <version>1.5.4</version>
                 <class-path>httpunit.jar</class-path>
                 <source home-uri="http://httpunit.sourceforge.net/"
-                        license="Open Source, Free, Custom License"/>
+                    license="Open Source, Free, Custom License"/>
             </library>
 
             <library>
@@ -44,7 +44,7 @@
                 <version>1.5R4+ (patched for HttpUnit)</version>
                 <class-path>js.jar</class-path>
                 <source home-uri="http://httpunit.sourceforge.net/"
-                        license="Mozilla Public License"/>
+                    license="Mozilla Public License"/>
             </library>
 
             <library>
@@ -52,7 +52,7 @@
                 <version>04aug2000r7</version>
                 <class-path>jtidy.jar</class-path>
                 <source home-uri="http://lempinen.net/sami/jtidy/"
-                        license="Open Source, Free, Custom License"/>
+                    license="Open Source, Free, Custom License"/>
             </library>
 
             <library>

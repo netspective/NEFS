@@ -71,7 +71,7 @@ public class NavigationTrees implements MetricsProducer
     {
         NavigationTree tree = (NavigationTree) trees.get(name);
 
-        if (tree == null && log.isDebugEnabled())
+        if(tree == null && log.isDebugEnabled())
         {
             log.debug("Unable to find NavigationTree '" + name + "'. Available: " + trees);
             return null;
@@ -87,7 +87,7 @@ public class NavigationTrees implements MetricsProducer
 
     public NavigationTree createNavigationTree(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (NavigationTree.class.isAssignableFrom(cls))
+        if(NavigationTree.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[]{Project.class});
             return (NavigationTree) c.newInstance(new Object[]{project});
@@ -98,7 +98,7 @@ public class NavigationTrees implements MetricsProducer
 
     public void addNavigationTree(NavigationTree tree)
     {
-        if (tree.isDefaultTree() || tree.getName() == null)
+        if(tree.isDefaultTree() || tree.getName() == null)
             defaultTree = tree;
 
         trees.put(tree.getName(), tree);
@@ -112,11 +112,11 @@ public class NavigationTrees implements MetricsProducer
      */
     public void setDefaultTree(String name)
     {
-        if (defaultTree != null)
+        if(defaultTree != null)
         {
-            if (defaultTree.getName() == null)
+            if(defaultTree.getName() == null)
                 throw new RuntimeException("Failed to change the default navigation tree because current default tree doesn" +
-                        "not have a name associated with it.");
+                                           "not have a name associated with it.");
             defaultTree.setDefault(false);
         }
         NavigationTree tree = getNavigationTree(name);
@@ -141,8 +141,6 @@ public class NavigationTrees implements MetricsProducer
 
     /**
      * Generates various metrics related to navigation trees
-     *
-     * @param parent
      */
     public void produceMetrics(Metric parent)
     {
@@ -154,11 +152,11 @@ public class NavigationTrees implements MetricsProducer
         CountMetric totalPagesMetric = treesMetric.addCountMetric("Total Pages");
         Iterator itr = trees.values().iterator();
 
-        while (itr.hasNext())
+        while(itr.hasNext())
         {
             NavigationTree navigationTree = (NavigationTree) itr.next();
             // exclude the CONSOLE navigation tree from the metrics
-            if (!navigationTree.getName().equals("console"))
+            if(!navigationTree.getName().equals("console"))
             {
                 avgPageMetric.incrementAverage(navigationTree.size());
                 totalPagesMetric.incrementCount(navigationTree.size());

@@ -233,7 +233,7 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
      */
     public HtmlPanelFrame createFrame()
     {
-        if (frame == null)
+        if(frame == null)
             frame = new HtmlPanelFrame();
         return frame;
     }
@@ -245,7 +245,7 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
      */
     public HtmlPanelBanner createBanner()
     {
-        if (banner == null)
+        if(banner == null)
             banner = new HtmlPanelBanner();
         return banner;
     }
@@ -297,14 +297,8 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
     /**
      * Writes the HTML for displaying the source XML of this panel
      *
-     * @param writer     the writer object to write the HTML to
-     * @param nc         the current navigation context
-     * @param objectName
-     * @param cls
-     * @param objectId
-     * @param isl
-     *
-     * @throws IOException
+     * @param writer the writer object to write the HTML to
+     * @param nc     the current navigation context
      */
     public static void renderXdmObjectViewSource(Writer writer, NavigationContext nc, String objectName, Class cls, String objectId, InputSourceLocator isl) throws IOException
     {
@@ -329,12 +323,10 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
      * @param writer the write object to write the HTML to
      * @param nc     the navigation context
      * @param panel  the panel
-     *
-     * @throws IOException
      */
     public static void renderPanelViewSource(Writer writer, NavigationContext nc, HtmlPanel panel) throws IOException
     {
-        if (panel.isAllowViewSource(nc))
+        if(panel.isAllowViewSource(nc))
             renderXdmObjectViewSource(writer, nc, "Panel XDM Code", panel.getClass(), panel.getPanelIdentifier(), panel.getInputSourceLocator());
     }
 
@@ -344,7 +336,6 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
      * @param writer the write object to write the HTML to
      * @param nc     the navigation context
      *
-     * @throws IOException
      * @see AbstractPanel#renderPanelViewSource(Writer, NavigationContext, HtmlPanel);
      */
     public void renderViewSource(Writer writer, NavigationContext nc) throws IOException

@@ -48,7 +48,7 @@ public class StaticField extends TextField
     {
         TextFieldState state = (TextFieldState) dc.getFieldStates().getState(this);
         String value = state.getValue().getTextValue();
-        if (value == null)
+        if(value == null)
             value = "";
         else
             value = TextUtils.getInstance().escapeHTML(value);

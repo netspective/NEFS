@@ -82,10 +82,10 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
     public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
         Columns depColumns = new ColumnsCollection();
-        for (int i = 0; i < table.getColumns().size(); i++)
+        for(int i = 0; i < table.getColumns().size(); i++)
         {
             Column col = table.getColumns().get(i);
-            if (col.getDependentForeignKeys() != null)
+            if(col.getDependentForeignKeys() != null)
                 depColumns.add(col);
         }
 
@@ -103,7 +103,7 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
         {
             Column column = columns.get(row);
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                 case 1:
@@ -114,7 +114,7 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
                     Set dependents = column.getDependentForeignKeys();
                     String[] depNames = new String[dependents.size()];
                     int dn = 0;
-                    for (Iterator i = column.getDependentForeignKeys().iterator(); i.hasNext();)
+                    for(Iterator i = column.getDependentForeignKeys().iterator(); i.hasNext();)
                     {
                         ForeignKey fKey = (ForeignKey) i.next();
                         depNames[dn] = fKey.getSourceColumns().getFirst().getQualifiedName();
@@ -123,7 +123,7 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
                     Arrays.sort(depNames);
 
                     StringBuffer sb = new StringBuffer();
-                    for (int i = 0; i < depNames.length; i++)
+                    for(int i = 0; i < depNames.length; i++)
                     {
                         sb.append(depNames[i]);
                         sb.append("<br>");

@@ -75,7 +75,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
         static
         {
-            for (int i = 0; i < BasicHtmlPanelSkin.Flags.FLAGDEFNS.length; i++)
+            for(int i = 0; i < BasicHtmlPanelSkin.Flags.FLAGDEFNS.length; i++)
                 FLAGDEFNS[i] = BasicHtmlPanelSkin.Flags.FLAGDEFNS[i];
             FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 0] = new FlagDefn(ACCESS_XDM, "SHOW_HEAD_ROW", SHOW_HEAD_ROW);
             FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "SHOW_FOOT_ROW", SHOW_FOOT_ROW);
@@ -110,29 +110,21 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
     public String constructClassRef(Class cls)
     {
         String className = cls.getName();
-        if (className.startsWith("com.netspective"))
+        if(className.startsWith("com.netspective"))
             className = "~" + className.substring("com.netspective".length());
         return "<span title=\"" + ClassPath.getClassFileName(cls) + "\">" + className + "</span>";
     }
 
     /**
      * Constructs the redirect URL from the passed in command
-     *
-     * @param rc
-     * @param redirect
-     * @param label
-     * @param hint
-     * @param target
-     *
-     * @return
      */
     public String constructRedirect(TabularReportValueContext rc, ValueSource redirect, String label, String hint, String target)
     {
-        if (redirect instanceof RedirectValueSource)
+        if(redirect instanceof RedirectValueSource)
         {
             StringBuffer sb = new StringBuffer();
             String url = ((RedirectValueSource) redirect).getUrl(rc);
-            if (url.startsWith("javascript"))
+            if(url.startsWith("javascript"))
             {
                 sb.append("<a href=\"#\" onclick=\"" + url + "\"");
             }
@@ -141,9 +133,9 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 sb.append("<a href='" + url + "'");
 
             }
-            if (hint != null)
+            if(hint != null)
                 sb.append(" title=\"" + hint + "\"");
-            if (target != null)
+            if(target != null)
                 sb.append(" target=\"" + target + "\"");
             sb.append(">" + label + "</a>");
             return sb.toString();
@@ -170,32 +162,32 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         final HtmlTabularReportPanel.CustomRenderer customRenderer = htmlTabularReportPanel.getRenderer();
         int panelRenderFlags = rvc.getPanelRenderFlags();
 
-        if (customRenderer != null)
+        if(customRenderer != null)
         {
             boolean handleContainerTableTag = customRenderer.isRenderContainerTableTag();
-            if (!customRenderer.isRenderFrame())
+            if(!customRenderer.isRenderFrame())
                 panelRenderFlags |= HtmlPanel.RENDERFLAG_NOFRAME;
 
-            if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
             {
                 renderFrameBegin(writer, rvc);
-                if (handleContainerTableTag)
+                if(handleContainerTableTag)
                     writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
             }
-            else if (handleContainerTableTag)
+            else if(handleContainerTableTag)
                 writer.write("    <table id=\"" + rvc.getPanel().getPanelIdentifier() + "_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
             customRenderer.getTemplateProcessor().process(writer, rc, customRenderer.getTemplateVars(rvc, ds));
 
-            if (handleContainerTableTag)
+            if(handleContainerTableTag)
                 writer.write("    </table>\n");
 
-            if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
                 renderFrameEnd(writer, rvc);
         }
         else
         {
-            if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
             {
                 renderFrameBegin(writer, rvc);
                 writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
@@ -203,18 +195,18 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             else
                 writer.write("    <table id=\"" + rvc.getPanel().getPanelIdentifier() + "_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
-            if (flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
+            if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
                 produceHeadingRow(writer, rvc, (HtmlTabularReportDataSource) ds);
             produceDataRows(writer, rvc, (HtmlTabularReportDataSource) ds);
 
-            if (flags.flagIsSet(Flags.SHOW_FOOT_ROW) && rc.getCalcsCount() > 0)
+            if(flags.flagIsSet(Flags.SHOW_FOOT_ROW) && rc.getCalcsCount() > 0)
                 produceFootRow(writer, rvc);
 
             // TODO: Need to check the flag to find out where the command item for the selectable report should be
             produceSelectableCommandRow(writer, rvc);
             writer.write("    </table>\n");
 
-            if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
                 renderFrameEnd(writer, rvc);
         }
     }
@@ -222,9 +214,9 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
     protected int getTableColumnsCount(HtmlTabularReportValueContext rc)
     {
         return (rc.getVisibleColsCount() * 2) +
-                (getRowDecoratorPrependColsCount(rc) * 2) +
-                (getRowDecoratorAppendColsCount(rc) * 2) +
-                +1; // each column has "spacer" in between, first column as spacer before too
+               (getRowDecoratorPrependColsCount(rc) * 2) +
+               (getRowDecoratorAppendColsCount(rc) * 2) +
+               +1; // each column has "spacer" in between, first column as spacer before too
     }
 
     public void produceHeadingRow(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds) throws IOException
@@ -239,25 +231,25 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
         writer.write("<tr>");
         int prependColCount = getRowDecoratorPrependColsCount(rc);
-        if (prependColCount > 0)
+        if(prependColCount > 0)
         {
-            for (int k = 0; k < prependColCount; k++)
+            for(int k = 0; k < prependColCount; k++)
             {
                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">&nbsp;&nbsp;</th>");
             }
         }
-        for (int i = 0; i < dataColsCount; i++)
+        for(int i = 0; i < dataColsCount; i++)
         {
             TabularReportColumnState rcs = rc.getState(i);
-            if (!states[i].isVisible())
+            if(!states[i].isVisible())
                 continue;
 
             String colHeading = ds.getHeadingRowColumnData(i);
-            if (colHeading != null)
+            if(colHeading != null)
             {
-                if (rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_ASCENDING))
+                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_ASCENDING))
                     colHeading += sortAscImgTag;
-                if (rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
+                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
                     colHeading += sortDescImgTag;
 
                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">" + colHeading + "</th>");
@@ -266,9 +258,9 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">&nbsp;&nbsp;</th>");
         }
         int appendColCount = getRowDecoratorAppendColsCount(rc);
-        if (appendColCount > 0)
+        if(appendColCount > 0)
         {
-            for (int k = 0; k < appendColCount; k++)
+            for(int k = 0; k < appendColCount; k++)
             {
                 writer.write("        <th class=\"report-column-heading\" nowrap scope=\"col\">&nbsp;&nbsp;</th>");
             }
@@ -291,7 +283,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         String panelId = rc.getPanel().getPanelIdentifier();
 
         StringBuffer treeScript = null;
-        if (hiearchical && allowTreeExpandCollapse)
+        if(hiearchical && allowTreeExpandCollapse)
         {
             treeScript = new StringBuffer();
             treeScript.append("var activeTree = new Tree(\"" + panelId + "\");\n");
@@ -304,12 +296,12 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
         int currentPage = 1;
 
-        if (paging)
+        if(paging)
         {
             currentPage = scrollState.getActivePage();
         }
 
-        while (ds.next())
+        while(ds.next())
         {
             isOddRow = !isOddRow;
             int activeRow = ds.getActiveRowNumber();
@@ -317,16 +309,16 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             int activeLevel = 0;
             int activeParent = -1;
 
-            if (hiearchical)
+            if(hiearchical)
             {
                 TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHierarchy();
                 hiearchyCol = activeHierarchy.getColumn();
                 activeLevel = activeHierarchy.getLevel();
                 activeParent = activeHierarchy.getParentRow();
 
-                if (allowTreeExpandCollapse)
+                if(allowTreeExpandCollapse)
                 {
-                    if (activeParent == -1)
+                    if(activeParent == -1)
                         treeScript.append("activeNode = activeTree.newNode(null, \"node_" + rowsWritten + "\");\n");
                     else
                         treeScript.append("activeNode = activeTree.newNode(\"node_" + activeHierarchy.getParentRow() + "\", \"node_" + rowsWritten + "\");\n");
@@ -341,12 +333,12 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             // construct the HTML for the data columns
             String[] rowData = new String[dataColsCount];
             StringBuffer dataBuffer = new StringBuffer();
-            for (int i = 0; i < dataColsCount; i++)
+            for(int i = 0; i < dataColsCount; i++)
             {
                 TabularReportColumn column = columns.getColumn(i);
                 TabularReportColumnState state = states[i];
 
-                if (!state.isVisible())
+                if(!state.isVisible())
                     continue;
 
                 String data =
@@ -354,24 +346,24 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
                 RedirectValueSource redirect = column.getRedirect();
-                if (data != null && redirect != null)
+                if(data != null && redirect != null)
                 {
                     String newdata = rc.getSkin().constructRedirect(rc, redirect, data, null, null);
                     data = defn.replaceOutputPatterns(rc, ds, newdata);
                 }
 
                 String style = state.getCssStyleAttrValue();
-                if (hiearchical && (hiearchyCol == i) && activeLevel > 0)
+                if(hiearchical && (hiearchyCol == i) && activeLevel > 0)
                 {
                     style += "padding-left:" + (activeLevel * 15) + ";";
-                    if (allowTreeExpandCollapse)
+                    if(allowTreeExpandCollapse)
                         data = "<span id=\"" + panelId + "_node_" + rowsWritten + "_controller\" onclick=\"TREES.toggleNodeExpansion('" + panelId + "', 'node_" + rowsWritten + "')\" class=\"panel-output-tree-collapse\">&nbsp;</span>" + data;
                 }
 
                 String singleColumn =
                         "<td class=\"" +
                         (ds.isActiveRowSelected()
-                        ? "report-column-selected" : (isOddRow ? "report-column-even" : "report-column-odd")) + "\" style=\"" + style + "\">" +
+                         ? "report-column-selected" : (isOddRow ? "report-column-even" : "report-column-odd")) + "\" style=\"" + style + "\">" +
                         data +
                         "&nbsp;</td>";
                 dataBuffer.append(defn.replaceOutputPatterns(rc, ds, singleColumn));
@@ -384,35 +376,35 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             writer.write("</tr>");
             rowsWritten++;
             // check to see if this row should be the last
-            if (paging && rowsWritten == scrollState.getRowsPerPage())
+            if(paging && rowsWritten == scrollState.getRowsPerPage())
                 break;
 
         }
 
-        if (rowsWritten == 0)
+        if(rowsWritten == 0)
         {
             // no rows were written out that means that there was no data in the result set
             ValueSource noDataFoundMsgSrc = ds.getNoDataFoundMessage();
             String noDataFoundMsg = noDataFoundMsgSrc != null ? noDataFoundMsgSrc.getTextValue(rc) : null;
             // add the 'no data found' message
-            if (noDataFoundMsg != null)
+            if(noDataFoundMsg != null)
                 writer.write("<tr><td class=\"report-column-summary\" colspan='" + tableColsCount + "'>" + noDataFoundMsg + "</td></tr>");
             //TODO: Sparx 2.x conversion required
-            if (paging)
+            if(paging)
                 scrollState.setNoMoreRows();
         }
         //TODO: Sparx 2.x conversion required
-        else if (paging)
+        else if(paging)
         {
             // record the number of rows written to the total number ofrows already displayed
             scrollState.accumulateRowsProcessed(rowsWritten);
             // if the total number of rows written is less than the scroll state's number of rows per page setting,
             // this must be the last page
-            if (rowsWritten < scrollState.getRowsPerPage())
+            if(rowsWritten < scrollState.getRowsPerPage())
                 scrollState.setNoMoreRows();
         }
 
-        if (hiearchical && allowTreeExpandCollapse)
+        if(hiearchical && allowTreeExpandCollapse)
         {
             treeScript.append("TREES.registerTree(activeTree)\n");
             treeScript.append("activeTree.initialize()\n");
@@ -429,7 +421,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
     public void produceFootRow(Writer writer, HtmlTabularReportValueContext rc) throws IOException
     {
         int calcsCount = rc.getCalcsCount();
-        if (calcsCount == 0)
+        if(calcsCount == 0)
             return;
 
         TabularReportColumnState[] states = rc.getStates();
@@ -438,21 +430,21 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
         writer.write("<tr>");
         int prependColCount = getRowDecoratorPrependColsCount(rc);
-        if (prependColCount > 0)
+        if(prependColCount > 0)
         {
-            for (int k = 0; k < prependColCount; k++)
+            for(int k = 0; k < prependColCount; k++)
             {
                 writer.write("        <td class=\"report-column-summary\" nowrap>&nbsp;&nbsp;</td>");
             }
         }
-        for (int i = 0; i < dataColsCount; i++)
+        for(int i = 0; i < dataColsCount; i++)
         {
             TabularReportColumn column = columns.getColumn(i);
-            if (!states[i].isVisible())
+            if(!states[i].isVisible())
                 continue;
 
             String summary = column.getFormattedData(rc, states[i].getCalc());
-            if (summary == null)
+            if(summary == null)
                 summary = "&nbsp;";
 
             writer.write("<td class=\"report-column-summary\" style=\"" + states[i].getCssStyleAttrValue() + "\">" + summary + "</td>");
@@ -463,11 +455,6 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
     /**
      * Produce the HTML for the button/link for the selectable report action processing
-     *
-     * @param rc
-     * @param writer
-     *
-     * @throws IOException
      */
     public void produceSelectableCommandRow(Writer writer, HtmlTabularReportValueContext rc) throws IOException
     {
@@ -475,23 +462,23 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         HtmlReportActions actions = report.getActions();
         StringBuffer sb = new StringBuffer();
         sb.append("    <tr>");
-        if (actions != null)
+        if(actions != null)
         {
             HtmlReportAction[] reportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
-            if (reportActions != null && reportActions.length > 0)
+            if(reportActions != null && reportActions.length > 0)
             {
                 TabularReportColumns columns = rc.getColumns();
                 int colsCount = columns.size() + getRowDecoratorPrependColsCount(rc) + getRowDecoratorAppendColsCount(rc);
                 RedirectValueSource redirect = (RedirectValueSource) reportActions[0].getRedirect();
-                if (redirect != null)
+                if(redirect != null)
                 {
                     String title = reportActions[0].getTitle() != null
-                            ? reportActions[0].getTitle().getTextValue(rc) : "";
+                                   ? reportActions[0].getTitle().getTextValue(rc) : "";
                     sb.append("            <td colspan=\"" + colsCount + "\" class=\"report-column-heading\">" +
-                            "<a class=\"" + panelClassNamePrefix + "-frame-action\" title=\"" + title + "\" href=\"" +
-                            redirect.getUrl(rc) + "\" onClick=\"return ReportAction_submit(" + QueryDialog.EXECUTE_SELECT_ACTION +
-                            ", '" + redirect.getUrl(rc) +
-                            "')\">&nbsp;" + reportActions[0].getCaption().getTextValue(rc) + "&nbsp;</a></td>");
+                              "<a class=\"" + panelClassNamePrefix + "-frame-action\" title=\"" + title + "\" href=\"" +
+                              redirect.getUrl(rc) + "\" onClick=\"return ReportAction_submit(" + QueryDialog.EXECUTE_SELECT_ACTION +
+                              ", '" + redirect.getUrl(rc) +
+                              "')\">&nbsp;" + reportActions[0].getCaption().getTextValue(rc) + "&nbsp;</a></td>");
                 }
             }
         }
@@ -501,24 +488,18 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
     /**
      * Produces html to prepend to the data row
-     *
-     * @param writer
-     * @param rc
-     * @param isOddRow
-     *
-     * @throws IOException
      */
     public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report
             return;
         }
         HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
-        if (selectReportActions != null && selectReportActions.length > 0)
+        if(selectReportActions != null && selectReportActions.length > 0)
         {
             // use the active row rumber within the result set as the checkbox name
             int activeRowNumber = ds.getActiveRowNumber();
@@ -526,31 +507,31 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             // attach all the row data as name/value pairs to the value of the checkbox. also prepend the active row number
             // to the string
             StringBuffer valueStr = new StringBuffer(activeRowNumber + "\t");
-            for (int i = 0; i < rowData.length; i++)
+            for(int i = 0; i < rowData.length; i++)
             {
                 String colHeading = ds.getHeadingRowColumnData(i);
                 valueStr.append(i != rowData.length - 1
-                        ? (colHeading + "=" + rowData[i] + "\t") : (colHeading + "=" + rowData[i]));
+                                ? (colHeading + "=" + rowData[i] + "\t") : (colHeading + "=" + rowData[i]));
             }
 
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
             writer.write("<input type=\"checkbox\" value=\"" + valueStr.toString() + "\" name=\"checkbox_" + activeRowNumber +
-                    "\" title=\"Click here to select the row.\" ");
+                         "\" title=\"Click here to select the row.\" ");
             HttpServletRequest request = (HttpServletRequest) rc.getRequest();
 
             // get the list of selected rows so that the correct checkboxes can be highlighted
             String[] selectedValues = request.getParameterValues("_dc.selectedItemList");
 
-            if (selectedValues != null)
+            if(selectedValues != null)
             {
-                for (int i = 0; i < selectedValues.length; i++)
+                for(int i = 0; i < selectedValues.length; i++)
                 {
                     StringTokenizer st = new StringTokenizer(selectedValues[i], "\t");
-                    if (st.countTokens() > 0)
+                    if(st.countTokens() > 0)
                     {
                         int selectedRow = Integer.parseInt(st.nextToken());
 
-                        if (selectedRow == activeRowNumber)
+                        if(selectedRow == activeRowNumber)
                         {
                             writer.write("checked");
                             break;
@@ -566,12 +547,6 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
     /**
      * Produces html to append to the data row
-     *
-     * @param writer
-     * @param rc
-     * @param isOddRow
-     *
-     * @throws IOException
      */
     // TODO: Change isOddRow to the ACTUAL row number
     public void produceDataRowDecoratorAppend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
@@ -582,13 +557,13 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions == null)
+        if(actions == null)
         {
             // no actions are defined in the report so return 0
             return 0;
         }
         HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
-        if (selectReportActions != null && selectReportActions.length > 0)
+        if(selectReportActions != null && selectReportActions.length > 0)
             return 1;
         else
             return 0;

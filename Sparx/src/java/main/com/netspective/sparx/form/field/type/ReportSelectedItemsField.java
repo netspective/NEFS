@@ -55,9 +55,9 @@ public class ReportSelectedItemsField extends SelectField
 
         PresentationValue pValue = new PresentationValue();
         PresentationValue.Items choices = pValue.createItems();
-        if (values != null)
+        if(values != null)
         {
-            for (int i = 0; i < values.length; i++)
+            for(int i = 0; i < values.length; i++)
             {
                 choices.addItem(values[i]);
             }
@@ -71,15 +71,15 @@ public class ReportSelectedItemsField extends SelectField
         StringBuffer options = new StringBuffer();
 
         // this field is always hidden no matter what the flags are set to
-        for (int i = 0; i < choices.size(); i++)
+        for(int i = 0; i < choices.size(); i++)
         {
             PresentationValue.Items.Item choice = choices.getItem(i);
             boolean selected = (choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0;
             options.append("    <option value=\"" + choice.getValue() + "\" " + (selected ? "selected" : "") + ">" + choice.getCaption() + "</option>\n");
         }
         writer.write("<select name='" + id + "' size='" + getSize() + "' multiple='yes' " + defaultControlAttrs +
-                (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
-                ">\n" + options + "</select>\n");
+                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
+                     ">\n" + options + "</select>\n");
 
     }
 

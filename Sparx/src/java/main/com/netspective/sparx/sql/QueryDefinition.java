@@ -149,7 +149,7 @@ public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefi
 
     public QueryBuilderDialog createQueryBuilderDialog()
     {
-        if (qbDialog == null)
+        if(qbDialog == null)
         {
             qbDialog = new QueryBuilderDialog(getProject());
             qbDialog.setName(this.getName());

@@ -57,21 +57,21 @@ public class AutoPerspectiveDialogCommand extends DialogCommand
                 PAGE_COMMAND_REQUEST_PARAM_NAME
             };
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Displays and executes a dialog box.",
-            new CommandDocumentation.Parameter[]
-            {
-                new CommandDocumentation.Parameter("dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
-                new CommandDocumentation.Parameter("dialog-perspective", false, new DialogPerspectives(), null, "The dialog perspective to send to DialogContext."),
-                new SkinParameter(),
-                new CommandDocumentation.Parameter("debug-flags", false, new DialogDebugFlags(), null, "The debug flags."),
-                new CommandDocumentation.Parameter("perspective-key", false, "The key that is used to determine if the dialog is in add or edit mode")
-            });
+                                                                                      new CommandDocumentation.Parameter[]
+                                                                                      {
+                                                                                          new CommandDocumentation.Parameter("dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
+                                                                                          new CommandDocumentation.Parameter("dialog-perspective", false, new DialogPerspectives(), null, "The dialog perspective to send to DialogContext."),
+                                                                                          new SkinParameter(),
+                                                                                          new CommandDocumentation.Parameter("debug-flags", false, new DialogDebugFlags(), null, "The debug flags."),
+                                                                                          new CommandDocumentation.Parameter("perspective-key", false, "The key that is used to determine if the dialog is in add or edit mode")
+                                                                                      });
 
     private String perspectiveKey;
 
     public void setParameters(StringTokenizer params)
     {
         super.setParameters(params);
-        if (params.hasMoreTokens())
+        if(params.hasMoreTokens())
         {
             perspectiveKey = params.nextToken();
         }
@@ -79,11 +79,11 @@ public class AutoPerspectiveDialogCommand extends DialogCommand
 
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
-        if (perspectiveKey != null && getPerspective() == null)
+        if(perspectiveKey != null && getPerspective() == null)
         {
             // no perspective was set but the key was set
             String keyValue = nc.getRequest().getParameter(perspectiveKey);
-            if (keyValue != null && keyValue.length() > 0)
+            if(keyValue != null && keyValue.length() > 0)
             {
                 // keyValue exists so put the dialog in EDIT mode
                 nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "EDIT");

@@ -66,7 +66,7 @@ public class SimulatedLoginAuthenticator extends AbstractLoginAuthenticator
         user.setUserId(sld.getUserId());
         user.setUserName(sld.getUserName());
 
-        if (sld.getUserOrgId() != null)
+        if(sld.getUserOrgId() != null)
         {
             MutableAuthenticatedOrganizations orgs = (MutableAuthenticatedOrganizations) user.getOrganizations();
             MutableAuthenticatedOrganization org = orgs.createOrganization();
@@ -76,25 +76,25 @@ public class SimulatedLoginAuthenticator extends AbstractLoginAuthenticator
             orgs.addOrganization(org);
         }
 
-        if (sld.getPermissions() != null)
+        if(sld.getPermissions() != null)
         {
             try
             {
                 user.setPermissions(ldc.getProject(), sld.getPermissions());
             }
-            catch (PermissionNotFoundException e)
+            catch(PermissionNotFoundException e)
             {
                 log.error("Error assigning permissions to user " + user.getUserId(), e);
             }
         }
 
-        if (sld.getRoles() != null)
+        if(sld.getRoles() != null)
         {
             try
             {
                 user.setRoles(ldc.getProject(), sld.getRoles());
             }
-            catch (RoleNotFoundException e)
+            catch(RoleNotFoundException e)
             {
                 log.error("Error assigning roles to user " + user.getUserId(), e);
             }

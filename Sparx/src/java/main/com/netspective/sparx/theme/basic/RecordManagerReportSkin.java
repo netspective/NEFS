@@ -48,7 +48,7 @@ import com.netspective.sparx.theme.Theme;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * @version $Id: RecordManagerReportSkin.java,v 1.7 2004-08-15 01:47:11 shahid.shah Exp $
+ * @version $Id: RecordManagerReportSkin.java,v 1.8 2004-08-15 02:27:29 shahid.shah Exp $
  */
 public class RecordManagerReportSkin extends RecordEditorReportSkin
 {
@@ -68,8 +68,6 @@ public class RecordManagerReportSkin extends RecordEditorReportSkin
      * @param writer writer object to write the output to
      * @param vc     current panel context
      * @param frame  the panel frame object
-     *
-     * @throws IOException
      */
     public void produceHeadingExtras(Writer writer, HtmlPanelValueContext vc, HtmlPanelFrame frame) throws IOException
     {
@@ -78,22 +76,22 @@ public class RecordManagerReportSkin extends RecordEditorReportSkin
         HtmlTabularReportValueContext rc = ((HtmlTabularReportValueContext) vc);
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
-        if (actions != null)
+        if(actions != null)
         {
             HtmlReportAction[] addReportActions = actions.getByType(HtmlReportAction.Type.RECORD_ADD);
-            if (addReportActions != null && addReportActions.length > 0)
+            if(addReportActions != null && addReportActions.length > 0)
             {
                 Theme theme = rc.getActiveTheme();
                 RedirectValueSource redirect = addReportActions[0].getRedirect();
-                if (redirect != null)
+                if(redirect != null)
                 {
                     writer.write("<td align=right valign=bottom bgcolor=white><table cellspacing=0 cellpadding=0 class='" + panelClassNamePrefix + "'><tr>");
                     writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-action-add\" width=\"16\" height=14><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"16\"></td>");
-                    if (redirect != null)
+                    if(redirect != null)
                     {
                         writer.write("            <td class=\"" + panelClassNamePrefix + "-frame-action-box\" height=14>" +
-                                "<a class=\"" + panelClassNamePrefix + "-frame-action\" href=\"" + redirect.getUrl(rc) +
-                                "\"><nobr>&nbsp;" + addReportActions[0].getCaption().getTextValue(vc) + "&nbsp;</nobr></a></td>");
+                                     "<a class=\"" + panelClassNamePrefix + "-frame-action\" href=\"" + redirect.getUrl(rc) +
+                                     "\"><nobr>&nbsp;" + addReportActions[0].getCaption().getTextValue(vc) + "&nbsp;</nobr></a></td>");
                     }
                     writer.write("</td></tr></table></td>");
                 }

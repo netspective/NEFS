@@ -49,12 +49,12 @@ public class ResinCompilingClassPathProvider implements ClassPath.ClassPathProvi
     {
         try
         {
-            if (getClassPathMethod == null)
+            if(getClassPathMethod == null)
                 getClassPathMethod = getClass().getClassLoader().getClass().getMethod("getClassPath", null);
 
             return (String) getClassPathMethod.invoke(getClass().getClassLoader(), null);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error trying to get Resin compiling class loader class path.", e);
             throw new RuntimeException(e.getMessage());

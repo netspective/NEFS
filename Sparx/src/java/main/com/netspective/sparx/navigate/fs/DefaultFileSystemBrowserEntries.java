@@ -70,7 +70,7 @@ public class DefaultFileSystemBrowserEntries implements FileSystemBrowserEntries
 
     public void addDirectory(DirectoryEntry entry)
     {
-        if (entry.name != null)
+        if(entry.name != null)
             folderNames.add(entry.name);
     }
 
@@ -81,19 +81,19 @@ public class DefaultFileSystemBrowserEntries implements FileSystemBrowserEntries
 
     public void addFile(FileEntry entry)
     {
-        if (entry.name != null)
+        if(entry.name != null)
             fileNames.add(entry.name);
 
-        if (entry.type != null)
+        if(entry.type != null)
             fileTypes.add(entry.type.toLowerCase());
     }
 
     public boolean contains(File file)
     {
-        if (file.isDirectory())
+        if(file.isDirectory())
             return folderNames.contains(file.getName());
 
-        if (fileNames.contains(file.getName()))
+        if(fileNames.contains(file.getName()))
             return true;
 
         return false;
@@ -101,10 +101,10 @@ public class DefaultFileSystemBrowserEntries implements FileSystemBrowserEntries
 
     public boolean contains(FileSystemEntry fileSystemEntry)
     {
-        if (contains(fileSystemEntry.getFile()))
+        if(contains(fileSystemEntry.getFile()))
             return true;
 
-        if (fileTypes.contains(fileSystemEntry.getEntryType().toLowerCase()))
+        if(fileTypes.contains(fileSystemEntry.getEntryType().toLowerCase()))
             return true;
 
         return false;

@@ -53,9 +53,9 @@ public class AntBuildDialogPropertyField extends TextField
     public void setProperty(String property)
     {
         this.property = property;
-        if (getName() == null)
+        if(getName() == null)
             setName(property);
-        if (getCaption() == ValueSource.NULL_VALUE_SOURCE)
+        if(getCaption() == ValueSource.NULL_VALUE_SOURCE)
             setCaption(new StaticValueSource(property));
     }
 }

@@ -90,18 +90,18 @@ public class SchemaTablesDescriptionsPanel extends SchemaTablesPanel
         {
             Table activeTable = activeRow.getTable();
 
-            switch (columnIndex)
+            switch(columnIndex)
             {
                 case 0:
                     return super.getActiveRowColumnData(columnIndex, flags);
 
                 case 1:
-                    if (activeTable != null)
+                    if(activeTable != null)
                     {
                         String descr = activeTable.getDescription();
-                        if (descr != null)
+                        if(descr != null)
                         {
-                            if (activeRow == selectedRow)
+                            if(activeRow == selectedRow)
                                 return descr;
                             else
                             {

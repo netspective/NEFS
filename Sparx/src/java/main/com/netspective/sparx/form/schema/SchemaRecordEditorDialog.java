@@ -179,7 +179,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             this.templateElement = templateElement;
 
             String[] tableNameParts = TextUtils.getInstance().split(templateElement.getElementName(), ".", false);
-            if (tableNameParts.length == 1)
+            if(tableNameParts.length == 1)
             {
                 schema = sredc.getProject().getSchemas().getDefault();
                 tableName = tableNameParts[0];
@@ -187,7 +187,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             else
             {
                 schema = sredc.getProject().getSchemas().getByNameOrXmlNodeName(tableNameParts[0]);
-                if (schema == null)
+                if(schema == null)
                 {
                     getLog().error("Unable to find schema '" + tableNameParts[0] + "' in SchemaRecordEditorDialog '" + getQualifiedName() + "'");
                     return;
@@ -197,7 +197,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             }
 
             table = schema.getTables().getByNameOrXmlNodeName(tableName);
-            if (table == null)
+            if(table == null)
             {
                 getLog().error("Unable to find table '" + tableName + "' in schema '" + schema.getName() + "' for SchemaRecordEditorDialog '" + getQualifiedName() + "'");
                 return;
@@ -210,30 +210,30 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         private void autoMapColumnNamesToFieldNames()
         {
             String autoMapAttrValue = templateElement.getAttributes().getValue(ATTRNAME_AUTOMAP);
-            if (autoMapAttrValue == null || autoMapAttrValue.length() == 0)
+            if(autoMapAttrValue == null || autoMapAttrValue.length() == 0)
                 return;
 
             AttributesImpl attrs = new AttributesImpl(templateElement.getAttributes());
             attrs.removeAttribute(attrs.getIndex(ATTRNAME_AUTOMAP));
 
-            if (autoMapAttrValue.equals("*"))
+            if(autoMapAttrValue.equals("*"))
             {
                 Columns columns = table.getColumns();
                 DialogFields fields = getFields();
-                for (int i = 0; i < columns.size(); i++)
+                for(int i = 0; i < columns.size(); i++)
                 {
                     Column column = columns.get(i);
                     DialogField field = fields.getByName(column.getName());
 
                     // make sure this dialog has the given column and add the column
-                    if (field != null)
+                    if(field != null)
                         attrs.addAttribute(null, null, column.getName(), "CDATA", column.getName());
                 }
             }
             else
             {
                 String[] columnNames = TextUtils.getInstance().split(autoMapAttrValue, ",", true);
-                for (int i = 0; i < columnNames.length; i++)
+                for(int i = 0; i < columnNames.length; i++)
                     attrs.addAttribute(null, null, columnNames[i], "CDATA", columnNames[i]);
             }
 
@@ -244,10 +244,10 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         {
             // see if a primary key value is provided -- if it is, we're going to populate using the primary key value
             String primaryKeyValueSpec = templateElement.getAttributes().getValue(ATTRNAME_PRIMARYKEY_VALUE);
-            if (primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
+            if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
             {
                 HttpServletRequest request = dialogContext.getHttpRequest();
-                if (request.getAttribute(PanelEditor.PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX) != null)
+                if(request.getAttribute(PanelEditor.PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX) != null)
                 {
                     PanelEditorState state = (PanelEditorState) request.getAttribute(PanelEditor.PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX);
                     primaryKeyValueSpec = ReportPanelEditorContentElement.getPkValueFromState(state);
@@ -255,7 +255,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 else
                 {
                     primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getName());
-                    if (primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
+                    if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
                         primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getXmlNodeName());
                 }
             }
@@ -313,7 +313,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public TemplateProducers getTemplateProducers()
     {
-        if (templateProducers == null)
+        if(templateProducers == null)
         {
             templateProducers = new TemplateProducers();
             insertDataTemplateProducer = new InsertDataTemplate();
@@ -360,11 +360,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public boolean isConditionalTestExpressionTrue(SchemaRecordEditorDialogContext sredc, TemplateElement element)
     {
         String testExpr = element.getAttributes().getValue(ATTRNAME_TEST);
-        if (testExpr != null && testExpr.length() > 0)
+        if(testExpr != null && testExpr.length() > 0)
             return sredc.isConditionalExpressionTrue(testExpr, null);
 
         testExpr = element.getAttributes().getValue(ATTRNAME_TEST_VS);
-        if (testExpr != null && testExpr.length() > 0)
+        if(testExpr != null && testExpr.length() > 0)
             return ValueSources.getInstance().getValueSourceOrStatic(testExpr).getValue(sredc).getBooleanValue();
 
         getLog().error("'test' attribute or 'test-vs' attribute with conditional expression is required");
@@ -373,24 +373,24 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public ConditionalTemplateResult getConditionalChoiceTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
-        if (!template.getElementName().equals(ELEMNAME_CHOOSE))
+        if(!template.getElementName().equals(ELEMNAME_CHOOSE))
             return null;
 
         TemplateElement otherwiseTemplate = null;
 
         List chooseElements = template.getChildren();
-        for (int i = 0; i < chooseElements.size(); i++)
+        for(int i = 0; i < chooseElements.size(); i++)
         {
             TemplateNode chooseElementChildNode = (TemplateNode) chooseElements.get(i);
-            if ((chooseElementChildNode instanceof TemplateElement))
+            if((chooseElementChildNode instanceof TemplateElement))
             {
                 TemplateElement whenElement = (TemplateElement) chooseElementChildNode;
-                if (whenElement.getElementName().equals(ELEMNAME_WHEN))
+                if(whenElement.getElementName().equals(ELEMNAME_WHEN))
                 {
-                    if (isConditionalTestExpressionTrue(sredc, whenElement))
+                    if(isConditionalTestExpressionTrue(sredc, whenElement))
                         return new ConditionalTemplateResult(true, whenElement);
                 }
-                else if (whenElement.getElementName().equals(ELEMNAME_OTHERWISE))
+                else if(whenElement.getElementName().equals(ELEMNAME_OTHERWISE))
                     otherwiseTemplate = whenElement;
                 else
                     getLog().error("Only <when> or <otherwise> elements allowed inside a <choose> tag: " + whenElement.getElementName() + " is not a valid child of <choose>");
@@ -403,11 +403,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public ConditionalTemplateResult getConditionalIfTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
-        if (!template.getElementName().equals(ELEMNAME_IF))
+        if(!template.getElementName().equals(ELEMNAME_IF))
             return null;
 
         String testExpr = template.getAttributes().getValue(ATTRNAME_TEST);
-        if (testExpr == null || testExpr.length() == 0)
+        if(testExpr == null || testExpr.length() == 0)
         {
             getLog().error("Test expression is required");
             return new ConditionalTemplateResult(false, template);
@@ -419,7 +419,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public ConditionalTemplateResult getConditionalTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
         ConditionalTemplateResult result = getConditionalChoiceTemplate(sredc, template);
-        if (result != null)
+        if(result != null)
             return result;
 
         return getConditionalIfTemplate(sredc, template);
@@ -435,28 +435,28 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     {
         // make sure auto-mapping expansion is taken care of
         SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, templateElement);
-        if (!stte.isTableFound())
+        if(!stte.isTableFound())
             return;
 
         DialogFieldStates states = sredc.getFieldStates();
         HttpServletRequest request = sredc.getHttpRequest();
 
         Attributes templateAttributes = templateElement.getAttributes();
-        for (int i = 0; i < templateAttributes.getLength(); i++)
+        for(int i = 0; i < templateAttributes.getLength(); i++)
         {
             String columnName = templateAttributes.getQName(i);
             String columnTextValue = templateAttributes.getValue(i);
 
             // these are private "instructions"
-            if (columnName.startsWith("_"))
+            if(columnName.startsWith("_"))
                 continue;
 
             String columnRequestValue = request.getParameter(columnName);
 
-            if (columnRequestValue != null)
+            if(columnRequestValue != null)
             {
                 DialogField.State fieldState = states.getState(columnTextValue, null);
-                if (fieldState != null)
+                if(fieldState != null)
                     fieldState.getValue().setTextValue(columnRequestValue);
             }
         }
@@ -464,21 +464,21 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public void populateFieldValuesUsingRequestParameters(DialogContext dc, TemplateProducer templateProducer)
     {
-        if (templateProducer == null)
+        if(templateProducer == null)
             return;
 
         final List templateInstances = templateProducer.getInstances();
-        if (templateInstances.size() == 0)
+        if(templateInstances.size() == 0)
             return;
 
         // make sure to get the last template only because inheritance may have create multiples
         Template template = (Template) templateInstances.get(templateInstances.size() - 1);
         List childTableElements = template.getChildren();
 
-        for (int i = 0; i < childTableElements.size(); i++)
+        for(int i = 0; i < childTableElements.size(); i++)
         {
             TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-            if (childTableNode instanceof TemplateElement)
+            if(childTableNode instanceof TemplateElement)
             {
                 TemplateElement childTableElement = (TemplateElement) childTableNode;
                 populateFieldValuesUsingRequestParameters((SchemaRecordEditorDialogContext) dc, childTableElement);
@@ -492,17 +492,17 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         ColumnValues columnValues = row.getColumnValues();
 
         Attributes templateAttributes = templateElement.getAttributes();
-        for (int i = 0; i < templateAttributes.getLength(); i++)
+        for(int i = 0; i < templateAttributes.getLength(); i++)
         {
             String columnName = templateAttributes.getQName(i);
             String columnTextValue = templateAttributes.getValue(i);
 
             // these are private "instructions"
-            if (columnName.startsWith("_"))
+            if(columnName.startsWith("_"))
                 continue;
 
             ColumnValue columnValue = columnValues.getByNameOrXmlNodeName(columnName);
-            if (columnValue == null)
+            if(columnValue == null)
             {
                 getLog().error("Can't populateFieldValuesUsingAttributes -- Table '" + row.getTable().getName() + "' does not have a column named '" + columnName + "'.");
                 continue;
@@ -510,10 +510,10 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
             // if the column value is a value source spec, we don't map the value to a field
             ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
-            if (vs == null)
+            if(vs == null)
             {
                 DialogField.State fieldState = states.getState(columnTextValue, null);
-                if (fieldState != null)
+                if(fieldState != null)
                     fieldState.getValue().copyValueByReference(columnValue);
                 else
                     getLog().error("Can't populateFieldValuesUsingAttributes -- Table Table '" + row.getTable().getName() + "' is mapping a column called '" + columnName + "' to the field '" + columnTextValue + "' but that field was not found.");
@@ -527,15 +527,15 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // in the case we are a <choose> or <if> then the children of the choose's <when> or <otherwise> blocks will be
         // the actual things we want to populate
         ConditionalTemplateResult conditionalTemplateResult = getConditionalTemplate(sredc, templateElement);
-        if (conditionalTemplateResult != null)
+        if(conditionalTemplateResult != null)
         {
-            if (conditionalTemplateResult.isExprResultTrue())
+            if(conditionalTemplateResult.isExprResultTrue())
             {
                 List conditionalChildElements = conditionalTemplateResult.getTemplateElement().getChildren();
-                for (int i = 0; i < conditionalChildElements.size(); i++)
+                for(int i = 0; i < conditionalChildElements.size(); i++)
                 {
                     TemplateNode childTableNode = (TemplateNode) conditionalChildElements.get(i);
-                    if (childTableNode instanceof TemplateElement)
+                    if(childTableNode instanceof TemplateElement)
                         populateDataUsingTemplateElement(sredc, (TemplateElement) childTableNode);
                 }
             }
@@ -546,19 +546,19 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         // if we get to here, it means that we are not a <choose> or <if> block
         SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, templateElement);
-        if (!stte.isTableFound())
+        if(!stte.isTableFound())
             return;
 
         // now we have the table we're dealing with for this template element
         Table table = stte.getTable();
 
         ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
-        if (primaryKeyValueSource != null)
+        if(primaryKeyValueSource != null)
         {
             final Value primaryKeyValue = primaryKeyValueSource.getValue(sredc);
-            if (primaryKeyValue == null)
+            if(primaryKeyValue == null)
             {
-                if (!(sredc.editingData() && getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND)))
+                if(!(sredc.editingData() && getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND)))
                     sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
                         primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName()
                     });
@@ -569,11 +569,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 Row activeRow = table.getRowByPrimaryKeys(sredc.getActiveConnectionContext(), new Object[]{
                     primaryKeyValueObj
                 }, null);
-                if (activeRow != null)
+                if(activeRow != null)
                     populateFieldValuesUsingAttributes(sredc, activeRow, templateElement);
                 else
                 {
-                    if (!(sredc.editingData() && getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND)))
+                    if(!(sredc.editingData() && getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND)))
                         sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
                             primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName()
                         });
@@ -588,21 +588,21 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public void populateValuesUsingTemplateProducer(DialogContext dc, TemplateProducer templateProducer) throws NamingException, SQLException
     {
-        if (templateProducer == null)
+        if(templateProducer == null)
             return;
 
         final List templateInstances = templateProducer.getInstances();
-        if (templateInstances.size() == 0)
+        if(templateInstances.size() == 0)
             return;
 
         // make sure to get the last template only because inheritance may have create multiples
         Template template = (Template) templateInstances.get(templateInstances.size() - 1);
         List childTableElements = template.getChildren();
 
-        for (int i = 0; i < childTableElements.size(); i++)
+        for(int i = 0; i < childTableElements.size(); i++)
         {
             TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-            if (childTableNode instanceof TemplateElement)
+            if(childTableNode instanceof TemplateElement)
             {
                 TemplateElement childTableElement = (TemplateElement) childTableNode;
                 populateDataUsingTemplateElement((SchemaRecordEditorDialogContext) dc, childTableElement);
@@ -614,9 +614,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     {
         SchemaRecordEditorDialogContext sredc = (SchemaRecordEditorDialogContext) dc;
 
-        if (sredc.getDialogState().isInitialEntry())
+        if(sredc.getDialogState().isInitialEntry())
         {
-            if (sredc.addingData() && !getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.DONT_POPULATE_USING_REQUEST_PARAMS))
+            if(sredc.addingData() && !getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.DONT_POPULATE_USING_REQUEST_PARAMS))
                 populateFieldValuesUsingRequestParameters(dc, insertDataTemplateProducer);
             else
             {
@@ -625,7 +625,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 {
                     cc = sredc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
                     sredc.setActiveConnectionContext(cc);
-                    switch ((int) dc.getDialogState().getPerspectives().getFlags())
+                    switch((int) dc.getDialogState().getPerspectives().getFlags())
                     {
                         case DialogPerspectives.EDIT:
                         case DialogPerspectives.PRINT:
@@ -639,11 +639,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                     }
                     sredc.setActiveConnectionContext(null);
                 }
-                catch (SQLException e)
+                catch(SQLException e)
                 {
                     getLog().error("Error in populateValues for perspective " + dc.getDialogState().getPerspectives(), e);
                 }
-                catch (NamingException e)
+                catch(NamingException e)
                 {
                     getLog().error("Error in populateValues for perspective " + dc.getDialogState().getPerspectives(), e);
                 }
@@ -651,9 +651,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 {
                     try
                     {
-                        if (cc != null) cc.close();
+                        if(cc != null) cc.close();
                     }
-                    catch (SQLException e)
+                    catch(SQLException e)
                     {
                         getLog().error("Unable to close connection in populateValues()", e);
                     }
@@ -676,15 +676,15 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // in the case we are a <choose> or <if> then the children of the choose's <when> or <otherwise> blocks will be
         // the actual things we want to add
         ConditionalTemplateResult conditionalTemplateResult = getConditionalTemplate(sredc, templateElement);
-        if (conditionalTemplateResult != null)
+        if(conditionalTemplateResult != null)
         {
-            if (conditionalTemplateResult.isExprResultTrue())
+            if(conditionalTemplateResult.isExprResultTrue())
             {
                 List conditionalChildElements = conditionalTemplateResult.getTemplateElement().getChildren();
-                for (int i = 0; i < conditionalChildElements.size(); i++)
+                for(int i = 0; i < conditionalChildElements.size(); i++)
                 {
                     TemplateNode childTableNode = (TemplateNode) conditionalChildElements.get(i);
-                    if (childTableNode instanceof TemplateElement)
+                    if(childTableNode instanceof TemplateElement)
                         addDataUsingTemplateElement(sredc, (TemplateElement) childTableNode, parentRow);
                 }
             }
@@ -695,7 +695,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         // if we get to here, it means that we are not a <choose> or <if> block
         SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, templateElement);
-        if (!stte.isTableFound())
+        if(!stte.isTableFound())
             return;
 
         // now we have the table we're dealing with for this template element
@@ -710,15 +710,15 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // this column should be used to insert multiple rows
         String loopColumnName = templateAttributes.getValue(ATTRNAME_LOOP);
         String[] loopColumnValues = null;
-        if (loopColumnName != null)
+        if(loopColumnName != null)
         {
             String loopColumnTextValue = templateAttributes.getValue(loopColumnName);
             ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(loopColumnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
-            if (vs == null)
+            if(vs == null)
             {
                 DialogFieldStates states = sredc.getFieldStates();
                 DialogField.State state = states.getState(loopColumnTextValue);
-                if (state != null)
+                if(state != null)
                 {
                     loopColumnValues = state.getValue().getTextValues();
                     insertCount = loopColumnValues.length;
@@ -735,12 +735,12 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             }
         }
 
-        for (int k = 0; k < insertCount; k++)
+        for(int k = 0; k < insertCount; k++)
         {
             Row activeRow;
             // find the connector from the child table to the parent table if one is available
             Columns parentKeyCols = table.getForeignKeyColumns(ForeignKey.FKEYTYPE_PARENT);
-            if (parentKeyCols.size() == 1 && parentRow != null)
+            if(parentKeyCols.size() == 1 && parentRow != null)
             {
                 Column connector = parentKeyCols.getSole();
                 activeRow = table.createRow((ParentForeignKey) connector.getForeignKey(), parentRow);
@@ -751,51 +751,51 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             ColumnValues columnValues = activeRow.getColumnValues();
             boolean doInsert = true;
 
-            for (int i = 0; i < templateAttributes.getLength(); i++)
+            for(int i = 0; i < templateAttributes.getLength(); i++)
             {
                 String columnName = templateAttributes.getQName(i);
                 String columnTextValue = templateAttributes.getValue(i);
 
                 // if we have an attribute called _condition then it's a JSTL-style expression that should return true if
                 // we want to do this insert or false if we don't
-                if (columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
+                if(columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
                 {
                     doInsert = sredc.isConditionalExpressionTrue(columnTextValue, null);
-                    if (!doInsert)
+                    if(!doInsert)
                         break; // don't bother setting values since we're not inserting
                 }
 
-                if (columnName.equalsIgnoreCase(ATTRNAME_LOOP))
+                if(columnName.equalsIgnoreCase(ATTRNAME_LOOP))
                     continue;
 
                 // these are private "instructions"
-                if (columnName.startsWith("_"))
+                if(columnName.startsWith("_"))
                     continue;
 
                 ColumnValue columnValue = columnValues.getByNameOrXmlNodeName(columnName);
-                if (columnValue == null)
+                if(columnValue == null)
                 {
                     getLog().error("Table '" + table.getName() + "' does not have a column named '" + columnName + "'.");
                     continue;
                 }
 
-                if (loopColumnName != null && loopColumnName.equals(columnName) && loopColumnValues != null)
+                if(loopColumnName != null && loopColumnName.equals(columnName) && loopColumnValues != null)
                     columnValue.setTextValue(loopColumnValues[k]);
                 else
                     assignColumnValue(sredc, columnValue, columnTextValue);
             }
 
-            if (doInsert)
+            if(doInsert)
             {
                 table.insert(sredc.getActiveConnectionContext(), activeRow);
                 sredc.getRowsAdded().add(activeRow);
 
                 // now recursively add children if any are available
                 List childTableElements = templateElement.getChildren();
-                for (int i = 0; i < childTableElements.size(); i++)
+                for(int i = 0; i < childTableElements.size(); i++)
                 {
                     TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-                    if (childTableNode instanceof TemplateElement)
+                    if(childTableNode instanceof TemplateElement)
                     {
                         TemplateElement childTableElement = (TemplateElement) childTableNode;
                         addDataUsingTemplateElement(sredc, childTableElement, activeRow);
@@ -816,14 +816,14 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     {
         // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
         ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
-        if (vs == null)
+        if(vs == null)
             DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
-        else if (vs instanceof SqlExpressionValueSource)
+        else if(vs instanceof SqlExpressionValueSource)
             setColumnSqlExpression(columnValue, vs, sredc);
         else
         {
             Value fieldValue = vs.getValue(sredc);
-            if (fieldValue.getValueHolderClass() == columnValue.getValueHolderClass())
+            if(fieldValue.getValueHolderClass() == columnValue.getValueHolderClass())
                 columnValue.copyValueByReference(fieldValue);
             else
                 columnValue.setTextValue(vs.getTextValue(sredc));
@@ -832,20 +832,20 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public void addDataUsingTemplate(SchemaRecordEditorDialogContext sredc) throws SQLException
     {
-        if (insertDataTemplateProducer == null)
+        if(insertDataTemplateProducer == null)
             return;
 
         final List templateInstances = insertDataTemplateProducer.getInstances();
-        if (templateInstances.size() == 0)
+        if(templateInstances.size() == 0)
             return;
 
         // make sure to get the last template only because inheritance may have create multiples
         Template insertDataTemplate = (Template) templateInstances.get(templateInstances.size() - 1);
         List childTableElements = insertDataTemplate.getChildren();
-        for (int i = 0; i < childTableElements.size(); i++)
+        for(int i = 0; i < childTableElements.size(); i++)
         {
             TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-            if (childTableNode instanceof TemplateElement)
+            if(childTableNode instanceof TemplateElement)
             {
                 TemplateElement childElement = (TemplateElement) childTableNode;
                 addDataUsingTemplateElement(sredc, childElement, null);
@@ -862,14 +862,14 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public void editDataUsingTemplateElement(SchemaRecordEditorDialogContext sredc, TemplateElement templateElement) throws NamingException, SQLException
     {
         SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, templateElement);
-        if (!stte.isTableFound())
+        if(!stte.isTableFound())
             return;
 
         // now we have the table we're dealing with for this template element
         Table table = stte.getTable();
         ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
 
-        if (primaryKeyValueSource == null)
+        if(primaryKeyValueSource == null)
         {
             sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[]{
                 table.getName()
@@ -878,9 +878,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
 
         final Value primaryKeyValue = primaryKeyValueSource.getValue(sredc);
-        if (primaryKeyValue == null)
+        if(primaryKeyValue == null)
         {
-            if (getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
+            if(getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
                 addDataUsingTemplateElement(sredc, templateElement, null);
             else
                 sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
@@ -891,9 +891,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         final Object primaryKeyValueObj = primaryKeyValue.getValue();
         Row activeRow = table.getRowByPrimaryKeys(sredc.getActiveConnectionContext(), new Object[]{primaryKeyValueObj}, null);
-        if (activeRow == null)
+        if(activeRow == null)
         {
-            if (getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
+            if(getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
                 addDataUsingTemplateElement(sredc, templateElement, null);
             else
                 sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
@@ -909,26 +909,26 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // column-value may be a static string which refers to a dialog field name or a value source specification
         // which refers to some dynamic value
         Attributes templateAttributes = templateElement.getAttributes();
-        for (int i = 0; i < templateAttributes.getLength(); i++)
+        for(int i = 0; i < templateAttributes.getLength(); i++)
         {
             String columnName = templateAttributes.getQName(i);
             String columnTextValue = templateAttributes.getValue(i);
 
             // if we have an attribute called _condition then it's a JSTL-style expression that should return true if
             // we want to do this update or false if we don't
-            if (columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
+            if(columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
             {
                 doUpdate = sredc.isConditionalExpressionTrue(columnTextValue, null);
-                if (!doUpdate)
+                if(!doUpdate)
                     break; // don't bother setting values since we're not inserting
             }
 
             // these are private "instructions"
-            if (columnName.startsWith("_"))
+            if(columnName.startsWith("_"))
                 continue;
 
             ColumnValue columnValue = columnValues.getByNameOrXmlNodeName(columnName);
-            if (columnValue == null)
+            if(columnValue == null)
             {
                 getLog().error("Table '" + table.getName() + "' does not have a column named '" + columnName + "'.");
                 continue;
@@ -938,17 +938,17 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
 
 
-        if (doUpdate)
+        if(doUpdate)
         {
             table.update(sredc.getActiveConnectionContext(), activeRow);
             sredc.getRowsUpdated().add(activeRow);
 
             // now recursively add children if any are available
             List childTableElements = templateElement.getChildren();
-            for (int i = 0; i < childTableElements.size(); i++)
+            for(int i = 0; i < childTableElements.size(); i++)
             {
                 TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-                if (childTableNode instanceof TemplateElement)
+                if(childTableNode instanceof TemplateElement)
                 {
                     TemplateElement childTableElement = (TemplateElement) childTableNode;
                     editDataUsingTemplateElement(sredc, childTableElement);
@@ -959,20 +959,20 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public void editDataUsingTemplate(SchemaRecordEditorDialogContext sredc) throws NamingException, SQLException
     {
-        if (editDataTemplateProducer == null)
+        if(editDataTemplateProducer == null)
             return;
 
         final List templateInstances = editDataTemplateProducer.getInstances();
-        if (templateInstances.size() == 0)
+        if(templateInstances.size() == 0)
             return;
 
         // make sure to get the last template only because inheritance may have create multiples
         Template editDataTemplate = (Template) templateInstances.get(templateInstances.size() - 1);
         List childTableElements = editDataTemplate.getChildren();
-        for (int i = 0; i < childTableElements.size(); i++)
+        for(int i = 0; i < childTableElements.size(); i++)
         {
             TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-            if (childTableNode instanceof TemplateElement)
+            if(childTableNode instanceof TemplateElement)
             {
                 TemplateElement childTableElement = (TemplateElement) childTableNode;
                 editDataUsingTemplateElement(sredc, childTableElement);
@@ -989,14 +989,14 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public void deleteDataUsingTemplateElement(SchemaRecordEditorDialogContext sredc, TemplateElement templateElement) throws NamingException, SQLException
     {
         SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, templateElement);
-        if (!stte.isTableFound())
+        if(!stte.isTableFound())
             return;
 
         // now we have the table we're dealing with for this template element
         Table table = stte.getTable();
 
         ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
-        if (primaryKeyValueSource == null)
+        if(primaryKeyValueSource == null)
         {
             sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0}.", new Object[]{
                 table.getName()
@@ -1006,7 +1006,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
         Row activeRow = table.getRowByPrimaryKeys(sredc.getActiveConnectionContext(), new Object[]{primaryKeyValue}, null);
-        if (activeRow == null)
+        if(activeRow == null)
         {
             sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[]{
                 primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName()
@@ -1021,26 +1021,26 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // column-value may be a static string which refers to a dialog field name or a value source specification
         // which refers to some dynamic value
         Attributes templateAttributes = templateElement.getAttributes();
-        for (int i = 0; i < templateAttributes.getLength(); i++)
+        for(int i = 0; i < templateAttributes.getLength(); i++)
         {
             String columnName = templateAttributes.getQName(i);
             String columnTextValue = templateAttributes.getValue(i);
 
             // if we have an attribute called _condition then it's a JSTL-style expression that should return true if
             // we want to do this delete or false if we don't
-            if (columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
+            if(columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
             {
                 doDelete = sredc.isConditionalExpressionTrue(columnTextValue, null);
-                if (!doDelete)
+                if(!doDelete)
                     break; // don't bother setting values since we're not inserting
             }
 
             // these are private "instructions"
-            if (columnName.startsWith("_"))
+            if(columnName.startsWith("_"))
                 continue;
 
             ColumnValue columnValue = columnValues.getByNameOrXmlNodeName(columnName);
-            if (columnValue == null)
+            if(columnValue == null)
             {
                 getLog().error("Table '" + table.getName() + "' does not have a column named '" + columnName + "'.");
                 continue;
@@ -1049,17 +1049,17 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             assignColumnValue(sredc, columnValue, columnTextValue);
         }
 
-        if (doDelete)
+        if(doDelete)
         {
             table.delete(sredc.getActiveConnectionContext(), activeRow);
             sredc.getRowsDeleted().add(activeRow);
 
             // now recursively add children if any are available
             List childTableElements = templateElement.getChildren();
-            for (int i = 0; i < childTableElements.size(); i++)
+            for(int i = 0; i < childTableElements.size(); i++)
             {
                 TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-                if (childTableNode instanceof TemplateElement)
+                if(childTableNode instanceof TemplateElement)
                 {
                     TemplateElement childTableElement = (TemplateElement) childTableNode;
                     deleteDataUsingTemplateElement(sredc, childTableElement);
@@ -1070,20 +1070,20 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public void deleteDataUsingTemplate(SchemaRecordEditorDialogContext sredc) throws NamingException, SQLException
     {
-        if (deleteDataTemplateProducer == null)
+        if(deleteDataTemplateProducer == null)
             return;
 
         final List templateInstances = deleteDataTemplateProducer.getInstances();
-        if (templateInstances.size() == 0)
+        if(templateInstances.size() == 0)
             return;
 
         // make sure to get the last template only because inheritance may have create multiples
         Template deleteDataTemplate = (Template) templateInstances.get(templateInstances.size() - 1);
         List childTableElements = deleteDataTemplate.getChildren();
-        for (int i = 0; i < childTableElements.size(); i++)
+        for(int i = 0; i < childTableElements.size(); i++)
         {
             TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-            if (childTableNode instanceof TemplateElement)
+            if(childTableNode instanceof TemplateElement)
             {
                 TemplateElement childTableElement = (TemplateElement) childTableNode;
                 deleteDataUsingTemplateElement(sredc, childTableElement);
@@ -1096,43 +1096,43 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         boolean duplicateFound = false;
         List templateInstances;
 
-        if (sredc.editingData())
+        if(sredc.editingData())
         {
-            if (editDataTemplateProducer == null) return false;
+            if(editDataTemplateProducer == null) return false;
             templateInstances = editDataTemplateProducer.getInstances();
         }
         else
         {
-            if (insertDataTemplateProducer == null) return false;
+            if(insertDataTemplateProducer == null) return false;
             templateInstances = insertDataTemplateProducer.getInstances();
         }
 
-        if (templateInstances.size() == 0)
+        if(templateInstances.size() == 0)
             return false;
 
         // make sure to get the last template only because inheritance may have create multiples
         Template editDataTemplate = (Template) templateInstances.get(templateInstances.size() - 1);
         List childTableElements = editDataTemplate.getChildren();
-        for (int i = 0; i < childTableElements.size(); i++)
+        for(int i = 0; i < childTableElements.size(); i++)
         {
             TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-            if (childTableNode instanceof TemplateElement)
+            if(childTableNode instanceof TemplateElement)
             {
                 TemplateElement childTableElement = (TemplateElement) childTableNode;
                 SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, childTableElement);
-                if (!stte.isTableFound())
+                if(!stte.isTableFound())
                     return false;
 
                 Table table = stte.getTable();
                 Attributes templateAttributes = childTableElement.getAttributes();
 
                 Indexes indexes = table.getIndexes();
-                for (int j = 0; j < indexes.size(); j++)
+                for(int j = 0; j < indexes.size(); j++)
                 {   //Iterate through all of the indexes.  This includes all of the single columns indexes that are created when
                     //a columns is marked as unique.
 
                     Index index = indexes.get(j);
-                    if (!index.isUnique())
+                    if(!index.isUnique())
                         continue;
 
 
@@ -1140,14 +1140,14 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
                     IndexColumns indexColumns = index.getColumns();
                     List params = new ArrayList();
-                    for (int k = 0; k < indexColumns.size(); k++)
+                    for(int k = 0; k < indexColumns.size(); k++)
                     {   //Iterate through all of the columns in the index
                         Column column = indexColumns.get(k);
                         String columnTextValue = templateAttributes.getValue(column.getName());
                         String columnValue;
                         // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
                         ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
-                        if (vs == null)
+                        if(vs == null)
                         {
                             DialogField.State fieldState = sredc.getFieldStates().getState(columnTextValue);
                             columnValue = fieldState.getValue().getTextValue();
@@ -1165,23 +1165,23 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                     QueryResultSet results = indexAccessor.execute(sredc.getActiveConnectionContext(), params.toArray(), false);
                     ResultSet resultSet = results.getResultSet();
 
-                    if (resultSet.next())
+                    if(resultSet.next())
                     {
-                        if (sredc.editingData())
+                        if(sredc.editingData())
                         {
                             ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
 
-                            if (primaryKeyValueSource != null)
+                            if(primaryKeyValueSource != null)
                             {
                                 Value primaryKeyValue = primaryKeyValueSource.getValue(sredc);
-                                if (primaryKeyValue != null)
+                                if(primaryKeyValue != null)
                                 {
                                     ColumnValues dialogVals = table.createRow().getPrimaryKeyValues();
                                     ColumnValues dbVals = table.createRow().getPrimaryKeyValues();
 
                                     dialogVals.getByColumnIndex(0).setValue(primaryKeyValue.getValue());
                                     dbVals.getByColumnIndex(0).setValueFromSqlResultSet(resultSet, 0, resultSet.findColumn(table.getPrimaryKeyColumns().get(0).getName()));
-                                    if (dbVals.equals(dialogVals))
+                                    if(dbVals.equals(dialogVals))
                                         continue; // This means that the row found was the same as the one we were trying to update so it should be ok
                                 }
                             }
@@ -1189,21 +1189,21 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
                         getLog().debug("A Unique constraint violation found for Table: '" + table.getName() + "' Index: '" + index.getName() + "'");
 
-                        if (fields.size() == 1)
+                        if(fields.size() == 1)
                         {   //If there is only one field that is violating the unqie constraint then the scenario is simple
                             DialogField.State fieldState = (DialogField.State) fields.get(0);
-                            if (fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
+                            if(fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
                                 sredc.getValidationContext().addError("A problem was encountered when validating that the data was able to be persisted.  Please re-open the record you were trying to edit and try it again.");
                             else
                                 fieldState.getField().invalidate(sredc, "The value for field: " + fieldState.getField().getName() + " must be unique.  A record was found with the same value.  Please change the value and try again.");
                         }
-                        else if (fields.size() > 1)
+                        else if(fields.size() > 1)
                         {   //If there are more than one field, then need to construct a list of the field name to show at the top of the dialog
                             String fieldNameList = "";
-                            for (int k = 0; k < fields.size(); k++)
+                            for(int k = 0; k < fields.size(); k++)
                             {   //Looping through each field and invalidating it and adding to the list of fields if the field is visible and available to the user
                                 DialogField.State fieldState = (DialogField.State) fields.get(k);
-                                if (fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
+                                if(fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
                                 {
                                     fieldState.getField().invalidate(sredc, "The value for field: " + fieldState.getField().getName() + " must be unique.  A record was found with the same value.  Please change the value and try again.");
                                     fieldNameList = fieldNameList + (fieldNameList.length() <= 0 ? "" : ", ") + fieldState.getField().getName();
@@ -1231,7 +1231,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public boolean isValid(DialogContext dc)
     {
         boolean superIsValid = super.isValid(dc);
-        if (!superIsValid)
+        if(!superIsValid)
             return false; //No need to continue if there was something invalid with the dialog.
 
         boolean isValid = true;
@@ -1242,7 +1242,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         {
             ConnectionContext cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, true);
             sredc.setActiveConnectionContext(cc);
-            switch ((int) dc.getDialogState().getPerspectives().getFlags())
+            switch((int) dc.getDialogState().getPerspectives().getFlags())
             {
                 case DialogPerspectives.ADD:
                 case DialogPerspectives.EDIT:
@@ -1251,7 +1251,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             }
             sredc.setActiveConnectionContext(null);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             getLog().error("Error while Validating duplicates on unique columns.", e);
         }
@@ -1266,7 +1266,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
      */
     public void execute(Writer writer, DialogContext dc) throws DialogExecuteException, IOException
     {
-        if (dc.executeStageHandled())
+        if(dc.executeStageHandled())
             return;
         SchemaRecordEditorDialogContext sredc = ((SchemaRecordEditorDialogContext) dc);
 
@@ -1277,7 +1277,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, true);
             sredc.setActiveConnectionContext(cc);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             handlePostExecuteException(writer, dc, dc.getDialogState().getPerspectives() + ": unable to establish connection", e);
             return;
@@ -1285,7 +1285,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         try
         {
-            switch ((int) dc.getDialogState().getPerspectives().getFlags())
+            switch((int) dc.getDialogState().getPerspectives().getFlags())
             {
                 case DialogPerspectives.ADD:
                     addDataUsingTemplate(sredc);
@@ -1300,7 +1300,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                     break;
             }
 
-            if (handlers.size() > 0)
+            if(handlers.size() > 0)
                 handlers.handleDialogExecute(writer, dc);
 
             sredc.setActiveConnectionContext(null);
@@ -1308,13 +1308,13 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             dc.setExecuteStageHandled(true);
             handlePostExecute(writer, dc);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             try
             {
                 cc.rollbackAndClose();
             }
-            catch (SQLException e1)
+            catch(SQLException e1)
             {
                 getLog().error("Error while rolling back DML", e1);
             }
