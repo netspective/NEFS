@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.42 2003-06-12 14:36:08 shahid.shah Exp $
+  * $Id: console.xml,v 1.43 2003-06-12 16:08:05 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -11,6 +11,7 @@
 
     <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="c:\Projects\Frameworks\Sparx\src\java\main\com\netspective\sparx\console"/>
     <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
+    <register-value-source class="com.netspective.sparx.console.value.ConsolePageContentPathValueSource"/>
 
     <panel-type name="console-page-summary" extends="html">
         <frame heading="Overview"/>
@@ -27,11 +28,11 @@
                 <panels style="vertical">
                     <panel type="html">
                         <frame heading="Welcome"/>
-                        <body config="console" source="content/home/welcome.ftl"/>
+                        <body config="console" source="console-page-content:welcome.ftl"/>
                     </panel>
                     <panel type="html">
                         <frame heading="Configuration Overview"/>
-                        <body config="console" source="content/home/app-overview.ftl"/>
+                        <body config="console" source="console-page-content:app-overview.ftl"/>
                     </panel>
                 </panels>
 
@@ -201,6 +202,14 @@
 
         <page name="framework" caption="Framework">
             <page name="xdm" caption="XDM">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Using XDM"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+
                 <page name="components" caption="Instances">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.framework.XdmComponentsPanel"/>
@@ -222,6 +231,7 @@
                     </panels>
                 </page>
             </page>
+
             <page name="commands" caption="Commands">
                 <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="command-class">
                     <panels>
@@ -234,7 +244,16 @@
                     </panels>
                 </page>
             </page>
+
 	        <page name="value-source" caption="Value Sources">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Using Value Sources"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+
                 <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="value-source-class">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesCatalogPanel"/>
