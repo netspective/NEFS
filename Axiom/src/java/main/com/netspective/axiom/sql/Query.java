@@ -597,4 +597,9 @@ public class Query
             throw e;
         }
     }
+
+    public int executeUpdate(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
+    {
+        return executeUpdateAndIgnoreStatistics(cc, overrideParams);
+    }
 }
