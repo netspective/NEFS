@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.1 ($Date: 2004-03-24 15:26:51 $)</releaseinfo>
+    <releaseinfo>Release 7.1 ($Date: 2004-04-26 12:24:15 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until March 31, 2004 when it's
     expected to be completed. Check back daily until then because material is
@@ -835,9 +835,10 @@
                 <para>When writing your own application you will simply append
                 <literal>/console</literal> to the end of your own
                 application's context identifier. If your app would be
-                available at http://your-server/your-app-id then the Console
-                for your application would be available at
-                http://http://your-server/your-app-id/console.</para>
+                available at
+                http://<replaceable>your-server</replaceable>/<replaceable>your-app-id</replaceable>
+                then the Console for your application would be available at
+                http://<replaceable>your-server</replaceable>/<replaceable>your-app-id</replaceable>/<literal>console</literal>.</para>
               </listitem>
             </varlistentry>
           </variablelist>
