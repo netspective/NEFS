@@ -51,17 +51,12 @@
  */
  
 /**
- * $Id: HtmlPanelBanner.java,v 1.3 2003-06-21 21:42:00 shahid.shah Exp $
+ * $Id: HtmlPanelBanner.java,v 1.4 2004-01-20 22:00:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.panel.HtmlPanelAction;
 import com.netspective.sparx.panel.HtmlPanelActions;
@@ -69,44 +64,22 @@ import com.netspective.sparx.panel.HtmlPanelActions;
 public class HtmlPanelBanner
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static class Style extends XdmEnumeratedAttribute
-    {
-        public static final int HORIZONTAL = 0;
-        public static final int VERTICAL = 1;
-
-        public static final String[] VALUES = new String[] { "horizontal", "vertical" };
-
-        public Style()
-        {
-        }
-
-        public Style(int valueIndex)
-        {
-            super(valueIndex);
-        }
-
-        public String[] getValues()
-        {
-            return VALUES;
-        }
-    }
 
     private HtmlPanelActions actions = new HtmlPanelActions();
     private ValueSource content;
-    private Style style = new Style(Style.HORIZONTAL);
 
     public HtmlPanelBanner()
     {
     }
 
-    public Style getStyle()
+    public HtmlPanelActions.Style getStyle()
     {
-        return style;
+        return actions.getStyle();
     }
 
-    public void setStyle(Style style)
+    public void setStyle(HtmlPanelActions.Style style)
     {
-        this.style = style;
+        this.setStyle(style);
     }
 
     public ValueSource getContent()

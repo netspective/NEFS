@@ -2,6 +2,18 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.0.15"/>
+        <change-log>
+            <summary>Minor bug fixed</summary>
+            <change-log-entry>
+                Fixed problem where the HtmlPanelBanner class was using HtmlPanelActions to delegate action handling
+                but had its own style (horiz/vertical) attribute and not passing the style over to the HtmlPanelActions.
+                Now, the style is delegated and should work in horizontal or vertical mode.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Axiom" version="7.0.10"/>
         <change-log>
             <summary>Minor bug fixed</summary>
