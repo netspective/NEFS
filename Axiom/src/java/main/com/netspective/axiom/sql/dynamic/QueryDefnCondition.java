@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnCondition.java,v 1.2 2003-08-11 07:23:08 aye.thu Exp $
+ * $Id: QueryDefnCondition.java,v 1.3 2004-04-01 15:51:45 zahara.khan Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -51,6 +51,11 @@ import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundExcepti
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnSqlComparisonNotFoundException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 
+/**
+ * Class representing the selection criteria for a dynamic query (query definition).
+ * Determine how the data input from this query definition's select-dialog is
+ * interpreted by the query definition engine.
+ */
 public class QueryDefnCondition
 {
     static public final int CONNECT_AND = 0;
@@ -128,6 +133,14 @@ public class QueryDefnCondition
         return comparison;
     }
 
+    /**
+     * Sets the relational operator to be used for this condition.  For example,
+     * gte-date, greater-than-equal and ends-with.
+     *
+     * @param attr comparison operator
+     * @throws QueryDefnSqlComparisonNotFoundException when the given value does not
+     *                                                 correspond to a valid operator
+     */
     public void setComparison(SqlComparisonEnumeratedAttribute attr) throws QueryDefnSqlComparisonNotFoundException
     {
         comparison = SqlComparisonFactory.getComparison(attr.getValue());
@@ -141,6 +154,12 @@ public class QueryDefnCondition
         return value;
     }
 
+    /**
+     * Set the field of the main query definition with which this select-dialog
+     * field is to be compared.
+     *
+     * @param value
+     */
     public void setValue(ValueSource value)
     {
         this.value = value;
@@ -181,6 +200,15 @@ public class QueryDefnCondition
         return removeIfValueNull || removeIfValueNullChildren;
     }
 
+    /**
+     * Sets whether or not to allow <code>NULL</code> as a valid bind parameter value.
+     *
+     * @param allowNull   If set to <code>false</code>, the select generated will
+     *                    omit the field if the corresponding dialog field happens
+     *                    to be empty.  Otherwise, it keeps the field in the generated
+     *                    sql (with NULL value) if the corresponding dialog field
+     *                    happens to be empty.
+     */
     public void setAllowNull(boolean allowNull)
     {
         removeIfValueNull = ! allowNull;

@@ -48,6 +48,10 @@ import com.netspective.sparx.Project;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * Class representing a dynamic SQL Statement along with its bind parameters, join conditions
+ * and report definitions defined using the <query-defn> in XML.
+ */
 public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefinition
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
@@ -116,6 +120,11 @@ public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefi
         return project;
     }
 
+    /**
+     * Sets the unique name for this dynamic query.
+     *
+     * @param name dynamic query's name
+     */
     public void setName(String name)
     {
         super.setName(name);

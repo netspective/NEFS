@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.13 2003-08-31 22:41:45 shahid.shah Exp $
+ * $Id: Query.java,v 1.14 2004-04-01 15:51:21 zahara.khan Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -198,6 +198,11 @@ public class Query
         return queryName;
     }
 
+    /**
+     * Sets this query's name.
+     *
+     * @param name query name
+     */
     public void setName(String name)
     {
         this.queryName = name;
