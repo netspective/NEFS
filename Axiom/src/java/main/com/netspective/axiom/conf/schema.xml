@@ -307,8 +307,8 @@
         <presentation>
             <dialog class="com.netspective.sparx.form.schema.TableDialog"
                     name="${table.name}"
-                    schemaName="${table.getSchema().getName()}"
-                    tableName="${table.getName()}">
+                    bind-table="${table.schema.name}.${table.name}"
+                    auto-bind-fields-to-columns="yes">
                 <frame heading="create-dialog-perspective-heading:${table.getCaption()}"/>
                 <data-type-presentation columns="*"/>
             </dialog>
