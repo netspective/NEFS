@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.12 2003-12-18 20:06:26 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.13 2003-12-18 20:09:06 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -858,7 +858,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             Column column = value.getColumn();
 
             // primary keys should not be in the update SQL
-            if(execute && column.isPrimaryKey())
+            if(column.isPrimaryKey())
                 continue;
 
             if(execute && (column instanceof GeneratedValueColumn))
