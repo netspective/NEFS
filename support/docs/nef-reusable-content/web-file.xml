@@ -6,7 +6,7 @@
   Specification<footnote>
       <para>You can get a copy of the Java Servlet Specification directly from
       Sun Microsystems' web site at the following URL: <ulink
-      url="http://java.sun.com/products/servelet/download.html">http://java.sun.com/products/servelet/download.html</ulink></para>
+      url="http://java.sun.com/products/servlet/download.html">http://java.sun.com/products/servlet/download.html</ulink></para>
     </footnote>, contains information specific to the application server under
   which the application si running. As an example, it might contain a mapping
   of URLs to specific servlets that should handle those URLs. It might also
