@@ -39,10 +39,12 @@
 .menu-level-1:visited   { color: #9370db; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-1:hover  { color: #000080; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-3-separator { background-color: #6a5acd }
+
 .masthead-right-table { border-bottom: 1px solid #000 }
-.masthead     { }
-.masthead-right         { background: #6a5acd url(../images/masthead/masthead-rightside.gif) no-repeat right top; border-bottom: 1px solid black }
-.masthead-left     { background: url(../images/masthead/masthead.gif) no-repeat left top }
+.masthead    { background: #6a5acd  url(../images/masthead/masthead.gif) no-repeat left top }
+.masthead-right        { background: url(../images/masthead/masthead-rightside.gif) no-repeat right top; border-bottom: 1px solid black }
+.masthead-left    { }
+
 .page-heading       { color: #000; font-weight: bold; font-size: 22px; font-family: "Trebuchet MS", Verdana; text-decoration: none; padding-top: 4px; padding-bottom: 2px; padding-left: 10px; border-bottom: 1px solid #b8b8b8 }
 .page-heading-table  { background: url(../images/pagetitle/pagetitle-blend.gif) no-repeat left top }
 .page-heading-icon       { padding-top: 4px; padding-left: 7px; border-right: 1px solid #b8b8b8; border-bottom: 1px solid #b8b8b8; width: 26px; height: 28px }
