@@ -35,7 +35,6 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
  */
 package com.netspective.medigy.model.data;
 
@@ -43,6 +42,9 @@ import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.HibernateException;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -52,6 +54,8 @@ import java.util.Hashtable;
 
 public class EntitySeedDataPopulator
 {
+    private Log log = LogFactory.getLog(EntitySeedDataPopulator.class);
+
     private Session session;
     private Party globalParty;
 
@@ -60,7 +64,7 @@ public class EntitySeedDataPopulator
         this.session = session;
     }
 
-    public void populateSeedData()
+    public void populateSeedData() throws HibernateException
     {
         HibernateUtil.beginTransaction();
         globalParty = new Party("SYS_GLOBAL_PARTY");
@@ -71,20 +75,20 @@ public class EntitySeedDataPopulator
         HibernateUtil.closeSession();
     }
 
-    protected void populatePartyRoleType()
+    protected void populatePartyRoleType() throws HibernateException
     {
         populateEntity(session, PartyRoleType.class, new String[] {"code", "label", "description", "party"},
             new Object[][]
             {
-                {PartyRoleType.Cache.PROSPECT.getEntity().getCode(), PartyRoleType.Cache.PROSPECT.getEntity().getLabel(), PartyRoleType.Cache.PROSPECT.getEntity().getDescription(), globalParty},
-                {PartyRoleType.Cache.DIVISION.getEntity().getCode(), PartyRoleType.Cache.DIVISION.getEntity().getLabel(), PartyRoleType.Cache.DIVISION.getEntity().getDescription(), globalParty},
-                {PartyRoleType.Cache.OTHER_ORG_UNIT.getEntity().getCode(), PartyRoleType.Cache.OTHER_ORG_UNIT.getEntity().getLabel(), PartyRoleType.Cache.OTHER_ORG_UNIT.getEntity().getDescription(), globalParty},
-                {PartyRoleType.Cache.DEPARTMENT.getEntity().getCode(), PartyRoleType.Cache.DEPARTMENT.getEntity().getLabel(), PartyRoleType.Cache.DEPARTMENT.getEntity().getDescription(), globalParty},
-                {PartyRoleType.Cache.SUBSIDIARY.getEntity().getCode(), PartyRoleType.Cache.SUBSIDIARY.getEntity().getLabel(), PartyRoleType.Cache.SUBSIDIARY.getEntity().getDescription(), globalParty},
-                {PartyRoleType.Cache.PARENT_ORG.getEntity().getCode(), PartyRoleType.Cache.PARENT_ORG.getEntity().getLabel(), PartyRoleType.Cache.PARENT_ORG.getEntity().getDescription(), globalParty},
-                {PartyRoleType.Cache.FAMILY_MEMBER.getEntity().getCode(), PartyRoleType.Cache.FAMILY_MEMBER.getEntity().getLabel(), PartyRoleType.Cache.FAMILY_MEMBER.getEntity().getDescription(), globalParty},
-                {PartyRoleType.Cache.CONTRACTOR.getEntity().getCode(), PartyRoleType.Cache.CONTRACTOR.getEntity().getLabel(), PartyRoleType.Cache.CONTRACTOR.getEntity().getDescription(), globalParty},
-                {PartyRoleType.Cache.EMPLOYEE.getEntity().getCode(), PartyRoleType.Cache.EMPLOYEE.getEntity().getLabel(), PartyRoleType.Cache.EMPLOYEE.getEntity().getDescription(), globalParty},
+                {PartyRoleType.Cache.PROSPECT.getCode(), "Prospect", null, globalParty},
+                {PartyRoleType.Cache.DIVISION.getCode(), "Division", null, globalParty},
+                {PartyRoleType.Cache.OTHER_ORG_UNIT.getCode(), "Other Organization Unit", null, globalParty},
+                {PartyRoleType.Cache.DEPARTMENT.getCode(), "Department", null, globalParty},
+                {PartyRoleType.Cache.SUBSIDIARY.getCode(), "Subsidiary", null, globalParty},
+                {PartyRoleType.Cache.PARENT_ORG.getCode(), "Parent Organization", null, globalParty},
+                {PartyRoleType.Cache.FAMILY_MEMBER.getCode(), "Family Member", null, globalParty},
+                {PartyRoleType.Cache.CONTRACTOR.getCode(), "Contractor", null, globalParty},
+                {PartyRoleType.Cache.EMPLOYEE.getCode(), "Employee", null, globalParty},
             }
         );
 
@@ -93,7 +97,7 @@ public class EntitySeedDataPopulator
     protected void  populateEntity(final Session session,
                                final Class entityClass,
                                final String[] propertyList,
-                               final Object[][] data)
+                               final Object[][] data)  throws HibernateException
     {
         try
         {
@@ -121,7 +125,8 @@ public class EntitySeedDataPopulator
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
+            throw new HibernateException(e);
         }
     }
 }
