@@ -603,6 +603,11 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         return javaPropertyName == null ? TextUtils.getInstance().xmlTextToJavaIdentifier(getName(), false) : javaPropertyName;
     }
 
+    public String getJavaPropertyName(String defaultJavaPropName)
+    {
+        return javaPropertyName == null ? defaultJavaPropName : javaPropertyName;
+    }
+
     public void setName(String value)
     {
         name = value;
