@@ -365,13 +365,15 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             vc.getHttpResponse().addCookie(cookie);
         }
 
-        HttpServletRequest req = vc.getHttpRequest();
-        MutableAuthenticatedUser user = (MutableAuthenticatedUser) getAuthenticatedUser(req);
+        final HttpServletRequest req = vc.getHttpRequest();
+        final MutableAuthenticatedUser user = (MutableAuthenticatedUser) getAuthenticatedUser(req);
+        final HttpSession session = req.getSession();
         if(user != null)
         {
             registerLogout(vc, user);
-            req.getSession().removeAttribute(getAuthenticatedUserSessionAttrName());
+            session.removeAttribute(getAuthenticatedUserSessionAttrName());
         }
+        session.invalidate();
     }
 
     public boolean allowLoginAttempt(LoginDialogContext ldc)
