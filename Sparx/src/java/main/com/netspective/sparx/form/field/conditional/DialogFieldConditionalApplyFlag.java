@@ -51,24 +51,23 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.12 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.13 2004-01-27 04:05:05 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.Value;
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.sparx.form.field.DialogFieldConditionalAction;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogPerspectives;
-import com.netspective.sparx.console.ConsoleServlet;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldConditionalAction;
+import com.netspective.sparx.form.field.DialogFieldFlags;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalAction
 {
@@ -292,7 +291,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         if(status && hasValue != null)
         {
             Value value = hasValue.getValue(dc);
-            status = value.getTextValue() != null ? true : false;
+            status = value.getTextValue() != null && value.getTextValue().trim().length() > 0 ? true : false;
         }
         // check the isTrue attribute
         if(status && isTrue != null)
