@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.10 2003-08-17 00:03:26 shahid.shah Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.11 2003-09-14 05:32:02 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -230,10 +230,26 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
         {
             setActivePage(getTotalPages());
         }
+
+        public long getCreationTime()
+        {
+            return creationTime;
+        }
+
+        public long getLastAccessTime()
+        {
+            return lastAccessed;
+        }
+
+        public long getInactivityTime()
+        {
+            return lastAccessed - creationTime;
+        }
     }
 
     private static ValueSource defaultNoDataFoundMsg = new StaticValueSource("No data available.");
     protected TabularReportValueContext reportValueContext;
+    protected long creationTime = System.currentTimeMillis();
     protected long lastAccessed = System.currentTimeMillis();
 
     public AbstractTabularReportDataSource()

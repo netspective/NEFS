@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportDataSourceScrollState.java,v 1.4 2003-08-17 00:03:26 shahid.shah Exp $
+ * $Id: TabularReportDataSourceScrollState.java,v 1.5 2003-09-14 05:32:02 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -66,6 +66,10 @@ public interface TabularReportDataSourceScrollState
 
     public int getRowsProcessed();
     public void accumulateRowsProcessed(int rowsProcessed);
+
+    public long getCreationTime();
+    public long getLastAccessTime();
+    public long getInactivityTime();
 
     public void close();   // called explicity when no longer needed
     public void timeOut(); // called implicity if user who is using it timeOuts (session destroyed -- should just close)
