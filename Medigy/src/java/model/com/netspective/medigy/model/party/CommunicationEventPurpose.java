@@ -39,17 +39,17 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
-
-import javax.ejb.OneToOne;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
 import javax.ejb.Column;
 import javax.ejb.Entity;
-import javax.ejb.Table;
-import javax.ejb.Id;
 import javax.ejb.GeneratorType;
+import javax.ejb.Id;
+import javax.ejb.JoinColumn;
+import javax.ejb.ManyToOne;
+import javax.ejb.OneToOne;
+import javax.ejb.Table;
+
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
 
 @Entity
 @Table(name = "Comm_Event_Purpose")        
@@ -88,7 +88,7 @@ public class CommunicationEventPurpose extends AbstractTopLevelEntity
     }
 
     @ManyToOne
-    @JoinColumn(name = "comm_event_id")
+    @JoinColumn(name = "comm_event_id", nullable = false)
     public CommunicationEvent getCommunicationEvent()
     {
         return communicationEvent;

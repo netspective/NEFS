@@ -40,18 +40,18 @@
 
 package com.netspective.medigy.model.person;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.type.GenderType;
-
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
 import javax.ejb.JoinColumn;
+import javax.ejb.ManyToOne;
 import javax.ejb.OneToOne;
 import javax.ejb.Table;
-import javax.ejb.ManyToOne;
+
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.type.GenderType;
 
 @Entity
 @Table(name = "Person_Gender")
@@ -82,7 +82,7 @@ public class Gender extends AbstractDateDurationEntity implements Comparable
     }
 
     @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_id")
+    @JoinColumn(name = "party_id", nullable = false)
     public Person getPerson()
     {
         return person;

@@ -39,7 +39,8 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -48,10 +49,10 @@ import javax.ejb.GeneratorType;
 import javax.ejb.Id;
 import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
-import javax.ejb.Table;
 import javax.ejb.OneToMany;
-import java.util.Set;
-import java.util.HashSet;
+import javax.ejb.Table;
+
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
 
 @Entity
 @Table(name = "Comm_Event")
@@ -90,7 +91,7 @@ public class CommunicationEvent extends AbstractDateDurationEntity
     }
 
     @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_rel_id")
+    @JoinColumn(name = "party_rel_id", nullable = false)
     public PartyRelationship getPartyRelationship()
     {
         return partyRelationship;

@@ -39,9 +39,6 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.type.ContactMechanismType;
-
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
 import javax.ejb.Entity;
@@ -51,6 +48,9 @@ import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
 import javax.ejb.OneToOne;
 import javax.ejb.Table;
+
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.type.ContactMechanismType;
 
 @Entity
 @Table(name = "Party_Contact_Mech")
@@ -91,7 +91,7 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_id")
+    @JoinColumn(name = "party_id", nullable = false)
     public Party getParty()
     {
         return party;

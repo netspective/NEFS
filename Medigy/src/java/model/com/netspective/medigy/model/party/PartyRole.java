@@ -39,8 +39,8 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -52,8 +52,9 @@ import javax.ejb.ManyToOne;
 import javax.ejb.OneToMany;
 import javax.ejb.OneToOne;
 import javax.ejb.Table;
-import java.util.HashSet;
-import java.util.Set;
+
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
 @Entity
 @Table(name = "Party_Role")
@@ -100,7 +101,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
 
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "party_id")
+    @JoinColumn(name = "party_id", nullable = false)
     public Party getParty()
     {
         return party;

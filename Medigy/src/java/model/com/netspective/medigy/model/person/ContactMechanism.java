@@ -43,13 +43,13 @@
  */
 package com.netspective.medigy.model.person;
 
-import com.netspective.medigy.model.common.AbstractContactMechanism;
-
 import javax.ejb.CascadeType;
 import javax.ejb.Entity;
 import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
 import javax.ejb.Table;
+
+import com.netspective.medigy.model.common.AbstractContactMechanism;
 
 @Entity @Table(name = "Person_Contact_Mech")
 public class ContactMechanism extends AbstractContactMechanism
@@ -61,7 +61,7 @@ public class ContactMechanism extends AbstractContactMechanism
     }
 
     @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "partyId")
+    @JoinColumn(name = "partyId", nullable = false)
     public Person getPerson()
     {
         return person;

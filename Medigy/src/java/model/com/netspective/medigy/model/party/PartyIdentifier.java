@@ -39,16 +39,16 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractEntity;
-import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
-
+import javax.ejb.CascadeType;
+import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.Id;
-import javax.ejb.ManyToOne;
-import javax.ejb.CascadeType;
 import javax.ejb.JoinColumn;
+import javax.ejb.ManyToOne;
 import javax.ejb.OneToOne;
-import javax.ejb.Column;
+
+import com.netspective.medigy.model.common.AbstractEntity;
+import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
 
 @Entity
 public class PartyIdentifier extends AbstractEntity
@@ -75,7 +75,7 @@ public class PartyIdentifier extends AbstractEntity
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_id")
+    @JoinColumn(name = "party_id", nullable = false)
     public Party getParty()
     {
         return party;

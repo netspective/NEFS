@@ -39,9 +39,6 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.type.party.PartyFacilityRoleType;
-
 import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
@@ -50,6 +47,9 @@ import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
 import javax.ejb.OneToOne;
 import javax.ejb.Table;
+
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.type.party.PartyFacilityRoleType;
 
 @Entity
 @Table(name = "Party_Fac_Role")
@@ -79,7 +79,7 @@ public class PartyFacilityRole extends AbstractTopLevelEntity
     }
 
     @ManyToOne
-    @JoinColumn(name = "party_id")
+    @JoinColumn(name = "party_id", nullable = false)
     public Party getParty()
     {
         return party;
