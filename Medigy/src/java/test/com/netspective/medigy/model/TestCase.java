@@ -45,6 +45,12 @@ package com.netspective.medigy.model;
 
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
+import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
+import com.netspective.tool.hibernate.document.diagram.DefaultHibernateDiagramFilter;
+import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
+import com.netspective.tool.graphviz.GraphvizLayoutType;
+
 import org.hibernate.HibernateException;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.cfg.Environment;
@@ -124,10 +130,22 @@ public abstract class TestCase extends junit.framework.TestCase
         HibernateUtil.setConfiguration(hibernateConfiguration);
         HibernateUtil.initReferenceEntityCaches(hibernateConfiguration.getReferenceEntitiesAndCachesMap());
 
+        // Generate the DDL into a file so we can review it
         final SchemaExport se = new SchemaExport(hibernateConfiguration);
         final String dialectName = hibernateConfiguration.getProperties().getProperty(Environment.DIALECT);
-        se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectName.substring(dialectName.lastIndexOf('.')+1) + ".ddl");
+        final String dialectShortName = dialectName.substring(dialectName.lastIndexOf('.')+1);
+        se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".ddl");
         se.create(false, false);
+
+        // Generate a DOT (GraphViz) diagram so we can visualize the DDL
+        final File dotDestFile = new File(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".dot");
+        final File diagramFile = new File(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".png");
+        final GraphvizDiagramGenerator diagrammer = new GraphvizDiagramGenerator("MEDIGY", true, GraphvizLayoutType.DOT);
+        final HibernateDiagramGeneratorFilter filter = new DefaultHibernateDiagramFilter();
+        final HibernateDiagramGenerator hdg = new HibernateDiagramGenerator(hibernateConfiguration, diagrammer, filter);
+        hdg.generate();
+        diagrammer.generateDOTSource(dotDestFile);
+        Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o"+ diagramFile + " " + dotDestFile);
     }
 
     protected void tearDown() throws Exception
