@@ -145,15 +145,18 @@
             <page name="account" caption="My Account" heading="My Account" title="CTMS">
                 <panels>
                     <panel type="command" command="query,person.self-info,-,-,-,detail-compressed"/>
+                    <panel type="command" command="query,person.self-contact-info,-,subject-view,-,record-manager-compressed"/>
                 </panels>
-                <page name="edit" caption="Edit profile" heading="Edit your personal profile" title="CTMS"/>
-
-                <page name="contacts" caption="Contact Information" heading="Contact Information" title="CTMS"
-                    command="query,person.self-contact-info,-,-,-,record-viewer-compressed">
-                    <page name="add" caption="Add new contact entry" heading="Add a new contact entry" title="CTMS"
-                        command="dialog,person.contact-info,add"/>
-                    <page name="edit" caption="Edit contact entry" heading="Edit contact entry" title="CTMS"/>
-                    <page name="delete" caption="Delete contact entry" heading="Delete contact entry" title="CTMS"/>
+                <page name="edit" caption="Edit profile" heading="Edit your personal profile" title="CTMS"
+                    command="dialog,coordinator.self-short-profile,edit" />
+                <page name="contacts" caption="My Contact Information" heading="Contact Information" title="CTMS"
+                    hidden="yes">
+                    <page name="add_contact" caption="Add new contact entry" heading="Add a new contact entry" title="CTMS"
+                        command="dialog,person.contact-info,add" hidden="yes"/>
+                    <page name="edit_contact" caption="Edit contact entry" heading="Edit contact entry" title="CTMS"
+                        command="dialog,person.contact-info,edit" hidden="yes"/>
+                    <page name="delete_contact" caption="Delete contact entry" heading="Delete contact entry" title="CTMS"
+                        command="dialog,person.contact-info,delete" hidden="yes"/>
                 </page>
                 <page name="password" caption="Change Password" heading="Change Password" title="CTMS"
                     command="dialog,person.self-login-info,edit"/>
