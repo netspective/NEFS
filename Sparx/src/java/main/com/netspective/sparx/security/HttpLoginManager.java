@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.20 2003-11-13 17:30:50 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.21 2003-11-19 02:27:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -290,7 +290,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public AuthenticatedUser getAuthenticatedUser(HttpServletRequest request)
     {
-        return getAuthenticatedUser(request.getSession(true));
+        return getAuthenticatedUser(request.getSession());
     }
 
     public AuthenticatedUser getAuthenticatedUser(HttpServletValueContext vc)
@@ -338,7 +338,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public void login(HttpServletValueContext vc, AuthenticatedUser user, boolean rememberUserId)
     {
-        vc.getHttpRequest().getSession(true).setAttribute(getAuthenticatedUserSessionAttrName(), user);
+        vc.getHttpRequest().getSession().setAttribute(getAuthenticatedUserSessionAttrName(), user);
 
         if(isAllowRememberUserId() && rememberUserId)
         {
@@ -435,7 +435,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         if(log.isDebugEnabled())
         {
             String userId = user.getUserId();
-            log.debug("User '" + userId + "' (" + user.getUserName() + ") is now authenticated for Session ID '" + req.getSession(true).getId() + "'");
+            log.debug("User '" + userId + "' (" + user.getUserName() + ") is now authenticated for Session ID '" + req.getSession().getId() + "'");
 
             BitSet perms = user.getUserPermissions();
             if(perms != null)

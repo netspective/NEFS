@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultLoginAttemptsManager.java,v 1.3 2003-11-13 17:30:50 shahid.shah Exp $
+ * $Id: DefaultLoginAttemptsManager.java,v 1.4 2003-11-19 02:27:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -101,7 +101,7 @@ public class DefaultLoginAttemptsManager implements HttpLoginAttemptsManager
 
     public boolean allowLoginAttempt(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
-        HttpSession session = loginDialogContext.getHttpRequest().getSession(true);
+        HttpSession session = loginDialogContext.getHttpRequest().getSession();
         if(session.getAttribute(SESSATTRNAME_MAX_LOGIN_ATTEMPTS_EXCEEDED) != null)
             return false;
 
@@ -134,7 +134,7 @@ public class DefaultLoginAttemptsManager implements HttpLoginAttemptsManager
 
     public void maxLoginAttemptsExceeeded(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
-        loginDialogContext.getHttpRequest().getSession(true).setAttribute(SESSATTRNAME_MAX_LOGIN_ATTEMPTS_EXCEEDED, Boolean.TRUE);
+        loginDialogContext.getHttpRequest().getSession().setAttribute(SESSATTRNAME_MAX_LOGIN_ATTEMPTS_EXCEEDED, Boolean.TRUE);
     }
 
     public void renderLoginAttemptDeniedHtml(Writer writer, HttpLoginManager loginManager, LoginDialogContext loginDialogContext) throws IOException

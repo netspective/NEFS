@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EncryptedParametersFilter.java,v 1.1 2003-08-20 04:06:11 shahid.shah Exp $
+ * $Id: EncryptedParametersFilter.java,v 1.2 2003-11-19 02:27:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -64,7 +64,7 @@ public class EncryptedParametersFilter implements javax.servlet.Filter
 
     public static final String getUserKey(final ServletRequest request)
     {
-        HttpSession session = ((HttpServletRequest) request).getSession(true);
+        HttpSession session = ((HttpServletRequest) request).getSession();
         String result = (String) session.getAttribute(SESSATTRNAME_ENCRYPTION_KEY);
         if(result == null)
         {

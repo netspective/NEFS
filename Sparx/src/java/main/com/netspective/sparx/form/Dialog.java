@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.46 2003-11-16 15:18:03 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.47 2003-11-19 02:25:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -906,7 +906,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
 
     public DialogState getDialogState(DialogContext dc)
     {
-        HttpSession session = dc.getHttpRequest().getSession(true);
+        HttpSession session = dc.getHttpRequest().getSession();
         Map dialogStates = (Map) session.getAttribute(ATTRNAME_DIALOG_STATES);
         if(dialogStates == null)
         {

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.14 2003-11-16 17:15:18 shahid.shah Exp $
+ * $Id: SelectField.java,v 1.15 2003-11-19 02:25:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -248,7 +248,7 @@ public class SelectField extends TextField
             {
                 log.error("Unable to find default popup page");
             }
-            ((HttpServletRequest) dc.getRequest()).getSession(true).setAttribute(lvsSessionAttrName, choices.getSpecification().getSpecificationText());
+            ((HttpServletRequest) dc.getRequest()).getSession().setAttribute(lvsSessionAttrName, choices.getSpecification().getSpecificationText());
         }
 
         public void initialize()

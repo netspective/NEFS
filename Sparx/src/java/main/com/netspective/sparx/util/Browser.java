@@ -219,7 +219,7 @@ public class Browser implements java.io.Serializable
     public static Browser getInstance(final javax.servlet.http.HttpServletRequest request)
     {
 
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession();
         String sessionBrowserNS = "com.dhtmlkitchen.Browser";
 
         Browser browser = (Browser) session.getAttribute(sessionBrowserNS);
