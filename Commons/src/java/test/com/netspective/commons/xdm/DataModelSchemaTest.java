@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataModelSchemaTest.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
+ * $Id: DataModelSchemaTest.java,v 1.3 2003-03-29 13:00:26 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -102,7 +102,7 @@ public class DataModelSchemaTest extends TestCase
         static
         {
             XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[] { "ignore-me" });
-            TEMPLATE_PRODUCERS.add(new TemplateProducer(TEMPLATENAMESPACEID_NESTED1, "nested-1-custom-template", "name", "extends", false));
+            TEMPLATE_PRODUCERS.add(new TemplateProducer(TEMPLATENAMESPACEID_NESTED1, "nested-1-custom-template", "name", "extends", true, false));
         }
 
         private StringBuffer pcData = new StringBuffer();

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateProducer.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: TemplateProducer.java,v 1.2 2003-03-29 13:00:26 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -60,13 +60,15 @@ public class TemplateProducer
     private String templateNameAttrName; // the name of the attribute of the element that specifies the template name
     private String templateInhAttrName; // the name of the attribute of the element that specifies what other templates to inherit
     private boolean unmarshallContents; // true to treat this producer as both a template and a instance/object of the data model, false to only treat as template and not unmarshall to actual data
+    private boolean isStatic; // true if the producer is not instance-dependent
 
-    public TemplateProducer(String nameSpaceId, String elementName, String templateNameAttrName, String templateInhAttrName, boolean unmarshallContents)
+    public TemplateProducer(String nameSpaceId, String elementName, String templateNameAttrName, String templateInhAttrName, boolean isStatic, boolean unmarshallContents)
     {
         this.elementName = elementName;
         this.nameSpaceId = nameSpaceId;
         this.templateNameAttrName = templateNameAttrName;
         this.templateInhAttrName = templateInhAttrName;
+        this.isStatic = isStatic;
         this.unmarshallContents = unmarshallContents;
     }
 
@@ -96,6 +98,11 @@ public class TemplateProducer
     public String getTemplateInhAttrName()
     {
         return templateInhAttrName;
+    }
+
+    public boolean isStatic()
+    {
+        return isStatic;
     }
 
     public boolean isUnmarshallContents()

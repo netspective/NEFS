@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.3 2003-03-18 22:32:42 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.4 2003-03-29 13:00:07 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -112,8 +112,8 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
         if(templateProducers == null)
         {
             templateProducers = new TemplateProducers();
-            templateProducers.add(new TemplateProducer(getDataTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_DATA_TYPE, "name", "type", false));
-            templateProducers.add(new TemplateProducer(getTableTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_TABLE_TYPE, "name", "type", false));
+            templateProducers.add(new TemplateProducer(getDataTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_DATA_TYPE, "name", "type", false, false));
+            templateProducers.add(new TemplateProducer(getTableTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_TABLE_TYPE, "name", "type", false, false));
         }
         return templateProducers;
     }

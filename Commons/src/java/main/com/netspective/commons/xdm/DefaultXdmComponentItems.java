@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.7 2003-03-28 04:13:08 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.8 2003-03-29 13:00:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -61,10 +61,10 @@ import com.netspective.commons.report.Reports;
 import com.netspective.commons.report.Report;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.BasicTabularReport;
+import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateProducerParent;
-import com.netspective.axiom.schema.BasicSchema;
 
 public class DefaultXdmComponentItems implements TemplateProducerParent, ConfigurationsManager, AccessControlListsManager, ReportsManager
 {
@@ -76,7 +76,7 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     {
         public TabularReportColumnTypeTemplate()
         {
-            super(TabularReportColumn.class.getName(), TEMPLATEELEMNAME_TABULAR_REPORT_COLUMN_TYPE, "name", "extends", false);
+            super(TabularReportColumn.class.getName(), TEMPLATEELEMNAME_TABULAR_REPORT_COLUMN_TYPE, "name", "extends", true, false);
         }
     }
 
@@ -171,7 +171,12 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
         return reportsManager;
     }
 
-    public void addTabularReport(BasicTabularReport report)
+    public TabularReport createTabularReport()
+    {
+        return new BasicTabularReport();
+    }
+
+    public void addTabularReport(TabularReport report)
     {
         getReports().add(report);
     }

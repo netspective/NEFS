@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.3 2003-03-29 13:00:07 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -123,7 +123,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     {
         public TablePresentationTemplate()
         {
-            super(getSchema().getPresentationTemplatesNameSpaceId(), BasicSchema.TEMPLATEELEMNAME_PRESENTATION, null, null, false);
+            super(getSchema().getPresentationTemplatesNameSpaceId(), BasicSchema.TEMPLATEELEMNAME_PRESENTATION, null, null, false, false);
         }
 
         public String getTemplateName(String url, String localName, String qName, Attributes attributes) throws SAXException

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: UnsupportedElementException.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: UnsupportedElementException.java,v 1.2 2003-03-29 13:00:26 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm.exception;
@@ -61,7 +61,7 @@ public class UnsupportedElementException extends DataModelSyntaxException
 
     public UnsupportedElementException(XmlDataModelSchema schema, XdmParseContext pc, Object element, String nestedElemName)
     {
-        super(pc, "Class " + element.getClass().getName() + " does not support nested element '"+ nestedElemName +"' ("+ pc.getLocator().getSystemId() +" line "+ pc.getLocator().getLineNumber() + ") Elems: "+ schema.getNestedCreators().keySet() + " Attrs:" +schema.getAttributes());
+        super(pc, "Class " + element.getClass().getName() + " does not support nested element '"+ nestedElemName +"' ("+ (pc != null ? (pc.getLocator().getSystemId() +" line "+ pc.getLocator().getLineNumber()) : "") + ") Elems: "+ schema.getNestedCreators().keySet() + " Attrs:" +schema.getAttributes());
         this.schema = schema;
         this.element = element;
         this.nestedElemName = nestedElemName;

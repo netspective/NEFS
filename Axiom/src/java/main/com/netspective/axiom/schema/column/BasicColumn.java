@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.3 2003-03-29 13:00:07 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -137,7 +137,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     {
         public ColumnPresentationTemplate()
         {
-            super(schema.getPresentationTemplatesNameSpaceId(), BasicSchema.TEMPLATEELEMNAME_PRESENTATION, null, null, false);
+            super(schema.getPresentationTemplatesNameSpaceId(), BasicSchema.TEMPLATEELEMNAME_PRESENTATION, null, null, false, false);
         }
 
         public String getTemplateName(String url, String localName, String qName, Attributes attributes) throws SAXException

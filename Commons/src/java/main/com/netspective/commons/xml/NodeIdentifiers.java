@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NodeIdentifiers.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: NodeIdentifiers.java,v 1.2 2003-03-29 13:00:26 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -86,7 +86,7 @@ public final class NodeIdentifiers
         templateParamDecl = xmlNameSpacePrefix + "template-param";
         templateReplaceExprsAttrName = xmlNameSpacePrefix + "replace-template-expressions";
 
-        genericTemplateProducer = new TemplateProducer(GENERIC_TEMPLATES_NAMESPACE_ID, templateElementName, ATTRNAME_GENERIC_TEMPLATE_NAME, ATTRNAME_GENERIC_TEMPLATE_EXTENDS, false);
+        genericTemplateProducer = new TemplateProducer(GENERIC_TEMPLATES_NAMESPACE_ID, templateElementName, ATTRNAME_GENERIC_TEMPLATE_NAME, ATTRNAME_GENERIC_TEMPLATE_EXTENDS, true, false);
     }
 
     public final String getXmlNameSpace()

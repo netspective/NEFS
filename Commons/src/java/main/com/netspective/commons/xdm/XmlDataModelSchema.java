@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.5 2003-03-28 04:13:08 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.6 2003-03-29 13:00:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -696,9 +696,14 @@ public class XmlDataModelSchema
         else
         {
             UnsupportedElementException e = new UnsupportedElementException(this, pc, element, elementName);
-            pc.addError(e);
-            if(pc.isThrowErrorException())
-                throw e;
+            if(pc != null)
+            {
+                pc.addError(e);
+                if(pc.isThrowErrorException())
+                    throw e;
+                else
+                    return null;
+            }
             else
                 return null;
         }
@@ -709,7 +714,7 @@ public class XmlDataModelSchema
      */
     public Object createElement(XdmParseContext pc, String alternateClassName, Object element, String elementName, boolean withinCustom) throws DataModelException, UnsupportedElementException
     {
-        //System.out.println("Creating: " + element.getClass() + " " + elementName + " " + alternateClassName + " " + withinCustom);
+        //System.out.println("Creating: " + element.getClass().getName() + " " + elementName + " " + alternateClassName + " " + withinCustom);
 
         try
         {
@@ -1122,25 +1127,25 @@ public class XmlDataModelSchema
         return result.getAllNames();
     }
 
-    private interface NestedCreator
+    public interface NestedCreator
     {
         public Object create(Object parent)
                 throws InvocationTargetException, IllegalAccessException, InstantiationException;
     }
 
-    private interface NestedAltClassCreator
+    public interface NestedAltClassCreator
     {
         public Object create(Object parent, Class cls)
                 throws InvocationTargetException, IllegalAccessException, InstantiationException;
     }
 
-    private interface NestedStorer
+    public interface NestedStorer
     {
         public void store(Object parent, Object child)
                 throws InvocationTargetException, IllegalAccessException, InstantiationException;
     }
 
-    private interface AttributeSetter
+    public interface AttributeSetter
     {
         public void set(XdmParseContext pc, Object parent, String value)
                 throws InvocationTargetException, IllegalAccessException,

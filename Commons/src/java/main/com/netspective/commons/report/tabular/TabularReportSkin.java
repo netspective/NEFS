@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: TabularReportSkin.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: TabularReportSkin.java,v 1.2 2003-03-29 13:00:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -62,6 +62,7 @@ import java.io.Writer;
 public interface TabularReportSkin
 {
     public String getFileExtension();
-
+    public String getBlankValue();
+    public String constructClassRef(Class cls);
     public void produceReport(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException;
 }
