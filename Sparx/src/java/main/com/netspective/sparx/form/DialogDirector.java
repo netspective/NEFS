@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.7 2003-05-19 00:58:56 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.8 2003-06-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -71,7 +71,7 @@ public class DialogDirector extends DialogField
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final String[] STYLE_ENUM_VALUES = new String[] { "data", "confirm" };
 
-    public class DialogDirectorStyle extends XdmEnumeratedAttribute
+    public static class DialogDirectorStyle extends XdmEnumeratedAttribute
     {
         public static final int DATA = 0;
         public static final int CONFIRM = 1;
