@@ -89,7 +89,9 @@ public class TestPerson extends TestCase
         final Gender gender = new Gender();
         gender.setPerson(newPerson);
         gender.setType(GenderType.Cache.MALE.getEntity());
-        newPerson.setGender(gender);
+        calendar.set(1970, 6, 14);
+        gender.setFromDate(calendar.getTime());
+        newPerson.getGenders().add(gender);
 
         final Date birthDate = new Date();
         newPerson.setBirthDate(birthDate);
@@ -121,7 +123,7 @@ public class TestPerson extends TestCase
         assertEquals(1, updatedPerson.getContactMechanisms().size());
         assertEquals(2, updatedPerson.getMaritalStatuses().size());
         assertEquals(MaritalStatusType.Cache.MARRIED.getEntity(), updatedPerson.getCurrentMaritalStatus());
-        assertEquals(GenderType.Cache.MALE.getEntity(), updatedPerson.getGender().getType());
+        assertEquals(GenderType.Cache.MALE.getEntity(), updatedPerson.getCurrentGender());
         assertEquals(birthDate, updatedPerson.getBirthDate());
 
         HibernateUtil.closeSession();
