@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.14 2003-07-10 00:52:09 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.15 2003-07-11 05:29:03 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -175,7 +175,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             renderFrameEnd(writer, (HtmlPanelValueContext) rc);
     }
 
-    private int getTableColumnsCount(TabularReportValueContext rc)
+    private int getTableColumnsCount(HtmlTabularReportValueContext rc)
     {
         return (rc.getVisibleColsCount() * 2) +
                (getRowDecoratorPrependColsCount(rc) * 2) +
@@ -278,6 +278,11 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             else
                 writer.write("<tr>");
 
+            Object[] rowData = new Object[dataColsCount];
+            for(int i = 1; i <= dataColsCount; i++)
+                rowData[i - 1] = columns.get(i);
+
+            produceDataRowDecoratorPrepend(writer, rc, ds, isOddRow);
             for(int i = 0; i < dataColsCount; i++)
             {
 
@@ -383,12 +388,34 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         writer.write("</tr>");
     }
 
-    protected int getRowDecoratorPrependColsCount(com.netspective.commons.report.tabular.TabularReportValueContext rc)
+    /**
+     * Produces html to prepend to the data row
+     * @param writer
+     * @param rc
+     * @param isOddRow
+     * @throws IOException
+     */
+    public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, boolean isOddRow) throws IOException
+    {
+    }
+
+    /**
+     * Produces html to append to the data row
+     * @param writer
+     * @param rc
+     * @param isOddRow
+     * @throws IOException
+     */
+    public void produceDataRowDecoratorAppend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, boolean isOddRow) throws IOException
+    {
+    }
+
+    protected int getRowDecoratorPrependColsCount(HtmlTabularReportValueContext rc)
     {
         return 0;
     }
 
-    protected int getRowDecoratorAppendColsCount(com.netspective.commons.report.tabular.TabularReportValueContext rc)
+    protected int getRowDecoratorAppendColsCount(HtmlTabularReportValueContext rc)
     {
         return 0;
     }
