@@ -7,5 +7,6 @@ public interface Respondent
 {
     static public final String ALL_RESPONDENTS = "db.Respondent.all-respondents";
     static public final String LOCK = "db.Respondent.lock";
+    static public final String SAMPLE_RESPONDENTS_FOR_DEMO = "db.Respondent.sample-respondents-for-demo";
     static public final String SUMMARY = "db.Respondent.summary";
 }
