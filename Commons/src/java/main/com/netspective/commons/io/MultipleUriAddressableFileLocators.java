@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MultipleUriAddressableFileLocators.java,v 1.1 2003-08-23 16:05:16 shahid.shah Exp $
+ * $Id: MultipleUriAddressableFileLocators.java,v 1.2 2004-03-20 22:09:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
@@ -87,7 +87,7 @@ public class MultipleUriAddressableFileLocators implements UriAddressableFileLoc
             if (resource != null)
             {
                 if(logging) log.debug("MultipleUriAddressableFileLocators found '"+ name +"' in locator " + locator);
-                if(cacheLocations) cache.put(name, locator);
+                if(cacheLocations) cache.put(name, resource);
                 return resource;
             }
         }
