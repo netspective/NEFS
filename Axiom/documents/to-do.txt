@@ -1,11 +1,12 @@
 * [IMPORTANT] -- extend Query/QueryDef/Schema logging so that the logs are per-query, per-qd, per-table instead of just per class (e.g. instead of LogFactory.getLog(Query.class) use LogFactory.getLog(Query.getClass().getName() + "."+ query.getQualifiedName()))
 * [IMPORTANT] -- wherever a "close()" method is called for result sets and exceptions are being thrown, be sure to capture the close() in a try..finally block (reported by Aye)
 * [IMPORTANT] -- allowd for pooled/cached PreparedStatements in Queries (tests show that prepared statements are 20% slower than non-prepared unless they are reused)
+* [IMPORTANT] -- Store call stack where database connections are opened so that if any are left open at the end of a program run we know where they were created.
+* [IMPORTANT] -- Add feature to connection provider to detect connection leaks (a connection leak occurs when a connection obtained from the pool was not closed explicitly by calling close() and then was disposed by the garbage collector and returned to the connection pool).
+
 * Add GraphViz DOT diagrams for data-types and table-types usage in schemas (i.e. showing which table-types, data-types are used by which tables)
 * Review http://ldbc.sourceforge.net/ (Liberty Database Connectivity) which provides a single API and SQL rewriter for various databases
 * Review http://jakarta.apache.org/commons/codec/index.html and implement soundex, metaphone, etc encoders to save/search those encodings using query defs and such
-* Add feature to connection provider to detect connection leaks (a connection leak occurs when a connection obtained from the pool was not closed explicitly by calling close() and then was disposed by the garbage collector and returned to the connection pool).
-* Store call stack where database connections are opened so that if any are left open at the end of a program run we know where they were created.
 * Add "versioning of rows" feature into the framework -- perhaps a table-type called "Versioned" that would manage it?
 * Add support for "temporal data" that may "auto expire" or in other way are able to be retired, etc. (storing, querying, and updating historical and/or future data)
 * Add new 'denormalize-ref' foreign key type that would allow automated table denomalization to occur through DAL

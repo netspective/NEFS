@@ -1,16 +1,14 @@
+* Start using JAAS for login and user management (replace Principal with Subject)
+* [important] Add ability for <xdm:include> to allow including an entire directory instead of just specific files (e.g. <xdm:include dir="abc"/>)
+* Add <documentation type="requirement | fs | etc">1.2.3.4</document> tag to all objects to allow gathering of documentation like reqs, specs, etc -- perhaps this should be a "Documentable" interface?
 * In XDM Options, when ignore, required, etc attributes are provided perform runtime validation to make sure the name provided actually matches an attribute or nested element (emit warning otherwise)
 * Use sample at http://www.sapia-oss.org/projects/utils/confix/home.html to document XDM (Confix is almost identical to XDM except it doesn't support Templates)
 * Use sample at http://www.sapia-oss.org/projects/vlad/home.html to document validation subsystem (Vlad is similar to Commons validation)
 * In all validators, convert validation errors messages to use Value Sources
 * Using some of the ideas from M7 (http://www.m7.com/products/personalization.html), create a Personalization subsystem/framework similar to AccessControl/Permissions subsystem
-* Use Jakarta Commons Attributes (http://jakarta.apache.org/commons/sandbox/attributes/index.html) to allow XDM to store additional information useful at runtime (like descriptions, etc)
 * Add a workflow engine subsystem that would allow multiple workflows engines to be plugged-in (werken, etc)
-* Create "XdmFlags" datatype that would allow XML files to supply flags as yes/no using booleans as well as Java-style A | B | C
-* Add <documentation type="requirement | fs | etc">1.2.3.4</document> tag to all objects to allow gathering of documentation like reqs, specs, etc
 * Add capability for <xdm:define-template-tag name="abc" name-space="/x/y/z"/> that would allow "on the fly" template producers and <xdm:consume-template-tag> for consumers
-* Add ability for <xdm:include> to allow including an entire directory instead of just specific files (e.g. <xdm:include dir="abc"/>)
 * Add performance, load, and stress tests using JunitPerf
-* Start using JAAS for login and user management (replace Principal with Subject)
 * Start using mock objects for hard to create unit tests
 * Add JMX MBean support in the core library that other derived classes can build upon (like http://jakarta.apache.org/commons/modeler.html).
 * Integrate with AppStats Framework (http://appstats.sourceforge.net/). The Metrics and SqlExectionLog in Axiom may be replaced by or built upon this library.
@@ -20,4 +18,4 @@
 * Create Ant task that will allow the running of Metrics generator and store results in a configurable file name (for scripting the execution of metrics).
 * Add basic User Management functionality to the Access Control framework. Use Realm design pattern (http://jakarta.apache.org/tomcat/tomcat-4.0-doc/config/realm.html) and find a way to use the HttpServletRequest.getUserPrincipal() and HttpServletRequest.isUserInRole() methods.
 * Consider integration with MARS network monitor (http://www.altara.org/mars.html).
-* Consider how to add copy protection/licensing code to Sparx.
+* Consider how to add copy protection/licensing code to NEFS.
