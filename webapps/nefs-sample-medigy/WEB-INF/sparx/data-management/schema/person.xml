@@ -2,6 +2,7 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <table name="Person" abbrev="Per" type="Default">
+        <trigger class="app.schema.trigger.PersonRowTableTrigger"/>
         <description>Any person (client, staff member, etc.)</description>
         <column name="person_id" primarykey="yes" type="guid32" descr="Auto-generated Unique ID for a person within the entire system">
             <presentation>
