@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<article>
+  <title>NEFS Enterprise Console Tour</title>
+
+  <section>
+    <title>Overview</title>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>Login to Enterprise Console</title>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>Console Home</title>
+
+    <para></para>
+
+    <section>
+      <title>Sitemap</title>
+
+      <para></para>
+    </section>
+  </section>
+
+  <section>
+    <title>Project</title>
+
+    <para></para>
+
+    <section>
+      <title>Source</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Ant Build</title>
+
+      <para></para>
+
+      <section>
+        <title>Project</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>NEFS / Sparx</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Inspect</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Commands</title>
+
+      <para></para>
+
+      <section>
+        <title>Catalog</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Unit Test</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Documentation</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Value Sources</title>
+
+      <para></para>
+
+      <section>
+        <title>Catalog</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Unit Test</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Documentation</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Metrics</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Configuration</title>
+
+      <para></para>
+
+      <section>
+        <title>Servlet Configuration</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Runtime Environment</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Class Path</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Dependencies</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Access Control</title>
+
+      <para></para>
+
+      <section>
+        <title>Access Control List (ACL) Catalog</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>ACL Inspector</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Perm Inspector</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Role Inspector</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Login Managers</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Project Folders</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Project Files</title>
+
+      <para></para>
+    </section>
+  </section>
+
+  <section>
+    <title>Presentation</title>
+
+    <para></para>
+
+    <section>
+      <title>Navigation</title>
+
+      <para></para>
+
+      <section>
+        <title>Catalog</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Tree Inspector</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Page Inspector</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Page Types</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Panel Types</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Body Handlers</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Conditionals</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Dialogs</title>
+
+      <para></para>
+
+      <section>
+        <title>Catalog</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Unit Test</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Inspector</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Dialog Types</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Exec Handlers</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Field Types</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Conditionals</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Themes</title>
+
+      <para></para>
+
+      <section>
+        <title>Sampler</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Console</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Slate</title>
+
+        <para></para>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Data Management</title>
+
+    <para></para>
+
+    <section>
+      <title>Static SQL Queries</title>
+
+      <para></para>
+
+      <section>
+        <title>Catalog</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Documentation</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Unit Test</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Dynamic SQL Queries</title>
+
+      <para></para>
+
+      <section>
+        <title>Catalog</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Documentation</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Unit Test</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>SQL Comparisons</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Scroll States</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Schemas</title>
+
+      <para></para>
+
+      <section>
+        <title>Schema Tables</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Table Documentation</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Table Query Definitions</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Table Dialog</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Table Types</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Data Types</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Data Sources</title>
+
+      <para></para>
+
+      <section>
+        <title>Catalog</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>SQL Explorer</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Database Policies</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Connection Providers</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Open Connections</title>
+
+      <para></para>
+    </section>
+  </section>
+
+  <section>
+    <title>Documentation</title>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>XDM Tags Reference</title>
+
+    <para></para>
+
+    <section>
+      <title>Tags Tree</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Tags Documentation</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Template Catalog</title>
+
+      <para></para>
+    </section>
+  </section>
+
+  <section>
+    <title>Viewing Error Messages</title>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>Logout from Enterprise Console</title>
+
+    <para></para>
+  </section>
+</article>
