@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialog.java,v 1.3 2003-08-08 18:34:23 shahid.shah Exp $
+ * $Id: LoginDialog.java,v 1.4 2003-08-09 03:57:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -58,7 +58,7 @@ import com.netspective.sparx.security.HttpLoginManager;
 public class LoginDialog extends Dialog
 {
     public static final String DEFAULT_USERID_FIELD_NAME  = "user-id";
-    public static final String DEFAULT_PASSWORD_FIELD_NAME = "password";
+    public static final String DEFAULT_PASSWORD_IELD_NAME = "password";
     public static final String DEFAULT_REMEMBER_ID_FIELD_NAME = "remember";
 
     private HttpLoginManager loginManager;
