@@ -111,7 +111,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">timestamp</define>
         </sql-ddl>
         <presentation>
-            <field type="date-time" size="16" format="MM-dd-yyyy H:mm" min="01-01-1900 00:00"/>
+            <field type="date-time" size="16" format="MM-dd-yyyy H:mm" min="01-01-1900 00\:00"/> <!-- escape : in 'min' since it's a value source -->
         </presentation>
     </data-type>
 
@@ -124,7 +124,7 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
         </sql-ddl>
         <presentation>
-            <field type="time" size="16" format="H:mm" min="00:00"/>
+            <field type="time" size="16" format="H:mm" min="00\:00"/> <!-- escape : in 'min' since it's a value source -->
         </presentation>
     </data-type>
 
