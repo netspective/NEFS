@@ -120,19 +120,19 @@
     ********************************************************************** 
     -->
     <query-defn name="sbn">
-        <field name="listing_seq_no" caption="Lst Seq No" join="Listing" column="listing_seq_no"/>
-        <field name="lblcode" caption="Lbl" join="Listing" column="lblcode"/>
-        <field name="prodcode" caption="Prod" join="Listing" column="prodcode"/>
-        <field name="strength" caption="Strength" join="Listing" column="strength"/>
-        <field name="unit" caption="Unit" join="Listing" column="unit"/>
-        <field name="rx_otc" caption="R/O" join="Listing" column="rx_otc"/>
-        <field name="dosage" caption="Dosage" join="Listing" column="dosage"/>
-        <field name="firm_seq_no" caption="Firm Seq" join="Listing" column="firm_seq_no"/>
-        <field name="firm-name" caption="Firm Name" join="Firms" column="firm_name"/>
-        <field name="tradename" caption="Trade Name" join="Listing" column="tradename"/>
+        <field name="listing_seq_no" caption="Lst Seq No" join="Listings" column="listing_seq_no"/>
+        <field name="lblcode" caption="Lbl" join="Listings" column="lblcode"/>
+        <field name="prodcode" caption="Prod" join="Listings" column="prodcode"/>
+        <field name="strength" caption="Strength" join="Listings" column="strength"/>
+        <field name="unit" caption="Unit" join="Listings" column="unit"/>
+        <field name="rx_otc" caption="R/O" join="Listings" column="rx_otc"/>
+        <field name="dosage_form" caption="Dosage" join="Listings" column="dosage_form"/>
+        <field name="firm_seq_no" caption="Firm Seq" join="Listings" column="firm_seq_no"/>
+        <field name="firm-name" caption="Firm Name" join="Firms" column="firm_name"/> -->
+        <field name="tradename" caption="Trade Name" join="Listings" column="tradename"/>
 
-        <join name="Listing" table="listing"/>
-	<join name="Firms" table="firms" condition="Listing.firm_seq_no = Firms.firm_seq_no"/>
+        <join name="Listings" table="listings"/>
+        <join name="Firms" table="firms" condition="Firms.firm_seq_no = Listings.firm_seq_no"/>
 
         <presentation>
             <select-dialog name="searchByNameDialog"  allow-debug="yes" hide-output-dests="no" hide-readonly-hints="yes" >
@@ -140,15 +140,34 @@
                 <field type="text" name="Tradename" caption="Trade Name"/>
                 
                 <select name="sbnt">
-                    <display field="Tradename"/>
+                    <order-by field="tradename"/> 
+                    <display field="listing_seq_no"/>
+                    <display field="lblcode"/>
+                    <display field="prodcode"/>
+                    <display field="strength"/>
+                    <display field="unit"/>
+                    <display field="rx_otc"/>
+                    <display field="dosage_form"/>
+                    <display field="firm_seq_no"/>
+                   <!-- <display field="firmname"/> --> 
+                    <display field="tradename"/>
 
-                    <condition field="tradename" allow-null="no" comparison="starts-with" value="field:Tradename"/>
+                    <condition field="tradename" allow-null="no" comparison="starts-with-ignore-case" value="field:Tradename"/>
 
                     <presentation>
                         <panel name="report">
                             <frame heading="static:Search by Trade Name Results"/>
                             <report>
-                                <column format="plain" redirect="page-id:/disp?listing_seq_no=${0}"/>
+                                <column heading ="Lst Seq No" format="plain" redirect="page-id:/disp?listing_seq_no=${0}"/>
+                                <column heading ="Lbl"/>
+                                <column heading ="Prod"/>
+                                <column heading ="Strength"/>
+                                <column heading ="Unit"/>
+                                <column heading ="R/O"/>
+                                <column heading ="Dosage"/>
+                                <column heading ="Firm Seq"/> 
+<!--                                <column heading ="Firm Name"/> -->
+                                <column heading ="Trade Name"/>
                              </report>
                         </panel>
                     </presentation>
