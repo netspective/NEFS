@@ -39,8 +39,8 @@
             <xdm:template-param name="recordStatusEnum" default="Record_Status"/>
 
             <column name="cr_stamp" type="creation-stamp"/>
-            <column name="cr_person_id" lookupref="Person.system_id" descr="The user that created the record"/>
-            <column name="record_status_id" lookupref="${params.recordStatusEnum}" required="dbms" descr="The status of a row in the table">
+            <column name="cr_person_id" lookup-ref="Person.system_id" descr="The user that created the record"/>
+            <column name="record_status_id" lookup-ref="${params.recordStatusEnum}" required="dbms" descr="The status of a row in the table">
                 <sql-ddl>
                     <default dbms="ansi">0</default>
                 </sql-ddl>
@@ -60,11 +60,11 @@
         </table>
 
         <table name="Case_Source" type="Default">
-            <description>Describes the source of a case such as a project, product, or other area</description>
-            <column name="system_id" primarykey="yes" type="auto-inc" descr="The source's auto-generated id (internal identifier)"/>
+            <description>Describes the source of a case such as a project, product, or other area.</description>
+            <column name="system_id" primary-key="yes" type="auto-inc" descr="The source's auto-generated id (internal identifier)"/>
             <column name="source_id" unique="yes" type="text" size="64" descr="The source's name or other identifier"/>
             <column name="source_type" lookup-ref="Case_Source_Type" required="yes" descr="The type of case source"/>
-            <column name="parent" selfref="Case_Source.system_id" descr="The source's parent if this source is a sub-product or sub-project of another source"/>
+            <column name="parent" self-ref="Case_Source.system_id" descr="The source's parent if this source is a sub-product or sub-project of another source"/>
             <column name="caption" type="text" required="yes" size="200" descr="The source's brief caption"/>
 
             <accessor name="lookup">
@@ -72,36 +72,41 @@
             </accessor>
         </table>
 
-        <table name="Case_Source_Product_Version" type="Default">
-            <column name="system_id" primarykey="yes" type="auto-inc" descr="The version's auto-generated id (internal identifier)"/>
-            <column name="product_id" parentref="Case_Source.system_id" descr="The product (case source record) that this component belongs to"/>
+        <table name="Product_Version" type="Default">
+            <column name="system_id" primary-key="yes" type="auto-inc" descr="The version's auto-generated id (internal identifier)"/>
+            <column name="product_id" parent-ref="Case_Source.system_id" descr="The product (case source record) that this component belongs to"/>
             <column name="version" unique="yes" type="text" size="64" descr="The product's version identifier"/>
         </table>
 
-        <table name="Case_Source_Product_Milestone" type="Default">
-            <column name="system_id" primarykey="yes" type="auto-inc" descr="The milestone's auto-generated id (internal identifier)"/>
-            <column name="product_id" parentref="Case_Source.system_id" descr="The product (case source record) that this milestone belongs to"/>
+        <table name="Product_Milestone" type="Default">
+            <column name="system_id" primary-key="yes" type="auto-inc" descr="The milestone's auto-generated id (internal identifier)"/>
+            <column name="product_id" parent-ref="Case_Source.system_id" descr="The product (case source record) that this milestone belongs to"/>
             <column name="milestone" unique="yes" type="text" size="64" descr="The product's milestone identifier"/>
         </table>
 
         <table name="Case_Incidence" type="Default">
-            <column name="system_id" primarykey="yes" type="auto-inc" descr="The case's auto-generated id (internal identifier)"/>
-            <column name="product_id" parentref="Case_Source.system_id" descr="The product, project, or other case source that this case belongs to"/>
-            <column name="version_id" lookupref="Case_Source_Product_Version.system_id" descr="The product version that this case belongs to"/>
-            <column name="milestone_id" lookupref="Case_Source_Product_Milestone.system_id" descr="The product milestone that this case belongs to"/>
+            <column name="system_id" primary-key="yes" type="auto-inc" descr="The case's auto-generated id (internal identifier)"/>
+            <column name="product_id" parent-ref="Case_Source.system_id" descr="The product, project, or other case source that this case belongs to"/>
+            <column name="version_id" lookup-ref="Product_Version.system_id" descr="The product version that this case belongs to"/>
+            <column name="milestone_id" lookup-ref="Product_Milestone.system_id" descr="The product milestone that this case belongs to"/>
             <column name="case_title" unique="yes" type="text" size="128" descr="A brief overview of the case"/>
         </table>
 
         <table name="Case_Elaboration" type="Default">
-            <column name="system_id" primarykey="yes" type="auto-inc" descr="The elaboration's auto-generated id (internal identifier)"/>
-            <column name="incidence_id" parentref="Case_Incidence.system_id" descr="The case (incidence) that is being elaborated"/>
+            <column name="system_id" primary-key="yes" type="auto-inc" descr="The elaboration's auto-generated id (internal identifier)"/>
+            <column name="incidence_id" parent-ref="Case_Incidence.system_id" descr="The case (incidence) that is being elaborated"/>
             <column name="elaboration_text" type="data-block" descr="The actual text of the elaboration"/>
         </table>
 
         <table name="Case_Source_Type" type="Enumeration">
             <enumerations>
-                <enum id="0">Product</enum>
-                <enum id="1">Project</enum>
+                <enum id="0">Unknown</enum>
+
+                <enum id="10">Product</enum>
+                <enum id="11">Product Component</enum>
+
+                <enum id="20">Project</enum>
+                <enum id="21">Project Area</enum>
             </enumerations>
         </table>
     </schema>
