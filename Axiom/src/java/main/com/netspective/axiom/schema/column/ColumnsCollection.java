@@ -39,29 +39,28 @@
  */
 
 /**
- * $Id: ColumnsCollection.java,v 1.5 2004-03-05 03:43:41 shahid.shah Exp $
+ * $Id: ColumnsCollection.java,v 1.6 2004-03-16 22:05:49 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
-import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.ColumnValue;
+import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.ColumnValuesProducer;
+import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.Index;
 import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.column.BasicColumn;
-import com.netspective.commons.validate.ValidationContext;
 import com.netspective.commons.validate.BasicValidationContext;
+import com.netspective.commons.validate.ValidationContext;
 import com.netspective.commons.validate.ValidationRules;
 
 public class ColumnsCollection implements Columns
@@ -296,6 +295,27 @@ public class ColumnsCollection implements Columns
                     rules.validateValue(result, value);
             }
             return result;
+        }
+
+        public void setValues(String[] textValues, boolean treatBlanksAsNull)
+        {
+            if(treatBlanksAsNull)
+            {
+                for(int i = 0; i < values.length; i++)
+                {
+                    ColumnValue cv = values[i];
+                    String textValue = textValues[i];
+                    if(textValue == null || textValue.length() == 0)
+                        cv.setValue((Object) null);
+                    else
+                        cv.setTextValue(textValue);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < values.length; i++)
+                    values[i].setTextValue(textValues[i]);
+            }
         }
 
         public void copyValuesUsingColumnNames(ColumnValues source)

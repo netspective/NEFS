@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ColumnValues.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
+ * $Id: ColumnValues.java,v 1.3 2004-03-16 22:05:49 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -95,4 +95,12 @@ public interface ColumnValues extends Values
      * @param vc optional validation context (if it's null, one will be created)
      */
     public ValidationContext getValidationResult(ValidationContext vc);
+
+    /**
+     * Assign the given text array to the columns in this structure. This is most often used when a CSV or tab-delimited
+     * set of text values should be assigned.
+     * @param textValues The values that should be assigned (must be in same order as the column definitions)
+     * @param treatBlanksAsNull What to do with blank values (treat them as nulls or assign blanks).
+     */
+    public void setValues(String[] textValues, boolean treatBlanksAsNull);
 }
