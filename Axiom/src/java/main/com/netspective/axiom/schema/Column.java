@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Column.java,v 1.14 2004-07-30 16:34:11 aye.thu Exp $
+ * $Id: Column.java,v 1.15 2004-07-30 16:38:25 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -51,7 +51,6 @@ import java.util.Set;
 import com.netspective.axiom.schema.column.ColumnQueryDefnField;
 import com.netspective.axiom.schema.column.RequirementEnumeratedAttribute;
 import com.netspective.axiom.schema.column.SqlDataDefns;
-import com.netspective.axiom.schema.column.JdbcTypeDefns;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.axiom.sql.JdbcTypesEnumeratedAttribute;
 import com.netspective.commons.validate.ValidationRules;
