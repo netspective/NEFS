@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SingleUserServletLoginAuthenticator.java,v 1.1 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: SingleUserServletLoginAuthenticator.java,v 1.2 2003-08-08 18:34:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -92,10 +92,10 @@ public class SingleUserServletLoginAuthenticator implements LoginAuthenticator
             return false;
         }
 
-        if(! loginUserId.equals(loginDialogContext.getUserId()))
+        if(! loginUserId.equals(loginDialogContext.getUserIdInput()))
             return false;
 
-        if(! loginPasswordEncrypted.equals(loginDialogContext.getPassword(! loginDialogContext.hasEncryptedPassword())))
+        if(! loginPasswordEncrypted.equals(loginDialogContext.getPasswordInput(! loginDialogContext.hasEncryptedPassword())))
             return false;
 
         return true;

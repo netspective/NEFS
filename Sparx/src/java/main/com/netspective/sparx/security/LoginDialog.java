@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialog.java,v 1.1 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: LoginDialog.java,v 1.2 2003-08-08 18:34:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -146,14 +146,10 @@ public class LoginDialog extends Dialog
 
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
-        String userId = states.getState(getUserIdFieldName()).getValue().getTextValue();
-        String encPassword = Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, states.getState(getPasswordFieldName()).getValue().getTextValue());
-        DialogField.State rememberState = states.getState(getRememberIdFieldName(), null);
-        boolean rememberId = rememberState != null ? rememberState.getValue().getTextValue().equals("1") : false;
-
+        LoginDialogContext ldc = (LoginDialogContext) dc;
         HttpLoginManager loginManager = getLoginManager();
-        AuthenticatedUser user = loginManager.createAuthenticatedUser((LoginDialogContext) dc, userId, encPassword, ((LoginDialogContext) dc).hasRememberedValues());
-        loginManager.login(dc, user, rememberId);
+        AuthenticatedUser user = loginManager.createAuthenticatedUser(ldc, ldc.getUserIdInput(),
+                ldc.getPasswordInput(true), ((LoginDialogContext) dc).hasRememberedValues());
+        loginManager.login(dc, user, ldc.getRememberIdInput());
     }
 }

@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: LoginDialogContext.java,v 1.1 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: LoginDialogContext.java,v 1.2 2003-08-08 18:34:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.security.LoginDialog;
 import com.netspective.commons.security.Crypt;
@@ -55,17 +56,24 @@ public class LoginDialogContext extends DialogContext
     private boolean hasRememberedValues;
     private boolean hasEncryptedPassword;
 
-    public String getUserId()
+    public String getUserIdInput()
     {
         LoginDialog loginDialog = (LoginDialog) getDialog();
         return getFieldStates().getState(loginDialog.getUserIdFieldName()).getValue().getTextValue();
     }
 
-    public String getPassword(boolean encrypted)
+    public String getPasswordInput(boolean encrypted)
     {
         LoginDialog loginDialog = (LoginDialog) getDialog();
         String password = getFieldStates().getState(loginDialog.getPasswordFieldName()).getValue().getTextValue();
         return encrypted ? Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, password) : password;
+    }
+
+    public boolean getRememberIdInput()
+    {
+        LoginDialog loginDialog = (LoginDialog) getDialog();
+        DialogField.State rememberState = getFieldStates().getState(loginDialog.getRememberIdFieldName(), null);
+        return rememberState != null ? rememberState.getValue().getTextValue().equals("1") : false;
     }
 
     public boolean hasRememberedValues(HttpLoginManager loginManager)
