@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+
+<project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	<!--
+	**********************************************************************
+	** NETSPECTIVE FRAMEWORKS' RESOURCE FILES                           **
+	********************************************************************** -->
+
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+
+	<!--
+	**********************************************************************
+	** USER INTERFACE (PRESENTATION) SPECIFICATIONS                     **
+	********************************************************************** -->
+
+    <navigation-tree name="app" default="yes">
+        <page name="home" default="yes" caption="Home" command="query,library.get-all-books,-,-,-,record-editor-compressed"/>
+
+        <page name="add" caption="Add Book" command="dialog,schema.db.Book_Info,add"/>
+        <page name="edit" caption="Edit Book" command="dialog,schema.db.Book_Info,edit" require-request-param="id" retain-params="id">
+            <missing-params-body>
+               Please choose a book to edit from the &lt;a href='home'&gt; books list&lt;/a&gt;.
+            </missing-params-body>
+        </page>
+        <page name="delete" caption="Delete Book" command="dialog,schema.db.Book_Info,delete" require-request-param="id" retain-params="id">
+            <missing-params-body>
+               Please choose a book to delete from the &lt;a href='home'&gt; books list&lt;/a&gt;.
+            </missing-params-body>
+        </page>
+        <page name="search" caption="Search Books" command="query-defn,library,test,searchBooksDialog"/>
+        <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
+        <page name="sampler" caption="Sampler" redirect="vs-expr:${servlet-context-uri:server-root}/nefs-sampler"/>
+    </navigation-tree>
+
+<!--
+    *******************************************************************************************************************
+    ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
+    ** ============================================================================================================= **
+    ** Any data source called 'jdbc/default' will automatically be used as the default JDBC data source. If you wish **
+    ** to change the name of the default data source, you may specify it as a tag in project.xml like the following: **
+    ** <project>                                                                                                     **
+    **     <default-data-source>jdbc/other</default-data-source>						                             **
+    **														                                                         **
+    ** Note that data sources specified under this connection provider will be managed by the Jakarta Commons DBCP   **
+    ** If you wish to use JNDI, you simply have to specify the resource according to the server you're using.	     **
+    *******************************************************************************************************************
+    -->
+
+    <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
+
+        <data-source name="jdbc/default">
+            <driver-class>org.hsqldb.jdbcDriver</driver-class>
+            <url>vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}</url>
+            <user>sa</user>
+            <password></password>
+        </data-source>
+
+    </connection-provider>
+
+	<!--
+	**********************************************************************
+	** DATA MANAGEMENT STRUCTURE (SCHEMA) SPECIFICATIONS                **
+	********************************************************************** -->
+
+	<schema name="db">
+		<xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+
+		<table name="Book_Info" abbrev="bkI" type="Presentation">
+			<column name="id" type="text" size="10" primary-key="yes" descr="Unique ID for every book in the database"/>
+			<column name="name" type="text" size="64" descr="Name of the book"/>
+            <column name="author" type="text" size="64" descr="Name of the author(s)"/>
+			<column name="genre" lookup-ref="Book_Type"/>
+			<column name="isbn" type="text" size="10" descr="The 10 digit ISBN number"/>
+		</table>
+
+		<table name="Book_Type" abbrev="bkT" type="Enumeration">
+			<enumerations>
+				<enum>Science Fiction</enum>
+				<enum>Mystery</enum>
+				<enum>Business</enum>
+				<enum>Information Technology</enum>
+				<enum>Nuclear Physics</enum>
+				<enum>Chemistry</enum>
+			</enumerations>
+		</table>
+	</schema>
+
+	<!--
+	**********************************************************************
+	** DATA MANAGEMENT QUERY (SQL) SPECIFICATIONS                       **
+	********************************************************************** -->
+
+    <queries package="library">
+
+        <query name="get-all-books">
+
+            select id, name, author, book_type.caption, isbn
+            from book_info, book_type
+            where genre = book_type.id
+
+            <presentation>
+                <panel name="main" height="300">
+                    <frame heading="static:All available books"/>
+                    <report>
+                        <actions>
+                            <action type="add" caption="Add Book" redirect="page-id:/add"/>
+                            <action type="edit" redirect="page-id:/edit?id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="page-id:/delete?id=${0}"/>
+                        </actions>
+                        <column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/>
+                        <column heading="Name" />
+                        <column heading="Author"/>
+                        <column heading="Genre"/>
+                        <column heading="ISBN"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+    </queries>
+
+    <query-defn name="library">
+        <field name="book_id" caption="Book ID" join="BookInfo" column="id"/>
+        <field name="name" caption="Name" join="BookInfo" column="name"/>
+        <field name="author" caption="Author" join="BookInfo" column="author"/>
+        <field name="genre_id" caption="Genre ID" join="BookInfo" column="genre"/>
+        <field name="genre_caption" caption="Genre" join="BookType" column="caption"/>
+        <field name="isbn" caption="ISBN" join="BookInfo" column="isbn"/>
+
+        <join name="BookInfo" table="book_info"/>
+		<join name="BookType" table="book_type" condition="BookType.id = BookInfo.genre"/>
+
+        <presentation>
+            <select-dialog name="searchBooksDialog"  allow-debug="yes" hide-output-dests="no" hide-readonly-hints="yes" >
+                <frame heading="Search for Books" />
+                <field type="text" name="book_id" caption="Book ID" />
+                <field type="text" name="name" caption="Book Name"/>
+                <field type="text" name="author" caption="Author"/>
+                <field type="text" name="isbn" caption="ISBN"/>
+                <field type="select" style="list" name="genre" caption="Genre" choices="schema-enum:Book_Type"/>
+
+                <select name="test">
+                    <display field="book_id"/>
+                    <display field="name"/>
+                    <display field="author"/>
+                    <display field="genre_caption"/>
+                    <display field="isbn"/>
+
+                    <condition field="book_id" allow-null="no" comparison="equals" value="field:book_id" connector="and"/>
+                    <condition field="name" allow-null="no" comparison="starts-with" value="field:name" connector="and"/>
+                    <condition field="author" allow-null="no" comparison="equals" value="field:author" connector="and"/>
+                    <condition field="genre_id" allow-null="no" comparison="equals" value="field:genre" connector="and"/>
+
+                    <presentation>
+                        <panel name="report">
+                            <frame heading="static:Book Search Results"/>
+                            <report>
+                                <column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/>
+                                <column heading="Name" />
+                                <column heading="Author"/>
+                                <column heading="Genre"/>
+                                <column heading="ISBN"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+    </query-defn>
+</project>

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<!--
+************************************************
+** GENERIC WEB-INF/web.xml CONFIGURATION FILE **
+************************************************
+$Id: generic-web.xml,v 1.1 2003-10-19 22:47:07 shahid.shah Exp $
+-->
+
+<web-app>
+
+    <!--
+    *******************************************************************************************************************
+    ** SERVLET CONTEXT LISTENERS CONFIGURATION (initialize and cleanup resources required by Sparx)                  **
+    *******************************************************************************************************************
+    -->
+    <listener>
+        <listener-class>com.netspective.sparx.util.ApplicationEventsListener</listener-class>
+    </listener>
+
+    <!--
+    *******************************************************************************************************************
+    ** APPLICATION FRONT-CONTROLLER CONFIGURATION                                                                    **
+    ** ============================================================================================================= **
+    ** 1) The SparxNavigationController servlet handles all the requests to /app/*                                   **
+    ** 2) In some servers you can setup this servlet to become the default controller.  See resin's config example   **
+    **    for refference.                                                                                            **
+    ** ============================================================================================================= **
+    ** NOTE: In all of the other popular web servers, it is easy to setup a default servlet and add exceptions to    **
+    **       to handle specific folders.  This makes for a much more elegant URL structure.
+    *******************************************************************************************************************
+    -->
+    <servlet>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+        <init-param>
+            <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
+            <param-value>--init-first-time-using-ant=/WEB-INF/sparx/conf/ant-build-project.xml:create-database-hsqldb</param-value>
+        </init-param>
+    </servlet>
+
+    <!--
+    *******************************************************************************************************************
+    ** NETSPECTIVE APPLICATION ADMINISTRATION CONSOLE CONFIGURATION                                                  **
+    ** ============================================================================================================= **
+    ** If you wish to disable the Console completely, just remove the <servlet> and <servlet-mapping> configuration  **
+    ** elements for the NetspectiveConsole servlet.                                                                  **
+    *******************************************************************************************************************
+    -->
+    <servlet>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
+        <init-param>
+            <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
+            <param-value>--login-manager=console</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.OPTIONS</param-name>
+            <param-value>--user-id=console --encrypted-password=NCbHq1WqkpfDY</param-value> <!-- run "java com.netspective.commons.security.Crypt NC <password>" to generate encrypted password -->
+        </init-param>
+    </servlet>
+
+
+    <!--
+    *******************************************************************************************************************
+    ** MAPPING OF SPARX FRONT SERVLET									             **
+    *******************************************************************************************************************
+    -->
+    <servlet-mapping>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <url-pattern>/app/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!--
+    *******************************************************************************************************************
+    ** MAPPING OF CONSOLE SERVLET									             **
+    *******************************************************************************************************************
+    -->
+    <servlet-mapping>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <url-pattern>/console/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
