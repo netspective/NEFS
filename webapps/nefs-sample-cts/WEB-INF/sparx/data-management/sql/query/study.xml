@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
     <queries package="study">
+        <!--
+            This query is for getting the trial information which the subject is currently
+            involved with. The study_id comes from the AppAuthenticatedUser object saved in
+            the session and it is assumed that one subject is involved with one clinical
+            trail at a time.
+        -->
         <query name="get-self-study-info">
         	select
         		study.study_id,
@@ -40,6 +46,11 @@
                 </panel>
             </presentation>
         </query>
+
+        <!--
+            This query is for getting the trial information and the bind parameter is obtained
+            from the request. This is used to look up information of any clinical trial.
+        -->
         <query name="get-study-info-by-id">
         	select
         		study.study_id,
@@ -82,6 +93,11 @@
                 </panel>
             </presentation>
         </query>
+
+        <!--
+           This query is for retrieving a list of sponsor organizations related to the
+           clinical trial which the logged in subject is currently involved with.
+        -->
         <query name="get-self-study-sponsors">
         	select
         		org.org_id,

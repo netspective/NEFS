@@ -165,9 +165,6 @@
         <presentation>
             <panel>
                 <frame heading="static:Addresses"/>
-                <banner>
-                    <action caption="Add new address" redirect="vs-expr:${page-id:/home/org/address/add}?org_id=${request:org_id}"/>
-                </banner>
                 <report>
                     <actions>
                         <action type="add" caption="Add Address" redirect="vs-expr:${page-id:/home/org/address/add}?org_id=${request:org_id}"/>
@@ -180,6 +177,36 @@
                     <column heading="City" />
                     <column heading="State" />
                     <column heading="Zip" />
+                </report>
+            </panel>
+        </presentation>
+    </query>
+    <query name="get-org-contacts-by-id">
+        select
+            org_contact.system_id,
+            org_contact.method_type,
+            org_contact.method_name,
+            org_contact.method_value
+        from
+            org_contact
+        where
+            org_contact.parent_id = ?
+        <params>
+            <param value="request:org_id"/>
+        </params>
+        <presentation>
+            <panel>
+                <frame heading="static:Active Contacts"/>
+                <report>
+                    <actions>
+                        <action type="add" caption="Add new contact" redirect="vs-expr:${page-id:coordinator,/home/trial/site/add_contact}?study_id=${request:study_id}&amp;org_id=${request:org_id}"/>
+                        <action type="edit" redirect="vs-expr:${page-id:coordinator,/home/trial/site/edit_contact}?study_id=${request:study_id}&amp;org_id=${request:org_id}&amp;id=${0}"/>
+                        <action type="delete" redirect="vs-expr:${page-id:coordinator,/home/trial/site/delete_contact}?study_id=${request:study_id}&amp;org_id=${request:org_id}&amp;id=${0}"/>
+                    </actions>
+                    <column heading="ID" hidden="yes"/>
+                    <column heading="Type"/>
+                    <column heading="Name"/>
+                    <column heading="Value"/>
                 </report>
             </panel>
         </presentation>

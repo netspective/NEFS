@@ -4,51 +4,38 @@
     <xdm:include file="org.xml"/>
     <xdm:include file="person.xml"/>
     <xdm:include file="study.xml"/>
-    <dialogs package="cts">
-        <!--
-           This dialog is for adding/updating/deleting person contact information
-        -->
-        <dialog name="person-contact-info" retain-params="*">
-			<frame heading="create-dialog-perspective-heading:Contact"/>
-			<field type="text" name="id" caption="ID" read-only="yes" default="request:id">
-				<conditional action="apply-flags" flags="unavailable" perspective="add"/>
-			</field>
-			<field type="composite" name="contactType" caption="Contact Type" required="yes">
-				<conditional action="apply-flags" flags="read_only" perspective="edit"/>	
-				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type">
-									
-				</field>
-				<field type="text" name="method_name" caption="Other Contact Type">
-					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
-				</field>
-			</field>
-			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
 
-            <!--director>
-                <next-actions caption="Next Action\:" choices="text-list:a=x" display-single-action="yes"/>
-                <next-actions>
-
-                    <choices>
-                        <choice value="simple-expr:${servlet-context-uri:/index.jsp}">Return to home</choice>
-                        <choice value="simple-expr:${servlet-context-uri:/person/contact.jsp}?person_id=${session:user_person_id}&amp;data_cmd=add">Create another subject</choice>
-                    </choices>
-                </next-actions>
-            </director-->
-		</dialog>
-    </dialogs>
-
+    <!--
+        This is the template for contact information for persons (subjects, coordinators), organizations(sites, sponsors),
+        and clinical trials.
+    -->
+    <xdm:template name="contact-info">
+        <frame heading="create-dialog-perspective-heading:Contact"/>
+        <field type="text" name="id" caption="ID" read-only="yes" default="request:id">
+            <conditional action="apply-flags" flags="unavailable" perspective="add"/>
+        </field>
+        <field type="composite" name="contactType" caption="*" >
+            <conditional action="apply-flags" flags="read_only" perspective="edit"/>
+            <field type="select" name="method_type" caption="Contact Type" required="yes" choices="schema-enum:Contact_Method_Type">
+            </field>
+            <field type="text" name="method_name" caption="Other Contact Type">
+                <conditional action="display" partner-field-name="contactType.method_type"
+                    expression="control.options[control.selectedIndex].text == 'Other'"/>
+            </field>
+        </field>
+        <field type="text" name="method_value" caption="Contact Information" required="yes"
+            hint="Enter the contact number, email address or other information here."/>
+    </xdm:template>
 
     <dialogs package="subject">
-
-
         <dialog name="login_info" >
             <frame heading="Login Information"/>
             <field type="text" caption="Login ID" name="login_id" default="authenticated-user:user-id" read-only="yes" required="yes"/>
             <field type="text" mask-entry="yes" caption="Old Password" name="old_password"  required="yes"/>
             <field type="text" mask-entry="yes" caption="New Password" name="new_password1" required="yes"/>
             <field type="text" mask-entry="yes" caption="Verify New Password" name="new_password2" required="yes"/>
-            <on-execute class="app.cts.form.person.PasswordDialogHandler"/>
-            <listener class="app.cts.form.person.PasswordDialogHandler"/>
+            <!--on-execute class="app.cts.form.person.PasswordDialogHandler"/>
+            <listener class="app.cts.form.person.PasswordDialogHandler"/-->
         </dialog>
         <!--
            This dialog is for adding/updating/deleting a subject's profile information
@@ -88,41 +75,6 @@
                 <field type="zip-code" name="zip" caption="Zip Code" required="yes"/>
             </field>
 
-            <!--
-            <field type="separator" heading="Contact Methods"/>
-            <field type="composite" name="primary_contact" >
-                <field type="select" name="type" caption="Primary Contact Method" choices="schema-enum:Contact_Method_Type"
-                    prepend-blank="yes" required="yes"/>
-                <field type="phone" name="phone_value"  size="30">
-                    <conditional action="display" partner-field-name="primary_contact.type"
-                        expression="control.options[control.selectedIndex].text.substring(0, 9) == 'Telephone'"/>
-                </field>
-                <field type="phone" name="fax_value" size="30">
-                    <conditional action="display" partner-field-name="primary_contact.type"
-                        expression="control.options[control.selectedIndex].text.substring(0, 3) == 'Fax'"/>
-                </field>
-                <field type="e-mail" name="email_value" size="30">
-                    <conditional action="display" partner-field-name="primary_contact.type"
-                        expression="control.options[control.selectedIndex].text.substring(0, 5) == 'Email'"/>
-                </field>
-            </field>
-            <field type="composite" name="secondary_contact" >
-                <field type="select" name="type" caption="Secondary Contact Method" choices="schema-enum:Contact_Method_Type"
-                    prepend-blank="yes" required="no"/>
-                <field type="phone" name="phone_value"  size="30">
-                    <conditional action="display" partner-field-name="secondary_contact.type"
-                        expression="control.options[control.selectedIndex].text.substring(0, 9) == 'Telephone'"/>
-                </field>
-                <field  type="phone" name="fax_value" size="30">
-                    <conditional action="display" partner-field-name="secondary_contact.type"
-                        expression="control.options[control.selectedIndex].text.substring(0, 3) == 'Fax'"/>
-                </field>
-                <field type="e-mail" name="email_value" size="30">
-                    <conditional action="display" partner-field-name="secondary_contact.type"
-                        expression="control.options[control.selectedIndex].text.substring(0, 5) == 'Email'"/>
-                </field>
-            </field>
-            -->
         </dialog>
     </dialogs>
 </xdm:container>

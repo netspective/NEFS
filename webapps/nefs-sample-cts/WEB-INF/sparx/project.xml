@@ -79,7 +79,7 @@
 
 
     <!-- setup the data access layer Singleton to point to our schema -->
-    <listener class="app.cts.Util"/>
+    <!--listener class="app.cts.Util"/-->
     <!--theme name="console" default="yes" class="com.netspective.sparx.theme.console.ConsoleTheme"
         inherit-resources-from-themes="common"/-->
 
@@ -198,6 +198,9 @@
         </page>
     </navigation-tree>
 
+    <!--
+        The following is the navigation tree structure for Trial Coordinator Users
+    -->
     <navigation-tree name="coordinator" default="no" >
         <page name="home" caption="Home" heading="Welcome to Netspective CTMS" title="Netspective Clinical Trial Management System" default="yes">
             <panels>
@@ -227,7 +230,7 @@
                 </panels>
                 <body-handler class="app.cts.navigate.StudySiteSummaryPageBodyHandler"/>
 
-                <page name="coordinator" caption="Trial Coordinator Information" heading="Trial Coordinator Information">
+                <page name="coordinator" caption="Trial Coordinator Information" heading="Trial Coordinator Information" hidden="yes">
                     <panels>
                         <panel type="html" width="400">
                             <frame heading="Description"/>
@@ -289,16 +292,23 @@
                         <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-editor-compressed" />
                     </panels>
                     <page name="add" caption="Add" heading="Add a new Sponsor" title="CTMS - Add Sponsor"
-                        command="dialog,study.new-sponsor,add" hidden="yes"/>
+                        command="dialog,sponsor.complete-info,add" hidden="yes"/>
+
+                    <page name="add_contact" caption="Add new contact entry" heading="Add a new contact entry" title="Netspective - CTMS"
+                        command="dialog,sponsor.contact-info,add"/>
                 </page>
                 <page name="site" caption="Site Information"  heading="Site Information" retain-params="study_id,org_id"
                      require-request-params="study_id,org_id" hidden="yes">
                     <panels style="two-columns">
                         <panel type="command" command="query,org.get-site-info-by-id,-,-,-,detail-compressed" />
-                        <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-editor-compressed" />
+                        <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-manager-compressed" />
+                        <panel type="command" command="query,org.get-org-contacts-by-id,-,-,-,record-manager-compressed" />
                     </panels>
                     <page name="add" caption="Add Site" heading="Create a new clinical trial site" title="Create a new clinical trial site"
-                        command="dialog,site.profile,add" hidden="no"/>
+                        command="dialog,site.complete-info,add" hidden="yes"/>
+
+                    <page name="add_contact" caption="Add new contact entry" heading="Add a new contact entry" title="Netspective - CTMS"
+                        command="dialog,site.contact-info,add"/>
                 </page>
             </page>
 

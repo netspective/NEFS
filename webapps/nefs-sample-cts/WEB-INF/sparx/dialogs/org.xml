@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+    <!--
+       This is a template for Organization address which can be included in dialogs
+       e.g <xdm:include template="org-address"/>
+    -->
     <xdm:template name="org-address" >
         <field type="separator" heading="Address Information"/>
         <field type="text" name="address_name" hidden="no" caption="Address Name" default="Mailing Address"/>
@@ -23,44 +27,87 @@
         <field type="text" name="website" caption="Web Site"/>
     </xdm:template>
 
+    <!--
+        This is a template for basic Organization information which can be included in dialogs
+        e.g <xdm:include template="org-profile"/>
+    -->
     <xdm:template name="org-profile">
         <field type="text" name="org_name" caption="Organization Name" required="yes" size="32" />
         <field type="text" name="org_code" required="yes" caption="Code" size="16" />
         <field type="text" name="org_abbrev" caption="Abbreviated Name" size="16" />
     </xdm:template>
-    
-    
+
+
+    <!--
+        The following package is for dialogs that are related to Clinical Trial Sites.
+    -->
     <dialogs package="site">
        <!--
-            This is the dialog for creating/updating/deleting trial sites
+            This is the dialog for creating trial sites. Editing and Deleting is done with a different dialog
         -->
-        <dialog name="profile" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+        <dialog name="complete-info" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <frame heading="create-dialog-perspective-heading:Site"/>
             <xdm:include template="org-profile"/>
             <xdm:include template="org-address"/>
+            <field type="text" name="study_id" caption="Trial ID" default="request:study_id" hidden="yes"/>
             <on-add-data>
-                <org _auto_map="org_name,org_code,org_abbrev," rec-stat-id="static:Active">
+                <org org_name="org_name" org_code="org_code" org_abbrev="org_abbrev" rec-stat-id="static:Active">
                     <org-classification rec-stat-id="static:Active" org-type-id="static:Trial Site"/>
+                    <org-address address_name="address_name" line1="line1" line2="line2" zip="cityStateZip.zip"
+                        city="cityStateZip.city" state_id="cityStateZip.state" rec-stat-id="static:Active" />
+                    <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method_type_id="static:Telephone: Business" method-value="primary.phone"
+                        _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                    <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method_type_id="static:Fax: Business" method-value="primary.fax"
+                        _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                    <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method_type_id="static:Email: Business" method-value="email"
+                        _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
                 </org>
+                <studyorg-relationship parent_id="field:study_id" rel_type_id="static:Site" rel-type="static:Site"
+                    rel-entity-id="java:vc.getAddedRowPrimaryKeyValue(0).getIntValue()" rec_stat_id="static:Active" />
+            </on-add-data>
+        </dialog>
+        <dialog name="contact-info"   class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <xdm:include template="contact-info"/>
+            <field type="text" name="org_id" caption="Site ID" hidden="yes" default="request:org_id"/>
+            <on-add-data>
+                <org-contact rec-stat-id="static:Active" method-type="contactType.method_type" method_type_id="contactType.method_type"
+                     method-value="method_value" parent_id="field:org_id"/>
             </on-add-data>
         </dialog>
     </dialogs>
 
+    <!--
+        The following is for dialogs that are related to the Clinical Trial Sponsor organizations.
+    -->
     <dialogs package="sponsor">
         <!--
             This is the dialog for creating trial sponsors. Editing and Deletion is done with a diffrent dialog.
         -->
-        <dialog name="info" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+        <dialog name="complete-info" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <frame heading="create-dialog-perspective-heading:Sponsor"/>
 			<xdm:include template="org-profile"/>
             <xdm:include template="org-address"/>
+            <field type="text" name="study_id" caption="Trial ID" default="request:study_id" hidden="yes"/>
             <on-add-data>
-                <org _auto_map="org_name,org_code,org_abbrev," rec-stat-id="static:Active">
-                    <org-classification rec-stat-id="static:Active" org-type-id="static:Trial Sponsor"/>
-                    <org-address _auto_map="address_name,line1,line2,zip" parent_id="request:org_id" rec-stat-id="static:Active" />
+                <org org_name="org_name" org_code="org_code" org_abbrev="org_abbrev" rec-stat-id="static:Active">
+                    <org-classification rec-stat-id="static:Active" org_type="static:Trial Sponsor" org-type-id="static:Trial Sponsor"/>
+                    <org-address address_name="address_name" line1="line1" line2="line2" city="cityStateZip.city"
+                        state_id="cityStateZip.state"   address_type_id="static:Primary"
+                        zip="cityStateZip.zip" rec-stat-id="static:Active" />
+                    <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method_type_id="static:Telephone: Business" method-value="primary.phone"
+                        _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                    <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method_type_id="static:Fax: Business" method-value="primary.fax"
+                        _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                    <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method_type_id="static:Email: Business" method-value="email"
+                        _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
                 </org>
+                <studyorg-relationship parent_id="field:study_id" rel_type_id="static:Sponsor" rel-type="static:Sponsor"
+                    rel-entity-id="java:vc.getAddedRowPrimaryKeyValue(0).getIntValue()" rec_stat_id="static:Active" />
             </on-add-data>
-		</dialog>
+        </dialog>
+        <!--
+           This is the dialog for editing basic sponsor information and deleting the sponsor
+        -->
         <dialog name="profile" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <frame heading="create-dialog-perspective-heading:Sponsor Profile"/>
 			<xdm:include template="org-profile"/>
@@ -69,13 +116,19 @@
             </on-edit-data>
         </dialog>
         <!--
-            This is the dialog for creating/editing/deleting additional addresses for a sponsor
+            This is the dialog for creating/editing/deleting additional addresses for an existing sponsor
         -->
         <dialog name="address" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <xdm:include template="org-address"/>
             <on-add-data>
                 <org-address _auto_map="address_name,line1,line2,zip" parent_id="request:org_id" rec-stat-id="static:Active" />
             </on-add-data>
+        </dialog>
+        <!--
+           This dialog is for adding/editing/deleting sponsor contact information
+        -->
+         <dialog name="contact-info"   class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <xdm:include template="contact-info"/>
         </dialog>
     </dialogs>
     <!--
@@ -91,8 +144,6 @@
                     _auto_map="address_name,line1,line2,country"/>
             </on-add-data>
         </dialog>
-
-
 
         <!--
             This is the dialog for creating/updating/deleting employees of sponsors and sites
@@ -131,10 +182,11 @@
 
             <!--director>
                 <next-actions>
-                    <choices>
-                        <choice value="config-expr:${create-app-url:/account/home.jsp}?project_id=${request:project_id}">Choose next action</choice>
-                        <choice value="config-expr:${create-app-url:/account/home.jsp}?project_id=${request:project_id}&amp;project_name=${request:project_name}">Return to project home</choice>
-                    </choices>
+                    <items>
+                        <item value="vs-expr:${create-app-url:/account/home.jsp}?project_id=${request:project_id}" caption="Choose next action" />
+                        <item value="vs-expr:${create-app-url:/account/home.jsp}?project_id=${request:project_id}&amp;project_name=${request:project_name}"
+                            caption="Return to site home" />
+                    </items>
                 </next-actions>
             </director-->
         </dialog>

@@ -5,7 +5,7 @@
         <!--
            This dialog is for adding/updating/deleting study profile information
         -->
-        <dialog name="profile" hide-hints-until-focus="yes" >
+        <dialog name="profile" hide-hints-until-focus="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <frame heading="Clinical Trial Profile"/>
             <field type="separator" heading="Overview"/>
             <field type="text" name="study_id" caption="Trial ID" default="request:study_id" hidden="yes"/>
@@ -20,7 +20,7 @@
             </field>
             <field type="select" name="study_stage" caption="Stage" choices="schema-enum:Study_Stage_Type"
                 prepend-blank="yes" hint="The phase study is in" required="yes"/>
-            <field type="select" name="study_type" caption="Type" choices="schema-enum:Study_Type" prepend-blank="yes"/>
+            <!--field type="select" name="study_type" caption="Type" choices="schema-enum:Study_Type" prepend-blank="yes"/-->
             <field type="select" name="sponsor_org_name" caption="Sponsor" size="50"
                 default="request:org_id">
                 <conditional action="apply-flags" flags="unavailable" perspective="delete,edit"/>
@@ -44,8 +44,17 @@
             <field type="date" name="irb_expiration_date" caption="Expiration Date" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
 
             <!-- declare the classes that are handling the dialog -->
-            <on-execute class="app.cts.form.study.StudyDialogExecuteHandler"/>
-            <listener class="app.cts.form.study.StudyDialogInitialPopulateListener"/>
+            <on-edit-data>
+                <study study_name="study_name" study_code="study_code" study_descr="study_descr" study_status="study_status"
+                    study_stage="study_stage" study_type="study_type" start_date="start_date"
+                    target_end_date="target_end_date" actual_end_date="actual_end_date"
+                    irb_name="irb_name" irb_number="irb_number" irb_approval_date="irb_approval_date"
+                    irb_expiration_date="irb_expiration_date"
+                    _pk-value="request:study_id" />
+            </on-edit-data>
+            <!--listener class="app.cts.form.study.StudyDialogInitialPopulateListener"/-->
         </dialog>
+
+
     </dialogs>
 </xdm:container>
