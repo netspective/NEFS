@@ -46,6 +46,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.lang.StringUtils;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.Value;
 import com.netspective.commons.text.ExpressionText;
 import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -59,12 +60,13 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
+import java.sql.DatabaseMetaData;
 
 /**
  * Class for handling stored procedure calls
  *
  * @author Aye Thu
- * @version $Id: StoredProcedure.java,v 1.6 2003-11-10 23:02:02 aye.thu Exp $
+ * @version $Id: StoredProcedure.java,v 1.7 2003-11-11 23:08:37 aye.thu Exp $
  */
 public class StoredProcedure
 {
@@ -143,15 +145,22 @@ public class StoredProcedure
         }
     }
 
-
+    /* log */
     private Log log = LogFactory.getLog(StoredProcedure.class);
+    /* the name space to which this stored procedure call belongs to */
     private StoredProceduresNameSpace nameSpace;
+    /* the name of the stored procedure call defined in the XML */
     private String spName;
+    /* bind parameters defined for the stored procedure call */
     private StoredProcedureParameters parameters;
+    /* the datasource associated with the stored procedure call */
     private ValueSource dataSourceId;
+    /* execution log associated witht the stored procedure call */
     private QueryExecutionLog execLog = new QueryExecutionLog();
     private StoredProcedure.StoredProcedureDbmsSqlTexts sqlTexts = new StoredProcedure.StoredProcedureDbmsSqlTexts();
 
+    /* the name of the procedure/function in the database. This is OPTIONAL */
+    private String procedureName;
 
     public StoredProcedure()
     {
@@ -169,6 +178,26 @@ public class StoredProcedure
     public StoredProceduresNameSpace getNameSpace()
     {
         return nameSpace;
+    }
+
+    /**
+     * Gets the actual name of the stored procedure defined in the database
+     * @return
+     */
+    public String getProcedureName()
+    {
+        return procedureName;
+    }
+
+    /**
+     * Sets the actual name of the stored procedure defined in the database. This name
+     * is used to dynamically investigate in/out types of the parameters of the stored
+     * procedure.
+     * @param name
+     */
+    public void setProcedureName(String name)
+    {
+        procedureName = name;
     }
 
     public void setNameSpace(StoredProceduresNameSpace pkg)
@@ -274,6 +303,71 @@ public class StoredProcedure
         return sqlText != null ? sqlText.getSql(cc) : null;
     }
 
+    /**
+     * Gets the stored procedure's metadata information from the database. This will search
+     * all available catalogs and schemas.
+     * @param cc
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public void getMetaData(ConnectionContext cc) throws NamingException, SQLException
+    {
+        if (procedureName != null && procedureName.length() > 0)
+        {
+            // Get DatabaseMetaData
+            Connection connection = cc.getConnection();
+            DatabaseMetaData dbmd = connection.getMetaData();
+            ResultSet rs = dbmd.getProcedureColumns(null, null, procedureName, "%");
+            // Printout table data
+            while(rs.next())
+            {
+                // Get procedure metadata
+                String dbProcedureCatalog   = rs.getString(1);
+                String dbProcedureSchema    = rs.getString(2);
+                String dbProcedureName      = rs.getString(3);
+                String dbColumnName         = rs.getString(4);
+                short  dbColumnReturn       = rs.getShort(5);
+                String dbColumnReturnTypeName = rs.getString(7);
+                int    dbColumnPrecision      = rs.getInt(8);
+                int    dbColumnByteLength     = rs.getInt(9);
+                short  dbColumnScale          = rs.getShort(10);
+                short  dbColumnRadix          = rs.getShort(11);
+                String dbColumnRemarks        = rs.getString(13);
+                // Interpret the return type (readable for humans)
+                String procReturn = null;
+                switch(dbColumnReturn)
+                {
+                    case DatabaseMetaData.procedureColumnIn:
+                        procReturn = "In";
+                        break;
+                    case DatabaseMetaData.procedureColumnOut:
+                        procReturn = "Out";
+                        break;
+                    case DatabaseMetaData.procedureColumnInOut:
+                        procReturn = "In/Out";
+                        break;
+                    case DatabaseMetaData.procedureColumnReturn:
+                        procReturn = "return value";
+                        break;
+                    case DatabaseMetaData.procedureColumnResult:
+                        procReturn = "return ResultSet";
+                    default:
+                        procReturn = "Unknown";
+                }
+                // Printout
+                  System.out.println("Procedure: " + dbProcedureCatalog + "." + dbProcedureSchema
+                                     + "." + dbProcedureName);
+                  System.out.println("   ColumnName [ColumnType(ColumnPrecision)]: " + dbColumnName
+                                     + " [" + dbColumnReturnTypeName + "(" + dbColumnPrecision + ")]");
+                  System.out.println("   ColumnReturns: " + procReturn + "(" + dbColumnReturnTypeName + ")");
+                  System.out.println("   Radix: " + dbColumnRadix + ", Scale: " + dbColumnScale);
+                  System.out.println("   Remarks: " + dbColumnRemarks);
+            }
+            rs.close();
+            connection.close();
+        }
+    }
+
     public String createExceptionMessage(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
     {
         StringBuffer text = new StringBuffer();
@@ -355,6 +449,7 @@ public class StoredProcedure
         CallableStatement stmt = null;
         try
         {
+            getMetaData(cc);
             conn = cc.getConnection();
             String sql = StringUtils.strip(getSqlText(cc));
             if (scrollable)
@@ -371,10 +466,16 @@ public class StoredProcedure
             if(parameters != null)
                 parameters.apply(cc, stmt);
             stmt.execute();
-
+            parameters.extract(cc, stmt);
             StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
-            return (rsParameter != null ? (QueryResultSet) rsParameter.getValue().getValue(cc.getDatabaseValueContext()) : null);
-
+            if (rsParameter != null)
+            {
+                return (QueryResultSet) rsParameter.getExtractedValue(cc.getDatabaseValueContext());
+            }
+            else
+            {
+                return null;
+            }
         }
         catch(SQLException e)
         {
@@ -464,10 +565,16 @@ public class StoredProcedure
             stmt.execute();
             logEntry.registerExecSqlEndSuccess();
             parameters.extract(cc, stmt);
-
             StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
-            return (rsParameter != null ? (QueryResultSet) rsParameter.getValue().getValue(cc.getDatabaseValueContext()) : null);
-
+            if (rsParameter != null)
+            {
+                Value val = rsParameter.getValue().getValue(cc.getDatabaseValueContext());
+                return (QueryResultSet) val.getValue();
+            }
+            else
+            {
+                return null;
+            }
         }
         catch(SQLException e)
         {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameters.java,v 1.4 2003-11-10 23:02:02 aye.thu Exp $
+ * $Id: StoredProcedureParameters.java,v 1.5 2003-11-11 23:08:37 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -47,10 +47,14 @@ package com.netspective.axiom.sql;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.axiom.ConnectionContext;
 
+import javax.naming.NamingException;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.CallableStatement;
+import java.sql.DatabaseMetaData;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 /**
  * List class for keeping track of the stored procedure parameters
@@ -171,9 +175,7 @@ public class StoredProcedureParameters
         if (inoutType == StoredProcedureParameter.Type.IN ||
             inoutType == StoredProcedureParameter.Type.IN_OUT)
             inParams.add(param);
-        if (inoutType == StoredProcedureParameter.Type.OUT &&
-            param.getSqlIdentifierType().equals(QueryParameterType.RESULTSET_IDENTIFIER))
-            resultsetParamIndex = params.size();
+
     }
 
     /**
@@ -191,10 +193,13 @@ public class StoredProcedureParameters
      */
     public StoredProcedureParameter getResultSetParameter()
     {
-        if (resultsetParamIndex > 0)
-            return (StoredProcedureParameter) params.get(resultsetParamIndex);
-        else
-            return null;
+        for (int i=0; i < outParams.size(); i++)
+        {
+            StoredProcedureParameter spp = (StoredProcedureParameter)outParams.get(i);
+            if (spp.getSqlIdentifierType().equals(QueryParameterType.RESULTSET_IDENTIFIER))
+                return spp;
+        }
+        return null;
     }
 
     /**
@@ -224,20 +229,19 @@ public class StoredProcedureParameters
      * @return The index of the last parameter applied
      * @throws SQLException
      */
-    public int apply(ConnectionContext cc, CallableStatement stmt) throws SQLException
+    public int apply(ConnectionContext cc, CallableStatement stmt) throws SQLException, NamingException
     {
         StoredProcedureParameters.ValueApplyContext vac = new StoredProcedureParameters.ValueApplyContext();
 
         if(params.size() == 0)
             return 0;
 
-        /*
         int paramsCount = params.size();
         for(int i = 0; i < paramsCount; i++)
         {
             ((StoredProcedureParameter) params.get(i)).apply(vac, cc, stmt);
         }
-        */
+        /*
         for (int i = 0; i < inParams.size(); i++)
         {
             ((StoredProcedureParameter) inParams.get(i)).apply(vac, cc, stmt);
@@ -248,6 +252,7 @@ public class StoredProcedureParameters
             ((StoredProcedureParameter) outParams.get(i)).apply(vac, cc, stmt);
 
         }
+        */
         return vac.getActiveParamNum();
     }
 

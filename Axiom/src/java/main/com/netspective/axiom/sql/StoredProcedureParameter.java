@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.7 2003-11-10 23:02:02 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.8 2003-11-11 23:08:37 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -61,6 +61,8 @@ import java.sql.ResultSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.naming.NamingException;
 
 /**
  * Class representing an in or out parameter of a callable statement object
@@ -213,6 +215,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
         Value sv = value.getValue(cc);
         int jdbcType = getSqlType().getJdbcType();
+        String identifier = getSqlType().getIdentifier();
         if (getType().getValueIndex() == Type.IN || getType().getValueIndex() == Type.IN_OUT)
         {
             switch (jdbcType)
@@ -221,6 +224,8 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                     stmt.setObject(paramNum, value.getTextValue(cc));
                     break;
                 case Types.INTEGER:
+                    System.out.println(" >> " + paramNum + " " + sv.getIntValue());
+
                     stmt.setInt(paramNum, sv.getIntValue());
                     break;
                 case Types.DOUBLE:
@@ -243,10 +248,46 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         }
         if (getType().getValueIndex() == Type.OUT || getType().getValueIndex() == Type.IN_OUT)
         {
-            // jdbcType MUST be of java.sql.Types value always!
-            System.out.println("OUT>> " + paramNum + " " + jdbcType);
-            stmt.registerOutParameter(paramNum, jdbcType);
+            if (identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
+            {
+                // result sets are returned differently fod different vendors
+                stmt.registerOutParameter(paramNum, getVendorSpecificResultSetType(cc));
+                System.out.println(" >> " + paramNum +  " " + getVendorSpecificResultSetType(cc));
+            }
+            else
+                stmt.registerOutParameter(paramNum, jdbcType);
         }
+    }
+
+    /**
+     * Database vendors implement the process of returning result set from a stored procedure
+     * differently. This method will try to detect the database vendor through the driver name and
+     * register the correct out parameter type specific to the vendor.
+     * If it isn't able to guess the database from the drive name, it will return <code>Types.OTHER</code>
+     * as the result set type.
+     * @param cc  connection context object
+     * @return  the JDBC type code defined by <code>java.sql.Types</code>.
+     */
+    public int getVendorSpecificResultSetType(ConnectionContext cc)
+    {
+        // set the default type
+        int sqlType = Types.OTHER;
+        try
+        {
+            String driverName = cc.getConnection().getMetaData().getDriverName();
+            if (driverName.indexOf("Oracle") != -1)
+            {
+                // ORACLE DRIVER
+                Class oClass = Class.forName("oracle.jdbc.driver.OracleTypes");
+                sqlType = oClass.getField("CURSOR").getInt(null);
+            }
+        }
+        catch (Exception e)
+        {
+            log.error("Failed to get the column type for the result set cursor for stored procedure" +
+                    "'" + parent.getProcedure() + "'.");
+        }
+        return sqlType;
     }
 
     /**
@@ -258,6 +299,16 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         return (type.getValueIndex() == Type.OUT || type.getValueIndex() == Type.IN_OUT) ? true: false;
     }
 
+
+    /**
+     * Gets the extracted value
+     * @param vc the value context
+     * @return
+     */
+    public Object getExtractedValue(ValueContext vc)
+    {
+       return value.getValue(vc).getValue();
+    }
 
     /**
      * Extract the OUT parameter values from the callable statment and
@@ -275,6 +326,15 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         QueryParameterType paramType = getSqlType();
         int jdbcType = paramType.getJdbcType();
         String identifier = paramType.getIdentifier();
+
+        // result sets are special
+        if (identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
+        {
+            ResultSet rs = (ResultSet) stmt.getObject(index);
+            QueryResultSet qrs = new QueryResultSet(getParent().getProcedure(), cc, rs);
+            value.getValue(cc).setValue(qrs);
+            return;
+        }
 
         switch (jdbcType)
         {
@@ -339,16 +399,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                 value.getValue(cc).setValue(stmt.getBigDecimal(index));
                 break;
             case java.sql.Types.OTHER:
-                if (identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
-                {
-                    ResultSet rs = (ResultSet) stmt.getObject(index);
-                    QueryResultSet qrs = new QueryResultSet(getParent().getProcedure(), cc, rs);
-                    value.getValue(cc).setValue(qrs);
-                }
-                else
-                {
-                    value.getValue(cc).setValue(stmt.getObject(index));
-                }
+                value.getValue(cc).setValue(stmt.getObject(index));
                 break;
             case java.sql.Types.REAL:
                 value.getValue(cc).setValue(new Float(stmt.getFloat(index)));
