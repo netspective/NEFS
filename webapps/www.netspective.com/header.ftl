@@ -1,6 +1,6 @@
-<#include "macros.ftl"/>
-
 <html><head>
+
+<#include "macros.ftl"/>
 
 <title>${vc.navigationContext.getPageTitle()}</title>
 

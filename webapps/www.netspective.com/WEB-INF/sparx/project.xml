@@ -10,7 +10,7 @@
     <theme name="netspective-site" default="yes" class="app.AppTheme" inherit-resources-from-themes="console,common"/>
 
     <navigation-tree name="app" default="yes">
-        <page class="app.AppPage" name="home" default="yes" caption="Home">
+        <page class="app.AppPage" name="home" default="yes" caption="Home" static="yes">
             <body source="index.ftl"/>
         </page>
 
