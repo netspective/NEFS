@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: Theme.java,v 1.8 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: Theme.java,v 1.9 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
+
+import java.util.Map;
 
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
@@ -62,17 +64,37 @@ public interface Theme
 
     public void setResourcesPath(ValueSource path);
 
-    public NavigationSkin getNavigationSkin();
+    public void addNavigationSkin(NavigationSkin skin);
+
+    public Map getNavigationSkins();
+
+    public NavigationSkin getDefaultNavigationSkin();
+
+    public NavigationSkin getNavigationSkin(String name);
+
+    public void addPanelSkin(HtmlPanelSkin skin);
+
+    public Map getPanelSkins();
 
     public HtmlPanelSkin getTabbedPanelSkin();
 
     public HtmlPanelSkin getTemplatePanelSkin();
 
-    public HtmlTabularReportSkin getReportSkin();
+    public HtmlPanelSkin getTemplateSkin(String name);
+
+    public void addTabularReportSkin(HtmlTabularReportSkin skin);
+
+    public Map getTabularReportSkins();
+
+    public HtmlTabularReportSkin getDefaultReportSkin();
 
     public HtmlTabularReportSkin getReportSkin(String name);
 
-    public DialogSkin getDialogSkin();
+    public void addDialogSkin(DialogSkin skin);
+
+    public Map getDialogSkins();
+
+    public DialogSkin getDefaultDialogSkin();
 
     public DialogSkin getDialogSkin(String name);
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.5 2003-06-26 16:05:58 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.6 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -106,7 +106,7 @@ public class NavigationControllerServlet extends HttpServlet
         if(activePageId == null)
             activePageId = "/";
 
-        NavigationSkin skin = theme.getNavigationSkin();
+        NavigationSkin skin = theme.getDefaultNavigationSkin();
 
         return skin.createContext(getServletContext(), this, httpServletRequest, httpServletResponse,
                                         tree, activePageId);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ThemeSkin.java,v 1.1 2003-03-23 04:51:53 shahid.shah Exp $
+ * $Id: ThemeSkin.java,v 1.2 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -47,5 +47,21 @@ package com.netspective.sparx.theme;
 
 public interface ThemeSkin
 {
+    /**
+     * Return the name of this dialog skin
+     * @return
+     */
+    public String getName();
+
+    /**
+     * Return the theme that this skin belongs to
+     * @return
+     */
     public Theme getTheme();
+
+    /**
+     * Sets the theme that this skin belongs to
+     * @param theme
+     */
+    public void setTheme(Theme theme);
 }

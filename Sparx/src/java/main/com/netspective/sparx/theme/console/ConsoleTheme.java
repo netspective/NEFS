@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleTheme.java,v 1.1 2003-04-10 01:27:18 shahid.shah Exp $
+ * $Id: ConsoleTheme.java,v 1.2 2003-07-11 20:53:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -49,7 +49,7 @@ import com.netspective.sparx.navigate.NavigationSkin;
 
 public class ConsoleTheme extends BasicTheme
 {
-    protected NavigationSkin constructNavigationSkin()
+    protected NavigationSkin constructDefaultNavigationSkin()
     {
         return new ConsoleNavigationSkin(this);
     }

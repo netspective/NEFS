@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.8 2003-06-27 18:42:05 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.9 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -220,7 +220,7 @@ public class DialogCommand extends AbstractHttpServletCommand
         }
 
         Theme theme = nc.getActiveTheme();
-        DialogSkin skin = skinName != null ? theme.getDialogSkin(skinName) : theme.getDialogSkin();
+        DialogSkin skin = skinName != null ? theme.getDialogSkin(skinName) : theme.getDefaultDialogSkin();
         if(skin == null)
         {
             writer.write("DialogSkin '" + skinName + "' not found in skin factory.");

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.21 2003-06-27 01:37:11 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.22 2003-07-11 20:53:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -55,8 +55,6 @@ import javax.servlet.ServletContext;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.discovery.tools.DiscoverClass;
 
 import freemarker.template.Configuration;
 
@@ -327,10 +325,10 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
                 (ProjectComponent) XdmComponentFactory.get(
                         PROJECT_COMPONENT_CLASS, getProjectFileName(context), compFlags);
 
-            for(int i = 0; i < amComponent.getErrors().size(); i++)
-                System.err.println(amComponent.getErrors().get(i));
-            for(int i = 0; i < amComponent.getWarnings().size(); i++)
-                System.out.println(amComponent.getWarnings().get(i));
+            if(amComponent.getErrors().size() > 0)
+                System.err.println("You have " + amComponent.getErrors().size() + " error(s) in the Sparx project. To see the messages, visit\nhttp://<your-host>"+ context.getServletContextName() +"/console/project/input-source#errors.\n");
+            if(amComponent.getWarnings().size() > 0)
+                System.out.println("You have " + amComponent.getWarnings().size() + " warning(s) in the Sparx project. To see the messages, visit\nhttp://<your-host>"+ context.getServletContextName() +"/console/project/input-source#warnings.\n");
 
             return amComponent;
         }
@@ -342,29 +340,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public ProjectComponent getProjectComponent()
     {
-        try
-        {
-            int compFlags = XdmComponentFactory.XDMCOMPFLAG_CACHE_ALWAYS;
-            if(getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
-                compFlags |= XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
-
-            // never store the ProjectComponent instance since it may change if it needs to be reloaded
-            // (always use the factory get() method)
-            ProjectComponent amComponent =
-                (ProjectComponent) XdmComponentFactory.get(
-                        PROJECT_COMPONENT_CLASS, getProjectFileName(context), compFlags);
-
-            for(int i = 0; i < amComponent.getErrors().size(); i++)
-                System.err.println(amComponent.getErrors().get(i));
-            for(int i = 0; i < amComponent.getWarnings().size(); i++)
-                System.out.println(amComponent.getWarnings().get(i));
-
-            return amComponent;
-        }
-        catch(Exception e)
-        {
-            throw new NestableRuntimeException(e);
-        }
+        return getProjectComponent(getServletContext());
     }
 
     public Project getProject()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.14 2003-07-11 05:31:15 aye.thu Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.15 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -120,7 +120,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        HtmlTabularReportValueContext vc = createContext(nc, theme.getReportSkin());
+        HtmlTabularReportValueContext vc = createContext(nc, theme.getDefaultReportSkin());
         vc.setPanelRenderFlags(flags);
         TabularReportDataSource ds = createDataSource(nc);
         vc.produceReport(writer, ds);
@@ -146,7 +146,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
             if(scrollState != null)
             {
                 // reuse the scroll state object
-                vc = createContext(dc.getNavigationContext(), theme.getReportSkin(), scrollState);
+                vc = createContext(dc.getNavigationContext(), theme.getDefaultReportSkin(), scrollState);
                 vc.setDialogContext(dc);
                 vc.setPanelRenderFlags(flags);
                 vc.setResultsScrolling(scrollState);
@@ -156,7 +156,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
             {
                 // no existing scroll state object associated with current dialog transaction ID
                 // so create a new scroll state object
-                vc = createContext(dc.getNavigationContext(), theme.getReportSkin());
+                vc = createContext(dc.getNavigationContext(), theme.getDefaultReportSkin());
                 vc.setDialogContext(dc);
                 vc.setPanelRenderFlags(flags);
                 TabularReportDataSource ds = createDataSource(dc.getNavigationContext());
@@ -194,7 +194,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         }
         else
         {
-            HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), reportSkin != null ? theme.getReportSkin(reportSkin) : theme.getReportSkin());
+            HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), reportSkin != null ? theme.getReportSkin(reportSkin) : theme.getDefaultReportSkin());
             vc.setDialogContext(dc);
             vc.setPanelRenderFlags(flags);
             TabularReportDataSource ds = createDataSource(dc.getNavigationContext());

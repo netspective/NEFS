@@ -39,21 +39,33 @@
  */
 
 /**
- * $Id: AbstractThemeSkin.java,v 1.1 2003-03-24 13:28:02 shahid.shah Exp $
+ * $Id: AbstractThemeSkin.java,v 1.2 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
 
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.theme.ThemeSkin;
 
-public class AbstractThemeSkin
+public class AbstractThemeSkin implements ThemeSkin
 {
+    private String name;
     private Theme theme;
 
     public AbstractThemeSkin(Theme theme)
     {
         this.theme = theme;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public Theme getTheme()

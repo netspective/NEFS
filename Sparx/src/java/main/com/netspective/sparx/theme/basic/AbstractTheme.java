@@ -1,5 +1,8 @@
 package com.netspective.sparx.theme.basic;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.netspective.commons.io.InheritableFileResources;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
@@ -15,7 +18,11 @@ public class AbstractTheme implements Theme
     private ValueSource path;
     private InheritableFileResources resources;
     private boolean defaultTheme;
-    private NavigationSkin navigationSkin;
+    private Map navigationSkins = new TreeMap();
+    private Map tabularReportSkins = new TreeMap();
+    private Map panelSkins = new TreeMap();
+    private Map dialogSkins = new TreeMap();
+    private NavigationSkin defaultNavigationSkin;
     private HtmlPanelSkin tabbedPanelSkin;
     private HtmlPanelSkin templatePanelSkin;
     private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel-output", "panel/output", false);
@@ -23,17 +30,17 @@ public class AbstractTheme implements Theme
 
     public AbstractTheme()
     {
-        navigationSkin = constructNavigationSkin();
-        tabbedPanelSkin = constructPanelSkin();
-        templatePanelSkin = constructPanelSkin();
+        defaultNavigationSkin = constructDefaultNavigationSkin();
+        tabbedPanelSkin = constructTabbedPanelSkin();
+        templatePanelSkin = constructTabbedPanelSkin();
     }
 
-    protected NavigationSkin constructNavigationSkin()
+    protected NavigationSkin constructDefaultNavigationSkin()
     {
         return null;
     }
 
-    protected HtmlPanelSkin constructPanelSkin()
+    protected HtmlPanelSkin constructTabbedPanelSkin()
     {
         return new BasicHtmlPanelSkin(this, "panel-output", "panel/output", false);
     }
@@ -70,9 +77,14 @@ public class AbstractTheme implements Theme
         return resources;
     }
 
-    public NavigationSkin getNavigationSkin()
+    public NavigationSkin getDefaultNavigationSkin()
     {
-        return navigationSkin;
+        return defaultNavigationSkin;
+    }
+
+    public NavigationSkin getNavigationSkin(String name)
+    {
+        return (NavigationSkin) navigationSkins.get(name);
     }
 
     public HtmlPanelSkin getTabbedPanelSkin()
@@ -85,25 +97,73 @@ public class AbstractTheme implements Theme
         return templatePanelSkin;
     }
 
-    public HtmlTabularReportSkin getReportSkin()
+    public HtmlPanelSkin getTemplateSkin(String name)
+    {
+        return (HtmlPanelSkin) panelSkins.get(name);
+    }
+
+    public HtmlTabularReportSkin getDefaultReportSkin()
     {
         return defaultReportSkin;
     }
 
     public HtmlTabularReportSkin getReportSkin(String name)
     {
-        //TODO: fix this
-        return defaultReportSkin;
+        return (HtmlTabularReportSkin) tabularReportSkins.get(name);
     }
 
-    public DialogSkin getDialogSkin()
+    public DialogSkin getDefaultDialogSkin()
     {
         return defaultDialogSkin;
     }
 
     public DialogSkin getDialogSkin(String name)
     {
-        return defaultDialogSkin;
+        return (DialogSkin) dialogSkins.get(name);
+    }
+
+    public void addDialogSkin(DialogSkin skin)
+    {
+        skin.setTheme(this);
+        dialogSkins.put(skin.getName(), skin);
+    }
+
+    public void addNavigationSkin(NavigationSkin skin)
+    {
+        skin.setTheme(this);
+        navigationSkins.put(skin.getName(), skin);
+    }
+
+    public void addPanelSkin(HtmlPanelSkin skin)
+    {
+        skin.setTheme(this);
+        panelSkins.put(skin.getName(), skin);
+    }
+
+    public void addTabularReportSkin(HtmlTabularReportSkin skin)
+    {
+        skin.setTheme(this);
+        tabularReportSkins.put(skin.getName(), skin);
+    }
+
+    public Map getDialogSkins()
+    {
+        return dialogSkins;
+    }
+
+    public Map getNavigationSkins()
+    {
+        return navigationSkins;
+    }
+
+    public Map getPanelSkins()
+    {
+        return panelSkins;
+    }
+
+    public Map getTabularReportSkins()
+    {
+        return tabularReportSkins;
     }
 
     public boolean isDefault()

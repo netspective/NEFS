@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.5 2003-07-09 02:14:34 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.6 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -68,7 +68,6 @@ import org.apache.tools.ant.Main;
 import com.netspective.sparx.console.form.ConsoleDialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.SelectField;
 import com.netspective.sparx.navigate.NavigationContext;

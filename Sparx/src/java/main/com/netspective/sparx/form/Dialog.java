@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.21 2003-07-10 00:52:08 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.22 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -699,7 +699,7 @@ public class Dialog extends AbstractPanel
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        DialogContext dc = createContext(nc, theme.getDialogSkin());
+        DialogContext dc = createContext(nc, theme.getDefaultDialogSkin());
         try
         {
             render(writer, dc, false);

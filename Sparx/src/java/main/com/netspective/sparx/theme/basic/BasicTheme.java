@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTheme.java,v 1.2 2003-04-10 01:27:17 shahid.shah Exp $
+ * $Id: BasicTheme.java,v 1.3 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -48,7 +48,7 @@ import com.netspective.sparx.navigate.NavigationSkin;
 
 public class BasicTheme extends AbstractTheme
 {
-    protected NavigationSkin constructNavigationSkin()
+    protected NavigationSkin constructDefaultNavigationSkin()
     {
         return new BasicTabbedNavigationSkin(this);
     }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.13 2003-07-02 14:04:32 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.14 2003-07-11 20:53:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -324,7 +324,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             aSkin = nc.getActiveTheme().getDialogSkin(overrideSkin);
 
         dialog = aDialog;
-        skin = aSkin == null ? nc.getActiveTheme().getDialogSkin() : aSkin;
+        skin = aSkin == null ? nc.getActiveTheme().getDefaultDialogSkin() : aSkin;
 
         activeMode = DIALOGMODE_UNKNOWN;
         nextMode = DIALOGMODE_UNKNOWN;
