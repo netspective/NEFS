@@ -4,6 +4,15 @@
 .active-user-anchor     { background: url(../images/active-user/anchor.gif) no-repeat left center; width: 13px; height: 13px }
 .active-user:visited    { color: white; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
 .active-user:hover      { color: #000; font-size: 9px; font-family: Tahoma; text-decoration: none }
+.active-user-heading { color: #696969; font-size: 9px; font-family: Tahoma; text-decoration: none; text-align: left; text-transform: uppercase }
+
+.error-alert:link    { color: white; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
+.error-alert         { color: #696969; font-size: 9px; font-family: Tahoma; text-decoration: none; background: url(../images/active-user/active-user-separator.gif) no-repeat left center; text-align: left; text-transform: uppercase; height: 11px }
+.error-alert-anchor     { background: url(../images/error.gif) no-repeat left center; width: 13px; height: 13px }
+.error-alert:visited    { color: white; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
+.error-alert:hover      { color: #000; font-size: 9px; font-family: Tahoma; text-decoration: none }
+.error-alert-heading { color: yellow; font-size: 9px; font-family: Tahoma; text-decoration: none; text-align: left; text-transform: uppercase }
+
 .page-sub-heading      { color: #333; font-weight: bold; font-size: 11px; font-family: Helvetica, Tahoma; text-decoration: none; background-color: #a9a9a9; text-align: left; padding-right: 4px; padding-left: 4px; border-right: 1px solid #d3d3d3; border-left: 1px solid #d3d3d3; height: 12px }
 .page-sub-heading-table     { background-image: url(../images/active-user/active-user-backdrop.gif); padding-top: 2px; padding-left: 38px; border-bottom: 1px solid #dcdcdc; height: 12px }
 .menu-table      { background-image: url(../images/level3/level3-menu.gif); border-right: 1px solid #696969 }
@@ -71,4 +80,4 @@
 .masthead-logo    { width: 100%; height: 25px }
 .body-top-left     { }
 .menu-level-1  { }
-.active-user-heading { color: #696969; font-size: 9px; font-family: Tahoma; text-decoration: none; text-align: left; text-transform: uppercase }
+
