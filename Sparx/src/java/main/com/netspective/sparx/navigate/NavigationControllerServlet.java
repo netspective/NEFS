@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.32 2003-10-31 00:51:40 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.33 2003-11-25 00:52:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -120,6 +120,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private Properties executionProperties;
     private long initializationCount;
     private boolean initCountWritten;
+    private Map staticPagesRendered = new HashMap();
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
@@ -628,7 +629,30 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         if(activePage != null)
         {
             if(nc.isActivePageValid())
+            {
+                if(activePage.getFlags().flagIsSet(NavigationPage.Flags.STATIC_CONTENT))
+                {
+                    final HttpServletRequest httpRequest = nc.getHttpRequest();
+                    String staticPageKey = httpRequest.getServletPath() + httpRequest.getPathInfo();
+                    Date lastModfTime = (Date) staticPagesRendered.get(staticPageKey);
+
+                    // If the client sent an If-Modified-Since header equal or after the
+                    // servlet's last modified time, send a short "Not Modified" status code
+                    // Round down to the nearest second since client headers are in seconds
+                    if (lastModfTime != null && !httpRequest.getMethod().equals("GET") &&
+                        (lastModfTime.getTime() / 1000 * 1000) <= httpRequest.getDateHeader("If-Modified-Since"))
+                    {
+                        nc.getHttpResponse().setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                        return;
+                    }
+                    else
+                        staticPagesRendered.put(staticPageKey, new Date());
+                }
+
+                // if we get to there we're not static content or we're static but being rendered for the first
+                // time in this instance of the servlet
                 activePage.handlePage(writer, nc);
+            }
             else
                 activePage.handleInvalidPage(writer, nc);
         }
