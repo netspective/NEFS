@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialog.java,v 1.2 2003-08-08 18:34:03 shahid.shah Exp $
+ * $Id: LoginDialog.java,v 1.3 2003-08-08 18:34:23 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -48,7 +48,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.security.Crypt;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogsPackage;
