@@ -29,6 +29,7 @@ td.panel-output-banner a:visited { color: #696969; font-size: 11px; font-family:
 .panel-output-banner-footer      { color: #696969; font-size: 11px; font-family: Verdana; text-decoration: none; background-color: #f1eeee; text-align: left; padding-left: 3px; border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }
 
 .panel-output-content     { border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }
+.panel-output-content-no-frame {  }
 .panel-output-frame-table-action { background-color: white }
 
 .panel-output-tabs  { color: #000000; font-size: 9px; font-family: Verdana; background: url(../images/panel/output/panel-tab-bg.gif) repeat-x left bottom; height: 19px }

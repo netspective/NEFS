@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.24 2004-03-18 04:42:16 aye.thu Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.25 2004-07-16 12:06:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -213,6 +213,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
     {
         HtmlPanel panel = vc.getPanel();
         HtmlPanelFrame frame = panel.getFrame();
+        boolean renderedFrame = false;
 
         Theme theme = getTheme();
 
@@ -261,6 +262,8 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 writer.write("    </table>\n");
                 writer.write("    </td>\n");
                 writer.write("</tr>\n");
+
+                renderedFrame = true;
             }
             else
             {
@@ -279,13 +282,16 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         }
 
         renderBanner(writer, vc);
+        String contentClassName = panelClassNamePrefix + "-content";
+        if(! renderedFrame)
+            contentClassName += "-no-frame";
 
         int height = panel.getHeight();
         int width = panel.getWidth();
         if(height > 0)
-            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"width: " + width + "; height: "+ height +"; overflow: auto;\">\n");
+            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ contentClassName +"\"><div class='"+ contentDivClass +"' style=\"width: " + width + "; height: "+ height +"; overflow: auto;\">\n");
         else
-            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"width: " + width + ";\">\n");
+            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ contentClassName +"\"><div class='"+ contentDivClass +"' style=\"width: " + width + ";\">\n");
     }
 
     public void renderFrameEnd(Writer writer, HtmlPanelValueContext vc) throws IOException

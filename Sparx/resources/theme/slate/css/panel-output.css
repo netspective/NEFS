@@ -24,6 +24,7 @@
 .panel-output-banner-footer    { color: #5a5ae6; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; background-color: #e6e6fa; text-align: left; padding-left: 3px; border-right: 1px solid #5a5ae6; border-bottom: 1px solid #5a5ae6; border-left: 1px solid #5a5ae6 }
 
 .panel-output-content    { border: solid 1px #5a5ae6 }
+.panel-output-content-no-frame {  }
 .panel-output-frame-table-action  { background-color: white }
 
 .panel-output-tree-collapse  { background: url(../images/panel/output/tree-collapse.gif) no-repeat; width: 10px; height: 18px; cursor: hand; }
