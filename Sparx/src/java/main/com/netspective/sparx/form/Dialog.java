@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.15 2003-06-12 14:36:08 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.16 2003-06-20 04:16:09 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -60,7 +60,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
-
+import java.util.List;
+import java.util.ArrayList;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
@@ -150,6 +151,7 @@ public class Dialog extends AbstractPanel
     private String[] retainRequestParams;
     private Class dcClass = DialogContext.class;
     private ValueSource includeJSFile = ValueSource.NULL_VALUE_SOURCE;
+    private List clientJavascripts = new ArrayList();
 
     /**
      * Create a dialog
@@ -428,6 +430,25 @@ public class Dialog extends AbstractPanel
     public ValueSource getIncludeJSFile()
     {
         return includeJSFile;
+    }
+
+    /**
+	 * Gets all the javascript files to be included with this dialog
+	 *
+	 * @return ArrayList
+	 */
+	public List getIncludeJSFiles()
+	{
+		return this.clientJavascripts;
+	}
+
+    /**
+     * Adds a javascript file to be included
+     * @param clientJsFile
+     */
+    public void addClientJs(DialogIncludeJavascriptFile clientJsFile)
+    {
+        clientJavascripts.add(clientJsFile);
     }
 
     public void setDialogContextClass(Class cls)
