@@ -34,6 +34,7 @@
                 </ul>]]>
             </body>
         </page>
+        <page name="sampler" caption="Sampler" redirect="../nefs-sampler"/>
 
         <!--
         ** If foward or include attributes need to be used/tested then be sure to provide appropriate mappings in the
