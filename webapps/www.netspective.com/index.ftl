@@ -23,17 +23,17 @@
                     <td><table border="0" cellspacing="0" cellpadding="0">
 
                             <tbody><tr>
-                                <td><a onmouseover="changeImages( /*CMP*/'home_28',/*URL*/'images/what-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_28',/*URL*/'${resourcesPath}/images/home/what.gif');return true" href="${servletPath}/products/frameworks/suite/what-it-does"><img name="home_28" src="${resourcesPath}/images/home/what.gif" width="116" height="24" border="0" alt=""></a></td>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_28',/*URL*/'${resourcesPath}/images/home/what-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_28',/*URL*/'${resourcesPath}/images/home/what.gif');return true" href="${servletPath}/products/frameworks/suite/what-it-does"><img name="home_28" src="${resourcesPath}/images/home/what.gif" width="116" height="24" border="0" alt=""></a></td>
                             </tr>
                             <tr>
-                                <td><a onmouseover="changeImages( /*CMP*/'home_29',/*URL*/'images/how-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_29',/*URL*/'${resourcesPath}/images/home/how.gif');return true" href="${servletPath}/products/frameworks/suite/how-it-does-it"><img name="home_29" src="${resourcesPath}/images/home/how.gif" width="116" height="22" border="0" alt=""></a></td>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_29',/*URL*/'${resourcesPath}/images/home/how-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_29',/*URL*/'${resourcesPath}/images/home/how.gif');return true" href="${servletPath}/products/frameworks/suite/how-it-does-it"><img name="home_29" src="${resourcesPath}/images/home/how.gif" width="116" height="22" border="0" alt=""></a></td>
                             </tr>
                             <tr>
-                                <td><a onmouseover="changeImages( /*CMP*/'home_30',/*URL*/'images/online-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_30',/*URL*/'${resourcesPath}/images/home/online.gif');return true" href="${vc.rootUrl}/sampler" target="sampler"><img name="home_30" src="${resourcesPath}/images/home/online.gif" width="116" height="22" border="0" alt=""></a></td>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_30',/*URL*/'${resourcesPath}/images/home/online-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_30',/*URL*/'${resourcesPath}/images/home/online.gif');return true" href="${vc.rootUrl}/sampler" target="sampler"><img name="home_30" src="${resourcesPath}/images/home/online.gif" width="116" height="22" border="0" alt=""></a></td>
                             </tr>
 
                             <tr>
-                                <td><a onmouseover="changeImages( /*CMP*/'home_31',/*URL*/'images/fact-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact.gif');return true" href="#"><img name="home_31" src="${resourcesPath}/images/home/fact.gif" width="116" height="22" border="0" alt=""></a></td>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact.gif');return true" href="#"><img name="home_31" src="${resourcesPath}/images/home/fact.gif" width="116" height="22" border="0" alt=""></a></td>
                             </tr>
                         </tbody></table></td>
                     <td><img src="${resourcesPath}/images/home/anima-pane.gif" width="190" height="90" alt=""></td>
