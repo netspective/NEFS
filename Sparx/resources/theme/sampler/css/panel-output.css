@@ -12,6 +12,7 @@
 .panel-output-frame-action-item  { background: url(../images/panel/output/frame-action-add.gif) no-repeat left top; width: 18px; height: 19px }
 .panel-output-frame-mid { background-image: url(../images/panel/output/mid.gif); width: 100%; height: 19px }
 .panel-output-frame-end-cap { background: url(../images/panel/output/end-cap.gif) no-repeat left top; width: 2px; height: 19px }
+.panel-output-frame-begin-cap { background: url(../images/panel/output/begin-cap.gif) no-repeat left top; width: 2px; height: 19px }
 
 .panel-output-frame-action         { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
 .panel-output-frame-action:link { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
