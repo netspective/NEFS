@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.6 2003-04-06 15:18:29 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.7 2003-04-07 17:13:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -68,19 +68,6 @@ import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
 public class NavigationContext extends BasicDbHttpServletValueContext
 {
-    public class NavigationPathState
-    {
-        public NavigationPath path;
-        public NavigationPath.Flags flags;
-
-        public NavigationPathState(NavigationPath path)
-        {
-            navigationStates.put(path.getQualifiedName(), path);
-            this.path = path;
-            this.flags = (NavigationPath.Flags) path.createFlags().cloneFlags();
-        }
-    }
-
     private NavigationTree ownerTree;
     private NavigationPage activePage;
     private boolean redirectToAlternateChildRequired;
@@ -212,25 +199,19 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         this.navigationStates = navigationStates;
     }
 
-    public void setFlag(NavigationPath path, long flag)
+    public NavigationPath.State getActiveState()
     {
-        NavigationPathState state = (NavigationPathState) navigationStates.get(path.getQualifiedName());
-        if (state == null)
-            state = new NavigationPathState(path);
-        state.flags.setFlag(flag);
+        return getState(activePage);
     }
 
-    public void clearFlag(NavigationPath path, long flag)
+    public NavigationPath.State getState(NavigationPath path)
     {
-        NavigationPathState state = (NavigationPathState) navigationStates.get(path.getQualifiedName());
+        NavigationPath.State state = (NavigationPath.State) navigationStates.get(path.getQualifiedName());
         if (state == null)
-            state = new NavigationPathState(path);
-        state.flags.clearFlag(flag);
-    }
-
-    public boolean flagIsSet(NavigationPath path, long flag)
-    {
-        NavigationPathState state = (NavigationPathState) navigationStates.get(path.getQualifiedName());
-        return state != null ? state.flags.flagIsSet(flag) : path.getFlags().flagIsSet(flag);
+        {
+            state = path.constructState();
+            navigationStates.put(path.getQualifiedName(), state);
+        }
+        return state;
     }
 }

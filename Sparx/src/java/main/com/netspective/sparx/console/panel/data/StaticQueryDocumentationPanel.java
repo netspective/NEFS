@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticQueryDocumentationPanel.java,v 1.1 2003-04-06 04:01:46 shahid.shah Exp $
+ * $Id: StaticQueryDocumentationPanel.java,v 1.2 2003-04-07 17:13:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -62,6 +62,7 @@ import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
+import com.netspective.sparx.console.page.StaticQueryPage;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.sql.DbmsSqlText;
@@ -76,7 +77,7 @@ import com.netspective.commons.text.TextUtils;
 public class StaticQueryDocumentationPanel extends AbstractHtmlTabularReportPanel
 {
     public static final HtmlTabularReport queryReport = new BasicHtmlTabularReport();
-    public static final String REQPARAMNAME_QUERY = "query";
+    public static final String REQPARAMNAME_QUERY = "selected-query-id";
     private static final ValueSource noQueryParamAvailSource = new StaticValueSource("No '"+ REQPARAMNAME_QUERY +"' parameter provided.");
 
     static
@@ -97,7 +98,8 @@ public class StaticQueryDocumentationPanel extends AbstractHtmlTabularReportPane
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        String queryName = nc.getRequest().getParameter(REQPARAMNAME_QUERY);
+        // the query should be automatically assigned to the state using the "assign-state-params" method
+        String queryName = ((StaticQueryPage.State) nc.getActiveState()).getSelectedQueryId();
         if(queryName == null)
             return new NoQueryParameterDataSource(vc);
 

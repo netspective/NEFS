@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.3 2003-04-04 17:19:32 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.4 2003-04-07 17:13:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -82,6 +82,26 @@ public class NavigationPath
         }
     }
 
+    public class State
+    {
+        private Flags flags;
+
+        public State()
+        {
+            this.flags = (NavigationPath.Flags) NavigationPath.this.getFlags().cloneFlags();
+        }
+
+        public Flags getFlags()
+        {
+            return flags;
+        }
+
+        public NavigationPath getPath()
+        {
+            return NavigationPath.this;
+        }
+    }
+
     private NavigationTree owner;
     private NavigationPath parent;
     private Flags flags;
@@ -100,6 +120,11 @@ public class NavigationPath
     public NavigationPath()
     {
         flags = createFlags();
+    }
+
+    public State constructState()
+    {
+        return new State();
     }
 
     public String getQualifiedName()

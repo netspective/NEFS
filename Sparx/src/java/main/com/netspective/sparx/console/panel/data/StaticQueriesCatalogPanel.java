@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticQueriesCatalogPanel.java,v 1.2 2003-04-06 04:36:42 shahid.shah Exp $
+ * $Id: StaticQueriesCatalogPanel.java,v 1.3 2003-04-07 17:13:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -56,6 +56,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.console.page.StaticQueryPage;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
@@ -123,7 +124,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        return new CatalogDataSource(vc, nc.getSqlManager());
+        return new CatalogDataSource(vc, nc.getSqlManager(), ((StaticQueryPage.State) nc.getActiveState()).getSelectedQueryId());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -135,6 +136,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
     {
         private Queries queries;
         private Query activeRowQuery;
+        private String selectedQueryName;
         private String activeNameSpace;
         private List rows = new ArrayList();
         private int activeRow = -1;
@@ -159,10 +161,11 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
-        public CatalogDataSource(HtmlTabularReportValueContext vc, SqlManager sqlManager)
+        public CatalogDataSource(HtmlTabularReportValueContext vc, SqlManager sqlManager, String selectedQueryName)
         {
             super(vc);
             queries = sqlManager.getQueries();
+            this.selectedQueryName = selectedQueryName;
 
             //TODO: this does not account for queries that are not contained within a namespace
             Set sortedNamesSpaces = new TreeSet(queries.getNameSpaceNames());
@@ -192,6 +195,13 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             return true;
         }
 
+        public boolean isActiveRowSelected()
+        {
+            if(activeRowQuery == null)
+                return false;
+
+            return activeRowQuery.getQualifiedName().equals(selectedQueryName);
+        }
 
         public TabularReportDataSource.Hierarchy getActiveHierarchy()
         {

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.8 2003-04-06 15:18:29 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.9 2003-04-07 17:13:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -62,6 +62,7 @@ import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
+import com.netspective.sparx.util.HttpUtils;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -114,24 +115,30 @@ public class NavigationPage extends NavigationPath
         }
     }
 
-    //TODO: still need to implement this old Sparx feature
-    static private final String THIS_NAV_ID_REPLACE_EXPR = "{NAV_ID}";
-    static private final String PARENT_NAV_ID_REPLACE_EXPR = "{PARENT_NAV_ID}";
+    public class State extends NavigationPath.State
+    {
+
+    }
 
     private ValueSource caption;
     private ValueSource title;
     private ValueSource heading;
     private ValueSource subHeading;
     private ValueSource retainParams;
+    private ValueSource assignStateParams;
+    private boolean inheritRetainParams = true;
+    private boolean inheritAssignStateParams = true;
     private ValueSource redirect;
-    private ValueSource forward;
     private HtmlLayoutPanel panel;
 
     /* --- XDM Callbacks --------------------------------------------------------------------------------------------*/
 
-    public NavigationPage createPage()
+    /**
+     * When inheriting pages, we want our child pages to be the same class as us
+     */
+    public NavigationPage createPage() throws InstantiationException, IllegalAccessException
     {
-        return new NavigationPage();
+        return (NavigationPage) this.getClass().newInstance();
     }
 
     public void addPage(NavigationPage page)
@@ -142,6 +149,11 @@ public class NavigationPage extends NavigationPath
     public NavigationPath.Flags createFlags()
     {
         return new Flags();
+    }
+
+    public NavigationPath.State constructState()
+    {
+        return new State();
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/
@@ -193,6 +205,32 @@ public class NavigationPage extends NavigationPath
         }
 
         return false;
+    }
+
+    public void enterPage(NavigationContext nc) throws NavigationException
+    {
+        ValueSource assignParamsVS = getAssignStateParams();
+        if(assignParamsVS != null)
+        {
+            String assignParams = assignParamsVS.getTextValue(nc);
+            if(assignParams != null)
+            {
+                NavigationPath.State state = nc.getActiveState();
+                try
+                {
+                    HttpUtils.assignParamsToInstance(nc.getHttpRequest(), state, assignParams);
+                }
+                catch (Exception e)
+                {
+                    throw new NavigationException(e);
+                }
+            }
+        }
+    }
+
+    public void exitPage(NavigationContext nc)
+    {
+
     }
 
     public void makeStateChanges(NavigationContext nc)
@@ -369,14 +407,15 @@ public class NavigationPage extends NavigationPath
     {
         StringBuffer result = new StringBuffer(url);
         boolean hasQueryChar = url.indexOf('?') >= 0;
+        HttpServletRequest req = vc.getHttpRequest();
 
         if(paramNames.equals("*"))
         {
             int i = 0;
-            for(Enumeration e = vc.getHttpRequest().getParameterNames(); e.hasMoreElements(); )
+            for(Enumeration e = req.getParameterNames(); e.hasMoreElements(); )
             {
                 String paramName = (String) e.nextElement();
-                String paramValue = vc.getHttpRequest().getParameter(paramName);
+                String paramValue = req.getParameter(paramName);
                 if(paramValue != null)
                 {
                     if(i > 0 || hasQueryChar)
@@ -397,7 +436,7 @@ public class NavigationPage extends NavigationPath
             for(int i = 0; i < retainParams.length; i++)
             {
                 String paramName = retainParams[i];
-                String paramValue = vc.getHttpRequest().getParameter(paramName);
+                String paramValue = req.getParameter(paramName);
                 if(paramValue != null)
                 {
                     if(i > 0 || hasQueryChar)
@@ -434,9 +473,59 @@ public class NavigationPage extends NavigationPath
         return result;
     }
 
+    public boolean isInheritRetainParams()
+    {
+        return inheritRetainParams;
+    }
+
+    public void setInheritRetainParams(boolean inheritRetainParams)
+    {
+        this.inheritRetainParams = inheritRetainParams;
+    }
+
+    public boolean isInheritAssignStateParams()
+    {
+        return inheritAssignStateParams;
+    }
+
+    public void setInheritAssignStateParams(boolean inheritAssignStateParams)
+    {
+        this.inheritAssignStateParams = inheritAssignStateParams;
+    }
+
+    public ValueSource getAssignStateParams()
+    {
+        if(assignStateParams != null)
+            return assignStateParams;
+
+        if(! inheritAssignStateParams)
+            return null;
+
+        NavigationPage parentPage = (NavigationPage) getParent();
+        if(parentPage != null)
+            return parentPage.getAssignStateParams();
+
+        return null;
+    }
+
+    public void setAssignStateParams(ValueSource assignStateParams)
+    {
+        this.assignStateParams = assignStateParams;
+    }
+
     public ValueSource getRetainParams()
     {
-        return retainParams;
+        if(retainParams != null)
+            return retainParams;
+
+        if(! inheritRetainParams)
+            return null;
+
+        NavigationPage parentPage = (NavigationPage) getParent();
+        if(parentPage != null)
+            return parentPage.getRetainParams();
+
+        return null;
     }
 
     public void setRetainParams(ValueSource retainParams)
@@ -496,6 +585,7 @@ public class NavigationPage extends NavigationPath
 
     public void handlePage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
+        enterPage(nc);
         if(bodyAffectsNavigationContext(nc))
         {
             // render the body first and let it modify the navigation context
@@ -529,5 +619,6 @@ public class NavigationPage extends NavigationPath
             //    throw new NavigationPageException(e);
             //}
         }
+        exitPage(nc);
     }
 }

@@ -39,19 +39,29 @@
  */
 
 /**
- * $Id: ConsoleServletPage.java,v 1.2 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: StaticQueryPage.java,v 1.1 2003-04-07 17:13:55 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.console.page;
 
-import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.console.ConsoleServletPage;
 import com.netspective.sparx.navigate.NavigationPath;
 
-public class ConsoleServletPage extends NavigationPage
+public class StaticQueryPage extends ConsoleServletPage
 {
-    public class State extends NavigationPage.State
+    public class State extends ConsoleServletPage.State
     {
+        private String selectedQueryId;
 
+        public String getSelectedQueryId()
+        {
+            return selectedQueryId;
+        }
+
+        public void setSelectedQueryId(String selectedQueryId)
+        {
+            this.selectedQueryId = selectedQueryId;
+        }
     }
 
     public NavigationPath.State constructState()

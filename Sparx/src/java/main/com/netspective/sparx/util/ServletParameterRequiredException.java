@@ -39,23 +39,31 @@
  */
 
 /**
- * $Id: ConsoleServletPage.java,v 1.2 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: ServletParameterRequiredException.java,v 1.1 2003-04-07 17:13:55 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.util;
 
-import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.navigate.NavigationPath;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
-public class ConsoleServletPage extends NavigationPage
+public class ServletParameterRequiredException extends NestableRuntimeException
 {
-    public class State extends NavigationPage.State
+    public ServletParameterRequiredException()
     {
-
     }
 
-    public NavigationPath.State constructState()
+    public ServletParameterRequiredException(String s)
     {
-        return new State();
+        super(s);
+    }
+
+    public ServletParameterRequiredException(Throwable throwable)
+    {
+        super(throwable);
+    }
+
+    public ServletParameterRequiredException(String s, Throwable throwable)
+    {
+        super(s, throwable);
     }
 }

@@ -39,23 +39,31 @@
  */
 
 /**
- * $Id: ConsoleServletPage.java,v 1.2 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: NavigationException.java,v 1.1 2003-04-07 17:13:55 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console;
+package com.netspective.sparx.navigate;
 
-import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.navigate.NavigationPath;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
-public class ConsoleServletPage extends NavigationPage
+public class NavigationException extends NestableRuntimeException
 {
-    public class State extends NavigationPage.State
+    public NavigationException()
     {
-
     }
 
-    public NavigationPath.State constructState()
+    public NavigationException(String s)
     {
-        return new State();
+        super(s);
+    }
+
+    public NavigationException(Throwable throwable)
+    {
+        super(throwable);
+    }
+
+    public NavigationException(String s, Throwable throwable)
+    {
+        super(s, throwable);
     }
 }

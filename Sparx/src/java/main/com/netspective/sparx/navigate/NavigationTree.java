@@ -105,7 +105,7 @@ public class NavigationTree
         return new NavigationPage();
     }
 
-    public NavigationPage createPage()
+    public NavigationPage createPage() throws InstantiationException, IllegalAccessException
     {
         return root.createPage();
     }

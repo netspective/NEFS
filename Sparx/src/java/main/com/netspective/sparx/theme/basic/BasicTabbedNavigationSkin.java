@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.7 2003-04-06 04:36:42 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.8 2003-04-07 17:13:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -587,7 +587,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
 
-            if (!nc.flagIsSet(tabElement, NavigationPage.Flags.HIDDEN))
+            if (!nc.getState(tabElement).getFlags().flagIsSet(NavigationPage.Flags.HIDDEN))
             {
                 if (i == 0)
                 {
@@ -668,7 +668,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
 
-            if (!nc.flagIsSet(tabElement, NavigationPage.Flags.HIDDEN))
+            if (!nc.getState(tabElement).getFlags().flagIsSet(NavigationPage.Flags.HIDDEN))
             {
                 if (tabElement.isInActivePath(nc))
                 {
@@ -717,7 +717,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         for (int i = 0; i < sideBarElements.size(); i++)
         {
             NavigationPage sideBarElement = (NavigationPage) sideBarElements.get(i);
-            if (!nc.flagIsSet(sideBarElement, NavigationPage.Flags.HIDDEN))
+            if (!nc.getState(sideBarElement).getFlags().flagIsSet(NavigationPage.Flags.HIDDEN))
             {
                 if (sideBarElement.isInActivePath(nc))
                 {
