@@ -37,7 +37,7 @@
  *
  * @author Shahid N. Shah
 
- * $Id: NavigationConditionalApplyFlag.java,v 1.8 2003-12-31 19:01:35 shahid.shah Exp $
+ * $Id: NavigationConditionalApplyFlag.java,v 1.9 2004-01-09 05:59:12 aye.thu Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -213,10 +213,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
         // the keep checking things until the status is set to false -- if it's false, we're going to just leave
         // and not do anything
         //  TODO: How do we get a hold of the dataCmd for the current request?  When we figure out, then need to update next lines.
-        /*
-        if(status && dataCommand != DialogContext.)
-            status = nc.matchesDataCmdCondition(dataCmd);
-        */
         boolean hasPermissionFlg = true;
         boolean lackPermissionFlg = false;
 
@@ -228,27 +224,34 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
             {
                 try
                 {
-                    if(this.hasPermissions != null)
+                    if(this.hasPermissions != null && this.lackPermissions != null)
+                    {
+                        // if both has-permissions and lack-permissions are set then both conditions need to be satisfied
+                        // for the flag to be applied
                         hasPermissionFlg = authUser.hasAnyPermission(nc.getProject(), this.hasPermissions);
-                    if(this.lackPermissions != null)
                         lackPermissionFlg = authUser.hasAnyPermission(nc.getProject(), this.lackPermissions);
+                        if (hasPermissionFlg && !lackPermissionFlg)
+                            status = true;
+                        else
+                            status = false;
+                    }
+                    else if (this.lackPermissions != null)
+                    {
+                        status = !authUser.hasAnyPermission(nc.getProject(), this.lackPermissions);
+                    }
+                    else if (this.hasPermissions != null)
+                    {
+                        status = authUser.hasAnyPermission(nc.getProject(), this.hasPermissions);
+                    }
                 }
                 catch (PermissionNotFoundException e)
                 {
                     log.error("Permission error", e);
                 }
-
-                // set 'status' to true only if the user lacks certain permissions and
-                // has certain permissions
-                if(lackPermissionFlg == false && hasPermissionFlg == true)
-                    status = true;
-                else
-                    status = false;
             }
             else
                 status = false;
         }
-
         // handle any configured  'value' checks
         if(status && isTrue != ValueSource.NULL_VALUE_SOURCE)
         {
@@ -269,17 +272,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
             String textVal = lackValue.getValue(nc).getTextValue();
             status = textVal == null || textVal.length() == 0;
         }
-
-        /*
-        if(status && clearFlag)
-        {
-            nc.clearFlag(getPath().getId(), navigationPathFlag);
-        }
-        else if(status)
-        {
-            nc.setFlag(getPath().getId(), navigationPathFlag);
-        }
-        */
         if(status)
         {
             //TODO: check to see if our flags should overwrite the other flags or only update them
