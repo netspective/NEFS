@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.22 2003-04-28 01:10:37 shahid.shah Exp $
+  * $Id: console.xml,v 1.23 2003-04-28 16:01:39 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -122,14 +122,19 @@
                 <page name="schema" caption="Schema" heading="Schema Structure" retain-params="schema-table">
                     <panels>
                         <panels style="tabbed">
-                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaStructurePanel"/>
-                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableDescriptionsPanel"/>
+                            <frame heading="Schema Tables"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesPanel" view="all"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesDescriptionsPanel" view="all"/>
                         </panels>
                     </panels>
                 </page>
                 <page name="table" caption="Table" heading="Table Documentation" retain-params="schema-table">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableAncestorsPanel"/>
+                        <panels style="tabbed">
+                            <frame heading="Table Hierarchy" allow-collapse="yes"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesPanel" view="active-table"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesDescriptionsPanel" view="active-table"/>
+                        </panels>
                         <panels style="tabbed">
                             <frame heading="Table Columns"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel"/>
@@ -144,7 +149,7 @@
                         <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableDataPanel"/>
                     </panels>
                 </page>
-                <page name="query-def" caption="Query Defn" retain-params="schema-table">
+                <page name="query-defn" caption="Query Defn" retain-params="schema-table">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnFieldsPanel"/>
                         <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnJoinsPanel"/>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableColumnsPanel.java,v 1.7 2003-04-28 01:10:37 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPanel.java,v 1.8 2003-04-28 16:01:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -114,11 +114,11 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        List rows = SchemaStructurePanel.createStructureRows(nc.getSqlManager().getSchemas());
-        SchemaStructurePanel.StructureRow selectedRow = SchemaStructurePanel.getSelectedStructureRow(nc, rows);
+        List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
+        SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
         if(selectedRow == null)
-            return new SimpleMessageDataSource(vc, SchemaStructurePanel.noTableSelected);
+            return new SimpleMessageDataSource(vc, SchemaTablesPanel.noTableSelected);
         else
             return createColumnsDataSource(nc, vc, selectedRow.tableTreeNode != null ? selectedRow.tableTreeNode.getTable() : selectedRow.enumTable);
     }

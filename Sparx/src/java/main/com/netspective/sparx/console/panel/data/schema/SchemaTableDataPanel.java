@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableDataPanel.java,v 1.1 2003-04-28 01:10:37 shahid.shah Exp $
+ * $Id: SchemaTableDataPanel.java,v 1.2 2003-04-28 16:01:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -98,16 +98,16 @@ public class SchemaTableDataPanel extends AbstractHtmlTabularReportPanel
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        List rows = SchemaStructurePanel.createStructureRows(nc.getSqlManager().getSchemas());
-        SchemaStructurePanel.StructureRow selectedRow = SchemaStructurePanel.getSelectedStructureRow(nc, rows);
+        List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
+        SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
         if(selectedRow == null)
-            return new SimpleMessageDataSource(vc, SchemaStructurePanel.noTableSelected);
+            return new SimpleMessageDataSource(vc, SchemaTablesPanel.noTableSelected);
         else
         {
             Table table = selectedRow.getTable();
             if(table == null)
-                return new SimpleMessageDataSource(vc, SchemaStructurePanel.noTableSelected);
+                return new SimpleMessageDataSource(vc, SchemaTablesPanel.noTableSelected);
             else
             {
                 Rows data = table.getData();
@@ -121,8 +121,8 @@ public class SchemaTableDataPanel extends AbstractHtmlTabularReportPanel
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
-        List rows = SchemaStructurePanel.createStructureRows(nc.getSqlManager().getSchemas());
-        SchemaStructurePanel.StructureRow selectedRow = SchemaStructurePanel.getSelectedStructureRow(nc, rows);
+        List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
+        SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
         if(selectedRow == null)
             return new BasicHtmlTabularReport();

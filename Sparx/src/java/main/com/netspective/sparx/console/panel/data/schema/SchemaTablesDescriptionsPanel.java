@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableDescriptionsPanel.java,v 1.1 2003-04-28 01:10:37 shahid.shah Exp $
+ * $Id: SchemaTablesDescriptionsPanel.java,v 1.1 2003-04-28 16:01:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -56,7 +56,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.axiom.schema.Table;
 
-public class SchemaTableDescriptionsPanel extends SchemaStructurePanel
+public class SchemaTablesDescriptionsPanel extends SchemaTablesPanel
 {
     private static final HtmlTabularReport descrsReport = new BasicHtmlTabularReport();
     private static final GeneralColumn schemaTableColumn = new GeneralColumn();
@@ -72,7 +72,7 @@ public class SchemaTableDescriptionsPanel extends SchemaStructurePanel
         descrsReport.addColumn(column);
     }
 
-    public SchemaTableDescriptionsPanel()
+    public SchemaTablesDescriptionsPanel()
     {
         getFrame().setHeading(new StaticValueSource("Descriptions"));
     }
@@ -113,8 +113,13 @@ public class SchemaTableDescriptionsPanel extends SchemaStructurePanel
                         String descr = activeTable.getDescription();
                         if(descr != null)
                         {
-                            int descrFirstSentenceEnd = activeTable.getDescription().indexOf(". ");
-                            return descrFirstSentenceEnd > 0 ? descr.substring(0, descrFirstSentenceEnd) : descr;
+                            if(activeRow == selectedRow)
+                                return descr;
+                            else
+                            {
+                                int descrFirstSentenceEnd = activeTable.getDescription().indexOf(". ");
+                                return descrFirstSentenceEnd > 0 ? descr.substring(0, descrFirstSentenceEnd) : descr;
+                            }
                         }
                     }
 

@@ -39,27 +39,25 @@
  */
 
 /**
- * $Id: SchemaStructurePanelViewEnumeratedAttribute.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
+ * $Id: SchemaTablesPanelViewEnumeratedAttribute.java,v 1.1 2003-04-28 16:01:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
 
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
-public class SchemaStructurePanelViewEnumeratedAttribute extends XdmEnumeratedAttribute
+public class SchemaTablesPanelViewEnumeratedAttribute extends XdmEnumeratedAttribute
 {
-    public static final int STRUCTURE = 0;
-    public static final int TREE = 1;
-    public static final int DETAIL = 2;
-    public static final int DETAIL_ANCESTORS = 3;
+    public static final int ALL = 0;
+    public static final int ACTIVE_TABLE = 1;
 
-    private static final String[] VALUES = new String[] { "structure", "tree", "detail", "detail-ancestors" };
+    private static final String[] VALUES = new String[] { "all", "active-table" };
 
-    public SchemaStructurePanelViewEnumeratedAttribute()
+    public SchemaTablesPanelViewEnumeratedAttribute()
     {
     }
 
-    public SchemaStructurePanelViewEnumeratedAttribute(int valueIndex)
+    public SchemaTablesPanelViewEnumeratedAttribute(int valueIndex)
     {
         super(valueIndex);
     }

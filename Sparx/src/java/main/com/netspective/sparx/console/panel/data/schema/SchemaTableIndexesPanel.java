@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableIndexesPanel.java,v 1.1 2003-04-26 17:25:15 shahid.shah Exp $
+ * $Id: SchemaTableIndexesPanel.java,v 1.2 2003-04-28 16:01:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -94,11 +94,11 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        List rows = SchemaStructurePanel.createStructureRows(nc.getSqlManager().getSchemas());
-        SchemaStructurePanel.StructureRow selectedRow = SchemaStructurePanel.getSelectedStructureRow(nc, rows);
+        List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
+        SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
         if(selectedRow == null)
-            return new SimpleMessageDataSource(vc, SchemaStructurePanel.noTableSelected);
+            return new SimpleMessageDataSource(vc, SchemaTablesPanel.noTableSelected);
         else
             return new IndexesDataSource(vc, selectedRow.tableTreeNode != null ? selectedRow.tableTreeNode.getTable().getIndexes() : selectedRow.enumTable.getIndexes());
     }

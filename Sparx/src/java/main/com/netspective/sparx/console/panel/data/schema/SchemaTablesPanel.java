@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaStructurePanel.java,v 1.7 2003-04-28 01:10:37 shahid.shah Exp $
+ * $Id: SchemaTablesPanel.java,v 1.1 2003-04-28 16:01:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -70,9 +70,9 @@ import com.netspective.axiom.schema.Rows;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.schema.table.BasicTable;
 
-public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
+public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 {
-    private static final Log log = LogFactory.getLog(SchemaStructurePanel.class);
+    private static final Log log = LogFactory.getLog(SchemaTablesPanel.class);
     public static final String REQPARAMNAME_SHOW_DETAIL_TABLE = "schema-table";
     private static final HtmlTabularReport structureReport = new BasicHtmlTabularReport();
     private static final GeneralColumn schemaTableColumn = new GeneralColumn();
@@ -163,8 +163,9 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
     }
 
     private static Map rowsCache = new HashMap();
+    private SchemaTablesPanelViewEnumeratedAttribute view = new SchemaTablesPanelViewEnumeratedAttribute(SchemaTablesPanelViewEnumeratedAttribute.ALL);
 
-    public SchemaStructurePanel()
+    public SchemaTablesPanel()
     {
         getFrame().setHeading(new StaticValueSource("Overview"));
     }
@@ -235,6 +236,16 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
         return rows;
     }
 
+    public SchemaTablesPanelViewEnumeratedAttribute getView()
+    {
+        return view;
+    }
+
+    public void setView(SchemaTablesPanelViewEnumeratedAttribute view)
+    {
+        this.view = view;
+    }
+
     public boolean affectsNavigationContext(NavigationContext nc)
     {
         return true;
@@ -245,7 +256,15 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
         List rows = createStructureRows(nc.getSqlManager().getSchemas());
         StructureRow selectedRow = getSelectedStructureRow(nc, rows);
 
-        return new StructureDataSource(vc, createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
+        if(view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ALL)
+            return new StructureDataSource(vc, createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
+        else
+        {
+            if(selectedRow == null)
+                return new SimpleMessageDataSource(vc, noTableSelected);
+            else
+                return new StructureDataSource(vc, createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
+        }
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -310,12 +329,26 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
             return hierarchy;
         }
 
-        public StructureDataSource(HtmlTabularReportValueContext vc, List rows, StructureRow selectedRow)
+        public StructureDataSource(HtmlTabularReportValueContext vc, List structureRows, StructureRow selectedRow)
         {
             super(vc);
-            this.rows = rows;
+            this.rows = structureRows;
             this.selectedRow = selectedRow;
-            lastRow = rows.size() - 1;
+            lastRow = structureRows.size() - 1;
+
+            if(view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ACTIVE_TABLE)
+            {
+                this.rows = new ArrayList();
+
+                for(int i = 0; i < structureRows.size(); i++)
+                {
+                    StructureRow checkRow = (StructureRow) structureRows.get(i);
+                    if(checkRow == selectedRow || selectedRow.ancestors.contains(checkRow) || (checkRow.ancestors != null && checkRow.ancestors.contains(selectedRow)))
+                        this.rows.add(structureRows.get(i));
+                }
+
+                lastRow = this.rows.size() - 1;
+            }
         }
 
         public String createTableHref(Table table)
@@ -384,6 +417,11 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
         public boolean isActiveRowSelected()
         {
             return activeRow == selectedRow;
+        }
+
+        public ValueSource getNoDataFoundMessage()
+        {
+            return noTableSelected;
         }
     }
 }
