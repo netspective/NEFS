@@ -39,7 +39,7 @@
  */
 
 /**
- * @version $Id: HtmlListPanelSkin.java,v 1.2 2003-12-04 05:03:23 aye.thu Exp $
+ * @version $Id: HtmlListPanelSkin.java,v 1.3 2003-12-08 05:13:35 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -106,9 +106,9 @@ public class HtmlListPanelSkin extends BasicHtmlPanelSkin
                 if (item instanceof CommandListItem)
                 {
                     writer.write("\t\t\t\t<li><a href=\""+ ((CommandListItem)item).getUrl((HttpServletValueContext)nc) + "\">" +
-                        ((CommandListItem)item).getCaption() + "</a>");
+                        ((CommandListItem)item).getCaption().getTextValue(nc) + "</a>");
                     if (((CommandListItem)item).getDescription() != null)
-                        writer.write(":&nbsp;" + ((CommandListItem)item).getDescription());
+                        writer.write(":&nbsp;" + ((CommandListItem)item).getDescription().getTextValue(nc));
                     writer.write("</li>\n");
                 }
                 else if (item instanceof String)
