@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.2 2003-05-18 22:25:34 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.3 2003-05-19 00:58:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -221,7 +221,13 @@ public class AxiomTask extends XdmComponentTask
     public Schema getSchema(SqlManager sqlManager) throws BuildException
     {
         if(schemaName == null)
-            throw new BuildException("No schema attribute provide for source of DDL.");
+        {
+            //if no schema name provided, just use the first one unless there are multiple schemas available
+            if(sqlManager.getSchemas().size() > 1)
+                throw new BuildException("No schema attribute provide for source of DDL. Available: " + sqlManager.getSchemas().getNames());
+            else
+                return sqlManager.getSchemas().get(0);
+        }
 
         Schema schema = sqlManager.getSchema(schemaName);
         if(schema == null)
@@ -527,12 +533,5 @@ public class AxiomTask extends XdmComponentTask
     public SqlManager getSqlManager() throws BuildException
     {
         return ((SqlManagerComponent) getComponent()).getManager();
-    }
-
-    /* -------------------------------------------------------------------------------------------------------------*/
-
-    public void setAxiomDtd(File dtdFile)
-    {
-        this.dtdFile = dtdFile;
     }
 }
