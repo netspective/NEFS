@@ -68,7 +68,7 @@ import java.util.StringTokenizer;
  * Class for handling the record-editor-panel command
  *
  *
- * @version $Id: PanelEditorCommand.java,v 1.8 2004-03-11 13:10:10 aye.thu Exp $
+ * @version $Id: PanelEditorCommand.java,v 1.9 2004-03-14 06:11:19 aye.thu Exp $
  */
 public class PanelEditorCommand extends AbstractHttpServletCommand
 {
@@ -216,8 +216,7 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
             panelState.setActiveElement(activeElement);
         if (activeElementInfo != null)
             panelState.setActiveElementInfo(activeElementInfo);
-        if (previousPanelMode != null)
-            panelState.setPreviousMode(PanelEditor.translateMode(previousPanelMode));
+        panelState.setPreviousMode(PanelEditor.translateMode(previousPanelMode));
         ePanel.render(writer, nc, panelState);
 
     }
