@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialogSkin.java,v 1.1 2003-08-08 01:03:33 shahid.shah Exp $
+ * $Id: LoginDialogSkin.java,v 1.2 2003-08-10 00:34:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -75,9 +75,9 @@ public class LoginDialogSkin extends StandardDialogSkin
         String themeImagesRootUrl = dc.getNavigationContext().getThemeImagesRootUrl(dc.getActiveTheme());
         ValueSource heading = dc.getDialog().getFrame().getHeading();
 
-        writer.write("        <table class=\"color-input-panel-border\" width=\"50%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
+        writer.write("        <table width=\"50%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
         writer.write("            <tr>");
-        writer.write("                <td class=\"panel-content-input\">");
+        writer.write("                <td class=\"panel-input-content\">");
         writer.write("                    <table border=\"0\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
         if(heading != null)
         {
