@@ -132,13 +132,6 @@ Setup instructions:
         <javac srcdir="${project.src.main.home}" destdir="${project.build.main.classes.dir}"
             debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
         </javac>
-        <copy todir="${project.build.main.classes.dir}">
-            <fileset dir="${project.src.main.home}">
-                <include name="**/*.xml"/>
-                <include name="**/*.xsl"/>
-                <include name="**/*.properties"/>
-            </fileset>
-        </copy>
     </target>
 
     <target name="compile-test" depends="compile-main">
@@ -298,6 +291,7 @@ Setup instructions:
             <fileset dir="${project.src.main.home}">
                 <include name="**/*.xml"/>
                 <include name="**/*.ftl"/>
+                <include name="**/*.xsl"/>
                 <include name="**/*.properties"/>
             </fileset>
             <fileset dir="${project.home}">
