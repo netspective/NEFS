@@ -10,7 +10,7 @@
     <title>Netspective Enterprise Frameworks (NEF) 7.0 Release Candidate 1
     User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-12 17:29:09 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-20 14:18:18 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 30, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -4889,6 +4889,66 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
           <title>Body Handlers</title>
 
           <para>TODO: documentation coming soon...</para>
+
+          <section>
+            <title>HTML Subsite Handler</title>
+
+            <para>There are many cases when an existing website needs to be
+            shown as part of another application. There are two ways of
+            handling this: using frames or using the sub-site type. The
+            following examples shows how a DocBook chunked output set of files
+            that we want to share our navigation skin could be created as a
+            page:</para>
+
+            <programlisting>&#60;page name=&#34;manual&#34; caption=&#34;User&#39;s Manual&#34; heading=&#34;-&#34; title=&#34;User&#39;s Manual&#34;&#62;
+
+    &#60;!-- be sure that redirect URL ends in / because of relative paths in subsite --&#62;
+    &#60;redirect&#62;servlet-context-uri:/documentation/manual/&#60;/redirect&#62;     
+
+    &#60;body-handler handler=&#34;html-sub-site&#34;&#62;
+        &#60;root&#62;servlet-context-path:/nef-manual&#60;/root&#62;
+        &#60;file-not-found-message&#62;
+            Please run build in &#38;lt;code&#38;gt;NEFS_HOME/support/docs&#38;lt;/code&#38;gt; to generate
+            the Manual.&#38;lt;p&#38;gt;
+            &#38;lt;code&#38;gt;{0}&#38;lt;/code&#38;gt; was not found.
+        &#60;/file-not-found-message&#62;
+
+        &#60;!-- because we&#39;re in a subsite we want to translate the locations of our images and resources --&#62;
+        &#60;substitute&#62;
+            &#60;perl-reg-ex&#62;simple-expr:s!src=&#34;\./resources/!src=&#34;${servlet-context-uri:/nef-manual/resources/}!g&#60;/perl-reg-ex&#62;
+        &#60;/substitute&#62;
+        &#60;substitute&#62;
+            &#60;perl-reg-ex&#62;simple-expr:s!src=&#34;images/!src=&#34;${servlet-context-uri:/nef-manual/images/}!g&#60;/perl-reg-ex&#62;
+        &#60;/substitute&#62;
+    &#60;/body-handler&#62;
+&#60;/page&#62;</programlisting>
+
+            <para>Doing the same thing as above but using frames is easy too:</para>
+
+            <programlisting>&#60;page name=&#34;manual&#34; caption=&#34;User&#39;s Manual&#34; heading=&#34;-&#34; title=&#34;NEFS User&#39;s Manual&#34;
+      handle-meta-data=&#34;yes&#34; handle-header=&#34;no&#34; handle-footer=&#34;no&#34;&#62;
+    &#60;body&#62;
+        &#60;![CDATA[
+            &#60;!-- if anything comes after the manual/ path, it&#39;s considered the actual href to the DocBook file --&#62;
+            &#60;#assign manualBodyPath = vc.navigationContext.activePathFindResults.getUnmatchedPath(0)?default(&#39;&#39;)/&#62;
+            &#60;#if manualBodyPath != &#34;&#34;&#62;
+               &#60;#assign manualBodyPath = &#34;/&#34; + manualBodyPath/&#62;
+            &#60;/#if&#62;
+
+            &#60;frameset rows=&#34;110,*&#34;&#62;
+             &#60;frame src=&#34;${vc.servletRootUrl}/documentation/manual/header&#34; name=&#34;header&#34; FRAMEBORDER=&#34;NO&#34; SCROLLING=&#34;NO&#34;&#62;
+             &#60;frame src=&#34;${vc.servletRootUrl}nef-manual${manualBodyPath}&#34; name=&#34;body&#34; FRAMEBORDER=&#34;NO&#34; SCROLLING=&#34;YES&#34;&#62;
+            &#60;/frameset&#62;
+        ]]&#62;
+    &#60;/body&#62;
+
+    &#60;!-- make sure the targets for all hyperlinks go to the frame&#39;s parent (usually _top) --&#62;
+    &#60;page name=&#34;header&#34; caption=&#34;Sample Applications&#34; base-attributes=&#34;target=&#39;_parent&#39;&#34;&#62;
+        &#60;body&#62;This shouldn&#39;t appear, the frame stops right above it.&#60;/body&#62;
+    &#60;/page&#62;
+&#60;/page&#62;
+</programlisting>
+          </section>
         </section>
       </section>
 
@@ -7772,8 +7832,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         method to modifying DDL during the design and construction phases
         (pre-production) of a web application. In post-production usage, the
         entire SQL is regenerated for changed tables and relationships but a
-        experienced DBA should be involved for the alteration of live schemas.
-        </para>
+        experienced DBA should be involved for the alteration of live schemas.</para>
       </section>
     </section>
   </chapter>
