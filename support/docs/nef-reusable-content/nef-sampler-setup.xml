@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section>
+  <title>Setting up the NEFS Sampler Application on Your Own App
+  Server</title>
+
+  <para>You may download the NEFS Sampler application as
+  app-server-independent .war file. The Sampler Application's .war file
+  includes all of the NEF binary files, resources and everything you need to
+  use NEF. Once you have downloaded the .war file, you have everything you
+  need to start modifying and adding to the app.</para>
+
+  <section>
+    <title>Downloading the Sampler Application</title>
+
+    <para>You can download the NEF Sampler Application file from <ulink
+    url="http://www.netspective.com/corp/downloads/frameworks/samples">http://www.netspective.com/corp/downloads/frameworks/samples</ulink><screenshot>
+        <graphic fileref="./resources/images/screen-sampler-war.gif" />
+      </screenshot></para>
+  </section>
+
+  <section>
+    <title>Setting up the Sampler Application</title>
+
+    <para>Copy the downloaded <filename>nefs-sampler.war</filename> file to
+    the <filename class="directory">webapps</filename> folder of your servlet
+    container (application server) and run (or restart) the application
+    server. This will create an Application Directory Structure containing the
+    necessary NEF files and sub-folders, under the <filename
+    class="directory">webapps</filename> folder of your application
+    server.</para>
+  </section>
+
+  <section>
+    <title>Testing the Sampler Application in a Browser</title>
+
+    <para>Use a web browser to access the root of the Sampler Application
+    using the URL of the form
+    http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/nefs-sampler.
+    If everything worked as it should, you will see the Sampler Application
+    Welcome Page.</para>
+
+    <para><screenshot>
+        <graphic fileref="./resources/images/screen-sampler-home.gif" />
+      </screenshot></para>
+  </section>
+</section>
