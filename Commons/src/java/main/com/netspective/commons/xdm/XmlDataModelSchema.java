@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.29 2003-08-06 04:53:05 aye.thu Exp $
+ * $Id: XmlDataModelSchema.java,v 1.30 2003-08-13 12:18:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -73,7 +73,9 @@ import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandNotFoundException;
-import com.netspective.commons.lang.JavaDocXmlDocuments;
+import com.netspective.commons.lang.JavaDocs;
+import com.netspective.commons.lang.MethodJavaDoc;
+import com.netspective.commons.lang.ClassJavaDoc;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducerParent;
@@ -440,9 +442,9 @@ public class XmlDataModelSchema
      * Gets the description of the bean represented by this Schema by using the runtime JavaDoc XML resources.
      * @return The description of the class provided in the JavaDoc XML
      */
-    public String getDescription()
+    public ClassJavaDoc getJavaDoc()
     {
-        return JavaDocXmlDocuments.getInstance().getClassOrInterfaceDescription(getBean());
+        return JavaDocs.getInstance().getClassJavaDoc(getBean());
     }
 
     public class ElementDetail
@@ -487,9 +489,9 @@ public class XmlDataModelSchema
             return templateProducer != null;
         }
 
-        public String getDescription()
+        public ClassJavaDoc getJavaDoc()
         {
-            return JavaDocXmlDocuments.getInstance().getClassOrInterfaceDescription(elemType);
+            return JavaDocs.getInstance().getClassJavaDoc(elemType);
         }
     }
 
@@ -628,15 +630,12 @@ public class XmlDataModelSchema
             return required;
         }
 
-        public String getDescription()
+        public MethodJavaDoc getJavaDoc()
         {
-            if(attrName.equals(ATTRNAME_CLASS))
-                return "Override the class used for this instance with an appropriate subclass.";
-
             if(isFlagAlias())
-                return JavaDocXmlDocuments.getInstance().getMethodDescription(getBean(), "set"+ TextUtils.xmlTextToJavaIdentifier(primaryFlagsAttrName, true));
+                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set"+ TextUtils.xmlTextToJavaIdentifier(primaryFlagsAttrName, true));
             else
-                return JavaDocXmlDocuments.getInstance().getMethodDescription(getBean(), "set"+ TextUtils.xmlTextToJavaIdentifier(attrName, true));
+                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set"+ TextUtils.xmlTextToJavaIdentifier(attrName, true));
         }
 
         public boolean isFlagsPrimary()

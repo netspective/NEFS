@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JavaDocXmlDocuments.java,v 1.2 2003-06-15 20:30:47 shahid.shah Exp $
+ * $Id: JavaDocs.java,v 1.1 2003-08-13 12:18:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.lang;
@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.TransformerException;
 
 import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
@@ -61,17 +62,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.xpath.XPathAPI;
 
-public class JavaDocXmlDocuments
+public class JavaDocs
 {
-    private static final JavaDocXmlDocuments INSTANCE = (JavaDocXmlDocuments) DiscoverSingleton.find(JavaDocXmlDocuments.class, JavaDocXmlDocuments.class.getName());
-    private static final Log log = LogFactory.getLog(JavaDocXmlDocuments.class);
+    private static final JavaDocs INSTANCE = (JavaDocs) DiscoverSingleton.find(JavaDocs.class, JavaDocs.class.getName());
+    private static final Log log = LogFactory.getLog(JavaDocs.class);
 
-    public static JavaDocXmlDocuments getInstance()
+    public static JavaDocs getInstance()
     {
         return INSTANCE;
     }
 
-    private Map javaDocsByClass = new HashMap();
+    private Map xmlDocsByClass = new HashMap();
+    private Map classJavaDocsByClass = new HashMap();
 
     /**
      * Return the DOM document that represents the output from JavaDoc for the given class. The XML file is located
@@ -85,9 +87,9 @@ public class JavaDocXmlDocuments
      * @return The DOM document for the given class or null if x.y.z.xml resource could not be located.
      * @throws IOException
      */
-    public Document getClassJavaDoc(Class cls) throws IOException
+    public Document getXmlDocForClass(Class cls) throws IOException
     {
-        Document javaDoc = (Document) javaDocsByClass.get(cls);
+        Document javaDoc = (Document) xmlDocsByClass.get(cls);
         if(javaDoc != null)
             return javaDoc;
 
@@ -100,7 +102,7 @@ public class JavaDocXmlDocuments
             {
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 javaDoc = factory.newDocumentBuilder().parse(is);
-                javaDocsByClass.put(cls, javaDoc);
+                xmlDocsByClass.put(cls, javaDoc);
             }
             catch (SAXException e)
             {
@@ -119,78 +121,141 @@ public class JavaDocXmlDocuments
         return javaDoc;
     }
 
-    public String getClassOrInterfaceDescription(Class cls)
+    public ClassJavaDoc getClassJavaDoc(Class cls)
     {
-        try
+        ClassJavaDoc result = (ClassJavaDoc) classJavaDocsByClass.get(cls);
+        if(result == null)
         {
-            Document javaDoc = getClassJavaDoc(cls);
-            if(javaDoc == null)
-                return "JavaDoc XML not found for " + cls;
-
-            String result = "";
-
-            Node descrLeadNode = XPathAPI.selectSingleNode(javaDoc.getDocumentElement(), "/*/description/lead");
-            Node descrDetailNode = XPathAPI.selectSingleNode(javaDoc.getDocumentElement(), "/*/description/detail");
-
-            if(descrLeadNode != null)
-                result += descrLeadNode.getFirstChild().getNodeValue();
-
-            if(descrDetailNode != null)
-                result += descrDetailNode.getFirstChild().getNodeValue();
-
-            return result;
+            result = new ClassJavaDoc(cls);
+            classJavaDocsByClass.put(cls, result);
         }
-        catch (Exception e)
-        {
-            log.error("Error retrieving description for " + cls, e);
-            return e.getMessage();
-        }
+        return result;
     }
 
-    public String getMethodDescription(Class cls, String methodName)
+    public MethodDocXmlNodeLocator getMethodDocXmlNodeLocator(Class cls, String methodName, boolean inherit)
     {
-        try
+        MethodDocXmlNodeLocator locator = new MethodDocXmlNodeLocator(cls, methodName, inherit);
+        locator.locate();
+        return locator;
+    }
+
+    public abstract class JavaDocXmlNodeLocator
+    {
+        protected Class startingClass;
+        protected Class locatedInClass;
+        protected Node locatedNode;
+        protected int locatedInAncestorIndex;
+        protected boolean searchParents;
+        protected Exception retrievalError;
+
+        protected JavaDocXmlNodeLocator(Class startingClass, boolean searchParents)
         {
-            Document javaDoc = getClassJavaDoc(cls);
-            if(javaDoc == null)
-                return "JavaDoc XML not found for " + cls;
+            this.startingClass = startingClass;
+            this.searchParents = searchParents;
+        }
 
-            String mutatorDocNodeXPathExpr = "//method[@name = '"+ methodName +"']";
-            Node methodDocNode = XPathAPI.selectSingleNode(javaDoc.getDocumentElement(), mutatorDocNodeXPathExpr);
-            if(methodDocNode != null)
+        public boolean isFound()
+        {
+            return locatedNode != null;
+        }
+
+        public Node getLocatedNode()
+        {
+            return locatedNode;
+        }
+
+        public Class getStartingClass()
+        {
+            return startingClass;
+        }
+
+        public Class getLocatedInClass()
+        {
+            return locatedInClass;
+        }
+
+        public int getLocatedInAncestorIndex()
+        {
+            return locatedInAncestorIndex;
+        }
+
+        public boolean isSearchParents()
+        {
+            return searchParents;
+        }
+
+        public Exception getRetrievalError()
+        {
+            return retrievalError;
+        }
+
+        protected Class getSuperClass(Document xmlDoc) throws TransformerException, ClassNotFoundException
+        {
+            Element superClassDocElem = (Element) XPathAPI.selectSingleNode(xmlDoc.getDocumentElement(), "//superclass");
+            if(superClassDocElem != null)
             {
-                String result = "";
-
-                Node descrLeadNode = XPathAPI.selectSingleNode(methodDocNode, "description/lead");
-                Node descrDetailNode = XPathAPI.selectSingleNode(methodDocNode, "description/detail");
-
-                if(descrLeadNode != null)
-                    result += descrLeadNode.getFirstChild().getNodeValue();
-
-                if(descrDetailNode != null)
-                    result += descrDetailNode.getFirstChild().getNodeValue();
-
-                return result;
+                String superClassName = superClassDocElem.getAttribute("inPackage") + "." +
+                                        superClassDocElem.getAttribute("name");
+                return Class.forName(superClassName);
             }
             else
-            {
-                Element superClassDocElem = (Element) XPathAPI.selectSingleNode(javaDoc.getDocumentElement(), "//superclass");
-                if(superClassDocElem != null)
-                {
-                    String superClassName = superClassDocElem.getAttribute("inPackage") + "." +
-                                            superClassDocElem.getAttribute("name");
-                    return getMethodDescription(Class.forName(superClassName), methodName);
-                }
-                else
-                    return "JavaDoc for method " + methodName + " not found using " + mutatorDocNodeXPathExpr;
-            }
+                return null;
         }
-        catch (Exception e)
-        {
-            log.error("Error retrieving description for " + cls, e);
-            return e.getMessage();
-        }
+
+        abstract protected void locate(Class activeClass, int inhLevel) throws IOException, ClassNotFoundException, TransformerException;
+        abstract protected void locate();
     }
 
+    public class MethodDocXmlNodeLocator extends JavaDocXmlNodeLocator
+    {
+        private String methodName;
 
+        public MethodDocXmlNodeLocator(Class startingClass, String methodName, boolean searchParents)
+        {
+            super(startingClass, searchParents);
+            this.methodName = methodName;
+        }
+
+        public String getMethodName()
+        {
+            return methodName;
+        }
+
+        protected void locate(Class activeClass, int inhLevel) throws IOException, ClassNotFoundException, TransformerException
+        {
+            Document xmlDoc = getXmlDocForClass(activeClass);
+            if(xmlDoc == null)
+                return;
+
+            String mutatorDocNodeXPathExpr = "//method[@name = '"+ getMethodName() +"']";
+            Node methodDocNode = XPathAPI.selectSingleNode(xmlDoc.getDocumentElement(), mutatorDocNodeXPathExpr);
+            if(methodDocNode != null)
+            {
+                this.locatedInAncestorIndex = inhLevel;
+                this.locatedInClass = activeClass;
+                this.locatedNode = methodDocNode;
+                return;
+            }
+
+            if(isSearchParents())
+            {
+                Class superClass = getSuperClass(xmlDoc);
+                if(superClass != null)
+                    locate(superClass, inhLevel+1);
+            }
+        }
+
+        public void locate()
+        {
+            try
+            {
+                locate(getStartingClass(), 0);
+            }
+            catch (Exception e)
+            {
+                JavaDocs.log.error("Error retrieving description for " + getStartingClass() + " method " + getMethodName(), e);
+                retrievalError = e;
+            }
+        }
+    }
 }
