@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.16 2003-12-04 09:11:22 roque.hernandez Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.17 2004-01-14 16:51:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -55,6 +55,7 @@ import com.netspective.axiom.value.source.SqlExpressionValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.Value;
 import com.netspective.commons.xml.template.*;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.form.*;
@@ -435,14 +436,23 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
         if(primaryKeyValueSource != null)
         {
-            final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
-            Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue }, null);
-            if(activeRow != null)
-                populateFieldValuesUsingAttributes(sredc, activeRow, templateElement);
-            else
+            final Value primaryKeyValue = primaryKeyValueSource.getValue(sredc);
+            if(primaryKeyValue == null)
             {
                 if(! (sredc.editingData() && getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND)))
                     sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[] { primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName() });
+            }
+            else
+            {
+                final Object primaryKeyValueObj = primaryKeyValue.getValue();
+                Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValueObj }, null);
+                if(activeRow != null)
+                    populateFieldValuesUsingAttributes(sredc, activeRow, templateElement);
+                else
+                {
+                    if(! (sredc.editingData() && getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND)))
+                        sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[] { primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName() });
+                }
             }
         }
         else
@@ -646,8 +656,18 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         if(primaryKeyValueSource == null)
             sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[] { table.getName() });
 
-        final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
-        Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue }, null);
+        final Value primaryKeyValue = primaryKeyValueSource.getValue(sredc);
+        if(primaryKeyValue == null)
+        {
+            if(getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
+                addDataUsingTemplateElement(sredc, cc, templateElement, null);
+            else
+                sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[] { primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName() });
+            return;
+        }
+
+        final Object primaryKeyValueObj = primaryKeyValue.getValue();
+        Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValueObj }, null);
         if(activeRow == null)
         {
             if(getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
