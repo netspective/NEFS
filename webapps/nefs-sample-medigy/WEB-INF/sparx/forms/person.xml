@@ -8,34 +8,26 @@
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="non-patient.demographic-information"/>
 			<xdm:include template="person.identification-information"/>
-			<xdm:include template="person.contact-information"/>
-			<xdm:include template="person.employment-information"/>
-
+			<xdm:include template="staff.contact-information"/>
+			<!--xdm:include template="person.employment-information"/-->
 			<xdm:include template="staff.professional-identification"/>
 			<xdm:include template="staff.speciality"/>
-			
-			<xdm:include template="nurse.associated-physicians"/>
-            <!--listener class="app.form.person.NurseDialog" /-->
-            <on-add-data>
-                <person _auto-map="*" rec_stat_id="static:Active">
-                    <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-value="work_phone"
-                        _condition="vc.getFieldStates().getState('work_phone').getValue().hasValue()"/>
-                    <person-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-value="email"
-                         _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
-                    <person-login user_id="user_id" password="field:password1" rec-stat-id="static:Active"
-                        quantity="static:100"/>
-                </person>
-            </on-add-data>
-            <on-delete-data>
-                <person _pk-value="request:person_id" _auto-map="*" />
-            </on-delete-data>
+			<!--xdm:include template="nurse.associated-physicians"/-->
+            <director>
+                <next-actions caption="Next Action\:" display-single-action="yes">
+                    <items>
+                        <item>Add another nurse</item>
+                        <item>Go to nurse's home page</item>
+                    </items>
+                </next-actions>
+            </director>
 		</dialog>
 
 		<dialog type="schema-record-editor" name="patient" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Patient/Person"/>
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="patient.demographic-information"/>
-			<xdm:include template="person.contact-information"/>
+			<xdm:include template="patient.contact-information"/>
 			<xdm:include template="person.employment-information"/>
 			<xdm:include template="patient.insurance-information"/>
             <xdm:include template="patient.responsible-party"/>
@@ -106,7 +98,7 @@
 			<xdm:include template="person.demographic-information"/>
 		</dialog-->
 
-		<dialog name="physician"  generate-dcb="yes" type="schema-record-editor">
+		<!--dialog name="physician"  generate-dcb="yes" type="schema-record-editor">
             <frame heading="create-dialog-perspective-heading:Physician/Provider"/>
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="non-patient.demographic-information"/>
@@ -119,16 +111,60 @@
 			
 			<xdm:include template="physician.license-and-provider-information"/>
 			<xdm:include template="physician.billing-information"/>
-            <!--listener class="app.form.person.PhysicianDialog" /-->
 
+		</dialog-->
+
+        <dialog type="schema-record-editor" name="physician" generate-dcb="yes">
+            <frame heading="create-dialog-perspective-heading:Physician"/>
+			<xdm:include template="person.personal-profile"/>
+			<xdm:include template="non-patient.demographic-information"/>
+            <xdm:include template="physician.license"/>
+            <xdm:include template="staff.contact-information"/>
+
+            <xdm:include template="physician.identification"/>
+            <director>
+                <next-actions caption="Next Action\:" display-single-action="yes">
+                    <items>
+                        <item>Add another physician</item>
+                        <item>Go to physician's home page</item>
+                    </items>
+                </next-actions>
+            </director>
+            <!--listener class="app.form.person.attribute.PatientDialog" /-->
+            <on-add-data>
+                <person name_last="field:profile.name_last" name_first="field:profile.name_first" name_middle="field:profile.name_middle"
+                    name_suffix="field:profile.name_suffix" ssn="field:demographics.ssn" marital_status_id="field:demographics.marital_status_id"
+                    blood_type_id="field:demographics.blood_type_id" gender_id="field:demographics.gender_id" ethnicity_id="field:demographics.ethnicity_id"
+                    language_id="field:demographics.language_id" rec_stat_id="static:Active" birth_date="field:demographics.birth_date">
+
+                    <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business"
+                        method-value="contact.work_phone"
+                        _condition="vc.getFieldStates().getState('contact.work_phone').getValue().hasValue()"/>
+                    <person-contact rec-stat-id="static:Active" method-type="static:Email: Business"
+                        method-value="contact.email"
+                         _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
+                    <person-login user_id="field:identification.user_name" password="field:identification.user_name" rec-stat-id="static:Active"
+                        login-status="static:Active" quantity="static:100"/>
+
+                    <person-classification rec-stat-id="static:Active" person-type-id="static:Patient"/>
+                    <person-ethnicity _loop-column="ethnicity-id" ethnicity-id="field:demographics.ethnicity_id" rec-stat-id="static:Active"/>
+                    <person-language _loop-column="language-id" language-id="field:demographics.language_id" rec-stat-id="static:Active"/>
+                </person>
+            </on-add-data>
+            <on-edit-data>
+
+            </on-edit-data>
+            <on-delete-data>
+                <person _pk-value="request:person_id" _auto-map="*" />
+            </on-delete-data>
 		</dialog>
-		
+
 		<dialog type="schema-record-editor" name="referringDoctor">
             <frame heading="create-dialog-perspective-heading:Referring Doctor"/>
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="non-patient.demographic-information"/>
 			<xdm:include template="person.identification-information"/>
-			<xdm:include template="person.contact-information"/>
+			<xdm:include template="staff.contact-information"/>
 			<xdm:include template="person.employment-information"/>
 
 			<xdm:include template="staff.professional-identification"/>
@@ -143,7 +179,7 @@
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="non-patient.demographic-information"/>
 			<xdm:include template="person.identification-information"/>
-			<xdm:include template="person.contact-information"/>
+			<xdm:include template="staff.contact-information"/>
 			<xdm:include template="person.employment-information"/>
 
 			<xdm:include template="staff.professional-identification"/>
