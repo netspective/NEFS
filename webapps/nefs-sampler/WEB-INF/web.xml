@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: web.xml,v 1.1 2003-12-10 05:33:06 aye.thu Exp $
+$Id: web.xml,v 1.2 2003-12-11 17:37:49 shahid.shah Exp $
 -->
 
 <web-app>
@@ -44,6 +44,10 @@ $Id: web.xml,v 1.1 2003-12-10 05:33:06 aye.thu Exp $
         <servlet-class>com.caucho.server.http.FileServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>AppServerJspServlet</servlet-name>
+        <servlet-class>com.caucho.jsp.JspServlet</servlet-class>
+    </servlet>
 
     <!--
     *******************************************************************************************************************
@@ -106,6 +110,11 @@ $Id: web.xml,v 1.1 2003-12-10 05:33:06 aye.thu Exp $
     <servlet-mapping>
         <servlet-name>AppServerStaticFileServlet</servlet-name>
         <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AppServerJspServlet</servlet-name>
+        <url-pattern>/jsp/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

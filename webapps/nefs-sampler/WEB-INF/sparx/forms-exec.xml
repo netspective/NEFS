@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <dialogs package="form.exec.template">
+        <dialog name="body-xml" redirect-after-execute="false">
+            <frame heading="Hello World Form"/>
+            <field type="text" name="first_name" caption="First Name" required="yes"/>
+            <field type="text" name="last_name" caption="Last Name" required="yes"/>
+
+            <on-execute handler="template">
+                <![CDATA[
+                Welcome to NEFS, ${vc.fieldStates.getState("first_name").value.textValue}
+                ${vc.fieldStates.getState("last_name").value.textValue}.
+                <p>Form1 demonstrated how you can take two
+                pieces of data and execute an arbritrary <a href="http://www.freemarker.org">FreeMarker</a> template embedded in the project.xml file.
+                ]]>
+            </on-execute>
+        </dialog>
+
+        <dialog name="body-file" loop="no" redirect-after-execute="false">
+            <frame heading="Hello World Form"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+            <field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/>
+
+            <on-execute handler="template">
+                <source>form/exec/template-body-file.ftl</source>  <!-- source is relative to the app root -->
+            </on-execute>
+        </dialog>
+
+        <dialog name="inc-jsp" loop="no" redirect-after-execute="false">
+            <frame heading="Hello World Form"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+            <field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/>
+
+            <on-execute handler="include">
+                <path>/jsp/template-inc-test.jsp</path>
+            </on-execute>
+        </dialog>
+    </dialogs>
+
+    <dialogs package="form.exec.handler">
+        <dialog name="inc-html" loop="prepend" redirect-after-execute="false" allow-multiple-executes="yes">
+            <loop-separator>&lt;hr size=1&gt;&lt;p&gt;</loop-separator>
+            <frame heading="Get contents of URL"/>
+            <field type="text" name="url" caption="URL" size="60" required="yes" default="http\://www.yahoo.com">
+                <hint>
+                    Please provide a complete URL such as http\://www.google.com.&lt;br&gt;
+                    This form will read the contents of the URL and show it below.
+                </hint>
+            </field>
+
+            <on-execute handler="include">
+                <url>dialog-field:url</url>
+            </on-execute>
+        </dialog>
+
+        <dialog name="send-mail" loop="append" redirect-after-execute="false" allow-multiple-executes="yes">
+            <frame heading="Send Mail Handler Example"/>
+            <field type="text" name="host" caption="Host" required="yes" default="mail.netspective.com"/>
+            <field type="text" name="from" caption="From" required="yes" default="dummy@mail.com"/>
+            <field type="text" name="to" caption="To" required="yes"/>
+            <field type="text" name="subject" caption="Subject" required="yes"/>
+            <field type="memo" name="body" caption="Body"/>
+
+            <on-execute handler="mail">
+                <host>dialog-field:host</host>
+                <from>dialog-field:from</from>
+                <to>dialog-field:to</to>
+                <subject>dialog-field:subject</subject>
+                <body>You entered this e-mail body: ${vc.fieldStates.getState("body").value.textValue}</body>
+                <success-message>
+                    <![CDATA[
+                    Thank you for sending e-mail to <code><b>${vc.fieldStates.getState("to").value.textValue}</b></code>.
+                    ]]>
+                </success-message>
+                <failure-message>
+                    <![CDATA[
+                    Unable to send e-mail to <code><b>${vc.fieldStates.getState("to").value.textValue}</b></code>.<p>
+                    Exception:<br>
+                    <pre>${exception}</pre>
+                    ]]>
+                </failure-message>
+            </on-execute>
+        </dialog>
+
+        <dialog name="exec-cmd" redirect-after-execute="false" allow-multiple-executes="yes">
+            <frame heading="Command Handler Example"/>
+            <field type="text" name="command" caption="Command" required="yes" size="60"/>
+
+            <on-execute handler="command" command-expr="dialog-field:command"/>
+        </dialog>
+
+        <dialog name="exec-panels" redirect-after-execute="false" allow-multiple-executes="yes">
+            <frame heading="Panels Handler Example"/>
+            <field type="text" name="local-include" caption="Include local" required="yes" size="60" default="/jsp/panel-inc-test.jsp"/>
+            <field type="text" name="remote-include" caption="Command 2" required="yes" size="60" default="http\://www.yahoo.com"/>
+
+            <on-execute handler="panels" style="two-columns">
+                <panel type="include" path="dialog-field:local-include">
+                    <frame heading="dialog-field:local-include"/>
+                </panel>
+                <panel type="include" url="dialog-field:remote-include">
+                    <frame heading="dialog-field:remote-include"/>
+                </panel>
+            </on-execute>
+        </dialog>
+
+        <dialog name="transform-xslt-dc" loop="prepend" redirect-after-execute="false" allow-multiple-executes="yes">
+            <frame heading="XSLT Handler Example"/>
+            <field type="select" name="style-sheet-file" caption="Stylesheet File" required="yes" choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"/>
+
+            <on-execute handler="style-sheet">
+                <style-sheet-file>dialog-field:style-sheet-file</style-sheet-file>
+            </on-execute>
+        </dialog>
+
+        <dialog name="transform-xslt-file" loop="prepend" redirect-after-execute="false" allow-multiple-executes="yes">
+            <frame heading="XSLT Handler Example"/>
+            <field type="select" name="source-file" caption="Source File" required="yes" choices="filesystem-entries:servlet-context-path:/form/exec,\.x[sm]l$,yes"/>
+            <field type="select" name="style-sheet-file" caption="Stylesheet File" required="yes" choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"/>
+
+            <on-execute handler="style-sheet">
+                <source-file>dialog-field:source-file</source-file>
+                <style-sheet-file>dialog-field:style-sheet-file</style-sheet-file>
+            </on-execute>
+        </dialog>
+    </dialogs>
+
+    <dialogs package="form.exec.inheritance">
+
+        <!--
+          * both exec1a and exec1b will be handled by the same custom Java class: app.inheritance.SampleExecuteDialog
+          * see WEB-INF/classes/app/inheritance/ExecDialog.java for the code
+        -->
+
+        <dialog name="exec1a" class="app.form.exec.inheritance.SampleExecuteDialog" redirect-after-execute="false">
+            <frame heading="Inheritance Execute Sample 1a"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+        </dialog>
+
+        <dialog name="exec1b" class="app.form.exec.inheritance.SampleExecuteDialog" redirect-after-execute="false">
+            <frame heading="Inheritance Execute Sample 1b"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+            <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
+        </dialog>
+
+        <dialog name="validate" class="app.form.exec.inheritance.SampleValidateDialog" generate-dcb="yes" redirect-after-execute="false">
+            <frame heading="Inheritance Validate Sample"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+            <field type="date" name="birth_date" caption="Birth Date" required="yes" max="today"/>
+            <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
+        </dialog>
+    </dialogs>
+
+    <dialogs package="form.exec.delegation">
+        <dialog name="exec1a" redirect-after-execute="false">
+            <frame heading="Delegation Execute Sample 1a"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+
+            <on-execute class="app.form.exec.delegation.SampleExecuteHandler"/>
+        </dialog>
+
+        <dialog name="exec1b" redirect-after-execute="false">
+            <frame heading="Delegation Execute Sample 1b"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+            <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
+
+            <on-execute class="app.form.exec.delegation.SampleExecuteHandler"/>
+        </dialog>
+
+        <dialog name="validate" generate-dcb="yes" redirect-after-execute="false">
+            <frame heading="Delegation Validate Sample"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+            <field type="date" name="birth_date" caption="Birth Date" required="yes" max="today"/>
+            <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
+
+            <!-- The <listener> tag will automatically figure out all the the interfaces that the given class
+                 implements (such as population of values, validation, execution, etc) and register all the
+                 listeners automatically. -->
+            <listener class="app.form.exec.delegation.SampleValidateHandler"/>
+        </dialog>
+    </dialogs>
+
+</xdm:container>

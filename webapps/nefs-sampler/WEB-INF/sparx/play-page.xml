@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <!--
+    ============================================================================================================
+    This page is for your test cases and it is included directly into the main navigation system which is why
+    it does not have a <navigation-tree> as its parent (because the parent navigation-tree is in project.xml)
+    ============================================================================================================
+    -->
+    <page class="app.AppPage" name="play" caption="Play!">
+        <body>
+            <![CDATA[
+            <#include "*/macros.ftl"/>
+            <div class="textbox">
+            This page is reserved for you! Edit the <@objectXmlLocator object=vc.navigationContext.activePage/> file to begin declaring your
+            application components (and have fun!).
+
+            </div>
+            <@footer/>
+            ]]>
+        </body>
+    </page>
+
+</xdm:container>

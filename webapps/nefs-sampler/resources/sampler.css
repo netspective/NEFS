@@ -26,4 +26,4 @@ table.site-map td.L5 { padding-left: 100px; }
 table.site-map td.L6 { padding-left: 125px; }
 table.site-map td.L7 { padding-left: 150px; }
 
-div.scrollbox { overflow:scroll; height: 100px; width: 600px }
+div.scrollbox { overflow:scroll; height: 250px; width: 100% }
