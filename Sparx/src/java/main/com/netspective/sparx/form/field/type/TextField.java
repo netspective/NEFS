@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.10 2003-05-15 20:50:32 shahid.shah Exp $
+ * $Id: TextField.java,v 1.11 2003-05-15 21:34:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -136,7 +136,7 @@ public class TextField extends DialogField
 
     private int size = 32;
     private String displayPattern;
-    private String formatPattern;
+    private String submitPattern;
     private TextValueValidationRule textValidationRule;
 
     public TextField()
@@ -236,14 +236,14 @@ public class TextField extends DialogField
         this.displayPattern = displayPattern;
     }
 
-    public String getFormatPattern()
+    public String getSubmitPattern()
     {
-        return formatPattern;
+        return submitPattern;
     }
 
-    public void setFormatPattern(String formatPattern)
+    public void setSubmitPattern(String formatPattern)
     {
-        this.formatPattern = formatPattern;
+        this.submitPattern = formatPattern;
     }
 
     /**
@@ -296,16 +296,14 @@ public class TextField extends DialogField
         if((flags & Flags.LOWERCASE) != 0) value = value.toLowerCase();
         if((flags & Flags.TRIM) != 0) value = value.trim();
 
-        String pattern = getFormatPattern();
+        String pattern = getSubmitPattern();
         if(pattern != null)
         {
             synchronized(perlUtil)
             {
                 try
                 {
-                    System.out.println("FSV " + pattern + " " + value);
                     value = perlUtil.substitute(pattern, value);
-                    System.out.println("FSV " + pattern + " " + value);
                 }
                 catch(MalformedPerl5PatternException e)
                 {

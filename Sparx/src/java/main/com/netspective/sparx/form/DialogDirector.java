@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.5 2003-05-15 15:51:17 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.6 2003-05-15 21:34:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -216,6 +216,7 @@ public class DialogDirector extends DialogField
 
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
+        Dialog dialog = dc.getDialog();
         String attrs = dc.getSkin().getDefaultControlAttrs();
 
         String submitCaption = this.submitCaption.getTextValue(dc);
@@ -254,7 +255,7 @@ public class DialogDirector extends DialogField
                 writer.write("&nbsp;&nbsp;");
         }
 
-        writer.write("<input type='submit' name='form_submit' class=\"dialog-button\" value='");
+        writer.write("<input type='submit' name='"+ dialog.getSubmitDataParamName() +"' class=\"dialog-button\" value='");
         writer.write(submitCaption);
         writer.write("' ");
         writer.write(attrs);
@@ -262,7 +263,7 @@ public class DialogDirector extends DialogField
 
         if(pendingCaption != null)
         {
-            writer.write("<input type='submit' class=\"dialog-button\" name='"+Dialog.PARAMNAME_IGNORE_VALIDATION+"' value='");
+            writer.write("<input type='submit' class=\"dialog-button\" name='"+ dialog.getPendDataParamName() +"' value='");
             writer.write(pendingCaption.getTextValue(dc));
             writer.write("' ");
             writer.write(attrs);

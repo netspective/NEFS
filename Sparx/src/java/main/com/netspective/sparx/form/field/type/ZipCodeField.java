@@ -39,25 +39,25 @@
  */
 
 /**
- * $Id: SocialSecurityField.java,v 1.2 2003-05-15 21:34:46 shahid.shah Exp $
+ * $Id: ZipCodeField.java,v 1.1 2003-05-15 21:34:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.field.DialogField;
 
-public class SocialSecurityField extends TextField
+public class ZipCodeField extends TextField
 {
-    public static final String VALIDATE_PATTERN = "^([\\d]{3})[-]?([\\d]{2})[-]?([\\d]{4})$";
-    public static final String DISPLAY_SUBSTITUTION_PATTERN = "s/" + VALIDATE_PATTERN + "/$1-$2-$3/g";
-    public static final String SUBMIT_SUBSTITUTION_PATTERN = "s/" + VALIDATE_PATTERN + "/$1$2$3/g";
+    public static final String VALIDATE_PATTERN = "^([\\d]{5})([-][\\d]{4})?$";
+    public static final String DISPLAY_SUBSTITUTION_PATTERN = "s/" + VALIDATE_PATTERN + "/$1-$2/g";
+    public static final String SUBMIT_SUBSTITUTION_PATTERN = "s/" + VALIDATE_PATTERN + "/$1$2/g";
 
-    public static final Flags.FlagDefn[] SSN_FIELD_FLAG_DEFNS = new Flags.FlagDefn[TextField.TEXT_FIELD_FLAG_DEFNS.length + 1];
+    public static final Flags.FlagDefn[] ZIP_FIELD_FLAG_DEFNS = new Flags.FlagDefn[TextField.TEXT_FIELD_FLAG_DEFNS.length + 1];
     static
     {
         for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
-            SSN_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
-        SSN_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "STRIP_DASHES", Flags.STRIP_DASHES);
+            ZIP_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
+        ZIP_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "STRIP_DASHES", Flags.STRIP_DASHES);
     }
 
     public class Flags extends TextField.Flags
@@ -72,15 +72,15 @@ public class SocialSecurityField extends TextField
 
         public FlagDefn[] getFlagsDefns()
         {
-            return SSN_FIELD_FLAG_DEFNS;
+            return ZIP_FIELD_FLAG_DEFNS;
         }
     }
 
-    public SocialSecurityField()
+    public ZipCodeField()
     {
         super();
         setRegExpr("/" + VALIDATE_PATTERN + "/");
-        setInvalidRegExMessage("The SSN must be of the format 999-99-9999 or 999999999.");
+        setInvalidRegExMessage("Zip codes must be in the 99999 or 99999-9999 format.");
         setDisplayPattern(DISPLAY_SUBSTITUTION_PATTERN);
     }
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.9 2003-05-15 20:50:32 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.10 2003-05-15 21:34:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -103,7 +103,6 @@ public class Dialog extends AbstractPanel
     public static final String PARAMNAME_DIALOGPREFIX = "_d.";
     public static final String PARAMNAME_CONTROLPREFIX = "_dc.";
     public static final String PARAMNAME_DIALOGQNAME = "_d.dialog_qname";
-    public static final String PARAMNAME_IGNORE_VALIDATION = PARAMNAME_CONTROLPREFIX + "ignore_val";
 
     public static final String PARAMNAME_ACTIVEMODE = ".active_mode";
     public static final String PARAMNAME_NEXTMODE = ".next_mode";
@@ -112,6 +111,8 @@ public class Dialog extends AbstractPanel
     public static final String PARAMNAME_ORIG_REFERER = ".orig_referer";
     public static final String PARAMNAME_POST_EXECUTE_REDIRECT = ".post_exec_redirect";
     public static final String PARAMNAME_TRANSACTIONID = ".transaction_id";
+    public static final String PARAMNAME_SUBMIT_DATA = ".submit_data";
+    public static final String PARAMNAME_PEND_DATA = ".pend_data";
     public static final String PARAMNAME_RESETCONTEXT = ".reset_context";
 
     /*
@@ -325,6 +326,16 @@ public class Dialog extends AbstractPanel
     public String getResetContextParamName()
     {
         return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_RESETCONTEXT;
+    }
+
+    public String getSubmitDataParamName()
+    {
+        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_SUBMIT_DATA;
+    }
+
+    public String getPendDataParamName()
+    {
+        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_PEND_DATA;
     }
 
     public String getValuesRequestAttrName()

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.6 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.7 2003-05-15 21:34:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -657,7 +657,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         dialog.makeStateChanges(this, STATECALCSTAGE_INITIAL);
 
         ServletRequest request = getRequest();
-        String ignoreVal = request.getParameter(Dialog.PARAMNAME_IGNORE_VALIDATION);
+        String ignoreVal = request.getParameter(Dialog.PARAMNAME_PEND_DATA);
         if(ignoreVal != null && !ignoreVal.equals("no"))
             validationContext.setValidationStage(DialogValidationContext.VALSTAGE_IGNORE);
 

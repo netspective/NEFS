@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: CurrencyField.java,v 1.3 2003-05-15 20:50:32 shahid.shah Exp $
+ * $Id: CurrencyField.java,v 1.4 2003-05-15 21:34:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -183,7 +183,7 @@ public class CurrencyField extends TextField
             setRegExpr("/^([-])?([\\" + currencySymbol + "])?([\\d]+)" + decimalExpr + "$/");
             setDisplayPattern("s/^([-])?([\\" + currencySymbol +
                     "])?([\\d]+)" + decimalExpr + "$/$1\\" + currencySymbol + "$3$4/g");
-            setFormatPattern("s/" + "^([-])?([\\" + currencySymbol + "])?([\\d]+)" + decimalExpr +
+            setSubmitPattern("s/" + "^([-])?([\\" + currencySymbol + "])?([\\d]+)" + decimalExpr +
                     "$/$1$3$4/g");
             setInvalidRegExMessage("Currency values must have the format " +
                     currencySymbol + "xxx.xx for positive values and " +
@@ -193,7 +193,7 @@ public class CurrencyField extends TextField
         {
             setRegExpr("/^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$/");
             setDisplayPattern("s/" + "^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$/\\" + currencySymbol + "$2$3/g");
-            setFormatPattern("s/" + "^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$" + "/$2$3/g");
+            setSubmitPattern("s/" + "^([\\" + currencySymbol + "])?([-]?[\\d]+)" + decimalExpr + "$" + "/$2$3/g");
             setInvalidRegExMessage("Currency values must have the format " +
                     currencySymbol + "xxx.xx for positive values and " +
                     currencySymbol + "-xxx.xx for negative values.");
