@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.58 2003-06-24 18:00:41 shahid.shah Exp $
+  * $Id: console.xml,v 1.59 2003-06-24 19:46:23 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -38,7 +38,6 @@
                     <panel type="console-sibling-summaries">
                         <frame heading="Console Overview"/>
                     </panel>
-                    <panel class="com.netspective.sparx.console.panel.LibrariesPanel"/>
                 </panels>
 
                 <panels style="vertical">
@@ -52,7 +51,46 @@
                     </panel>
                 </panels>
             </panels>
+
+            <page name="xdm" caption="XDM">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Using XDM"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+
+                <page name="components" caption="Instances">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.framework.XdmComponentsPanel"/>
+                    </panels>
+                </page>
+                <page name="structure" caption="Structure" retain-params="xdm-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel"/>
+                    </panels>
+                </page>
+                <page name="detail" caption="Detail" retain-params="xdm-class">
+                    <panels style="horizontal">
+                        <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="tree" height="320"/>
+                        <panels style="tabbed">
+                            <frame heading="tabbed"/>
+                            <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="detail-ancestors"/>
+                            <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="detail"/>
+                        </panels>
+                    </panels>
+                </page>
+            </page>
+
+            <page name="tutorials" caption="Tutorials"/>
+            <page name="versions" caption="Versions">
+                <panels>
+                    <panel class="com.netspective.sparx.console.panel.LibrariesPanel"/>
+                </panels>
+            </page>
         </page>
+
         <page name="project" caption="Project" heading="Project Home">
 
             <panels>
@@ -66,7 +104,7 @@
                 </panel>
             </panels>
 
-            <page name="input-source" caption="Input Source">
+            <page name="input-source" caption="Source">
                 <panels>
                     <panel type="html">
                         <frame heading="Sparx Project Input Source File and Dependencies"/>
@@ -79,11 +117,54 @@
                     <panel type="command" command="dialog,console.ant-build"/>
                 </panels>
             </page>
-	        <page name="runtime-environment" caption="Runtime Environment">
-                <body config="console" source="content/framework/runtime-environment.ftl"/>
+	        <page name="runtime-environment" caption="Environment">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Using the Runtime Environment"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+            </page>
+            <page name="commands" caption="Commands">
+                <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="command-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.framework.CommandsCatalogPanel"/>
+                    </panels>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Command Documentation" retain-params="command-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.framework.CommandsCatalogPanel"/>
+                    </panels>
+                </page>
+            </page>
+	        <page name="value-sources" caption="Value Sources">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Using Value Sources"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+
+                <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="value-source-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesCatalogPanel"/>
+                    </panels>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="value-source-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesCatalogPanel"/>
+                    </panels>
+                </page>
+                <page name="usage" caption="Usage" heading="Value Sources Usage" retain-params="value-source-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesUsagePanel"/>
+                    </panels>
+                </page>
             </page>
 	        <page name="metrics" caption="Metrics"/>
-	        <page name="configuration" caption="Configuration Properties">
+	        <page name="configuration" caption="Configuration">
 	            <page name="servlet" caption="Servlet Config"/>
 	            <page name="application" caption="App Config">
                     <body config="console" source="content/home/app-overview.ftl"/>
@@ -261,6 +342,7 @@
             <page name="reports" caption="Reports"/>
 	        <page name="panels" caption="Panels"/>
 	        <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
+            <page name="templating-engines" caption="Templating Engines"/>
         </page>
 
         <page name="data-management" caption="Data Management" heading="Data Management Layer">
@@ -400,93 +482,10 @@
                 </page>
             </page>
 	        <page name="database-policies" caption="Database Policies"/>
-        </page>
-
-        <page name="framework" caption="Framework">
-            <panels>
-                <panel type="console-page-summary"/>
-
-                <panel type="console-children-summaries">
-                    <frame heading="Framework Layer Overview"/>
-                </panel>
-            </panels>
-
-            <page name="xdm" caption="XDM">
-                <panels>
-                    <panel type="console-page-summary"/>
-                    <panel type="html">
-                        <frame heading="Using XDM"/>
-                        <body config="console" source="console-page-content:documentation.ftl"/>
-                    </panel>
-                </panels>
-
-                <page name="components" caption="Instances">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.XdmComponentsPanel"/>
-                    </panels>
-                </page>
-                <page name="structure" caption="Structure" retain-params="xdm-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel"/>
-                    </panels>
-                </page>
-                <page name="detail" caption="Detail" retain-params="xdm-class">
-                    <panels style="horizontal">
-                        <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="tree" height="320"/>
-                        <panels style="tabbed">
-                            <frame heading="tabbed"/>
-                            <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="detail-ancestors"/>
-                            <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="detail"/>
-                        </panels>
-                    </panels>
-                </page>
-            </page>
-
-            <page name="commands" caption="Commands">
-                <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="command-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.CommandsCatalogPanel"/>
-                    </panels>
-                </page>
-                <page name="documentation" caption="Documentation" heading="Command Documentation" retain-params="command-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.CommandsCatalogPanel"/>
-                    </panels>
-                </page>
-            </page>
-
-	        <page name="value-sources" caption="Value Sources">
-                <panels>
-                    <panel type="console-page-summary"/>
-                    <panel type="html">
-                        <frame heading="Using Value Sources"/>
-                        <body config="console" source="console-page-content:documentation.ftl"/>
-                    </panel>
-                </panels>
-
-                <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="value-source-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesCatalogPanel"/>
-                    </panels>
-                </page>
-                <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="value-source-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesCatalogPanel"/>
-                    </panels>
-                </page>
-                <page name="usage" caption="Usage" heading="Value Sources Usage" retain-params="value-source-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesUsagePanel"/>
-                    </panels>
-                </page>
-            </page>
-            <page name="templating-engines" caption="Templating Engines"/>
-            <page name="dependencies" caption="Library Dependencies"/>
             <page name="connection-providers" caption="Connection Providers"/>
         </page>
 
         <page name="tools" caption="Tools"/>
-
         <page name="documents" caption="Documents"/>
     </navigation-tree>
 
