@@ -93,16 +93,17 @@
             <field type="boolean" name="bool_field_combo" caption="Boolean Field (Combo)" style="combo"/>
             <director submit-caption="Submit"/>
        </dialog>
+        <!-- The text-list value source accepts a process instruction [] which can contain two
+                 characters: second one is used for value assignment and first one is for choice item
+                 seperation
+        -->
         <dialog name="DialogTest_03" retain-params="*">
             <frame heading="Test Select Fields" />
             <field type="separator" heading="Select Fields"/>
             <field type="select" name="sel_field_combo" caption="Select Field (Combo)" style="combo"
                 choices="text-list:Choice 1=A'S,Choice 2=B,Choice 3=C"
                 default="A'S" hidden="no" prepend-blank="yes" append-blank="yes"/>
-            <!-- The text-list value source accepts a process instruction [] which can contain two
-                 characters: second one is used for value assignment and first one is for choice item
-                 seperation
-            -->
+
             <field type="select" name="sel_field_radio" caption="Select Field (Radio)" style="radio" required="no"
                 choices="text-list:[;=]Choice 1=A;Choice 2=B;Choice 3=C"/>
             <field type="select" name="sel_field_list" caption="Select Field (List)" style="list" size="5" default="B"
@@ -164,11 +165,11 @@
             <field type="select" name="sel_field_list" caption="Select Field (Combo)" style="combo" size="5"
                 choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C" prepend-blank="yes"/>
             <field type="text" name="static_field" default="Here I am!">
-                <!--conditional action="display" partner="sel_field_list" js-expr="control.selectedIndex == 2"/-->
+                <conditional action="display" partner-field-name="sel_field_list" js-expr="control.selectedIndex == 2"/>
             </field>
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
             <field type="static" name="static_field2" default="Checkbox checked!">
-                <!--conditional action="display" partner="checkbox_field" js-expr="control.checked == true"/-->
+                <conditional action="display" partner-field-name="checkbox_field" js-expr="control.checked == true"/>
             </field>
         </dialog>
         <dialog name="DialogTest_07">
@@ -187,7 +188,7 @@
             <field type="date" name="date_field" caption="Date" format="MM-dd-yyyy" default="today"/>
             <field type="phone" name="phone_field" caption="Phone" strip-brackets="yes" style="bracket"/>
         </dialog>
-        <dialog name="DialogTest_09" retain-params="*">
+        <!--dialog name="DialogTest_09" retain-params="*">
             <frame heading="Test Hidden Fields" />
             <field type="static" name="static_field" caption="Static Field" default="Static Field's entry"/>
             <field type="text" name="text_field" caption="Text Field" default="Text Field's entry"/>
@@ -199,26 +200,26 @@
             <field type="select" name="select_field_hidden" hidden="yes" style="combo"
                 choices="text-list:Choice 1=Choice 1's hidden value,Choice 2=Choice 2's hidden value,Choice 3=Choice 3's hidden value"
                 default="Choice 1's hidden value" prepend-blank="yes" append-blank="yes"/>
-        </dialog>
+        </dialog-->
 
-        <dialog name="DialogTest_10">
+        <!--dialog name="DialogTest_10">
             <frame heading="Test Data Command and Conditionals" />
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
             <field type="static" name="static_field2" default="Checkbox checked!">
-                <!--conditional action="display" partner="checkbox_field" js-expr="control.checked == true"/-->
+                <conditional action="display" partner="checkbox_field" js-expr="control.checked == true"/>
             </field>
             <field type="text" name="text_field_1" caption="Text Field" size="50" hint="Invisible when ADD" default="I guess the data command is not 'add'">
-                <!--conditional action="apply-flag" flag="invisible" data-cmd="add"/-->
+                <conditional action="apply-flag" flag="invisible" data-cmd="add"/>
             </field>
             <field type="select" name="select_field" caption="Select Field" style="combo"
                 choices="Choice 1=Choice 1's value;Choice 2=Choice 2's value;Choice 3=Choice 3's value" default="Choice 1's value">
-                <!--conditional action="apply-flag" flag="invisible" data-cmd="add"/-->
+                <conditional action="apply-flag" flag="invisible" data-cmd="add"/>
             </field>
             <field type="static" name="static_field_4" default="The data command is not 'add' or 'edit'">
-                <!--conditional action="apply-flag" flag="invisible" data-cmd="add"/>
-                <conditional action="apply-flag" flag="invisible" data-cmd="edit"/-->
+                <conditional action="apply-flag" flag="invisible" data-cmd="add"/>
+                <conditional action="apply-flag" flag="invisible" data-cmd="edit"/>
             </field>
-        </dialog>
+        </dialog-->
         <!--dialog name="DialogTest_11" retain-params="*">
             <frame heading="Test Select Fields w/ seperator" />
             <field type="separator" heading="Select Fields"/>
@@ -231,10 +232,8 @@
             <field type="select" name="sel_field_popup" caption="Select Field (Popup)" style="popup" choices="query:library.get-all-books"/>
             <director submit-caption="Submit"/>
         </dialog-->
-        <dialog name="DialogTest_12" retain-params="*">
+        <!--dialog name="DialogTest_12" retain-params="*">
             <frame heading="Test Custom Javascript" />
-            <!-- NOTE: including the client script at dialog level is not allowed -->
-            <!--client-js href="create-app-url:/resources/scripts/eimo.js"/-->
             <field type="float" name="float_field" caption="Float">
                 <client-js event="is-valid" type="extends" js-expr="return testValid(field, control);"/>
                 <client-js event="value-changed" type="extends" js-expr="return testNum(field, control);"/>
@@ -251,7 +250,7 @@
                 <client-js event="is-valid" type="override" js-expr="return true;"/>
                 <client-js event="value-changed" type="override" js-expr="return true;"/>
             </field>
-        </dialog>
+        </dialog-->
         <!--dialog name="DialogTest_13" retain-params="*">
             <frame heading="Test Request, Request Attribute , and Form Value Sources" />
 			<field type="text" name="text_field" caption="Text Field (formOrRequestAttr)" default="request:value"/>
