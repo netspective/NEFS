@@ -31,14 +31,14 @@
     <#list sourcePage.childrenList as child>
         <tr>
             <td class="report-column-${classSuffix}">
-                <a href="${parentName}/${child.name}">${child.getHeading(vc)}</a>
+                <a href="${parentName}/${child.name}">${child.getCaption(vc)}</a>
             </td>
             <td class="report-column-${classSuffix}">
                 <#assign summaryTemplateName = "/content${child.qualifiedName}/summary.ftl"/>
                 <#if templateExists(summaryTemplateName)>
                     <#include summaryTemplateName/>
                 <#else>
-                    ${summaryTemplateName} not available.
+                    <font color=red>${summaryTemplateName} not available.</font>
                 </#if>
             </td>
         </tr>

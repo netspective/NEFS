@@ -7,7 +7,9 @@
 * Need to add support for <client-js href="create-app-url:/resources/scripts/eimo.js"/> within <dialog> tag (used to be there in Sparx 2.3)
 * Need to add support for table dialogs (from Sparx 2.3)
 * Need to fix NPE when the first element of a NavigationTree path is not found (e.g. try http://xxx/console/home -- which does not exist)
-* Need to conduct detailed memory leak analysis, performance testing, stress/load testing
+* Need to conduct detailed memory leak analysis, performance testing, stress/load testing (see http://www.pushtotest.com)
+* Add debug mode to pages that will show the location, class, and other data about each element (
+* Consider ways of allowing Console to be extended in end-user applications by allow "object" insertion capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
 * Integrate http://oss.metaparadigm.com/jmemprof/ open-source memory profiler intended for web application containers (like resin, tomcat, etc). Also take a look at the SUN HAT http://java.sun.com/people/billf/heap/.
 * Take a look at http://xmljs.sourceforge.net/ for JavaScript XML parsing and record set management
 * Take a look at http://www.duncanlamb.com/sdba/ for SDBA Revolution Instant Messaging Application Server and see if it's useful to create Sparx-based IM apps

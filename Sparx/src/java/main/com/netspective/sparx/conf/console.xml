@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.50 2003-06-19 03:10:40 shahid.shah Exp $
+  * $Id: console.xml,v 1.51 2003-06-19 14:26:21 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -28,7 +28,7 @@
     </panel-type>
 
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
-        <page name="project" caption="Project Home" default="yes">
+        <page name="project" caption="Project" heading="Project Home" default="yes">
             <panels style="horizontal">
                 <panels style="vertical">
                     <panel type="html">
@@ -36,7 +36,7 @@
                         <body config="console" source="console-page-content:app-overview.ftl"/>
                     </panel>
                     <panel type="console-sibling-summaries">
-                        <frame heading="Table of Contents"/>
+                        <frame heading="Console Overview"/>
                     </panel>
                     <panel class="com.netspective.sparx.console.panel.LibrariesPanel"/>
                 </panels>
@@ -57,7 +57,7 @@
                 <panels>
                     <panel type="console-page-summary"/>
                     <panel type="html">
-                        <frame heading="Sparx Project File XML Tags"/>
+                        <frame heading="Sparx Project XML Tags"/>
                         <body config="console" source="console-page-content:documentation.ftl"/>
                     </panel>
                 </panels>
@@ -161,6 +161,7 @@
                 </page>
 	        </page>
 
+            <page name="report" caption="Reports"/>
 	        <page name="panel" caption="Panels"/>
 	        <page name="theme" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
         </page>
@@ -257,6 +258,7 @@
                     </panels>
                 </page>
             </page>
+	        <page name="database-policies" caption="Database Policies"/>
         </page>
 
         <page name="framework" caption="Framework">
@@ -304,7 +306,7 @@
                 </page>
             </page>
 
-	        <page name="value-source" caption="Value Sources">
+	        <page name="value-sources" caption="Value Sources">
                 <panels>
                     <panel type="console-page-summary"/>
                     <panel type="html">
@@ -331,6 +333,7 @@
             </page>
             <page name="templating-engines" caption="Templating Engines"/>
             <page name="dependencies" caption="Library Dependencies"/>
+            <page name="connection-providers" caption="Connection Providers"/>
         </page>
 
         <page name="tools" caption="Tools"/>
