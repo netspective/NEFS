@@ -1,3 +1,4 @@
+* Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
 * Create a 16x16 Console icon that will appear in browser window tabs and URL address line
 * Use http://informa.sourceforge.net/ RSS library to setup RSS panels that can connect to RSS channels via URLs or files
 * Add documentation capability to TemplateProducers and TemplateConsumers so that those documentation resources may be displayed in Console.

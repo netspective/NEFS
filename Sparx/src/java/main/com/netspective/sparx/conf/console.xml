@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.62 2003-06-27 01:12:52 shahid.shah Exp $
+  * $Id: console.xml,v 1.63 2003-06-28 00:47:54 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -451,7 +451,7 @@
                     </panel>
                 </panels>
 
-                <page name="catalog" caption="Schema" heading="Schema Structure" retain-params="schema-table">
+                <page name="catalog" caption="Schema Tables" heading="Schema Structure" retain-params="schema-table">
                     <panels>
                         <panels style="tabbed">
                             <frame heading="Schema Tables"/>
@@ -461,7 +461,7 @@
                         </panels>
                     </panels>
                 </page>
-                <page name="table" caption="Table" heading="Table Documentation" retain-params="schema-table">
+                <page name="table" caption="Table Doc" heading="Table Documentation" retain-params="schema-table">
                     <panels>
                         <panels style="tabbed">
                             <frame heading="Table Hierarchy" allow-collapse="yes"/>
@@ -484,12 +484,18 @@
                         <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableDataPanel"/>
                     </panels>
                 </page>
-                <page name="query-defn" caption="Query Defn" retain-params="schema-table">
+                <page name="query-defn" caption=" Table Query Defn" retain-params="schema-table">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnFieldsPanel"/>
                         <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnJoinsPanel"/>
                         <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnSelectsPanel"/>
                     </panels>
+                </page>
+                <page name="table-types" caption="Table Types">
+                     <body config="console" source="console-page-content:documentation.ftl"/>
+                </page>
+                <page name="data-types" caption="Data Types">
+                    <body config="console" source="console-page-content:documentation.ftl"/>
                 </page>
 	        </page>
 

@@ -1,3 +1,12 @@
+
+<#function reportRowClassSuffix row='odd'>
+    <#if row = 'odd'>
+        <#return 'even'/>
+    <#else>
+        <#return 'odd'/>
+    </#if>
+</#function>
+
 <!--
  ******************************************************************************
  ** MACRO: projectFile
@@ -229,7 +238,7 @@
 </#macro>
 
 <#macro reportTable>
-    <table class="report" width=100% border="0" cellspacing="2" cellpadding="0">
+    <table class="report" border="0" cellspacing="2" cellpadding="0">
 
         <#nested>
 

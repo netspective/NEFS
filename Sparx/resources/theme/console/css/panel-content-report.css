@@ -1,4 +1,5 @@
 .report {  }
+.report_no_frame {  }
 .report-column-heading   { color: #666666; font-weight: bold; font-size: 11px; font-family: Tahoma; padding: 1px 4px; border: solid 1px #c0c0c0 }
 .report-column-even { color: #000; font-size: 11px; font-family: Tahoma; padding: 1px 4px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc; vertical-align: top; }
 .report-column-odd  { color: #000; font-size: 11px; font-family: Tahoma; background-color: #f8f8f8; vertical-align: top; padding: 1px 4px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc }
