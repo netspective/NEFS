@@ -39,19 +39,14 @@
  */
 
 /**
- * $Id: StudyDialogExecuteHandler.java,v 1.2 2003-10-20 06:55:26 aye.thu Exp $
+ * $Id: StudyDialogExecuteHandler.java,v 1.3 2003-10-31 08:33:50 aye.thu Exp $
  */
 package app.cts.form.study;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.form.DialogContextUtils;
 import com.netspective.sparx.form.handler.DialogExecuteRecordEditorHandler;
 import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.sql.QueryResultSet;
-
-import java.sql.SQLException;
 
 import auto.dcb.study.ProfileContext;
 import auto.dal.db.DataAccessLayer;
@@ -62,9 +57,6 @@ import auto.dal.db.dao.study.StudyOrgRelationshipTable;
 import auto.id.sql.schema.db.enum.RecordStatus;
 import auto.id.sql.schema.db.enum.StudyOrgRelationType;
 
-import javax.naming.NamingException;
-
-import app.cts.form.AbstractDialogPerspectiveExecuteHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
