@@ -13,7 +13,7 @@
 
     <para>The Library Application is a project meant to get you familiar with
     more features of <acronym>NEF</acronym> by creating a complete library
-    managament application. </para>
+    managament application.</para>
   </section>
 
   &__nef-assumptions__drd5ufsf;
@@ -27,7 +27,7 @@
     library of books. It allows you to track the books within a library and
     maintain the loan records for these library books. Assets, borrowers and
     loan information can be added and edited using the various management
-    intrefaces provided by the Library Application. </para>
+    intrefaces provided by the Library Application.</para>
   </section>
 
   <section>
@@ -40,7 +40,7 @@
       components. It will use static SQL and associated reports to help you
       track the assets, borrowers and loan information. The library contains
       certain assets (books, journals, etc.) which the borrowers can loan for
-      a specified period. </para>
+      a specified period.</para>
 
       <para>The data storage of choice is the Java-based embedded database
       that is included in the Sparx Starter Application:
@@ -256,16 +256,16 @@
       Similarly, Borrower and Asset_Loan tables are 1:n related by ID (in
       Borrower) and borrower_id (in Asset_Loan) fields. The Loan_Type and
       Asset_Loan tables are 1:n related by type (in Loan_Type) and loan_type
-      (in Asset_Loan) fields. </para>
+      (in Asset_Loan) fields.</para>
 
       <para>Once entered as XML, this schema is available for
       platform-independent database access from your application.</para>
 
-      <para>Following is the code that creates the Library Application
-      schema:</para>
+      <para>Following is the code that creates the table types within Library
+      Application schema:</para>
 
       <example>
-        <title>Creating the Library Application Schema</title>
+        <title>Creating table types for Library Application</title>
 
         <programlisting>&lt;<emphasis>schema</emphasis> name="db"&gt; 
   &lt;<emphasis>xdm:include resource="com/netspective/axiom/conf/schema.xml"</emphasis>/&gt; 
@@ -274,7 +274,7 @@
     &lt;column name="${owner.name.toLowerCase()}_id" type="auto-inc" primary-key="yes" <co
             id="???" />
                                           descr="Unique identifier for ${owner.name}"&gt;
-     &lt;presentation&gt; <co id="???" />
+     &lt;presentation&gt; 
       &lt;field name="${column.name}" type="integer" caption="ID" primary-key-generated="yes"/&gt; <co
             id="???" />
      &lt;/presentation&gt;
@@ -282,13 +282,199 @@
    &lt;/table-type&gt;
 
    &lt;table-type name="Person" type="Entity"&gt; <co id="???" />
-    &lt;column name="first_name" type="text" size="64" descr="The person's first name"/&gt;
+    &lt;column name="first_name" type="text" size="64" descr="The person's first name"/&gt; <co
+            id="???" />
     &lt;column name="last_name" type="text" size="64" descr="The person's last name"/&gt;
    &lt;/table-type&gt;</programlisting>
 
         <calloutlist>
           <callout arearefs="declare-schema-tags-eg-3">
-            <para>[TODO]</para>
+            <para>Defining a table type named
+            <literal>Entity</literal>.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>The <sgmltag>column</sgmltag> element in the
+            <sgmltag>table-type</sgmltag> elements creates actual columns
+            derived from a particular <sgmltag>data-type</sgmltag>. The
+            <sgmltag>column</sgmltag> elements will automatically maintain all
+            type definitions and links to foreign keys. The name attribute
+            represents the column name. Each column is usually named as a
+            singular noun in all lower case with each word inside a name
+            separated by underscores. Since this is a table template, the
+            actual column name of the table that uses this table type will
+            replace <emphasis>${owner.name.toLowerCase()}</emphasis> to form
+            the actual column name. </para>
+
+            <para>The <sgmltag>type</sgmltag> attribute represents the name of
+            data-type to inherit. All of the attributes and elements from the
+            other data-type will be inherited and any attributes and elements
+            defined in this data-type will override those values. The
+            <sgmltag>primary-key </sgmltag>attribute specifies whether or not
+            this column is a primary key.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Defining the presentation for the column. This defines how
+            the column data will be displayed.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Inheriting a new table type from the
+            <literal>Entity</literal> table type defined in steps 1 through 3.
+            </para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Specifying columns for the newly defined table type. The
+            <literal>Person</literal> table type will consist of 3 columns -
+            <literal>person_id</literal>, <literal>first_name</literal>,
+            <literal>last_name</literal>.</para>
+          </callout>
+        </calloutlist>
+      </example>
+
+      <para>Following is the code that creates the tables within Library
+      Application schema:</para>
+
+      <example>
+        <title>Creating tables for Library Application</title>
+
+        <programlisting> &lt;table name="Asset_Type" abbrev="atype" type="Enumeration"&gt; <co
+            id="???" />
+  &lt;enumerations&gt;
+   &lt;enum&gt;Other&lt;/enum&gt;
+   &lt;enum&gt;Software&lt;/enum&gt;
+   &lt;enum&gt;Periodical&lt;/enum&gt;
+   &lt;enum&gt;Book&lt;/enum&gt;
+  &lt;/enumerations&gt;
+ &lt;/table&gt;
+
+ &lt;table name="Loan_Type" abbrev="ltype" type="Enumeration"&gt; <co id="???" />
+  &lt;enumerations&gt;
+   &lt;enum&gt;Short term&lt;/enum&gt;
+   &lt;enum&gt;Long term&lt;/enum&gt;
+  &lt;/enumerations&gt;
+ &lt;/table&gt;
+
+ &lt;table name="Asset" abbrev="asset" type="Entity,Presentation"&gt; <co
+            id="???" />
+  &lt;column name="type" lookup-ref="Asset_Type" required="yes" descr="The type of asset"/&gt; <co
+            id="???" />
+  &lt;column name="name" type="text" size="64" required="yes" descr="Name of the asset"/&gt; 
+  &lt;column name="quantity" type="integer" required="yes" 
+                          descr="Count of number of assets available to loan"/&gt;
+ &lt;/table&gt;
+   
+ &lt;table name="Borrower" type="Person,Presentation"&gt; <co id="???" />
+ &lt;/table&gt;
+
+ &lt;table name="Asset_Loan" abbrev="asloan" type="Entity,Presentation"&gt;
+  &lt;column name="asset_id" parent-ref="Asset.asset_id" <co id="???" />
+          descr="The asset that was borrowed (a loan is owned by the Asset so 
+                 it's a parent reference)"&gt;
+    &lt;presentation&gt;
+      &lt;field name="${column.name}" type="select" caption="Asset" <co
+            id="???" />
+             choices="query:library.asset-names-for-select-field-choices"/&gt;
+    &lt;/presentation&gt;
+  &lt;/column&gt;
+
+  &lt;column name="borrower_id" lookup-ref="Borrower.borrower_id" descr="The person <co
+            id="???" />
+                                                        that borrowed the asset"&gt;
+    &lt;presentation&gt;
+      &lt;field name="${column.name}" type="select" caption="Borrower" <co
+            id="???" />
+             choices="query:library.borrower-names-for-select-field-choices"/&gt;
+    &lt;/presentation&gt;
+  &lt;/column&gt;
+  &lt;column name="loan_type" lookup-ref="Loan_Type" descr="The type of loan"/&gt; <co
+            id="???" />
+  &lt;column name="loan" type="duration" required="yes" descr="The duration of the loan"/&gt;
+  &lt;column name="returned" type="boolean" descr="Whether the asset has been returned or not"/&gt;
+ &lt;/table&gt;
+
+&lt;/schema&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="???">
+            <para>Defining an enumeration containing available asset
+            types.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Defining an enumeration containing available loan
+            types.</para>
+          </callout>
+
+          <callout arearefs="declare-schema-tags-eg-3">
+            <para>Defining <literal>Asset</literal> table using the
+            <literal>Entity</literal> table type defined previously.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Adding more columns to the <literal>Asset</literal> table.
+            The <sgmltag>lookup-ref</sgmltag> attribute specifies a general
+            foreign key relationship from this column which references the
+            foreign field <literal>type</literal> in table
+            <literal>Asset_Type</literal>. This creates a 1:N relationship
+            between the <literal>Asset_Type</literal> and
+            <literal>Asset</literal> tables. </para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Defining <literal>Borrower</literal> table using the
+            <literal>Person</literal> table type defined previously. No
+            columns are being added.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Defining the field which represents the asset to which the
+            loan belongs. The <sgmltag>parent-ref</sgmltag> attribute
+            specifies a parent/child foreign key relationship which indicates
+            that <literal>Asset</literal> table is the parent of the
+            <literal>asset_id</literal> column (creates a 1:N relationship
+            between <literal>Asset</literal> table and the
+            <literal>asset_id</literal> column).</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Defines presentation for the <literal>asset_id</literal>
+            field. The available assets will be displayed as a select option.
+            The <sgmltag>choices</sgmltag> attribute is used to fill the
+            select with available assets. This definition uses the query
+            <literal>asset-names-for-select-field-choices</literal> to obtain
+            the assets.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Defining the field which represents the borrower taking the
+            loan. The <sgmltag>lookup-ref</sgmltag> attribute specifies a
+            general foreign key relationship from this column which references
+            the foreign field <literal>borrower_id</literal> in table
+            <literal>Borrower</literal>. This creates a 1:N relationship
+            between the <literal>Borrower</literal> and
+            <literal>Asset_Loan</literal> tables. </para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Defines presentation for the <literal>borrower_id</literal>
+            field. The available borrowers will be displayed as a select
+            option. The <sgmltag>choices</sgmltag> attribute is used to fill
+            the select with available borrowers. This definition uses the
+            query <literal>borrower-names-for-select-field-choices</literal>
+            to obtain the borrower names.</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>Defining the field which represents the loan type. The
+            <sgmltag>lookup-ref</sgmltag> attribute specifies a general
+            foreign key relationship from this column which references the
+            foreign field <literal>type</literal>in table
+            <literal>Loan_Type</literal>. This creates a 1:N relationship
+            between the <literal>Loan_Type</literal> and
+            <literal>Asset_Loan</literal> tables.</para>
           </callout>
         </calloutlist>
       </example>
@@ -364,66 +550,6 @@
         database.</para>
       </section>
 
-      <section>
-        <title>Automating the HSQL Database Generation</title>
-
-        <para>You may also edit the <filename>web.xml</filename> file to
-        automatically create the database each time the servlet is run for the
-        first time. to do this, you need to add a
-        <sgmltag>--init-first-time-using-ant</sgmltag> servlet option in the
-        Sparx navigation controller using the following steps:</para>
-
-        <procedure>
-          <step>
-            <para>Open the APP_ROOT/WEB-INF/web.xml file and look for the
-            following Code:</para>
-
-            <programlisting>&lt;servlet&gt;
- &lt;servlet-name&gt;SparxNavigationController&lt;/servlet-name&gt;
- &lt;servlet-class&gt;
-   com.netspective.sparx.navigate.NavigationControllerServlet
- &lt;/servlet-class&gt;
-&lt;/servlet&gt;</programlisting>
-          </step>
-
-          <step>
-            <para>Add the <sgmltag>init-param</sgmltag> tag to the above block
-            of code. The resulting code will look like this:</para>
-
-            <programlisting>&lt;servlet&gt; 
- &lt;servlet-name&gt;SparxNavigationController&lt;/servlet-name&gt;
- &lt;servlet-class&gt;
-   com.netspective.sparx.navigate.NavigationControllerServlet
- &lt;/servlet-class&gt;
- &lt;init-param&gt; 
-  &lt;param-name&gt;com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS&lt;/param-name&gt;
-  &lt;param-value&gt;
-  --init-first-time-using-ant=/WEB-INF/sparx/conf/ant-build-project.xml:create-database-hsqldb 
-  &lt;/param-value&gt;
- &lt;/init-param&gt;
-&lt;/servlet&gt;</programlisting>
-          </step>
-        </procedure>
-
-        <para>The above approach works because when the navigation controller
-        runs, it creates a file called
-        <replaceable>APP_ROOT</replaceable>/<filename
-        class="directory">WEB-INF</filename>/<filename
-        class="directory">sparx</filename>/<filename
-        class="directory">conf</filename>/<filename>execution.properties</filename>.
-        This properties file contains the execution count of the servlet. If
-        the execution count is less than one, the Ant file
-        (<filename>ant-build-project.xml</filename>) and the target you
-        requested (create-database-hsqldb) will be run.</para>
-
-        <note>
-          <para>This is the best method to create databases because it
-          automatically creates the database the very first time the servlet
-          is run. And, if you ever want the database recreated, you can simply
-          erase the <filename>execution.properties</filename> file.</para>
-        </note>
-      </section>
-
       <section id="desc-init-data">
         <title>Populating the HSQL Database with Test Data</title>
 
@@ -443,22 +569,25 @@
         <example>
           <title>Loading Initial Test Data into Book_Info Table</title>
 
-          <programlisting>&lt;<emphasis>!DOCTYPE dal SYSTEM "../defn/db-import.dtd"</emphasis>&gt; <co
+          <programlisting>&lt;?transform --xslt initial-and-test-data.xsl?&gt; <co
+              id="???" />
+&lt;<emphasis>!DOCTYPE dal SYSTEM "../defn/db-import.dtd"</emphasis>&gt; <co
               id="declare-test-db-xml-eg-1" />
 
 &lt;<emphasis>dal</emphasis>&gt; <co id="declare-test-db-xml-eg-2" />
-    &lt;<emphasis>book-info</emphasis> <co id="declare-test-db-xml-eg-3" />
-        id="test-001" name="Book 001"
-        author="Smith, James R." genre="Science Fiction" isbn="test001"/&gt;
+    &lt;generate-asset-records count="35"/&gt; <co id="???" />
 
-    &lt;book-info
-        id="test-002" name="Book 002"
-        author="Jones, Rober. J." genre="Mystery" isbn="test002"/&gt;
-
+    &lt;borrower last-name="Doe" first-name="John"/&gt; <co id="???" />
+    &lt;borrower last-name="Doe" first-name="Jane"/&gt;
 &lt;/dal&gt;</programlisting>
 
           <calloutlist>
             <callout arearefs="declare-test-db-xml-eg-1">
+              <para>The xdm-transform processing instruction tells Sparx to
+              filter special tags through the XSLT before processing.</para>
+            </callout>
+
+            <callout arearefs="???">
               <para>The db-import.dtd is the DTD that is automatically created
               (by the Ant Build) based on the schema that is provided by the
               <sgmltag>schema</sgmltag> tag. The DTD is always called
@@ -473,18 +602,18 @@
             </callout>
 
             <callout arearefs="declare-test-db-xml-eg-3">
-              <para>The root dal tag may contain one or more tags named as
-              <replaceable>table-name
-              </replaceable>(<literal>book-info</literal> in this case). Note
-              that the underscore "<symbol>_</symbol>" in the original table
-              name "<literal>book_info</literal>" (specified by
-              <sgmltag>schema</sgmltag> tag in the project file) is replaced
-              with a hyphen "<symbol>-</symbol>". The table field names become
-              the attributes for the table-name tag (<sgmltag>id</sgmltag>,
-              <sgmltag>name</sgmltag>, <sgmltag>author</sgmltag>,
-              <sgmltag>genre</sgmltag> and <sgmltag>isbn</sgmltag> in this
-              case). The values you provide for these fields are stored in the
+              <para>Setting the value for the number of asset records to be
+              generated automatically by the XSL.</para>
+            </callout>
+
+            <callout arearefs="???">
+              <para>The values you provide for these fields are stored in the
               corresponding hsql table.</para>
+            </callout>
+
+            <callout arearefs="???">
+              <para>Adding the test record in the <literal>Borrower</literal>
+              table.</para>
             </callout>
           </calloutlist>
         </example>
@@ -509,31 +638,30 @@
         &lt;/xsl:copy&gt;
     &lt;/xsl:template&gt;
 
-    &lt;xsl:template match="generate-book-info-records"&gt; <co
-              id="declare-test-db-xsl-eg-4" />
-        &lt;xsl:call-template name="iterate-one"&gt; 
-            &lt;xsl:with-param name="x"&gt;&lt;xsl:value-of select="@count"/&gt;&lt;/xsl:with-param&gt; 
+    &lt;xsl:template match="generate-asset-records"&gt; <co id="???" />
+        &lt;xsl:call-template name="iterate-one"&gt;
+            &lt;xsl:with-param name="x"&gt;0&lt;/xsl:with-param&gt;
+            &lt;xsl:with-param name="count"&gt;&lt;xsl:value-of select="@count"/&gt;&lt;/xsl:with-param&gt;
         &lt;/xsl:call-template&gt;
     &lt;/xsl:template&gt;
+ 
+    &lt;xsl:template name="iterate-one"&gt; <co id="???" />
+        &lt;xsl:param name="x"/&gt;
+        &lt;xsl:param name="count"/&gt;
 
-    &lt;xsl:template name="iterate-one"&gt; <co id="declare-test-db-xsl-eg-5" />
-      &lt;xsl:param name="x"/&gt; 
+        &lt;asset&gt; <co id="???" />
+            &lt;xsl:attribute name="name"&gt;Item &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
+            &lt;xsl:attribute name="type"&gt;Book&lt;/xsl:attribute&gt;
+            &lt;xsl:attribute name="quantity"&gt;5&lt;/xsl:attribute&gt;
+        &lt;/asset&gt;
 
-      &lt;book-info&gt; <co id="declare-test-db-xsl-eg-6" />
-       &lt;xsl:attribute name="id"&gt;BOOK_&lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt; 
-       &lt;xsl:attribute name="name"&gt;Book &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
-       &lt;xsl:attribute name="author"&gt;Author &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
-       &lt;xsl:attribute name="genre"&gt;Science Fiction&lt;/xsl:attribute&gt;
-       &lt;xsl:attribute name="isbn"&gt;ISBN &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
-      &lt;/book-info&gt;
-
-      &lt;xsl:if test="$x &gt; 1"&gt; <co id="declare-test-db-xsl-eg-7" />
-         &lt;xsl:call-template name="iterate-one"&gt;
-             &lt;xsl:with-param name="x" select="$x - 1"/&gt;
-         &lt;/xsl:call-template&gt;
+        &lt;xsl:if test="$x &amp;lt; $count"&gt; <co id="???" />
+          &lt;xsl:call-template name="iterate-one"&gt;
+            &lt;xsl:with-param name="x" select="$x + 1"/&gt;
+            &lt;xsl:with-param name="count"&gt;&lt;xsl:value-of select="$count"/&gt;&lt;/xsl:with-param&gt;
+          &lt;/xsl:call-template&gt;
         &lt;/xsl:if&gt;
     &lt;/xsl:template&gt;
-
 &lt;/xsl:stylesheet&gt;</programlisting>
 
           <calloutlist>
@@ -561,90 +689,25 @@
 
             <callout arearefs="declare-test-db-xsl-eg-5">
               <para>This is the iterate-one template which is called by the
-              generate-info-records template. It generates the values for all
-              the fields of Book_Info table.</para>
+              generate-asset-records template. It generates the values for all
+              the fields of <literal>Asset</literal> table.</para>
             </callout>
 
             <callout arearefs="declare-test-db-xsl-eg-6">
-              <para>The book-info XML records are generated using the value of
-              parameter <varname>x</varname>, which changes on every iteration
-              of the iterate-one template.</para>
+              <para>The <literal>Asset</literal> XML records are generated
+              using the value of parameter <varname>x</varname>, which changes
+              on every iteration of the iterate-one template.</para>
             </callout>
 
             <callout arearefs="declare-test-db-xsl-eg-7">
               <para>This tag is responsible for recursively calling the
               iterate-one template. It checks the value of the parameter
-              <varname>x</varname> and, if it is greater than 1, decreases it
-              by one to call the iterate-one template with this new
-              value.</para>
+              <varname>x</varname> and, if it is less than
+              <varname>count</varname>, increases it by one to call the
+              iterate-one template with this new value.</para>
             </callout>
           </calloutlist>
         </example>
-
-        <para>This XSL can be incorporated in your XML file using the
-        following code:</para>
-
-        <example>
-          <title>Incorporating XSL in the Test Data XSL</title>
-
-          <programlisting>&lt;?transform --xslt initial-and-test-data.xsl?&gt; <co
-              id="incorporate-xsl-eg-1" />
-&lt;!DOCTYPE dal SYSTEM "../defn/db-import.dtd"&gt;
-&lt;dal&gt;
-    &lt;generate-book-info-records count="100"/&gt; <co
-              id="incorporate-xsl-eg-2" />
-&lt;/dal&gt;</programlisting>
-
-          <calloutlist>
-            <callout arearefs="incorporate-xsl-eg-1">
-              <para>The xdm-transform processing instruction tells Sparx to
-              filter special tags through the XSLT before processing.</para>
-            </callout>
-
-            <callout arearefs="incorporate-xsl-eg-2">
-              <para>Calling the the template from XSL to generate 100 test
-              records for Book_Info table.</para>
-            </callout>
-          </calloutlist>
-        </example>
-
-        <note>
-          <para>The XSL is optional. It is merely a way of automating the
-          creation of lots of test data. You can manually create the XML and
-          leave out the XSL.</para>
-        </note>
-      </section>
-
-      <section>
-        <title>DDL and HSQL Database Files</title>
-
-        <para>The DDL generation process creates the <filename
-        class="directory">WEB-INF</filename>/<filename
-        class="directory">database</filename> folder. This folder contains
-        further sub-folders: <filename class="directory">defn</filename> and
-        <filename class="directory">instance</filename>.</para>
-
-        <variablelist>
-          <varlistentry>
-            <term>defn</term>
-
-            <listitem>
-              <para>This folder contains the SQL files containing
-              DBMS-specific database creation scripts.</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term>instance</term>
-
-            <listitem>
-              <para>This folder contains the HSQL database files:
-              <filename>db.properties</filename>,
-              <filename>db.script</filename>, <filename>db.data</filename> and
-              <filename>db.backup</filename>.</para>
-            </listitem>
-          </varlistentry>
-        </variablelist>
       </section>
 
       <section>
@@ -653,8 +716,8 @@
         <para>You may test the newly created HSQL database through
         <guimenu>Data Management</guimenu> | <guisubmenu>Data
         Sources</guisubmenu> | <guimenuitem>SQL Explorer</guimenuitem> option
-        in the Console. Enter a SQL query for the <literal>Book_Info</literal>
-        table in the SQL Editor.</para>
+        in the Console. Enter a SQL query for the Asset table in the SQL
+        Editor.</para>
 
         <para></para>
 
@@ -677,45 +740,8 @@
     <section>
       <title>Creating the Data Management Layer</title>
 
-      <para>The Library Application uses two types of queries for data
-      management:</para>
-
-      <variablelist>
-        <varlistentry>
-          <term>Static SQL</term>
-
-          <listitem>
-            <para>A static SQL statement is merely an encapsulation of a
-            regular SQL statement within the XML definition required by Sparx
-            to interpret it. Once defined, a single or multiple SQL statements
-            may be used in reports, dialogs (forms), Servlets, templates, or
-            JSP-pages. All the static SQL statements with the bind parameters
-            are declared in the Library Application Project File.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>Dynamic SQL (Query-Defn)</term>
-
-          <listitem>
-            <para>One of Axiom's powerful features is to generate dynamic SQL
-            statements based upon user input. The dynamic SQL generator can
-            also generate different output formats such as pageable HTML
-            reports with configurable rows per page or comma separated value
-            (CSV) reports. The main component of the dynamic queries is the
-            query definition dialog which is used to define bind parameters of
-            the dynamic SQL statement. Thus, the dynamic query generator can
-            be thought of as a combination of Dialog and Static Query
-            features.</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-
-      <note>
-        <para>All the static and dynamic SQL statements are declared in the
-        Library Application Project File
-        (<filename>project.xml</filename>)</para>
-      </note>
+      <para>The Library Application uses the following queries for data
+      management: [TODO]</para>
 
       <section id="section-declare-static-qry">
         <title>Declaring a Static Query</title>
