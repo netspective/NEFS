@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldFlags.java,v 1.7 2004-03-24 15:20:38 zahara.khan Exp $
+ * $Id: DialogFieldFlags.java,v 1.8 2004-04-20 13:13:13 aye.thu Exp $
  */
 package com.netspective.sparx.form.field;
 
@@ -185,7 +185,8 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     }
 
     /**
-     * Clears a flag.
+     * Clears a flag. If this flag object belongs to a field and the flag is one of the carry over flags,
+     * then all children fields will have their corresponding flags cleared.
      *
      * @param flag
      */
@@ -199,22 +200,11 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
             if (field.getChildren() != null)
                 field.getChildren().clearFlags(flag);
         }
-        else if (state != null && state.getField().carryFlag(flag))
-        {
-            DialogFieldStates fieldStates = state.getDialogContext().getFieldStates();
-            DialogFields children = state.getField().getChildren();
-            if (children != null)
-            {
-                for (int i=0; i < children.size(); i++)
-                {
-                    fieldStates.getState(children.get(i)).getStateFlags().clearFlag(flag);
-                }
-            }
-        }
     }
 
     /**
-     * Sets a flag.
+     * Sets a flag. If this flag object belongs to a field and the flag is one of the carry over flags,
+     * then all children fields will have their corresponding flags set.
      *
      * @param flag
      */
@@ -227,18 +217,6 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
             // check to see if the flag should be carried to the children
             if (field.getChildren() != null)
                 field.getChildren().setFlags(flag);
-        }
-        else if (state != null && state.getField().carryFlag(flag))
-        {
-            DialogFieldStates fieldStates = state.getDialogContext().getFieldStates();
-            DialogFields children = state.getField().getChildren();
-            if (children != null)
-            {
-                for (int i=0; i < children.size(); i++)
-                {
-                    fieldStates.getState(children.get(i)).getStateFlags().setFlag(flag);
-                }
-            }
         }
     }
 
