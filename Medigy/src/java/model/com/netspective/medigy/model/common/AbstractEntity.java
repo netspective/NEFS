@@ -95,6 +95,7 @@ public abstract class AbstractEntity implements Serializable
     }
 
     @ManyToOne
+    @JoinColumn(name = "create_session_id")
     public Session getCreateSession()
     {
         return createSession;
@@ -116,6 +117,7 @@ public abstract class AbstractEntity implements Serializable
     }
 
     @ManyToOne
+    @JoinColumn(name = "update_session_id")        
     public Session getUpdateSession()
     {
         return updateSession;
