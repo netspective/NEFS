@@ -60,7 +60,6 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.sparx.panel.HtmlPanelActions;
 import com.netspective.commons.value.source.RedirectValueSource;
 
 import java.io.Writer;
@@ -69,9 +68,9 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordManagerReportSkin.java,v 1.1 2003-10-21 16:54:33 shahid.shah Exp $
+ * $Id: RecordManagerReportSkin.java,v 1.2 2003-10-21 17:27:07 shahid.shah Exp $
  */
-public class RecordManagerReportSkin extends BasicHtmlTabularReportPanelSkin
+public class RecordManagerReportSkin extends RecordEditorReportSkin
 {
     public RecordManagerReportSkin()
     {
@@ -90,7 +89,6 @@ public class RecordManagerReportSkin extends BasicHtmlTabularReportPanelSkin
         HtmlTabularReportValueContext rc = ((HtmlTabularReportValueContext)vc);
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
-        HtmlPanelActions frameActions = frame.getActions();
         if (actions != null)
         {
             HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_ADD));
@@ -112,59 +110,5 @@ public class RecordManagerReportSkin extends BasicHtmlTabularReportPanelSkin
                 }
             }
         }
-    }
-
-    /**
-     *
-     * @param writer
-     * @param rc
-     * @param ds
-     * @param isOddRow
-     * @throws IOException
-     */
-    public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
-    {
-        BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
-        HtmlReportActions actions = report.getActions();
-        if (actions == null)
-        {
-            // no actions are defined in the report
-            return;
-        }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
-        if (reportAction != null)
-        {
-            RedirectValueSource redirect = reportAction.getRedirect();
-            Theme theme = rc.getActiveTheme();
-
-            String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-edit.gif") + "\" " +
-                "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
-            String editRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
-            editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
-            writer.write("<td class=\"" + (isOddRow ? "report-column-even" : "report-column-odd") + "\" width=\"10\">");
-            writer.write(editRecordUrl);
-            writer.write("</td>");
-        }
-    }
-
-    /**
-     * Gets the additional number of columns to prepend to the data
-     * @param rc
-     * @return
-     */
-    protected int getRowDecoratorPrependColsCount(HtmlTabularReportValueContext rc)
-    {
-        BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
-        HtmlReportActions actions = report.getActions();
-        if (actions == null)
-        {
-            // no actions are defined in the report so return 0
-            return 0;
-        }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
-        if (reportAction != null)
-            return 1;
-        else
-            return 0;
     }
 }
