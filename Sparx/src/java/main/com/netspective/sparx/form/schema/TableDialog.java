@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.13 2003-10-14 14:54:51 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.14 2003-10-16 04:53:30 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -88,7 +88,10 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.util.HttpUtils;
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
 public class TableDialog extends Dialog implements TemplateProducerParent
 {
@@ -216,11 +219,8 @@ public class TableDialog extends Dialog implements TemplateProducerParent
     {
         if(dc.isInitialEntry())
         {
-            if(dc.addingData())
-            {
-                DialogContextUtils.getInstance().populateFieldValuesFromRequestParamsAndAttrs(dc);
-            }
-            else
+            if(!dc.addingData())
+                //DialogContextUtils.getInstance().populateFieldValuesFromRequestParamsAndAttrs(dc);
             {
                 Object pkValue = getPrimaryKeyValueForEditDeleteConfirmOrPrint(dc);
 
@@ -353,6 +353,7 @@ public class TableDialog extends Dialog implements TemplateProducerParent
         {
             Column connector = parentKeyCols.getSole();
             activeRow = table.createRow((ParentForeignKey) connector.getForeignKey(), parentRow);
+            System.out.println("Parent key");
         }
         else
             activeRow = table.createRow();
@@ -402,7 +403,7 @@ public class TableDialog extends Dialog implements TemplateProducerParent
             for(int i = 0; i < childTableElements.size(); i++)
             {
                 TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
-                insertDataUsingTemplateElement(tdc, cc, childTableElement, tdc.getPrimaryTableRow());
+                insertDataUsingTemplateElement(tdc, cc, childTableElement, activeRow);
             }
         }
     }
@@ -426,12 +427,19 @@ public class TableDialog extends Dialog implements TemplateProducerParent
 
     public void execute(Writer writer, DialogContext dc) throws IOException
     {
+        if(dc.executeStageHandled())
+            return;
+
         TableDialogContext tdc = ((TableDialogContext) dc);
 
         ConnectionContext cc = null;
+        DialogExecuteHandlers handlers = getExecuteHandlers();
         try
         {
-            cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
+            // open the connection with the selected shared mode. The default mode
+            // is no sharing.
+            cc = dc.getSharedConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, true,
+                    getConnectionShareType().getValueIndex());
         }
         catch (Exception e)
         {
@@ -447,7 +455,7 @@ public class TableDialog extends Dialog implements TemplateProducerParent
             switch((int) dc.getPerspectives().getFlags())
             {
                 case DialogPerspectives.ADD:
-                    insertParentAndChildren(tdc, cc, table, row, true);
+                    //insertParentAndChildren(tdc, cc, table, row, true);
                     insertDataUsingTemplate(tdc, cc);
                     break;
 
@@ -471,12 +479,15 @@ public class TableDialog extends Dialog implements TemplateProducerParent
                     table.delete(cc, row);
                     break;
             }
-
+            if(handlers.size() > 0)
+                handlers.handleDialogExecute(writer, dc);
             cc.commitAndClose();
+            dc.setExecuteStageHandled(true);
             handlePostExecute(writer, dc);
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             try
             {
                 cc.rollbackAndClose();

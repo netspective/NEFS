@@ -28,7 +28,7 @@
             <field type="text" name="website" caption="Web Site"/>
         </dialog>
 
-        <dialog name="profile" retain-params="*" class="app.cts.form.OrgDialog" bind-table="org" auto-bind-fields-to-columns="no">
+        <dialog name="profile" type="table-dialog" retain-params="*" bind-table="org" auto-bind-fields-to-columns="no">
             <frame heading="create-dialog-perspective-heading: Organization"/>
             <field type="integer" name="org_id" hidden="yes" default="request:org_id"/>
             <field type="separator" heading="Organization Profile"/>
@@ -51,16 +51,12 @@
                 <field type="text" name="city" caption="City" required="yes" size="16" bind-column="Org_Address.city"/>
                 <field type="select" name="state" caption="State" choices="schema-enum:db.US_State_Type"
                     bind-column="Org_Address.state" required="yes"/>
-                <field type="zip-code" name="zip" caption="Zip Code" bind-column="Org_Address.zip"/>
+                <field type="zip-code" name="zip" caption="Zip Code" max-length="5" size="7" bind-column="Org_Address.zip"/>
             </field>
             <field type="text" name="country" caption="Country" size="16" bind-column="Org_Address.country"/>
             <field type="composite"  name="primary" caption="*">
                 <field type="phone"  name="phone" caption="Telephone"/>
                 <field type="phone" name="fax" caption="Fax"/>
-            </field>
-            <field type="composite" name="billing" caption="*">
-                <field type="text" name="contact" caption="Billing Contact"/>
-                <field type="phone" name="phone" caption="Phone"/>
             </field>
             <field type="e-mail" name="email" caption="E-Mail"/>
             <field type="text" name="website" caption="Web Site"/>
@@ -117,7 +113,15 @@
             <!-- The following information will be handled explicitly in the handler class-->
             <field type="phone"  name="phone" caption="Telephone"/>
             <field type="e-mail" name="email" caption="E-Mail"/>
-            <on-execute class="app.cts.form.person.PersonDialogHandler"/>
+            <insert-additional-data>
+                <person name_last="name_last" name_first="name_first" name_middle="name_middle" name_suffix="name_suffix"
+                    gender-id="gender_id" marital-status-id="marital_status_id">
+                    <personorg-relationship rel-entity-id="request:org_id" rec-stat-id="static:Active" rel-type-id="static:Employee"/>
+                    <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-value="phone" />
+                    <person-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-value="email" />
+                </person>
+            </insert-additional-data>
+<!--            <on-execute class="app.cts.form.person.PersonDialogHandler"/>-->
 
             <!--director>
                 <next-actions>
