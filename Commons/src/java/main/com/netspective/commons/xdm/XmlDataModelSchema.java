@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.46 2004-04-28 16:51:48 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.47 2004-06-16 17:24:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -2155,7 +2155,7 @@ public class XmlDataModelSchema
                             break;
 
                         case 2:
-                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0], new Locale(items[1])) });
+                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0], new Locale(items[1], Locale.US.getCountry())) });
                             break;
 
                         case 3:
