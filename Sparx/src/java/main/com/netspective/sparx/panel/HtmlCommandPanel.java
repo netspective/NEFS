@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlCommandPanel.java,v 1.3 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: HtmlCommandPanel.java,v 1.4 2003-11-16 17:54:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -49,6 +49,7 @@ import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
@@ -56,11 +57,14 @@ import com.netspective.sparx.command.HttpServletCommand;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Command;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.value.ValueSource;
 
 public class HtmlCommandPanel extends AbstractPanel
 {
     private static final Log log = LogFactory.getLog(HtmlCommandPanel.class);
     private Command command;
+    private ValueSource commandExpr;
 
     public HtmlCommandPanel()
     {
@@ -76,8 +80,46 @@ public class HtmlCommandPanel extends AbstractPanel
         this.command = command;
     }
 
+    public ValueSource getCommandExpr()
+    {
+        return commandExpr;
+    }
+
+    /**
+     * A value source that will be evaluated and the result of the evaluation will be treated as a command
+     * specification. This method allows the actual command that will be executed to be dynamic.
+     * @param commandExpr
+     */
+    public void setCommandExpr(ValueSource commandExpr)
+    {
+        this.commandExpr = commandExpr;
+    }
+
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
+        ValueSource commandExpr = getCommandExpr();
+        if(commandExpr != null)
+        {
+            String commandText = commandExpr.getTextValue(nc);
+            if(commandText != null)
+            {
+                try
+                {
+                    HttpServletCommand httpCommand = (HttpServletCommand) Commands.getInstance().getCommand(commandText);
+                    httpCommand.handleCommand(writer, nc, false);
+                    return;
+                }
+                catch (CommandException e)
+                {
+                    log.error("Command error in " + this.getClass().getName(), e);
+                    throw new NestableRuntimeException(e);
+                }
+            }
+        }
+
+        // if we get to here, we don't have an expression or the expression returned null so see if we have static
+        // command supplied
+
         if(command == null)
         {
             writer.write("No command provided.");
@@ -97,6 +139,25 @@ public class HtmlCommandPanel extends AbstractPanel
 
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
+        ValueSource commandExpr = getCommandExpr();
+        if(commandExpr != null)
+        {
+            String commandText = commandExpr.getTextValue(dc);
+            if(commandText != null)
+            {
+                try
+                {
+                    HttpServletCommand httpCommand = (HttpServletCommand) Commands.getInstance().getCommand(commandText);
+                    httpCommand.handleCommand(writer, dc, false);
+                    return;
+                }
+                catch (CommandException e)
+                {
+                    log.error("Command error in " + this.getClass().getName(), e);
+                    throw new NestableRuntimeException(e);
+                }
+            }
+        }
 
         if(command == null)
         {
