@@ -39,13 +39,16 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialogContext.java,v 1.3 2003-10-17 15:59:08 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialogContext.java,v 1.4 2003-10-27 04:28:27 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.schema;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.axiom.schema.Row;
+import com.netspective.axiom.schema.ColumnValue;
+import com.netspective.axiom.schema.ColumnValues;
+import com.netspective.axiom.schema.PrimaryKeyColumnValues;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,6 +56,9 @@ import org.apache.commons.logging.LogFactory;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Dialog context container class for the SchemaRecordEditorDialog
+ */
 public class SchemaRecordEditorDialogContext extends DialogContext
 {
     private static final Log log = LogFactory.getLog(SchemaRecordEditorDialogContext.class);
@@ -61,18 +67,55 @@ public class SchemaRecordEditorDialogContext extends DialogContext
     private List rowsUpdated = new ArrayList();
     private List rowsDeleted = new ArrayList();
 
+    /**
+     * Gets a List object of recently added rows
+     * @return
+     */
     public List getRowsAdded()
     {
         return rowsAdded;
     }
 
+    /**
+     * Gets a List object of recently updated rows
+     * @return
+     */
     public List getRowsUpdated()
     {
         return rowsUpdated;
     }
 
+    /**
+     * Gets a List object of recently deleted rows
+     * @return
+     */
     public List getRowsDeleted()
     {
         return rowsDeleted;
+    }
+
+    /**
+     * Gets the primary key values of the row that was added
+     * @param rowNum Row number
+     * @return
+     */
+    public ColumnValues getAddedRowPrimaryKeyValues(int rowNum)
+    {
+        Row row = (Row)rowsAdded.get(rowNum);
+        return row.getPrimaryKeyValues();
+    }
+
+    /**
+     * Gets the primary key value of the row that was recently added. If there are more than
+     * one primary key, the first primary key column is used.
+     * @param rowNum
+     * @return A NULL object is returned if there are not primary keys
+     */
+    public ColumnValue getAddedRowPrimaryKeyValue(int rowNum)
+    {
+        Row row = (Row)rowsAdded.get(rowNum);
+        PrimaryKeyColumnValues primaryKeyValues = row.getPrimaryKeyValues();
+        ColumnValue val =  primaryKeyValues != null ? primaryKeyValues.getByColumnIndex(0) : null;
+        return val;
     }
 }
