@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.52 2003-11-21 19:32:12 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.53 2003-11-21 19:34:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -1074,7 +1074,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                         {
                             HttpServletCommand httpCommand = (HttpServletCommand) Commands.getInstance().getCommand(commandText);
                             httpCommand.handleCommand(writer, nc, false);
-                            return;
+                            break;
                         }
                         catch (Exception e)
                         {
