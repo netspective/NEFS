@@ -49,16 +49,18 @@ import javax.ejb.OneToOne;
 import javax.ejb.CascadeType;
 import javax.ejb.JoinColumn;
 import javax.ejb.Entity;
+import javax.ejb.Table;
 
-@Entity        
-public class Priority extends AbstractEntity implements Comparable
+@Entity
+@Table(name = "Party_Rel_Priority")
+public class PartyRelationshipPriority extends AbstractEntity implements Comparable
 {
     private Long identifier;
 
     private PartyRelationship partyRelationship;
     private PriorityType type;
 
-    public Priority()
+    public PartyRelationshipPriority()
     {
     }
 
@@ -103,7 +105,7 @@ public class Priority extends AbstractEntity implements Comparable
         if(o == this)
             return 0;
 
-        final Priority otherStatus = (Priority) o;
+        final PartyRelationshipPriority otherStatus = (PartyRelationshipPriority) o;
         return ((PriorityType) getType()).compareTo(otherStatus.getType());
     }
 }
