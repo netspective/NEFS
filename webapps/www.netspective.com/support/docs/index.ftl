@@ -19,4 +19,8 @@
         <td><a href="documentation/change-log">NEFS Changes Log</a></td>
         <td>Provides a history of the changes to NEFS since 7.0 was released.</td>
     </tr>
+    <tr>
+        <td><a href="http://www.netspective.com/old-devel/">Old developer.netspective.com site</a></td>
+        <td>In case you need access to the old site, the contents remain available.</td>
+    </tr>
 </table>
