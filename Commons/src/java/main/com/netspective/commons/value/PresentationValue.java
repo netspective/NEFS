@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PresentationValue.java,v 1.1 2003-05-13 19:51:51 shahid.shah Exp $
+ * $Id: PresentationValue.java,v 1.2 2003-05-24 20:28:14 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -132,6 +132,13 @@ public class PresentationValue implements Value
             item.setCaption(caption);
             item.setValue(value);
             add(item);
+        }
+
+        public Item addItem()
+        {
+            Item item = new Item();
+            add(item);
+            return item;
         }
 
         public Item getItem(int index)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.11 2003-05-16 21:21:32 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.12 2003-05-24 20:28:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -187,7 +187,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            log.error(e);
+            log.error("Error cloning flags", e);
             return null;
         }
     }

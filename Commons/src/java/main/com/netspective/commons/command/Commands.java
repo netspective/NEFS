@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Commands.java,v 1.4 2003-05-09 15:56:09 shahid.shah Exp $
+ * $Id: Commands.java,v 1.5 2003-05-24 20:28:14 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
@@ -128,17 +128,17 @@ public class Commands implements MetricsProducer
         srcClassesSet.add(actualClass);
     }
 
-    public String[] getCommandIdentifiers(Class vsClass)
+    public String[] getCommandIdentifiers(Class cmdClass)
     {
         Method getIdsMethod = null;
         try
         {
-            getIdsMethod = vsClass.getMethod(CMDMETHODNAME_GETIDENTIFIERS, null);
+            getIdsMethod = cmdClass.getMethod(CMDMETHODNAME_GETIDENTIFIERS, null);
         }
         catch (NoSuchMethodException e)
         {
-            log.error(e);
-            throw new NestableRuntimeException("Static method 'String[] "+ CMDMETHODNAME_GETIDENTIFIERS +"()' not found in command " + vsClass.getName(), e);
+            log.error("Error retreiving method " + CMDMETHODNAME_GETIDENTIFIERS, e);
+            throw new NestableRuntimeException("Static method 'String[] "+ CMDMETHODNAME_GETIDENTIFIERS +"()' not found in command " + cmdClass.getName(), e);
         }
 
         try
@@ -147,17 +147,17 @@ public class Commands implements MetricsProducer
         }
         catch (Exception e)
         {
-            log.error(e);
-            throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] "+ CMDMETHODNAME_GETIDENTIFIERS +"()' method in command " + vsClass.getName(), e);
+            log.error("Error executing method " + CMDMETHODNAME_GETIDENTIFIERS, e);
+            throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] "+ CMDMETHODNAME_GETIDENTIFIERS +"()' method in command " + cmdClass.getName(), e);
         }
     }
 
-    public CommandDocumentation getCommandDocumentation(Class vsClass)
+    public CommandDocumentation getCommandDocumentation(Class cmdClass)
     {
         Method getDocsMethod = null;
         try
         {
-            getDocsMethod = vsClass.getMethod(CMDMETHODNAME_GETDOCUMENTATION, null);
+            getDocsMethod = cmdClass.getMethod(CMDMETHODNAME_GETDOCUMENTATION, null);
         }
         catch (NoSuchMethodException e)
         {
@@ -170,7 +170,7 @@ public class Commands implements MetricsProducer
         }
         catch (Exception e)
         {
-            log.error(e);
+            log.error("Error executing method " + CMDMETHODNAME_GETDOCUMENTATION + " in command " + cmdClass.getName(), e);
             return null;
         }
     }
@@ -190,7 +190,7 @@ public class Commands implements MetricsProducer
             }
             catch (Exception e)
             {
-                log.error(e);
+                log.error("Error instantiating command " + name + " with params " + params, e);
                 return null;
             }
         }

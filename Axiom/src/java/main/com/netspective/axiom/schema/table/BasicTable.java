@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.8 2003-04-29 02:26:45 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.9 2003-05-24 20:27:57 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -549,7 +549,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         }
         catch (NamingException e)
         {
-            log.error(e);
+            log.error("Error while inserting row " + row, e);
             throw new SQLException(e.getMessage());
         }
     }
@@ -567,7 +567,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         }
         catch (NamingException e)
         {
-            log.error(e);
+            log.error("Error while updating row " + row + " whereCond " + whereCond, e);
             throw new SQLException(e.getMessage());
         }
     }
@@ -585,7 +585,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         }
         catch (NamingException e)
         {
-            log.error(e);
+            log.error("Error deleting row " + row + " whereCond " + whereCond, e);
             throw new SQLException(e.getMessage());
         }
     }
@@ -612,7 +612,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             }
             catch (QueryDefinitionException e)
             {
-                log.error(e);
+                log.error("Error while initializing query definition.", e);
             }
             tqd.addField(field);
         }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConnectionProviderEntriesValueSource.java,v 1.3 2003-05-13 19:51:41 shahid.shah Exp $
+ * $Id: ConnectionProviderEntriesValueSource.java,v 1.4 2003-05-24 20:27:57 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -162,7 +162,11 @@ public class ConnectionProviderEntriesValueSource extends AbstractValueSource
             Map.Entry entry = (Map.Entry) i.next();
             String dataSourceId = (String) entry.getKey();
             if(perlUtil.match(filter, dataSourceId))
-                items.addItem(dataSourceId);
+            {
+                PresentationValue.Items.Item item = items.addItem();
+                item.setCaption(dataSourceId);
+                item.setCustom(entry.getValue()); // the custom data is the ConnectionProviderEntry instance
+            }
         }
 
         return result;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.10 2003-03-29 19:12:54 shahbaz.javeed Exp $
+ * $Id: ValueSources.java,v 1.11 2003-05-24 20:28:14 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -181,7 +181,7 @@ public class ValueSources implements MetricsProducer
         }
         catch (NoSuchMethodException e)
         {
-            log.error(e);
+            log.error("Error retrieving method " + VSMETHODNAME_GETIDENTIFIERS, e);
             throw new NestableRuntimeException("Static method 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' not found in value source " + vsClass.getName(), e);
         }
 
@@ -191,7 +191,7 @@ public class ValueSources implements MetricsProducer
         }
         catch (Exception e)
         {
-            log.error(e);
+            log.error("Error executing method " + VSMETHODNAME_GETIDENTIFIERS, e);
             throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' method in value source " + vsClass.getName(), e);
         }
     }
@@ -214,7 +214,7 @@ public class ValueSources implements MetricsProducer
         }
         catch (Exception e)
         {
-            log.error(e);
+            log.error("Error executing method " + VSMETHODNAME_GETDOCUMENTATION + " in value source " + vsClass.getName(), e);
             return null;
         }
     }
@@ -224,14 +224,14 @@ public class ValueSources implements MetricsProducer
         if(! expected.isAssignableFrom(vc.getClass()) || null == vc || null == expected)
         {
             UnexpectedValueContextException e = new UnexpectedValueContextException(expected, vc, vs);
-            log.error(e);
+            log.error("Invalid value context instance", e);
             throw e;
         }
     }
 
     public final ExceptionValueSource createExceptionValueSource(Throwable t)
     {
-        log.error(t);
+        log.error("ValueSource exception", t);
         return new ExceptionValueSource(t);
     }
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultsValueSource.java,v 1.3 2003-05-13 19:51:41 shahid.shah Exp $
+ * $Id: QueryResultsValueSource.java,v 1.4 2003-05-24 20:27:57 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -274,7 +274,7 @@ public class QueryResultsValueSource extends AbstractValueSource
         }
         catch (Exception e)
         {
-            log.error(e);
+            log.error("Error retrieving SQL Manager", e);
             throw new NestableRuntimeException(e);
         }
 
@@ -299,7 +299,7 @@ public class QueryResultsValueSource extends AbstractValueSource
         }
         catch (Exception e)
         {
-            log.error(e);
+            log.error("Error executing query", e);
             throw new NestableRuntimeException(e);
         }
 
@@ -398,7 +398,7 @@ public class QueryResultsValueSource extends AbstractValueSource
         }
         catch (Exception e)
         {
-            log.error(e);
+            log.error("Error retrieving results", e);
             throw new NestableRuntimeException(e);
         }
         finally
@@ -411,7 +411,7 @@ public class QueryResultsValueSource extends AbstractValueSource
                 }
                 catch (SQLException e)
                 {
-                    log.error(e);
+                    log.error("Error closing result set", e);
                     throw new NestableRuntimeException(e);
                 }
             }

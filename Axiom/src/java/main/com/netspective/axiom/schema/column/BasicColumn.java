@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.7 2003-05-11 17:51:30 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.8 2003-05-24 20:27:57 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -247,12 +247,12 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
             }
             catch (NamingException e)
             {
-                log.error(e);
+                log.error("This should never happen!", e);
                 throw new NestableRuntimeException("This should never happen!", e);
             }
             catch (SQLException e)
             {
-                log.error(e);
+                log.error("This should never happen!", e);
                 throw new NestableRuntimeException("This should never happen!", e);
             }
         }

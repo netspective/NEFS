@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: TabularReportCalcs.java,v 1.1 2003-04-01 22:36:32 shahid.shah Exp $
+ * $Id: TabularReportCalcs.java,v 1.2 2003-05-24 20:28:14 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.calc;
@@ -108,7 +108,7 @@ public class TabularReportCalcs
         }
         catch (NoSuchMethodException e)
         {
-            log.error(e);
+            log.error("Error retrieving method " + CALCMETHODNAME_GETIDENTIFIERS, e);
             throw new NestableRuntimeException("Static method 'String[] "+ CALCMETHODNAME_GETIDENTIFIERS +"()' not found in column data calc " + vsClass.getName(), e);
         }
 
@@ -118,7 +118,7 @@ public class TabularReportCalcs
         }
         catch (Exception e)
         {
-            log.error(e);
+            log.error("Error executing method " + CALCMETHODNAME_GETIDENTIFIERS, e);
             throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] "+ CALCMETHODNAME_GETIDENTIFIERS +"()' method in column data calc " + vsClass.getName(), e);
         }
     }

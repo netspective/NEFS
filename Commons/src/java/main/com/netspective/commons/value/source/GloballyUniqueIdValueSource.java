@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GloballyUniqueIdValueSource.java,v 1.3 2003-05-13 19:51:51 shahid.shah Exp $
+ * $Id: GloballyUniqueIdValueSource.java,v 1.4 2003-05-24 20:28:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -104,7 +104,7 @@ public class GloballyUniqueIdValueSource extends AbstractValueSource
         }
         catch (Exception e)
         {
-            log.error(e);
+            log.error("Error generating GUID", e);
             return new GenericValue(e.getMessage());
         }
     }
