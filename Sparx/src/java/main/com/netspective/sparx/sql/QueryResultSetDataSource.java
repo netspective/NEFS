@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.9 2004-04-30 01:28:29 shahid.shah Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.10 2004-05-10 22:49:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -54,11 +54,15 @@ import org.apache.commons.logging.LogFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.ResultSetMetaData;
 
 public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSource
 {
     private static final Log log = LogFactory.getLog(QueryResultSetDataSource.class);
 
+    protected boolean cacheColumnData = true;
+    protected boolean[] retrievedColumnData;
+    protected Object[] cachedColumnData;
     protected int activeRowIndex = -1;
     protected QueryResultSet queryResultSet;
     protected ResultSet resultSet;
@@ -71,10 +75,20 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     /* primary key column of the selected row */
     protected int selectedRowPkColumn = -1;
 
-    public QueryResultSetDataSource(ValueSource noDataMessage) throws SQLException
+    public QueryResultSetDataSource(ValueSource noDataMessage)
     {
         super();
         this.message = noDataMessage;
+    }
+
+    public boolean isCacheColumnData()
+    {
+        return cacheColumnData;
+    }
+
+    public void setCacheColumnData(boolean cacheColumnData)
+    {
+        this.cacheColumnData = cacheColumnData;
     }
 
     public String getSelectedRowPkValue()
@@ -156,6 +170,12 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
 
         try
         {
+            if(cacheColumnData)
+            {
+                final ResultSetMetaData metaData = resultSet.getMetaData();
+                retrievedColumnData = new boolean[metaData.getColumnCount()];
+                cachedColumnData = new Object[metaData.getColumnCount()];
+            }
             scrollable = resultSet.getType() != ResultSet.TYPE_FORWARD_ONLY ? true : false;
         }
         catch (SQLException e)
@@ -172,7 +192,17 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     {
         try
         {
-            return queryResultSet.getResultSet().getObject(columnIndex + 1);
+            if(cacheColumnData)
+            {
+                if(retrievedColumnData[columnIndex])
+                    return cachedColumnData[columnIndex];
+
+                cachedColumnData[columnIndex] = resultSet.getObject(columnIndex + 1);
+                retrievedColumnData[columnIndex] = true;
+                return cachedColumnData[columnIndex];
+            }
+            else
+                return resultSet.getObject(columnIndex + 1);
         }
         catch (SQLException e)
         {
@@ -283,6 +313,12 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     {
         try
         {
+            if(cacheColumnData)
+            {
+                for(int i = 0; i < retrievedColumnData.length; i++)
+                    retrievedColumnData[i] = false;
+            }
+
             if(resultSet.next())
             {
                 activeRowIndex++;
