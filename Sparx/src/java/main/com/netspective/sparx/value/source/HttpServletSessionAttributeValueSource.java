@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpServletSessionAttributeValueSource.java,v 1.4 2003-05-23 02:18:41 shahid.shah Exp $
+ * $Id: HttpServletSessionAttributeValueSource.java,v 1.5 2003-11-11 23:02:56 aye.thu Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -57,6 +57,7 @@ import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.value.AbstractValue;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.commons.value.exception.ValueException;
 import com.netspective.sparx.value.ServletValueContext;
 import com.netspective.axiom.ConnectionContext;
 
@@ -105,6 +106,11 @@ public class HttpServletSessionAttributeValueSource extends AbstractValueSource
             public Object getValue()
             {
                 return ((HttpServletRequest) svc.getRequest()).getSession().getAttribute(attributeName);
+            }
+
+            public void setValue(Object value) throws ValueException
+            {
+                ((HttpServletRequest) svc.getRequest()).getSession().setAttribute(attributeName, value);
             }
 
             public String getTextValue()
