@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DriverManagerConnectionProvider.java,v 1.3 2003-09-05 16:10:42 roque.hernandez Exp $
+ * $Id: DriverManagerConnectionProvider.java,v 1.4 2004-04-28 16:54:10 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -126,6 +126,66 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
         public void setConnPassword(String connPassword)
         {
             this.connPassword = connPassword;
+        }
+
+        public boolean setInfo(List dsInfoList)
+        {
+            if(dsInfoList.size() < 2)
+                return false;
+
+            setDriverName(dsInfoList.get(0).toString());
+            setConnUrl(dsInfoList.get(1).toString());
+            if(dsInfoList.size() > 2)
+                setConnUser(dsInfoList.get(2).toString());
+            if(dsInfoList.size() > 3)
+                setConnPassword(dsInfoList.get(3).toString());
+
+            return true;
+        }
+
+        public boolean setInfo(Map dsInfoMap, String keyPrefix)
+        {
+            String driverName = dsInfoMap.get(keyPrefix != null ? keyPrefix + "jdbc-driver-class" : "jdbc-driver-class").toString();
+            String connUrl = dsInfoMap.get(keyPrefix != null ? keyPrefix + "jdbc-connection-url" : "jdbc-connection-url").toString();
+            String connUser = dsInfoMap.get(keyPrefix != null ? keyPrefix + "jdbc-connection-user" : "jdbc-connection-user").toString();
+            String connPassword = dsInfoMap.get(keyPrefix != null ? keyPrefix + "jdbc-connection-password" : "jdbc-connection-password").toString();
+
+            if(driverName == null || connUrl == null)
+                return false;
+
+            setDriverName(driverName);
+            setConnUrl(connUrl);
+
+            if(connUser != null)
+                setConnUser(connUser);
+
+            if(connPassword != null)
+                setConnUser(connPassword);
+
+            return true;
+        }
+
+        public boolean setInfo(String[] dsInfoArray)
+        {
+            if(dsInfoArray.length < 2)
+                return false;
+
+            setDriverName(dsInfoArray[0]);
+            setConnUrl(dsInfoArray[1]);
+
+            if(dsInfoArray.length > 2)
+                setConnUser(dsInfoArray[2]);
+            if(dsInfoArray.length > 3)
+                setConnPassword(dsInfoArray[3]);
+
+            return true;
+        }
+
+        public String toString()
+        {
+            StringBuffer sb = new StringBuffer();
+            sb.append("[" + getClass().getName() + ": " + getDriverName() + ", " + getConnUrl() + ", " + getConnUser() + ", " + getConnPassword() + "]");
+            return sb.toString();
         }
     }
 
