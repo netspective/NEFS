@@ -28,7 +28,7 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
     static public final int LVSTYPE_INSTANCE    = 2;
     public static final String[] IDENTIFIERS = new String[] { "list", "list-value" };
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation(
-            "Displays the contents of a StaticListValueSource.",
+            "Displays the contents of a StaticListValueSource. Useful for displaying in a popup window and retrieving values. Parameters are delimited with '|'.",
             new CommandDocumentation.Parameter[]
             {
                 new CommandDocumentation.Parameter("value-source-type", true, "The value-source-type parameter may be either 'reference' or 'instance'. When it is set " +
@@ -48,6 +48,11 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
     public static String[] getIdentifiers()
     {
         return IDENTIFIERS;
+    }
+
+    public String getParametersDelimiter()
+    {
+        return "|"; // this because we accept value source specs that may contain commas or semicolons
     }
 
     public static CommandDocumentation getDocumentation()

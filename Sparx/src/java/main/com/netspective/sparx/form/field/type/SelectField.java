@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.13 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: SelectField.java,v 1.14 2003-11-16 17:15:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -241,7 +241,7 @@ public class SelectField extends TextField
             NavigationPage popupPage = dc.getNavigationContext().getOwnerTree().getPopupPage();
             if (popupPage != null)
             {
-                String actionString = "list,instance,session:" + getChoicesSessionAttributeName() + ",report";
+                String actionString = "list,instance|session:" + getChoicesSessionAttributeName() + "|report";
                 setAction(new StaticValueSource(popupPage.getUrl(dc)+"?cmd=" + actionString));
             }
             else
