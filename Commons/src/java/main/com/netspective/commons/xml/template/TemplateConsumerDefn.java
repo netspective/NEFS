@@ -43,6 +43,8 @@ import java.util.StringTokenizer;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import com.netspective.commons.xdm.XdmHandlerNodeStackEntry;
+import com.netspective.commons.xml.ContentHandlerNodeStackEntry;
 import com.netspective.commons.xml.NodeIdentifiers;
 
 public class TemplateConsumerDefn implements Cloneable
@@ -113,6 +115,16 @@ public class TemplateConsumerDefn implements Cloneable
     {
         List templates = null;
 
+        // if we're already inside a template, then check to see if we have any attributes that need their
+        // expressions replaced
+        final ContentHandlerNodeStackEntry activeNodeEntry = contentHandler.getActiveNodeEntry();
+        final XdmHandlerNodeStackEntry xdmHandlerNodeStackEntry = activeNodeEntry instanceof XdmHandlerNodeStackEntry
+                                                                  ? ((XdmHandlerNodeStackEntry) activeNodeEntry)
+                                                                  : null;
+        final TemplateApplyContext activeApplyTemplateContext = xdmHandlerNodeStackEntry != null
+                                                                ? xdmHandlerNodeStackEntry.getActiveApplyContext()
+                                                                : null;
+
         String templateNames = attributes.getValue(getTemplateRefAttrName());
         if(templateNames != null && templateNames.length() > 0)
         {
@@ -125,6 +137,9 @@ public class TemplateConsumerDefn implements Cloneable
             while(st.hasMoreTokens())
             {
                 String templateName = st.nextToken().trim();
+                if(activeApplyTemplateContext != null)
+                    templateName = contentHandler.getActiveNodeEntry().evaluateTemplateTextExpressions(activeApplyTemplateContext, templateName);
+
                 Template template = (Template) consumerTemplates.get(templateName);
                 if(template == null)
                     throw new SAXException("Template '" + templateName + "' for element '" + elementName + "' in namespace '" + getNameSpaceId() + "'. was not found in the active document. Available: " + consumerTemplates.keySet());
