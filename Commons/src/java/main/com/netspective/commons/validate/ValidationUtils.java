@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValidationUtils.java,v 1.2 2003-05-13 02:12:20 shahid.shah Exp $
+ * $Id: ValidationUtils.java,v 1.3 2003-05-15 15:53:55 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
@@ -446,11 +446,11 @@ public class ValidationUtils
             String word = "(" + atom + "|" + quotedUser + ")";
 
             // Each pattern must be surrounded by /
-            String emailPat = getDelimittedRegexp("^(.+)@(.+)$");
-            String ipDomainPat = getDelimittedRegexp("^(\\d{1,3})[.](\\d{1,3})[.](\\d{1,3})[.](\\d{1,3})$");
-            String userPat = getDelimittedRegexp("^" + word + "(\\." + word + ")*$");
-            String domainPat = getDelimittedRegexp("^" + atom + "(\\." + atom + ")*$");
-            String atomPat = getDelimittedRegexp("(" + atom + ")");
+            String emailPat = getDelimitedRegexp("^(.+)@(.+)$");
+            String ipDomainPat = getDelimitedRegexp("^(\\d{1,3})[.](\\d{1,3})[.](\\d{1,3})[.](\\d{1,3})$");
+            String userPat = getDelimitedRegexp("^" + word + "(\\." + word + ")*$");
+            String domainPat = getDelimitedRegexp("^" + atom + "(\\." + atom + ")*$");
+            String atomPat = getDelimitedRegexp("(" + atom + ")");
 
             Perl5Util matchEmailPat = new Perl5Util();
             Perl5Util matchUserPat = new Perl5Util();
@@ -584,7 +584,7 @@ public class ValidationUtils
     /**
      * Adds a '/' on either side of the regular expression.
      */
-    protected static String getDelimittedRegexp(String regexp)
+    protected static String getDelimitedRegexp(String regexp)
     {
         return (REGEXP_DELIM + regexp + REGEXP_DELIM);
     }
