@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: popup.js,v 1.2 2004-02-25 23:19:48 shahid.shah Exp $
+ * $Id: popup.js,v 1.3 2004-07-14 20:58:12 aye.thu Exp $
  */
 
 //****************************************************************************
@@ -87,9 +87,7 @@ function PopulateControlInfo(sourceForm, sourceField, fieldName)
 
 	this.fieldName = fieldName;
 	this.field = this.dialog.fieldsByQualName[fieldName];
-	if(this.field != null)
-		this.control = this.field.getControl(this.dialog);
-	else if(fieldName.indexOf(adjacentAreaSuffix) > 0)
+	if(fieldName.indexOf(adjacentAreaSuffix) > 0)
 	{
 	    // this is the adjacent field so get the actual field's name
 	    fieldName = fieldName.substring(0, fieldName.length - adjacentAreaSuffix.length);
@@ -105,6 +103,8 @@ function PopulateControlInfo(sourceForm, sourceField, fieldName)
 		else
     	    alert("In DialogFieldPopup for " + sourceForm + "." + sourceField + ", fill field '" + fieldName + "' could not be found [001].");
 	}
+    else if(this.field != null)
+        this.control = this.field.getControl(this.dialog);
 	else
     	alert("In DialogFieldPopup for " + sourceForm + "." + sourceField + ", fill field '" + fieldName + "' could not be found [002].");
 
@@ -171,7 +171,8 @@ function PopulateControlInfo_populateValue(value)
 
 var activeDialogPopup = null;
 
-function DialogFieldPopup(sourceForm, sourceField, actionURL, windowClass, closeAfterSelect, allowMultiSelect)
+function DialogFieldPopup(sourceForm, sourceField, actionURL, windowClass, closeAfterSelect, allowMultiSelect,
+    fillArray, extractArray, prePopupScript)
 {
 	this.srcFormName = sourceForm;
 	this.srcFieldName = sourceField;
@@ -183,24 +184,10 @@ function DialogFieldPopup(sourceForm, sourceField, actionURL, windowClass, close
 	this.controlsInfo = new Array();
 	this.extractInfo = new Array();
     this.dialog = activeDialog;
+    this.prePopupScript = prePopupScript;
     
-	// every arg after allowMultiSelect is a field name that should be "filled"
-	// by the popup
-	
-	var startFillArg = 6;
 	var argsLen = arguments.length;
-    
 	var controls = this.controlsInfo;
-	/*
-	for(var i = startFillArg; i < argsLen; i++)
-	{
-		var fieldName = arguments[i];
-		var realIndex = i - startFillArg;
-		controls[realIndex] = new PopulateControlInfo(sourceForm, sourceField, fieldName);
-	}
-	*/
-	// expecting the seventh argument to be an array object with the fill field names
-	var fillArray = arguments[startFillArg];
     if (fillArray != null && fillArray.length != null)
     {
         for (var i=0; i < fillArray.length; i++)
@@ -209,20 +196,25 @@ function DialogFieldPopup(sourceForm, sourceField, actionURL, windowClass, close
             controls[i] = new PopulateControlInfo(sourceForm, sourceField, fieldName);
         }
     }
-	if (argsLen == 8)
+    // TODO: this extract code is incomplete so it is commented out.
+    /*
+	if (extractArray != null)
 	{
 	    this.appendActionUrl = DialogFieldPopup_appendActionUrl;
-        // expecting the last variable as an array object containing field names from which to extract values and
-	    // append to the popup URL
-	    var extractArray = arguments[startFillArg+1];
-	    //this.appendActionUrl(extractArray);
     }
+    */
 
 	// the remaining are object-based methods
 	this.populateControl = DialogFieldPopup_populateControl;
 	this.populateControls = DialogFieldPopup_populateControls;
 	this.doPopup = DialogFieldPopup_doPopup;
-	
+
+    if (this.prePopupScript != null)
+    {
+        if (eval(this.prePopupScript) == false)
+            return;
+    }
+
 	this.doPopup();
 }
 
