@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.9 2003-08-31 22:43:38 shahid.shah Exp $
+ * $Id: AuthenticatedUser.java,v 1.10 2004-01-12 05:40:48 aye.thu Exp $
  */
 
 package com.netspective.commons.security;
@@ -67,6 +67,8 @@ public interface AuthenticatedUser extends Principal
     public BitSet getUserPermissions();
 
     public String[] getUserRoleNames();
+
+    public String getUserRoleNamesAsString();
 
     public void setPermissions(AccessControlListsManager aclsManager, String[] permissions) throws PermissionNotFoundException;
 

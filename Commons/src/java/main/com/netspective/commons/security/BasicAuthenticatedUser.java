@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.12 2003-09-14 03:26:29 roque.hernandez Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.13 2004-01-12 05:40:58 aye.thu Exp $
  */
 
 package com.netspective.commons.security;
@@ -47,6 +47,7 @@ package com.netspective.commons.security;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
@@ -149,6 +150,26 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
     public String[] getUserRoleNames()
     {
         return userRoleNames;
+    }
+
+    /**
+     * Gets the names of all assigned roles as one comma separated string
+     * @return
+     */
+    public String getUserRoleNamesAsString()
+    {
+        if (userRoleNames != null)
+        {
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < userRoleNames.length; i++)
+            {
+                if (i != 0)
+                    sb.append(", ");
+                sb.append(userRoleNames[i]);
+            }
+            return sb.toString();
+        }
+        return null;
     }
 
     public BitSet createPermissionsBitSet(AccessControlListsManager aclsManager)
