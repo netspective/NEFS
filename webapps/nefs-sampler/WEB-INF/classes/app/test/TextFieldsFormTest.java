@@ -21,29 +21,8 @@ public class TextFieldsFormTest extends FormInputTest
         formsInputLink.click();
         URL url = wc.getCurrentPage().getURL();
         String urlStr = url.getHost() + ":" + url.getPort() + "/" + wc.getCurrentPage().getLinkWith("Text").getURLString() + "?id=12345";
-        WebResponse  response =wc.getResponse("http://" + urlStr);
-        //WebResponse  response = wc.getCurrentPage().getLinkWith("Text").click();
+        response = wc.getResponse("http://" + urlStr);
         form = response.getForms()[0];
-    }
-
-    /**
-     * Verify the default values
-     */
-    public void testRequiredValues()
-    {
-        assertEquals( "conditional Required Text", form.getParameterValue( "_dc.textFieldConditionallyRequired" ) );
-    }
-
-    /**
-     * Verify that fields whose default values that are dependent upon request params are populated correctly
-     */
-    public void testRequestParameterFieldPopulation() throws IOException, SAXException
-    {
-
-        String url = wc.getCurrentPage().getURL().toString() + "?id=123";
-        form = wc.getResponse(url).getForms()[0];
-        assertEquals("123", form.getParameterValue("_dc.textFieldHidden"));
-        assertEquals("123", form.getParameterValue("_dc.staticField1"));
     }
 
     /**
@@ -51,11 +30,12 @@ public class TextFieldsFormTest extends FormInputTest
      * @throws IOException
      * @throws SAXException
      */
-    public void testTextFieldsFormInput() throws IOException, SAXException
+    public void testForm() throws IOException, SAXException
     {
         // the following fields' default values are set by values from request parameters
         assertEquals("12345", form.getParameterValue("_dc.textFieldHidden"));
         assertEquals("12345", form.getParameterValue("_dc.staticField1"));
+        assertEquals( "conditional Required Text", form.getParameterValue( "_dc.textFieldConditionallyRequired" ) );
 
         form.setParameter("_dc.textFieldRequired", "12345");
         form.setParameter("_dc.textField", "12345");
@@ -64,7 +44,7 @@ public class TextFieldsFormTest extends FormInputTest
         WebResponse response = form.submit();
 
         //  verify the first row header names
-        String[][] fieldStates = response.getTableWithID("AbstractPanel_3_content").asText();
+        String[][] fieldStates = response.getTableWithID("DlgCntxt_Debug_States_content").asText();
         assertEquals("Field", fieldStates[0][0]);
         assertEquals("Type", fieldStates[0][1]);
         assertEquals("Control Id", fieldStates[0][2]);

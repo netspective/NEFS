@@ -34,7 +34,7 @@ public class BooleanFieldsFormTest  extends FormInputTest
         WebResponse response = form.submit();
 
         //  verify the first row header names
-        String[][] fieldStates = response.getTableWithID("AbstractPanel_3_content").asText();
+        String[][] fieldStates = response.getTableWithID("DlgCntxt_Debug_States_content").asText();
         assertEquals("Field", fieldStates[0][0]);
         assertEquals("Type", fieldStates[0][1]);
         assertEquals("Control Id", fieldStates[0][2]);

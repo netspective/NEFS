@@ -51,7 +51,7 @@
  */
 
 /**
- * @version $Id: GridFieldsFormTest.java,v 1.1 2003-12-15 06:23:12 aye.thu Exp $
+ * @version $Id: GridFieldsFormTest.java,v 1.2 2003-12-16 22:55:58 aye.thu Exp $
  */
 package app.test;
 
@@ -81,7 +81,7 @@ public class GridFieldsFormTest extends FormInputTest
         WebResponse response = form.submit();
 
         //  verify the first row header names
-        String[][] fieldStates = response.getTableWithID("AbstractPanel_3_content").asText();
+        String[][] fieldStates = response.getTableWithID("DlgCntxt_Debug_States_content").asText();
         assertEquals("Field", fieldStates[0][0]);
         assertEquals("Type", fieldStates[0][1]);
         assertEquals("Control Id", fieldStates[0][2]);
