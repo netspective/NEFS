@@ -255,10 +255,9 @@ function DialogFieldPopup_populateControls()
 
 function decode(text)
 {
-  // Create a regular expression to search all +s in the string
-  var lsRegExp = /\+/g;
-  // Return the decoded string
-  return unescape(String(text).replace(lsRegExp, " "));
+    // Create a regular expression to search all +s in the string
+    var lsRegExp = /\+/g;
+    return unescape(String(text).replace(lsRegExp, " "));
 }
 
 function DialogFieldPopup_populateControlsEncoded()
@@ -267,7 +266,6 @@ function DialogFieldPopup_populateControlsEncoded()
 	var controls = this.controlsInfo;
     for(var i = 0; i < arguments.length; i++)
     {
-        alert(arguments[i] = " " + decode(arguments[i]));
         controls[i].populateValue(decode(arguments[i]));
 	}
 	if(this.closeAfterSelect)
