@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.13 2003-11-19 17:27:55 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.14 2003-11-26 15:21:58 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -49,6 +49,8 @@ import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.schema.*;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.sql.QueryResultSet;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.value.source.SqlExpressionValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
@@ -59,6 +61,7 @@ import com.netspective.sparx.form.*;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
@@ -73,6 +76,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,11 +206,16 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         {
             // see if a primary key value is provided -- if it is, we're going to populate using the primary key value
             String primaryKeyValueSpec = templateElement.getAttributes().getValue(ATTRNAME_PRIMARYKEY_VALUE);
+            System.out.println("&&&&&&&&&&&&&&&&&&primaryKeyValueSpec1" + primaryKeyValueSpec);
             if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
             {
                 primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getName());
+                System.out.println("&&&&&&&&&&&&&&&&&&primaryKeyValueSpec2" + primaryKeyValueSpec);
                 if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
+                {
                     primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getXmlNodeName());
+                    System.out.println("&&&&&&&&&&&&&&&&&&primaryKeyValueSpec3" + primaryKeyValueSpec);
+                }
             }
 
             return ValueSources.getInstance().getValueSourceOrStatic(primaryKeyValueSpec);
@@ -643,6 +652,8 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
         Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue }, null);
+System.out.println("***********************primaryKeyValueSource: " + primaryKeyValueSource);
+System.out.println("***********************primaryKeyValue: " + primaryKeyValue);
         if(activeRow == null)
         {
             if(getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
@@ -842,10 +853,160 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
     }
 
+public boolean duplicateRecordOnUniqueColumnExists(SchemaRecordEditorDialogContext sredc, ConnectionContext cc) throws NamingException, SQLException
+{
+    boolean duplicateFound = false;
+
+    List templateInstances = null;
+
+    if (sredc.editingData()){
+        if (editDataTemplateProducer == null) return false;
+        templateInstances = editDataTemplateProducer.getInstances();
+    } else
+    {
+        if (insertDataTemplateProducer == null) return false;
+        templateInstances = insertDataTemplateProducer.getInstances();
+    }
+
+    if(templateInstances.size() == 0)
+        return false;
+
+    // make sure to get the last template only because inheritance may have create multiples
+    Template editDataTemplate = (Template) templateInstances.get(templateInstances.size()-1);
+    List childTableElements = editDataTemplate.getChildren();
+    for(int i = 0; i < childTableElements.size(); i++)
+    {
+        TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+        if (childTableNode instanceof TemplateElement) {
+            TemplateElement childTableElement = (TemplateElement) childTableNode;
+            SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, childTableElement);
+            if(! stte.isTableFound())
+                return false;
+
+            Table table = stte.getTable();
+
+            ValueSource primaryKeyValueSource = null;
+            Object primaryKeyValue = null;
+
+            if (sredc.editingData())
+            {
+                primaryKeyValueSource = stte.getPrimaryKeyValueSource();
+
+                if(primaryKeyValueSource == null)
+                    sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[] { table.getName() });
+                else
+                    primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
+            }
+
+
+            Attributes templateAttributes = childTableElement.getAttributes();
+            for(int j = 0; j < templateAttributes.getLength(); j++)
+            {
+                String columnName = templateAttributes.getQName(j);
+                String columnTextValue = templateAttributes.getValue(j);
+
+                // if we have an attribute called _condition then it's a JSTL-style expression that should return true if
+                // we want to do this update or false if we don't
+                if(columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
+                {
+                    if(! isConditionalExpressionTrue(sredc, columnTextValue))
+                        break; // don't bother setting values since we're not inserting
+                }
+
+                // these are private "instructions"
+                if(columnName.startsWith("_"))
+                    continue;
+
+                Column column = table.getColumns().getByName(columnName);
+
+                if(column == null || !column.isUnique())    //if that column doesn't exist or is not unique then we do not worry about it
+                {
+                    continue;
+                }
+
+                String columnValue = null;
+                DialogField.State fieldState = null;
+
+                // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
+                ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
+                if(vs == null)
+                {
+                    fieldState = sredc.getFieldStates().getState(columnTextValue);
+                    columnValue = fieldState.getValue().getTextValue();
+                }
+                else
+                    columnValue = vs.getTextValue(sredc);
+
+                //if (getLog().isDebugEnabled())
+                    getLog().debug("The column name to be checked for uniqueness is: '"+ columnName +"'\nThe value to be chekcked is: '"+ columnValue + "'");
+                if (fieldState != null)// && getLog().isDebugEnabled())
+                    getLog().debug("And the field name that the column maps to is: '" + fieldState.getField().getName() + "'");
+
+                QueryDefnSelect columnAccessor = table.getAccessorByColumnEquality(column);
+                QueryResultSet results = columnAccessor.execute(cc, new Object[] { columnValue }, false);
+                ResultSet resultSet = results.getResultSet();
+
+                if (resultSet.next())
+                {
+                    if (sredc.editingData())
+                    {
+                        ColumnValues dialogVals = table.createRow().getPrimaryKeyValues();
+                        ColumnValues dbVals = table.createRow().getPrimaryKeyValues();
+
+                        dialogVals.getByColumnIndex(0).setValue(primaryKeyValue);
+                        dbVals.getByColumnIndex(0).setValueFromSqlResultSet(resultSet, 0, resultSet.findColumn(table.getPrimaryKeyColumns().get(0).getName()));
+                        if (dbVals.equals(dialogVals))
+                            continue; // This means that the row found was the same as the one we were trying to update so it should be ok
+                    }
+
+                    getLog().error("A Unique constraint violation found for Table: '" + table.getName() + "' Column: '" + columnName + "'");
+                    if (fieldState == null || fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
+                        sredc.getValidationContext().addError("A problem was encountered when validating that the data was able to be persisted.  Please re-open the record you were trying to edit and try it again.");
+                    else
+                        fieldState.getField().invalidate(sredc, "The value for field: " + fieldState.getField().getName() + " must be unique.  A record was found with the same value.  Please change the value and try again.");
+                    duplicateFound =  true;
+                }
+                resultSet.close();
+                results.close(true);
+            }
+        }
+    }
+    return duplicateFound;
+}
+
+
+    public boolean isValid(DialogContext dc)
+    {
+        boolean superIsValid = super.isValid(dc);
+        if (!superIsValid)
+            return false; //No need to continue if there was something invalid with the dialog.
+
+        boolean isValid = true;
+
+        SchemaRecordEditorDialogContext sredc = ((SchemaRecordEditorDialogContext) dc);
+
+        try
+        {
+            ConnectionContext cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, true);
+            switch((int) dc.getDialogState().getPerspectives().getFlags())
+            {
+                case DialogPerspectives.ADD:
+                case DialogPerspectives.EDIT:
+                    isValid = !duplicateRecordOnUniqueColumnExists(sredc, cc);
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            getLog().error("Error while Validating duplicates on unique columns.", e);
+        }
+
+        return isValid;
+    }
+
     /******************************************************************************************************************
      ** Default execute method                                                                                       **
      ******************************************************************************************************************/
-
     public void execute(Writer writer, DialogContext dc) throws DialogExecuteException, IOException
     {
         if(dc.executeStageHandled())
