@@ -155,7 +155,7 @@ Setup instructions:
              version="true"
              use="true"
              windowtitle="Netspective Frameworks API"
-             doctitle="Netspecitve Frameworks API Documentation"
+             doctitle="Netspective Frameworks API Documentation"
              bottom="Copyright &#169; 2003 Netspective. All Rights Reserved."
         />
     </target>
