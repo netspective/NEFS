@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.2 2003-06-29 03:17:21 aye.thu Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -129,6 +129,11 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
         }
     }
 
+    /**
+     * Calculates the total number of rows in the result set by moving the cursor to the last row and getting
+     * the row number. It then returns the cursor to the original row position.
+     * @return
+     */
     public int getTotalRows()
     {
         if(calculatedTotalRows)
@@ -138,9 +143,20 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
         {
             if(scrollable)
             {
+                // get the current row number
+                int currentRow = resultSet.getRow();
                 resultSet.last();
                 totalRows = resultSet.getRow();
-                resultSet.first();
+                if (currentRow == 0)
+                {
+                    // there is no current row so THE DEFAULT BEHAVIOR is to send the cursor to before the first row
+                    resultSet.beforeFirst();
+                }
+                else
+                {
+                    // set the cusor back to the original row
+                    resultSet.absolute(currentRow);
+                }
             }
         }
         catch (SQLException e)
