@@ -315,6 +315,18 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
         return dataSource;
     }
 
+    /**
+     * Returns the configured info object associated with a datasource. This will contain more information then what
+     * a {@link javax.sql.DataSource} will reveal.
+     *
+     * @param dataSourceId  datasource name
+     * @return              DataSourceInfo object configured in the connection provider
+     */
+    public DataSourceInfo getDataSourceInfo(String dataSourceId)
+    {
+        return (DataSourceInfo) dataSourcesInfo.get(dataSourceId);
+    }
+
     public DataSource getDataSource(ValueContext vc, String dataSourceId) throws NamingException
     {
 
