@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppPage.java,v 1.1 2003-11-24 03:17:33 shahid.shah Exp $
+ * $Id: AppPage.java,v 1.2 2003-11-24 14:49:52 shahid.shah Exp $
  */
 
 package app;
@@ -50,6 +50,7 @@ import com.netspective.sparx.navigate.NavigationPath;
 public class AppPage extends NavigationPage
 {
     private String tagLine;
+    private String summary;
 
     public AppPage()
     {
@@ -80,5 +81,15 @@ public class AppPage extends NavigationPage
     public void setTagLine(String tagLine)
     {
         this.tagLine = tagLine;
+    }
+
+    public String getSummary()
+    {
+        return summary;
+    }
+
+    public void setSummary(String summary)
+    {
+        this.summary = summary;
     }
 }

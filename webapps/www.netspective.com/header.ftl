@@ -1,8 +1,12 @@
+<#include "macros.ftl"/>
+
 <html><head>
 
 <title>${vc.navigationContext.getPageTitle()}</title>
 
 <#assign resourcesPath = vc.servletRootUrl + "resources"/>
+<#assign activePage = vc.navigationContext.activePage/>
+<#assign activePageId = activePage.qualifiedName/>
 <#assign theme = vc.activeTheme/>
 
 <link rel="SHORTCUT ICON" href="${theme.getResourceUrl('/images/favicon.ico')}">
@@ -97,7 +101,7 @@ function preloadImages() {
 						<td>
 							<table cellpadding="0" cellspacing="0" border="0">
 								<tbody><tr>
-									<td><img alt="" height="32" width="429" src="${resourcesPath}/images/header/home_03.gif"></td>
+									<td><img alt="" height="32" width="429" src="${resourcesPath}/images/header/spacer-top.gif"></td>
 								</tr>
 								<tr>
 									<td>
@@ -116,7 +120,7 @@ function preloadImages() {
 				<table cellpadding="0" cellspacing="0" border="0" width="600">
 					<tbody><tr>
 						<td><a href="${vc.servletRootUrl}products" onmouseout="changeImages( /*CMP*/'home_7',/*URL*/'${resourcesPath}/images/header/products.gif');return true" onmouseover="changeImages( /*CMP*/'home_7',/*URL*/'${resourcesPath}/images/header/products-over.gif');return true"><img alt="" border="0" height="17" width="58" src="${resourcesPath}/images/header/products.gif" name="home_7"></a></td>
-						<td><a href="http://sampler.netspective.com/nefs-sampler/files" onmouseout="changeImages( /*CMP*/'home_8',/*URL*/'${resourcesPath}/images/header/downloads.gif');return true" onmouseover="changeImages( /*CMP*/'home_8',/*URL*/'${resourcesPath}/images/header/downloads-over.gif');return true"><img alt="" border="0" height="17" width="65" src="${resourcesPath}/images/header/downloads.gif" name="home_8"></a></td>
+						<td><a href="${vc.servletRootUrl}downloads" onmouseout="changeImages( /*CMP*/'home_8',/*URL*/'${resourcesPath}/images/header/downloads.gif');return true" onmouseover="changeImages( /*CMP*/'home_8',/*URL*/'${resourcesPath}/images/header/downloads-over.gif');return true"><img alt="" border="0" height="17" width="65" src="${resourcesPath}/images/header/downloads.gif" name="home_8"></a></td>
 						<td><a href="${vc.servletRootUrl}buy" onmouseout="changeImages( /*CMP*/'home_9',/*URL*/'${resourcesPath}/images/header/buy.gif');return true" onmouseover="changeImages( /*CMP*/'home_9',/*URL*/'${resourcesPath}/images/header/buy-over.gif');return true"><img alt="" border="0" height="17" width="30" src="${resourcesPath}/images/header/buy.gif" name="home_9"></a></td>
 						<td><a href="${vc.servletRootUrl}services" onmouseout="changeImages( /*CMP*/'home_13',/*URL*/'${resourcesPath}/images/header/services.gif');return true" onmouseover="changeImages( /*CMP*/'home_13',/*URL*/'${resourcesPath}/images/header/services-over.gif');return true"><img alt="" border="0" height="17" width="50" src="${resourcesPath}/images/header/services.gif" name="home_13"></a></td>
 						<td><a href="${vc.servletRootUrl}support" onmouseout="changeImages( /*CMP*/'home_14',/*URL*/'${resourcesPath}/images/header/support.gif');return true" onmouseover="changeImages( /*CMP*/'home_14',/*URL*/'${resourcesPath}/images/header/support-over.gif');return true"><img alt="" border="0" height="17" width="50" src="${resourcesPath}/images/header/support.gif" name="home_14"></a></td>
@@ -125,50 +129,3 @@ function preloadImages() {
 					</tr>
 				</tbody></table>
 
-<#macro childMenus activePage level=2>
-
-    <#list activePage.childrenList as childPage>
-    <tr>
-        <td>
-            <a class="menu" href="${childPage.getUrl(vc)}">
-            <span class="L${level}">
-                ${childPage.caption.getTextValue(vc)}
-                <#if childPage = vc.navigationContext.activePage> *</#if>
-            </span>
-            </a>
-        </td>
-    </tr>
-    <#if childPage.childrenList.size() gt 0>
-        <@childMenus activePage=childPage level="${level+1}"/>
-    </#if>
-    </#list>
-
-</#macro>
-
-<#macro primaryAncestorChildren>
-    <table width="151" border="0" cellspacing="0" cellpadding="0">
-        <@childMenus activePage=vc.navigationContext.activePage.primaryAncestor/>
-    </table>
-</#macro>
-
-<#macro pageBody>
-
-    <table width="600" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td width=157 style="font-family:tahoma,arial;font-size:8pt;background-color: #EEEEEE; text-align:center">${vc.navigationContext.activePage.primaryAncestor.getCaption(vc)}</td>
-            <td width=443 align=right>${vc.navigationContext.activePage.tagLine}</td>
-        </tr>
-    </table>
-
-    <table width="600" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td valign="top">
-                <@primaryAncestorChildren/>
-            </td>
-            <td valign="top">
-                <#nested>
-            </td>
-        </tr>
-   </table>
-
-</#macro>

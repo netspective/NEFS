@@ -15,43 +15,54 @@
         </page>
 
         <page class="app.AppPage" name="products" caption="Products">
-            <body source="index.ftl"/>
-
-            <page name="frameworks" caption="Frameworks" tag-line="Developing J2EE Applications Gets Easy">
-                <body source="index.ftl"/>
+            <page name="frameworks" caption="Frameworks" tag-line="Developing J2EE Applications Gets Easier">
+                <body source="products/frameworks/index.ftl"/>
+                <summary>
+                    The Netspective Enterprise Frameworks Suite (NEFS) is the fastest path to building production ready,
+                    secure, data-driven web applications. Ease development using &amp;lt;declarative&amp;gt; constructs
+                    instead of hand coding.
+                </summary>
 
                 <page name="features" caption="Features">
-                    <body source="index.ftl"/>
+                    <body source="products/frameworks/features.ftl"/>
                 </page>
 
-                <page name="architecture" caption="Architecture">
-                    <body source="index.ftl"/>
+                <page name="architecture" caption="Architecture" tag-line="The Secret Sauce: Declare More, Code Less">
+                    <body source="products/frameworks/architecture.ftl"/>
+                    <summary>
+                        If you find J2EE app development to be difficult, you're using the wrong ingredients in your
+                        development process.
+                    </summary>
                 </page>
 
                 <page name="sparx" caption="Application Platform">
-                    <body source="index.ftl"/>
+                    <body source="products/frameworks/index.ftl"/>
                 </page>
 
                 <page name="axiom" caption="Data Service">
-                    <body source="index.ftl"/>
+                    <body source="products/frameworks/index.ftl"/>
                 </page>
 
                 <page name="commons" caption="Core Library">
-                    <body source="index.ftl"/>
+                    <body source="products/frameworks/index.ftl"/>
                 </page>
 
                 <page name="console" caption="Enterprise Console">
-                    <body source="index.ftl"/>
+                    <body source="products/frameworks/index.ftl"/>
                 </page>
             </page>
 
             <page name="web-services" caption="Web Services">
-                <body source="index.ftl"/>
+                <body source="products/index.ftl"/>
             </page>
 
-            <page name="struts" caption="Enhancing Struts">
-                <body source="index.ftl"/>
+            <page name="struts" caption="Simplifying Struts">
+                <body source="products/index.ftl"/>
             </page>
+        </page>
+
+        <page class="app.AppPage" name="downloads" caption="Downloads">
+            <body source="index.ftl"/>
         </page>
 
         <page class="app.AppPage" name="buy" caption="Buy">

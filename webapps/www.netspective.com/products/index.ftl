@@ -1,8 +1,6 @@
 <#include "*/header.ftl"/>
 
-<p>
-   Other stuff goes here
-</p>
+Some heading goes here
 
 <@pageBody>
 
