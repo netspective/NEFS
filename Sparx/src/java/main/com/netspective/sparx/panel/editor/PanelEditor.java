@@ -486,7 +486,7 @@ public class PanelEditor extends AbstractPanel
 
         // only when the mode is in DISPLAY mode, the panel editor is displayed
         HtmlPanelSkin skin = null;
-        skin = nc.getActiveTheme().getTemplateSkin("panel-editor-compressed");
+        skin = nc.getActiveTheme().getTemplateSkin("panel-editor-full");
         /*
         if (mode != PanelEditor.MODE_DISPLAY && mode != PanelEditor.MODE_MANAGE)
         {
@@ -518,7 +518,10 @@ public class PanelEditor extends AbstractPanel
             }
         }
         preparePanelActionStates(nc, pvc, state, mode);
-        writer.write("<table class=\"panel-editor-table\"><tr>\n");
+        if(mode != PanelEditor.MODE_DISPLAY)
+            writer.write("<table class=\"panel-editor-table-manage\"><tr>\n");
+        else
+            writer.write("<table class=\"panel-editor-table\"><tr>\n");
         if(activeElement != null)
             writer.write("<td class=\"active-content\">" + activeEditorWriter.getBuffer().toString() + "</td>");
 

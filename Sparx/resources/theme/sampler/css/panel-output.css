@@ -48,7 +48,7 @@ td.panel-output-banner a:visited { color: #696969; font-size: 11px; font-family:
 .panel-output-tree-leaf  { background: url(../images/panel/output/tree-leaf.gif) no-repeat; width: 10px; }
 
 table.panel-layout-table  { width: auto; padding: 5px 0px 5px 0px; }
-div.panel-layout-column   { padding: 3px 0px 3px 0px; }
+div.panel-layout-column   { padding-left: 3px; padding-right: 10px; padding-bottom: 10px; }
 
 
 /*
@@ -107,8 +107,12 @@ td.panel-editor-banner a:visited { color: #696969; font-size: 8pt; font-family: 
 .panel-editor-tree-expand  { background: url(../images/panel/output/tree-expand.gif) no-repeat; width: 10px; cursor: hand; }
 .panel-editor-tree-leaf  { background: url(../images/panel/output/tree-leaf.gif) no-repeat; width: 10px; }
 
-.panel-editor-content { width: auto; padding: 0px; }
-table.panel-editor-table { width: auto; padding: 0px;  }
+.panel-editor-content { width: 100%; padding: 0px; }
+table.panel-editor-table { width: 100%; padding: 0px;  }
+.panel-editor-content-manage { width: auto; padding: 0px; }
+table.panel-editor-table-manage { width: auto; padding: 0px; vertical-align:top }
 table.panel-editor-table td.active-content  { backgound: #cc0000; text-align: left; padding: 0px 5px 0px 0px; vertical-align: top;}
+table.panel-editor-table-manage td.active-content  { backgound: #cc0000; text-align: left; padding: 0px 5px 0px 0px; vertical-align: top;}
 table.panel-editor-table td.display-content { backgound: #cc0000; text-align: left; padding: 0px 0px 0px 0px; vertical-align: top;}
+table.panel-editor-table-manage td.display-content { backgound: #cc0000; text-align: left; padding: 0px 0px 0px 0px; vertical-align: top;}
 .panel-editor-report    { text-align: left; padding: 0px 0px 0px 0px}
