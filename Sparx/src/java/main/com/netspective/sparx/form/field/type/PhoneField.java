@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PhoneField.java,v 1.6 2003-10-19 04:07:29 aye.thu Exp $
+ * $Id: PhoneField.java,v 1.7 2004-03-23 17:49:48 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -157,14 +157,14 @@ public class PhoneField extends TextField
         switch(this.style.getValueIndex())
         {
             case Style.DASH:
-                setRegExpr("/" + DASH_VALIDATE_PATTERN + "/");
+                setRegExpr(DASH_VALIDATE_PATTERN);
                 setInvalidRegExMessage(DASH_VALIDATE_ERROR_MSG);
                 setDisplayPattern(DASH_DISPLAY_PATTERN);
                 setSubmitPattern(DASH_SUBMIT_PATTERN);
                 break;
 
             case Style.BRACKET:
-                setRegExpr("/" + BRACKET_VALIDATE_PATTERN + "/");
+                setRegExpr(BRACKET_VALIDATE_PATTERN);
                 setInvalidRegExMessage(BRACKET_VALIDATE_ERROR_MSG);
                 setDisplayPattern(BRACKET_DISPLAY_PATTERN);
                 setSubmitPattern(BRACKET_SUBMIT_PATTERN);

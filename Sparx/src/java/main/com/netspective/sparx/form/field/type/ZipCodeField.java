@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ZipCodeField.java,v 1.5 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: ZipCodeField.java,v 1.6 2004-03-23 17:49:48 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -101,7 +101,7 @@ public class ZipCodeField extends TextField
     public ZipCodeField()
     {
         super();
-        setRegExpr("/" + VALIDATE_PATTERN + "/");
+        setRegExpr(VALIDATE_PATTERN);
         setInvalidRegExMessage("Zip codes must be in the 99999 or 99999-9999 format.");
         setDisplayPattern(DISPLAY_SUBSTITUTION_PATTERN);
     }

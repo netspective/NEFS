@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SocialSecurityField.java,v 1.6 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: SocialSecurityField.java,v 1.7 2004-03-23 17:49:48 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -96,7 +96,7 @@ public class SocialSecurityField extends TextField
     public SocialSecurityField()
     {
         super();
-        setRegExpr("/" + VALIDATE_PATTERN + "/");
+        setRegExpr(VALIDATE_PATTERN);
         setInvalidRegExMessage("The SSN must be of the format 999-99-9999 or 999999999.");
         setDisplayPattern(DISPLAY_SUBSTITUTION_PATTERN);
     }
