@@ -670,7 +670,7 @@ function DialogField_doPreSubmit()
 		// even though the field type was set to SELECT.
 		// Depending on the browser, the evaluation of control.options.length could
 		// generate a run-time error.
-		if ( control.options == null )
+		if ( typeof(control) == "undefined" || control.options == null )
 		    return;
 		for (var i = 0; i < control.options.length; i++)
 		{
