@@ -55,14 +55,17 @@
             <field name="text_field_hidden"   type="text"   hidden="yes"    default="request:id"/>
             <field name="static_field1" type="static" caption="Static 1" default="request:id" hint="Request attribute 'id' value"/>
             <field name="static_field2" type="static" caption="Static 2 " default="Static Field's Value"/>
-            <field name="text_field_required" type="text" caption="Text Required" hint="Text field required" default="Required Text" required="yes">
-                <!--conditional action="apply-flag" flag="initial-focus" has-value="request:abc"/-->
+            <field name="text_field_required" type="text" caption="Text Required" hint="Text field is required when req param 'abc' has value"
+                default="conditional Required Text" required="no">
+                <conditional action="apply-flag" flag="required" has-value="request:abc"/>
             </field>
             <!-- When max-length is turned on then the default text should be truncated or an error should be displayed??? -->
             <field name="text_field" type="text" caption="Text" hint="Text field optional (max-length=5, uppercase=yes)" max-length="5" uppercase="yes"/>
-            <field name="text_field_email" type="text" caption="Text Email" hint="Text field with regular expression checking" display-pattern="/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/"
-                invalid-reg-ex-message="Invalid email format."/>
+            <!--field name="text_field_email" type="text" caption="Text Email" hint="Text field with regular expression checking"
+                display-pattern="/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/"
+                invalid-reg-ex-message="Invalid email format."/-->
             <field name="email_field" type="e-mail" caption="Email" hint="Email field"/>
+            <field name="masked_field" type="text" caption="Masked Field" mask-entry="yes" hint="e.g password"/>
             <director submit-caption="Submit"/>
         </dialog>
         <dialog name="DialogTest_01_B" retain-params="*">
@@ -160,18 +163,18 @@
 				<field type="text" caption="Field C" size="7" name="text_field_03" default="default" hint="Testing..."/>
 			</composite>
         </dialog>
-        <dialog name="DialogTest_06">
+        <!--dialog name="DialogTest_06">
             <frame heading="Test Conditionals"/>
             <field type="select" name="sel_field_list" caption="Select Field (Combo)" style="combo" size="5"
                 choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C" prepend-blank="yes"/>
-            <field type="text" name="static_field" default="Here I am!">
+            <field type="text" name="static_field" default="Here I am!" hint="Partner field is Select Field (Combo)">
                 <conditional action="display" partner-field-name="sel_field_list" js-expr="control.selectedIndex == 2"/>
             </field>
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
             <field type="static" name="static_field2" default="Checkbox checked!">
                 <conditional action="display" partner-field-name="checkbox_field" js-expr="control.checked == true"/>
             </field>
-        </dialog>
+        </dialog-->
         <dialog name="DialogTest_07">
             <frame  heading="Test Popup" />
             <field type="select" name="sel_field_list" caption="Select Field" style="combo" choices="-;Choice 1=A;Choice 2=B;Choice 3=C"/>
@@ -202,11 +205,11 @@
                 default="Choice 1's hidden value" prepend-blank="yes" append-blank="yes"/>
         </dialog-->
 
-        <!--dialog name="DialogTest_10">
+        <dialog name="DialogTest_10">
             <frame heading="Test Data Command and Conditionals" />
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
             <field type="static" name="static_field2" default="Checkbox checked!">
-                <conditional action="display" partner="checkbox_field" js-expr="control.checked == true"/>
+                <!--conditional action="display" partner="checkbox_field" js-expr="control.checked == true"/-->
             </field>
             <field type="text" name="text_field_1" caption="Text Field" size="50" hint="Invisible when ADD" default="I guess the data command is not 'add'">
                 <conditional action="apply-flag" flag="invisible" data-cmd="add"/>
@@ -219,7 +222,7 @@
                 <conditional action="apply-flag" flag="invisible" data-cmd="add"/>
                 <conditional action="apply-flag" flag="invisible" data-cmd="edit"/>
             </field>
-        </dialog-->
+        </dialog>
         <!--dialog name="DialogTest_11" retain-params="*">
             <frame heading="Test Select Fields w/ seperator" />
             <field type="separator" heading="Select Fields"/>
