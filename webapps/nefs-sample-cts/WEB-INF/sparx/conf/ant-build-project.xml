@@ -13,15 +13,24 @@
         <basename property="app.name" file="${app.home}"/>
     </target>
 
-    <target name=".init" depends=".init-app-path,.init-app-name" description="Private target that performs intialization for all tasks. This target is designed for use as a dependent, not to be called directly.">
-        <taskdef name="sparx" classname="com.netspective.sparx.ant.SparxTask"/>
-
+    <target name=".init-compile" depends=".init-app-path,.init-app-name">
         <property name="app.WEB-INF.path" value="${app.home}/WEB-INF"/>
         <property name="app.WEB-INF.classes.path" value="${app.WEB-INF.path}/classes"/>
         <property name="app.WEB-INF.lib.path" value="${app.WEB-INF.path}/lib"/>
         <available file="${app.WEB-INF.classes.path}" type="dir" property="app.WEB-INF.classes.path.exists"/>
 
         <property name="app.auto.jar-name" value="${app.name}-auto.jar"/>
+
+        <path id="project.class.path">
+            <fileset dir="${app.WEB-INF.path}">
+                <include name="classes"/>
+                <include name="lib/*.jar"/>
+            </fileset>
+        </path>
+    </target>
+
+    <target name=".init" depends=".init-compile" description="Private target that performs intialization for all tasks. This target is designed for use as a dependent, not to be called directly.">
+        <taskdef name="sparx" classname="com.netspective.sparx.ant.SparxTask"/>
 
         <property name="app.sparx.project.home" value="${app.WEB-INF.path}/sparx"/>
         <property name="app.sparx.project.file" value="${app.sparx.project.home}/project.xml"/>
@@ -31,13 +40,6 @@
 
         <property name="app.database.home" value="${app.WEB-INF.path}/database"/>
         <property name="app.database.defn.path" value="${app.database.home}/defn"/>
-
-        <path id="project.class.path">
-            <pathelement path="classes"/>
-            <fileset dir="${app.WEB-INF.lib.path}">
-                <include name="**/*.jar"/>
-            </fileset>
-        </path>
 
         <sparx action="get-default-schema-name" projectFile="${app.sparx.project.file}" property="app.database.default-schema-name"/>
     </target>
@@ -57,7 +59,7 @@
         <echo message="app.database.default-schema-name = '${app.database.default-schema-name}'"/>
     </target>
 
-    <target name="compile" depends=".init" if="app.WEB-INF.classes.path.exists" description="Compiles all the Java source files in WEB-INF/classes.">
+    <target name="compile" depends=".init-compile" if="app.WEB-INF.classes.path.exists" description="Compiles all the Java source files in WEB-INF/classes.">
         <javac srcdir="${app.WEB-INF.classes.path}" deprecation="on" classpathref="project.class.path"/>
     </target>
 
