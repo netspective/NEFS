@@ -524,6 +524,12 @@
         section in the Console. In order to create the HSQL database, you must
         run the "<literal>create-database-hsqldb</literal>" target.</para>
 
+        <note>
+          <para>Please note that you need the initial-and-test-data.xml file
+          in order to create the HSQL database using the Ant Build Script. See
+          <xref linkend="desc-init-data" /></para>
+        </note>
+
         <para><graphic
         fileref="./resources/images/screen-console-ant-build.gif" /></para>
 
@@ -533,6 +539,8 @@
         loads the 'starter' from XML files using Sparx import from XML
         feature. The Console displays differemt messages during the HSQL
         database creation (as show below):</para>
+
+        <para></para>
 
         <screenshot>
           <graphic fileref="./resources/images/screen-console-create-hsql-db.gif" />
@@ -606,7 +614,7 @@
         </note>
       </section>
 
-      <section>
+      <section id="desc-init-data">
         <title>Populating the HSQL Database with Test Data</title>
 
         <para>You will need some test data to be stored in the Books
@@ -838,6 +846,8 @@
         in the Console. Enter a SQL query for the <literal>Book_Info</literal>
         table in the SQL Editor.</para>
 
+        <para></para>
+
         <screenshot>
           <graphic fileref="./resources/images/screen-console-sql-explorer.gif" />
         </screenshot>
@@ -957,8 +967,6 @@
 
         <para>The next step is to define the customized way of displaying the
         result of your <literal>get-all-books</literal> query.</para>
-
-        <para></para>
 
         <example>
           <title>Presenting the Results of a Static Query</title>
@@ -1193,11 +1201,17 @@
             </callout>
           </calloutlist>
         </example>
+      </section>
+
+      <section id="desc-pres-dyn-qry">
+        <title>Presenting the Results of a Dynamic Query (Query
+        Definition)</title>
 
         <para>After defining the basic join on Books Application tables, the
         next step is to define the search dialog and the presentation of the
         search result. This is handled through the use of
-        <sgmltag>presentation</sgmltag> tag and its child tags.</para>
+        <sgmltag>presentation</sgmltag> tag and its child tags under
+        <sgmltag>query-defn</sgmltag> tag.</para>
 
         <example>
           <title>Declaring the Search Dialog and Query Result
@@ -1281,7 +1295,8 @@
               <para>The <sgmltag>allow-debug</sgmltag> attribute of
               <sgmltag>select-dialog</sgmltag> tag is used to specify the
               query debug option. If it is set to "<literal>yes</literal>" (as
-              in this example), a debug check box is displayed. When this
+              in this example), a debug check box is displayed (with the
+              caption <emphasis>View Generated SQL</emphasis>). When this
               checkbox is checked and the dialog is submitted, the generated
               SQL with its bind parameters is displayed for debugging purposes
               instead of execution of the generated SQL</para>
@@ -1408,6 +1423,8 @@
 
         <para>Click on the <literal>books</literal> query to see the details
         of the query in a tabular form.</para>
+
+        <para></para>
 
         <screenshot>
           <graphic fileref="./resources/images/screen-console--dynamic-qry-doc.gif" />
@@ -1783,9 +1800,9 @@
       <interfacename>DialogNextActionProvider</interfacename> interface to
       customize what happens after your Books Application's dialogs (forms)
       are submitted. In this example, you will try to send the dialogs (forms)
-      back to the Books Application Home page. Following is the java class
+      back to the Books Application Home page. Following is the Java class
       (<classname>Util.java</classname>) that provides this functionality.
-      This java file will be saved in the <filename
+      This Java file will be saved in the <filename
       class="directory">WEB-INF</filename>/<filename
       class="directory">classes</filename>/<filename
       class="directory">app</filename> folder along with its class
@@ -1841,12 +1858,16 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
         <guisubmenu>Ant Build</guisubmenu> section in Console and execute the
         <sgmltag>Compile</sgmltag> target.</para>
 
+        <para></para>
+
         <screenshot>
           <graphic fileref="./resources/images/screen-console-build-compile.gif" />
         </screenshot>
 
         <para>The <filename>Util.java</filename> file is compiled and a
         compile message is displayed.</para>
+
+        <para></para>
 
         <screenshot>
           <graphic fileref="./resources/images/screen-console-build-compile-msg.gif" />
@@ -1889,6 +1910,8 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
       <ulink
       url="http://localhost:8080/nefs-sample-books">http://localhost:8080/nefs-sample-books</ulink></para>
 
+      <para></para>
+
       <screenshot>
         <graphic fileref="./resources/images/screen-books-app-home.gif" />
       </screenshot>
@@ -1897,6 +1920,8 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
       Application database along with the Edit and Delete buttons. Try adding
       a new book from the Add Book section.</para>
 
+      <para></para>
+
       <screenshot>
         <graphic fileref="./resources/images/screen-books-app-add.gif" />
       </screenshot>
@@ -1904,6 +1929,8 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
       <para>Enter the book information and click the <command>OK</command>
       button. You can see the newly added book in the list available on the
       Home page.</para>
+
+      <para></para>
 
       <screenshot>
         <graphic fileref="./resources/images/screen-books-app-new-list.gif" />
@@ -1920,28 +1947,43 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
       <para>Try searching for books by genre or name, or any other field for
       that matter, by using the Search Books page.</para>
 
+      <para></para>
+
       <screenshot>
         <graphic fileref="./resources/images/screen-books-app-search.gif" />
       </screenshot>
 
       <para>The result of the search is displayed in tabular form.</para>
 
+      <para></para>
+
       <screenshot>
         <graphic fileref="./resources/images/screen-books-search-result.gif" />
       </screenshot>
 
-      <para>You may see the SQL statement corrsponding to a search criteria by
-      clicking on the View Generated SQL check box on the Search Books page.
-      The SQL statement is displayed along with the bind parameters and their
-      values.</para>
+      <para>You may see the SQL statement corresponding to a search criteria
+      by clicking on the <emphasis>View Generated SQL</emphasis> check box on
+      the Search Books page. The SQL statement is displayed along with the
+      bind parameters and their values.</para>
+
+      <note>
+        <para>You may turn this option off in the production application by
+        setting the <sgmltag>allow-debug</sgmltag> attribute of
+        <sgmltag>select-dialog</sgmltag> tag within the corresponding query
+        definition. See <xref linkend="desc-pres-dyn-qry" /></para>
+      </note>
+
+      <para></para>
 
       <screenshot>
         <graphic fileref="./resources/images/screen-books-app-search-qry.gif" />
       </screenshot>
 
-      <para>Go to Home page and select the book to delete. The Delet Book page
-      is displayed containing the selected book's information. Click on the
-      Delete button to delete the selected book's record.</para>
+      <para>Go to Home page and select the book to delete. The Delete Book
+      page is displayed containing the selected book's information. Click on
+      the Delete button to delete the selected book's record.</para>
+
+      <para></para>
 
       <screenshot>
         <graphic fileref="./resources/images/screen-books-app-delete.gif" />
@@ -1951,6 +1993,8 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
       page. Use '<literal>console</literal>' and '<literal>console</literal>'
       (without quotes) for Console's <varname>User Id</varname> and
       <varname>Password</varname>.</para>
+
+      <para></para>
 
       <screenshot>
         <graphic fileref="./resources/images/screen-books-app-console.gif" />
