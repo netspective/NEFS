@@ -11,13 +11,146 @@
         <property name="nefs.webapps.home" value="${basedir}"/>
         <property name="nefs.starter.empty-app.name" value="nefs-starter-empty"/>
         <property name="nefs.starter.empty-app.home" value="${nefs.webapps.home}/${nefs.starter.empty-app.name}"/>
+        <property name="nefs.sampler-app.name" value="nefs-sampler"/>
+        <property name="nefs.sampler-app.home" value="${nefs.webapps.home}/${nefs.sampler-app.name}"/>
+        <property name="nefs.sampler-app.downloads.path" value="${nefs.sampler-app.home}/downloads"/>
         <property name="nefs.app.execution-properties.file" value="WEB-INF/sparx/conf/execution.properties"/>
+        <property name="nefs.war.staging.path" value="${nefs.webapps.home}/temp/war-staging"/>
+
+        <fileset id="nefs.web-app.required-libs" dir="${basedir}/../">
+            <include name="Axiom/lib/netspective-axiom.jar"/>
+            <include name="Axiom/lib/redist/*.jar"/>
+
+            <include name="Commons/lib/netspective-commons.jar"/>
+            <include name="Commons/lib/redist/*.jar"/>
+            <exclude name="Commons/lib/redist/jdbc.jar"/>
+            <exclude name="Commons/lib/redist/XmlDoclet.jar"/>
+            <exclude name="Commons/lib/redist/clover.jar"/>
+
+            <include name="Sparx/lib/netspective-sparx.jar"/>
+            <include name="Sparx/lib/redist/*.jar"/>
+            <exclude name="Sparx/lib/redist/servlet.jar"/>
+        </fileset>
     </target>
 
     <target name="nefs.show-properties" depends="nefs.init">
         <echo message="nefs.webapps.home = ${nefs.webapps.home}"/>
         <echo message="nefs.starter.empty-app.name = ${nefs.starter.empty-app.name}"/>
         <echo message="nefs.starter.empty-app.home = ${nefs.starter.empty-app.home}"/>
+        <echo message="nefs.sampler-app.name = ${nefs.sampler-app.name}"/>
+        <echo message="nefs.sampler-app.home = ${nefs.sampler-app.home}"/>
+        <echo message="nefs.sampler-app.downloads.path = ${nefs.sampler-app.downloads.path}"/>
+    </target>
+
+    <!-- ********************************************************************************************************** -->
+
+    <target name=".nefs.war-specific-app.init" depends="nefs.init">
+        <property name="specific.test-app-war-file" value="${nefs.sampler-app.downloads.path}/${param.test-app-id}.war"/>
+        <property name="specific.test-app-path" value="${nefs.webapps.home}/${param.test-app-id}"/>
+        <property name="specific.test-app-staging-path" value="${nefs.war.staging.path}/${param.test-app-id}"/>
+
+        <echo message="Preparing ${specific.test-app-path} WAR file."/>
+
+        <delete dir="${specific.test-app-staging-path}"/>
+        <mkdir dir="${specific.test-app-staging-path}"/>
+
+        <copy todir="${specific.test-app-staging-path}">
+            <fileset dir="${specific.test-app-path}">
+                <exclude name="sparx"/>
+                <exclude name="work"/>
+                <exclude name="*.class"/>
+                <exclude name="${nefs.app.execution-properties.file}"/>
+                <exclude name="WEB-INF/web.xml"/>
+                <exclude name="WEB-INF/tmp"/>
+                <exclude name="WEB-INF/temp"/>
+                <exclude name="downloads"/> <!-- this is only in nefs-sampler -->
+                <exclude name="WEB-INF/database/defn"/> <!-- all apps should auto-create their databases -->
+                <exclude name="WEB-INF/database/instance"/> <!-- all apps should auto-create their databases -->
+            </fileset>
+        </copy>
+
+        <copy todir="${specific.test-app-staging-path}/sparx">
+            <fileset dir="${basedir}/../Sparx/resources">
+                <exclude name="java-doc-xml/**"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${specific.test-app-staging-path}/WEB-INF/lib"/>
+        <copy todir="${specific.test-app-staging-path}/WEB-INF/lib" flatten="yes">
+            <fileset refid="nefs.web-app.required-libs"/>
+        </copy>
+
+        <available file="${specific.test-app-staging-path}/WEB-INF/classes" type="dir" property="specific.test-app-staging.classes-path-exists"/>
+    </target>
+
+    <target name=".nefs-compile-specific-app" if="specific.test-app-staging.classes-path-exists">
+        <path id="app.class.path">
+            <pathelement path="${specific.test-app-staging-path}/WEB-INF/classes"/>
+            <fileset dir="${specific.test-app-staging-path}/WEB-INF/lib">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${basedir}/../">  <!-- these were excluded so we need to include them -->
+                <include name="Commons/lib/redist/jdbc.jar"/>
+                <include name="Sparx/lib/redist/servlet.jar"/>
+            </fileset>
+        </path>
+
+        <javac srcdir="${specific.test-app-staging-path}/WEB-INF/classes" deprecation="off" classpathref="app.class.path"/>
+    </target>
+
+    <target name="nefs.war-specific-app" depends=".nefs.war-specific-app.init,.nefs-compile-specific-app" description="Create a J2EE WAR file for a given app.">
+        <mkdir dir="${nefs.sampler-app.downloads.path}"/>
+        <war warfile="${specific.test-app-war-file}"
+             basedir="${specific.test-app-staging-path}"
+             webxml="${specific.test-app-staging-path}/WEB-INF/sparx/conf/${param.web-xml-file}"
+             excludes="*.war" duplicate="fail" />
+    </target>
+
+    <target name="nefs.war-starter-app" depends="nefs.init" description="Prepare WAR files for the starter application.">
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sample-survey"/>
+            <param name="param.web-xml-file" value="generic-web.xml"/>
+        </antcall>
+    </target>
+
+    <target name="nefs.war-all-apps" depends="nefs.init" description="Prepare WAR files for all the applications.">
+        <property name="web-xml-file" value="generic-web.xml"/>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="${nefs.starter.empty-app.name}"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sample-hello-world"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sample-hello-forms"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sample-books"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sample-library"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sampler"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sample-survey"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-test-bed"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sample-cts"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
     </target>
 
     <!-- ********************************************************************************************************** -->
@@ -36,20 +169,7 @@
         <delete dir="${specific.test-app-path}/WEB-INF/lib"/>
         <mkdir dir="${specific.test-app-path}/WEB-INF/lib"/>
         <copy todir="${specific.test-app-path}/WEB-INF/lib" flatten="yes">
-            <fileset dir="${basedir}/../">
-                <include name="Axiom/lib/netspective-axiom.jar"/>
-                <include name="Axiom/lib/redist/*.jar"/>
-
-                <include name="Commons/lib/netspective-commons.jar"/>
-                <include name="Commons/lib/redist/*.jar"/>
-                <exclude name="Commons/lib/redist/jdbc.jar"/>
-                <exclude name="Commons/lib/redist/XmlDoclet.jar"/>
-                <exclude name="Commons/lib/redist/clover.jar"/>
-
-                <include name="Sparx/lib/netspective-sparx.jar"/>
-                <include name="Sparx/lib/redist/*.jar"/>
-                <exclude name="Sparx/lib/redist/servlet.jar"/>
-            </fileset>
+            <fileset refid="nefs.web-app.required-libs"/>
         </copy>
     </target>
 
