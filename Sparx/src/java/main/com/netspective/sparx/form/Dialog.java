@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.28 2003-08-28 00:42:58 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.29 2003-08-30 00:23:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -75,6 +75,7 @@ import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.form.handler.DialogExecuteHandler;
 import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.form.handler.DialogExecuteDefaultHandler;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.listener.DialogPopulateForSubmitListener;
 import com.netspective.sparx.form.listener.DialogStateListener;
 import com.netspective.sparx.form.listener.DialogInitialPopulateForSubmitListener;
@@ -187,6 +188,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     private List dialogTypes = new ArrayList();
     private List clientJavascripts = new ArrayList();
     private DialogExecuteHandlers executeHandlers = new DialogExecuteHandlers();
+    private DialogNextActionProvider nextActionProvider;
 
     private boolean haveInitialPopulateForDisplayListeners;
     private boolean haveInitialPopulateForSubmitListeners;
@@ -478,6 +480,9 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
 
     public String getNextActionUrl(DialogContext dc, String defaultUrl)
     {
+        if(nextActionProvider != null)
+            return nextActionProvider.getDialogNextActionUrl(dc, defaultUrl);
+
         if(director == null)
             return defaultUrl;
 
@@ -730,6 +735,16 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
             dc.renderDebugPanels(writer);
 
         dc.setExecuteStageHandled(true);
+    }
+
+    public DialogNextActionProvider getNextActionProvider()
+    {
+        return nextActionProvider;
+    }
+
+    public void addNextActionProvider(DialogNextActionProvider nextActionProvider)
+    {
+        this.nextActionProvider = nextActionProvider;
     }
 
     public void handlePostExecute(Writer writer, DialogContext dc) throws IOException
