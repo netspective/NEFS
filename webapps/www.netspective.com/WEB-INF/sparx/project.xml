@@ -62,12 +62,12 @@
                         <body source="products/frameworks/suite/features.ftl"/>
                     </page>
 
-                    <page name="architecture" caption="Architecture" heading="An Architecture you're Already Familiar with">
+                    <page name="process" caption="Process" heading="NEFS Supports Your Development Process">
                         <summary>
-                            A standards-based, pattern-oriented architecture that follows industry best-practices assures
-                            that the NEFS will fit right into your development environment.
+                            Since there is no room for mistakes at today's rapid development pace, whether you use
+                            RUP, XP/Agile, Waterfall, or CMMI our Java Frameworks will keep you on track.
                         </summary>
-                        <body source="products/frameworks/suite/architecture.ftl"/>
+                        <body source="products/frameworks/suite/process.ftl"/>
                     </page>
 
                     <page name="competitors" caption="Competitors" heading="NEFS is not Just Another Framework">
@@ -100,6 +100,15 @@
                         </page>
                     </page>
                 </page>
+
+                <page name="architecture" caption="Architecture" heading="An Architecture you're Already Familiar with">
+                    <summary>
+                        A standards-based, pattern-oriented architecture that follows industry best-practices assures
+                        that the NEFS will fit right into your development environment.
+                    </summary>
+                    <body source="products/frameworks/suite/architecture.ftl"/>
+                </page>
+
                 <page name="sparx" caption="Sparx" heading="Advanced Web User Interfaces Made Simple">
                     <summary>
                         If you're tired of creating multiple pages of HTML and hundreds of lines of Java code just to

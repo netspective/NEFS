@@ -15,7 +15,7 @@
             </a>
         </td>
     </tr>
-    <#if childPage.childrenList?size gt 0>
+    <#if childPage.childrenList?size gt 0 && childPage.isInActivePath(vc)>
         <@childMenus parentPage=childPage/>
     </#if>
     </#list>
