@@ -48,8 +48,8 @@
 
                     <page name="process" caption="Process" heading="NEFS Supports Your Development Process">
                         <summary>
-                            Since there is no room for mistakes at today's rapid development pace, whether you use
-                            RUP, XP/Agile, Waterfall, or CMMI our Java Frameworks will keep you on track.
+                            Since there is no room for mistakes at today's rapid development pace, our Java Frameworks
+                            will keep you on track whether you use RUP, XP/Agile, Waterfall, or CMMI.
                         </summary>
                         <body source="products/frameworks/suite/process.ftl"/>
                     </page>
@@ -118,7 +118,7 @@
 
                     <page name="simplify-struts" caption="Simplify Struts">
                         <summary>
-                            What's wrong with Struts? Absolute nothing if you like to write lots of HTML and Java code.
+                            What's wrong with Struts? Absolute nothing if you like to write lots of tedious HTML and Java code.
                         </summary>
 
                         <body source="products/frameworks/sparx/simplify-struts.ftl"/>

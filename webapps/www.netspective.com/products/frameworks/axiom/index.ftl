@@ -41,6 +41,7 @@ a vendor-independent XML meta-data format.
     <li>Zero-Java record management allows you to connect your XML database schema declarations directly to Sparx or
         other presentation frameworks so that your database and forms are kept in synch.
 </ul>
+<img src="${resourcesPath}/images/products/frameworks/axiom-outputs.gif"/>
 
 <h1>Tie XML Import/Export Functionality to your Schema</h1>
 Once your database schemas are modeled using XML, you can import and export data to and from your database instances using
@@ -61,6 +62,13 @@ Axiom supports its own internal JNDI-based connection pools or can delegate conn
 server. Using the internal connection pool still allows statistics gathering and finding connection leaks but keeps
 your application app-server-neutral. However, a single configuration option allows you to use your app server's or your
 own connection pool.
+
+<h1>Overview of Axiom Tags</h1>
+Axiom defines and processes numerous, very high-level, tags that you use to declare data management
+components. The <code>&lt;presentation&gt;</code> tag is optional and may be ignored if you want
+clean separation between your UI and data layers.<p>
+<img src="${resourcesPath}/images/products/frameworks/suite/database-tags.gif"/>
+
 
 <h1>Summary of Axiom Features</h1>
 <ul class="check-list-in-body">

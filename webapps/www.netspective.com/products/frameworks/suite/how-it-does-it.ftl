@@ -1,20 +1,28 @@
-By using XML to declare common J2EE and Web Services code and plain Java for customizations and extensibility, the NEFS open-architecture dramatically simplifies
-development.
-<p>
-So instead of hand coding everything, you use XML declarative constructs to quickly build to the point when you
-can start adding custom business rules (<i>the secret sauce that makes your application unique</i>) into your
-application using plain Java.
+<h1>Instantiate Components using XML, Customize using Java</h1>
+Instead of hand-coding object construction in Java, you use XML declarations to instantiate and configure our high-level
+Java classes in external resource files.
 <ul class="check-list">
-    <li>More declarations and less coding means faster application development.</li>
-    <li>Experts can still customize and tweak our Frameworks using standard Java extension mechansims such as dynamic
-        class loading, inheritance, and delegation.</li>
+    <li>More declarations and less coding means faster application development and lower learning-curve.</li>
+    <li>High-level XML tags shield you from the complexities of J2EE.</li>
 </ul>
-The NEFS provides a proven application architecture, with packaged RAD/XP practices, for a painless approach
-to application assembly, testing, deployment, and management. All as a single, integrated solution that doesn't make
-you buy all-new app servers, database servers, or learn a new IDE.
+
+When you are ready to customize the actions or attach events, you just use Java.
 <ul class="check-list">
-    <li>NEFS dramatically
-        reduces the time and resources you need to build, deploy, manage and change applications, while shielding you from
-        the complexities of J2EE.</li>
+    <li>You don't have to learn a new programming language or scripting system.</li>
+    <li>You can customize and tweak our Frameworks using standard Java extension mechansims such as dynamic class loading, inheritance, and delegation.
+</ul>
+
+It fits in your current environment.
+<ul class="check-list">
+    <li>NEFS is delivered as a single, integrated solution that doesn't make you buy all-new app servers, database servers, or learn a new IDE.</li>
     <li>NEFS-based applications are deployed as standard <code>.war</code> files with no special vendor-specific extensions.</li>
 </ul>
+
+<h1>Overview of NEFS Tags</h1>
+NEFS defines and processes numerous, very high-level, tags that you use to declare application components.
+<p>
+<img src="${resourcesPath}/images/products/frameworks/suite/presentation-tags.gif"/>
+<p>
+<img src="${resourcesPath}/images/products/frameworks/suite/database-tags.gif"/>
+<p>
+<img src="${resourcesPath}/images/products/frameworks/suite/security-tags.gif"/>

@@ -66,15 +66,14 @@
             </div>
         </td>
         <td class="bodycopy" valign="top" width="350">
-            <b>Complement</b> and enhance your existing tools, like
-            <a href="sparx/simplify-struts">Struts</a>, with
+            <b>Complement</b> and enhance your existing tools with
             Java libraries that:
 
             <ul class="check-list-in-body">
-                <li>Plays well with other frameworks</li>
+                <li>Play well with other frameworks</li>
                 <li>Run on Unix, Windows, Linux, OS X</li>
-                <li>Works on app servers from BEA, IBM, Oracle, others</li>
-                <li>Works with any IDE, like Eclipse or IDEA</li>
+                <li>Work on app servers from BEA, IBM, Oracle, others</li>
+                <li>Work with any IDE, like Eclipse or IDEA</li>
             </ul>
         </td>
     </tr>

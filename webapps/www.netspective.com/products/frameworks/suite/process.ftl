@@ -1,14 +1,12 @@
-Programming paradigms like Extreme Programming (XP) and Rational™ (RUP), have exploded into the developer community due to the high demand for shorter development cycles. By dissecting development projects into staged tasks, Agile Methodologies like XP promise rapid application development.
+Programming paradigms like XP and RUP have exploded into the developer community due to the high demand for a more
+controlled engineering process. Although the benefits for such paradigms are tremendous, the risks for potential project
+failure increase because of process learning curve and artifacts preparation tasks.
 <p>
-Although the benefits for such paradigms are tremendous, the risks for potential project failure increase exponentially. There is simply no room for mistakes at this pace.
-<p>
-The solution is simple: Rely on a proven architecture that complements multiple paradigms: The Netspective Enterprise Frameworks.
-<p>
-Our Java Frameworks deliver benefits to your programming process by:
+The solution is simple: rely on our tools that complement multiple paradigms. Our Java Frameworks deliver benefits to
+your programming process by:
 <ul class="check-list-in-body">
-    <li>Keeping software soft
-    <li>Handling changing requirements with relative ease
-    <li>Allowing average developers to produce great software
-    <li>Continually producing useful client-driven enhancements
+    <li>Delivering powerful prototyping features which allow users to see what they're getting before coding begins.
+    <li>Keeping software soft (UI, database, and other components are kept in resource files instead of code).
+    <li>Handling changing requirements with relative ease (less Java code to deal with).
+    <li>Providing tools that help generate process artifacts like functional specs, metrics, and design documents.
 </ul>
-The risk of trial-and-error development is eliminated. Your enterprise keeps pace with even the most demanding programming paradigms.

@@ -17,6 +17,11 @@ top of it.
     <li>Because all NEFS security is declarative, you can generate reports of application components that are not secured properly.
 </ul>
 
+<h1>Overview of Commons Security Service Tags</h1>
+Commons defines and processes numerous, very high-level, tags that you use to declare security
+components. <p>
+<img src="${resourcesPath}/images/products/frameworks/suite/security-tags.gif"/>
+
 <h1>Additional NEFS Security Service Features</h1>
 <ul class="check-list-in-body">
 	<li>Automatic login forms with no HTML or Java required

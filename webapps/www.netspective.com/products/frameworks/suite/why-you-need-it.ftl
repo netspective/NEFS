@@ -1,19 +1,20 @@
 <h1>You may need NEFS if:</h1>
 <h2>Your app is too important to experiment with right now.</h2>
 NEFS gels with your current tools by adding an extensive library of pre-built and well-tested e-business
-and database components and services. Don't throw away your existing tools or IDEs and don't worry about hiring
-new programmers. Use what you have.
-
+and database components and services.
+<ul class="check-list">
+    <li>Don't throw away your existing tools or IDEs and don't worry about hiring
+new programmers. Use what you have.</li>
+</ul>
 
 <h2>You want the power of J2EE but the simplicity of Visual Basic.</h2>
 NEFS user interfaces are easy to create, it's data components are painless to use, and its security model
 is simple to integrate. However, the true power of NEFS comes through its extensibility since Java and J2EE APIs
-are never out of reach. You'll never find yourself stuck in our frameworks because they allow you to customize and tweak
-your application using standard Java extension mechansims such as dynamic class loading, getting files using resource
-locators, extending classes using inheritance, and off-loading work to delegation classes.
+are never out of reach.
 <ul class="check-list">
-    <li>With NEFS you can opt to use XML to code in a simpler declarative style instead of a programmatic style.
-        As you get comfortable with J2EE you can extend or replace our Java classes with your own custom classes.</li>
+    <li>You'll never find yourself stuck in our frameworks because they allow you to customize and tweak
+your application using standard Java extension mechansims such as dynamic class loading, getting files using resource
+locators, extending classes using inheritance, and off-loading work to delegation classes.</li>
 </ul>
 
 

@@ -72,6 +72,12 @@ Most web based applications have a need for a basic report writer. Sparx include
 can take SQL and generate reports with one line of XML or take SQL and pass it on to an XSLT stylesheet for highly
 customizable output. If you need even more advanced functionality you can attach your favorite reporting engine.
 
+<h1>Overview of Sparx Tags</h1>
+Sparx defines and processes numerous, very high-level, tags that you use to declare presentation
+components. Using these tags eliminates literally pages and pages of HTML code and thousands of lines
+of Java code in a typical business application. <p>
+<img src="${resourcesPath}/images/products/frameworks/suite/presentation-tags.gif"/>
+
 <h1>Summary of Sparx Features</h1>
 <ul class="check-list-in-body">
     <li>Forms and Controls

@@ -1,11 +1,15 @@
 <h1>I have an application server, isn't that sufficient?</h1>
 Most J2EE application servers contain a great deal of common infrastructure code that helps contain, manage, deploy,
 and execute applications. They also have features the increase scalability, reliability, and availability of
-applications by providing features like clustering and failover. What they lack, because it's not part of their product
+applications by providing features like clustering and failover.
+<p>
+What they lack, because it's not part of their product
 requirements, is the ability to help build the applications they contain. Just as an operating system is a container
 for executing applications written in any language but does not assist in the development of the applications, a J2EE
 application server is a container for executing Java and J2EE applications but does not assist in the development of
-the Java/J2EE applications. NEFS, as a J2EE framework, helps create the applications that you can then deploy onto any
+the Java/J2EE applications.
+<p>
+NEFS, as a J2EE framework that sits atop an app server, helps create the applications that you can then deploy onto any
 J2EE container or application server.
 
 <h1>Why not use the frameworks that come with my application server?</h1>
