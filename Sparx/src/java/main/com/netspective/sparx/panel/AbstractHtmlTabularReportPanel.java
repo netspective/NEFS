@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.12 2003-06-26 07:06:52 aye.thu Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.13 2003-06-28 05:26:11 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -116,22 +116,36 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         ds.close();
     }
 
+    /**
+     * Render the html tabular report panel
+     * @param writer
+     * @param dc
+     * @param theme
+     * @param flags
+     * @throws IOException
+     */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
         if(isScrollable())
         {
             HtmlTabularReportDataSourceScrollStates scrollStates = HtmlTabularReportDataSourceScrollStates.getInstance();
             HtmlTabularReportDataSourceScrollState scrollState = scrollStates.getScrollStateByDialogTransactionId(dc);
+            HtmlTabularReportValueContext vc = null;
+
             if(scrollState != null)
             {
-                HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), theme.getReportSkin(), scrollState);
+                // reuse the scroll state object
+                vc = createContext(dc.getNavigationContext(), theme.getReportSkin(), scrollState);
                 vc.setDialogContext(dc);
                 vc.setPanelRenderFlags(flags);
-                vc.produceReport(writer, scrollState.getDataSource());
+                vc.setResultsScrolling(scrollState);
+                //vc.produceReport(writer, scrollState.getDataSource());
             }
             else
             {
-                HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), theme.getReportSkin());
+                // no existing scroll state object associated with current dialog transaction ID
+                // so create a new scroll state object
+                vc = createContext(dc.getNavigationContext(), theme.getReportSkin());
                 vc.setDialogContext(dc);
                 vc.setPanelRenderFlags(flags);
                 TabularReportDataSource ds = createDataSource(dc.getNavigationContext());
@@ -142,7 +156,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
                 // save the scroll state as a session attribute based on the dialog context transaction id
                 scrollStates.setActiveScrollState(dc, scrollState);
                 vc.setResultsScrolling(scrollState);
-                vc.produceReport(writer, ds);
+                //vc.produceReport(writer, ds);
                 // don't close the data source -- we're scrolling
             }
 
@@ -150,13 +164,22 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
             // now that we've got our scroll state, see if the user is requesting us to move to another page
             HttpServletRequest request = dc.getHttpRequest();
             if (request.getParameter(DataSourceNavigatorButtonsField.RSNAV_BUTTONNAME_NEXT) != null)
+            {
                 scrollState.setPageDelta(1);
+            }
             else if (request.getParameter(DataSourceNavigatorButtonsField.RSNAV_BUTTONNAME_PREV) != null)
+            {
                 scrollState.setPageDelta(-1);
+            }
             else if (request.getParameter(DataSourceNavigatorButtonsField.RSNAV_BUTTONNAME_LAST) != null)
+            {
                 scrollState.setPageLast();
+            }
             else if (request.getParameter(DataSourceNavigatorButtonsField.RSNAV_BUTTONNAME_FIRST) != null)
+            {
                 scrollState.setPageFirst();
+            }
+            vc.produceReport(writer, scrollState.getDataSource());
         }
         else
         {
