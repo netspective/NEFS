@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleTemplateProvider.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleTemplateProvider.java,v 1.2 2004-03-27 19:17:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -51,9 +51,12 @@ public interface ScheduleTemplateProvider
     /**
      * Retrieve the list of templates associated with a given set of attendees (such as a physician) and a
      * set of resources (like facilities).
+     * @param scheduleManager The schedule manager for which scheduling templates should be provided
      * @param participants The list of participants for which templates should be retrieved
-     * @return The array of schedule templates associated with the given attendees and resources. The result is always
-     *         non-null but may have a zero length if no templates were located for the associated providers.
+     * @return The array of schedule templates associated with the given attendees and resources (participants).
+     *         The result is always non-null but may have a zero length if no templates were located for the associated
+     *         providers.
      */
-    public ScheduleTemplates getScheduleTemplates(Date beginDate, Date endDate, ScheduleParticipants participants);
+    public ScheduleTemplates getScheduleTemplates(ScheduleManager scheduleManager, Date beginDate, Date endDate,
+                                                  ScheduleParticipants participants);
 }

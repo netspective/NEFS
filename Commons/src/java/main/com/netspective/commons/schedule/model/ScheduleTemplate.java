@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleTemplate.java,v 1.4 2004-03-27 15:45:41 shahid.shah Exp $
+ * $Id: ScheduleTemplate.java,v 1.5 2004-03-27 19:17:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -55,7 +55,7 @@ public interface ScheduleTemplate
      * Retrieve the unique identifier for this template instance
      * @return An object which uniquely identifies a specific template
      */
-    public Object getIdentifier();
+    public Object getTemplateIdentifier();
 
     /**
      * Retrieve the schedule manager that is managing this template
@@ -67,7 +67,7 @@ public interface ScheduleTemplate
      * Retrieve the list of participants for which the template was defined
      * @return A list of participants that must be part of any event scheduled using this template
      */
-    public ScheduleParticipants getOwners();
+    public ScheduleParticipants getTemplateOwners();
 
     /**
      * Is this time block Available or Unavailable for scheduling events?
@@ -104,7 +104,7 @@ public interface ScheduleTemplate
      * @return A IntSpan integer set with the months of the year that this template is applicable. The first month
      *         begins with 0 and the month indexes correspond to Calendar.set(Calendar.MONTH).
      */
-    public IntSpan getMonthsOfYear();
+    public IntSpan getMonthsOfTheYear();
 
     /**
      * Retrieve the days of the month that this template is applicable

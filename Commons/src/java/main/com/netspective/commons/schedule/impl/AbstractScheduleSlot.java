@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractScheduleSlot.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: AbstractScheduleSlot.java,v 1.3 2004-03-27 19:17:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.impl;
@@ -87,7 +87,7 @@ public class AbstractScheduleSlot implements ScheduleSlot
         this.minutesSet.applyDateRange(calendar, calendarUtils, beginDate, endDate);
     }
 
-    public Object getIdentifier()
+    public Object getScheduleSlotIdentifier()
     {
         return identifier;
     }

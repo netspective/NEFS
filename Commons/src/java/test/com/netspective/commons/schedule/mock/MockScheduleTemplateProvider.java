@@ -38,25 +38,20 @@
  * @author Shahid N. Shah
  */
 
-/**
- * $Id: ScheduleParticipantProvider.java,v 1.3 2004-03-27 19:17:03 shahid.shah Exp $
- */
+package com.netspective.commons.schedule.mock;
 
-package com.netspective.commons.schedule.model;
+import java.util.Date;
 
-import java.util.List;
+import com.netspective.commons.schedule.model.ScheduleTemplateProvider;
+import com.netspective.commons.schedule.model.ScheduleTemplates;
+import com.netspective.commons.schedule.model.ScheduleParticipants;
+import com.netspective.commons.schedule.model.ScheduleManager;
 
-public interface ScheduleParticipantProvider
+public class MockScheduleTemplateProvider implements ScheduleTemplateProvider
 {
-    public ScheduleParticipants getScheduleParticipants(ScheduleManager scheduleManager, List identifiers);
-    public ScheduleParticipants getScheduleParticipants(ScheduleManager scheduleManager, Object[] identifiers);
-
-    public ScheduleParticipants getScheduleParticipants(ScheduleManager scheduleManager, List identifiers, ScheduleParticipantTypes participantTypes);
-    public ScheduleParticipants getScheduleParticipants(ScheduleManager scheduleManager, Object[] identifiers, ScheduleParticipantTypes participantTypes);
-
-    /**
-     * Get a list of all of the schedule participants' types allowed
-     * @return A set that represents all event types that may be scheduled by the scheduler
-     */
-    public ScheduleParticipantTypes getScheduleParticipantTypes(ScheduleManager scheduleManager);
+    public ScheduleTemplates getScheduleTemplates(ScheduleManager scheduleManager, Date beginDate, Date endDate,
+                                                  ScheduleParticipants participants)
+    {
+        return null;
+    }
 }

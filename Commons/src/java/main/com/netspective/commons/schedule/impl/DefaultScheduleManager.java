@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultScheduleManager.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: DefaultScheduleManager.java,v 1.3 2004-03-27 19:17:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.impl;
@@ -51,9 +51,31 @@ import com.netspective.commons.schedule.model.ScheduleSearchParameters;
 import com.netspective.commons.schedule.model.ScheduleSearchResults;
 import com.netspective.commons.schedule.model.ScheduleTemplate;
 import com.netspective.commons.schedule.model.ScheduleTemplateSlot;
+import com.netspective.commons.schedule.model.ScheduleParticipantProvider;
+import com.netspective.commons.schedule.model.ScheduleEventProvider;
+import com.netspective.commons.schedule.model.ScheduleTemplateProvider;
 
 public class DefaultScheduleManager implements ScheduleManager
 {
+    private ScheduleParticipantProvider scheduleParticipantProvider;
+    private ScheduleEventProvider scheduleEventProvider;
+    private ScheduleTemplateProvider scheduleTemplateProvider;
+
+    public ScheduleParticipantProvider getScheduleParticipantProvider()
+    {
+        return scheduleParticipantProvider;
+    }
+
+    public ScheduleEventProvider getScheduleEventProvider()
+    {
+        return scheduleEventProvider;
+    }
+
+    public ScheduleTemplateProvider getScheduleTemplateProvider()
+    {
+        return scheduleTemplateProvider;
+    }
+
     public ScheduleSearchResults searchSchedule(ScheduleSearchParameters parameters)
     {
         return null;

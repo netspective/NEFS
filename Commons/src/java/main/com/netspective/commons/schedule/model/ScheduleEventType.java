@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleEventType.java,v 1.1 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: ScheduleEventType.java,v 1.2 2004-03-27 19:17:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -50,7 +50,7 @@ public interface ScheduleEventType
      * Retrieve the unique identifier for this event type
      * @return An object that can uniquely identify this event type
      */
-    public Object getIdentifier();
+    public Object getEventTypeIdentifier();
 
     /**
      * Retrieve the schedule manager that is managing this template
