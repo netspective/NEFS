@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.2 2003-05-07 03:39:36 shahid.shah Exp $
+ * $Id: ProductRelease.java,v 1.3 2003-08-15 01:46:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
 
 import com.netspective.commons.Product;
+import com.netspective.commons.product.NetspectiveComponent;
 import com.netspective.axiom.BuildLog;
 
 public class ProductRelease implements Product
@@ -60,6 +61,7 @@ public class ProductRelease implements Product
 
     public ProductRelease()
     {
+        NetspectiveComponent.getInstance().registerProduct(this);
     }
 
     public String getProductId()

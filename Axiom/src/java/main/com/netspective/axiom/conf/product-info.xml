@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<netspective>
+    <product id="netspective-axiom" version="7">
+        <dependencies>
+            <product id="netspective-commons"/>
+
+            <library>
+                <name>Hypersonic SQL (HSQLDB)</name>
+                <version>1.7.1</version>
+                <class-path>hsqldb.jar</class-path>
+                <source home-uri="http://hsqldb.sourceforge.net"
+                        license="Open Source, Free, Custom License"
+                        license-uri="http://hsqldb.sourceforge.net/web/hsqlLicense.html"/>
+            </library>
+
+            <library>
+                <name>ZQL SQL Parser Library</name>
+                <version>1.0</version>
+                <class-path>zql.jar</class-path>
+                <source home-uri="mailto:pierreyves.gibello@experlog.com"
+                        license="Open Source, Free, Custom License"/>
+            </library>
+        </dependencies>
+    </product>
+</netspective>
+
+
