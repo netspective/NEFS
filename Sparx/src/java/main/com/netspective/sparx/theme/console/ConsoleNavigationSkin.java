@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.8 2003-05-09 01:22:20 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.9 2003-05-16 02:53:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -128,8 +128,9 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("<title>" + (activePage != null ? nc.getPageTitle() : "") + "</title>\n");
 
         // get all the CSS files associated with this theme/style combination
-        String cssRootUrl = nc.getThemeResourcesRootUrl(getTheme()) + "/css";
-        String scriptsRootUrl = nc.getThemeResourcesRootUrl(getTheme()) + "/scripts";
+        String resourcesUrl = nc.getThemeResourcesRootUrl(getTheme());
+        String cssRootUrl = resourcesUrl + "/css";
+        String scriptsRootUrl = resourcesUrl + "/scripts";
 
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/general.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/navigation.css\" type=\"text/css\">\n");
@@ -139,6 +140,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-report.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-text.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/syntax-highlight.css\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + resourcesUrl + "/calendar-0.9.2/calendar-win2k-1.css\" type=\"text/css\">\n");
         writer.write("  <script src=\"" + scriptsRootUrl + "/panel.js\" language=\"JavaScript1.1\"></script>\n");
         writer.write("  <script src=\"" + scriptsRootUrl + "/dialog.js\" language=\"JavaScript1.1\"></script>\n");
 

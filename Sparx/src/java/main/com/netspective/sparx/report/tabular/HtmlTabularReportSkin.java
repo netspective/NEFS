@@ -39,14 +39,15 @@
  */
 
 /**
- * $Id: HtmlTabularReportSkin.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
+ * $Id: HtmlTabularReportSkin.java,v 1.2 2003-05-16 02:53:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
 import com.netspective.sparx.panel.HtmlPanelSkin;
+import com.netspective.sparx.theme.ThemeSkin;
 import com.netspective.commons.report.tabular.TabularReportSkin;
 
-public interface HtmlTabularReportSkin extends HtmlPanelSkin, TabularReportSkin
+public interface HtmlTabularReportSkin extends HtmlPanelSkin, TabularReportSkin, ThemeSkin
 {
 }

@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.14 2003-05-15 21:34:46 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.15 2003-05-16 02:53:57 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -35,6 +35,9 @@
     <dialog-field-type name="social-security" class="com.netspective.sparx.form.field.type.SocialSecurityField"/>
     <dialog-field-type name="zip-code" class="com.netspective.sparx.form.field.type.ZipCodeField"/>
     <dialog-field-type name="phone" class="com.netspective.sparx.form.field.type.PhoneField"/>
+    <dialog-field-type name="date" class="com.netspective.sparx.form.field.type.DateTimeField" data-type="date-only"/>
+    <dialog-field-type name="time" class="com.netspective.sparx.form.field.type.DateTimeField" data-type="time-only"/>
+    <dialog-field-type name="date-time" class="com.netspective.sparx.form.field.type.DateTimeField" data-type="date-and-time"/>
 
     <dialog-field-type name="e-mail" class="com.netspective.sparx.form.field.type.TextField">
         <validation>

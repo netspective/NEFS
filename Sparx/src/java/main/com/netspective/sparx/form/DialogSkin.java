@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogSkin.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogSkin.java,v 1.2 2003-05-16 02:53:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -64,12 +64,13 @@ import org.w3c.dom.Element;
 import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.theme.ThemeSkin;
 
 /**
  * The <code>DialogSkin</code> interface describes methods available for
  * creating the HTML/DHTML rendering rules for displaying the dialog and its contents.
  */
-public interface DialogSkin
+public interface DialogSkin extends ThemeSkin
 {
     /**
      * Write out the complete HTML string for the dialog
