@@ -3,10 +3,10 @@
 	<xdm:include file="templates/person.xml"/>
 	
 	<dialogs package="personAttribute">
-		<dialog name="address"  retain-params="person_id">
-<frame heading="create-dialog-perspective-heading:Address"/>
+		<dialog name="address"  retain-params="*" generate-dcb="yes">
+            <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="text" name="system_id" caption="" hidden="yes"/>
-			<field type="text" name="parent_id" caption="Person ID" required="yes">
+			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			
@@ -26,11 +26,11 @@
             <director>
                 <next-actions caption="Next Action ">
                     <items>
-<item value="page-id:/person/summary" caption="Summary"/>
-</items>
+                        <item value="vs-expr:${page-id:person}?person_id=${request:person_id}" caption="Summary"/>
+                    </items>
                 </next-actions>
             </director>
-            <!--listener  class="app.form.person.attribute.AddressDialog"/-->
+            <listener  class="app.form.person.attribute.AddressDialogHandler"/>
 		</dialog>
 
 		
