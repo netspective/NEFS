@@ -70,10 +70,10 @@
         <property name="jdbc.password" value=""/>
 
         <!-- recreate the Hypersonic database by deleting existing files and making sure the database directory exists -->
+        <mkdir dir="${app.database.instance.path}"/>
         <delete>
             <fileset dir="${app.database.instance.path}" includes="${app.database.schema.default-name}*"/>
         </delete>
-        <mkdir dir="${app.database.instance.path}"/>
 
         <echo message="Hypersonic database name is '${app.database.schema.default-name}' and will be stored in ${app.database.instance.path}"/>
 
