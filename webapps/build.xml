@@ -19,10 +19,104 @@
         <echo message="sparx.primary-test-app.home = ${sparx.primary-test-app.home}"/>
     </target>
 
-    <target name="sparx.copy-standard-items" depends="sparx.init" description="Copy files that are standard to Sparx from the 'primary' test app to all the other test apps.">
+    <!-- ********************************************************************************************************** -->
+
+    <target name="sparx.prepare-specific-app-ITE-resources-and-web-app-libs" depends="sparx.init" description="Copy all Sparx resources and libraries into the given test app WEB-INF/lib for integration testing purposes.">
+        <property name="specific.test-app-path" value="${sparx.test-apps.home}/${param.test-app-id}"/>
+        <echo message="Preparing ${specific.test-app-path} for ITE"/>
+
+        <copy todir="${specific.test-app-path}/sparx">
+            <fileset dir="${basedir}/../Sparx/resources">
+                <exclude name="java-doc-xml/**"/>
+            </fileset>
+        </copy>
+
+        <delete dir="${specific.test-app-path}/WEB-INF/lib"/>
+        <mkdir dir="${specific.test-app-path}/WEB-INF/lib"/>
+        <copy todir="${specific.test-app-path}/WEB-INF/lib" flatten="yes">
+            <fileset dir="${basedir}/../">
+                <include name="Axiom/lib/netspective-axiom.jar"/>
+                <include name="Axiom/lib/redist/*.jar"/>
+
+                <include name="Commons/lib/netspective-commons.jar"/>
+                <include name="Commons/lib/redist/*.jar"/>
+                <exclude name="Commons/lib/redist/jdbc.jar"/>
+                <exclude name="Commons/lib/redist/XmlDoclet.jar"/>
+                <exclude name="Commons/lib/redist/clover.jar"/>
+
+                <include name="Sparx/lib/netspective-sparx.jar"/>
+                <include name="Sparx/lib/redist/*.jar"/>
+                <exclude name="Sparx/lib/redist/servlet.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="sparx.prepare-primary-app-ITE-resources-and-web-app-libs" depends="sparx.init" description="Prepare all test applications for integration testing environment (ITE).">
+        <antcall target="sparx.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-00"/>
+        </antcall>
+    </target>
+
+    <target name="sparx.prepare-ITE-resources-and-web-app-libs-for-all-test-apps" depends="sparx.init" description="Prepare all test applications for integration testing environment (ITE).">
+        <antcall target="sparx.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-00"/>
+        </antcall>
+        <antcall target="sparx.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-01"/>
+        </antcall>
+        <antcall target="sparx.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-02"/>
+        </antcall>
+        <antcall target="sparx.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-03"/>
+        </antcall>
+        <antcall target="sparx.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-04"/>
+        </antcall>
+    </target>
+
+    <!-- ********************************************************************************************************** -->
+
+    <target name="sparx.prepare-specific-app-SDE-resources-and-web-app-libs" depends="sparx.init" description="Removes the APP_ROOT/Sparx and APP_ROOT/WEB-INF/lib folders for a specific (provided via parameter) test app. Used to ensure that items don't conflict when doing framework development.">
+        <property name="specific.test-app-path" value="${sparx.test-apps.home}/${param.test-app-id}"/>
+        <echo message="Preparing ${specific.test-app-path} for SDE"/>
+
+        <delete dir="${specific.test-app-path}/sparx"/>
+        <delete dir="${specific.test-app-path}/WEB-INF/lib"/>
+    </target>
+
+    <target name="sparx.prepare-primary-app-SDE-resources-and-web-app-libs" depends="sparx.init" description="Removes the APP_ROOT/Sparx and APP_ROOT/WEB-INF/lib folders for a specific (provided via parameter) test app. Used to ensure that items don't conflict when doing framework development.">
+        <antcall target="sparx.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="${sparx.primary-test-app.name}"/>
+        </antcall>
+    </target>
+
+    <target name="sparx.prepare-SDE-resources-and-web-app-libs-for-all-test-apps" depends="sparx.init" description="Prepare all test applications for software development environment (SDE).">
+        <antcall target="sparx.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-00"/>
+        </antcall>
+        <antcall target="sparx.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-01"/>
+        </antcall>
+        <antcall target="sparx.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-02"/>
+        </antcall>
+        <antcall target="sparx.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-03"/>
+        </antcall>
+        <antcall target="sparx.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="sparx-test-app-04"/>
+        </antcall>
+    </target>
+
+    <!-- ********************************************************************************************************** -->
+
+    <target name="sparx.copy-standard-nefs-items-from-primary-test-app-to-other-test-apps" depends="sparx.init" description="Copy files that are standard to Sparx from the 'primary' test app to all the other test apps.">
         <fileset id="standard-items" dir="${sparx.primary-test-app.home}">
+            <include name="WEB-INF/classes/commons-logging.properties"/>
+            <include name="WEB-INF/classes/log4j.properties"/>
             <include name="WEB-INF/sparx/conf/**"/>
-            <include name="WEB-INF/sparx/ant-build-project.xml"/>
+            <include name="WEB-INF/lib/**"/>
         </fileset>
 
         <copy todir="${sparx.test-apps.home}/sparx-test-app-01">
@@ -39,7 +133,9 @@
         </copy>
     </target>
 
-    <target name="sparx.setup-for-resin" depends="sparx.init" description="Performs tasks necessary to setup applications for use under Caucho Resin app server">
+    <!-- ********************************************************************************************************** -->
+
+    <target name="sparx.setup-all-test-apps-for-resin" depends="sparx.init" description="Performs tasks necessary to setup applications for use under Caucho Resin app server">
         <copy tofile="${sparx.test-apps.home}/sparx-test-app-00/WEB-INF/web.xml" file="${sparx.test-apps.home}/sparx-test-app-00/WEB-INF/sparx/conf/resin-web.xml"/>
         <copy tofile="${sparx.test-apps.home}/sparx-test-app-01/WEB-INF/web.xml" file="${sparx.test-apps.home}/sparx-test-app-01/WEB-INF/sparx/conf/resin-web.xml"/>
         <copy tofile="${sparx.test-apps.home}/sparx-test-app-02/WEB-INF/web.xml" file="${sparx.test-apps.home}/sparx-test-app-02/WEB-INF/sparx/conf/resin-web.xml"/>
