@@ -6,5 +6,5 @@ package auto.id.sql.query;
 public interface Responses
 {
     static public final String BY_PIN = "responses.by-pin";
-    static public final String BY_PIN_GROUP_RISK = "responses.by-pin-group-risk";
+    static public final String BY_PIN_GROUP_RISK_ID = "responses.by-pin-group-risk-id";
 }

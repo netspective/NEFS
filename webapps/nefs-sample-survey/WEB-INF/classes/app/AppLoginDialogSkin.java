@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppLoginDialogSkin.java,v 1.1 2003-08-31 03:15:28 shahid.shah Exp $
+ * $Id: AppLoginDialogSkin.java,v 1.2 2003-09-01 03:21:45 shahid.shah Exp $
  */
 
 package app;
@@ -74,7 +74,7 @@ public class AppLoginDialogSkin extends LoginDialogSkin
         writer.write("</table>\n");
         writer.write("<!-- END MASTHEAD -->\n");
         writer.write("<center>");
-        writer.write("<p>&nbsp;<p>&nbsp;<p>");
+        writer.write("<p>&nbsp;<p>");
 
         super.renderHtml(writer, dc);
     }

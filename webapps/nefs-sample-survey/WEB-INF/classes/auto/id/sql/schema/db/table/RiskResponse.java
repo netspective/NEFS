@@ -5,14 +5,15 @@ package auto.id.sql.schema.db.table;
 
 public interface RiskResponse
 {
-    static public final int FIRM_EFF = 9;
-    static public final int FIRM_SIG = 8;
-    static public final int IBU_EFF = 5;
-    static public final int IBU_SIG = 4;
-    static public final int LBG_EFF = 7;
-    static public final int LBG_SIG = 6;
+    static public final int FIRM_EFF = 10;
+    static public final int FIRM_SIG = 9;
+    static public final int IBU_EFF = 6;
+    static public final int IBU_SIG = 5;
+    static public final int LBG_EFF = 8;
+    static public final int LBG_SIG = 7;
     static public final int PIN = 1;
-    static public final int RISK = 3;
+    static public final int RISK = 4;
     static public final int RISK_GROUP = 2;
+    static public final int RISK_ID = 3;
     static public final int SYSTEM_ID = 0;
 }

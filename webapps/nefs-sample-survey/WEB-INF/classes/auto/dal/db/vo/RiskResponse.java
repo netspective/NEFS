@@ -22,6 +22,8 @@ public interface RiskResponse
     
     public java.lang.String getRiskGroup();
     
+    public java.lang.String getRiskId();
+    
     public java.lang.Long getSystemId();
     
     public void setFirmEff(java.lang.Integer firmEff);
@@ -41,6 +43,8 @@ public interface RiskResponse
     public void setRisk(java.lang.String risk);
     
     public void setRiskGroup(java.lang.String riskGroup);
+    
+    public void setRiskId(java.lang.String riskId);
     
     public void setSystemId(java.lang.Long systemId);
 }

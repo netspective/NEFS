@@ -50,6 +50,11 @@ implements auto.dal.db.vo.RiskResponse
         return riskGroup;
     }
     
+    public java.lang.String getRiskId()
+    {
+        return riskId;
+    }
+    
     public java.lang.Long getSystemId()
     {
         return systemId;
@@ -100,6 +105,11 @@ implements auto.dal.db.vo.RiskResponse
         this.riskGroup = riskGroup;
     }
     
+    public void setRiskId(java.lang.String riskId)
+    {
+        this.riskId = riskId;
+    }
+    
     public void setSystemId(java.lang.Long systemId)
     {
         this.systemId = systemId;
@@ -113,5 +123,6 @@ implements auto.dal.db.vo.RiskResponse
     private java.lang.Integer pin;
     private java.lang.String risk;
     private java.lang.String riskGroup;
+    private java.lang.String riskId;
     private java.lang.Long systemId;
 }

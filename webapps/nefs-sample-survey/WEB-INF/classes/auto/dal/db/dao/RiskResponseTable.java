@@ -26,24 +26,26 @@ public final class RiskResponseTable
     public static final int ACCESSORID_BY_SYSTEM_ID_EQUALITY = 1;
     public static final int ACCESSORID_BY_PIN_EQUALITY = 2;
     public static final int ACCESSORID_BY_RISK_GROUP_EQUALITY = 3;
-    public static final int ACCESSORID_BY_RISK_EQUALITY = 4;
-    public static final int ACCESSORID_BY_IBU_SIG_EQUALITY = 5;
-    public static final int ACCESSORID_BY_IBU_EFF_EQUALITY = 6;
-    public static final int ACCESSORID_BY_LBG_SIG_EQUALITY = 7;
-    public static final int ACCESSORID_BY_LBG_EFF_EQUALITY = 8;
-    public static final int ACCESSORID_BY_FIRM_SIG_EQUALITY = 9;
-    public static final int ACCESSORID_BY_FIRM_EFF_EQUALITY = 10;
-    public static final int ACCESSORID_BY_INDEX_UNIQUE_RISK_EQUALITY = 11;
+    public static final int ACCESSORID_BY_RISK_ID_EQUALITY = 4;
+    public static final int ACCESSORID_BY_RISK_EQUALITY = 5;
+    public static final int ACCESSORID_BY_IBU_SIG_EQUALITY = 6;
+    public static final int ACCESSORID_BY_IBU_EFF_EQUALITY = 7;
+    public static final int ACCESSORID_BY_LBG_SIG_EQUALITY = 8;
+    public static final int ACCESSORID_BY_LBG_EFF_EQUALITY = 9;
+    public static final int ACCESSORID_BY_FIRM_SIG_EQUALITY = 10;
+    public static final int ACCESSORID_BY_FIRM_EFF_EQUALITY = 11;
+    public static final int ACCESSORID_BY_INDEX_UNIQUE_RISK_EQUALITY = 12;
     public static final int COLINDEX_SYSTEM_ID = 0;
     public static final int COLINDEX_PIN = 1;
     public static final int COLINDEX_RISK_GROUP = 2;
-    public static final int COLINDEX_RISK = 3;
-    public static final int COLINDEX_IBU_SIG = 4;
-    public static final int COLINDEX_IBU_EFF = 5;
-    public static final int COLINDEX_LBG_SIG = 6;
-    public static final int COLINDEX_LBG_EFF = 7;
-    public static final int COLINDEX_FIRM_SIG = 8;
-    public static final int COLINDEX_FIRM_EFF = 9;
+    public static final int COLINDEX_RISK_ID = 3;
+    public static final int COLINDEX_RISK = 4;
+    public static final int COLINDEX_IBU_SIG = 5;
+    public static final int COLINDEX_IBU_EFF = 6;
+    public static final int COLINDEX_LBG_SIG = 7;
+    public static final int COLINDEX_LBG_EFF = 8;
+    public static final int COLINDEX_FIRM_SIG = 9;
+    public static final int COLINDEX_FIRM_EFF = 10;
     
     public RiskResponseTable(Table table)
     {
@@ -116,6 +118,11 @@ public final class RiskResponseTable
     public final QueryDefnSelect getAccessorByRiskGroupEquality()
     {
         return accessors.get(ACCESSORID_BY_RISK_GROUP_EQUALITY);
+    }
+    
+    public final QueryDefnSelect getAccessorByRiskIdEquality()
+    {
+        return accessors.get(ACCESSORID_BY_RISK_ID_EQUALITY);
     }
     
     public final QueryDefnSelect getAccessorBySystemIdEquality()
@@ -229,6 +236,11 @@ public final class RiskResponseTable
         return (TextColumn)table.getColumns().get(COLINDEX_RISK_GROUP);
     }
     
+    public final TextColumn getRiskIdColumn()
+    {
+        return (TextColumn)table.getColumns().get(COLINDEX_RISK_ID);
+    }
+    
     public final AutoIncColumn getSystemIdColumn()
     {
         return (AutoIncColumn)table.getColumns().get(COLINDEX_SYSTEM_ID);
@@ -326,6 +338,11 @@ public final class RiskResponseTable
             return (TextColumn.TextColumnValue)values.getByColumnIndex(COLINDEX_RISK_GROUP);
         }
         
+        public final TextColumn.TextColumnValue getRiskId()
+        {
+            return (TextColumn.TextColumnValue)values.getByColumnIndex(COLINDEX_RISK_ID);
+        }
+        
         public final Row getRow()
         {
             return row;
@@ -347,6 +364,7 @@ public final class RiskResponseTable
             valueObject.setSystemId(autoIncSystemIdValue instanceof Integer ? new Long(((Integer) autoIncSystemIdValue).intValue()) : (Long) autoIncSystemIdValue);
             valueObject.setPin((java.lang.Integer) values.getByColumnIndex(COLINDEX_PIN).getValue());
             valueObject.setRiskGroup((java.lang.String) values.getByColumnIndex(COLINDEX_RISK_GROUP).getValue());
+            valueObject.setRiskId((java.lang.String) values.getByColumnIndex(COLINDEX_RISK_ID).getValue());
             valueObject.setRisk((java.lang.String) values.getByColumnIndex(COLINDEX_RISK).getValue());
             valueObject.setIbuSig((java.lang.Integer) values.getByColumnIndex(COLINDEX_IBU_SIG).getValue());
             valueObject.setIbuEff((java.lang.Integer) values.getByColumnIndex(COLINDEX_IBU_EFF).getValue());
@@ -414,6 +432,11 @@ public final class RiskResponseTable
             getRiskGroup().copyValueByReference(value);
         }
         
+        public final void setRiskId(com.netspective.commons.value.Value value)
+        {
+            getRiskId().copyValueByReference(value);
+        }
+        
         public final void setSystemId(com.netspective.commons.value.Value value)
         {
             getSystemId().copyValueByReference(value);
@@ -424,6 +447,7 @@ public final class RiskResponseTable
             values.getByColumnIndex(COLINDEX_SYSTEM_ID).setValue(valueObject.getSystemId());
             values.getByColumnIndex(COLINDEX_PIN).setValue(valueObject.getPin());
             values.getByColumnIndex(COLINDEX_RISK_GROUP).setValue(valueObject.getRiskGroup());
+            values.getByColumnIndex(COLINDEX_RISK_ID).setValue(valueObject.getRiskId());
             values.getByColumnIndex(COLINDEX_RISK).setValue(valueObject.getRisk());
             values.getByColumnIndex(COLINDEX_IBU_SIG).setValue(valueObject.getIbuSig());
             values.getByColumnIndex(COLINDEX_IBU_EFF).setValue(valueObject.getIbuEff());

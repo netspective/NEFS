@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: RiskResponseDialog.java,v 1.4 2003-08-31 23:14:30 shahid.shah Exp $
+ * $Id: RiskResponseDialog.java,v 1.5 2003-09-01 03:21:45 shahid.shah Exp $
  */
 
 package app;
@@ -123,33 +123,37 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
                 String riskGroup = fieldStates.getState(FIELDPREFIXID_RISK_GROUP + riskIdentifier).getValue().getTextValue();
                 String risk = fieldStates.getState(FIELDPREFIX_RISK_ID + riskIdentifier).getValue().getTextValue();
 
-                // if "additional" risks are presenent, they can be empty so filter them out
-                if(risk != null && risk.length() > 0)
+                Query query = dc.getSqlManager().getQuery(auto.id.sql.query.Responses.BY_PIN_GROUP_RISK_ID);
+                try
                 {
-                    Query query = dc.getSqlManager().getQuery(auto.id.sql.query.Responses.BY_PIN_GROUP_RISK);
-                    try
-                    {
-                        QueryResultSet qrs = query.execute(dc, new Object[] { pin, riskGroup, risk }, false);
-                        Map responses = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet());
-                        qrs.close(true);
-                        qrs = null;
+                    QueryResultSet qrs = query.execute(dc, new Object[] { pin, riskGroup, riskIdentifier }, false);
+                    Map responses = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet());
+                    qrs.close(true);
+                    qrs = null;
 
-                        RiskResponseTable rrTable = DataAccessLayer.getInstance().getRiskResponseTable();
-                        if(responses != null)
-                        {
-                            fieldStates.getState(FIELDPREFIXID_RISK_ROW_SYSTEM_ID + riskIdentifier).getValue().setTextValue(responses.get(rrTable.getSystemIdColumn().getName()).toString());
-                            fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_IMMBUSUNIT_SIGNIFICANCE).getValue().setTextValue(responses.get(rrTable.getIbuSigColumn().getName()).toString());
-                            fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_IMMBUSUNIT_EFFECTIVENESS).getValue().setTextValue(responses.get(rrTable.getIbuEffColumn().getName()).toString());
-                            fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_LARBUSGROUP_SIGNIFICANCE).getValue().setTextValue(responses.get(rrTable.getLbgSigColumn().getName()).toString());
-                            fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_LARBUSGROUP_EFFECTIVENESS).getValue().setTextValue(responses.get(rrTable.getLbgEffColumn().getName()).toString());
-                            fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_ENTERPRISE_SIGNIFICANCE).getValue().setTextValue(responses.get(rrTable.getFirmSigColumn().getName()).toString());
-                            fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_ENTERPRISE_EFFECTIVENESS).getValue().setTextValue(responses.get(rrTable.getFirmEffColumn().getName()).toString());
-                        }
-                    }
-                    catch (Exception e)
+                    RiskResponseTable rrTable = DataAccessLayer.getInstance().getRiskResponseTable();
+                    if(responses != null)
                     {
-                        dc.getValidationContext().addError(e.toString());
+                        if(riskIdentifier.startsWith("additional"))
+                        {
+                            Object addlRiskNameValue = responses.get(rrTable.getRiskColumn().getName());
+                            if(addlRiskNameValue != null)
+                                fieldStates.getState(FIELDPREFIX_RISK_ID + riskIdentifier).getValue().setTextValue(addlRiskNameValue.toString());
+                        }
+
+                        fieldStates.getState(FIELDPREFIXID_RISK_ROW_SYSTEM_ID + riskIdentifier).getValue().setTextValue(responses.get(rrTable.getSystemIdColumn().getName()).toString());
+                        fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_IMMBUSUNIT_SIGNIFICANCE).getValue().setTextValue(responses.get(rrTable.getIbuSigColumn().getName()).toString());
+                        fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_IMMBUSUNIT_EFFECTIVENESS).getValue().setTextValue(responses.get(rrTable.getIbuEffColumn().getName()).toString());
+                        fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_LARBUSGROUP_SIGNIFICANCE).getValue().setTextValue(responses.get(rrTable.getLbgSigColumn().getName()).toString());
+                        fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_LARBUSGROUP_EFFECTIVENESS).getValue().setTextValue(responses.get(rrTable.getLbgEffColumn().getName()).toString());
+                        fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_ENTERPRISE_SIGNIFICANCE).getValue().setTextValue(responses.get(rrTable.getFirmSigColumn().getName()).toString());
+                        fieldStates.getState(FIELDPREFIXID_RISK_RESPONSE + riskIdentifier + FIELDNAME_ENTERPRISE_EFFECTIVENESS).getValue().setTextValue(responses.get(rrTable.getFirmEffColumn().getName()).toString());
                     }
+                }
+                catch (Exception e)
+                {
+                    getLog().error("Error populating values", e);
+                    dc.getValidationContext().addError(e.toString());
                 }
             }
         }
@@ -192,6 +196,7 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
                     if(haveExistingRow) riskResponse.setSystemId(Long.valueOf(existingRowSystemId));
                     riskResponse.setPin(pin);
                     riskResponse.setRiskGroup(riskGroup);
+                    riskResponse.setRiskId(riskIdentifier);
                     riskResponse.setRisk(risk);
                     riskResponse.setIbuSig(Integer.valueOf(fieldStates.getState(riskResponseGridName + FIELDNAME_IMMBUSUNIT_SIGNIFICANCE).getValue().getTextValue()));
                     riskResponse.setIbuEff(Integer.valueOf(fieldStates.getState(riskResponseGridName + FIELDNAME_IMMBUSUNIT_EFFECTIVENESS).getValue().getTextValue()));
