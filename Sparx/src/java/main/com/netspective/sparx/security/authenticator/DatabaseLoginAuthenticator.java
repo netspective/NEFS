@@ -39,12 +39,15 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.10 2004-08-09 05:42:59 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.11 2004-08-14 19:58:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
 
+import java.sql.SQLException;
 import java.util.Map;
+
+import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,13 +55,13 @@ import org.apache.commons.logging.LogFactory;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
+import com.netspective.commons.attr.Attribute;
+import com.netspective.commons.attr.MutableAttributes;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
-import com.netspective.commons.security.EntityPreference;
 import com.netspective.commons.security.MutableAuthenticatedOrganization;
 import com.netspective.commons.security.MutableAuthenticatedOrganizations;
 import com.netspective.commons.security.MutableAuthenticatedUser;
-import com.netspective.commons.security.MutableEntityPreferences;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.security.LoginDialogContext;
@@ -140,7 +143,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, MutableAuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
         assignUserInfo(ldc, user);
-        retrievePreferences(ldc, userPrefsQuery, new Object[]{ldc.getUserIdInput()}, (MutableEntityPreferences) user.getPreferences(), ATTRNAME_USER_PREFS_QUERY_RESULTS);
+        retrievePreferences(ldc, userPrefsQuery, new Object[]{ldc.getUserIdInput()}, (MutableAttributes) user.getPreferences(), ATTRNAME_USER_PREFS_QUERY_RESULTS);
 
         assignOrganizations(ldc, user);
         assignUserRoles(ldc, user);
@@ -193,31 +196,43 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         }
     }
 
-    protected void retrievePreferences(LoginDialogContext ldc, Query query, Object[] queryParams, MutableEntityPreferences preferences, String resultsAttrName)
+    protected void retrievePreferences(LoginDialogContext ldc, Query query, Object[] queryParams, MutableAttributes preferences, String resultsAttrName)
     {
         if (query != null)
         {
             try
             {
-                QueryResultSet qrs = query.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
+                QueryResultSet qrs = query.execute(ldc, queryParams, false);
                 if (qrs != null)
                 {
-                    Map[] orgsResult = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(qrs.getResultSet(), true);
-                    ldc.setAttribute(resultsAttrName, orgsResult);
-
-                    for (int rowIndex = 0; rowIndex < orgsResult.length; rowIndex++)
+                    Map[] prefsResult = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(qrs.getResultSet(), true);
+                    if(prefsResult != null)
                     {
-                        EntityPreference pref = preferences.createPreference();
-                        XmlDataModelSchema schema = XmlDataModelSchema.getSchema(pref.getClass());
-                        Map row = orgsResult[rowIndex];
-                        schema.assignMapValues(pref, row, "*");
-                        preferences.addPreference(pref);
-                    }
+                        ldc.setAttribute(resultsAttrName, prefsResult);
 
+                        preferences.setObserving(false); // make sure add/update/remove announcements aren't made
+                        try
+                        {
+                            for (int rowIndex = 0; rowIndex < prefsResult.length; rowIndex++)
+                            {
+                                final Attribute attribute = preferences.createAttribute(prefsResult[rowIndex]);
+                                if(attribute != null)
+                                    preferences.addAttribute(attribute);
+                            }
+                        }
+                        finally
+                        {
+                            preferences.setObserving(true); // from now on, announcements should be made
+                        }
+                    }
                     qrs.close(true);
                 }
             }
-            catch (Exception e)
+            catch (SQLException e)
+            {
+                log.error("Error retrieving preferences", e);
+            }
+            catch (NamingException e)
             {
                 log.error("Error retrieving preferences", e);
             }
@@ -246,7 +261,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                         schema.assignMapValues(org, row, "*");
                         mutableOrgs.addOrganization(org);
 
-                        retrievePreferences(ldc, orgsPrefsQuery, new Object[] { org.getOrgId() }, (MutableEntityPreferences) org.getPreferences(), null);
+                        retrievePreferences(ldc, orgsPrefsQuery, new Object[] { org.getOrgId() }, (MutableAttributes) org.getPreferences(), null);
                     }
 
                     qrs.close(true);
@@ -276,7 +291,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                     org.setPrimary(true);
                     mutableOrgs.addOrganization(org);
 
-                    retrievePreferences(ldc, primaryOrgPrefsQuery, new Object[] { org.getOrgId() }, (MutableEntityPreferences) org.getPreferences(), ATTRNAME_ORG_PREFS_QUERY_RESULTS);
+                    retrievePreferences(ldc, primaryOrgPrefsQuery, new Object[] { org.getOrgId() }, (MutableAttributes) org.getPreferences(), ATTRNAME_ORG_PREFS_QUERY_RESULTS);
                     qrs.close(true);
                 }
             }
