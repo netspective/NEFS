@@ -31,7 +31,7 @@ Setup instructions:
         <property name="project.src.main.home" value="${project.home}/src/java/main"/>
         <property name="project.src.test.home" value="${project.home}/src/java/test"/>
         <property name="project.documents.javadoc-html.home" value="${project.documents.home}/java-doc"/>
-        <property name="project.documents.javadoc-xml.home" value="${project.src.main.home}/com/netspective/conf/java-doc"/>
+        <property name="project.documents.javadoc-xml.home" value="${project.src.main.home}/${project.package.base.dir}/conf/java-doc"/>
 
         <property name="project.change-log.name" value="change-log"/>
         <property name="project.build.log.class.package" value="${project.package.base}"/>
