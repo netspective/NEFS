@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.30 2003-10-24 03:27:17 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.31 2003-10-30 13:27:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -108,7 +108,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private NavigationControllerServletOptions servletOptions;
     private String projectSourceFileName;
     private Class projectComponentClass;
-    private ProjectComponent lastProjectComponentRetrieved;
+    private int lastProjectComponentRetrievedId;
     private Project project;
     private HttpLoginManager loginManager;
     private Theme theme;
@@ -467,7 +467,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             ProjectComponent projectComponent =
                 (ProjectComponent) XdmComponentFactory.get(projectComponentClass, projectSourceFileName, compFlags);
 
-            if(lastProjectComponentRetrieved != projectComponent)
+            if(lastProjectComponentRetrievedId != projectComponent.hashCode())
             {
                 if(projectComponent.getErrors().size() > 0)
                 {
@@ -506,8 +506,11 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                     }
                 }
 
+                // clear the currently cached project if there is one
+                project = null;
+
                 // save this for the next time so that we don't reinitialize or run the listeners again
-                lastProjectComponentRetrieved = projectComponent;
+                lastProjectComponentRetrievedId = projectComponent.hashCode();
             }
 
             return projectComponent;
