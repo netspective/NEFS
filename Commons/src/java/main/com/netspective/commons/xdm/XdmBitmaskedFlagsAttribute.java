@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.16 2003-08-05 17:40:07 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.17 2003-08-06 00:56:34 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -71,7 +71,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
     private static final String ALIAS_COMMENT_REPL_EXPR = "${xdmAttrDetailAliasComment}";
 
     public static final int ACCESS_XDM = 1;      // available via XML
-    public static final int ACCESS_PRIVATE = 2;  // available only to Java
+    public static final int ACCESS_PRIVATE = 2;  // available only to Java (will be ignored in setValue(String))
 
     public static class FlagDefn
     {
@@ -266,8 +266,11 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
                 FlagDefn flagDefn = flagDefns[j];
                 if(flagDefn.name.equalsIgnoreCase(flagName))
                 {
+                    if(flagDefn.access == ACCESS_PRIVATE)
+                        throw new RuntimeException("Attempting to set ACCESS_PRIVATE flag '"+ flagDefn.name +"' from outside Java.");
+
                     found = true;
-                    this.flags |= flagDefns[j].mask;
+                    this.flags |= flagDefn.mask;
                 }
             }
 
