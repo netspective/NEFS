@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletRequestParameterValueSource.java,v 1.1 2003-04-05 17:08:29 shahid.shah Exp $
+ * $Id: ServletRequestParameterValueSource.java,v 1.2 2003-05-09 01:22:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -63,7 +63,7 @@ public class ServletRequestParameterValueSource extends AbstractValueSource
             "Provides access to HTTP servlet request parameters.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("parameter-name", true, null, null, "The name of the request parameter.")
+                new ValueSourceDocumentation.Parameter("parameter-name", true, "The name of the request parameter.")
             }
     );
 

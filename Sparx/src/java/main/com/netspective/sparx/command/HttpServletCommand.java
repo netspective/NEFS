@@ -39,80 +39,18 @@
  */
 
 /**
- * $Id: ServletContextPathValueSource.java,v 1.2 2003-05-09 01:22:20 shahid.shah Exp $
+ * $Id: HttpServletCommand.java,v 1.1 2003-05-09 01:22:19 shahid.shah Exp $
  */
 
-package com.netspective.sparx.value.source;
+package com.netspective.sparx.command;
 
-import java.io.File;
+import java.io.Writer;
+import java.io.IOException;
 
-import com.netspective.commons.value.source.AbstractValueSource;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.ValueSourceSpecification;
-import com.netspective.commons.value.GenericValue;
-import com.netspective.commons.value.ValueSourceDocumentation;
-import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.sparx.value.ServletValueContext;
+import com.netspective.commons.command.CommandException;
+import com.netspective.sparx.navigate.NavigationContext;
 
-public class ServletContextPathValueSource extends AbstractValueSource
+public interface HttpServletCommand extends ServletCommand
 {
-    public static final String[] IDENTIFIERS = new String[] { "servlet-context-path" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Creates a file path relative to the servlet context root.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("relative-path", true, "The relative path of the file.")
-            }
-    );
-
-    private boolean root;
-
-    public static String[] getIdentifiers()
-    {
-        return IDENTIFIERS;
-    }
-
-    public static ValueSourceDocumentation getDocumentation()
-    {
-        return DOCUMENTATION;
-    }
-
-    public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
-    {
-        super.initialize(spec);
-        root = "/".equals(spec.getParams());
-    }
-
-    public Value getPresentationValue(ValueContext vc)
-    {
-        return getValue(vc);
-    }
-
-    public Value getValue(ValueContext vc)
-    {
-        ServletValueContext svc = (ServletValueContext) vc;
-
-        if(vc.isAntBuildEnvironment())
-        {
-            String simulatingProp = System.getProperty("com.netspective.sparx.value.source.ServletContextPathValue.simulate");
-            if(simulatingProp == null)
-                throw new RuntimeException("Running inside Ant but no 'com.netspective.sparx.value.source.ServletContextPathValue.simulate' system property provided.");
-            File simulatedPath = new File(simulatingProp);
-            return new GenericValue(root ?
-                         simulatedPath.getAbsolutePath() :
-                         new File(simulatedPath, spec.getParams()).getAbsolutePath());
-        }
-        else
-        {
-            return new GenericValue(root ?
-                         svc.getServletContext().getRealPath(null) :
-                         svc.getServletContext().getRealPath(spec.getParams()));
-        }
-    }
-
-    public boolean hasValue(ValueContext vc)
-    {
-        return true;
-    }
+    public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException;
 }

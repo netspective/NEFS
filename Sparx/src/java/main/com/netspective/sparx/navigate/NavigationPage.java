@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.15 2003-04-29 19:57:24 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.16 2003-05-09 01:22:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -62,11 +62,15 @@ import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.command.CommandException;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.template.TemplateProcessor;
+import com.netspective.sparx.command.AbstractHttpServletCommand;
+import com.netspective.sparx.command.HttpServletCommand;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -77,8 +81,12 @@ import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class NavigationPage extends NavigationPath implements TemplateConsumer
 {
+    public static final Log log = LogFactory.getLog(NavigationPage.class);
     public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 7];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
@@ -557,12 +565,38 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
+        if(getFlags().flagIsSet(Flags.ALLOW_PAGE_CMD))
+        {
+            String commandSpec = nc.getRequest().getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
+            if(commandSpec != null)
+            {
+                HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand(commandSpec);
+                try
+                {
+                    command.handleCommand(writer, nc, false);
+                }
+                catch (CommandException e)
+                {
+                    log.error(e);
+                    throw new ServletException(e);
+                }
+                return;
+            }
+        }
+
         if(bodyPanel != null)
+        {
             bodyPanel.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDEFFLAGS_DEFAULT);
-        else if(bodyTemplate != null)
+            return;
+        }
+
+        if(bodyTemplate != null)
+        {
             bodyTemplate.process(writer, nc);
-        else
-            writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
+            return;
+        }
+
+        writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
     }
 
     public void handlePageFooter(Writer writer, NavigationContext nc) throws ServletException, IOException

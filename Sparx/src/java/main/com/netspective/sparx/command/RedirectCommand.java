@@ -39,20 +39,24 @@
  */
 
 /**
- * $Id: RedirectCommand.java,v 1.2 2003-04-07 01:03:52 shahid.shah Exp $
+ * $Id: RedirectCommand.java,v 1.3 2003-05-09 01:22:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
 
 import java.util.StringTokenizer;
+import java.io.Writer;
+import java.io.IOException;
 
 import com.netspective.commons.command.AbstractCommand;
 import com.netspective.commons.command.CommandDocumentation;
+import com.netspective.commons.command.CommandException;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
 
-public class RedirectCommand extends AbstractCommand
+public class RedirectCommand extends AbstractHttpServletCommand
 {
     public static final String[] IDENTIFIERS = new String[] { "redirect" };
     public static final String IS_NAV_ID_FLAG = "IS_NAV_ID";
@@ -60,8 +64,8 @@ public class RedirectCommand extends AbstractCommand
             "Redirects the current page to another page via an URL.",
             new CommandDocumentation.Parameter[]
             {
-                new CommandDocumentation.Parameter("location", true, null, null, "The URL or navigation id."),
-                new CommandDocumentation.Parameter("flags", false, null, null, "Set to '"+ IS_NAV_ID_FLAG +"' if the location is a Sparx navigation id.")
+                new CommandDocumentation.Parameter("location", true, "The URL or navigation id."),
+                new CommandDocumentation.Parameter("flags", false, "Set to '"+ IS_NAV_ID_FLAG +"' if the location is a Sparx navigation id.")
             }
     );
 
@@ -119,5 +123,9 @@ public class RedirectCommand extends AbstractCommand
     public void setLocation(ValueSource location)
     {
         this.location = location;
+    }
+
+    public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
+    {
     }
 }

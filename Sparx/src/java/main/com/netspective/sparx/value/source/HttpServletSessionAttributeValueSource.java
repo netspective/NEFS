@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpServletSessionAttributeValueSource.java,v 1.1 2003-04-05 17:08:29 shahid.shah Exp $
+ * $Id: HttpServletSessionAttributeValueSource.java,v 1.2 2003-05-09 01:22:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -65,7 +65,7 @@ public class HttpServletSessionAttributeValueSource extends AbstractValueSource
             "Provides access to HTTP session attributes. Intelligently handles object of types String, String[], and List.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("attribute-name", true, null, null, "The name of the request parameter.")
+                new ValueSourceDocumentation.Parameter("attribute-name", true, "The name of the request parameter.")
             }
     );
 

@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.7 2003-05-07 03:39:17 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.8 2003-05-09 01:22:20 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -15,6 +15,7 @@
     <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/slate"/>
 
     <register-command class="com.netspective.sparx.command.RedirectCommand"/>
+    <register-command class="com.netspective.sparx.command.DialogCommand"/>
 
     <panel-type name="html" class="com.netspective.sparx.panel.TemplateContentPanel"/>
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.3 2003-05-07 03:39:17 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.4 2003-05-09 01:22:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -77,11 +77,10 @@ import com.netspective.sparx.form.DialogDataCommands;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
-import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.validate.ValidationRulesCollection;
@@ -190,6 +189,33 @@ public class DialogField implements TemplateConsumer
             super.setFlag(flag);
             if (children != null)
                 children.setFlags(flag);
+        }
+    }
+
+    public class BasicFieldValue extends GenericValue implements DialogFieldValue
+    {
+        public BasicFieldValue()
+        {
+        }
+
+        public BasicFieldValue(List value)
+        {
+            super(value);
+        }
+
+        public BasicFieldValue(Object value)
+        {
+            super(value);
+        }
+
+        public BasicFieldValue(String[] value)
+        {
+            super(value);
+        }
+
+        public DialogField getField()
+        {
+            return DialogField.this;
         }
     }
 
@@ -372,8 +398,7 @@ public class DialogField implements TemplateConsumer
 
     public DialogFieldValue constructValueInstance()
     {
-        //TODO: return new something;
-        return null;
+        return new BasicFieldValue();
     }
 
     public DialogFieldState constructStateInstance(DialogContext dc)
@@ -1138,7 +1163,7 @@ public class DialogField implements TemplateConsumer
 		String fieldQualfName = this.getQualifiedName();
         String fieldCaption = caption != null ? caption.getTextValueOrBlank(dc) : "";
 		String js =
-			"field = new DialogField(\"" + fieldClassName + "\", \"" + this.getHtmlFormControlId() + "\", \"" + this.getName() + "\", \"" + fieldQualfName + "\", \"" + fieldCaption + "\", " + dc.getFieldStates().getState(this).getStateFlags() + ");\n" +
+			"field = new DialogField(\"" + fieldClassName + "\", \"" + this.getHtmlFormControlId() + "\", \"" + this.getName() + "\", \"" + fieldQualfName + "\", \"" + fieldCaption + "\", " + dc.getFieldStates().getState(this).getStateFlags().getFlags() + ");\n" +
 			"dialog.registerField(field);\n";
 		String customStr = this.getEventJavaScriptFunctions(dc);
 		customStr += this.getCustomJavaScriptDefn(dc);

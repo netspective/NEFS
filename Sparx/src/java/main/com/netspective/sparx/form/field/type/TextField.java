@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.2 2003-05-06 14:52:14 shahid.shah Exp $
+ * $Id: TextField.java,v 1.3 2003-05-09 01:22:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -115,11 +115,20 @@ public class TextField extends DialogField
     public TextField(Dialog owner)
     {
         super(owner);
+        initialize();
     }
 
     public TextField(DialogField parent)
     {
         super(parent);
+        initialize();
+    }
+
+    public void initialize()
+    {
+        textValidationRule = new TextValueValidationRule();
+        textValidationRule.setMinLength(0);
+        textValidationRule.setMaxLength(255);
     }
 
     public DialogField.Flags createFlags()
@@ -316,9 +325,11 @@ public class TextField extends DialogField
         if(textValidationRule != null)
         {
             if(textValidationRule.getRegExpr() != null)
+            {
                 buf.append("field.text_format_pattern = " + textValidationRule.getRegExpr() + ";\n");
-            if(textValidationRule.getInvalidRegExMessage() != null)
-                buf.append("field.text_format_err_msg = '" + textValidationRule.getInvalidRegExMessage() + "';\n");
+                if(textValidationRule.getInvalidRegExMessage() != null)
+                    buf.append("field.text_format_err_msg = \"" + textValidationRule.getInvalidRegExMessage() + "\";\n");
+            }
         }
 
         return buf.toString();

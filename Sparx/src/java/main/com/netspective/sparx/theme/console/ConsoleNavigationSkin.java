@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.7 2003-05-06 17:18:19 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.8 2003-05-09 01:22:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -133,11 +133,14 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/general.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/navigation.css\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-input.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-output.css\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-dialog.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-report.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-text.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/syntax-highlight.css\" type=\"text/css\">\n");
         writer.write("  <script src=\"" + scriptsRootUrl + "/panel.js\" language=\"JavaScript1.1\"></script>\n");
+        writer.write("  <script src=\"" + scriptsRootUrl + "/dialog.js\" language=\"JavaScript1.1\"></script>\n");
 
         writer.write("</head>\n");
     }

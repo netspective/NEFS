@@ -1,7 +1,7 @@
-.dialog-button:link    { color: #333; font-size: 12px; font-family: Verdana; text-decoration: none; padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
-.dialog-button:visited { color: #333; font-size: 12px; font-family: Verdana; text-decoration: none;padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
-.dialog-button:active  { color: #333; font-size: 12px; font-family: Verdana; text-decoration: none;padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
-.dialog-button         { color: #333; font-size: 12px; font-family: Verdana; text-decoration: none; background-color: #dcdcdc; text-transform: uppercase; padding: 1px 3px; border: solid 1px #009;    }
+.dialog-button:link    { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none; padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
+.dialog-button:visited { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none;padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
+.dialog-button:active  { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none;padding: 1px 3px; text-transform: uppercase; border: solid 1px #009; }
+.dialog-button         { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none; background-color: #dcdcdc; text-transform: uppercase; padding: 1px 3px; border: solid 1px #009;    }
 .dialog-button:hover   { color: white; background-color: #009;}
 .dialog-button-table   { font-size: 12px; text-align: left; padding: 7px 7px 7px 5px }
 

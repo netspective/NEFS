@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFieldValueSource.java,v 1.1 2003-05-05 21:25:32 shahid.shah Exp $
+ * $Id: DialogFieldValueSource.java,v 1.2 2003-05-09 01:22:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -67,7 +67,7 @@ public class DialogFieldValueSource extends AbstractValueSource
             "Provides access to a specific field of a dialog.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("field-name", true, null, null, "The name of the field.")
+                new ValueSourceDocumentation.Parameter("field-name", true, "The name of the field.")
             }
     );
 

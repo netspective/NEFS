@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportValueContext.java,v 1.2 2003-04-24 17:01:11 shahid.shah Exp $
+ * $Id: HtmlTabularReportValueContext.java,v 1.3 2003-05-09 01:22:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -74,6 +74,7 @@ import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.report.tabular.TabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
@@ -87,6 +88,7 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
     private TabularReportColumnState[] states;
     private HtmlPanel panel;
     private HtmlTabularReport report;
+    private DialogContext sourceDialogContext;
     private int panelRenderFlags;
     private int calcsCount;
     private int visibleColsCount;
@@ -123,6 +125,16 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
                 calcsCount++;
             states[i] = state;
         }
+    }
+
+    public DialogContext getSourceDialogContext()
+    {
+        return sourceDialogContext;
+    }
+
+    public void setSourceDialogContext(DialogContext sourceDialogContext)
+    {
+        this.sourceDialogContext = sourceDialogContext;
     }
 
     public HtmlPanel getPanel()
