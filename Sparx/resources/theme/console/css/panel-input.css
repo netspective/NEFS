@@ -38,10 +38,6 @@ input.panel-input       { background-color: white }
 .panel-input-tree-collapse  { background: url(../images/panel/input/tree-collapse.gif) no-repeat; width: 10px; cursor: hand; }
 .panel-input-tree-expand  { background: url(../images/panel/input/tree-expand.gif) no-repeat; width: 10px; cursor: hand; }
 .panel-input-tree-leaf  { background: url(../images/panel/input/tree-leaf.gif) no-repeat; width: 10px; }
-
-
-.panel-input-login         { background-color: black }
-
 .panel-input-login-frame-heading  { color: #fff0f5; font-weight: bold; font-size: 10px; font-family: Tahoma; background: url(../images/panel/input/frame-heading.gif) no-repeat left top; text-transform: uppercase; padding: 1px 8px 3px }
 
 .panel-input-login-frame-heading-action-left-blank  { background: url(../images/panel/input/frame-heading-action-left.gif) no-repeat; width: 17px; height: 19px }
@@ -61,7 +57,7 @@ input.panel-input       { background-color: white }
 .panel-input-login-frame-action:visited    { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
 .panel-input-login-frame-action:hover       { color: #009; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
 
-.panel-input-login  { }
+.panel-input-login    { background: white url(../images/panel/output/banner-pattern.gif) }
 .panel-input-login-banner        { color: #009; font-weight: bold; font-size: 12px; font-family: Verdana; text-decoration: none; text-align: left; padding-top: 4px; padding-left: 3px; border-top: 1px solid #009; border-right: 1px solid #009; border-left: 1px solid #009 }
 .panel-input-login-banner-footer       { color: #009; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; text-align: left; padding-left: 3px; border-right: 1px solid #009; border-bottom: 1px solid #009; border-left: 1px solid #009 }
 
