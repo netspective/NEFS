@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.11 2003-08-31 22:43:38 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.12 2003-09-14 03:26:29 roque.hernandez Exp $
  */
 
 package com.netspective.commons.security;
@@ -54,9 +54,13 @@ import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.acl.Role;
 import com.netspective.commons.acl.RoleNotFoundException;
 import com.netspective.commons.value.ValueContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedOrgUser
+public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedOrgUser, java.io.Serializable
 {
+    private static final Log log = LogFactory.getLog(BasicAuthenticatedUser.class);
+
     private String userName;
     private String userId;
     private String encryptedPassword;
@@ -209,6 +213,15 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
 
     public void setAttribute(String attrName, Object attrValue)
     {
+        if (!(attrValue instanceof java.io.Serializable))
+        {
+            log.error("A Non-Serializable attribute '"+  attrName + "' of type '" + attrValue.getClass() + "' was added to " +
+                      this.getClass() + " object with User Name '" + this.getUserName() + "' and User Id '" + this.getUserId() + "'.\n" +
+                      "The process of serializing the session would fail if the server is configured for clustering or persistant sessions.\n" +
+                      "Make sure any attribute added to the AuthenticatedUser object implements Serializable and that it either implements the \n" +
+                      "serialization of its members or its members implement Serializable as well.");
+        }
+
         attributes.put(attrName, attrValue);
     }
 
