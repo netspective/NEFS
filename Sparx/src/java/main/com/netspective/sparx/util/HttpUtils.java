@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpUtils.java,v 1.3 2003-08-20 19:00:23 shahid.shah Exp $
+ * $Id: HttpUtils.java,v 1.4 2003-08-31 23:04:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.util;
@@ -47,12 +47,23 @@ package com.netspective.sparx.util;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.navigate.NavigationPath;
+import com.netspective.sparx.navigate.NavigationPathFlags;
+import com.netspective.sparx.ProjectComponent;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletRequest;
 import java.util.Enumeration;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.io.Writer;
+import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,6 +71,13 @@ import org.apache.commons.logging.LogFactory;
 public class HttpUtils
 {
     private static final Log log = LogFactory.getLog(HttpUtils.class);
+    private static final ValueSource develEnvironmentHeaderTemplate = new StaticValueSource("devel-environment-header.ftl");
+    private static final FreeMarkerTemplateProcessor develEnvironmentHeader = new FreeMarkerTemplateProcessor();
+
+    static
+    {
+        develEnvironmentHeader.setSource(develEnvironmentHeaderTemplate);
+    }
 
     public static void assignParamToInstance(HttpServletRequest req, XmlDataModelSchema schema, Object instance, String paramName, String defaultValue) throws IllegalAccessException, InvocationTargetException, DataModelException
     {
@@ -198,5 +216,26 @@ public class HttpUtils
         }
 
         return result.toString();
+    }
+
+    public static void renderDevelopmentEnvironmentHeader(Writer writer, NavigationContext nc) throws IOException
+    {
+        if(! nc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
+            return;
+
+        final ProjectComponent projectComponent = nc.getProjectComponent();
+        if(projectComponent.hasErrors())
+        {
+            int errorsCount = projectComponent.getErrors().size() + projectComponent.getWarnings().size();
+
+            writer.write("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\" bgcolor=darkred><tr>\n");
+            writer.write("  <td nowrap><font size=2 color=white style='font-family: tahoma,arial; font-size: 8pt'><b>You have <font color=yellow>"+ errorsCount +"</font> Netspective Frameworks Project Errors/Warnings.");
+            writer.write("             Visit the <a href='"+ nc.getRootUrl() +"/console/project/input-source#errors' style='color: yellow'>Console</a> to see the messages</b></font></td>\n");
+            writer.write("</tr></table>");
+        }
+
+        final NavigationPathFlags flags = nc.getActiveState().getFlags();
+        if(flags.flagIsSet(NavigationPage.Flags.DEBUG_REQUEST))
+            develEnvironmentHeader.process(writer, nc, null);
     }
 }
