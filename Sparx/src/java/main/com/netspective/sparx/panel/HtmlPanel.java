@@ -39,27 +39,27 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.16 2004-03-11 13:09:26 aye.thu Exp $
+ * $Id: HtmlPanel.java,v 1.17 2004-03-14 00:55:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.io.IOException;
-import java.io.Writer;
-
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.value.HttpServletValueContext;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+
+import java.io.IOException;
+import java.io.Writer;
 
 public interface HtmlPanel extends TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
 {
     public static final int RENDERFLAGS_DEFAULT = 0;
     public static final int RENDERFLAG_NOFRAME = 1;
     public static final int RENDERFLAG_HIDE_FRAME_HEADING = RENDERFLAG_NOFRAME * 2;
+    public static final int START_CUSTOM =  RENDERFLAG_HIDE_FRAME_HEADING * 2;
 
     public String getPanelIdentifier();
 
