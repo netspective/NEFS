@@ -105,7 +105,7 @@ import java.util.Map;
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
  *
- * @version $Id: NavigationPage.java,v 1.63 2004-03-16 16:19:54 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.64 2004-03-25 15:15:01 zahara.khan Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -602,8 +602,12 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         }
     }
 
-    /* -------------------------------------------------------------------------------------------------------------*/
-
+    /**
+     * Sets multiple request parameters as the required parameters.  An error message
+     * is displayed if these required parameters are not provided.
+     *
+     * @param params comma-separated list of parameter names
+     */
     public void setRequireRequestParams(String params)
     {
         String[] paramNames = TextUtils.split(params, ",", true);
@@ -611,6 +615,12 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             requireRequestParams.add(paramNames[i]);
     }
 
+    /**
+     * Sets a request parameters as the required parameter.  An error message
+     * is displayed if this required parameter is not provided.
+     *
+     * @param param parameter name
+     */
     public void setRequireRequestParam(String param)
     {
         requireRequestParams.add(param);
@@ -819,6 +829,14 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return caption;
     }
 
+    /**
+     * A required attribute containing a static string or dynamic text to be shown
+     * as the page's identifer to end users when the page needs to be shown in a
+     * menu (or a tab). Actual rendering depends on the active theme and and its
+     * specific navigation skin.
+     *
+     * @param caption value source object containing page caption
+     */
     public void setCaption(ValueSource caption)
     {
         this.caption = caption;
@@ -829,6 +847,14 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return heading;
     }
 
+    /**
+     * An optional attribute containing a static string or dynamic text that will be
+     * shown as page's heading. Always used to indicate what the current page's
+     * content means to the end user.  Actual rendering depends on the active theme
+     * and and its specific navigation skin.
+     *
+     * @param heading value source object containing page heading
+     */
     public void setHeading(ValueSource heading)
     {
         this.heading = heading;
@@ -849,6 +875,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return title;
     }
 
+    /**
+     * An optional attribute representing static string or dynamic text to be used
+     * as the browser window's title. This is the text that will usually be used
+     * by the browser when it bookmarks a page.
+     *
+     * @param title
+     */
     public void setTitle(ValueSource title)
     {
         this.title = title;
@@ -859,6 +892,12 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return summary;
     }
 
+    /**
+     * Sets static string or dynamic text as the page summary.  Used to
+     * provide a quick summary of what the page does.
+     *
+     * @param summary value source object containing page summary
+     */
     public void setSummary(ValueSource summary)
     {
         this.summary = summary;
@@ -879,6 +918,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return redirect;
     }
 
+    /**
+     * Sets this page to be automatically redirected to another page whenever this
+     * page is chosen.  The alternate page is usually an external site but it
+     * could actually be any URL.
+     *
+     * @param redirect value source pointing to the page to be redirected to
+     */
     public void setRedirect(ValueSource redirect)
     {
         this.redirect = redirect;
@@ -889,11 +935,21 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return redirectTarget;
     }
 
+    /**
+     * Sets target window for the redirected page.
+     *
+     * @param redirectTarget target window for the redirected page
+     */
     public void setRedirectTarget(String redirectTarget)
     {
         this.redirectTarget = redirectTarget;
     }
 
+    /**
+     * Sets target window for the page.
+     *
+     * @param redirectTarget target window for the page
+     */
     public void setTarget(String redirectTarget)
     {
         setRedirectTarget(redirectTarget);
@@ -914,6 +970,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return forward;
     }
 
+    /**
+     * Forwards the request to another web resource within application's context (same as Servlet forwarding not
+     * HTTP forwarding).
+     *
+     * @param forward value source object pointing to teh web resource to which the request
+     *                should be forwarded
+     */
     public void setForward(ValueSource forward)
     {
         this.forward = forward;
@@ -925,6 +988,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return include;
     }
 
+    /**
+     * Inserts the contents of another web resource (within the application's context)
+     * directly into the body of this page. The included page is called after
+     * the Sparx navigation skin header (menus, page heading, meta-data, etc) has
+     * already been rendered.  When control returns from the include the standard
+     * navigation skin footer is rendered.
+     *
+     * @param include value source object pointing to web resource whose contents are to be
+     *                inserted into body of this page
+     */
     public void setInclude(ValueSource include)
     {
         this.include = include;
@@ -1035,6 +1108,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return null;
     }
 
+    /**
+     * Sets the parameters to be carried from one page to another.
+     *
+     * @param retainParams value source object containing the parameters to be retained
+     */
     public void setRetainParams(ValueSource retainParams)
     {
         this.retainParams = retainParams;
@@ -1051,6 +1129,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return bodyCommand;
     }
 
+    /**
+     * Delegates the body to a <code>Command</code> interface.  Includes the content
+     * of the execution as the content of the page.  Also, sets appropriate flag
+     * if the command affects navigation.
+     *
+     * @param command command interface to which the execution is delegated
+     */
     public void setCommand(Command command)
     {
         this.bodyCommand = command;

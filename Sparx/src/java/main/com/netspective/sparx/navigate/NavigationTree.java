@@ -78,6 +78,11 @@ import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.handler.NavigationPageBodyHandlerTemplateConsumer;
 
+/**
+ * Main class for handling the navigation tree XML tag, &lt;navigation-tree&gt;.
+ * There is only one instance of each navigation tree and the definition is shared
+ * across all users and threads.
+ */
 public class NavigationTree implements TemplateProducerParent, XmlDataModelSchema.InputSourceLocatorListener, XmlDataModelSchema.ConstructionFinalizeListener, DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
@@ -168,6 +173,12 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         return defaultTree;
     }
 
+    /**
+     * Sets this navigation tree as the default tree.
+     *
+     * @param defaultTree If <code>true</code>, sets this tree as the default navigation
+     *                    tree;
+     */
     public void setDefault(boolean defaultTree)
     {
         this.defaultTree = defaultTree;
@@ -219,6 +230,10 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         return name;
     }
 
+    /**
+     * Required and unique name of the navigation tree.
+     * @param name the navigation tree name
+     */
     public void setName(String name)
     {
         this.name = name;
@@ -321,6 +336,11 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         return dialogNextActionUrl;
     }
 
+    /**
+     * Sets the page the dialog should be redirected to after successful execution.
+     *
+     * @param dialogNextActionUrl URL for the page to redirect to
+     */
     public void setDialogNextActionUrl(ValueSource dialogNextActionUrl)
     {
         // if we have a specific next action provided, then we become our own provider

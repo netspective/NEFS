@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlPanelFrame.java,v 1.7 2004-03-24 15:22:17 zahara.khan Exp $
+ * $Id: HtmlPanelFrame.java,v 1.8 2004-03-25 15:15:30 zahara.khan Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -130,6 +130,11 @@ public class HtmlPanelFrame
         return heading;
     }
 
+    /**
+     * Sets the heading for the frame from a value source.
+     *
+     * @param vs value source object containing frame heading
+     */
     public void setHeading(ValueSource vs)
     {
         heading = vs;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteHandler.java,v 1.2 2003-11-16 01:41:11 shahid.shah Exp $
+ * $Id: DialogExecuteHandler.java,v 1.3 2004-03-25 15:11:08 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -52,6 +52,13 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.listener.DialogListener;
 
+/**
+ * Handler to implement custom business logic to be executed at dialog's state change.
+ * Provides method for dialog execution. The handler is not called when Cancel is
+ * pressed because Cancel usually presses the "back" button or does some other redirection.
+ * Only one instance of this handler is instantiated similar to Dialog) and shared
+ * by multiple users.
+ */
 public interface DialogExecuteHandler extends DialogListener
 {
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException;
