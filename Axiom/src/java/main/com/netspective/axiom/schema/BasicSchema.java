@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.5 2003-04-09 16:57:37 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.6 2003-04-13 02:36:50 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -51,6 +51,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Comparator;
+import java.text.Collator;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -78,6 +82,8 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     public static final String TEMPLATEELEMNAME_TABLE_TYPE = "table-type";
     public static final String TEMPLATEELEMNAME_PRESENTATION = "presentation";
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
+    public static final TableComparator TABLE_COMPARATOR = new TableComparator();
+    public static final TableTreeNodeComparator TABLE_TREE_NODE_COMPARATOR = new TableTreeNodeComparator();
 
     static
     {
@@ -288,6 +294,28 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
         return dalGen;
     }
 
+    public static class TableComparator implements Comparator
+    {
+        public int compare(Object o1, Object o2)
+        {
+            Table t1 = (Table) o1;
+            Table t2 = (Table) o2;
+
+            return Collator.getInstance().compare(t1.getName().toUpperCase(), t2.getName().toUpperCase());
+        }
+    }
+
+    public static class TableTreeNodeComparator implements Comparator
+    {
+        public int compare(Object o1, Object o2)
+        {
+            TableTreeNode n1 = (TableTreeNode) o1;
+            TableTreeNode n2 = (TableTreeNode) o2;
+
+            return Collator.getInstance().compare(n1.getTable().getName().toUpperCase(), n2.getTable().getName().toUpperCase());
+        }
+    }
+
     protected class BasicTableTree implements TableTree
     {
         private List children = new ArrayList();
@@ -295,12 +323,14 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
         public BasicTableTree()
         {
             Tables tables = getTables();
+            Set sortedChildren = new TreeSet(TABLE_TREE_NODE_COMPARATOR);
             for(int i = 0; i < tables.size(); i++)
             {
                 Table table = tables.get(i);
                 if(table.isApplicationTable() && ! table.isChildTable())
-                    children.add(table.createTreeNode(this, null, 1));
+                    sortedChildren.add(table.createTreeNode(this, null, 1));
             }
+            children.addAll(sortedChildren);
         }
 
         public Schema getSchema()

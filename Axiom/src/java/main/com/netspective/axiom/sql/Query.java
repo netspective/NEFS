@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.3 2003-04-09 04:24:11 shahbaz.javeed Exp $
+ * $Id: Query.java,v 1.4 2003-04-13 02:36:50 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -102,7 +102,7 @@ public class Query
                     int paramNum = Integer.parseInt(replaceToken.substring(LISTPARAM_PREFIX.length()));
                     if(paramNum >= 0 && paramNum < parameters.size())
                     {
-                        QueryParameter param = (QueryParameter) parameters.get(paramNum);
+                        QueryParameter param = parameters.get(paramNum);
                         if(!param.isListType())
                             throw new RuntimeException("Query '"+ getNameForMapKey() +"': only list parameters may be specified here (param '" + paramNum + "')");
 
@@ -299,7 +299,7 @@ public class Query
             if(params != null)
             {
                 for(int i = 0; i < params.size(); i++)
-                    ((QueryParameter) params.get(i)).appendBindText(traceMsg, cc, "\n");
+                    (params.get(i)).appendBindText(traceMsg, cc, "\n");
             }
         }
         log.trace(traceMsg);
@@ -329,7 +329,7 @@ public class Query
             {
                 text.append("\nBind Parameters (in query):\n");
                 for(int i = 0; i < parameters.size(); i++)
-                    ((QueryParameter) parameters.get(i)).appendBindText(text, cc, "\n");
+                    (parameters.get(i)).appendBindText(text, cc, "\n");
             }
             text.append("\n");
         }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.4 2003-04-09 16:57:37 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.5 2003-04-13 02:36:50 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -50,6 +50,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.naming.NamingException;
 
@@ -85,6 +87,7 @@ import com.netspective.axiom.sql.dynamic.QueryDefnConditionConnectorEnumeratedAt
 import com.netspective.axiom.sql.dynamic.QueryDefnFieldReference;
 import com.netspective.axiom.sql.dynamic.QueryDefnJoin;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.sql.dynamic.QueryDefnField;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnSqlComparisonNotFoundException;
@@ -568,16 +571,26 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     {
         tqd.setName(getName());
 
-        for(int i = 0; i < columns.size(); i++)
-        {
-            tqd.addField(columns.get(i).createQueryDefnField(tqd));
-        }
-
         QueryDefnJoin join = tqd.createJoin();
         join.setName(getName());
         join.setTable(getName());
         join.setAutoInclude(true);
         tqd.addJoin(join);
+
+        for(int i = 0; i < columns.size(); i++)
+        {
+            QueryDefnField field = columns.get(i).createQueryDefnField(tqd);
+            try
+            {
+                if(field.getJoin() == null)
+                    field.setJoin(join.getName());
+            }
+            catch (QueryDefinitionException e)
+            {
+                log.error(e);
+            }
+            tqd.addField(field);
+        }
 
         // automatically create and add the primary key accessor
         getAccessorByPrimaryKeyEquality();
@@ -820,12 +833,14 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                     parentForeignKey = fKey;
             }
 
+            Set sortedChildren = new TreeSet(BasicSchema.TABLE_TREE_NODE_COMPARATOR);
             Tables childTables = getChildTables();
             for(int i = 0; i < childTables.size(); i++)
             {
                 Table childTable = childTables.get(i);
-                children.add(childTable.createTreeNode(owner, this, level+1));
+                sortedChildren.add(childTable.createTreeNode(owner, this, level+1));
             }
+            children.addAll(sortedChildren);
         }
 
         public Schema.TableTree getOwner()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSelect.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: QueryDefnSelect.java,v 1.2 2003-04-13 02:36:50 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -227,6 +227,11 @@ public class QueryDefnSelect extends Query
     public String getWhereClauseSql()
     {
         return whereClauseSql;
+    }
+
+    public boolean isSqlStatic()
+    {
+        return ! isDirty && ! alwaysDirty;
     }
 
     public String getSqlText(ConnectionContext cc) throws NamingException, SQLException

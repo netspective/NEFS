@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.3 2003-03-29 13:00:07 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.4 2003-04-13 02:36:50 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -369,6 +369,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         result.setName(getName());
         result.setColumn(getName());
         result.setTableColumn(this);
+        result.setCaption(TextUtils.sqlIdentifierToText(getName(), true));
         return result;
     }
 
