@@ -51,10 +51,7 @@ public class FullTextSearchResultsActivity implements Activity
     public String getUrlToRepeatSearch()
     {
         final FullTextSearchPage fullTextSearchPage = searchResults.getSearchPage();
-
-        // the fullTextSearchPage.getUrl will already contain "expression" as part of the URL since expression is a
-        // retained param for that page
-        return fullTextSearchPage.getUrl(navigationContext);
+        return fullTextSearchPage.getUrl(navigationContext, new String[] { "expression", searchResults.getExpression().getExprText() });
     }
 
     public void broadcastChildActivity(Activity activity)
