@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesTest.java,v 1.3 2003-03-27 22:11:13 shahid.shah Exp $
+ * $Id: ValueSourcesTest.java,v 1.4 2003-03-29 19:11:49 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value;
@@ -51,7 +51,6 @@ import junit.framework.TestCase;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.commons.value.exception.ValueException;
 import com.netspective.commons.value.source.*;
 import com.netspective.commons.metric.Metrics;
 
@@ -233,8 +232,6 @@ public class ValueSourcesTest extends TestCase
 
 		for (int i = 0; i < expectedClassesSet.length; i ++)
 			assertTrue(srcClassesMapKeySet.contains(expectedClassesMapKeySet[i]));
-
-		//assertEquals(11, vs.getValueSourceInstancesMap().size());
 	}
 
     public void testValueSourceTokens()
