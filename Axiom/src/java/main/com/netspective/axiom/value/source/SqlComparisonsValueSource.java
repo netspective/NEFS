@@ -51,32 +51,32 @@
  */
  
 /**
- * $Id: SqlComparisonsValueSource.java,v 1.2 2003-06-24 05:11:56 aye.thu Exp $
+ * $Id: SqlComparisonsValueSource.java,v 1.3 2004-06-01 04:10:10 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.netspective.commons.value.ValueContext;
+import com.netspective.axiom.sql.dynamic.SqlComparison;
+import com.netspective.axiom.sql.dynamic.SqlComparisonFactory;
+import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.Value;
-import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.source.AbstractValueSource;
-import com.netspective.axiom.sql.dynamic.SqlComparisonFactory;
-import com.netspective.axiom.sql.dynamic.SqlComparison;
 
 public class SqlComparisonsValueSource extends AbstractValueSource
 {
-    public static final String[] IDENTIFIERS = new String[] { "sql-comparisons" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Retrieves the list of all defined SQL comparisons.",
+    public static final String[] IDENTIFIERS = new String[]{"sql-comparisons"};
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Retrieves the list of all defined SQL comparisons.",
             new ValueSourceDocumentation.Parameter[]
             {
-            }
-    );
+            });
 
     public static String[] getIdentifiers()
     {
@@ -88,8 +88,18 @@ public class SqlComparisonsValueSource extends AbstractValueSource
         return DOCUMENTATION;
     }
 
+    private String groupNames;
+
     public SqlComparisonsValueSource()
     {
+    }
+
+    public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
+    {
+        super.initialize(spec);
+        groupNames = spec.getParams();
+        if (groupNames != null && groupNames.length() == 0)
+            groupNames = null;
     }
 
     public PresentationValue getPresentationValue(ValueContext vc)
@@ -97,8 +107,9 @@ public class SqlComparisonsValueSource extends AbstractValueSource
         PresentationValue result = new PresentationValue();
         PresentationValue.Items items = result.createItems();
 
-        List comparisons = SqlComparisonFactory.getComparisonsList();
-        for(int i = 0; i < comparisons.size(); i++)
+        List comparisons = groupNames != null
+                ? SqlComparisonFactory.getComparisonsList(groupNames) : SqlComparisonFactory.getComparisonsList();
+        for (int i = 0; i < comparisons.size(); i++)
         {
             SqlComparison sqlComparison = (SqlComparison) comparisons.get(i);
             items.addItem(sqlComparison.getCaption(), sqlComparison.getName());
@@ -110,8 +121,9 @@ public class SqlComparisonsValueSource extends AbstractValueSource
     public Value getValue(ValueContext vc)
     {
         List result = new ArrayList();
-        List comparisons = SqlComparisonFactory.getComparisonsList();
-        for(int i = 0; i < comparisons.size(); i++)
+        List comparisons = groupNames != null
+                ? SqlComparisonFactory.getComparisonsList(groupNames) : SqlComparisonFactory.getComparisonsList();
+        for (int i = 0; i < comparisons.size(); i++)
             result.add(((SqlComparison) comparisons.get(i)).getName());
 
         return new GenericValue(result);

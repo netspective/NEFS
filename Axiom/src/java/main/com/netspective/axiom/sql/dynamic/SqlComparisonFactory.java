@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlComparisonFactory.java,v 1.3 2004-03-19 03:12:20 shahid.shah Exp $
+ * $Id: SqlComparisonFactory.java,v 1.4 2004-06-01 04:10:10 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -54,21 +54,25 @@ import com.netspective.axiom.sql.dynamic.comparison.ContainsComparison;
 import com.netspective.axiom.sql.dynamic.comparison.ContainsComparisonIgnoreCase;
 import com.netspective.axiom.sql.dynamic.comparison.DateComparison;
 import com.netspective.axiom.sql.dynamic.comparison.EndsWithComparison;
+import com.netspective.axiom.sql.dynamic.comparison.EndsWithComparisonIgnoreCase;
 import com.netspective.axiom.sql.dynamic.comparison.InComparison;
 import com.netspective.axiom.sql.dynamic.comparison.IsDefinedComparison;
 import com.netspective.axiom.sql.dynamic.comparison.StartsWithComparison;
 import com.netspective.axiom.sql.dynamic.comparison.StartsWithComparisonIgnoreCase;
-import com.netspective.axiom.sql.dynamic.comparison.EndsWithComparisonIgnoreCase;
+import com.netspective.commons.text.TextUtils;
 
 public class SqlComparisonFactory
 {
-    static List comparisonsList = new ArrayList();
-    static Map comparisonsMap = new HashMap();
+    private static List comparisonsList = new ArrayList();
+    private static Map comparisonsMap = new HashMap();
+    private static Map comparisonsListByGroup = new HashMap();
 
     static
     {
         registerComparison(new BinaryOpComparison("equals", "equals", "general", "="), new String[]{"is", "="});
-        registerComparison(new BinaryOpComparison("not-equals", "does not equal", "general", "!="), new String[]{"is-not", "!="});
+        registerComparison(new BinaryOpComparison("not-equals", "does not equal", "general", "!="), new String[]{
+            "is-not", "!="
+        });
         registerComparison(new StartsWithComparison(), null);
         registerComparison(new StartsWithComparisonIgnoreCase(), null);
         registerComparison(new ContainsComparison(), null);
@@ -77,10 +81,16 @@ public class SqlComparisonFactory
         registerComparison(new EndsWithComparisonIgnoreCase(), null);
         registerComparison(new InComparison(), null);
         registerComparison(new IsDefinedComparison(), null);
-        registerComparison(new BinaryOpComparison("greater-than", "greater than", "general", ">"), new String[]{"gt", ">"});
-        registerComparison(new BinaryOpComparison("greater-than-equal", "greater than or equal to", "general", ">="), new String[]{"gte", ">="});
+        registerComparison(new BinaryOpComparison("greater-than", "greater than", "general", ">"), new String[]{
+            "gt", ">"
+        });
+        registerComparison(new BinaryOpComparison("greater-than-equal", "greater than or equal to", "general", ">="), new String[]{
+            "gte", ">="
+        });
         registerComparison(new BinaryOpComparison("less-than", "less than", "general", "<"), new String[]{"lt", "<"});
-        registerComparison(new BinaryOpComparison("less-than-equal", "less than or equal to", "general", "<="), new String[]{"lte", "<="});
+        registerComparison(new BinaryOpComparison("less-than-equal", "less than or equal to", "general", "<="), new String[]{
+            "lte", "<="
+        });
         registerComparison(new DateComparison("lte-date", "<="), new String[]{"lte-date", "less-than-equal-date"});
         registerComparison(new DateComparison("lt-date", "<"), new String[]{"lt-date", "less-than-date"});
         registerComparison(new DateComparison("gte-date", ">="), new String[]{"gte-date", "greater-than-equal-date"});
@@ -92,9 +102,17 @@ public class SqlComparisonFactory
         comparisonsList.add(comp);
         comparisonsMap.put(comp.getName(), comp);
 
-        if(aliases != null)
+        List groupList = (List) comparisonsListByGroup.get(comp.getGroupName());
+        if (groupList == null)
         {
-            for(int i = 0; i < aliases.length; i++)
+            groupList = new ArrayList();
+            comparisonsListByGroup.put(comp.getGroupName(), groupList);
+        }
+        groupList.add(comp);
+
+        if (aliases != null)
+        {
+            for (int i = 0; i < aliases.length; i++)
                 comparisonsMap.put(aliases[i], comp);
         }
     }
@@ -112,5 +130,33 @@ public class SqlComparisonFactory
     public static List getComparisonsList()
     {
         return comparisonsList;
+    }
+
+    public static List getComparisonsList(String groupNames)
+    {
+        if (groupNames == null || groupNames.length() == 0)
+            return new ArrayList();
+
+        List result = (List) comparisonsListByGroup.get(groupNames);
+        if (result != null)
+            return result;
+
+        result = new ArrayList();
+
+        String[] groups = TextUtils.split(groupNames, ",", true);
+        for (int i = 0; i < groups.length; i++)
+        {
+            List list = (List) comparisonsListByGroup.get(groups[i]);
+            result.addAll(list);
+        }
+
+        // store it for future use
+        comparisonsListByGroup.put(groupNames, result);
+        return result;
+    }
+
+    public static Map getComparisonsListByGroup()
+    {
+        return comparisonsListByGroup;
     }
 }
