@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.15 2003-07-12 02:20:33 aye.thu Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.16 2003-07-14 04:10:56 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -187,7 +187,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 }
                 else
                 {
-                    itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + imgPath + "/login/spacer.gif\" width=\"18\" height=\"19\"></td>");
+                    itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + imgPath + "/spacer.gif\" width=\"18\" height=\"19\"></td>");
                     colCount++;
                 }
                 itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +

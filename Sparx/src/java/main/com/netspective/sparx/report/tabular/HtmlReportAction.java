@@ -49,7 +49,7 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
 /**
  * @author aye
- * $Id: HtmlReportAction.java,v 1.2 2003-07-12 02:14:08 aye.thu Exp $
+ * $Id: HtmlReportAction.java,v 1.3 2003-07-14 04:13:01 aye.thu Exp $
  */
 public class HtmlReportAction
 {
@@ -58,8 +58,9 @@ public class HtmlReportAction
         public static final short RECORD_ADD    = 0;
         public static final short RECORD_EDIT   = 1;
         public static final short RECORD_DELETE = 2;
+        public static final short RECORD_SELECT = 3;
 
-        public static final String values[] = { "add", "edit", "delete" };
+        public static final String values[] = { "add", "edit", "delete", "select" };
 
         public Type()
         {

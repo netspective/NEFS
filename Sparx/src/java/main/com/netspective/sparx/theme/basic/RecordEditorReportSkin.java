@@ -67,7 +67,7 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordEditorReportSkin.java,v 1.3 2003-07-12 02:20:33 aye.thu Exp $
+ * $Id: RecordEditorReportSkin.java,v 1.4 2003-07-14 04:10:56 aye.thu Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -85,6 +85,11 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
+        if (actions == null)
+        {
+            // no actions are defined in the report
+            return;
+        }
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_DELETE));
 
         if (reportAction != null)
@@ -115,6 +120,11 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
+        if (actions == null)
+        {
+            // no actions are defined in the report
+            return;
+        }
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
         if (reportAction != null)
         {
@@ -136,6 +146,11 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
+        if (actions == null)
+        {
+            // no actions are defined in the report so return 0
+            return 0;
+        }
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_DELETE));
         if (reportAction != null)
             return 1;
@@ -153,6 +168,11 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
+        if (actions == null)
+        {
+            // no actions are defined in the report so return 0
+            return 0;
+        }
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
         if (reportAction != null)
             return 1;

@@ -62,6 +62,7 @@ import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.panel.HtmlPanelActions;
 import com.netspective.sparx.panel.HtmlPanelAction;
+import com.netspective.sparx.command.RedirectCommand;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
@@ -73,7 +74,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordViewerReportSkin.java,v 1.3 2003-07-12 02:20:33 aye.thu Exp $
+ * $Id: RecordViewerReportSkin.java,v 1.4 2003-07-14 04:10:56 aye.thu Exp $
  */
 public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -88,30 +89,39 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
     }
 
     /**
-     * Renders the html report
+     * Adds action items including frame actions and record action items
      * @param writer
-     * @param rc
-     * @param ds
+     * @param vc
+     * @param frame
      * @throws IOException
      */
-    public void render(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
+    public void produceHeadingExtras(Writer writer, HtmlPanelValueContext vc, HtmlPanelFrame frame) throws IOException
     {
+        super.produceHeadingExtras(writer, vc, frame);
+
+        HtmlTabularReportValueContext rc = ((HtmlTabularReportValueContext)vc);
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
-        // if ADD record action is defined, we want to display an "Add" action item in the frame but the frame
-        // doesn't know about the report contained within. So, create a frame action item for the "Add" and fool
-        // the frame into drawing it out.
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_ADD));
-        if (reportAction != null)
+        HtmlPanelActions frameActions = frame.getActions();
+        if (actions != null)
         {
-            HtmlPanelFrame frame = ((HtmlTabularReportValueContext) rc).getPanel().getFrame();
-            HtmlPanelAction panelAction = frame.createAction();
-            panelAction.setCaption(reportAction.getCaption());
-            panelAction.setCommand(reportAction.getCommand());
-            frame.addAction(panelAction);
+            HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_ADD));
+            if (reportAction != null)
+            {
+                Theme theme = rc.getActiveTheme();
+                String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
+                Command command = reportAction.getCommand(vc);
+                if (frameActions.size() > 0)
+                    writer.write("            <td bgcolor=\"white\"><img src=\"" + imgPath + "/spacer.gif\" width=\"5\" height=\"5\"></td>");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + imgPath + "/spacer.gif\" width=\"18\" height=\"19\"></td>");
+                if (command instanceof RedirectCommand)
+                {
+                     writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
+                        "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ ((RedirectCommand) command).getLocation().getTextValue(rc)  +
+                        "\">&nbsp;" + reportAction.getCaption().getTextValue(vc) + "&nbsp;</a></td>");
+                }
+            }
         }
-
-        super.render(writer, rc, ds);
     }
 
     /**
@@ -126,6 +136,11 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
+        if (actions == null)
+        {
+            // no actions are defined in the report
+            return;
+        }
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
         if (reportAction != null)
         {
@@ -152,14 +167,15 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
-        for (int i=0; actions != null && i < actions.size(); i++)
+        if (actions == null)
         {
-            HtmlReportAction action = actions.get(i);
-            if (action.getType().getValueIndex() == HtmlReportAction.Type.RECORD_EDIT)
-            {
-                return 1;
-            }
+            // no actions are defined in the report so return 0
+            return 0;
         }
-        return 0;
+        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
+        if (reportAction != null)
+            return 1;
+        else
+            return 0;
     }
 }
