@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-06 16:45:00 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-06 19:14:44 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -2670,19 +2670,19 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Unit Testing and Demonstrating the Presentation Layer</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Unit Testing the Data Management Layer</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Unit Testing the Security Layer</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
     </section>
 
@@ -2791,7 +2791,7 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Generating Presentation Layer Code</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
@@ -2808,7 +2808,7 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Generating Security Layer code</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
     </section>
 
@@ -2834,19 +2834,19 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Customizing Presentation Layer Code</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Customizing Data Management Layer Code</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Customizing Security Layer Code</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
     </section>
 
@@ -2864,25 +2864,25 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Acceptance Testing</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Multi-user and Thread-safety Testing</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Regression Testing</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Load/Stress Testing</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
     </section>
 
@@ -3083,7 +3083,27 @@ id="project-file-basic-eg-7" />
       <section>
         <title>The <classname>com.netspective.sparx.Project</classname> class</title>
 
-        <para></para>
+        <para>All of the tags that are processed in the NEF Project file are
+        managed by Java classes. The class that manages the XML root <sgmltag
+        class="starttag">project</sgmltag> tag is called
+        <classname>com.netspective.sparx.ProjectComponent</classname>. The
+        <classname>ProjectComponent</classname> class owns an instance of the
+        <classname>com.netspective.sparx.Project</classname> class. The
+        <classname>Project</classname> class then has ownership of all of the
+        tags contained within the <sgmltag class="starttag">project</sgmltag>
+        tag.</para>
+
+        <figure>
+          <title>Overview of Classes Involved in Parsing and Processing the
+          <sgmltag class="starttag">project</sgmltag> tag.</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata
+              fileref="resources/images/nefs-uml-class-project-overview.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
       </section>
     </section>
 
@@ -3250,15 +3270,16 @@ id="project-file-basic-eg-7" />
       </section>
 
       <section>
-        <title>Declaring Project Components using Tags</title>
+        <title>How XDM Tags Become Java Class Instances and Mutator Method
+        Calls</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>XDM Tag Reference</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
@@ -3508,6 +3529,7 @@ id="xdm-template-consume-generic" /></programlisting>
                 tag but custom Template Producers each have their own
                 <emphasis>namespace</emphasis>. In the NEF the <sgmltag
                 class="starttag">page-type</sgmltag>, <sgmltag
+                class="starttag">panel-type</sgmltag>, <sgmltag
                 class="starttag">field-type</sgmltag>, <sgmltag
                 class="starttag">dialog-type</sgmltag>, <sgmltag
                 class="starttag">data-type</sgmltag>, and <sgmltag
@@ -3783,7 +3805,7 @@ id="value-source-eg-5" /></programlisting>
     </section>
 
     <section>
-      <title>Commands</title>
+      <title id="section-commands">Commands</title>
 
       <para>Commands are Java classes that implement the
       <classname>com.netspective.commons.command.Command</classname> interface
@@ -3793,7 +3815,7 @@ id="value-source-eg-5" /></programlisting>
     </section>
 
     <section>
-      <title>Ant Build Scripts</title>
+      <title id="section-ant-build-scripts">Ant Build Scripts</title>
 
       <para>NEF provides a series of scripts that, among other functions,
       allow you to compile your application, generate code, and upgrade NEF
@@ -3804,25 +3826,25 @@ id="value-source-eg-5" /></programlisting>
       <section>
         <title>Executing Ant Scripts through Console</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Executing Ant Scripts From the Command Line</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Executing Ant Scripts from within your IDE</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Automatically Executing Ant Scripts in Navigation Controller</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
     </section>
 
@@ -4235,18 +4257,15 @@ id="value-source-eg-5" /></programlisting>
         <para>You may declare as many navigation trees as your application
         needs. Consider different trees for different users (based on
         personalization) or a different tree for each access-control role (for
-        security) or any other criteria required by your application. Each
-        tree has a name and may be marked with <sgmltag class="attribute">default</sgmltag>=<sgmltag
-        class="attvalue">yes</sgmltag> if it is to be the default tree.</para>
+        security) or any other criteria required by your application.</para>
 
         <section>
           <title>Specifying the Active Navigation Tree</title>
 
           <para>If you have multiple navigation trees, which tree is actually
           used by the application may be specfied as a servlet parameter or
-          chosen dynamically at runtime based on some processing rules. You
-          may choose which navigation tree is used either statically or
-          dynamically.</para>
+          chosen dynamically at runtime based on some processing rules.
+          </para>
 
           <section>
             <title>In the <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename>
@@ -4474,16 +4493,22 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
       </section>
 
       <section>
-        <title>Page Content (Bodies)</title>
+        <title>The Navigation Context</title>
 
-        <para>Since page content (the body) is where all of the action is,
-        Sparx allows a wide variety of different content management
-        techniques. From simple redirects to complex templates all the way
-        through completely customized handled, there&#39;s nothing that the
-        Sparx page bodies can&#39;t handle.</para>
+        <para></para>
+      </section>
+
+      <section>
+        <title>Transferring Page Flow to non-Sparx Content</title>
+
+        <para>Many times its desirable to have certain pages in a navigation
+        tree be sent to existing content either within your own application or
+        external to the application. Sparx allows the page tag to define page
+        transfers to other application resources (like other Servlets, JSPs,
+        etc.) or external sites.</para>
 
         <section>
-          <title>Redirect</title>
+          <title>Redirect to an URL</title>
 
           <para>The <sgmltag class="starttag">page</sgmltag> <sgmltag
           class="attribute">redirect</sgmltag> attribute, which is a value
@@ -4512,7 +4537,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
         </section>
 
         <section>
-          <title>Forward</title>
+          <title>Forward to a Servlet Context Resource</title>
 
           <para>The <sgmltag class="starttag">page</sgmltag> <sgmltag
           class="attribute">forward</sgmltag> attribute, which is a value
@@ -4537,9 +4562,19 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
 
           <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Dynamic forward&#34; forward=&#34;request:url&#34;/&#62;</programlisting>
         </section>
+      </section>
+
+      <section>
+        <title>Page Content (Bodies)</title>
+
+        <para>Since page content (the body) is where all of the action is,
+        Sparx allows a wide variety of different content management
+        techniques. From simple redirects to complex templates all the way
+        through completely customized handled, there&#39;s nothing that the
+        Sparx page bodies can&#39;t handle.</para>
 
         <section>
-          <title>Include</title>
+          <title>Include a Servlet Context Resource</title>
 
           <para>The <sgmltag class="starttag">page</sgmltag> <sgmltag
           class="attribute">include</sgmltag> attribute, which is a value
@@ -4558,22 +4593,38 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
 
           <para>To include a resource based on a dynamic vlaue, use a value
           source specification instead of a static string. In the next example
-          we&#39;ll simpley include whatever resource is specified in the
+          we&#39;ll simply include whatever resource is specified in the
           request parameter called &#39;url&#39;.</para>
 
           <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Dynamic include&#34; include=&#34;request:url&#34;/&#62;</programlisting>
         </section>
 
         <section>
-          <title>Command</title>
+          <title>Execute a Command</title>
 
-          <para></para>
+          <para>The <sgmltag class="starttag">page</sgmltag> <sgmltag
+          class="attribute">command</sgmltag> attribute calls
+          <methodname>execute()</methodname> on an instance of the
+          <classname>com.netspective.sparx.command.Command</classname>
+          interface and includes the content of the execution as the content
+          of the page. Commands are described in detail in <xref
+          linkend="section-commands" />.</para>
+
+          <para>To display a dialog, obtain input, and include its content
+          use:</para>
+
+          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Add Record&#34; command=&#34;dialog,person.contact-info,add&#34;/&#62;</programlisting>
+
+          <para>To run a <sgmltag class="starttag">query</sgmltag> and display
+          its contents in a report use:</para>
+
+          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Run Query&#34; command=&#34;query,person.self-contact-info&#34;/&#62;</programlisting>
         </section>
 
         <section>
-          <title>Panels</title>
+          <title>Show Portal-like Pages using Panels</title>
 
-          <para></para>
+          <para>TODO: coming soon...</para>
         </section>
 
         <section>
@@ -4599,26 +4650,26 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
         <section>
           <title>Body Handlers</title>
 
-          <para></para>
+          <para>TODO: coming soon...</para>
         </section>
       </section>
 
       <section>
         <title>Conditionally Displaying or Hiding Pages</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Navigation Skins</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
         <title>Custom Pages, Bodies, and Body Handlers</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
@@ -4666,7 +4717,24 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
 
         <orderedlist>
           <listitem>
-            <para></para>
+            <para>TODO: coming soon...</para>
+          </listitem>
+        </orderedlist>
+
+        <figure>
+          <title>Sparx NavigationPage Rendering Sequence Diagram</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata
+              fileref="./resources/images/sparx-uml-seq-nav-page-render.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <orderedlist>
+          <listitem>
+            <para>TODO: coming soon...</para>
           </listitem>
         </orderedlist>
       </section>
@@ -4675,19 +4743,15 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
     <section>
       <title>Forms and Dialogs</title>
 
-      <para></para>
+      <para>A major component in developing any web application is giving the
+      user the ability to enter data and retrieve data. Dialogs allow users to
+      create new data, edit existing data, and remove data. Sparx Dialog
+      objects provide a multitude of features such as client-side/server-side
+      data verifications and validations, dialog state tracking, and
+      consistent skinnable appearances.</para>
 
       <section id="dialogs">
         <title>Overview</title>
-
-        <para>The first step in developing a web application is giving the
-        user the ability to enter data and retrieve data.
-        <trademark>Sparx</trademark>&#39;s answer to this is the
-        <emphasis>Dialog</emphasis> object; it is through the Dialogs that a
-        user can create new data, edit existing data, and remove data. A
-        <trademark>Sparx</trademark> Dialog object provides a multitude of
-        features such as client-side/server-side data verifications and
-        validations, dialog state tracking, and skin association.</para>
 
         <para>Defining the dialog in the Project File s the first step towards
         creating a dialog. Dialogs are defined with the <emphasis role="bold">&#60;dialog&#62;</emphasis>
@@ -5474,56 +5538,60 @@ public class Test1  extends com.xaf.form.Dialog
     <section>
       <title>Themes and Skins</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
 
     <section>
       <title>Template Engines</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
   </chapter>
 
   <chapter>
     <title>Project Security Declarations</title>
 
-    <para></para>
+    <para>TODO: coming soon...</para>
 
     <section>
       <title>Login Managers</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
 
     <section>
       <title>Authenticated Users and Personalization</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
 
     <section>
       <title>Access Control Lists</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
 
     <section>
       <title>Role-based Navigation Trees</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
 
     <section>
       <title>Role- and permission-based Forms and Fields</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
   </chapter>
 
   <chapter>
     <title>Project Data Management Declarations</title>
 
-    <para></para>
+    <para>Every enterprise application beyond the simplest Hello World program
+    will require access to a relational database management system to store
+    data, retrieve it, and report on it. NEF&#39;s Axiom framework provides
+    sophisticated data management capabilities using simple XML tags and Java
+    APIs.</para>
 
     <section>
       <title>Static Queries</title>
@@ -5962,7 +6030,7 @@ public class Test1  extends com.xaf.form.Dialog
     <section>
       <title>Stored Procedures and Callable Statements</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
 
     <section>
@@ -6545,7 +6613,7 @@ public class Test1  extends com.xaf.form.Dialog
       <section>
         <title>Creating Relationships</title>
 
-        <para></para>
+        <para>TODO: coming soon...</para>
       </section>
 
       <section>
@@ -6627,13 +6695,13 @@ public class Test1  extends com.xaf.form.Dialog
     <section>
       <title>Connection Providers</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
 
     <section>
       <title>Database Policies</title>
 
-      <para></para>
+      <para>TODO: coming soon...</para>
     </section>
   </chapter>
 
