@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.1 2003-08-28 13:03:09 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.2 2003-08-30 00:24:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
@@ -76,7 +76,7 @@ public class DatabaseLoginAuthenticator implements LoginAuthenticator
             if(qrs == null)
                 return false;
             String loginPasswordInDB = ResultSetUtils.getInstance().getResultSetSingleColumn(qrs.getResultSet()).toString();
-            qrs.close(false);
+            qrs.close(true);
 
             // if the password is not encrypted in the database, then encrypt it now because we deal with encrypted passwords internally
             if(! passwordEncrypted)
@@ -94,7 +94,7 @@ public class DatabaseLoginAuthenticator implements LoginAuthenticator
                     String[] roleNames = ResultSetUtils.getInstance().getResultSetRowsAsStrings(qrs.getResultSet());
                     if(roleNames != null && roleNames.length > 0)
                         loginDialogContext.setUserRoleNames(roleNames);
-                    qrs.close(false);
+                    qrs.close(true);
                 }
             }
         }
