@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConcatenateValueSource.java,v 1.4 2003-05-13 19:51:51 shahid.shah Exp $
+ * $Id: ConcatenateValueSource.java,v 1.5 2004-01-12 19:33:45 aye.thu Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -49,7 +49,12 @@ import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.ValueSourceSpecification;
 
+/**
+ * Value source class for appending and prepending strings to the value
+ * of another value source.
+ */
 public class ConcatenateValueSource extends AbstractValueSource
 {
     public final static String[] IDENTIFIERS = new String[] { "concat" };
@@ -67,6 +72,19 @@ public class ConcatenateValueSource extends AbstractValueSource
         this.appendText = appendText;
         this.prependText = prependText;
         this.valueSource = valueSource;
+    }
+
+    /**
+     * Gets the value source specification. This actually returns the specification of
+     * the value source to which strings are being appended/prepended. There is no
+     * specification defined for the ConcatenateValueSource since it cannot be created
+     * using ValueSourceSpecification currently.
+     *
+     * @return
+     */
+    public ValueSourceSpecification getSpecification()
+    {
+        return valueSource.getSpecification();
     }
 
     public Value getValue(ValueContext vc)
