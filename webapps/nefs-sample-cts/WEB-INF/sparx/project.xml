@@ -98,6 +98,20 @@
 
         <login-dialog retain-params="*">
             <frame heading="Welcome to the Clinical Trial System"/>
+            <field name="html" type="html">
+                <body>
+                <![CDATA[
+                <div>
+                    <span style="font-size: 12px">Please use the following login ID and passwords to login to <br>
+                    the Netspective Clinical Trial Management application.</span>
+                    <ul>
+                        <li>Subject/Patient login: <code>subject2/letmein</code></li>
+                        <li>Coordinator login: <code>person0/letmein</code></li>
+                    </ul>
+                </div>
+                ]]>
+                </body>
+            </field>
             <field name="user-id" type="text" caption="Login ID" required="yes" persist="yes" initial-focus="yes"/>
             <field name="password" type="text" caption="Password" mask-entry="yes" required="yes"/>
         </login-dialog>
@@ -175,8 +189,8 @@
                 <page name="site" caption="Site Info" heading="Clincial Trial Site Information" title="CTMS" hidden="yes"
                     require-request-param="org_id">
                     <panels style="two-columns">
-                        <panel type="command" command="query,org.get-site-info-by-id,-,-,-,detail-compressed" />
-                        <panel type="command" command="query,org.get-site-addresses-by-id,-,-,-,record-editor-compressed" />
+                        <panel type="command" command="query,org.get-site-info-by-id,-,subject-view,-,detail-compressed" />
+                        <panel type="command" command="query,org.get-site-addresses-by-id,-,subject-view,-,record-editor-compressed" />
                     </panels>
                 </page>
             </page>
@@ -412,6 +426,7 @@
         </page>
 
     </navigation-tree>
+
     <!--
         *******************************************************************************************************************
         ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
@@ -430,15 +445,14 @@
         *******************************************************************************************************************
         -->
 
-        <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
+    <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
 
-            <data-source name="jdbc/default">
-                <driver-class>org.hsqldb.jdbcDriver</driver-class>
-                <url>vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}</url>
-                <user>sa</user>
-                <password></password>
-            </data-source>
-
-        </connection-provider>
+        <data-source name="jdbc/default">
+            <driver-class>org.hsqldb.jdbcDriver</driver-class>
+            <url>vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}</url>
+            <user>sa</user>
+            <password></password>
+        </data-source>
+    </connection-provider>
 
 </project>

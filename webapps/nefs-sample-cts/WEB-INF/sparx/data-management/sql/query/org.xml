@@ -111,11 +111,22 @@
             <param value="request:org_id"/>
         </params>
         <presentation>
-            <panel>
+            <panel name="admin-view">
                 <frame heading="static:Site Information"/>
                 <banner>
                     <action caption="Edit" redirect="vs-expr:${page-id:coordinator,/home/trial/site/update}?study_id=${request:study_id}&amp;org_id=${request:org_id}"/>
                 </banner>
+                <report>
+
+                    <column heading="ID"/>
+                    <column heading="Name" align="left"/>
+                    <column heading="Code" />
+                    <column heading="Abbrev" />
+                    <column heading="Employees" />
+                </report>
+            </panel>
+            <panel name="subject-view">
+                <frame heading="static:Site Information"/>
                 <report>
 
                     <column heading="ID"/>
@@ -170,6 +181,21 @@
                         <action type="edit" redirect="vs-expr:${page-id:coordinator,/home/trial/site/edit_address}?study_id=${request:study_id}&amp;org_id=${request:org_id}&amp;id=${0}"/>
                         <action type="delete" redirect="vs-expr:${page-id:coordinator,/home/trial/site/delete_address}?study_id=${request:study_id}&amp;org_id=${request:org_id}&amp;id=${0}"/>
                     </actions>
+                    <column heading="ID" hidden="yes"/>
+                    <column heading="Name"/>
+                    <column heading="Street Address"/>
+                    <column heading="City" />
+                    <column heading="State" />
+                    <column heading="Zip" />
+                </report>
+            </panel>
+            <!--
+                This report panel is for patients/subject. It does not contain any report actions because these types of
+                users do not have the capabilities.
+            -->
+            <panel name="subject-view">
+                <frame heading="static:Addresses"/>
+                <report>
                     <column heading="ID" hidden="yes"/>
                     <column heading="Name"/>
                     <column heading="Street Address"/>

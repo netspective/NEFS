@@ -115,11 +115,11 @@
         		<param value="authenticated-user:study_id"/>
         	</params>
             <presentation>
-                <panel>
+                <panel name="subject-view">
                     <frame heading="static:Trial Sponsors"/>
                     <report>
                         <column heading="ID"/>
-                        <column heading="Name" align="left" redirect="page-id:/trial/summary/sponsor?org_id=${0}"/>
+                        <column heading="Name" align="left" />
                         <column heading="Code" />
                         <column heading="Abbrev" />
                         <column heading="Employees" />
@@ -154,6 +154,16 @@
                         </actions>
                         <column heading="ID"/>
                         <column heading="Name" align="left" redirect="vs-expr:${page-id:coordinator,/home/trial/sponsor}?study_id=${request:study_id}&amp;org_id=${0}"/>
+                        <column heading="Code" />
+                        <column heading="Abbrev" />
+                        <column heading="Employees" />
+                    </report>
+                </panel>
+                <panel name="subject-view">
+                    <frame heading="static:Trial Sponsors"/>
+                    <report>
+                        <column heading="ID"/>
+                        <column heading="Name" align="left" />
                         <column heading="Code" />
                         <column heading="Abbrev" />
                         <column heading="Employees" />
