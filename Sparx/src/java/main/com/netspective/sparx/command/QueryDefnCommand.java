@@ -51,20 +51,21 @@
  */
 
 /**
- * $Id: QueryDefnCommand.java,v 1.2 2003-06-25 07:02:35 aye.thu Exp $
+ * $Id: QueryDefnCommand.java,v 1.3 2003-07-03 22:35:16 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.sql.QueryBuilderDialog;
+import com.netspective.sparx.form.sql.QuerySelectDialog;
+import com.netspective.sparx.sql.QueryDefinition;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.CommandException;
 import com.netspective.axiom.SqlManager;
-import com.netspective.axiom.sql.dynamic.QueryDefinition;
 
 import java.util.StringTokenizer;
 import java.util.List;
@@ -251,17 +252,29 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
 
     public QueryBuilderDialog createQueryDefnDialog(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
-        QueryDefinition queryDefn = sqlManager.getQueryDefinition(queryDefnName, true);
+        // get the registered query definition
+        com.netspective.sparx.sql.QueryDefinition queryDefn = (QueryDefinition) sqlManager.getQueryDefinition(queryDefnName, true);
         if(queryDefn == null)
         {
             writer.write("Query definition " + queryDefnName + " not found.");
             return null;
         }
-
-        QueryBuilderDialog result = new QueryBuilderDialog();
-        result.setName("queryDefn");
-        result.setQueryDefn(queryDefn);
-        result.setMaxConditions(MAXIMUM_CONDITIONS);
+        QueryBuilderDialog result = null;
+        if (queryDefnSelectDialogName != null && !queryDefnSelectDialogName.equals(PARAMVALUE_DEFAULT))
+        {
+            result = queryDefn.getPresentation().getSelectDialog(queryDefnSelectDialogName);
+            if (result == null)
+            {
+                writer.write("Query select dialog '" + queryDefnSelectDialogName + "' not found.");
+                return null;
+            }
+            result.setName(queryDefnSelectDialogName);
+            result.setQueryDefn(queryDefn);
+        }
+        else
+        {
+            result = queryDefn.createQueryBuilderDialog();
+        }
         return result;
         // TODO:
         //if(queryDefnSelectDialogName.equals(PARAMVALUE_DEFAULT))
