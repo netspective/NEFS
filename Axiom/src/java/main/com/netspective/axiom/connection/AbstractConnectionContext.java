@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.15 2003-09-05 16:10:42 roque.hernandez Exp $
+ * $Id: AbstractConnectionContext.java,v 1.16 2003-11-16 15:15:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -50,8 +50,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Collections;
 import java.util.Date;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 
 import javax.naming.NamingException;
 
@@ -67,6 +65,7 @@ import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.text.TextUtils;
 
 public abstract class AbstractConnectionContext implements ConnectionContext
 {
@@ -196,9 +195,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         if(contextNotClosedException == null)
             return null;
 
-        StringWriter sw = new StringWriter();
-        contextNotClosedException.printStackTrace(new PrintWriter(sw));
-        return sw.getBuffer().toString();
+        return TextUtils.getStackTrace(contextNotClosedException);
     }
 
     public void rollbackAndCloseAndLogAsConnectionLeak(Log log, String message)

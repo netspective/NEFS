@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.14 2003-09-29 04:37:41 aye.thu Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.15 2003-11-16 15:15:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -54,6 +54,8 @@ import java.sql.SQLException;
 import java.net.URL;
 
 import org.inxar.jenesis.*;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
@@ -75,6 +77,8 @@ import javax.naming.NamingException;
 
 public class DataAccessLayerGenerator
 {
+    private static final Log log = LogFactory.getLog(DataAccessLayerGenerator.class);
+
     private Schema.TableTree structure;
     private File rootDir;
     private String rootNameSpace;
@@ -127,7 +131,7 @@ public class DataAccessLayerGenerator
         {
             RuntimeException rex = new RuntimeException
                     ("Could not load VirtualMachine blockstyles: " + ioex.getMessage());
-            ioex.printStackTrace();
+            log.error(rex);
             throw rex;
         }
 

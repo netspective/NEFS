@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmHandler.java,v 1.7 2003-11-07 17:37:49 shahid.shah Exp $
+ * $Id: XdmHandler.java,v 1.8 2003-11-16 15:16:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -260,7 +260,7 @@ public class XdmHandler extends AbstractContentHandler
             }
             catch (DataModelException e)
             {
-                e.printStackTrace();
+                log.error(e.getMessage() + " " + getStateText(), e);
                 throw new SAXException(e.getMessage() + " " + getStateText(), e);
             }
 
@@ -316,7 +316,7 @@ public class XdmHandler extends AbstractContentHandler
                 }
                 catch (Exception e)
                 {
-                    e.printStackTrace();
+                    log.error(e.getMessage() + " " + getStateText(), e);
                     throw new SAXException(e.getMessage() + " " + getStateText(), e);
                 }
 
@@ -326,7 +326,7 @@ public class XdmHandler extends AbstractContentHandler
                 }
                 catch (DataModelException e)
                 {
-                    e.printStackTrace();
+                    log.error(e.getMessage() + " " + getStateText(), e);
                     throw new SAXException(e.getMessage() + " " + getStateText(), e);
                 }
             }

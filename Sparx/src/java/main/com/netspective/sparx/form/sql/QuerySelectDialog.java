@@ -73,7 +73,7 @@ import java.io.Writer;
 import java.sql.SQLException;
 
 /**
- * $Id: QuerySelectDialog.java,v 1.10 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: QuerySelectDialog.java,v 1.11 2003-11-16 15:18:03 shahid.shah Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -216,8 +216,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 }
                 catch (Exception e)
                 {
-                    e.printStackTrace();
-                    //log.error("Error trying to get debug SQL", e);
+                    getLog().error("Error trying to get debug SQL", e);
                     throw new DialogExecuteException(e);
                 }
                 finally
@@ -298,8 +297,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-            //log.error("Exception while trying to render report", e);
+            getLog().error("Exception while trying to render report", e);
             throw new DialogExecuteException(e);
         }
     }

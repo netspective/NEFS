@@ -39,12 +39,15 @@
  */
 
 /**
- * $Id: GetQueryResultsAsMatrixMethod.java,v 1.2 2003-08-31 14:15:04 shahid.shah Exp $
+ * $Id: GetQueryResultsAsMatrixMethod.java,v 1.3 2003-11-16 15:18:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
 import java.util.List;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModel;
@@ -60,6 +63,8 @@ import com.netspective.axiom.value.DatabaseConnValueContext;
 
 public class GetQueryResultsAsMatrixMethod implements TemplateMethodModel
 {
+    private static final Log log = LogFactory.getLog(GetQueryResultsAsMatrixMethod.class);
+
     public TemplateModel exec(List args) throws TemplateModelException
     {
         if (args.size() < 1)
@@ -73,7 +78,7 @@ public class GetQueryResultsAsMatrixMethod implements TemplateMethodModel
         }
         catch (TemplateModelException e)
         {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            log.error(e);
         }
 
 

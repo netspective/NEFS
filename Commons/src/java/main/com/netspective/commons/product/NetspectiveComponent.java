@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NetspectiveComponent.java,v 1.1 2003-08-15 01:48:53 shahid.shah Exp $
+ * $Id: NetspectiveComponent.java,v 1.2 2003-11-16 15:16:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.product;
@@ -92,7 +92,6 @@ public class NetspectiveComponent extends DefaultXdmComponent
         catch (Exception e)
         {
             log.error("Unable to load component", e);
-            e.printStackTrace();
             return;
         }
 

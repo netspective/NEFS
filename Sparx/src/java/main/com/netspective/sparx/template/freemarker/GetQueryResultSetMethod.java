@@ -39,12 +39,15 @@
  */
 
 /**
- * $Id: GetQueryResultSetMethod.java,v 1.1 2003-08-30 19:15:48 shahid.shah Exp $
+ * $Id: GetQueryResultSetMethod.java,v 1.2 2003-11-16 15:18:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
 import java.util.List;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModel;
@@ -58,6 +61,8 @@ import com.netspective.axiom.value.DatabaseConnValueContext;
 
 public class GetQueryResultSetMethod implements TemplateMethodModel
 {
+    private static final Log log = LogFactory.getLog(GetQueryResultSetMethod.class);
+
     public TemplateModel exec(List args) throws TemplateModelException
     {
         if (args.size() < 1)
@@ -71,7 +76,7 @@ public class GetQueryResultSetMethod implements TemplateMethodModel
         }
         catch (TemplateModelException e)
         {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            log.error(e);
         }
 
 

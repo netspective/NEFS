@@ -78,7 +78,7 @@ import java.io.IOException;
 /**
  * Command for executing a stored procedure and producing a report returned from the stored procedure as a result set
  * @author Aye Thu
- * @version $Id: StoredProcedureCommand.java,v 1.2 2003-11-12 04:36:21 aye.thu Exp $
+ * @version $Id: StoredProcedureCommand.java,v 1.3 2003-11-16 15:18:04 shahid.shah Exp $
  */
 public class StoredProcedureCommand extends AbstractHttpServletCommand
 {
@@ -147,7 +147,6 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
                 }
                 catch (NumberFormatException e)
                 {
-                    e.printStackTrace();
                     log.error("Invalid rows per page value for stored procedure command", e);
                 }
             }

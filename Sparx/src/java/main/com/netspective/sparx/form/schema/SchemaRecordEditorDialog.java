@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.11 2003-11-15 19:03:47 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.12 2003-11-16 15:18:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -891,7 +891,6 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             try
             {
                 cc.rollbackAndClose();

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.45 2003-11-15 19:03:48 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.46 2003-11-16 15:18:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -1208,11 +1208,8 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
 
     protected void renderFormattedExceptionMessage(Writer writer, Exception e) throws IOException
     {
-        StringWriter stackTraceWriter = new StringWriter();
-        PrintWriter stackTrace = new PrintWriter(stackTraceWriter);
-        e.printStackTrace(stackTrace);
         writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
-        writer.write(stackTraceWriter.toString());
+        writer.write(TextUtils.getStackTrace(e));
         writer.write("</pre>");
     }
 

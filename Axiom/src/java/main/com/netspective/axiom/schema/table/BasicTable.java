@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.21 2003-11-08 16:25:54 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.22 2003-11-16 15:15:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -711,7 +711,6 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             catch (QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
-                e.printStackTrace();
             }
         }
 
@@ -738,7 +737,6 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             catch (QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
-                e.printStackTrace();
             }
         }
     }
@@ -809,7 +807,6 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             catch (QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
-                e.printStackTrace();
             }
 
             PrimaryKeyColumns columns = getPrimaryKeyColumns();
@@ -847,7 +844,6 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             catch (QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
-                e.printStackTrace();
             }
         }
 
@@ -904,7 +900,6 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             catch (QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
-                e.printStackTrace();
             }
         }
         return qds;

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.15 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.16 2003-11-16 15:18:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -610,7 +610,6 @@ public class QueryBuilderDialog extends Dialog
             }
             catch (Exception e)
             {
-                e.printStackTrace();
                 getLog().error("Error trying to get debug SQL", e);
                 throw new DialogExecuteException(e);
             }

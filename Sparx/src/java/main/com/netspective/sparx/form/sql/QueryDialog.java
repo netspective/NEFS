@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.12 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: QueryDialog.java,v 1.13 2003-11-16 15:18:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -249,7 +249,6 @@ public class QueryDialog extends Dialog
         catch (DialogExecuteException e)
         {
             log.error("Dialog execute error", e);
-            e.printStackTrace();
             writer.write(e.toString());
         }
     }
@@ -437,7 +436,6 @@ public class QueryDialog extends Dialog
         catch (Exception e)
         {
             log.error("Exception while trying to render report", e);
-            e.printStackTrace();
             throw new DialogExecuteException(e);
         }
 

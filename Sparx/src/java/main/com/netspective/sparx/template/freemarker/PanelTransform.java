@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelTransform.java,v 1.4 2003-08-31 15:29:14 shahid.shah Exp $
+ * $Id: PanelTransform.java,v 1.5 2003-11-16 15:18:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -47,6 +47,9 @@ package com.netspective.sparx.template.freemarker;
 import java.io.Writer;
 import java.io.IOException;
 import java.util.Map;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import freemarker.template.TemplateTransformModel;
 import freemarker.template.TemplateModelException;
@@ -66,6 +69,8 @@ import com.netspective.commons.value.source.StaticValueSource;
 
 public class PanelTransform implements TemplateTransformModel
 {
+    private static final Log log = LogFactory.getLog(PanelTransform.class);
+
     public PanelTransform()
     {
     }
@@ -116,7 +121,7 @@ public class PanelTransform implements TemplateTransformModel
             }
             catch (TemplateModelException e)
             {
-                e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+                log.error(e);
             }
 
             vc = (HttpServletValueContext) model.getWrappedObject();
@@ -129,7 +134,7 @@ public class PanelTransform implements TemplateTransformModel
             }
             catch (IOException e)
             {
-                e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+                log.error(e);
             }
         }
 

@@ -39,15 +39,13 @@
  */
 
 /**
- * $Id: DialogContextAttributesPanel.java,v 1.9 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: DialogContextAttributesPanel.java,v 1.10 2003-11-16 15:18:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
@@ -129,9 +127,7 @@ public class DialogContextAttributesPanel extends DialogDetailPanel
             }
             catch(Exception e)
             {
-                StringWriter stack = new StringWriter();
-                e.printStackTrace(new PrintWriter(stack));
-                XML = e.toString() + stack.toString();
+                XML = e.toString() + "\n" + TextUtils.getStackTrace(e);
             }
             result.add(createAttribute("XML Representation", "<pre>" + XML + "</pre>"));
 

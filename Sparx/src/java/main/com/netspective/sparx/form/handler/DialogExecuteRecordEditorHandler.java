@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteRecordEditorHandler.java,v 1.1 2003-10-11 14:39:05 shahid.shah Exp $
+ * $Id: DialogExecuteRecordEditorHandler.java,v 1.2 2003-11-16 15:18:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -70,7 +70,6 @@ public abstract class DialogExecuteRecordEditorHandler extends DialogExecuteDefa
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             dialog.getLog().error("Failed to get connection", e);
             dialog.handlePostExecuteException(writer, dc, "Failed to get connection.", e);
             return;

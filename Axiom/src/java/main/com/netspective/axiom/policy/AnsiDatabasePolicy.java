@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.7 2003-10-15 15:28:04 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.8 2003-11-16 15:15:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -1089,7 +1089,6 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 catch (Exception e)
                 {
                     log.error(e.getMessage(), e);
-                    e.printStackTrace();
                 }
             }
         }

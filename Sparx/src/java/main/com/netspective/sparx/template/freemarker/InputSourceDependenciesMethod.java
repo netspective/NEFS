@@ -39,12 +39,15 @@
  */
 
 /**
- * $Id: InputSourceDependenciesMethod.java,v 1.3 2003-10-08 21:14:26 shahid.shah Exp $
+ * $Id: InputSourceDependenciesMethod.java,v 1.4 2003-11-16 15:18:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
 import java.util.List;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModel;
@@ -60,6 +63,8 @@ import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
 public class InputSourceDependenciesMethod implements TemplateMethodModel
 {
+    private static final Log log = LogFactory.getLog(InputSourceDependenciesMethod.class);
+
     public TemplateModel exec(List args) throws TemplateModelException
     {
         Environment env = Environment.getCurrentEnvironment();
@@ -70,7 +75,7 @@ public class InputSourceDependenciesMethod implements TemplateMethodModel
         }
         catch (TemplateModelException e)
         {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            log.error(e);
         }
 
         BasicDbHttpServletValueContext vc = (BasicDbHttpServletValueContext) model.getWrappedObject();

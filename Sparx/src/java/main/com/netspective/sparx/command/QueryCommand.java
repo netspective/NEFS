@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.11 2003-10-20 22:20:26 shahid.shah Exp $
+ * $Id: QueryCommand.java,v 1.12 2003-11-16 15:18:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -163,7 +163,6 @@ public class QueryCommand extends AbstractHttpServletCommand
                 }
                 catch (NumberFormatException e)
                 {
-                    e.printStackTrace();
                     log.error("Invalid rows per page value for query command", e);
                 }
             }
