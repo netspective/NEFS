@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.6 2003-07-09 02:10:35 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.7 2003-07-17 13:49:20 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -537,9 +537,14 @@ public class AxiomTask extends XdmComponentTask
 
         if(getDestDir() == null)
             throw new BuildException("No destDir attribute provided for destination of DAL files.");
-        getDestDir().mkdirs();
 
         Schema schema = getSchema(sqlManager, true);
+
+        if(isCleanFirst())
+            delete(new File(getDestDir(), (dalRootPackage + "." + schema.getName().toLowerCase()).replace('.', '/')));
+
+        getDestDir().mkdirs();
+
         try
         {
             schema.generateDataAccessLayer(getDestDir(), dalRootPackage, dalClassNameWithoutPackage);
