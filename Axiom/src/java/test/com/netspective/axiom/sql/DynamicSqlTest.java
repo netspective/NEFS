@@ -74,7 +74,7 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import junit.framework.TestCase;
 
 /**
- * $Id: DynamicSqlTest.java,v 1.12 2004-08-15 01:38:22 shahid.shah Exp $
+ * $Id: DynamicSqlTest.java,v 1.13 2004-08-15 01:51:48 shahid.shah Exp $
  */
 public class DynamicSqlTest extends TestCase
 {
@@ -85,16 +85,16 @@ public class DynamicSqlTest extends TestCase
     protected String[] fqQueryDefnNames = new String[]{"query-defn-1", "query-defn-2"};
     static protected File dbFile = null;
     static protected String dbFilename = null;
-	static DatabasePolicy dbPolicy = new HSqlDbDatabasePolicy();
+    static DatabasePolicy dbPolicy = new HSqlDbDatabasePolicy();
 
-    static protected int[] numFields = new int[] {5, 5};
-    static protected int[] numJoins = new int[] {5, 4};
-    static protected int[] numSelects = new int[] {1, 1};
-	static protected int[] numDisplayFields = new int[] {3, 3};
-	static protected int[] numOrderBys = new int[] {1, 0};
-	static protected int[] numGroupBys = new int[] {1, 0};
-	static protected int[] numConditions = new int[] {9, 0};
-	static protected int[] numWhereExpr = new int[] {1, 0};
+    static protected int[] numFields = new int[]{5, 5};
+    static protected int[] numJoins = new int[]{5, 4};
+    static protected int[] numSelects = new int[]{1, 1};
+    static protected int[] numDisplayFields = new int[]{3, 3};
+    static protected int[] numOrderBys = new int[]{1, 0};
+    static protected int[] numGroupBys = new int[]{1, 0};
+    static protected int[] numConditions = new int[]{9, 0};
+    static protected int[] numWhereExpr = new int[]{1, 0};
 
     static protected int fieldIndexWithBadJoin = 3;
     static protected int queryDefnIndexWithMalformedSyntax = 1;
@@ -139,11 +139,12 @@ public class DynamicSqlTest extends TestCase
         Set queryDefnNames = queryDefns.getNames();
         assertEquals(this.queryDefnNames.length, queryDefnNames.size());
 
-        for (int i = 0; i < this.queryDefnNames.length; i++) {
+        for (int i = 0; i < this.queryDefnNames.length; i++)
+        {
             assertEquals(this.queryDefnNames[i], queryDefns.get(i).getName());
-			assertNull(queryDefns.get(i).getContainer());
-			assertEquals(this.queryDefnNames[i], queryDefns.get(i).getNameSpaceId());
-		}
+            assertNull(queryDefns.get(i).getContainer());
+            assertEquals(this.queryDefnNames[i], queryDefns.get(i).getNameSpaceId());
+        }
     }
 
     public void testQueryDefnValidity() throws QueryDefinitionException, DataModelException, InstantiationException, InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException, NamingException, SQLException
@@ -159,44 +160,65 @@ public class DynamicSqlTest extends TestCase
             assertTrue(actualQueryDefnNames.contains(queryDefnNames[i].toUpperCase()));
         }
 
-        String[][] expectedFieldCaptionList = new String[][] {
-            new String[]{null, "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption", "Test Field 05 Caption"},
-            new String[]{null, "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption", "Test Field 05 Caption"}
+        String[][] expectedFieldCaptionList = new String[][]{
+            new String[]{
+                null, "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption",
+                "Test Field 05 Caption"
+            },
+            new String[]{
+                null, "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption",
+                "Test Field 05 Caption"
+            }
         };
-        String[][] expectedFieldColumnLabelList = new String[][] {
-            new String[]{"field_01", "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption", "Test Field 05 Caption"},
-           new String[]{"field_01", "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption", "Test Field 05 Caption"}
+        String[][] expectedFieldColumnLabelList = new String[][]{
+            new String[]{
+                "field_01", "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption",
+                "Test Field 05 Caption"
+            },
+            new String[]{
+                "field_01", "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption",
+                "Test Field 05 Caption"
+            }
         };
-        String[][] expectedFieldQualifiedColNameList = new String[][] {
+        String[][] expectedFieldQualifiedColNameList = new String[][]{
             new String[]{"join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"},
             new String[]{"join_01.column_01", "join_02.column_02", "column_03", "join_04.column_04", "column_05"}
         };
-        String[][] expectedFieldTableNameList = new String[][] {
+        String[][] expectedFieldTableNameList = new String[][]{
             new String[]{"join_01", "Table_02", null, null, null},
             new String[]{"join_01", "Table_02", null, null, null}
         };
-        String[][] expectedFieldTableAliasList = new String[][] {
+        String[][] expectedFieldTableAliasList = new String[][]{
             new String[]{"join_01", "join_02", null, null, null},
             new String[]{"join_01", "join_02", null, null, null}
         };
-        String[][] expectedSelectClauseExprAndLabelList = new String[][] {
-            new String[]{"join_01.column_01 as \"field_01\"", "join_02.column_02a as \"Test Field 02 Caption\"", "column_03 as \"Test Field 03 Caption\"", "column_04 as \"Test Field 04 Caption\"", "column_05 as \"Test Field 05 Caption\""},
-            new String[]{"join_01.column_01 as \"field_01\"", "join_02.column_02 as \"Test Field 02 Caption\"", "column_03 as \"Test Field 03 Caption\"", "column_04 as \"Test Field 04 Caption\"", "column_05 as \"Test Field 05 Caption\""}
+        String[][] expectedSelectClauseExprAndLabelList = new String[][]{
+            new String[]{
+                "join_01.column_01 as \"field_01\"", "join_02.column_02a as \"Test Field 02 Caption\"",
+                "column_03 as \"Test Field 03 Caption\"", "column_04 as \"Test Field 04 Caption\"",
+                "column_05 as \"Test Field 05 Caption\""
+            },
+            new String[]{
+                "join_01.column_01 as \"field_01\"", "join_02.column_02 as \"Test Field 02 Caption\"",
+                "column_03 as \"Test Field 03 Caption\"", "column_04 as \"Test Field 04 Caption\"",
+                "column_05 as \"Test Field 05 Caption\""
+            }
         };
-        String[][] expectedFieldColExprList = new String[][] {
+        String[][] expectedFieldColExprList = new String[][]{
             new String[]{"join_01.column_01", "join_02.column_02a", "column_03", "column_04", "column_05"},
             new String[]{"join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"}
         };
-        String[][] expectedFieldWhereExprList = new String[][] {
+        String[][] expectedFieldWhereExprList = new String[][]{
             new String[]{"join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"},
             new String[]{"join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"}
         };
-        String[][] expectedFieldOrderByExprList = new String[][] {
+        String[][] expectedFieldOrderByExprList = new String[][]{
             new String[]{"join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"},
             new String[]{"join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"}
         };
 
-        for (int item = 0; item < queryDefns.size(); item ++) {
+        for (int item = 0; item < queryDefns.size(); item++)
+        {
             QueryDefinition queryDefn = manager.getQueryDefinition(queryDefnNames[item]);
             assertNotNull(queryDefn);
             assertEquals(queryDefn, queryDefns.get(queryDefnNames[item]));
@@ -221,11 +243,15 @@ public class DynamicSqlTest extends TestCase
             List joinList = new ArrayList(queryDefn.getJoins().size());
             String[] expectedJoinName = new String[]{"join_01", "join_02", "join_03", "join_04"};
             String[] expectedJoinTable = new String[]{"join_01", "Table_02", "Table_03", "Table_04"};
-            String[] expectedJoinFromExpr = new String[]{expectedJoinName[0], expectedJoinTable[1] + " " + expectedJoinName[1], expectedJoinTable[2] + " " + expectedJoinName[2], expectedJoinTable[3] + " " + expectedJoinName[3]};
+            String[] expectedJoinFromExpr = new String[]{
+                expectedJoinName[0], expectedJoinTable[1] + " " + expectedJoinName[1],
+                expectedJoinTable[2] + " " + expectedJoinName[2], expectedJoinTable[3] + " " + expectedJoinName[3]
+            };
 
             for (int i = 0; i < fields.size(); i++)
             {
-                boolean exceptionThrownStatus = (queryDefnIndexWithMalformedSyntax == item && fieldIndexWithBadJoin == i) ? true : false;
+                boolean exceptionThrownStatus = (queryDefnIndexWithMalformedSyntax == item && fieldIndexWithBadJoin == i)
+                        ? true : false;
                 boolean qdExceptionThrown = true;
 
                 QueryDefnField field = fields.get(i);
@@ -410,12 +436,12 @@ public class DynamicSqlTest extends TestCase
                     QueryDefnJoin[] impliedJoins = getJoins(field.getJoin());
 
                     if (null != impliedJoins)
-                        for (int j = 0; j < impliedJoins.length; j ++)
+                        for (int j = 0; j < impliedJoins.length; j++)
                             joinList.add(impliedJoins[j]);
                 }
             }
 
-            for (int i = 0; i < joinList.size(); i ++)
+            for (int i = 0; i < joinList.size(); i++)
             {
                 QueryDefnJoin join = (QueryDefnJoin) joinList.get(i);
 
@@ -426,7 +452,7 @@ public class DynamicSqlTest extends TestCase
                 assertEquals(expectedJoinFromExpr[i], join.getFromExpr());
             }
 
-			assertEquals(0, queryDefn.getWhereExpressions().size());
+            assertEquals(0, queryDefn.getWhereExpressions().size());
 
             QueryDefnSelect qdsl = queryDefn.getSelects().get("query-select-1");
             assertNotNull(qdsl);
@@ -436,7 +462,7 @@ public class DynamicSqlTest extends TestCase
 
             //DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
             //dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
-        //        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+            //        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
             //ValueSource vs = ValueSources.getInstance().getValueSource("data-sources:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
             //Value value = vs.getValue(dbvc);
@@ -470,16 +496,35 @@ public class DynamicSqlTest extends TestCase
 
         // Verify Fields...
         QueryDefnFields fields = queryDefn.getFields();
-        String[] expectedFieldCaption = new String[] { null, "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption", "Test Field 05 Caption" };
-        String[] expectedFieldColumnLabel = new String[] { "field_01", "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption", "Test Field 05 Caption" };
-        String[] expectedFieldQualifiedColNameOne = new String[] { "join_01.column_01", "join_02.column_02a", "column_03", "column_04", "column_05" };
-        String[] expectedFieldQualifiedColNameTwo = new String[] { "join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05" };
-        String[] expectedFieldTableName = new String[] { "join_01", "Table_02", null, null, null };
-        String[] expectedFieldTableAlias = new String[] { "join_01", "join_02", null, null, null };
-        String[] expectedSelectClauseExprAndLabel = new String[] { "join_01.column_01 as \"field_01\"", "join_02.column_02a as \"Test Field 02 Caption\"", "column_03 as \"Test Field 03 Caption\"", "column_04 as \"Test Field 04 Caption\"", "column_05 as \"Test Field 05 Caption\"" };
-        String[] expectedFieldColExpr = new String[]{"join_01.column_01", "join_02.column_02a", "column_03", "column_04", "column_05"};
-        String[] expectedFieldWhereExpr = new String[]{"join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"};
-        String[] expectedFieldOrderByExpr = new String[]{"join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"};
+        String[] expectedFieldCaption = new String[]{
+            null, "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption", "Test Field 05 Caption"
+        };
+        String[] expectedFieldColumnLabel = new String[]{
+            "field_01", "Test Field 02 Caption", "Test Field 03 Caption", "Test Field 04 Caption",
+            "Test Field 05 Caption"
+        };
+        String[] expectedFieldQualifiedColNameOne = new String[]{
+            "join_01.column_01", "join_02.column_02a", "column_03", "column_04", "column_05"
+        };
+        String[] expectedFieldQualifiedColNameTwo = new String[]{
+            "join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"
+        };
+        String[] expectedFieldTableName = new String[]{"join_01", "Table_02", null, null, null};
+        String[] expectedFieldTableAlias = new String[]{"join_01", "join_02", null, null, null};
+        String[] expectedSelectClauseExprAndLabel = new String[]{
+            "join_01.column_01 as \"field_01\"", "join_02.column_02a as \"Test Field 02 Caption\"",
+            "column_03 as \"Test Field 03 Caption\"", "column_04 as \"Test Field 04 Caption\"",
+            "column_05 as \"Test Field 05 Caption\""
+        };
+        String[] expectedFieldColExpr = new String[]{
+            "join_01.column_01", "join_02.column_02a", "column_03", "column_04", "column_05"
+        };
+        String[] expectedFieldWhereExpr = new String[]{
+            "join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"
+        };
+        String[] expectedFieldOrderByExpr = new String[]{
+            "join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"
+        };
 
         for (int i = 0; i < fields.size(); i++)
         {
@@ -527,7 +572,10 @@ public class DynamicSqlTest extends TestCase
         List joinList = new ArrayList(queryDefn.getJoins().size());
         String[] expectedJoinName = new String[]{"join_01", "join_02", "join_03", "join_04", "join_05"};
         String[] expectedJoinTable = new String[]{"join_01", "Table_02", "Table_03", "Table_04", "Table_05"};
-        String[] expectedJoinFromExpr = new String[]{expectedJoinName[0], expectedJoinTable[1] + " " + expectedJoinName[1], expectedJoinTable[2] + " " + expectedJoinName[2], expectedJoinTable[3] + " " + expectedJoinName[3]};
+        String[] expectedJoinFromExpr = new String[]{
+            expectedJoinName[0], expectedJoinTable[1] + " " + expectedJoinName[1],
+            expectedJoinTable[2] + " " + expectedJoinName[2], expectedJoinTable[3] + " " + expectedJoinName[3]
+        };
 
         for (int i = 0; i < fields.size(); i++)
         {
@@ -599,83 +647,106 @@ public class DynamicSqlTest extends TestCase
         select.setDistinct(true);
         assertTrue(select.distinctRowsOnly());
 
-		String[] expectedDisplayFieldNames = new String[] {"field_01", "field_02", "field_03"};
-		String[] expectedGroupByFieldNames = new String[] {"field_01"};
-		String[] expectedOrderByFieldNames = new String[] {"field_03"};
-		int[] expectedWhereExpressionConnector = new int[] {QueryDefnCondition.CONNECT_AND};
-		String[] expectedWhereExpressions = new String[] {"field_01 in ('A', 'B', 'C')"};
+        String[] expectedDisplayFieldNames = new String[]{"field_01", "field_02", "field_03"};
+        String[] expectedGroupByFieldNames = new String[]{"field_01"};
+        String[] expectedOrderByFieldNames = new String[]{"field_03"};
+        int[] expectedWhereExpressionConnector = new int[]{QueryDefnCondition.CONNECT_AND};
+        String[] expectedWhereExpressions = new String[]{"field_01 in ('A', 'B', 'C')"};
 
-		String[][] expectedConditionExpressions = new String[][] {
-			new String[] {"field_01", "equals", "10", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]},
-			new String[] {"field_02", "starts-with", "a", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]},
-			new String[] {"field_03", "contains-ignore-case", "eve", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]},
-			new String[] {"field_04", "ends-with", "adam", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]},
-			new String[] {"field_05", "contains", "abel", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]},
-			new String[] {"field_01", "in", "'C', 'D', 'E'", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]},
-			new String[] {"field_02", "is-defined", "field_02", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]},
-			new String[] {"field_03", "lte-date", "10/11/2012", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_OR]},
-			new String[] {"field_04", "greater-than", "10", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]},
-		};
+        String[][] expectedConditionExpressions = new String[][]{
+            new String[]{"field_01", "equals", "10", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]},
+            new String[]{
+                "field_02", "starts-with", "a", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]
+            },
+            new String[]{
+                "field_03", "contains-ignore-case", "eve",
+                QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]
+            },
+            new String[]{
+                "field_04", "ends-with", "adam", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]
+            },
+            new String[]{
+                "field_05", "contains", "abel", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]
+            },
+            new String[]{
+                "field_01", "in", "'C', 'D', 'E'", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]
+            },
+            new String[]{
+                "field_02", "is-defined", "field_02", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]
+            },
+            new String[]{
+                "field_03", "lte-date", "10/11/2012", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_OR]
+            },
+            new String[]{
+                "field_04", "greater-than", "10", QueryDefnCondition.CONNECTOR_SQL[QueryDefnCondition.CONNECT_AND]
+            },
+        };
 
         assertSame(queryDefn, select.getQueryDefn());
 
-		assertEquals(numDisplayFields[0], select.getDisplayFields().size());
-		QueryDefnFields qdDisplayFields = select.getDisplayFields();
-        for (int i = 0; i < qdDisplayFields.size(); i ++) {
-			QueryDefnField qdField = qdDisplayFields.get(i);
+        assertEquals(numDisplayFields[0], select.getDisplayFields().size());
+        QueryDefnFields qdDisplayFields = select.getDisplayFields();
+        for (int i = 0; i < qdDisplayFields.size(); i++)
+        {
+            QueryDefnField qdField = qdDisplayFields.get(i);
 
-			assertEquals(expectedDisplayFieldNames[i], qdField.getName());
-		}
+            assertEquals(expectedDisplayFieldNames[i], qdField.getName());
+        }
 
         assertEquals(numGroupBys[0], select.getGroupByFields().size());
-		QueryDefnFields qdGroupByFields = select.getGroupByFields();
-		for (int i = 0; i < qdGroupByFields.size(); i ++) {
-			QueryDefnField qdField = qdGroupByFields.get(i);
+        QueryDefnFields qdGroupByFields = select.getGroupByFields();
+        for (int i = 0; i < qdGroupByFields.size(); i++)
+        {
+            QueryDefnField qdField = qdGroupByFields.get(i);
 
-			assertEquals(expectedGroupByFieldNames[i], qdField.getName());
-		}
+            assertEquals(expectedGroupByFieldNames[i], qdField.getName());
+        }
 
         assertEquals(numOrderBys[0], select.getOrderByFieldRefs().size());
-		QueryDefnSortFieldReferences qdSortFieldRefs = select.getOrderByFieldRefs();
-		for (int i = 0; i < qdSortFieldRefs.size(); i ++) {
-			QueryDefnSortFieldReference qdSortFieldRef = qdSortFieldRefs.get(i);
+        QueryDefnSortFieldReferences qdSortFieldRefs = select.getOrderByFieldRefs();
+        for (int i = 0; i < qdSortFieldRefs.size(); i++)
+        {
+            QueryDefnSortFieldReference qdSortFieldRef = qdSortFieldRefs.get(i);
 
-			QueryDefinition.QueryFieldSortInfo[] qfSortInfo = qdSortFieldRef.getFields(null);
+            QueryDefinition.QueryFieldSortInfo[] qfSortInfo = qdSortFieldRef.getFields(null);
 
-			for (int j = 0; j < qfSortInfo.length; j ++) {
-				assertEquals(expectedOrderByFieldNames[j], qfSortInfo[j].getField().getName());
-				assertFalse(qfSortInfo[j].isDescending());
-			}
-		}
+            for (int j = 0; j < qfSortInfo.length; j++)
+            {
+                assertEquals(expectedOrderByFieldNames[j], qfSortInfo[j].getField().getName());
+                assertFalse(qfSortInfo[j].isDescending());
+            }
+        }
 
         assertEquals(numWhereExpr[0], select.getWhereExprs().size());
-		QueryDefnSqlWhereExpressions whereExprs = select.getWhereExprs();
-		QueryDefnSelectStmtGenerator stmtGen = dbPolicy.createSelectStatementGenerator(select);
+        QueryDefnSqlWhereExpressions whereExprs = select.getWhereExprs();
+        QueryDefnSelectStmtGenerator stmtGen = dbPolicy.createSelectStatementGenerator(select);
 
-		for (int i = 0; i < whereExprs.size(); i ++) {
-			QueryDefnSqlWhereExpression whereExpr = whereExprs.get(i);
+        for (int i = 0; i < whereExprs.size(); i++)
+        {
+            QueryDefnSqlWhereExpression whereExpr = whereExprs.get(i);
 
-			assertEquals(expectedWhereExpressionConnector[i], whereExpr.getConnector());
-			assertEquals(expectedWhereExpressions[i], whereExpr.getWhereCondExpr(stmtGen, null));
-		}
+            assertEquals(expectedWhereExpressionConnector[i], whereExpr.getConnector());
+            assertEquals(expectedWhereExpressions[i], whereExpr.getWhereCondExpr(stmtGen, null));
+        }
 
         assertEquals(numConditions[0], select.getConditions().size());
-		QueryDefnConditions qdConditions = select.getConditions();
+        QueryDefnConditions qdConditions = select.getConditions();
 
-		for (int i = 0; i < qdConditions.size(); i ++) {
-			QueryDefnCondition qdCondition = qdConditions.get(i);
-			String[] expectedConditionExpression = expectedConditionExpressions[i];
+        for (int i = 0; i < qdConditions.size(); i++)
+        {
+            QueryDefnCondition qdCondition = qdConditions.get(i);
+            String[] expectedConditionExpression = expectedConditionExpressions[i];
 
-			assertSame(queryDefn, qdCondition.getOwner());
-			assertTrue(qdCondition.isNotNested());
-			assertFalse(qdCondition.isNested());
-			assertNull(qdCondition.getParentCondition());
-			assertEquals(expectedConditionExpression[0], qdCondition.getField().getName());
-			assertEquals(expectedConditionExpression[1], qdCondition.getComparison().getName());
-			assertEquals(expectedConditionExpression[2], qdCondition.getValue().getTextValue(null));
-			assertEquals(expectedConditionExpression[3], qdCondition.getConnectorSql());
-			assertNull(qdCondition.getBindExpr());
-		}
+            assertSame(queryDefn, qdCondition.getOwner());
+            assertTrue(qdCondition.isNotNested());
+            assertFalse(qdCondition.isNested());
+            assertNull(qdCondition.getParentCondition());
+            assertEquals(expectedConditionExpression[0], qdCondition.getField().getName());
+            assertEquals(expectedConditionExpression[1], qdCondition.getComparison().getName());
+            assertEquals(expectedConditionExpression[2], qdCondition.getValue().getTextValue(null));
+            assertEquals(expectedConditionExpression[3], qdCondition.getConnectorSql());
+            assertNull(qdCondition.getBindExpr());
+        }
 
         //TODO: See if this assertion is really necessary
         //assertEquals("jdbc:hsqldb:" + dbFilename, TestUtils.getConnprovider().getDataSourceInfo(this.getClass().getPackage().getName()).getConnUrl());
@@ -684,12 +755,12 @@ public class DynamicSqlTest extends TestCase
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
-		String expectedSqlOne = "select distinct join_01.column_01 as \"field_01\", join_02.column_02a as \"Test Field 02 Caption\", column_03 as \"Test Field 03 Caption\" from join_01, Table_02 join_02, Table_03 join_03, /* implied by join definition 'join_02' */ Table_04 join_04, /* implied by join definition 'join_03' */ Table_05 join_05 /* auto-included for join definition 'join_05' */ where ( (join_01.column_01 = ?) and (join_02.column_02 like ?) and (UPPER(column_03) like UPPER(?)) and (column_05 like ?) and (join_01.column_01 in (?)) and (join_02.column_02 is not null) and (column_03 like ?) ) and (field_01 in ('A', 'B', 'C') ) group by join_01.column_01 order by column_03";
+        String expectedSqlOne = "select distinct join_01.column_01 as \"field_01\", join_02.column_02a as \"Test Field 02 Caption\", column_03 as \"Test Field 03 Caption\" from join_01, Table_02 join_02, Table_03 join_03, /* implied by join definition 'join_02' */ Table_04 join_04, /* implied by join definition 'join_03' */ Table_05 join_05 /* auto-included for join definition 'join_05' */ where ( (join_01.column_01 = ?) and (join_02.column_02 like ?) and (UPPER(column_03) like UPPER(?)) and (column_05 like ?) and (join_01.column_01 in (?)) and (join_02.column_02 is not null) and (column_03 like ?) ) and (field_01 in ('A', 'B', 'C') ) group by join_01.column_01 order by column_03";
 
         String sqlOne = select.getSqlText(cc);
         sqlOne = TextUtils.getInstance().join(TextUtils.getInstance().split(sqlOne, " \r\t\f\n", true), " ");
 
-		//System.out.println("\n" + sqlOne + "\n" + expectedSqlOne);
+        //System.out.println("\n" + sqlOne + "\n" + expectedSqlOne);
 
         assertEquals(expectedSqlOne, sqlOne);
 
@@ -701,7 +772,7 @@ public class DynamicSqlTest extends TestCase
         //System.out.println(dtd);
     }
 
-    protected QueryDefnJoin[] getJoins (QueryDefnJoin join) throws QueryDefinitionException
+    protected QueryDefnJoin[] getJoins(QueryDefnJoin join) throws QueryDefinitionException
     {
         List impliedJoins = new ArrayList();
 
@@ -709,14 +780,14 @@ public class DynamicSqlTest extends TestCase
 
         if (null == joins) return joins;
 
-        for (int i = 0; i < joins.length; i ++)
+        for (int i = 0; i < joins.length; i++)
         {
             impliedJoins.add(joins[i]);
 
             QueryDefnJoin[] deeperJoins = getJoins(joins[i]);
 
             if (null != deeperJoins)
-                for (int j = 0; j < deeperJoins.length; j ++)
+                for (int j = 0; j < deeperJoins.length; j++)
                     impliedJoins.add(deeperJoins[j]);
         }
 

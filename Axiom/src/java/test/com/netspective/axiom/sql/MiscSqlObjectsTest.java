@@ -71,25 +71,27 @@ import junit.framework.TestCase;
 public class MiscSqlObjectsTest extends TestCase
 {
     public static final String RESOURCE_NAME = "SqlManagerQueryTest.xml";
-	protected SqlManagerComponent component = null;
-	protected SqlManager manager = null;
-    protected String[] queryNames = new String[] { "statement-0", "statement-1", "bad-statement", "statement-2" };
-    protected String[] fqQueryNames = new String[]{"test.statement-0", "test.statement-1", "test.bad-statement", "test.statement-2"};
+    protected SqlManagerComponent component = null;
+    protected SqlManager manager = null;
+    protected String[] queryNames = new String[]{"statement-0", "statement-1", "bad-statement", "statement-2"};
+    protected String[] fqQueryNames = new String[]{
+        "test.statement-0", "test.statement-1", "test.bad-statement", "test.statement-2"
+    };
 
-	protected void setUp () throws Exception
+    protected void setUp() throws Exception
     {
-		super.setUp();
+        super.setUp();
 
-		component =
-		        (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(MiscSqlObjectsTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
-		assertNotNull(component);
+        component =
+                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(MiscSqlObjectsTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+        assertNotNull(component);
 
-		component.printErrorsAndWarnings();
-		assertEquals(0, component.getErrors().size());
+        component.printErrorsAndWarnings();
+        assertEquals(0, component.getErrors().size());
 
-		manager = component.getManager();
-		assertEquals(this.queryNames.length, manager.getQueries().size());
-	}
+        manager = component.getManager();
+        assertEquals(this.queryNames.length, manager.getQueries().size());
+    }
 
     public void testDatabaseValueContexts()
     {
@@ -109,53 +111,53 @@ public class MiscSqlObjectsTest extends TestCase
         assertNull(dbpvc.getSqlManager());
     }
 
-	public void testQueryNameSpaceObjects()
-	{
-		Query testStatement = manager.getQuery("test.statement-0");
-		assertNotNull(testStatement);
-		assertNull(testStatement.getParams());
+    public void testQueryNameSpaceObjects()
+    {
+        Query testStatement = manager.getQuery("test.statement-0");
+        assertNotNull(testStatement);
+        assertNull(testStatement.getParams());
 
-		QueriesPackage qPackage = (QueriesPackage) testStatement.getNameSpace();
+        QueriesPackage qPackage = (QueriesPackage) testStatement.getNameSpace();
         Queries queries = qPackage.getContainer();
 
-		assertSame(manager.getQueries(), queries);
-	}
+        assertSame(manager.getQueries(), queries);
+    }
 
-	public void testQueryParameters() throws NamingException, SQLException
-	{
-	    Query testStmt = manager.getQuery("test.statement-1");
-	    assertNotNull(testStmt);
-	    assertNotNull(testStmt.getParams());
-	    assertEquals(2, testStmt.getParams().size());
+    public void testQueryParameters() throws NamingException, SQLException
+    {
+        Query testStmt = manager.getQuery("test.statement-1");
+        assertNotNull(testStmt);
+        assertNotNull(testStmt.getParams());
+        assertEquals(2, testStmt.getParams().size());
 
-		QueryParameters params = testStmt.getParams();
-		assertEquals(2, params.size());
+        QueryParameters params = testStmt.getParams();
+        assertEquals(2, params.size());
         assertEquals("test.statement-1", params.getQuery().getQualifiedName());
 
-	    QueryParameter columnA = (QueryParameter) params.get(0);
-		QueryParameter columnB = (QueryParameter) params.get(1);
+        QueryParameter columnA = (QueryParameter) params.get(0);
+        QueryParameter columnB = (QueryParameter) params.get(1);
 
-		// Test QueryParameter(s)
-		assertEquals("column_a", columnA.getName());
-		assertEquals("abc", columnA.getValue().getTextValue(null));
-		assertFalse(columnA.isListType());
-		assertTrue(columnA.isScalarType());
-		assertEquals(1, columnA.getIndex());
-		assertEquals(Types.VARCHAR, columnA.getSqlTypeCode());
-		assertEquals(String.class, columnA.getJavaType());
+        // Test QueryParameter(s)
+        assertEquals("column_a", columnA.getName());
+        assertEquals("abc", columnA.getValue().getTextValue(null));
+        assertFalse(columnA.isListType());
+        assertTrue(columnA.isScalarType());
+        assertEquals(1, columnA.getIndex());
+        assertEquals(Types.VARCHAR, columnA.getSqlTypeCode());
+        assertEquals(String.class, columnA.getJavaType());
         assertEquals(params, columnA.getParent());
 
-		assertEquals("column_b", columnB.getName());
-		assertEquals("abc", columnB.getValue().getTextValue(null));
-		assertEquals(2, columnB.getIndex());
-		assertEquals(Types.ARRAY, columnB.getSqlTypeCode());
-		assertEquals(String.class, columnB.getJavaType());
+        assertEquals("column_b", columnB.getName());
+        assertEquals("abc", columnB.getValue().getTextValue(null));
+        assertEquals(2, columnB.getIndex());
+        assertEquals(Types.ARRAY, columnB.getSqlTypeCode());
+        assertEquals(String.class, columnB.getJavaType());
         assertEquals(params, columnB.getParent());
 
-		String[] expectedColBParamValues = new String[] { "abc", "def", "ghi", "jkl" };
-		String[] actualColBParamValues = columnB.getValue().getTextValues(null);
-		for (int i = 0; i < expectedColBParamValues.length; i++)
-			assertEquals(expectedColBParamValues[i], actualColBParamValues[i]);
+        String[] expectedColBParamValues = new String[]{"abc", "def", "ghi", "jkl"};
+        String[] actualColBParamValues = columnB.getValue().getTextValues(null);
+        for (int i = 0; i < expectedColBParamValues.length; i++)
+            assertEquals(expectedColBParamValues[i], actualColBParamValues[i]);
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
@@ -167,7 +169,7 @@ public class MiscSqlObjectsTest extends TestCase
         Integer[] bindType = vrc.getBindTypes();
 
         assertEquals(bindValue.length, bindType.length);
-        for (int i = 0; i < bindValue.length; i ++)
+        for (int i = 0; i < bindValue.length; i++)
         {
             if (0 == i)
                 assertEquals("abc", bindValue[i]);
@@ -178,49 +180,49 @@ public class MiscSqlObjectsTest extends TestCase
         }
 
         cc.close();
-	}
+    }
 
-	public void testDbmsTexts()
-	{
+    public void testDbmsTexts()
+    {
         Query testStatement = manager.getQuery("test.statement-0");
-		assertNotNull(testStatement);
-		assertNull(testStatement.getParams());
+        assertNotNull(testStatement);
+        assertNull(testStatement.getParams());
 
-		DbmsSqlTexts dbmsSqlTextsOne = ((DbmsSqlTexts) testStatement.getSqlTexts()).getCopy();
-		DbmsSqlTexts dbmsSqlTextsTwo = dbmsSqlTextsOne.getCopy();
-		assertEquals(dbmsSqlTextsOne.size(), dbmsSqlTextsTwo.size());
-		assertEquals(dbmsSqlTextsOne.getAvailableDbmsIds(), dbmsSqlTextsTwo.getAvailableDbmsIds());
+        DbmsSqlTexts dbmsSqlTextsOne = ((DbmsSqlTexts) testStatement.getSqlTexts()).getCopy();
+        DbmsSqlTexts dbmsSqlTextsTwo = dbmsSqlTextsOne.getCopy();
+        assertEquals(dbmsSqlTextsOne.size(), dbmsSqlTextsTwo.size());
+        assertEquals(dbmsSqlTextsOne.getAvailableDbmsIds(), dbmsSqlTextsTwo.getAvailableDbmsIds());
 
-		// Remove the oracle DbmsSqlText and add an ansi DbmsSqlText...
-		dbmsSqlTextsTwo.removeByDbms("oracle");
-		DbmsSqlText ansiSqlText = dbmsSqlTextsTwo.create();
+        // Remove the oracle DbmsSqlText and add an ansi DbmsSqlText...
+        dbmsSqlTextsTwo.removeByDbms("oracle");
+        DbmsSqlText ansiSqlText = dbmsSqlTextsTwo.create();
 
-		DatabasePolicies.DatabasePolicyEnumeratedAttribute dpea = DatabasePolicies.getInstance().getEnumeratedAttribute();
-		dpea.setValue(DatabasePolicies.DBMSID_DEFAULT);
-		ansiSqlText.setDbms(dpea);
-		ansiSqlText.setSql("select *");
-		ansiSqlText.addText(" from test");
+        DatabasePolicies.DatabasePolicyEnumeratedAttribute dpea = DatabasePolicies.getInstance().getEnumeratedAttribute();
+        dpea.setValue(DatabasePolicies.DBMSID_DEFAULT);
+        ansiSqlText.setDbms(dpea);
+        ansiSqlText.setSql("select *");
+        ansiSqlText.addText(" from test");
 
-		// Ensure the previous ansi sqlText was empty...
-		assertEquals("", dbmsSqlTextsTwo.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql(null).trim());
+        // Ensure the previous ansi sqlText was empty...
+        assertEquals("", dbmsSqlTextsTwo.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql(null).trim());
 
-		// Now add the new one ...
-		dbmsSqlTextsTwo.add(ansiSqlText);
-		String expectedAnsiSql = "select * from test";
+        // Now add the new one ...
+        dbmsSqlTextsTwo.add(ansiSqlText);
+        String expectedAnsiSql = "select * from test";
 
-		// and test it..
-		assertEquals(expectedAnsiSql, dbmsSqlTextsTwo.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql().trim());
+        // and test it..
+        assertEquals(expectedAnsiSql, dbmsSqlTextsTwo.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql().trim());
 
-		// Ensure that dbmsSqlTextOne's previous "ansi" sqlText is empty...
-		assertEquals("", dbmsSqlTextsOne.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql(null).trim());
+        // Ensure that dbmsSqlTextOne's previous "ansi" sqlText is empty...
+        assertEquals("", dbmsSqlTextsOne.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql(null).trim());
 
-		// Now merge Two with One...
-		dbmsSqlTextsOne.merge(dbmsSqlTextsTwo);
+        // Now merge Two with One...
+        dbmsSqlTextsOne.merge(dbmsSqlTextsTwo);
 
-		// and test it..
-		assertEquals(expectedAnsiSql, dbmsSqlTextsOne.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql().trim());
-		assertEquals(expectedAnsiSql, dbmsSqlTextsOne.getByDbmsOrAnsi(DatabasePolicies.getInstance().getDatabasePolicy("postgres")).getSql().trim());
-	}
+        // and test it..
+        assertEquals(expectedAnsiSql, dbmsSqlTextsOne.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql().trim());
+        assertEquals(expectedAnsiSql, dbmsSqlTextsOne.getByDbmsOrAnsi(DatabasePolicies.getInstance().getDatabasePolicy("postgres")).getSql().trim());
+    }
 
     public void testDatabasePolicies()
     {
@@ -233,7 +235,7 @@ public class MiscSqlObjectsTest extends TestCase
         selectedDbPolicyNames.add("postgres");
         selectedDbPolicyNames.add("mssql");     // Microsoft Sql Server (from dbPolicy.getIdentifiers()
         assertEquals(selectedDbPolicyNames.size(), selectedDbPolicies.length);
-        for (int i = 0; i < selectedDbPolicies.length; i ++)
+        for (int i = 0; i < selectedDbPolicies.length; i++)
             assertTrue(selectedDbPolicyNames.contains(selectedDbPolicies[i].getDbmsIdentifier()));
 
         Set policySet = dbPolicies.getPolicies();
@@ -272,7 +274,7 @@ public class MiscSqlObjectsTest extends TestCase
         comparisonTypeMap.put("gte-date", new DateComparison("gte-date", ">="));
         comparisonTypeMap.put("gt-date", new DateComparison("gt-date", ">"));
 
-        for (int i = 0; i < comparisonIds.length; i ++)
+        for (int i = 0; i < comparisonIds.length; i++)
             assertNotNull(SqlComparisonFactory.getComparison(comparisonIds[i]));
 
         for (Iterator iter = comparisonTypeMap.keySet().iterator(); iter.hasNext();)

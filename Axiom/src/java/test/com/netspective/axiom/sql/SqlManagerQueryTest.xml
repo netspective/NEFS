@@ -71,20 +71,20 @@
             <display field="field_02"/>
             <display field="field_03"/>
 
-			<group-by field="field_01"/>
-			<order-by field="field_03"/>
+            <group-by field="field_01"/>
+            <order-by field="field_03"/>
 
-			<condition field="field_01" allow-null="no" comparison="equals" value="10" connector="and"/>
-			<condition field="field_02" allow-null="no" comparison="starts-with" value="a" connector="and"/>
-			<condition field="field_03" allow-null="no" comparison="contains-ignore-case" value="eve" connector="and"/>
-			<condition field="field_04" allow-null="yes" comparison="ends-with" value="adam" connector="and"/>
-			<condition field="field_05" allow-null="no" comparison="contains" value="abel" connector="and"/>
-			<condition field="field_01" allow-null="no" comparison="in" value="'C', 'D', 'E'" connector="and"/>
-			<condition field="field_02" allow-null="no" comparison="is-defined" value="field_02" connector="and"/>
-			<condition field="field_03" allow-null="no" comparison="lte-date" value="10/11/2012" connector="or"/>
-			<condition field="field_04" allow-null="yes" comparison="greater-than" value="10" connector="and"/>
+            <condition field="field_01" allow-null="no" comparison="equals" value="10" connector="and"/>
+            <condition field="field_02" allow-null="no" comparison="starts-with" value="a" connector="and"/>
+            <condition field="field_03" allow-null="no" comparison="contains-ignore-case" value="eve" connector="and"/>
+            <condition field="field_04" allow-null="yes" comparison="ends-with" value="adam" connector="and"/>
+            <condition field="field_05" allow-null="no" comparison="contains" value="abel" connector="and"/>
+            <condition field="field_01" allow-null="no" comparison="in" value="'C', 'D', 'E'" connector="and"/>
+            <condition field="field_02" allow-null="no" comparison="is-defined" value="field_02" connector="and"/>
+            <condition field="field_03" allow-null="no" comparison="lte-date" value="10/11/2012" connector="or"/>
+            <condition field="field_04" allow-null="yes" comparison="greater-than" value="10" connector="and"/>
 
-			<where-expr connector="and" value="field_01 in ('A', 'B', 'C')"/>
+            <where-expr connector="and" value="field_01 in ('A', 'B', 'C')"/>
         </select>
     </query-defn>
 
@@ -98,7 +98,7 @@
         <join name='join_01'/>
         <join name='join_02' table="Table_02" imply-join="join_03"/>
         <join name='join_03' table="Table_03"/>
-<!--        <join name='join_04' table="Table_04"/>-->
+        <!--        <join name='join_04' table="Table_04"/>-->
         <join name='join_05' table="Table_05" auto-include="yes"/>
 
         <select name="query-select-1">
@@ -106,11 +106,11 @@
             <display field="field_02"/>
             <display field="field_03"/>
 
-			<condition field="field_01" allow-null="no" comparison="in" value="'D', 'E', 'F'" connector="and"/>
-			<condition field="field_02" allow-null="no" comparison="is-defined" connector="and"/>
-			<condition field="field_03" allow-null="no" comparison="lte-date" value="10/11/2012" connector="and"/>
-			<condition field="field_04" allow-null="yes" comparison="greater-than" value="15" connector="and"/>
-			<condition field="field_05" allow-null="no" comparison="contains" value="abel" connector="and"/>
+            <condition field="field_01" allow-null="no" comparison="in" value="'D', 'E', 'F'" connector="and"/>
+            <condition field="field_02" allow-null="no" comparison="is-defined" connector="and"/>
+            <condition field="field_03" allow-null="no" comparison="lte-date" value="10/11/2012" connector="and"/>
+            <condition field="field_04" allow-null="yes" comparison="greater-than" value="15" connector="and"/>
+            <condition field="field_05" allow-null="no" comparison="contains" value="abel" connector="and"/>
         </select>
     </query-defn>
 

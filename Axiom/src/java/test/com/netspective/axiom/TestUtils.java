@@ -51,65 +51,73 @@ import com.netspective.axiom.connection.AbstractConnectionContext;
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.commons.io.FileFind;
 
-public class TestUtils {
-   private static final String DB = "medspective";
-   public static final String DATASRCID_DEFAULT = "default";
-   protected static final DriverManagerConnectionProvider connProvider = new DriverManagerConnectionProvider();
+public class TestUtils
+{
+    private static final String DB = "medspective";
+    public static final String DATASRCID_DEFAULT = "default";
+    protected static final DriverManagerConnectionProvider connProvider = new DriverManagerConnectionProvider();
 
-   protected static String schemaFilename = "test-data-schema.xml";
-   protected static String dataImportFile = "test-data.xml";
-   protected static String destinationTestDataFolder = "/test-data";
-   protected static String ddlPath = destinationTestDataFolder + "/ddl";
-   protected static String dbPath = destinationTestDataFolder + "/hsqldb-data";
-   protected static String dbName = "test";
-   protected static String dataImportDtdFile = destinationTestDataFolder + "/import-data.dtd";
-
-
-   public static Map connProviders = new HashMap();
-
-   //TODO: We could setup a default DB for the whole Axiom and set that as the default DB to get if you don't pass an Id.
-   //TODO: Cleanup the file structure (every package will have its own DB, it will pass the package name as an id to the DB)
-
-   static public DriverManagerConnectionProvider getConnProvider(Class connProviderId){
-      return getConnProvider(connProviderId.getName());
-   }
-
-   static public DriverManagerConnectionProvider getConnProvider(Package connProviderId){
-      return getConnProvider(connProviderId.getName());
-   }
-
-   static public DriverManagerConnectionProvider getConnProvider(String connProviderId){
-      return getConnProvider(connProviderId, true);  //TODO: Really need to think about if the default should false
-   }
-
-   static public DriverManagerConnectionProvider getConnProvider(Class connProviderId, boolean reCreateDb){
-      return getConnProvider(connProviderId.getName(), reCreateDb);
-   }
-
-   static public DriverManagerConnectionProvider getConnProvider(Package connProviderId, boolean reCreateDb){
-      return getConnProvider(connProviderId.getName(), reCreateDb);
-   }
-
-   static public DriverManagerConnectionProvider getConnProvider(String connProviderId, boolean reCreateDb){
-
-      ConnectionProviderEntry entry = connProvider.getDataSourceEntry(null, connProviderId);
-
-      if (entry == null || reCreateDb)
-         setupDb(connProviderId, true, true);
-
-      return connProvider;
-   }
-
-   static public DriverManagerConnectionProvider getConnProvider(String connProviderId, boolean createDb, boolean loadData){
+    protected static String schemaFilename = "test-data-schema.xml";
+    protected static String dataImportFile = "test-data.xml";
+    protected static String destinationTestDataFolder = "/test-data";
+    protected static String ddlPath = destinationTestDataFolder + "/ddl";
+    protected static String dbPath = destinationTestDataFolder + "/hsqldb-data";
+    protected static String dbName = "test";
+    protected static String dataImportDtdFile = destinationTestDataFolder + "/import-data.dtd";
 
 
-      ConnectionProviderEntry entry = connProvider.getDataSourceEntry(null, connProviderId);
+    public static Map connProviders = new HashMap();
 
-      if (entry == null)
-         setupDb(connProviderId, createDb, loadData);
+    //TODO: We could setup a default DB for the whole Axiom and set that as the default DB to get if you don't pass an Id.
+    //TODO: Cleanup the file structure (every package will have its own DB, it will pass the package name as an id to the DB)
 
-      return connProvider;
-   }
+    static public DriverManagerConnectionProvider getConnProvider(Class connProviderId)
+    {
+        return getConnProvider(connProviderId.getName());
+    }
+
+    static public DriverManagerConnectionProvider getConnProvider(Package connProviderId)
+    {
+        return getConnProvider(connProviderId.getName());
+    }
+
+    static public DriverManagerConnectionProvider getConnProvider(String connProviderId)
+    {
+        return getConnProvider(connProviderId, true);  //TODO: Really need to think about if the default should false
+    }
+
+    static public DriverManagerConnectionProvider getConnProvider(Class connProviderId, boolean reCreateDb)
+    {
+        return getConnProvider(connProviderId.getName(), reCreateDb);
+    }
+
+    static public DriverManagerConnectionProvider getConnProvider(Package connProviderId, boolean reCreateDb)
+    {
+        return getConnProvider(connProviderId.getName(), reCreateDb);
+    }
+
+    static public DriverManagerConnectionProvider getConnProvider(String connProviderId, boolean reCreateDb)
+    {
+
+        ConnectionProviderEntry entry = connProvider.getDataSourceEntry(null, connProviderId);
+
+        if (entry == null || reCreateDb)
+            setupDb(connProviderId, true, true);
+
+        return connProvider;
+    }
+
+    static public DriverManagerConnectionProvider getConnProvider(String connProviderId, boolean createDb, boolean loadData)
+    {
+
+
+        ConnectionProviderEntry entry = connProvider.getDataSourceEntry(null, connProviderId);
+
+        if (entry == null)
+            setupDb(connProviderId, createDb, loadData);
+
+        return connProvider;
+    }
 
 
     static public void setupDb(String connProviderId, boolean createDb, boolean loadData)
@@ -126,85 +134,87 @@ public class TestUtils {
         }
 
 
-      String classDir = connProviderId.replace('.', '/');
+        String classDir = connProviderId.replace('.', '/');
 
-      FileFind.FileFindResults ffr = FileFind.findInClasspath(classDir + "/" + schemaFilename, FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
-      if (!ffr.isFileFound()){
-          ffr = FileFind.findInClasspath(classDir + "-" + schemaFilename, FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
-      }
+        FileFind.FileFindResults ffr = FileFind.findInClasspath(classDir + "/" + schemaFilename, FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
+        if (!ffr.isFileFound())
+        {
+            ffr = FileFind.findInClasspath(classDir + "-" + schemaFilename, FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
+        }
 
-      if (!ffr.isFileFound()) {
-          return;
-      }
+        if (!ffr.isFileFound())
+        {
+            return;
+        }
 
-      File schemaFile = ffr.getFoundFile();
-      String rootPath = schemaFile.getParentFile().getAbsolutePath();
+        File schemaFile = ffr.getFoundFile();
+        String rootPath = schemaFile.getParentFile().getAbsolutePath();
 
-      Project project = new Project();
+        Project project = new Project();
 
-      Target target = new Target();
-      target.setName("generate-ddl");
+        Target target = new Target();
+        target.setName("generate-ddl");
 
-      AxiomTask task = new AxiomTask();
-      task.setTaskName("generate-ddl");
-      task.setSchema("db");
-      task.setDdl("*");
-      task.setProjectFile(new File(rootPath + "/" + schemaFilename));
-      task.setDestDir(new File(rootPath + ddlPath));
+        AxiomTask task = new AxiomTask();
+        task.setTaskName("generate-ddl");
+        task.setSchema("db");
+        task.setDdl("*");
+        task.setProjectFile(new File(rootPath + "/" + schemaFilename));
+        task.setDestDir(new File(rootPath + ddlPath));
 
-      target.addTask(task);
-      project.addTarget(target);
-      task.setProject(project);
+        target.addTask(task);
+        project.addTarget(target);
+        task.setProject(project);
 
-      SqlManager manager = task.getSqlManager();
-      task.generateDdlFiles(manager);
+        SqlManager manager = task.getSqlManager();
+        task.generateDdlFiles(manager);
 
-      if (!createDb)
-        return;
+        if (!createDb)
+            return;
 
 
-      SQLExec sqlExec = new SQLExec();
-      target.addTask(sqlExec);
-      sqlExec.setProject(project);
-      File dbFolder = new File(rootPath + dbPath);
+        SQLExec sqlExec = new SQLExec();
+        target.addTask(sqlExec);
+        sqlExec.setProject(project);
+        File dbFolder = new File(rootPath + dbPath);
 
-      //need to do a recursive delete or call the deleteTree ant task
-      Delete del = new Delete();
-      target.addTask(del);
-      del.setProject(project);
-      del.setDir(dbFolder);
-      del.execute();
+        //need to do a recursive delete or call the deleteTree ant task
+        Delete del = new Delete();
+        target.addTask(del);
+        del.setProject(project);
+        del.setDir(dbFolder);
+        del.execute();
 
-      dbFolder.mkdir();
+        dbFolder.mkdir();
 
-      sqlExec.setSrc(new File(rootPath + ddlPath + "/db-hsqldb.sql"));
-      sqlExec.setDriver("org.hsqldb.jdbcDriver");
-      sqlExec.setUrl("jdbc:hsqldb:" + rootPath + dbPath + "/" + dbName);
-      sqlExec.setUserid("sa");
-      sqlExec.setPassword("");
-      sqlExec.execute();
+        sqlExec.setSrc(new File(rootPath + ddlPath + "/db-hsqldb.sql"));
+        sqlExec.setDriver("org.hsqldb.jdbcDriver");
+        sqlExec.setUrl("jdbc:hsqldb:" + rootPath + dbPath + "/" + dbName);
+        sqlExec.setUserid("sa");
+        sqlExec.setPassword("");
+        sqlExec.execute();
 
-      //TODO: If we ever need to generate the DAL, then the trick is how to compile the classes that use it.
-      //      For now, we leve it here for code coverage purposes, since it is excercising the DAL Generator
-      String testRoot = rootPath.substring(0,rootPath.length() - connProviderId.length() - 1);
-      task.setDestDir(new File(testRoot));
-      task.setDalPackage(connProviderId + ".dal");
-      task.generateDalFiles(manager);
+        //TODO: If we ever need to generate the DAL, then the trick is how to compile the classes that use it.
+        //      For now, we leve it here for code coverage purposes, since it is excercising the DAL Generator
+        String testRoot = rootPath.substring(0, rootPath.length() - connProviderId.length() - 1);
+        task.setDestDir(new File(testRoot));
+        task.setDalPackage(connProviderId + ".dal");
+        task.generateDalFiles(manager);
 
-      if (!loadData)
-        return;
+        if (!loadData)
+            return;
 
-      task.setImport(new File(rootPath + "/" + dataImportFile));
-      task.setDtdFile(new File(rootPath + dataImportDtdFile));
-      task.generateImportDtd(manager);
+        task.setImport(new File(rootPath + "/" + dataImportFile));
+        task.setDtdFile(new File(rootPath + dataImportDtdFile));
+        task.generateImportDtd(manager);
 
-      task.setDriver("org.hsqldb.jdbcDriver");
-      task.setUrl("jdbc:hsqldb:" + rootPath + dbPath + "/" + dbName);
-      task.setUserId("sa");
-      task.setPassword("");
-      task.importData(manager);
+        task.setDriver("org.hsqldb.jdbcDriver");
+        task.setUrl("jdbc:hsqldb:" + rootPath + dbPath + "/" + dbName);
+        task.setUserId("sa");
+        task.setPassword("");
+        task.importData(manager);
 
-      connProvider.addDataSourceInfo(connProviderId, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:" + rootPath + dbPath + File.separator + dbName, "sa", "");
+        connProvider.addDataSourceInfo(connProviderId, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:" + rootPath + dbPath + File.separator + dbName, "sa", "");
 
-   }
+    }
 }

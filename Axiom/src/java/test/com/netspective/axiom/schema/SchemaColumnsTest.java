@@ -483,9 +483,6 @@ public class SchemaColumnsTest extends TestCase
         ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
 
-
-
-
         Row fkRow = colValue.getReferencedForeignKeyRow(cc);
         Rows fkRows = colValue.getReferencedForeignKeyRows(cc);
         //These values should be null before assigning a value to the ColumnValue
@@ -538,12 +535,13 @@ public class SchemaColumnsTest extends TestCase
             //This is good.
         }
 
-       assertNotNull(col2.toString());
+        assertNotNull(col2.toString());
 
         cc.close();
     }
 
-    public void testColumnsCollections(){
+    public void testColumnsCollections()
+    {
         Table table2 = populatedSchema.getTables().getByName("Test_Three");
         Columns cols = table2.getColumns();
         Column col2 = table2.getColumns().getByName("enumIdRef");
@@ -583,18 +581,20 @@ public class SchemaColumnsTest extends TestCase
 
     }
 
-    public void testColumnValueException(){
+    public void testColumnValueException()
+    {
         ColumnValueException cve = new ColumnValueException(new Exception("Test Message"));
         assertEquals(cve.getMessage(), "Test Message");
         cve = new ColumnValueException("Test Message", new Exception());
         assertEquals(cve.getMessage(), "Test Message");
     }
 
-    public void testValueDefs(){
+    public void testValueDefs()
+    {
         Table table = schema.getTables().getByName("SchemaTest");
         Row row = table.createRow();
-        BasicColumn col = (FloatColumn)table.getColumns().getByName("float_column");
-        BasicColumn col2 = (IntegerColumn)table.getColumns().getByName("integer_column");
+        BasicColumn col = (FloatColumn) table.getColumns().getByName("float_column");
+        BasicColumn col2 = (IntegerColumn) table.getColumns().getByName("integer_column");
         ValueDefns valDef = col.getValueDefns();
         assertSame(col, valDef.getColumn());
 
@@ -602,16 +602,18 @@ public class SchemaColumnsTest extends TestCase
         //TODO: Not sure what to assert here
     }
 
-    public void testColumnQueryDefnField(){
+    public void testColumnQueryDefnField()
+    {
         Table table = schema.getTables().getByName("SchemaTest");
-        BasicColumn col = (FloatColumn)table.getColumns().getByName("float_column");
+        BasicColumn col = (FloatColumn) table.getColumns().getByName("float_column");
         ColumnQueryDefnField query = col.createQueryDefnField(table.getQueryDefinition());
         assertSame(col, query.getTableColumn());
     }
 
-    public void testSqlDataDefns(){
+    public void testSqlDataDefns()
+    {
         Table table = populatedSchema.getTables().getByName("Test_Three");
-        BasicColumn col = (BasicColumn)table.getColumns().getByName("enumIdRef");
+        BasicColumn col = (BasicColumn) table.getColumns().getByName("enumIdRef");
         SqlDataDefns sqlDef = col.getSqlDdl();
         assertSame(col, sqlDef.getColumn());
         assertNotNull(sqlDef.getSqlForeignKeyDefns());

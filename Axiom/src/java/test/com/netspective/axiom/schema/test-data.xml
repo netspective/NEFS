@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dal>
 
-   <test-three column_a="abc" column_b="a" text_set_column="a,b,c,d" enum_set_column="2" enumIdRef="2"/>
-   <test-three column_a="def" column_b="b" text_set_column="e,f,g,h" enum_set_column="1" enumIdRef="1"/>
-   <test-three column_a="ghi" column_b="c" text_set_column="e,f,g,h" enum_set_column="One" enumIdRef="One"/>
+    <test-three column_a="abc" column_b="a" text_set_column="a,b,c,d" enum_set_column="2" enumIdRef="2"/>
+    <test-three column_a="def" column_b="b" text_set_column="e,f,g,h" enum_set_column="1" enumIdRef="1"/>
+    <test-three column_a="ghi" column_b="c" text_set_column="e,f,g,h" enum_set_column="One" enumIdRef="One"/>
 
-   <test-four child_column_a="abc" column_b="column_b"/>
+    <test-four child_column_a="abc" column_b="column_b"/>
 
 </dal>

@@ -2,75 +2,75 @@
 
 <component xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-   <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
-   <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
 
 
-   <schema name="db">
+    <schema name="db">
 
-      <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
-
-
-      <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-
-         <data-type name="creation-stamp" type="stamp">
-            <!--
-                            AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <java-default> is no longer used in Axiom.
-                            Column triggers, validation, and DAL information must now be placed in Java classes.
-                            -->
-         </data-type>
-
-          <table name="Record_Status" abbrev="RecStatus" type="Status"/>
-
-         <table-type name="Default">
-            <xdm:template-param name="recordStatusEnum" default="Record_Status"/>
-            <column name="cr_stamp" type="creation-stamp" required="dbms" descr="Date/time record was created">
-               <sql-ddl>
-                  <default dbms="oracle">sysdate</default>
-               </sql-ddl>
-               <value-defn>
-                  <default dbms="hsqldb">curdate()</default>
-               </value-defn>
-               <presentation>
-                  <field.text hidden="yes" visible="no" size="36"/>
-               </presentation>
-            </column>
-            <!-- <column name="cr_sess_id" lookupref="Person_Session.session_id" descr="The session used to create a record.  The Person_Session table will contain all information relevant to the session including the person_id and org_id of the user to whom the session belongs">
-               <presentation>
-                  <field.text hidden="yes" size="36"/>
-               </presentation>
-            </column> -->
-            <column name="rec_stat_id" lookupref="${params.recordStatusEnum}" descr="The status of a row in the table">
-               <!--
-               AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <java-default> is no longer used in Axiom.
-               Column triggers, validation, and DAL information must now be placed in Java classes.
-               -->
-               <presentation>
-                  <field.select hidden="yes"/>
-               </presentation>
-            </column>
-         </table-type>
-      </xdm:container>
+        <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
 
-      <table name="Test" abbrev="Tst" type="Default">
-         <description>
+        <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+            <data-type name="creation-stamp" type="stamp">
+                <!--
+                                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <java-default> is no longer used in Axiom.
+                                Column triggers, validation, and DAL information must now be placed in Java classes.
+                                -->
+            </data-type>
+
+            <table name="Record_Status" abbrev="RecStatus" type="Status"/>
+
+            <table-type name="Default">
+                <xdm:template-param name="recordStatusEnum" default="Record_Status"/>
+                <column name="cr_stamp" type="creation-stamp" required="dbms" descr="Date/time record was created">
+                    <sql-ddl>
+                        <default dbms="oracle">sysdate</default>
+                    </sql-ddl>
+                    <value-defn>
+                        <default dbms="hsqldb">curdate()</default>
+                    </value-defn>
+                    <presentation>
+                        <field.text hidden="yes" visible="no" size="36"/>
+                    </presentation>
+                </column>
+                <!-- <column name="cr_sess_id" lookupref="Person_Session.session_id" descr="The session used to create a record.  The Person_Session table will contain all information relevant to the session including the person_id and org_id of the user to whom the session belongs">
+                   <presentation>
+                      <field.text hidden="yes" size="36"/>
+                   </presentation>
+                </column> -->
+                <column name="rec_stat_id" lookupref="${params.recordStatusEnum}" descr="The status of a row in the table">
+                    <!--
+                    AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <java-default> is no longer used in Axiom.
+                    Column triggers, validation, and DAL information must now be placed in Java classes.
+                    -->
+                    <presentation>
+                        <field.select hidden="yes"/>
+                    </presentation>
+                </column>
+            </table-type>
+        </xdm:container>
+
+
+        <table name="Test" abbrev="Tst" type="Default">
+            <description>
             This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
-         </description>
-         <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
-         <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
-         <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
-         <column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
-      </table>
+            </description>
+            <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
+            <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
+        </table>
 
-      <table name="Test_Two" abbrev="Tst2" type="Default">
-         <description>
+        <table name="Test_Two" abbrev="Tst2" type="Default">
+            <description>
             This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
-         </description>
-         <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
-         <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
-         <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
-         <column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
-      </table>
-   </schema>
+            </description>
+            <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
+            <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
+        </table>
+    </schema>
 </component>

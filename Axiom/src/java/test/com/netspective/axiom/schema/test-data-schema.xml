@@ -2,107 +2,107 @@
 
 <component xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-   <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
-   <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
 
 
-   <schema name="local">
+    <schema name="local">
 
-      <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+        <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
-      <table-type name="Default" type="Versioned"/>
-      <table name="Record_Status" type="Record_Status"/>
+        <table-type name="Default" type="Versioned"/>
+        <table name="Record_Status" type="Record_Status"/>
 
-      <table name="SchemaTest" abbrev="SchTst" type="Default">
-         <description>
+        <table name="SchemaTest" abbrev="SchTst" type="Default">
+            <description>
             This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
-         </description>
-          <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
-         <column name="text_column" type="text" descr="Text Column"/>
-         <column name="float_column" type="float" descr="Float Column"/>
-         <column name="integer_column" type="integer" descr="Integer Column"/>
-         <column name="small_int_column" type="small-int" descr="Small Int Column"/>
-         <column name="long_integer_column" type="long-integer" descr="Long Integer Column"/>
-         <column name="boolean_column" type="boolean" descr="Boolean Column"/>
-         <column name="data-block_column" type="data-block" descr="Data Block Column"/>
-         <column name="date_column" type="date" descr="Date Column"/>
-         <column name="date_time_column" type="date-time" descr="Date Time Column"/>
-         <column name="stamp_column" type="stamp" descr="Stamp Column"/>
-         <column name="time_column" type="time" descr="Time Column"/>
-         <column name="duration_column" type="duration" descr="Duration Column"/>
-         <column name="date_time_range_column" type="date-time-range" descr="Date Time Range Column"/>
-         <column name="stamp_range_column" type="stamp-range" descr="Stamp Range Column"/>
-         <column name="auto_inc_column" type="auto-inc" descr="Auto Inc Column"/>
-         <column name="guid_text_column" type="guid-text" descr="Guid Text Column"/>
-         <column name="guid32_column" type="guid32" descr="Guid32 Column"/>
-         <column name="currency_column" type="currency" descr="Currency Column"/>
-         <column name="percentage_column" type="percentage" descr="Percentage Column"/>
-         <column name="email_column" type="email" descr="Email Column"/>
-         <column name="credit_card_column" type="credit-card" descr="Credit Card Column"/>
-         <!-- column name="lookup_with_freeform_column" type="lookup-with-freeform" descr="Lookup With Freeform Column"/ -->
-         <!-- column name="enumeration_id_column" type="enumeration-id" descr="Enumeration Id Column"/ -->
-      </table>
+            </description>
+            <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
+            <column name="text_column" type="text" descr="Text Column"/>
+            <column name="float_column" type="float" descr="Float Column"/>
+            <column name="integer_column" type="integer" descr="Integer Column"/>
+            <column name="small_int_column" type="small-int" descr="Small Int Column"/>
+            <column name="long_integer_column" type="long-integer" descr="Long Integer Column"/>
+            <column name="boolean_column" type="boolean" descr="Boolean Column"/>
+            <column name="data-block_column" type="data-block" descr="Data Block Column"/>
+            <column name="date_column" type="date" descr="Date Column"/>
+            <column name="date_time_column" type="date-time" descr="Date Time Column"/>
+            <column name="stamp_column" type="stamp" descr="Stamp Column"/>
+            <column name="time_column" type="time" descr="Time Column"/>
+            <column name="duration_column" type="duration" descr="Duration Column"/>
+            <column name="date_time_range_column" type="date-time-range" descr="Date Time Range Column"/>
+            <column name="stamp_range_column" type="stamp-range" descr="Stamp Range Column"/>
+            <column name="auto_inc_column" type="auto-inc" descr="Auto Inc Column"/>
+            <column name="guid_text_column" type="guid-text" descr="Guid Text Column"/>
+            <column name="guid32_column" type="guid32" descr="Guid32 Column"/>
+            <column name="currency_column" type="currency" descr="Currency Column"/>
+            <column name="percentage_column" type="percentage" descr="Percentage Column"/>
+            <column name="email_column" type="email" descr="Email Column"/>
+            <column name="credit_card_column" type="credit-card" descr="Credit Card Column"/>
+            <!-- column name="lookup_with_freeform_column" type="lookup-with-freeform" descr="Lookup With Freeform Column"/ -->
+            <!-- column name="enumeration_id_column" type="enumeration-id" descr="Enumeration Id Column"/ -->
+        </table>
 
-       <table name="Test" abbrev="Tst" type="Default">
-         <description>
+        <table name="Test" abbrev="Tst" type="Default">
+            <description>
             This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
-         </description>
-         <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
-         <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
-         <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
-         <column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
-      </table>
+            </description>
+            <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
+            <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
+        </table>
 
-      <table name="Test_Two" abbrev="Tst2" type="Default">
-         <description>
+        <table name="Test_Two" abbrev="Tst2" type="Default">
+            <description>
             This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
-         </description>
-         <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
-         <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
-         <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
-         <column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
-      </table>
+            </description>
+            <column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
+            <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
+        </table>
 
-       <table name="Test_Three" abbrev="Tst3" type="Default">
-         <description>
+        <table name="Test_Three" abbrev="Tst3" type="Default">
+            <description>
             This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
-         </description>
-         <column name="auto_inc_column" type="auto-inc" descr="Auto Inc Column"/>
-         <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+            </description>
+            <column name="auto_inc_column" type="auto-inc" descr="Auto Inc Column"/>
+            <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
 
-      </table>
-   </schema>
+        </table>
+    </schema>
 
     <schema name="db">
 
-      <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+        <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
-      <table-type name="Default" type="Versioned"/>
-      <table name="Record_Status" type="Record_Status"/>
+        <table-type name="Default" type="Versioned"/>
+        <table name="Record_Status" type="Record_Status"/>
 
-      <table name="Test_Three" abbrev="Tst3" type="Default">
-         <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
-         <column name="auto_inc_column" primary-key="yes" type="auto-inc" descr="Auto Inc Column"/>
-         <column name="text_set_column" type="text-set" descr="Text Set Column"/>
-         <column xdm:param-enumerationTable="Enum_set_Lookup" name="enum_set_column" type="enum-set"  descr="Enum Set Column"/>
-         <column name="column_a" indexed="yes" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
-         <column name="enumIdRef" lookupref="Enum_set_Lookup" descr="Testing the EnumerationIdRefColumn"/>
-         <column name="column_b" indexed="yes" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
-         <index name="column_a_b_index" columns="column_a,column_b" unique="yes"/>
-          <index name="column_a_index" columns="column_a" unique="yes"/>
-      </table>
-      <table name="Test_Four" abbrev="Test4" type="Default">
-         <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
-         <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
-         <column name="child_column_a" indexed="yes" parentref="Test_Three.column_a" descr="Column A - for use in unit test SqlManagerQueryTest"/>
-         <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
-      </table>
+        <table name="Test_Three" abbrev="Tst3" type="Default">
+            <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
+            <column name="auto_inc_column" primary-key="yes" type="auto-inc" descr="Auto Inc Column"/>
+            <column name="text_set_column" type="text-set" descr="Text Set Column"/>
+            <column xdm:param-enumerationTable="Enum_set_Lookup" name="enum_set_column" type="enum-set" descr="Enum Set Column"/>
+            <column name="column_a" indexed="yes" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+            <column name="enumIdRef" lookupref="Enum_set_Lookup" descr="Testing the EnumerationIdRefColumn"/>
+            <column name="column_b" indexed="yes" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
+            <index name="column_a_b_index" columns="column_a,column_b" unique="yes"/>
+            <index name="column_a_index" columns="column_a" unique="yes"/>
+        </table>
+        <table name="Test_Four" abbrev="Test4" type="Default">
+            <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
+            <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
+            <column name="child_column_a" indexed="yes" parentref="Test_Three.column_a" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
+        </table>
 
         <table name="To_Be_Deleted" abbrev="ToBDel" type="Default">
-         <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
-         <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
-         <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
-      </table>
+            <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
+            <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
+            <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+        </table>
 
         <table name="Enum_set_Lookup" abbrev="EnumLookup" type="Enumeration">
             <enumerations>
@@ -110,7 +110,7 @@
                 <enum id="1">One</enum>
                 <enum id="2">Two</enum>
             </enumerations>
-      </table>
+        </table>
 
     </schema>
 </component>

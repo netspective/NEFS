@@ -84,8 +84,9 @@ public class SchemaTableTest extends TestCase
         //TestUtils.getConnProvider(this.getClass().getPackage().getName(), true, true);
     }
 
-    public void testEnumTableType(){
-        EnumerationTable table = (EnumerationTable)populatedSchema.getTables().getByName("Enum_set_Lookup");
+    public void testEnumTableType()
+    {
+        EnumerationTable table = (EnumerationTable) populatedSchema.getTables().getByName("Enum_set_Lookup");
         assertNotNull(table);
         EnumerationTableRows rows = table.getEnums();
 
@@ -98,7 +99,7 @@ public class SchemaTableTest extends TestCase
     public void testBasicTable() throws NamingException, SQLException
     {
         BasicTable table = (BasicTable) populatedSchema.getTables().getByName("Test_Three");
-        BasicTable table2 = (BasicTable)populatedSchema.getTables().getByName("Enum_set_Lookup");
+        BasicTable table2 = (BasicTable) populatedSchema.getTables().getByName("Enum_set_Lookup");
 
         //Test getTableTypes Method
         assertEquals("Default", table.getTableTypes().get(0));
@@ -107,9 +108,9 @@ public class SchemaTableTest extends TestCase
         assertNull(table.getParentColumn());
 
         table.setXmlNodeName("Test-Three");
-        assertEquals("Test-Three",table.getXmlNodeName());
+        assertEquals("Test-Three", table.getXmlNodeName());
 
-        assertEquals("This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.",table.getDescription());
+        assertEquals("This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.", table.getDescription());
 
         assertNotNull(table.getForeignKeyColumns().getByName("record_status_id"));
         assertNotNull(table.getForeignKeyColumns().getByName("enumIdRef"));
@@ -144,7 +145,6 @@ public class SchemaTableTest extends TestCase
         assertTrue(!table2.isParentTable());
 
 
-
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
@@ -155,13 +155,13 @@ public class SchemaTableTest extends TestCase
         QueryResultSet qrs = query.execute(dbvc, new Object[]{"abc"}, false);
         ResultSet rs = qrs.getResultSet();
         if (rs.next())
-            initialRow.getColumnValues().populateValues(rs,1);
+            initialRow.getColumnValues().populateValues(rs, 1);
 
         qrs.close(true);
 
 
         Row row = table.createRow();
-        row = table.getRowByPrimaryKeys(cc,initialRow.getPrimaryKeyValues(),row);
+        row = table.getRowByPrimaryKeys(cc, initialRow.getPrimaryKeyValues(), row);
 
         assertEquals(initialRow, row);
 
@@ -228,7 +228,7 @@ public class SchemaTableTest extends TestCase
         QueryResultSet qrs = query.execute(dbvc, new Object[]{"abc"}, false);
         ResultSet rs = qrs.getResultSet();
         if (rs.next())
-            initialRow.getColumnValues().populateValues(rs,1);
+            initialRow.getColumnValues().populateValues(rs, 1);
 
         assertNotNull(initialRow.toString());
 
@@ -239,7 +239,7 @@ public class SchemaTableTest extends TestCase
     public void testTableTree()
     {
         BasicTable table = (BasicTable) populatedSchema.getTables().getByName("Test_Three");
-        BasicTable.BasicTableTreeNode treeNode = (BasicTable.BasicTableTreeNode) table.createTreeNode(populatedSchema.getStructure(),null,0);
+        BasicTable.BasicTableTreeNode treeNode = (BasicTable.BasicTableTreeNode) table.createTreeNode(populatedSchema.getStructure(), null, 0);
         assertSame(populatedSchema.getStructure(), treeNode.getOwner());
         assertNotNull(treeNode.toString());
         assertTrue(treeNode.hasChildren());
