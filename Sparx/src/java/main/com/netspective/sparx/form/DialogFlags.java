@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.19 2004-06-23 21:06:45 shahid.shah Exp $
+ * $Id: DialogFlags.java,v 1.20 2004-07-26 14:04:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -92,8 +92,10 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     public static final int ALLOW_EXECUTE_WITH_CANCEL_BUTTON = GENERATE_DCB * 2;
     // allow the dialog to execute when the cancel button is pressed
     public static final int DISABLE_ACTIVITY_ANNOUNCEMENT = ALLOW_EXECUTE_WITH_CANCEL_BUTTON * 2;
+    // close the window after the dialog has successfully executed
+    public static final int CLOSE_PAGE_AFTER_EXECUTE  = DISABLE_ACTIVITY_ANNOUNCEMENT * 2;
     // custom start
-    public static final int CUSTOM_START = DISABLE_ACTIVITY_ANNOUNCEMENT * 2;
+    public static final int CUSTOM_START = CLOSE_PAGE_AFTER_EXECUTE * 2;
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
@@ -114,7 +116,8 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_PENDING_DATA", ALLOW_PENDING_DATA, "If set, data is allowed to be entered in the dialog fields but server side validation is not performed. Client-side validation is performed normally."),
         new FlagDefn(DialogFlags.ACCESS_XDM, "GENERATE_DCB", GENERATE_DCB, "If set, a dialog context bean is automatically generated for this dialog, whenever Ant build is run using generate-dialog-context-beans target."),
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_EXECUTE_WITH_CANCEL_BUTTON", ALLOW_EXECUTE_WITH_CANCEL_BUTTON, "If set, the cancel button will cause the form to be submitted and the dialog's execute method will be called. The default is to just send a JavaScript 'history.back()' event."),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_ACTIVITY_ANNOUNCEMENT", DISABLE_ACTIVITY_ANNOUNCEMENT, "If set, the dialog will NOT announce events to the activity manager so that observers are preventing from acting upon the activity.")
+        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_ACTIVITY_ANNOUNCEMENT", DISABLE_ACTIVITY_ANNOUNCEMENT, "If set, the dialog will NOT announce events to the activity manager so that observers are preventing from acting upon the activity."),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "CLOSE_PAGE_AFTER_EXECUTE", DISABLE_ACTIVITY_ANNOUNCEMENT, "If set, the page will close itself after the dialog has successfully executed. This is useful for popup windows.")
     };
 
     public DialogFlags()
