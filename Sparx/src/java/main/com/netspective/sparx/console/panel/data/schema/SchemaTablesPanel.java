@@ -95,6 +95,10 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
         structureReport.addColumn(column);
 
         column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Delete"));
+        structureReport.addColumn(column);
+
+        column = new GeneralColumn();
         column.setHeading(new StaticValueSource("Class"));
         structureReport.addColumn(column);
     }
@@ -428,6 +432,10 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
                     return rows != null ? new Integer(rows.size()) : null;
 
                 case 5:
+                    if(activeTable != null)
+                        return activeTable.getRowDeleteType();
+
+                case 6:
                     if(activeRow.tableTreeNode != null && (selectedRow == activeRow || activeRow.tableTreeNode.getTable().getClass() != BasicTable.class))
                         return reportValueContext.getSkin().constructClassRef(activeRow.tableTreeNode.getTable().getClass());
                     else if(activeRow.enumTable != null && (selectedRow == activeRow || activeRow.enumTable.getClass() != EnumerationTable.class))
