@@ -13,7 +13,9 @@
     <title>Downloading the Sampler Application</title>
 
     <para>You can download the NEF Sampler Application file from <ulink
-    url="http://www.netspective.com/corp/downloads/frameworks/samples">http://www.netspective.com/corp/downloads/frameworks/samples</ulink><screenshot>
+    url="http://www.netspective.com/corp/downloads/frameworks/samples">http://www.netspective.com/corp/downloads/frameworks/samples</ulink></para>
+
+    <para><screenshot>
         <graphic fileref="./resources/images/screen-sampler-war.gif" />
       </screenshot></para>
   </section>
