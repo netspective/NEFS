@@ -24,11 +24,17 @@
             </password-query>
         </login-authenticator>
 
-        <login-dialog retain-params="*">
+        <login-dialog name='login' retain-params="*">
             <frame heading="Welcome to the Marsh Survey"/>
 
             <field name="user-id" type="text" caption="PIN" required="yes" persist="yes" initial-focus="yes"/>
             <field name="password" type="text" caption="Password" mask-entry="yes" required="yes"/>
+
+            <!-- if we're not in production mode, show some sample logins -->
+            <field name="samples" type="select" caption="Sample PINs" choices="query:db.Respondent.sample-respondents-for-demo">
+                <conditional action="apply-flags" flags="UNAVAILABLE" is-true="java:vc.runtimeEnvironmentFlags.isProduction()"/>
+                <client-js event="value-changed" js-expr="activeDialog.getFieldControl('user-id').value = control.options[control.selectedIndex].value; activeDialog.getFieldControl('password').value = control.options[control.selectedIndex].value;"/>
+            </field>
         </login-dialog>
     </login-manager>
 
@@ -208,8 +214,8 @@
         </dialog>
     </dialogs>
 
-    
-<!-- 
+
+<!--
     *******************************************************************************************************************
     ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
     ** ============================================================================================================= **
@@ -224,7 +230,7 @@
     ** Note that data sources specified under this connection provider will be managed by the Jakarta Commons DBCP   **
     ** If you wish to use JNDI, you simply have to specify the resource according to the server you're using.	     **
     **														     **
-    ******************************************************************************************************************* 
+    *******************************************************************************************************************
     -->
 
     <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
@@ -299,6 +305,10 @@
                         </report>
                     </panel>
                 </presentation>
+            </query>
+
+            <query name="sample-respondents-for-demo">
+                select 'User: ' + pin +', Password: ' + pin, pin from Respondent
             </query>
 
             <query name="summary">
