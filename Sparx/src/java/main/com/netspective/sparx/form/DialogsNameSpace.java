@@ -6,6 +6,8 @@
  */
 package com.netspective.sparx.form;
 
+import java.lang.reflect.InvocationTargetException;
+
 public interface DialogsNameSpace
 {
     public Dialogs getContainer();
@@ -13,4 +15,8 @@ public interface DialogsNameSpace
 
     String getNameSpaceId();
     void setNameSpaceId(String identifier);
+
+    public Dialog createDialog();
+    public Dialog createDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
+    public void addDialog(Dialog dialog);
 }
