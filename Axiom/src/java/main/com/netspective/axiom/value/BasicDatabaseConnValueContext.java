@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDatabaseConnValueContext.java,v 1.2 2003-03-16 21:22:35 shahid.shah Exp $
+ * $Id: BasicDatabaseConnValueContext.java,v 1.3 2003-04-10 13:04:48 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.value;
@@ -66,6 +66,7 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
     private static final Log log = LogFactory.getLog(BasicDatabaseConnValueContext.class);
     public static final ConnectionProvider DEFAULT_CONN_PROVIDER = (ConnectionProvider) DiscoverSingleton.find(ConnectionProvider.class, JndiConnectionProvider.class.getName());
     private ConnectionProvider provider = DEFAULT_CONN_PROVIDER;
+	protected String defaultDataSource = DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE;
 
     public ConnectionContext getConnection(String dataSourceId, boolean transaction) throws NamingException, SQLException
     {
@@ -117,4 +118,22 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
     {
         return null;
     }
+
+	/**
+	 * Sets the default data source to a user-defined string.
+	 * @param defaultDataSource A string representing the new data source
+	 */
+	public void setDefaultDataSource (String defaultDataSource)
+	{
+		this.defaultDataSource = defaultDataSource;
+	}
+
+	/**
+	 * Retrieves the default data source
+	 * @return A string representing the default data source
+	 */
+	public String getDefaultDataSource ()
+	{
+		return null == defaultDataSource ? DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE : defaultDataSource;
+	}
 }

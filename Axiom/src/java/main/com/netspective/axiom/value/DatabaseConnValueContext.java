@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabaseConnValueContext.java,v 1.2 2003-03-16 21:22:35 shahid.shah Exp $
+ * $Id: DatabaseConnValueContext.java,v 1.3 2003-04-10 13:04:48 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.value;
@@ -98,4 +98,16 @@ public interface DatabaseConnValueContext extends ValueContext
      * Retrieves the default SQL manager
      */
     public SqlManager getSqlManager();
+
+	/**
+	 * Sets the default data source to a user-defined string.
+	 * @param defaultDataSource A string representing the new data source
+	 */
+	public void setDefaultDataSource(String defaultDataSource);
+
+	/**
+	 * Retrieves the default data source
+	 * @return A string representing the default data source
+	 */
+	public String getDefaultDataSource();
 }
