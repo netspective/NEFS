@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportHandler.java,v 1.7 2003-07-16 19:31:28 shahid.shah Exp $
+ * $Id: DataImportHandler.java,v 1.8 2003-09-11 05:30:55 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -81,6 +81,7 @@ public class DataImportHandler extends AbstractContentHandler
     static public final String ATTRNAME_SQL_EXPR = "dal:sql-expr";
     static public final String ATTRNAME_STORE_ID = "ID";
     static public final String ATTRNAME_RETRIEVE_ID = "IDREF";
+    public static final String ATTRVALUE_RETRIEVE_ID = "IDREF:";
 
     static public final Set SPECIAL_ATTRIBUTES = new HashSet();
 
@@ -137,7 +138,27 @@ public class DataImportHandler extends AbstractContentHandler
                     {
                         Column column = row.getTable().getColumns().getByNameOrXmlNodeName(attrName);
                         if(column != null)
-                            row.getColumnValues().getByColumn(column).setTextValue(attributes.getValue(i));
+                        {
+                            String value = attributes.getValue(i);
+                            if (value.startsWith(ATTRVALUE_RETRIEVE_ID))
+                            {
+                                String idRef = value.substring(ATTRVALUE_RETRIEVE_ID.length());
+                                if (idRef != null)
+                                {
+                                    idRefValues = (PrimaryKeyColumnValues) idReferences.get(idRef);
+                                    if(idRefValues != null)
+                                        row.getColumnValues().getByColumn(column).setValue(idRefValues.getByColumnIndex(0));
+                                }
+                                else
+                                {
+                                    getParseContext().addError("IDREF '"+ idRef +"' not found in table '"+ row.getTable().getName() +"'. Available: " + idReferences.keySet() + " ");
+                                }
+                            }
+                            else
+                            {
+                                row.getColumnValues().getByColumn(column).setTextValue(value);
+                            }
+                        }
                         else
                             getParseContext().addError("Column '" + attrName + "' not found for attribute in table '" + row.getTable().getName() + "'");
                     }
