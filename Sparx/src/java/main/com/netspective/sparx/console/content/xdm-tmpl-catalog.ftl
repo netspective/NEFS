@@ -56,7 +56,8 @@
                 <#else>
                     <#assign className = "&nbsp;"/>
                 </#if>
-                <#assign report = report + [[ "<a href='?ns=${nameSpaceId}&tmpl=${template.templateName}'>${template.templateName}</a>", className, "<code>${vc.getConsoleFileBrowserLink(template.inputSourceLocator.inputSourceTracker.identifier, true)} line ${template.inputSourceLocator.lineNumber}</code>"]]/>
+                <#assign url = "?ns=${nameSpaceId}&tmpl=${template.templateName}"/>
+                <#assign report = report + [[ "<a href='${vc.constructAppUrl(url)}'>${template.templateName}</a>", className, "<code>${vc.getConsoleFileBrowserLink(template.inputSourceLocator.inputSourceTracker.identifier, true)} line ${template.inputSourceLocator.lineNumber}</code>"]]/>
             </#list>
 
             <@panel heading="Templates">
