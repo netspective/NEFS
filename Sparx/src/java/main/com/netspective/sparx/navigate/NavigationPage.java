@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.35 2003-08-20 22:52:25 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.36 2003-08-28 02:12:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -173,11 +173,25 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
             if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
                 setFlagRecursively(flag);
         }
+
+        public boolean isPopup()
+        {
+            return flagIsSet(IS_POPUP_MODE);
+        }
+
+        public boolean isHidden()
+        {
+            return flagIsSet(HIDDEN);
+        }
+
+        public boolean isRejectFocus()
+        {
+            return flagIsSet(REJECT_FOCUS);
+        }
     }
 
     public class State extends NavigationPath.State
     {
-
     }
 
     private TemplateConsumerDefn templateConsumer;
