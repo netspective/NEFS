@@ -11,7 +11,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.1 ($Date: 2004-05-30 02:56:37 $)</releaseinfo>
+    <releaseinfo>Release 7.1 ($Date: 2004-05-31 03:09:06 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until May 25, 2004 when it's
     expected to be completed. Check back daily until then because material is
@@ -4079,8 +4079,6 @@
 
       <section>
         <title>Executing Ant Scripts from within your IDE</title>
-
-        <para>TODO: documentation coming soon...</para>
 
         <para>Using Intellij IDEA, open the Ant tool window by pressing the
         Ant Build tool window button. The Ant tool window consists of an Ant
