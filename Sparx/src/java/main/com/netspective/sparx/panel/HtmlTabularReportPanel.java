@@ -39,12 +39,11 @@
  */
 
 /**
- * $Id: HtmlTabularReportPanel.java,v 1.2 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: HtmlTabularReportPanel.java,v 1.3 2003-08-01 05:46:32 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import com.netspective.sparx.panel.HtmlOutputPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
@@ -60,6 +59,8 @@ public interface HtmlTabularReportPanel extends HtmlOutputPanel
     public void setScrollable(boolean scrollable);
 
     int getScrollRowsPerPage();
-
     void setScrollRowsPerPage(int scrollRowsPerPage);
+
+    public boolean isSelectable();
+    public void setSelectable(boolean selectable);
 }
