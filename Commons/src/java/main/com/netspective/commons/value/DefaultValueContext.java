@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.6 2003-03-24 13:24:31 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.7 2003-03-24 18:43:46 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -53,7 +53,6 @@ import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.text.GloballyUniqueIdentifier;
-import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
 public class DefaultValueContext implements ValueContext
 {
@@ -184,7 +183,7 @@ public class DefaultValueContext implements ValueContext
             }
             catch (Exception e)
             {
-                contextId = Long.toString(BasicDbHttpServletValueContext.contextNum);
+                contextId = Long.toString(contextNum);
                 log.error("Unable to create context id.", e);
             }
         }
@@ -214,7 +213,7 @@ public class DefaultValueContext implements ValueContext
 
     public final boolean hasError()
     {
-        return (flags & BasicDbHttpServletValueContext.VCFLAG_HASERROR) != 0 ? true : false;
+        return (flags & VCFLAG_HASERROR) != 0 ? true : false;
     }
 
     public long getResultCode()
