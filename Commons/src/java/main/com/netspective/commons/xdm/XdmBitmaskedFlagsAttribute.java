@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.14 2003-06-18 19:57:11 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.15 2003-07-29 20:47:22 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -247,7 +247,10 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
     {
         this.flags = 0;
         if(value == null || value.length() == 0)
+        {
+            flagsChanged();
             return;
+        }
 
         String[] flagNames = TextUtils.split(value, flagDelimiter, true);
         FlagDefn[] flagDefns = getFlagsDefns();
