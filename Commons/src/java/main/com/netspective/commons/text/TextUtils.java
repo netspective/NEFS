@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.2 2003-03-17 20:02:16 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.3 2003-03-19 08:15:54 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.text;
@@ -75,16 +75,43 @@ public class TextUtils
         return classNameDelimPos != -1 ? pkgAndClassName.substring(classNameDelimPos+1) : pkgAndClassName;
     }
 
+    /**
+     * A version of getClassNameWithoutPackage with sensible defaults for most common usage: getting only the class
+     * name (without the package name) for a Java class
+     *
+     * @param pkgAndClassName
+     * @return
+     */
+	static public String getClassNameWithoutPackage(String pkgAndClassName)
+    {
+	    return getClassNameWithoutPackage(pkgAndClassName, '.');
+    }
+
     static public String getPackageName(String pkgAndClassName, char sep)
     {
         int classNameDelimPos = pkgAndClassName.lastIndexOf(sep);
         return classNameDelimPos != -1 ? pkgAndClassName.substring(0, classNameDelimPos) : null;
     }
 
+	/**
+	 * A version of getPackageName with sensible defaults for most common usage: getting the package name for a Java
+	 * class
+	 *
+	 * @param pkgAndClassName
+	 * @return
+	 */
+    static public String getPackageName(String pkgAndClassName)
+    {
+	    return getPackageName(pkgAndClassName, '.');
+    }
+
     static public String[] split(String source, String delimiter, boolean trim)
     {
         if(source == null)
             return null;
+
+	    if (null == delimiter)
+	        delimiter = " ";
 
         List list = new ArrayList();
         StringTokenizer st = new StringTokenizer(source, delimiter);
@@ -101,9 +128,22 @@ public class TextUtils
         return (String[]) list.toArray(new String[list.size()]);
     }
 
+	/**
+	 * A version of split with sensible defaults for most common usage: splitting sentences into words
+	 *
+	 * @param source
+	 * @return
+	 */
+	static public String[] split(String source)
+	{
+		return split(source, " ", false);
+	}
+
     static public String join(String[] source, String delimiter)
     {
         if(source == null) return null;
+	    if (null == delimiter)
+	        delimiter = "";
 
         StringBuffer result = new StringBuffer();
         for(int i = 0; i < source.length; i++)
@@ -115,6 +155,37 @@ public class TextUtils
         return result.toString();
     }
 
+	/**
+	 * A version of join with sensible defaults for most common usage: concatenating multiple String objects together
+	 *
+	 * @param source
+	 * @return
+	 */
+	static public String join(String[] source)
+	{
+		return join(source, "");
+	}
+
+	/**
+	 * A version of join with an additional parameter (trim) which automatically trims each String in the source and
+	 * then does the join.
+	 *
+	 * @param source
+	 * @param delimiter
+	 * @param trim
+	 * @return
+	 */
+	static public String join(String[] source, String delimiter, boolean trim)
+	{
+		if (trim)
+		{
+			for (int i = 0; i < source.length; i ++)
+				source[i] = source[i].trim();
+		}
+
+		return join(source, delimiter);
+	}
+
     /**
      * Perform a simple string replacement of findStr to replStr in origStr and returns the result. All instances
      * of findStr are replaced to replStr (regardless of how many there are). Not optimized for performance.
@@ -124,6 +195,7 @@ public class TextUtils
      */
     static public String replaceTextValues(final String originalText, final String findText, final String replaceText)
     {
+		//TODO: Might it be better to make it so it's just if (null == findText || null == replaceText) return originalText ?
         if (originalText == null || findText == null || replaceText == null)
             return null;
 
@@ -134,7 +206,15 @@ public class TextUtils
             StringBuffer sb = new StringBuffer(activeText);
             sb.replace(findLoc, findLoc + findText.length(), replaceText);
             activeText = sb.toString();
-            findLoc = activeText.indexOf(findText);
+/*
+			Now, look through this new String and locate findText.  Except, since we've already searched in the
+	        portion of the string before findLoc, we dont need to go there again.  If we do, it'll cause problems when
+	        calling the method using a syntax like:
+
+	        replaceTextValues("Some rules should be broken", "rules", "rules");
+*/
+            if (findLoc != activeText.length())
+	            findLoc = activeText.indexOf(findText, findLoc + 1);
         }
 
         return activeText;
@@ -198,6 +278,7 @@ public class TextUtils
         nodeName.append(javaIdentifier.charAt(0));
         for(int i = 1; i < javaIdentifier.length(); i++)
         {
+			//TODO: Might be a good idea to replace _ with - and to lower the case of any uppercase letters
             char ch = javaIdentifier.charAt(i);
             if(Character.isLowerCase(ch))
                 nodeName.append(ch);
@@ -364,6 +445,9 @@ public class TextUtils
     /* make the table name title cased (cap each letter after _) */
     public static String fixupTableNameCase(String tableNameOrig)
     {
+		if (null == tableNameOrig)
+			return null;
+
         StringBuffer tableNameBuf = new StringBuffer(tableNameOrig.toLowerCase());
         boolean capNext = false;
         for (int i = 0; i < tableNameBuf.length(); i++)
