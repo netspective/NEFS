@@ -47,28 +47,18 @@
     <target name=".nefs.war-specific-app.init" depends="nefs.init">
         <property name="specific.test-app-war-file" value="${nefs.sampler-app.downloads.path}/${param.test-app-id}.war"/>
         <property name="specific.test-app-path" value="${nefs.webapps.home}/${param.test-app-id}"/>
-        <property name="specific.test-app-staging-path" value="${nefs.war.staging.path}/${param.test-app-id}"/>
+        <property name="specific.test-app-staging-path" value="${nefs.war.staging.path}/webapps/${param.test-app-id}"/>
 
         <echo message="Preparing ${specific.test-app-path} WAR file."/>
 
         <delete dir="${specific.test-app-staging-path}"/>
         <mkdir dir="${specific.test-app-staging-path}"/>
 
-        <copy todir="${specific.test-app-staging-path}">
-            <fileset dir="${specific.test-app-path}">
-                <exclude name="sparx"/>
-                <exclude name="work"/>
-                <exclude name="*.class"/>
-                <exclude name="${nefs.app.execution-properties.file}"/>
-                <exclude name="WEB-INF/web.xml"/>
-                <exclude name="WEB-INF/tmp"/>
-                <exclude name="WEB-INF/temp"/>
-                <exclude name="downloads"/> <!-- this is only in nefs-sampler -->
-                <exclude name="WEB-INF/database/defn"/> <!-- all apps should auto-create their databases -->
-                <exclude name="WEB-INF/database/instance"/> <!-- all apps should auto-create their databases -->
-            </fileset>
-        </copy>
+        <cvs cvsroot=":pserver:shahid.shah@cvs.netspective.com:/home/netspective/cvs/Frameworks"
+             command="export" date="now" quiet="yes"
+             package="webapps/${param.test-app-id}" dest="${nefs.war.staging.path}"/>
 
+        <delete file="${specific.test-app-staging-path}/WEB-INF/web.xml"/>
         <copy todir="${specific.test-app-staging-path}/sparx">
             <fileset dir="${basedir}/../Sparx/resources">
                 <exclude name="java-doc-xml/**"/>
@@ -83,7 +73,7 @@
         <available file="${specific.test-app-staging-path}/WEB-INF/classes" type="dir" property="specific.test-app-staging.classes-path-exists"/>
     </target>
 
-    <target name=".nefs-compile-specific-app" if="specific.test-app-staging.classes-path-exists">
+    <target name=".nefs.war-specific-app.compile" if="specific.test-app-staging.classes-path-exists">
         <path id="app.class.path">
             <pathelement path="${specific.test-app-staging-path}/WEB-INF/classes"/>
             <fileset dir="${specific.test-app-staging-path}/WEB-INF/lib">
@@ -98,17 +88,18 @@
         <javac srcdir="${specific.test-app-staging-path}/WEB-INF/classes" deprecation="off" classpathref="app.class.path"/>
     </target>
 
-    <target name="nefs.war-specific-app" depends=".nefs.war-specific-app.init,.nefs-compile-specific-app" description="Create a J2EE WAR file for a given app.">
+    <target name="nefs.war-specific-app" depends=".nefs.war-specific-app.init,.nefs.war-specific-app.compile" description="Create a J2EE WAR file for a given app.">
         <mkdir dir="${nefs.sampler-app.downloads.path}"/>
         <war warfile="${specific.test-app-war-file}"
              basedir="${specific.test-app-staging-path}"
              webxml="${specific.test-app-staging-path}/WEB-INF/sparx/conf/${param.web-xml-file}"
              excludes="*.war" duplicate="fail" />
+        <delete dir="${specific.test-app-staging-path}"/>
     </target>
 
     <target name="nefs.war-starter-app" depends="nefs.init" description="Prepare WAR files for the starter application.">
         <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="nefs-sample-survey"/>
+            <param name="param.test-app-id" value="${nefs.starter.empty-app.name}"/>
             <param name="param.web-xml-file" value="generic-web.xml"/>
         </antcall>
     </target>
