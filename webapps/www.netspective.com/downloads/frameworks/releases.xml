@@ -6,6 +6,22 @@
         <change-log>
             <summary>Minor bug fixes and minor enhancement</summary>
             <change-log-entry>
+                Added a new rule that a field that is hidden on the client side should not have the required validation
+                rule run (on the client side). The server side check remains the responsibility of the programmer but a
+                sample is provided in the NEFS Sampler application's "Sample Conditionals" input dialog example to
+                help show how the server side can be done by adding a second conditional tag.
+            </change-log-entry>
+            <change-log-entry>
+                Added 'summary' and 'description' properties to Navigation Pages so that skins may use those attributes
+                to provide simple help or descriptions about the usage of pages. See the NEFS Sampler's 'container'
+                body type for how it can be put to use.
+            </change-log-entry>
+            <change-log-entry>
+                Added new panel layout style called "two-columns-stacked" which displays child panels in two columns.
+                The child panels in each column are stacked on top of one another without row alignment like in
+                "two-columns" style.
+            </change-log-entry>
+            <change-log-entry>
                 Corrected defect which was causing query definitions to remember the last input after done button was
                 pressed. The symptoms were that even after the done button was pressed and new input criteria was added
                 to the dialog only the previous query was being executed. Also put in a workaround which was causing
