@@ -130,8 +130,8 @@
         <mkdir dir="${app.WEB-INF.lib.path}"/>
         <property name="dest" value="${app.WEB-INF.lib.path}/${app.auto.jar-name}"/>
         <delete file="${dest}"/>
-        <jar jarfile="${dest}" basedir="${app.WEB-INF.classes.path}/auto">
-            <include name="**/*.class"/>
+        <jar jarfile="${dest}" basedir="${app.WEB-INF.classes.path}">
+            <include name="auto/**/*.class"/>
         </jar>
     </target>
 
