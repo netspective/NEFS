@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.10 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: DateTimeField.java,v 1.11 2003-09-09 05:28:47 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -89,11 +89,11 @@ public class DateTimeField extends TextField
     {
         for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
             DATE_TIME_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
-        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "FUTURE_ONLY", Flags.FUTURE_ONLY);
-        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 1] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "PAST_ONLY", Flags.PAST_ONLY);
-        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 2] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "STRICT_YEAR", Flags.STRICT_YEAR);
-        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 3] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "STRICT_TIME", Flags.STRICT_TIME);
-        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 4] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "POPUP_CALENDAR", Flags.POPUP_CALENDAR);
+        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(Flags.ACCESS_XDM, "FUTURE_ONLY", Flags.FUTURE_ONLY);
+        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 1] = new Flags.FlagDefn(Flags.ACCESS_XDM, "PAST_ONLY", Flags.PAST_ONLY);
+        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 2] = new Flags.FlagDefn(Flags.ACCESS_XDM, "STRICT_YEAR", Flags.STRICT_YEAR);
+        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 3] = new Flags.FlagDefn(Flags.ACCESS_XDM, "STRICT_TIME", Flags.STRICT_TIME);
+        DATE_TIME_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 4] = new Flags.FlagDefn(Flags.ACCESS_XDM, "POPUP_CALENDAR", Flags.POPUP_CALENDAR);
     }
 
     public class Flags extends TextField.Flags
@@ -107,22 +107,29 @@ public class DateTimeField extends TextField
 
         public Flags()
         {
-            setFlag(POPUP_CALENDAR);
+            super(POPUP_CALENDAR);
         }
 
         public Flags(State dfs)
         {
-            super(dfs);
-            setFlag(POPUP_CALENDAR);
+            super(dfs, POPUP_CALENDAR);
+        }
+
+        public Flags(DateTimeField dtf)
+        {
+            super(dtf, POPUP_CALENDAR);
         }
 
         public void flagsChanged()
         {
-            super.flagsChanged();
-            if(dateValidationRule != null)
+            if (getField() != null)
             {
-                dateValidationRule.setFutureOnly(flagIsSet(FUTURE_ONLY));
-                dateValidationRule.setPastOnly(flagIsSet(PAST_ONLY));
+                DateValueValidationRule dateValidationRule = ((DateTimeField)getField()).getDateValidationRule();
+                if(dateValidationRule != null)
+                {
+                    dateValidationRule.setFutureOnly(flagIsSet(FUTURE_ONLY));
+                    dateValidationRule.setPastOnly(flagIsSet(PAST_ONLY));
+                }
             }
         }
 
@@ -231,10 +238,16 @@ public class DateTimeField extends TextField
             super(dc);
         }
 
+        public DialogFieldFlags constructFlagInstance()
+        {
+            return new Flags(this);
+        }
+
         public DialogFieldValue constructValueInstance()
         {
             return new DateTimeFieldValue();
         }
+
     }
 
     private DataType dataType = null;
@@ -274,6 +287,11 @@ public class DateTimeField extends TextField
         getFlags().flagsChanged(); // make sure updates occur based on flags
         rules.addRule(dateValidationRule);
         return rules;
+    }
+
+    public DateValueValidationRule getDateValidationRule()
+    {
+        return dateValidationRule;
     }
 
     public void addValidation(DialogFieldValidations rules)
@@ -467,7 +485,7 @@ public class DateTimeField extends TextField
         }
 
         DialogField.State state = dc.getFieldStates().getState(this);
-        TextField.Flags stateFlags = (TextField.Flags) state.getStateFlags();
+        DateTimeField.Flags stateFlags = (DateTimeField.Flags) state.getStateFlags();
         String textValue = state.getValue().getTextValue();
 
         if(textValue == null)
