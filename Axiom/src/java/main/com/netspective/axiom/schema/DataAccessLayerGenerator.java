@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.6 2003-08-19 04:54:47 aye.thu Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.7 2003-08-19 13:23:53 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -173,13 +173,24 @@ public class DataAccessLayerGenerator
         rootClass.isFinal(true);
 
         ClassField field = rootClass.newField(vm.newType(dalClassName), "INSTANCE");
-        field.setAccess(Access.PUBLIC);
+        field.setAccess(Access.PRIVATE);
         field.isStatic(true);
         field.isFinal(true);
         field.setExpression(vm.newFree("new " + dalClassName + "()"));
 
         field = rootClass.newField(vm.newType("Schema"), "schema");
         field.setAccess(Access.PRIVATE);
+
+        rootClassChildrenAssignmentBlock = rootClass.newMethod(vm.newType(dalClassName), "getInstance");
+        rootClassChildrenAssignmentBlock.setAccess(Access.PUBLIC);
+        rootClassChildrenAssignmentBlock.isFinal(true);
+        rootClassChildrenAssignmentBlock.isStatic(true);
+        rootClassChildrenAssignmentBlock.newReturn().setExpression(vm.newFree("INSTANCE"));
+
+        rootClassChildrenAssignmentBlock = rootClass.newMethod(vm.newType("Schema"), "getSchema");
+        rootClassChildrenAssignmentBlock.setAccess(Access.PUBLIC);
+        rootClassChildrenAssignmentBlock.isFinal(true);
+        rootClassChildrenAssignmentBlock.newReturn().setExpression(vm.newFree("this.schema"));
 
         rootClassChildrenAssignmentBlock = rootClass.newMethod(vm.newType(Type.VOID), "setSchema");
         rootClassChildrenAssignmentBlock.setAccess(Access.PUBLIC);
