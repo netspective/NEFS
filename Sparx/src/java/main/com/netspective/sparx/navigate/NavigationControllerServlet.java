@@ -466,7 +466,9 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                 System.err.println("Unable to register any web resource locators (" + TextUtils.getInstance().join(webAppLocations, ", ") + " were not found). Please use the SparxResourcesServlet for serving Sparx resources.");
 
             // this will allow serving up files directly from the JAR (assuming the SparxResourcesServlet is available for serving those files)
-            locators.add(new UriAddressableSparxJarResourceLocator(request.getContextPath() + "/sparx", new ZipFile(servletContext.getRealPath("WEB-INF/lib/netspective-sparx.jar"))));
+            final File jarFile = new File(servletContext.getRealPath("WEB-INF/lib/netspective-sparx.jar"));
+            if(jarFile.exists())
+                locators.add(new UriAddressableSparxJarResourceLocator(request.getContextPath() + "/sparx", new ZipFile(jarFile)));
 
             resourceLocator = new MultipleUriAddressableFileLocators((UriAddressableFileLocator[]) locators.toArray(new UriAddressableFileLocator[locators.size()]), isCacheComponents());
             return resourceLocator;
