@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesDocumentationPanel.java,v 1.8 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: ValueSourcesDocumentationPanel.java,v 1.9 2003-04-04 20:25:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -70,7 +70,6 @@ public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPan
         TabularReportColumn identifiers = documentationReport.createColumn();
         identifiers.setHeading(new StaticValueSource("Identifier(s)"));
         identifiers.setColIndex(0);
-        identifiers.setWordWrap(false);
         documentationReport.addColumn(identifiers);
 
         TabularReportColumn doc = documentationReport.createColumn();

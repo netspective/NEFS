@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.1 2003-04-04 17:19:32 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.2 2003-04-04 20:25:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -198,9 +198,9 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 ValueSource headingAnchorAttrs = rcd.getHeadingAnchorAttrs();
                 if(headingAnchorAttrs != null)
                     colHeading = "<a " + headingAnchorAttrs.getValue(rc) + ">" + colHeading + "</a>";
-                if(rcs.flagIsSet(TabularReportColumn.COLFLAG_SORTED_ASCENDING))
+                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_ASCENDING))
                     colHeading += sortAscImgTag;
-                if(rcs.flagIsSet(TabularReportColumn.COLFLAG_SORTED_DESCENDING))
+                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
                     colHeading += sortDescImgTag;
 
                 writer.write("        <td class=\"report-field\" nowrap>" + colHeading  + "</td>");
@@ -246,9 +246,9 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 ValueSource headingAnchorAttrs = rcd.getHeadingAnchorAttrs();
                 if(headingAnchorAttrs != null)
                     colHeading = "<a " + headingAnchorAttrs.getValue(rc) + ">" + colHeading + "</a>";
-                if(rcs.flagIsSet(TabularReportColumn.COLFLAG_SORTED_ASCENDING))
+                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_ASCENDING))
                     colHeading += sortAscImgTag;
-                if(rcs.flagIsSet(TabularReportColumn.COLFLAG_SORTED_DESCENDING))
+                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
                     colHeading += sortDescImgTag;
 
                 writer.write("        <td class=\"report-field\" nowrap>" + colHeading  + "</td>");
@@ -289,7 +289,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
             if(hiearchical)
             {
-                TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHiearchy();
+                TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHierarchy();
                 hiearchyCol = activeHierarchy.getColumn();
                 activeLevel = activeHierarchy.getLevel();
             }
@@ -304,7 +304,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                     continue;
 
                 String data =
-                        state.flagIsSet(TabularReportColumn.COLFLAG_HASOUTPUTPATTERN) ?
+                        state.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN) ?
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
 
@@ -313,7 +313,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                     style += "padding-left:" + (activeLevel * 15);
 
                 String singleRow = "<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " style=\"" + style +  "\">" +
-                        (state.flagIsSet(TabularReportColumn.COLFLAG_WRAPURL) ? "<a href=\"" + state.getUrl() + "\" " + state.getUrlAnchorAttrs() + ">" +
+                        (state.getFlags().flagIsSet(TabularReportColumn.Flags.WRAP_URL) ? "<a href=\"" + state.getUrl() + "\" " + state.getUrlAnchorAttrs() + ">" +
                         data + "</a>" : data) +
                         "&nbsp;</td>";
 

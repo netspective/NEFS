@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.6 2003-04-04 17:19:32 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.7 2003-04-04 20:25:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -84,40 +84,33 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
     {
         GeneralColumn elementName = new GeneralColumn();
         elementName.setHeading(new StaticValueSource("Element"));
-        elementName.setWordWrap(false);
         elementName.setUrl(new StaticValueSource("detail?"+ REQPARAMNAME_SHOW_CLASS_DETAIL +"=%{1}"));
         structureReport.addColumn(elementName);
 
         GeneralColumn xdmClass = new GeneralColumn();
         xdmClass.setHeading(new StaticValueSource("Class"));
-        xdmClass.setWordWrap(false);
         structureReport.addColumn(xdmClass);
 
         GeneralColumn isText = new GeneralColumn();
         isText.setHeading(new StaticValueSource("Text"));
-        isText.setWordWrap(false);
         isText.setAlign(new TabularReportColumn.AlignStyle(TabularReportColumn.ALIGN_CENTER));
         structureReport.addColumn(isText);
 
         GeneralColumn isRecursive = new GeneralColumn();
         isRecursive.setHeading(new StaticValueSource("Recursive"));
-        isRecursive.setWordWrap(false);
         isRecursive.setAlign(new TabularReportColumn.AlignStyle(TabularReportColumn.ALIGN_CENTER));
         structureReport.addColumn(isRecursive);
 
         elementName = new GeneralColumn();
         elementName.setHeading(new StaticValueSource("Element"));
-        elementName.setWordWrap(false);
         detailReport.addColumn(elementName);
 
         xdmClass = new GeneralColumn();
         xdmClass.setHeading(new StaticValueSource("Type"));
-        xdmClass.setWordWrap(false);
         detailReport.addColumn(xdmClass);
 
         GeneralColumn xdmChoices = new GeneralColumn();
         xdmChoices.setHeading(new StaticValueSource("Choices"));
-        xdmChoices.setWordWrap(false);
         detailReport.addColumn(xdmChoices);
     }
 
@@ -294,9 +287,8 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         if(view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.TREE && vc.getReport() == structureReport)
         {
             TabularReportColumnState[] states = vc.getStates();
-            states[1].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
-            //states[2].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
-            states[3].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+            states[1].getFlags().setFlag(TabularReportColumn.Flags.HIDDEN);
+            states[3].getFlags().setFlag(TabularReportColumn.Flags.HIDDEN);
         }
         return vc;
     }
@@ -366,7 +358,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             return true;
         }
 
-        public TabularReportDataSource.Hierarchy getActiveHiearchy()
+        public TabularReportDataSource.Hierarchy getActiveHierarchy()
         {
             return hierarchy;
         }

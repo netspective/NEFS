@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesUsagePanel.java,v 1.8 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: ValueSourcesUsagePanel.java,v 1.9 2003-04-04 20:25:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -70,7 +70,6 @@ public class ValueSourcesUsagePanel extends AbstractHtmlTabularReportPanel
 
         GeneralColumn vsClass = new GeneralColumn();
         vsClass.setHeading(new StaticValueSource("Value Source"));
-        vsClass.setWordWrap(false);
         usageReport.addColumn(vsClass);
 
         NumericColumn usage = new NumericColumn();
