@@ -45,8 +45,8 @@
             <on-add-data>
                 <person name_last="field:profile.name_last" name_first="field:profile.name_first" name_middle="field:profile.name_middle"
                     name_suffix="field:profile.name_suffix" ssn="field:demographics.ssn" marital_status_id="field:demographics.marital_status_id"
-                    blood_type_id="field:demographics.blood_type_id" gender_id="field:demographics.gender_id" ethnicity_id="field:ethnicity_id"
-                    language_id="field:language_id" rec_stat_id="static:Active">
+                    blood_type_id="field:demographics.blood_type_id" gender_id="field:demographics.gender_id" ethnicity_id="field:demographics.ethnicity_id"
+                    language_id="field:demographics.language_id" rec_stat_id="static:Active">
                     <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business"
                         method-value="contact.work_phone"
                         _condition="vc.getFieldStates().getState('contact.work_phone').getValue().hasValue()"/>
@@ -55,19 +55,26 @@
                          _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
                     <person-login user_id="field:user_name" password="field:user_name" rec-stat-id="static:Active"
                         login-status="static:Active" quantity="static:100"/>
+                    <person name_last="field:responsible.name_last" name_first="field:responsible.name_first"
+                        gender_id="static:Male" marital_status_id="static:Single"  rec_stat_id="static:Active"
+                        _condition="!vc.getFieldStates().getState('resp_party_id').getValue().hasValue() &amp;&amp; !vc.getFieldStates().getState('responsible.rel_type_id').getValue().getTextValue().equals('Self')">
+                    </person>
                     <!--
                         Person relationship insertion is complicated. If RESPONSIBLE party does not exist yet, the REPONSIBLE
                         PARTY needs to be created as a PERSON also. If the party already exists, then a lookup field
                         needs to be provided. The lookup field should then provide a search dialog to look for the
                         RESPONSIBLE PARTY.
                     -->
-                    <!--person-relationship rel_entity_id="field:responsible.party_id" rel_type_id="field:responsible.rel_type_id" rec-stat-id="static:Active"
+                    <person-relationship rel_entity_id="record-editor-added-row-pk:last" rel_type_id="field:responsible.rel_type_id" rec-stat-id="static:Active"
                         rel-descr="field:responsible.rel_descr"
-                        _condition="vc.getFieldStates().getState('responsible.party_id').getValue() != null"   /-->
-                    <person-insurance guar-person-id="field:responsible.party_id" rec-stat-id="static:Active" />
+                        _condition="!vc.getFieldStates().getState('resp_party_id').getValue().hasValue() &amp;&amp; !vc.getFieldStates().getState('responsible.rel_type_id').getValue().getTextValue().equals('Self')"   />
+                    <person-relationship rel_entity_id="field:resp_party_id" rel_type_id="field:responsible.rel_type_id" rec-stat-id="static:Active"
+                        rel-descr="field:responsible.rel_descr"
+                        _condition="vc.getFieldStates().getState('resp_party_id').getValue().hasValue()"   />
+                    <!--person-insurance guar-person-id="field:responsible.party_id" rec-stat-id="static:Active" /-->
                     <person-classification rec-stat-id="static:Active" person-type-id="static:Patient"/>
-                    <person-ethnicity _loop-column="ethnicity-id" ethnicity-id="field:ethnicity_id" rec-stat-id="static:Active"/>
-                    <person-language _loop-column="language-id" language-id="field:language_id" rec-stat-id="static:Active"/>
+                    <person-ethnicity _loop-column="ethnicity-id" ethnicity-id="field:demographics.ethnicity_id" rec-stat-id="static:Active"/>
+                    <person-language _loop-column="language-id" language-id="field:demographics.language_id" rec-stat-id="static:Active"/>
                 </person>
             </on-add-data>
             <on-delete-data>
