@@ -50,12 +50,12 @@
  ** PARAMS: childElementName (the name of the child element that should be displayed)
  ****************************************************************************************
  -->
-<#macro xdmChildStructure parentClassName childElementName>
+<#macro xdmChildStructure parentClassName childElementName expandFlagAliases>
 
     <#assign parentSchema = getXmlDataModelSchema(parentClassName)/>
     <#assign childElementClass = parentSchema.getElementType(childElementName)/>
 
-    <@xdmStructure className=childElementClass.name heading="&lt;${childElementName}&gt;"/>
+    <@xdmStructure className=childElementClass.name heading="&lt;${childElementName}&gt;" expandFlagAliases=expandFlagAliases/>
 </#macro>
 
 <!--
@@ -65,11 +65,15 @@
  ** PARAMS: heading (the heading to display above the description of the class)
  ****************************************************************************************
  -->
-<#macro xdmStructure className heading>
+<#macro xdmStructure className heading expandFlagAliases>
 <div class="textbox">
 
     <#assign schema = getXmlDataModelSchema(className)/>
-    <#assign settableAttributesWithFlagsExpanded = schema.settableAttributesWithFlagsExpanded/>
+    <#if expandFlagAliases = 'yes'>
+        <#assign settableAttributesDetail = schema.getSettableAttributesDetail(true)/>
+    <#else>
+        <#assign settableAttributesDetail = schema.getSettableAttributesDetail(false)/>
+    </#if>
     <#assign classSuffix="odd"/>
 
     <b>${heading}</b> (<@classReference className = schema.bean.name/>)<br>
@@ -83,7 +87,7 @@
             <td class="report-column-heading">Choices</td>
         </tr>
 
-    <#list settableAttributesWithFlagsExpanded as attrDetail>
+    <#list settableAttributesDetail as attrDetail>
         <tr>
             <td class="report-column-${classSuffix}">
                 <#if attrDetail.isRequired()>
