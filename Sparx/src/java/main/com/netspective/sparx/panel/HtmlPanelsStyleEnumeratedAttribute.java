@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanelsStyleEnumeratedAttribute.java,v 1.2 2003-04-24 02:26:21 shahid.shah Exp $
+ * $Id: HtmlPanelsStyleEnumeratedAttribute.java,v 1.3 2003-10-20 04:44:49 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -51,8 +51,9 @@ public class HtmlPanelsStyleEnumeratedAttribute extends XdmEnumeratedAttribute
     public static final int VERTICAL = 0;
     public static final int HORIZONTAL = 1;
     public static final int TABBED = 2;
+    public static final int TWO_COLUMNS = 3;
 
-    private static final String[] VALUES = new String[] { "vertical", "horizontal", "tabbed" };
+    private static final String[] VALUES = new String[] { "vertical", "horizontal", "tabbed", "two-columns" };
 
     public HtmlPanelsStyleEnumeratedAttribute()
     {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.18 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.19 2003-10-20 04:44:58 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -208,6 +208,30 @@ public class HtmlLayoutPanel implements HtmlPanel
                 }
                 writer.write("</tr></table>");
                 break;
+            case HtmlPanelsStyleEnumeratedAttribute.TWO_COLUMNS:
+                writer.write("<table cellspacing=0 cellpadding=9>");
+                int counter = 0;
+                for(int i = 0; i < children.size(); i++)
+                {
+                    counter++;
+                    if (counter == 1)
+                    {
+                        writer.write("<tr valign=top><td>");
+                        children.get(i).render(writer, nc, theme, flags);
+                        writer.write("</td>");
+                    }
+                    else if (counter == 2)
+                    {
+                        writer.write("<td>");
+                        children.get(i).render(writer, nc, theme, flags);
+                        writer.write("</td></tr>");
+                        counter = 0;
+                    }
+                }
+                if (counter != 0)
+                    writer.write("<td>&nbsp;</td></tr>");
+                writer.write("</table>");
+                break;
 
             case HtmlPanelsStyleEnumeratedAttribute.TABBED:
                 HtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
@@ -263,6 +287,31 @@ public class HtmlLayoutPanel implements HtmlPanel
                     writer.write("</td>");
                 }
                 writer.write("</tr></table>");
+                break;
+
+            case HtmlPanelsStyleEnumeratedAttribute.TWO_COLUMNS:
+                writer.write("<table cellspacing=0 cellpadding=9>");
+                int counter = 0;
+                for(int i = 0; i < children.size(); i++)
+                {
+                    counter++;
+                    if (counter == 1)
+                    {
+                        writer.write("<tr valign=top><td>");
+                        children.get(i).render(writer, dc, theme, flags);
+                        writer.write("</td>");
+                    }
+                    else if (counter == 2)
+                    {
+                        writer.write("<td>");
+                        children.get(i).render(writer, dc, theme, flags);
+                        writer.write("</td></tr>");
+                        counter = 0;
+                    }
+                }
+                if (counter != 0)
+                    writer.write("<td>&nbsp;</td></tr>");
+                writer.write("</table>");
                 break;
 
             case HtmlPanelsStyleEnumeratedAttribute.TABBED:
