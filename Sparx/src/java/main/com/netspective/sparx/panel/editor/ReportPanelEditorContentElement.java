@@ -103,7 +103,8 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     // dialog used for editing the report content
     private Dialog dialog;
     // whether or the element has been initialized
-    private boolean initialized;
+    private boolean allowEdit = true;
+    private boolean allowDelete = true;
 
     private int pkColumnIndex;
 
@@ -118,6 +119,26 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     public Dialog getDialog()
     {
         return dialog;
+    }
+
+    public boolean isAllowDelete()
+    {
+        return allowDelete;
+    }
+
+    public void setAllowDelete(boolean allowDelete)
+    {
+        this.allowDelete = allowDelete;
+    }
+
+    public boolean isAllowEdit()
+    {
+        return allowEdit;
+    }
+
+    public void setAllowEdit(boolean allowEdit)
+    {
+        this.allowEdit = allowEdit;
     }
 
     /**
@@ -314,23 +335,33 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         String deleteUrl = getParent().generatePanelActionUrl(PanelEditor.MODE_DELETE);
         deleteUrl = appendElementInfoToActionUrl(deleteUrl, PanelEditor.MODE_DELETE);
 
-        BasicHtmlTabularReport report = (BasicHtmlTabularReport) qrp.getReport();
-        HtmlReportActions actions = new HtmlReportActions();
-        HtmlReportAction editAction = actions.createAction();
-        editAction.setCaption(new StaticValueSource(RECORD_EDIT_ACTION));
-        editAction.setHint(new StaticValueSource(RECORD_EDIT_ACTION));
-        editAction.setRedirect(new RedirectValueSource(editUrl));
-        editAction.setType(new HtmlReportAction.Type(HtmlReportAction.Type.RECORD_EDIT));
+        if(allowEdit || allowDelete)
+        {
+            BasicHtmlTabularReport report = (BasicHtmlTabularReport) qrp.getReport();
+            HtmlReportActions actions = new HtmlReportActions();
 
-        HtmlReportAction deleteAction = actions.createAction();
-        deleteAction.setCaption(new StaticValueSource(RECORD_DELETE_ACTION));
-        deleteAction.setHint(new StaticValueSource(RECORD_DELETE_ACTION));
-        deleteAction.setRedirect(new RedirectValueSource(deleteUrl));
-        deleteAction.setType(new HtmlReportAction.Type(HtmlReportAction.Type.RECORD_DELETE));
+            if(allowEdit)
+            {
+                HtmlReportAction editAction = actions.createAction();
+                editAction.setCaption(new StaticValueSource(RECORD_EDIT_ACTION));
+                editAction.setHint(new StaticValueSource(RECORD_EDIT_ACTION));
+                editAction.setRedirect(new RedirectValueSource(editUrl));
+                editAction.setType(new HtmlReportAction.Type(HtmlReportAction.Type.RECORD_EDIT));
+                actions.addAction(editAction);
+            }
 
-        actions.addAction(editAction);
-        actions.addAction(deleteAction);
-        report.addActions(actions);
+            if(allowDelete)
+            {
+                HtmlReportAction deleteAction = actions.createAction();
+                deleteAction.setCaption(new StaticValueSource(RECORD_DELETE_ACTION));
+                deleteAction.setHint(new StaticValueSource(RECORD_DELETE_ACTION));
+                deleteAction.setRedirect(new RedirectValueSource(deleteUrl));
+                deleteAction.setType(new HtmlReportAction.Type(HtmlReportAction.Type.RECORD_DELETE));
+                actions.addAction(deleteAction);
+            }
+
+            report.addActions(actions);
+        }
     }
 
     /**
