@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.7 2003-05-30 23:06:53 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.8 2003-06-20 05:12:10 aye.thu Exp $
  */
 
 package com.netspective.axiom;
@@ -128,9 +128,13 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
     public Query getQuery(final String name)
     {
-        String actualName = Query.translateNameForMapKey(name);
-        Query query = queries.get(actualName);
-
+        Query query = null;
+        String actualName = "";
+        if (name != null && name.length() > 0)
+        {
+            actualName = Query.translateNameForMapKey(name);
+            query = queries.get(actualName);
+        }
         if(query == null && log.isDebugEnabled())
         {
             log.debug("Unable to find query object '"+ name +"' as '"+ actualName +"'. Available: " + queries);
