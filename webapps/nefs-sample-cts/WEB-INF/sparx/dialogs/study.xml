@@ -5,7 +5,7 @@
         <!--
            This dialog is for adding/updating/deleting study profile information
         -->
-        <dialog name="profile" hide-hints-until-focus="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+        <dialog name="profile" generate-dcb="yes" hide-hints-until-focus="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <frame heading="Clinical Trial Profile"/>
             <field type="separator" heading="Overview"/>
             <field type="text" name="study_id" caption="Trial ID" default="request:study_id" hidden="yes"/>

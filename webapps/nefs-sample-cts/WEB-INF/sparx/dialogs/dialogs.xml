@@ -30,7 +30,7 @@
 
 
     <dialogs package="subject">
-        <dialog name="login_info" >
+        <dialog name="login_info" generate-dcb="yes">
             <frame heading="Login Information"/>
             <field type="text" caption="Login ID" name="login_id" default="authenticated-user:user-id" read-only="yes" required="yes"/>
             <field type="text" mask-entry="yes" caption="Old Password" name="old_password"  required="yes"/>
