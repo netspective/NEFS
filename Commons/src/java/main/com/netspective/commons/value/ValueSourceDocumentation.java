@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceDocumentation.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: ValueSourceDocumentation.java,v 1.3 2003-03-24 13:24:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -133,9 +133,23 @@ public class ValueSourceDocumentation
             addParameter(params[i]);
     }
 
-    public String getUsageHtml(String commandId, String delim, boolean all)
+    public String getUsageHtml()
     {
-        return null;
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < parameters.size(); i++)
+        {
+            if(i > 0)
+                sb.append(",");
+
+            Parameter param = (Parameter) parameters.get(i);
+            String name = param.getName();
+            if(param.required)
+                name = "<b>" + name + "</b>";
+            if(param.enums != null)
+                name = "<u>" + name + "</u>";
+            sb.append(name);
+        }
+        return sb.toString();
     }
 
     public String getParamsHtml(String commandId)

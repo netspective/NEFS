@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RuntimeEnvironment.java,v 1.2 2003-03-15 21:39:18 shahid.shah Exp $
+ * $Id: RuntimeEnvironment.java,v 1.3 2003-03-24 13:24:31 shahid.shah Exp $
  */
 
 package com.netspective.commons;
@@ -56,16 +56,15 @@ public interface RuntimeEnvironment
     /**
      * Checks whether the current runtime environment, based on the given value source, is under maintenance.
      * Maintenance mode is usually reserved for only production environments.
-     * @param vc The value context
      * @return True if in maintenance mode or false if in regular production mode.
      */
-    public boolean inMaintenanceMode();
+    public boolean isInMaintenanceMode();
+    public void setMaintenanceMode(boolean maintenance);
 
     /**
      * Checks whether the current runtime environment, based on the given value source, is running in the
-     * Application Components Explorer (ACE).
-     * @param vc The value context
-     * @return True if in maintenance mode or false if in regular production mode.
+     * Application Components Explorer (ACE) administration console.
      */
-    public boolean withinACE();
+    public boolean isInConsoleMode();
+    public void setConsoleMode(boolean consoleMode);
 }

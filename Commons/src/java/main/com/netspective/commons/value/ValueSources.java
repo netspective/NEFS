@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.7 2003-03-23 04:43:26 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.8 2003-03-24 13:24:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -75,6 +75,7 @@ public class ValueSources implements MetricsProducer
     protected static final Log log = LogFactory.getLog(ValueSources.class);
 
     public static final String VSMETHODNAME_GETIDENTIFIERS = "getIdentifiers";
+    public static final String VSMETHODNAME_GETDOCUMENTATION = "getDocumentation";
 
     public static final int VSNOTFOUNDHANDLER_NULL = 1;
     public static final int VSNOTFOUNDHANDLER_ERROR_VS = 2;
@@ -161,33 +162,61 @@ public class ValueSources implements MetricsProducer
     public void registerValueSource(Class vsClass)
     {
         Class actualClass = discoverClass.find(vsClass, vsClass.getName());
+        String[] identifiers = getValueSourceIdentifiers(actualClass);
+        for(int i = 0; i < identifiers.length; i++)
+        {
+            srcClassesMap.put(identifiers[i], actualClass);
+            if(log.isTraceEnabled())
+                log.trace("Registered value source "+ actualClass.getName() +" as '"+ identifiers[i] +"'.");
+        }
+        srcClassesSet.add(actualClass);
+    }
 
+    public String[] getValueSourceIdentifiers(Class vsClass)
+    {
         Method getIdsMethod = null;
         try
         {
-            getIdsMethod = actualClass.getMethod(VSMETHODNAME_GETIDENTIFIERS, null);
+            getIdsMethod = vsClass.getMethod(VSMETHODNAME_GETIDENTIFIERS, null);
         }
         catch (NoSuchMethodException e)
         {
             log.error(e);
-            throw new NestableRuntimeException("Static method 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' not found in value source " + actualClass.getName(), e);
+            throw new NestableRuntimeException("Static method 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' not found in value source " + vsClass.getName(), e);
         }
 
         try
         {
-            String[] identifiers = (String[]) getIdsMethod.invoke(null, null);
-            for(int i = 0; i < identifiers.length; i++)
-            {
-                srcClassesMap.put(identifiers[i], actualClass);
-                if(log.isTraceEnabled())
-                    log.trace("Registered value source "+ actualClass.getName() +" as '"+ identifiers[i] +"'.");
-            }
-            srcClassesSet.add(actualClass);
+            return (String[]) getIdsMethod.invoke(null, null);
         }
         catch (Exception e)
         {
             log.error(e);
-            throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' method in value source " + actualClass.getClass().getName(), e);
+            throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' method in value source " + vsClass.getName(), e);
+        }
+    }
+
+    public ValueSourceDocumentation getValueSourceDocumentation(Class vsClass)
+    {
+        Method getDocsMethod = null;
+        try
+        {
+            getDocsMethod = vsClass.getMethod(VSMETHODNAME_GETDOCUMENTATION, null);
+        }
+        catch (NoSuchMethodException e)
+        {
+            log.error(e);
+            return null;
+        }
+
+        try
+        {
+            return (ValueSourceDocumentation) getDocsMethod.invoke(null, null);
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+            return null;
         }
     }
 

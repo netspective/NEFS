@@ -39,21 +39,44 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.5 2003-03-20 14:56:32 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.6 2003-03-24 13:24:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
 import org.apache.commons.discovery.tools.DiscoverClass;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.BasicAuthenticatedUser;
+import com.netspective.commons.text.GloballyUniqueIdentifier;
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
 public class DefaultValueContext implements ValueContext
 {
+    private static final Log log = LogFactory.getLog(DefaultValueContext.class);
     private static DiscoverClass discoverClass = new DiscoverClass();
+
+    private boolean inConsole;
+    static public final int VCFLAG_HASERROR = 0;
+    protected static int contextNum = 0;
+    private String contextId;
+    private int flags;
+    private long resultCode;
+    private long creationTime;
+
+    public DefaultValueContext()
+    {
+        this.creationTime = System.currentTimeMillis();
+    }
+
+    public long getCreationTime()
+    {
+        return creationTime;
+    }
 
     public AccessControlListsManager getAccessControlListsManager()
     {
@@ -85,14 +108,23 @@ public class DefaultValueContext implements ValueContext
         return null;
     }
 
-    public boolean inMaintenanceMode()
+    public boolean isInMaintenanceMode()
     {
         return false;
     }
 
-    public boolean withinACE()
+    public void setMaintenanceMode(boolean maintenance)
     {
-        return false;
+    }
+
+    public boolean isInConsoleMode()
+    {
+        return inConsole;
+    }
+
+    public void setConsoleMode(boolean consoleMode)
+    {
+        this.inConsole = consoleMode;
     }
 
     public boolean isAntBuildEnvironment()
@@ -140,5 +172,58 @@ public class DefaultValueContext implements ValueContext
 
     public void setContextLocation(Object locator)
     {
+    }
+
+    public final String getContextId()
+    {
+        if(contextId == null)
+        {
+            try
+            {
+                contextId = GloballyUniqueIdentifier.getRandomGUID(false);
+            }
+            catch (Exception e)
+            {
+                contextId = Long.toString(BasicDbHttpServletValueContext.contextNum);
+                log.error("Unable to create context id.", e);
+            }
+        }
+
+        return contextId;
+    }
+
+    public final int getFlags()
+    {
+        return flags;
+    }
+
+    public final boolean flagIsSet(int flag)
+    {
+        return (flags & flag) == 0 ? false : true;
+    }
+
+    public final void setFlag(int flag)
+    {
+        flags |= flag;
+    }
+
+    public final void clearFlag(int flag)
+    {
+        flags &= ~flag;
+    }
+
+    public final boolean hasError()
+    {
+        return (flags & BasicDbHttpServletValueContext.VCFLAG_HASERROR) != 0 ? true : false;
+    }
+
+    public long getResultCode()
+    {
+        return resultCode;
+    }
+
+    public void setResultCode(long value)
+    {
+        resultCode = value;
     }
 }
