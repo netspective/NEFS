@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	
+
+	<table-type name="Person_Relationship" type="Relationship">
+<xdm:template-param name="parentRef" default="Person.person_id"/>
+<xdm:template-param name="relatedEntity" default="Person.person_id"/>
+<xdm:template-param name="relatedEntityFieldCaption" default="Related Person ID"/>
+<xdm:template-param name="relatedEntityFieldQuery" default="person.get-all-persons"/>
+<description>Basic information required for an entity that may be related to a person.</description>
+</table-type>
+
+	<table-type name="Org_Relationship" type="Relationship">
+<xdm:template-param name="parentRef" default="Org.org_id"/>
+<xdm:template-param name="relatedEntity" default="Org.org_id"/>
+<xdm:template-param name="relatedEntityFieldCaption" default="Related Org ID"/>
+<xdm:template-param name="relatedEntityFieldQuery" default="person.get-all-orgs"/>
+<xdm:template-param name="relationshipMapTablePackage" default="app.dal.table"/>
+<xdm:template-param name="relationshipMapClassPrefix" default="OrgRelationshipMap"/>
+<description>Basic information required for an entity that may be related to an organization.</description>
+</table-type>
+
+	<table-type name="Org_Lookup" type="Default">
+<xdm:template-param name="capsize" default="96"/>
+<xdm:template-param name="abbrevsize" default="32"/>
+<column name="system_id" type="guid32" primarykey="yes" descr="The value associated with a single lookup"/>
+<column name="org_id" parentref="Org.org_id" descr="The organization that the lookup item belongs to">
+<presentation>
+<field.select caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
+				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+			</field.select>
+</presentation>
+</column>
+<column name="item_id" type="integer" required="yes" descr="The unique ID assigned by the organization">
+<presentation>
+<field.integer caption="Item ID" size="8"/>
+</presentation>
+</column>
+<column name="caption" type="text" size="96" required="yes" descr="The name/text an end-user would see">
+<presentation>
+<field.text caption="Caption" size="16"/>
+</presentation>
+</column>
+<column name="abbrev" type="text" size="32" unique="yes" descr="An abbreviated form of the caption">
+<presentation>
+<field.text caption="Abbreviation" size="8"/>
+</presentation>
+</column>
+<index name="${owner.abbrev}_unq" columns="org_id,item_id" unique="yes"/>
+</table-type>
+	
+	<table-type name="Org_Preference" type="Preference">
+<xdm:template-param name="parentRef" default="Org.org_id"/>
+<description>
+			This table allows a developer to store preferences for any Org record.  The general format is to store the equivalent
+			of an environment variable and its corresponding value as a string.  This can be enhanced later.
+		</description>
+</table-type>
+
+	<table-type name="Org_Log" type="Log">
+<xdm:template-param name="parentRef" default="Org.org_id"/>
+<description>
+			This table allows a developer to store information about any and all activity that occurs within a table.  This includes
+			everything from adding a record to updating it and deleting it and anything else that needs to be logged.
+		</description>
+</table-type>
+
+</xdm:container>

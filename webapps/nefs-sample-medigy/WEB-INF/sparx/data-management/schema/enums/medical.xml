@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	
+
+	
+	
+	<table name="Doctor_Visit_Type" abbrev="VisTy" type="Enumeration">
+<description>The reason for visiting a physician</description>
+<enumerations>
+<enum>Office</enum>
+<enum>Clinic</enum>
+<enum>Hospital</enum>
+<enum>Facility</enum>
+<enum>Physical Exam</enum>
+<enum>Executive Physical</enum>
+<enum>Sports/School Physical</enum>
+<enum>Regular Visit</enum>
+<enum>Complicated Visit</enum>
+<enum>Well Women Exam</enum>
+<enum>Consultation</enum>
+<enum>Injection Only</enum>
+<enum>Procedure Visit</enum>
+<enum>Workers Compensation</enum>
+<enum>Radiology Visit</enum>
+<enum>Lab Visit</enum>
+<enum>Counseling Visit</enum>
+<enum>Physical Therapy</enum>
+<enum>Special Visit</enum>
+<enum>Other</enum>
+</enumerations>
+</table>
+
+	
+	
+	<table name="Lab_Order_Status" abbrev="LabOrdSts" type="Enumeration">
+<description>Status of Lab Order Request</description>
+<enumerations>
+<enum id="0">Approved</enum>
+<enum id="1">Pending</enum>
+<enum id="2">Faxed to Lab</enum>
+<enum id="3">E-Mailed to Lab</enum>
+<enum id="4">Transmitted to Lab</enum>
+</enumerations>
+</table>	
+	
+	<table name="Lab_Order_Priority" abbrev="LabOrdPri" type="Enumeration">
+<description>Priority of Lab Order Request</description>
+<enumerations>
+<enum id="0">Normal</enum>
+<enum id="1">STAT</enum>
+<enum id="2">ASAP</enum>
+<enum id="3">Today</enum>
+</enumerations>
+</table>		
+
+	<table name="Lab_Order_Transmission" abbrev="LabOrdTrans" type="Enumeration">
+<description>Priority of Lab Order Request</description>
+<enumerations>
+<enum id="0">Print</enum>
+<enum id="1">E-Mail</enum>
+<enum id="2">Fax</enum>
+</enumerations>
+</table>		
+	
+	
+	
+	<table name="Medication_Type" abbrev="MedTy" type="Enumeration">
+<enumerations>
+<enum>Pain Reliever</enum>
+<enum>Carcinogen</enum>
+<enum>Addictive Drugs</enum>
+</enumerations>
+</table>
+
+	<table name="Medication_Record_Type" abbrev="MedRecTy" type="Enumeration">
+<enumerations>
+<enum>Existing</enum>
+<enum>Prescribe</enum>
+<enum>Refill</enum>
+</enumerations>
+</table>
+
+	
+	
+	<table name="Referral_Communication" abbrev="RefComm" type="Enumeration">
+<description>Referral Communication method</description>
+<enumerations>
+<enum id="0">Verbal</enum>
+<enum id="1">Fax</enum>
+<enum id="2">E-Mail</enum>
+<enum id="3">Mail</enum>
+<enum id="4">Left Message</enum>
+</enumerations>
+</table>
+
+	<table name="Referral_Urgency" abbrev="RefUrge" type="Enumeration">
+<description>Referral Urgency</description>
+<enumerations>
+<enum id="0">Stat</enum>
+<enum id="1">Regular</enum>
+<enum id="2">Follow Up</enum>
+</enumerations>
+</table>
+
+	<table name="Referral_Status" abbrev="RefSts" type="Enumeration">
+<description>Referral Type</description>
+<enumerations>
+<enum id="0">Active</enum>
+<enum id="1">Inactive</enum>
+</enumerations>
+</table>
+
+	<table name="Referral_Type" abbrev="RefType" type="Enumeration">
+<description>Referral Type</description>
+<enumerations>
+<enum id="0">Test</enum>
+<enum id="1">Consultation</enum>
+<enum id="2">Evaluation</enum>
+<enum id="3">Treatment</enum>
+<enum id="4">Surgery</enum>
+<enum id="5">Procedure</enum>
+</enumerations>
+</table>
+	
+</xdm:container>

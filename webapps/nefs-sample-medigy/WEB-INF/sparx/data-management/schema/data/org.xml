@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dal>
+	<org org-code="MEDS" org-name="Medspective Inc.">
+		<hcfa-servplace-id>26</hcfa-servplace-id>
+		<rec-stat-id>1</rec-stat-id>
+	</org>
+	<org org-code="ORG1" org-name="Org 1" org-abbrev="MEDSPT">
+		<ownership-id>1</ownership-id>
+		<ticker-symbol>MST</ticker-symbol>
+		<sic-code>code1</sic-code>
+		<employees>3</employees>
+		<fiscal-year-month-id>0</fiscal-year-month-id>
+		
+		<time-zone>EST</time-zone>
+		<org-level-id>0</org-level-id>
+		<hcfa-servplace-id>26</hcfa-servplace-id>
+		<org-address address-name="Location 1">
+			<mailing>true</mailing>
+			<address_type_id>0</address_type_id>
+			<line1>123 Main Road</line1>
+			<city>Fairfax</city>
+			<state>VA</state>
+			<county>Fairfax</county>
+			<zip>22038</zip>
+		</org-address>
+		<org-classification>
+			<org-type-id>0</org-type-id>
+		</org-classification>
+		<org-contact>
+			<method-type>0</method-type>
+			<method-value>532-5512</method-value>
+			<phone-ac>703</phone-ac>
+		</org-contact>
+		<org-contact>
+			<method-type>1</method-type>
+			<method-value>585-5574</method-value>
+			<phone-ac>703</phone-ac>
+		</org-contact>
+		<org-identifier>
+			<identifier-type-id>0</identifier-type-id>
+			<identifier>123456789</identifier>
+		</org-identifier>
+		<org-identifier>
+			<identifier-type-id>1</identifier-type-id>
+			<identifier>987654321</identifier>
+		</org-identifier>
+		<org-industry>
+			<org-industry-id>16</org-industry-id>
+		</org-industry>
+		<org-medication>
+			<med-type-id>0</med-type-id>
+			<med-name>Aspirin</med-name>
+			<generic-name>Aspirin</generic-name>
+		</org-medication>
+		
+		
+		<org-personid-src-type>
+			<item-id>1</item-id>
+			
+			<caption>SSN</caption>
+			<abbrev>ssn</abbrev>
+		</org-personid-src-type>
+		<org-personid-src-type>
+			<item-id>2</item-id>
+			<caption>License Number</caption>
+			<abbrev>lic</abbrev>
+		</org-personid-src-type>
+		<org-relationship>
+			<rel-type>1030</rel-type>
+			
+			<rel-descr>First Children of 'The' main Organization</rel-descr>
+			<rel-org-id>1</rel-org-id>
+		</org-relationship>
+		
+	</org>
+</dal>

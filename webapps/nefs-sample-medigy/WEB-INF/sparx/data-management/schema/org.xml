@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	<table name="Org" abbrev="Org" type="Default">
+<description>An organization, such as a physician's private practice, a hospital, or an insurance company</description>
+<column name="org_id" type="guid32" primarykey="yes" descr="Unique organization record identification (in entire system) for internal use"/>
+<column name="org_code" required="yes" type="text" size="64" descr="Unique org identification within owner organization (basically, an account number)">
+<presentation>
+<field.text caption="Org Code" size="16"/>
+</presentation>
+</column>
+<column name="org_name" type="text" size="128" required="yes" descr="Name of organization">
+<presentation>
+<field.text caption="Name" size="16"/>
+</presentation>
+</column>
+<column name="org_abbrev" type="text" size="24" descr="Abbreviated name of organization">
+<presentation>
+<field.text caption="Abbreviation" size="16"/>
+</presentation>
+</column>
+<column name="ownership_id" lookupref="Org_Ownership_Type" descr="The type of ownership of the company">
+<presentation>
+<field.select caption="Ownership Type"/>
+</presentation>
+</column>
+<column name="ticker_symbol" type="text" size="24" descr="Ticker symbol if this is a public company">
+<presentation>
+<field.text caption="Ticker Symbol" size="8"/>
+</presentation>
+</column>
+<column name="sic_code" type="text" size="24" descr="Company's SIC code">
+<presentation>
+<field.text caption="SIC Code" size="16"/>
+</presentation>
+</column>
+<column name="employees" type="integer" descr="A round figure describing number of employees">
+<presentation>
+<field.integer caption="Num. Employees" size="8"/>
+</presentation>
+</column>
+<column name="fiscal_year_month_id" lookupref="Month_Of_Year" descr="The month when this org's fiscal year starts">
+<presentation>
+<field.select caption="Start of Fiscal Year"/>
+</presentation>
+</column>
+<column name="business_start_time" type="time" descr="The time of day when this org opens for business each working day">
+<presentation>
+<field.time caption="Business Day Start Time" size="12"/>
+</presentation>
+</column>
+<column name="business_end_time" type="time" descr="The time of day when this org closes for business each working day">
+<presentation>
+<field.time caption="Business Day End Time" size="12"/>
+</presentation>
+</column>
+<column name="time_zone" type="text" size="10" descr="Time zone that the organization operates in">
+<presentation>
+<field.text caption="Time Zone" size="8" hint="descr"/>
+</presentation>
+</column>
+<column name="org_level_id" lookupref="Org_Level_Type" descr="The size of organization">
+<presentation>
+<field.select caption="Org Level"/>
+</presentation>
+</column>
+<column name="hcfa_servplace_id" lookupref="HCFA1500_Service_Place_Type" descr="The org's HCFA Service Place type">
+<presentation>
+<field.select caption="HCFA Service Place Type"/>
+</presentation>
+</column>
+<presentation>
+<dialog name="orgProfileTableDialog" class="app.customdal.TableDialog" retain-params="org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="org_id"/>
+			
+			<field.separator heading="Organization Profile"/>
+			<field.table-column column="org_name"/>
+			<field.table-column column="org_code"/>
+			<field.table-column column="org_abbrev"/>
+
+			<field.table-column column="ticker_symbol"/>
+			<field.table-column column="sic_code"/>
+			
+			<field.table-column column="fiscal_year_month_id"/>
+			<field.table-column column="time_zone" hint="The following fields should be filled with times in this timezone"/>
+			<field.table-column column="business_start_time"/>
+			<field.table-column column="business_end_time"/>
+
+			<field.separator heading="Demographic Information"/>
+			<field.table-column column="ownership_id"/>
+			<field.table-column column="org_level_id"/>
+			<field.table-column column="employees"/>
+
+			<field.separator heading="Service Information"/>
+			<field.table-column column="hcfa_servplace_id"/>
+		</dialog>
+</presentation>
+</table>
+
+	<table name="Org_Address" abbrev="OrgAdr" type="Physical_Address" xdm:param-parentRef="Org.org_id">
+<presentation>
+<dialog name="orgAddressTableDialog" class="app.customdal.TableDialog" retain-params="parent_id,org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="system_id"/>
+			<field.table-column column="parent_id" caption="Org ID"/>
+
+			<field.separator heading="Address Classification"/>
+			<field.table-column column="address_name"/>
+			<field.table-column column="mailing"/>
+			<field.table-column column="address_type_id"/>
+
+			<field.separator heading="Address Data"/>
+			<field.table-column column="line1"/>
+			<field.table-column column="line2"/>
+			<field.table-column column="city"/>
+			<field.table-column column="county"/>
+			<field.table-column column="state_id"/>
+			<field.table-column column="state" hint="The state, if not within the USA/Canada"/>
+			<field.table-column column="zip"/>
+			<field.table-column column="country"/>
+		</dialog>
+</presentation>
+</table>
+
+	<table name="Org_Note" abbrev="ONote" type="Note" xdm:param-parentRef="Org.org_id" xdm:param-noteTypeEnum="Org_Note_Type">
+<presentation>
+<dialog name="orgNoteTableDialog" class="app.customdal.TableDialog" retain-params="parent_id,org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="system_id"/>
+			<field.table-column column="parent_id"/>
+			
+			<field.table-column column="note_type_id"/>
+			<field.table-column column="note_type"/>
+			<field.table-column column="notes"/>
+		</dialog>
+</presentation>
+</table>
+
+	<table name="Org_Classification" abbrev="OrgClass" type="Default">
+<description>
+			Stores a record of the different classifications for an org
+		</description>
+<column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+<column name="org_id" parentref="Org.org_id" descr="The actual org record for which classification record is being defined">
+<presentation>
+<field.guid32 caption="Org ID" required="yes">
+				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+			</field.guid32>
+</presentation>
+</column>
+<column name="org_type_id" lookupref="Org_Type" descr="This org's classification">
+<presentation>
+<field.select/>
+</presentation>
+</column>
+<column name="org_type" type="text" size="64" descr="This org's classification if 'Other' chosen above">
+<presentation>
+<field.text size="16">
+				<conditional action="display" partner="org_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+			</field.text>
+</presentation>
+</column>
+<presentation>
+<dialog name="orgClassificationTableDialog" class="app.customdal.TableDialog" retain-params="org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="system_id"/>
+			<field.table-column column="org_id"/>
+
+			<field.table-column column="org_type_id"/>
+			<field.table-column column="org_type"/>
+		</dialog>
+</presentation>
+</table>
+
+	<table name="Org_Contact" abbrev="OrgCnt" type="Contact_Method" xdm:param-parentRef="Org.org_id">
+<presentation>
+<dialog name="orgContactTableDialog" class="app.customdal.TableDialog" retain-params="parent_id,org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="system_id"/>
+			<field.table-column column="parent_id" caption="Org ID"/>
+
+			<field.table-column column="method_type"/>
+			<field.table-column column="method_name"/>
+			<field.table-column column="method_value"/>
+		</dialog>
+</presentation>
+</table>
+
+	<table name="Org_Inv_Claim_Rel" abbrev="OrgInvClmRel" type="Default">
+<description>
+			This table stores the relationship between an invoice and all the
+			claims generated as a result of that invoice
+		</description>
+<column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+<column name="invoice_id" lookupref="Org_Inv_Visit.invoice_id" descr="A link to an invoice generated by a patient's visit to a physician">
+<presentation>
+<field.select caption="Invoice ID" required="yes" choices="query:org.get-all-invoices" style="popup"/>
+</presentation>
+</column>
+<column name="org_id" parentref="Org.org_id" descr="The organization to which these claims/invoices belong">
+<presentation>
+<field.select caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
+				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+			</field.select>
+</presentation>
+</column>
+<column name="claim_id" lookupref="Claim.claim_id" descr="A link to a claim generated by this invoice">
+<presentation>
+<field.select caption="Claim ID" required="yes" choices="query:org.get-all-claims" style="popup"/>
+</presentation>
+</column>
+<column name="inv_type_id" lookupref="Invoice_Type" descr="The type of invoice that the above invoice_id refers to">
+<presentation>
+<field.select caption="Invoice Type"/>
+</presentation>
+</column>
+<column name="inv_type" type="text" size="64" descr="The type of invoice if the above field is 'Other'">
+<presentation>
+<field.text caption="Other Invoice Type" size="16">
+				<conditional action="display" partner="inv_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+			</field.text>
+</presentation>
+</column>
+<presentation>
+<dialog name="orgInvClaimRelationship" class="app.customdal.TableDialog" retain-params="org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="system_id"/>
+
+			<field.table-column column="org_id"/>
+			<field.table-column column="invoice_id"/>
+			<field.table-column column="claim_id"/>
+
+			<field.table-column column="inv_type_id"/>
+			<field.table-column column="inv_type"/>
+		</dialog>
+</presentation>
+</table>
+	
+	<table name="Org_Identifier" abbrev="OrgID" type="Default">
+<column name="system_id" type="guid32" primarykey="yes"/>
+<column name="org_id" parentref="Org.org_id"/>
+<column name="identifier_type_id" lookupref="Org_Identifier_Type" descr="The type of ID number to be stored in this record">
+<presentation>
+<field.select caption="Identifier Type"/>
+</presentation>
+</column>
+<column name="identifier_type" type="text" size="64" descr="The explicit name of the ID number type, if choosing 'Other' in the field above">
+<presentation>
+<field.text caption="Other Identifier Type" size="16">
+				<conditional action="display" partner="identifier_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+			</field.text>
+</presentation>
+</column>
+<column name="identifier" type="text" size="256">
+<presentation>
+<field.text caption="Identifier Name" size="16"/>
+</presentation>
+</column>
+<presentation>
+<dialog name="orgIdentifierTableDialog" class="app.customdal.TableDialog" retain-params="org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="system_id"/>
+			<field.table-column column="org_id" caption="Org ID"/>
+			
+			<field.table-column column="identifier_type_id"/>
+			<field.table-column column="identifier_type"/>
+			<field.table-column column="identifier"/>
+		</dialog>
+</presentation>
+</table>
+
+	<table name="Org_Industry" abbrev="OInd" type="Default">
+<column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for each row"/>
+<column name="org_id" parentref="Org.org_id" descr="The organization being described">
+<presentation>
+<field.select caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
+				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+			</field.select>
+</presentation>
+</column>
+<column name="industry_type_id" lookupref="Org_Industry_Type" descr="The industry organization belongs in">
+<presentation>
+<field.select caption="Industry Type"/>
+</presentation>
+</column>
+<column name="industry_type" type="text" size="64" descr="The full name of the org's industry if the field above contains 'Other'">
+<presentation>
+<field.text caption="Other Industry Type" size="16">
+				<conditional action="display" partner="org_industry_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+			</field.text>
+</presentation>
+</column>
+<presentation>
+<dialog name="orgIndustryTableDialog" class="app.customdal.TableDialog" retain-params="org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="system_id"/>
+			<field.table-column column="org_id" caption="Org ID"/>
+			
+			<field.table-column column="industry_type_id"/>
+			<field.table-column column="industry_type"/>
+		</dialog>
+</presentation>
+</table>
+
+	<table name="Org_PersonId_Src_Type" abbrev="OPerSrcIdTy" type="Org_Lookup">
+<description>
+			This table holds all the different types that the Person_Identification table's id_type_id column can hold.
+		</description>
+<presentation>
+<dialog name="orgPersonIdSrcTableDialog" class="app.customdal.TableDialog" retain-params="org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="system_id"/>
+			<field.table-column column="org_id" caption="Org ID"/>
+			
+			<field.table-column column="item_id" caption="Person ID Source Number"/>
+			<field.table-column column="caption"/>
+			<field.table-column column="abbrev"/>
+		</dialog>
+</presentation>
+</table>
+
+	<table name="Org_Product" abbrev="OPrd" type="Default">
+<column name="product_id" type="guid32" primarykey="yes" descr="Unique ID for each product"/>
+<column name="org_id" parentref="Org.org_id" descr="The organization which offers this product">
+<presentation>
+<field.select caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
+				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+			</field.select>
+</presentation>
+</column>
+<column name="product_name" type="text" size="256" descr="The name of the product">
+<presentation>
+<field.text caption="Product Name" size="16"/>
+</presentation>
+</column>
+<column name="measurement_unit_id" lookupref="Measurement_Unit_Type" descr="The type of units used in measuring quantities of this product">
+<presentation>
+<field.select caption="Measurement Unit"/>
+</presentation>
+</column>
+<column name="measurement_unit" type="text" size="16" descr="The name of the unit of measurement, if 'Other' chosen above">
+<presentation>
+<field.text caption="Other Measurement Unit">
+				<conditional action="display" partner="measurement_unit_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+			</field.text>
+</presentation>
+</column>
+<column name="unit_measure" type="integer" descr="How many of the above units form a sellable quantity">
+<presentation>
+<field.float caption="Unit Size" size="8" hint="How many units of the above measurement type form a sellable quantity?"/>
+</presentation>
+</column>
+<presentation>
+<dialog name="orgProductTableDialog" class="app.customdal.TableDialog" retain-params="org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="product_id"/>
+			<field.table-column column="org_id"/>
+
+			<field.separator heading="Product Information"/>
+			<field.table-column column="product_name"/>
+			<field.table-column column="measurement_unit_id"/>
+			<field.table-column column="measurement_unit"/>
+			<field.table-column column="unit_measure"/>
+		</dialog>
+</presentation>
+</table>
+	
+	<table name="Org_Relationship_Type" abbrev="ORelTy" type="Relationship_Type">
+<enumerations>
+<enum>Our Firm</enum>
+<enum>Client</enum>
+<enum>Vendor</enum>
+<enum>Partner</enum>
+<enum id="1000">Ancestor of Org</enum>
+<enum id="1010">Parent of Org</enum>
+<enum id="1020">Sibling of Org</enum>
+<enum id="1030">Child of Org</enum>
+<enum id="1040">Descendent of Org</enum>
+</enumerations>
+</table>
+
+	<table name="Org_Relationship_Status" abbrev="ORelSt" type="Relationship_Status"/>
+
+	<table name="Org_Relationship" abbrev="OrgRel" type="Org_Relationship" xdm:param-recordStatusEnum="Org_Relationship_Status" xdm:param-relationshipTypeEnum="Org_Relationship_Type" xdm:param-relatedEntityFieldQuery="org.get-all-orgs" xdm:param-relatedEntityFieldCaption="Related Org">
+<description>The relationship between two organizations.</description>
+<presentation>
+<dialog name="orgRelationshipTableDialog" class="app.customdal.TableDialog" retain-params="parent_id,org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="system_id"/>
+			<field.table-column column="parent_id" caption="Org ID"/>
+
+			<field.table-column column="rel_entity_id"/>
+			<field.table-column column="rel_type_id"/>
+			<field.table-column column="rel_type"/>
+
+			<field.table-column column="rel_begin"/>
+			<field.table-column column="rel_end"/>
+
+			<field.table-column column="rel_descr"/>
+		</dialog>
+</presentation>
+</table>
+
+	<table name="Org_Relationship_Map" abbrev="OrgRelMp" type="Relationship_Map" xdm:param-relationshipTypeTable="Org_Relationship_Type">
+<description>A map between relationships and their inverses for the Org_Relationship_Type table</description>
+</table>
+
+	<table name="Org_Role_Declaration" abbrev="OrgRlDc" type="Default">
+<column name="role_name_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+<column name="org_id" parentref="Org.org_id" required="yes" descr="The org for which this role is defined">
+<presentation>
+<field.select caption="Org ID" choices="query:org.get-all-orgs" style="popup"/>
+</presentation>
+</column>
+<column name="role_type_id" lookupref="Person_Role_Type" indexed="yes" required="dbms" descr="What type of role this is">
+<presentation>
+<field.select caption="Role Type" required="yes"/>
+</presentation>
+</column>
+<column name="role_name" type="text" size="255" required="yes" descr="The role name">
+<presentation>
+<field.text caption="Role Name" size="32"/>
+</presentation>
+</column>
+<index name="Org_Role_Declaration_unq" columns="role_type_id,role_name" unique="yes"/>
+<presentation>
+<dialog name="personRoleNameTableDialog" class="app.customdal.TableDialog">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="role_name_id"/>
+			
+			<field.table-column column="org_id"/>
+			<field.table-column column="role_type_id"/>
+			<field.table-column column="role_name"/>
+		</dialog>
+</presentation>
+</table>
+	
+	<table name="Org_Service" abbrev="OSvc" type="Default">
+<column name="service_id" type="guid32" primarykey="yes" descr="Unique ID for each service"/>
+<column name="org_id" parentref="Org.org_id" descr="The organization which offers this service">
+<presentation>
+<field.select caption="Org ID" required="yes" choices="query:org.get-all-orgs" style="popup">
+				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+			</field.select>
+</presentation>
+</column>
+<column name="service_name" type="text" size="256" descr="The name of the service">
+<presentation>
+<field.text caption="Service Name" size="16"/>
+</presentation>
+</column>
+<presentation>
+<dialog name="orgServiceTableDialog" class="app.customdal.TableDialog" retain-params="org_id">
+			<field.table-column column="cr_sess_id"/>
+			<field.table-column column="cr_stamp"/>
+			<field.table-column column="rec_stat_id"/>
+			<field.table-column column="service_id"/>
+
+			<field.table-column column="org_id"/>
+			<field.table-column column="service_name"/>
+		</dialog>
+</presentation>
+</table>
+</xdm:container>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	<table name="Catalog" type="Default"/>
+
+	<table name="Service_Catalog" abbrev="SvcCat" type="Service_Catalog"/>
+
+	<table name="Service_Catalog_Item" abbrev="SvcCatItm" type="Catalog_Item" xdm:param-parentCatalog="Service_Catalog.catalog_id" xdm:param-catalogItemRef="Org_Service.service_id"/>
+	
+	<table name="Product_Catalog" abbrev="PrdCat" type="Product_Catalog"/>
+	
+	<table name="Product_Catalog_Item" abbrev="PrdCatItm" type="Catalog_Item" xdm:param-parentCatalog="Product_Catalog.catalog_id" xdm:param-catalogItemRef="Org_Product.product_id"/>
+
+</xdm:container>

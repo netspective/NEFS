@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dal>
+	<org ID="ORG_">
+		<org-name>Org</org-name>
+		<org-code>ORG</org-code>
+		<org-abbrev>ORG</org-abbrev>
+		<rec-stat-id>Active</rec-stat-id>
+		<ownership-id>Public</ownership-id>
+		<ticker-symbol>MST</ticker-symbol>
+		<sic-code>code1</sic-code>
+		<employees>10</employees>
+		<fiscal-year-month-id>January</fiscal-year-month-id>
+		<time-zone>EST</time-zone>
+		<org-level-id>Company</org-level-id>
+		<hcfa-servplace-id>Office</hcfa-servplace-id>
+		<org-address>
+			<address-name>Main</address-name>
+			<rec-stat-id>Active</rec-stat-id>
+			<mailing>true</mailing>
+			<address-type-id>Primary</address-type-id>
+			<line1>123 Main Road</line1>
+			<city>Fairfax</city>
+			<state-id>Virginia</state-id>
+			<county>Fairfax</county>
+			<zip>22038</zip>
+		</org-address>
+		<org-classification>
+			<rec-stat-id>Active</rec-stat-id>
+			<org-type-id>Practice</org-type-id>
+		</org-classification>
+		<org-contact>
+			<rec-stat-id>Active</rec-stat-id>
+			<method-type>Telephone: Business</method-type>
+			<method-value>532-5512</method-value>
+			<phone-ac>703</phone-ac>
+		</org-contact>
+		<org-contact>
+			<rec-stat-id>Active</rec-stat-id>
+			<method-type>Telephone: Company</method-type>
+			<method-value>585-5574</method-value>
+			<phone-ac>703</phone-ac>
+		</org-contact>
+		<org-identifier>
+			<rec-stat-id>Active</rec-stat-id>
+			<identifier-type-id>Tax ID</identifier-type-id>
+			<identifier>123456789</identifier>
+		</org-identifier>
+		<org-identifier>
+			<rec-stat-id>Active</rec-stat-id>
+			<identifier-type-id>Employer ID</identifier-type-id>
+			<identifier>987654321</identifier>
+		</org-identifier>
+		<org-industry>
+			<rec-stat-id>Active</rec-stat-id>
+			<industry-type-id>Healthcare</industry-type-id>
+		</org-industry>
+		<org-medication>
+			<med-type-id>Pain Reliever</med-type-id>
+			<med-name>Aspirin</med-name>
+			<generic-name>Aspirin</generic-name>
+		</org-medication>
+		<org-relationship>
+			<rec-stat-id>Active</rec-stat-id>
+			<rel-type-id>Child of Org</rel-type-id>
+			<rel-descr>First Children of 'The' main Organization</rel-descr>
+			
+			<rel-entity-id IDREF="ORG_0"/>
+		</org-relationship>
+	</org>
+	<person ID="PERSON_">
+		<name-first>John</name-first>
+		<name-last>Smith</name-last>
+		<ssn>123456789</ssn>
+		<rec-stat-id>Active</rec-stat-id>
+		<gender-id>Male</gender-id>
+		<ethnicity-id>Hispanic,African-American</ethnicity-id>
+		<language-id>English,Spanish</language-id>
+		<marital-status-id>Unknown</marital-status-id>
+		<blood-type-id>Unknown</blood-type-id>
+		<patient-indication>
+			<rec-stat-id>Active</rec-stat-id>
+			<indication-type-id>Medication Allergy</indication-type-id>
+			<indication>Ampicilin</indication>
+		</patient-indication>
+		<person-classification>
+			<rec-stat-id>Active</rec-stat-id>
+			<org-id IDREF="ORG_"/>
+			<person-type-id>0</person-type-id>
+		</person-classification>
+		<person-contact>
+			<rec-stat-id>Active</rec-stat-id>
+			<method-type>Telephone: Business</method-type>
+			<method-value>555-5555</method-value>
+			<phone-ac>703</phone-ac>
+		</person-contact>
+		<person-identifier>
+			<rec-stat-id>Active</rec-stat-id>
+			<org-id IDREF="ORG_"/>
+			
+			
+			<id-type-id/>
+			<identifier>123456789</identifier>
+		</person-identifier>
+		<person-role>
+			<rec-stat-id>Active</rec-stat-id>
+			
+			
+			<role-name-id/>
+		</person-role>
+		<person-address address-name="Test Address Name">
+			<rec-stat-id>Active</rec-stat-id>
+			<address-type-id>Primary</address-type-id>
+			<line1>987 Main St.</line1>
+			<city>Washington</city>
+			<state-id>District of Columbia</state-id>
+			<county>DC</county>
+			<zip>22059</zip>
+		</person-address>
+		<personorg-relationship>
+			<rec-stat-id>Active</rec-stat-id>
+			<rel-type-id>Employed (Full-time)</rel-type-id>
+			<rel-entity-id IDREF="ORG_"/>
+		</personorg-relationship>
+	</person>
+</dal>

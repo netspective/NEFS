@@ -8,5 +8,6 @@
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
 
 	<xdm:include file="data-management/query.xml"/>
+	<xdm:include file="data-management/schema.xml"/>
 
 </component>

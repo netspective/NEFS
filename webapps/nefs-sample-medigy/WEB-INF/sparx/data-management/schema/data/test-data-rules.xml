@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules>
+	<org>
+        
+	    <number-of-entities>
+            <org-type-id>1</org-type-id>
+		</number-of-entities>
+		<fields>
+			<org-name>
+				<source type="list" has-dependents="true">
+					<value>AETNA</value>
+					<value>MEDSERV</value>
+                    <value>HEALTHSOURCE PPO</value>
+                    <value>MEDICAID</value>
+                    <value>MEDICLINIC</value>
+                    <value>METHODIST MEDICAL GROUP</value>
+                    <value>VIRGINIA MEDICAL CLINICS</value>
+                    <value>MEDINET FAMILY CARE CLINIC</value>
+                    <value>TEXACO</value>
+                    <value>MEMORIAL HERMANN HOSPITAL</value>
+				</source>
+			</org-name>
+			<org-code>
+				<source type="dependant" parent-field="org-name"/>
+			</org-code>
+			<org-type-id>
+				<source type="list">
+					<value>0</value>
+					<value>1</value>
+					<value>2</value>
+					<value>3</value>
+					<value>4</value>
+					<value>5</value>
+					<value>6</value>
+					<value>7</value>
+					<value>8</value>
+					<value>9</value>
+					<value>10</value>
+				</source>
+			</org-type-id>
+		</fields>
+        <children>
+            <person>
+                <number-of-entities>
+                    <person-type-id>2</person-type-id>
+                </number-of-entities>
+                <fields>
+                    <name-first>
+                        <source type="list">
+                            <value>John</value>
+                            <value>Mathew</value>
+                            <value>Brandon</value>
+                            <value>Robert</value>
+                            <value>Jason</value>
+                            <value>Samuel</value>
+                            <value>Harold</value>
+                            <value>Jacob</value>
+                            <value>Leroy</value>
+                            <value>Ben</value>
+                            <value>Bernard</value>
+                            <value>Sam</value>
+                            <value>Victor</value>
+                        </source>
+                    </name-first>
+                    <name-last>
+                        <source type="list">
+                            <value>Smith</value>
+                            <value>Johnson</value>
+                            <value>Bush</value>
+                            <value>Kennedy</value>
+                            <value>Parker</value>
+                            <value>Thompson</value>
+                            <value>Miller</value>
+                            <value>Scotts</value>
+                            <value>Hansin</value>
+                            <value>Cote</value>
+                            <value>Graham</value>
+                            <value>McGraph</value>
+                        </source>
+                    </name-last>
+                    <rel-entity-id>
+                        <source type="parentId"/>
+                    </rel-entity-id>
+                    <org-id>
+                        <source type="parentId"/>
+                    </org-id>
+                    <role-name-id>
+                    	<source type="list">
+                    		<value>SECURITY</value>
+                    		<value>FUNCTIONAL</value>
+                    		<value>FUNCTIONAL</value>
+                    		<value>FUNCTIONAL</value>
+                    		<value>SECURITY</value>
+                    		<value>FUNCTIONAL</value>
+                    	</source>
+                    </role-name-id>
+                    <id-type-id>
+											<source type="list">
+												<value>SSN</value>
+												<value>LICENSE</value>
+												<value>LICENSE</value>
+												<value>SSN</value>
+												<value>LICENSE</value>
+												<value>SSN</value>
+											</source>
+                    </id-type-id>
+                    <person-type-id>
+                        <source type="list">
+                            <value>0</value>
+                            <value>1</value>
+                            <value>2</value>
+                            <value>3</value>
+                            <value>4</value>
+                            <value>5</value>
+                            <value>6</value>
+                            <value>7</value>
+                            <value>8</value>
+                        </source>
+                    </person-type-id>
+                    <address-type-id>
+                    	<source type="list">
+												<value>Primary</value>
+												<value>Secondary</value>
+												<value>Alternate</value>
+												<value>Secondary</value>
+												<value>Billing</value>
+												<value>Other</value>
+												<value>Alternate</value>
+                    	</source>
+                    </address-type-id>
+                </fields>
+            </person>
+        </children>
+	</org>
+</rules>

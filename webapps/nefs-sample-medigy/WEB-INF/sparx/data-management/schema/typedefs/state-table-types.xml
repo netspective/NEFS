@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	<table-type name="Record_State" type="Default">
+<description>
+			This table type is used to store the state of a record in a table.
+		</description>
+<column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for this record state record"/>
+<column name="upd_stamp" type="stamp" required="dbms" descr="Date/Time this record state was changed">
+<sql-ddl>
+<default dbms="oracle">sysdate</default>
+</sql-ddl>
+<value-defn>
+<default dbms="hsqldb">curdate()</default>
+</value-defn>
+<presentation>
+<field.datetime caption="Last Change Timestamp"/>
+</presentation>
+</column>
+<column name="upd_sess_id" lookupref="Person_Session.session_id" descr="The session used to change the original record from this state to the next">
+<presentation>
+<field.text caption="Last Change Session ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
+				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+			</field.text>
+</presentation>
+</column>
+<column name="rec_state_id" lookupref="${params.recordStateEnum}" required="yes" descr="The state of the record this row is referring to">
+<presentation>
+<field.select caption="Record Status"/>
+</presentation>
+</column>
+</table-type>
+
+</xdm:container>

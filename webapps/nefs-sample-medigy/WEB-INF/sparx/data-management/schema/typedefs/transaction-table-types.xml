@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	<table-type name="Transaction" abbrev="Trans" type="Default">
+<column name="trans_id" type="guid32" primarykey="yes" descr="Unique System ID for each transaction record"/>
+<column name="trns_type_id" lookupref="${params.transTypeEnum}" descr="What kind of transaction is this information stored for?">
+<presentation>
+<field.select caption="Transaction Type ID"/>
+</presentation>
+</column>
+<column name="trns_type" type="text" size="64" descr="The transaction type, if 'Other' chosen above">
+<presentation>
+<field.text caption="Other Transaction Type"/>
+</presentation>
+</column>
+<column name="start_stamp" type="stamp" descr="The date that this transaction began">
+<presentation>
+<field.datetime caption="Begin Timestamp"/>
+</presentation>
+</column>
+<column name="end_stamp" type="stamp" descr="The date that this transaction ends">
+<presentation>
+<field.datetime caption="End Timestamp"/>
+</presentation>
+</column>
+<column name="comments" type="text" size="1024" descr="Details of the transaction">
+<presentation>
+<field.memo caption="Comments"/>
+</presentation>
+</column>
+</table-type>
+
+	<table-type name="Clinical_Transaction" abbrev="ClncTrans" type="Transaction">
+<description>
+			This table stores details of all clinical transactions between a patient and physician
+		</description>
+<column name="patient_id" lookupref="Person.person_id" descr="The name of the patient involved in this transaction">
+<presentation>
+<field.text caption="Patient ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
+				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+			</field.text>
+</presentation>
+</column>
+<column name="patient" type="text" size="128" descr="The name of the initiator (if not specified above)">
+<presentation>
+<field.text caption="Patient Name"/>
+</presentation>
+</column>
+<column name="physician_id" lookupref="Person.person_id" descr="The physician involved in this transaction">
+<presentation>
+<field.text caption="Physician ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
+				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
+			</field.text>
+</presentation>
+</column>
+<column name="physician" type="text" size="128" descr="The name of the receptor (if not specified above)">
+<presentation>
+<field.text caption="Physician Name"/>
+</presentation>
+</column>
+</table-type>
+	
+</xdm:container>

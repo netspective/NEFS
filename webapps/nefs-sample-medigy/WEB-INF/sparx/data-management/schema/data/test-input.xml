@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dal>
+    <org org-code="MEDSPECTIVE" org-name="Medspective" org-abbrev="MEDSPT">
+        <ownership-id>1</ownership-id>
+        <employees>3</employees>
+        <fiscal_year_month_id>0</fiscal_year_month_id>
+        <business_start_time>08:00:00</business_start_time>
+        <business_end_time>17:00:00</business_end_time>
+        <time_zone>EST</time_zone>
+        <org_level_id>0</org_level_id>
+        <org-address address-name="Address 1">
+            <mailing>true</mailing>
+            <address_type_id>0</address_type_id>
+            <line1>29013 Falling Creek Road</line1>
+            <city>Silver Spring</city>
+            <state>MD</state>
+            <county>Montgomery</county>
+            <zip>20706</zip>
+        </org-address>
+        <org-classification org_type_id="0"/>
+        <org-contact/>
+        <org-identifier>
+            <identifier-type-id>0</identifier-type-id>
+            <identifier>123456789</identifier>
+        </org-identifier>
+        <org-identifier>
+            <identifier-type-id>1</identifier-type-id>
+            <identifier>987654321</identifier>
+        </org-identifier>
+        <org-industry org-industry-id="16"/>
+        <org-medication/>
+        <org-note/>                                   
+        <org-personId-src-type>
+            <item-id>0</item-id>                                
+            <caption>ssn</caption>
+            <abberv>ssn</abberv>
+        </org-personId-src-type>
+        <org-relationship/>
+        <ins-product>
+            <insProduct-address/>
+            <insProduct-contact/>
+            <insPlan>
+                <insPlan-address/>
+                <insPlan-contact/>
+            </insPlan>
+        </ins-product>
+    </org>
+    <person name-first="Bob" name-last="Smith">
+        <name-middle>J</name-middle>
+        <gender-id>0</gender-id>
+        <ssn>123456789</ssn>
+        <gender-id>0</gender-id>
+        <ethnicity-id>5</ethnicity-id>
+        <language-id>0</language-id>
+        <marital-status-id>2</marital-status-id>
+        <blood-type-id>0</blood-type-id>
+        <birth-date>07/01/1978</birth-date>
+        <patient-indication>
+            <indication-type-id>1</indication-type-id>
+            <indication>Ampicilin</indication>
+        </patient-indication>
+        <patient-medication/>               
+        <person-classification>
+            <org-id>1</org-id>
+            <person-type-id>0</person-type-id>
+        </person-classification>
+        <person-contact>
+            <method-type>5</method-type>
+            <method-value>555-5555</method-value>
+            <phone-ac>703</phone-ac>
+        </person-contact>
+        <person-identifier>
+            <org-id>1</org-id>
+            <id-type-id>0</id-type-id>
+            <identifier>123456789</identifier>
+        </person-identifier>
+        <person-insurace/>                     
+        <peron-role>                                            
+            <role-type-id>0</role-type-id>
+            <role-name-id/>                       
+        </peron-role>
+
+        <person-address address-name="Test Address Name">
+            <line1>123 Main Road</line1>
+            <city>Silver Spring</city>
+            <state>MD</state>
+            <county>Montgomery</county>
+            <zip>20706</zip>
+        </person-address>
+        <person-login>
+            <user-id>bsmith</user-id>
+            <password>bsmith</password>
+            <login-status>1</login-status>
+        </person-login>
+        <personorg-relationship>
+            <rel_type>1</rel_type>
+            <rel_org_id>1</rel_org_id>
+            <rec_stat_id>1</rec_stat_id>
+        </personorg-relationship>
+    </person>
+</dal>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	
+
+	<table name="Asset_Type" abbrev="ResTy" type="Enumeration">
+<description>
+			Types of assets that the application can manage.
+		</description>
+<enumerations>
+<enum>Heavy Machinery</enum>
+<enum>Medical Diagnostic Equipment</enum>
+<enum>Surgical Equipment</enum>
+<enum>Office Machinery</enum>
+<enum>Room</enum>
+<enum>Other</enum>
+</enumerations>
+</table>
+
+</xdm:container>

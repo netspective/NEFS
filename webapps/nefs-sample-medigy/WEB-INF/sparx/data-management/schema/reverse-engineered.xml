@@ -1,0 +1,1691 @@
+<?xml version="1.0"?>
+
+<!-- Reverse engineered by Axiom
+     driver: HSQL Database Engine Driver
+     driver-version: 1.7.1
+     product: HSQL Database Engine
+     product-version: 1.7.1
+     available catalogs:
+     available schemas:
+-->
+
+<component xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <schema name="*.*">
+        <table name="Lookup_Result_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Record_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Record_State">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Contact_Method_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Contact_Address_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Contact_Telephone_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Contact_Email_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Action_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Patient_Comm_Act_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Patient_Comm_Status_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Provider_Comm_Act_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Provider_Comm_Status_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Directive_Act_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Diag_Term_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Proc_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Artifact_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Artifact_Event_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Artifact_Source_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Artifact_Association_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Claim_Table_Field_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Claim_Status_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Claim_Diagnosis_Code_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Claim_Procedure_Code_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Document_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Document_Mime_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Hcfa1500_Service_Place_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Procedure_Code_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Bill_Remittance_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Bill_Sequence_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Ins_Coverage_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Ins_Product_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Insured_Relationship">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Invoice_Status_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Invoice_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Doctor_Visit_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Lab_Order_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Lab_Order_Priority">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Lab_Order_Transmission">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Medication_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Medication_Record_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Referral_Communication">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Referral_Urgency">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Referral_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Referral_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Message_Attachment_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Message_Recipient_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Message_Reception_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Table_Activity_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Field_Change_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Measurement_Unit_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Month_Of_Year">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Session_Status_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Us_State_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Org_Note_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Org_Identifier_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Org_Industry_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Org_Level_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Org_Ownership_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Org_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Note_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Blood_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Ethnicity_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Gender_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Language_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Marital_Status_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Name_Prefix_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Indication_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_License_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Relationship_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Personorg_Rel_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Role_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Asset_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Event_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Event_Status_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Event_Status_Chgrsn_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Resource_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Session_Activity_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Session_Action_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Staff_Benefit_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Staff_Speciality_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Transaction_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Comm_Trns_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Phycomm_Trns_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Directive_Trns_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Action">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+        </table>
+        <table name="Action_Patient_Comm">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="act_id" type="text" primary-key="yes" required="yes"/>
+            <column name="act_type_id" lookup-ref="Patient_Comm_Act_Type.id"/>
+            <column name="act_type" type="text"/>
+            <column name="start_stamp" type="date"/>
+            <column name="end_stamp" type="date"/>
+            <column name="comments" type="text"/>
+            <column name="act_status_id" lookup-ref="Patient_Comm_Status_Type.id"/>
+            <column name="act_status" type="text"/>
+            <column name="subject" type="text"/>
+            <column name="initiator_id" lookup-ref="Person.person_id"/>
+            <column name="initiator" type="text"/>
+            <column name="receptor_id" lookup-ref="Person.person_id"/>
+            <column name="receptor" type="text"/>
+            <column name="rcpt_cont" type="text"/>
+        </table>
+        <table name="Action_Diagnosis">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="act_id" type="text" primary-key="yes" required="yes"/>
+            <column name="act_type_id" lookup-ref="Diag_Term_Type.id"/>
+            <column name="act_type" type="text"/>
+            <column name="start_stamp" type="date"/>
+            <column name="end_stamp" type="date"/>
+            <column name="comments" type="text"/>
+            <column name="patient_id" lookup-ref="Person.person_id"/>
+            <column name="patient" type="text"/>
+            <column name="physician_id" lookup-ref="Person.person_id"/>
+            <column name="physician" type="text"/>
+            <column name="diag_codetype_id" lookup-ref="Claim_Diagnosis_Code_Type.id"/>
+            <column name="diag_code" type="text"/>
+            <column name="diagnosis" type="text"/>
+        </table>
+        <table name="Action_Directive">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="act_id" type="text" primary-key="yes" required="yes"/>
+            <column name="act_type_id" lookup-ref="Directive_Act_Type.id"/>
+            <column name="act_type" type="text"/>
+            <column name="start_stamp" type="date"/>
+            <column name="end_stamp" type="date"/>
+            <column name="comments" type="text"/>
+            <column name="patient_id" lookup-ref="Person.person_id"/>
+            <column name="patient" type="text"/>
+            <column name="physician_id" lookup-ref="Person.person_id"/>
+            <column name="physician" type="text"/>
+            <column name="issuer" type="text"/>
+            <column name="reason" type="text"/>
+        </table>
+        <table name="Action_Ins_Verify">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="act_id" type="text" primary-key="yes" required="yes"/>
+            <column name="act_type_id" lookup-ref="Action_Type.id"/>
+            <column name="act_type" type="text"/>
+            <column name="start_stamp" type="date"/>
+            <column name="end_stamp" type="date"/>
+            <column name="comments" type="text"/>
+            <column name="event_id" lookup-ref="Event.event_id"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="effective_begin_date" type="date"/>
+            <column name="deductible" type="float"/>
+            <column name="deductible_met" type="float"/>
+            <column name="ovcopay" type="float"/>
+            <column name="labcopay" type="float"/>
+            <column name="xraycopay" type="float"/>
+            <column name="referral_required" type="boolean"/>
+            <column name="sep_copay_xray" type="boolean"/>
+            <column name="lab" type="text"/>
+            <column name="provider_id" lookup-ref="Person.person_id"/>
+            <column name="coverage_req" type="text"/>
+            <column name="coverage_on" type="text"/>
+            <column name="referral_or_precert" type="boolean"/>
+            <column name="precert_phone" type="text"/>
+            <column name="annual_pe_ww" type="text"/>
+            <column name="gyn_exam" type="text"/>
+            <column name="thin_prep_pap" type="text"/>
+            <column name="depo_inj" type="text"/>
+            <column name="iud" type="text"/>
+            <column name="tubal_lig" type="text"/>
+            <column name="surgery" type="text"/>
+            <column name="flex_sig" type="text"/>
+            <column name="output_xray" type="text"/>
+            <column name="mammogram" type="text"/>
+            <column name="amniocenteses" type="text"/>
+            <column name="pelvic_ultrasound" type="text"/>
+            <column name="fertility_test" type="text"/>
+            <column name="circumcision" type="text"/>
+            <column name="ins_rep_name" type="text"/>
+            <column name="ins_verified_by" lookup-ref="Person.person_id"/>
+            <column name="ins_verify_date" type="date"/>
+            <column name="app_verified_by" lookup-ref="Person.person_id"/>
+            <column name="app_verify_date" type="date"/>
+            <column name="med_verified_by" lookup-ref="Person.person_id"/>
+            <column name="med_verify_date" type="date"/>
+            <column name="per_verified_by" lookup-ref="Person.person_id"/>
+            <column name="per_verify_date" type="date"/>
+            <column name="verify_action" type="text"/>
+            <column name="owner_org_id" lookup-ref="Org.org_id"/>
+        </table>
+        <table name="Action_Provider_Comm">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="act_id" type="text" primary-key="yes" required="yes"/>
+            <column name="act_type_id" lookup-ref="Provider_Comm_Act_Type.id"/>
+            <column name="act_type" type="text"/>
+            <column name="start_stamp" type="date"/>
+            <column name="end_stamp" type="date"/>
+            <column name="comments" type="text"/>
+            <column name="act_status_id" lookup-ref="Provider_Comm_Status_Type.id"/>
+            <column name="act_status" type="text"/>
+            <column name="subject" type="text"/>
+            <column name="initiator_id" lookup-ref="Person.person_id"/>
+            <column name="initiator" type="text"/>
+            <column name="receptor_id" lookup-ref="Person.person_id"/>
+            <column name="receptor" type="text"/>
+            <column name="rcpt_cont" type="text"/>
+        </table>
+        <table name="Action_Procedure">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="act_id" type="text" primary-key="yes" required="yes"/>
+            <column name="act_type_id" lookup-ref="Proc_Type.id"/>
+            <column name="act_type" type="text"/>
+            <column name="start_stamp" type="date"/>
+            <column name="end_stamp" type="date"/>
+            <column name="comments" type="text"/>
+            <column name="patient_id" lookup-ref="Person.person_id"/>
+            <column name="patient" type="text"/>
+            <column name="physician_id" lookup-ref="Person.person_id"/>
+            <column name="physician" type="text"/>
+            <column name="proc_codetype_id" lookup-ref="Claim_Procedure_Code_Type.id"/>
+            <column name="proc_code" type="text"/>
+            <column name="procedure" type="text"/>
+        </table>
+        <table name="Action_Visit">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="act_id" type="text" primary-key="yes" required="yes"/>
+            <column name="act_type_id" lookup-ref="Doctor_Visit_Type.id"/>
+            <column name="act_type" type="text"/>
+            <column name="start_stamp" type="date"/>
+            <column name="end_stamp" type="date"/>
+            <column name="comments" type="text"/>
+            <column name="patient_id" lookup-ref="Person.person_id"/>
+            <column name="patient" type="text"/>
+            <column name="physician_id" lookup-ref="Person.person_id"/>
+            <column name="physician" type="text"/>
+            <column name="reason" type="text"/>
+        </table>
+        <table name="Artifact_Association_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Artifact">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="artifact_id" type="text" primary-key="yes" required="yes"/>
+            <column name="artifact_id_alias" type="text"/>
+            <column name="message_digest" type="text"/>
+            <column name="mime_type" type="text"/>
+            <column name="header" type="text"/>
+            <column name="spec_type_id" lookup-ref="Artifact_Type.id"/>
+            <column name="spec_subtype" type="text"/>
+            <column name="source_id" type="text"/>
+            <column name="source_type_id" lookup-ref="Artifact_Source_Type.id"/>
+            <column name="source_subtype" type="text"/>
+            <column name="source_system" type="text"/>
+            <column name="name" type="text"/>
+            <column name="description" type="text"/>
+            <column name="orig_stamp" type="date"/>
+            <column name="recv_stamp" type="date"/>
+            <column name="content_uri" type="text"/>
+            <column name="content_small" type="text"/>
+            <column name="content_large" type="1111"/>
+        </table>
+        <table name="Artifact_State">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="upd_stamp" type="date" required="yes"/>
+            <column name="upd_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_state_id" lookup-ref="Record_State.id"/>
+            <column name="artifact_id" lookup-ref="Artifact.artifact_id"/>
+            <column name="artifact_id_alias" type="text"/>
+            <column name="message_digest" type="text"/>
+            <column name="mime_type" type="text"/>
+            <column name="header" type="text"/>
+            <column name="spec_type_id" lookup-ref="Artifact_Type.id"/>
+            <column name="spec_subtype" type="text"/>
+            <column name="source_id" type="text"/>
+            <column name="source_type_id" lookup-ref="Artifact_Source_Type.id"/>
+            <column name="source_subtype" type="text"/>
+            <column name="source_system" type="text"/>
+            <column name="name" type="text"/>
+            <column name="description" type="text"/>
+            <column name="orig_stamp" type="date"/>
+            <column name="recv_stamp" type="date"/>
+            <column name="content_uri" type="text"/>
+            <column name="content_small" type="text"/>
+            <column name="content_large" type="1111"/>
+        </table>
+        <table name="Artifact_Association">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="assn_id" type="text" primary-key="yes" required="yes"/>
+            <column name="assn_status_id" lookup-ref="Artifact_Association_Status.id"/>
+            <column name="assn_type_id" lookup-ref="Artifact_Association_Type.id"/>
+            <column name="assn_sequence" type="integer"/>
+            <column name="artifact_id" lookup-ref="Artifact.artifact_id"/>
+            <column name="assoc_artifact_id" lookup-ref="Artifact.artifact_id"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="assn_data_a" type="text"/>
+            <column name="assn_data_b" type="text"/>
+            <column name="assn_data_c" type="text"/>
+        </table>
+        <table name="Artifact_Keyword">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="keyword_id" type="text" primary-key="yes" required="yes"/>
+            <column name="artifact_id" lookup-ref="Artifact.artifact_id"/>
+            <column name="keyword" type="text"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+        </table>
+        <table name="Artifact_Event">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="event_id" type="text" primary-key="yes" required="yes"/>
+            <column name="event_type_id" lookup-ref="Artifact_Event_Type.id"/>
+            <column name="event_status" type="text"/>
+            <column name="artifact_id" lookup-ref="Artifact.artifact_id"/>
+            <column name="rel_artifact_id" lookup-ref="Artifact.artifact_id"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="event_info" type="text"/>
+            <column name="event_info_extra" type="text"/>
+        </table>
+        <table name="Catalog">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+        </table>
+        <table name="Service_Catalog">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="catalog_id" type="text" primary-key="yes" required="yes"/>
+            <column name="catalog_name" type="text"/>
+            <column name="ins_plan_id" lookup-ref="Ins_Plan.plan_id"/>
+        </table>
+        <table name="Service_Catalog_Item">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="catalog_id" lookup-ref="Service_Catalog.catalog_id"/>
+            <column name="item_id" lookup-ref="Org_Service.service_id"/>
+            <column name="item" type="text"/>
+            <column name="cost" type="float"/>
+        </table>
+        <table name="Product_Catalog">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="catalog_id" type="text" primary-key="yes" required="yes"/>
+            <column name="catalog_name" type="text"/>
+            <column name="ins_plan_id" lookup-ref="Ins_Plan.plan_id"/>
+        </table>
+        <table name="Product_Catalog_Item">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="catalog_id" lookup-ref="Product_Catalog.catalog_id"/>
+            <column name="item_id" lookup-ref="Org_Product.product_id"/>
+            <column name="item" type="text"/>
+            <column name="cost" type="float"/>
+        </table>
+        <table name="Claim">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="claim_id" type="text" primary-key="yes" required="yes"/>
+            <column name="batch_id" type="integer"/>
+            <column name="batch_date" type="date"/>
+            <column name="visit_type_id" lookup-ref="Doctor_Visit_Type.id"/>
+            <column name="claim_status_id" lookup-ref="Claim_Status_Type.id"/>
+            <column name="patient_id" lookup-ref="Person.person_id"/>
+            <column name="referral_id" lookup-ref="Patient_Referral.referral_id"/>
+            <column name="service_provider_id" lookup-ref="Person.person_id"/>
+            <column name="billing_provider_id" lookup-ref="Person.person_id"/>
+            <column name="service_facility_id" lookup-ref="Org.org_id"/>
+            <column name="billing_facility_id" lookup-ref="Org.org_id"/>
+            <column name="accident" type="boolean"/>
+            <column name="accident_state_id" lookup-ref="Us_State_Type.id"/>
+            <column name="accident_state" type="text"/>
+            <column name="authorization_number" type="text"/>
+        </table>
+        <table name="Claim_Diagnosis">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="claim_id" lookup-ref="Claim.claim_id"/>
+            <column name="diag_code_type_id" lookup-ref="Claim_Diagnosis_Code_Type.id"/>
+            <column name="diag_code" type="text"/>
+            <column name="modifier" type="text"/>
+        </table>
+        <table name="Claim_Diagproc_Rel">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="diagnosis_id" lookup-ref="Claim_Diagnosis.system_id"/>
+            <column name="procedure_id" lookup-ref="Claim_Procedure.system_id"/>
+            <column name="comments" type="text"/>
+        </table>
+        <table name="Claim_Data_History">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="claim_id" lookup-ref="Claim.claim_id"/>
+            <column name="change_time" type="date"/>
+            <column name="change_type_id" lookup-ref="Field_Change_Type.id"/>
+            <column name="changed_field_id" lookup-ref="Claim_Table_Field_Type.id"/>
+            <column name="field_old_value" type="text"/>
+            <column name="field_new_value" type="text"/>
+        </table>
+        <table name="Claim_Procedure">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="claim_id" lookup-ref="Claim.claim_id"/>
+            <column name="proc_code_type_id" lookup-ref="Claim_Procedure_Code_Type.id"/>
+            <column name="proc_code" type="text"/>
+            <column name="modifier" type="text"/>
+            <column name="date_begin_date" type="date"/>
+            <column name="date_end_date" type="date"/>
+        </table>
+        <table name="Claim_Data_Archive">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="claim_id" lookup-ref="Claim.claim_id"/>
+            <column name="x12_xml_data" type="text"/>
+        </table>
+        <table name="Ins_Plan">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="plan_id" type="text" primary-key="yes" required="yes"/>
+            <column name="product_id" lookup-ref="Ins_Product.product_id"/>
+            <column name="plan_name" type="text"/>
+            <column name="remit_payer_id" type="text"/>
+            <column name="remit_type_id" lookup-ref="Bill_Remittance_Type.id"/>
+            <column name="remit_type" type="text"/>
+            <column name="remit_payer_name" type="text"/>
+            <column name="medigap_id" type="text"/>
+            <column name="initiation_date" type="date"/>
+            <column name="expiration_date" type="date"/>
+        </table>
+        <table name="Ins_Policy">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="policy_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="plan_id" lookup-ref="Ins_Plan.plan_id"/>
+            <column name="policy_number" type="text"/>
+            <column name="group_number" type="text"/>
+            <column name="group_name" type="text"/>
+            <column name="bill_sequence_id" lookup-ref="Bill_Sequence_Type.id"/>
+            <column name="coverage_begin_date" type="date"/>
+            <column name="coverage_end_date" type="date"/>
+        </table>
+        <table name="Ins_Product">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="product_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="prd_type_id" lookup-ref="Ins_Product_Type.id"/>
+            <column name="prd_type" type="text"/>
+            <column name="product_name" type="text"/>
+            <column name="remit_payer_id" type="text"/>
+            <column name="remit_type_id" lookup-ref="Bill_Remittance_Type.id"/>
+            <column name="remit_type" type="text"/>
+            <column name="remit_payer_name" type="text"/>
+        </table>
+        <table name="Insplan_Address">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Ins_Plan.plan_id"/>
+            <column name="address_name" type="text"/>
+            <column name="mailing" type="boolean"/>
+            <column name="address_type_id" lookup-ref="Contact_Address_Type.id"/>
+            <column name="line1" type="text"/>
+            <column name="line2" type="text"/>
+            <column name="city" type="text"/>
+            <column name="county" type="text"/>
+            <column name="state_id" lookup-ref="Us_State_Type.id"/>
+            <column name="state" type="text"/>
+            <column name="zip" type="text"/>
+            <column name="country" type="text"/>
+        </table>
+        <table name="Insplan_Contact">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Ins_Plan.plan_id"/>
+            <column name="method_type" lookup-ref="Contact_Method_Type.id"/>
+            <column name="method_name" type="text"/>
+            <column name="method_value" type="text"/>
+            <column name="phone_cc" type="text"/>
+            <column name="phone_ac" type="integer"/>
+            <column name="phone_prefix" type="integer"/>
+            <column name="phone_suffix" type="integer"/>
+        </table>
+        <table name="Insplan_Coverage">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Ins_Plan.plan_id"/>
+            <column name="cvg_type_id" lookup-ref="Ins_Coverage_Type.id"/>
+            <column name="cvg_type" type="text"/>
+            <column name="ind_deduct_amt" type="float"/>
+            <column name="fam_deduct_amt" type="float"/>
+            <column name="percent_pmt" type="float"/>
+            <column name="threshold_amt" type="float"/>
+            <column name="copay_amt" type="float"/>
+        </table>
+        <table name="Inspolicy_Coverage">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Ins_Policy.policy_id"/>
+            <column name="cvg_type_id" lookup-ref="Ins_Coverage_Type.id"/>
+            <column name="cvg_type" type="text"/>
+            <column name="ind_deduct_amt" type="float"/>
+            <column name="fam_deduct_amt" type="float"/>
+            <column name="percent_pmt" type="float"/>
+            <column name="threshold_amt" type="float"/>
+            <column name="copay_amt" type="float"/>
+        </table>
+        <table name="Insproduct_Address">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Ins_Product.product_id"/>
+            <column name="address_name" type="text"/>
+            <column name="mailing" type="boolean"/>
+            <column name="address_type_id" lookup-ref="Contact_Address_Type.id"/>
+            <column name="line1" type="text"/>
+            <column name="line2" type="text"/>
+            <column name="city" type="text"/>
+            <column name="county" type="text"/>
+            <column name="state_id" lookup-ref="Us_State_Type.id"/>
+            <column name="state" type="text"/>
+            <column name="zip" type="text"/>
+            <column name="country" type="text"/>
+        </table>
+        <table name="Insproduct_Contact">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Ins_Product.product_id"/>
+            <column name="method_type" lookup-ref="Contact_Method_Type.id"/>
+            <column name="method_name" type="text"/>
+            <column name="method_value" type="text"/>
+            <column name="phone_cc" type="text"/>
+            <column name="phone_ac" type="integer"/>
+            <column name="phone_prefix" type="integer"/>
+            <column name="phone_suffix" type="integer"/>
+        </table>
+        <table name="Insproduct_Coverage">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Ins_Product.product_id"/>
+            <column name="cvg_type_id" lookup-ref="Ins_Coverage_Type.id"/>
+            <column name="cvg_type" type="text"/>
+            <column name="ind_deduct_amt" type="float"/>
+            <column name="fam_deduct_amt" type="float"/>
+            <column name="percent_pmt" type="float"/>
+            <column name="threshold_amt" type="float"/>
+            <column name="copay_amt" type="float"/>
+        </table>
+        <table name="Org_Inv_Visit">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="invoice_id" type="text" primary-key="yes" required="yes"/>
+            <column name="act_id" lookup-ref="Action_Visit.act_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="submitter_id" lookup-ref="Person.person_id"/>
+            <column name="target_id" lookup-ref="Person.person_id"/>
+            <column name="invoice_num" type="text"/>
+            <column name="invoice_stat_id" lookup-ref="Invoice_Status_Type.id"/>
+            <column name="invoice_date" type="date"/>
+            <column name="submit_date" type="date"/>
+        </table>
+        <table name="Visit_Line_Item">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="invoice_id" lookup-ref="Org_Inv_Visit.invoice_id"/>
+        </table>
+        <table name="Org_Medication">
+            <column name="med_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="med_type_id" lookup-ref="Medication_Type.id"/>
+            <column name="med_type" type="text"/>
+            <column name="med_name" type="text"/>
+            <column name="generic_name" type="text"/>
+        </table>
+        <table name="Patient_Indication">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="indication_type_id" lookup-ref="Person_Indication_Type.id"/>
+            <column name="indication_type" type="text"/>
+            <column name="indication" type="text"/>
+        </table>
+        <table name="Patient_Medication">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="patient_id" lookup-ref="Person.person_id"/>
+            <column name="record_type" lookup-ref="Medication_Record_Type.id"/>
+            <column name="med_id" lookup-ref="Org_Medication.med_id"/>
+            <column name="prescriber_id" lookup-ref="Person.person_id"/>
+            <column name="pharmacy_id" lookup-ref="Org.org_id"/>
+            <column name="pharmacy_name" type="text"/>
+            <column name="first_dose" type="text"/>
+            <column name="dose" type="float"/>
+            <column name="dose_units" type="text"/>
+            <column name="sale_units" type="text"/>
+            <column name="route" type="text"/>
+            <column name="frequency" type="text"/>
+            <column name="prn" type="text"/>
+            <column name="start_date" type="date"/>
+            <column name="end_date" type="date"/>
+            <column name="ongoing" type="boolean"/>
+            <column name="duration" type="integer"/>
+            <column name="duration_units" type="text"/>
+            <column name="quantity" type="float"/>
+            <column name="num_refills" type="integer"/>
+            <column name="allow_generic" type="boolean"/>
+            <column name="allow_substitutions" type="boolean"/>
+            <column name="notes" type="text"/>
+            <column name="sig" type="text"/>
+            <column name="status" type="integer"/>
+            <column name="label" type="boolean"/>
+            <column name="label_language" lookup-ref="Language_Type.id"/>
+            <column name="signed" type="boolean"/>
+        </table>
+        <table name="Patient_Referral">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="referral_id" type="text" primary-key="yes" required="yes"/>
+            <column name="patient_id" lookup-ref="Person.person_id"/>
+            <column name="referrer_id" lookup-ref="Person.person_id"/>
+            <column name="referee_id" lookup-ref="Person.person_id"/>
+            <column name="user_id" lookup-ref="Person.person_id"/>
+            <column name="request_date" type="date"/>
+            <column name="referral_urgency" lookup-ref="Referral_Urgency.id"/>
+            <column name="code" type="text"/>
+            <column name="speciality" type="text"/>
+            <column name="referral_type_id" lookup-ref="Referral_Type.id"/>
+            <column name="allowed_visits" type="integer"/>
+            <column name="auth_number" type="text"/>
+            <column name="referral_begin_date" type="date"/>
+            <column name="referral_end_date" type="date"/>
+            <column name="comm_type_id" lookup-ref="Referral_Communication.id"/>
+            <column name="completion_date" type="date"/>
+            <column name="referral_status_id" lookup-ref="Referral_Status.id"/>
+            <column name="referral_status_date" type="date"/>
+            <column name="referral_reason" type="text"/>
+            <column name="comments" type="text"/>
+        </table>
+        <table name="Message">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="message_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Artifact.artifact_id"/>
+            <column name="subject" type="text"/>
+            <column name="sender_id" lookup-ref="Person.person_id"/>
+            <column name="content" type="text"/>
+        </table>
+        <table name="Message_Recipient">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="message_id" lookup-ref="Message.message_id"/>
+            <column name="recipient_type_id" lookup-ref="Message_Recipient_Type.id"/>
+            <column name="reception_type_id" lookup-ref="Message_Reception_Type.id"/>
+            <column name="recipient_id" lookup-ref="Person.person_id"/>
+        </table>
+        <table name="Message_Attach">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="message_id" lookup-ref="Message.message_id"/>
+            <column name="attachment_type_id" lookup-ref="Message_Attachment_Type.id"/>
+            <column name="document_id" lookup-ref="Artifact.artifact_id"/>
+            <column name="forwarded_id" lookup-ref="Message.message_id"/>
+        </table>
+        <table name="Org">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="org_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_code" type="text"/>
+            <column name="org_name" type="text"/>
+            <column name="org_abbrev" type="text"/>
+            <column name="ownership_id" lookup-ref="Org_Ownership_Type.id"/>
+            <column name="ticker_symbol" type="text"/>
+            <column name="sic_code" type="text"/>
+            <column name="employees" type="integer"/>
+            <column name="fiscal_year_month_id" lookup-ref="Month_Of_Year.id"/>
+            <column name="business_start_time" type="date"/>
+            <column name="business_end_time" type="date"/>
+            <column name="time_zone" type="text"/>
+            <column name="org_level_id" lookup-ref="Org_Level_Type.id"/>
+            <column name="hcfa_servplace_id" lookup-ref="Hcfa1500_Service_Place_Type.id"/>
+        </table>
+        <table name="Org_Address">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Org.org_id"/>
+            <column name="address_name" type="text"/>
+            <column name="mailing" type="boolean"/>
+            <column name="address_type_id" lookup-ref="Contact_Address_Type.id"/>
+            <column name="line1" type="text"/>
+            <column name="line2" type="text"/>
+            <column name="city" type="text"/>
+            <column name="county" type="text"/>
+            <column name="state_id" lookup-ref="Us_State_Type.id"/>
+            <column name="state" type="text"/>
+            <column name="zip" type="text"/>
+            <column name="country" type="text"/>
+        </table>
+        <table name="Org_Note">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Org.org_id"/>
+            <column name="note_type_id" lookup-ref="Org_Note_Type.id"/>
+            <column name="note_type" type="text"/>
+            <column name="notes" type="text"/>
+        </table>
+        <table name="Org_Classification">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="org_type_id" lookup-ref="Org_Type.id"/>
+            <column name="org_type" type="text"/>
+        </table>
+        <table name="Org_Contact">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Org.org_id"/>
+            <column name="method_type" lookup-ref="Contact_Method_Type.id"/>
+            <column name="method_name" type="text"/>
+            <column name="method_value" type="text"/>
+            <column name="phone_cc" type="text"/>
+            <column name="phone_ac" type="integer"/>
+            <column name="phone_prefix" type="integer"/>
+            <column name="phone_suffix" type="integer"/>
+        </table>
+        <table name="Org_Inv_Claim_Rel">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="invoice_id" lookup-ref="Org_Inv_Visit.invoice_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="claim_id" lookup-ref="Claim.claim_id"/>
+            <column name="inv_type_id" lookup-ref="Invoice_Type.id"/>
+            <column name="inv_type" type="text"/>
+        </table>
+        <table name="Org_Identifier">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="identifier_type_id" lookup-ref="Org_Identifier_Type.id"/>
+            <column name="identifier_type" type="text"/>
+            <column name="identifier" type="text"/>
+        </table>
+        <table name="Org_Industry">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="industry_type_id" lookup-ref="Org_Industry_Type.id"/>
+            <column name="industry_type" type="text"/>
+        </table>
+        <table name="Org_Personid_Src_Type">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="item_id" type="integer"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Org_Product">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="product_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="product_name" type="text"/>
+            <column name="measurement_unit_id" lookup-ref="Measurement_Unit_Type.id"/>
+            <column name="measurement_unit" type="text"/>
+            <column name="unit_measure" type="integer"/>
+        </table>
+        <table name="Org_Relationship_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Org_Relationship_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Org_Relationship">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Org_Relationship_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Org.org_id"/>
+            <column name="rel_entity_id" lookup-ref="Org.org_id"/>
+            <column name="rel_type_id" lookup-ref="Org_Relationship_Type.id"/>
+            <column name="rel_type" type="text"/>
+            <column name="rel_begin" type="date"/>
+            <column name="rel_end" type="date"/>
+            <column name="rel_descr" type="text"/>
+        </table>
+        <table name="Org_Relationship_Map">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="rel_type_id" lookup-ref="Org_Relationship_Type.id"/>
+            <column name="inv_rel_type_id" lookup-ref="Org_Relationship_Type.id"/>
+        </table>
+        <table name="Org_Role_Declaration">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="role_name_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="role_type_id" lookup-ref="Person_Role_Type.id" required="yes"/>
+            <column name="role_name" type="text"/>
+        </table>
+        <table name="Org_Service">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="service_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="service_name" type="text"/>
+        </table>
+        <table name="Person">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="person_id" type="text" primary-key="yes" required="yes"/>
+            <column name="name_prefix_id" lookup-ref="Name_Prefix_Type.id"/>
+            <column name="name_prefix" type="text"/>
+            <column name="name_first" type="text"/>
+            <column name="name_middle" type="text"/>
+            <column name="name_last" type="text"/>
+            <column name="name_suffix" type="text"/>
+            <column name="short_name" type="text" required="yes"/>
+            <column name="simple_name" type="text" required="yes"/>
+            <column name="complete_name" type="text" required="yes"/>
+            <column name="short_sortable_name" type="text" required="yes"/>
+            <column name="complete_sortable_name" type="text" required="yes"/>
+            <column name="ssn" type="text"/>
+            <column name="gender_id" lookup-ref="Gender_Type.id"/>
+            <column name="ethnicity_id" type="text"/>
+            <column name="language_id" type="text"/>
+            <column name="marital_status_id" lookup-ref="Marital_Status_Type.id"/>
+            <column name="blood_type_id" lookup-ref="Blood_Type.id"/>
+            <column name="birth_date" type="date"/>
+            <column name="death_date" type="date"/>
+            <column name="age" type="integer"/>
+        </table>
+        <table name="Per_Ethnicity_Id_Set">
+            <column name="system_id" type="integer" primary-key="yes" required="yes" descr="IDENTITY"/>
+            <column name="parent_id" lookup-ref="Person.person_id"/>
+            <column name="enum_index" type="integer"/>
+            <column name="enum_value" lookup-ref="Ethnicity_Type.id"/>
+        </table>
+        <table name="Per_Language_Id_Set">
+            <column name="system_id" type="integer" primary-key="yes" required="yes" descr="IDENTITY"/>
+            <column name="parent_id" lookup-ref="Person.person_id"/>
+            <column name="enum_index" type="integer"/>
+            <column name="enum_value" lookup-ref="Language_Type.id"/>
+        </table>
+        <table name="Person_Address">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Person.person_id"/>
+            <column name="address_name" type="text"/>
+            <column name="mailing" type="boolean"/>
+            <column name="address_type_id" lookup-ref="Contact_Address_Type.id"/>
+            <column name="line1" type="text"/>
+            <column name="line2" type="text"/>
+            <column name="city" type="text"/>
+            <column name="county" type="text"/>
+            <column name="state_id" lookup-ref="Us_State_Type.id"/>
+            <column name="state" type="text"/>
+            <column name="zip" type="text"/>
+            <column name="country" type="text"/>
+        </table>
+        <table name="Person_Note">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Person.person_id"/>
+            <column name="note_type_id" lookup-ref="Person_Note_Type.id"/>
+            <column name="note_type" type="text"/>
+            <column name="notes" type="text"/>
+        </table>
+        <table name="Person_Classification">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="person_type_id" lookup-ref="Person_Type.id"/>
+            <column name="person_type" type="text"/>
+        </table>
+        <table name="Person_Contact">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Person.person_id"/>
+            <column name="method_type" lookup-ref="Contact_Method_Type.id"/>
+            <column name="method_name" type="text"/>
+            <column name="method_value" type="text"/>
+            <column name="phone_cc" type="text"/>
+            <column name="phone_ac" type="integer"/>
+            <column name="phone_prefix" type="integer"/>
+            <column name="phone_suffix" type="integer"/>
+        </table>
+        <table name="Person_Ethnicity">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="ethnicity_id" lookup-ref="Ethnicity_Type.id"/>
+            <column name="ethnicity" type="text"/>
+        </table>
+        <table name="Person_Flag_Type">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Flag_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Flag">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Person_Flag_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Person.person_id"/>
+            <column name="flag_id" lookup-ref="Person_Flag_Type.id"/>
+        </table>
+        <table name="Person_Identifier">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="id_type_id" lookup-ref="Org_Personid_Src_Type.system_id"/>
+            <column name="id_type" type="text"/>
+            <column name="identifier" type="text"/>
+            <column name="source_type_id" lookup-ref="Org_Personid_Src_Type.system_id"/>
+            <column name="source_type" type="text"/>
+            <column name="notes" type="text"/>
+        </table>
+        <table name="Person_Insurance">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="ins_rel_id" lookup-ref="Person_Relationship.system_id"/>
+            <column name="guar_person_id" lookup-ref="Person.person_id"/>
+            <column name="guar_rel_id" lookup-ref="Person_Relationship.system_id"/>
+            <column name="member_number" type="text"/>
+            <column name="policy_id" lookup-ref="Ins_Policy.policy_id"/>
+        </table>
+        <table name="Person_Language">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="language_id" lookup-ref="Language_Type.id"/>
+            <column name="language" type="text"/>
+        </table>
+        <table name="Person_Login_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Login">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="user_id" type="text"/>
+            <column name="password" type="text"/>
+            <column name="login_status" lookup-ref="Person_Login_Status.id"/>
+            <column name="quantity" type="integer"/>
+        </table>
+        <table name="Person_Relationship_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Relationship">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Person_Relationship_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Person.person_id"/>
+            <column name="rel_entity_id" lookup-ref="Person.person_id"/>
+            <column name="rel_type_id" lookup-ref="Person_Relationship_Type.id"/>
+            <column name="rel_type" type="text"/>
+            <column name="rel_begin" type="date"/>
+            <column name="rel_end" type="date"/>
+            <column name="rel_descr" type="text"/>
+        </table>
+        <table name="Person_Relationship_Map">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="rel_type_id" lookup-ref="Person_Relationship_Type.id"/>
+            <column name="inv_rel_type_id" lookup-ref="Person_Relationship_Type.id"/>
+        </table>
+        <table name="Person_Role_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Person_Role">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="role_name_id" lookup-ref="Org_Role_Declaration.role_name_id"/>
+        </table>
+        <table name="Personorg_Rel_Status">
+            <column name="id" type="integer" primary-key="yes" required="yes"/>
+            <column name="caption" type="text"/>
+            <column name="abbrev" type="text"/>
+        </table>
+        <table name="Personorg_Relationship">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Personorg_Rel_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="parent_id" lookup-ref="Person.person_id"/>
+            <column name="rel_entity_id" lookup-ref="Org.org_id"/>
+            <column name="rel_type_id" lookup-ref="Personorg_Rel_Type.id"/>
+            <column name="rel_type" type="text"/>
+            <column name="rel_begin" type="date"/>
+            <column name="rel_end" type="date"/>
+            <column name="rel_descr" type="text"/>
+            <column name="relationship_name" type="text"/>
+            <column name="relationship_code" type="text"/>
+        </table>
+        <table name="Personorg_Relationship_Map">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="rel_type_id" lookup-ref="Personorg_Rel_Type.id"/>
+            <column name="inv_rel_type_id" lookup-ref="Personorg_Rel_Type.id"/>
+        </table>
+        <table name="Staff_Benefit">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="benefit_type_id" lookup-ref="Staff_Benefit_Type.id"/>
+            <column name="benefit_type" type="text"/>
+            <column name="benefit_detail" type="text"/>
+        </table>
+        <table name="Staff_License">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="license_type_id" lookup-ref="Person_License_Type.id"/>
+            <column name="license_type" type="text"/>
+            <column name="license_num" type="text"/>
+            <column name="expiration_date" type="date"/>
+            <column name="license_state_id" lookup-ref="Us_State_Type.id"/>
+            <column name="license_state" type="text"/>
+            <column name="speciality_type_id" lookup-ref="Staff_Speciality_Type.id"/>
+        </table>
+        <table name="Asset">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="asset_id" type="text" primary-key="yes" required="yes"/>
+            <column name="asset_type_id" lookup-ref="Asset_Type.id"/>
+            <column name="asset_type" type="text"/>
+            <column name="name" type="text"/>
+            <column name="concurrency" type="integer"/>
+            <column name="location" type="text"/>
+            <column name="serial_num" type="text"/>
+        </table>
+        <table name="Asset_Maint">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="system_id" type="text" primary-key="yes" required="yes"/>
+            <column name="asset_id" lookup-ref="Asset.asset_id"/>
+            <column name="scheduled" type="boolean"/>
+            <column name="breakdown_date" type="date"/>
+            <column name="maintenance_date" type="date"/>
+        </table>
+        <table name="Org_Appt_Type">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="appt_type_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="caption" type="text"/>
+            <column name="duration" type="integer"/>
+            <column name="lead_time" type="integer"/>
+            <column name="lag_time" type="integer"/>
+            <column name="back_to_back" type="boolean"/>
+            <column name="multiple" type="boolean"/>
+            <column name="num_sim" type="integer"/>
+            <column name="am_limit" type="integer"/>
+            <column name="pm_limit" type="integer"/>
+            <column name="day_limit" type="integer"/>
+            <column name="appt_width" type="integer"/>
+            <column name="attribute" type="text"/>
+            <column name="super_bill_ids" type="text"/>
+        </table>
+        <table name="Apty_Super_Bill_Ids_Set">
+            <column name="system_id" type="integer" primary-key="yes" required="yes" descr="IDENTITY"/>
+            <column name="parent_id" lookup-ref="Org_Appt_Type.appt_type_id"/>
+            <column name="value_index" type="integer"/>
+            <column name="value_text" type="text"/>
+        </table>
+        <table name="Appt_Type_Resource">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="resource_type_id" lookup-ref="Resource_Type.id"/>
+            <column name="resource_id" type="text"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="asset_id" lookup-ref="Asset.asset_id"/>
+            <column name="other_id" type="text"/>
+            <column name="appt_type_id" lookup-ref="Org_Appt_Type.appt_type_id"/>
+        </table>
+        <table name="Org_Sch_Template">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="template_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="active" type="boolean"/>
+            <column name="caption" type="text"/>
+            <column name="start_time" type="date"/>
+            <column name="end_time" type="date"/>
+            <column name="available" type="boolean"/>
+            <column name="days_of_month" type="text"/>
+            <column name="months" type="text"/>
+            <column name="days_of_week" type="text"/>
+            <column name="slot_width" type="integer"/>
+        </table>
+        <table name="Template_Resource">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="resource_type_id" lookup-ref="Resource_Type.id"/>
+            <column name="resource_id" type="text"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="asset_id" lookup-ref="Asset.asset_id"/>
+            <column name="other_id" type="text"/>
+            <column name="template_id" lookup-ref="Org_Sch_Template.template_id"/>
+        </table>
+        <table name="Appt_Chain_Entry">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="entry_id" type="text" primary-key="yes" required="yes"/>
+            <column name="chain_id" lookup-ref="Org_Appt_Type.appt_type_id"/>
+            <column name="appt_type_id" lookup-ref="Org_Appt_Type.appt_type_id"/>
+            <column name="sequence" type="integer"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+        </table>
+        <table name="Event">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="event_id" type="text" primary-key="yes" required="yes"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="event_type_id" lookup-ref="Event_Type.id"/>
+            <column name="event_status_id" lookup-ref="Event_Status_Type.id"/>
+            <column name="status_chgrsn_id" lookup-ref="Event_Status_Chgrsn_Type.id"/>
+            <column name="remark" type="text"/>
+            <column name="start_stamp" type="date"/>
+            <column name="duration" type="integer"/>
+            <column name="scheduled_by_id" lookup-ref="Person.person_id"/>
+            <column name="scheduled_stamp" type="date"/>
+            <column name="appt_type_id" lookup-ref="Org_Appt_Type.appt_type_id"/>
+            <column name="parent_id" lookup-ref="Event.event_id"/>
+            <column name="waiting_list" type="boolean"/>
+            <column name="start_time" type="text"/>
+        </table>
+        <table name="Event_Resource">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="resource_type_id" lookup-ref="Resource_Type.id"/>
+            <column name="resource_id" type="text"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="asset_id" lookup-ref="Asset.asset_id"/>
+            <column name="other_id" type="text"/>
+            <column name="event_id" lookup-ref="Event.event_id"/>
+        </table>
+        <table name="Event_Attendee">
+            <column name="cr_stamp" type="date" required="yes"/>
+            <column name="cr_sess_id" lookup-ref="Person_Session.session_id"/>
+            <column name="rec_stat_id" lookup-ref="Record_Status.id"/>
+            <column name="event_id" lookup-ref="Event.event_id"/>
+            <column name="patient_id" lookup-ref="Person.person_id"/>
+            <column name="reason" type="text"/>
+            <column name="checkin_by_id" lookup-ref="Person.person_id"/>
+            <column name="checkin_stamp" type="date"/>
+            <column name="checkout_by_id" lookup-ref="Person.person_id"/>
+            <column name="checkout_stamp" type="date"/>
+            <column name="discard_by_id" lookup-ref="Person.person_id"/>
+            <column name="discard_stamp" type="date"/>
+        </table>
+        <table name="Person_Session">
+            <column name="session_id" type="text" primary-key="yes" required="yes"/>
+            <column name="person_id" lookup-ref="Person.person_id"/>
+            <column name="org_id" lookup-ref="Org.org_id"/>
+            <column name="remote_host" type="text"/>
+            <column name="remote_addr" type="text"/>
+            <column name="first_access" type="date"/>
+            <column name="last_access" type="date"/>
+        </table>
+        <table name="Personsession_Activity">
+            <column name="session_id" lookup-ref="Person_Session.session_id"/>
+            <column name="activity_type" lookup-ref="Session_Activity_Type.id"/>
+            <column name="activity_stamp" type="date"/>
+            <column name="action_type" lookup-ref="Session_Action_Type.id"/>
+            <column name="action_scope" type="text"/>
+            <column name="action_key" type="text"/>
+            <column name="detail_level" type="integer"/>
+            <column name="activity_data" type="text"/>
+        </table>
+        <table name="Personsession_View_Count">
+            <column name="session_id" lookup-ref="Person_Session.session_id"/>
+            <column name="view_init" type="date"/>
+            <column name="view_latest" type="date"/>
+            <column name="view_scope" type="text"/>
+            <column name="view_key" type="text"/>
+            <column name="view_count" type="integer"/>
+            <column name="view_caption" type="text"/>
+            <column name="view_arl" type="text"/>
+        </table>
+    </schema>
+</component>

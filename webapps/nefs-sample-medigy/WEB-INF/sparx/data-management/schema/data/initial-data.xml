@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dal>
+
+	<org org-code="MEDS" org-name="Medspective Inc." ID="ORG_0">
+		<rec-stat-id>Active</rec-stat-id>
+		<ownership-id>Private</ownership-id>
+		<fiscal-year-month-id>January</fiscal-year-month-id>
+		<org-level-id>Company</org-level-id>
+		<hcfa-servplace-id>Office</hcfa-servplace-id>
+
+		<org-personid-src-type ID="SSN">
+			<rec-stat-id>Active</rec-stat-id>
+			<item-id>1</item-id>
+			<caption>SSN</caption>
+			<abbrev>ssn</abbrev>
+		</org-personid-src-type>
+		<org-personid-src-type ID="LICENSE">
+			<rec-stat-id>Active</rec-stat-id>
+			<item-id>2</item-id>
+			<caption>License Number</caption>
+			<abbrev>lic</abbrev>
+		</org-personid-src-type>
+
+		<org-role-declaration ID="SECURITY">
+			<rec-stat-id>Active</rec-stat-id>
+			<role-type-id>Security Role (used for authorization)</role-type-id>
+			<role-name>Admin</role-name>
+		</org-role-declaration>
+		<org-role-declaration ID="FUNCTIONAL">
+			<rec-stat-id>Active</rec-stat-id>
+			<role-type-id>Functional Role (used for business rules processing)</role-type-id>
+			<role-name>Front Desk</role-name>
+		</org-role-declaration>
+	</org>
+
+	<person name-first="Medspective" name-last="Administrator">
+		<rec-stat-id>Active</rec-stat-id>
+		<gender-id>Male</gender-id>
+		<marital-status-id>Unknown</marital-status-id>
+		<language-id>English</language-id>
+		<ethnicity-id>Unknown</ethnicity-id>
+		<personorg-relationship>
+			<rec-stat-id>Active</rec-stat-id>
+			<rel-type-id>Employed (Full-time)</rel-type-id>
+			<rel-entity-id IDREF="ORG_0"/>
+		</personorg-relationship>
+		<person-login>
+			<rec-stat-id>Active</rec-stat-id>
+			<user-id>admin</user-id>
+			<password>password</password>
+			<login-status>Active</login-status>
+		</person-login>
+	</person>
+</dal>

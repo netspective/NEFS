@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	<table-type name="Action" abbrev="Trans" type="Default">
+<hierarchy parent="Action"/>
+<column name="act_id" type="guid32" primarykey="yes" descr="Unique System ID for each action record"/>
+<column name="act_type_id" lookupref="${params.actTypeEnum}" descr="What kind of action is this information stored for?">
+<presentation>
+<field.select caption="Action Type"/>
+</presentation>
+</column>
+<column name="act_type" type="text" size="64" descr="The action type, if 'Other' chosen above">
+<presentation>
+<field.text caption="Other Action Type"/>
+</presentation>
+</column>
+<column name="start_stamp" type="stamp" descr="The date that this action began">
+<presentation>
+<field.datetime caption="Begin Timestamp"/>
+</presentation>
+</column>
+<column name="end_stamp" type="stamp" descr="The date that this action ends">
+<presentation>
+<field.datetime caption="End Timestamp"/>
+</presentation>
+</column>
+<column name="comments" type="text" size="1024" descr="Details of the message">
+<presentation>
+<field.memo caption="Comments"/>
+</presentation>
+</column>
+</table-type>
+
+	<table-type name="Communication_Action" abbrev="CommTrans" type="Action">
+<description>This table stores details of all communication actions between a patient and clinic</description>
+<column name="act_status_id" lookupref="${params.actStatusEnum}" descr="The status of this action.">
+<presentation>
+<field.select caption="Status"/>
+</presentation>
+</column>
+<column name="act_status" type="text" size="64" descr="The action status, if 'Other' chosen above">
+<presentation>
+<field.text caption="Other Status"/>
+</presentation>
+</column>
+<column name="subject" type="text" size="256" descr="The reason why this action took place">
+<presentation>
+<field.text caption="Subject"/>
+</presentation>
+</column>
+<column name="initiator_id" lookupref="Person.person_id" descr="The person who initiated this action (i.e. who made the call, sent out the fax etc)">
+<presentation>
+<field.text caption="Initiator Person ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
+</presentation>
+</column>
+<column name="initiator" type="text" size="128" descr="The name of the initiator (if not specified above)">
+<presentation>
+<field.text caption="Initiator Person Name"/>
+</presentation>
+</column>
+<column name="receptor_id" lookupref="Person.person_id" descr="The person who was at the receiving end of this action (i.e. who received the call or email etc)">
+<presentation>
+<field.text caption="Receptor Person ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
+</presentation>
+</column>
+<column name="receptor" type="text" size="128" descr="The name of the receptor (if not specified above)">
+<presentation>
+<field.text caption="Receptor Person Name"/>
+</presentation>
+</column>
+<column name="rcpt_cont" type="text" size="256" descr="The e-mail address/phone/fax numbers used to contact the receptor.  This is only needed if receptor_id is empty">
+<presentation>
+<field.text caption="Receptor Contact Information"/>
+</presentation>
+</column>
+</table-type>
+
+	<table-type name="Clinical_Action" abbrev="ClncTrans" type="Action">
+<description>This table stores details of all clinical actions between a patient and physician</description>
+<column name="patient_id" lookupref="Person.person_id" descr="The name of the patient involved in this action">
+<presentation>
+<field.text caption="Patient ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
+</presentation>
+</column>
+<column name="patient" type="text" size="128" descr="The name of the initiator (if not specified above)">
+<presentation>
+<field.text caption="Patient Name"/>
+</presentation>
+</column>
+<column name="physician_id" lookupref="Person.person_id" descr="The physician involved in this action">
+<presentation>
+<field.text caption="Physician ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
+</presentation>
+</column>
+<column name="physician" type="text" size="128" descr="The name of the receptor (if not specified above)">
+<presentation>
+<field.text caption="Physician Name"/>
+</presentation>
+</column>
+</table-type>
+
+</xdm:container>

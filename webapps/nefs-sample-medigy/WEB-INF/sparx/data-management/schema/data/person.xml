@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dal>
+	<person-role-name>
+		<rec-stat-id>1</rec-stat-id>
+		<role-type-id>0</role-type-id>
+		<role-name>Admin</role-name>
+	</person-role-name>
+	<person-role-name>
+		<rec-stat-id>1</rec-stat-id>
+		<role-type-id>1</role-type-id>
+		<role-name>Front Desk</role-name>
+	</person-role-name>
+	<person name-first="Medspective" name-last="Administrator">
+		<rec-stat-id>1</rec-stat-id>
+		<gender-id>2</gender-id>
+		<marital-status-id>7</marital-status-id>
+		<language-id>9</language-id>
+		<ethnicity-id>0</ethnicity-id>
+		<personorg-relationship>
+			<rel_type>1</rel_type>
+			<rel_org_id>1</rel_org_id>
+			<rec_stat_id>1</rec_stat_id>
+		</personorg-relationship>
+		<person-login>
+			<rec-stat-id>1</rec-stat-id>
+			<user-id>admin</user-id>
+			<password>password</password>
+			<login-status>1</login-status>
+		</person-login>
+	</person>
+	<person name-first="Bob" name-last="Smith" name-middle="J" ssn="123456789">
+		<gender-id>0</gender-id>
+		<gender-id>0</gender-id>
+		<ethnicity-id>5</ethnicity-id>
+		<language-id>0</language-id>
+		<marital-status-id>2</marital-status-id>
+		<blood-type-id>0</blood-type-id>
+		<patient-indication>
+			<indication-type-id>1</indication-type-id>
+			<indication>Ampicilin</indication>
+		</patient-indication>
+		<person-classification>
+			<org-id>1</org-id>
+			<person-type-id>0</person-type-id>
+		</person-classification>
+		<person-contact>
+			<method-type>5</method-type>
+			<method-value>555-5555</method-value>
+			<phone-ac>703</phone-ac>
+		</person-contact>
+		<person-identifier>
+			<org-id>2</org-id>
+			<id-type-id>1</id-type-id>
+			<identifier>123456789</identifier>
+		</person-identifier>
+		<person-role>
+			<role-type-id>1</role-type-id>
+			<role-name-id>2</role-name-id>
+		</person-role>
+		<person-address address-name="Test Address Name">
+			<line1>987 Main St.</line1>
+			<city>Washington</city>
+			<state>DC</state>
+			<county>DC</county>
+			<zip>22059</zip>
+		</person-address>
+		<person-login>
+			<user-id>bsmith</user-id>
+			<password>bsmith</password>
+			<login-status>1</login-status>
+		</person-login>
+		<personorg-relationship>
+			<rel_type>1</rel_type>
+			<rel_org_id>2</rel_org_id>
+			<rec_stat_id>1</rec_stat_id>
+		</personorg-relationship>
+	</person>
+</dal>

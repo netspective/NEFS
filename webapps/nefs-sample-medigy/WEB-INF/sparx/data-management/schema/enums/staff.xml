@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	
+
+	<table name="Staff_Benefit_Type" abbrev="StfBenTy" type="Enumeration">
+<enumerations>
+<enum>Attendance</enum>
+<enum>Insurance</enum>
+<enum>Retirement</enum>
+<enum>Other</enum>
+</enumerations>
+</table>
+
+	<table name="Staff_Speciality_Type" abbrev="StfSpcTy" type="Enumeration">
+<description>List of physician specialties. Provided by Envoy Exhibit 3 for processing NSF claims.</description>
+<enumerations>
+<enum abbrev="079">Addiction Medicine</enum>
+<enum abbrev="003">Allergy/Immunology</enum>
+<enum abbrev="005">Anesthesiology</enum>
+<enum abbrev="078">Cardiac Surgery</enum>
+<enum abbrev="006">Cardiology</enum>
+<enum abbrev="035">Chiropractic</enum>
+<enum abbrev="081">Critical Care (Intensivists)</enum>
+<enum abbrev="028">Colorectal Surgery</enum>
+<enum abbrev="007">Dermatology</enum>
+<enum abbrev="030">Diagnostic Radiology</enum>
+<enum abbrev="093">Emergency Medicine</enum>
+<enum abbrev="046">Endocrinology</enum>
+<enum abbrev="008">Family Practice</enum>
+<enum abbrev="010">Gastroenterology</enum>
+<enum abbrev="001">General Practice</enum>
+<enum abbrev="002">General Surgery</enum>
+<enum abbrev="038">Geriatric Medicine</enum>
+<enum abbrev="009">Gynecology (Osteopaths only)</enum>
+<enum abbrev="040">Hand Surgery</enum>
+<enum abbrev="082">Hematology</enum>
+<enum abbrev="083">Hematology/Oncology</enum>
+<enum abbrev="044">Infectious Disease</enum>
+<enum abbrev="011">Internal Medicine</enum>
+<enum abbrev="094">Interventional Radiology</enum>
+<enum abbrev="085">Maxillofacial Surgery</enum>
+<enum abbrev="090">Medical Oncology</enum>
+<enum abbrev="070">Multispecialty Clinic or Group Practice</enum>
+<enum abbrev="039">Nephrology</enum>
+<enum abbrev="013">Neurology</enum>
+<enum abbrev="086">Neuropsychiatry</enum>
+<enum abbrev="014">Neurosurgery</enum>
+<enum abbrev="036">Nuclear Medicine</enum>
+<enum abbrev="015">Obstetrics (Osteopaths only)</enum>
+<enum abbrev="016">Obstetrics/Gynecology</enum>
+<enum abbrev="018">Ophthalmology</enum>
+<enum abbrev="017">Ophthalmology/Otolaryngology (Osteopaths only)</enum>
+<enum abbrev="019">Oral Surgery (Dentists only)</enum>
+<enum abbrev="020">Orthopedic Surgery</enum>
+<enum abbrev="012">Osteopathic Manipulative Therapy</enum>
+<enum abbrev="004">Otolaryngology</enum>
+<enum abbrev="021">Pathologic Anatomy; Clinical Pathology (Osteopaths only)</enum>
+<enum abbrev="022">Pathology</enum>
+<enum abbrev="037">Pediatric Medicine</enum>
+<enum abbrev="076">Peripheral Vascular Disease</enum>
+<enum abbrev="023">Peripheral Vascular Disease - Med or Surg (Osteopaths only)</enum>
+<enum abbrev="025">Physical Medicine and Rehabilitation</enum>
+<enum abbrev="024">Plastic and Reconstruction Surgery</enum>
+<enum abbrev="084">Preventive Medicine</enum>
+<enum abbrev="026">Psychiatry</enum>
+<enum abbrev="027">Psychiatry/Neurology (Osteopaths only)</enum>
+<enum abbrev="029">Pulmonary Diseases</enum>
+<enum abbrev="092">Radiation Oncology</enum>
+<enum abbrev="032">Radiation Therapy (Osteopaths only)</enum>
+<enum abbrev="066">Rheumatology</enum>
+<enum abbrev="031">Roentgenology/Radiology (Osteopaths only)</enum>
+<enum abbrev="091">Surgical Oncology</enum>
+<enum abbrev="033">Thoracic Surgery</enum>
+<enum abbrev="099">Unknown Physician Specialty</enum>
+<enum abbrev="034">Urology</enum>
+<enum abbrev="077">Vascular Surgery</enum>
+<enum abbrev="089">Certified Clinical Nurse Specialist</enum>
+<enum abbrev="042">Certified Nurse Midwife</enum>
+<enum abbrev="043">Certified Registered Nurse Anesthetist</enum>
+<enum abbrev="068">Clinical Psychologist</enum>
+<enum abbrev="064">Independently-Billing Audiologist</enum>
+<enum abbrev="062">Independently-Billing Psychologist</enum>
+<enum abbrev="067">Independently-Practicing Occupational Therapist</enum>
+<enum abbrev="065">Independently-Practicing Physical Therapist</enum>
+<enum abbrev="080">Licensed Clinical Social Worker</enum>
+<enum abbrev="050">Nurse Practitioner</enum>
+<enum abbrev="041">Optometry</enum>
+<enum abbrev="097">Physician Assistant</enum>
+<enum abbrev="048">Podiatry</enum>
+<enum abbrev="072">Diagnostic Laboratory, GPPP</enum>
+<enum abbrev="071">Diagnostic X-Ray, GPPP</enum>
+<enum abbrev="074">Occupational Therapy, GPPP</enum>
+<enum abbrev="075">Other Medical Care, GPPP</enum>
+<enum abbrev="073">Physiotherapy, GPPP</enum>
+<enum abbrev="087">All Other (ex. Drug and Dept Stores)</enum>
+<enum abbrev="059">Ambulance Service Supplier</enum>
+<enum abbrev="049">Ambulatory Surgical Center</enum>
+<enum abbrev="095">Independent Physiological Laboratory</enum>
+<enum abbrev="069">Independently Billing Clinical Laboratory</enum>
+<enum abbrev="055">Individual Certified Orthotist</enum>
+<enum abbrev="056">Individual Certified Prosthetist</enum>
+<enum abbrev="057">Individual Certified Prosthetist-Orthotist</enum>
+<enum abbrev="058">Individual Certified (Other)</enum>
+<enum abbrev="045">Mammography Screening Center</enum>
+<enum abbrev="051">Medical Supply Co. (with Orthotist Cert. by ABCPO)</enum>
+<enum abbrev="052">Medical Supply Co. (with Prosthetist Cert. by ABCPO)</enum>
+<enum abbrev="053">Medical Supply Co. (with Prosthetist-Orthotist Cert. by ABCPO)</enum>
+<enum abbrev="054">Medical Supply Company (Other)</enum>
+<enum abbrev="063">Portable X-Ray Supplier</enum>
+<enum abbrev="060">Public Health or Welfare Agencies</enum>
+<enum abbrev="088">Unknown Supplier/Provider</enum>
+<enum abbrev="061">Volun. Health or Charitable Agencies</enum>
+<enum abbrev="N04">Acupuncturist</enum>
+<enum abbrev="N06">Independently Billing Radiology Grp</enum>
+<enum abbrev="N07">Licensed Massage Therapist</enum>
+<enum abbrev="N02">Licensed Practical Nurse</enum>
+<enum abbrev="N03">Opthamology, Cataracts</enum>
+<enum abbrev="N05">Obstetrics/Neo Natal</enum>
+<enum abbrev="N01">Registered Nurse</enum>
+<enum abbrev="301">Dental General Practice</enum>
+<enum abbrev="308">Denturist</enum>
+<enum abbrev="303">Endodontics</enum>
+<enum abbrev="302">Independent Hygienist</enum>
+<enum abbrev="307">Orthodontics</enum>
+<enum abbrev="304">Pedodontics</enum>
+<enum abbrev="305">Periodontics</enum>
+<enum abbrev="306">Prosthodontics</enum>
+</enumerations>
+</table>
+
+</xdm:container>
