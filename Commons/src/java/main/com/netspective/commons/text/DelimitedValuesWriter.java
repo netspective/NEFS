@@ -97,7 +97,7 @@ public class DelimitedValuesWriter
     {
         if(delimiterChar == newDelimiter) return; // no need to do anything.
         if(newDelimiter == '\n' || newDelimiter == '\r' ||
-           newDelimiter == delimiterChar || newDelimiter == quoteChar)
+           newDelimiter == quoteChar)
             throw new RuntimeException("Invalid delimiter: " + newDelimiter);
 
         delimiterChar = newDelimiter;
@@ -111,7 +111,7 @@ public class DelimitedValuesWriter
     public void changeQuote(char newQuote)
     {
         if(newQuote == '\n' || newQuote == '\r' ||
-           newQuote == delimiterChar || newQuote == quoteChar)
+           newQuote == delimiterChar)
             throw new RuntimeException("Invalid quote character: " + newQuote);
 
         quoteChar = newQuote;
