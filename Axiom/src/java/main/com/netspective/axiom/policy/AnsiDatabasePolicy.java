@@ -39,10 +39,32 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.16 2004-05-19 22:03:14 aye.thu Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.17 2004-06-11 11:40:11 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.naming.NamingException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicies;
@@ -63,26 +85,6 @@ import com.netspective.axiom.sql.dynamic.QueryDefnSelectStmtGenerator;
 import com.netspective.commons.text.GloballyUniqueIdentifier;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.naming.NamingException;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.net.UnknownHostException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class AnsiDatabasePolicy implements DatabasePolicy
 {
@@ -92,6 +94,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
     private SqlDdlFormats ddlFormats = createDdlFormats();
     private SqlDdlGenerator ddlGenerator = createDdlGenerator();
     private boolean prefixTableNamesWithSchemaName = false;
+    private boolean placeBindComments = false;
 
     /* --------------------------------------------------------------------------------------------------------------*/
 
@@ -154,7 +157,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
     public String[] getDbmsIdentifiers()
     {
-        return new String[] { getDbmsIdentifier() };
+        return new String[]{getDbmsIdentifier()};
     }
 
     public Object executeAndGetSingleValue(ConnectionContext cc, String sql) throws SQLException
@@ -287,9 +290,9 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         try
         {
             rs = dbmd.getCatalogs();
-            while(rs.next())
+            while (rs.next())
             {
-                writer.write(" "+rs.getObject(1).toString());
+                writer.write(" " + rs.getObject(1).toString());
             }
         }
         finally
@@ -303,9 +306,9 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         try
         {
             rs = dbmd.getSchemas();
-            while(rs.next())
+            while (rs.next())
             {
-                writer.write(" "+rs.getObject(1).toString());
+                writer.write(" " + rs.getObject(1).toString());
             }
         }
         finally
@@ -317,7 +320,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
         writer.write("<component xmlns:xdm=\"http://www.netspective.org/Framework/Commons/XMLDataModel\">\n");
         writer.write("    <xdm:include resource=\"com/netspective/axiom/conf/axiom.xml\"/>\n");
-        writer.write("    <schema name=\""+ catalog + "." + schemaPattern +"\">\n");
+        writer.write("    <schema name=\"" + catalog + "." + schemaPattern + "\">\n");
 
         Map dbmdTypeInfoByName = new HashMap();
         Map dbmdTypeInfoByJdbcType = new HashMap();
@@ -349,7 +352,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 String tableNameOrig = tables.getString(3);
                 String tableName = TextUtils.fixupTableNameCase(tableNameOrig);
 
-                writer.write("        <table name=\""+ tableName + "\">\n");
+                writer.write("        <table name=\"" + tableName + "\">\n");
 
                 Map primaryKeys = new HashMap();
                 ResultSet pkRS = null;
@@ -405,17 +408,17 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
                         String columnName = columnNameOrig.toLowerCase();
 
-                        writer.write("            <column name=\""+ columnName + "\"");
+                        writer.write("            <column name=\"" + columnName + "\"");
                         try
                         {
                             if (fKeys.containsKey(columnNameOrig))
-                                writer.write(" lookup-ref=\""+ fKeys.get(columnNameOrig) +"\"");
+                                writer.write(" lookup-ref=\"" + fKeys.get(columnNameOrig) + "\"");
                             else
                             {
                                 short jdbcType = columns.getShort(5);
                                 String dataType = (String) dataTypesMap.get(new Integer(jdbcType));
                                 if (dataType == null) dataType = Short.toString(jdbcType);
-                                writer.write(" type=\""+ dataType +"\"");
+                                writer.write(" type=\"" + dataType + "\"");
                             }
 
                             if (primaryKeys.containsKey(columnNameOrig))
@@ -425,12 +428,12 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                                 writer.write(" required=\"yes\"");
 
                             String defaultValue = columns.getString(13);
-                            if(defaultValue != null)
-                                writer.write(" default=\""+ defaultValue +"\"");
+                            if (defaultValue != null)
+                                writer.write(" default=\"" + defaultValue + "\"");
 
                             String remarks = columns.getString(12);
-                            if(remarks != null)
-                                writer.write(" descr=\""+ remarks +"\"");
+                            if (remarks != null)
+                                writer.write(" descr=\"" + remarks + "\"");
 
                         }
                         catch (Exception e)
@@ -467,11 +470,21 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         }
         finally
         {
-            if(writer != null) writer.close();
+            if (writer != null) writer.close();
         }
     }
 
     /* --------------------------------------------------------------------------------------------------------------*/
+
+    public boolean isPlaceBindComments()
+    {
+        return placeBindComments;
+    }
+
+    public void setPlaceBindComments(boolean placeBindComments)
+    {
+        this.placeBindComments = placeBindComments;
+    }
 
     public static String getDmlDebugText(String sql, Object[] bindValues)
     {
@@ -481,23 +494,23 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         result.append("\n");
         result.append(sql);
 
-        if(bindValues != null)
+        if (bindValues != null)
         {
             result.append("\nBIND");
 
             int bindNum = 1;
-            for(int i = 0; i < bindValues.length; i++)
+            for (int i = 0; i < bindValues.length; i++)
             {
                 Object bindValue = bindValues[i];
-                if(bindValue == null)
+                if (bindValue == null)
                     continue;
 
-                if(bindNum  > 1)
+                if (bindNum > 1)
                     result.append(", ");
 
-                result.append(" ["+ i + ", " + bindNum +"] ");
+                result.append(" [" + i + ", " + bindNum + "] ");
                 result.append(bindValue);
-                result.append(" ("+ bindValues[i].getClass() +")");
+                result.append(" (" + bindValues[i].getClass() + ")");
 
                 bindNum++;
             }
@@ -508,7 +521,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
     protected void executeAndRecordStatistics(ConnectionContext cc, QueryExecutionLog qel, String identifer, String sql, Object[] bindValues, Object[] addlParams) throws NamingException, SQLException
     {
-        if(log.isTraceEnabled())
+        if (log.isTraceEnabled())
             log.trace(getDmlDebugText(sql, bindValues));
 
         QueryExecutionLogEntry logEntry = qel.createNewEntry(cc, identifer);
@@ -521,24 +534,24 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
             logEntry.registerBindParamsBegin();
             int bindNum = 0;
-            if(bindValues != null)
+            if (bindValues != null)
             {
-                for(int i = 0; i < bindValues.length; i++)
+                for (int i = 0; i < bindValues.length; i++)
                 {
                     Object bindValue = bindValues[i];
-                    if(bindValue != null)
+                    if (bindValue != null)
                     {
                         bindNum++;
                         stmt.setObject(bindNum, bindValue);
                     }
                 }
             }
-            if(addlParams != null)
+            if (addlParams != null)
             {
-                for(int i = 0; i < addlParams.length; i++)
+                for (int i = 0; i < addlParams.length; i++)
                 {
                     Object bindValue = addlParams[i];
-                    if(bindValue != null)
+                    if (bindValue != null)
                     {
                         bindNum++;
                         stmt.setObject(bindNum, bindValue);
@@ -551,7 +564,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             stmt.execute();
             logEntry.registerExecSqlEndSuccess();
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             logEntry.registerExecSqlEndFailed();
             log.error(getDmlDebugText(sql, bindValues), e);
@@ -565,7 +578,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
     protected void executeAndIgnoreStatistics(ConnectionContext cc, String sql, Object[] bindValues, Object[] addlParams) throws NamingException, SQLException
     {
-        if(log.isTraceEnabled())
+        if (log.isTraceEnabled())
             log.trace(getDmlDebugText(sql, bindValues));
 
         try
@@ -574,24 +587,24 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             int bindNum = 0;
-            if(bindValues != null)
+            if (bindValues != null)
             {
-                for(int i = 0; i < bindValues.length; i++)
+                for (int i = 0; i < bindValues.length; i++)
                 {
                     Object bindValue = bindValues[i];
-                    if(bindValue != null)
+                    if (bindValue != null)
                     {
                         bindNum++;
                         stmt.setObject(bindNum, bindValue);
                     }
                 }
             }
-            if(addlParams != null)
+            if (addlParams != null)
             {
-                for(int i = 0; i < addlParams.length; i++)
+                for (int i = 0; i < addlParams.length; i++)
                 {
                     Object bindValue = addlParams[i];
-                    if(bindValue != null)
+                    if (bindValue != null)
                     {
                         bindNum++;
                         stmt.setObject(bindNum, bindValue);
@@ -601,7 +614,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
             stmt.execute();
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             log.error(getDmlDebugText(sql, bindValues), e);
             throw e;
@@ -615,7 +628,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         StringBuffer namesSql = new StringBuffer();
         StringBuffer valuesSql = new StringBuffer();
 
-        if(execute && rowListener != null)
+        if (execute && rowListener != null)
             rowListener.beforeInsert(cc, flags, columnValues);
 
         Object[] bindValues = ((flags & DMLFLAG_USE_BIND_PARAMS) != 0) ? new Object[columnsCount] : null;
@@ -626,6 +639,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         boolean haveGenerators = false;
         boolean haveColListeners = false;
         boolean isFirstColumn = true;
+        boolean placeBindComments = isPlaceBindComments();
 
         for (int i = 0; i < columnsCount; i++)
         {
@@ -636,17 +650,17 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             if (execute && column.isInsertManagedByDbms())
                 continue;
 
-            if(execute && (column instanceof GeneratedValueColumn))
+            if (execute && (column instanceof GeneratedValueColumn))
             {
                 GeneratedValueColumn generator = (GeneratedValueColumn) column;
                 generators[i] = generator;
                 haveGenerators = true;
 
-                if(! generator.retainValueInInsertDml(cc)) continue;
+                if (!generator.retainValueInInsertDml(cc)) continue;
                 bindValue = generator.handlePreDmlExecute(cc);
             }
 
-            if(execute && (column instanceof ColumnInsertListener))
+            if (execute && (column instanceof ColumnInsertListener))
             {
                 ((ColumnInsertListener) column).beforeInsert(cc, flags, value, columnValues);
                 colListeners[i] = (ColumnInsertListener) column;
@@ -660,17 +674,19 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             }
 
             isFirstColumn = false;
-            namesSql.append(column.getName());
+            namesSql.append(column.getSqlName());
 
-            if(value.isSqlExpr())
+            if (value.isSqlExpr())
                 valuesSql.append(value.getSqlExprs().getByDbms(this).getSql(cc));
             else
             {
                 if (bindValue == null)
                     valuesSql.append("NULL");
-                else if((flags & DMLFLAG_USE_BIND_PARAMS) != 0)
+                else if ((flags & DMLFLAG_USE_BIND_PARAMS) != 0)
                 {
-                    valuesSql.append("? /* "+ i +" */");
+                    valuesSql.append("?");
+                    if (placeBindComments)
+                        valuesSql.append(" /* \"+ i +\" */");
                     bindValues[i] = bindValue;
                 }
                 else
@@ -679,29 +695,30 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         }
 
         Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
-        String tableName = (isPrefixTableNamesWithSchemaName() ? table.getSchema().getName() + "." + table.getName() : table.getName());
+        String tableName = (isPrefixTableNamesWithSchemaName()
+                ? table.getSchema().getName() + "." + table.getSqlName() : table.getSqlName());
         String sql = "insert into " + tableName + " (" + namesSql + ") values (" + valuesSql + ")";
 
-        if(execute)
+        if (execute)
         {
-            if(log.isInfoEnabled())
+            if (log.isInfoEnabled())
                 executeAndRecordStatistics(cc, table.getDmlExecutionLog(), table.getName() + ".insert()", sql, bindValues, null);
             else
                 executeAndIgnoreStatistics(cc, sql, bindValues, null);
 
-            if(haveGenerators || haveColListeners)
+            if (haveGenerators || haveColListeners)
             {
-                for(int i = 0; i < columnsCount; i++)
+                for (int i = 0; i < columnsCount; i++)
                 {
-                    if(generators[i] != null)
+                    if (generators[i] != null)
                     {
                         ColumnValue value = columnValues.getByColumnIndex(i);
                         Object postDmlValue = generators[i].handlePostDmlExecute(cc, bindValues[i]);
-                        if(value != null)
+                        if (value != null)
                             value.setValue(postDmlValue);
                     }
 
-                    if(colListeners[i] != null)
+                    if (colListeners[i] != null)
                     {
                         ColumnValue value = columnValues.getByColumnIndex(i);
                         colListeners[i].afterInsert(cc, flags, value, columnValues);
@@ -709,7 +726,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 }
             }
 
-            if(rowListener != null)
+            if (rowListener != null)
                 rowListener.afterInsert(cc, flags, columnValues);
         }
 
@@ -720,7 +737,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
     {
         boolean execute = (flags & DMLFLAG_EXECUTE) != 0;
 
-        if(execute && rowListener != null)
+        if (execute && rowListener != null)
             rowListener.beforeUpdate(cc, flags, columnValues);
 
         int columnsCount = columnValues.size();
@@ -729,6 +746,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         ColumnUpdateListener[] colListeners = new ColumnUpdateListener[columnsCount];
         boolean haveColListeners = false;
         boolean isFirstColumn = true;
+        boolean placeBindComments = isPlaceBindComments();
 
         for (int i = 0; i < columnsCount; i++)
         {
@@ -736,19 +754,19 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             Column column = value.getColumn();
 
             // primary keys should not be in the update SQL
-            if(column.isPrimaryKey())
+            if (column.isPrimaryKey())
                 continue;
 
             if (execute && column.isUpdateManagedByDbms())
                 continue;
 
-            if(execute && (column instanceof GeneratedValueColumn))
+            if (execute && (column instanceof GeneratedValueColumn))
             {
                 GeneratedValueColumn generator = (GeneratedValueColumn) column;
-                if(! generator.retainValueInUpdateDml(cc)) continue;
+                if (!generator.retainValueInUpdateDml(cc)) continue;
             }
 
-            if(execute && (column instanceof ColumnUpdateListener))
+            if (execute && (column instanceof ColumnUpdateListener))
             {
                 ((ColumnUpdateListener) column).beforeUpdate(cc, flags, value, columnValues);
                 colListeners[i] = (ColumnUpdateListener) column;
@@ -757,22 +775,24 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
             Object bindValue = value.getValueForSqlBindParam();
 
-            if (! isFirstColumn)
+            if (!isFirstColumn)
                 setsSql.append(", ");
 
             isFirstColumn = false;
-            setsSql.append(column.getName());
+            setsSql.append(column.getSqlName());
             setsSql.append(" = ");
 
-            if(value.isSqlExpr())
+            if (value.isSqlExpr())
                 setsSql.append(value.getSqlExprs().getByDbms(cc.getDatabasePolicy()).getSql(cc));
             else
             {
                 if (bindValue == null)
                     setsSql.append("NULL");
-                else if((flags & DMLFLAG_USE_BIND_PARAMS) != 0)
+                else if ((flags & DMLFLAG_USE_BIND_PARAMS) != 0)
                 {
                     setsSql.append("?");
+                    if (placeBindComments)
+                        setsSql.append(" /* \"+ i +\" */");
                     bindValues[i] = bindValue;
                 }
                 else
@@ -782,28 +802,29 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
         Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
 
-        String tableName = (isPrefixTableNamesWithSchemaName() ? table.getSchema().getName() + "." + table.getName() : table.getName());
+        String tableName = (isPrefixTableNamesWithSchemaName()
+                ? table.getSchema().getName() + "." + table.getSqlName() : table.getSqlName());
 
         String sql = "update " + tableName + " set " + setsSql;
         if (whereCond != null)
         {
-            if(! whereCond.startsWith("where"))
+            if (!whereCond.startsWith("where"))
                 sql += " where";
             sql += " " + whereCond;
         }
 
-        if(execute)
+        if (execute)
         {
-            if(log.isInfoEnabled())
+            if (log.isInfoEnabled())
                 executeAndRecordStatistics(cc, table.getDmlExecutionLog(), table.getName() + ".update()", sql, bindValues, whereCondBindParams);
             else
                 executeAndIgnoreStatistics(cc, sql, bindValues, whereCondBindParams);
 
-            if(haveColListeners)
+            if (haveColListeners)
             {
-                for(int i = 0; i < columnsCount; i++)
+                for (int i = 0; i < columnsCount; i++)
                 {
-                    if(colListeners[i] != null)
+                    if (colListeners[i] != null)
                     {
                         ColumnValue value = columnValues.getByColumnIndex(i);
                         colListeners[i].afterUpdate(cc, flags, value, columnValues);
@@ -811,7 +832,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 }
             }
 
-            if(rowListener != null)
+            if (rowListener != null)
                 rowListener.afterUpdate(cc, flags, columnValues);
         }
 
@@ -826,14 +847,14 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         ColumnDeleteListener[] colListeners = new ColumnDeleteListener[columnsCount];
         boolean haveColListeners = false;
 
-        if(execute)
+        if (execute)
         {
             for (int i = 0; i < columnsCount; i++)
             {
                 ColumnValue value = columnValues.getByColumnIndex(i);
                 Column column = value.getColumn();
 
-                if(column instanceof ColumnDeleteListener)
+                if (column instanceof ColumnDeleteListener)
                 {
                     ((ColumnDeleteListener) column).beforeDelete(cc, flags, value, columnValues);
                     colListeners[i] = (ColumnDeleteListener) column;
@@ -844,31 +865,32 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
         Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
 
-        String tableName = (isPrefixTableNamesWithSchemaName() ? table.getSchema().getName() + "." + table.getName() : table.getName());
+        String tableName = (isPrefixTableNamesWithSchemaName()
+                ? table.getSchema().getName() + "." + table.getSqlName() : table.getSqlName());
 
         String sql = "delete from " + tableName;
         if (whereCond != null)
         {
-            if(! whereCond.startsWith("where"))
+            if (!whereCond.startsWith("where"))
                 sql += " where";
             sql += " " + whereCond;
         }
 
-        if(execute)
+        if (execute)
         {
-            if(rowListener != null)
+            if (rowListener != null)
                 rowListener.beforeDelete(cc, flags, columnValues);
 
-            if(log.isInfoEnabled())
+            if (log.isInfoEnabled())
                 executeAndRecordStatistics(cc, table.getDmlExecutionLog(), table.getName() + ".delete()", sql, null, whereCondBindParams);
             else
                 executeAndIgnoreStatistics(cc, sql, null, whereCondBindParams);
 
-            if(haveColListeners)
+            if (haveColListeners)
             {
-                for(int i = 0; i < columnsCount; i++)
+                for (int i = 0; i < columnsCount; i++)
                 {
-                    if(colListeners[i] != null)
+                    if (colListeners[i] != null)
                     {
                         ColumnValue value = columnValues.getByColumnIndex(i);
                         colListeners[i].afterDelete(cc, flags, value, columnValues);
@@ -876,7 +898,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 }
             }
 
-            if(rowListener != null)
+            if (rowListener != null)
                 rowListener.afterDelete(cc, flags, columnValues);
         }
 
