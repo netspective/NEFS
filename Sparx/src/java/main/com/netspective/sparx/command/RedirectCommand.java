@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RedirectCommand.java,v 1.3 2003-05-09 01:22:19 shahid.shah Exp $
+ * $Id: RedirectCommand.java,v 1.4 2003-08-06 18:02:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -127,5 +127,6 @@ public class RedirectCommand extends AbstractHttpServletCommand
 
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
+        writer.write("Redirect to " + getLocation() + " not implemented yet.");
     }
 }
