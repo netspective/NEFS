@@ -155,6 +155,16 @@
             </presentation>
         </query>
 
+        <query name="get-insurance-orgs">
+            select
+                org.org_name, org. org_id
+            from
+                org, org_classification
+            where
+                org_classification.org_type_id = 8 and
+                org.org_id = org_classification.org_id
+        </query>
+
         <query name="insPlan">
 			select
 				plan_id,
