@@ -39,25 +39,24 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.10 2003-08-30 14:05:51 shahid.shah Exp $
+ * $Id: QueryReportPanel.java,v 1.11 2004-03-01 07:02:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
+import com.netspective.axiom.sql.Query;
+import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.sql.QueryResultSetDataSource;
-import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.sql.QueryResultSet;
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class QueryReportPanel extends AbstractHtmlTabularReportPanel
 {
@@ -165,6 +164,12 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         {
             // if the report is null, we need to create it by running the query and getting the meta data
             activeReport = new BasicHtmlTabularReport();
+            this.report = activeReport;
+        }
+
+        // NO COLUMNS are defined for the report so use the result set to get the column information
+        if (activeReport.getColumns().isEmpty())
+        {
             try
             {
                 QueryResultSet resultSet = null;
@@ -180,7 +185,6 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
                 log.error("Unable to create report for query ", e);
                 throw new NestableRuntimeException(e);
             }
-            this.report = activeReport;
         }
 
         return activeReport;
