@@ -8,7 +8,7 @@
         <#assign xdmTag = vc.request.getParameter('xdm-tag')?default('')/>
         <#assign xdmParentClasses = vc.request.getParameter('parent-xdm-classes')?default('')/>
         <#assign xdmParentTags = vc.request.getParameter('parent-tags')?default('')/>
-    </if>
+    </#if>
     <#if xdmClass?default('-') = '-'>
         <#assign xdmClass = "com.netspective.sparx.Project"/>
         <#assign xdmTag = "project"/>
