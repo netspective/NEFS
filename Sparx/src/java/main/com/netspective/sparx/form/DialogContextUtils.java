@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextUtils.java,v 1.2 2003-09-29 02:07:56 shahid.shah Exp $
+ * $Id: DialogContextUtils.java,v 1.3 2003-10-10 20:30:19 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -50,6 +50,7 @@ import java.util.Enumeration;
 import java.sql.SQLException;
 import java.sql.ResultSetMetaData;
 import java.sql.ResultSet;
+import java.sql.Types;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -58,6 +59,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.type.DateTimeField;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.DbmsSqlText;
@@ -136,7 +138,14 @@ public class DialogContextUtils
                 String fieldName = rsmd.getColumnName(i).toLowerCase();
                 DialogField.State state = fieldStates.getState(fieldName, null);
                 if(state != null)
-                    state.getValue().setTextValue(rs.getString(i));
+                {
+                    // for columns that are Date objects, use the object setter instead of the text setter
+                    // because we don't need to do unnecessary formatting/parsing
+                    if (rsmd.getColumnType(i) ==  Types.DATE)
+                        state.getValue().setValue(rs.getDate(i));
+                    else
+                        state.getValue().setTextValue(rs.getString(i));
+                }
             }
         }
     }
