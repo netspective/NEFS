@@ -133,7 +133,7 @@
 
     <orderedlist>
       <listitem>
-        <para>The link to Hide the currently visible XDM code. Clicking on
+        <para>The link to hide the currently visible XDM code. Clicking on
         this link hides the currently visible XDM code.</para>
       </listitem>
 
@@ -597,7 +597,7 @@
 
         <para>This page demonstrates the usage of a <emphasis>Dialog
         Director</emphasis> which controls destinations after successful form
-        submission and the display of the dialog buttons. </para>
+        submission and the display of the dialog buttons.</para>
 
         <figure>
           <title>Sample Page for Director</title>
@@ -621,7 +621,7 @@
 
           <programlisting>&lt;project&gt;
 ...
- &lt;dialog type="exec-sample" name="director-next-action" redirect-after-execute="yes"&gt; <co
+ &lt;dialog <emphasis>type="exec-sample"</emphasis> name="director-next-action" redirect-after-execute="yes"&gt; <co
               id="declare-director-tags-eg-1" />
     &lt;frame heading="Test Dialog Director's Next Action"/&gt;
     &lt;field type="html"&gt;
@@ -640,8 +640,9 @@
     &lt;/field&gt;
     &lt;field type="text" name="text_field" caption="Text Field (formOrRequestAttr)"
         default="request:value"/&gt;
-    &lt;director&gt; <co id="declare-director-tags-eg-2" />
-        &lt;next-actions caption="Next Action\:" choices="text-list:Netspective=a;Google=y"
+    &lt;<emphasis>director</emphasis>&gt; <co id="declare-director-tags-eg-2" />
+        &lt;<emphasis>next-actions</emphasis> caption="Next Action\:" <emphasis>choices="text-list:Netspective=http://www.netspective.com;
+                                                                 Google=http://www.google.com"</emphasis>
             display-single-action="yes"/&gt; <co
               id="declare-director-tags-eg-3" />
     &lt;/director&gt;
@@ -653,8 +654,8 @@
           <calloutlist>
             <callout arearefs="declare-director-tags-eg-1">
               <para>The <sgmltag>dialog</sgmltag> tag defines a dialog using
-              <sgmltag>exec-sample</sgmltag> template as the dialog-type.
-              </para>
+              <sgmltag>exec-sample</sgmltag> template as the
+              dialog-type.</para>
             </callout>
 
             <callout arearefs="declare-director-tags-eg-2">
@@ -684,7 +685,7 @@
           <para>This page contains an example of a dialog which will execute a
           template body defined in the dialog's XML declaration and display
           the output. The XML template is used to display the Welcome message
-          to user. </para>
+          to user.</para>
 
           <figure>
             <title>Sample Page for Templates using Body in XML</title>
@@ -810,20 +811,21 @@
                 id="declare-template-in-sep-file-eg-2" />
     &lt;/on-execute&gt;
  &lt;/dialog&gt;
-
+...
 &lt;/project&gt;</programlisting>
 
             <calloutlist>
               <callout arearefs="declare-template-in-sep-file-eg-1">
                 <para>The <sgmltag>loop</sgmltag> attribute of
                 <sgmltag>dialog</sgmltag> tag is used to specify not to show
-                the dialog after the dialog executes. </para>
+                the dialog after the dialog executes.</para>
               </callout>
 
               <callout arearefs="declare-template-in-sep-file-eg-2">
-                <para>Source tag is used to specify the template source file
-                to be used (<filename>template-body-file.ftl</filename> in
-                this case)</para>
+                <para><sgmltag>Source</sgmltag> tag is used to specify the
+                template source file to be used
+                (<filename>template-body-file.ftl</filename> in this
+                case)</para>
               </callout>
             </calloutlist>
           </example>
@@ -860,6 +862,42 @@
               </imageobject>
             </mediaobject>
           </figure>
+
+          <para>The XML Code for using the jsp file is given below:</para>
+
+          <example>
+            <title>XML Code for Using a JSP File</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="inc-jsp" loop="no"&gt;
+    &lt;frame heading="Hello World Form"/&gt;
+    &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
+    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/&gt;
+
+    &lt;on-execute <emphasis>handler="include"</emphasis>&gt; <co
+                id="declare-template-in-jsp-eg-1" />
+        <emphasis>&lt;path&gt;/jsp/template-inc-test.jsp&lt;/path&gt;</emphasis> <co
+                id="declare-template-in-jsp-eg-2" />
+    &lt;/on-execute&gt;
+ &lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-template-in-jsp-eg-1">
+                <para>The <sgmltag>handler</sgmltag> attribute of
+                <sgmltag>on-execute</sgmltag> tag specifies the
+                "<sgmltag>include</sgmltag>" handler for this dialog. </para>
+              </callout>
+
+              <callout arearefs="declare-template-in-jsp-eg-2">
+                <para><sgmltag>Path</sgmltag> tag is used to specify the JSP
+                file to be used (<emphasis>template-inc-test.jsp</emphasis> in
+                this case)</para>
+              </callout>
+            </calloutlist>
+          </example>
         </section>
       </section>
 
@@ -907,6 +945,55 @@
               </imageobject>
             </mediaobject>
           </figure>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Including an External Page</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="inc-html" loop="prepend" allow-multiple-executes<emphasis>="yes"</emphasis>&gt;
+    <emphasis>&lt;loop-separator&gt;&amp;lt;hr size=1&amp;gt;&amp;lt;p&amp;gt;&lt;/loop-separator&gt;</emphasis> <co
+                id="declare-include-url-eg-1" />
+    &lt;frame heading="Get contents of URL"/&gt;
+    &lt;field type="text" name="url" caption="URL" size="60" required="yes" default="http\://www.yahoo.com"&gt;
+        &lt;hint&gt;
+            Please provide a complete URL such as http\://www.google.com.&amp;lt;br&amp;gt;
+            This form will read the contents of the URL and show it below.
+        &lt;/hint&gt;
+    &lt;/field&gt;
+
+    &lt;on-execute <emphasis>handler="include"</emphasis>&gt; <co
+                id="declare-include-url-eg-2" />
+        <emphasis>&lt;url&gt;dialog-field:url&lt;/url&gt;</emphasis> <co
+                id="declare-include-url-eg-3" />
+    &lt;/on-execute&gt;
+ &lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-include-url-eg-1">
+                <para>The loop-separator tag specifies a horizontal row to be
+                displayed between the dialog and the external page
+                content.</para>
+              </callout>
+
+              <callout arearefs="declare-include-url-eg-2">
+                <para>The <sgmltag>handler</sgmltag> attribute of
+                <sgmltag>on-execute</sgmltag> tag specifies the "include"
+                handler for this dialog. </para>
+              </callout>
+
+              <callout arearefs="declare-include-url-eg-3">
+                <para><sgmltag>The URL</sgmltag> tag is used to specify the
+                URL of the external page. The <sgmltag>dialog-field</sgmltag>
+                static value specifies that the URL is obtained from the
+                dialog field named <emphasis>URL</emphasis></para>
+              </callout>
+            </calloutlist>
+          </example>
         </section>
 
         <section>
@@ -928,6 +1015,84 @@
           <para>Enter the values for the mail dialog fields and click the
           <command>OK</command> button. [TODO: put details/image of successful
           mail send]</para>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Using the Mail Handler</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="send-mail" loop="append" allow-multiple-executes="yes"&gt;
+    &lt;frame heading="Send Mail Handler Example"/&gt;
+    &lt;field type="text" name="host" caption="Host" required="yes" default="mail.netspective.com"/&gt;
+    &lt;field type="text" name="from" caption="From" required="yes" default="dummy@mail.com"/&gt;
+    &lt;field type="text" name="to" caption="To" required="yes"/&gt;
+    &lt;field type="text" name="subject" caption="Subject" required="yes"/&gt;
+    &lt;field type="memo" name="body" caption="Body"/&gt;
+
+    &lt;on-execute <emphasis>handler="mail"</emphasis>&gt; <co
+                id="declare-mail-eg-1" />
+        &lt;host&gt;dialog-field:host&lt;/host&gt; <co id="declare-mail-eg-2" />
+        &lt;from&gt;dialog-field:from&lt;/from&gt;
+        &lt;to&gt;dialog-field:to&lt;/to&gt;
+        &lt;subject&gt;dialog-field:subject&lt;/subject&gt;
+        &lt;body&gt;You entered this e-mail body: ${vc.fieldStates.getState("body").value.textValue}&lt;/body&gt; <co
+                id="declare-mail-eg-3" />
+        &lt;success-message&gt; <co id="declare-mail-eg-4" />
+            &lt;![CDATA[
+            Thank you for sending e-mail to &lt;code&gt;&lt;b&gt;${vc.fieldStates.getState("to").value.textValue}&lt;/b&gt;&lt;/code&gt;.
+            ]]&gt;
+        &lt;/success-message&gt;
+        &lt;failure-message&gt; <co id="declare-mail-eg-5" />
+            &lt;![CDATA[
+            Unable to send e-mail to &lt;code&gt;&lt;b&gt;${vc.fieldStates.getState("to").value.textValue}&lt;/b&gt;&lt;/code&gt;.&lt;p&gt;
+            Exception:&lt;br&gt;
+            &lt;pre&gt;${exception}&lt;/pre&gt; <co id="declare-mail-eg-6" />
+            ]]&gt;
+        &lt;/failure-message&gt;
+    &lt;/on-execute&gt;
+ &lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-mail-eg-1">
+                <para>The <sgmltag>handler</sgmltag> attribute of
+                <sgmltag>on-execute</sgmltag> tag specifies the "mail" handler
+                for this dialog.</para>
+              </callout>
+
+              <callout arearefs="declare-mail-eg-2">
+                <para><sgmltag>The host </sgmltag>tag is used to specify the
+                address for the mailing host. The
+                <sgmltag>dialog-field</sgmltag> static value specifies that
+                the mailing Host address is obtained from the dialog field
+                named <emphasis>host.</emphasis></para>
+              </callout>
+
+              <callout arearefs="declare-mail-eg-3">
+                <para>Displays the email's body text.</para>
+              </callout>
+
+              <callout arearefs="declare-mail-eg-4">
+                <para>The success-message tag specifies the message to be
+                displayed when the email is successfully sent to the supplied
+                recipient.</para>
+              </callout>
+
+              <callout arearefs="declare-mail-eg-5">
+                <para>The failure-message tag specifies the message to be
+                displayed when the email is not sent to the supplied recipient
+                due to some error.</para>
+              </callout>
+
+              <callout arearefs="declare-mail-eg-6">
+                <para>Displays the details of exception, in the error
+                message.</para>
+              </callout>
+            </calloutlist>
+          </example>
         </section>
 
         <section>
@@ -936,6 +1101,35 @@
           <para>This page contains an example of a dialog which has a handler
           that will process a command upon execution of the dialog. [TODO:
           image of exec command]</para>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Using the Command Handler</title>
+
+            <programlisting>&lt;project&gt;
+...
+&lt;dialog type="exec-sample" name="exec-cmd" allow-multiple-executes="yes"&gt;
+    &lt;frame heading="Command Handler Example"/&gt;
+    &lt;field type="text" name="command" caption="Command" required="yes" size="60"/&gt;
+
+    &lt;on-execute <emphasis>handler="command"</emphasis> <emphasis>command-expr="dialog-field:command"</emphasis>/&gt; <co
+                id="declare-command-eg-1" />
+&lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-command-eg-1">
+                <para>The <sgmltag>handler</sgmltag> attribute of
+                <sgmltag>on-execute</sgmltag> tag specifies the "command"
+                handler for this dialog. The <sgmltag>command-expr</sgmltag>
+                field specifies the dialog field named
+                <varname>command</varname> as the source for the command
+                expression.</para>
+              </callout>
+            </calloutlist>
+          </example>
         </section>
 
         <section>
@@ -943,7 +1137,7 @@
 
           <para>This page contains an example of a dialog which has a handler
           that will display panels upon execution of the dialog. The panels
-          can contain html from various entities such as JSPs or URLs.</para>
+          can contain HTML from various entities such as JSPs or URLs.</para>
 
           <figure>
             <title>Sample Page for Execution of Panels</title>
@@ -960,7 +1154,7 @@
           for <varname>Include Local</varname> field and a URL
           (<literal>http://www.yahoo/com</literal> in this case) as the value
           for <varname>Command 2</varname> field. Click the
-          <command>OK</command> button. The HTML contents from the jsp and the
+          <command>OK</command> button. The HTML contents from the JSP and the
           yahoo web site are displayed in two different panels (as shown
           below):</para>
 
@@ -973,6 +1167,72 @@
               </imageobject>
             </mediaobject>
           </figure>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Using the Panels Handler</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="exec-panels" allow-multiple-executes="yes"&gt;
+    &lt;frame heading="Panels Handler Example"/&gt;
+    &lt;field type="text" name="local-include" caption="Include local" required="yes" size="60" 
+                       default="/jsp/panel-inc-test.jsp"/&gt;
+    &lt;field type="text" name="remote-include" caption="Command 2" required="yes" size="60" 
+                       default="http\://www.yahoo.com"/&gt;
+
+    &lt;on-execute <emphasis>handler="panels"</emphasis> <emphasis>style="two-columns"</emphasis>&gt; <co
+                id="declare-panels-eg-1" />
+        &lt;panel <emphasis>type="include"</emphasis> <emphasis>path="dialog-field:local-include"</emphasis>&gt; <co
+                id="declare-panels-eg-2" />
+            &lt;frame <emphasis>heading="dialog-field:local-include"</emphasis>/&gt; <co
+                id="declare-panels-eg-3" />
+        &lt;/panel&gt;
+        &lt;panel type="include" <emphasis>URL="dialog-field:remote-include"</emphasis>&gt; <co
+                id="declare-panels-eg-4" />
+            &lt;frame heading="dialog-field:remote-include"/&gt;
+        &lt;/panel&gt;
+    &lt;/on-execute&gt;
+ &lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-panels-eg-1">
+                <para>The <sgmltag>handler</sgmltag> attribute of
+                <sgmltag>on-execute</sgmltag> tag specifies the "panels"
+                handler for this dialog. The <sgmltag>style</sgmltag> field
+                specifies how the panels will be arranged in the output HTML.
+                In this example, the panels will be arranged in two columns
+                (one panel per column).</para>
+              </callout>
+
+              <callout arearefs="declare-panels-eg-2">
+                <para>Declaring the panel. The <sgmltag>type</sgmltag>
+                attribute specifies the use of "<sgmltag>include</sgmltag>"
+                template as the panel type. The <sgmltag>path</sgmltag>
+                attribute uses a value-source to get the path from where the
+                include file will be obtained. In the above example, this path
+                value is obtained from the dialog field named
+                <varname>local-include</varname>.</para>
+              </callout>
+
+              <callout arearefs="declare-panels-eg-3">
+                <para>The <sgmltag>heading</sgmltag> attribute of this frame
+                specifies the value of the dialog-field named
+                <varname>local-include</varname> as the heading for the
+                frame.</para>
+              </callout>
+
+              <callout arearefs="declare-panels-eg-4">
+                <para>The <sgmltag>URL</sgmltag> attribute of this panel tag
+                specifies the URL for the external page. In the above example,
+                the value for the external page's URL is obtained from the
+                dialog-field named <varname>remote-include</varname>.</para>
+              </callout>
+            </calloutlist>
+          </example>
         </section>
 
         <section>
@@ -993,11 +1253,13 @@
           </figure>
 
           <para>The XSL style sheet is provided in the dialog. Click on the
-          <command>OK</command> button to see the transformed XML for the
-          dialog's <emphasis>Context Bean</emphasis> (as shown below):</para>
+          <command>OK</command> button to see the transformed XML describing
+          the dialog's <emphasis>Context Bean</emphasis> (as shown
+          below):</para>
 
           <figure>
-            <title>Transformed XML for Dialog's Context Bean</title>
+            <title>Transformed XML Describing the Dialog's Context
+            Bean</title>
 
             <mediaobject>
               <imageobject>
@@ -1005,6 +1267,55 @@
               </imageobject>
             </mediaobject>
           </figure>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Using the Style-Sheet Handler (Transform
+            Bean)</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="transform-xslt-dc" loop="prepend" allow-multiple-executes="yes"&gt;
+    &lt;frame heading="XSLT Handler Example"/&gt;
+    &lt;field type="select" name="style-sheet-file" caption="Style sheet File" required="yes" 
+           <emphasis>choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"</emphasis>/&gt; <co
+                id="declare-transform-bean-eg-1" />
+
+    &lt;on-execute <emphasis>handler="style-sheet"</emphasis>&gt; <co
+                id="declare-transform-bean-eg-2" />
+        <emphasis>&lt;style-sheet-file&gt;dialog-field:style-sheet-file&lt;/style-sheet-file&gt;</emphasis> <co
+                id="declare-transform-bean-eg-3" />
+    &lt;/on-execute&gt;
+ &lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-transform-bean-eg-1">
+                <para>The <sgmltag>choices</sgmltag> attribute declares the
+                list of XSL files from which the user can select. The
+                <sgmltag>filesystem-entries</sgmltag> value-source specifies
+                the list of all XSL files, available from the path specified
+                by servlet context path, to be used as the entries for the
+                select field.</para>
+              </callout>
+
+              <callout arearefs="declare-transform-bean-eg-2">
+                <para>The <sgmltag>handler</sgmltag> attribute of
+                <sgmltag>on-execute</sgmltag> tag specifies the "style-sheet"
+                handler for this dialog. </para>
+              </callout>
+
+              <callout arearefs="declare-transform-bean-eg-3">
+                <para>The <sgmltag>style-sheet-file tag </sgmltag>specifies
+                the XSL file to be used for transformation. In the above
+                example, this value is obtained from the
+                <varname>style-sheet-file</varname> field of the
+                dialog.</para>
+              </callout>
+            </calloutlist>
+          </example>
         </section>
 
         <section>
@@ -1054,6 +1365,38 @@
               </imageobject>
             </mediaobject>
           </figure>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Using the Style-Sheet Handler (Transform
+            File)</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="transform-xslt-file" loop="prepend" allow-multiple-executes="yes"&gt;
+    &lt;frame heading="XSLT Handler Example"/&gt;
+    &lt;field type="select" name="source-file" caption="Source File" required="yes" 
+           choices="filesystem-entries:servlet-context-path:/form/exec,\.x[sm]l$,yes"/&gt;
+    &lt;field type="select" name="style-sheet-file" caption="Stylesheet File" required="yes" 
+           choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"/&gt;
+
+    &lt;on-execute handler="style-sheet"&gt;
+        &lt;source-file&gt;dialog-field:source-file&lt;/source-file&gt; <co
+                id="declare-transform-file-eg-1" />
+        &lt;style-sheet-file&gt;dialog-field:style-sheet-file&lt;/style-sheet-file&gt;
+    &lt;/on-execute&gt;
+ &lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-transform-file-eg-1">
+                <para>The <sgmltag>source-file tag </sgmltag>specifies the
+                file on which XSL transformation is applied.</para>
+              </callout>
+            </calloutlist>
+          </example>
         </section>
       </section>
 
@@ -1086,7 +1429,7 @@
           </figure>
 
           <para>Enter a value for <varname>Full Name</varname> field and click
-          the <command>OK</command> button. The custome java class
+          the <command>OK</command> button. The custom Java class
           (<classname>SampleExecuteDialog</classname> in this case) displays a
           <emphasis>Welcome</emphasis> message along with the supplied name
           (as shown below):</para>
@@ -1101,8 +1444,159 @@
             </mediaobject>
           </figure>
 
-          <para>[TODO: Replace with new image after correcting the class path
-          issue]</para>
+          <para>The welcome message also displays the link to the custom class
+          being used as the dialog handler. </para>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Using Custom Handler (Inheritance)</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="exec1a" <emphasis>class="app.form.exec.inheritance.SampleExecuteDialog"</emphasis>&gt; <co
+                id="declare-inherit-handler-eg-1" />
+    &lt;frame heading="Inheritance Execute Sample 1a"/&gt;
+    &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
+ &lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-inherit-handler-eg-1">
+                <para>the <sgmltag>class</sgmltag> attribute of the dialog tag
+                specifies the custom class
+                (<classname>SamplerExecuteDialog</classname> in this case) to
+                be used as the handler for this dialog</para>
+              </callout>
+            </calloutlist>
+          </example>
+
+          <para>You may view the code for custom Java class using the link
+          provided in the welcome message. This opens the Java source code in
+          the Console (as shown below):</para>
+
+          <figure>
+            <title>Source File for Custom Class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-inherit-custom-class.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <example>
+            <title>Custom Dialog Handler Class (using Inheritance)</title>
+
+            <programlisting><emphasis>package app.form.exec.inheritance;</emphasis> <co
+                id="declare-inherit-class-eg-1" />
+
+       <co id="declare-inherit-class-eg-2" />
+import java.io.Writer;
+import java.io.IOException;
+
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.Project;
+  <emphasis>
+public class SampleExecuteDialog extends Dialog</emphasis> <co
+                id="declare-inherit-class-eg-3" />
+{
+    public SampleExecuteDialog(Project project)
+    {
+        super(project);
+    }
+
+    public SampleExecuteDialog(Project project, DialogsPackage pkg)
+    {
+        super(project, pkg);
+    }
+
+    <emphasis>public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException</emphasis> <co
+                id="declare-inherit-class-eg-4" />
+    {
+      writer.write("Welcome to NEFS &lt;b&gt;" + 
+                    <emphasis>dc.getFieldStates().getState("full_name").getValue().getTextValue()</emphasis> + <co
+                id="declare-inherit-class-eg-5" />
+                   "&lt;/b&gt;. ");
+      writer.write("You are running the dialog called &lt;b&gt;"+ dc.getDialog().getName() 
+                   +"&lt;/b&gt; in package &lt;b&gt;"+
+                   dc.getDialog().getNameSpace().getNameSpaceId() +"&lt;/b&gt;.");
+
+      <emphasis>if(dc.getDialog().getQualifiedName().equals("form.exec.inheritance.exec1b"))</emphasis> <co
+                id="declare-inherit-class-eg-6" />
+          writer.write("&lt;p&gt;You are &lt;b&gt;"+ dc.getFieldStates().getState("age").getValue().getIntValue() 
+                        + "&lt;/b&gt; years old."); 
+
+      writer.write("&lt;p&gt;");
+      writer.write("This code demonstrated how you can take two pieces of data and execute an " + 
+                   "arbritrary class by setting the 'class' attribute of the dialog. ");
+      writer.write("This method of execution is called &lt;i&gt;Dialog Inheritance&lt;/i&gt;. ");
+
+      <emphasis>String relativePath = "/WEB-INF/classes/app/form/exec/inheritance/SampleExecuteDialog.java"; </emphasis><co
+                id="declare-inherit-class-eg-7" />
+      <emphasis>String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt(
+                              dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
+                              relativePath);</emphasis> <co
+                id="declare-inherit-class-eg-8" />
+      writer.write("You may review the code at " + sourceFileLink + ".");
+      writer.write("&lt;p&gt;");
+      writer.write("&lt;a href=\""+ <emphasis>dc.getNavigationContext().getActivePage().getName()</emphasis> +"\"&gt;Clear the dialog&lt;/a&gt;"); <co
+                id="declare-inherit-class-eg-9" />
+    }
+}</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-inherit-class-eg-1">
+                <para>Defining the package for this class.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-class-eg-2">
+                <para>Importing other required classes.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-class-eg-3">
+                <para>Extending the <classname>Dialog</classname> class to
+                provide custom implementation.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-class-eg-4">
+                <para>Declaring the dialog <methodname>execute</methodname>
+                method which is called as soon as all dialog data is entered
+                and validated. </para>
+              </callout>
+
+              <callout arearefs="declare-inherit-class-eg-5">
+                <para>Retrieving the value of the dialog field named full_name
+                from the dialog context and sending it to the writer.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-class-eg-6">
+                <para>Checking the dialog name after retrieving it from the
+                dialog context. If the dialog name is exec1b, the Age related
+                message is also displayed in the output HTLML.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-class-eg-7">
+                <para>Declaring a variable containing the relative path of
+                this Java file.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-class-eg-8">
+                <para>Retrieving the current page's name from the Navigation
+                Context. </para>
+              </callout>
+            </calloutlist>
+
+            <para><note>
+                <para>This custom dialog handler class takes care of
+                <sgmltag>exec1A</sgmltag> and <sgmltag>exec2a</sgmltag> both,
+                in case of Sampler App.</para>
+              </note></para>
+          </example>
         </section>
 
         <section>
@@ -1125,7 +1619,7 @@
 
           <para>Enter a value for <varname>Full Name</varname> and
           <varname>Age</varname> fields and click the <command>OK</command>
-          button. In the Sampler app, the custom java class
+          button. In the Sampler App, the custom Java class
           <classname>SampleExecuteDialog</classname> handles this dialog as
           well. Note the message about the supplied age (as shown
           below):</para>
@@ -1136,21 +1630,6 @@
             <mediaobject>
               <imageobject>
                 <imagedata fileref="./resources/images/screen-sampler-dialog-1b-msg.gif" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-
-          <para>[TODO: Replace with new image after correcting the class path
-          issue] You may view the code for custom java class using the link
-          provided in the message. This opens the java source code in the
-          Console.</para>
-
-          <figure>
-            <title>Source File for Custom Class</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="./resources/images/screen-sampler-inherit-custom-class.gif" />
               </imageobject>
             </mediaobject>
           </figure>
@@ -1222,7 +1701,7 @@
           </figure>
 
           <para>Enter a value for <varname>Full Name</varname> field and click
-          the <command>OK</command> button. The custome java class
+          the <command>OK</command> button. The custom Java class
           (<classname>SampleExecuteHandler</classname> in this case) displays
           a <emphasis>Welcome</emphasis> message along with the supplied name
           (as shown below):</para>
@@ -1236,9 +1715,6 @@
               </imageobject>
             </mediaobject>
           </figure>
-
-          <para>[TODO: Replace with new image after correcting the class path
-          issue]</para>
         </section>
 
         <section>
@@ -1263,7 +1739,7 @@
 
           <para>Enter a value for <varname>Full Name</varname> and
           <varname>Age</varname> fields and click the <command>OK</command>
-          button. In the Sampler app, the custom java class
+          button. In the Sampler App, the custom Java class
           <classname>SampleExecuteHandler</classname> handles this dialog as
           well. Note the message about the supplied age (as shown
           below):</para>
@@ -1278,9 +1754,8 @@
             </mediaobject>
           </figure>
 
-          <para>[TODO: Replace with new image after correcting the class path
-          issue] You may view the code for custom java class using the link
-          provided in the message. This opens the java source code in the
+          <para>You may view the code for custom Java class using the link
+          provided in the message. This opens the Java source code in the
           Console.</para>
 
           <figure>
@@ -1347,8 +1822,8 @@
       <para>The examples contained in this section are further divided into
       sub-categories. The <emphasis>Access Control</emphasis> page contains a
       list of links to its children pages containing the categorized example
-      pages. Links to these children pages are also provided through a submenu
-      bar under the <emphasis>Access Control</emphasis> tab.</para>
+      pages. Links to these children pages are also provided through a sub
+      menu bar under the <emphasis>Access Control</emphasis> tab.</para>
 
       <section>
         <title>Change Role</title>
@@ -1413,7 +1888,7 @@
 
         <para>This page is hidden in the navigation menu when the user has the
         following permission: /acl/app/forms/execution. Clicking on this link
-        from the Navigation Meny bar displays a message informing you about
+        from the Navigation Menu bar displays a message informing you about
         the permission rights currently available:</para>
 
         <figure>
@@ -1427,8 +1902,8 @@
         </figure>
 
         <para>When this link is not visible in the navigation menu tab, you
-        may select it from the <emphasis>Access Control</emphasis> page.
-        </para>
+        may select it from the <emphasis>Access Control</emphasis>
+        page.</para>
       </section>
 
       <section>
@@ -1437,7 +1912,7 @@
         <para>This page is hidden in the navigation menu when the user lacks
         the following permission: /acl/app/forms/execution. You may click on
         this link from the Access Control page. You may also test it from the
-        Navigation Manu bar when it is visible there. </para>
+        Navigation Menu bar when it is visible there.</para>
       </section>
 
       <section>
@@ -1446,7 +1921,7 @@
         <para>This page is hidden in the navigation menu when the user lacks
         the following permission: /acl/app/forms. You may click on this link
         from the Access Control page. You may also test it from the Navigation
-        Manu bar when it is visible there. </para>
+        Menu bar when it is visible there.</para>
       </section>
     </section>
 
@@ -1458,7 +1933,7 @@
       The Play page gives you a chance to learn by writing your own code. You
       can do this by updating the WEB-INF\sparx\play-page.xml file. The Play
       page provides you the opportunity to test the functionality of your
-      newly written code. </para>
+      newly written code.</para>
 
       <figure>
         <title>Page for Creating and Testing Your Own Code</title>
@@ -1474,10 +1949,10 @@
     <section>
       <title>Sitemap</title>
 
-      <para>Sparx provoides you with the facility to create sitemaps for your
+      <para>Sparx provides you with the facility to create sitemaps for your
       web sites using templates. The <emphasis>Sitemap</emphasis> page
-      demonstrates this facility by providing a sitemap for the Sampler App.
-      </para>
+      demonstrates this facility by providing a sitemap for the Sampler
+      App.</para>
 
       <figure>
         <title>Sampler App Sitemap</title>
@@ -1513,7 +1988,7 @@
       <title>Sample Apps Home</title>
 
       <para>This section takes you to the Sample Apps Home page on the
-      netspective web site.</para>
+      Netspective web site.</para>
 
       <screenshot>
         <graphic fileref="./resources/images/screen-books-samples-page.gif" />
