@@ -77,7 +77,7 @@
         { 'id': "nefs-sampler", 'name': "Sampler", 'allowTryOnline': true, 'allowDownload': true,
           'descr' : "The Sampler gives you an idea of how easy it is to build J2EE web applications using the powerful
                      building blocks provided by our Java Frameworks. It includes various examples of creating forms and
-                     input fields, performing a variety of different data validations, and executing forms to provide end-user functionality."
+                     input fields, performing a variety of different data validations, and executing forms to provide end-user functionality.",
 	  'tutorialUrl' : resourcesPath + '/support/docs/nef-articles/nefs-sampler-tutorial.html',
           'tutorialName' : 'NEFS Sampler App Tutorial',
           'tutorialDescr' : 'Provides a tour of NEFS Sampler Application.'                     
