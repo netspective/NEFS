@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelDtd.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: XmlDataModelDtd.java,v 1.3 2003-12-05 04:49:04 roque.hernandez Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -306,7 +306,7 @@ public class XmlDataModelDtd
             }
             sb.append("#IMPLIED <!-- ");
             XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
-            if(! attrNames.isPrimaryName(attrName))
+            if(attrNames != null && !attrNames.isPrimaryName(attrName))
                 sb.append("alias for '"+ attrNames.getPrimaryName() +"' attribute, ");
             sb.append(type.getName());
             sb.append(" -->");
