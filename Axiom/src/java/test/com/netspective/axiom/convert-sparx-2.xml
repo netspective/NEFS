@@ -7,6 +7,7 @@
     <target name="init">
         <property name="sparx2.home.path" value="c:/Projects/Sparx"/>
         <property name="app.home.path" value="c:/Projects/webapps/medspective"/>
+        <property name="sparx7.testapp04.home.path" value="c:/Projects/webapps/sparx-test-app-04"/>
 
         <property name="sparx2-web-shared-path" value="${sparx2.home.path}/web-shared"/>
         <property name="sparx2-resources-path" value="${sparx2-web-shared-path}/resources"/>
@@ -22,7 +23,7 @@
         <property name="schema-final-dir" value="dal/test-data"/>
 
         <property name="statements-staging-dir" value="${staging-root-dir}/sql"/>
-        <property name="statements-final-dir" value="sql/test-data"/>
+        <property name="statements-final-dir" value="${sparx7.testapp04.home.path}/WEB-INF/sparx/data-management/query"/>
 
         <echo message="Basedir is '${basedir}'"/>
         <echo message="Sparx 2.0 home path is '${sparx2.home.path}'"/>
