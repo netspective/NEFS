@@ -39,35 +39,63 @@
  */
 
 /**
- * $Id: ConsoleServletTest.java,v 1.1 2003-11-26 15:13:50 shahid.shah Exp $
+ * $Id: ConsoleServletTest.java,v 1.2 2003-12-02 16:07:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
 
 import junit.framework.TestCase;
-import net.sourceforge.jwebunit.WebTester;
 
 import com.netspective.sparx.form.Dialog;
 
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebResponse;
+import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.WebLink;
 
 public class ConsoleServletTest extends TestCase
 {
-    private WebTester tester;
-
-    protected void setUp() throws Exception
+    static
     {
-        tester = new WebTester();
-        tester.getTestContext().setBaseUrl("http://localhost:8099/nefs-sampler");
-        HttpUnitOptions.setExceptionsThrownOnScriptError(false);
+        HttpUnitOptions.setScriptingEnabled(false);
     }
 
-    public void testLogin() throws Exception
+    private WebConversation wc;
+    private WebResponse pageAfterLogin;
+    private WebLink homeLink, projectLink, presentationLink, dataMgmtLink, docLink, xdmTagsRefLink;
+
+    /**
+     * Start a new web conversation, get the console login page, enter the login data and get the first reponse page
+     * after logging in.
+     * @throws Exception
+     */
+    protected void setUp() throws Exception
     {
-        tester.beginAt("/console");
-        tester.setFormElement(Dialog.PARAMNAME_CONTROLPREFIX + "userId", "console");
-        tester.setFormElement(Dialog.PARAMNAME_CONTROLPREFIX + "password", "console");
-        tester.submit(Dialog.PARAMNAME_DIALOGPREFIX + "login" + Dialog.PARAMNAME_SUBMIT_DATA);
-        tester.assertTitleEquals("Console Home");
+        wc = new WebConversation();
+        WebResponse resp = wc.getResponse( "http://sampler.netspective.com/nefs-sampler/console");
+        WebForm form = resp.getForms()[0];
+        form.setParameter(Dialog.PARAMNAME_CONTROLPREFIX + "userId", "console");
+        form.setParameter(Dialog.PARAMNAME_CONTROLPREFIX + "password", "console");
+        WebRequest req = form.getRequest(Dialog.PARAMNAME_DIALOGPREFIX + "login" + Dialog.PARAMNAME_SUBMIT_DATA);
+        pageAfterLogin = wc.getResponse(req);
+
+        homeLink = pageAfterLogin.getLinkWith("Home");
+        projectLink = pageAfterLogin.getLinkWith("Project");
+        presentationLink = pageAfterLogin.getLinkWith("Presentation");
+        dataMgmtLink = pageAfterLogin.getLinkWith("Data Management");
+        docLink = pageAfterLogin.getLinkWith("Documentation");
+        xdmTagsRefLink = pageAfterLogin.getLinkWith("XDM Tags Reference");
+    }
+
+    public void testTopLevelLinks() throws Exception
+    {
+        assertNotNull(homeLink);
+        assertNotNull(projectLink);
+        assertNotNull(presentationLink);
+        assertNotNull(dataMgmtLink);
+        assertNotNull(docLink);
+        assertNotNull(xdmTagsRefLink);
     }
 }
