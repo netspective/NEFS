@@ -46,11 +46,8 @@ import com.netspective.sparx.form.DialogLoopStyle;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
-import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
 import com.netspective.sparx.form.field.type.ReportSelectedItemsField;
-import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
-import com.netspective.sparx.form.field.type.SelectField;
 import com.netspective.sparx.form.field.type.BooleanField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDestination;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
@@ -62,14 +59,11 @@ import com.netspective.sparx.report.tabular.destination.HtmlTabularReportFileDes
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
 import com.netspective.sparx.panel.QueryReportPanel;
 import com.netspective.sparx.sql.QueryDefinition;
+import com.netspective.sparx.sql.QueryDefnSelect;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
-import com.netspective.axiom.value.source.QueryDefnFieldsValueSource;
-import com.netspective.axiom.value.source.QueryDefnSelectsValueSource;
+
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.source.StaticValueSource;
 
 import java.io.IOException;
@@ -79,7 +73,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 
 
 /**
- * $Id: QuerySelectDialog.java,v 1.2 2003-07-03 22:25:37 aye.thu Exp $
+ * $Id: QuerySelectDialog.java,v 1.3 2003-07-07 03:43:39 aye.thu Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -148,7 +142,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
      */
     public QueryDefnSelect createSelect()
     {
-        qdSelect =  new QueryDefnSelect(getQueryDefn());
+        qdSelect =  new com.netspective.sparx.sql.QueryDefnSelect(getQueryDefn());
         return qdSelect;
     }
 
@@ -343,8 +337,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 if(activeScrollState != null && ! getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
                     scrollStatesManager.removeActiveState(dc, activeScrollState);
 
-                //QueryDefnSelect select = createSelect(dc);
-                reportPanel = new QueryReportPanel();
+                reportPanel = qdSelect.getPresentation().getDefaultPanel();
                 reportPanel.setQuery(qdSelect);
                 if(browserDest.isScrollable())
                 {
@@ -360,7 +353,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         else
         {
             //QueryDefnSelect select = createSelect(dc);
-            reportPanel = new QueryReportPanel();
+            reportPanel = qdSelect.getPresentation().getDefaultPanel();
             reportPanel.setQuery(qdSelect);
         }
 
