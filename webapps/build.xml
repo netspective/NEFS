@@ -165,6 +165,7 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
     </target>
 
