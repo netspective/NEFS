@@ -40,13 +40,15 @@
 
 package com.netspective.sparx.sql;
 
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.sparx.form.sql.QuerySelectDialog;
-import com.netspective.sparx.form.sql.QueryBuilderDialog;
-import com.netspective.sparx.Project;
-
-import java.util.Map;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
+
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.form.sql.QueryBuilderDialog;
+import com.netspective.sparx.form.sql.QuerySelectDialog;
 
 /**
  * Class representing a dynamic SQL Statement along with its bind parameters, join conditions
@@ -74,6 +76,12 @@ public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefi
         public QuerySelectDialog createSelectDialog()
         {
             return new QuerySelectDialog(getProject(), QueryDefinition.this);
+        }
+
+        public QuerySelectDialog createSelectDialog(Class cls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
+        {
+            Constructor c = cls.getConstructor(new Class[] { Project.class, QueryDefinition.class } );
+            return (QuerySelectDialog) c.newInstance(new Object[] { getProject(), QueryDefinition.this });
         }
 
         // created here because we need to ignore text but can't include public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
