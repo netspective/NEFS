@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.54 2004-03-03 08:14:31 aye.thu Exp $
+ * $Id: Dialog.java,v 1.55 2004-03-07 02:51:17 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -93,6 +93,8 @@ import com.netspective.sparx.form.listener.DialogValidateListener;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.panel.HtmlInputPanel;
+import com.netspective.sparx.panel.PanelEditor;
+import com.netspective.sparx.panel.PanelEditorState;
 import com.netspective.sparx.theme.Theme;
 import org.apache.commons.collections.LRUMap;
 import org.apache.commons.lang.exception.NestableRuntimeException;
@@ -502,6 +504,12 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
 
             // if the url is null, it means that the director returned the default (NULL) and wants to let the
             // the delegated callers handle it so we'll fall through to the rest of the providers below
+        }
+        // if this dialog is being executed within a panel editor context, then use the panel'editor's mode URL
+        PanelEditorState  state = (PanelEditorState) dc.getHttpRequest().getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
+        if (state != null)
+        {
+            return state.calculateNextModeUrl(dc);
         }
 
         // see if we are delegating our next action call to another class
