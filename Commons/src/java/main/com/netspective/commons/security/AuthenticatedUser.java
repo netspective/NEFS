@@ -50,6 +50,8 @@ public interface AuthenticatedUser extends Principal
 
     public String getUserRoleNamesAsString();
 
+    public boolean isUserInRole(String roleName);
+
     public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException;
 
     public boolean hasAnyPermission(AccessControlListsManager aclsManager, String[] permissionNames) throws PermissionNotFoundException;

@@ -33,6 +33,8 @@
 package com.netspective.commons.security;
 
 import java.util.BitSet;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,6 +56,7 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io
     private boolean isRemembered;
     private String[] userRoleNames;
     private String[] userPermissionNames;
+    private Set userRoleNamesSet = new HashSet();
     private BitSet userPermissions;
     private AuthenticatedOrganizations organizations = createOrganizations();
 
@@ -135,6 +138,11 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io
         return null;
     }
 
+    public boolean isUserInRole(String roleName)
+    {
+        return userRoleNamesSet.contains(roleName);
+    }
+
     public BitSet createPermissionsBitSet(AccessControlListsManager aclsManager)
     {
         return new BitSet(aclsManager.getAccessControlLists().getHighestPermissionId());
@@ -159,6 +167,7 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io
     public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws RoleNotFoundException
     {
         userRoleNames = roles;
+        userRoleNamesSet.clear();
         userPermissions = null;
         if(userRoleNames == null)
             return;
@@ -170,6 +179,9 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io
             Role role = aclsManager.getRole(roleName);
             userPermissions.or(role.getPermissions());
         }
+
+        for(int i = 0; i < userRoleNames.length; i++)
+            userRoleNamesSet.add(userRoleNames[i]);
     }
 
     public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException
