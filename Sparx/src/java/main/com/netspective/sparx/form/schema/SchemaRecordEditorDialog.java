@@ -1150,7 +1150,6 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
                     QueryDefnSelect indexAccessor;
                     indexAccessor = table.getAccessorByIndexEquality(index);
-
                     QueryResultSet results = indexAccessor.execute(sredc.getActiveConnectionContext(), params.toArray(), false);
                     ResultSet resultSet = results.getResultSet();
 
@@ -1163,16 +1162,12 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                             if(primaryKeyValueSource != null)
                             {
                                 Value primaryKeyValue = primaryKeyValueSource.getValue(sredc);
-                                if(primaryKeyValue != null)
-                                {
-                                    ColumnValues dialogVals = table.createRow().getPrimaryKeyValues();
-                                    ColumnValues dbVals = table.createRow().getPrimaryKeyValues();
+                                final Column primaryKeyTableColumn = table.getPrimaryKeyColumns().getSole();
+                                final ColumnValue primaryKeyValueFromPotentiallyDuplicateRow = primaryKeyTableColumn.constructValueInstance();
+                                primaryKeyValueFromPotentiallyDuplicateRow.setValueFromSqlResultSet(resultSet, 0, primaryKeyTableColumn.getIndexInRow()+1);
 
-                                    dialogVals.getByColumnIndex(0).setValue(primaryKeyValue.getValue());
-                                    dbVals.getByColumnIndex(0).setValueFromSqlResultSet(resultSet, 0, resultSet.findColumn(table.getPrimaryKeyColumns().get(0).getName()));
-                                    if(dbVals.equals(dialogVals))
-                                        continue; // This means that the row found was the same as the one we were trying to update so it should be ok
-                                }
+                                if(primaryKeyValue != null && primaryKeyValue.equals(primaryKeyValueFromPotentiallyDuplicateRow));
+                                    continue; // This means that the row found was the same as the one we were trying to update so it should be ok
                             }
                         }
 
@@ -1182,9 +1177,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                         {   //If there is only one field that is violating the unqie constraint then the scenario is simple
                             DialogField.State fieldState = (DialogField.State) fields.get(0);
                             if(fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
-                                sredc.getValidationContext().addError("A problem was encountered when validating that the data was able to be persisted.  Please re-open the record you were trying to edit and try it again.");
+                                sredc.getValidationContext().addError("A problem was encountered when validating that the data was able to be persisted. Please re-open the record you were trying to edit and try it again.");
                             else
-                                fieldState.getField().invalidate(sredc, "The value for field: " + fieldState.getField().getName() + " must be unique.  A record was found with the same value.  Please change the value and try again.");
+                                fieldState.getField().invalidate(sredc, "The value for field " + fieldState.getField().getName() + " must be unique.  Another record was found with the same value. Please change the value and try again.");
                         }
                         else if(fields.size() > 1)
                         {   //If there are more than one field, then need to construct a list of the field name to show at the top of the dialog
