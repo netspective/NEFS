@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.30 2003-08-13 12:18:31 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.31 2003-08-24 18:36:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1095,7 +1095,11 @@ public class XmlDataModelSchema
                 }
                 catch (Exception e)
                 {
-                    throw new DataModelException(pc, e);
+                    pc.addError("Unable to set attribute '"+ attributeName +"' to '"+ value +"' at " + pc.getLocator().getSystemId() +
+                                " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+                    log.error(e);
+                    if(pc.isThrowErrorException())
+                        throw new DataModelException(pc, e);
                 }
 
                 if(returnVal instanceof XdmBitmaskedFlagsAttribute)
@@ -1120,22 +1124,28 @@ public class XmlDataModelSchema
             else
                 as.set(pc, element, value);
         }
-        catch (IllegalAccessException ie)
-        {
-            throw new DataModelException(pc, ie);
-        }
         catch (InvocationTargetException ite)
         {
-            Throwable t = ite.getTargetException();
-            if (t instanceof DataModelException)
+            pc.addError("Unable to set attribute '"+ attributeName +"' to '"+ value +"' at " + pc.getLocator().getSystemId() +
+                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
+            log.error(ite);
+            if(pc.isThrowErrorException())
             {
-                throw (DataModelException) t;
+                Throwable t = ite.getTargetException();
+                if (t instanceof DataModelException)
+                {
+                    throw (DataModelException) t;
+                }
+                throw new DataModelException(pc, t);
             }
-            throw new DataModelException(pc, t);
         }
-        catch (NumberFormatException nfe)
+        catch (Exception e)
         {
-            throw new DataModelException(pc, nfe);
+            pc.addError("Unable to set attribute '"+ attributeName +"' to '"+ value +"' at " + pc.getLocator().getSystemId() +
+                        " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            log.error(e);
+            if(pc.isThrowErrorException())
+                throw new DataModelException(pc, e);
         }
     }
 
@@ -1159,19 +1169,26 @@ public class XmlDataModelSchema
         {
             addText.invoke(element, new String[]{text});
         }
-        catch (IllegalAccessException ie)
-        {
-            // impossible as getMethods should only return public methods
-            throw new DataModelException(pc, ie);
-        }
         catch (InvocationTargetException ite)
         {
-            Throwable t = ite.getTargetException();
-            if (t instanceof DataModelException)
+            pc.addError("Unable to add text '"+ text +"' at " + pc.getLocator().getSystemId() + " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
+            log.error(ite);
+            if(pc.isThrowErrorException())
             {
-                throw (DataModelException) t;
+                Throwable t = ite.getTargetException();
+                if (t instanceof DataModelException)
+                {
+                    throw (DataModelException) t;
+                }
+                throw new DataModelException(pc, t);
             }
-            throw new DataModelException(pc, t);
+        }
+        catch (Exception e)
+        {
+            pc.addError("Unable to add text '"+ text +"' at " + pc.getLocator().getSystemId() + " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            log.error(e);
+            if(pc.isThrowErrorException())
+                throw new DataModelException(pc, e);
         }
     }
 
@@ -1188,7 +1205,17 @@ public class XmlDataModelSchema
                 }
                 catch (ClassNotFoundException e)
                 {
-                    throw new DataModelException(pc, e);
+                    pc.addError("Class '"+ alternateClassName +"' for element '"+ elementName +"' not found at " + pc.getLocator().getSystemId() +
+                                " line "+ pc.getLocator().getLineNumber() + ". " + e.getMessage());
+                    log.error(e);
+                    if(pc.isThrowErrorException())
+                        throw new DataModelException(pc, e);
+                    else
+                    {
+                        NestedCreator nc = (NestedCreator) nestedCreators.get(elementName);
+                        if(nc != null)
+                            return nc.create(element);
+                    }
                 }
 
                 NestedAltClassCreator nac = (NestedAltClassCreator) nestedAltClassNameCreators.get(elementName);
@@ -1201,24 +1228,28 @@ public class XmlDataModelSchema
                     return nc.create(element);
             }
         }
-        catch (IllegalAccessException ie)
-        {
-            // impossible as getMethods should only return public methods
-            throw new DataModelException(pc, ie);
-        }
-        catch (InstantiationException ine)
-        {
-            // impossible as getMethods should only return public methods
-            throw new DataModelException(pc, ine);
-        }
         catch (InvocationTargetException ite)
         {
-            Throwable t = ite.getTargetException();
-            if (t instanceof DataModelException)
+            pc.addError("Could not create class '"+ alternateClassName +"' for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
+                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
+            log.error(ite);
+            if(pc.isThrowErrorException())
             {
-                throw (DataModelException) t;
+                Throwable t = ite.getTargetException();
+                if (t instanceof DataModelException)
+                {
+                    throw (DataModelException) t;
+                }
+                throw new DataModelException(pc, t);
             }
-            throw new DataModelException(pc, t);
+        }
+        catch (Exception e)
+        {
+            pc.addError("Could not create class '"+ alternateClassName +"' for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
+                        " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            log.error(e);
+            if(pc.isThrowErrorException())
+                throw new DataModelException(pc, e);
         }
 
         // if the element is being defined as a sub-element but has an attribute of the same name, it's a convenience attribute setter
@@ -1255,24 +1286,31 @@ public class XmlDataModelSchema
             else
                 return createElement(pc, alternateClassName, element, elementName);
         }
-        catch (IllegalAccessException ie)
-        {
-            // impossible as getMethods should only return public methods
-            throw new DataModelException(pc, ie);
-        }
-        catch (InstantiationException ine)
-        {
-            // impossible as getMethods should only return public methods
-            throw new DataModelException(pc, ine);
-        }
         catch (InvocationTargetException ite)
         {
-            Throwable t = ite.getTargetException();
-            if (t instanceof DataModelException)
+            pc.addError("Could not create class for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
+                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
+            log.error(ite);
+            if(pc.isThrowErrorException())
             {
-                throw (DataModelException) t;
+                Throwable t = ite.getTargetException();
+                if (t instanceof DataModelException)
+                {
+                    throw (DataModelException) t;
+                }
+                throw new DataModelException(pc, t);
             }
-            throw new DataModelException(pc, t);
+            else
+                return null;
+        }
+        catch (Exception e)
+        {
+            pc.addError("Could not create class for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
+                        " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            log.error(e);
+            if(pc.isThrowErrorException())
+                throw new DataModelException(pc, e);
+            return null;
         }
     }
 
@@ -1289,24 +1327,28 @@ public class XmlDataModelSchema
             else if(ns != null)
                 ns.store(element, child);
         }
-        catch (IllegalAccessException ie)
-        {
-            // impossible as getMethods should only return public methods
-            throw new DataModelException(pc, ie);
-        }
-        catch (InstantiationException ine)
-        {
-            // impossible as getMethods should only return public methods
-            throw new DataModelException(pc, ine);
-        }
         catch (InvocationTargetException ite)
         {
-            Throwable t = ite.getTargetException();
-            if (t instanceof DataModelException)
+            pc.addError("Could not store data for for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
+                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
+            log.error(ite);
+            if(pc.isThrowErrorException())
             {
-                throw (DataModelException) t;
+                Throwable t = ite.getTargetException();
+                if (t instanceof DataModelException)
+                {
+                    throw (DataModelException) t;
+                }
+                throw new DataModelException(pc, t);
             }
-            throw new DataModelException(pc, t);
+        }
+        catch (Exception e)
+        {
+            pc.addError("Could not store data for for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
+                        " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            log.error(e);
+            if(pc.isThrowErrorException())
+                throw new DataModelException(pc, e);
         }
     }
 
@@ -1584,7 +1626,9 @@ public class XmlDataModelSchema
                     }
                     catch (CommandNotFoundException e)
                     {
-                        throw new DataModelException(pc, e);
+                        pc.addError("Unable to create Command for '"+ value +"' at " + pc.getLocator().getSystemId() + " line "+ pc.getLocator().getLineNumber() + ".");
+                        if(pc.isThrowErrorException())
+                            throw new DataModelException(pc, e);
                     }
                 }
             };
@@ -1604,7 +1648,9 @@ public class XmlDataModelSchema
                     }
                     catch (InstantiationException ie)
                     {
-                        throw new DataModelException(pc, ie);
+                        pc.addError(ie);
+                        if(pc.isThrowErrorException())
+                            throw new DataModelException(pc, ie);
                     }
                 }
             };
@@ -1629,7 +1675,9 @@ public class XmlDataModelSchema
                     }
                     catch (InstantiationException ie)
                     {
-                        throw new DataModelException(pc, ie);
+                        pc.addError(ie);
+                        if(pc.isThrowErrorException())
+                            throw new DataModelException(pc, ie);
                     }
                 }
             };
@@ -1680,7 +1728,9 @@ public class XmlDataModelSchema
                         }
                         catch (InstantiationException ie)
                         {
-                            throw new DataModelException(pc, ie);
+                            pc.addError(ie);
+                            if(pc.isThrowErrorException())
+                                throw new DataModelException(pc, ie);
                         }
                     }
                 };
