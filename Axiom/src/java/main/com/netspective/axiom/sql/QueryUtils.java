@@ -219,6 +219,53 @@ public class QueryUtils
     }
 
     /**
+     * Run the query provided and return the first row's first column value.
+     *
+     * @param query  The query that should be executed
+     * @param dbvc   The database (mainly data source) that should be used for the query
+     * @param params The parameters to use
+     *
+     * @return Map of length greater than zero if records found, NULL if an error occurs or a Map of 0 length
+     *         if no values are found but no exception was encountered.
+     */
+    public Object getResultSetSingleColumn(final Query query, final DatabaseConnValueContext dbvc, final Object[] params)
+    {
+        if(query == null)
+            throw new RuntimeException("The query should not be NULL.");
+
+        if(dbvc == null)
+            throw new RuntimeException("The database value context should not  be NULL.");
+
+        QueryResultSet qrs = null;
+        try
+        {
+            qrs = query.execute(dbvc, params, false);
+            return ResultSetUtils.getInstance().getResultSetSingleColumn(qrs.getResultSet());
+        }
+        catch(SQLException e)
+        {
+            log.error(e);
+            return null;
+        }
+        catch(NamingException e)
+        {
+            log.error(e);
+            return null;
+        }
+        finally
+        {
+            try
+            {
+                if(qrs != null) qrs.close(true);
+            }
+            catch(SQLException e)
+            {
+                log.error(e);
+            }
+        }
+    }
+
+    /**
      * Run the query provided and return the all the rows as a map array
      *
      * @param query  The query that should be executed
