@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.10 2003-03-21 13:53:48 shahbaz.javeed Exp $
+ * $Id: AccessControlListTest.java,v 1.11 2003-03-24 13:26:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -445,14 +445,14 @@ public class AccessControlListTest extends TestCase
 
 		// Test ValueContext...
 	    DefaultValueContext dvc = (DefaultValueContext) vcOne;
-	    assertFalse(dvc.inMaintenanceMode());
+	    assertFalse(dvc.isInMaintenanceMode());
 	    assertFalse(dvc.isAntBuildEnvironment());
 	    assertFalse(dvc.isDemonstrationEnvironment());
 	    assertFalse(dvc.isDevelopmentEnvironment());
 	    assertFalse(dvc.isProductionEnvironment());
 	    assertFalse(dvc.isTestEnvironment());
 	    assertFalse(dvc.isTrainingEnvironment());
-	    assertFalse(dvc.withinACE());
+	    assertFalse(dvc.isInConsoleMode());
 
 	    assertNull(dvc.getAccessControlListsManager());
 	    assertNull(dvc.getConfigurationsManager());
