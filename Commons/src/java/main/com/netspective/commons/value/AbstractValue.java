@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.8 2003-08-19 04:59:16 aye.thu Exp $
+ * $Id: AbstractValue.java,v 1.9 2003-08-19 16:09:22 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -398,5 +398,10 @@ public abstract class AbstractValue implements Value
                 parent.appendChild(valueElem);
             }
         }
+    }
+
+    public String toString()
+    {
+        return super.toString() + ": " + getTextValue();
     }
 }
