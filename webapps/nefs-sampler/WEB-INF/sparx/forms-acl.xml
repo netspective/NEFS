@@ -3,7 +3,7 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 <dialogs package="form.acl">
-    <dialog name="role" generate-dcb="yes">
+    <dialog name="role" generate-dcb="yes" allow-view-source="yes">
         <frame heading="Assign a role"/>
         <field type="html">
             <body>
@@ -11,7 +11,7 @@
                 <div class="textbox" style="width: 350">
                  A <i>Role</i> (<code>&lt;role&gt;</code>) is a logical grouping
                     of a set of permissions and permissions are usually defined and grouped logically also.
-                    By assigning a permission (<code>&lt;permisiion&gt;</code>) to a role, its' child permissions are also automatically assigned.
+                    By assigning a permission (<code>&lt;permisiion&gt;</code>) to a role, its child permissions are also automatically assigned.
                     Changing a role might result in a completely new set of permissions or just one permission being
                     added or removed. 
                     You can read more about roles and permissions in the
