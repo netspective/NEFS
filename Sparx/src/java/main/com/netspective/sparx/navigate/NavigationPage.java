@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.net.URLEncoder;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -90,7 +91,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.79 2004-09-13 03:54:41 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.80 2004-09-24 15:49:25 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -1108,6 +1109,33 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             result = HttpUtils.appendParams(vc.getHttpRequest(), result, retainParamsVS.getTextValue(vc));
 
         return result;
+    }
+
+    public String getUrl(HttpServletValueContext vc, String[] additionalParams)
+    {
+        if(additionalParams == null || additionalParams.length == 0)
+            return getUrl(vc);
+
+        final String url = getUrl(vc);
+        StringBuffer result = new StringBuffer(url);
+        if(url.indexOf('?') >= 0)
+            result.append('&');
+        else
+            result.append('?');
+
+        for(int i = 0; i < additionalParams.length; i += 2)
+        {
+            String paramName = additionalParams[i];
+            String paramValue = URLEncoder.encode(additionalParams[i+1]);
+
+            if(i > 0)
+                result.append('&');
+            result.append(paramName);
+            result.append('=');
+            result.append(paramValue);
+        }
+
+        return result.toString();
     }
 
     public String constructAnchorAttributes(HttpServletValueContext vc)
