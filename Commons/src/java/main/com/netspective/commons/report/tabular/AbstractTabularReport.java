@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AbstractTabularReport.java,v 1.1 2003-04-02 22:53:23 shahid.shah Exp $
+ * $Id: AbstractTabularReport.java,v 1.2 2003-04-03 14:07:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -114,7 +114,7 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
 
     public void setFlags(TabularReport.Flags flags)
     {
-        this.flags.setFlag(flags.getFlags());
+        this.flags.copy(flags);
     }
 
     public void finalizeContents()

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: BasicTabularReportValueContext.java,v 1.4 2003-04-03 12:45:47 shahid.shah Exp $
+ * $Id: BasicTabularReportValueContext.java,v 1.5 2003-04-03 14:07:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -186,6 +186,6 @@ public class BasicTabularReportValueContext extends DefaultValueContext implemen
     public void produceReport(Writer writer, TabularReportDataSource ds) throws IOException
     {
         reportDefn.makeStateChanges(this, ds);
-        skin.produceReport(writer, this, ds);
+        skin.render(writer, this, ds);
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.2 2003-04-02 22:53:23 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.3 2003-04-03 14:07:25 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -167,6 +167,16 @@ public abstract class XdmBitmaskedFlagsAttribute
     public final void updateFlag(long flag, boolean set)
     {
         if(set) flags |= flag; else flags &= ~flag;
+    }
+
+    public final void copy(XdmBitmaskedFlagsAttribute flags)
+    {
+        FlagDefn[] flagDefns = flags.getFlagsDefns();
+        for(int i = 0; i < flagDefns.length; i++)
+        {
+            int copyMask = flagDefns[i].mask;
+            updateFlag(copyMask, flags.flagIsSet(copyMask));
+        }
     }
 
     public String[] getFlagNames()
