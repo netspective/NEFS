@@ -7,7 +7,7 @@
             <summary>Major enhancements</summary>
             <change-log-entry>
                 <![CDATA[
-                Adding new method for for defining custom logic or action for execution of a dialog. This model is
+                Added new method for for defining custom logic or action for execution of a dialog. This model is
                 probably the best model for most types of customization because action classes may be written as
                 standard Java beans with no reference to the Sparx framework packages. Inversion of Control (IoC)
                 using Java reflection is used to analyze the bean and use setXXX() style calls to the action class to
