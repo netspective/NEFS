@@ -224,11 +224,11 @@
             </params>
         </query>
 
-        <query name="by-pin-group-risk">
-            select    system_id, ibu_sig, ibu_eff, lbg_sig, lbg_eff, firm_sig, firm_eff
+        <query name="by-pin-group-risk-id">
+            select system_id, ibu_sig, ibu_eff, lbg_sig, lbg_eff, firm_sig, firm_eff, risk
             from risk_response
-            where pin = ? and risk_group = ? and risk = ?
-            order by risk_group, risk
+            where pin = ? and risk_group = ? and risk_id = ?
+            order by risk_group, risk_id
         </query>
 
     </queries>
@@ -316,6 +316,7 @@
             <column name="system_id" type="auto-inc" primary-key="yes" descr="Unique system identifier for the response"/>
             <column name="pin" type="integer" indexed="yes" descr="The respondent's public identifier (PIN)."/>
             <column name="risk_group" type="text" size="256" indexed="yes" descr="The risk group name"/>
+            <column name="risk_id" type="text" size="256" indexed="yes" descr="The risk identifier"/>
             <column name="risk" type="text" size="512" indexed="yes" descr="The risk name"/>
             <column name="ibu_sig" lookup-ref="Risk_Rating"/>
             <column name="ibu_eff" lookup-ref="Risk_Rating"/>
@@ -343,7 +344,7 @@
                 </params>
             </query>
 
-            <index name="unique_risk" unique="yes" columns="pin,risk_group,risk"/>
+            <index name="unique_risk" unique="yes" columns="pin,risk_group,risk_id"/>
         </table>
 
         <table name="Visited_Page">

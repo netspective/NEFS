@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: RiskResponseDialog.java,v 1.5 2003-09-01 03:21:45 shahid.shah Exp $
+ * $Id: RiskResponseDialog.java,v 1.6 2003-09-01 03:24:44 shahid.shah Exp $
  */
 
 package app;
@@ -121,7 +121,6 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
                 String riskIdentifier = (String) riskIdentifiers.get(i);
                 Integer pin = ((AuthenticatedRespondent) dc.getAuthenticatedUser()).getRespondent().getPin();
                 String riskGroup = fieldStates.getState(FIELDPREFIXID_RISK_GROUP + riskIdentifier).getValue().getTextValue();
-                String risk = fieldStates.getState(FIELDPREFIX_RISK_ID + riskIdentifier).getValue().getTextValue();
 
                 Query query = dc.getSqlManager().getQuery(auto.id.sql.query.Responses.BY_PIN_GROUP_RISK_ID);
                 try
