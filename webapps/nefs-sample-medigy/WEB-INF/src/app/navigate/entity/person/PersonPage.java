@@ -39,14 +39,19 @@
  */
 
 /**
- * $Id: PersonPage.java,v 1.4 2004-03-07 02:55:14 aye.thu Exp $
+ * $Id: PersonPage.java,v 1.5 2004-04-12 03:53:34 aye.thu Exp $
  */
 
 package app.navigate.entity.person;
 
 import app.navigate.entity.EntityPage;
 import app.navigate.entity.EntityRedirectorPage;
+import auto.dal.db.dao.PersonTable;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.schema.column.type.DateColumn;
+import com.netspective.axiom.schema.column.type.EnumerationIdRefColumn;
+import com.netspective.axiom.schema.column.type.TextColumn;
+import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
@@ -100,12 +105,66 @@ public abstract class PersonPage extends EntityPage implements PersonSubtypePage
         }
     }
 
+    public class PersonProfilePageSubHeadingValueSource extends AbstractValueSource
+    {
+        public boolean hasValue(ValueContext vc)
+        {
+            return true;
+        }
+
+        public Value getValue(ValueContext vc)
+        {
+            PersonPageState personPageState = ((PersonPageState) ((NavigationContext) vc).getActiveState());
+            PersonTable.Record activePerson = personPageState.getActivePerson().getPerson();
+            TextColumn.TextColumnValue ssn = activePerson.getSsn();
+            DateColumn.DateColumnValue birthDate = activePerson.getBirthDate();
+
+            EnumerationIdRefColumn.EnumerationIdRefValue maritalStatus = activePerson.getMaritalStatusId();
+            EnumerationIdRefColumn.EnumerationIdRefValue gender = activePerson.getGenderId();
+            // ASSUMING one ethnicity and one language
+            String ethnicity = activePerson.getEthnicityId().getReferencedEnumRow().getCaption();
+            String language = activePerson.getLanguageId().getReferencedEnumRow().getCaption();
+
+            // TODO: This needs to be moved/changed so that it will be formatted only in the SKIN
+            return new GenericValue("<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">SSN:</span> " +
+                    ssn.getTextValueOrBlank() + "</span>" +
+                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Birth Date:</span> " +
+                    birthDate.getTextValueOrBlank() + "</span> " +
+                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Marital Status:</span> " +
+                    maritalStatus.getReferencedEnumRow().getCaption() + "</span>" +
+                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Gender:</span> " +
+                    gender.getReferencedEnumRow().getCaption() + "</span>" +
+                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Gender:</span> " +
+                    ethnicity + "</span>" +
+                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Gender:</span> " +
+                    language + "</span>");
+        }
+
+        public PresentationValue getPresentationValue(ValueContext vc)
+        {
+            return new PresentationValue(getValue(vc));
+        }
+    }
+
+    private ValueSource profile;
+
     public PersonPage(NavigationTree owner)
     {
         super(owner);
         setRequireRequestParam(ActivePerson.PARAMNAME_PERSON_ID);
         setRetainParams(RETAIN_PARAMS);
         setHeading(new PersonPageHeadingValueSource());
+        setSubHeading(new PersonProfilePageSubHeadingValueSource());
+    }
+
+    public ValueSource getProfile()
+    {
+        return profile;
+    }
+
+    public void setProfile(ValueSource profile)
+    {
+        this.profile = profile;
     }
 
     public NavigationPath.State constructState()
