@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.15 2004-06-05 20:23:47 jeremy.d.hulick Exp $
+ * $Id: Query.java,v 1.16 2004-08-15 01:06:21 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -449,5 +449,40 @@ public class Query
     public QueryResultSet execute(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
     {
         return log.isInfoEnabled() ? executeAndRecordStatistics(cc, overrideParams, scrollable) : executeAndIgnoreStatistics(cc, overrideParams, scrollable);
+    }
+
+    public int executeUpdateAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
+    {
+        if(log.isTraceEnabled()) trace(cc, overrideParams);
+        try
+        {
+            Connection conn = cc.getConnection();
+            PreparedStatement stmt = null;
+            String sql = getSqlText(cc);
+            stmt = conn.prepareStatement(sql);
+
+            if(overrideParams != null)
+            {
+                for(int i = 0; i < overrideParams.length; i++)
+                    stmt.setObject(i + 1, overrideParams[i]);
+            }
+            else if(parameters != null)
+                parameters.apply(cc, stmt);
+
+            int executeStmtResult = stmt.executeUpdate();
+            stmt.close();
+            return executeStmtResult;
+        }
+        catch(SQLException e)
+        {
+            log.error(createExceptionMessage(cc, overrideParams), e);
+            throw e;
+        }
+    }
+
+    public int executeUpdate(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean autoCommit) throws NamingException, SQLException
+    {
+        String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
+        return executeUpdateAndIgnoreStatistics(dbvc.getConnection(dataSrcIdText, ! autoCommit), overrideParams);
     }
 }
