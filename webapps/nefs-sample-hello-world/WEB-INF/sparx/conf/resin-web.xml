@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: resin-web.xml,v 1.8 2003-08-31 15:44:56 shahid.shah Exp $
+$Id: resin-web.xml,v 1.9 2003-09-05 21:03:15 roque.hernandez Exp $
 -->
 
 <web-app>
@@ -17,6 +17,7 @@ $Id: resin-web.xml,v 1.8 2003-08-31 15:44:56 shahid.shah Exp $
     <listener>
         <listener-class>com.netspective.sparx.util.ApplicationEventsListener</listener-class>
     </listener>
+
 
     <!--
     *******************************************************************************************************************
@@ -33,30 +34,16 @@ $Id: resin-web.xml,v 1.8 2003-08-31 15:44:56 shahid.shah Exp $
     **       servlets so you may need additional servlet-mappings for the forwarded or included resources.           **
     *******************************************************************************************************************
     -->
-	<servlet>
-		<servlet-name>SparxNavigationController</servlet-name>
-		<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
-	</servlet>
+    <servlet>
+	<servlet-name>SparxNavigationController</servlet-name>
+	<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>AppServerStaticFileServlet</servlet-name>
         <servlet-class>com.caucho.server.http.FileServlet</servlet-class>
     </servlet>
 
-    <servlet-mapping>
-        <servlet-name>SparxNavigationController</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AppServerStaticFileServlet</servlet-name>
-        <url-pattern>/sparx/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AppServerStaticFileServlet</servlet-name>
-        <url-pattern>/resources/*</url-pattern>
-    </servlet-mapping>
 
     <!--
     *******************************************************************************************************************
@@ -66,9 +53,9 @@ $Id: resin-web.xml,v 1.8 2003-08-31 15:44:56 shahid.shah Exp $
     ** elements for the NetspectiveConsole servlet.                                                                  **
     *******************************************************************************************************************
     -->
-	<servlet>
-		<servlet-name>NetspectiveConsole</servlet-name>
-		<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
+    <servlet>
+	<servlet-name>NetspectiveConsole</servlet-name>
+	<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
         <init-param>
             <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
             <param-value>--login-manager=console</param-value>
@@ -77,32 +64,48 @@ $Id: resin-web.xml,v 1.8 2003-08-31 15:44:56 shahid.shah Exp $
             <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.OPTIONS</param-name>
             <param-value>--user-id=console --encrypted-password=NCbHq1WqkpfDY</param-value> <!-- run "java com.netspective.commons.security.Crypt NC <password>" to generate encrypted password -->
         </init-param>
-	</servlet>
+    </servlet>
 
-	<servlet-mapping>
-		<servlet-name>NetspectiveConsole</servlet-name>
-		<url-pattern>/console/*</url-pattern>
-	</servlet-mapping>
 
-    <!--
+    <!-- 
     *******************************************************************************************************************
-    ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
-    ** ============================================================================================================= **
-    ** Any data source called 'jdbc/default' will automatically be used as the default JDBC data source. If you wish **
-    ** to change the name of the default data source, you may specify it as a tag in project.xml like the following: **
-    ** <project>                                                                                                     **
-    **     <default-data-source>jdbc/other</default-data-source>                                                     **
+    ** MAPPING OF DEFAULT SERVLET									             **
     *******************************************************************************************************************
     -->
-	<resource-ref>
-	  <res-ref-name>jdbc/default</res-ref-name>
-	  <res-type>javax.sql.DataSource</res-type>
-	  <init-param driver-name="org.hsqldb.jdbcDriver"/>
-	  <init-param url="jdbc:hsqldb:${app.docDir}/WEB-INF/database/instance/db"/>
-	  <init-param user="sa"/>
-	  <init-param password=""/>
-	  <init-param max-connections="20"/>
-	  <init-param enable-transaction="false"/>
-	</resource-ref>
+    <servlet-mapping>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- 
+    *******************************************************************************************************************
+    ** MAPPING OF CONSOLE SERVLET									             **
+    *******************************************************************************************************************
+    -->
+    <servlet-mapping>
+	<servlet-name>NetspectiveConsole</servlet-name>
+	<url-pattern>/console/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- 
+    *******************************************************************************************************************
+    ** MAPPING OF EXCEPTION TO DEFAULT SERVLET									     **
+    ** ============================================================================================================= **
+    ** These mappings represent folders in the application that contain resources that must be served by the         **
+    ** server's as such.  If more resources are added for a specific application more exceptions must be added       **
+    ** unless they reside in one of these folders.								     **
+    *******************************************************************************************************************
+    -->
+    <servlet-mapping>
+        <servlet-name>AppServerStaticFileServlet</servlet-name>
+        <url-pattern>/sparx/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AppServerStaticFileServlet</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

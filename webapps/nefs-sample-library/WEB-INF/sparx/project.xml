@@ -60,6 +60,37 @@
         </dialog>
     </dialogs>
 
+
+<!-- 
+    *******************************************************************************************************************
+    ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
+    ** ============================================================================================================= **
+    ** Any data source called 'jdbc/default' will automatically be used as the default JDBC data source. If you wish **
+    ** to change the name of the default data source, you may specify it as a tag in project.xml like the following: **
+    ** <project>                                                                                                     **
+    **     <default-data-source>jdbc/other</default-data-source>						     **
+    **														     **
+    ** Or by specifying it in the data source definition as follows:						     **
+    **     <data-source name="theName" default="yes"								     **
+    **														     **
+    ** Note that data sources specified under this connection provider will be managed by the Jakarta Commons DBCP   **
+    ** If you wish to use JNDI, you simply have to specify the resource according to the server you're using.	     **
+    **														     **
+    ******************************************************************************************************************* 
+    -->
+
+    <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
+
+        <data-source name="jdbc/default">
+            <driver-class>org.hsqldb.jdbcDriver</driver-class>
+            <url>vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}</url>
+            <user>sa</user>
+            <password></password>
+        </data-source>
+
+    </connection-provider>
+
+
 	<!--
 	**********************************************************************
 	** DATA MANAGEMENT STRUCTURE (SCHEMA) SPECIFICATIONS                **

@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <!--
-*****************************************************
-** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
-*****************************************************
-$Id: web.xml,v 1.2 2003-08-31 15:44:56 shahid.shah Exp $
+************************************************
+** GENERIC WEB-INF/web.xml CONFIGURATION FILE **
+************************************************
+$Id: web.xml,v 1.3 2003-09-05 21:03:16 roque.hernandez Exp $
 -->
 
 <web-app>
@@ -22,41 +25,18 @@ $Id: web.xml,v 1.2 2003-08-31 15:44:56 shahid.shah Exp $
     *******************************************************************************************************************
     ** APPLICATION FRONT-CONTROLLER CONFIGURATION                                                                    **
     ** ============================================================================================================= **
-    ** 1) The SparxNavigationController servlet handles all the requests (it's the default servlet)                  **
-    ** 2) Anything under the /sparx URL is assumed to be a Sparx resource or asset so it's forwarded to the normal   **
-    **    app-server static file servlet.                                                                            **
-    ** 3) Anything under the /resources URL is assumed to be an application resource or asset so it's also forwared  **
-    **    to the normal app-server static file servlet.                                                              **
+    ** 1) The SparxNavigationController servlet handles all the requests to /app/*                                   **
+    ** 2) In some servers you can setup this servlet to become the default controller.  See resin's config example   **
+    **    for refference.                                                                                            **
     ** ============================================================================================================= **
-    ** NOTE: if you will be using the NavigationPage forward or include attributes (<page ... forward=''> or <page   **
-    **       include=''>) then you will need to ensure that those pages get handled by the appropriate app server    **
-    **       servlets so you may need additional servlet-mappings for the forwarded or included resources.           **
+    ** NOTE: In all of the other popular web servers, it is easy to setup a default servlet and add exceptions to    **
+    **       to handle specific folders.  This makes for a much more elegant URL structure.
     *******************************************************************************************************************
     -->
-	<servlet>
-		<servlet-name>SparxNavigationController</servlet-name>
-		<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
-	</servlet>
-
     <servlet>
-        <servlet-name>AppServerStaticFileServlet</servlet-name>
-        <servlet-class>com.caucho.server.http.FileServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>SparxNavigationController</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AppServerStaticFileServlet</servlet-name>
-        <url-pattern>/sparx/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AppServerStaticFileServlet</servlet-name>
-        <url-pattern>/resources/*</url-pattern>
-    </servlet-mapping>
+	<servlet-name>SparxNavigationController</servlet-name>
+	<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+    </servlet>    
 
     <!--
     *******************************************************************************************************************
@@ -66,9 +46,9 @@ $Id: web.xml,v 1.2 2003-08-31 15:44:56 shahid.shah Exp $
     ** elements for the NetspectiveConsole servlet.                                                                  **
     *******************************************************************************************************************
     -->
-	<servlet>
-		<servlet-name>NetspectiveConsole</servlet-name>
-		<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
+    <servlet>
+	<servlet-name>NetspectiveConsole</servlet-name>
+	<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
         <init-param>
             <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
             <param-value>--login-manager=console</param-value>
@@ -77,32 +57,28 @@ $Id: web.xml,v 1.2 2003-08-31 15:44:56 shahid.shah Exp $
             <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.OPTIONS</param-name>
             <param-value>--user-id=console --encrypted-password=NCbHq1WqkpfDY</param-value> <!-- run "java com.netspective.commons.security.Crypt NC <password>" to generate encrypted password -->
         </init-param>
-	</servlet>
+    </servlet>
 
-	<servlet-mapping>
-		<servlet-name>NetspectiveConsole</servlet-name>
-		<url-pattern>/console/*</url-pattern>
-	</servlet-mapping>
 
-    <!--
+    <!-- 
     *******************************************************************************************************************
-    ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
-    ** ============================================================================================================= **
-    ** Any data source called 'jdbc/default' will automatically be used as the default JDBC data source. If you wish **
-    ** to change the name of the default data source, you may specify it as a tag in project.xml like the following: **
-    ** <project>                                                                                                     **
-    **     <default-data-source>jdbc/other</default-data-source>                                                     **
+    ** MAPPING OF SPARX FRONT SERVLET									             **
     *******************************************************************************************************************
     -->
-	<resource-ref>
-	  <res-ref-name>jdbc/default</res-ref-name>
-	  <res-type>javax.sql.DataSource</res-type>
-	  <init-param driver-name="org.hsqldb.jdbcDriver"/>
-	  <init-param url="jdbc:hsqldb:${app.docDir}/WEB-INF/database/instance/db"/>
-	  <init-param user="sa"/>
-	  <init-param password=""/>
-	  <init-param max-connections="20"/>
-	  <init-param enable-transaction="false"/>
-	</resource-ref>
+    <servlet-mapping>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <url-pattern>/app/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- 
+    *******************************************************************************************************************
+    ** MAPPING OF CONSOLE SERVLET									             **
+    *******************************************************************************************************************
+    -->
+    <servlet-mapping>
+	<servlet-name>NetspectiveConsole</servlet-name>
+	<url-pattern>/console/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>
