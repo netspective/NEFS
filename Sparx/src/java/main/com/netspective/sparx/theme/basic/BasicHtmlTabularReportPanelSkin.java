@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.24 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.25 2003-09-07 19:19:41 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -340,6 +340,12 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                         state.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN) ?
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
+                Command command = column.getCommand();
+                if (command != null && command instanceof RedirectCommand)
+                {
+                    data = rc.getSkin().constructRedirect(rc, column.getCommand(), data, null, null);
+                    data = defn.replaceOutputPatterns(rc, ds, data);
+                }
 
                 String style = state.getCssStyleAttrValue();
                 if(hiearchical && (hiearchyCol == i) && activeLevel > 0)
