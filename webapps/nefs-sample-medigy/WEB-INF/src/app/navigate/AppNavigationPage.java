@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppNavigationPage.java,v 1.3 2004-03-03 15:57:33 aye.thu Exp $
+ * $Id: AppNavigationPage.java,v 1.4 2004-03-03 20:20:00 aye.thu Exp $
  */
 
 package app.navigate;
@@ -65,7 +65,7 @@ public class AppNavigationPage extends NavigationPage
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         HttpServletRequest request = nc.getHttpRequest();
-        String commandSpec = request.getParameter(PanelEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME);
+        String commandSpec = request.getParameter(PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME);
         if (commandSpec != null)
         {
             PanelEditorCommand command = new PanelEditorCommand();
