@@ -39,23 +39,23 @@
  */
 
 /**
- * $Id: TemplateElement.java,v 1.4 2003-10-16 18:31:26 shahid.shah Exp $
+ * $Id: TemplateElement.java,v 1.5 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 import com.netspective.commons.text.ExpressionText;
-import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.text.JavaExpressionText;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xml.ContentHandlerNodeStackEntry;
 
 public class TemplateElement extends TemplateNode
@@ -164,7 +164,7 @@ public class TemplateElement extends TemplateNode
     protected boolean isAllowReplaceExpressions()
     {
         String exprsFlag = attributes.getValue(defnContentHandler.getNodeIdentifiers().getTemplateReplaceExprsAttrName());
-        return exprsFlag != null && exprsFlag.length() > 0 ? TextUtils.toBoolean(exprsFlag) : true;
+        return exprsFlag != null && exprsFlag.length() > 0 ? TextUtils.getInstance().toBoolean(exprsFlag) : true;
     }
 
     protected void apply(TemplateApplyContext ac) throws SAXException

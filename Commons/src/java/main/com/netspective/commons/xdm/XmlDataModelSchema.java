@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.50 2004-08-08 22:48:32 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.51 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -695,7 +695,7 @@ public class XmlDataModelSchema
                 return valueIfNull;
 
             if (value instanceof String[])
-                return TextUtils.join((String[]) value, ", ");
+                return TextUtils.getInstance().join((String[]) value, ", ");
 
             return value.toString();
         }
@@ -734,9 +734,9 @@ public class XmlDataModelSchema
         public MethodJavaDoc getJavaDoc()
         {
             if (isFlagAlias())
-                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set" + TextUtils.xmlTextToJavaIdentifier(primaryFlagsAttrName, true));
+                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set" + TextUtils.getInstance().xmlTextToJavaIdentifier(primaryFlagsAttrName, true));
             else
-                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set" + TextUtils.xmlTextToJavaIdentifier(attrName, true));
+                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set" + TextUtils.getInstance().xmlTextToJavaIdentifier(attrName, true));
         }
 
         public boolean isFlagsPrimary()
@@ -790,11 +790,12 @@ public class XmlDataModelSchema
             if (attrType == null)
                 return "";
 
+            TextUtils textUtils = TextUtils.getInstance();
             if (isFlagAlias())
-                return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
+                return textUtils.join(textUtils.getBooleanChoices(), ", ");
 
             if (isFlagsPrimary())
-                return TextUtils.join(flags.getFlagNamesWithXdmAccess(), " | ");
+                return textUtils.join(flags.getFlagNamesWithXdmAccess(), " | ");
 
             if (XdmEnumeratedAttribute.class.isAssignableFrom(attrType))
             {
@@ -809,11 +810,11 @@ public class XmlDataModelSchema
                     return e.toString();
                 }
 
-                return TextUtils.join(ea.getValues(), ", ");
+                return textUtils.join(ea.getValues(), ", ");
             }
 
             if (Boolean.class.isAssignableFrom(attrType) || (attrType == boolean.class))
-                return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
+                return textUtils.join(textUtils.getBooleanChoices(), ", ");
 
             return "";
         }
@@ -1283,7 +1284,7 @@ public class XmlDataModelSchema
                 if (returnVal instanceof XdmBitmaskedFlagsAttribute)
                 {
                     XdmBitmaskedFlagsAttribute bfa = (XdmBitmaskedFlagsAttribute) returnVal;
-                    if (bfa.updateFlag(attributeName, TextUtils.toBoolean(value)))
+                    if (bfa.updateFlag(attributeName, TextUtils.getInstance().toBoolean(value)))
                         return;
                 }
             }
@@ -1660,7 +1661,7 @@ public class XmlDataModelSchema
         }
         else
         {
-            String[] keysArray = TextUtils.split(keys, ",", true);
+            String[] keysArray = TextUtils.getInstance().split(keys, ",", true);
             for (int i = 0; i < keysArray.length; i++)
             {
                 String key = keysArray[i];
@@ -1961,7 +1962,7 @@ public class XmlDataModelSchema
                 public void set(XdmParseContext pc, Object parent, String value)
                         throws InvocationTargetException, IllegalAccessException
                 {
-                    m.invoke(parent, new Boolean[]{new Boolean(TextUtils.toBoolean(value))});
+                    m.invoke(parent, new Boolean[]{new Boolean(TextUtils.getInstance().toBoolean(value))});
                 }
 
                 public boolean isInherited()
@@ -2041,13 +2042,14 @@ public class XmlDataModelSchema
                 public void set(XdmParseContext pc, Object parent, String value)
                         throws InvocationTargetException, IllegalAccessException
                 {
+                    TextUtils textUtils = TextUtils.getInstance();
                     ValueSource vs = ValueSources.getInstance().getValueSourceOrStatic(value);
                     if (vs == null)
                     {
                         // better to throw an error here since if there are objects which are based on null/non-null
                         // value of the value source, it is easier to debug
                         pc.addError("Unable to find ValueSource '" + value + "' to wrap in RedirectValueSource at " + pc.getLocator().getSystemId() +
-                                " line " + pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                                " line " + pc.getLocator().getLineNumber() + ". Valid value sources are: " + textUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                     }
                     try
                     {
@@ -2058,7 +2060,7 @@ public class XmlDataModelSchema
                     catch (InstantiationException e)
                     {
                         pc.addError("Unable to create RedirectValueSource for '" + value + "' at " + pc.getLocator().getSystemId() +
-                                " line " + pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                                " line " + pc.getLocator().getLineNumber() + ". Valid value sources are: " + textUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                     }
                 }
 
@@ -2080,6 +2082,7 @@ public class XmlDataModelSchema
                 public void set(XdmParseContext pc, Object parent, String value)
                         throws InvocationTargetException, IllegalAccessException
                 {
+                    TextUtils textUtils = TextUtils.getInstance();
                     ValueSource vs = ValueSources.getInstance().getValueSourceOrStatic(value);
                     if (vs == null)
                     {
@@ -2087,9 +2090,9 @@ public class XmlDataModelSchema
                         // value of the value source, it is easier to debug
                         if (pc != null)
                             pc.addError("Unable to create ValueSource for '" + value + "' at " + pc.getLocator().getSystemId() +
-                                    " line " + pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                                    " line " + pc.getLocator().getLineNumber() + ". Valid value sources are: " + textUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                         else
-                            log.error("Unable to create ValueSource for '" + value + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                            log.error("Unable to create ValueSource for '" + value + ". Valid value sources are: " + textUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                     }
                     m.invoke(parent, new ValueSource[]{vs});
                 }
@@ -2216,7 +2219,7 @@ public class XmlDataModelSchema
                 public void set(XdmParseContext pc, Object parent, String value)
                         throws InvocationTargetException, IllegalAccessException, DataModelException
                 {
-                    String[] items = TextUtils.split(value, ",", true);
+                    String[] items = TextUtils.getInstance().split(value, ",", true);
                     switch (items.length)
                     {
                         case 1:
@@ -2257,7 +2260,7 @@ public class XmlDataModelSchema
                 public void set(XdmParseContext pc, Object parent, String value)
                         throws InvocationTargetException, IllegalAccessException, DataModelException
                 {
-                    String[] items = TextUtils.split(value, ",", true);
+                    String[] items = TextUtils.getInstance().split(value, ",", true);
                     switch (items.length)
                     {
                         case 1:
@@ -2359,7 +2362,7 @@ public class XmlDataModelSchema
             int start = prefix.length();
 
             String nameMinusPrefix = methodName.substring(start);
-            String xmlNodeName = TextUtils.javaIdentifierToXmlNodeName(nameMinusPrefix);
+            String xmlNodeName = TextUtils.getInstance().javaIdentifierToXmlNodeName(nameMinusPrefix);
 
             primaryName = xmlNodeName.toLowerCase();
             aliases.add(primaryName);

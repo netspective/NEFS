@@ -39,29 +39,29 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSource.java,v 1.5 2003-05-13 19:51:51 shahid.shah Exp $
+ * $Id: FilesystemEntriesValueSource.java,v 1.6 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.apache.oro.text.perl.Perl5Util;
 
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSourceDocumentation;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.ValueSourceSpecification;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.commons.text.TextUtils;
 
 public class FilesystemEntriesValueSource extends AbstractValueSource implements FilenameFilter
 {
@@ -167,7 +167,7 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
         else
             filter = ALL_FILES_FILTER;
         if(st.hasMoreTokens())
-            setIncludePathInSelection(TextUtils.toBoolean(st.nextToken().trim()));
+            setIncludePathInSelection(TextUtils.getInstance().toBoolean(st.nextToken().trim()));
     }
 
     public Value getValue(ValueContext vc)

@@ -44,9 +44,9 @@
                     </td>
                     <td class="report-column-${classSuffix}">
                         <#if parameter.hasEnums()>
-                            ${statics["com.netspective.commons.text.TextUtils"].join(parameter.enums, ", ")}
+                            ${statics["com.netspective.commons.text.TextUtils"].getInstance().join(parameter.enums, ", ")}
                         <#elseif parameter.hasFlags()>
-                            ${statics["com.netspective.commons.text.TextUtils"].join(parameter.flags.flagNames, " | ")}
+                            ${statics["com.netspective.commons.text.TextUtils"].getInstance().join(parameter.flags.flagNames, " | ")}
                         <#else>
                             &nbsp;
                         </#if>

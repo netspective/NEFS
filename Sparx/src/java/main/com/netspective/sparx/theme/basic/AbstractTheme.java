@@ -39,10 +39,19 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.25 2004-07-11 02:15:42 shahid.shah Exp $
+ * $Id: AbstractTheme.java,v 1.26 2004-08-09 22:15:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.io.UriAddressableFile;
@@ -53,17 +62,8 @@ import com.netspective.sparx.form.DialogSkin;
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.security.LoginDialogSkin;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import com.netspective.sparx.theme.Theme;
 
 /**
  * A Theme is defined as a logical collection of the look and feel of various framework components such as pages,
@@ -239,7 +239,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     public void setInheritResourcesFromThemes(String delimitedThemeNames)
     {
         List themeNamesList = new ArrayList();
-        String[] themeNames = TextUtils.split(delimitedThemeNames, ",", true);
+        String[] themeNames = TextUtils.getInstance().split(delimitedThemeNames, ",", true);
         for(int i = 0; i < themeNames.length; i++)
             themeNamesList.add(themeNames[i]);
         for(int i = 0; i < inheritResourcesFromThemes.length; i++)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.19 2004-04-27 20:09:56 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.20 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -200,7 +200,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         if(contextNotClosedException == null)
             return null;
 
-        return TextUtils.getStackTrace(contextNotClosedException);
+        return TextUtils.getInstance().getStackTrace(contextNotClosedException);
     }
 
     public void rollbackAndCloseAndLogAsConnectionLeak(Log log, String message)

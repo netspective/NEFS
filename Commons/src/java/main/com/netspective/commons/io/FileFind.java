@@ -39,21 +39,25 @@
  */
 
 /**
- * $Id: FileFind.java,v 1.4 2003-03-25 17:49:01 shahbaz.javeed Exp $
+ * $Id: FileFind.java,v 1.5 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
 
-import com.netspective.commons.text.TextUtils;
-
-import java.io.*;
-import java.util.Enumeration;
-import java.util.List;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
+
+import com.netspective.commons.text.TextUtils;
 
 public class FileFind
 {
@@ -75,7 +79,7 @@ public class FileFind
     public static boolean isJarFile(String fileName)
     {
         File f = new File(fileName);
-        if (TextUtils.isEmpty(f.getName())) return false;
+        if (TextUtils.getInstance().isEmpty(f.getName())) return false;
         String fileExt = getExtension(f).toLowerCase();
         return (fileExt.equals("jar") || fileExt.equals("zip"));
     }
@@ -247,7 +251,7 @@ public class FileFind
 
         public FileFindResults(String searchPaths, String searchPathsDelim, String searchFileName, int flags)
         {
-            this(TextUtils.split(searchPaths, searchPathsDelim, false), searchFileName, flags);
+            this(TextUtils.getInstance().split(searchPaths, searchPathsDelim, false), searchFileName, flags);
         }
 
         public String getSearchFileName()
@@ -427,7 +431,7 @@ public class FileFind
 
     public static final FileFindResults findInPath(String[] searchPaths, String searchFileName, int flags)
     {
-        if (searchPaths == null || searchPaths.length == 0 || TextUtils.isEmpty(searchFileName))
+        if (searchPaths == null || searchPaths.length == 0 || TextUtils.getInstance().isEmpty(searchFileName))
             return null;
 
         FileFindResults results = new FileFindResults(searchPaths, searchFileName, flags);
@@ -437,7 +441,7 @@ public class FileFind
 
     public static final FileFindResults findInPath(String searchPaths, String searchPathsDelim, String searchFileName, int flags)
     {
-        if (TextUtils.isEmpty(searchPaths) || TextUtils.isEmpty(searchFileName))
+        if (TextUtils.getInstance().isEmpty(searchPaths) || TextUtils.getInstance().isEmpty(searchFileName))
             return null;
 
         FileFindResults results = new FileFindResults(searchPaths, searchPathsDelim, searchFileName, flags);

@@ -39,18 +39,17 @@
  */
 
 /**
- * $Id: AntBuildProjectsPage.java,v 1.5 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: AntBuildProjectsPage.java,v 1.6 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page.project;
 
-import com.netspective.sparx.console.ConsoleServletPage;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.ant.AntProjects;
-import com.netspective.sparx.ant.AntProject;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.ant.AntProject;
+import com.netspective.sparx.ant.AntProjects;
+import com.netspective.sparx.console.ConsoleServletPage;
+import com.netspective.sparx.navigate.NavigationTree;
 
 public class AntBuildProjectsPage extends ConsoleServletPage
 {
@@ -75,7 +74,7 @@ public class AntBuildProjectsPage extends ConsoleServletPage
             AntProject antProject = antProjects.getByIndex(i);
             AntProjectPage page = new AntProjectPage(getOwner());
             page.setAntProject(antProject);
-            page.setName(TextUtils.xmlTextToJavaIdentifier(antProject.getId(), false));
+            page.setName(TextUtils.getInstance().xmlTextToJavaIdentifier(antProject.getId(), false));
             page.setCaption(new StaticValueSource(antProject.getCaptionOrId()));
             page.setHeading(new StaticValueSource(antProject.getCaptionOrId() + " Ant Build"));
             appendChild(page);

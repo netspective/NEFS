@@ -39,22 +39,22 @@
  */
 
 /**
- * $Id: QueryDefnDetailPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: QueryDefnDetailPanel.java,v 1.4 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql.dynamic;
 
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.axiom.sql.dynamic.QueryDefinition;
+import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.SqlManager;
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.axiom.sql.dynamic.QueryDefinition;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 
 abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPanel
 {
@@ -91,7 +91,7 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
             }
             else if(queryDefnSource.startsWith("schema"))
             {
-                String[] querySourceParams = TextUtils.split(queryDefnSource, ",", true);
+                String[] querySourceParams = TextUtils.getInstance().split(queryDefnSource, ",", true);
                 Schema schema = sqlManager.getSchema(querySourceParams[1]);
                 if(schema != null)
                 {
@@ -142,7 +142,7 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
         String schemaTable = nc.getHttpRequest().getParameter(SchemaTableColumnsPanel.REQPARAMNAME_SHOW_DETAIL_TABLE);
         if(schemaTable != null)
         {
-            String[] items = TextUtils.split(schemaTable, ".", false);
+            String[] items = TextUtils.getInstance().split(schemaTable, ".", false);
             return new SelectedQueryDefinition(nc.getSqlManager(), "schema," + items[0], items[1]);
         }
         else

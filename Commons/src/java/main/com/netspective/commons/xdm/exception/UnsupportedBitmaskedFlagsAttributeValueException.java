@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: UnsupportedBitmaskedFlagsAttributeValueException.java,v 1.1 2003-04-01 01:45:33 shahid.shah Exp $
+ * $Id: UnsupportedBitmaskedFlagsAttributeValueException.java,v 1.2 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm.exception;
 
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.xdm.XdmParseContext;
 
 public class UnsupportedBitmaskedFlagsAttributeValueException extends DataModelSyntaxException
 {
@@ -61,7 +61,7 @@ public class UnsupportedBitmaskedFlagsAttributeValueException extends DataModelS
 
     public UnsupportedBitmaskedFlagsAttributeValueException(XdmParseContext pc, XdmBitmaskedFlagsAttribute bfa, Object element, String attrName, String attrValue)
     {
-        super(pc, "Class " + element.getClass().getName() + " does not support attribute value '"+ attrValue +"' for attribute '"+ attrName +"'  ["+ bfa.getClass().getName() +"] ("+ pc.getLocator().getSystemId() +" line "+ pc.getLocator().getLineNumber() + "). Valid values are " + TextUtils.join(bfa.getFlagNames(), ", "));
+        super(pc, "Class " + element.getClass().getName() + " does not support attribute value '"+ attrValue +"' for attribute '"+ attrName +"'  ["+ bfa.getClass().getName() +"] ("+ pc.getLocator().getSystemId() +" line "+ pc.getLocator().getLineNumber() + "). Valid values are " + TextUtils.getInstance().join(bfa.getFlagNames(), ", "));
         this.bfa = bfa;
         this.attrName = attrName;
         this.attrValue = attrValue;

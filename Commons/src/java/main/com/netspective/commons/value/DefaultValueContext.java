@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.19 2004-04-28 01:11:49 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.20 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -192,7 +192,7 @@ public class DefaultValueContext implements ValueContext
         if (evalResult instanceof Boolean)
             return ((Boolean) evalResult).booleanValue();
         else if(evalResult != null)
-            return TextUtils.toBoolean(evalResult.toString(), false);
+            return TextUtils.getInstance().toBoolean(evalResult.toString(), false);
         else
         {
             log.error("Conditional expression '" + expr + "' did not return a boolean or non-Object.");

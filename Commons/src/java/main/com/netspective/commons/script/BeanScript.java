@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BeanScript.java,v 1.2 2004-04-27 20:10:00 shahid.shah Exp $
+ * $Id: BeanScript.java,v 1.3 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.script;
@@ -137,7 +137,7 @@ public class BeanScript implements Script
     public void setSource(File source) throws IOException
     {
         this.source = source;
-        setScript(TextUtils.getFileContents(source.getAbsolutePath()));
+        setScript(TextUtils.getInstance().getFileContents(source.getAbsolutePath()));
     }
 
     public void addText(String text)

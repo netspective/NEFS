@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScriptEngine.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
+ * $Id: ScriptEngine.java,v 1.2 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.script;
@@ -75,7 +75,7 @@ public class ScriptEngine
 
     public void setExtensions(String extensions)
     {
-        this.extensions = TextUtils.split(extensions, ",", true);
+        this.extensions = TextUtils.getInstance().split(extensions, ",", true);
     }
 
     public String getName()

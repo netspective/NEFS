@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScriptValidationRule.java,v 1.1 2004-04-27 20:10:00 shahid.shah Exp $
+ * $Id: ScriptValidationRule.java,v 1.2 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -117,7 +117,7 @@ public class ScriptValidationRule extends BasicValidationRule implements XmlData
             return ((Boolean) result).booleanValue();
 
         if(result != null)
-            return TextUtils.toBoolean(result.toString(), false);
+            return TextUtils.getInstance().toBoolean(result.toString(), false);
         else
             return false;
     }

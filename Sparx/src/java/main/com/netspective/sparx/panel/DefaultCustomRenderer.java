@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultCustomRenderer.java,v 1.2 2004-06-23 21:06:45 shahid.shah Exp $
+ * $Id: DefaultCustomRenderer.java,v 1.3 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -183,7 +183,7 @@ public class DefaultCustomRenderer implements CustomRenderer, XmlDataModelSchema
         if (templateVars == null)
             templateVars = new HashMap();
 
-        templateVars.put(TextUtils.xmlTextToJavaIdentifier(attrName, false), attrValue);
+        templateVars.put(TextUtils.getInstance().xmlTextToJavaIdentifier(attrName, false), attrValue);
     }
 
     public class SqlResultSetPopulator implements DataPopulator

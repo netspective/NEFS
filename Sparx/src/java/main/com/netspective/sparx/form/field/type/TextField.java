@@ -51,10 +51,18 @@
  */
 
 /**
- * $Id: TextField.java,v 1.22 2004-03-25 05:01:28 aye.thu Exp $
+ * $Id: TextField.java,v 1.23 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.oro.text.perl.MalformedPerl5PatternException;
+import org.apache.oro.text.perl.Perl5Util;
 
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.rule.TextValueValidationRule;
@@ -65,13 +73,6 @@ import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.DialogFieldValidations;
 import com.netspective.sparx.form.field.DialogFieldValue;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.oro.text.perl.MalformedPerl5PatternException;
-import org.apache.oro.text.perl.Perl5Util;
-
-import java.io.IOException;
-import java.io.Writer;
 
 public class TextField extends DialogField
 {
@@ -362,7 +363,7 @@ public class TextField extends DialogField
         if(textValue == null)
             textValue = "";
         else
-            textValue = TextUtils.escapeHTML(textValue);
+            textValue = TextUtils.getInstance().escapeHTML(textValue);
 
         String className = isRequired(dc) ? dc.getSkin().getControlAreaRequiredStyleClass() : dc.getSkin().getControlAreaStyleClass();
 

@@ -39,34 +39,34 @@
  */
 
 /**
- * $Id: Transform.java,v 1.3 2003-11-15 18:53:55 shahid.shah Exp $
+ * $Id: Transform.java,v 1.4 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
-import java.io.Writer;
-import java.io.IOException;
-import java.io.File;
+import java.util.List;
+import java.util.Map;
 
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.io.Resource;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
 
 public class Transform
 {
@@ -318,7 +318,7 @@ public class Transform
             log.error("XSLT error in " + this.getClass().getName(), e);
             if(writeErrors)
             {
-                writer.write("<pre>"+ TextUtils.getStackTrace(e) +"</pre>");
+                writer.write("<pre>"+ TextUtils.getInstance().getStackTrace(e) +"</pre>");
                 return false;
             }
             else throw e;
@@ -328,7 +328,7 @@ public class Transform
             log.error("XSLT error in " + this.getClass().getName(), e);
             if(writeErrors)
             {
-                writer.write("<pre>"+ TextUtils.getStackTrace(e) +"</pre>");
+                writer.write("<pre>"+ TextUtils.getInstance().getStackTrace(e) +"</pre>");
                 return false;
             }
             else throw e;

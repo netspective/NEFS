@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.19 2004-03-24 01:07:55 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.20 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -63,17 +63,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.field.DialogFieldValue;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFieldValidations;
-import com.netspective.sparx.form.field.DialogFieldFlags;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.validate.rule.DateValueValidationRule;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.exception.ValueException;
-import com.netspective.commons.validate.rule.DateValueValidationRule;
-import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogFieldValidations;
+import com.netspective.sparx.form.field.DialogFieldValue;
+import com.netspective.sparx.theme.Theme;
 
 public class DateTimeField extends TextField
 {
@@ -401,7 +401,7 @@ public class DateTimeField extends TextField
         if(textValue == null)
             textValue = "";
         else
-            textValue = TextUtils.escapeHTML(textValue);
+            textValue = TextUtils.getInstance().escapeHTML(textValue);
 
         String className = isRequired(dc) ? dc.getSkin().getControlAreaRequiredStyleClass() : dc.getSkin().getControlAreaStyleClass();
 

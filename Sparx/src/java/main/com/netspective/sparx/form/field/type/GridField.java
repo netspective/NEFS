@@ -52,6 +52,9 @@
  
 package com.netspective.sparx.form.field.type;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -61,13 +64,10 @@ import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.sparx.form.field.DialogFields;
 
-import java.io.IOException;
-import java.io.Writer;
-
 /**
  * Logical dialog field class to allow creation of grids.
  *
- * @version $Id: GridField.java,v 1.9 2004-02-13 04:41:02 aye.thu Exp $
+ * @version $Id: GridField.java,v 1.10 2004-08-09 22:15:14 shahid.shah Exp $
  */
 public class GridField extends DialogField
 {
@@ -227,7 +227,7 @@ public class GridField extends DialogField
             for (int i=0; i < columns.size(); i++)
             {
                 DialogField columnField = columns.get(i);
-                mi.addJavaCode("\tpublic DialogFieldValue get" + mi.getMemberName() + TextUtils.xmlTextToJavaIdentifier(columnField.getName(), true) + "ValueByRow(int rowNumber)\n" +
+                mi.addJavaCode("\tpublic DialogFieldValue get" + mi.getMemberName() + TextUtils.getInstance().xmlTextToJavaIdentifier(columnField.getName(), true) + "ValueByRow(int rowNumber)\n" +
                 "\t{\n" +
                 "\t\t" + stateClassName + " state = get" + mi.getMemberName() + "State();\n" +
                 "\t\treturn state.getValue(rowNumber, " +  i + ");\n" +

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: ReportColumnFactory.java,v 1.4 2004-06-23 20:45:37 shahid.shah Exp $
+ * $Id: ReportColumnFactory.java,v 1.5 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -122,7 +122,7 @@ public class ReportColumnFactory
         }
 
         column.setColIndex(resultSetColIndex - 1);
-        column.setHeading(new StaticValueSource(TextUtils.sqlIdentifierToText(rsmd.getColumnName(resultSetColIndex), true)));
+        column.setHeading(new StaticValueSource(TextUtils.getInstance().sqlIdentifierToText(rsmd.getColumnName(resultSetColIndex), true)));
         column.setDataType(dataType);
         column.setWidth(rsmd.getColumnDisplaySize(resultSetColIndex));
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnFieldReference.java,v 1.3 2004-04-05 14:05:13 zahara.khan Exp $
+ * $Id: QueryDefnFieldReference.java,v 1.4 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -106,7 +106,7 @@ public class QueryDefnFieldReference
         if(fieldName == null)
             throw new RuntimeException("No fields specified in QueryDefnFieldsReference in query definition " + queryDefn.getName());
 
-        String[] fieldNames = TextUtils.split(fieldName, ",", true);
+        String[] fieldNames = TextUtils.getInstance().split(fieldName, ",", true);
 
         QueryDefnFields fields = new QueryDefnFields();
         for(int i = 0; i < fieldNames.length; i++)

@@ -39,23 +39,21 @@
  */
 
 /**
- * $Id: UriAddressableInheritableFileResource.java,v 1.2 2003-08-23 17:23:34 shahid.shah Exp $
+ * $Id: UriAddressableInheritableFileResource.java,v 1.3 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.io.UriAddressableUniqueFileLocator;
-import com.netspective.commons.io.UriAddressableFile;
 
 /**
  * A {@link com.netspective.commons.io.UriAddressableFileLocator} that uses files in a specified directory as the
@@ -95,7 +93,7 @@ public class UriAddressableInheritableFileResource extends UriAddressableUniqueF
             return result;
         }
 
-        String[] pathItems = TextUtils.split(SEP_IS_SLASH ? name : name.replace(File.separatorChar, '/'), "/", false);
+        String[] pathItems = TextUtils.getInstance().split(SEP_IS_SLASH ? name : name.replace(File.separatorChar, '/'), "/", false);
         String justName = pathItems[pathItems.length-1];
 
         // get just the name then start looking "up" the parents until we get to the base directory

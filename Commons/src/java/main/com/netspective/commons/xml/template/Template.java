@@ -39,30 +39,30 @@
  */
 
 /**
- * $Id: Template.java,v 1.3 2003-10-12 18:08:59 shahid.shah Exp $
+ * $Id: Template.java,v 1.4 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
 
-import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
-import java.util.Stack;
-import java.util.Set;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+import java.util.StringTokenizer;
 
+import org.apache.commons.jexl.JexlContext;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.apache.commons.jexl.JexlContext;
 
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xml.ContentHandlerNodeStackEntry;
 import com.netspective.commons.xml.NodeIdentifiers;
-import com.netspective.commons.io.InputSourceLocator;
 
 public class Template extends TemplateElement
 {
@@ -169,7 +169,7 @@ public class Template extends TemplateElement
         param.setDefaultValue(attributes.getValue(NodeIdentifiers.ATTRNAME_TEMPLATE_PARAM_DECL_DEFAULT));
 
         String paramRequiredStr = attributes.getValue(NodeIdentifiers.ATTRNAME_TEMPLATE_PARAM_DECL_REQUIRED);
-        param.setRequired(paramRequiredStr != null && paramRequiredStr.length() > 0 ? TextUtils.toBoolean(paramRequiredStr) : false);
+        param.setRequired(paramRequiredStr != null && paramRequiredStr.length() > 0 ? TextUtils.getInstance().toBoolean(paramRequiredStr) : false);
 
         param.setCopyAttribute(attributes.getValue(NodeIdentifiers.ATTRNAME_TEMPLATE_PARAM_DECL_COPYATTR));
     }
@@ -287,7 +287,7 @@ public class Template extends TemplateElement
     public TemplateApplyContext createApplyContext(TemplateContentHandler contentHandler, String elementName, Attributes attributes) throws SAXException
     {
         String exprsFlag = attributes.getValue(contentHandler.getNodeIdentifiers().getTemplateReplaceExprsAttrName());
-        boolean allowReplaceExpressions = exprsFlag != null && exprsFlag.length() > 0 ? TextUtils.toBoolean(exprsFlag) : true;
+        boolean allowReplaceExpressions = exprsFlag != null && exprsFlag.length() > 0 ? TextUtils.getInstance().toBoolean(exprsFlag) : true;
         if(! allowReplaceExpressions)
             return new TemplateApplyContext(contentHandler);
 

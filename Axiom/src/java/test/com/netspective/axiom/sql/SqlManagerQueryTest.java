@@ -39,44 +39,48 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.15 2003-11-08 18:29:29 shahid.shah Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.16 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.sql.ResultSet;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 
 import javax.naming.NamingException;
 
-import junit.framework.TestCase;
-
-import com.netspective.commons.xdm.XdmComponentFactory;
-import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.SqlManagerComponent;
+import com.netspective.axiom.TestUtils;
+import com.netspective.axiom.policy.OracleDatabasePolicy;
+import com.netspective.axiom.policy.PostgreSqlDatabasePolicy;
+import com.netspective.axiom.sql.collection.QueriesCollection;
+import com.netspective.axiom.sql.collection.QueriesPackage;
+import com.netspective.axiom.value.BasicDatabaseConnValueContext;
+import com.netspective.axiom.value.BasicDatabasePolicyValueContext;
+import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSources;
-import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.sql.collection.QueriesCollection;
-import com.netspective.axiom.sql.collection.QueriesPackage;
-import com.netspective.axiom.*;
-import com.netspective.axiom.connection.DriverManagerConnectionProvider;
-import com.netspective.axiom.policy.OracleDatabasePolicy;
-import com.netspective.axiom.policy.PostgreSqlDatabasePolicy;
-import com.netspective.axiom.value.DatabaseConnValueContext;
-import com.netspective.axiom.value.BasicDatabaseConnValueContext;
-import com.netspective.axiom.value.BasicDatabasePolicyValueContext;
+import com.netspective.commons.xdm.XdmComponentFactory;
+import com.netspective.commons.xdm.exception.DataModelException;
+
+import junit.framework.TestCase;
 
 public class SqlManagerQueryTest extends TestCase
 {
     public static final String RESOURCE_NAME = "SqlManagerQueryTest.xml";
-	 protected SqlManagerComponent component = null;
-	 protected SqlManager manager = null;
+    protected SqlManagerComponent component = null;
+    protected SqlManager manager = null;
     protected String[] queryNames = new String[] { "statement-0", "statement-1", "bad-statement", "statement-2" };
     protected String[] fqQueryNames = new String[]{"test.statement-0", "test.statement-1", "test.bad-statement", "test.statement-2"};
+    protected TextUtils textUtils = TextUtils.getInstance();
 
 	protected void setUp () throws Exception
     {
@@ -266,9 +270,9 @@ public class SqlManagerQueryTest extends TestCase
 	    assertEquals("", dbmsSqlTexts.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql().trim());
 
 	    String sqlStatement = dbmsSqlTexts.getByDbmsId("oracle").getSql().trim();
-	    sqlStatement = TextUtils.join(TextUtils.split(sqlStatement, " \t\n", true), " ", true);
+	    sqlStatement = textUtils.join(textUtils.split(sqlStatement, " \t\n", true), " ", true);
 	    assertEquals("select * from test where column_a = 1 and column_b = 2 and column_c = 'this'", sqlStatement);
-        assertEquals(sqlStatement, TextUtils.join(TextUtils.split(dbmsSqlTexts.getByDbmsOrAnsi(new OracleDatabasePolicy()).getSql().trim(), " \t\n", true), " ", true));
+        assertEquals(sqlStatement, textUtils.join(textUtils.split(dbmsSqlTexts.getByDbmsOrAnsi(new OracleDatabasePolicy()).getSql().trim(), " \t\n", true), " ", true));
     }
 
     public void testStmt1Validity()
@@ -283,8 +287,8 @@ public class SqlManagerQueryTest extends TestCase
 	    assertNotNull(dbmsSqlTextsTwo.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT));
 
 	    String sqlStatement1 = dbmsSqlTextsTwo.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql();
-	    String[] sqlWords1 = TextUtils.split(sqlStatement1, " \t\n", true);
-	    sqlStatement1 = TextUtils.join(sqlWords1, " ", true);
+	    String[] sqlWords1 = textUtils.split(sqlStatement1, " \t\n", true);
+	    sqlStatement1 = textUtils.join(sqlWords1, " ", true);
 	    assertEquals("select * from test where column_a = ? and column_b in (${param-list:1}) and column_c = 'this'", sqlStatement1);
 
 	    QueryParameters testParams1 = testStatement1.getParams();
@@ -747,7 +751,7 @@ public class SqlManagerQueryTest extends TestCase
 
 		DbmsSqlTexts sqlTexts = statement2.getSqlTexts();
 	    String sql = sqlTexts.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql();
-        String flatSql = TextUtils.join(TextUtils.split(sql, " \t\n", true), " ");
+        String flatSql = textUtils.join(textUtils.split(sql, " \t\n", true), " ");
 	    assertEquals("select * from test where column_a = ? and column_b = ? and column_c = 'this'", flatSql);
     }
 

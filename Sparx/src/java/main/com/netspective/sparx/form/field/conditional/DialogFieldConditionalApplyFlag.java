@@ -51,28 +51,29 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.16 2004-07-26 13:14:53 aye.thu Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.17 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogFieldFlags;
-import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.type.SelectField;
+import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.value.source.DialogFieldValueSource;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalAction
 {
@@ -325,7 +326,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
 
     public void setHasPermissions(String permissions)
     {
-        this.hasPermissions = TextUtils.split(permissions, ",", true);
+        this.hasPermissions = TextUtils.getInstance().split(permissions, ",", true);
     }
 
     public String[] getLackPermissions()
@@ -335,7 +336,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
 
     public void setLackPermissions(String lackPermissions)
     {
-            this.lackPermissions = TextUtils.split(lackPermissions, ",", true); 
+            this.lackPermissions = TextUtils.getInstance().split(lackPermissions, ",", true);
     }
 
     public void applyFlags(DialogContext dc)

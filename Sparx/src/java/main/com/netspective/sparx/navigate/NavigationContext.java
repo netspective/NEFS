@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.29 2004-07-18 16:24:10 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.30 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -182,10 +182,10 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         {
             Throwable rootCause = ((ServletException) errorPageException).getRootCause();
             if (rootCause != null)
-                return TextUtils.getStackTrace(rootCause);
+                return TextUtils.getInstance().getStackTrace(rootCause);
         }
 
-        return TextUtils.getStackTrace(errorPageException);
+        return TextUtils.getInstance().getStackTrace(errorPageException);
     }
 
     public String getErrorPageExceptionStackStraceHtml()

@@ -39,40 +39,48 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.7 2003-11-07 17:47:29 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.8 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.framework;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.xdm.XmlDataModel;
-import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.xdm.XmlDataModel;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.exception.UnsupportedElementException;
-import com.netspective.commons.xml.template.TemplateProducers;
-import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 
 public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 {
@@ -870,6 +878,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                         return reportValueContext.getSkin().constructClassRef(activeRow.attrType);
 
                 case 2:
+                    TextUtils textUtils = TextUtils.getInstance();
                     if(activeRow.attrType != null)
                     {
                         if(XdmBitmaskedFlagsAttribute.class.isAssignableFrom(activeRow.attrType))
@@ -889,7 +898,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                                 return e.toString();
                             }
 
-                            return TextUtils.join(bfa.getFlagNamesWithXdmAccess(), " | ");
+                            return textUtils.join(bfa.getFlagNamesWithXdmAccess(), " | ");
                         }
                         else if(XdmEnumeratedAttribute.class.isAssignableFrom(activeRow.attrType))
                         {
@@ -904,15 +913,15 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                                 return e.toString();
                             }
 
-                            return TextUtils.join(ea.getValues(), ", ");
+                            return textUtils.join(ea.getValues(), ", ");
                         }
                         else if(Boolean.class.isAssignableFrom(activeRow.attrType) || (activeRow.attrType == boolean.class))
-                            return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
+                            return textUtils.join(textUtils.getBooleanChoices(), ", ");
                         else
                             return reportValueContext.getSkin().getBlankValue();
                     }
                     else if(activeRow.bfa != null)
-                        return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
+                        return textUtils.join(textUtils.getBooleanChoices(), ", ");
                     else
                         return reportValueContext.getSkin().getBlankValue();
 

@@ -1,34 +1,48 @@
 package com.netspective.axiom.sql;
 
-import junit.framework.TestCase;
-import com.netspective.axiom.*;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.naming.NamingException;
+
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.SqlManagerComponent;
+import com.netspective.axiom.TestUtils;
 import com.netspective.axiom.policy.HSqlDbDatabasePolicy;
-import com.netspective.axiom.value.DatabaseConnValueContext;
-import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
-import com.netspective.axiom.sql.dynamic.*;
+import com.netspective.axiom.sql.dynamic.QueryDefinition;
+import com.netspective.axiom.sql.dynamic.QueryDefnCondition;
+import com.netspective.axiom.sql.dynamic.QueryDefnConditions;
+import com.netspective.axiom.sql.dynamic.QueryDefnField;
+import com.netspective.axiom.sql.dynamic.QueryDefnFields;
+import com.netspective.axiom.sql.dynamic.QueryDefnJoin;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelectStmtGenerator;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
+import com.netspective.axiom.sql.dynamic.QueryDefnSortFieldReference;
+import com.netspective.axiom.sql.dynamic.QueryDefnSortFieldReferences;
+import com.netspective.axiom.sql.dynamic.QueryDefnSqlWhereExpression;
+import com.netspective.axiom.sql.dynamic.QueryDefnSqlWhereExpressions;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
+import com.netspective.axiom.value.BasicDatabaseConnValueContext;
+import com.netspective.axiom.value.DatabaseConnValueContext;
+import com.netspective.commons.io.Resource;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.xdm.XmlDataModelDtd;
 import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.io.Resource;
-import com.netspective.commons.io.FileFind;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.text.TextUtils;
 
-import javax.naming.NamingException;
-import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import java.lang.reflect.InvocationTargetException;
-import java.io.IOException;
-import java.io.File;
-import java.sql.SQLException;
+import junit.framework.TestCase;
 
 /**
- * $Id: DynamicSqlTest.java,v 1.10 2004-02-06 03:05:36 shahid.shah Exp $
+ * $Id: DynamicSqlTest.java,v 1.11 2004-08-09 22:13:32 shahid.shah Exp $
  */
 public class DynamicSqlTest extends TestCase
 {
@@ -641,7 +655,7 @@ public class DynamicSqlTest extends TestCase
 		String expectedSqlOne = "select distinct join_01.column_01 as \"field_01\", join_02.column_02a as \"Test Field 02 Caption\", column_03 as \"Test Field 03 Caption\" from join_01, Table_02 join_02, Table_03 join_03, /* implied by join definition 'join_02' */ Table_04 join_04, /* implied by join definition 'join_03' */ Table_05 join_05 /* auto-included for join definition 'join_05' */ where ( (join_01.column_01 = ?) and (join_02.column_02 like ?) and (UPPER(column_03) like UPPER(?)) and (column_05 like ?) and (join_01.column_01 in (?)) and (join_02.column_02 is not null) and (column_03 like ?) ) and (field_01 in ('A', 'B', 'C') ) group by join_01.column_01 order by column_03";
 
         String sqlOne = select.getSqlText(cc);
-        sqlOne = TextUtils.join(TextUtils.split(sqlOne, " \r\t\f\n", true), " ");
+        sqlOne = TextUtils.getInstance().join(TextUtils.getInstance().split(sqlOne, " \r\t\f\n", true), " ");
 
 		//System.out.println("\n" + sqlOne + "\n" + expectedSqlOne);
 

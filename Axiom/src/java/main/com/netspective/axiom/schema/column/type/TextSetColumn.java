@@ -39,20 +39,20 @@
  */
 
 /**
- * $Id: TextSetColumn.java,v 1.2 2003-07-19 00:36:27 shahid.shah Exp $
+ * $Id: TextSetColumn.java,v 1.3 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
 
 import java.sql.SQLException;
 
-import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.Row;
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.schema.Table;
 import com.netspective.commons.text.TextUtils;
 
 public class TextSetColumn extends TextColumn implements DatabasePolicy.ColumnInsertListener, DatabasePolicy.ColumnUpdateListener, DatabasePolicy.ColumnDeleteListener
@@ -104,7 +104,7 @@ public class TextSetColumn extends TextColumn implements DatabasePolicy.ColumnIn
     public void afterInsert(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
         String[] values = columnValue.isListValue() ?
-                            columnValue.getTextValues() : TextUtils.split(columnValue.getTextValue(), delimiter, true);
+                            columnValue.getTextValues() : TextUtils.getInstance().split(columnValue.getTextValue(), delimiter, true);
         if(values == null)
             return;
 

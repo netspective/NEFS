@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportHandler.java,v 1.9 2004-03-16 22:05:49 shahid.shah Exp $
+ * $Id: DataImportHandler.java,v 1.10 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -216,7 +216,7 @@ public class DataImportHandler extends AbstractContentHandler
                 {
                     row.getColumnValues().setValues(
                             new DelimitedValuesParser().parse(csv),
-                            TextUtils.toBoolean(attributes.getValue(ATTRNAME_CSV_BLANK_IS_NULL), true));
+                            TextUtils.getInstance().toBoolean(attributes.getValue(ATTRNAME_CSV_BLANK_IS_NULL), true));
                 }
                 else
                     getParseContext().addError("Trying to assign CSV value '"+ csv +"' but there is no active row.");
@@ -495,7 +495,7 @@ public class DataImportHandler extends AbstractContentHandler
                     {
                         NodeStackEntry entry = (NodeStackEntry) getActiveNodeEntry();
                         if (entry.row != null)
-                            loadFromCsv(entry.row.getTable(), csvFile, TextUtils.toBoolean(attributes.getValue(ATTRNAME_CSV_BLANK_IS_NULL), true));
+                            loadFromCsv(entry.row.getTable(), csvFile, TextUtils.getInstance().toBoolean(attributes.getValue(ATTRNAME_CSV_BLANK_IS_NULL), true));
                         else
                             getParseContext().addError("Request for CSV file import from '"+ csvFile.getAbsolutePath() +"' not possible: '" + qName + "' does not have a valid row.");
                     }

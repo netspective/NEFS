@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.44 2004-06-01 04:14:12 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.45 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -301,7 +301,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             Vector targets = new Vector();
             if (target != null)
             {
-                String[] targetNames = TextUtils.split(target, ",", true);
+                String[] targetNames = TextUtils.getInstance().split(target, ",", true);
                 for (int i = 0; i < targetNames.length; i++)
                     targets.add(targetNames[i]);
             }
@@ -338,7 +338,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             logWriter.println("Started build at " + SimpleDateFormat.getDateTimeInstance().format(new Date()) + " in Servlet " + getServletName() + " (Context " + getServletContext().getServletContextName() + ", BuildFile " + buildFile.getAbsolutePath() + ")");
             logWriter.write(ostream.toString());
             if (exceptionThrown != null)
-                logWriter.write(TextUtils.getStackTrace(exceptionThrown));
+                logWriter.write(TextUtils.getInstance().getStackTrace(exceptionThrown));
             logWriter.println("Ended build at " + SimpleDateFormat.getDateTimeInstance().format(new Date()) + " in Servlet " + getServletName() + " (Context " + getServletContext().getServletContextName() + ", BuildFile " + buildFile.getAbsolutePath() + ")");
         }
         catch (IOException e)
@@ -441,7 +441,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         ServletContext servletContext = getServletContext();
         try
         {
-            String[] webAppLocations = TextUtils.split(servletOptions.getSparxResourceLocators(), ",", false);
+            String[] webAppLocations = TextUtils.getInstance().split(servletOptions.getSparxResourceLocators(), ",", false);
             List locators = new ArrayList();
             for (int i = 0; i < webAppLocations.length; i++)
             {
@@ -463,7 +463,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             }
 
             if (locators.size() == 0)
-                System.err.println("Unable to register any web resource locators (" + TextUtils.join(webAppLocations, ", ") + " were not found).");
+                System.err.println("Unable to register any web resource locators (" + TextUtils.getInstance().join(webAppLocations, ", ") + " were not found).");
 
             resourceLocator = new MultipleUriAddressableFileLocators((UriAddressableFileLocator[]) locators.toArray(new UriAddressableFileLocator[locators.size()]), isCacheComponents());
             return resourceLocator;
@@ -683,7 +683,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         if (isSecure())
         {
             String logoutActionReqParamValue = nc.getHttpRequest().getParameter(servletOptions.getLogoutActionReqParamName());
-            if (logoutActionReqParamValue != null && TextUtils.toBoolean(logoutActionReqParamValue))
+            if (logoutActionReqParamValue != null && TextUtils.getInstance().toBoolean(logoutActionReqParamValue))
             {
                 getLoginManager().logout(nc);
                 return true;

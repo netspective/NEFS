@@ -39,26 +39,26 @@
  */
 
 /**
- * $Id: TemplateContentPanel.java,v 1.8 2003-08-31 22:55:00 shahid.shah Exp $
+ * $Id: TemplateContentPanel.java,v 1.9 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.template.TemplateProcessor;
-import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
+import com.netspective.sparx.theme.Theme;
 
 public class TemplateContentPanel extends AbstractPanel implements XmlDataModelSchema.CustomElementAttributeSetter
 {
@@ -108,6 +108,6 @@ public class TemplateContentPanel extends AbstractPanel implements XmlDataModelS
         if(templateVars == null)
             templateVars = new HashMap();
 
-        templateVars.put(TextUtils.xmlTextToJavaIdentifier(attrName, false), attrValue);
+        templateVars.put(TextUtils.getInstance().xmlTextToJavaIdentifier(attrName, false), attrValue);
     }
 }

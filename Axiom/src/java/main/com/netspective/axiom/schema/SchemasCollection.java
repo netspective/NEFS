@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: SchemasCollection.java,v 1.4 2003-10-17 15:56:57 shahid.shah Exp $
+ * $Id: SchemasCollection.java,v 1.5 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -53,9 +53,6 @@ import java.util.TreeMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.axiom.schema.Schemas;
-import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.commons.text.TextUtils;
 
@@ -128,7 +125,7 @@ public class SchemasCollection implements Schemas
             return null;
         }
 
-        String[] parts = TextUtils.split(schemaTableNames, ".", true);
+        String[] parts = TextUtils.getInstance().split(schemaTableNames, ".", true);
         Schema schema = null;
         String tableName = null;
 
@@ -166,7 +163,7 @@ public class SchemasCollection implements Schemas
         Table table = null;
         String columnName = null;
 
-        String[] parts = TextUtils.split(schemaTableColumnNames, ".", true);
+        String[] parts = TextUtils.getInstance().split(schemaTableColumnNames, ".", true);
         switch(parts.length)
         {
             case 1:

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtilsTest.java,v 1.4 2004-06-06 23:50:20 shahid.shah Exp $
+ * $Id: TextUtilsTest.java,v 1.5 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -48,6 +48,8 @@ import junit.framework.TestCase;
 
 public class TextUtilsTest extends TestCase
 {
+    protected TextUtils textUtils = TextUtils.getInstance();
+
     public void testClassUtilities()
     {
 /*
@@ -58,26 +60,26 @@ public class TextUtilsTest extends TestCase
 	    assertEquals("java.lang.String", relativeClassNameJavaStandardClass);
 */
 
-	    String bareClassName = TextUtils.getClassNameWithoutPackage("java.lang.String", '.');
-	    String altBareClassName = TextUtils.getClassNameWithoutPackage("java.lang.String");
+	    String bareClassName = textUtils.getClassNameWithoutPackage("java.lang.String", '.');
+	    String altBareClassName = textUtils.getClassNameWithoutPackage("java.lang.String");
 	    assertEquals("String", bareClassName);
 	    assertEquals(bareClassName, altBareClassName);
 
-	    String bareClassNameModifiedSeparator = TextUtils.getClassNameWithoutPackage("java.lang.String", '/');
+	    String bareClassNameModifiedSeparator = textUtils.getClassNameWithoutPackage("java.lang.String", '/');
 	    assertEquals("java.lang.String", bareClassNameModifiedSeparator);
 
-	    String bareFileName = TextUtils.getClassNameWithoutPackage("/usr/local/src/bite-me-0.0.1.tar.gz", '/');
+	    String bareFileName = textUtils.getClassNameWithoutPackage("/usr/local/src/bite-me-0.0.1.tar.gz", '/');
 	    assertEquals("bite-me-0.0.1.tar.gz", bareFileName);
 
-	    String barePackageName = TextUtils.getPackageName("java.lang.String", '.');
-	    String altBarePackageName = TextUtils.getPackageName("java.lang.String");
+	    String barePackageName = textUtils.getPackageName("java.lang.String", '.');
+	    String altBarePackageName = textUtils.getPackageName("java.lang.String");
 	    assertEquals("java.lang", barePackageName);
 	    assertEquals(barePackageName, altBarePackageName);
 
-	    String barePackageNameModifiedSeparator = TextUtils.getPackageName("java.lang.String", '/');
+	    String barePackageNameModifiedSeparator = textUtils.getPackageName("java.lang.String", '/');
 	    assertNull(barePackageNameModifiedSeparator);
 
-	    String bareDirectoryName = TextUtils.getPackageName("/usr/local/src/what-is-this-0.0.2.tar.gz", '/');
+	    String bareDirectoryName = textUtils.getPackageName("/usr/local/src/what-is-this-0.0.2.tar.gz", '/');
 	    assertEquals("/usr/local/src", bareDirectoryName);
     }
 
@@ -87,7 +89,7 @@ public class TextUtilsTest extends TestCase
 		String testSentenceWithExtraSpaces = " This is  a sample  sentence   ";
 		String testSentenceWithAlternateDelimiterAndExtraDelimiters = ".This.is.a.sample. sentence... ";
 
-		String[] testWordsNoTrim = TextUtils.split(testSentence, " ", false);
+		String[] testWordsNoTrim = textUtils.split(testSentence, " ", false);
 		assertEquals(5, testWordsNoTrim.length);
         assertEquals("This", testWordsNoTrim[0]);
 		assertEquals("is", testWordsNoTrim[1]);
@@ -95,7 +97,7 @@ public class TextUtilsTest extends TestCase
 		assertEquals("sample", testWordsNoTrim[3]);
 		assertEquals("sentence", testWordsNoTrim[4]);
 
-		String[] testWordsNoTrim2 = TextUtils.split(testSentenceWithExtraSpaces, " ", false);
+		String[] testWordsNoTrim2 = textUtils.split(testSentenceWithExtraSpaces, " ", false);
 		assertEquals(5, testWordsNoTrim2.length);
 		assertEquals("This", testWordsNoTrim2[0]);
 		assertEquals("is", testWordsNoTrim2[1]);
@@ -103,7 +105,7 @@ public class TextUtilsTest extends TestCase
 		assertEquals("sample", testWordsNoTrim2[3]);
 		assertEquals("sentence", testWordsNoTrim2[4]);
 
-		String[] testWordsNoTrim3 = TextUtils.split(testSentenceWithExtraSpaces);
+		String[] testWordsNoTrim3 = textUtils.split(testSentenceWithExtraSpaces);
 		assertEquals(5, testWordsNoTrim3.length);
 		assertEquals("This", testWordsNoTrim3[0]);
 		assertEquals("is", testWordsNoTrim3[1]);
@@ -117,7 +119,7 @@ public class TextUtilsTest extends TestCase
 		assertEquals(testWordsNoTrim2[3], testWordsNoTrim3[3]);
 		assertEquals(testWordsNoTrim2[4], testWordsNoTrim3[4]);
 
-		String[] testWordsTrimmed = TextUtils.split(testSentenceWithExtraSpaces, " ", true);
+		String[] testWordsTrimmed = textUtils.split(testSentenceWithExtraSpaces, " ", true);
 		assertEquals(5, testWordsTrimmed.length);
 		assertEquals("This", testWordsTrimmed[0]);
 		assertEquals("is", testWordsTrimmed[1]);
@@ -125,7 +127,7 @@ public class TextUtilsTest extends TestCase
 		assertEquals("sample", testWordsTrimmed[3]);
 		assertEquals("sentence", testWordsTrimmed[4]);
 
-		String[] testWordsAlternateDelimiter = TextUtils.split(testSentenceWithAlternateDelimiterAndExtraDelimiters, ".", false);
+		String[] testWordsAlternateDelimiter = textUtils.split(testSentenceWithAlternateDelimiterAndExtraDelimiters, ".", false);
 		assertEquals(6, testWordsAlternateDelimiter.length);
 		assertEquals("This", testWordsAlternateDelimiter[0]);
 		assertEquals("is", testWordsAlternateDelimiter[1]);
@@ -134,7 +136,7 @@ public class TextUtilsTest extends TestCase
 		assertEquals(" sentence", testWordsAlternateDelimiter[4]);
 		assertEquals(" ", testWordsAlternateDelimiter[5]);
 
-		String[] testWordsAlternateDelimiterTrimmed = TextUtils.split(testSentenceWithAlternateDelimiterAndExtraDelimiters, ".", true);
+		String[] testWordsAlternateDelimiterTrimmed = textUtils.split(testSentenceWithAlternateDelimiterAndExtraDelimiters, ".", true);
 		assertEquals(6, testWordsAlternateDelimiterTrimmed.length);
 		assertEquals("This", testWordsAlternateDelimiterTrimmed[0]);
 		assertEquals("is", testWordsAlternateDelimiterTrimmed[1]);
@@ -148,20 +150,20 @@ public class TextUtilsTest extends TestCase
 	{
 		String testSentence = "This is a sample sentence";
 
-		String[] testWordsErrorOne = TextUtils.split(null, " ", false);
+		String[] testWordsErrorOne = textUtils.split(null, " ", false);
 		assertNull(testWordsErrorOne);
 
-		String[] testWordsErrorTwo = TextUtils.split(null, " ", true);
+		String[] testWordsErrorTwo = textUtils.split(null, " ", true);
 		assertNull(testWordsErrorTwo);
 
-		String[] testWordsErrorThree = TextUtils.split(null, null, false);
+		String[] testWordsErrorThree = textUtils.split(null, null, false);
 		assertNull(testWordsErrorThree);
 
-		String[] testWordsErrorFour = TextUtils.split(null, null, true);
+		String[] testWordsErrorFour = textUtils.split(null, null, true);
 		assertNull(testWordsErrorFour);
 
-		String[] expectedWordsErrorFive = TextUtils.split(testSentence, " ", false);
-		String[] testWordsErrorFive = TextUtils.split(testSentence, null, false);
+		String[] expectedWordsErrorFive = textUtils.split(testSentence, " ", false);
+		String[] testWordsErrorFive = textUtils.split(testSentence, null, false);
 		assertEquals(5, testWordsErrorFive.length);
 		assertEquals(expectedWordsErrorFive.length, testWordsErrorFive.length);
 		assertEquals("This", testWordsErrorFive[0]);
@@ -175,8 +177,8 @@ public class TextUtilsTest extends TestCase
 		assertEquals(expectedWordsErrorFive[3], testWordsErrorFive[3]);
 		assertEquals(expectedWordsErrorFive[4], testWordsErrorFive[4]);
 
-		String[] expectedWordsErrorSix = TextUtils.split(testSentence, " ", true);
-		String[] testWordsErrorSix = TextUtils.split(testSentence, null, true);
+		String[] expectedWordsErrorSix = textUtils.split(testSentence, " ", true);
+		String[] testWordsErrorSix = textUtils.split(testSentence, null, true);
 		assertEquals(5, testWordsErrorSix.length);
 		assertEquals(expectedWordsErrorSix.length, testWordsErrorSix.length);
 		assertEquals("This", testWordsErrorSix[0]);
@@ -197,66 +199,66 @@ public class TextUtilsTest extends TestCase
 		String[] testWordsTwo = { "One ", " ring ", "to ", "rule", "them", " all   " };
 
 		// Basic, trimmed words ...
-		String testSentenceOne = TextUtils.join(testWordsOne, " ");
+		String testSentenceOne = textUtils.join(testWordsOne, " ");
 		assertEquals("This is a sentence", testSentenceOne);
 
-		String testSentenceTwo = TextUtils.join(testWordsOne, null);
+		String testSentenceTwo = textUtils.join(testWordsOne, null);
 		assertEquals("Thisisasentence", testSentenceTwo);
 
-		String testSentenceThree = TextUtils.join(testWordsOne, ".");
+		String testSentenceThree = textUtils.join(testWordsOne, ".");
 		assertEquals("This.is.a.sentence", testSentenceThree);
 
-		String testSentenceFour = TextUtils.join(testWordsOne);
+		String testSentenceFour = textUtils.join(testWordsOne);
 		assertEquals(testSentenceTwo, testSentenceFour);
 
-        String testSentenceFive = TextUtils.join(testWordsOne, " ", false);
+        String testSentenceFive = textUtils.join(testWordsOne, " ", false);
 		assertEquals(testSentenceOne, testSentenceFive);
 
-		String testSentenceSix = TextUtils.join(testWordsOne, " ", true);
+		String testSentenceSix = textUtils.join(testWordsOne, " ", true);
 		assertEquals(testSentenceOne, testSentenceSix);
 
-		String testSentenceSeven = TextUtils.join(testWordsOne, null, false);
+		String testSentenceSeven = textUtils.join(testWordsOne, null, false);
 		assertEquals(testSentenceTwo, testSentenceSeven);
 
-		String testSentenceEight = TextUtils.join(testWordsOne, null, true);
+		String testSentenceEight = textUtils.join(testWordsOne, null, true);
 		assertEquals(testSentenceTwo, testSentenceEight);
 
 		// Slightly more flexible, untrimmed words...
-		String testSentenceTen = TextUtils.join(testWordsTwo, " ");
+		String testSentenceTen = textUtils.join(testWordsTwo, " ");
 		assertEquals("One   ring  to  rule them  all   ", testSentenceTen);
 
-		String testSentenceEleven = TextUtils.join(testWordsTwo, null);
+		String testSentenceEleven = textUtils.join(testWordsTwo, null);
 		assertEquals("One  ring to rulethem all   ", testSentenceEleven);
 
-		String testSentenceTwelve = TextUtils.join(testWordsTwo, ".");
+		String testSentenceTwelve = textUtils.join(testWordsTwo, ".");
 		assertEquals("One . ring .to .rule.them. all   ", testSentenceTwelve);
 
-		String testSentenceThirteen = TextUtils.join(testWordsTwo);
+		String testSentenceThirteen = textUtils.join(testWordsTwo);
 		assertEquals(testSentenceEleven, testSentenceThirteen);
 
-		String testSentenceFourteen = TextUtils.join(testWordsTwo, " ", false);
+		String testSentenceFourteen = textUtils.join(testWordsTwo, " ", false);
 		assertEquals(testSentenceTen, testSentenceFourteen);
 
-		String testSentenceFifteen = TextUtils.join(testWordsTwo, " ", true);
+		String testSentenceFifteen = textUtils.join(testWordsTwo, " ", true);
 		assertEquals("One ring to rule them all", testSentenceFifteen);
 
 		//TODO: This test is not working properly.  The behavior is similar to the one for testSentenceSeventeen
-		String testSentenceSixteen = TextUtils.join(testWordsTwo, null, false);
+		String testSentenceSixteen = textUtils.join(testWordsTwo, null, false);
 //		assertEquals(testSentenceEleven, testSentenceSixteen);
 
-		String testSentenceSeventeen = TextUtils.join(testWordsTwo, null, true);
+		String testSentenceSeventeen = textUtils.join(testWordsTwo, null, true);
 		assertEquals("Oneringtorulethemall", testSentenceSeventeen);
 	}
 
 	public void testStringJoinErrors()
 	{
-		String testSentenceOne = TextUtils.join(null, null);
+		String testSentenceOne = textUtils.join(null, null);
 		assertNull(testSentenceOne);
 
-		String testSentenceTwo = TextUtils.join(null, " ");
+		String testSentenceTwo = textUtils.join(null, " ");
 		assertNull(testSentenceTwo);
 
-		String testSentenceThree = TextUtils.join(null);
+		String testSentenceThree = textUtils.join(null);
 		assertNull(testSentenceThree);
 	}
 
@@ -265,19 +267,19 @@ public class TextUtilsTest extends TestCase
 		String testSentenceOne = "One ring to rule them all";
 		String testSentnceTwo = "And somehow do something to them";
 
-		String rule = TextUtils.replaceTextValues(testSentenceOne, "rule", "rule");
+		String rule = textUtils.replaceTextValues(testSentenceOne, "rule", "rule");
 		assertEquals(testSentenceOne, rule);
 
-		String find = TextUtils.replaceTextValues(testSentenceOne, "rule", "find");
+		String find = textUtils.replaceTextValues(testSentenceOne, "rule", "find");
 		assertEquals("One ring to find them all", find);
 
-		String bring = TextUtils.replaceTextValues(testSentenceOne, "rule", "bring");
+		String bring = textUtils.replaceTextValues(testSentenceOne, "rule", "bring");
 		assertEquals("One ring to bring them all", bring);
 
-		String bind = TextUtils.replaceTextValues(testSentnceTwo, "somehow", "in the darkness");
+		String bind = textUtils.replaceTextValues(testSentnceTwo, "somehow", "in the darkness");
 		assertEquals("And in the darkness do something to them", bind);
 
-		bind = TextUtils.replaceTextValues(bind, "do something to", "bind");
+		bind = textUtils.replaceTextValues(bind, "do something to", "bind");
 		assertEquals("And in the darkness bind them", bind);
 	}
 
@@ -285,24 +287,24 @@ public class TextUtilsTest extends TestCase
 	{
 		String original = "Testing Code since 1990 - Weird Phrases Magazine";
 
-		String replacedOne = TextUtils.replaceTextValues(original, null, "test");
+		String replacedOne = textUtils.replaceTextValues(original, null, "test");
 		assertEquals(original, replacedOne);
 
-		String replacedTwo = TextUtils.replaceTextValues(original, "since", null);
+		String replacedTwo = textUtils.replaceTextValues(original, "since", null);
 		assertEquals(original, replacedTwo);
 	}
 
 	public void testStringMiscellaneousUtilities()
 	{
-		assertTrue(TextUtils.toBoolean("true"));
-		assertTrue(TextUtils.toBoolean("YeS"));
-		assertTrue(TextUtils.toBoolean("1"));
-		assertTrue(TextUtils.toBoolean("oN"));
+		assertTrue(textUtils.toBoolean("true"));
+		assertTrue(textUtils.toBoolean("YeS"));
+		assertTrue(textUtils.toBoolean("1"));
+		assertTrue(textUtils.toBoolean("oN"));
 
-		assertFalse(TextUtils.toBoolean("faLse"));
-		assertFalse(TextUtils.toBoolean("NO"));
-		assertFalse(TextUtils.toBoolean("0"));
-		assertFalse(TextUtils.toBoolean("oFf"));
+		assertFalse(textUtils.toBoolean("faLse"));
+		assertFalse(textUtils.toBoolean("NO"));
+		assertFalse(textUtils.toBoolean("0"));
+		assertFalse(textUtils.toBoolean("oFf"));
 	}
 
 	public void testStringIdentifierConversion()
@@ -310,20 +312,20 @@ public class TextUtilsTest extends TestCase
 		// SQL to Identifier
         String sqlIdentifierOne = "disaster_recovery_items";
 
-		String sqlTextOne = TextUtils.sqlIdentifierToText(sqlIdentifierOne, false);
+		String sqlTextOne = textUtils.sqlIdentifierToText(sqlIdentifierOne, false);
 		assertEquals("Disaster recovery items", sqlTextOne);
 
-		String sqlTextTwo = TextUtils.sqlIdentifierToText(sqlIdentifierOne, true);
+		String sqlTextTwo = textUtils.sqlIdentifierToText(sqlIdentifierOne, true);
 		assertEquals("Disaster Recovery Items", sqlTextTwo);
 
 		// Java to XML Node Name
 		String javaIdentifierOne = "disasterRecoveryItemList";
 		String javaIdentifierTwo = "disaster_recovery_item_list";
 
-		String xmlIdentifierOne = TextUtils.javaIdentifierToXmlNodeName(javaIdentifierOne);
+		String xmlIdentifierOne = textUtils.javaIdentifierToXmlNodeName(javaIdentifierOne);
 		assertEquals("disaster-Recovery-Item-List", xmlIdentifierOne);
 
-		String xmlIdentifierTwo = TextUtils.javaIdentifierToXmlNodeName(javaIdentifierTwo);
+		String xmlIdentifierTwo = textUtils.javaIdentifierToXmlNodeName(javaIdentifierTwo);
 		assertEquals("disaster-_recovery-_item-_list", xmlIdentifierTwo);
 
 		// XML to Java Constant
@@ -331,73 +333,73 @@ public class TextUtilsTest extends TestCase
 		String xmlTagTwo = ":makes_jack:a_dull.boy";
 		String xmlTagThree = "04makes_jack_dull";
 
-		String javaConstantOne = TextUtils.xmlTextToJavaConstant(xmlTagOne);
+		String javaConstantOne = textUtils.xmlTextToJavaConstant(xmlTagOne);
 		assertEquals("ALL_WORK_AND_NO_PLAY", javaConstantOne);
 
-		String javaConstantTwo = TextUtils.xmlTextToJavaConstant(xmlTagTwo);
+		String javaConstantTwo = textUtils.xmlTextToJavaConstant(xmlTagTwo);
 		assertEquals("_MAKES_JACK_A_DULL_BOY", javaConstantTwo);
 
-		String javaConstantThree = TextUtils.xmlTextToJavaConstantTrimmed(xmlTagOne);
+		String javaConstantThree = textUtils.xmlTextToJavaConstantTrimmed(xmlTagOne);
 		assertEquals(javaConstantOne, javaConstantThree);
 
-		String javaConstantFour = TextUtils.xmlTextToJavaConstantTrimmed(xmlTagTwo);
+		String javaConstantFour = textUtils.xmlTextToJavaConstantTrimmed(xmlTagTwo);
 		assertEquals("MAKES_JACK_A_DULL_BOY", javaConstantFour);
 
-		String javaConstantFive = TextUtils.xmlTextToJavaIdentifier(xmlTagOne, false);
+		String javaConstantFive = textUtils.xmlTextToJavaIdentifier(xmlTagOne, false);
 		assertEquals("allWorkAndNoPlay", javaConstantFive);
 
-		String javaConstantSix = TextUtils.xmlTextToJavaIdentifier(xmlTagOne, true);
+		String javaConstantSix = textUtils.xmlTextToJavaIdentifier(xmlTagOne, true);
 		assertEquals("AllWorkAndNoPlay", javaConstantSix);
 
-		String javaConstantSeven = TextUtils.xmlTextToJavaIdentifier(xmlTagTwo, false);
+		String javaConstantSeven = textUtils.xmlTextToJavaIdentifier(xmlTagTwo, false);
 		assertEquals("_makesJackADull_boy", javaConstantSeven);
 
-		String javaConstantEight = TextUtils.xmlTextToJavaIdentifier(xmlTagTwo, true);
+		String javaConstantEight = textUtils.xmlTextToJavaIdentifier(xmlTagTwo, true);
 		assertEquals(javaConstantSeven, javaConstantEight);
 
-		String javaConstantNine = TextUtils.xmlTextToJavaIdentifier(xmlTagThree, true);
+		String javaConstantNine = textUtils.xmlTextToJavaIdentifier(xmlTagThree, true);
 		assertEquals("_04makesJackDull", javaConstantNine);
 
 		// XML to Node Name
 		String xmlTextOne = "Jack_Be_Nimble";
 		String xmlTextTwo = "_jack_be_:quick";
 
-		String xmlNodeOne = TextUtils.xmlTextToNodeName(xmlTextOne);
+		String xmlNodeOne = textUtils.xmlTextToNodeName(xmlTextOne);
 		assertEquals("jack-be-nimble", xmlNodeOne);
 
-		String xmlNodeTwo = TextUtils.xmlTextToNodeName(xmlTextTwo);
+		String xmlNodeTwo = textUtils.xmlTextToNodeName(xmlTextTwo);
 		assertEquals("-jack-be--quick", xmlNodeTwo);
 
 		// Table Name Case Conversion
 		String tableNameOne = "Jacks_CANdlEStick_manufacturers";
 		String tableNameTwo = "CandleSTICK_LOCAtion";
 
-		String tableOne = TextUtils.fixupTableNameCase(tableNameOne);
+		String tableOne = textUtils.fixupTableNameCase(tableNameOne);
 		assertEquals("Jacks_Candlestick_Manufacturers", tableOne);
 
-		String tableTwo = TextUtils.fixupTableNameCase(tableNameTwo);
+		String tableTwo = textUtils.fixupTableNameCase(tableNameTwo);
 		assertEquals("Candlestick_Location", tableTwo);
 	}
 
 	public void testStringIdentifierConversionErrors()
 	{
 		// SQL -> Java
-		assertNull(TextUtils.sqlIdentifierToText(null, false));
-		assertNull(TextUtils.sqlIdentifierToText(null, true));
+		assertNull(textUtils.sqlIdentifierToText(null, false));
+		assertNull(textUtils.sqlIdentifierToText(null, true));
 
 		// Java -> XML
-		assertNull(TextUtils.javaIdentifierToXmlNodeName(null));
+		assertNull(textUtils.javaIdentifierToXmlNodeName(null));
 
 		// XML -> Java
-		assertNull(TextUtils.xmlTextToJavaConstant(null));
-		assertNull(TextUtils.xmlTextToJavaConstantTrimmed(null));
-		assertNull(TextUtils.xmlTextToJavaIdentifier(null, false));
-		assertNull(TextUtils.xmlTextToJavaIdentifier(null, true));
+		assertNull(textUtils.xmlTextToJavaConstant(null));
+		assertNull(textUtils.xmlTextToJavaConstantTrimmed(null));
+		assertNull(textUtils.xmlTextToJavaIdentifier(null, false));
+		assertNull(textUtils.xmlTextToJavaIdentifier(null, true));
 
 		// XML -> Node Name
-		assertNull(TextUtils.xmlTextToNodeName(null));
+		assertNull(textUtils.xmlTextToNodeName(null));
 
 		// Table Name
-		assertNull(TextUtils.fixupTableNameCase(null));
+		assertNull(textUtils.fixupTableNameCase(null));
 	}
 }

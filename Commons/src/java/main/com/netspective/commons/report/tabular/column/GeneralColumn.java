@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.14 2004-03-23 19:50:42 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.15 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -61,25 +61,25 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
+import com.netspective.commons.command.Command;
+import com.netspective.commons.command.CommandNotFoundException;
+import com.netspective.commons.command.Commands;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportColumnConditionalApplyFlag;
 import com.netspective.commons.report.tabular.TabularReportColumnConditionalState;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
-import com.netspective.commons.report.tabular.calc.TabularReportCalcs;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.TabularReportValueContext;
+import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
+import com.netspective.commons.report.tabular.calc.TabularReportCalcs;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.RedirectValueSource;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateCatalog;
-import com.netspective.commons.command.Command;
-import com.netspective.commons.command.Commands;
-import com.netspective.commons.command.CommandNotFoundException;
-import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
 
 public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 {
@@ -305,7 +305,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         }
 
         if(this.flags.flagIsSet(Flags.ESCAPE_HTML))
-            data = TextUtils.escapeHTML(data);
+            data = TextUtils.getInstance().escapeHTML(data);
 
         return data;
     }

@@ -39,23 +39,23 @@
  */
 
 /**
- * $Id: QueryResultSet.java,v 1.6 2003-11-06 00:04:01 aye.thu Exp $
+ * $Id: QueryResultSet.java,v 1.7 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Types;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportColumns;
-import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.column.DecimalColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.source.StaticValueSource;
 
@@ -185,7 +185,7 @@ public class QueryResultSet
             }
 
             column.setColIndex(c - 1);
-            column.setHeading(new StaticValueSource(TextUtils.sqlIdentifierToText(rsmd.getColumnLabel(c), true)));
+            column.setHeading(new StaticValueSource(TextUtils.getInstance().sqlIdentifierToText(rsmd.getColumnLabel(c), true)));
             column.setDataType(dataType);
             column.setWidth(rsmd.getColumnDisplaySize(c));
 

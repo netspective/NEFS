@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: UnsupportedEnumeratedAttributeValueException.java,v 1.1 2003-04-01 01:45:33 shahid.shah Exp $
+ * $Id: UnsupportedEnumeratedAttributeValueException.java,v 1.2 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm.exception;
 
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.text.TextUtils;
 
 public class UnsupportedEnumeratedAttributeValueException extends DataModelSyntaxException
 {
@@ -61,7 +61,7 @@ public class UnsupportedEnumeratedAttributeValueException extends DataModelSynta
 
     public UnsupportedEnumeratedAttributeValueException(XdmParseContext pc, XdmEnumeratedAttribute ea, Object element, String attrName, String attrValue)
     {
-        super(pc, "Class " + element.getClass().getName() + " does not support attribute value '"+ attrValue +"' for attribute '"+ attrName +"'  ["+ ea.getClass().getName() +"] ("+ pc.getLocator().getSystemId() +" line "+ pc.getLocator().getLineNumber() + "). Valid values are " + TextUtils.join(ea.getValues(), ", "));
+        super(pc, "Class " + element.getClass().getName() + " does not support attribute value '"+ attrValue +"' for attribute '"+ attrName +"'  ["+ ea.getClass().getName() +"] ("+ pc.getLocator().getSystemId() +" line "+ pc.getLocator().getLineNumber() + "). Valid values are " + TextUtils.getInstance().join(ea.getValues(), ", "));
         this.ea = ea;
         this.attrName = attrName;
         this.attrValue = attrValue;

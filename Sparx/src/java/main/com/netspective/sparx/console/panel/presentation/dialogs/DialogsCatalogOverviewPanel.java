@@ -39,23 +39,23 @@
  */
 
 /**
- * $Id: DialogsCatalogOverviewPanel.java,v 1.8 2003-09-15 03:57:45 aye.thu Exp $
+ * $Id: DialogsCatalogOverviewPanel.java,v 1.9 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
 
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.column.NumericColumn;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.form.DialogFlags;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.form.DialogFlags;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.NumericColumn;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.source.RedirectValueSource;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.text.TextUtils;
 
 public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
 {
@@ -151,7 +151,7 @@ public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
                 case 6:
                     return activeRowDialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS) ?
                             "ALL" :
-                            (activeRowDialog.getRetainParams() != null ? TextUtils.join(activeRowDialog.getRetainParams(), ", ") : null);
+                            (activeRowDialog.getRetainParams() != null ? TextUtils.getInstance().join(activeRowDialog.getRetainParams(), ", ") : null);
 
                 case 7:
                     return activeRowDialog.getDialogFlags().getFlagsText();

@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: EntityRedirectorPage.java,v 1.2 2004-03-05 21:18:10 shahid.shah Exp $
+ * $Id: EntityRedirectorPage.java,v 1.3 2004-08-09 22:15:58 shahid.shah Exp $
  */
 
 package app.navigate.entity;
 
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -55,18 +55,18 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationPath;
-import com.netspective.sparx.value.HttpServletValueContext;
-import com.netspective.sparx.Project;
 import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.schema.table.type.EnumerationTable;
-import com.netspective.axiom.schema.table.type.EnumerationTableRows;
-import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPath;
+import com.netspective.sparx.navigate.NavigationTree;
+import com.netspective.sparx.value.HttpServletValueContext;
 
 import app.navigate.AppNavigationPage;
 
@@ -197,7 +197,7 @@ public abstract class EntityRedirectorPage extends AppNavigationPage
 
         public void setRetainParams(String retainParams)
         {
-            this.retainParams = TextUtils.split(retainParams, ",", true);
+            this.retainParams = TextUtils.getInstance().split(retainParams, ",", true);
         }
 
         /**
@@ -255,7 +255,7 @@ public abstract class EntityRedirectorPage extends AppNavigationPage
     {
         if(subtypeInfo.getSchemaEnum() != null)
         {
-            String[] params = TextUtils.split(subtypeInfo.getSchemaEnum(), ",", true);
+            String[] params = TextUtils.getInstance().split(subtypeInfo.getSchemaEnum(), ",", true);
             if(params.length != 2)
                 log.error("the schema-enum attribute in <sub-type> of entity redirector requires 2 params: schema.enum-table,enum-id-or-caption");
             else

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StaticField.java,v 1.1 2003-05-15 15:51:17 shahid.shah Exp $
+ * $Id: StaticField.java,v 1.2 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -59,9 +59,8 @@ package com.netspective.sparx.form.field.type;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.sparx.form.DialogContext;
 
 public class StaticField extends TextField
 {
@@ -76,7 +75,7 @@ public class StaticField extends TextField
         if(value == null)
             value = "";
         else
-      		value = TextUtils.escapeHTML(value);
+      		value = TextUtils.getInstance().escapeHTML(value);
 
         writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value=\"" + value + "\"><span id='" + getQualifiedName() + "'>" + value + "</span>");
     }

@@ -39,24 +39,24 @@
  */
 
 /**
- * $Id: AbstractPanel.java,v 1.6 2004-01-24 20:36:46 aye.thu Exp $
+ * $Id: AbstractPanel.java,v 1.7 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.io.StringReader;
+import java.io.Writer;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.value.HttpServletValueContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.Template;
-import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.value.HttpServletValueContext;
 
 /**
  * AbstractPanel class is the base class of all panel classes that need to implement the HtmlPanel interface. This class
@@ -326,7 +326,7 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
         writer.write("      <br>Java Class Instantiated: <b><code>"+ nc.getClassSourceHtml(cls, false) + "</code></b></td></tr>\n");
         writer.write("      </td></tr>\n");
         writer.write("  <tr id='view-src-"+ objectId +"-content' style='display:none'><td class='content'>\n");
-        HtmlSyntaxHighlightPanel.emitHtml("xml", new StringReader(TextUtils.getUnindentedText(isl.getSourceText())), writer);
+        HtmlSyntaxHighlightPanel.emitHtml("xml", new StringReader(TextUtils.getInstance().getUnindentedText(isl.getSourceText())), writer);
         writer.write("  </td></tr>\n");
         writer.write("</table>\n");
     }

@@ -39,16 +39,16 @@
  */
 
 /**
- * $Id: BooleanColumn.java,v 1.2 2003-10-21 15:02:05 shahid.shah Exp $
+ * $Id: BooleanColumn.java,v 1.3 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
 
-import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.ColumnValue;
+import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.column.BasicColumn;
-import com.netspective.commons.value.exception.ValueException;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.exception.ValueException;
 
 public class BooleanColumn extends BasicColumn
 {
@@ -73,7 +73,7 @@ public class BooleanColumn extends BasicColumn
 
         public void setTextValue(String value) throws ValueException
         {
-            setValue(new Boolean(TextUtils.toBoolean(value)));
+            setValue(new Boolean(TextUtils.getInstance().toBoolean(value)));
         }
     }
 

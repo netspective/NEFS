@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.25 2004-08-09 20:28:52 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.26 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -311,7 +311,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public String getXmlNodeName()
     {
-        return xmlNodeName == null ? TextUtils.xmlTextToNodeName(getName()) : xmlNodeName;
+        return xmlNodeName == null ? TextUtils.getInstance().xmlTextToNodeName(getName()) : xmlNodeName;
     }
 
     public void setXmlNodeName(String value)
@@ -331,7 +331,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public String getCaption()
     {
-        return caption == null ? TextUtils.sqlIdentifierToText(getName(), true) : caption;
+        return caption == null ? TextUtils.getInstance().sqlIdentifierToText(getName(), true) : caption;
     }
 
     public void setCaption(String caption)

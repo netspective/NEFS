@@ -39,23 +39,23 @@
  */
 
 /**
- * $Id: SchemaTablesInheritancePanel.java,v 1.4 2003-09-15 03:57:45 aye.thu Exp $
+ * $Id: SchemaTablesInheritancePanel.java,v 1.5 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
 
 import java.util.List;
 
+import com.netspective.axiom.schema.Table;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.axiom.schema.Table;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 
 public class SchemaTablesInheritancePanel extends SchemaTablesPanel
 {
@@ -113,7 +113,7 @@ public class SchemaTablesInheritancePanel extends SchemaTablesPanel
                     {
                         List tableTypes = activeTable.getTableTypes();
                         if(tableTypes.size() > 0)
-                            return TextUtils.join((String[]) tableTypes.toArray(new String[tableTypes.size()]), ", ");
+                            return TextUtils.getInstance().join((String[]) tableTypes.toArray(new String[tableTypes.size()]), ", ");
                         else
                             return null;
                     }

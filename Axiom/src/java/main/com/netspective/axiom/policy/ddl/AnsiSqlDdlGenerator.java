@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlGenerator.java,v 1.3 2004-08-09 20:28:52 shahid.shah Exp $
+ * $Id: AnsiSqlDdlGenerator.java,v 1.4 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -361,6 +361,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         if(table.getColumns().size() == 0)
             return false;
 
+        TextUtils textUtils = TextUtils.getInstance();
         Writer writer = gc.getWriter();
         SqlDdlFormats ddlFormats = gc.getSqlDdlFormats();
 
@@ -424,7 +425,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                     writer.write(",");
 
                 writer.write(" /* ");
-                writer.write(TextUtils.getRelativeClassName(BasicColumn.class, column.getClass()));
+                writer.write(textUtils.getRelativeClassName(BasicColumn.class, column.getClass()));
                 writer.write(" */");
 
                 writer.write("\n");

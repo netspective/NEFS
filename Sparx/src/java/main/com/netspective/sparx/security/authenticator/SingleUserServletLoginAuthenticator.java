@@ -39,29 +39,29 @@
  */
 
 /**
- * $Id: SingleUserServletLoginAuthenticator.java,v 1.6 2004-07-21 18:04:28 shahid.shah Exp $
+ * $Id: SingleUserServletLoginAuthenticator.java,v 1.7 2004-08-09 22:15:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
 
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.sparx.security.LoginDialog;
-import com.netspective.sparx.security.LoginDialogContext;
-import com.netspective.sparx.security.HttpLoginManager;
-
 import javax.servlet.ServletConfig;
 
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.cli.Options;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.LoginDialog;
+import com.netspective.sparx.security.LoginDialogContext;
 
 /**
  * Implements a basic login authenticator that assumes a single user has access to the entire servlet and the user
@@ -165,7 +165,7 @@ public class SingleUserServletLoginAuthenticator extends AbstractLoginAuthentica
         CommandLine result = null;
         try
         {
-            result = parser.parse(authenticatorOptions, optionsText != null ? TextUtils.split(optionsText) : new String[0]);
+            result = parser.parse(authenticatorOptions, optionsText != null ? TextUtils.getInstance().split(optionsText) : new String[0]);
             if(result.hasOption('?'))
                 printHelp(authenticatorOptions);
         }
@@ -219,7 +219,7 @@ public class SingleUserServletLoginAuthenticator extends AbstractLoginAuthentica
             }
 
             if(commandLine.hasOption('s'))
-                System.out.println(TextUtils.getClassNameWithoutPackage(getClass().getName()) + " encrypted password is " + loginPasswordEncrypted);
+                System.out.println(TextUtils.getInstance().getClassNameWithoutPackage(getClass().getName()) + " encrypted password is " + loginPasswordEncrypted);
 
             if(! loginUserId.equals(loginDialogContext.getUserIdInput()))
                 return false;

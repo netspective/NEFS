@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogContextBeanMemberInfo.java,v 1.1 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: DialogContextBeanMemberInfo.java,v 1.2 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -96,7 +96,7 @@ public class DialogContextBeanMemberInfo
     public void setFieldName(String fieldName)
     {
         this.fieldName = fieldName;
-        this.memberName = TextUtils.xmlTextToJavaIdentifier(fieldName, true);
+        this.memberName = TextUtils.getInstance().xmlTextToJavaIdentifier(fieldName, true);
     }
 
     public void addImportModule(String module)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EnumerationTableRow.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: EnumerationTableRow.java,v 1.2 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table.type;
@@ -91,7 +91,7 @@ public class EnumerationTableRow extends BasicRow
 
     public String getJavaConstant()
     {
-        return TextUtils.xmlTextToJavaConstantTrimmed(javaConstant != null ? javaConstant : getCaption());
+        return TextUtils.getInstance().xmlTextToJavaConstantTrimmed(javaConstant != null ? javaConstant : getCaption());
     }
 
     public void setId(int id)

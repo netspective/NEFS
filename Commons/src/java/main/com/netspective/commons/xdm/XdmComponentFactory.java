@@ -39,29 +39,28 @@
  */
 
 /**
- * $Id: XdmComponentFactory.java,v 1.9 2003-10-20 15:43:21 shahid.shah Exp $
+ * $Id: XdmComponentFactory.java,v 1.10 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Collections;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipEntry;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.apache.commons.discovery.tools.DiscoverClass;
 
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xdm.XdmComponent;
-import com.netspective.commons.io.Resource;
 import com.netspective.commons.io.FileFind;
+import com.netspective.commons.io.Resource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.exception.DataModelException;
 
 public class XdmComponentFactory
 {
@@ -306,7 +305,7 @@ public class XdmComponentFactory
                 return get(componentClass, ffResults.getFoundFile(), flags);
         }
         else
-            throw new FileNotFoundException("File '"+ fileName +"' not found in classpath. Searched: " + TextUtils.join(ffResults.getSearchPaths(), ", "));
+            throw new FileNotFoundException("File '"+ fileName +"' not found in classpath. Searched: " + TextUtils.getInstance().join(ffResults.getSearchPaths(), ", "));
     }
 
 }

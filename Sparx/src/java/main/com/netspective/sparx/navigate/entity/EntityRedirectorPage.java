@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EntityRedirectorPage.java,v 1.1 2004-08-09 05:44:07 shahid.shah Exp $
+ * $Id: EntityRedirectorPage.java,v 1.2 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.entity;
@@ -199,7 +199,7 @@ public class EntityRedirectorPage extends NavigationPage
 
         public void setRetainParams(String retainParams)
         {
-            this.retainParams = TextUtils.split(retainParams, ",", true);
+            this.retainParams = TextUtils.getInstance().split(retainParams, ",", true);
         }
 
         /**
@@ -358,7 +358,7 @@ public class EntityRedirectorPage extends NavigationPage
     {
         if(subtypeInfo.getSchemaEnum() != null)
         {
-            String[] params = TextUtils.split(subtypeInfo.getSchemaEnum(), ",", true);
+            String[] params = TextUtils.getInstance().split(subtypeInfo.getSchemaEnum(), ",", true);
             if(params.length != 2)
                 log.error("the schema-enum attribute in <sub-type> of entity redirector requires 2 params: schema.enum-table,enum-id-or-caption");
             else

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.13 2004-06-23 20:44:52 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.14 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -133,7 +133,7 @@ public abstract class AbstractValue implements Value
             return ((Boolean) result).booleanValue();
 
         if (result != null)
-            return TextUtils.toBoolean(result.toString());
+            return TextUtils.getInstance().toBoolean(result.toString());
 
         return false;
     }

@@ -39,36 +39,34 @@
  */
 
 /**
- * $Id: QueryDbmsSqlTextsPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: QueryDbmsSqlTextsPanel.java,v 1.5 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Iterator;
-import java.io.StringReader;
+import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
-import com.netspective.sparx.console.panel.data.schema.SchemaTablesPanel;
-import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.sql.DbmsSqlText;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 
 public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
 {
@@ -176,7 +174,7 @@ public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
 
                 case 1:
                     DbmsSqlText sqlText = (DbmsSqlText) ((Object[]) rows.get(activeRow))[1];
-                    String sql = TextUtils.getUnindentedText(sqlText.getSql(reportValueContext));
+                    String sql = TextUtils.getInstance().getUnindentedText(sqlText.getSql(reportValueContext));
                     Reader reader = new StringReader(sql);
                     Writer writer = new StringWriter();
                     try

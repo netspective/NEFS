@@ -39,17 +39,17 @@
  */
 
 /**
- * $Id: EnumerationIdRefColumn.java,v 1.4 2003-08-28 01:17:33 shahid.shah Exp $
+ * $Id: EnumerationIdRefColumn.java,v 1.5 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
 
-import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.ColumnValue;
-import com.netspective.axiom.schema.table.type.EnumerationTable;
-import com.netspective.axiom.schema.table.type.EnumerationTableRows;
-import com.netspective.axiom.schema.table.type.EnumerationTableRow;
+import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.column.ColumnValueException;
+import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.commons.text.TextUtils;
 
 public class EnumerationIdRefColumn extends IntegerColumn
@@ -61,7 +61,7 @@ public class EnumerationIdRefColumn extends IntegerColumn
 
         public InvalidEnumerationValueException(EnumerationTable table, String value)
         {
-            super("Column '"+ getQualifiedName() +"' value is invalid -- enumeration '"+ table.getName() +"' does not contain an id, caption, or abbrevation called ["+ value +"]. Available: " + TextUtils.join(table.getEnums().getValidValues(), ", "));
+            super("Column '"+ getQualifiedName() +"' value is invalid -- enumeration '"+ table.getName() +"' does not contain an id, caption, or abbrevation called ["+ value +"]. Available: " + TextUtils.getInstance().join(table.getEnums().getValidValues(), ", "));
             this.table = table;
             this.value = value;
         }

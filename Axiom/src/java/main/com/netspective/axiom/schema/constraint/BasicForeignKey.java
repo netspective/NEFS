@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicForeignKey.java,v 1.6 2004-07-25 21:11:30 shahid.shah Exp $
+ * $Id: BasicForeignKey.java,v 1.7 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.constraint;
@@ -267,7 +267,7 @@ public class BasicForeignKey implements ForeignKey
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        sb.append(TextUtils.getRelativeClassName(BasicForeignKey.class, getClass()));
+        sb.append(TextUtils.getInstance().getRelativeClassName(BasicForeignKey.class, getClass()));
         sb.append(" ");
 
         Columns srcCols = getSourceColumns();

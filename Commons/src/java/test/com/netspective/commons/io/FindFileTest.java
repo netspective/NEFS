@@ -39,15 +39,17 @@
  */
 
 /**
- * $Id: FindFileTest.java,v 1.3 2003-03-25 17:50:50 shahbaz.javeed Exp $
+ * $Id: FindFileTest.java,v 1.4 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
 
-import java.io.IOException;
 import java.io.File;
-import junit.framework.TestCase;
+import java.io.IOException;
+
 import com.netspective.commons.text.TextUtils;
+
+import junit.framework.TestCase;
 
 public class FindFileTest extends TestCase
 {
@@ -63,7 +65,7 @@ public class FindFileTest extends TestCase
         assertEquals(searchFileName, ffrDir.getSearchFileName());
 
 		// Verify that the search path is identical to the classpath...
-		String[] classPath = TextUtils.split(System.getProperty("java.class.path"), File.pathSeparator, true);
+		String[] classPath = TextUtils.getInstance().split(System.getProperty("java.class.path"), File.pathSeparator, true);
         String[] searchPath = ffrDir.getSearchPaths();
 
 		for (int i = 0; i < searchPath.length; i ++)

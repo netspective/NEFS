@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BooleanField.java,v 1.7 2004-02-16 19:08:24 aye.thu Exp $
+ * $Id: BooleanField.java,v 1.8 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -59,14 +59,14 @@ package com.netspective.sparx.form.field.type;
 import java.io.IOException;
 import java.io.Writer;
 
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.exception.ValueException;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValue;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.exception.ValueException;
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
-import com.netspective.commons.text.TextUtils;
 
 /**
  * Custom field class for handling boolean data entry. There are several input styles available for
@@ -193,7 +193,7 @@ public class BooleanField extends DialogField
                     }
                     else
                     {
-                        setValue(new Integer(TextUtils.toBoolean(value) ? 1 : 0));
+                        setValue(new Integer(TextUtils.getInstance().toBoolean(value) ? 1 : 0));
                     }
                 }
             }

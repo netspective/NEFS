@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: InputSourceLocator.java,v 1.3 2003-12-10 23:36:38 shahid.shah Exp $
+ * $Id: InputSourceLocator.java,v 1.4 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
@@ -104,7 +104,7 @@ public class InputSourceLocator
 
     public String getSourceText() throws IOException
     {
-        return TextUtils.getTextStreamLines(inputSourceTracker.openStream(), startLineNumber, endLineNumber);
+        return TextUtils.getInstance().getTextStreamLines(inputSourceTracker.openStream(), startLineNumber, endLineNumber);
     }
 
     public String toString()

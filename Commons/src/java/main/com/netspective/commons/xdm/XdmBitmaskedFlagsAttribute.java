@@ -39,24 +39,23 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.21 2003-11-13 16:41:57 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.22 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.io.Serializable;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.exception.UnsupportedBitmaskedFlagsAttributeValueException;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.text.TextUtils;
 
 /**
  * Helper class for attributes that can take multiple flags from a set of a flags.
@@ -134,7 +133,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
 
         public String getAliasDescription(String aliasComment)
         {
-            return TextUtils.replaceTextValues(aliasDescription, ALIAS_COMMENT_REPL_EXPR, aliasComment);
+            return TextUtils.getInstance().replaceTextValues(aliasDescription, ALIAS_COMMENT_REPL_EXPR, aliasComment);
         }
 
         public void setAliasDescription(String aliasDescription)
@@ -199,8 +198,8 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
                     throw new RuntimeException("Flags "+ i +" in " + this.getClass().getName() + " is null");
 
                 String flagName = flagDefn.getName();
-                String javaId = TextUtils.xmlTextToJavaIdentifier(flagName.toLowerCase(), false);
-                String xmlNodeName = TextUtils.javaIdentifierToXmlNodeName(javaId).toLowerCase();
+                String javaId = TextUtils.getInstance().xmlTextToJavaIdentifier(flagName.toLowerCase(), false);
+                String xmlNodeName = TextUtils.getInstance().javaIdentifierToXmlNodeName(javaId).toLowerCase();
 
                 flagDefnsByName.put(flagName, flagDefns);
                 flagDefnsByName.put(javaId, flagDefn);
@@ -256,7 +255,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
             }
         }
 
-        String[] flagNames = TextUtils.split(value, flagDelimiter, true);
+        String[] flagNames = TextUtils.getInstance().split(value, flagDelimiter, true);
         FlagDefn[] flagDefns = getFlagsDefns();
         for(int i = 0; i < flagNames.length; i++)
         {

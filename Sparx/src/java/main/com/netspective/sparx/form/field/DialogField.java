@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.57 2004-08-03 20:06:21 aye.thu Exp $
+ * $Id: DialogField.java,v 1.58 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -83,17 +83,17 @@ import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.sparx.form.ClientDataEncryption;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogValidationContext;
-import com.netspective.sparx.form.ClientDataEncryption;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
+import com.netspective.sparx.form.field.conditional.DialogFieldConditionalClear;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
-import com.netspective.sparx.form.field.conditional.DialogFieldConditionalClear;
 import com.netspective.sparx.panel.HtmlHelpPanel;
 import com.netspective.sparx.value.source.DialogFieldValueSource;
 
@@ -944,7 +944,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         name = newName;
         if (name != null)
         {
-            setHtmlFormControlId(Dialog.PARAMNAME_CONTROLPREFIX + TextUtils.xmlTextToJavaIdentifier(name, false));
+            setHtmlFormControlId(Dialog.PARAMNAME_CONTROLPREFIX + TextUtils.getInstance().xmlTextToJavaIdentifier(name, false));
             setQualifiedName(name);
         }
     }
@@ -958,7 +958,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     {
         qualifiedName = newName;
         if (qualifiedName != null)
-            setHtmlFormControlId(Dialog.PARAMNAME_CONTROLPREFIX + TextUtils.xmlTextToJavaIdentifier(qualifiedName, false));
+            setHtmlFormControlId(Dialog.PARAMNAME_CONTROLPREFIX + TextUtils.getInstance().xmlTextToJavaIdentifier(qualifiedName, false));
     }
 
     /**
@@ -1392,7 +1392,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         DialogField.State state = dc.getFieldStates().getState(this);
         String value = state.getValue() != null ? state.getValue().getTextValue() : null;
         return "<input type='hidden' id=\"" + getHtmlFormControlId() + "\" name='" +
-                getHtmlFormControlId() + "' value=\"" + (value != null ? TextUtils.escapeHTML(value) : "") + "\">";
+                getHtmlFormControlId() + "' value=\"" + (value != null ? TextUtils.getInstance().escapeHTML(value) : "") + "\">";
     }
 
     /**
@@ -1701,7 +1701,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             {
                 DialogFieldClientJavascript jsObject = (DialogFieldClientJavascript) i.next();
                 String script = (jsObject.getJsExpr() != null ? jsObject.getJsExpr().getTextValue(dc) : null);
-                eventName = TextUtils.xmlTextToJavaIdentifier(jsObject.getEvent().getValue(), false);
+                eventName = TextUtils.getInstance().xmlTextToJavaIdentifier(jsObject.getEvent().getValue(), false);
                 // append function signature
                 if (script != null)
                 {

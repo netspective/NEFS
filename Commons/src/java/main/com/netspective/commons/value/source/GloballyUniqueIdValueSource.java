@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GloballyUniqueIdValueSource.java,v 1.4 2003-05-24 20:28:15 shahid.shah Exp $
+ * $Id: GloballyUniqueIdValueSource.java,v 1.5 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -49,15 +49,15 @@ import java.util.StringTokenizer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.value.ValueSourceDocumentation;
-import com.netspective.commons.value.ValueSourceSpecification;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.text.GloballyUniqueIdentifier;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.text.GloballyUniqueIdentifier;
 
 public class GloballyUniqueIdValueSource extends AbstractValueSource
 {
@@ -93,7 +93,7 @@ public class GloballyUniqueIdValueSource extends AbstractValueSource
 
         StringTokenizer st = new StringTokenizer(spec.getParams(), ",");
         if(st.hasMoreTokens())
-            secure = TextUtils.toBoolean(st.nextToken().trim());
+            secure = TextUtils.getInstance().toBoolean(st.nextToken().trim());
     }
 
     public Value getValue(ValueContext vc)

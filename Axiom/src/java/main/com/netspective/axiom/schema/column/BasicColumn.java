@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.26 2004-08-09 20:28:52 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.27 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -413,7 +413,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         else
             result.setColumn(getName());
         result.setTableColumn(this);
-        result.setCaption(TextUtils.sqlIdentifierToText(getName(), true));
+        result.setCaption(TextUtils.getInstance().sqlIdentifierToText(getName(), true));
         return result;
     }
 
@@ -509,7 +509,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public String getCaption()
     {
-        return caption == null ? TextUtils.sqlIdentifierToText(getName(), true) : caption;
+        return caption == null ? TextUtils.getInstance().sqlIdentifierToText(getName(), true) : caption;
     }
 
     public void setCaption(String caption)
@@ -544,7 +544,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public String getXmlNodeName()
     {
-        return xmlNodeName == null ? TextUtils.xmlTextToNodeName(getName()) : xmlNodeName;
+        return xmlNodeName == null ? TextUtils.getInstance().xmlTextToNodeName(getName()) : xmlNodeName;
     }
 
     public void setName(String value)
@@ -873,7 +873,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        sb.append(TextUtils.getRelativeClassName(BasicColumn.class, getClass()));
+        sb.append(TextUtils.getInstance().getRelativeClassName(BasicColumn.class, getClass()));
         sb.append(" [" + getIndexInRow() + "] ");
         sb.append(getName());
 

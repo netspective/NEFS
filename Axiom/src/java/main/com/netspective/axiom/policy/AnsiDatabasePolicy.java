@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.18 2004-07-11 02:14:04 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.19 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -171,7 +171,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
     public void setAliases(String aliases)
     {
-        this.aliases = TextUtils.split(aliases, ",", true);
+        this.aliases = TextUtils.getInstance().split(aliases, ",", true);
 
         Set aliasesSet = new HashSet();
         for(int i = 0; i < this.aliases.length; i++)
@@ -313,6 +313,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
     {
         Map dataTypesMap = prepareJdbcTypeInfoMap();
         DatabaseMetaData dbmd = conn.getMetaData();
+        TextUtils textUtils = TextUtils.getInstance();
 
         writer.write("<?xml version=\"1.0\"?>\n\n");
         writer.write("<!-- Reverse engineered by Axiom\n");
@@ -386,7 +387,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             while (tables.next())
             {
                 String tableNameOrig = tables.getString(3);
-                String tableName = TextUtils.fixupTableNameCase(tableNameOrig);
+                String tableName = textUtils.fixupTableNameCase(tableNameOrig);
 
                 writer.write("        <table name=\"" + tableName + "\">\n");
 
@@ -417,7 +418,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                     fkRS = dbmd.getImportedKeys(null, null, tableNameOrig);
                     while (fkRS.next())
                     {
-                        fKeys.put(fkRS.getString(8), TextUtils.fixupTableNameCase(fkRS.getString(3)) + "." + fkRS.getString(4).toLowerCase());
+                        fKeys.put(fkRS.getString(8), textUtils.fixupTableNameCase(fkRS.getString(3)) + "." + fkRS.getString(4).toLowerCase());
                     }
                 }
                 catch (Exception e)

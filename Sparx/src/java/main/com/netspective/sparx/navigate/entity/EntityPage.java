@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EntityPage.java,v 1.1 2004-08-09 05:44:07 shahid.shah Exp $
+ * $Id: EntityPage.java,v 1.2 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.entity;
@@ -143,7 +143,7 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
 
     public void setEntitySubtypeSchemaEnum(String schemaEnumId)
     {
-        String[] params = TextUtils.split(schemaEnumId, ",", true);
+        String[] params = TextUtils.getInstance().split(schemaEnumId, ",", true);
         if(params.length != 2)
             log.error("the entity-subtype-schema-enum attribute in the entity page requires 2 params: schema.enum-table,enum-id-or-caption");
         else

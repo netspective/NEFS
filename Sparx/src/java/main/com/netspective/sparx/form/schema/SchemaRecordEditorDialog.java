@@ -39,10 +39,24 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.30 2004-04-20 14:55:47 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.31 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicies;
@@ -88,18 +102,6 @@ import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.panel.editor.PanelEditor;
 import com.netspective.sparx.panel.editor.PanelEditorState;
 import com.netspective.sparx.panel.editor.ReportPanelEditorContentElement;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
-
-import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.Writer;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SchemaRecordEditorDialog extends Dialog implements TemplateProducerParent
 {
@@ -188,7 +190,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             this.dialogContext = sredc;
             this.templateElement = templateElement;
 
-            String[] tableNameParts = TextUtils.split(templateElement.getElementName(), ".", false);
+            String[] tableNameParts = TextUtils.getInstance().split(templateElement.getElementName(), ".", false);
             if (tableNameParts.length == 1)
             {
                 schema = sredc.getProject().getSchemas().getDefault();
@@ -242,7 +244,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             }
             else
             {
-                String[] columnNames = TextUtils.split(autoMapAttrValue, ",", true);
+                String[] columnNames = TextUtils.getInstance().split(autoMapAttrValue, ",", true);
                 for (int i = 0; i < columnNames.length; i++)
                     attrs.addAttribute(null, null, columnNames[i], "CDATA", columnNames[i]);
             }

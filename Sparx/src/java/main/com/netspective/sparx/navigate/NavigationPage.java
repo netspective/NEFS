@@ -53,6 +53,24 @@
 
 package com.netspective.sparx.navigate;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.exception.NestableException;
+
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.CommandException;
@@ -87,27 +105,11 @@ import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.sparx.util.AlternateOutputDestServletResponse;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
-import org.apache.commons.lang.exception.NestableException;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.71 2004-07-31 23:13:00 aye.thu Exp $
+ * @version $Id: NavigationPage.java,v 1.72 2004-08-09 22:15:14 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -620,7 +622,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      */
     public void setRequireRequestParams(String params)
     {
-        String[] paramNames = TextUtils.split(params, ",", true);
+        String[] paramNames = TextUtils.getInstance().split(params, ",", true);
         for (int i = 0; i < paramNames.length; i++)
             requireRequestParams.add(paramNames[i]);
     }
@@ -648,7 +650,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
 
     public void setPermissions(String permissions)
     {
-        this.permissions = TextUtils.split(permissions, ",", true);
+        this.permissions = TextUtils.getInstance().split(permissions, ",", true);
 
         NavigationConditionalApplyFlag ncaf = new NavigationConditionalApplyFlag(this);
         Flags flags = new Flags();

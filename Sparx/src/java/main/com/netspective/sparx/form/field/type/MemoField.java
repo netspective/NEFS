@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: MemoField.java,v 1.3 2003-08-01 21:29:40 aye.thu Exp $
+ * $Id: MemoField.java,v 1.4 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -59,9 +59,9 @@ package com.netspective.sparx.form.field.type;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.sparx.form.DialogContext;
 
 public class MemoField extends TextField
 {
@@ -140,7 +140,7 @@ public class MemoField extends TextField
 
         if(isReadOnly(dc))
         {
-            String valueStr = value != null ? TextUtils.escapeHTML(value) : "";
+            String valueStr = value != null ? TextUtils.getInstance().escapeHTML(value) : "";
             writer.write("<input type='hidden' name='" + id + "' value=\"" + valueStr + "\">" + valueStr);
         }
         else
@@ -149,7 +149,7 @@ public class MemoField extends TextField
                     "<textarea maxlength=\"" + getMaxLength() + "\" id=\"" + id + "\" name=\"" + id + "\" rows=\"" + rows + "\" cols=\"" + cols + "\" wrap=\"" +
                     wordWrap.getValue() + "\"" + (isRequired(dc) ? " class=\"" + dc.getSkin().getControlAreaRequiredStyleClass()+ "\" " : " ") +
                     dc.getSkin().getDefaultControlAttrs() +
-                    ">" + (value != null ? TextUtils.escapeHTML(value) : "") + "</textarea>");
+                    ">" + (value != null ? TextUtils.getInstance().escapeHTML(value) : "") + "</textarea>");
         }
     }
 

@@ -39,35 +39,25 @@
  */
 
 /**
- * $Id: CryptCalcDialog.java,v 1.2 2004-07-18 15:42:05 shahid.shah Exp $
+ * $Id: CryptCalcDialog.java,v 1.3 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import com.netspective.sparx.console.form.ConsoleDialog;
+import com.netspective.commons.security.Crypt;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogsPackage;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogFieldStates;
-import com.netspective.sparx.sql.Query;
-import com.netspective.sparx.command.HttpServletCommand;
-import com.netspective.sparx.Project;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.command.Commands;
-import com.netspective.commons.command.CommandNotFoundException;
-import com.netspective.commons.command.CommandException;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.security.Crypt;
-import com.netspective.axiom.sql.DbmsSqlText;
-import com.netspective.axiom.SqlManager;
 
 public class CryptCalcDialog extends Dialog
 {
@@ -90,7 +80,7 @@ public class CryptCalcDialog extends Dialog
         final String textValue = states.getState("original").getValue().getTextValue();
         if(textValue != null && textValue.length() > 0)
         {
-            String[] original = TextUtils.split(textValue, "\n", true);
+            String[] original = TextUtils.getInstance().split(textValue, "\n", true);
 
             for(int i = 0; i < original.length; i++)
             {

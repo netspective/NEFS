@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SelectFieldChoicesPanel.java,v 1.6 2003-11-16 17:16:01 shahid.shah Exp $
+ * $Id: SelectFieldChoicesPanel.java,v 1.7 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -256,7 +256,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
                 case 1:
                     DbmsSqlText sqlText = (DbmsSqlText) ((Object[]) rows.get(activeRow))[1];
-                    String sql = TextUtils.getUnindentedText(sqlText.getSql(reportValueContext));
+                    String sql = TextUtils.getInstance().getUnindentedText(sqlText.getSql(reportValueContext));
                     Reader reader = new StringReader(sql);
                     Writer writer = new StringWriter();
                     try

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpUtils.java,v 1.7 2004-08-08 22:55:16 shahid.shah Exp $
+ * $Id: HttpUtils.java,v 1.8 2004-08-09 22:15:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.util;
@@ -158,7 +158,7 @@ public class HttpUtils
         }
         else
         {
-            String[] retainParams = TextUtils.split(paramNames, ",", true);
+            String[] retainParams = TextUtils.getInstance().split(paramNames, ",", true);
             for(int i = 0; i < retainParams.length; i++)
             {
                 String paramName = retainParams[i];
@@ -199,7 +199,7 @@ public class HttpUtils
         }
         else
         {
-            String[] retainParams = TextUtils.split(paramNames, ",", true);
+            String[] retainParams = TextUtils.getInstance().split(paramNames, ",", true);
             for(int i = 0; i < retainParams.length; i++)
             {
                 String paramName = retainParams[i];

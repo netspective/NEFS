@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.17 2004-08-09 20:29:37 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.18 2004-08-09 22:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -59,10 +59,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.oro.text.perl.Perl5Util;
 
 public class TextUtils
 {
+    private static final TextUtils INSTANCE = (TextUtils) DiscoverSingleton.find(TextUtils.class, TextUtils.class.getName());
+
+    public static TextUtils getInstance()
+    {
+        return INSTANCE;
+    }
+
     public static final String[] BOOLEAN_CHOICES = new String[]
     {
         "yes", "no",
@@ -80,7 +88,7 @@ public class TextUtils
      *
      * @return
      */
-    static public String getRelativeClassName(Class relativeTo, Class cls)
+    public String getRelativeClassName(Class relativeTo, Class cls)
     {
         String className = cls.getName();
         String relativeToPkg = relativeTo.getPackage().getName();
@@ -90,7 +98,7 @@ public class TextUtils
             return className;
     }
 
-    static public String getClassNameWithoutPackage(String pkgAndClassName, char sep)
+    public String getClassNameWithoutPackage(String pkgAndClassName, char sep)
     {
         int classNameDelimPos = pkgAndClassName.lastIndexOf(sep);
         return classNameDelimPos != -1 ? pkgAndClassName.substring(classNameDelimPos + 1) : pkgAndClassName;
@@ -104,12 +112,12 @@ public class TextUtils
      *
      * @return
      */
-    static public String getClassNameWithoutPackage(String pkgAndClassName)
+    public String getClassNameWithoutPackage(String pkgAndClassName)
     {
         return getClassNameWithoutPackage(pkgAndClassName, '.');
     }
 
-    static public String getPackageName(String pkgAndClassName, char sep)
+    public String getPackageName(String pkgAndClassName, char sep)
     {
         int classNameDelimPos = pkgAndClassName.lastIndexOf(sep);
         return classNameDelimPos != -1 ? pkgAndClassName.substring(0, classNameDelimPos) : null;
@@ -123,12 +131,12 @@ public class TextUtils
      *
      * @return
      */
-    static public String getPackageName(String pkgAndClassName)
+    public String getPackageName(String pkgAndClassName)
     {
         return getPackageName(pkgAndClassName, '.');
     }
 
-    static public String[] split(String source, String delimiter, boolean trim)
+    public String[] split(String source, String delimiter, boolean trim)
     {
         if (source == null)
             return null;
@@ -158,12 +166,12 @@ public class TextUtils
      *
      * @return
      */
-    static public String[] split(String source)
+    public String[] split(String source)
     {
         return split(source, " ", false);
     }
 
-    static public String join(String[] source, String delimiter)
+    public String join(String[] source, String delimiter)
     {
         if (source == null) return null;
         if (null == delimiter)
@@ -186,7 +194,7 @@ public class TextUtils
      *
      * @return
      */
-    static public String join(String[] source)
+    public String join(String[] source)
     {
         return join(source, "");
     }
@@ -201,7 +209,7 @@ public class TextUtils
      *
      * @return
      */
-    static public String join(String[] source, String delimiter, boolean trim)
+    public String join(String[] source, String delimiter, boolean trim)
     {
         if (trim)
         {
@@ -220,7 +228,7 @@ public class TextUtils
      * @param findText     The text to locate
      * @param replaceText  The text to replace for each findStr
      */
-    public static String replaceTextValues(final String originalText, final String findText, final String replaceText)
+    public String replaceTextValues(final String originalText, final String findText, final String replaceText)
     {
         if (findText == null || replaceText == null)
             return originalText;
@@ -247,42 +255,6 @@ public class TextUtils
     }
 
     /**
-     * Perform a simple string replacement of findStr to replStr in origStr and returns the result. All instances
-     * of findStr are replaced to replStr (regardless of how many there are). Not optimized for performance.
-     *
-     * @deprecated This old method was slower and had a few bugs
-     * @param originalText The source text
-     * @param findText     The text to locate
-     * @param replaceText  The text to replace for each findStr
-     */
-    static public String oldReplaceTextValues(final String originalText, final String findText, final String replaceText)
-    {
-        //TODO: Might it be better to make it so it's just if (null == findText || null == replaceText) return originalText ?
-        if (findText == null || replaceText == null)
-            return originalText;
-
-        String activeText = originalText;
-        int findLoc = activeText.indexOf(findText);
-        while (findLoc >= 0)
-        {
-            StringBuffer sb = new StringBuffer(activeText);
-            sb.replace(findLoc, findLoc + findText.length(), replaceText);
-            activeText = sb.toString();
-/*
-			Now, look through this new String and locate findText.  Except, since we've already searched in the
-	        portion of the string before findLoc, we dont need to go there again.  If we do, it'll cause problems when
-	        calling the method using a syntax like:
-
-	        replaceTextValues("Some rules should be broken", "rules", "rules");
-*/
-            if (findLoc != activeText.length())
-                findLoc = activeText.indexOf(findText, findLoc + replaceText.length());
-        }
-
-        return activeText;
-    }
-
-    /**
      * Perform a simple string replacement of findStr to replStr in all the members of origStr and returns the result.
      * All instances of findStr are replaced to replStr (regardless of how many there are). Not optimized for
      * performance.
@@ -291,7 +263,7 @@ public class TextUtils
      * @param findText     The text to locate
      * @param replaceText  The text to replace for each findStr
      */
-    static public String[] replaceTextValues(final String[] originalText, final String findText, final String replaceText)
+    public String[] replaceTextValues(final String[] originalText, final String findText, final String replaceText)
     {
         String[] returnValue = new String[originalText.length];
 
@@ -304,7 +276,7 @@ public class TextUtils
         return returnValue;
     }
 
-    public static String[] getBooleanChoices()
+    public String[] getBooleanChoices()
     {
         return BOOLEAN_CHOICES;
     }
@@ -313,7 +285,7 @@ public class TextUtils
      * returns the boolean equivalent of a string, which is considered true
      * if either "on", "true", or "yes" is found, ignoring case.
      */
-    public static boolean toBoolean(String s)
+    public boolean toBoolean(String s)
     {
         return (s.equalsIgnoreCase("yes") ||
                 s.equalsIgnoreCase("true") ||
@@ -324,7 +296,7 @@ public class TextUtils
     /**
      * returns the boolean equivalent of a string, which is considered true but allows a default value if s is null
      */
-    public static boolean toBoolean(String s, boolean valueIfNull)
+    public boolean toBoolean(String s, boolean valueIfNull)
     {
         if (s == null)
             return valueIfNull;
@@ -345,8 +317,8 @@ public class TextUtils
      *
      * @return The text surrounded by ' and with all internal ' characters escaped as ''
      */
-    public static String createLiteral(String text, String surroundWith, String escapeText, String replaceWith,
-                                       boolean trim, boolean stripNewLines, String valueIfNullOrBlank)
+    public String createLiteral(String text, String surroundWith, String escapeText, String replaceWith,
+                                boolean trim, boolean stripNewLines, String valueIfNullOrBlank)
     {
         if (text == null || text.length() == 0)
             return valueIfNullOrBlank;
@@ -370,7 +342,7 @@ public class TextUtils
      * Given a text string that defines a SQL table name or column name or other SQL identifier,
      * return a string that would be suitable for that string to be used as a caption or plain text.
      */
-    public static String sqlIdentifierToText(String original, boolean uppercaseEachWord)
+    public String sqlIdentifierToText(String original, boolean uppercaseEachWord)
     {
         if (original == null || original.length() == 0)
             return original;
@@ -403,7 +375,7 @@ public class TextUtils
      * match both "abcDef" and "abc-def" as node names in XML. It turns a java identifier into
      * a reasonable xml node name.
      */
-    public static String javaIdentifierToXmlNodeName(final String javaIdentifier)
+    public String javaIdentifierToXmlNodeName(final String javaIdentifier)
     {
         if (javaIdentifier == null || javaIdentifier.length() == 0)
             return javaIdentifier;
@@ -435,7 +407,7 @@ public class TextUtils
      * words. For example, Person_Address becomes personAddress or PersonAddress depending upon
      * whether ucaseInitial is set to true or false. Person.Address would become Person_Address.
      */
-    public static String xmlTextToJavaIdentifier(String xml, boolean ucaseInitial)
+    public String xmlTextToJavaIdentifier(String xml, boolean ucaseInitial)
     {
         if (xml == null || xml.length() == 0)
             return xml;
@@ -475,7 +447,7 @@ public class TextUtils
      * Given a text string, return a string that would be suitable for that string to be used
      * as a Java package name. The rule is to leave all periods and treat words as XML identifiers.
      */
-    public static String xmlTextToJavaPackageName(String xml)
+    public String xmlTextToJavaPackageName(String xml)
     {
         if (xml == null || xml.length() == 0)
             return xml;
@@ -497,7 +469,7 @@ public class TextUtils
      * as a Java constant (public static final XXX). The rule is to basically take every letter
      * or digit and return it in uppercase and every non-letter or non-digit as an underscore.
      */
-    public static String xmlTextToJavaConstant(String xml)
+    public String xmlTextToJavaConstant(String xml)
     {
         if (xml == null || xml.length() == 0)
             return xml;
@@ -517,7 +489,7 @@ public class TextUtils
      * or digit and return it in uppercase and every non-letter or non-digit as an underscore.
      * This trims all non-letter/digit characters from the beginning of the string.
      */
-    public static String xmlTextToJavaConstantTrimmed(String xml)
+    public String xmlTextToJavaConstantTrimmed(String xml)
     {
         if (xml == null || xml.length() == 0)
             return xml;
@@ -543,7 +515,7 @@ public class TextUtils
      * when given Person_Address it would return person-address. The rule is to basically take every letter
      * or digit and return it in lowercase and every non-letter or non-digit as a dash.
      */
-    public static String xmlTextToNodeName(String xml)
+    public String xmlTextToNodeName(String xml)
     {
         if (xml == null || xml.length() == 0)
             return xml;
@@ -564,7 +536,7 @@ public class TextUtils
      *
      * @return Unindented text or original text if not indented
      */
-    public static String getUnindentedText(String text)
+    public String getUnindentedText(String text)
     {
         /*
          * if the string is indented, find out how far the first line is indented
@@ -590,7 +562,7 @@ public class TextUtils
             return text;
     }
 
-    public static String getStackTrace(Throwable t)
+    public String getStackTrace(Throwable t)
     {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
@@ -605,7 +577,7 @@ public class TextUtils
      *
      * @return Unindented text or original text if not indented
      */
-    public static String getIndentedText(String text, String indent, boolean appendNewLine)
+    public String getIndentedText(String text, String indent, boolean appendNewLine)
     {
         text = getUnindentedText(text);
 
@@ -618,7 +590,7 @@ public class TextUtils
     }
 
     /* make the table name title cased (cap each letter after _) */
-    public static String fixupTableNameCase(String tableNameOrig)
+    public String fixupTableNameCase(String tableNameOrig)
     {
         if (null == tableNameOrig)
             return null;
@@ -648,7 +620,7 @@ public class TextUtils
      *
      * @return true if the string is empty
      */
-    public static boolean isEmpty(String value)
+    public boolean isEmpty(String value)
     {
         if (value == null) return true;
         if (value.length() == 0) return true;
@@ -665,7 +637,7 @@ public class TextUtils
      *
      * @throws IOException
      */
-    public static String getUrlContents(String strLocation) throws IOException
+    public String getUrlContents(String strLocation) throws IOException
     {
         StringBuffer sb = new StringBuffer();
         URL url = new URL(strLocation);
@@ -689,7 +661,7 @@ public class TextUtils
      *
      * @throws IOException
      */
-    public static String getFileContents(String location) throws IOException
+    public String getFileContents(String location) throws IOException
     {
         StringBuffer sb = new StringBuffer();
         InputStream is = new BufferedInputStream(new FileInputStream(location));
@@ -713,7 +685,7 @@ public class TextUtils
      *
      * @throws IOException
      */
-    public static String getTextFileLines(String location, int startLineNumber, int endLineNumber) throws IOException
+    public String getTextFileLines(String location, int startLineNumber, int endLineNumber) throws IOException
     {
         return getTextStreamLines(new FileInputStream(location), startLineNumber, endLineNumber);
     }
@@ -729,7 +701,7 @@ public class TextUtils
      *
      * @throws IOException
      */
-    public static String getTextStreamLines(InputStream is, int startLineNumber, int endLineNumber) throws IOException
+    public String getTextStreamLines(InputStream is, int startLineNumber, int endLineNumber) throws IOException
     {
         if (is == null)
             return null;
@@ -788,7 +760,7 @@ public class TextUtils
         return result.toString();
     }
 
-    public static final String escapeHTML(String s)
+    public final String escapeHTML(String s)
     {
         if (s == null) return null;
         StringBuffer sb = new StringBuffer();

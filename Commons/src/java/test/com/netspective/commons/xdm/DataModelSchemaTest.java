@@ -39,32 +39,33 @@
  */
 
 /**
- * $Id: DataModelSchemaTest.java,v 1.11 2003-06-30 15:33:30 shahid.shah Exp $
+ * $Id: DataModelSchemaTest.java,v 1.12 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
-import java.io.IOException;
 import java.io.File;
-import java.util.*;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
-import junit.framework.TestCase;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.netspective.commons.io.Resource;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.TemplateProducers;
-import com.netspective.commons.xml.template.TemplateProducerParent;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xml.template.Template;
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xdm.XdmComponentFactory;
-import com.netspective.commons.xdm.XmlDataModelDtd;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducers;
+
+import junit.framework.TestCase;
 
 public class DataModelSchemaTest extends TestCase
 {
@@ -75,6 +76,7 @@ public class DataModelSchemaTest extends TestCase
     private List errors = null;
     private String[] rootSchemaPropertyNames = new String[]{"integer", "nested-1", "path-separator-char", "root-attr-1", "test-boolean", "test-byte", "test-class", "test-double", "test-file", "test-float", "test-long", "test-short"};
     private String[] schemaModifiedPropertyNames = null;
+    private TextUtils textUtils = TextUtils.getInstance();
 
     static public class DataModelTest extends DefaultXdmComponent
     {
@@ -542,7 +544,7 @@ public class DataModelSchemaTest extends TestCase
         Set modifiedPropertyNames = new HashSet();
         for (int i = 0; i < rootSchemaPropertyNames.length; i++)
         {
-            String removeDashes = TextUtils.replaceTextValues(rootSchemaPropertyNames[i], "-", "");
+            String removeDashes = textUtils.replaceTextValues(rootSchemaPropertyNames[i], "-", "");
 
             if (!rootSchemaPropertyNames[i].equals(removeDashes))
                 modifiedPropertyNames.add(removeDashes);
@@ -739,7 +741,7 @@ public class DataModelSchemaTest extends TestCase
         {
             assertTrue(schemaPropertySet.contains(rootSchemaPropertyNames[i]));
             XmlDataModelSchema.PropertyNames xdmspn = (XmlDataModelSchema.PropertyNames) schema.getPropertyNames().get(rootSchemaPropertyNames[i]);
-            assertTrue(xdmspn.getAliases().contains(TextUtils.replaceTextValues(rootSchemaPropertyNames[i], "-", "")));
+            assertTrue(xdmspn.getAliases().contains(textUtils.replaceTextValues(rootSchemaPropertyNames[i], "-", "")));
             numAliases += xdmspn.getAliases().size();
         }
 
@@ -807,7 +809,7 @@ public class DataModelSchemaTest extends TestCase
             String key = (String) iter.next();
             assertEquals(expectedAttributeTypes.get(key), rootSchemaAttributeTypes.get(key));
 
-            String removeDashes = TextUtils.replaceTextValues(key, "-", "");
+            String removeDashes = textUtils.replaceTextValues(key, "-", "");
             assertEquals(expectedAttributeTypes.get(key), rootSchemaAttributeTypes.get(removeDashes));
         }
     }
@@ -871,7 +873,7 @@ public class DataModelSchemaTest extends TestCase
         String[] expectedBitStringsOne = new String[]{"BIT_ONE", "BIT_THREE", "BIT_FIVE", "BIT_SEVEN"};
         bmfa = new SampleBitmaskedFlagsAttribute(170);
         assertEquals(expectedBitMaskOne, bmfa.getFlags());
-        assertEquals(TextUtils.join(expectedBitStringsOne, " | "), bmfa.getFlagsText());
+        assertEquals(textUtils.join(expectedBitStringsOne, " | "), bmfa.getFlagsText());
         String[] actualBitStringsOne = bmfa.getFlagNames();
         assertEquals(possibleFlagNames.length, actualBitStringsOne.length);
 
@@ -900,7 +902,7 @@ public class DataModelSchemaTest extends TestCase
         }
 
         assertEquals(expectedBitMaskTwo, bmfa.getFlags());
-        assertEquals(TextUtils.join(expectedBitStringsTwo, " | "), bmfa.getFlagsText());
+        assertEquals(textUtils.join(expectedBitStringsTwo, " | "), bmfa.getFlagsText());
 
         for (int i = 0; i < 8; i++)
         {

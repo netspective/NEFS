@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlComparisonFactory.java,v 1.6 2004-07-30 02:41:19 shahid.shah Exp $
+ * $Id: SqlComparisonFactory.java,v 1.7 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -123,7 +123,7 @@ public class SqlComparisonFactory
     {
         if(name.startsWith(DynamicComparison.DYNAMIC_ID))
         {
-            String[] items = TextUtils.split(name, ",", true);
+            String[] items = TextUtils.getInstance().split(name, ",", true);
             if(items.length == 2)
                 return items[1];
             else
@@ -164,7 +164,7 @@ public class SqlComparisonFactory
 
         result = new ArrayList();
 
-        String[] groups = TextUtils.split(groupNames, ",", true);
+        String[] groups = TextUtils.getInstance().split(groupNames, ",", true);
         for (int i = 0; i < groups.length; i++)
         {
             List list = (List) comparisonsListByGroup.get(groups[i]);

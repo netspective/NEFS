@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: SimulatedLoginDialog.java,v 1.2 2004-01-07 16:58:58 shahid.shah Exp $
+ * $Id: SimulatedLoginDialog.java,v 1.3 2004-08-09 22:15:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.simulate;
 
 import com.netspective.commons.text.TextUtils;
-import com.netspective.sparx.security.LoginDialog;
 import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.LoginDialog;
 
 public class SimulatedLoginDialog extends LoginDialog
 {
@@ -142,11 +142,11 @@ public class SimulatedLoginDialog extends LoginDialog
 
     public void setUserPermissions(String permissions)
     {
-        setPermissions(TextUtils.split(permissions, ",", true));
+        setPermissions(TextUtils.getInstance().split(permissions, ",", true));
     }
 
     public void setUserRoles(String roles)
     {
-        setRoles(TextUtils.split(roles, ",", true));
+        setRoles(TextUtils.getInstance().split(roles, ",", true));
     }
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.40 2004-08-03 23:02:02 aye.thu Exp $
+ * $Id: DialogContext.java,v 1.41 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -83,7 +83,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.netspective.commons.activity.Activity;
-import com.netspective.commons.activity.ActivityManager;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -259,7 +258,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         {
             String ncRetain = ncRetainVS.getTextValue(this);
             if (ncRetain != null && ncRetain.length() > 0)
-                addRetainRequestParams(TextUtils.split(ncRetain, ",", true));
+                addRetainRequestParams(TextUtils.getInstance().split(ncRetain, ",", true));
         }
 
         nc.setDialogContext(this);

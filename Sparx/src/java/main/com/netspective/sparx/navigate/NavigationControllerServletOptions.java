@@ -39,32 +39,33 @@
  */
 
 /**
- * $Id: NavigationControllerServletOptions.java,v 1.8 2003-12-18 21:45:59 shahid.shah Exp $
+ * $Id: NavigationControllerServletOptions.java,v 1.9 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
-import java.util.Properties;
-import java.util.Map;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.io.StringWriter;
-import java.io.PrintWriter;
+import java.util.Map;
+import java.util.Properties;
+
 import javax.servlet.ServletConfig;
 
-import org.apache.commons.cli.Options;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.PosixParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
+import org.apache.commons.discovery.tools.DiscoverClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.discovery.tools.DiscoverClass;
 
-import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.ProjectComponent;
 
@@ -97,7 +98,7 @@ public class NavigationControllerServletOptions
         {
             String optionsParamValue = servletConfig.getInitParameter(INITPARAMNAME_SERVLET_OPTIONS);
             log.debug("Using servlet init param " + INITPARAMNAME_SERVLET_OPTIONS + ":\n  " + optionsParamValue);
-            commandLine = parser.parse(servletOptions, optionsParamValue != null ? TextUtils.split(optionsParamValue, " ", false) : new String[0]);
+            commandLine = parser.parse(servletOptions, optionsParamValue != null ? TextUtils.getInstance().split(optionsParamValue, " ", false) : new String[0]);
         }
         catch (ParseException pe)
         {

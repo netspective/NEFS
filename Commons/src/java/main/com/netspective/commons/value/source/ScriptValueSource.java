@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScriptValueSource.java,v 1.1 2004-04-27 20:10:00 shahid.shah Exp $
+ * $Id: ScriptValueSource.java,v 1.2 2004-08-09 22:14:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -185,6 +185,6 @@ public class ScriptValueSource extends AbstractValueSource
         if(result instanceof Value)
             return ((Value) result).hasValue();
 
-        return result != null ? TextUtils.toBoolean(result.toString(), false) : false;
+        return result != null ? TextUtils.getInstance().toBoolean(result.toString(), false) : false;
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextAttributesPanel.java,v 1.10 2003-11-16 15:18:04 shahid.shah Exp $
+ * $Id: DialogContextAttributesPanel.java,v 1.11 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -47,18 +47,17 @@ package com.netspective.sparx.console.panel.presentation.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 
 public class DialogContextAttributesPanel extends DialogDetailPanel
 {
@@ -123,11 +122,11 @@ public class DialogContextAttributesPanel extends DialogDetailPanel
             {
                 TODO: XML = dialogContext.getAsXml();
                 if(XML != null)
-                    XML = TextUtils.escapeHTML(XML);
+                    XML = TextUtils.getInstance().escapeHTML(XML);
             }
             catch(Exception e)
             {
-                XML = e.toString() + "\n" + TextUtils.getStackTrace(e);
+                XML = e.toString() + "\n" + TextUtils.getInstance().getStackTrace(e);
             }
             result.add(createAttribute("XML Representation", "<pre>" + XML + "</pre>"));
 

@@ -51,15 +51,14 @@
  */
 
 /**
- * $Id: DialogFieldPopup.java,v 1.5 2004-07-26 14:08:01 aye.thu Exp $
+ * $Id: DialogFieldPopup.java,v 1.6 2004-08-09 22:15:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
 
-import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
-import com.netspective.sparx.form.field.type.SelectField;
 
 /**
  * <code>DialogFieldPopup</code> class represents a dialog field with a pop up window associated with it.
@@ -206,7 +205,7 @@ public class DialogFieldPopup
 
     public void setExtract(String value)
     {
-        extract = TextUtils.split(value, ",", true);
+        extract = TextUtils.getInstance().split(value, ",", true);
     }
 
     public final String[] getFill()
@@ -221,7 +220,7 @@ public class DialogFieldPopup
      */
     public void setFill(String fields)
     {
-        fill = TextUtils.split(fields, ",", true);
+        fill = TextUtils.getInstance().split(fields, ",", true);
     }
 
     /**

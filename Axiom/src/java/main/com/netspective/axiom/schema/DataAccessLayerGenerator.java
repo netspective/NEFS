@@ -39,26 +39,28 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.17 2004-04-02 04:19:30 aye.thu Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.18 2004-08-09 22:13:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.schema.column.BasicColumn;
-import com.netspective.axiom.schema.column.type.AutoIncColumn;
-import com.netspective.axiom.schema.constraint.ParentForeignKey;
-import com.netspective.axiom.schema.table.BasicTable;
-import com.netspective.axiom.schema.table.TableQueryDefinition;
-import com.netspective.axiom.schema.table.type.EnumerationTable;
-import com.netspective.axiom.schema.table.type.EnumerationTableRow;
-import com.netspective.axiom.schema.table.type.EnumerationTableRows;
-import com.netspective.axiom.sql.QueryResultSet;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
-import com.netspective.commons.lang.ResourceLoader;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.value.Value;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.naming.NamingException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.inxar.jenesis.AbstractMethod;
@@ -76,21 +78,21 @@ import org.inxar.jenesis.PackageClass;
 import org.inxar.jenesis.Type;
 import org.inxar.jenesis.VirtualMachine;
 
-import javax.naming.NamingException;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.schema.column.BasicColumn;
+import com.netspective.axiom.schema.column.type.AutoIncColumn;
+import com.netspective.axiom.schema.constraint.ParentForeignKey;
+import com.netspective.axiom.schema.table.BasicTable;
+import com.netspective.axiom.schema.table.TableQueryDefinition;
+import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
+import com.netspective.axiom.sql.QueryResultSet;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
+import com.netspective.commons.lang.ResourceLoader;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.Value;
 
 public class DataAccessLayerGenerator
 {
@@ -295,7 +297,7 @@ public class DataAccessLayerGenerator
             CompilationUnit enumUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
             enumUnit.setNamespace(enumsUnit.getNamespace().getName());
 
-            PackageClass enumerationClass = enumUnit.newClass(TextUtils.xmlTextToJavaIdentifier(enumTable.getName(), true));
+            PackageClass enumerationClass = enumUnit.newClass(TextUtils.getInstance().xmlTextToJavaIdentifier(enumTable.getName(), true));
             enumerationClass.setAccess(Access.PUBLIC);
             enumerationClass.isFinal(true);
 
@@ -348,8 +350,9 @@ public class DataAccessLayerGenerator
             this.parentAccessorClass = parentClass;
             this.parentChildAssignmentsBlock = parentChildrenAssignmentsBlock;
 
-            fieldName = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), false) + "Table";
-            classNameNoPackage = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true) + "Table";
+            TextUtils textUtils = TextUtils.getInstance();
+            fieldName = textUtils.xmlTextToJavaIdentifier(node.getTable().getName(), false) + "Table";
+            classNameNoPackage = textUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true) + "Table";
 
             recordInnerClassNameDecl = "Record";
             recordsInnerClassNameDecl = "Records";
@@ -378,8 +381,8 @@ public class DataAccessLayerGenerator
             accessorClass.setAccess(Access.PUBLIC);
             accessorClass.isFinal(true);
 
-            valueInterfaceName = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true);
-            valueClassName = TextUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true) + "VO";
+            valueInterfaceName = textUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true);
+            valueClassName = textUtils.xmlTextToJavaIdentifier(node.getTable().getName(), true) + "VO";
 
             valueInterfaceUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
             valueInterfaceUnit.setNamespace(valueObjectUnit.getNamespace().getName());
@@ -453,13 +456,15 @@ public class DataAccessLayerGenerator
             if (parentFKey == null)
                 return;
 
+            TextUtils textUtils = TextUtils.getInstance();
+
             // the rest of the code assumes we're a child table with a parent foreign key available
             TableAccessorGenerator parentTag = (TableAccessorGenerator) tableAccessorGenerators.get(parentNode);
-            String fKeyVarName = TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), false) + "ForeignKey";
+            String fKeyVarName = textUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), false) + "ForeignKey";
 
             addImport(accessorClass, parentTag.accessorNameSpace + "." + parentTag.classNameNoPackage);
 
-            ClassMethod method = accessorClass.newMethod(vm.newType(recordInnerClassName), "createChildLinkedBy" + TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true));
+            ClassMethod method = accessorClass.newMethod(vm.newType(recordInnerClassName), "createChildLinkedBy" + textUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true));
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
             method.addParameter(vm.newType(parentTag.recordInnerClassName), "parentRecord");
@@ -468,7 +473,7 @@ public class DataAccessLayerGenerator
             method = parentTag.recordInnerClass.newMethod(vm.newType(recordInnerClassName), "create" + classNameNoPackage + "Record");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
-            method.newStmt(vm.newFree("return " + fieldName + ".createChildLinkedBy" + TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true) + "(this)"));
+            method.newStmt(vm.newFree("return " + fieldName + ".createChildLinkedBy" + textUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true) + "(this)"));
 
             ClassField field = parentTag.recordInnerClass.newField(vm.newType(recordsInnerClassName), fieldName + "Records");
             field.setAccess(Access.PRIVATE);
@@ -484,7 +489,7 @@ public class DataAccessLayerGenerator
                 parentTag.recordInnerClassDeleteChildrenMethod.newStmt(vm.newFree(fieldName + "Records.delete(cc)"));
             }
 
-            String getParentRecsByFKeyMethodName = "getParentRecordsBy" + TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true);
+            String getParentRecsByFKeyMethodName = "getParentRecordsBy" + textUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true);
             method = accessorClass.newMethod(vm.newType(recordsInnerClassName), getParentRecsByFKeyMethodName);
             method.setComment(Comment.D, "Parent reference: " + parentFKey);
             method.setAccess(Access.PUBLIC);
@@ -582,6 +587,8 @@ public class DataAccessLayerGenerator
             method.isFinal(true);
             method.addParameter(vm.newType("ConnectionContext"), "cc");
 
+            TextUtils textUtils = TextUtils.getInstance();
+
             StringBuffer callParams = new StringBuffer();
             for (int i = 0; i < pkCols.size(); i++)
             {
@@ -591,7 +598,7 @@ public class DataAccessLayerGenerator
                 Column pkCol = pkCols.get(i);
                 ColumnValue pkColValue = pkCol.constructValueInstance();
                 Class pkValueHolderClass = pkColValue.getBindParamValueHolderClass();
-                String paramName = TextUtils.xmlTextToJavaIdentifier(pkCol.getName(), false);
+                String paramName = textUtils.xmlTextToJavaIdentifier(pkCol.getName(), false);
                 method.addParameter(vm.newType(pkValueHolderClass.getName()), paramName);
                 callParams.append(paramName);
             }
@@ -848,19 +855,20 @@ public class DataAccessLayerGenerator
         {
             TableQueryDefinition tqd = node.getTable().getQueryDefinition();
             QueryDefnSelects accessors = tqd.getSelects();
+            TextUtils textUtils = TextUtils.getInstance();
 
             for (int i = 0; i < accessors.size(); i++)
             {
                 QueryDefnSelect accessor = accessors.get(i);
 
-                String constantId = "ACCESSORID_" + TextUtils.xmlTextToJavaConstantTrimmed(accessor.getName());
+                String constantId = "ACCESSORID_" + textUtils.xmlTextToJavaConstantTrimmed(accessor.getName());
                 ClassField field = accessorClass.newField(vm.newType(Type.INT), constantId);
                 field.setAccess(Access.PUBLIC);
                 field.isStatic(true);
                 field.isFinal(true);
                 field.setExpression(vm.newInt(i));
 
-                String methodSuffix = TextUtils.xmlTextToJavaIdentifier(accessor.getName(), true);
+                String methodSuffix = textUtils.xmlTextToJavaIdentifier(accessor.getName(), true);
                 ClassMethod method = accessorClass.newMethod(vm.newType("QueryDefnSelect"), "getAccessor" + methodSuffix);
                 method.setAccess(Access.PUBLIC);
                 method.isFinal(true);
@@ -871,6 +879,7 @@ public class DataAccessLayerGenerator
         public void generateColumnAccessors()
         {
             Columns columns = node.getTable().getColumns();
+            TextUtils textUtils = TextUtils.getInstance();
 
             for (int i = 0; i < columns.size(); i++)
             {
@@ -886,14 +895,14 @@ public class DataAccessLayerGenerator
                     addImport(accessorClass, stdColClassName);
                 }
 
-                String constantId = "COLINDEX_" + TextUtils.xmlTextToJavaConstantTrimmed(column.getName());
+                String constantId = "COLINDEX_" + textUtils.xmlTextToJavaConstantTrimmed(column.getName());
                 ClassField field = accessorClass.newField(vm.newType(Type.INT), constantId);
                 field.setAccess(Access.PUBLIC);
                 field.isStatic(true);
                 field.isFinal(true);
                 field.setExpression(vm.newInt(column.getIndexInRow()));
 
-                String methodSuffix = TextUtils.xmlTextToJavaIdentifier(column.getName(), true);
+                String methodSuffix = textUtils.xmlTextToJavaIdentifier(column.getName(), true);
                 ClassMethod method = accessorClass.newMethod(columnType, "get" + methodSuffix + "Column");
                 method.setAccess(Access.PUBLIC);
                 method.isFinal(true);
@@ -905,8 +914,8 @@ public class DataAccessLayerGenerator
                 if (fKey != null)
                 {
                     Type fKeyType = fKey instanceof ParentForeignKey ? vm.newType("ParentForeignKey") : vm.newType("ForeignKey");
-                    String fkeyFieldName = TextUtils.xmlTextToJavaIdentifier(column.getName(), false) + "ForeignKey";
-                    String fkeyMethodName = TextUtils.xmlTextToJavaIdentifier(column.getName(), true) + "ForeignKey";
+                    String fkeyFieldName = textUtils.xmlTextToJavaIdentifier(column.getName(), false) + "ForeignKey";
+                    String fkeyMethodName = textUtils.xmlTextToJavaIdentifier(column.getName(), true) + "ForeignKey";
 
                     method = accessorClass.newMethod(fKeyType, "get" + fkeyMethodName);
                     method.setAccess(Access.PUBLIC);
@@ -999,6 +1008,8 @@ public class DataAccessLayerGenerator
 
         public void generateValueObjects() throws IOException
         {
+            TextUtils textUtils = TextUtils.getInstance();
+
             valueObjectInterface = valueInterfaceUnit.newInterface(valueInterfaceName);
             valueObjectInterface.setAccess(Access.PUBLIC);
 
@@ -1018,11 +1029,11 @@ public class DataAccessLayerGenerator
 
                 Type valueHolderValueType = vm.newType(valueInstClassName.replace('$', '.'));
 
-                String fieldName = TextUtils.xmlTextToJavaIdentifier(column.getName(), false);
+                String fieldName = textUtils.xmlTextToJavaIdentifier(column.getName(), false);
                 ClassField field = valueObjectClass.newField(valueHolderValueType, fieldName);
                 field.setAccess(Access.PRIVATE);
 
-                String methodSuffix = TextUtils.xmlTextToJavaIdentifier(column.getName(), true);
+                String methodSuffix = textUtils.xmlTextToJavaIdentifier(column.getName(), true);
 
                 ClassMethod method = valueObjectClass.newMethod(valueHolderValueType, "get" + methodSuffix);
                 method.setAccess(Access.PUBLIC);

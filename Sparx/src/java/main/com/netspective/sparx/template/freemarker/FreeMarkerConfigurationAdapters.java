@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.15 2004-07-18 23:21:01 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.16 2004-08-09 22:15:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -159,7 +159,7 @@ public class FreeMarkerConfigurationAdapters
         {
             if(templatePathsText != null)
             {
-                String[] templatePaths = TextUtils.split(templatePathsText, templatePathsDelim == null ? File.pathSeparator : templatePathsDelim, true);
+                String[] templatePaths = TextUtils.getInstance().split(templatePathsText, templatePathsDelim == null ? File.pathSeparator : templatePathsDelim, true);
                 for(int i = 0; i < templatePaths.length; i++)
                     templateLoaders.add(new FileTemplateLoader(new File(servletContext.getRealPath(templatePaths[i]))));
             }
