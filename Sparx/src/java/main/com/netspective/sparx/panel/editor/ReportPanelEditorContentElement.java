@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportPanelEditorContentElement.java,v 1.3 2004-03-14 00:54:32 aye.thu Exp $
+ * $Id: ReportPanelEditorContentElement.java,v 1.4 2004-03-14 06:08:59 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
@@ -400,9 +400,8 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         }
         DialogContext dc = dialog.createContext(nc, nc.getActiveTheme().getDefaultDialogSkin());
         dc.addRetainRequestParams(DialogCommand.DIALOG_COMMAND_RETAIN_PARAMS);
-        dc.getHttpRequest().setAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE, state);
+        dc.getHttpRequest().setAttribute(PanelEditor.PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX, state);
 
-        dc.setPanelRenderFlags(HtmlPanel.RENDERFLAG_HIDE_FRAME_HEADING | HtmlPanel.RENDERFLAG_NOFRAME);
         dialog.prepareContext(dc);
         try
         {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.3 2004-03-14 00:54:32 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.4 2004-03-14 06:08:59 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
@@ -69,10 +69,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,15 +82,14 @@ import java.util.Map;
 public class PanelEditor extends AbstractPanel
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    protected static final Log log = LogFactory.getLog(PanelEditor.class);
     public static final String PANEL_RECORD_EDIT_ACTION     = "Edit";
-    public static final String PANEL_CONTENT_ADD_ACTION      = "Add";
-    public static final String PANEL_CONTENT_MANAGE_ACTION   = "Manage";
+    public static final String PANEL_CONTENT_ADD_ACTION     = "Add";
+    public static final String PANEL_CONTENT_MANAGE_ACTION  = "Manage";
     public static final String PANEL_RECORD_DONE_ACTION     = "Done";
-    public static final String PANEL_CONTENT_DELETE_ACTION   = "Delete";
+    public static final String PANEL_CONTENT_DELETE_ACTION  = "Delete";
 
     // the following are all the possible displaymodes that the editor panel can be in
-    public static final int UNKNOWN_MODE                = -1;
+    public static final int UNKNOWN_MODE        = -1;
     public static final int MODE_DISPLAY        = 1;    /* default display report mode */
     public static final int MODE_EDIT           = 2;    /* editing panel content mode (dialog and current content (e.g. report)) */
     public static final int MODE_DELETE         = 3;    /* deleting panel content mode (dialog and current content) */
@@ -105,13 +102,16 @@ public class PanelEditor extends AbstractPanel
     /* default name assigned to the dialog defined in the panel editor */
     public static final String DEFAULT_DIALOG_NAME = "panel-editor-dialog";
     /* a request attribute name used to save the name of the panel editor */
-    public static final String PANEL_EDITOR_CONTEXT_ATTRIBUTE = "panel-editor-name";
+    public static final String PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX = "com.netspective.sparx.panel.editor.PanelEditor";
     /* the display mode is passed to the panel using a request attribute with this name */
     public static final String CURRENT_MODE_CONTEXT_ATTRIBUTE = "panel-editor-mode";
     /* the primary key of the record that is to be edited/deleted is passed to the dialog context using this attribute name */
     public static final String POPULATE_KEY_CONTEXT_ATTRIBUTE = "panel-editor-key";
     /* the previous mode of the panel passed using the request attribute */
-    public static final String PREV_MODE_CONTEXT_ATTRIBUTE = "panel-editor-prev-mode";
+    public static final String PREV_MODE_REQ_ATTRIBUTE = "com.netspective.sparx.panel.editor.PanelEditor.previousMode";
+
+    protected static final Log log = LogFactory.getLog(PanelEditor.class);
+
     /* associated project */
     protected Project project;
     /* the package that the panel belongs to */
@@ -125,9 +125,6 @@ public class PanelEditor extends AbstractPanel
     /* child elements for content */
     private Map elements = new HashMap();
 
-    /* all available panel editor types */
-    private List panelEditorTypes = new ArrayList();
-
     public PanelEditor(Project project)
     {
         this.project = project;
@@ -140,6 +137,15 @@ public class PanelEditor extends AbstractPanel
     {
         this(project);
         setNameSpace(pkg);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getNameForRequestAttribute()
+    {
+        return PANEL_EDITOR_REQ_ATTRIBUTE_PREFIX + getName();
     }
 
     /**
@@ -244,7 +250,7 @@ public class PanelEditor extends AbstractPanel
     public static int translateMode(String modeName)
     {
         int mode = MODE_DISPLAY;
-        if (modeName == null)
+        if (modeName == null || modeName.equals("display"))
             mode = MODE_DISPLAY;
         else if (modeName.equals("add"))
             mode = MODE_ADD;
@@ -276,6 +282,8 @@ public class PanelEditor extends AbstractPanel
             modeName = "edit";
         else if (mode == MODE_DELETE)
             modeName = "delete";
+        else if (mode == MODE_MANAGE)
+            modeName = "manage";
 
         return modeName;
     }
@@ -394,21 +402,21 @@ public class PanelEditor extends AbstractPanel
         if (actionMode == PanelEditor.MODE_EDIT)
         {
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + getQualifiedName() +
-                    ",edit,${request-attr:" + PREV_MODE_CONTEXT_ATTRIBUTE + "}";
+                    ",edit,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
         }
         else if (actionMode == MODE_DELETE)
         {
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() +
-                    ",delete,${request-attr:" + PREV_MODE_CONTEXT_ATTRIBUTE + "}";
+                    ",delete,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
         }
         else if (actionMode == MODE_ADD)
         {
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() +
-                    ",add,${request-attr:" + PREV_MODE_CONTEXT_ATTRIBUTE + "}";
+                    ",add,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
         }
         else if (actionMode == MODE_MANAGE)
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() +
-                    ",manage,${request-attr:" + PREV_MODE_CONTEXT_ATTRIBUTE + "}";
+                    ",manage,${request-attr:" + PREV_MODE_REQ_ATTRIBUTE + "}";
 
         return url;
     }
@@ -439,27 +447,6 @@ public class PanelEditor extends AbstractPanel
         initialized = true;
     }
 
-    /**
-     * Creates actions to be defined in the content of the panel
-     *
-     * @param nc
-     */
-    public void createPanelContentActions(NavigationContext nc) {}
-
-    /**
-     * Creates actions to be defined in the frame of the panel
-     *
-     * @param nc
-     */
-    public  void createPanelFrameActions(NavigationContext nc) {}
-
-
-    /**
-     * Creates all the panel actions for the banner
-     *
-     * @param nc    current navigation context
-     */
-    public void createPanelBannerActions(NavigationContext nc){}
 
     /**
      *
@@ -486,7 +473,9 @@ public class PanelEditor extends AbstractPanel
      */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        PanelEditorState state = constructPanelEditorState(nc);
+        PanelEditorState state = (PanelEditorState) nc.getAttribute("");
+        if (state != null)
+            render(writer, nc, state);
 
     }
 
@@ -515,20 +504,19 @@ public class PanelEditor extends AbstractPanel
 
         // only when the mode is in DISPLAY mode, the panel editor is displayed
         HtmlPanelSkin skin = null;
+        skin = nc.getActiveTheme().getTemplateSkin("panel-editor-compressed");
+        /*
         if (mode != PanelEditor.MODE_DISPLAY && mode != PanelEditor.MODE_MANAGE)
         {
             skin = nc.getActiveTheme().getTemplateSkin("panel-editor-compressed");
-            //pvc.setPanelRenderFlags(RENDERFLAG_NOFRAME | RENDERFLAG_HIDE_FRAME_HEADING);
-
         }
         else
         {
             skin = nc.getActiveTheme().getTemplateSkin("panel-editor-full");
         }
+        */
         preparePanelActionStates(nc, pvc, mode);
-
-        skin.renderPanelRegistration(writer, pvc);
-        skin.renderFrameBegin(writer, pvc);
+        nc.getHttpRequest().setAttribute(PREV_MODE_REQ_ATTRIBUTE, translateModeToString(state.getCurrentMode()));
 
         String activeElement = state.getActiveElement();
         StringWriter activeEditorWriter = new StringWriter();
@@ -547,17 +535,16 @@ public class PanelEditor extends AbstractPanel
                 elements[i].renderDisplayContent(inactiveWriter, nc, state);
             }
         }
-        writer.write("<table class=\"panel-editor\" width=\"100%\" cellpadding==\"3\" callspacing=\"0\">\n");
-        writer.write("<tr>\n");
         if (activeElement != null)
-        {
-            writer.write("<td valign=\"top\">" + activeEditorWriter.getBuffer().toString() + "</td>");
-        }
-        writer.write("<td valign=\"top\">" + (activeElement != null ? activeDisplayWriter.getBuffer().toString() : "") +
-                inactiveWriter.getBuffer().toString() + "</td>");
-        writer.write("</tr>\n</table>");
-        skin.renderFrameEnd(writer, pvc);
+            writer.write("<div class=\"panel-editor-active-content\">" + activeEditorWriter.getBuffer().toString() + "</div>");
 
+        writer.write("<div class=\"panel-editor-display-content\">");
+        skin.renderPanelRegistration(writer, pvc);
+        skin.renderFrameBegin(writer, pvc);
+        writer.write((activeElement != null ? activeDisplayWriter.getBuffer().toString() : "") +
+                inactiveWriter.getBuffer().toString());
+        skin.renderFrameEnd(writer, pvc);
+        writer.write("</div><p/>");
     }
 
     /**
@@ -574,9 +561,11 @@ public class PanelEditor extends AbstractPanel
         {
             actionStates.getState("Done").getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             PanelEditorContentElement[] elements = getElementsAsArray();
+            String caption = null;
             for (int i=0; i < elements.length; i++)
             {
-                actionStates.getState("Add " + elements[i].getCaption()).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+                caption = elements[i].getCaption();
+                actionStates.getState("Add " + (caption != null ? caption : "")).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             }
         }
         else if (mode == MODE_ADD || mode == MODE_EDIT || mode == MODE_DELETE)
@@ -633,7 +622,8 @@ public class PanelEditor extends AbstractPanel
             PanelEditorContentElement element = elements[i];
             String addUrl = generatePanelActionUrl(PanelEditor.MODE_ADD);
             addUrl = element.appendElementInfoToActionUrl(addUrl, PanelEditor.MODE_ADD);
-            addAction.setCaption(new StaticValueSource("Add " + element.getCaption()));
+            String caption = element.getCaption();
+            addAction.setCaption(new StaticValueSource("Add " + (caption != null ? caption : "")));
             addAction.setRedirect(new RedirectValueSource(addUrl));
             actions.add(addAction);
         }
