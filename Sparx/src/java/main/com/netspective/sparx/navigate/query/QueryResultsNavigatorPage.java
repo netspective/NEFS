@@ -222,6 +222,11 @@ public class QueryResultsNavigatorPage extends NavigationPage
         this.qrNavigatorStateTemplateVarName = qrNavigatorStateTemplateVarName;
     }
 
+    public String getQueryExectionId(NavigationContext nc)
+    {
+        return queryExecutionId.getTextValue(nc);
+    }
+
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         if(!valid)
@@ -234,7 +239,7 @@ public class QueryResultsNavigatorPage extends NavigationPage
         final ServletRequest request = nc.getRequest();
         try
         {
-            final String executionId = queryExecutionId.getTextValue(nc);
+            final String executionId = getQueryExectionId(nc);
 
             QueryResultsNavigatorState queryResults = getQueryResultsNavigatorStatesManager().getActiveUserQueryResults(this, nc, executionId);
             if(queryResults == null)
