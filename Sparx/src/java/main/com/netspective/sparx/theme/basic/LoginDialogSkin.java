@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialogSkin.java,v 1.3 2003-08-10 17:11:33 shahid.shah Exp $
+ * $Id: LoginDialogSkin.java,v 1.4 2003-08-10 17:15:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -131,8 +131,10 @@ public class LoginDialogSkin extends StandardDialogSkin
     public void renderHtml(Writer writer, DialogContext dc) throws IOException
     {
         dc.setPanelRenderFlags(dc.getPanelRenderFlags() | HtmlPanel.RENDERFLAG_NOFRAME);
+        writer.write("<body style='background-color: white'>");
         writer.write("<p>&nbsp;<p>&nbsp;<p>&nbsp;<p><center>");
         super.renderHtml(writer, dc);
         writer.write("</center>");
+        writer.write("</body>");
     }
 }
