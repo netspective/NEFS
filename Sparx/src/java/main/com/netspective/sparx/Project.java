@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.31 2003-10-19 17:05:30 shahid.shah Exp $
+ * $Id: Project.java,v 1.32 2003-10-22 06:50:10 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -390,6 +390,15 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public NavigationTree getDefaultNavigationTree()
     {
         return navigationTrees.getDefaultTree();
+    }
+
+    /**
+     * Sets the default navigation tree for the project
+     * @param name
+     */
+    public void setDefaultNavigationTree(String name)
+    {
+        navigationTrees.setDefaultTree(name);
     }
 
     public NavigationTree getNavigationTree(String name)
