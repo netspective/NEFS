@@ -25,7 +25,7 @@
 
             <library>
                 <name>FreeMarker Templating Library</name>
-                <version>2.3pre14</version>
+                <version>2.3pre15</version>
                 <class-path>freemarker.jar</class-path>
                 <source home-uri="http://www.freemarker.org"
                         license="BSD, OSI Certified"/>
