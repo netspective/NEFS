@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.25 2003-08-04 16:49:12 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.26 2003-08-05 17:11:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -66,6 +66,7 @@ import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Command;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
@@ -94,13 +95,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 7];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
-
-    protected static final int BODYTYPE_NONE     = 0;
-    protected static final int BODYTYPE_COMMAND  = 1;
-    protected static final int BODYTYPE_PANEL    = 2;
-    protected static final int BODYTYPE_TEMPLATE = 3;
-    protected static final int BODYTYPE_FORWARD  = 4;
-    protected static final int BODYTYPE_INCLUDE  = 5;
+    public static final String PARAMNAME_POPUP = "popup";
+    public static final String PARAMNAME_PRINT = "print";
 
     static
     {
@@ -169,6 +165,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     private TemplateConsumerDefn templateConsumer;
     private NavigationPageBodyType bodyType = new NavigationPageBodyType(NavigationPageBodyType.NONE);
+    private String popupModeParamName = PARAMNAME_POPUP;
+    private String printModeParamName = PARAMNAME_PRINT;
     private ValueSource caption;
     private ValueSource title;
     private ValueSource heading;
@@ -304,7 +302,19 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     public void makeStateChanges(NavigationContext nc)
     {
+        String popupParamValue = nc.getRequest().getParameter(getPopupModeParamName());
+        if(popupParamValue != null)
+        {
+            boolean isPopup = TextUtils.toBoolean(popupParamValue);
+            nc.setPopupMode(isPopup);
+        }
 
+        String printParamValue = nc.getRequest().getParameter(getPrintModeParamName());
+        if(printParamValue != null)
+        {
+            boolean isPrint = TextUtils.toBoolean(printParamValue);
+            nc.setPrintMode(isPrint);
+        }
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/
@@ -568,6 +578,26 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     {
         this.bodyCommand = command;
         getBodyType().setValue(NavigationPageBodyType.COMMAND);
+    }
+
+    public String getPopupModeParamName()
+    {
+        return popupModeParamName;
+    }
+
+    public void setPopupModeParamName(String popupModeParamName)
+    {
+        this.popupModeParamName = popupModeParamName;
+    }
+
+    public String getPrintModeParamName()
+    {
+        return printModeParamName;
+    }
+
+    public void setPrintModeParamName(String printModeParamName)
+    {
+        this.printModeParamName = printModeParamName;
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/

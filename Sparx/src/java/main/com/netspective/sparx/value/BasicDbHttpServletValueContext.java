@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.23 2003-07-20 19:44:47 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.24 2003-08-05 17:11:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -98,8 +98,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     private Servlet servlet;
     private ServletRequest request;
     private ServletResponse response;
-    private boolean isPopup;
-    private boolean isPrint;
     private String rootUrl;
     private RuntimeEnvironmentFlags contextEnvFlags;
 
@@ -209,26 +207,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public ServletContext getServletContext()
     {
         return context;
-    }
-
-    public boolean isPopup()
-    {
-        return isPopup;
-    }
-
-    public void setIsPopup(boolean popup)
-    {
-        this.isPopup = popup;
-    }
-
-    public boolean isPrint()
-    {
-        return isPrint;
-    }
-
-    public void setIsPrint(boolean print)
-    {
-        this.isPrint = print;
     }
 
     public AuthenticatedUser getAuthenticatedUser()

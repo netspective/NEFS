@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpServletValueContext.java,v 1.4 2003-05-10 16:50:02 shahid.shah Exp $
+ * $Id: HttpServletValueContext.java,v 1.5 2003-08-05 17:11:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -77,20 +77,6 @@ public interface HttpServletValueContext extends ServletValueContext
     public String getThemeResourcesRootUrl(Theme theme);
 
     public String getThemeImagesRootUrl(Theme theme);
-
-    /**
-     * Return true if the servlet is being used in a popup window
-     */
-    public boolean isPopup();
-
-    public void setIsPopup(boolean popup);
-
-    /**
-     * Return true if the servlet is being used for printing content
-     */
-    public boolean isPrint();
-
-    public void setIsPrint(boolean print);
 
     public String getRootUrl();
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.16 2003-07-12 03:33:44 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.17 2003-08-05 17:11:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -410,7 +410,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException
     {
-        if (nc.isPopup())
+        if (nc.isPopupMode())
             return;
 
         renderPageMasthead(writer, nc);
@@ -512,7 +512,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     public void renderPageFooter(Writer writer, NavigationContext nc) throws IOException
     {
-        if (nc.isPopup())
+        if (nc.isPopupMode())
             return;
 
         writer.write("            </td>");
