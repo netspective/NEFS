@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Suite.java,v 1.2 2003-04-06 23:57:48 shahbaz.javeed Exp $
+ * $Id: Suite.java,v 1.3 2003-04-12 05:48:37 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom;
@@ -48,15 +48,13 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import com.netspective.axiom.sql.SqlManagerQueryTest;
-import com.netspective.axiom.dal.SqlManagerSchemaTest;
 
 public class Suite
 {
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(SqlManagerQueryTest.class));
-//        suite.addTest(new TestSuite(SqlManagerSchemaTest.class));
+        suite.addTest(com.netspective.axiom.sql.Suite.suite());
         return suite;
     }
 }
