@@ -14,7 +14,6 @@ table.about td { font-family: verdana; font-size: 9pt; }
                 <tr><td align=right>ID:</td><td>${product.productId}</td></tr>
                 <tr><td align=right>Name:</td><td>${product.productName}</td></tr>
                 <tr><td align=right>Version:</td><td>${product.versionAndBuild}</td></tr>
-                <tr><td align=right>Build Date:</td><td>${product.buildDate?date}</td></tr>
             </table>
             <p>
             <#if vc.authenticatedUser?exists>
