@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.9 2004-03-06 17:16:28 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.10 2004-03-07 02:54:05 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import com.netspective.sparx.Project;
+import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.command.PanelEditorCommand;
 import com.netspective.sparx.form.Dialog;
@@ -55,6 +56,8 @@ import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -157,6 +160,11 @@ public class PanelEditor extends AbstractPanel
         setNameSpace(pkg);
     }
 
+    public PanelEditorState constructPanelEditorState()
+    {
+        return new PanelEditorState(getQualifiedName());
+    }
+
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
     {
@@ -176,30 +184,40 @@ public class PanelEditor extends AbstractPanel
     */
    public static int validatePanelEditorMode(String panelMode, String recordKey)
    {
-       int mode = ReportPanelEditor.UNKNOWN_MODE;
-       if (panelMode == null)
+       int mode = translatePanelEditorMode(panelMode);
+        // if mode is supposed to be in add, edit, or delete then the recordKey should have been provided.
+       if ((mode == ReportPanelEditor.EDIT_CONTENT_DISPLAY_MODE ||
+           mode == DELETE_CONTENT_DISPLAY_MODE) && recordKey == null)
        {
-           mode = ReportPanelEditor.DEFAULT_DISPLAY_MODE;
+           mode = UNKNOWN_MODE;
        }
-       else if (panelMode.equals("add"))
-       {
-           mode = ReportPanelEditor.ADD_CONTENT_DISPLAY_MODE;
-       }
-       else if (panelMode.equals("edit") && recordKey != null)
-       {
-           mode = ReportPanelEditor.EDIT_CONTENT_DISPLAY_MODE;
-       }
-       else if (panelMode.equals("delete") && recordKey != null)
-       {
-           mode = ReportPanelEditor.DELETE_CONTENT_DISPLAY_MODE;
-       }
-       else if (panelMode.equals("manage"))
-       {
-           mode = ReportPanelEditor.MANAGE_CONTENT_DISPLAY_MODE;
-       }
-
        return mode;
-   }
+    }
+
+    /**
+     * Translates the mode name into a mode value. This doesn't do any validation checking of the mode.
+     *
+     * @param modeName
+     * @return
+     */
+    public static int translatePanelEditorMode(String modeName)
+    {
+        int mode = DEFAULT_DISPLAY_MODE;
+        if (modeName == null)
+            mode = DEFAULT_DISPLAY_MODE;
+        else if (modeName.equals("add"))
+            mode = ADD_CONTENT_DISPLAY_MODE;
+        else if (modeName.equals("edit"))
+            mode = EDIT_CONTENT_DISPLAY_MODE;
+        else if (modeName.equals("delete"))
+            mode = ReportPanelEditor.DELETE_CONTENT_DISPLAY_MODE;
+        else if (modeName.equals("manage"))
+           mode = ReportPanelEditor.MANAGE_CONTENT_DISPLAY_MODE;
+        else
+            mode = UNKNOWN_MODE;
+
+        return mode;
+    }
 
     /**
      * Gets the associated project
@@ -368,18 +386,18 @@ public class PanelEditor extends AbstractPanel
         return null;
     }
 
-    public static String calculateNextMode(DialogContext dc, String panelName, String panelMode, String prevMode,
+    public static String calculateNextModeUrl(DialogContext dc, String panelName, int panelMode, int previousMode,
                                          String panelRecordKey)
     {
-        String url ="?";
+        String url = "active-page:";
         String currentUrl = dc.getNavigationContext().getActivePage().getUrl(dc);
-        int previousMode = validatePanelEditorMode(prevMode, panelRecordKey);
         if (previousMode != DEFAULT_DISPLAY_MODE)
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName + ",manage";
         else
             url = currentUrl;
 
-        return url;
+        String urlStr = ValueSources.getInstance().getValueSourceOrStatic(url).getTextValue(dc);
+        return urlStr;
     }
 
     /**
@@ -429,6 +447,23 @@ public class PanelEditor extends AbstractPanel
     }
 
     /**
+     * Gets the panel editor state object for the current navigation context
+     *
+     * @param nc    current navigation context
+     * @return      the state object containing  context sensitive panel editor information
+     */
+    public PanelEditorState getPanelEditorState(NavigationContext nc)
+    {
+        PanelEditorState state = (PanelEditorState) nc.getHttpRequest().getAttribute(PANEL_EDITOR_CONTEXT_ATTRIBUTE);
+        if (state == null)
+        {
+            log.error("Failed to render panel editor '" + getQualifiedName() + "' because the state  for it was not found in the request");
+            throw new RuntimeException("Failed to render panel editor '" + getQualifiedName() + "' because the state  for it was not found in the request");
+        }
+        return state;
+    }
+
+    /**
      * Calculate and process the state of the all the panel actions based on current context
      *
      * @param nc                current navigation context
@@ -452,7 +487,6 @@ public class PanelEditor extends AbstractPanel
         else if (mode == ADD_CONTENT_DISPLAY_MODE || mode == EDIT_CONTENT_DISPLAY_MODE || mode == DELETE_CONTENT_DISPLAY_MODE)
         {
             actionStates.getState(PANEL_CONTENT_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
-            actionStates.getState(PANEL_CONTENT_ADD_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
         }
         else if (mode == MANAGE_CONTENT_DISPLAY_MODE)
         {

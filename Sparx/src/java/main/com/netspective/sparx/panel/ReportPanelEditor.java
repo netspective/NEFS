@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ReportPanelEditor.java,v 1.3 2004-03-06 17:16:28 aye.thu Exp $
+ * $Id: ReportPanelEditor.java,v 1.4 2004-03-07 02:54:05 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -320,7 +320,7 @@ public class ReportPanelEditor extends PanelEditor
      */
     public String generatePanelActionUrl(NavigationContext nc, int actionMode)
     {
-        String url = "?";
+        String url = "active-page:";
         String currentUrl = nc.getActivePage().getUrl(nc);
 
         if (actionMode == EDIT_CONTENT_DISPLAY_MODE)
@@ -340,12 +340,7 @@ public class ReportPanelEditor extends PanelEditor
         }
         else if (actionMode == MANAGE_CONTENT_DISPLAY_MODE)
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",manage";
-        else if (actionMode == DEFAULT_DISPLAY_MODE)
-            url = currentUrl;
 
-        ValueSource retainParamsVS = nc.getActivePage().getRetainParams();
-        if(retainParamsVS != null)
-            url = HttpUtils.appendParams(nc.getHttpRequest(), url, retainParamsVS.getTextValue(nc));
         return url;
     }
 
@@ -371,10 +366,6 @@ public class ReportPanelEditor extends PanelEditor
                 throw new RuntimeException("Record editor panel '" + getQualifiedName() + "' requires the request " +
                         "parameter '" + getRequireRequestParam() + "'.");
         }
-        String requestedMode = (String) nc.getRequest().getAttribute(CURRENT_MODE_CONTEXT_ATTRIBUTE);
-        String requestedKey = (String) nc.getRequest().getAttribute(POPULATE_KEY_CONTEXT_ATTRIBUTE);
-        String prevMode = (String) nc.getRequest().getAttribute(PREV_MODE_CONTEXT_ATTRIBUTE);
-
         // add all the required panel actions
         if (!isActionsPrepared())
             createPanelActions(nc);
@@ -384,7 +375,8 @@ public class ReportPanelEditor extends PanelEditor
         qrp.setScrollable(true);
 
         // get the requested mode, key, and previous modes from the request
-        int mode = validatePanelEditorMode(requestedMode, requestedKey);
+        PanelEditorState state = getPanelEditorState(nc);
+        int mode = state.getCurrentMode();
         if (mode == UNKNOWN_MODE)
         {
             log.error("Unexpected mode encountered for the record editor panel '" + getName() + "'.");
@@ -411,8 +403,12 @@ public class ReportPanelEditor extends PanelEditor
             mode == ReportPanelEditor.DELETE_CONTENT_DISPLAY_MODE)
         {
             // set the dialog perspective using the requested mode.
-            // IMPORTANT: The dialog perspective strings are exactly the same as the panel editor's add/edit/delete modes.
-            nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, requestedMode);
+            if (mode == ReportPanelEditor.ADD_CONTENT_DISPLAY_MODE)
+                nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "add");
+            else if (mode == ReportPanelEditor.EDIT_CONTENT_DISPLAY_MODE)
+                nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "edit");
+            else if (mode == ReportPanelEditor.DELETE_CONTENT_DISPLAY_MODE)
+                nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "delete");
             // record action was defined so we need to display the requested display mode
             DialogContext dc = dialog.createContext(nc, theme.getDefaultDialogSkin());
             dc.addRetainRequestParams(DialogCommand.DIALOG_COMMAND_RETAIN_PARAMS);
