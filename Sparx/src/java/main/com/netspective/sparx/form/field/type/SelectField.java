@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.18 2004-01-27 04:01:51 aye.thu Exp $
+ * $Id: SelectField.java,v 1.19 2004-02-04 23:14:49 min-gu.lee Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -681,19 +681,19 @@ public class SelectField extends TextField
                     switch(styleValueIndex)
                     {
                         case Style.COMBO:
-                            writer.write("<select class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' " + defaultControlAttrs +
+                            writer.write("<select id = '" + id + "' class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' " + defaultControlAttrs +
                                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
                                     ">\n" + options + "</select>\n");
                             break;
 
                         case Style.LIST:
-                            writer.write("<select class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' " + defaultControlAttrs +
+                            writer.write("<select id = '" + id + "' class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' " + defaultControlAttrs +
                                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
                                     ">\n" + options + "</select>\n");
                             break;
 
                         case Style.MULTILIST:
-                            writer.write("<select class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' multiple='yes' " + defaultControlAttrs +
+                            writer.write("<select id = '" + id + "' class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' multiple='yes' " + defaultControlAttrs +
                                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
                                     ">\n" + options + "</select>\n");
                             break;
