@@ -2,6 +2,21 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.0.17"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                Add label for HTML form elements, column headers for data tables, and alt for auto generated images for
+                the CFR Section 508 compliance requirements and enhanced accessibility.
+            </change-log-entry>
+            <change-log-entry>
+                Fixed problem where large values in CurrencyField were being submitted with the exponential symbol
+                (e.g 1.234E3). The solution was to use the DecimalFormat to force the format of the double value.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Axiom" version="7.0.11"/>
         <change-log>
             <summary>Minor enhancement</summary>
@@ -14,6 +29,7 @@
             </change-log-entry>
         </change-log>
     </release>
+
     <release>
         <product name="Sparx" version="7.0.16"/>
         <change-log>
