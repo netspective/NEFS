@@ -39,11 +39,8 @@
  */
 package com.netspective.medigy.reference.custom;
 
-public interface CustomCachedReferenceEntity
+public interface CachedCustomReferenceEntity
 {
-    public String getId();
-    public String getLabel();
-    public String getDescription();
     public CustomReferenceEntity getEntity();
     public void setEntity(final CustomReferenceEntity entity);
 }
