@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsManager.java,v 1.1 2003-05-06 17:18:19 shahid.shah Exp $
+ * $Id: DialogsManager.java,v 1.2 2003-08-24 22:29:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -49,10 +49,6 @@ public interface DialogsManager
     Dialogs getDialogs();
 
     Dialog getDialog(String name);
-
-    Dialog createDialog();
-
-    void addDialog(Dialog query);
 
     DialogsPackage createDialogs();
 
