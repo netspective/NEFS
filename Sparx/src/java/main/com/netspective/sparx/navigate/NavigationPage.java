@@ -53,27 +53,10 @@
 
 package com.netspective.sparx.navigate;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.exception.NestableException;
-
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.CommandException;
+import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.security.AuthenticatedUser;
@@ -104,11 +87,27 @@ import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.sparx.util.AlternateOutputDestServletResponse;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
+import org.apache.commons.lang.exception.NestableException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.70 2004-07-18 16:24:10 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.71 2004-07-31 23:13:00 aye.thu Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -1735,32 +1734,50 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
      */
     public boolean verifyPanelEditorInPage(NavigationContext nc, PanelEditorCommand peCommand)
     {
-        boolean valid = false;
         int bodyType = getBodyType().getValueIndex();
-        String panelEditorName = peCommand.getPanelEditorName();
+        String requestedPanelEditorName = peCommand.getPanelEditorName();
         if (bodyType == NavigationPageBodyType.COMMAND)
         {
-            ValueSource commandExpr = getCommandExpr();
-            if (commandExpr != null)
+            Command command = null;
+            // check if command expression is defined for the page (command expression is used for dynamically defining
+            // the page command using a value source
+            if (getCommandExpr() != null)
             {
+                ValueSource commandExpr = getCommandExpr();
                 String commandText = commandExpr.getTextValue(nc);
-                if (commandText != null)
+                try
                 {
-                    try
-                    {
-                        Command command = Commands.getInstance().getCommand(commandText);
-                        if (command instanceof PanelEditorCommand)
-                        {
-                            String peName = ((PanelEditorCommand) command).getPanelEditorName();
-                            if (panelEditorName.equals(peName))
-                                return true;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        getLog().error("Command error in " + this.getClass().getName(), e);
-                    }
+                    command = Commands.getInstance().getCommand(commandText);
                 }
+                catch (CommandNotFoundException e)
+                {
+                    getLog().error("The command expression defined for the page body is not a valid command: " + commandText, e);
+                }
+            }
+            else if (getCommand() != null)
+            {
+                command = getCommand();
+            }
+            if (command != null)
+            {
+                if (command instanceof PanelEditorCommand)
+                {
+                    String peName = ((PanelEditorCommand) command).getPanelEditorName();
+                    if (requestedPanelEditorName.equals(peName))
+                        return true;
+                    else
+                        getLog().error("The requested panel editor '" + requestedPanelEditorName + "' is not the same as " +
+                                " the panel editor '" + peName +"' defined in the page.");
+                }
+                else
+                {
+                    getLog().error("The command in the body of the page is not a panel editor command.");
+                }
+            }
+            else
+            {
+                // no commands are defined in the body so the requested command is not valid for execution
+                getLog().error("There are no valid commands defined in the page body.");
             }
         }
         else if (bodyType == NavigationPageBodyType.PANEL)
@@ -1777,7 +1794,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                     if (command instanceof PanelEditorCommand)
                     {
                         String peName = ((PanelEditorCommand) command).getPanelEditorName();
-                        if (panelEditorName.equals(peName))
+                        if (requestedPanelEditorName.equals(peName))
                         {
                             return true;
                         }
