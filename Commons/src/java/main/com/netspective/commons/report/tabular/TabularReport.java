@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: TabularReport.java,v 1.6 2003-05-16 21:21:31 shahid.shah Exp $
+ * $Id: TabularReport.java,v 1.7 2003-08-01 14:50:52 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -65,11 +65,13 @@ public interface TabularReport extends Report
     {
         public static final int HAS_PLACE_HOLDERS = 1;
         public static final int HIDE_HEADING = HAS_PLACE_HOLDERS * 2;
+        public static final int SELECTABLE = HIDE_HEADING * 2;
 
         public static final FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
         {
             new FlagDefn(ACCESS_PRIVATE, "HAS_PLACE_HOLDERS", HAS_PLACE_HOLDERS),
             new FlagDefn(ACCESS_XDM, "HIDE_HEADING", HIDE_HEADING),
+            new FlagDefn(ACCESS_PRIVATE, "IS_SELECTABLE", SELECTABLE)
         };
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
@@ -81,6 +83,8 @@ public interface TabularReport extends Report
     public String getName();
 
     public Flags getFlags();
+
+    public Flags createFlags();
 
     public TabularReportColumns getColumns();
 
