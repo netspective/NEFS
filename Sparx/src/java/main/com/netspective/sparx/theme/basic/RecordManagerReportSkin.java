@@ -56,7 +56,6 @@ import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelFrame;
@@ -68,7 +67,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordManagerReportSkin.java,v 1.3 2003-10-21 18:13:56 shahid.shah Exp $
+ * $Id: RecordManagerReportSkin.java,v 1.4 2003-10-22 02:48:50 shahid.shah Exp $
  */
 public class RecordManagerReportSkin extends RecordEditorReportSkin
 {
@@ -98,11 +97,11 @@ public class RecordManagerReportSkin extends RecordEditorReportSkin
                 RedirectValueSource redirect = reportAction.getRedirect();
                 if (redirect != null)
                 {
-                    writer.write("<td align=right><table cellspacing=0 cellpadding=0><tr>");
-                    writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-add\" width=\"16\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"16\"></td>");
+                    writer.write("<td align=right valign=bottom bgcolor=white><table cellspacing=0 cellpadding=0 class='"+ panelClassNamePrefix +"'><tr>");
+                    writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-add\" width=\"16\" height=14><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"16\"></td>");
                     if (redirect != null)
                     {
-                         writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
+                         writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\" height=14>" +
                             "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ redirect.getUrl(rc)  +
                             "\"><nobr>&nbsp;" + reportAction.getCaption().getTextValue(vc) + "&nbsp;</nobr></a></td>");
                     }

@@ -8,13 +8,13 @@
 .panel-output-frame-heading-action-expand  { background: url(../images/panel/output/frame-heading-action-down.gif) no-repeat; width: 17px; height: 19px; cursor: hand; }
 .panel-output-frame-heading-action-drag { background: url(../images/panel/output/frame-heading-action-drag.gif) no-repeat; width: 17px; height: 19px }
 .panel-output-frame-action-search { background: url(../images/panel/output/frame-action-search.gif) no-repeat; width: 17px; height: 14px }
-.panel-output-frame-action-add { background: url(../images/panel/output/frame-action-add.gif) no-repeat; border-left: 1px solid #999; width: 17px; height: 14px }
+.panel-output-frame-action-add { background: url(../images/panel/output/frame-action-add.gif) no-repeat; border-top: 1px solid #999; border-left: 1px solid #999; width: 17px; height: 14px }
 .panel-output-frame-action-item   { background: #5a5ae6 url(../images/panel/output/frame-action-add.gif) left bottom; border-top: 1px solid #999; border-left: 1px solid #999 }
 .panel-output-frame-mid { background-image: url(../images/panel/output/mid.gif); width: 100%; height: 19px }
 .panel-output-frame-end-cap { background: url(../images/panel/output/end-cap.gif) no-repeat left top; width: 2px; height: 19px }
 
 .panel-output-frame-action        { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase; width: 100% }
-.panel-output-frame-action-box    { background-color: #f1eeee; text-transform: uppercase; border-left: 1px solid #999; border-right: 1px solid #999 }
+.panel-output-frame-action-box    { background-color: #f1eeee; text-transform: uppercase; border-top: 1px solid #999; border-right: 1px solid #999 }
 .panel-output-frame-action-box:hover  { background-color: #a9a9a9; text-transform: uppercase; padding-top: 1px; border-top: 1px solid #999; border-right: 1px solid #999 }
 .panel-output-frame-action:link    { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
 .panel-output-frame-action:visited    { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none }
