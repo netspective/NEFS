@@ -291,6 +291,114 @@ function HttpController_callAuthenticatedUserClientService(/** all arguments mus
     );
 }
 
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Http Client Communications Manager. (Both generic and service-oriented handling
+ * ----------------------------------------------------------------------------------------------------
+ * USAGE: 
+ * To use this http client object, you must do the following:
+ *     var myClient = new HttpClient();
+ *     // OPTIONAL: do the following if you want to construct the request object. The xmlHttp variable is the XMLHttpRequest object.
+ *     myClient.setupMessage = function(xmlHttp) { ... };
+ *     
+ *     // Use the generic sendMessage(url) to send the message to a generic URL
+ *     myClient.sendMessage("http://www.yahoo.com");
+ *     // Use the service-oriented sendServiceMessage(serviceName) to send a message to a server-side service
+ *     myClient.sendServiceMessage("myService");
+ * ----------------------------------------------------------------------------------------------------
+ */
+ 
+function HttpClient()
+{
+    this.xmlHttp =  createXmlHttpRequest(); 
+    if(! this.xmlHttp)
+        alert("Unable to create XMLHttpRequest");
+        
+    this.callInProgress = false;
+    
+    this.asyncMessage = true;   // by default, it is an async operation
+    this.messageType = 'GET';   // by default, it is a GET message
+    this.setupMessage = null;   // by default, there is no modification to the request object
+    
+    this.sendMessage = HttpClient_sendMessage;
+    this.sendServiceMessage = HttpClient_sendServiceMessage;
+    this.stateChangeCallback = HttpClient_stateChangeCallback;
+    
+    this.statusOkCallback = null;           // declare this function to handle a http 200 status
+    this.statusNotFoundCallback = null;     // declare this function to handle a http 404 error
+    this.statusOtherCallback = null;        // declare this function to handle an unexpected http status code
+}
+
+function HttpClient_sendMessage(url)
+{
+    // Prevent multiple calls
+    if (this.callInProgress) 
+    {
+        alert("Call in progress");
+        return;
+    };  
+    
+
+    // Open an async request - third argument makes it async
+    this.xmlHttp.open(this.messageType, url, this.asyncMessage);
+    if (this.setupMessage != null)
+        this.setupMessage(this.xmlHttp);
+        
+
+    // Have to assign "this" to a variable - not sure why can't use directly
+    var self = this;
+
+    // Assign a closure to the onreadystatechange callback
+    this.xmlHttp.onreadystatechange = function() 
+    {
+        self.stateChangeCallback(self);
+    }
+    
+    // Send the request
+    this.xmlHttp.send(null);
+   
+    this.callInProgress = true;
+}
+
+function HttpClient_sendServiceMessage(serviceName)
+{
+    // use the current URL but just append the service name as a request parameter.
+    this.messageType = 'HEAD';
+    this.sendMessage("?service=HttpController." + serviceName);   
+}
+
+/**
+ * NOTE: IE using ActiveX 3.x and above doesn't populate the xmlHttp status until
+ * the load is complete with status 4.
+ */
+function HttpClient_stateChangeCallback(client) 
+{    
+    if (client.xmlHttp.readyState == 4)
+    {
+        if (client.xmlHttp.status == 200)
+        {
+            if (client.statusOkCallback != null)
+                client.statusOkCallback(client.xmlHttp);
+        }
+        else if (xmlhttp.status == 404)
+        {
+            if(client.statusNotFoundCallback != null)
+                client.statusNotFoundCallback(client.xmlHttp);
+        }
+        else
+        {
+            if(client.statusOtherCallback != null)
+                client.statusOtherCallback(client.xmlHttp);
+        }               
+        
+        client.callInProgress = false;
+    }
+}
+
+
+
+
 // -------------------------------------------------------------------------------------------------------------------
 // -- DHTML display/hide functions
 // -------------------------------------------------------------------------------------------------------------------
