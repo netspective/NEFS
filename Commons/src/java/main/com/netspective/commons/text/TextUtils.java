@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.11 2003-12-06 01:07:45 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.12 2003-12-10 21:00:59 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -484,7 +484,7 @@ public class TextUtils
         Perl5Util perlUtil = new Perl5Util();
 
         if(replStr.length() > 0)
-            return perlUtil.substitute("s/" + replStr + "/\n/g", text).trim();
+            return perlUtil.substitute("s/^" + replStr + "//gm", text).trim();
         else
             return text;
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmHandler.java,v 1.8 2003-11-16 15:16:25 shahid.shah Exp $
+ * $Id: XdmHandler.java,v 1.9 2003-12-10 21:01:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -49,6 +49,7 @@ import java.util.Iterator;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.Locator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -146,7 +147,8 @@ public class XdmHandler extends AbstractContentHandler
             if (tp != null)
             {
                 String templateName = tp.getTemplateName(url, localName, qName, attributes);
-                InputSourceLocator inputSourceLocator = new InputSourceLocator(getParseContext().getInputSrcTracker(), getParseContext().getLocator().getLineNumber());
+                final Locator locator = getParseContext().getLocator();
+                InputSourceLocator inputSourceLocator = new InputSourceLocator(getParseContext().getInputSrcTracker(), locator.getLineNumber(), locator.getColumnNumber());
                 Template template = new Template(templateName, this, inputSourceLocator, getParseContext().getTemplateCatalog(), tp, url, localName, qName, attributes);
                 getParseContext().getTemplateCatalog().registerTemplate(tp, templateName, template);
                 getTemplateDefnStack().push(template);
@@ -267,7 +269,10 @@ public class XdmHandler extends AbstractContentHandler
             if(childInstance != null)
             {
                 if (childInstance instanceof XmlDataModelSchema.InputSourceLocatorListener)
-                    ((XmlDataModelSchema.InputSourceLocatorListener) childInstance).setInputSourceLocator(new InputSourceLocator(getParseContext().getInputSrcTracker(), getParseContext().getLocator().getLineNumber()));
+                {
+                    final Locator locator = getParseContext().getLocator();
+                    ((XmlDataModelSchema.InputSourceLocatorListener) childInstance).setInputSourceLocator(new InputSourceLocator(getParseContext().getInputSrcTracker(), locator.getLineNumber(), locator.getColumnNumber()));
+                }
 
                 XdmHandlerNodeStackEntry childEntry = null;
                 try
@@ -371,7 +376,17 @@ public class XdmHandler extends AbstractContentHandler
             {
                 XdmHandlerNodeStackEntry activeEntry = (XdmHandlerNodeStackEntry) getNodeStack().peek();
                 if (activeEntry != null)
+                {
+                    if (activeEntry.getInstance() instanceof XmlDataModelSchema.InputSourceLocatorListener)
+                    {
+                        InputSourceLocator isl = ((XmlDataModelSchema.InputSourceLocatorListener) activeEntry.getInstance()).getInputSourceLocator();
+                        final Locator locator = getParseContext().getLocator();
+                        if(isl != null)
+                            isl.setEndLine(locator.getLineNumber(), locator.getColumnNumber());
+                    }
+
                     activeEntry.getSchema().finalizeElementConstruction(((XdmParseContext) getParseContext()), activeEntry.getInstance(), activeEntry.getElementName());
+                }
                 getNodeStack().pop();
             }
             catch (DataModelException e)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.41 2003-11-13 17:10:03 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.42 2003-12-10 21:01:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -136,6 +136,7 @@ public class XmlDataModelSchema
 
     public interface InputSourceLocatorListener
     {
+        public InputSourceLocator getInputSourceLocator();
         public void setInputSourceLocator(InputSourceLocator locator);
     }
 

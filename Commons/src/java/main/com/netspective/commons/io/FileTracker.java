@@ -39,12 +39,15 @@
  */
 
 /**
- * $Id: FileTracker.java,v 1.3 2003-08-17 00:04:30 shahid.shah Exp $
+ * $Id: FileTracker.java,v 1.4 2003-12-10 21:00:59 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class FileTracker extends AbstractSourceTracker
 {
@@ -85,5 +88,16 @@ public class FileTracker extends AbstractSourceTracker
 		if (file.lastModified() >= this.lastModified)
 			this.lastModified = file.lastModified();
 	}
+
+    public InputStream openStream() throws IOException
+    {
+        if(file == null)
+            return null;
+
+        if(file.exists())
+            return new FileInputStream(file);
+        else
+            return null;
+    }
 }
 

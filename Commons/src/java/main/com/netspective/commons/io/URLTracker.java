@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: URLTracker.java,v 1.1 2003-08-17 00:04:30 shahid.shah Exp $
+ * $Id: URLTracker.java,v 1.2 2003-12-10 21:00:59 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -111,5 +112,13 @@ public class URLTracker extends AbstractSourceTracker
 	{
         this.lastModified = lastModified();
 	}
+
+    public InputStream openStream() throws IOException
+    {
+        if(url == null)
+            return null;
+
+        return url.openStream();
+    }
 }
 

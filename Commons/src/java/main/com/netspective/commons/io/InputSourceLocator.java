@@ -39,20 +39,30 @@
  */
 
 /**
- * $Id: InputSourceLocator.java,v 1.1 2003-10-11 14:32:42 shahid.shah Exp $
+ * $Id: InputSourceLocator.java,v 1.2 2003-12-10 21:00:59 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
 
+import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
+
 public class InputSourceLocator
 {
     private InputSourceTracker inputSourceTracker;
-    private int lineNumber;
+    private int startLineNumber;
+    private int startColumnNumber;
+    private int endLineNumber;
+    private int endColumnNumber;
 
-    public InputSourceLocator(InputSourceTracker inputSourceTracker, int lineNumber)
+    public InputSourceLocator(InputSourceTracker inputSourceTracker, int lineNumber, int columnNumber)
     {
         this.inputSourceTracker = inputSourceTracker;
-        this.lineNumber = lineNumber;
+        this.startLineNumber = lineNumber;
+        this.startColumnNumber = columnNumber;
     }
 
     public InputSourceTracker getInputSourceTracker()
@@ -60,13 +70,101 @@ public class InputSourceLocator
         return inputSourceTracker;
     }
 
-    public int getLineNumber()
+    public int getStartLineNumber()
     {
-        return lineNumber;
+        return startLineNumber;
+    }
+
+    public int getStartColumnNumber()
+    {
+        return startColumnNumber;
+    }
+
+    public int getEndLineNumber()
+    {
+        return endLineNumber;
+    }
+
+    public int getEndColumnNumber()
+    {
+        return endColumnNumber;
+    }
+
+    public void setEndLine(int lineNumber, int columnNumber)
+    {
+        this.endLineNumber = lineNumber;
+        this.endColumnNumber = columnNumber;
+    }
+
+    public String getLineNumbersText()
+    {
+        if(endLineNumber > startLineNumber)
+            return " lines " + startLineNumber + " to " + endLineNumber;
+        else
+            return " line " + startLineNumber;
+    }
+
+    public String getSourceText() throws IOException
+    {
+        if(startLineNumber == 0 && endLineNumber == 0)
+            return null;
+
+        InputStream is = null;
+        Reader isReader = null;
+        LineNumberReader reader = null;
+        StringBuffer result = new StringBuffer();
+
+        try
+        {
+            is = inputSourceTracker.openStream();
+            isReader = new InputStreamReader(is);
+            reader = new LineNumberReader(isReader);
+
+            String line = null;
+
+            if(startLineNumber != 0 && endLineNumber == 0)
+            {
+                while((line = reader.readLine()) != null)
+                {
+                    if(reader.getLineNumber() == startLineNumber)
+                        return line;
+                }
+
+            }
+            else
+            {
+                while((line = reader.readLine()) != null)
+                {
+                    int lineNumber = reader.getLineNumber();
+
+                    if(lineNumber < startLineNumber)
+                        continue;
+
+                    if(lineNumber > endLineNumber)
+                        break;
+
+                    result.append(line);
+                    result.append("\n");
+                }
+            }
+        }
+        finally
+        {
+            if(reader != null)
+                reader.close();
+
+            if(isReader != null)
+                is.close();
+
+            if(is != null)
+                is.close();
+        }
+
+        return result.toString();
     }
 
     public String toString()
     {
-        return inputSourceTracker.getIdentifier() + " line " + lineNumber;
+        return inputSourceTracker.getIdentifier() + getLineNumbersText();
     }
 }
