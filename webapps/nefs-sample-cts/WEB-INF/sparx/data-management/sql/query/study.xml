@@ -227,7 +227,11 @@
                         <column heading="Code" />
                         <column heading="Abbrev" />
                     </report>
-                    <report name="subject-view">
+
+                </panel>
+                <panel  name="subject-view">
+                    <frame heading="static:Cilinical Trial Sites"/>
+                    <report>
                         <column heading="ID"/>
                         <column heading="Name" align="left" redirect="vs-expr:${page-id:patient,/home/trial/site}?study_id=${request:study_id}&amp;org_id=${0}"/>
                         <column heading="Code" />
