@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.6 2004-04-27 04:13:34 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.7 2004-08-01 00:38:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel.editor;
@@ -124,6 +124,7 @@ public class PanelEditor extends AbstractPanel
     private String requireRequestParam = null;
     /* child elements for content */
     private Map elements = new HashMap();
+    private boolean alwaysShowAddAction;
 
     public PanelEditor(Project project)
     {
@@ -223,6 +224,15 @@ public class PanelEditor extends AbstractPanel
         return list;
     }
 
+    public boolean isAlwaysShowAddAction()
+    {
+        return alwaysShowAddAction;
+    }
+
+    public void setAlwaysShowAddAction(boolean alwaysShowAddAction)
+    {
+        this.alwaysShowAddAction = alwaysShowAddAction;
+    }
 
     /**
     * Calculate the mode the record editor panel is in and also set the
@@ -568,8 +578,8 @@ public class PanelEditor extends AbstractPanel
             {
                 caption = elements[i].getCaption();
                 PanelEditorContentElement.PanelEditorContentState elementState = state.getElementState(elements[i].getName());
-                // hide the ADD action only if there is content in the content element
-                if (!elementState.isEmptyContent())
+                // hide the ADD action only if there is content in the content element and we're not always showing add action
+                if (!alwaysShowAddAction && !elementState.isEmptyContent())
                     actionStates.getState("Add " + (caption != null ? caption : "")).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             }
         }
