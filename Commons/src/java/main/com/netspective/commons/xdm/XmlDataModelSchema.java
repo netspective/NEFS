@@ -1562,8 +1562,9 @@ public class XmlDataModelSchema
             ((ConstructionFinalizeListener) element).finalizeConstruction(pc, element, elementName);
     }
 
-    public boolean assignInstanceValue(final Object element, final String key, final Object value, final boolean required) throws IllegalAccessException, InvocationTargetException, DataModelException
+    public boolean assignInstanceValue(final Object element, String key, final Object value, final boolean required) throws IllegalAccessException, InvocationTargetException, DataModelException
     {
+        key = key.toLowerCase();
         Method method = (Method) getAttributeSetterMethods().get(key);
         if(method != null)
         {
