@@ -2,7 +2,7 @@
     <tr>
         <td align="left" valign="top" width="83">
             <div align="left">
-                <img src="${resourcesPath}/images/products/frameworks/presentation-bug.gif" alt="" height="54" width="63" border="0"/>
+                <img src="${resourcesPath}/images/products/frameworks/suite/presentation-bug.gif" alt="" height="54" width="63" border="0"/>
             </div>
         </td>
         <td class="bodycopy" valign="top" width="350">
@@ -22,7 +22,7 @@
     <tr>
         <td align="left" valign="top" width="83">
             <div align="left">
-                <img src="${resourcesPath}/images/products/frameworks/database-bug.gif" alt="" width="63" height="54" border="0"/>
+                <img src="${resourcesPath}/images/products/frameworks/suite/database-bug.gif" alt="" width="63" height="54" border="0"/>
             </div>
         </td>
         <td class="bodycopy" valign="top" width="350">
@@ -41,7 +41,7 @@
     <tr>
         <td align="left" valign="top" width="83">
             <div align="left">
-                <img src="${resourcesPath}/images/products/frameworks/security-bug.gif" alt="" width="63" height="54" border="0"/>
+                <img src="${resourcesPath}/images/products/frameworks/suite/security-bug.gif" alt="" width="63" height="54" border="0"/>
             </div>
 
         </td>
@@ -61,7 +61,7 @@
     <tr>
         <td align="left" valign="top" width="83">
             <div align="left">
-                <img src="${resourcesPath}/images/products/frameworks/compliment-bug.gif" alt="" width="62" height="44" border="0"/>
+                <img src="${resourcesPath}/images/products/frameworks/suite/complement-bug.gif" alt="" width="62" height="44" border="0"/>
             </div>
         </td>
         <td class="bodycopy" valign="top" width="350">

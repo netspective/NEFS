@@ -1,6 +1,6 @@
 <h1>TODO: Architecture Overview</h1>
 
-<img src="${resourcesPath}/images/products/frameworks/architecture.gif">
+<img src="${resourcesPath}/images/products/frameworks/suite/architecture.gif">
 
 <h1>Key NEFS Architecture Features</h1>
 <ul class="check-list">

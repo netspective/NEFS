@@ -5,7 +5,7 @@
 <#elseif activePageId = "/products/frameworks/commons">
     <#assign boxImage="products/frameworks/box-commons.gif"/>
 <#else>
-    <#assign boxImage="products/frameworks/box-nefs.jpg"/>
+    <#assign boxImage="products/frameworks/suite/box-nefs.jpg"/>
 </#if>
 
 <table width="600" border="0" cellspacing="0" cellpadding="0">

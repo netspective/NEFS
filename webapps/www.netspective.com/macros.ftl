@@ -1,10 +1,10 @@
-<#macro childMenus parentPage level=2>
+<#macro childMenus parentPage>
 
     <#list parentPage.childrenList as childPage>
     <tr>
         <td>
             <a class="menu" href="${childPage.getUrl(vc)}">
-            <span class="L${level}">
+            <span class="L${childPage.level}">
                 ${childPage.caption.getTextValue(vc)}
                 <#if childPage = activePage> *</#if>
             </span>
@@ -12,7 +12,7 @@
         </td>
     </tr>
     <#if childPage.childrenList?size gt 0>
-        <@childMenus parentPage=childPage level="${level+1}"/>
+        <@childMenus parentPage=childPage/>
     </#if>
     </#list>
 

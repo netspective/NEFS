@@ -2,7 +2,7 @@
     <table class="product-feature-synopsis">
         <tr>
             <td valign=top>
-                <img src="${resourcesPath}/images/products/frameworks/features/${image}.gif"/>
+                <img src="${resourcesPath}/images/products/frameworks/suite/features/${image}.gif"/>
             </td>
             <td valign=top>
                 <h1>${headline}</h1>
