@@ -62,6 +62,7 @@
 * Incorporate JDiff (http://javadiff.sourceforge.net/) documentation between releases
 * See if it makes sense to include Jamon (http://www.jamon.org) as a template engine option
 * Might be interesting to see if Sparx can work with x-Desktop (http://www.x-desktop.org/).
+* Review XP stories and scenarios capture methodology described in http://www.agilealliance.com/articles/articles/breitman.pdf and implement as new Sparx feature for capturing requirements and traceability
 
 BUGS
 * SelectField:
