@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.11 2003-03-24 13:26:41 shahid.shah Exp $
+ * $Id: AccessControlListTest.java,v 1.12 2003-03-25 17:52:10 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.acl;
@@ -442,24 +442,6 @@ public class AccessControlListTest extends TestCase
 	    // ValueContext Created User...
         ValueContext vcOne = ValueSources.getInstance().createDefaultValueContext();
 		assertNotNull(vcOne);
-
-		// Test ValueContext...
-	    DefaultValueContext dvc = (DefaultValueContext) vcOne;
-	    assertFalse(dvc.isInMaintenanceMode());
-	    assertFalse(dvc.isAntBuildEnvironment());
-	    assertFalse(dvc.isDemonstrationEnvironment());
-	    assertFalse(dvc.isDevelopmentEnvironment());
-	    assertFalse(dvc.isProductionEnvironment());
-	    assertFalse(dvc.isTestEnvironment());
-	    assertFalse(dvc.isTrainingEnvironment());
-	    assertFalse(dvc.isInConsoleMode());
-
-	    assertNull(dvc.getAccessControlListsManager());
-	    assertNull(dvc.getConfigurationsManager());
-
-	    dvc.setAttribute("test-attribute", new Float(3.14159));
-	    assertNull(dvc.getAttribute("test-attribute"));
-	    dvc.removeAttribute("test-attribute");
 
         AuthenticatedUser userOne = vcOne.createAuthenticatedUser();
 	    assertNotNull(userOne);
