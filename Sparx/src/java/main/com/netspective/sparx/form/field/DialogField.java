@@ -51,44 +51,45 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.49 2003-12-31 05:07:44 aye.thu Exp $
+ * $Id: DialogField.java,v 1.50 2004-03-04 05:21:35 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.*;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import javax.servlet.http.Cookie;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Element;
-import org.w3c.dom.Document;
-
-import com.netspective.sparx.form.DialogContext;
+import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogValidationContext;
-import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
+import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.GenericValue;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.Template;
-import com.netspective.commons.xml.template.TemplateCatalog;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.io.InputSourceLocator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.Cookie;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A <code>DialogField</code> object represents a data field of a form/dialog. It contains functionalities
@@ -1443,6 +1444,8 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 					if (action.getPartnerField().isAvailable(dc))
 						dcJs.append("field.dependentConditions[field.dependentConditions.length] = new DialogFieldConditionalDisplay(\"" + action.getSourceField().getQualifiedName()
 							+ "\", \"" + action.getPartnerField().getQualifiedName() + "\", \"" + action.getExpression() + "\");\n");
+                    else
+                        log.warn("Javascript dependent condition was not added because the partner field with name '" + action.getPartnerFieldName() + "' was not available.");
 				}
 			}
 			js = js + dcJs.toString();
