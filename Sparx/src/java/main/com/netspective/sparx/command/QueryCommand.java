@@ -51,12 +51,12 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.3 2003-05-30 23:11:32 shahid.shah Exp $
+ * $Id: QueryCommand.java,v 1.4 2003-06-12 14:36:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
 
-import com.netspective.sparx.form.DialogDataCommands;
+import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogDebugFlags;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
@@ -98,7 +98,7 @@ public class QueryCommand extends AbstractHttpServletCommand
 
                 // the following are the same as the ones in DialogComponentCommand so be sure to make them look the same
                 new CommandDocumentation.Parameter("additional-dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
-                new CommandDocumentation.Parameter("additional-dialog-data-command", false, new DialogDataCommands(), null, "The data command to send to DialogContext."),
+                new CommandDocumentation.Parameter("additional-dialog-perspective", false, new DialogPerspectives(), null, "The dialog perspective to send to DialogContext."),
                 new DialogCommand.SkinParameter(),
                 new CommandDocumentation.Parameter("additional-dialog-debug-flags", false, new DialogDebugFlags(), null, "The debug flags.")
             }

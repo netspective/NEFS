@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DirectorNextActionsSelectField.java,v 1.5 2003-05-15 20:50:32 shahid.shah Exp $
+ * $Id: DirectorNextActionsSelectField.java,v 1.6 2003-06-12 14:36:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -60,7 +60,7 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogDataCommands;
+import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.DialogField;
 
@@ -91,7 +91,7 @@ public class DirectorNextActionsSelectField extends SelectField
         }
     }
 
-    private DialogDataCommands dataCmd = new DialogDataCommands();
+    private DialogPerspectives perspective = new DialogPerspectives();
 
     public DirectorNextActionsSelectField()
     {
@@ -150,21 +150,21 @@ public class DirectorNextActionsSelectField extends SelectField
         }
     }
 
-    public DialogDataCommands getDataCmd()
+    public DialogPerspectives getPerspective()
     {
-        return dataCmd;
+        return perspective;
     }
 
-    public void setDataCmd(DialogDataCommands dataCmd)
+    public void setPerspective(DialogPerspectives perspective)
     {
-        this.dataCmd.copy(dataCmd);
-        if (this.dataCmd.getFlags() != DialogDataCommands.NONE)
+        this.perspective.copy(perspective);
+        if (this.perspective.getFlags() != DialogPerspectives.NONE)
         {
             getFlags().setFlag(Flags.INPUT_HIDDEN);
             DialogFieldConditionalApplyFlag dataCmdAction = new DialogFieldConditionalApplyFlag(this);
             dataCmdAction.getFlags().setFlag(Flags.INPUT_HIDDEN);
             dataCmdAction.setClear(true);
-            dataCmdAction.setDataCmd(this.dataCmd);
+            dataCmdAction.setPerspective(this.perspective);
             addConditional(dataCmdAction);
         }
     }

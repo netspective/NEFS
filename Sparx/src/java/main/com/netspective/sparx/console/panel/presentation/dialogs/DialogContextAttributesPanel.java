@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextAttributesPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: DialogContextAttributesPanel.java,v 1.4 2003-06-12 14:36:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -121,7 +121,7 @@ public class DialogContextAttributesPanel extends DialogDetailPanel
             result.add(createAttribute("Next Mode", new Character(dialogContext.getNextMode())));
             result.add(createAttribute("Validation Stage", new Integer(dialogContext.getValidationContext().getValidationStage())));
             result.add(createAttribute("Is Pending", new Boolean(dialogContext.isPending())));
-            result.add(createAttribute("Data Command", dialogContext.getDataCommands().getFlagsText()));
+            result.add(createAttribute("Data Command", dialogContext.getPerspectives().getFlagsText()));
             String XML = null;
             try
             {

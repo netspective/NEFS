@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.6 2003-06-09 22:27:12 aye.thu Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.7 2003-06-12 14:36:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -61,17 +61,16 @@ import javax.servlet.http.HttpServletRequest;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.RuntimeEnvironmentFlags;
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogDataCommands;
+import com.netspective.sparx.form.DialogPerspectives;
 
 public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalAction
 {
     private boolean clear;
     private DialogField.Flags flags;
-    private DialogDataCommands dataCmd = new DialogDataCommands();
+    private DialogPerspectives perspective = new DialogPerspectives();
     private String[] hasPermissions;
     private String[] lackPermissions;
     private ValueSource valueSource;
@@ -206,14 +205,14 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
     }
     */
 
-    public DialogDataCommands getDataCmd()
+    public DialogPerspectives getPerspective()
     {
-        return dataCmd;
+        return perspective;
     }
 
-    public void setDataCmd(DialogDataCommands dataCmd)
+    public void setPerspective(DialogPerspectives perspective)
     {
-        this.dataCmd.copy(dataCmd);
+        this.perspective.copy(perspective);
     }
 
     public String[] getHasPermissions()
@@ -245,8 +244,8 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         // the keep checking things until the status is set to false -- if it's false, we're going to just leave
         // and not do anything
 
-        if(status && dataCmd.getFlags() != 0)
-            status = dc.matchesDataCmdCondition((int) dataCmd.getFlags());
+        if(status && perspective.getFlags() != 0)
+            status = dc.matchesPerspective((int) perspective.getFlags());
 
         boolean hasPermissionFlg = true;
         boolean lackPermissionFlg = false;

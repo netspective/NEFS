@@ -39,13 +39,16 @@
  */
 
 /**
- * $Id: TemplateContentPanel.java,v 1.5 2003-05-19 00:58:56 shahid.shah Exp $
+ * $Id: TemplateContentPanel.java,v 1.6 2003-06-12 14:36:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import java.io.Writer;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
@@ -53,11 +56,15 @@ import com.netspective.sparx.template.TemplateProcessor;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.text.TextUtils;
 
-public class TemplateContentPanel extends AbstractPanel
+public class TemplateContentPanel extends AbstractPanel implements XmlDataModelSchema.CustomElementAttributeSetter
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private TemplateProcessor bodyTemplate;
+    private Map templateVars;
 
     public TemplateContentPanel()
     {
@@ -79,7 +86,7 @@ public class TemplateContentPanel extends AbstractPanel
         vc.setNavigationContext(nc);
         HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
         templatePanelSkin.renderFrameBegin(writer, vc);
-        bodyTemplate.process(writer, vc);
+        bodyTemplate.process(writer, vc, templateVars);
         templatePanelSkin.renderFrameEnd(writer, vc);
     }
 
@@ -90,7 +97,17 @@ public class TemplateContentPanel extends AbstractPanel
         vc.setDialogContext(dc);
         HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
         templatePanelSkin.renderFrameBegin(writer, vc);
-        bodyTemplate.process(writer, vc);
+        bodyTemplate.process(writer, vc, templateVars);
         templatePanelSkin.renderFrameEnd(writer, vc);
+    }
+
+    public void setCustomDataModelElementAttribute(XdmParseContext pc, XmlDataModelSchema schema, Object parent, String attrName, String attrValue)
+            throws DataModelException, InvocationTargetException, IllegalAccessException, DataModelException
+    {
+        // if we don't know something about an attribute, save it for the template (pass it in)
+        if(templateVars == null)
+            templateVars = new HashMap();
+
+        templateVars.put(TextUtils.xmlTextToJavaIdentifier(attrName, false), attrValue);
     }
 }

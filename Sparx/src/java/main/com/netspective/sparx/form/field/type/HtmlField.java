@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlField.java,v 1.1 2003-05-16 14:43:41 shahid.shah Exp $
+ * $Id: HtmlField.java,v 1.2 2003-06-12 14:36:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -100,7 +100,7 @@ public class HtmlField extends DialogField
         if(html != null)
             writer.write(html.getTextValue(dc));
         else if(bodyTemplate != null)
-            bodyTemplate.process(writer, dc);
+            bodyTemplate.process(writer, dc, null);
         else
             writer.write("Neither an html value source nor a body template was provided.");
     }

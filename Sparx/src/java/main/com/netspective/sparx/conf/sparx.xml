@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.24 2003-06-12 14:21:40 aye.thu Exp $
+  * $Id: sparx.xml,v 1.25 2003-06-12 14:36:08 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -11,7 +11,7 @@
     <register-value-source class="com.netspective.sparx.value.source.ServletContextPathValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.ServletRequestParameterValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.HttpServletSessionAttributeValueSource"/>
-    <register-value-source class="com.netspective.sparx.value.source.DialogDataCmdExprValueSource"/>
+    <register-value-source class="com.netspective.sparx.value.source.DialogPerspectiveExprValueSource"/>
 
     <register-theme name="console" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
     <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/slate"/>
@@ -67,8 +67,7 @@
         </validation>
     </dialog-field-type>
 
-     <dialog-field-conditional-action name="apply-flags" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag"/>
-     <dialog-field-conditional-action name="display" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay"/>
-
+    <dialog-field-conditional-action name="apply-flags" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag"/>
+    <dialog-field-conditional-action name="display" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay"/>
 
 </xdm:container>

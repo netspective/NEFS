@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.9 2003-06-11 03:33:59 aye.thu Exp $
+ * $Id: DialogDirector.java,v 1.10 2003-06-12 14:36:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -230,19 +230,19 @@ public class DialogDirector extends DialogField
         String submitCaption = (this.submitCaption != null) ? this.submitCaption.getTextValue(dc) : null;
         String cancelCaption = (this.cancelCaption != null) ? this.cancelCaption.getTextValue(dc) : null;
 
-        int dataCmd = (int) dc.getDataCommands().getFlags();
+        int dataCmd = (int) dc.getPerspectives().getFlags();
         switch(dataCmd)
         {
-            case DialogDataCommands.ADD:
-            case DialogDataCommands.EDIT:
+            case DialogPerspectives.ADD:
+            case DialogPerspectives.EDIT:
                 submitCaption = " Save ";
                 break;
 
-            case DialogDataCommands.DELETE:
+            case DialogPerspectives.DELETE:
                 submitCaption = " Delete ";
                 break;
 
-            case DialogDataCommands.CONFIRM:
+            case DialogPerspectives.CONFIRM:
                 submitCaption = "  Yes  ";
                 cancelCaption = "  No   ";
                 break;

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.11 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.12 2003-06-12 14:36:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -268,7 +268,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     private String originalReferer;
     private boolean executeHandled;
     private DialogDebugFlags debugFlags = new DialogDebugFlags();
-    private DialogDataCommands dataCommands = new DialogDataCommands();
+    private DialogPerspectives perspectives = new DialogPerspectives();
     private String[] retainReqParams;
     private boolean redirectDisabled;
     private Row lastRowManipulated;
@@ -356,9 +356,9 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                 transactionId = "No MessageDigest Algorithm found!";
                 log.error("Unable to create transation id", e);
             }
-            dataCmdStr = (String) request.getAttribute(Dialog.PARAMNAME_DATA_CMD_INITIAL);
+            dataCmdStr = (String) request.getAttribute(Dialog.PARAMNAME_PERSPECTIVE_INITIAL);
             if(dataCmdStr == null)
-                dataCmdStr = request.getParameter(Dialog.PARAMNAME_DATA_CMD_INITIAL);
+                dataCmdStr = request.getParameter(Dialog.PARAMNAME_PERSPECTIVE_INITIAL);
             debugFlagsStr = (String) request.getAttribute(Dialog.PARAMNAME_DEBUG_FLAGS_INITIAL);
             if(debugFlagsStr == null)
                 debugFlagsStr = request.getParameter(Dialog.PARAMNAME_DEBUG_FLAGS_INITIAL);
@@ -371,7 +371,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             debugFlagsStr = request.getParameter(dialog.getDebugFlagsParamName());
         }
 
-        dataCommands.setValue(dataCmdStr);
+        perspectives.setValue(dataCmdStr);
         debugFlags.setValue(debugFlagsStr);
 
         ValueSource ncRetainVS = nc.getActivePage().getRetainParams();
@@ -458,19 +458,19 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
      * data command is set in the condition, then check to see if our data command for that command id is set. If any
      * of the data commands in dataCommandCondition match our current dataCmd, return true.
      *
-     * @param dataCmdCondition the data command condition
+     * @param perspectives the data command condition
      * @return boolean True if the data commands in the passes in condition matches the current dialog data command
      */
-    public boolean matchesDataCmdCondition(int dataCmdCondition)
+    public boolean matchesPerspective(int perspectives)
     {
-        if(dataCmdCondition == DialogDataCommands.NONE || dataCommands.getFlags() == DialogDataCommands.NONE)
+        if(perspectives == DialogPerspectives.NONE || this.perspectives.getFlags() == DialogPerspectives.NONE)
             return false;
 
-        int lastDataCmd = DialogDataCommands.LAST;
+        int lastDataCmd = DialogPerspectives.LAST;
         for(int i = 1; i <= lastDataCmd; i *= 2)
         {
             // if the dataCmdCondition's dataCmd i is set, it means we need to check our dataCmd to see if we're set
-            if((dataCmdCondition & i) != 0 && dataCommands.flagIsSet(i))
+            if((perspectives & i) != 0 && this.perspectives.flagIsSet(i))
                 return true;
         }
 
@@ -884,9 +884,9 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         return skin;
     }
 
-    public DialogDataCommands getDataCommands()
+    public DialogPerspectives getPerspectives()
     {
-        return dataCommands;
+        return perspectives;
     }
 
     public DialogDebugFlags getDebugFlags()
@@ -896,27 +896,27 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
     public boolean addingData()
     {
-        return dataCommands.flagIsSet(DialogDataCommands.ADD);
+        return perspectives.flagIsSet(DialogPerspectives.ADD);
     }
 
     public boolean editingData()
     {
-        return dataCommands.flagIsSet(DialogDataCommands.EDIT);
+        return perspectives.flagIsSet(DialogPerspectives.EDIT);
     }
 
     public boolean deletingData()
     {
-        return dataCommands.flagIsSet(DialogDataCommands.DELETE);
+        return perspectives.flagIsSet(DialogPerspectives.DELETE);
     }
 
     public boolean confirmingData()
     {
-        return dataCommands.flagIsSet(DialogDataCommands.CONFIRM);
+        return perspectives.flagIsSet(DialogPerspectives.CONFIRM);
     }
 
     public boolean printingData()
     {
-        return dataCommands.flagIsSet(DialogDataCommands.PRINT);
+        return perspectives.flagIsSet(DialogPerspectives.PRINT);
     }
 
     public boolean executeStageHandled()
@@ -982,8 +982,8 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         if(redirectUrlParamValue != null)
             hiddens.append("<input type='hidden' name='" + dialog.getPostExecuteRedirectUrlParamName() + "' value='" + redirectUrlParamValue + "'>\n");
 
-        if(dataCommands.getFlags() != 0)
-            hiddens.append("<input type='hidden' name='" + dialog.getDataCmdParamName() + "' value='" + dataCommands.getFlagsText() + "'>\n");
+        if(perspectives.getFlags() != 0)
+            hiddens.append("<input type='hidden' name='" + dialog.getDataCmdParamName() + "' value='" + perspectives.getFlagsText() + "'>\n");
 
         if(debugFlags.getFlags() != 0)
             hiddens.append("<input type='hidden' name='" + dialog.getDebugFlagsParamName() + "' value='" + debugFlags.getFlagsText() + "'>\n");

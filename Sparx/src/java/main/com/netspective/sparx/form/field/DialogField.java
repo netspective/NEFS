@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.17 2003-06-09 22:21:56 aye.thu Exp $
+ * $Id: DialogField.java,v 1.18 2003-06-12 14:36:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -72,7 +72,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.sparx.form.DialogFlags;
-import com.netspective.sparx.form.DialogDataCommands;
+import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogValidationContext;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
@@ -266,17 +266,17 @@ public class DialogField implements TemplateConsumer
                 }
             }
 
-            switch((int) dc.getDataCommands().getFlags())
+            switch((int) dc.getPerspectives().getFlags())
             {
-                case DialogDataCommands.EDIT:
+                case DialogPerspectives.EDIT:
                     // when in "edit" mode, the primary key should be read-only
                     if(stateFlags.flagIsSet(Flags.PRIMARY_KEY))
                         stateFlags.setFlag(Flags.READ_ONLY);
                     break;
 
-                case DialogDataCommands.CONFIRM:
-                case DialogDataCommands.DELETE:
-                case DialogDataCommands.PRINT:
+                case DialogPerspectives.CONFIRM:
+                case DialogPerspectives.DELETE:
+                case DialogPerspectives.PRINT:
                     // when in "delete" mode, all the fields should be read-only
                     stateFlags.setFlag(Flags.READ_ONLY);
                     break;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogDataCmdExprValueSource.java,v 1.1 2003-05-17 17:51:30 shahid.shah Exp $
+ * $Id: DialogPerspectiveExprValueSource.java,v 1.1 2003-06-12 14:36:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -54,21 +54,21 @@ import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogDataCommands;
+import com.netspective.sparx.form.DialogPerspectives;
 
-public class DialogDataCmdExprValueSource extends AbstractValueSource
+public class DialogPerspectiveExprValueSource extends AbstractValueSource
 {
-    private static final Log log = LogFactory.getLog(DialogDataCmdExprValueSource.class);
+    private static final Log log = LogFactory.getLog(DialogPerspectiveExprValueSource.class);
 
-    public static final String[] IDENTIFIERS = new String[] { "create-data-cmd-heading" };
+    public static final String[] IDENTIFIERS = new String[] { "create-dialog-perspective-heading" };
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Returns the current dialog data_cmd identifier plus the text provided that would be suitable for use " +
+            "Returns the current dialog data perspective identifier plus the text provided that would be suitable for use " +
             "as the heading of a multi-purpose dialog (a dialog that can be used for adding, updating, and deleting). For " +
             "example, if <code><u>Person</u></code> is the text, and the current dialog's data_cmd is <code><u>add</u></code> then this SVS would return " +
             "<code><u>Add Person</u></code>.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("text", true, "The text to use in the dialog data command expression."),
+                new ValueSourceDocumentation.Parameter("text", true, "The text to use in the dialog data perspective expression."),
             }
     );
 
@@ -82,7 +82,7 @@ public class DialogDataCmdExprValueSource extends AbstractValueSource
         return DOCUMENTATION;
     }
 
-    public DialogDataCmdExprValueSource()
+    public DialogPerspectiveExprValueSource()
     {
     }
 
@@ -91,18 +91,18 @@ public class DialogDataCmdExprValueSource extends AbstractValueSource
         String expr = getSpecification().getParams();
         if(vc instanceof DialogContext)
         {
-            DialogDataCommands ddc = ((DialogContext) vc).getDataCommands();
+            DialogPerspectives ddc = ((DialogContext) vc).getPerspectives();
             switch((int) ddc.getFlags())
             {
-                case DialogDataCommands.ADD:
+                case DialogPerspectives.ADD:
                     expr = "Add " + expr;
                     break;
 
-                case DialogDataCommands.EDIT:
+                case DialogPerspectives.EDIT:
                     expr = "Edit " + expr;
                     break;
 
-                case DialogDataCommands.DELETE:
+                case DialogPerspectives.DELETE:
                     expr = "Delete " + expr;
                     break;
             }

@@ -39,15 +39,15 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.8 2003-06-06 23:10:53 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.9 2003-06-12 14:36:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -107,21 +107,28 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
             FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader().addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
     }
 
-    public void process(Writer writer, ValueContext vc) throws IOException, TemplateProcessorException
+    public void process(Writer writer, ValueContext vc, Map templateVars) throws IOException, TemplateProcessorException
     {
         Configuration fmConfig = fmConfigAdapter == null ?
                 ((ServletValueContext) vc).getFreeMarkerConfiguration() :
                 fmConfigAdapter.getConfiguration();
 
-        Map vars = new HashMap();
         try
         {
-            Template template = source != null ?
-                    fmConfig.getTemplate(source.getTextValue(vc)) :
-                    fmConfig.getTemplate(Integer.toString(this.hashCode()));
+            Map instanceVars = templateVars != null ? new HashMap(templateVars) : new HashMap();
 
-            vars.put("vc", BeansWrapper.getDefaultInstance().wrap(vc));
-            template.process(vars, writer);
+            Template template = null;
+            if(source != null)
+            {
+                String sourceText = source.getTextValue(vc);
+                template = fmConfig.getTemplate(sourceText);
+                instanceVars.put("source", sourceText);
+            }
+            else
+                template = fmConfig.getTemplate(Integer.toString(this.hashCode()));
+
+            instanceVars.put("vc", BeansWrapper.getDefaultInstance().wrap(vc));
+            template.process(instanceVars, writer);
         }
         catch (Exception e)
         {

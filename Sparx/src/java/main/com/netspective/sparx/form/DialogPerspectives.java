@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: DialogDataCommands.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogPerspectives.java,v 1.1 2003-06-12 14:36:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
 
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
-public class DialogDataCommands extends XdmBitmaskedFlagsAttribute
+public class DialogPerspectives extends XdmBitmaskedFlagsAttribute
 {
     public static final int NONE = 0;
     public static final int ADD = 1;
@@ -56,7 +56,7 @@ public class DialogDataCommands extends XdmBitmaskedFlagsAttribute
     public static final int PRINT = CONFIRM * 2;
     public static final int LAST = PRINT * 2;
 
-    public static final FlagDefn[] DATA_COMMAND_DEFNS = new FlagDefn[]
+    public static final FlagDefn[] PERSPECTIVE_DEFNS = new FlagDefn[]
     {
         new FlagDefn(DialogFlags.ACCESS_XDM, "ADD", ADD),
         new FlagDefn(DialogFlags.ACCESS_XDM, "EDIT", EDIT),
@@ -65,13 +65,13 @@ public class DialogDataCommands extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_XDM, "CONFIRM", CONFIRM),
     };
 
-    public DialogDataCommands()
+    public DialogPerspectives()
     {
         setFlagDelimiter(",");
     }
 
     public FlagDefn[] getFlagsDefns()
     {
-        return DATA_COMMAND_DEFNS;
+        return PERSPECTIVE_DEFNS;
     }
 }

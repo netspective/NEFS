@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.3 2003-06-10 02:57:53 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapter.java,v 1.4 2003-06-12 14:36:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -97,9 +97,6 @@ public class FreeMarkerConfigurationAdapter
         List tmplLoaders = new ArrayList();
         tmplLoaders.add(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
 
-        if(baseClass != null)
-            tmplLoaders.add(new ClassTemplateLoader(baseClass));
-
         try
         {
             if(baseDir != null)
@@ -109,6 +106,9 @@ public class FreeMarkerConfigurationAdapter
         {
             throw new NestableRuntimeException(e);
         }
+
+        if(baseClass != null)
+            tmplLoaders.add(new ClassTemplateLoader(baseClass));
 
         getConfiguration().setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()])));
     }

@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.41 2003-06-10 02:57:40 shahid.shah Exp $
+  * $Id: console.xml,v 1.42 2003-06-12 14:36:08 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -11,6 +11,15 @@
 
     <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="c:\Projects\Frameworks\Sparx\src\java\main\com\netspective\sparx\console"/>
     <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
+
+    <panel-type name="console-page-summary" extends="html">
+        <frame heading="Overview"/>
+        <body config="console" source="content/page-summary.ftl"/>
+    </panel-type>
+
+    <panel-type name="console-children-summaries" extends="html">
+        <body config="console" source="content/children-summaries.ftl"/>
+    </panel-type>
 
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" default="yes" sub-heading="trying something here">
@@ -31,11 +40,29 @@
         </page>
 
         <page name="presentation" caption="Presentation">
+
+            <panels>
+                <panel type="console-page-summary"/>
+
+                <panel type="console-children-summaries">
+                    <frame heading="Presentation Layer Features"/>
+                </panel>
+            </panels>
+
 	        <page name="navigation" caption="Navigation">
+                <panels>
+                    <panel type="console-page-summary"/>
+                </panels>
+
                 <page name="catalog" caption="Catalog"/>
                 <page name="test" caption="Unit Test"/>
 	        </page>
+
 	        <page name="dialog" caption="Dialogs" retain-params="selected-dialog-id">
+                <panels>
+                    <panel type="console-page-summary"/>
+                </panels>
+
 				<page name="catalog" caption="Catalog">
                     <panels>
                         <panels style="tabbed">
@@ -59,6 +86,7 @@
                 </page>
 		        <page name="fields" caption="Field Types"/>
 	        </page>
+
 	        <page name="panel" caption="Panels"/>
 	        <page name="theme" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
         </page>

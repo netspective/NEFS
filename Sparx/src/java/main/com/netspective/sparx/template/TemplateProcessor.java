@@ -39,17 +39,18 @@
  */
 
 /**
- * $Id: TemplateProcessor.java,v 1.2 2003-05-10 16:50:01 shahid.shah Exp $
+ * $Id: TemplateProcessor.java,v 1.3 2003-06-12 14:36:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template;
 
 import java.io.Writer;
 import java.io.IOException;
+import java.util.Map;
 
 import com.netspective.commons.value.ValueContext;
 
 public interface TemplateProcessor
 {
-    public void process(Writer writer, ValueContext vc) throws IOException, TemplateProcessorException;
+    public void process(Writer writer, ValueContext vc, Map templateVars) throws IOException, TemplateProcessorException;
 }

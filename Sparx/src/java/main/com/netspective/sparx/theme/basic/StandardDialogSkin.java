@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.6 2003-05-13 19:52:04 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.7 2003-06-12 14:36:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -75,7 +75,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogDirector;
-import com.netspective.sparx.form.DialogDataCommands;
+import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldPopup;
 import com.netspective.sparx.form.field.DialogFields;
@@ -720,7 +720,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                 appendFieldHtml(dc, field, fieldsHtml, fieldsJSDefn, fieldErrorMsgs);
             }
 
-            if(director != null && director.isAvailable(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
+            if(director != null && director.isAvailable(dc) && ! dc.getPerspectives().flagIsSet(DialogPerspectives.PRINT))
             {
                 fieldsHtml.append("<tr><td class=\"dialog-button-table\" colspan='2'>");
                 StringWriter directorHtml = new StringWriter();
@@ -773,7 +773,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             }
             fieldsHtml.append("</tr>");
 
-            if(director != null && director.isAvailable(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
+            if(director != null && director.isAvailable(dc) && ! dc.getPerspectives().flagIsSet(DialogPerspectives.PRINT))
             {
                 fieldsHtml.append("<tr><td class=\"dialog-button-table\" colspan='" + dlgTableColSpan + "'>");
                 StringWriter directorHtml = new StringWriter();

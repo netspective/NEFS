@@ -51,14 +51,14 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.6 2003-05-17 17:51:29 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.7 2003-06-12 14:36:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
 
 import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.CommandException;
-import com.netspective.sparx.form.DialogDataCommands;
+import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogDebugFlags;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogSkin;
@@ -87,7 +87,7 @@ public class DialogCommand extends AbstractHttpServletCommand
             new CommandDocumentation.Parameter[]
             {
                 new CommandDocumentation.Parameter("dialog-name", true, "The fully qualified name of the dialog (package-name.dialog-name)"),
-                new CommandDocumentation.Parameter("data-command", false, new DialogDataCommands(), null, "The data command to send to DialogContext."),
+                new CommandDocumentation.Parameter("dialog-perspective", false, new DialogPerspectives(), null, "The dialog perspective to send to DialogContext."),
                 new SkinParameter(),
                 new CommandDocumentation.Parameter("debug-flags", false, new DialogDebugFlags(), null, "The debug flags.")
             }
@@ -104,7 +104,7 @@ public class DialogCommand extends AbstractHttpServletCommand
     }
 
     private String dialogName;
-    private DialogDataCommands dataCmd;
+    private DialogPerspectives perspective;
     private String skinName;
     private DialogDebugFlags debugFlags;
 
@@ -113,7 +113,7 @@ public class DialogCommand extends AbstractHttpServletCommand
         String delim = getParametersDelimiter();
         StringBuffer sb = new StringBuffer(dialogName);
         sb.append(delim);
-        sb.append(dataCmd != null ? dataCmd.getFlagsText() : PARAMVALUE_DEFAULT);
+        sb.append(perspective != null ? perspective.getFlagsText() : PARAMVALUE_DEFAULT);
         if(skinName != null)
         {
             sb.append(delim);
@@ -138,12 +138,12 @@ public class DialogCommand extends AbstractHttpServletCommand
                 dataCmdText = null;
             if(dataCmdText != null)
             {
-                dataCmd = new DialogDataCommands();
-                dataCmd.setValue(dataCmdText);
+                perspective = new DialogPerspectives();
+                perspective.setValue(dataCmdText);
             }
         }
         else
-            dataCmd = null;
+            perspective = null;
 
         if(params.hasMoreTokens())
         {
@@ -166,14 +166,14 @@ public class DialogCommand extends AbstractHttpServletCommand
             debugFlags = null;
     }
 
-    public DialogDataCommands getDataCmd()
+    public DialogPerspectives getPerspective()
     {
-        return dataCmd;
+        return perspective;
     }
 
-    public void setDataCmd(DialogDataCommands dataCmd)
+    public void setPerspective(DialogPerspectives perspective)
     {
-        this.dataCmd = dataCmd;
+        this.perspective = perspective;
     }
 
     public DialogDebugFlags getDebugFlags()
@@ -208,8 +208,8 @@ public class DialogCommand extends AbstractHttpServletCommand
 
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
-        if(dataCmd != null)
-            nc.getRequest().setAttribute(Dialog.PARAMNAME_DATA_CMD_INITIAL, dataCmd.getFlagsText());
+        if(perspective != null)
+            nc.getRequest().setAttribute(Dialog.PARAMNAME_PERSPECTIVE_INITIAL, perspective.getFlagsText());
 
         Dialog dialog = nc.getDialogsManager().getDialog(dialogName);
         if(dialog == null)

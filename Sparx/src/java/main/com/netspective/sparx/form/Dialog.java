@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.14 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.15 2003-06-12 14:36:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -125,13 +125,13 @@ public class Dialog extends AbstractPanel
     public static final String PARAMNAME_DEBUG_FLAGS_INITIAL = "debug_flags";
     public static final String PARAMNAME_DEBUG_FLAGS = ".debug_flags";
     /*
-	   the Data Command when first passed in (start of dialog, run seq == 1)
-	   is passed using the parameter "data_cmd" (INITIAL). When the dialog is
+	   the data perspective when first passed in (start of dialog, run seq == 1)
+	   is passed using the parameter "perspective" (INITIAL). When the dialog is
 	   in run sequence > 1 (after submit) the data command is passed in as a
-	   hidden "pass-thru" variable with the suffix PARAMNAME_DATA_CMD
+	   hidden "pass-thru" variable with the suffix PARAMNAME_PERSPECTIVE
     */
-    public static final String PARAMNAME_DATA_CMD_INITIAL = "data_cmd";
-    public static final String PARAMNAME_DATA_CMD = ".data_cmd";
+    public static final String PARAMNAME_PERSPECTIVE_INITIAL = "data_perspective";
+    public static final String PARAMNAME_PERSPECTIVE = ".data_perspective";
 
     public static final String translateNameForMapKey(String name)
     {
@@ -346,7 +346,7 @@ public class Dialog extends AbstractPanel
 
     public String getDataCmdParamName()
     {
-        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_DATA_CMD;
+        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_PERSPECTIVE;
     }
 
     public String getDebugFlagsParamName()
