@@ -8,6 +8,7 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 
+import com.netspective.medigy.model.common.AbstractCustomReferenceEntity;
 import com.netspective.medigy.reference.ReferenceEntity;
 import com.netspective.tool.graphviz.GraphvizDiagramEdge;
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
@@ -117,6 +118,19 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
             return false;
         else
             return true;
+    }
+
+    public String getTableNameCellHtmlAttributes(final HibernateDiagramGenerator generator, final PersistentClass pclass)
+    {
+        if (AbstractCustomReferenceEntity.class.isAssignableFrom(pclass.getMappedClass()))
+            return " BGCOLOR=\"rosybrown\"";
+        else
+            return " BGCOLOR=\"lightsteelblue\"";
+    }
+
+    public String getEntityTableHtmlAttributes(HibernateDiagramGenerator generator, PersistentClass pclass)
+    {
+        return "BORDER=\"1\" CELLSPACING=\"0\" CELLBORDER=\"0\"";
     }
 
     public void formatTableNode(final HibernateDiagramGenerator generator, final PersistentClass pclass, final GraphvizDiagramNode node)

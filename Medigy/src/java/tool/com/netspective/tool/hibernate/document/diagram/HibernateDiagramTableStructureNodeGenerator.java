@@ -55,9 +55,6 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
     private boolean showDataTypes = true;
     private boolean showConstraints = true;
 
-    private String entityTableAttrs = "BORDER=\"1\" CELLSPACING=\"0\" CELLBORDER=\"0\"";
-    private String tableNameBgColor = "lightsteelblue";
-
     public HibernateDiagramTableStructureNodeGenerator(final String name)
     {
         this.name = name;
@@ -99,7 +96,12 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
             if (!column.isNullable() && partOfPrimaryKey == null)
                 constraints.add("R");
             if (partOfForeignKey != null)
-                constraints.add("FK");
+            {
+                if (generator.isParentRelationship(partOfForeignKey))
+                    constraints.add("CK");
+                else
+                    constraints.add("FK");
+            }
 
             if (constraints.size() > 0)
                 result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX + "\"" + extraAttrs + ">" + constraints + "</TD>\n");
@@ -168,8 +170,8 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
         if (showDataTypes) colSpan++;
         if (showConstraints) colSpan++;
 
-        StringBuffer tableNodeLabel = new StringBuffer("<<TABLE " + entityTableAttrs + ">\n");
-        tableNodeLabel.append("        <TR><TD COLSPAN=\"" + colSpan + "\" BGCOLOR=\"" + tableNameBgColor + "\">" + table.getName() + "</TD></TR>\n");
+        StringBuffer tableNodeLabel = new StringBuffer("<<TABLE " + filter.getEntityTableHtmlAttributes(generator, pclass) + ">\n");
+        tableNodeLabel.append("        <TR><TD COLSPAN=\"" + colSpan + "\" " + filter.getTableNameCellHtmlAttributes(generator, pclass) + ">" + table.getName() + "</TD></TR>\n");
         if (primaryKeyRows.length() > 0)
             tableNodeLabel.append(primaryKeyRows);
         if (parentKeyRows.length() > 0)

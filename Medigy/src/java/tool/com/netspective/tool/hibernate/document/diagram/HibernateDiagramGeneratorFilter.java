@@ -67,4 +67,8 @@ public interface HibernateDiagramGeneratorFilter
     public String getColumnDataType(HibernateDiagramGenerator generator, Column column, PrimaryKey partOfPrimaryKey, ForeignKey partOfForeignKey);
 
     public boolean isIncludeEdgePort(HibernateDiagramGenerator generator, ForeignKey foreignKey, boolean source);
+
+    public String getTableNameCellHtmlAttributes(HibernateDiagramGenerator generator, PersistentClass pclass);
+
+    public String getEntityTableHtmlAttributes(HibernateDiagramGenerator generator, PersistentClass pclass);
 }
