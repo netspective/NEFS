@@ -3,7 +3,7 @@
 ** programmers.                                                             **
 ******************************************************************************
 
-$Id: README.TXT,v 1.7 2003-08-29 12:26:54 shahid.shah Exp $
+$Id: README.TXT,v 1.8 2003-09-07 18:09:02 shahid.shah Exp $
 
 Standard IDE and App Server
 ------------------------------------------------------------------------------
@@ -52,6 +52,10 @@ First-time only steps
 *  If you are not using the standard directory locations, open the Resin
    NEFS_HOME/webapps/nefs-resin-*.conf configuration files and follow the
    directions in the top of each file.
+*  Create the NEFS_HOME/tools/idea/classes directory to store the compiled
+   IDEA classes.
+*  In IDEA, open File | Project Properties and make sure that the output
+   directory points to NEFS_HOME/tools/idea/classes.
 
 Steps for all builds (each time code is updated)
 ------------------------------------------------------------------------------
