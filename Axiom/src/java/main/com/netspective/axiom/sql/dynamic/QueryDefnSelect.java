@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSelect.java,v 1.7 2003-06-25 06:58:05 aye.thu Exp $
+ * $Id: QueryDefnSelect.java,v 1.8 2003-07-07 15:07:09 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -82,6 +82,13 @@ public class QueryDefnSelect extends Query
     private QueryDefnConditions conditions = new QueryDefnConditions(null);
     private QueryDefnSqlWhereExpressions whereExprs = new QueryDefnSqlWhereExpressions();
     private String whereClauseSql;
+
+    public QueryDefnSelect()
+    {
+        super();
+        this.isDirty = true;
+        this.distinctRows = true;
+    }
 
     public QueryDefnSelect(QueryDefinition queryDefn)
     {
