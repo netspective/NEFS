@@ -106,7 +106,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.67 2004-06-23 21:06:45 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.68 2004-06-24 19:02:17 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -1289,6 +1289,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         getBodyType().setValue(NavigationPageBodyType.TEMPLATE);
     }
 
+    public Map createDefaultBodyTemplateVars(NavigationContext nc)
+    {
+        return null;
+    }
+
     public TemplateProcessor getBodyTemplate()
     {
         return bodyTemplate;
@@ -1456,7 +1461,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 break;
 
             case NavigationPageBodyType.TEMPLATE:
-                getBodyTemplate().process(writer, nc, null);
+                getBodyTemplate().process(writer, nc, createDefaultBodyTemplateVars(nc));
                 break;
 
             case NavigationPageBodyType.FORWARD:
