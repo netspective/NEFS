@@ -44,6 +44,7 @@
         <person-address address-name="Home" zip="22059" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="987 Main Street" city="Washington" state-id="District of Columbia" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employee" rel-entity-id="IDREF:ORG 5"/>
         <person-login user-id="person0" password="letmein" quantity="100"/>
+        <person-classification person-type-id="Certified Clinical Research Coordinator" person-type="Certified Clinical Research Coordinator" rec-stat-id="Active"/>
 	</person>
     <person ID="PERSON 1" name-first="Mary" name-last="Carpenter" short-name="Mary Carpenter" simple-name="Mary Carpenter"
         short-sortable-name="Carpenter, Mary" complete-name="Mary Carpenter" complete-sortable-name="Carpenter, Mary"
@@ -53,15 +54,17 @@
         <person-address address-name="Home" zip="12345" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Acme Street" city="Jackson" state-id="Ohio" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:ORG 3"/>
         <person-login user-id="person1" password="letmein" quantity="100"/>
+        <person-classification person-type-id="Physician" person-type="Physician" rec-stat-id="Active"/>
 	</person>
-    <person ID="PERSON 2" name-first="Michael" name-last="Gabriel" short-name="Michael Gabriel" simple-name="Michael Gabriel"
+    <person ID="SUBJECT 2" name-first="Michael" name-last="Gabriel" short-name="Michael Gabriel" simple-name="Michael Gabriel"
         short-sortable-name="Gabriel, Michael" complete-name="Michael Gabriel" complete-sortable-name="Gabriel, Michael"
         complete-name="Michael Gabriel" gender-id="Male" ssn="123-22-1111"  marital-status-id="Single"
         blood-type-id="Unknown" rec-stat-id="Active" >
         <person-contact rec-stat-id="Active" method-type="Telephone: Home" method-value="432-1234" phone-ac="222"/>
         <person-address address-name="Home" zip="22012" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="3301 Lothian Street" city="Merrifield" state-id="Virginia" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/>
-        <person-login user-id="person2" password="letmein" quantity="100"/>
+        <person-login user-id="subject2" password="letmein" quantity="100"/>
+        <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active"/>
 	</person>
     <person ID="SUBJECT 0" name-first="Bubba" name-last="Smith" short-name="Bubba Smith" simple-name="Bubba Smith"
         short-sortable-name="Smith, Bubba" complete-name="Bubba Smith" complete-sortable-name="Smith, Bubba"
@@ -71,6 +74,7 @@
         <person-address address-name="Home" zip="22012" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="3301 Lothian Street" city="Merrifield" state-id="Virginia" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/>
         <person-login user-id="subject0" password="letmein" quantity="100"/>
+        <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active"/>
 	</person>
     <person ID="SUBJECT 1" name-first="Mack" name-last="Daddy" short-name="Mack Daddy" simple-name="Mack Daddy"
         short-sortable-name="Daddy, Mack" complete-name="Mack Daddy" complete-sortable-name="Daddy, Mack"
@@ -81,6 +85,7 @@
             line1="666 Hoosier Street" city="Kalamazoo" state-id="Washington" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/>
         <person-login user-id="subject1" password="letmein" quantity="100"/>
+        <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active"/>
 	</person>
 
 
@@ -92,7 +97,7 @@
         <studyorg-relationship rec-stat-id="Active" rel-type-id="Site" rel-entity-id="IDREF:ORG 3" rel-begin="May 10, 2003"/>
         <studyperson-relationship rec-stat-id="Active" rel-type-id="Administrator" rel-entity-id="IDREF:PERSON 0" rel-begin="May 10, 2003"/>
         <studyperson-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:PERSON 1" rel-begin="May 10, 2003"/>
-        <studyperson-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:PERSON 2" rel-begin="May 10, 2003"/>
+        <studyperson-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:SUBJECT 2" rel-begin="May 10, 2003"/>
     </study>
     <study ID="STUDY 1" study-code="AL" study-name="Ragweed Allergy" study-descr="Study of ragweed allergy" rec-stat-id="Active"
         study-status="Proposed" study-stage="Phase II"
@@ -103,7 +108,7 @@
         <study-contact rec-stat-id="Active" method-type="Telephone: Office" method-value="111-1234" phone-ac="800"/>
         <studyperson-relationship rec-stat-id="Active" rel-type-id="Administrator" rel-entity-id="IDREF:PERSON 0" rel-begin="January 10, 2003"/>
         <studyperson-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:PERSON 1" rel-begin="January 10, 2003"/>
-        <studyperson-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:PERSON 2" rel-begin="January 10, 2003"/>
+        <studyperson-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:SUBJECT 2" rel-begin="January 10, 2003"/>
     </study>
 <!--person ID="PERSON_1">
 		<name-first>Harold</name-first>
