@@ -1,0 +1,11 @@
+This week:
+- Replace as many JSPs as possible by using the cmd to define the content and PATH_INFO to define the navigation.
+- Clean up may JSPs that are not being in used.  Both the files as well as references to it in the XML files.
+- Create a value source that will be used in dialogs and reports to obtain the URL based on a page id
+- Implement that value source throughout the entire application
+- Develop the component cmd to be used within the structure.xml (Not sure if this will be finished by this week, but will attempt)
+- Integrate the newly developed component cmd to eliminate even more JSPs (Not sure if this will be finished by this week, but will attempt)
+
+Future:
+- Look into a third party XML generator to generate test data based on the schema XMLs
+- Look at migrating the Artifact_Keyword's keyword to the text-set data type
