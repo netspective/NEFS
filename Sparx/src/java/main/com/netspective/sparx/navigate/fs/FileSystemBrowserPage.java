@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FileSystemBrowserPage.java,v 1.3 2004-06-14 01:36:14 shahid.shah Exp $
+ * $Id: FileSystemBrowserPage.java,v 1.4 2004-06-16 00:14:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
@@ -383,7 +383,7 @@ public class FileSystemBrowserPage extends NavigationPage
             final FileSystemEntry child = (FileSystemEntry) activePathChildren.get(i);
             final File childFile = child.getFile();
             if (ignoreEntries.contains(child))
-                return;
+                continue;
 
             final boolean isFile = !childFile.isDirectory();
             if (isFile && (!includeFiles || !filesMixedWithDirs))
@@ -415,7 +415,7 @@ public class FileSystemBrowserPage extends NavigationPage
                 final FileSystemEntry child = (FileSystemEntry) activePathChildren.get(i);
                 final File childFile = child.getFile();
                 if (ignoreEntries.contains(child))
-                    return;
+                    continue;
 
                 if (childFile.isDirectory())
                     continue;
