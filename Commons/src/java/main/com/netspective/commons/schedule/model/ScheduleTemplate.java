@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleTemplate.java,v 1.3 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: ScheduleTemplate.java,v 1.4 2004-03-27 15:45:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -70,10 +70,10 @@ public interface ScheduleTemplate
     public ScheduleParticipants getOwners();
 
     /**
-     * Ascertain whether or not the template is active
-     * @return True if active, false if the template should no longer be used
+     * Is this time block Available or Unavailable for scheduling events?
+     * @return True if events may be scheduled in the time block or false events should not be scheduled in this block
      */
-    public boolean isActive();
+    public boolean isAvailable();
 
     /**
      * Ascertain the starting applicability date for this template
