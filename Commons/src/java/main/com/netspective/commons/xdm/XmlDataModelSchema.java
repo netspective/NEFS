@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.45 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.46 2004-04-28 16:51:48 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1879,10 +1879,15 @@ public class XmlDataModelSchema
                     }
                     catch (ClassNotFoundException ce)
                     {
-                        DataModelException dme = new DataModelException(pc, ce);
-                        pc.addError(dme);
-                        if(pc.isThrowErrorException())
-                            throw dme;
+                        if(pc != null)
+                        {
+                            DataModelException dme = new DataModelException(pc, ce);
+                            pc.addError(dme);
+                            if(pc.isThrowErrorException())
+                                throw dme;
+                        }
+                        else
+                            log.error(ce);
                     }
                 }
 
@@ -1905,7 +1910,7 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException
                 {
                     // resolve relative paths through DataModel
-                    m.invoke(parent, new File[]{pc.resolveFile(value)});
+                    m.invoke(parent, new File[]{ pc != null ? pc.resolveFile(value) : new File(value)});
                 }
 
                 public boolean isInherited()
@@ -1970,8 +1975,11 @@ public class XmlDataModelSchema
                     {
                         // better to throw an error here since if there are objects which are based on null/non-null
                         // value of the value source, it is easier to debug
-                        pc.addError("Unable to create ValueSource for '"+ value +"' at " + pc.getLocator().getSystemId() +
-                                " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                        if(pc != null)
+                            pc.addError("Unable to create ValueSource for '"+ value +"' at " + pc.getLocator().getSystemId() +
+                                                        " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                        else
+                            log.error("Unable to create ValueSource for '"+ value +". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                     }
                     m.invoke(parent, new ValueSource[]{ vs });
                 }
@@ -2000,9 +2008,14 @@ public class XmlDataModelSchema
                     }
                     catch (CommandNotFoundException e)
                     {
-                        pc.addError("Unable to create Command for '"+ value +"' at " + pc.getLocator().getSystemId() + " line "+ pc.getLocator().getLineNumber() + ".");
-                        if(pc.isThrowErrorException())
-                            throw new DataModelException(pc, e);
+                        if(pc != null)
+                        {
+                            pc.addError("Unable to create Command for '"+ value +"' at " + pc.getLocator().getSystemId() + " line "+ pc.getLocator().getLineNumber() + ".");
+                            if(pc.isThrowErrorException())
+                                throw new DataModelException(pc, e);
+                        }
+                        else
+                            log.error("Unable to create Command for '"+ value +"'", e);
                     }
                 }
 
@@ -2109,7 +2122,10 @@ public class XmlDataModelSchema
                             break;
 
                         case 4:
-                            throw new DataModelException(pc, "Too many items in Locale constructor.");
+                            if(pc != null)
+                                throw new DataModelException(pc, "Too many items in Locale constructor.");
+                            else
+                                log.error("Too many items in Locale constructor: " + value);
                     }
                 }
 
@@ -2150,7 +2166,11 @@ public class XmlDataModelSchema
                             m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0], new Locale(items[1], items[2], items[3])) });
 
                         default:
-                            throw new DataModelException(pc, "Too many items in ResourceBundle constructor.");
+                            if(pc != null)
+                                throw new DataModelException(pc, "Too many items in ResourceBundle constructor.");
+                            else
+                                log.error("Too many items in Locale constructor: " + value);
+
                     }
                 }
 
@@ -2183,9 +2203,14 @@ public class XmlDataModelSchema
                         }
                         catch (InstantiationException ie)
                         {
-                            pc.addError(ie);
-                            if(pc.isThrowErrorException())
-                                throw new DataModelException(pc, ie);
+                            if(pc != null)
+                            {
+                                pc.addError(ie);
+                                if(pc.isThrowErrorException())
+                                    throw new DataModelException(pc, ie);
+                            }
+                            else
+                                log.error(ie);
                         }
                     }
 
