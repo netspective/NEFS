@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.7 2003-03-20 14:57:13 shahid.shah Exp $
+ * $Id: AccessControlListTest.java,v 1.8 2003-03-20 20:42:39 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.acl;
@@ -59,6 +59,7 @@ import com.netspective.commons.acl.AccessControlListsComponent;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.security.BasicAuthenticatedUser;
 
 public class AccessControlListTest extends TestCase
 {
@@ -262,6 +263,8 @@ public class AccessControlListTest extends TestCase
 		aclExpectedPermissionSet.set(4);
 		aclExpectedPermissionSet.set(5);
 		aclExpectedPermissionSet.set(9);
+		System.out.println("\ndefaultACL: " + defaultAcl + "\n");
+		System.out.println("\naclACL: " + aclAcl + "\n");
 		assertEquals("Expected: Permissions for /acl/role/normal-user = " + aclExpectedPermissionSet + ", Found: " + aclNormalUserPermissionSet, aclExpectedPermissionSet, aclNormalUserPermissionSet);
 
 		// Verify the set of permissions for /acl_two/role/normal-user are exactly what we expect
@@ -374,12 +377,226 @@ public class AccessControlListTest extends TestCase
         // Verify _something_ was loaded...
         assertNotNull(aclc);
 
-        ValueContext vc = ValueSources.getInstance().createDefaultValueContext();
-        AuthenticatedUser user = vc.createAuthenticatedUser();
+	    // ValueContext Created User...
+        ValueContext vcOne = ValueSources.getInstance().createDefaultValueContext();
+        AuthenticatedUser userOne = vcOne.createAuthenticatedUser();
+	    assertNotNull(userOne);
 
-        user.setUserId("admin");
-        user.setUserName("Administrator");
+        userOne.setUserId("admin");
+	    assertEquals("admin", userOne.getUserId());
 
-        // other tests...
+        userOne.setUserName("Administrator");
+	    assertEquals("Administrator", userOne.getUserName());
+
+	    userOne.setUserOrgId("admin-org");
+	    assertEquals("admin-org", userOne.getUserOrgId());
+
+	    userOne.setUserOrgName("Administrative Services, Inc.");
+	    assertEquals("Administrative Services, Inc.", userOne.getUserOrgName());
+
+		// Independently created User...
+	    ValueContext vcTwo = ValueSources.getInstance().createDefaultValueContext();
+	    AuthenticatedUser userTwo = new BasicAuthenticatedUser("Administrator", "admin", "Administrative Services, Inc.", "admin-org");
+
+		assertEquals("admin", userTwo.getUserId());
+		assertEquals("Administrator", userTwo.getUserName());
+		assertEquals("admin-org", userTwo.getUserOrgId());
+		assertEquals("Administrative Services, Inc.", userTwo.getUserOrgName());
+
+	    //TODO: Implement setAuthenticatedUser (and getAuthenticatedUser) and _then_ enable these lines
+/*
+	    vcTwo.setAuthenticatedUser(userTwo);
+	    assertEquals(userTwo, vcTwo.getAuthenticatedUser());
+*/
+
+	    // Alternate constructor
+	    ValueContext vcThree = ValueSources.getInstance().createDefaultValueContext();
+	    AuthenticatedUser userThree = new BasicAuthenticatedUser("Administrator", "admin");
+
+	    assertEquals("admin", userThree.getUserId());
+	    assertEquals("Administrator", userThree.getUserName());
+	    assertNull(userThree.getUserOrgId());
+	    assertNull(userThree.getUserOrgName());
+
+		//TODO: Implement setAuthenticatedUser (and getAuthenticatedUser) and _then_ enable these lines
+/*
+	    vcThree.setAuthenticatedUser(userThree);
+	    assertEquals(userThree, vcThree.getAuthenticatedUser());
+*/
+
+	    userThree.setAttribute("pi", new Float(3.14159));
+	    assertEquals(new Float(3.14159), userThree.getAttribute("pi"));
+	    userThree.removeAttribute("pi");
+	    assertNull(userThree.getAttribute("pi"));
     }
+
+	public void testAuthenticatedUsersPermissions() throws DataModelException, InvocationTargetException, InstantiationException, NoSuchMethodException, IllegalAccessException, IOException, PermissionNotFoundException
+	{
+		AccessControlListsComponent aclc =
+		        (AccessControlListsComponent) XdmComponentFactory.get(
+		                AccessControlListsComponent.class,
+		                new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
+		                XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+
+		// Verify _something_ was loaded...
+		assertNotNull(aclc);
+
+        AccessControlListsManager aclm = aclc.getItems();
+		assertNotNull(aclm);
+
+		AccessControlList defaultAcl = aclm.getDefaultAccessControlList();
+		assertNotNull(defaultAcl);
+
+		assertEquals(10, defaultAcl.getPermissionsByName().size());
+
+		// Independently created User...
+	    ValueContext vcTwo = ValueSources.getInstance().createDefaultValueContext();
+	    AuthenticatedUser userTwo = new BasicAuthenticatedUser("Administrator", "admin", "Administrative Services, Inc.", "admin-org");
+
+		// Experiment with AuthenticatedUsers and Roles/Permissions
+        assertNull(userTwo.getUserRoles());
+
+		String[] userTwoRoles = { "/acl/role/normal-user" };
+		userTwo.setRoles(aclm, userTwoRoles);
+		assertEquals(userTwoRoles, userTwo.getUserRoles());
+
+		Permission normalUser = defaultAcl.getPermission("/acl/role/normal-user");
+		assertEquals(9, normalUser.getId());
+//		BitSet aclNormalUserPermissionSet = normalUser.getChildPermissions();
+		BitSet aclNormalUserPermissionSet = new BitSet(24);
+		aclNormalUserPermissionSet.set(1);
+		aclNormalUserPermissionSet.set(2);
+		aclNormalUserPermissionSet.set(3);
+		aclNormalUserPermissionSet.set(4);
+		aclNormalUserPermissionSet.set(5);
+		aclNormalUserPermissionSet.set(9);
+
+		assertEquals(normalUser.getChildPermissions(), userTwo.getUserPermissions());
+		assertEquals(aclNormalUserPermissionSet, userTwo.getUserPermissions());
+
+		userTwo.removeRoles(aclm, userTwoRoles);
+		assertEquals(null, userTwo.getUserRoles());
+		assertEquals(null, userTwo.getUserRoles());
+
+		userTwo.setRoles(aclm, userTwoRoles);
+		userTwo.removeAllRoles(aclm);
+		assertEquals(null, userTwo.getUserRoles());
+		assertEquals(null, userTwo.getUserRoles());
+
+		userTwo.setRoles(aclm, userTwoRoles);
+		assertTrue(userTwo.hasAnyPermission(aclm, new String[] { "/acl/app/orders/create_order", "/acl/app/orders/view_order", "/acl/app/orders/edit_order" }));
+		assertTrue(userTwo.hasAnyPermission(aclm, new String[] { "/acl/app/orders/delete_order", "/acl/app/orders/view_order", "/acl/app/orders/edit_order" }));
+		assertFalse(userTwo.hasPermission(aclm, "/acl/app/orders/delete_order"));
+
+		userTwo.removeAllRoles(aclm);
+		userTwo.setRoles(aclm, new String[] { "/acl/role/super-user", "/acl/role/normal-user" });
+		Permission superUser = defaultAcl.getPermission("/acl/role/super-user");
+		BitSet expectedPermissionSet = normalUser.getChildPermissions();
+		expectedPermissionSet.or(superUser.getChildPermissions());
+		assertEquals(expectedPermissionSet, userTwo.getUserPermissions());
+
+		userTwo.removeRoles(aclm, new String[] { "/acl/role/super-user" });
+		expectedPermissionSet = normalUser.getChildPermissions();
+		assertEquals("/acl/role/normal-user", userTwo.getUserRoles()[0]);
+		assertEquals(expectedPermissionSet, userTwo.getUserPermissions());
+	}
+
+	public void testAuthenticatedUsersPermissionErrors() throws DataModelException, InvocationTargetException, InstantiationException, NoSuchMethodException, IllegalAccessException, IOException, PermissionNotFoundException
+	{
+		AccessControlListsComponent aclc =
+		        (AccessControlListsComponent) XdmComponentFactory.get(
+		                AccessControlListsComponent.class,
+		                new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
+		                XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+
+		// Verify _something_ was loaded...
+		assertNotNull(aclc);
+
+        AccessControlListsManager aclm = aclc.getItems();
+		assertNotNull(aclm);
+
+		AccessControlList defaultAcl = aclc.getItems().getDefaultAccessControlList();
+		assertNotNull(defaultAcl);
+
+		// Independently created User...
+	    ValueContext vcTwo = ValueSources.getInstance().createDefaultValueContext();
+	    AuthenticatedUser userTwo = new BasicAuthenticatedUser("Administrator", "admin", "Administrative Services, Inc.", "admin-org");
+
+		// Experiment with AuthenticatedUsers and Roles/Permissions
+        assertNull(userTwo.getUserRoles());
+
+		boolean exceptionThrown = true;
+
+		try {
+			userTwo.setRoles(aclm, new String[] { "/acl/role/invalid-user" });
+			exceptionThrown = false;
+		} catch (PermissionNotFoundException e) {
+			assertTrue(exceptionThrown);
+		}
+
+		assertTrue(exceptionThrown);
+
+		String[] userTwoRoles = { "/acl/role/normal-user" };
+		userTwo.setRoles(aclm, userTwoRoles);
+		assertEquals(userTwoRoles, userTwo.getUserRoles());
+
+		Permission normalUser = defaultAcl.getPermission("/acl/role/normal-user");
+//		BitSet aclNormalUserPermissionSet = normalUser.getChildPermissions();
+		BitSet aclNormalUserPermissionSet = new BitSet(24);
+		aclNormalUserPermissionSet.set(1);
+		aclNormalUserPermissionSet.set(2);
+		aclNormalUserPermissionSet.set(3);
+		aclNormalUserPermissionSet.set(4);
+		aclNormalUserPermissionSet.set(5);
+		aclNormalUserPermissionSet.set(9);
+
+		assertEquals(aclNormalUserPermissionSet, normalUser.getChildPermissions());
+
+		assertEquals(normalUser.getChildPermissions(), userTwo.getUserPermissions());
+		System.out.println(defaultAcl);
+		assertEquals(aclNormalUserPermissionSet, userTwo.getUserPermissions());
+
+		try {
+			userTwo.removeRoles(aclm, new String[] { "/acl/role/invalid-user" });
+			exceptionThrown = false;
+		} catch (PermissionNotFoundException e) {
+			assertTrue(exceptionThrown);
+		}
+
+		assertTrue(exceptionThrown);
+
+		userTwo.removeRoles(aclm, userTwoRoles);
+		assertEquals(null, userTwo.getUserRoles());
+		assertEquals(null, userTwo.getUserRoles());
+
+		userTwo.setRoles(aclm, userTwoRoles);
+		userTwo.removeAllRoles(aclm);
+		assertEquals(null, userTwo.getUserRoles());
+		assertEquals(null, userTwo.getUserRoles());
+
+		userTwo.setRoles(aclm, userTwoRoles);
+		assertTrue(userTwo.hasAnyPermission(aclm, new String[] { "/acl/app/orders/create_order", "/acl/app/orders/view_order", "/acl/app/orders/edit_order" }));
+		assertTrue(userTwo.hasAnyPermission(aclm, new String[] { "/acl/app/orders/delete_order", "/acl/app/orders/view_order", "/acl/app/orders/edit_order" }));
+		assertFalse(userTwo.hasPermission(aclm, "/acl/app/orders/delete_order"));
+		assertFalse(userTwo.hasAnyPermission(aclm, new String[] { "/acl/app/orders/delete_order" }));
+
+		try {
+			userTwo.hasAnyPermission(aclm, new String[] { "/acl/app/orders/invalidate_order", "/acl/app/orders/misplace_order" });
+			exceptionThrown = false;
+		} catch (PermissionNotFoundException e) {
+			assertTrue(exceptionThrown);
+		}
+
+		assertTrue(exceptionThrown);
+
+		try {
+			userTwo.hasPermission(aclm, "/acl/app/orders/invalidate_order");
+			exceptionThrown = false;
+		} catch (PermissionNotFoundException e) {
+			assertTrue(exceptionThrown);
+		}
+
+		assertTrue(exceptionThrown);
+	}
+
 }
