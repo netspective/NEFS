@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RedirectValueSource.java,v 1.4 2003-09-10 20:53:36 aye.thu Exp $
+ * $Id: RedirectValueSource.java,v 1.5 2003-09-25 04:53:44 aye.thu Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -64,7 +64,6 @@ public class RedirectValueSource implements ValueSource
     );
 
     private ValueSource valueSource;
-    private ValueSourceSpecification spec;
 
     public static String[] getIdentifiers()
     {
@@ -87,8 +86,7 @@ public class RedirectValueSource implements ValueSource
 
     public void initialize(ValueSourceSpecification srcTokens) throws ValueSourceInitializeException
     {
-        spec = srcTokens;
-        valueSource = ValueSources.getInstance().getValueSourceOrStatic(srcTokens.getParams());
+        valueSource.initialize(srcTokens);
     }
 
     public ValueSource getValueSource()
