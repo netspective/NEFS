@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.7 2003-08-28 00:44:03 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.8 2003-08-28 14:44:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -241,14 +241,14 @@ public class TableDialog extends Dialog
                         try
                         {
                             cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false, ConnectionContext.OWNERSHIP_DEFAULT);
-                            Row row = table.getRowByPrimaryKeys(cc, new Object[] { pkValue}, null);
+                            Row row = table.getRowByPrimaryKeys(cc, new Object[] { pkValue }, null);
                             if(row != null)
                             {
-                                DialogContextUtils.getInstance().populateRowWithFieldValues(dc, row);
+                                DialogContextUtils.getInstance().populateFieldValuesFromRow(dc, row);
                                 ((TableDialogContext) dc).setPrimaryKeyValue(pkValue);
                             }
                             else if(! getDialogFlags().flagIsSet(TableDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
-                                dc.getValidationContext().addValidationError("Unable to locate primary key '{0}'", new Object[] { pkValue });
+                                dc.getValidationContext().addValidationError("Unable to locate primary key {0}", new Object[] { pkValue });
                         }
                         finally
                         {
