@@ -4,7 +4,7 @@
     <release>
         <product name="Sparx" version="7.0.20"/>
         <change-log>
-            <summary>Minor bug fixes</summary>
+            <summary>Minor bug fixed and enhancements</summary>
             <change-log-entry>
                 <![CDATA[
                 Fixed problem where the <i>no/false</i> option for the <i>radio</i> style of the BooleanField
@@ -25,6 +25,19 @@
                 If the "neither" option is available (by setting the <i>none-text</i> attribute), then
                 the "neither" option will be the default value when no default value is specified in XML.
                 ]]>
+            </change-log-entry>
+            <change-log-entry>
+                In login-manager's login-attempts-listener class, implemented usage of the simple max attempts reached
+                message in addition to providing a template body. This allows max attempts to be prevented with either
+                a simple message or a more elaborate template.
+            </change-log-entry>
+            <change-log-entry>
+                In send-mail dialog execute handler, the to/cc/bcc recipients now allow multiple comma-separated e-mail
+                addresses to be entered.
+            </change-log-entry>
+            <change-log-entry>
+                Added convenience method to access column values of each row of a grid in a GridField dialog context
+                bean. The new convenience method allows row-number-based access to values.
             </change-log-entry>
         </change-log>
     </release>
