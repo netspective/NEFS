@@ -888,7 +888,7 @@
               <callout arearefs="declare-template-in-jsp-eg-1">
                 <para>The <sgmltag>handler</sgmltag> attribute of
                 <sgmltag>on-execute</sgmltag> tag specifies the
-                "<sgmltag>include</sgmltag>" handler for this dialog. </para>
+                "<sgmltag>include</sgmltag>" handler for this dialog.</para>
               </callout>
 
               <callout arearefs="declare-template-in-jsp-eg-2">
@@ -983,7 +983,7 @@
               <callout arearefs="declare-include-url-eg-2">
                 <para>The <sgmltag>handler</sgmltag> attribute of
                 <sgmltag>on-execute</sgmltag> tag specifies the "include"
-                handler for this dialog. </para>
+                handler for this dialog.</para>
               </callout>
 
               <callout arearefs="declare-include-url-eg-3">
@@ -1007,14 +1007,26 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="./resources/images/screen-sampler-send-mail.gif" />
+                <imagedata fileref="./resources/images/screen-sampler-send-mail-msg.gif" />
               </imageobject>
             </mediaobject>
           </figure>
 
           <para>Enter the values for the mail dialog fields and click the
-          <command>OK</command> button. [TODO: put details/image of successful
-          mail send]</para>
+          <command>OK</command> button. A success message is displayed, along
+          with the body of the email, if the mail is sent to the specified
+          recipient. In case of an error, an appropriate error message is
+          displayed. </para>
+
+          <figure>
+            <title>Mail Send - Success Message</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-send-mail-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
 
           <para>The XML Code for this example is given below:</para>
 
@@ -1099,8 +1111,19 @@
           <title>Exec Command</title>
 
           <para>This page contains an example of a dialog which has a handler
-          that will process a command upon execution of the dialog. [TODO:
-          image of exec command]</para>
+          that will process a command upon execution of the dialog. Enter the
+          command and click the <command>OK</command> button to see the
+          command execution result.</para>
+
+          <figure>
+            <title>Execute Command</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-exec-cmd.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
 
           <para>The XML Code for this example is given below:</para>
 
@@ -1304,7 +1327,7 @@
               <callout arearefs="declare-transform-bean-eg-2">
                 <para>The <sgmltag>handler</sgmltag> attribute of
                 <sgmltag>on-execute</sgmltag> tag specifies the "style-sheet"
-                handler for this dialog. </para>
+                handler for this dialog.</para>
               </callout>
 
               <callout arearefs="declare-transform-bean-eg-3">
@@ -1445,7 +1468,7 @@
           </figure>
 
           <para>The welcome message also displays the link to the custom class
-          being used as the dialog handler. </para>
+          being used as the dialog handler.</para>
 
           <para>The XML Code for this example is given below:</para>
 
@@ -1477,7 +1500,7 @@
           the Console (as shown below):</para>
 
           <figure>
-            <title>Source File for Custom Class</title>
+            <title>Source File for Custom Class (Inheritance)</title>
 
             <mediaobject>
               <imageobject>
@@ -1551,7 +1574,7 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
 
             <calloutlist>
               <callout arearefs="declare-inherit-class-eg-1">
-                <para>Defining the package for this class.</para>
+                <para>Declaring the package for this class.</para>
               </callout>
 
               <callout arearefs="declare-inherit-class-eg-2">
@@ -1566,7 +1589,7 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
               <callout arearefs="declare-inherit-class-eg-4">
                 <para>Declaring the dialog <methodname>execute</methodname>
                 method which is called as soon as all dialog data is entered
-                and validated. </para>
+                and validated.</para>
               </callout>
 
               <callout arearefs="declare-inherit-class-eg-5">
@@ -1586,8 +1609,12 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
               </callout>
 
               <callout arearefs="declare-inherit-class-eg-8">
+                <para>TODO: description for this method</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-class-eg-8">
                 <para>Retrieving the current page's name from the Navigation
-                Context. </para>
+                Context.</para>
               </callout>
             </calloutlist>
 
@@ -1640,7 +1667,7 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
 
           <para>This page contains a dialog which has a custom dialog class
           that overrides the default population, validation, and execution
-          behaviors of the dialog.</para>
+          behaviors of the dialog. </para>
 
           <figure>
             <title>Sample Page for Validation using Custom Class (through
@@ -1668,6 +1695,220 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
               </imageobject>
             </mediaobject>
           </figure>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Validation Custom Class (Inheritance)</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="validate" <emphasis>class="app.form.exec.inheritance.SampleValidateDialog"</emphasis> 
+                            <emphasis>generate-dcb="yes"</emphasis>&gt; <co
+                id="declare-inherit-valid-eg-1" />
+    &lt;frame heading="Inheritance Validate Sample"/&gt;
+    &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
+    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" max="today"/&gt;
+    &lt;field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/&gt;
+ &lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-inherit-valid-eg-1">
+                <para>Declaring the custom class handling the dialog (form)
+                validation. The <sgmltag>generate-dcb</sgmltag> attribute
+                specifies the generation of auto-generated Dialog Context Bean
+                (DCB).</para>
+              </callout>
+            </calloutlist>
+          </example>
+
+          <para>The code for custom validation class is given below. Note that
+          this class extends the <classname>Dialog</classname> class to
+          provide custom implementation.</para>
+
+          <example>
+            <title>Custom Dialog Validation Handler Class (using
+            Inheritance)</title>
+
+            <programlisting>package app.form.exec.inheritance; 
+
+import java.io.Writer;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Calendar;
+import auto.dcb.form.exec.inheritance.ValidateContext;
+
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.Project;
+
+public class SampleValidateDialog extends Dialog 
+{
+  public SampleValidateDialog(Project project)
+ {
+     super(project);
+ }
+
+ public SampleValidateDialog(Project project, DialogsPackage pkg)
+ {
+     super(project, pkg);
+ }
+
+ public void populateValues(DialogContext dc, int formatType) <co
+                id="declare-inherit-valid-handler-eg-1" />
+ {
+     super.populateValues(dc, formatType);
+
+     if(dc.getDialogState().isInitialEntry() &amp;&amp; formatType == DialogField.DISPLAY_FORMAT) <co
+                id="declare-inherit-valid-handler-eg-2" />
+     {
+         ValidateContext validateContext = new ValidateContext(dc); <co
+                id="declare-inherit-valid-handler-eg-3" />
+         Date birthDate = validateContext.getBirthDate().getDateValue();
+         if(birthDate == null) 
+         {
+             Calendar cal = Calendar.getInstance();
+             cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 25); // assume we're 25 years old
+             validateContext.getBirthDate().setValue(cal.getTime());
+         }
+     }
+ }
+
+ public boolean isValid(DialogContext dc) <co
+                id="declare-inherit-valid-handler-eg-4" />
+ {
+     if(! super.isValid(dc)) <co id="declare-inherit-valid-handler-eg-5" />
+         return false;
+      ValidateContext validateContext = new ValidateContext(dc);
+      Date birthDate = validateContext.getBirthDate().getDateValue();
+      int age = validateContext.getAge().getIntValue();
+                    
+                    <co id="declare-inherit-valid-handler-eg-6" />
+      Calendar cal = Calendar.getInstance();
+      int currentYear = cal.get(Calendar.YEAR);
+      cal.setTime(birthDate);
+      int yearOfBirth = cal.get(Calendar.YEAR);
+
+      if(currentYear - yearOfBirth != age) 
+      {
+         dc.getValidationContext().addError("The Age and Birth Date fields do not match."); <co
+                id="declare-inherit-valid-handler-eg-7" />
+
+                                 <co id="declare-inherit-valid-handler-eg-8" />
+         validateContext.getBirthDateField().invalidate(dc, "If you want the age to be "+ age +
+                          " then birth date should be in year " + (currentYear - age));
+         validateContext.getAgeField().invalidate(dc, "If you want the birth year to be "+ 
+                          yearOfBirth +" then age should be " + (currentYear - yearOfBirth));
+
+         return false; <co id="declare-inherit-valid-handler-eg-9" />
+      }
+
+      return true;
+ }
+
+ public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException <co
+                id="declare-inherit-valid-handler-eg-10" />
+ {
+  writer.write("Congratulations &lt;b&gt;" 
+                + dc.getFieldStates().getState("full_name").getValue().getTextValue() + "&lt;/b&gt;! ");
+  writer.write("It seems that your birthdate and ages match correctly.");
+  writer.write("&lt;p&gt;");
+  writer.write("This code demonstrated how you can take two three pieces of data, have Sparx " +
+                " individually validate " +
+                "the general fields such as text, date, and integer but add your own custom " +
+                "validator some other logic by overriding the isValid() method of the " + 
+                "com.netspective.sparx.form.Dialog class.&lt;p&gt;");
+
+  String relativePath = "/WEB-INF/classes/app/inheritance/SampleValidateDialog.java";
+  writer.write("You may review the code at " + 
+   c.getConsoleFileBrowserLinkShowAlt(dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath), 
+                                         relativePath));
+  writer.write("&lt;p&gt;");
+  writer.write("&lt;a href=\""+ 
+  dc.getNavigationContext().getActivePage().getName() +"\"&gt;Clear the dialog&lt;/a&gt;");
+ }
+}</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-inherit-valid-handler-eg-1">
+                <para>This method is called each time the dialog is displayed
+                to the user and fields need their values populated. By
+                default, Sparx handles populates almost all the value
+                population. But, sometimes, you may want to populate something
+                programmatically.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-valid-handler-eg-2">
+                <para>Only put data into the fields if we're displaying the
+                data for the first time. If it's not the initial entry, it
+                means that there's an error on the screen and the fields need
+                to be populated with the data entered by the user.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-valid-handler-eg-3">
+                <para>Using the auto-generated dialog context bean (DCB) for
+                user data retrieval. DCB is a type-safe wrapper around the
+                general-purpose <classname>DialogContext</classname>.
+                Declaring a validation context for current user's
+                dialog.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-valid-handler-eg-4">
+                <para>The <methodname>isValid</methodname> method is called
+                right before <methodname>execute</methodname> to validate the
+                dialog. If you need to perform any validation that the fields
+                can't perform on their own (such as cross-field validation),
+                you should perform it here. The <varname>dc</varname>
+                parameter contains reference to the
+                <classname>DialogContext</classname> containing the field
+                values and states.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-valid-handler-eg-5">
+                <para>Check if any of the default validation failed. If yes,
+                leave this method.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-valid-handler-eg-6">
+                <para>Find out the current year and the year of birth entered
+                by the user.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-valid-handler-eg-7">
+                <para>Add an error message, at the dialog level, if the custom
+                validation condition fails. The error message is added to the
+                validation context of the dialog context.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-valid-handler-eg-8">
+                <para>In case of failure, add error messages to each field as
+                well.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-valid-handler-eg-9">
+                <para>Return "false" so the dialog does not go into execute
+                mode until you have valid data.</para>
+              </callout>
+
+              <callout arearefs="declare-inherit-valid-handler-eg-10">
+                <para>The dialog <methodname>execute</methodname> method is
+                called as soon as all data is entered and validated. This
+                method is guaranteed to be called <emphasis>only</emphasis>
+                when all fields' data is valid. </para>
+              </callout>
+            </calloutlist>
+          </example>
+
+          <note>
+            <para>This custom dialog validation handler class (using
+            inheritance) takes care of <sgmltag>exec1A</sgmltag> and
+            <sgmltag>exec2a</sgmltag> both, in case of Sampler App.</para>
+          </note>
         </section>
       </section>
 
@@ -1679,6 +1920,14 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
         definition of various listeners for different stages of a dialog. By
         implementing the listener interfaces and then assigning the custom
         listeners to a dialog, these listeners will get executed.</para>
+
+        <note>
+          <para>Inheritance is used for large-scale customizations and
+          enhancing the framework itself while delegation is used to implement
+          listeners and event processing customizations. Although both methods
+          are supported, the delegation model is recommened to help ensure
+          that changes in the NEF APIs do not affect your code.</para>
+        </note>
 
         <section>
           <title>Exec 1 A</title>
@@ -1715,6 +1964,158 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
               </imageobject>
             </mediaobject>
           </figure>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Using Custom Handler (Delegation)</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="exec1a"&gt;
+    &lt;frame heading="Delegation Execute Sample 1a"/&gt;
+    &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
+
+    &lt;<emphasis>on-execute</emphasis> <emphasis>class="app.form.exec.delegation.SampleExecuteHandler"</emphasis>/&gt; <co
+                id="declare-delegate-handler-eg-1" />
+ &lt;/dialog&gt;
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-delegate-handler-eg-1">
+                <para>the <sgmltag>class</sgmltag> attribute of the
+                <sgmltag>on-execute</sgmltag> tag specifies the custom class
+                (<classname>SampleExecuteHandler</classname> in this case) to
+                be used as the listener for this dialog.</para>
+              </callout>
+            </calloutlist>
+          </example>
+
+          <para>You may view the code for custom Java class using the link
+          provided in the welcome message. This opens the Java source code in
+          the Console (as shown below):</para>
+
+          <figure>
+            <title>Source File for Custom Class (Delegation)</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-delegate-custom-class.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <example>
+            <title>Custom Dialog Handler Class (using Delegation)</title>
+
+            <programlisting>package app.form.exec.delegation; <co
+                id="declare-delegate-class-eg-1" />
+
+    <co id="declare-delegate-class-eg-2" />
+import java.io.Writer;
+import java.io.IOException;
+
+import com.netspective.sparx.form.handler.DialogExecuteHandler;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
+
+public class SampleExecuteHandler implements DialogExecuteHandler <co
+                id="declare-delegate-class-eg-3" />
+{
+    public void executeDialog(Writer writer, DialogContext dc) 
+                              throws IOException, DialogExecuteException <co
+                id="declare-delegate-class-eg-4" />
+    {
+        writer.write("Welcome to NEFS &lt;b&gt;" + 
+                     dc.getFieldStates().getState("full_name").getValue().getTextValue() + <co
+                id="declare-delegate-class-eg-5" />
+                     "&lt;/b&gt;. ");
+        writer.write("You are running the dialog called &lt;b&gt;"+ dc.getDialog().getName() 
+                      +"&lt;/b&gt; in package &lt;b&gt;"+
+                     dc.getDialog().getNameSpace().getNameSpaceId() +"&lt;/b&gt;.");
+
+        if(dc.getDialog().getQualifiedName().equals("form.exec.delegation.exec1b")) <co
+                id="declare-delegate-class-eg-6" />
+            writer.write("&lt;p&gt;You are &lt;b&gt;"+ dc.getFieldStates().getState("age").getValue().getIntValue() 
+                           + "&lt;/b&gt; " + "years old.");
+
+        writer.write("&lt;p&gt;");
+        writer.write("This code demonstrated how you can take two pieces of data and execute an " + 
+                     "arbritrary class by supplying an &amp;lt;on-execute&amp;gt; tag in the &amp;lt;dialog&amp;gt;. ");
+        writer.write("This method of execution is called &lt;i&gt;Dialog Delegation&lt;/i&gt; because a class separate" +
+                     " from the Dialog class handles the execution.&lt;p&gt;");
+
+        String relativePath = "/WEB-INF/classes/app/form/exec/delegation/SampleExecuteHandler.java"; <co
+                id="declare-delegate-class-eg-7" />
+        String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt( 
+                                dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
+                                relativePath); <co
+                id="declare-delegate-class-eg-8" />
+        writer.write("You may review the code at " + sourceFileLink + ".");
+        writer.write("&lt;p&gt;");
+        writer.write("&lt;a href=\""+ dc.getNavigationContext().getActivePage().getName() 
+                       +"\"&gt;Clear the dialog&lt;/a&gt;"); <co
+                id="declare-delegate-class-eg-9" />
+    }
+}
+
+ 
+ </programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-delegate-class-eg-1">
+                <para>Declaring the package for this class.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-class-eg-2">
+                <para>Importing other required classes.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-class-eg-3">
+                <para>Implementing the
+                <interfacename>DialogExecuteHandler</interfacename>
+                interface.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-class-eg-4">
+                <para>Declaring the dialog
+                <methodname>executeDialog</methodname> method which is called
+                as soon as all dialog data is entered and validated.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-class-eg-5">
+                <para>Retrieving the value of the dialog field named full_name
+                from the dialog context and sending it to the writer.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-class-eg-6">
+                <para>Checking the dialog name after retrieving it from the
+                dialog context. If the dialog name is exec1b, the Age related
+                message is also displayed in the output HTLML.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-class-eg-7">
+                <para>Declaring a variable containing the relative path of
+                this Java file.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-class-eg-8">
+                <para>TODO: Description for this method</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-class-eg-9">
+                <para>Retrieving the current page's name from the Navigation
+                Context.</para>
+              </callout>
+            </calloutlist>
+
+            <para><note>
+                <para>This custom class takes care of
+                <sgmltag>exec1A</sgmltag> and <sgmltag>exec2a</sgmltag> both,
+                in case of Sampler App.</para>
+              </note></para>
+          </example>
         </section>
 
         <section>
@@ -1805,6 +2206,208 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
               </imageobject>
             </mediaobject>
           </figure>
+
+          <para>The XML Code for this example is given below:</para>
+
+          <example>
+            <title>XML Code for Validation Custom Class (Delegation)</title>
+
+            <programlisting>&lt;project&gt;
+...
+ &lt;dialog type="exec-sample" name="validate" <emphasis>generate-dcb="yes"</emphasis>&gt; <co
+                id="declare-delegate-valid-eg-1" />
+    &lt;frame heading="Delegation Validate Sample"/&gt;
+    &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
+    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" max="today"/&gt;
+    &lt;field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/&gt;
+
+    &lt;<emphasis>listener</emphasis> <emphasis>class="app.form.exec.delegation.SampleValidateHandler"</emphasis>/&gt; <co
+                id="declare-delegate-valid-eg-2" />
+ &lt;/dialog&gt;
+
+...
+&lt;/project&gt;</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-delegate-valid-eg-1">
+                <para>The <sgmltag>generate-dcb</sgmltag> attribute specifies
+                the generation of auto-generated Dialog Context Bean
+                (DCB).</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-valid-eg-2">
+                <para>The <sgmltag>class</sgmltag> attribute of the
+                <sgmltag>listener</sgmltag> tag declares the dialog listener
+                to be used for custom validation.</para>
+              </callout>
+            </calloutlist>
+          </example>
+
+          <para>The code for custom validation class, using delegation, is
+          given below. Note that this class implements the
+          <interfacename>DialogValidateListener</interfacename>,
+          <interfacename>DialogPopulateListener</interfacename> and
+          <interfacename>DialogExecuteHandler</interfacename> interfaces to
+          provide custom implementation.</para>
+
+          <example>
+            <title>Custom Dialog Validation Handler Class (using
+            Delegation)</title>
+
+            <programlisting>package app.form.exec.delegation;
+
+import java.io.Writer;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Calendar;
+
+import auto.dcb.form.exec.delegation.ValidateContext;
+
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogValidationContext;
+import com.netspective.sparx.form.handler.DialogExecuteHandler;
+import com.netspective.sparx.form.listener.DialogValidateListener;
+import com.netspective.sparx.form.listener.DialogPopulateListener;
+import com.netspective.sparx.form.field.DialogField;
+
+public class SampleValidateHandler implements DialogValidateListener, DialogPopulateListener, 
+                                              DialogExecuteHandler 
+{
+ <emphasis>public void populateDialogValues(DialogContext dc, int formatType)</emphasis> <co
+                id="declare-delegate-valid-handler-eg-1" />
+ {
+  if(dc.getDialogState().isInitialEntry() &amp;&amp; formatType == DialogField.DISPLAY_FORMAT) <co
+                id="declare-delegate-valid-handler-eg-2" />
+  {
+    ValidateContext validateContext = new ValidateContext(dc); <co
+                id="declare-delegate-valid-handler-eg-3" />
+    Date birthDate = validateContext.getBirthDate().getDateValue();
+    if(birthDate == null)
+    {
+     Calendar cal = Calendar.getInstance();
+     cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 25); // assume we're 25 years old
+     validateContext.getBirthDate().setValue(cal.getTime());
+    }
+  }
+ }
+
+ public void validateDialog(DialogValidationContext dvc) <co
+                id="declare-delegate-valid-handler-eg-4" />
+ {
+   ValidateContext validateContext = new ValidateContext(dvc.getDialogContext());
+   Date birthDate = validateContext.getBirthDate().getDateValue();
+   int age = validateContext.getAge().getIntValue();
+ 
+              <co id="declare-delegate-valid-handler-eg-5" />
+   Calendar cal = Calendar.getInstance();   
+   int currentYear = cal.get(Calendar.YEAR);
+   cal.setTime(birthDate);
+   int yearOfBirth = cal.get(Calendar.YEAR);
+
+   if(currentYear - yearOfBirth != age)
+   {
+    <emphasis>dvc.addError</emphasis>("The Age and Birth Date fields do not match."); <co
+                id="declare-delegate-valid-handler-eg-6" />
+    <emphasis>validateContext.getBirthDateField().</emphasis><emphasis>invalidate</emphasis>(dvc.getDialogContext(), "If you want the age to be "+ age +
+                                " then birth date should be in year " + (currentYear - age)); <co
+                id="declare-delegate-valid-handler-eg-7" />
+    validateContext.getAgeField().invalidate(dvc.getDialogContext(), "If you want the birth year to be "
+                                + yearOfBirth +" then age should be " + (currentYear - yearOfBirth));
+   }
+ }<emphasis>
+ public void executeDialog(Writer writer, DialogContext dc) 
+             throws IOException, DialogExecuteException</emphasis> <co
+                id="declare-delegate-valid-handler-eg-8" />
+ {
+   writer.write("Congratulations &lt;b&gt;" + dc.getFieldStates().getState("full_name").getValue().getTextValue() 
+                   + "&lt;/b&gt;! "); 
+   writer.write("It seems that your birthdate and ages match correctly.");
+   writer.write("&lt;p&gt;");
+   writer.write("This code demonstrated how you can take two three pieces of data, have Sparx individually"+
+                " validate the general fields such as text, date, and integer but add your own custom " +
+                "validator some other logic by creating listeners for various events such as population, "+
+                "validation, and execution.&lt;p&gt;");
+
+   String relativePath = "/WEB-INF/classes/app/form/exec/delegation/SampleValidateHandler.java";
+   writer.write("You may review the code at " + 
+    dc.getConsoleFileBrowserLinkShowAlt(
+      dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath), relativePath));
+   writer.write("&lt;p&gt;");
+   writer.write("&lt;a href=\""+ dc.getNavigationContext().getActivePage().getName() 
+                +"\"&gt;Clear the dialog&lt;/a&gt;");
+ }
+
+}</programlisting>
+
+            <calloutlist>
+              <callout arearefs="declare-delegate-valid-handler-eg-1">
+                <para>Declaring custom implementation for
+                <methodname>populateDialogValues</methodname> method of
+                <interfacename>DialogPopulateListener</interfacename>. This
+                method is called each time the dialog is displayed to the user
+                and fields need their values populated. By default, Sparx
+                handles populates almost all the value population. But,
+                sometimes, you may want to populate something
+                programmatically.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-valid-handler-eg-2">
+                <para>Only put data into the fields if we're displaying the
+                data for the first time. If it's not the initial entry, it
+                means that there's an error on the screen and the fields need
+                to be populated with the data entered by the user.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-valid-handler-eg-3">
+                <para>Using the auto-generated dialog context bean (DCB) for
+                user data retrieval. DCB is a type-safe wrapper around the
+                general-purpose <classname>DialogContext</classname>.
+                Declaring a validation context for current user's
+                dialog.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-valid-handler-eg-4">
+                <para>The <methodname>validateDialog</methodname> method is
+                called right before <methodname>execute</methodname> to
+                validate the dialog. If you need to perform any validation
+                that the fields can't perform on their own (such as
+                cross-field validation), you should perform it here. The
+                <varname>dvc</varname> parameter contains reference to the
+                <classname>DialogValidationContext</classname> containing the
+                dialog's validation context.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-valid-handler-eg-5">
+                <para>Find out the current year and the year of birth entered
+                by the user.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-valid-handler-eg-6">
+                <para>Add an error message, at the dialog level, if the custom
+                validation condition fails. The error message is added to the
+                dialog validation context.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-valid-handler-eg-7">
+                <para>In case of failure, add error messages to each field as
+                well.</para>
+              </callout>
+
+              <callout arearefs="declare-delegate-valid-handler-eg-8">
+                <para>The <methodname>executeDialog</methodname> method is
+                called as soon as all data is entered and validated. This
+                method is guaranteed to be called <emphasis>only</emphasis>
+                when all fields' data is valid.</para>
+              </callout>
+            </calloutlist>
+          </example>
+
+          <note>
+            <para>This custom dialog validation handler class (using
+            delegation) takes care of <sgmltag>exec1A</sgmltag> and
+            <sgmltag>exec2a</sgmltag> both, in case of Sampler App.</para>
+          </note>
         </section>
       </section>
     </section>
@@ -1999,6 +2602,12 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
   <section>
     <title>Conclusion</title>
 
-    <para></para>
+    <para>Congratulations! You have explored some of the core concepts
+    provided by NEFS. You have learnt how to create your dialogs and input
+    fields using Sparx. You have seen examples describing a variety of
+    powerful Sparx components to build your web applications. You can now
+    build your own applications that incorporate custom validation, custom
+    dialog handlers and access control. To learn about more advance concepts,
+    try the other sample applications.</para>
   </section>
 </article>
