@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.31 2003-07-09 13:12:00 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.32 2003-07-12 02:09:46 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -13,8 +13,13 @@
     <register-value-source class="com.netspective.sparx.value.source.HttpServletSessionAttributeValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.DialogPerspectiveExprValueSource"/>
 
-    <register-theme name="console" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
-    <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/slate"/>
+
+    <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/slate">
+        <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"
+            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output" />
+        <report-skin class="com.netspective.sparx.theme.basic.RecordEditorReportSkin" name="record-editor"
+            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
+    </register-theme>
 
     <register-command class="com.netspective.sparx.command.RedirectCommand"/>
     <register-command class="com.netspective.sparx.command.DialogCommand"/>

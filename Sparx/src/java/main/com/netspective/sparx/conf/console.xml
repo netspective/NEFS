@@ -3,15 +3,21 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.70 2003-07-09 13:12:00 shahid.shah Exp $
+  * $Id: console.xml,v 1.71 2003-07-12 02:09:45 aye.thu Exp $
   *****************************************************************************************
 -->
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <!-- TODO: the base-dir attribute below is included only because resource loading does not notice file updates (REMOVE before deployment) -->
-    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="c:\Projects\Frameworks\Sparx\src\java\main\com\netspective\sparx\console"/>
-    <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
+    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="/Users/aye/Projects/Frameworks/Sparx/src/java/main/com/netspective/sparx/console"/>
+    <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console">
+        <report-skin name="record-viewer" class="com.netspective.sparx.theme.basic.RecordViewerReportSkin"
+            panel-resources-prefix="panel/output" panel-class-name-prefix="panel-output"/>
+
+        <report-skin name="record-editor" class="com.netspective.sparx.theme.basic.RecordEditorReportSkin"
+            panel-resources-prefix="panel/output" panel-class-name-prefix="panel-output"/>
+    </register-theme>
     <register-value-source class="com.netspective.sparx.console.value.ConsolePageContentPathValueSource"/>
 
     <panel-type name="console-page-summary" extends="html">
