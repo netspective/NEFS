@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.27 2003-08-27 15:20:57 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.28 2003-08-28 00:42:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -115,6 +115,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     private static DialogTypeTemplateConsumerDefn dialogTypeConsumer = new DialogTypeTemplateConsumerDefn();
+    private static int dialogNumber = 0;
 
     protected static class DialogTypeTemplateConsumerDefn extends TemplateConsumerDefn
     {
@@ -178,7 +179,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     private DialogLoopStyle loop = new DialogLoopStyle(DialogLoopStyle.APPEND);
     private DialogDirector director = createDirector();
     private DialogsPackage nameSpace;
-    private String name;
+    private String name = "dialog_" + (++dialogNumber);
     private String htmlFormName;
     private int layoutColumnsCount = 1;
     private String[] retainRequestParams;
