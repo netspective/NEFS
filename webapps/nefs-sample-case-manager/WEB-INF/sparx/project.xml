@@ -59,6 +59,28 @@
             </accessor>
         </table>
 
+        <table name="Project" type="Default">
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The project's auto-generated id (internal identifier)"/>
+            <column name="project_id" unique="yes" type="text" size="64" descr="The project's name or other identifier"/>
+            <column name="parent" selfref="Project.system_id" descr="The project's parent if this product is a sub-project of another product"/>
+            <column name="caption" type="text" required="yes" size="200" descr="The project's brief caption"/>
+
+            <accessor name="lookup">
+                <display fields="system_id, project_id, caption"/>
+            </accessor>
+        </table>
+
+        <table name="Project_Area" type="Default">
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The project area's auto-generated id (internal identifier)"/>
+            <column name="area_id" unique="yes" type="text" size="64" descr="The area's unique name or other identifier"/>
+            <column name="project_id" lookup-ref="Project.system_id" descr="The identifier of the project this area belongs"/>
+            <column name="caption" type="text" required="yes" size="200" descr="The area's brief caption"/>
+
+            <accessor name="lookup">
+                <display fields="system_id, area_id, caption"/>
+            </accessor>
+        </table>
+
         <table name="Product" type="Default">
             <column name="system_id" primarykey="yes" type="auto-inc" descr="The products's auto-generated id (internal identifier)"/>
             <column name="product_id" unique="yes" type="text" size="64" descr="The product's name or other identifier"/>
@@ -82,17 +104,17 @@
             <column name="milestone" unique="yes" type="text" size="64" descr="The product's milestone identifier"/>
         </table>
 
-        <table name="Issue" type="Default">
-            <column name="system_id" primarykey="yes" type="auto-inc" descr="The issue's auto-generated id (internal identifier)"/>
-            <column name="product_id" parentref="Product.system_id" descr="The product that this issue belongs to"/>
-            <column name="version_id" lookupref="Product_Version.system_id" descr="The product version that this issue belongs to"/>
-            <column name="milestone_id" lookupref="Product_Milestone.system_id" descr="The product milestone that this issue belongs to"/>
-            <column name="overview" unique="yes" type="text" size="128" descr="A brief overview of the description"/>
+        <table name="Case_Incidence" type="Default">
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The case's auto-generated id (internal identifier)"/>
+            <column name="product_id" parentref="Product.system_id" descr="The product that this case belongs to"/>
+            <column name="version_id" lookupref="Product_Version.system_id" descr="The product version that this case belongs to"/>
+            <column name="milestone_id" lookupref="Product_Milestone.system_id" descr="The product milestone that this case belongs to"/>
+            <column name="case_title" unique="yes" type="text" size="128" descr="A brief overview of the case"/>
         </table>
 
-        <table name="Issue_Elaboration" type="Default">
+        <table name="Case_Elaboration" type="Default">
             <column name="system_id" primarykey="yes" type="auto-inc" descr="The elaboration's auto-generated id (internal identifier)"/>
-            <column name="issue_id" parentref="Issue.system_id" descr="The issue that is being elaborated"/>
+            <column name="incidence_id" parentref="Case_Incidence.system_id" descr="The case (incidence) that is being elaborated"/>
             <column name="elaboration_text" type="data-block" descr="The actual text of the elaboration"/>
         </table>
 
