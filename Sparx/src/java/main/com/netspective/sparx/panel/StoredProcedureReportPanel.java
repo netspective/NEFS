@@ -54,7 +54,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author  Aye Thu
- * @version $Id: StoredProcedureReportPanel.java,v 1.1 2003-11-06 00:04:45 aye.thu Exp $
+ * @version $Id: StoredProcedureReportPanel.java,v 1.2 2003-11-10 23:03:07 aye.thu Exp $
  */
 public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 {
@@ -66,6 +66,23 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
     private boolean defaultPanel;
     private StoredProcedure parentProcedure;
 
+    /**
+     * Creates a new basic html tabulare report
+     * @return
+     */
+    public HtmlTabularReport createReport()
+    {
+        return new BasicHtmlTabularReport();
+    }
+
+    /**
+     * Sets the report for this panel
+     * @param report
+     */
+    public void addReport(HtmlTabularReport report)
+    {
+        this.report = report;
+    }
 
     public HtmlTabularReport getReport()
     {
@@ -144,13 +161,17 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
             if(resultSet == null)
             {
                 if (isScrollable())
-                    resultSet = parentProcedure.executeQuery(nc, null, true);
+                    resultSet = parentProcedure.execute(nc, null, true);
                 else
-                    resultSet = parentProcedure.executeQuery(nc, null, false);
+                    resultSet = parentProcedure.execute(nc, null, false);
             }
             QueryResultSetDataSource qrsds = new QueryResultSetDataSource(NO_DATA_MSG);
-            qrsds.setQueryResultSet(resultSet);
+            if (resultSet != null)
+            {
+                qrsds.setQueryResultSet(resultSet);
+            }
             return qrsds;
+
         }
         catch (Exception e)
         {
@@ -175,9 +196,9 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
             {
                 QueryResultSet resultSet = null;
                 if (isScrollable())
-                    resultSet = parentProcedure.executeQuery(nc, null, true);
+                    resultSet = parentProcedure.execute(nc, null, true);
                 else
-                    resultSet = parentProcedure.executeQuery(nc, null, false);
+                    resultSet = parentProcedure.execute(nc, null, false);
 
                 resultSet.fillReportFromMetaData(activeReport);
                 nc.setAttribute(getCachedResultSetAttributeId(), resultSet); // store the result set so we don't run it again
