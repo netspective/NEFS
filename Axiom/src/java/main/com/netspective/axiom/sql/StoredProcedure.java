@@ -56,6 +56,7 @@ import com.netspective.axiom.value.DatabaseConnValueContext;
 
 import javax.naming.NamingException;
 import java.util.Map;
+import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.CallableStatement;
@@ -66,7 +67,7 @@ import java.sql.DatabaseMetaData;
  * Class for handling stored procedure calls
  *
  * @author Aye Thu
- * @version $Id: StoredProcedure.java,v 1.8 2003-11-18 03:53:15 aye.thu Exp $
+ * @version $Id: StoredProcedure.java,v 1.9 2004-01-15 20:00:46 aye.thu Exp $
  */
 public class StoredProcedure
 {
@@ -241,6 +242,10 @@ public class StoredProcedure
         log = LogFactory.getLog(getClass().getName() + "." + this.getQualifiedName());
     }
 
+    /**
+     * Gets the IN/OUT parameters registered for this stored procedure call
+     * @return
+     */
     public StoredProcedureParameters getParams()
     {
         return parameters;
@@ -254,6 +259,16 @@ public class StoredProcedure
     public void addParams(StoredProcedureParameters params)
     {
         this.parameters = params;
+    }
+
+    /**
+     * Gets a parameter by its index
+     * @param index
+     * @return
+     */
+    public StoredProcedureParameter getParam(int index)
+    {
+        return  parameters.get(index);
     }
 
     public ValueSource getDataSrc()
@@ -375,7 +390,7 @@ public class StoredProcedure
         return sb.toString();
     }
 
-    public String createExceptionMessage(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
+    public String createExceptionMessage(ConnectionContext cc, int[] overrideIndexes, Object[] overrideValues) throws NamingException, SQLException
     {
         StringBuffer text = new StringBuffer();
 
@@ -384,15 +399,17 @@ public class StoredProcedure
         text.append("\n");
         text.append(getSqlText(cc));
         text.append("\n");
-        if(overrideParams != null)
+        if(overrideIndexes != null)
         {
             text.append("\nBind Parameters (overridden in method):\n");
-            for(int i = 0; i < overrideParams.length; i++)
+            for(int i = 0; i < overrideIndexes.length; i++)
             {
-                text.append("["+ (i + 1) +"] ");
-                text.append(overrideParams[i] + " ("+ overrideParams[i].getClass().getName() +")");
+                text.append("["+ overrideIndexes[i]  +"] ");
+                text.append(overrideValues[i]);
+                if(overrideValues[i] != null)
+                    text.append(" ("+ overrideValues[i].getClass().getName() +")");
+                text.append("\n");
             }
-            text.append("\n");
         }
         else if(parameters != null)
         {
@@ -407,24 +424,25 @@ public class StoredProcedure
     /**
      * Appends tracing messages to the executions log
      * @param cc
-     * @param overrideParams
+     * @param overrideIndexes       parameter indexes to override
+     * @param overrideValues        parameter override values
      * @throws NamingException
      * @throws SQLException
      */
-    public void trace(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
+    public void trace(ConnectionContext cc, int[] overrideIndexes, Object[] overrideValues) throws NamingException, SQLException
     {
         StringBuffer traceMsg = new StringBuffer();
         traceMsg.append(QueryExecutionLogEntry.class.getName() + " '"+ getQualifiedName() +"' at "+
                 cc.getContextLocation() +"\n");
         traceMsg.append(getSqlText(cc));
-        if(overrideParams != null)
+        if(overrideIndexes != null)
         {
-            for(int i = 0; i < overrideParams.length; i++)
+            for(int i = 0; i < overrideIndexes.length; i++)
             {
-                traceMsg.append("["+ i +"] ");
-                traceMsg.append(overrideParams[i]);
-                if(overrideParams[i] != null)
-                    traceMsg.append(" (" + overrideParams[i].getClass().getName() + ")");
+                traceMsg.append("["+ overrideIndexes[i] +"] ");
+                traceMsg.append(overrideValues[i]);
+                if(overrideValues[i] != null)
+                    traceMsg.append(" (" + overrideValues[i].getClass().getName() + ")");
                 traceMsg.append("\n");
             }
         }
@@ -442,15 +460,17 @@ public class StoredProcedure
 
     /**
      * Executes the stored procedure without any statistical logging
-     * @param cc                Connection context
-     * @param overrideParams    Parameter values overriding the ones defined in XMLFlag indicating whether or not to close the DB connection after execution
+     * @param cc                    Connection context
+     * @param overrideIndexes       parameter indexes to override
+     * @param overrideValues        parameter override values
      * @throws NamingException
      * @throws SQLException
      */
-    protected QueryResultSet executeAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable)
+    protected QueryResultSet executeAndIgnoreStatistics(ConnectionContext cc, int[] overrideIndexes, Object[] overrideValues,
+                                                        boolean scrollable)
             throws NamingException, SQLException
     {
-        if(log.isTraceEnabled()) trace(cc, overrideParams);
+        if(log.isTraceEnabled()) trace(cc, overrideIndexes, overrideValues);
 
         Connection conn = null;
         CallableStatement stmt = null;
@@ -464,14 +484,8 @@ public class StoredProcedure
             else
                 stmt = conn.prepareCall(sql);
 
-            if(overrideParams != null)
-            {
-                for(int i = 0; i < overrideParams.length; i++)
-                    stmt.setObject(i + 1, overrideParams[i]);
-            }
-
             if(parameters != null)
-                parameters.apply(cc, stmt);
+                parameters.apply(cc, stmt, overrideIndexes, overrideValues);
             stmt.execute();
             parameters.extract(cc, stmt);
             StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
@@ -486,7 +500,7 @@ public class StoredProcedure
         }
         catch(SQLException e)
         {
-            log.error(createExceptionMessage(cc, overrideParams), e);
+            log.error(createExceptionMessage(cc, overrideIndexes, overrideValues), e);
             throw e;
         }
         finally
@@ -535,15 +549,17 @@ public class StoredProcedure
      * Executes the stored procedure and records different statistics such as database connection times,
      * parameetr binding times, and procedure execution times.
      * @param cc
-     * @param overrideParams
+     * @param overrideIndexes       parameter indexes to override
+     * @param overrideValues        parameter override values
      * @param scrollable
      * @throws NamingException
      * @throws SQLException
      */
-    protected QueryResultSet executeAndRecordStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable)
+    protected QueryResultSet executeAndRecordStatistics(ConnectionContext cc, int[] overrideIndexes, Object[] overrideValues,
+                                                        boolean scrollable)
             throws NamingException, SQLException
     {
-        if(log.isTraceEnabled()) trace(cc, overrideParams);
+        if(log.isTraceEnabled()) trace(cc, overrideIndexes, overrideValues);
         QueryExecutionLogEntry logEntry = execLog.createNewEntry(cc, this.getQualifiedName());
         Connection conn = null;
         CallableStatement stmt = null;
@@ -559,13 +575,9 @@ public class StoredProcedure
                 stmt = conn.prepareCall(sql);
 
             logEntry.registerBindParamsBegin();
-            if(overrideParams != null)
-            {
-                for(int i = 0; i < overrideParams.length; i++)
-                    stmt.setObject(i + 1, overrideParams[i]);
-            }
+
             if(parameters != null)
-                parameters.apply(cc, stmt);
+                parameters.apply(cc, stmt, overrideIndexes, overrideValues);
             logEntry.registerBindParamsEnd();
 
             logEntry.registerExecSqlBegin();
@@ -586,7 +598,7 @@ public class StoredProcedure
         catch(SQLException e)
         {
             logEntry.registerExecSqlEndFailed();
-            log.error(createExceptionMessage(cc, overrideParams), e);
+            log.error(createExceptionMessage(cc, overrideIndexes, overrideValues), e);
             throw e;
         }
         finally
@@ -605,65 +617,73 @@ public class StoredProcedure
     /**
      * Executes the stored procedure  without any statistical logging
      * @param dbvc
-     * @param overrideParams
+     * @param overrideIndexes       parameter indexes to override
+     * @param overrideValues        parameter override values
      * @throws SQLException
      * @throws NamingException
      */
-    public QueryResultSet executeAndIgnoreStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
+    public QueryResultSet executeAndIgnoreStatistics(DatabaseConnValueContext dbvc, int[] overrideIndexes, Object[] overrideValues,
+                                                     boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
         return executeAndIgnoreStatistics(
                     dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                    overrideParams, scrollable);
+                    overrideIndexes, overrideValues, scrollable);
     }
 
     /**
      * Executes the stored procedure and records different statistics such as database connection times,
      * parameetr binding times, and procedure execution times.
      * @param dbvc
-     * @param overrideParams
+     * @param overrideIndexes       parameter indexes to override
+     * @param overrideValues        parameter override values
      * @param scrollable
      * @throws SQLException
      * @throws NamingException
      */
-    protected QueryResultSet executeAndRecordStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
+    protected QueryResultSet executeAndRecordStatistics(DatabaseConnValueContext dbvc, int[] overrideIndexes, Object[] overrideValues,
+                                                        boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
         return executeAndRecordStatistics(
                     dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                    overrideParams, scrollable);
+                    overrideIndexes, overrideValues, scrollable);
     }
 
     /**
      * Executes the stored procedure
-     * @param dbvc
-     * @param overrideParams
-     * @param scrollable
+     * @param dbvc                  database connection value context
+     * @param overrideIndexes       parameter indexes to override
+     * @param overrideValues        parameter override values
+     * @param scrollable            whether or not the report is pageable (NOT SUPPORTED YET)
      * @throws NamingException
      * @throws SQLException
      */
-    public QueryResultSet execute(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
+    public QueryResultSet execute(DatabaseConnValueContext dbvc, int[] overrideIndexes, Object[] overrideValues,
+                                  boolean scrollable) throws NamingException, SQLException
     {
         if (log.isInfoEnabled())
-            return executeAndRecordStatistics(dbvc, overrideParams, scrollable);
+            return executeAndRecordStatistics(dbvc, overrideIndexes, overrideValues, scrollable);
         else
-            return executeAndIgnoreStatistics(dbvc, overrideParams, scrollable);
+            return executeAndIgnoreStatistics(dbvc, overrideIndexes, overrideValues, scrollable);
     }
 
     /**
      * Executes the stored procedure
-     * @param cc                Connection context
-     * @param overrideParams    parameters values to override the ones defined in XML
-     * @param scrollable        whether or not
+     * @param cc                    Connection context
+     * @param overrideIndexes       parameter indexes to override
+     * @param overrideValues        parameter override values
+     * @param scrollable            whether or not the report is pageable (NOT SUPPORTED YET)
      * @throws NamingException
      * @throws SQLException
      */
-    public QueryResultSet execute(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
+    public QueryResultSet execute(ConnectionContext cc, int[] overrideIndexes, Object[] overrideValues,
+                                  boolean scrollable) throws NamingException, SQLException
     {
         if (log.isInfoEnabled())
-            return executeAndRecordStatistics(cc, overrideParams, scrollable);
+            return executeAndRecordStatistics(cc, overrideIndexes, overrideValues, scrollable);
         else
-            return executeAndIgnoreStatistics(cc, overrideParams, scrollable);
+            return executeAndIgnoreStatistics(cc, overrideIndexes, overrideValues, scrollable);
     }
 
 }

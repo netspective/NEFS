@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameters.java,v 1.5 2003-11-11 23:08:37 aye.thu Exp $
+ * $Id: StoredProcedureParameters.java,v 1.6 2004-01-15 20:00:46 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -50,11 +50,9 @@ import com.netspective.axiom.ConnectionContext;
 import javax.naming.NamingException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.sql.SQLException;
 import java.sql.CallableStatement;
-import java.sql.DatabaseMetaData;
-import java.sql.Connection;
-import java.sql.ResultSet;
 
 /**
  * List class for keeping track of the stored procedure parameters
@@ -63,13 +61,100 @@ public class StoredProcedureParameters
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
+    /**
+     * Context class for keeping track of state of the stored procedure's bind parameters per execution
+     */
     public class ValueApplyContext
     {
+        /* counter to loop through the stored procedure parameters */
         private int activeParamNum;
+        /* object for keeping track of which IN parameters to override */
+        private int[] overrideIndexes = null;
+        /* override values */
+        private Object[] overrideValues = null;
 
         public ValueApplyContext()
         {
             activeParamNum = 0;
+        }
+
+        /**
+         * Check to see if the apply context has override values
+         *
+         * @return
+         */
+        public boolean hasOverrideValues()
+        {
+            return overrideValues != null ? true : false;
+        }
+
+        /**
+         * Checks to see if the active parameter has an override value
+         * @return
+         */
+        public boolean hasActiveParamOverrideValue()
+        {
+            for (int i=0; i < overrideIndexes.length; i++)
+            {
+                if (overrideIndexes[i] == activeParamNum)
+                    return true;
+            }
+            return false;
+        }
+
+        /**
+         * Gets the override values
+         *
+         * @return
+         */
+        public Object[] getOverrideValues()
+        {
+            return overrideValues;
+        }
+
+        /**
+         * Sets the override values
+         *
+         * @param overrideValues
+         */
+        public void setOverrideValues(Object[] overrideValues)
+        {
+            this.overrideValues = overrideValues;
+        }
+
+        /**
+         * Gets the override parameters indexes
+         * @return
+         */
+        public int[] getOverrideIndexes()
+        {
+            return overrideIndexes;
+        }
+
+        /**
+         * Sets the override parameter indexes
+         * @param overrideIndexes
+         */
+        public void setOverrideIndexes(int[] overrideIndexes)
+        {
+            this.overrideIndexes = overrideIndexes;
+        }
+
+        /**
+         * Gets the override value for the active parameter.
+         * @return  Returns a NULL when the override parameter is null or when the active param DOES
+         *          NOT have an override. Use {@link #hasActiveParamOverrideValue() hasActiveParamOverrideValue}
+         *          to make sure the active param does have an override value.
+         *
+         */
+        public Object getActiveParamOverrideValue()
+        {
+            for (int i=0; i < overrideIndexes.length; i++)
+            {
+                if (overrideIndexes[i] == activeParamNum)
+                    return overrideValues[i];
+            }
+            return null;
         }
 
         public int getActiveParamNum()
@@ -224,8 +309,38 @@ public class StoredProcedureParameters
 
     /**
      * Apply the parameters in this list to the given prepared statement.
+     *
      * @param cc The connection context
-     * @param stmt The prepared statement
+     * @param stmt The callable statement
+     * @return The index of the last parameter applied
+     * @throws SQLException
+     */
+    public int apply(ConnectionContext cc, CallableStatement stmt, int[] overrideIndexes, Object[] overrideValues) throws SQLException, NamingException
+    {
+        StoredProcedureParameters.ValueApplyContext vac = new StoredProcedureParameters.ValueApplyContext();
+        if (overrideIndexes != null)
+        {
+            vac.setOverrideIndexes(overrideIndexes);
+            vac.setOverrideValues(overrideValues);
+        }
+
+        if(params.size() == 0)
+            return 0;
+
+        int paramsCount = params.size();
+        for(int i = 0; i < paramsCount; i++)
+        {
+            StoredProcedureParameter param = (StoredProcedureParameter) params.get(i);
+            param.apply(vac, cc, stmt);
+        }
+        return vac.getActiveParamNum();
+    }
+
+    /**
+     * Apply the parameters in this list to the given prepared statement.
+     *
+     * @param cc The connection context
+     * @param stmt The callable statement
      * @return The index of the last parameter applied
      * @throws SQLException
      */
@@ -239,25 +354,17 @@ public class StoredProcedureParameters
         int paramsCount = params.size();
         for(int i = 0; i < paramsCount; i++)
         {
-            ((StoredProcedureParameter) params.get(i)).apply(vac, cc, stmt);
+            StoredProcedureParameter param = (StoredProcedureParameter) params.get(i);
+            param.apply(vac, cc, stmt);
         }
-        /*
-        for (int i = 0; i < inParams.size(); i++)
-        {
-            ((StoredProcedureParameter) inParams.get(i)).apply(vac, cc, stmt);
-
-        }
-        for (int i = 0; i < outParams.size(); i++)
-        {
-            ((StoredProcedureParameter) outParams.get(i)).apply(vac, cc, stmt);
-
-        }
-        */
         return vac.getActiveParamNum();
     }
 
     /**
      * Retrieve the values of the parameters in this list which are OUT parameters
+     *
+     * @param cc The connection context
+     * @param stmt The callable statement
      */
     public void extract(ConnectionContext cc, CallableStatement stmt) throws SQLException
     {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.9 2003-11-12 04:24:40 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.10 2004-01-15 20:00:46 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -58,6 +58,9 @@ import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Array;
 import java.sql.ResultSet;
+import java.sql.Connection;
+import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -100,12 +103,16 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     private Log log = LogFactory.getLog(StoredProcedureParameter.class);
     private StoredProcedureParameters parent;
     private String name;
+    /* configured value for this parameter */
     private ValueSource value;
-    //private int sqlType = Types.VARCHAR;
-    //private Class javaType = String.class;
     private QueryParameterType paramType;
     private int index;
     private Type type;
+    /* declares whether or not the bind column is allowed to have a SQL NULL */
+    private boolean allowNull = false;
+    /* declares the name of the array type (e.g create or replace type NUM_ARRAY as table of number;) */
+    private String typeName;
+
 
     public StoredProcedureParameter(StoredProcedureParameters parent)
     {
@@ -126,6 +133,30 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                 throw new RuntimeException("param type '" + paramTypeName + "' is invalid for param '"+
                         getName() +"' in stored procedure '" + parent.getProcedure().getQualifiedName() + "'");
         }
+    }
+
+    /**
+     * Gets the special TYPE defined in database
+     *
+     * @return
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+    /**
+     * Sets the special TYPE defined in database
+     * (e.g create or replace type NUM_ARRAY as table of number;)
+     *
+     * IMPORTANT: PLSQL types are known to exactly PLSQL and PLSQL alone. SQL types -- stored in the data dictionary --
+     * are visible to all, usable by all. you must use a SQL type via create type.
+     *
+     * @param typeName
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
     }
 
     /**
@@ -203,42 +234,66 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     }
 
     /**
-     * Apply the in and out parameters to the callable statement object
-     * @param vac
-     * @param cc
-     * @param stmt
+     * Apply the IN/OUT parameters of the callable statement object
+     *
+     * @param vac               the context in which the apply action is being performed
+     * @param stmt              the statement object
      * @throws SQLException
      */
     public void apply(StoredProcedureParameters.ValueApplyContext vac, ConnectionContext cc, CallableStatement stmt) throws SQLException
     {
         int paramNum = vac.getNextParamNum();
-
-        Value sv = value.getValue(cc);
         int jdbcType = getSqlType().getJdbcType();
-        String identifier = getSqlType().getIdentifier();
         if (getType().getValueIndex() == Type.IN || getType().getValueIndex() == Type.IN_OUT)
         {
+            String text = value.getTextValue(cc);
             switch (jdbcType)
             {
                 case Types.VARCHAR:
-                    stmt.setObject(paramNum, value.getTextValue(cc));
+                    // user override value if it exists
+                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                        text = (String) vac.getActiveParamOverrideValue();
+                    if (allowNull && text == null)
+                        stmt.setNull(paramNum, Types.VARCHAR);
+                    else if (text != null)
+                        stmt.setObject(paramNum, text);
+                    else
+                        log.warn("Parameter '" + getName() + "' was not bound. Value = " + text);
                     break;
+
                 case Types.INTEGER:
-                    stmt.setInt(paramNum, sv.getIntValue());
+                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                        text = vac.getActiveParamOverrideValue() != null ? vac.getActiveParamOverrideValue().toString() : null;
+                    if (allowNull && text == null)
+                        stmt.setNull(paramNum, Types.INTEGER);
+                    else if (text != null)
+                        stmt.setInt(paramNum, Integer.parseInt(text));
+                    else
+                        log.warn("Parameter '" + getName() + "' was not bound. Value = " + text);
+
                     break;
+
                 case Types.DOUBLE:
-                    stmt.setDouble(paramNum, sv.getDoubleValue());
+                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                        text = vac.getActiveParamOverrideValue() != null ? vac.getActiveParamOverrideValue().toString() : null;
+                    if (allowNull && text == null)
+                        stmt.setNull(paramNum, Types.DOUBLE);
+                    else if (text != null)
+                        stmt.setDouble(paramNum, Double.parseDouble(text));
+                    else
+                        log.warn("Parameter '" + getName() + "' was not bound. Value = " + text);
+
                     break;
+
                 case Types.ARRAY:
+                    // Arrays are quite tricky. Right now, this is supporting String arrays only.
+                    // TODO: Support integer and float arrays also
                     String[] textValues = value.getTextValues(cc);
-                    for(int q = 0; q < textValues.length; q++)
-                    {
-                        paramNum = vac.getNextParamNum();
-                        stmt.setObject(paramNum, textValues[q]);
-                    }
+                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                        textValues = (String[]) vac.getActiveParamOverrideValue();
+                    applyInArrayValue(cc, stmt, paramNum, textValues);
                     break;
                 default:
-                    // TODO: Need to handle all the types??
                     log.warn("Unknown JDBC type for parameter '" + getName() + "' (index=" +
                             paramNum + ") of stored procedure '" + parent.getProcedure() + "'.");
                     break;
@@ -246,12 +301,69 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         }
         if (getType().getValueIndex() == Type.OUT || getType().getValueIndex() == Type.IN_OUT)
         {
+            String identifier = getSqlType().getIdentifier();
             // result sets are returned differently for different vendors
             if (identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
                 stmt.registerOutParameter(paramNum, getVendorSpecificResultSetType(cc));
             else
                 stmt.registerOutParameter(paramNum, jdbcType);
         }
+    }
+
+    /**
+     *  Applies an array object as an IN parameter
+     *
+     * @param cc        Connection context
+     * @param stmt      Callable statement object
+     * @param paramNum  the index
+     * @param array     the java array object
+     */
+    private void applyInArrayValue(ConnectionContext cc, CallableStatement stmt, int paramNum, Object[] array)
+    {
+        // TODO: This is the initial implementation. NOT TESTED YET. 01/13/2004 AT
+        try
+        {
+            if (isOracleDriver(cc))
+            {
+                // doing the following ORACLE specific calls
+                // oracle.sql.ArrayDescriptor descriptor =  oracle.sql.ArrayDescriptor.createDescriptor( "NUM_ARRAY", conn );
+                // oracle.sql.ARRAY array_to_pass = new oracle.sql.ARRAY( descriptor, conn, javaArrray );
+                // stmt.setARRAY( paramNum, array_to_pass );
+
+                // create the array descriptor
+                Class arrayDescriptorClass = Class.forName("oracle.sql.ArrayDescriptor");
+                Method createDescriptor = arrayDescriptorClass.getMethod("createDescriptor", new Class[] {String.class, Connection.class});
+                Object descriptor = createDescriptor.invoke(null, new Object[] {getTypeName(), cc.getConnection()});
+
+                // create the array to pass to the database
+                Class arrayClass = Class.forName("oracle.sql.ARRAY");
+                Constructor arrayConstructor = arrayClass.getConstructor(new Class[] {arrayDescriptorClass, Connection.class,
+                                                                                      getSqlType().getJavaClass()});
+                arrayConstructor.newInstance(new Object[] {descriptor, cc.getConnection(), array});
+
+                Class oracleStmt = Class.forName("oracle.jdbc.OracleCallableStatement");
+                Method setArrayMethod = oracleStmt.getMethod("setARRAY", new Class[] {int.class, arrayClass});
+                setArrayMethod.invoke(stmt, new Object[] {new Integer(paramNum), array});
+            }
+        }
+        catch(Exception e)
+        {
+            log.error("Failed to apply the ARRAY IN parameter at index "+ paramNum + " in stored procedure " +
+                    "'" + parent.getProcedure() + "'.");
+        }
+    }
+
+    /**
+     * Checks to see if the connection context is connected to an Oracle database
+     * @param cc
+     * @return
+     * @throws NamingException
+     * @throws SQLException
+     */
+    private boolean isOracleDriver(ConnectionContext cc) throws NamingException, SQLException
+    {
+        String driverName = cc.getConnection().getMetaData().getDriverName();
+        return (driverName.indexOf("Oracle") != -1) ? true : false;
     }
 
     /**
@@ -269,8 +381,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         int sqlType = Types.OTHER;
         try
         {
-            String driverName = cc.getConnection().getMetaData().getDriverName();
-            if (driverName.indexOf("Oracle") != -1)
+            if (isOracleDriver(cc))
             {
                 // ORACLE DRIVER
                 Class oClass = Class.forName("oracle.jdbc.driver.OracleTypes");

@@ -55,7 +55,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author  Aye Thu
- * @version $Id: StoredProcedureReportPanel.java,v 1.3 2003-11-26 17:31:42 shahid.shah Exp $
+ * @version $Id: StoredProcedureReportPanel.java,v 1.4 2004-01-15 20:01:06 aye.thu Exp $
  */
 public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 {
@@ -163,9 +163,9 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
             if(resultSet == null)
             {
                 if (isScrollable())
-                    resultSet = parentProcedure.execute(nc, null, true);
+                    resultSet = parentProcedure.execute(nc, null, null, true);
                 else
-                    resultSet = parentProcedure.execute(nc, null, false);
+                    resultSet = parentProcedure.execute(nc, null, null, false);
             }
             QueryResultSetDataSource qrsds = new QueryResultSetDataSource(NO_DATA_MSG);
             if (resultSet != null)
@@ -198,9 +198,9 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
             {
                 QueryResultSet resultSet = null;
                 if (isScrollable())
-                    resultSet = parentProcedure.execute(nc, null, true);
+                    resultSet = parentProcedure.execute(nc, null, null, true);
                 else
-                    resultSet = parentProcedure.execute(nc, null, false);
+                    resultSet = parentProcedure.execute(nc, null, null, false);
 
                 resultSet.fillReportFromMetaData(activeReport);
                 nc.setAttribute(getCachedResultSetAttributeId(), resultSet); // store the result set so we don't run it again
