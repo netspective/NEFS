@@ -1,0 +1,79 @@
+<!--
+  ** This script requires the "webtest.home" variable to be set to the webtest home directory
+  -->
+
+ <project name="AcceptanceTests" basedir="." default="main">
+
+     <target name=".init_webtest">
+         <path id="project.class.path">
+             <fileset dir="${webtest.home}">
+                 <include name="**/*.jar"/>
+             </fileset>
+
+             <!-- this needs to be in the classpath because log4j.properties for webtest is here -->
+             <pathelement location="${webtest.home}"/>
+         </path>
+
+         <taskdef file="${webtest.home}/webtestTaskdefs.properties" classpathref="project.class.path"/>
+
+         <!-- assumption is that we're sitting in APP_ROOT/WEB-INF/tools/webtest so if we go up 3 dirs we'll be in APP_ROOT -->
+         <path id="app.root.relative.path">
+             <pathelement location="${basedir}/../../.."/>
+         </path>
+         <pathconvert targetos="unix" property="app.root.path" refid="app.root.relative.path"/>
+         <basename property="app.name" file="${app.root.path}"/>
+         <property name="app.servlet.context.path" value="/${app.name}"/>
+     </target>
+
+     <target name=".init_server" unless="test.config.server.host">
+         <property name="test.config.server.host" value="sampler.netspective.com"/>
+         <property name="test.config.server.port" value="80"/>
+         <property name="test.config.server.protocol" value="http"/>
+         <property name="test.config.server.basepath" value="${app.servlet.context.path}"/>
+     </target>
+
+     <target name=".init_options">
+         <property name="test.config.summary" value="yes"/>
+         <property name="test.config.verbose" value="yes"/>
+         <property name="test.config.result-file" value="results.xml"/>
+         <property name="test.config.halt-on-failure" value="false"/>
+     </target>
+
+     <target name=".init" depends=".init_webtest,.init_server,.init_options">
+         <echo message="Testing application ${app.root.path}"/>
+         <echo message="Testing basepath ${app.servlet.context.path}"/>
+     </target>
+
+     <target name="smoke-test" depends=".init">
+         <testSpec name="smoke-test">
+             <config host="${test.config.server.host}" port="${test.config.server.port}" protocol="${test.config.server.protocol}" basepath="${test.config.server.basepath}" summary="${test.config.summary}" resultfile="${test.config.result-file}" verbose="${test.config.verbose}" haltonfailure="${test.config.halt-on-failure}"/>
+             <steps>
+                 <invoke stepid="Get home page" url="/"/>
+                 <not stepid="Make sure no exceptions or errors are seen in the HTML">
+                    <verifytext stepid="Error" text="(error|Error|Exception|exception)" regex="yes"/>
+                 </not>
+                 <verifytitle stepid="Verify the page title" text="Hello World!"/>
+
+                 <clicklink stepid="Go to the next steps page" label="Next Steps"/>
+                 <not stepid="Make sure no exceptions or errors are seen in the HTML">
+                    <verifytext stepid="Error" text="(error|Error|Exception|exception)" regex="yes"/>
+                 </not>
+
+                 <clicklink stepid="Go to the Console" label="Console"/>
+                 <not stepid="Make sure no exceptions or errors are seen in the HTML">
+                    <verifytext stepid="Error" text="(error|Error|Exception|exception)" regex="yes"/>
+                 </not>
+                 <setinputfield stepid="Enter the Console User Id" name="_dc.userId" value="console"/>
+                 <setinputfield stepid="Enter the Console Password" name="_dc.password" value="console"/>
+                 <clickbutton stepid="Click the submit button" name="_d.login.submit_data"/>
+
+                 <not stepid="Make sure no exceptions or errors are seen in the HTML">
+                    <verifytext stepid="Error" text="(error|Error|Exception|exception)" regex="yes"/>
+                 </not>
+                 <verifytitle stepid="Verify the page Console Home page title" text="Console Home"/>
+             </steps>
+         </testSpec>
+     </target>
+
+     <target name="main" depends="smoke-test"/>
+ </project>

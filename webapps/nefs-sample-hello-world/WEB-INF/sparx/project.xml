@@ -20,7 +20,7 @@
     <navigation-tree name="app" default="yes">
         <page name="home" default="yes" caption="Hello" heading="Hello World!">
             <body>
-                This is the 'Hello World' app. Click &lt;a href="next-steps">here&lt;/a> to see what's next.
+                This is the 'Hello World' app. Click &lt;a href="next-steps">Next Steps&lt;/a> to see what's next.
             </body>
         </page>
         <page name="next-steps" caption="Next Steps" heading="What's next?">
