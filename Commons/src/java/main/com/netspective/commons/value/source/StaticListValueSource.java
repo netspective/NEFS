@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticListValueSource.java,v 1.3 2003-05-13 22:30:50 shahbaz.javeed Exp $
+ * $Id: StaticListValueSource.java,v 1.4 2003-08-27 20:48:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -81,7 +81,7 @@ public class StaticListValueSource extends AbstractValueSource
     {
         super.initialize(spec);
         String pi = spec.getProcessingInstructions();
-        String[] textItems = TextUtils.split(spec.getParams(), pi != null ? pi.substring(0, 1) : ",", false);
+        String[] textItems = TextUtils.split(spec.getParams(), pi != null ? pi.substring(0, 1) : ";", false);
         PresentationValue.Items items = staticValue.createItems();
         if(textItems != null && textItems.length > 0)
         {
