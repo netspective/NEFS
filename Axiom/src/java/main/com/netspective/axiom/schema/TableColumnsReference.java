@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableColumnsReference.java,v 1.1 2003-03-18 22:33:19 shahid.shah Exp $
+ * $Id: TableColumnsReference.java,v 1.2 2004-06-21 04:28:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -49,8 +49,12 @@ public interface TableColumnsReference
     public String QUALIFIED_TABLENAME_COLUMNNAME_SEPARATOR = ".";
 
     public String getColumnNames();
-    public Columns getColumns(Schema schema);
+
+    public Columns getColumns();
+
     public String getReference();
+
     public String getTableName();
+
     public boolean hasColumnNames();
 }

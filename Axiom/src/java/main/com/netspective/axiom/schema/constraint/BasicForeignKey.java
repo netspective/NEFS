@@ -39,33 +39,33 @@
  */
 
 /**
- * $Id: BasicForeignKey.java,v 1.4 2003-07-04 05:32:46 roque.hernandez Exp $
+ * $Id: BasicForeignKey.java,v 1.5 2004-06-21 04:28:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.constraint;
 
-import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.ForeignKey;
-import com.netspective.axiom.schema.TableColumnsReference;
-import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.schema.ColumnValue;
-import com.netspective.axiom.schema.Rows;
-import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.Columns;
-import com.netspective.axiom.schema.column.ForeignKeyPlaceholderColumn;
+import com.netspective.axiom.schema.ForeignKey;
+import com.netspective.axiom.schema.Row;
+import com.netspective.axiom.schema.Rows;
+import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.TableColumnsReference;
 import com.netspective.axiom.schema.column.ColumnsCollection;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.schema.column.ForeignKeyPlaceholderColumn;
 import com.netspective.axiom.sql.QueryResultSet;
-import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.commons.text.TextUtils;
 
 public class BasicForeignKey implements ForeignKey
@@ -123,9 +123,9 @@ public class BasicForeignKey implements ForeignKey
 
     public Columns getReferencedColumns()
     {
-        if(reference != null && referenced == null)
+        if (reference != null && referenced == null)
         {
-            Columns refCol = reference.getColumns(source.getFirst().getSchema());
+            Columns refCol = reference.getColumns();
             setReferencedColumns(refCol);
             return refCol;
         }
@@ -142,22 +142,22 @@ public class BasicForeignKey implements ForeignKey
         for (int i = 0; i < columns.size(); i++)
         {
             Column column = columns.get(i);
-            if(column instanceof ForeignKeyPlaceholderColumn)
+            if (column instanceof ForeignKeyPlaceholderColumn)
                 return;
-       }
+        }
 
         // if we have an existing referenced column, remove it from the dependencies
-        if(referenced != null)
+        if (referenced != null)
         {
-            for(int i = 0; i < referenced.size(); i++)
+            for (int i = 0; i < referenced.size(); i++)
                 referenced.get(i).removeForeignKeyDependency(this);
         }
 
         // now add the dependency
         referenced = columns;
-        if(referenced != null)
+        if (referenced != null)
         {
-            for(int i = 0; i < referenced.size(); i++)
+            for (int i = 0; i < referenced.size(); i++)
                 referenced.get(i).registerForeignKeyDependency(this);
         }
     }
@@ -167,7 +167,7 @@ public class BasicForeignKey implements ForeignKey
         Columns srcColumns = getSourceColumns();
         Columns refColumns = getReferencedColumns();
 
-        for(int i = 0; i < srcColumns.size(); i++)
+        for (int i = 0; i < srcColumns.size(); i++)
         {
             ColumnValue parentValue = refValues.getByColumn(refColumns.get(i));
             ColumnValue childValue = sourceValues.getByColumn(srcColumns.get(i));
@@ -182,19 +182,19 @@ public class BasicForeignKey implements ForeignKey
         Table refTable = refColumn.getTable();
 
         QueryDefnSelect accessor = refColumn.getTable().getAccessorByColumnEquality(refColumn);
-        if(accessor == null)
+        if (accessor == null)
             throw new SQLException("Unable to accessor for selecting reference column " + refColumn);
 
         Object bindValue = value.getValueForSqlBindParam();
-        if(bindValue == null)
+        if (bindValue == null)
             throw new SQLException("No bind value provided for reference column " + refColumn);
 
         Row resultRow = null;
-        QueryResultSet qrs = accessor.execute(cc, new Object[] { bindValue }, false);
-        if(qrs != null)
+        QueryResultSet qrs = accessor.execute(cc, new Object[]{bindValue}, false);
+        if (qrs != null)
         {
             ResultSet rs = qrs.getResultSet();
-            if(rs.next())
+            if (rs.next())
             {
                 resultRow = refTable.createRow();
                 resultRow.getColumnValues().populateValues(rs, ColumnValues.RESULTSETROWNUM_SINGLEROW);
@@ -210,16 +210,16 @@ public class BasicForeignKey implements ForeignKey
         Table refTable = refColumn.getTable();
 
         QueryDefnSelect accessor = refColumn.getTable().getAccessorByColumnEquality(refColumn);
-        if(accessor == null)
+        if (accessor == null)
             throw new SQLException("Unable to accessor for selecting reference column " + refColumn);
 
         Object bindValue = value.getValueForSqlBindParam();
-        if(bindValue == null)
+        if (bindValue == null)
             throw new SQLException("No bind value provided for reference column " + refColumn);
 
         Rows resultRows = refTable.createRows();
-        QueryResultSet qrs = accessor.execute(cc, new Object[] { bindValue }, false);
-        if(qrs != null)
+        QueryResultSet qrs = accessor.execute(cc, new Object[]{bindValue}, false);
+        if (qrs != null)
             resultRows.populateDataByIndexes(qrs.getResultSet());
         qrs.close(false);
         return resultRows;
@@ -231,16 +231,16 @@ public class BasicForeignKey implements ForeignKey
         Table refTable = refColumns.getFirst().getTable();
 
         QueryDefnSelect accessor = refTable.getAccessorByColumnsEquality(refColumns);
-        if(accessor == null)
+        if (accessor == null)
             throw new SQLException("Unable to accessor for selecting reference columns " + refColumns);
 
         Object[] bindValues = values.getByColumns(refColumns).getValuesForSqlBindParams();
-        if(bindValues == null)
+        if (bindValues == null)
             throw new SQLException("No bind value provided for reference columns " + refColumns);
 
         Rows resultRows = refTable.createRows();
         QueryResultSet qrs = accessor.execute(cc, bindValues, false);
-        if(qrs != null)
+        if (qrs != null)
             resultRows.populateDataByIndexes(qrs.getResultSet());
         qrs.close(false);
         return resultRows;
@@ -248,8 +248,8 @@ public class BasicForeignKey implements ForeignKey
 
     public Rows getReferencedRows(ConnectionContext cc, Row row) throws NamingException, SQLException
     {
-        if(row.getTable() != getReferencedColumns().getFirst().getTable())
-            throw new SQLException("Row value is from table '"+ row.getTable().getName() +"' while referenced column is from table '" + getReferencedColumns().getFirst().getTable().getName() + "'.");
+        if (row.getTable() != getReferencedColumns().getFirst().getTable())
+            throw new SQLException("Row value is from table '" + row.getTable().getName() + "' while referenced column is from table '" + getReferencedColumns().getFirst().getTable().getName() + "'.");
         return getReferencedRows(cc, row.getColumnValues());
     }
 

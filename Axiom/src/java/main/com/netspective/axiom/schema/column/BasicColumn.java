@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.21 2004-06-10 19:57:45 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.22 2004-06-21 04:28:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -430,7 +430,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
             // make sure the referenced column has completed its construction
             referenced.finishConstruction();
 
-            Column actualColumn = null;
+            Column actualColumn;
             try
             {
                 actualColumn = getTable().createColumn(referenced.getForeignKeyReferenceeClass());
@@ -698,17 +698,17 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public void setLookupRef(String reference)
     {
-        setForeignKey(new BasicForeignKey(this, new BasicTableColumnReference(reference)));
+        setForeignKey(new BasicForeignKey(this, new BasicTableColumnReference(schema, reference)));
     }
 
     public void setParentRef(String reference)
     {
-        setForeignKey(new ParentForeignKey(this, new BasicTableColumnReference(reference)));
+        setForeignKey(new ParentForeignKey(this, new BasicTableColumnReference(schema, reference)));
     }
 
     public void setSelfRef(String reference)
     {
-        setForeignKey(new SelfForeignKey(this, new BasicTableColumnReference(reference)));
+        setForeignKey(new SelfForeignKey(this, new BasicTableColumnReference(schema, reference)));
     }
 
     public Set getDependentForeignKeys()

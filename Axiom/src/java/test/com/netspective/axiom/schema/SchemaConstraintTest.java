@@ -39,47 +39,32 @@
  */
 
 /**
- * $Id: SchemaConstraintTest.java,v 1.5 2003-09-21 02:33:00 roque.hernandez Exp $
+ * $Id: SchemaConstraintTest.java,v 1.6 2004-06-21 04:28:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
-import com.netspective.axiom.*;
-import com.netspective.axiom.schema.column.type.*;
-import com.netspective.axiom.schema.column.*;
-import com.netspective.axiom.schema.table.type.EnumerationTableRow;
-import com.netspective.axiom.schema.table.type.EnumerationTable;
-import com.netspective.axiom.schema.table.type.EnumerationTableRows;
-import com.netspective.axiom.schema.table.BasicTable;
-import com.netspective.axiom.schema.table.TablesCollection;
-import com.netspective.axiom.schema.constraint.BasicTableColumnReference;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
+
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.SqlManagerComponent;
+import com.netspective.axiom.TestUtils;
+import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.schema.constraint.BasicForeignKey;
+import com.netspective.axiom.schema.constraint.BasicTableColumnReference;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
+import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.sql.QueryResultSet;
-import com.netspective.axiom.sql.DbmsSqlText;
-import com.netspective.axiom.sql.DbmsSqlTexts;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
-import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.io.Resource;
-import com.netspective.commons.value.exception.ValueException;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmComponentFactory;
+
 import junit.framework.TestCase;
-
-import javax.naming.NamingException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.lang.reflect.InvocationTargetException;
-
-import org.xml.sax.SAXException;
 
 public class SchemaConstraintTest extends TestCase
 {
@@ -114,8 +99,8 @@ public class SchemaConstraintTest extends TestCase
         Column column = table.getColumns().getByName("enumIdRef");
         BasicTableColumnReference colRef = (BasicTableColumnReference) column.getForeignKey().getReference();
 
-        assertEquals("Enum_set_Lookup", colRef.getReference());
-        assertNull(colRef.getColumns(schema));
+        assertEquals("Enum_set_Lookup.id", colRef.getReference());
+        assertNotNull(colRef.getColumns());
         assertNotNull(colRef.toString());
 
     }
@@ -198,12 +183,14 @@ public class SchemaConstraintTest extends TestCase
         }
 
         Row row = table3.createRow();
-        QueryResultSet result = table3.getAccessorByColumnEquality(table3.getColumns().getByName("column_a")).execute(cc,new String[]{"abc"}, false);
+        QueryResultSet result = table3.getAccessorByColumnEquality(table3.getColumns().getByName("column_a")).execute(cc, new String[]{
+            "abc"
+        }, false);
         ResultSet resultSet = result.getResultSet();
         if (resultSet.next())
             row.getColumnValues().populateValues(resultSet, 1);
 
-        rows = pfKey.getChildRowsByParentRow(cc,row);
+        rows = pfKey.getChildRowsByParentRow(cc, row);
         assertEquals(1, rows.size());
         assertEquals("column_b", rows.getRow(0).getColumnValues().getByName("column_b").getTextValue());
 
@@ -214,7 +201,7 @@ public class SchemaConstraintTest extends TestCase
 
         Row row2 = table4.createRow();
 
-        pfKey.fillChildValuesFromParentConnector(row2.getColumnValues(),row.getColumnValues());
+        pfKey.fillChildValuesFromParentConnector(row2.getColumnValues(), row.getColumnValues());
         assertEquals("abc", row2.getColumnValues().getByName("child_column_a").getTextValue());
 
         result.close(true);

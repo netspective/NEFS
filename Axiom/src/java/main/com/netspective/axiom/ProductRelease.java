@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.22 2004-06-19 01:27:39 shahid.shah Exp $
+ * $Id: ProductRelease.java,v 1.23 2004-06-21 04:28:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -55,7 +55,7 @@ public class ProductRelease implements Product
 
     public static final int PRODUCT_RELEASE_NUMBER = 7;
     public static final int PRODUCT_VERSION_MAJOR = 1;
-    public static final int PRODUCT_VERSION_MINOR = 2;
+    public static final int PRODUCT_VERSION_MINOR = 3;
 
     public ProductRelease()
     {
@@ -94,7 +94,7 @@ public class ProductRelease implements Product
     public final String getBuildFilePrefix(boolean includeBuildNumber)
     {
         String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
+        if (includeBuildNumber)
             filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
         return filePrefix;
     }
