@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.15 2003-06-02 04:28:11 aye.thu Exp $
+ * $Id: DialogField.java,v 1.16 2003-06-09 06:44:47 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -479,7 +479,13 @@ public class DialogField implements TemplateConsumer
     public void addConditional(DialogFieldConditionalAction action)
     {
         conditionalActions.addAction(action);
+        action.setSourceField(this);
         flags.setFlag(Flags.HAS_CONDITIONAL_DATA); // in case JavaScript needs it
+    }
+
+    public DialogFieldConditionalAction createConditional()
+    {
+        return new DialogFieldConditionalAction();
     }
 
     public DialogFieldPopup getPopup()
