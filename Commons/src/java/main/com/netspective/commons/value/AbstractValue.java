@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.14 2004-08-09 22:14:28 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.15 2004-08-14 19:55:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -441,7 +441,9 @@ public abstract class AbstractValue implements Value
         }
         else
         {
-            sb.append(paramName + "=" + URLEncoder.encode(getTextValue()));
+            String textValue = getTextValue();
+            if(textValue != null)
+                sb.append(paramName + "=" + URLEncoder.encode(textValue));
         }
     }
 
