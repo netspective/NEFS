@@ -39,83 +39,38 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.25 2004-08-08 22:47:03 shahid.shah Exp $
+ * $Id: UpdateStampColumn.java,v 1.1 2004-08-08 22:47:03 shahid.shah Exp $
  */
 
-package com.netspective.axiom;
+package com.netspective.axiom.schema.column.type;
 
-import com.netspective.commons.Product;
+import java.sql.SQLException;
+import java.util.Date;
 
-public class ProductRelease implements Product
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.schema.ColumnValue;
+import com.netspective.axiom.schema.ColumnValues;
+import com.netspective.axiom.schema.Table;
+
+/**
+ * An UpdateStampColumn is a column that only has a value (enabled via an update Java trigger) when a record is
+ * updated. It is blank when the column inserted and has a value at update time.
+ */
+public class UpdateStampColumn extends DateTimeColumn implements DatabasePolicy.ColumnUpdateListener
 {
-    public static final Product PRODUCT_RELEASE = new ProductRelease();
-
-    public static final String PRODUCT_NAME = "Netspective Axiom";
-    public static final String PRODUCT_ID = "netspective-axiom";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 2;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
+    public UpdateStampColumn(Table table)
     {
+        super(table);
     }
 
-    public String getProductId()
+    public void beforeUpdate(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
-        return PRODUCT_ID;
+        columnValue.setValue(new Date());
     }
 
-    public String getProductName()
+    public void afterUpdate(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
-        return PRODUCT_NAME;
-    }
-
-    public final int getReleaseNumber()
-    {
-        return PRODUCT_RELEASE_NUMBER;
-    }
-
-    public final int getVersionMajor()
-    {
-        return PRODUCT_VERSION_MAJOR;
-    }
-
-    public final int getVersionMinor()
-    {
-        return PRODUCT_VERSION_MINOR;
-    }
-
-    public final int getBuildNumber()
-    {
-        return BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if (includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        // we're not going to do anything after the update
     }
 }

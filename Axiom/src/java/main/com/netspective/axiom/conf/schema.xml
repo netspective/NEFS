@@ -131,6 +131,8 @@
         </value-defn>
     </data-type>
 
+    <data-type name="update-stamp" type="date-time" class="com.netspective.axiom.schema.column.type.UpdateStampColumn"/>
+
     <!-- alias for date-time -->
     <data-type name="stamp" type="date-time"/>
 
