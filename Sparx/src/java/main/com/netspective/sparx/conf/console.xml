@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.64 2003-07-02 18:23:14 shahid.shah Exp $
+  * $Id: console.xml,v 1.65 2003-07-03 00:42:43 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -33,45 +33,17 @@
 
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" heading="Console Home" default="yes">
-            <panels style="horizontal">
-                <panels style="vertical">
-                    <panel type="html">
-                        <frame heading="Configuration Overview"/>
-                        <body config="console" source="console-page-content:app-overview.ftl"/>
-                    </panel>
-                    <panel class="com.netspective.sparx.console.panel.LibrariesPanel"/>
-                </panels>
-
-                <panels style="vertical">
-                    <panel type="html">
-                        <frame heading="Welcome"/>
-                        <body config="console" source="console-page-content:welcome.ftl"/>
-                    </panel>
-                    <panel type="html">
-                        <frame heading="Console Security"/>
-                        <body config="console" source="console-page-content:console-security.ftl"/>
-                    </panel>
-                </panels>
-            </panels>
+            <body config="console" source="console-page-content:index.ftl"/>
         </page>
 
         <page name="project" caption="Project" heading="Project Home">
 
             <page name="input-source" caption="Source" heading="Sparx Project Input Source File and Dependencies">
-                <body config="console" source="console-page-content:documentation.ftl"/>
+                <body config="console" source="console-page-content:../input-source.ftl"/>
             </page>
 	        <page name="build" caption="Ant Build" heading="Execute Ant Build Target" command="dialog,console.ant-build"/>
             <page name="commands" caption="Commands">
-                <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="command-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.CommandsCatalogPanel"/>
-                    </panels>
-                </page>
-                <page name="documentation" caption="Documentation" heading="Command Documentation" retain-params="command-class">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.project.CommandsCatalogPanel"/>
-                    </panels>
-                </page>
+                <body config="console" source="console-page-content:../commands.ftl"/>
             </page>
 	        <page name="value-sources" caption="Value Sources">
                 <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="value-source-class">

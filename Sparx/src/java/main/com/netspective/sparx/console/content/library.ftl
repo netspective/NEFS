@@ -245,8 +245,8 @@
 
 </#macro>
 
-<#macro reportTable>
-    <table class="report" border="0" cellspacing="2" cellpadding="0">
+<#macro reportTable width="100%">
+    <table class="report" border="0" cellspacing="2" cellpadding="0" width="${width}">
 
         <#nested>
 

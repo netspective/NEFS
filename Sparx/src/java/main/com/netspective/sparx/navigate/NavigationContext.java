@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.9 2003-06-27 01:12:53 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.10 2003-07-03 00:42:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -213,5 +213,10 @@ public class NavigationContext extends BasicDbHttpServletValueContext
             navigationStates.put(path.getQualifiedName(), state);
         }
         return state;
+    }
+
+    public NavigationContext getNavigationContext()
+    {
+        return this;
     }
 }

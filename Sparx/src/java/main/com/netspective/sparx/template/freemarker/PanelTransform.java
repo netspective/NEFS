@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelTransform.java,v 1.2 2003-06-27 18:41:43 shahid.shah Exp $
+ * $Id: PanelTransform.java,v 1.3 2003-07-03 00:42:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -79,10 +79,10 @@ public class PanelTransform implements TemplateTransformModel
     {
         private Map args;
         private Writer out;
-        private char[] cbuf;
-        private int off;
-        private int len;
         private HtmlPanel panel;
+        private HttpServletValueContext vc;
+        private HtmlPanelSkin tabbedPanelSkin;
+        private HtmlPanelValueContext pvc;
 
         public class TransformPanel extends AbstractPanel
         {
@@ -95,17 +95,10 @@ public class PanelTransform implements TemplateTransformModel
 
             public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
             {
-                throw new RuntimeException("This should never be called, should it?");
             }
 
             public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
             {
-                HtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), panel);
-                HtmlPanelSkin tabbedPanelSkin = theme.getTabbedPanelSkin();
-                tabbedPanelSkin.renderPanelRegistration(writer, vc);
-                tabbedPanelSkin.renderFrameBegin(writer, vc);
-                writer.write(cbuf, off, len);
-                tabbedPanelSkin.renderFrameEnd(writer, vc);
             }
         }
 
@@ -114,13 +107,7 @@ public class PanelTransform implements TemplateTransformModel
             this.out = out;
             this.args = args;
             this.panel = new TransformPanel();
-        }
 
-        public void write(char[] cbuf, int off, int len) throws IOException
-        {
-            this.cbuf = cbuf;
-            this.off = off;
-            this.len = len;
             Environment env = Environment.getCurrentEnvironment();
             StringModel model = null;
             try
@@ -132,8 +119,23 @@ public class PanelTransform implements TemplateTransformModel
                 e.printStackTrace();  //To change body of catch statement use Options | File Templates.
             }
 
-            HttpServletValueContext vc = (HttpServletValueContext) model.getWrappedObject();
-            panel.render(out, vc.getNavigationContext(), vc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+            vc = (HttpServletValueContext) model.getWrappedObject();
+            pvc = new BasicHtmlPanelValueContext(vc.getServletContext(), vc.getServlet(), vc.getRequest(), vc.getResponse(), panel);
+            tabbedPanelSkin = vc.getActiveTheme().getTabbedPanelSkin();
+            try
+            {
+                tabbedPanelSkin.renderPanelRegistration(out, pvc);
+                tabbedPanelSkin.renderFrameBegin(out, pvc);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            }
+        }
+
+        public void write(char[] cbuf, int off, int len) throws IOException
+        {
+            out.write(cbuf, off, len);
         }
 
         public void flush() throws IOException
@@ -141,8 +143,9 @@ public class PanelTransform implements TemplateTransformModel
             out.flush();
         }
 
-        public void close()
+        public void close() throws IOException
         {
+            tabbedPanelSkin.renderFrameEnd(out, pvc);
         }
     }
 }
