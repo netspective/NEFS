@@ -38,6 +38,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import com.netspective.commons.text.TextUtils;
+
 /**
  * A simple class for loading java.util.Properties backed by .properties files
  * deployed as classpath resources. See individual methods for details.
@@ -136,10 +138,11 @@ public abstract class PropertiesLoader
         }
         finally
         {
-            if(in != null) try
-            { in.close(); }
-            catch(Throwable ignore)
-            {}
+            if(in != null)
+                try
+                { in.close(); }
+                catch(Throwable ignore)
+                {}
         }
 
         if(throwOnFailure && (result == null))
@@ -173,6 +176,32 @@ public abstract class PropertiesLoader
     public static Properties loadProperties(final String name)
     {
         return loadProperties(name, Thread.currentThread().getContextClassLoader(), true, false);
+    }
+
+    /**
+     * A convenience overload of {@link #loadProperties(String, ClassLoader, boolean, boolean)}
+     * that uses the current thread's context classloader. A better strategy
+     * would be to use techniques shown in
+     * http://www.javaworld.com/javaworld/javaqa/2003-06/01-qa-0606-load.html
+     */
+    public static Properties loadProperties(final String[] names, final boolean throwOnError, final boolean loadAsResourceBundle)
+    {
+        for(int i = 0; i < names.length; i++)
+        {
+            Properties props = loadProperties(names[i], Thread.currentThread().getContextClassLoader(), false, loadAsResourceBundle);
+            if(props != null)
+                return props;
+        }
+
+        if(throwOnError)
+        {
+            throw new IllegalArgumentException("could not load any of [" + TextUtils.getInstance().join(names, ",") + "]" +
+                                               " as " + (loadAsResourceBundle
+                                                         ? "a resource bundle"
+                                                         : "a classloader resource"));
+        }
+        else
+            return null;
     }
 
     private PropertiesLoader() {} // this class is not extentible

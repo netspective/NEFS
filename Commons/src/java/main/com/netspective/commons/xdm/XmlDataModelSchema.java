@@ -2319,19 +2319,28 @@ public class XmlDataModelSchema
                 public void set(XdmParseContext pc, Object parent, String value)
                         throws InvocationTargetException, IllegalAccessException, DataModelException
                 {
-                    final String[] options = TextUtils.getInstance().split(value, ",", true);
+                    // when specifying properties the following are valid
+                    // <xxx properties="abc.properties">  <!-- load this property file, throw exception if not found -->
+                    // <xxx properties="abc.properties:optional">  <!-- load this property file, no exception if not found -->
+                    // <xxx properties="/a/b/abc.properties,/x/y/def.properties"> <!-- load the first property file found, throw exception if none found -->
+                    // <xxx properties="/a/b/abc.properties,/x/y/def.properties:optional"> <!-- load the first property file found, no exception if none found -->
+
+                    final TextUtils textUtils = TextUtils.getInstance();
+                    final String[] options = textUtils.split(value, ":", true);
+                    final String[] fileNames = textUtils.split(value, ",", true);
                     final Properties properties;
                     switch(options.length)
                     {
                         case 1:
-                            properties = PropertiesLoader.loadProperties(value, true);
+                            properties = PropertiesLoader.loadProperties(fileNames, true, false);
                             m.invoke(parent, new Properties[]{properties});
                             break;
 
                         case 2:
-                            properties = PropertiesLoader.loadProperties(value, options[1].equals("optional")
-                                                                                ? false : true);
-                            m.invoke(parent, new Properties[]{properties});
+                            properties = PropertiesLoader.loadProperties(fileNames, options[1].equals("optional")
+                                                                                    ? false : true, false);
+                            if(properties != null)
+                                m.invoke(parent, new Properties[]{properties});
                             break;
 
                         default:
