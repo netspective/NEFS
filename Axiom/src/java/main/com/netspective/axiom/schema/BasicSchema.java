@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.9 2003-07-02 13:57:14 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.10 2003-07-19 00:34:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -145,7 +145,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
 
     /**
      * This method will be called by the DataModelSchema automatically when all the children have been added. We call
-     * the other methods "completeConstruction" so they are not called automatically by the DataModelSchema. We want to
+     * the other methods "finishConstruction" so they are not called automatically by the DataModelSchema. We want to
      * do all construction finalization in this method only.
      */
     public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
