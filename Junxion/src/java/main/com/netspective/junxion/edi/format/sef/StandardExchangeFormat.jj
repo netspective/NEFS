@@ -1,0 +1,205 @@
+options
+{
+    DEBUG_TOKEN_MANAGER = true;
+}
+
+PARSER_BEGIN(StandardExchangeFormatParser)
+package com.netspective.junxion.edi.format.sef;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class StandardExchangeFormatParser
+{
+    static private Token formatVersion;
+    static private List initFields;
+}
+
+PARSER_END(StandardExchangeFormatParser)
+
+/************************************
+ * PARSER SPECIFICATIONS BEGIN HERE *
+ ************************************/
+
+void formatFile() : {}
+{
+    header()
+    {
+        System.out.println("Version: " + formatVersion);
+        System.out.println("Init: " + initFields);
+    }
+}
+
+void header() : {}
+{
+    (versionSection())?
+    initSection()
+    (privateSection())?
+    setsSection()
+}
+
+void versionSection() : {}
+{
+    ".VER " formatVersion = freeText()
+}
+
+void initSection() : {}
+{
+    ".INI" <EOL> initFields = commaSeparatedTextList() <EOL>
+}
+
+void privateSection() : {}
+{
+    ".PRIVATE" ignoreTextToPublicSection()
+}
+
+void setsSection() : {}
+{
+    ".SETS" <EOL>
+    equalText()
+    segmentRefs()
+}
+
+void segmentRefs() : {}
+{
+    segmentRef() (segmentRef())* <EOL>
+}
+
+void segmentRef() :
+{
+    Token segmentId = null;
+}
+{
+    (<TABLE_START>)?
+    ("+" <INTEGER>)?
+    <LBRACKET>
+        segmentId = <SEGMENT_ID>
+        <COMMA> (["M", "O", "F", "C"])
+        (<COMMA> (">1" | <INTEGER>))?
+    <RBRACKET>
+    {
+        System.out.println("Segment ID: " + segmentId);
+    }
+}
+
+/*******************************************************************************
+ * Utility methods for consuming comma separated text fields up to a line feed *
+ *******************************************************************************/
+
+List commaSeparatedTextList() :
+{
+    List list = new ArrayList();
+}
+{
+    commaSeparatedText(list) ( <COMMA> commaSeparatedText(list) )*
+    {
+        return list;
+    }
+}
+
+Token commaSeparatedText(List list) :
+{
+    Token token = null;
+}
+{
+    { token_source.SwitchTo(StandardExchangeFormatParserConstants.CommaSepTextDataSect); }
+    token = <COMMASEPTEXTDATA>
+    {
+        token_source.SwitchTo(DEFAULT);
+        list.add(token.toString());
+        return token;
+    }
+}
+
+/***********************************************************************
+ * Utility method for consuming all free text up to a line fee/newline *
+ ***********************************************************************/
+
+Token freeText() :
+{
+    Token token = null;
+}
+{
+    { token_source.SwitchTo(StandardExchangeFormatParserConstants.FreeTextDataSect); }
+    token = <FREE_TEXT_DATA>
+    <FREE_TEXT_DATA_END>
+    {
+        return token;
+    }
+}
+
+Token equalText() :
+{
+    Token token = null;
+}
+{
+    { token_source.SwitchTo(StandardExchangeFormatParserConstants.EqualTextDataSect); }
+    token = <EQUAL_TEXT_DATA>
+    <EQUAL_TEXT_DATA_END>
+    {
+        return token;
+    }
+}
+
+void ignoreTextToPublicSection() : {}
+{
+    { token_source.SwitchTo(StandardExchangeFormatParserConstants.IgnoreToPublicSect); }
+    <IGNORE_TO_PUBLIC_SECTION>
+}
+
+/*************************************
+ * LEXICAL SPECIFICATIONS BEGIN HERE *
+ *************************************/
+
+TOKEN :
+{
+    <TABLE_START: "^"> |
+    <SEGMENT_ID: (<IDENTIFIER>)+>
+}
+
+TOKEN : /* SEPARATORS */
+{
+    <EOL: "\n" | "\r" | "\r\n"> |
+    <LPAREN: "("> |
+    <RPAREN: ")"> |
+    <LBRACE: "{"> |
+    <RBRACE: "}"> |
+    <LBRACKET: "["> |
+    <RBRACKET: "]"> |
+    <SEMICOLON: ";"> |
+    <COMMA: ","> |
+    <DOT: ".">
+}
+
+TOKEN :
+{
+    <IDENTIFIER: (["A"-"Z", "a"-"z", "_"])+ (["0"-"9", "-"])*> |
+    <INTEGER: (["0"-"9"])+>
+}
+
+<EqualTextDataSect> TOKEN:
+{
+    <EQUAL_TEXT_DATA: (~["="])+> |
+    <EQUAL_TEXT_DATA_END: "="> : DEFAULT
+}
+
+<FreeTextDataSect> TOKEN:
+{
+    <FREE_TEXT_DATA: (~["\n", "\r"])*> |
+    <FREE_TEXT_DATA_END: <EOL>> : DEFAULT
+}
+
+<CommaSepTextDataSect> TOKEN:
+{
+    <COMMASEPTEXTDATA: (~[",", "\n", "\r"])*>
+}
+
+<IgnoreToPublicSect> MORE:
+{
+    <~[]>
+}
+
+<IgnoreToPublicSect> TOKEN:
+{
+    <IGNORE_TO_PUBLIC_SECTION: ".PUBLIC" <EOL>> : DEFAULT
+}

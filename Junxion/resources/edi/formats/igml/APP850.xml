@@ -1,0 +1,1148 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE Standard PUBLIC "//igML Consortium//DTD igML//EN" "http://www.foresightcorp.com/igmldev/igml.dtd" >
+
+<!-- Standard APP850 -->
+
+<Standard ID="APP850" Version="004" Release="010" Authority="X" DerivedFrom="X12-4010" LastModified="1999-03-02T11:31:38">
+
+	<Text Type="Title">Draft Standards Approved for Publication by ASC X12 Procedures Review Board through October 1997</Text>
+
+	<MessageDirectory>
+
+		<Message ID="850">
+			<Text Type="Name">Purchase Order - Inbound from Customers</Text>
+			<Text Type="Purpose">This standard provides the format and establishes the data content of a purchase order transaction set.  The purchase order transaction set provides for customary and established business and industry practice relative to the placement of purchase orders for goods and services.</Text>
+
+
+			<Table Area="1">
+				<SegmentRef Pos="010" ID="ST" Req="M" MaxUse="1">
+					<Text Type="Purpose">To indicate the start of a transaction set and to assign a control number.</Text>
+					<DataElements>
+						<DataElementRef Pos="1" ID="143">
+							<Codes>
+								<Code ID="850">
+									<Text Type="Definition">X12.1 Purchase Order</Text>
+								</Code>
+							</Codes>
+						</DataElementRef>
+						<DataElementRef Pos="2" ID="329">
+							<Text Type="User" UserType="User1">Sequential number same as SE02</Text>
+						</DataElementRef>
+					</DataElements>
+				</SegmentRef>
+
+				<SegmentRef Pos="020" ID="BEG" Req="M" MaxUse="1">
+					<Text Type="Purpose">To indicate the beginning of the Purchase Order Transaction Set and transmit identifying numbers and dates.</Text>
+					<DataElements>
+						<DataElementRef Pos="1" ID="353">
+							<Codes>
+								<Code ID="00" />
+							</Codes>
+						</DataElementRef>
+						<DataElementRef Pos="2" ID="92">
+							<Codes>
+								<Code ID="SA" />
+							</Codes>
+						</DataElementRef>
+						<DataElementRef Pos="4" ID="328" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="5" ID="373">
+							<Text Type="User" UserType="User1">CCYYMMDD format</Text>
+						</DataElementRef>
+						<DataElementRef Pos="6" ID="367" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="7" ID="587" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="8" ID="1019" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="9" ID="1166" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="10" ID="1232" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="11" ID="786" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="12" ID="640" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+					</DataElements>
+				</SegmentRef>
+
+				<SegmentRef Pos="040" ID="CUR" Req="O" Usage="NU" MaxUse="1" />
+
+				<SegmentRef Pos="050" ID="REF" Req="O" Usage="NU" MaxUse="N/A">
+					<DataElements>
+						<DataElementRef Pos="1" ID="128">
+							<Codes>
+								<Code ID="CD" />
+							</Codes>
+						</DataElementRef>
+						<DataElementRef Pos="2" ID="127">
+							<Text Type="User" UserType="User1">Customer authorization number</Text>
+						</DataElementRef>
+					</DataElements>
+				</SegmentRef>
+
+				<SegmentRef Pos="060" ID="PER" Req="O" MaxUse="3">
+					<Text Type="Purpose">To identify a person or office to whom administrative communications should be directed.  In this header position the segment identifies the parties responsible for originating the purchase order.  A contact is required in order to process a PO.  The PER segment, however, is optional.  If it is not sent, then a default value for the trading partner will be assigned as contact.  Only the name is used in this instance.</Text>
+					<DataElements>
+						<DataElementRef Pos="1" ID="366">
+							<Codes>
+								<Code ID="IC" />
+							</Codes>
+						</DataElementRef>
+						<DataElementRef Pos="3" ID="365" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="4" ID="364" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="5" ID="365" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="6" ID="364" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="7" ID="365" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="8" ID="364" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="9" ID="443" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+					</DataElements>
+				</SegmentRef>
+
+				<SegmentRef Pos="070" ID="TAX" Req="O" Usage="NU" MaxUse="N/A" />
+
+				<SegmentRef Pos="080" ID="FOB" Req="O" Usage="NU" MaxUse="N/A" />
+
+				<SegmentRef Pos="090" ID="CTP" Req="O" Usage="NU" MaxUse="N/A" />
+
+				<SegmentRef Pos="095" ID="PAM" Req="O" Usage="NU" MaxUse="10" />
+
+				<SegmentRef Pos="110" ID="CSH" Req="O" Usage="NU" MaxUse="5" />
+
+				<SegmentRef Pos="115" ID="TC2" Req="O" Usage="NU" MaxUse="N/A" />
+
+				<Group ID="SAC" Req="O" Usage="NU" MaxUse="25">
+
+					<SegmentRef Pos="120" ID="SAC" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="125" ID="CUR" Req="O" Usage="NU" MaxUse="1" />
+
+				</Group>
+
+				<SegmentRef Pos="130" ID="ITD" Req="O" Usage="NU" MaxUse="N/A" />
+
+				<SegmentRef Pos="140" ID="DIS" Req="O" Usage="NU" MaxUse="20" />
+
+				<SegmentRef Pos="145" ID="INC" Req="O" Usage="NU" MaxUse="1" />
+
+				<SegmentRef Pos="150" ID="DTM" Req="O" Usage="R" MaxUse="10">
+					<Text Type="Purpose">To specify pertinent dates and times.  Specify the requested ship date for the entire purchase order.</Text>
+					<DataElements>
+						<DataElementRef Pos="1" ID="374">
+							<Codes>
+								<Code ID="037">
+									<Text Type="Definition">Requested Date Needed at Customer&apos;s Dock</Text>
+									<Text Type="User" UserType="User1">037 = Requested ship date</Text>
+								</Code>
+							</Codes>
+						</DataElementRef>
+						<DataElementRef Pos="2" ID="373">
+							<Text Type="User" UserType="User1">CCYYMMDD format</Text>
+						</DataElementRef>
+						<DataElementRef Pos="3" ID="337" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="4" ID="623" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="5" ID="1250" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="6" ID="1251" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+					</DataElements>
+				</SegmentRef>
+
+				<SegmentRef Pos="160" ID="LDT" Req="O" Usage="NU" MaxUse="12" />
+
+				<SegmentRef Pos="180" ID="LIN" Req="O" Usage="NU" MaxUse="5" />
+
+				<SegmentRef Pos="185" ID="SI" Req="O" Usage="NU" MaxUse="N/A" />
+
+				<SegmentRef Pos="190" ID="PID" Req="O" Usage="NU" MaxUse="200" />
+
+				<SegmentRef Pos="200" ID="MEA" Req="O" Usage="NU" MaxUse="40" />
+
+				<SegmentRef Pos="210" ID="PWK" Req="O" Usage="NU" MaxUse="25" />
+
+				<SegmentRef Pos="220" ID="PKG" Req="O" Usage="NU" MaxUse="200" />
+
+				<SegmentRef Pos="230" ID="TD1" Req="O" Usage="NU" MaxUse="2" />
+
+				<SegmentRef Pos="240" ID="TD5" Req="O" MaxUse="12">
+					<Text Type="Purpose">To specify the carrier and sequence of routing and provide transit time information.  Specify the expedite sequence code.  This code will override (if possible) normal delivery procedures followed by the distribution centers.</Text>
+					<DataElements>
+						<DataElementRef Pos="1" ID="133">
+							<Codes>
+								<Code ID="B" />
+							</Codes>
+						</DataElementRef>
+						<DataElementRef Pos="2" ID="66" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="3" ID="67" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="4" ID="91">
+							<Codes>
+								<Code ID="A" />
+								<Code ID="AE" />
+								<Code ID="E">
+									<Text Type="Definition">Exclusive Truck</Text>
+								</Code>
+							</Codes>
+						</DataElementRef>
+						<DataElementRef Pos="5" ID="387" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="6" ID="368" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="7" ID="309" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="8" ID="310" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="9" ID="731" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="10" ID="732" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="11" ID="733" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="12" ID="284" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="13" ID="284" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="14" ID="284" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+						<DataElementRef Pos="15" ID="26" Usage="NU">
+							<Text Type="User" UserType="User1">Not used</Text>
+						</DataElementRef>
+					</DataElements>
+				</SegmentRef>
+
+				<SegmentRef Pos="250" ID="TD3" Req="O" Usage="NU" MaxUse="12" />
+
+				<SegmentRef Pos="260" ID="TD4" Req="O" Usage="NU" MaxUse="5" />
+
+				<SegmentRef Pos="270" ID="MAN" Req="O" Usage="NU" MaxUse="10" />
+
+				<SegmentRef Pos="276" ID="PCT" Req="O" Usage="NU" MaxUse="N/A" />
+
+				<SegmentRef Pos="280" ID="CTB" Req="O" Usage="NU" MaxUse="5" />
+
+				<SegmentRef Pos="285" ID="TXI" Req="O" Usage="NU" MaxUse="N/A" />
+
+				<Group ID="AMT" Req="O" Usage="NU" MaxUse="N/A">
+
+					<SegmentRef Pos="287" ID="AMT" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="289" ID="REF" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="290" ID="DTM" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="292" ID="PCT" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<Group ID="FA1" Req="O" Usage="NU" MaxUse="N/A">
+
+						<SegmentRef Pos="293" ID="FA1" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="294" ID="FA2" Req="M" MaxUse="N/A" />
+
+					</Group>
+
+				</Group>
+
+				<Group ID="N9" Req="O" Usage="NU" MaxUse="1000">
+
+					<SegmentRef Pos="295" ID="N9" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="297" ID="DTM" Req="O" MaxUse="N/A" />
+
+					<SegmentRef Pos="300" ID="MSG" Req="O" Usage="NU" MaxUse="1000" />
+
+				</Group>
+
+				<Group ID="N1" Req="O" MaxUse="200">
+
+					<SegmentRef Pos="310" ID="N1" Req="O" MaxUse="1">
+						<Text Type="Purpose">To identify a party by type of organization, name, and code.  In this header position the N1 is used for the Ship to (ST) identifier.  This may be done through the use of a DUNS number or a customer number.  DUNS numbers will be translated into customer numbers.  Customer numbers are used to generate Bill to and Ship to addresses.  A Ship to address override is not available.  The N1 (loop) with a Ship to (ST) qualifier is used to pick up a Ship to attention contact via the PER segment.</Text>
+						<DataElements>
+							<DataElementRef Pos="1" ID="98">
+								<Codes>
+									<Code ID="ST" />
+								</Codes>
+							</DataElementRef>
+							<DataElementRef Pos="3" ID="66">
+								<Codes>
+									<Code ID="1" />
+									<Code ID="9" />
+									<Code ID="91">
+										<Text Type="Definition">Assigned by Seller (customer number)</Text>
+										<Text Type="User" UserType="User1">customer #</Text>
+									</Code>
+								</Codes>
+							</DataElementRef>
+							<DataElementRef Pos="4" ID="67">
+								<Text Type="User" UserType="User1">DUNS number or customer number</Text>
+							</DataElementRef>
+							<DataElementRef Pos="5" ID="706" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="6" ID="98" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+						</DataElements>
+					</SegmentRef>
+
+					<SegmentRef Pos="320" ID="N2" Req="O" Usage="NU" MaxUse="2" />
+
+					<SegmentRef Pos="330" ID="N3" Req="O" Usage="NU" MaxUse="2" />
+
+					<SegmentRef Pos="340" ID="N4" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="345" ID="NX2" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="350" ID="REF" Req="O" Usage="NU" MaxUse="12" />
+
+					<SegmentRef Pos="360" ID="PER" Req="O" MaxUse="N/A">
+						<Text Type="Purpose">To identify a person or office to whom administrative communications should be directed.  In this N1 loop position the segment identifies the parties responsible for receiving and payables.  The contact within a Ship to (ST) N1 loop will be a Ship to attention name.  Neither field (N1 or PER) is required in order to process an order.</Text>
+						<DataElements>
+							<DataElementRef Pos="1" ID="366">
+								<Codes>
+									<Code ID="ZZ">
+										<Text Type="Definition">Mutually Defined = Ship to attention</Text>
+									</Code>
+								</Codes>
+							</DataElementRef>
+							<DataElementRef Pos="3" ID="365" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="4" ID="364" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="5" ID="365" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="6" ID="364" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="7" ID="365" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="8" ID="364" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="9" ID="443" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+						</DataElements>
+					</SegmentRef>
+
+					<SegmentRef Pos="365" ID="SI" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="370" ID="FOB" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="380" ID="TD1" Req="O" Usage="NU" MaxUse="2" />
+
+					<SegmentRef Pos="390" ID="TD5" Req="O" Usage="NU" MaxUse="12" />
+
+					<SegmentRef Pos="400" ID="TD3" Req="O" Usage="NU" MaxUse="12" />
+
+					<SegmentRef Pos="410" ID="TD4" Req="O" Usage="NU" MaxUse="5" />
+
+					<SegmentRef Pos="420" ID="PKG" Req="O" Usage="NU" MaxUse="200" />
+
+				</Group>
+
+				<Group ID="LM" Req="O" Usage="NU" MaxUse="N/A">
+
+					<SegmentRef Pos="430" ID="LM" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="440" ID="LQ" Req="M" MaxUse="N/A" />
+
+				</Group>
+
+				<Group ID="SPI" Req="O" Usage="NU" MaxUse="N/A">
+
+					<SegmentRef Pos="450" ID="SPI" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="460" ID="REF" Req="O" Usage="NU" MaxUse="5" />
+
+					<SegmentRef Pos="470" ID="DTM" Req="O" Usage="NU" MaxUse="5" />
+
+					<SegmentRef Pos="480" ID="MSG" Req="O" Usage="NU" MaxUse="50" />
+
+					<Group ID="N1" Req="O" Usage="NU" MaxUse="20">
+
+						<SegmentRef Pos="490" ID="N1" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="500" ID="N2" Req="O" Usage="NU" MaxUse="2" />
+
+						<SegmentRef Pos="510" ID="N3" Req="O" Usage="NU" MaxUse="2" />
+
+						<SegmentRef Pos="520" ID="N4" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="530" ID="REF" Req="O" Usage="NU" MaxUse="20" />
+
+						<SegmentRef Pos="540" ID="G61" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="550" ID="MSG" Req="O" Usage="NU" MaxUse="50" />
+
+					</Group>
+
+					<Group ID="CB1" Req="O" Usage="NU" MaxUse="N/A">
+
+						<SegmentRef Pos="560" ID="CB1" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="570" ID="REF" Req="O" Usage="NU" MaxUse="20" />
+
+						<SegmentRef Pos="580" ID="DTM" Req="O" Usage="NU" MaxUse="5" />
+
+						<SegmentRef Pos="590" ID="LDT" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="600" ID="MSG" Req="O" Usage="NU" MaxUse="50" />
+
+					</Group>
+
+				</Group>
+
+				<Group ID="ADV" Req="O" Usage="NU" MaxUse="N/A">
+
+					<SegmentRef Pos="610" ID="ADV" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="620" ID="DTM" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="630" ID="MTX" Req="O" Usage="NU" MaxUse="N/A" />
+
+				</Group>
+
+			</Table>
+
+
+			<Table Area="2">
+				<Group ID="PO1" Req="M" MaxUse="100000">
+
+					<SegmentRef Pos="010" ID="PO1" Req="M" MaxUse="1">
+						<Text Type="Purpose">To specify basic and most frequently used purchase order line item data.  In this detail position the segment identifies specific part numbers.  There is one PO1 segment for each different part number.  A limit of 999 part numbers may be ordered.  Parts and their quantities and prices are subjected to the most numerous and rigorous edits by the order processing application.  If the price is supplied for a part, then it will be verified against the price calculated by the application.  Mismatches cause the order to be held in error.  Quantities that are not pallet quantities will not be accepted for greater than the pallet quantity.  Non-pallet quantities will NOT be automatically split into multiple line items.</Text>
+						<DataElements>
+							<DataElementRef Pos="1" ID="350">
+								<Text Type="Name">Assigned Identification - Purchase Order line number</Text>
+								<Text Type="User" UserType="User1">Purchase order line number</Text>
+							</DataElementRef>
+							<DataElementRef Pos="2" ID="330" Usage="R">
+								<Text Type="User" UserType="User1">Total quantity ordered for all requested ship dates provided in the SCH segments. </Text>
+							</DataElementRef>
+							<DataElementRef Pos="3" ID="355" Usage="R">
+								<Codes>
+									<Code ID="EA" />
+								</Codes>
+							</DataElementRef>
+							<DataElementRef Pos="4" ID="212">
+								<Text Type="User" UserType="User1">Per per unit of product</Text>
+							</DataElementRef>
+							<DataElementRef Pos="5" ID="639">
+								<Codes>
+									<Code ID="TE" />
+								</Codes>
+							</DataElementRef>
+							<DataElementRef Pos="6" ID="235" Usage="R">
+								<Codes>
+									<Code ID="IB" />
+									<Code ID="VP" />
+								</Codes>
+							</DataElementRef>
+							<DataElementRef Pos="7" ID="234">
+								<Text Type="User" UserType="User1">Product defined in PO106</Text>
+							</DataElementRef>
+							<DataElementRef Pos="8" ID="235">
+								<Codes>
+									<Code ID="AC">
+										<Text Type="Definition">Aggregation Code (Customer Requested Tie Code)</Text>
+									</Code>
+								</Codes>
+							</DataElementRef>
+							<DataElementRef Pos="9" ID="234">
+								<Text Type="User" UserType="User1">Tie code (use one character)</Text>
+							</DataElementRef>
+							<DataElementRef Pos="10" ID="235" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="11" ID="234" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="12" ID="235" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="13" ID="234" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="14" ID="235" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="15" ID="234" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="16" ID="235" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="17" ID="234" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="18" ID="235" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="19" ID="234" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="20" ID="235" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="21" ID="234" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="22" ID="235" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="23" ID="234" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="24" ID="235" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="25" ID="234" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+						</DataElements>
+					</SegmentRef>
+
+					<SegmentRef Pos="015" ID="LIN" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="018" ID="SI" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="020" ID="CUR" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="025" ID="CN1" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="030" ID="PO3" Req="O" Usage="NU" MaxUse="25" />
+
+					<Group ID="CTP" Req="O" Usage="NU" MaxUse="N/A">
+
+						<SegmentRef Pos="040" ID="CTP" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="043" ID="CUR" Req="O" Usage="NU" MaxUse="1" />
+
+					</Group>
+
+					<SegmentRef Pos="045" ID="PAM" Req="O" Usage="NU" MaxUse="10" />
+
+					<SegmentRef Pos="049" ID="MEA" Req="O" Usage="NU" MaxUse="40" />
+
+					<Group ID="PID" Req="O" Usage="NU" MaxUse="1000">
+
+						<SegmentRef Pos="050" ID="PID" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="060" ID="MEA" Req="O" Usage="NU" MaxUse="10" />
+
+					</Group>
+
+					<SegmentRef Pos="070" ID="PWK" Req="O" Usage="NU" MaxUse="25" />
+
+					<SegmentRef Pos="090" ID="PO4" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="100" ID="REF" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="110" ID="PER" Req="O" Usage="NU" MaxUse="3" />
+
+					<Group ID="SAC" Req="O" Usage="NU" MaxUse="25">
+
+						<SegmentRef Pos="130" ID="SAC" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="135" ID="CUR" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="137" ID="CTP" Req="O" Usage="NU" MaxUse="1" />
+
+					</Group>
+
+					<SegmentRef Pos="140" ID="IT8" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="142" ID="CSH" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="150" ID="ITD" Req="O" Usage="NU" MaxUse="2" />
+
+					<SegmentRef Pos="160" ID="DIS" Req="O" Usage="NU" MaxUse="20" />
+
+					<SegmentRef Pos="165" ID="INC" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="170" ID="TAX" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="180" ID="FOB" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="190" ID="SDQ" Req="O" Usage="NU" MaxUse="500" />
+
+					<SegmentRef Pos="200" ID="IT3" Req="O" Usage="NU" MaxUse="5" />
+
+					<SegmentRef Pos="210" ID="DTM" Req="O" MaxUse="10" />
+
+					<SegmentRef Pos="235" ID="TC2" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="240" ID="TD1" Req="O" Usage="NU" MaxUse="1" />
+
+					<SegmentRef Pos="250" ID="TD5" Req="O" MaxUse="12">
+						<Text Type="Purpose">To specify the carrier and sequence of routing and provide transit time information.  Shows the expedite sequence code.  This code will override, if possible, the normal delivery procedures followed by the distribution centers for the given item.</Text>
+						<DataElements>
+							<DataElementRef Pos="1" ID="133">
+								<Codes>
+									<Code ID="B" />
+								</Codes>
+							</DataElementRef>
+							<DataElementRef Pos="2" ID="66" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="3" ID="67" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="4" ID="91">
+								<Codes>
+									<Code ID="A" />
+									<Code ID="AE" />
+									<Code ID="E">
+										<Text Type="Definition">Exclusive Truck</Text>
+									</Code>
+								</Codes>
+							</DataElementRef>
+							<DataElementRef Pos="5" ID="387" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="6" ID="368" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="7" ID="309" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="8" ID="310" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="9" ID="731" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="10" ID="732" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="11" ID="733" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="12" ID="284" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="13" ID="284" Usage="NU" />
+							<DataElementRef Pos="14" ID="284" Usage="NU" />
+							<DataElementRef Pos="15" ID="26" Usage="NU" />
+						</DataElements>
+					</SegmentRef>
+
+					<SegmentRef Pos="260" ID="TD3" Req="O" Usage="NU" MaxUse="12" />
+
+					<SegmentRef Pos="270" ID="TD4" Req="O" Usage="NU" MaxUse="5" />
+
+					<SegmentRef Pos="276" ID="PCT" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="280" ID="MAN" Req="O" Usage="NU" MaxUse="10" />
+
+					<SegmentRef Pos="289" ID="MSG" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="290" ID="SPI" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="291" ID="TXI" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<SegmentRef Pos="292" ID="CTB" Req="O" Usage="NU" MaxUse="N/A" />
+
+					<Group ID="QTY" Req="O" Usage="NU" MaxUse="N/A">
+
+						<SegmentRef Pos="293" ID="QTY" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="294" ID="SI" Req="O" Usage="NU" MaxUse="N/A" />
+
+					</Group>
+
+					<Group ID="SCH" Req="O" MaxUse="200">
+
+						<SegmentRef Pos="295" ID="SCH" Req="O" MaxUse="1">
+							<DataElements>
+								<DataElementRef Pos="2" ID="355">
+									<Text Type="User" UserType="User1">Basic unit of measure</Text>
+									<Codes>
+										<Code ID="EA" />
+									</Codes>
+								</DataElementRef>
+								<DataElementRef Pos="3" ID="98" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="4" ID="93" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="5" ID="374">
+									<Codes>
+										<Code ID="010" />
+										<Code ID="037">
+											<Text Type="Definition">Requested Date Needed at Customer&apos;s Dock</Text>
+										</Code>
+										<Code ID="068" />
+									</Codes>
+								</DataElementRef>
+								<DataElementRef Pos="7" ID="337" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="8" ID="374" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="9" ID="373" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="10" ID="337" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="11" ID="326" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="12" ID="350" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+							</DataElements>
+						</SegmentRef>
+
+						<SegmentRef Pos="296" ID="TD1" Req="O" Usage="NU" MaxUse="2" />
+
+						<SegmentRef Pos="297" ID="TD5" Req="O" Usage="NU" MaxUse="12" />
+
+						<SegmentRef Pos="298" ID="TD3" Req="O" Usage="NU" MaxUse="12" />
+
+						<SegmentRef Pos="299" ID="TD4" Req="O" Usage="NU" MaxUse="5" />
+
+						<SegmentRef Pos="300" ID="REF" Req="O" Usage="NU" MaxUse="N/A" />
+
+					</Group>
+
+					<Group ID="PKG" Req="O" Usage="NU" MaxUse="200">
+
+						<SegmentRef Pos="305" ID="PKG" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="310" ID="MEA" Req="O" Usage="NU" MaxUse="N/A" />
+
+					</Group>
+
+					<SegmentRef Pos="320" ID="LS" Req="O" Usage="NU" MaxUse="1" />
+
+					<Group ID="LDT" Req="O" Usage="NU" MaxUse="N/A">
+
+						<SegmentRef Pos="321" ID="LDT" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="322" ID="QTY" Req="O" Usage="NU" MaxUse="N/A" />
+
+						<SegmentRef Pos="323" ID="MSG" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="324" ID="REF" Req="O" Usage="NU" MaxUse="3" />
+
+						<Group ID="LM" Req="O" Usage="NU" MaxUse="N/A">
+
+							<SegmentRef Pos="325" ID="LM" Req="O" Usage="NU" MaxUse="1" />
+
+							<SegmentRef Pos="326" ID="LQ" Req="M" MaxUse="N/A" />
+
+						</Group>
+
+					</Group>
+
+					<SegmentRef Pos="327" ID="LE" Req="O" Usage="NU" MaxUse="1" />
+
+					<Group ID="N9" Req="O" Usage="NU" MaxUse="1000">
+
+						<SegmentRef Pos="330" ID="N9" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="332" ID="DTM" Req="O" MaxUse="N/A" />
+
+						<SegmentRef Pos="335" ID="MEA" Req="O" Usage="NU" MaxUse="40" />
+
+						<SegmentRef Pos="340" ID="MSG" Req="O" Usage="NU" MaxUse="1000" />
+
+					</Group>
+
+					<Group ID="N1" Req="O" Usage="NU" MaxUse="200">
+
+						<SegmentRef Pos="350" ID="N1" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="360" ID="N2" Req="O" Usage="NU" MaxUse="2" />
+
+						<SegmentRef Pos="370" ID="N3" Req="O" Usage="NU" MaxUse="2" />
+
+						<SegmentRef Pos="380" ID="N4" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="383" ID="QTY" Req="O" MaxUse="N/A" />
+
+						<SegmentRef Pos="385" ID="NX2" Req="O" Usage="NU" MaxUse="N/A" />
+
+						<SegmentRef Pos="390" ID="REF" Req="O" Usage="NU" MaxUse="12" />
+
+						<SegmentRef Pos="400" ID="PER" Req="O" Usage="NU" MaxUse="3" />
+
+						<SegmentRef Pos="405" ID="SI" Req="O" MaxUse="N/A" />
+
+						<SegmentRef Pos="406" ID="DTM" Req="O" MaxUse="1" />
+
+						<SegmentRef Pos="410" ID="FOB" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="415" ID="SCH" Req="O" Usage="NU" MaxUse="200" />
+
+						<SegmentRef Pos="420" ID="TD1" Req="O" Usage="NU" MaxUse="2" />
+
+						<SegmentRef Pos="430" ID="TD5" Req="O" Usage="NU" MaxUse="12" />
+
+						<SegmentRef Pos="440" ID="TD3" Req="O" Usage="NU" MaxUse="12" />
+
+						<SegmentRef Pos="450" ID="TD4" Req="O" Usage="NU" MaxUse="5" />
+
+						<SegmentRef Pos="460" ID="PKG" Req="O" Usage="NU" MaxUse="200" />
+
+						<Group ID="LDT" Req="O" MaxUse="N/A">
+
+							<SegmentRef Pos="462" ID="LDT" Req="O" MaxUse="1" />
+
+							<SegmentRef Pos="464" ID="MAN" Req="O" MaxUse="10" />
+
+							<SegmentRef Pos="466" ID="QTY" Req="O" MaxUse="5" />
+
+							<SegmentRef Pos="468" ID="MSG" Req="O" MaxUse="1" />
+
+							<SegmentRef Pos="469" ID="REF" Req="O" MaxUse="3" />
+
+						</Group>
+
+					</Group>
+
+					<Group ID="SLN" Req="O" MaxUse="1000">
+
+						<SegmentRef Pos="470" ID="SLN" Req="O" MaxUse="1">
+							<Text Type="Purpose">To specify product subline detail item data.</Text>
+							<DataElements>
+								<DataElementRef Pos="1" ID="350">
+									<Text Type="User" UserType="User1">Purchase order unique identifier.  Unique SLN identifier.</Text>
+								</DataElementRef>
+								<DataElementRef Pos="2" ID="350">
+									<Text Type="User" UserType="User1">Subline identifier (same as PO101)</Text>
+								</DataElementRef>
+								<DataElementRef Pos="3" ID="662">
+									<Codes>
+										<Code ID="I" />
+									</Codes>
+								</DataElementRef>
+								<DataElementRef Pos="4" ID="380">
+									<Text Type="User" UserType="User1">Subline item quantity</Text>
+								</DataElementRef>
+								<CompositeRef Pos="5" ID="C001">
+									<DataElementRef Pos="1" ID="355">
+										<Codes>
+											<Code ID="EA" />
+										</Codes>
+									</DataElementRef>
+									<DataElementRef Pos="2" ID="1018" Usage="NU" />
+									<DataElementRef Pos="3" ID="649" Usage="NU" />
+									<DataElementRef Pos="4" ID="355" Usage="NU" />
+									<DataElementRef Pos="5" ID="1018" Usage="NU" />
+									<DataElementRef Pos="6" ID="649" Usage="NU" />
+									<DataElementRef Pos="7" ID="355" Usage="NU" />
+									<DataElementRef Pos="8" ID="1018" Usage="NU" />
+									<DataElementRef Pos="9" ID="649" Usage="NU" />
+									<DataElementRef Pos="10" ID="355" Usage="NU" />
+									<DataElementRef Pos="11" ID="1018" Usage="NU" />
+									<DataElementRef Pos="12" ID="649" Usage="NU" />
+									<DataElementRef Pos="13" ID="355" Usage="NU" />
+									<DataElementRef Pos="14" ID="1018" Usage="NU" />
+									<DataElementRef Pos="15" ID="649" Usage="NU" />
+								</CompositeRef>
+								<DataElementRef Pos="7" ID="639">
+									<Codes>
+										<Code ID="TE" />
+									</Codes>
+								</DataElementRef>
+								<DataElementRef Pos="8" ID="662">
+									<Text Type="User" UserType="User1">Subline price change code ID</Text>
+									<Codes>
+										<Code ID="I" />
+									</Codes>
+								</DataElementRef>
+								<DataElementRef Pos="9" ID="235">
+									<Text Type="User" UserType="User1">Seller&apos;s part number ID</Text>
+									<Codes>
+										<Code ID="VP" />
+									</Codes>
+								</DataElementRef>
+								<DataElementRef Pos="10" ID="234">
+									<Text Type="User" UserType="User1">Seller&apos;s part number</Text>
+								</DataElementRef>
+								<DataElementRef Pos="11" ID="235">
+									<Codes>
+										<Code ID="AC">
+											<Text Type="Definition">Aggregation Code (Customer Requested Tie Code)</Text>
+										</Code>
+									</Codes>
+								</DataElementRef>
+								<DataElementRef Pos="12" ID="234">
+									<Text Type="User" UserType="User1">Customer requested tie code (use one character)</Text>
+								</DataElementRef>
+								<DataElementRef Pos="13" ID="235" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="14" ID="234" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="15" ID="235" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="16" ID="234" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="17" ID="235" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="18" ID="234" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="19" ID="235" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="20" ID="234" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="21" ID="235" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="22" ID="234" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="23" ID="235" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="24" ID="234" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="25" ID="235" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="26" ID="234" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="27" ID="235" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+								<DataElementRef Pos="28" ID="234" Usage="NU">
+									<Text Type="User" UserType="User1">Not used</Text>
+								</DataElementRef>
+							</DataElements>
+						</SegmentRef>
+
+						<SegmentRef Pos="475" ID="MSG" Req="O" Usage="NU" MaxUse="N/A" />
+
+						<SegmentRef Pos="480" ID="SI" Req="O" Usage="NU" MaxUse="N/A" />
+
+						<SegmentRef Pos="490" ID="PID" Req="O" Usage="NU" MaxUse="1000" />
+
+						<SegmentRef Pos="500" ID="PO3" Req="O" Usage="NU" MaxUse="104" />
+
+						<SegmentRef Pos="505" ID="TC2" Req="O" Usage="NU" MaxUse="N/A" />
+
+						<SegmentRef Pos="513" ID="ADV" Req="O" Usage="NU" MaxUse="N/A" />
+
+						<SegmentRef Pos="515" ID="DTM" Req="O" Usage="NU" MaxUse="10" />
+
+						<SegmentRef Pos="516" ID="CTP" Req="O" Usage="NU" MaxUse="25" />
+
+						<SegmentRef Pos="517" ID="PAM" Req="O" Usage="NU" MaxUse="10" />
+
+						<SegmentRef Pos="518" ID="PO4" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="519" ID="TAX" Req="O" Usage="NU" MaxUse="3" />
+
+						<Group ID="N9" Req="O" Usage="NU" MaxUse="N/A">
+
+							<SegmentRef Pos="523" ID="N9" Req="O" Usage="NU" MaxUse="1" />
+
+							<SegmentRef Pos="524" ID="DTM" Req="O" Usage="NU" MaxUse="N/A" />
+
+							<SegmentRef Pos="525" ID="MSG" Req="O" Usage="NU" MaxUse="N/A" />
+
+						</Group>
+
+						<Group ID="SAC" Req="O" Usage="NU" MaxUse="25">
+
+							<SegmentRef Pos="526" ID="SAC" Req="O" Usage="NU" MaxUse="1" />
+
+							<SegmentRef Pos="527" ID="CUR" Req="O" Usage="NU" MaxUse="1" />
+
+							<SegmentRef Pos="528" ID="CTP" Req="O" Usage="NU" MaxUse="1" />
+
+						</Group>
+
+						<Group ID="QTY" Req="O" Usage="NU" MaxUse="N/A">
+
+							<SegmentRef Pos="529" ID="QTY" Req="O" Usage="NU" MaxUse="1" />
+
+							<SegmentRef Pos="530" ID="SI" Req="O" Usage="NU" MaxUse="N/A" />
+
+						</Group>
+
+						<Group ID="N1" Req="O" Usage="NU" MaxUse="10">
+
+							<SegmentRef Pos="535" ID="N1" Req="O" Usage="NU" MaxUse="1" />
+
+							<SegmentRef Pos="540" ID="N2" Req="O" Usage="NU" MaxUse="2" />
+
+							<SegmentRef Pos="550" ID="N3" Req="O" Usage="NU" MaxUse="2" />
+
+							<SegmentRef Pos="560" ID="N4" Req="O" Usage="NU" MaxUse="1" />
+
+							<SegmentRef Pos="570" ID="NX2" Req="O" Usage="NU" MaxUse="N/A" />
+
+							<SegmentRef Pos="580" ID="REF" Req="O" Usage="NU" MaxUse="12" />
+
+							<SegmentRef Pos="590" ID="PER" Req="O" Usage="NU" MaxUse="3" />
+
+							<SegmentRef Pos="595" ID="SI" Req="O" MaxUse="N/A" />
+
+						</Group>
+
+					</Group>
+
+					<Group ID="AMT" Req="O" Usage="NU" MaxUse="N/A">
+
+						<SegmentRef Pos="600" ID="AMT" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="610" ID="REF" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="612" ID="PCT" Req="O" Usage="NU" MaxUse="N/A" />
+
+					</Group>
+
+					<Group ID="LM" Req="O" Usage="NU" MaxUse="N/A">
+
+						<SegmentRef Pos="620" ID="LM" Req="O" Usage="NU" MaxUse="1" />
+
+						<SegmentRef Pos="630" ID="LQ" Req="M" MaxUse="N/A" />
+
+					</Group>
+
+				</Group>
+
+			</Table>
+
+
+			<Table Area="3">
+				<Group ID="CTT" Req="O" MaxUse="1">
+
+					<SegmentRef Pos="010" ID="CTT" Req="O" MaxUse="1">
+						<Text Type="Purpose">To transmit number of lines and a hash total for specific elements in the transaction set.  In this summary position the segment identifies the purchase order&apos;s number of line items and quantities ordered.  CTT02 is a summary of preceding PO102 elements.</Text>
+						<DataElements>
+							<DataElementRef Pos="2" ID="347">
+								<Text Type="Purpose">Sum of values of the specified data element. All values in the data element will be summed without regard to decimal points (explicit or implicit) or signs. Truncation will occur on the left most digits if the sum is greater than the maximum size of the hash total of the data element. 
+
+Example:
+
+ -.0018 First occurrence of value being hashed. .18 Second occurrence of value being hashed. 1.8 Third occurrence of value being hashed. 18.01 Fourth occurrence of value being hashed. --------- 1855 Hash total prior to truncation. 855 Hash total after truncation to three-digit field.</Text>
+								<Text Type="User" UserType="User1">Summation of quantities</Text>
+							</DataElementRef>
+							<DataElementRef Pos="3" ID="81" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="4" ID="355" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="5" ID="183" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="6" ID="355" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+							<DataElementRef Pos="7" ID="352" Usage="NU">
+								<Text Type="User" UserType="User1">Not used</Text>
+							</DataElementRef>
+						</DataElements>
+					</SegmentRef>
+
+					<SegmentRef Pos="020" ID="AMT" Req="O" Usage="NU" MaxUse="1" />
+
+				</Group>
+
+				<SegmentRef Pos="030" ID="SE" Req="M" MaxUse="1">
+					<DataElements>
+						<DataElementRef Pos="1" ID="96">
+							<Text Type="User" UserType="User1">Segment count</Text>
+						</DataElementRef>
+						<DataElementRef Pos="2" ID="329">
+							<Text Type="User" UserType="User1">Sequential number same as ST02</Text>
+						</DataElementRef>
+					</DataElements>
+				</SegmentRef>
+			</Table>
+
+
+		</Message>
+
+	</MessageDirectory>
+
+
+	<ElementDictionary>
+
+		<DictDataElement ID="347">
+			<Text Type="Purpose">Sum of values of the specified data element. All values in the data element will be summed without regard to decimal points (explicit or implicit) or signs. Truncation will occur on the left most digits if the sum is greater than the maximum size of the hash total of the data element. 
+
+Example:
+
+ -.0018 First occurrence of value being hashed. .18 Second occurrence of value being hashed. 1.8 Third occurrence of value being hashed. 18.01 Fourth occurrence of value being hashed. --------- 1855 Hash total prior to truncation. 855 Hash total after truncation to three-digit field.</Text>
+		</DictDataElement>
+
+
+		<DictDataElement ID="1019">
+			<Codes>
+				<Code ID="IEL" />
+				<Code ID="INR" />
+			</Codes>
+		</DictDataElement>
+
+	</ElementDictionary>
+
+	<Private>
+		<Entity>FORESIGHT Corp.</Entity>
+		<Item>TDVersion=Q5MZ</Item>
+		<Item>Control=Included</Item>
+	</Private>
+
+</Standard>
