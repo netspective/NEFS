@@ -39,25 +39,96 @@
  */
 
 /**
- * $Id: HtmlPanelAction.java,v 1.2 2003-09-25 04:51:26 aye.thu Exp $
+ * $Id: HtmlPanelAction.java,v 1.3 2004-03-02 07:36:44 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.source.RedirectValueSource;
-import com.netspective.commons.command.Command;
-import com.netspective.commons.command.CommandNotFoundException;
-import com.netspective.commons.command.Commands;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 
 public class HtmlPanelAction
 {
+    public static final Flags.FlagDefn[] FLAG_DEFNS = new Flags.FlagDefn[]
+    {
+        new Flags.FlagDefn(DialogFieldFlags.ACCESS_PRIVATE, "HIDDEN", HtmlPanelAction.Flags.HIDDEN),
+    };
+
+    public class Flags extends XdmBitmaskedFlagsAttribute
+    {
+        public static final int HIDDEN = 1;
+        private State state = null;
+
+        public Flags()
+        {
+
+        }
+
+        public Flags(int flags)
+        {
+            super(flags);
+        }
+
+        public FlagDefn[] getFlagsDefns()
+        {
+            return FLAG_DEFNS;
+        }
+
+        public State getState()
+        {
+            return state;
+        }
+
+        public void setState(State state)
+        {
+            this.state = state;
+        }
+    }
+
+    public class State
+    {
+        private Flags stateFlags;
+        private HtmlPanelValueContext panelContext;
+        private HtmlPanelAction action;
+
+        public State(HtmlPanelValueContext vc, HtmlPanelAction action)
+        {
+            this.panelContext = vc;
+            this.action = action;
+            this.stateFlags = action.createFlags();
+            this.stateFlags.setState(this);
+            initialize(vc);
+        }
+
+        private void initialize(HtmlPanelValueContext vc)
+        {
+            stateFlags.copy(getFlags());
+        }
+
+        public HtmlPanelAction getPanelAction()
+        {
+            return action;
+        }
+
+        /**
+         * Gets the state flags associated with the action
+         * @return
+         */
+        public HtmlPanelAction.Flags getStateFlags()
+        {
+            return stateFlags;
+        }
+
+    }
+
     private ValueSource icon;
     private ValueSource caption;
     private ValueSource hint;
     private RedirectValueSource redirect;
     private HtmlPanelActions children = new HtmlPanelActions();
+    private Flags flags = createFlags();
 
     public ValueSource getCaption()
     {
@@ -128,4 +199,38 @@ public class HtmlPanelAction
     {
         children.add(item);
     }
+
+    /**
+     * Creates a new state object for this panel action
+     * @param vc  The dialog context which is the state of the dialog
+     * @return
+     */
+    public State constructStateInstance(HtmlPanelValueContext vc)
+    {
+        return new State(vc, this);
+    }
+
+    /**
+     * Create flags for the panel object
+     * @return
+     */
+    public HtmlPanelAction.Flags createFlags()
+    {
+        return new Flags();
+    }
+
+    public Flags getFlags()
+    {
+        return flags;
+    }
+
+    /**
+     * Sets the flags for the panel action
+     * @param flags
+     */
+    public void setFlags(Flags flags)
+    {
+        this.flags.copy(flags);
+    }
+
 }
