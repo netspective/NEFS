@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.38 2003-08-31 22:53:50 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.39 2003-08-31 23:41:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -189,6 +189,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         public boolean isRejectFocus()
         {
             return flagIsSet(REJECT_FOCUS);
+        }
+
+        public boolean isDebuggingRequest()
+        {
+            return flagIsSet(DEBUG_REQUEST);
         }
     }
 
