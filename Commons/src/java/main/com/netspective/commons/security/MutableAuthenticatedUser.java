@@ -39,13 +39,37 @@
  */
 
 /**
- * $Id: AuthenticatedOrgUser.java,v 1.2 2004-08-03 19:53:41 shahid.shah Exp $
+ * $Id: MutableAuthenticatedUser.java,v 1.1 2004-08-03 19:53:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
 
-public interface AuthenticatedOrgUser extends AuthenticatedUser
+import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.acl.PermissionNotFoundException;
+import com.netspective.commons.acl.RoleNotFoundException;
+import com.netspective.commons.value.ValueContext;
+
+public interface MutableAuthenticatedUser extends AuthenticatedUser
 {
-    public Object getUserOrgId();
-    public String getUserOrgName();
+    String PASSWORD_ENCRYPTION_SALT = "NC";
+
+    public void init(ValueContext vc) throws AuthenticatedUserInitializationException;
+
+    public void setUserId(String userId);
+
+    public void setUserName(String userName);
+
+    public void setPermissions(AccessControlListsManager aclsManager, String[] permissions) throws PermissionNotFoundException;
+
+    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws RoleNotFoundException;
+
+    public void setEncryptedPassword(String encryptedPassword);
+
+    public void setUnencryptedPassword(String unEncryptedPassword);
+
+    public void setRemembered(boolean isRemembered);
+
+    public void registerLogin();
+
+    public void registerLogout(AuthenticatedUserLogoutType type);
 }

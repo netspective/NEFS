@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SamplerNavigationSkin.java,v 1.3 2004-07-18 14:51:33 shahid.shah Exp $
+ * $Id: SamplerNavigationSkin.java,v 1.4 2004-08-03 19:55:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.sampler;
@@ -61,6 +61,7 @@ import java.io.Writer;
 
 import com.netspective.commons.Product;
 import com.netspective.commons.security.AuthenticatedOrgUser;
+import com.netspective.commons.security.AuthenticatedOrgsUser;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSourceSpecification;
@@ -135,17 +136,22 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
     {
         AuthenticatedUser authUser = nc.getAuthenticatedUser();
 
-        String personId = authUser != null ? authUser.getUserId() : "Not logged in";
+        String personId = authUser != null ? authUser.getUserId().toString() : "Not logged in";
         String personName = authUser != null ? authUser.getUserName() : "Not logged in";
         if(authUser != null && authUser.isRemembered())
             personName += " (remembered)";
 
+        Object orgId = null;
         String orgName = null;
-        String orgId = null;
         if (authUser instanceof AuthenticatedOrgUser)
         {
             orgId = ((AuthenticatedOrgUser) authUser).getUserOrgId();
             orgName = ((AuthenticatedOrgUser) authUser).getUserOrgName();
+        }
+        else if ((authUser instanceof AuthenticatedOrgsUser) && ((AuthenticatedOrgsUser) authUser).isUserHasPrimaryOrg())
+        {
+            orgId = ((AuthenticatedOrgsUser) authUser).getUserPrimaryOrgId();
+            orgName = ((AuthenticatedOrgsUser) authUser).getUserPrimaryOrgName();
         }
 
         Theme theme = getTheme();

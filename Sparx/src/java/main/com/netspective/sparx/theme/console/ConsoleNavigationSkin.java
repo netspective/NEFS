@@ -51,10 +51,18 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.46 2004-07-16 01:54:50 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.47 2004-08-03 19:55:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.value.ValueSource;
@@ -69,13 +77,6 @@ import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.util.HttpUtils;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
 
 public class ConsoleNavigationSkin extends AbstractThemeSkin implements NavigationSkin
 {
@@ -163,8 +164,8 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     {
         AuthenticatedUser authUser = nc.getAuthenticatedUser();
 
-        String personName = authUser != null ? authUser.getUserId() : "Not logged in";
-        String personId = authUser != null ? authUser.getUserName() : "Not logged in";
+        String personId = authUser != null ? authUser.getUserId().toString() : "Not logged in";
+        String personName = authUser != null ? authUser.getUserName() : "Not logged in";
 
         if(authUser != null && authUser.isRemembered())
             personName += " (remembered)";

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.10 2004-01-12 05:40:48 aye.thu Exp $
+ * $Id: AuthenticatedUser.java,v 1.11 2004-08-03 19:53:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -47,32 +47,20 @@ package com.netspective.commons.security;
 import java.security.Principal;
 import java.util.BitSet;
 
-import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.AccessControlListsManager;
-import com.netspective.commons.acl.RoleNotFoundException;
-import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.acl.PermissionNotFoundException;
 
 public interface AuthenticatedUser extends Principal
 {
-    String PASSWORD_ENCRYPTION_SALT = "NC";
-
-    public void init(ValueContext vc) throws AuthenticatedUserInitializationException;
+    public Object getUserId();
 
     public String getUserName();
-    public void setUserName(String userName);
-
-    public String getUserId();
-    public void setUserId(String userId);
 
     public BitSet getUserPermissions();
 
     public String[] getUserRoleNames();
 
     public String getUserRoleNamesAsString();
-
-    public void setPermissions(AccessControlListsManager aclsManager, String[] permissions) throws PermissionNotFoundException;
-
-    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws RoleNotFoundException;
 
     public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException;
 
@@ -86,15 +74,5 @@ public interface AuthenticatedUser extends Principal
 
     public String getEncryptedPassword();
 
-    public void setEncryptedPassword(String encryptedPassword);
-
-    public void setUnencryptedPassword(String unEncryptedPassword);
-
-    public void setRemembered(boolean isRemembered);
-
     public boolean isRemembered();
-
-    public void registerLogin();
-
-    public void registerLogout(AuthenticatedUserLogoutType type);
 }

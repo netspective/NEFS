@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.13 2004-01-12 05:40:58 aye.thu Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.14 2004-08-03 19:53:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -47,30 +47,30 @@ package com.netspective.commons.security;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
-import com.netspective.commons.acl.Permission;
-import com.netspective.commons.acl.PermissionNotFoundException;
-import com.netspective.commons.acl.AccessControlListsManager;
-import com.netspective.commons.acl.Role;
-import com.netspective.commons.acl.RoleNotFoundException;
-import com.netspective.commons.value.ValueContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedOrgUser, java.io.Serializable
+import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.acl.Permission;
+import com.netspective.commons.acl.PermissionNotFoundException;
+import com.netspective.commons.acl.Role;
+import com.netspective.commons.acl.RoleNotFoundException;
+import com.netspective.commons.value.ValueContext;
+
+public class BasicAuthenticatedUser implements MutableAuthenticatedUser, MutableAuthenticatedOrgUser, java.io.Serializable
 {
     private static final Log log = LogFactory.getLog(BasicAuthenticatedUser.class);
 
+    private Object userId;
     private String userName;
-    private String userId;
     private String encryptedPassword;
     private boolean isRemembered;
     private String[] userRoleNames;
     private String[] userPermissionNames;
     private BitSet userPermissions;
+    private Object userOrgId;
     private String userOrgName;
-    private String userOrgId;
     private Map attributes = new HashMap();
 
     public BasicAuthenticatedUser()
@@ -83,7 +83,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
 
     public String getUserName()
     {
-        return userName != null ? userName : getUserId();
+        return userName != null ? userName : (userId != null ? userId.toString() : null);
     }
 
     public void setUserName(String userName)
@@ -93,10 +93,10 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
 
     public String getName() // implementation for java.security.Principal
     {
-        return userId;
+        return userId.toString();
     }
 
-    public String getUserId()
+    public Object getUserId()
     {
         return userId;
     }
@@ -108,7 +108,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
 
     public String getUserOrgName()
     {
-        return userOrgName != null ? userOrgName : getUserOrgId();
+        return userOrgName != null ? userOrgName : (userOrgId != null ? userOrgId.toString() : null);
     }
 
     public void setUserOrgName(String userOrgName)
@@ -116,7 +116,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
         this.userOrgName = userOrgName;
     }
 
-    public String getUserOrgId()
+    public Object getUserOrgId()
     {
         return userOrgId;
     }

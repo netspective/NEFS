@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.24 2004-07-18 21:19:24 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.25 2004-08-03 19:55:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -62,6 +62,7 @@ import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserLogoutType;
 import com.netspective.commons.security.AuthenticatedUsers;
+import com.netspective.commons.security.MutableAuthenticatedUser;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -268,11 +269,11 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
      * @param userId The userId that was either remembered or entered by a user.
      * @return
      */
-    public AuthenticatedUser createAuthenticatedUser(LoginDialogContext ldc, String userId, String encryptedPassword, boolean isRemembered)
+    public MutableAuthenticatedUser createAuthenticatedUser(LoginDialogContext ldc, String userId, String encryptedPassword, boolean isRemembered)
     {
         try
         {
-            AuthenticatedUser authUser = loginAuthenticator.constructAuthenticatedUser(this, ldc);
+            MutableAuthenticatedUser authUser = loginAuthenticator.constructAuthenticatedUser(this, ldc);
             authUser.setUserId(userId);
             authUser.setEncryptedPassword(encryptedPassword);
             authUser.setRemembered(isRemembered);
@@ -339,13 +340,13 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         return null;
     }
 
-    public void login(HttpServletValueContext vc, AuthenticatedUser user, boolean rememberUserId)
+    public void login(HttpServletValueContext vc, MutableAuthenticatedUser user, boolean rememberUserId)
     {
         vc.getHttpRequest().getSession().setAttribute(getAuthenticatedUserSessionAttrName(), user);
 
         if(isAllowRememberUserId() && rememberUserId)
         {
-            Cookie cookie = new Cookie(getRememberUserIdCookieName(), user.getUserId());
+            Cookie cookie = new Cookie(getRememberUserIdCookieName(), user.getUserId().toString());
             cookie.setPath(getRememberPasswordCookiePath(vc));
             cookie.setMaxAge(getRememberUserIdCookieMaxAge());
             vc.getHttpResponse().addCookie(cookie);
@@ -375,7 +376,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         }
 
         HttpServletRequest req = vc.getHttpRequest();
-        AuthenticatedUser user = getAuthenticatedUser(req);
+        MutableAuthenticatedUser user = (MutableAuthenticatedUser) getAuthenticatedUser(req);
         if(user != null)
         {
             registerLogout(vc, user);
@@ -398,7 +399,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         loginAttemptsManager.renderLoginAttemptDeniedHtml(writer, this, ldc);
     }
 
-    protected void registerLogin(HttpServletValueContext hsvc, AuthenticatedUser user)
+    protected void registerLogin(HttpServletValueContext hsvc, MutableAuthenticatedUser user)
     {
         user.registerLogin();
         activeUsers.add(user);
@@ -407,7 +408,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         if(log.isInfoEnabled())
         {
 
-            String userId = user.getUserId();
+            String userId = user.getUserId().toString();
             StringBuffer info = new StringBuffer();
             info.append("login");
             info.append(MONITOR_ENTRY_FIELD_SEPARATOR);
@@ -437,7 +438,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
         if(log.isDebugEnabled())
         {
-            String userId = user.getUserId();
+            String userId = user.getUserId().toString();
             log.debug("User '" + userId + "' (" + user.getUserName() + ") is now authenticated for Session ID '" + req.getSession().getId() + "'");
 
             BitSet perms = user.getUserPermissions();
@@ -459,7 +460,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         hsvc.getProject().broadcastActivity(new HttpLoginActivity(hsvc.getProject(), hsvc));
     }
 
-    protected void registerLogout(HttpServletValueContext hsvc, AuthenticatedUser user)
+    protected void registerLogout(HttpServletValueContext hsvc, MutableAuthenticatedUser user)
     {
         hsvc.getProject().broadcastActivity(new HttpLogoutActivity(hsvc.getProject(), hsvc));
 
@@ -469,7 +470,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         if(log.isInfoEnabled())
         {
             HttpServletRequest req = hsvc.getHttpRequest();
-            String userId = user.getUserId();
+            String userId = user.getUserId().toString();
             StringBuffer info = new StringBuffer();
             info.append("logout");
             info.append(MONITOR_ENTRY_FIELD_SEPARATOR);

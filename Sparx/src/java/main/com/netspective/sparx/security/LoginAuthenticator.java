@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: LoginAuthenticator.java,v 1.4 2003-08-31 03:11:50 shahid.shah Exp $
+ * $Id: LoginAuthenticator.java,v 1.5 2004-08-03 19:55:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
-import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
+import com.netspective.commons.security.MutableAuthenticatedUser;
 
 public interface LoginAuthenticator
 {
@@ -66,12 +66,12 @@ public interface LoginAuthenticator
      * @param loginDialogContext
      * @return
      */
-    public AuthenticatedUser constructAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
+    public MutableAuthenticatedUser constructAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
 
     /**
      * Assign the authenticated user's access control roles, permissions, and do other user initialization.
      * @param ldc The LoginDialogContext that was constructed by the LoginDialog.
      * @param user The authenticated user that was constructed using constructAuthenticatedUser()
      */
-    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException;
+    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, MutableAuthenticatedUser user) throws AuthenticatedUserInitializationException;
 }

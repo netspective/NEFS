@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: LoginDialogContext.java,v 1.8 2004-07-18 16:35:57 shahid.shah Exp $
+ * $Id: LoginDialogContext.java,v 1.9 2004-08-03 19:55:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
-import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.Crypt;
+import com.netspective.commons.security.MutableAuthenticatedUser;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogSkin;
@@ -73,7 +73,7 @@ public class LoginDialogContext extends DialogContext
 
     public String encryptPlainTextPassword(String plainTextPassword)
     {
-        return Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, plainTextPassword);
+        return Crypt.crypt(MutableAuthenticatedUser.PASSWORD_ENCRYPTION_SALT, plainTextPassword);
     }
 
     public String getUserIdInput()

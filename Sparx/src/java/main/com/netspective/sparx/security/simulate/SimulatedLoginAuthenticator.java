@@ -39,23 +39,23 @@
  */
 
 /**
- * $Id: SimulatedLoginAuthenticator.java,v 1.1 2004-01-06 20:08:09 shahid.shah Exp $
+ * $Id: SimulatedLoginAuthenticator.java,v 1.2 2004-08-03 19:55:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.simulate;
 
-import com.netspective.sparx.security.LoginDialogContext;
-import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.security.authenticator.AbstractLoginAuthenticator;
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.security.AuthenticatedUserInitializationException;
-import com.netspective.commons.security.AuthenticatedOrgUser;
-import com.netspective.commons.xdm.XmlDataModelSchema;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.RoleNotFoundException;
-
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import com.netspective.commons.security.AuthenticatedUserInitializationException;
+import com.netspective.commons.security.MutableAuthenticatedOrgUser;
+import com.netspective.commons.security.MutableAuthenticatedUser;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.LoginDialogContext;
+import com.netspective.sparx.security.authenticator.AbstractLoginAuthenticator;
 
 public class SimulatedLoginAuthenticator extends AbstractLoginAuthenticator
 {
@@ -68,7 +68,7 @@ public class SimulatedLoginAuthenticator extends AbstractLoginAuthenticator
         return true;
     }
 
-    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException
+    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, MutableAuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
         super.initAuthenticatedUser(loginManager, ldc, user);
 
@@ -76,10 +76,10 @@ public class SimulatedLoginAuthenticator extends AbstractLoginAuthenticator
 
         user.setUserId(sld.getUserId());
         user.setUserName(sld.getUserName());
-        if(user instanceof AuthenticatedOrgUser)
+        if(user instanceof MutableAuthenticatedOrgUser)
         {
-            ((AuthenticatedOrgUser) user).setUserOrgId(sld.getUserOrgId());
-            ((AuthenticatedOrgUser) user).setUserOrgName(sld.getUserOrgName());
+            ((MutableAuthenticatedOrgUser) user).setUserOrgId(sld.getUserOrgId());
+            ((MutableAuthenticatedOrgUser) user).setUserOrgName(sld.getUserOrgName());
         }
 
         if(sld.getPermissions() != null)

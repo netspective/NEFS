@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialog.java,v 1.8 2004-07-14 19:05:34 shahid.shah Exp $
+ * $Id: LoginDialog.java,v 1.9 2004-08-03 19:55:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -47,14 +47,13 @@ package com.netspective.sparx.security;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.security.MutableAuthenticatedUser;
+import com.netspective.sparx.Project;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.Project;
 
 public class LoginDialog extends Dialog
 {
@@ -139,7 +138,7 @@ public class LoginDialog extends Dialog
     {
         LoginDialogContext ldc = (LoginDialogContext) dc;
         HttpLoginManager loginManager = getLoginManager();
-        AuthenticatedUser user = loginManager.createAuthenticatedUser(ldc, ldc.getUserIdInput(),
+        MutableAuthenticatedUser user = loginManager.createAuthenticatedUser(ldc, ldc.getUserIdInput(),
                 ldc.getPasswordInput(! ldc.hasEncryptedPassword()), ((LoginDialogContext) dc).hasRememberedValues());
         loginManager.login(dc, user, ldc.getRememberIdInput());
     }

@@ -39,30 +39,28 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.14 2003-08-14 17:57:05 shahid.shah Exp $
+ * $Id: AccessControlListTest.java,v 1.15 2004-08-03 19:53:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 import java.util.BitSet;
+import java.util.Map;
 
 import org.apache.commons.discovery.tools.DiscoverClass;
 
-import junit.framework.TestCase;
-
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xdm.XdmComponentFactory;
-import com.netspective.commons.xdm.DefaultXdmComponentItems;
 import com.netspective.commons.io.Resource;
-import com.netspective.commons.acl.AccessControlListsComponent;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.DefaultValueContext;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.BasicAuthenticatedUser;
+import com.netspective.commons.security.MutableAuthenticatedUser;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.xdm.XdmComponentFactory;
+import com.netspective.commons.xdm.exception.DataModelException;
+
+import junit.framework.TestCase;
 
 public class AccessControlListTest extends TestCase
 {
@@ -446,7 +444,7 @@ public class AccessControlListTest extends TestCase
 		assertNotNull(vcOne);
 
         Class authUserClass = new DiscoverClass().find(AuthenticatedUser.class, BasicAuthenticatedUser.class.getName());
-        AuthenticatedUser userOne = (AuthenticatedUser) authUserClass.newInstance();
+        MutableAuthenticatedUser userOne = (MutableAuthenticatedUser) authUserClass.newInstance();
 	    assertNotNull(userOne);
 
         userOne.setUserId("admin");
@@ -458,7 +456,7 @@ public class AccessControlListTest extends TestCase
 
 		// Independently created User...
 	    ValueContext vcTwo = ValueSources.getInstance().createDefaultValueContext();
-	    AuthenticatedUser userTwo = new BasicAuthenticatedUser();
+	    MutableAuthenticatedUser userTwo = new BasicAuthenticatedUser();
         userTwo.setUserId("admin");
         userTwo.setUserName("Administrator");
 
@@ -474,7 +472,7 @@ public class AccessControlListTest extends TestCase
 
 	    // Alternate constructor
 	    ValueContext vcThree = ValueSources.getInstance().createDefaultValueContext();
-	    AuthenticatedUser userThree = new BasicAuthenticatedUser();
+	    MutableAuthenticatedUser userThree = new BasicAuthenticatedUser();
         userThree.setUserId("admin");
         userThree.setUserName("Administrator");
 
@@ -514,7 +512,7 @@ public class AccessControlListTest extends TestCase
 
 		// Independently created User...
 	    ValueContext vcTwo = ValueSources.getInstance().createDefaultValueContext();
-	    AuthenticatedUser userTwo = new BasicAuthenticatedUser();
+	    MutableAuthenticatedUser userTwo = new BasicAuthenticatedUser();
         userTwo.setUserId("admin");
         userTwo.setUserName("Administrator");
 
@@ -566,7 +564,7 @@ public class AccessControlListTest extends TestCase
 
 		// Independently created User...
 	    ValueContext vcTwo = ValueSources.getInstance().createDefaultValueContext();
-	    AuthenticatedUser userTwo = new BasicAuthenticatedUser();
+	    MutableAuthenticatedUser userTwo = new BasicAuthenticatedUser();
         userTwo.setUserId("admin");
         userTwo.setUserName("Administrator");
 

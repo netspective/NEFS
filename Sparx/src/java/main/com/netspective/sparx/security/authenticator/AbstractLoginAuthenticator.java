@@ -39,21 +39,21 @@
  */
 
 /**
- * $Id: AbstractLoginAuthenticator.java,v 1.3 2003-08-31 23:01:03 shahid.shah Exp $
+ * $Id: AbstractLoginAuthenticator.java,v 1.4 2004-08-03 19:55:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.security.BasicAuthenticatedUser;
-import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
-import com.netspective.sparx.security.LoginAuthenticator;
+import com.netspective.commons.security.BasicAuthenticatedUser;
+import com.netspective.commons.security.MutableAuthenticatedUser;
 import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.security.LoginDialogContext;
 import com.netspective.sparx.security.HttpSessionAuthenticatedUser;
+import com.netspective.sparx.security.LoginAuthenticator;
+import com.netspective.sparx.security.LoginDialogContext;
 
 public abstract class AbstractLoginAuthenticator implements LoginAuthenticator
 {
@@ -70,11 +70,11 @@ public abstract class AbstractLoginAuthenticator implements LoginAuthenticator
         this.authenticatedUserClass = authenticatedUserClass;
     }
 
-    public AuthenticatedUser constructAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
+    public MutableAuthenticatedUser constructAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
         try
         {
-            return (AuthenticatedUser) getAuthenticatedUserClass().newInstance();
+            return (MutableAuthenticatedUser) getAuthenticatedUserClass().newInstance();
         }
         catch (Exception e)
         {
@@ -83,7 +83,7 @@ public abstract class AbstractLoginAuthenticator implements LoginAuthenticator
         }
     }
 
-    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException
+    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, MutableAuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
         user.init(ldc);
     }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.39 2004-07-16 01:54:49 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.40 2004-08-03 19:55:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -65,6 +65,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.netspective.commons.security.AuthenticatedOrgUser;
+import com.netspective.commons.security.AuthenticatedOrgsUser;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.navigate.NavigationContext;
@@ -141,15 +142,20 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         AuthenticatedUser authUser = nc.getAuthenticatedUser();
         if (authUser != null)
         {
-            String personId = authUser.getUserId();
+            String personId = authUser.getUserId().toString();
             String personName = authUser.getUserName();
 
+            Object orgId = null;
             String orgName = null;
-            String orgId = null;
             if (authUser instanceof AuthenticatedOrgUser)
             {
-                orgName = ((AuthenticatedOrgUser) authUser).getUserOrgId();
-                orgId = ((AuthenticatedOrgUser) authUser).getUserOrgName();
+                orgId = ((AuthenticatedOrgUser) authUser).getUserOrgId();
+                orgName = ((AuthenticatedOrgUser) authUser).getUserOrgName();
+            }
+            else if ((authUser instanceof AuthenticatedOrgsUser) && ((AuthenticatedOrgsUser) authUser).isUserHasPrimaryOrg())
+            {
+                orgId = ((AuthenticatedOrgsUser) authUser).getUserPrimaryOrgId();
+                orgName = ((AuthenticatedOrgsUser) authUser).getUserPrimaryOrgName();
             }
 
             Theme theme = getTheme();
