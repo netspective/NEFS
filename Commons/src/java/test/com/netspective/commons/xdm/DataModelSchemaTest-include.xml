@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<!-- this file is designed to be included into the main DataModelSchemaTest.xml -->
+<!-- an xdm:container tag is only required if you have multiple elements in an include file -->
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <nested1 text="included-TestText1" integer="13" boolean="no">
+        PCDATA in included-nested1.
+
+        <nested11 text="included-TestText11" integer="15"/>
+        <nested11 type="type-C" text="included-TestText12" integer="17"/>
+
+    </nested1>
+
+</xdm:container>

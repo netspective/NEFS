@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+
+<!-- the xdm-transform processing instruction tells the DataModelHandler to run the transformation first, then load the model -->
+<?transform --resource --xslt com/netspective/commons/xdm/DataModelSchemaTestTransform.xsl?>
+
+<root root-attr-1="root-attr-1-text-in-attr" xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    PCDATA in root.
+
+    <!-- this is a special case where the root-attr-1 is being defined as an element and will override what was set
+         in the attribute above -->
+    <root-attr-1>root-attr-1-text</root-attr-1>
+
+    <xdm:include file="DataModelSchemaTest-include.xml"/>
+
+    <nested1 text="TestText1" integer="1" boolean="yes">
+        PCDATA in nested1.
+
+        <!-- this example uses the "normal" attribute mode of the attribute setters -->
+        <nested11 text="TestText11" integer="11"/>
+
+        <!-- this example uses the child-element form of the attribute setters -->
+        <nested11>
+            <type>type-C</type>
+            <text>TestText12</text>
+            <integer>12</integer>
+        </nested11>
+
+        <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test" text="CustomTestText12" integer="122"/>
+    </nested1>
+
+    <!-- this element has been registered as an 'ignore' element so test to make sure it is ignored -->
+    <ignore-me text="doesn't matter">
+        PCDATA in ignore-me.
+        <nested-ignore-me text="really doesn't matter" integer="shouldn't care"/>
+    </ignore-me>
+
+    <!-- this element is not a real element, it is a 'custom' element that will be handled using a customElement method -->
+    <custom-1>
+        PCDATA in custom-1.
+        <nested-custom-1 text="anc" integer="1"/>
+    </custom-1>
+
+    <!--
+         * an xdm:template tag is considered a "generic" template and all generic templates share a single namespace
+         * templates may contain parameters that may be optional or required. values of the parameters are available as {$paramx.XXX}
+           (note: parameter names must be valid Java identifiers because they are treated as Java expressions)
+    -->
+    <xdm:template name="test-template-1">
+        <xdm:template-param name="param1" required="yes"/>
+        <xdm:template-param name="param2" required="yes"/>
+
+        <nested1 text="TestNested1Template" integer="100">
+            PCDATA in TestNested1Template.
+            <nested11 text="${params.param1}" integer="${params.param2}"/>
+            <nested11 type="type-A" text="TestText12" integer="12"/>
+            <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test" text="CustomTestText12" integer="122"/>
+        </nested1>
+    </xdm:template>
+
+    <!-- include the generic template that we just defined, the contents of the template will replace the <xdm:include> tag -->
+    <!-- template parameters may only be passed in as attributes (not nested elements) -->
+    <xdm:include template="test-template-1" xdm:param-param1="param1-value" xdm:param-param2="4234"/>
+
+    <!-- here we're defining custom inheritable templates for nested-1 elements that can be used to "inherit" elements by nested1 elements -->
+    <nested-1-custom-template name="test-nested-template-0">
+        PCDATA in TestNested1CustomTemplate.
+        <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test" text="CustomTemplateTestText12" integer="772"/>
+    </nested-1-custom-template>
+
+    <nested-1-custom-template name="test-nested-template-1" extends="test-nested-template-0">
+        <nested11 text="TestText11CustomTemplate" integer="5213"/>
+        <nested11 type="type-B" text="TestText12CustomTemplate" integer="2312"/>
+
+        <!-- this element contains Jexl java expressions -->
+        <nested11 integer="${(1024 * 2) + 10}">
+            <text>${owner.class.name} ${this.class.name}</text>
+        </nested11>
+    </nested-1-custom-template>
+
+    <!-- create a nested1 element that recursively inherits from the above templates -->
+    <nested1 extends="test-nested-template-1"/>
+
+    <!-- NOTE: because there is an XLST transformation being done, there's one more element that will appear here -->
+</root>

@@ -1,0 +1,17 @@
+Library                                 Version    File                    Source                                                            
+--------------------------------------- ---------- ----------------------- ------------------------------------
+Java JDBC API                           2.0        jdbc.jar                http://java.sun.com
+Apache Xalan                            2.4.0      xalan.jar               http://xml.apache.org/xalan-j
+Apache Xalan JAXP/TrAX XML APIs         2.4.0      xml-apis.jar            http://xml.apache.org/xerces-j
+Apache Xerces                           2.0.2      xerces.jar              http://xml.apache.org/xerces-j
+Jakarta Ant                             1.5.0      ant.jar                 http://jakarta.apache.org/ant
+Jakarta Log4J                           1.2.6      log4j.jar               http://jakarta.apache.org/log4j/docs
+Jakarta ORO                             2.0.4      oro.jar                 http://jakarta.apache.org/oro
+Jakarta Commons Collections             2.1.0      commons-collections.jar http://jakarta.apache.org/commons
+Jakarta Commons Command Line Interface  1.0        commons-cli.jar         http://jakarta.apache.org/commons
+Jakarta Commons Discovery               0.0.1      commons-discovery.jar   http://jakarta.apache.org/commons
+Jakarta Commons Lang                    1.0.1      commons-lang.jar        http://jakarta.apache.org/commons
+Jakarta Commons Logging                 1.0.2      commons-logging.jar     http://jakarta.apache.org/commons
+Jakarta Commons Jexl                    1.0 beta 1 commons-jexl.jar        http://jakarta.apache.org/commons
+Jenesis Source Code Generation Library  0.2.1      jenesis.jar             http://www.inxar.org/jenesis
+JUnit Testing Framework                 3.8        junit.jar               http://www.junit.org
