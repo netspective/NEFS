@@ -39,15 +39,14 @@
  */
 
 /**
- * $Id: DataModelSchemaTest.java,v 1.4 2003-03-29 19:14:00 shahbaz.javeed Exp $
+ * $Id: DataModelSchemaTest.java,v 1.5 2003-04-01 13:09:37 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.xdm;
 
 import java.io.IOException;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.lang.reflect.InvocationTargetException;
 
 import junit.framework.TestCase;
@@ -64,11 +63,17 @@ import com.netspective.commons.xdm.XmlDataModelDtd;
 import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.text.TextUtils;
 
 public class DataModelSchemaTest extends TestCase
 {
     public static final String RESOURCE_NAME = "DataModelSchemaTest.xml";
     public static final String TEMPLATENAMESPACEID_NESTED1 = "/nested1";
+
+	protected DataModelTest dmt = null;
+	List errors = null;
+	String[] rootSchemaPropertyNames = new String[] { "integer", "nested-1", "path-separator-char", "root-attr-1", "test-boolean", "test-byte", "test-class", "test-double", "test-file", "test-float", "test-long", "test-short" };
+	String[] schemaModifiedPropertyNames = null;
 
     static public class DataModelTest extends DefaultXdmComponent
     {
@@ -398,24 +403,39 @@ public class DataModelSchemaTest extends TestCase
     {
     }
 
+	protected void setUp () throws Exception {
+		super.setUp();
+
+		dmt = (DataModelTest) XdmComponentFactory.get(DataModelTest.class, new Resource(DataModelSchemaTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+
+		errors = dmt.getErrors();
+		if(errors.size() != 0)
+		{
+		    for(int i = 0; i < errors.size(); i++)
+		    {
+		        Object error = errors.get(i);
+		        System.out.print(error.getClass().getName());
+		        if(error instanceof Throwable)
+		            ((Throwable) error).printStackTrace();
+		        else
+		            System.out.println(error.toString());
+		    }
+		}
+
+		// Massage the Root Schema Property Names...
+		Set modifiedPropertyNames = new HashSet();
+		for (int i = 0; i < rootSchemaPropertyNames.length; i ++)
+		{
+			String removeDashes = TextUtils.replaceTextValues(rootSchemaPropertyNames[i], "-", "");
+
+			if (! rootSchemaPropertyNames[i].equals(removeDashes))
+				modifiedPropertyNames.add(removeDashes);
+		}
+		schemaModifiedPropertyNames = (String[]) modifiedPropertyNames.toArray(new String[modifiedPropertyNames.size()]);
+	}
+
     public void testDataModelSchemaImportFromXmlValid() throws DataModelException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException
     {
-        DataModelTest  dmt = (DataModelTest) XdmComponentFactory.get(DataModelTest.class, new Resource(DataModelSchemaTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
-
-        List errors = dmt.getErrors();
-        if(errors.size() != 0)
-        {
-            for(int i = 0; i < errors.size(); i++)
-            {
-                Object error = errors.get(i);
-                System.out.print(error.getClass().getName());
-                if(error instanceof Throwable)
-                    ((Throwable) error).printStackTrace();
-                else
-                    System.out.println(error.toString());
-            }
-        }
-
         assertTrue(errors.size() == 0);
         assertNotNull(dmt.getInputSource());
 
@@ -431,8 +451,6 @@ public class DataModelSchemaTest extends TestCase
 	    assertNotNull(dmt.getRoot().getTestFile());
 	    assertTrue(dmt.getRoot().getTestFile().exists());
 	    assertEquals("DataModelSchemaTest.xml", dmt.getRoot().getTestFile().getName());
-
-
 
         assertTrue(dmt.getRoot().encounteredCustom1);
         assertTrue(dmt.getRoot().finalizedConstruction);
@@ -499,4 +517,169 @@ public class DataModelSchemaTest extends TestCase
         assertTrue(dtd != null);
         //System.out.println(dtd);
     }
+
+	public void testXmlDataModelSchemaOptions ()
+	{
+		// This test exercizes the XmlDataModelSchema.Options class...
+
+        XmlDataModelSchema.Options testOpt = new XmlDataModelSchema.Options(RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS);
+
+		// Verify initial values...
+		assertEquals(0, testOpt.getIgnoreAttributes().size());
+		assertEquals(1, testOpt.getIgnoreNestedElements().size());
+		assertFalse(testOpt.isIgnorePcData());
+		assertEquals(XmlDataModelSchema.ADD_TEXT_DEFAULT_METHOD_NAME, testOpt.getPcDataHandlerMethodName());
+		assertEquals(0, testOpt.getAliases().size());
+
+		// ... now modify them and re-verify the new values...
+		Set ignoredAttributes = testOpt.getIgnoreAttributes();
+		ignoredAttributes.add("ignored-attribute");
+		testOpt.setIgnoreAttributes(ignoredAttributes);
+		assertEquals(1, testOpt.getIgnoreAttributes().size());
+
+		testOpt.addIgnoreAttributes(new String[] { "ignored-attribute-two", "ignored-attribute-three" });
+		assertEquals(3, testOpt.getIgnoreAttributes().size());
+
+		Set ignoredNestedElements = testOpt.getIgnoreNestedElements();
+		ignoredNestedElements.add("ignored-nested-element");
+		testOpt.setIgnoreNestedElements(ignoredNestedElements);
+		assertEquals(2, testOpt.getIgnoreNestedElements().size());
+
+		testOpt.addIgnoreNestedElements(new String[] { "ignored-nested-element-two", "ignored-nested-element-three" });
+		assertEquals(4, testOpt.getIgnoreNestedElements().size());
+
+		testOpt.addAliases("ignored-attribute-two", new String[] { "ignored-attribute-too", "ignored-attribute-2" });
+		assertEquals(1, testOpt.getAliases().size());
+		testOpt.addAliases("ignored-attribute-two", new String[] { "ignored-attribute-too", "ignored-attribute-2", "ignored-attribute-to", "ignored-attr-too" });
+		assertEquals(1, testOpt.getAliases().size());
+
+		Set nestedElementAliasesOne = new HashSet();
+		Set nestedElementAliasesTwo = new HashSet();
+		String[] nestedElementAliasList = new String[] { "ignored-nested-element-too", "ignored-nested-element-2", "ignored-nested-element-to", "ignored-nested-elem-too" };
+
+		for (int i = 0; i < nestedElementAliasList.length; i ++)
+		{
+			if (i < 2)
+				nestedElementAliasesOne.add(nestedElementAliasList[i]);
+
+			nestedElementAliasesTwo.add(nestedElementAliasList[i]);
+		}
+
+		testOpt.addAliases("ignored-nested-element-two", nestedElementAliasesOne);
+		assertEquals(2, testOpt.getAliases().size());
+		testOpt.addAliases("ignored-nested-element-two", nestedElementAliasesTwo);
+		assertEquals(2, testOpt.getAliases().size());
+	}
+
+	public void testXmlDataModelSchemaOptionErrors ()
+	{
+		// This test exercizes the XmlDataModelSchema.Options class...
+
+        XmlDataModelSchema.Options testOpt = new XmlDataModelSchema.Options(RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS);
+
+		assertEquals(0, testOpt.getAliases().size());
+		String[] ignoredAttributeTwoAliases = null;
+		testOpt.addAliases("ignored-attribute-two", ignoredAttributeTwoAliases);
+		assertEquals(0, testOpt.getAliases().size());
+
+		Set nestedElementAliases = null;
+		testOpt.addAliases("ignored-nested-element-two", nestedElementAliases);
+		assertEquals(0, testOpt.getAliases().size());
+	}
+
+	public void testXmlDataModelSchemaProperties ()
+	{
+		XmlDataModelSchema schema = XmlDataModelSchema.getSchema(RootTest.class);
+		assertNotNull(schema);
+
+		XmlDataModelSchema.Options schemaOpt = schema.getOptions();
+		// This should be the same as the RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS
+		assertEquals(RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS, schemaOpt);
+
+		Set schemaPropertySet = schema.getPropertyNames().keySet();
+		assertEquals(rootSchemaPropertyNames.length + schemaModifiedPropertyNames.length, schemaPropertySet.size());
+		for (int i = 0; i < rootSchemaPropertyNames.length; i ++)
+			assertTrue(schemaPropertySet.contains(rootSchemaPropertyNames[i]));
+
+		for (int i = 0; i < schemaModifiedPropertyNames.length; i ++)
+			assertTrue(schemaPropertySet.contains(schemaModifiedPropertyNames[i]));
+
+		// Removed a println containing a Property object => reduces coverage of Property by ~ 27%
+	}
+
+	public void testXmlDataModelSchemaAttributes ()
+	{
+		System.out.println("\n");
+		Map schemas = XmlDataModelSchema.getSchemas();
+		Set schemaNames = schemas.keySet();
+		Class[] expectedSchemas = new Class[] { DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class };
+
+		for (int i = 0; i < expectedSchemas.length; i ++)
+			assertTrue(schemaNames.contains(expectedSchemas[i]));
+
+		XmlDataModelSchema rootSchema = XmlDataModelSchema.getSchema(RootTest.class);
+		assertNotNull(rootSchema);
+		assertEquals(schemas.get(RootTest.class), rootSchema);
+
+		XmlDataModelSchema.Options schemaOpt = rootSchema.getOptions();
+		// This should be the same as the RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS
+		assertEquals(RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS, schemaOpt);
+
+//		rootSchemaPropertyNames = new String[] { "integer", "nested-1", "path-separator-char", "root-attr-1", "test-boolean", "test-byte", "test-class", "test-double", "test-file", "test-float", "test-long", "test-short" };
+
+		Map rootSchemaAttributeSetters = rootSchema.getAttributeSetters();
+		Set rootSchemaAttributeSetterKeys = rootSchemaAttributeSetters.keySet();
+		assertEquals(rootSchema.getAttributes(), rootSchemaAttributeSetterKeys);
+
+		for (Iterator iter = rootSchemaAttributeSetterKeys.iterator(); iter.hasNext();)
+		{
+			Object key = iter.next();
+//			System.out.println(key + " => " + rootSchemaAttributeSetters.get(key));
+			// Decipher this...
+		}
+
+		Map expectedAttributeTypes = new HashMap();
+		expectedAttributeTypes.put("integer", int.class);
+		expectedAttributeTypes.put("path-separator-char", char.class);
+		expectedAttributeTypes.put("root-attr-1", String.class);
+		expectedAttributeTypes.put("test-boolean", boolean.class);
+		expectedAttributeTypes.put("test-byte", byte.class);
+		expectedAttributeTypes.put("test-class", Class.class);
+		expectedAttributeTypes.put("test-double", double.class);
+		expectedAttributeTypes.put("test-file", File.class);
+		expectedAttributeTypes.put("test-float", float.class);
+		expectedAttributeTypes.put("test-long", long.class);
+		expectedAttributeTypes.put("test-short", short.class);
+
+		Map rootSchemaAttributeTypes = rootSchema.getAttributeTypes();
+
+		for (Iterator iter = expectedAttributeTypes.keySet().iterator(); iter.hasNext();)
+		{
+			String key = (String) iter.next();
+			assertEquals(expectedAttributeTypes.get(key), rootSchemaAttributeTypes.get(key));
+
+			String removeDashes = TextUtils.replaceTextValues(key, "-", "");
+			assertEquals(expectedAttributeTypes.get(key), rootSchemaAttributeTypes.get(removeDashes));
+		}
+	}
+
+	public void testXmlDataModelSchema ()
+	{
+		System.out.println("\n");
+		Map schemas = XmlDataModelSchema.getSchemas();
+		Set schemaNames = schemas.keySet();
+		Class[] expectedSchemas = new Class[] { DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class };
+
+		for (int i = 0; i < expectedSchemas.length; i ++)
+			assertTrue(schemaNames.contains(expectedSchemas[i]));
+
+		XmlDataModelSchema rootSchema = XmlDataModelSchema.getSchema(RootTest.class);
+		assertNotNull(rootSchema);
+		assertEquals(schemas.get(RootTest.class), rootSchema);
+
+		XmlDataModelSchema.Options schemaOpt = rootSchema.getOptions();
+		// This should be the same as the RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS
+		assertEquals(RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS, schemaOpt);
+	}
+
 }
