@@ -39,116 +39,26 @@
  */
 
 /**
- * $Id: ApplicationEventsListener.java,v 1.1 2003-08-17 13:44:53 shahid.shah Exp $
+ * $Id: ApplicationEventsListener.java,v 1.2 2003-08-31 23:05:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.util;
 
-import java.util.Enumeration;
 import java.util.Set;
 import java.util.Iterator;
-import java.sql.SQLException;
-import java.sql.Connection;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.connection.AbstractConnectionContext;
+import com.netspective.sparx.connection.HttpSessionBindableConnectionContext;
 
-public class ApplicationEventsListener implements ServletContextListener, HttpSessionListener
+public class ApplicationEventsListener implements ServletContextListener
 {
     private static final Log log = LogFactory.getLog(ApplicationEventsListener.class);
-
-    /**
-     * Properly dispose of all Sparx objects stored in a user's session. It will timeout any authenticated users,
-     * timeout any scroll states (from pageable queries, query defns, etc), rollback and close any database Connections,
-     * and timeOut all ConnectionContexts.
-     * @param session The user's HttpSession where session-specific data is stored in session attributes
-     */
-    public void cleanupSession(HttpSession session)
-    {
-        log.trace("Cleaning up session for " + session.getServletContext().getServletContextName());
-        for(Enumeration e = session.getAttributeNames(); e.hasMoreElements(); )
-        {
-            String sessAttrName = (String) e.nextElement();
-            Object sessAttrValue = session.getAttribute(sessAttrName);
-
-            log.trace("Found sessionAttrName '"+ sessAttrName +"': " + sessAttrValue.getClass().getName());
-
-            if(sessAttrValue instanceof AuthenticatedUser)
-            {
-                ((AuthenticatedUser) sessAttrValue).registerTimeOut();
-                log.trace("Timed out authenticated user: " + sessAttrValue);
-                continue;
-            }
-
-            if(sessAttrValue instanceof TabularReportDataSourceScrollState)
-            {
-                ((TabularReportDataSourceScrollState) sessAttrValue).timeOut();
-                log.trace("Timed out scroll state: " + sessAttrValue);
-                continue;
-            }
-
-            if(sessAttrValue instanceof Connection)
-            {
-                Connection sharedConn = (Connection) sessAttrValue;
-                try
-                {
-                    try
-                    {
-                        sharedConn.rollback();
-                    }
-                    finally
-                    {
-                        sharedConn.close();
-                    }
-                }
-                catch (SQLException se)
-                {
-                    log.error("Unable to rollback and close the shared (session) connection.", se);
-                }
-                log.trace("Closed JDBC connection: " + sessAttrValue);
-                continue;
-            }
-
-            if(sessAttrValue instanceof ConnectionContext)
-            {
-                ConnectionContext cc = (ConnectionContext) sessAttrValue;
-                if(cc.getOwnership() != ConnectionContext.OWNERSHIP_AUTHENTICATED_USER)
-                {
-                    String message = "A connection context for DataSource '"+ cc.getDataSourceId() +"' was created and " +
-                                     "stored in the session but was not marked as being owned by a user. It will still " +
-                                     "be closed but needs to be marked if you don't want this error message to appear again.";
-                    if(log.isErrorEnabled())
-                        log.error(message, cc.getContextNotClosedException());
-                    else
-                    {
-                        System.err.println(message);
-                        cc.getContextNotClosedException().printStackTrace(System.err);
-                    }
-                }
-
-                try
-                {
-                    ((ConnectionContext) sessAttrValue).timeOut();
-                }
-                catch (SQLException se)
-                {
-                    log.error("Unable to timeOut the connection ", se);
-                }
-                log.trace("Timed out ConnectionContext: " + sessAttrValue);
-                continue;
-            }
-        }
-    }
 
     public void contextInitialized(ServletContextEvent event)
     {
@@ -164,29 +74,19 @@ public class ApplicationEventsListener implements ServletContextListener, HttpSe
         {
             ConnectionContext cc = (ConnectionContext) i.next();
 
-            // if the connection is owned by a particular user than it's probably stored in a session so we're not
-            // going to meddle with it (it will be disposed of appropriately in the session cleanup)
-            if(cc.getOwnership() != ConnectionContext.OWNERSHIP_AUTHENTICATED_USER)
+            // if the cc is bound to a session, it will be cleaned up when session is closed if requested
+            if(! cc.isBoundToSession())
             {
-                String message = "Connection for DataSource '"+ cc.getDataSourceId() +"' not closed (ownership = " + cc.getOwnership() + ")";
-                if(log.isErrorEnabled())
-                    log.error(message, cc.getContextNotClosedException());
-                else
+                if(cc instanceof HttpSessionBindableConnectionContext)
                 {
-                    System.err.println(message);
-                    cc.getContextNotClosedException().printStackTrace(System.err);
+                    HttpSessionBindableConnectionContext bindableCC = (HttpSessionBindableConnectionContext) cc;
+                    if(! bindableCC.isCloseOnSessionUnbind())
+                        cc.rollbackAndCloseAndLogAsConnectionLeak(log, "** Connection leak detected: connection is marked as a sending bound CC but is not set to automatically close when unbound.");
                 }
             }
+            else
+                cc.rollbackAndCloseAndLogAsConnectionLeak(log, null);
         }
     }
-
-    public void sessionCreated(HttpSessionEvent event)
-    {
-        log.trace("Init session for " + event.getSession().getServletContext().getServletContextName());
-    }
-
-    public void sessionDestroyed(HttpSessionEvent event)
-    {
-        cleanupSession(event.getSession());
-    }
 }
+
