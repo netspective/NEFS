@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Column.java,v 1.13 2004-07-28 22:06:23 aye.thu Exp $
+ * $Id: Column.java,v 1.14 2004-07-30 16:34:11 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -53,6 +53,7 @@ import com.netspective.axiom.schema.column.RequirementEnumeratedAttribute;
 import com.netspective.axiom.schema.column.SqlDataDefns;
 import com.netspective.axiom.schema.column.JdbcTypeDefns;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
+import com.netspective.axiom.sql.JdbcTypesEnumeratedAttribute;
 import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateElement;
@@ -410,23 +411,16 @@ public interface Column extends TemplateConsumer
     /**
      * Creates a JDBC type 
      *
-     * @return
      */
-    public JdbcTypeDefns createJdbcType();
+    public void setJdbcType(JdbcTypesEnumeratedAttribute type);
 
     /**
      * Gets the JDBC type associated with the column
      *
      * @return
      */
-    public JdbcTypeDefns getJdbcType();
+    public JdbcTypesEnumeratedAttribute getJdbcType();
 
-    /**
-     * Adds a JDBC type
-     *
-     * @param jdbcTypeDefn
-     */
-    public void addJdbcType(JdbcTypeDefns jdbcTypeDefn);
     /* ------------------------------------------------------------------------------------------------------------- */
 
     /**
