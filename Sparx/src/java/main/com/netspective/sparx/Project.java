@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.5 2003-07-02 14:02:25 shahid.shah Exp $
+ * $Id: Project.java,v 1.6 2003-07-03 22:34:11 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -53,6 +53,8 @@ import com.netspective.axiom.ConnectionProviderEntryStatistics;
 import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
+import com.netspective.axiom.sql.dynamic.QueryDefinitions;
+import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
 import com.netspective.sparx.navigate.NavigationTreesManager;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
@@ -131,6 +133,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private NavigationTrees navigationTrees = new NavigationTrees();
     private Dialogs dialogs = new Dialogs();
     private DialogsPackage activeDialogsNameSpace;
+    //private QueryDefinitionsCollection qdCollection = new QueryDefinitionsCollection();
 
     public Project()
     {
@@ -281,6 +284,13 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void addDialogs(DialogsPackage pkg)
     {
         activeDialogsNameSpace = null;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public com.netspective.axiom.sql.dynamic.QueryDefinition createQueryDefn()
+    {
+        return new com.netspective.sparx.sql.QueryDefinition();
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
