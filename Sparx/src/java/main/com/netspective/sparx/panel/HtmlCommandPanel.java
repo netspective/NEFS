@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlCommandPanel.java,v 1.5 2004-01-09 15:37:53 shahid.shah Exp $
+ * $Id: HtmlCommandPanel.java,v 1.6 2004-01-24 20:43:48 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -60,6 +60,12 @@ import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.value.ValueSource;
 
+/**
+ * Special panel class that handles commands and usually defined in xml as:
+ *  <![CDATA[
+ *  <panel type="command" command="..."/>
+ * ]]>
+ */
 public class HtmlCommandPanel extends AbstractPanel
 {
     private static final Log log = LogFactory.getLog(HtmlCommandPanel.class);
@@ -70,16 +76,32 @@ public class HtmlCommandPanel extends AbstractPanel
     {
     }
 
+    /**
+     * Gets the command
+     *
+     * @return      Command object
+     */
     public Command getCommand()
     {
         return command;
     }
 
+    /**
+     * Sets the command
+     *
+     * @param command   Command object
+     */
     public void setCommand(Command command)
     {
         this.command = command;
     }
 
+    /**
+     * Gets the value source  that will be evaluated and the result of the evaluation will be treated as a command
+     * specification.
+     *
+     * @return      value source
+     */
     public ValueSource getCommandExpr()
     {
         return commandExpr;
@@ -88,6 +110,7 @@ public class HtmlCommandPanel extends AbstractPanel
     /**
      * A value source that will be evaluated and the result of the evaluation will be treated as a command
      * specification. This method allows the actual command that will be executed to be dynamic.
+     *
      * @param commandExpr
      */
     public void setCommandExpr(ValueSource commandExpr)
@@ -95,6 +118,15 @@ public class HtmlCommandPanel extends AbstractPanel
         this.commandExpr = commandExpr;
     }
 
+    /**
+     * Writes the HTML for the command panel  
+     *
+     * @param writer        Write object to write to
+     * @param nc            the navigation context in which the panel is being used
+     * @param theme         current theme
+     * @param flags         the panel flags
+     * @throws IOException
+     */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         ValueSource commandExpr = getCommandExpr();
@@ -137,6 +169,15 @@ public class HtmlCommandPanel extends AbstractPanel
         }
     }
 
+    /**
+     *  Writes the HTML for the command panel
+     *
+     * @param writer        Write object to write to
+     * @param dc            Dialog context in which the panel is being used
+     * @param theme         Current theme
+     * @param flags         Panel flags
+     * @throws IOException
+     */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
         ValueSource commandExpr = getCommandExpr();
