@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SendMail.java,v 1.2 2003-11-14 19:43:34 shahid.shah Exp $
+ * $Id: SendMail.java,v 1.3 2004-02-12 19:16:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.message;
@@ -243,7 +243,7 @@ public class SendMail
             return result;
         }
         else
-            return new InternetAddress[] { new InternetAddress(value.getTextValue()) };
+            return InternetAddress.parse(value.getTextValue());
     }
 
     public void send(ValueContext vc, Map bodyTemplateVars) throws IOException, AddressException, MessagingException, SendMailNoFromAddressException, SendMailNoRecipientsException
