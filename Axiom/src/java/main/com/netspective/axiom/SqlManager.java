@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.19 2003-11-19 05:26:30 aye.thu Exp $
+ * $Id: SqlManager.java,v 1.20 2003-11-20 04:13:24 aye.thu Exp $
  */
 
 package com.netspective.axiom;
@@ -57,6 +57,7 @@ import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.MetricsProducer;
 import com.netspective.commons.metric.MetricsGroup;
+import com.netspective.commons.metric.CountMetric;
 import com.netspective.commons.product.NetspectiveComponent;
 import com.netspective.commons.xdm.DefaultXdmComponentItems;
 import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
@@ -360,10 +361,14 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
      */
     public void produceMetrics(Metric parent)
     {
-        MetricsGroup databaseGroup = parent.addGroupMetric("Database");
+        MetricsGroup databaseGroup = parent.addGroupMetric("Data Management");
         getQueries().produceMetrics(databaseGroup);
         getQueryDefns().produceMetrics(databaseGroup);
         getStoredProcedures().produceMetrics(databaseGroup);
+
+        CountMetric dsMetric = databaseGroup.addCountMetric("Total data sources");
+        dsMetric.setSum(getConnectionProvider().getAvailableDataSources().size());
+
         databaseGroup.addValueMetric("Schemas", Integer.toString(schemas.size()));
         databaseGroup.addValueMetric("Database Policies", Integer.toString(DatabasePolicies.getInstance().size()));
     }
