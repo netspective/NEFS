@@ -4,7 +4,14 @@
     <release>
         <product name="Sparx" version="7.0.21"/>
         <change-log>
-            <summary>Minor bug fixed and minor enhancement</summary>
+            <summary>Minor bug fixes and minor enhancement</summary>
+            <change-log-entry>
+                Corrected defect which was causing query definitions to remember the last input after done button was
+                pressed. The symptoms were that even after the done button was pressed and new input criteria was added
+                to the dialog only the previous query was being executed. Also put in a workaround which was causing
+                IE to lose the Servlet Session ID by putting in a getSession() call at the top of the navigation
+                controller's doGet() method.
+            </change-log-entry>
             <change-log-entry>
                 <![CDATA[
                 Renamed and changed the method hideHeading() to isHideHeading(HtmlValueContext vc) in HtmlPanelFrame.
