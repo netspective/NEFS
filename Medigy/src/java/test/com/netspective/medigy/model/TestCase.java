@@ -105,19 +105,21 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.session.ProcessSession.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
 
-        config.addAnnotatedClass(com.netspective.medigy.model.common.CommunicationEventPurposeType.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.common.FacilityType.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.common.Facility.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRoleType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
+
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyIdentifierType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRoleType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRelationshipType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyIdentifier.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyIdentifierType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationship.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyContactMechanism.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.common.PhoneNumber.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.common.PostalAddress.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.common.ElectronicAddress.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PhoneNumber.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PostalAddress.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.ElectronicAddress.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyFacilityRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEvent.class);        
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventPurpose.class);

@@ -40,7 +40,7 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.common.CommunicationEventPurposeType;
+import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
 
 import javax.ejb.OneToOne;
 import javax.ejb.JoinColumn;

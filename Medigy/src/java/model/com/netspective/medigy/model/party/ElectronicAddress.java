@@ -37,29 +37,35 @@
  *
  * @author Aye Thu
  */
-package com.netspective.medigy.model.common;
+package com.netspective.medigy.model.party;
+
+import com.netspective.medigy.model.party.PartyContactMechanism;
 
 import javax.ejb.Entity;
-import javax.ejb.Id;
-import javax.ejb.GeneratorType;
-import javax.ejb.Table;
 import javax.ejb.Column;
+import javax.ejb.Inheritance;
+import javax.ejb.InheritanceType;
+import javax.ejb.InheritanceJoinColumn;
 
 @Entity
-@Table(name = "Comm_Event_Purpose_Type")
-public class CommunicationEventPurposeType extends AbstractCustomReferenceEntity
+@Inheritance(strategy=InheritanceType.JOINED)
+@InheritanceJoinColumn(name="party_contact_mech_id")
+public class ElectronicAddress extends PartyContactMechanism
 {
+    private String electronicAddress;
 
-    @Id(generate = GeneratorType.AUTO)
-    @Column(name = "comm_event_purpose_type_id")
-    public Long getCommunicationEventPurposeTypeId()
+    public ElectronicAddress()
     {
-        return super.getSystemId();
     }
 
-    protected void setCommunicationEventPurposeTypeId(final Long id)
+    @Column(length = 256)
+    public String getElectronicAddress()
     {
-        super.setSystemId(id);
+        return electronicAddress;
     }
 
+    public void setElectronicAddress(final String electronicAddress)
+    {
+        this.electronicAddress = electronicAddress;
+    }
 }

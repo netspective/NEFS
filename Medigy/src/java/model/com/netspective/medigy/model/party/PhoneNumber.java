@@ -37,7 +37,7 @@
  *
  * @author Aye Thu
  */
-package com.netspective.medigy.model.common;
+package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.party.PartyContactMechanism;
 

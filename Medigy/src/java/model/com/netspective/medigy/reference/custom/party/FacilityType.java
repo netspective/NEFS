@@ -37,11 +37,13 @@
  *
  * @author Aye Thu
  */
-package com.netspective.medigy.model.common;
+package com.netspective.medigy.reference.custom.party;
+
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
 import javax.ejb.Entity;
-import javax.ejb.Id;
 import javax.ejb.GeneratorType;
+import javax.ejb.Id;
 
 @Entity
 public class FacilityType extends AbstractCustomReferenceEntity

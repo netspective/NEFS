@@ -37,55 +37,31 @@
  *
  * @author Aye Thu
  */
-package com.netspective.medigy.model.common;
+package com.netspective.medigy.reference.custom.party;
 
-import com.netspective.medigy.model.party.PartyContactMechanism;
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
-import javax.ejb.Column;
 import javax.ejb.Entity;
-import javax.ejb.InheritanceJoinColumn;
-import javax.ejb.InheritanceType;
-import javax.ejb.Inheritance;
+import javax.ejb.Id;
+import javax.ejb.GeneratorType;
+import javax.ejb.Table;
+import javax.ejb.Column;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-@InheritanceJoinColumn(name="party_contact_mech_id")
-public class PostalAddress extends PartyContactMechanism
+@Table(name = "Comm_Event_Purpose_Type")
+public class CommunicationEventPurposeType extends AbstractCustomReferenceEntity
 {
-    private String address1;
-    private String address2;
-    private String directions;
 
-    @Column(length = 100, nullable = false)
-    public String getAddress1()
+    @Id(generate = GeneratorType.AUTO)
+    @Column(name = "comm_event_purpose_type_id")
+    public Long getCommunicationEventPurposeTypeId()
     {
-        return address1;
+        return super.getSystemId();
     }
 
-    public void setAddress1(final String address1)
+    protected void setCommunicationEventPurposeTypeId(final Long id)
     {
-        this.address1 = address1;
+        super.setSystemId(id);
     }
 
-    @Column(length = 100)
-    public String getAddress2()
-    {
-        return address2;
-    }
-
-    public void setAddress2(final String address2)
-    {
-        this.address2 = address2;
-    }
-
-    @Column(length = 1000)
-    public String getDirections()
-    {
-        return directions;
-    }
-
-    public void setDirections(final String directions)
-    {
-        this.directions = directions;
-    }
 }

@@ -37,116 +37,53 @@
  *
  * @author Aye Thu
  */
-package com.netspective.medigy.model.common;
-
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
-import com.netspective.medigy.model.party.Party;
+package com.netspective.medigy.model.party;
 
 import javax.ejb.Column;
-import javax.ejb.Transient;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
-import javax.ejb.CascadeType;
+import javax.ejb.Entity;
+import javax.ejb.Inheritance;
+import javax.ejb.InheritanceJoinColumn;
+import javax.ejb.InheritanceType;
 
-
-public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implements CustomReferenceEntity, Comparable
+@Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+@InheritanceJoinColumn(name="party_contact_mech_id")
+public class PostalAddress extends PartyContactMechanism
 {
-    private Long systemId;
-    private String code;
-    private String name;
-    private String description;
-    private DataEncryptionType encryptionType;
-    private int maxAllowed = 1;
+    private String address1;
+    private String address2;
+    private String directions;
 
-    private Party party;
-
-    @Transient
-    public Long getSystemId()
+    @Column(length = 100, nullable = false)
+    public String getAddress1()
     {
-        return systemId;
+        return address1;
     }
 
-    protected void setSystemId(Long systemId)
+    public void setAddress1(final String address1)
     {
-        this.systemId = systemId;
+        this.address1 = address1;
     }
 
-    @Column()
-    public String getCode()
+    @Column(length = 100)
+    public String getAddress2()
     {
-        return code;
+        return address2;
     }
 
-    public void setCode(String code)
+    public void setAddress2(final String address2)
     {
-        this.code = code;
+        this.address2 = address2;
     }
 
-    @Column(nullable = false)
-            public String getName()
+    @Column(length = 1000)
+    public String getDirections()
     {
-        return name;
+        return directions;
     }
 
-    public void setName(String name)
+    public void setDirections(final String directions)
     {
-        this.name = name;
-    }
-
-    @Column(nullable = false)
-    public DataEncryptionType getEncryptionType()
-    {
-        return encryptionType;
-    }
-
-    public void setEncryptionType(DataEncryptionType encryptionType)
-    {
-        this.encryptionType = encryptionType;
-    }
-
-    @Column(nullable = false)
-    public int getMaxAllowed()
-    {
-        return maxAllowed;
-    }
-
-    public void setMaxAllowed(int maxAllowed)
-    {
-        this.maxAllowed = maxAllowed;
-    }
-
-    @Column(length = 256)
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(final String description)
-    {
-        this.description = description;
-    }
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_id")
-    public Party getParty()
-    {
-        return party;
-    }
-
-    public void setParty(final Party party)
-    {
-        this.party = party;
-    }
-
-    public int compareTo(Object o)
-    {
-        if (o == this)
-            return 0;
-
-        final CustomReferenceEntity otherType  =(CustomReferenceEntity) o;
-        if (otherType.getSystemId().longValue() == this.getSystemId().longValue())
-            return 0;
-        else
-            return -1;
+        this.directions = directions;
     }
 }
