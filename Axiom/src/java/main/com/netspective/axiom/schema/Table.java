@@ -46,6 +46,7 @@ import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.QueryExecutionLog;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateProducer;
@@ -54,7 +55,7 @@ import com.netspective.commons.xml.template.TemplateProducer;
  * Class handling the schema tables as defined by &lt;table&gt; tag.  Provides funtionality
  * for creating and managing table structures, defining indexes and triggers
  */
-public interface Table extends QueriesNameSpace, TemplateConsumer
+public interface Table extends QueriesNameSpace, TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
 {
     /**
      * Returns the schema that owns this table.

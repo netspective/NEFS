@@ -86,6 +86,7 @@ import com.netspective.axiom.sql.dynamic.SqlComparisonEnumeratedAttribute;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnSqlComparisonNotFoundException;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -133,6 +134,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         }
     }
 
+    private InputSourceLocator inputSourceLocator;
     private Schema schema;
     private Column parentColumn;
     private String name;
@@ -164,6 +166,16 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     static public String translateTableNameForMapKey(String name)
     {
         return name != null ? name.toUpperCase() : null;
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
