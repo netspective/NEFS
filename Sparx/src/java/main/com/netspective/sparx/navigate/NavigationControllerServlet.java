@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.36 2003-11-26 14:32:53 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.37 2003-11-27 19:31:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -66,6 +66,8 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.tools.ant.BuildLogger;
 import org.apache.tools.ant.NoBannerLogger;
 
+import freemarker.template.Configuration;
+
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
@@ -74,6 +76,7 @@ import com.netspective.sparx.ProjectManager;
 import com.netspective.sparx.ProjectComponent;
 import com.netspective.sparx.ProjectLifecyleListener;
 import com.netspective.sparx.ProjectEvent;
+import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.ant.AntProject;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.commons.io.MultipleUriAddressableFileLocators;
@@ -95,6 +98,10 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 {
     private static final Log log = LogFactory.getLog(NavigationControllerServlet.class);
     private static final Set allControllerServlets = Collections.synchronizedSet(new HashSet());
+    private static final ThreadLocal SERVLET_CONTEXT = new ThreadLocal();
+    private static final ThreadLocal SERVLET = new ThreadLocal();
+    private static final ThreadLocal REQUEST = new ThreadLocal();
+    private static final ThreadLocal NAVIGATION_CONTEXT = new ThreadLocal();
 
     public static final String REQATTRNAME_RENDER_START_TIME = NavigationControllerServlet.class.getName() + ".START_TIME";
     public static final String PROPNAME_INIT_COUNT = "SERVLET_INITIALIZATION_COUNT";
@@ -121,6 +128,47 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private long initializationCount;
     private boolean initCountWritten;
     private Map staticPagesRendered = new HashMap();
+    private Configuration freeMarkerConfig;
+
+    public static ServletContext getThreadServletContext()
+    {
+        return (ServletContext) SERVLET_CONTEXT.get();
+    }
+
+    public static NavigationControllerServlet getThreadServlet()
+    {
+        return (NavigationControllerServlet) SERVLET.get();
+    }
+
+    public static HttpServletRequest getThreadRequest()
+    {
+        return (HttpServletRequest) REQUEST.get();
+    }
+
+    public static NavigationContext getThreadNavigationContext()
+    {
+        return (NavigationContext) NAVIGATION_CONTEXT.get();
+    }
+
+    protected static void setThreadServletContext(ServletContext servletContext)
+    {
+        SERVLET_CONTEXT.set(servletContext);
+    }
+
+    protected static void setThreadServlet(NavigationControllerServlet servlet)
+    {
+        SERVLET.set(servlet);
+    }
+
+    protected static void setThreadRequest(HttpServletRequest request)
+    {
+        REQUEST.set(request);
+    }
+
+    protected static void setThreadNavigationContext(NavigationContext navigationContext)
+    {
+        NAVIGATION_CONTEXT.set(navigationContext);
+    }
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
@@ -141,6 +189,8 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         // if the init success is determined to be END_INIT we persist now, otherwise it will be done on first GET/POST
         if(servletOptions.getInitSuccessType().equals("END_INIT"))
             persistInitCount();
+
+        freeMarkerConfig = FreeMarkerConfigurationAdapters.getInstance().constructWebAppConfiguration(getServletContext());
     }
 
     protected NavigationControllerServletOptions constructServletOptions(ServletConfig servletConfig)
@@ -319,6 +369,11 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             getLoginManager();
             getNavigationTree();
         }
+    }
+
+    public Configuration getFreeMarkerConfiguration()
+    {
+        return freeMarkerConfig;
     }
 
     /**
@@ -584,6 +639,8 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
     protected void renderPage(NavigationContext nc) throws ServletException, IOException
     {
+        setThreadNavigationContext(nc);
+
         final HttpServletResponse httpResponse = nc.getHttpResponse();
         if(isSecure())
         {
@@ -629,6 +686,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
         if(activePage != null)
         {
+            nc.getResponse().setContentType("text/html");
             if(nc.isActivePageValid())
             {
                 // check to see if we have static content and we're in development mode (because in development presumably we don't want
@@ -685,6 +743,10 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     {
         // record the starting time because it may be used by skins to show complete render times.
         httpServletRequest.setAttribute(REQATTRNAME_RENDER_START_TIME, new Long(System.currentTimeMillis()));
+
+        setThreadServletContext(getServletContext());
+        setThreadServlet(this);
+        setThreadRequest(httpServletRequest);
 
         NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
         if(nc.getActivePage() == null)
