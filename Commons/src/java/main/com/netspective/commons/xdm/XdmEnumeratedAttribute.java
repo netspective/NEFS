@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmEnumeratedAttribute.java,v 1.3 2003-07-09 16:51:07 shahid.shah Exp $
+ * $Id: XdmEnumeratedAttribute.java,v 1.4 2003-08-04 15:45:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -72,6 +72,11 @@ public abstract class XdmEnumeratedAttribute
     }
 
     public XdmEnumeratedAttribute(int valueIndex)
+    {
+        setValue(valueIndex);
+    }
+
+    public void setValue(int valueIndex)
     {
         this.value = getValues()[valueIndex];
         this.valueIndex = valueIndex;
