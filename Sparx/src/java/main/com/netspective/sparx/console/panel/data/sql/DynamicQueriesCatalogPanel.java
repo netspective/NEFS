@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DynamicQueriesCatalogPanel.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
+ * $Id: DynamicQueriesCatalogPanel.java,v 1.2 2003-05-19 14:47:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -62,7 +62,6 @@ import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.command.Commands;
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.schema.Schemas;
 import com.netspective.axiom.schema.Schema;
@@ -160,7 +159,7 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             {
                 Schema schema = schemas.get(i);
                 QueryDefinitions tableQueryDefns = schema.getQueryDefinitions();
-                if(customQueryDefns.size() > 0)
+                if(tableQueryDefns.size() > 0)
                 {
                     rows.add("Schema '"+ schema.getName() +"'");
                     Set sortedNames = new TreeSet(tableQueryDefns.getNames());
