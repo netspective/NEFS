@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.18 2003-06-12 14:36:09 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.19 2003-06-16 00:23:37 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -1196,7 +1196,7 @@ public class DialogField implements TemplateConsumer
 				if (script != null)
 				{
 					jsBuffer.append("field.customHandlers." + eventName + " = new Function(\"field\", \"control\", \"" +
-						jsObject.getJsExpr().getValue(dc) + "\");\n");
+						jsObject.getJsExpr().getTextValue(dc) + "\");\n");
 					jsBuffer.append("field.customHandlers." + eventName + "Type = '" + jsObject.getType().getValue() + "';\n");
 				}
 			}
