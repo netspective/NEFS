@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.21 2004-06-23 20:43:31 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.22 2004-07-18 13:48:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
 import java.util.Set;
 
+import com.netspective.commons.Product;
 import com.netspective.commons.acl.AccessControlList;
 import com.netspective.commons.acl.AccessControlLists;
 import com.netspective.commons.acl.AccessControlListsManager;
@@ -129,6 +130,7 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
         return templateProducers;
     }
 
+    private Product product = new XdmProduct();
     private AccessControlLists aclsManager = new AccessControlLists();
     private Configurations configsManager = new Configurations();
     private Reports reportsManager = new Reports();
@@ -144,6 +146,23 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     public static TemplateProcessorTypeTemplate getTemplateProcessorTypes()
     {
         return TEMPLATE_PROCESSOR_TYPES;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public Product getProduct()
+    {
+        return product;
+    }
+
+    public Product createProduct()
+    {
+        return product;
+    }
+
+    public void addProduct(Product product)
+    {
+        this.product = product;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
