@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Command.java,v 1.3 2003-04-06 03:57:43 shahid.shah Exp $
+ * $Id: Command.java,v 1.4 2003-05-09 15:56:09 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
@@ -65,7 +65,13 @@ import com.netspective.commons.value.ValueContext;
 public interface Command
 {
     /**
-     * Set the active command for the component
+     * Set the parameters for the component
+     * @param params
+     */
+    public void setParameters(String params);
+
+    /**
+     * Set the parameters for the component
      * @param params the parameters being sent to the command
      */
     public void setParameters(StringTokenizer params);

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AbstractCommand.java,v 1.1 2003-04-06 03:57:43 shahid.shah Exp $
+ * $Id: AbstractCommand.java,v 1.2 2003-05-09 15:56:09 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
@@ -71,6 +71,11 @@ public abstract class AbstractCommand implements Command
     public String getParametersDelimiter()
     {
         return ",";
+    }
+
+    public void setParameters(String params)
+    {
+        setParameters(new StringTokenizer(params, getParametersDelimiter()));
     }
 
     abstract public String getParameters();

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Commands.java,v 1.3 2003-04-06 03:57:43 shahid.shah Exp $
+ * $Id: Commands.java,v 1.4 2003-05-09 15:56:09 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
@@ -185,7 +185,7 @@ public class Commands implements MetricsProducer
             try
             {
                 Command command = (Command) ccClass.newInstance();
-                if(params != null) command.setParameters(new StringTokenizer(params, command.getParametersDelimiter()));
+                if(params != null) command.setParameters(params);
                 return command;
             }
             catch (Exception e)
