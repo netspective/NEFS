@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: resin-web.xml,v 1.5 2003-08-17 13:45:11 shahid.shah Exp $
+$Id: resin-web.xml,v 1.6 2003-08-24 19:30:46 shahid.shah Exp $
 -->
 
 <web-app>
@@ -70,20 +70,12 @@ $Id: resin-web.xml,v 1.5 2003-08-17 13:45:11 shahid.shah Exp $
 		<servlet-name>NetspectiveConsole</servlet-name>
 		<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
         <init-param>
-            <param-name>com.netspective.sparx.security.LOGIN_MANAGER_NAME</param-name>
-            <param-value>console</param-value> <!-- the <login-manager> defined in the project that should be used -->
+            <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
+            <param-value>--login-manager=console</param-value>
         </init-param>
         <init-param>
-            <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.LOGIN_USER_ID</param-name>
-            <param-value>console</param-value>
-        </init-param>
-        <init-param>
-            <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.LOGIN_PASSWORD_PLAIN_TEXT</param-name> <!-- if you use this parameter then the encrypted one is not required -->
-            <param-value>console</param-value>
-        </init-param>
-        <init-param>
-            <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.LOGIN_PASSWORD_ENCRYPTED</param-name> <!-- if you provide an encrypted password, it takes precedence over unencrypted -->
-            <param-value>NCbHq1WqkpfDY</param-value> <!-- run "java com.netspective.commons.security.Crypt NC <password>" to generate encrypted password -->
+            <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.OPTIONS</param-name>
+            <param-value>--user-id=console --encrypted-password=NCbHq1WqkpfDY</param-value> <!-- run "java com.netspective.commons.security.Crypt NC <password>" to generate encrypted password -->
         </init-param>
 	</servlet>
 

@@ -51,7 +51,7 @@
         </copy>
     </target>
 
-    <target name="nefs.prepare-primary-app-ITE-resources-and-web-app-libs" depends="nefs.init" description="Prepare all test applications for integration testing environment (ITE).">
+    <target name="nefs.prepare-starter-ITE-resources-and-web-app-libs" depends="nefs.init" description="Prepare all test applications for integration testing environment (ITE).">
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="${nefs.starter.empty-app.name}"/>
         </antcall>
@@ -85,7 +85,7 @@
         <delete dir="${specific.test-app-path}/WEB-INF/lib"/>
     </target>
 
-    <target name="nefs.prepare-primary-app-SDE-resources-and-web-app-libs" depends="nefs.init" description="Removes the APP_ROOT/nefs and APP_ROOT/WEB-INF/lib folders for a specific (provided via parameter) test app. Used to ensure that items don't conflict when doing framework development.">
+    <target name="nefs.prepare-starter-SDE-resources-and-web-app-libs" depends="nefs.init" description="Removes the APP_ROOT/nefs and APP_ROOT/WEB-INF/lib folders for a specific (provided via parameter) test app. Used to ensure that items don't conflict when doing framework development.">
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="${nefs.starter.empty-app.name}"/>
         </antcall>
@@ -111,36 +111,46 @@
 
     <!-- ********************************************************************************************************** -->
 
-    <target name="nefs.copy-standard-nefs-items-from-primary-test-app-to-other-test-apps" depends="nefs.init" description="Copy files that are standard to NEFS from the 'primary' test app to all the other test apps.">
+    <target name="nefs.copy-standard-nefs-items-from-starter-to-other-apps" depends="nefs.init" description="Copy files that are standard to NEFS from the 'starter' empty app to all the other apps.">
+        <property name="force" value="yes"/>
         <fileset id="standard-items" dir="${nefs.starter.empty-app.home}">
             <include name="WEB-INF/classes/commons-logging.properties"/>
             <include name="WEB-INF/classes/log4j.properties"/>
             <include name="WEB-INF/sparx/conf/**"/>
             <include name="WEB-INF/lib/**"/>
+            <exclude name="WEB-INF/sparx/conf/execution.properties"/>
         </fileset>
 
-        <copy todir="${nefs.webapps.home}/sparx-test-app-01">
+        <copy todir="${nefs.webapps.home}/nefs-sample-case-manager" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
-        <copy todir="${nefs.webapps.home}/sparx-test-app-02">
+        <copy todir="${nefs.webapps.home}/nefs-sample-hello-world" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
-        <copy todir="${nefs.webapps.home}/sparx-test-app-03">
+        <copy todir="${nefs.webapps.home}/nefs-sample-library" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
-        <copy todir="${nefs.webapps.home}/sparx-test-app-04">
+        <copy todir="${nefs.webapps.home}/nefs-sample-medigy" overwrite="${force}">
+            <fileset refid="standard-items"/>
+        </copy>
+        <copy todir="${nefs.webapps.home}/nefs-sampler" overwrite="${force}">
+            <fileset refid="standard-items"/>
+        </copy>
+        <copy todir="${nefs.webapps.home}/nefs-test-miscellaneous" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
     </target>
 
     <!-- ********************************************************************************************************** -->
 
-    <target name="sparx.setup-all-test-apps-for-resin" depends="nefs.init" description="Performs tasks necessary to setup applications for use under Caucho Resin app server">
-        <copy tofile="${nefs.webapps.home}/sparx-test-app-00/WEB-INF/web.xml" file="${nefs.webapps.home}/sparx-test-app-00/WEB-INF/sparx/conf/resin-web.xml"/>
-        <copy tofile="${nefs.webapps.home}/sparx-test-app-01/WEB-INF/web.xml" file="${nefs.webapps.home}/sparx-test-app-01/WEB-INF/sparx/conf/resin-web.xml"/>
-        <copy tofile="${nefs.webapps.home}/sparx-test-app-02/WEB-INF/web.xml" file="${nefs.webapps.home}/sparx-test-app-02/WEB-INF/sparx/conf/resin-web.xml"/>
-        <copy tofile="${nefs.webapps.home}/sparx-test-app-03/WEB-INF/web.xml" file="${nefs.webapps.home}/sparx-test-app-03/WEB-INF/sparx/conf/resin-web.xml"/>
-        <copy tofile="${nefs.webapps.home}/sparx-test-app-04/WEB-INF/web.xml" file="${nefs.webapps.home}/sparx-test-app-04/WEB-INF/sparx/conf/resin-web.xml"/>
+    <target name="sparx.setup-all-apps-for-resin" depends="nefs.init" description="Performs tasks necessary to setup applications for use under Caucho Resin app server">
+        <property name="force" value="yes"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
     </target>
 
 </project>

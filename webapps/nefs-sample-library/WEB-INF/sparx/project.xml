@@ -106,7 +106,7 @@
                     <report>
                         <actions>
                             <action type="add" caption="Add Book" command="redirect,add,true"/>
-                            <action type="edit" command="redirect,edit?_ep.id=^{0},true"/>
+                            <action type="edit" command="redirect,edit?id=${0},true"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
                             <action type="delete" command="redirect,delete?id=${0},true"/>
                             <action type="select" caption="Process selected rows" title="Process the selected rows"
                                 command="redirect,yahoo.com"/>
