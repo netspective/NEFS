@@ -758,7 +758,7 @@
       management:</para>
 
       <section id="section-declare-static-qry">
-        <title>Declaring Queries</title>
+        <title id="section-declare-qry">Declaring Queries</title>
 
         <para>The Library Application uses different queries to retrieve
         required information from the library database.</para>
@@ -1182,7 +1182,7 @@
       </section>
 
       <section>
-        <title>Unit Testing a Static SQL [TODO]</title>
+        <title>Unit Testing a Static SQL</title>
 
         <para>To test your newly defined static query, go to the <guimenu>Data
         Management</guimenu> | <guisubmenu>Static Queries</guisubmenu> section
@@ -1230,19 +1230,15 @@
       </listitem>
 
       <listitem>
-        <para>Add Books Page</para>
+        <para>Assets Page</para>
       </listitem>
 
       <listitem>
-        <para>Edit Books Page</para>
+        <para>Borrowers Page</para>
       </listitem>
 
       <listitem>
-        <para>Delete Books Page</para>
-      </listitem>
-
-      <listitem>
-        <para>Search Books Page</para>
+        <para>Loans Page</para>
       </listitem>
 
       <listitem>
@@ -1258,8 +1254,9 @@
       <title>Creating the Home Page</title>
 
       <para>Your Library Application Home page will display list of all the
-      books. It will also provide Edit and Delete options for each of the
-      displayed books.</para>
+      assets and the borrowers. These lists will be displayed in two separate
+      panels. Both the lists will also have Add, Edit and Delete
+      options.</para>
 
       <para>Sparx handles the pages that an end user sees and the transfer of
       control from one page to another using URIs and URLs. This is called
@@ -1275,155 +1272,217 @@
       <example>
         <title>Creating "Home" Page</title>
 
-        <programlisting>&lt;project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt;
-...
- &lt;<emphasis>navigation-tree</emphasis> name="app" <emphasis>default="yes"</emphasis>&gt; <co
-            id="declare-nav-tags-eg-1" />
-    &lt;<emphasis>page</emphasis> name="home" <emphasis>default="yes"</emphasis> caption="Home" <co
-            id="declare-nav-tags-eg-2" />
-          <emphasis>command="query,books.get-all-books,-,-,-,record-editor-compressed"</emphasis>/&gt; <co
-            id="declare-nav-tags-eg-3" />
- &lt;/navigation-tree&gt;
-...</programlisting>
+        <programlisting>&lt;<emphasis>navigation-tree</emphasis> name="app" <emphasis>default="yes"</emphasis>&gt; <co
+            id="nav-tags-eg1-1" />
+  &lt;<emphasis>page</emphasis> name="home" <emphasis>default="yes"</emphasis> caption="Home"&gt; <co
+            id="nav-tags-eg1-2" />
+    &lt;panels style="horizontal"&gt; <co id="nav-tags-eg1-3" />
+      &lt;panel type="command" <co id="nav-tags-eg1-4" />
+             command="query,library.get-all-assets,-,-,-,record-manager-compressed"/&gt;
+      &lt;panel type="command" <co id="nav-tags-eg1-5" />
+             command="query,library.get-all-borrowers,-,-,-,record-manager-compressed"/&gt;
+    &lt;/panels&gt;
+  &lt;/page&gt;
+&lt;/navigation-tree&gt;</programlisting>
 
         <calloutlist>
-          <callout arearefs="declare-nav-tags-eg-1">
+          <callout arearefs="nav-tags-eg1-1">
             <para>The <sgmltag>navigation-tree</sgmltag> tag starts out the
-            definition and appears as a child of the
-            <sgmltag>project</sgmltag> tag. Each tree has a
+            definition of the navigation tree. Each tree has a
             <sgmltag>name</sgmltag> (<literal>app</literal> in this case). The
             <sgmltag>name</sgmltag> attribute is required and must be unique
             across all navigation trees. The <sgmltag>caption</sgmltag>
             attribute is a value source and is always required. A tree may be
             marked with <sgmltag class="attribute">default</sgmltag>=<sgmltag
             class="attvalue">yes</sgmltag> if it is to be the default tree.
-            Which tree is actually used by the application may be specfied as
-            a servet parameter or chosen dynamically at runtime based on some
-            processing rules. There is only one instance of each navigation
-            tree that you define and the definition is shared across all users
-            and threads.</para>
-
-            <note>
-              <para>You may declare as many navigation trees as your
-              application needs.</para>
-            </note>
+            Which tree is actually used by the application may be specified as
+            a server parameter or chosen dynamically at runtime based on some
+            processing rules. </para>
           </callout>
 
-          <callout arearefs="declare-nav-tags-eg-2">
+          <callout arearefs="nav-tags-eg1-2">
             <para>The <sgmltag>page</sgmltag> tag begins a definition of a
             single page and appears under the
-            <sgmltag>navigation-tree</sgmltag> tag. Each page has a
-            <sgmltag>name</sgmltag> (<literal>home</literal> in this case).
-            The <sgmltag>name</sgmltag> attribute is required and must be
-            unique within the navigation tree in which it is defined. A tree
-            may be marked with <sgmltag
-            class="attribute">default</sgmltag>=<sgmltag
-            class="attvalue">yes</sgmltag> if it is to be the default tree.
-            Which page is actually used by the application may be specfied as
+            <sgmltag>navigation-tree</sgmltag> tag. The
+            <sgmltag>name</sgmltag> attribute is required and must be unique
+            within the navigation tree in which it is defined. A page may be
+            marked with <sgmltag class="attribute">default</sgmltag>=<sgmltag
+            class="attvalue">yes</sgmltag> if it is to be the default page.
+            Which page is actually used by the application may be specified as
             a servlet parameter or chosen dynamically at runtime based on some
-            processing rules. There is only one instance of each page that you
-            define and the definition is shared across all users and
-            threads.</para>
-
-            <note>
-              <para>You may declare as many pages under a navigation-tree as
-              your application needs.</para>
-            </note>
+            processing rules. </para>
           </callout>
 
-          <callout arearefs="declare-nav-tags-eg-3">
-            <para>The page <sgmltag>command</sgmltag> attribute calls
+          <callout arearefs="nav-tags-eg1-3">
+            <para>The <sgmltag>panels</sgmltag> tag starts a definition of a
+            page body and appears under the <sgmltag>page</sgmltag> tag. Its
+            contents are handled by Sparx by laying out pre-defined panels
+            similar to the way portals lay out their content. The
+            <sgmltag>panels</sgmltag> tag ends up as an instance of the
+            <classname>com.netspective.sparx.panel.HtmlLayoutPanel</classname>
+            class. The <sgmltag>style</sgmltag> attribute specifies how the
+            panels will be arranged. In the above example, the panels will be
+            arranged horizontally. </para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg1-4">
+            <para>Declaring the panel containing the list of all assets. The
+            value of <sgmltag>type</sgmltag> attribute is set to
+            <literal>'command</literal>' which specifies that the panels will
+            be displaying the result of a command's execution.</para>
+
+            <para>The <sgmltag>command</sgmltag> attribute calls
             <methodname>execute</methodname>() on an instance of the
             <interfacename>com.netspective.sparx.command.Command</interfacename>
             interface and includes the content of the execution as the content
             of the page. The command attribute in this example executes the
-            <sgmltag>query</sgmltag> <literal>get-all-books</literal> from the
-            query package named <literal>books</literal> (see <xref
-            linkend="section-declare-static-qry" />). It also specifies one of
-            the pre-defined report skins
-            (<sgmltag>record-editor-compressed</sgmltag> in this case) for the
-            displayed report.</para>
+            query <literal>get-all-asset</literal> from the query package
+            named <literal>library</literal> (see <xref
+            linkend="section-declare-qry" />). It also specifies one of the
+            pre-defined report skins
+            (<sgmltag>record-manager-compressed</sgmltag> in this case) for
+            the displayed report.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg1-5">
+            <para>Declaring the panel containing the list of all borrowers.
+            The value of <sgmltag>type</sgmltag> attribute is again set to
+            <literal>'command</literal>'. The command attribute in this
+            example executes the query <literal>get-all-borrowers</literal>
+            from the query package named <literal>library</literal> (see <xref
+            linkend="section-declare-qry" />). The
+            <sgmltag>record-manager-compressed</sgmltag> skin is used for
+            displaying the report.</para>
           </callout>
         </calloutlist>
       </example>
     </section>
 
     <section>
-      <title>Creating the Add Book Page</title>
+      <title>Creating the Assets Page</title>
 
-      <para>The next step is to create a page for adding books information to
-      your database. This is achieved through the following XML
-      declaration:</para>
-
-      <example>
-        <title>Creating "Add Book" Page</title>
-
-        <programlisting>&lt;navigation-tree name="app" default="yes"&gt; 
-  &lt;page name="add" caption="Add Book" <emphasis>command="dialog,schema.db.Book_Info,add"</emphasis>/&gt; <co
-            id="declare-page-tags-eg-1" />
-&lt;navigation-tree&gt;</programlisting>
-
-        <calloutlist>
-          <callout arearefs="declare-page-tags-eg-1">
-            <para>The <sgmltag>page</sgmltag> tag in the example code defines
-            Library Application's <literal>Add Book</literal> page. The
-            <sgmltag>command</sgmltag> attribute in this example displays and
-            executes a dialog box for <literal>Book Info</literal> table using
-            the "<sgmltag>add</sgmltag>" perspective.</para>
-          </callout>
-        </calloutlist>
-      </example>
-    </section>
-
-    <section>
-      <title>Creating the Edit Book Page</title>
-
-      <para>Your Library Application requires a way to edit the book
-      information already stored in the database. For that, you will need an
-      <literal>Edit Book</literal> page. This is achieved through the
-      following XML declaration::</para>
+      <para>The next step is to create a page for managing library assets. The
+      Assets management page will contains links to pages for viewing, adding,
+      editing and deleting the assets. Sparx allows creation of nested pages.
+      i.e. pages that contain further pages. The following XML declaration
+      creates the Assets management page:</para>
 
       <example>
-        <title>Creating "Edit Book" Page</title>
+        <title>Creating "Assets" Page</title>
 
-        <programlisting>&lt;navigation-tree name="app" default="yes"&gt;         
-  &lt;page name="edit" caption="Edit Book" command="dialog,schema.db.Book_Info,<emphasis>edit</emphasis>" <co
-            id="declare-edit-page-eg-1" />
-        require-request-param="id" <co id="declare-edit-page-eg-2" />
-        retain-params="id"&gt; <co id="declare-edit-page-eg-3" />
-   &lt;missing-params-body&gt; <co id="declare-edit-page-eg-4" />
-    Please choose a book to edit from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;. 
-   &lt;/missing-params-body&gt;
+        <programlisting>&lt;page name="asset" caption="Assets" <emphasis>dialog-next-action-url</emphasis>="page-id:/asset/view"&gt; <co
+            id="nav-tags-eg2-1" />
+  &lt;page name="view" caption="View Assets" <co id="nav-tags-eg2-2" />
+        command="query,library.get-all-assets,-,-,-,record-manager-compressed"/&gt;
+  &lt;page name="add" caption="Add Asset" command="dialog,schema.db.Asset,add"/&gt; <co
+            id="nav-tags-eg2-3" />
+  &lt;page name="edit" caption="Edit Asset" 
+        require-request-param="asset_id" retain-params="asset_id"&gt; <co
+            id="nav-tags-eg2-4" />
+    &lt;missing-params-body&gt; <co id="nav-tags-eg2-5" />
+      Please choose an asset to edit from the &amp;lt;a href='view'&amp;gt; assets 
+      list&amp;lt;/a&amp;gt;.
+    &lt;/missing-params-body&gt;
+    &lt;panels style="horizontal"&gt; <co id="nav-tags-eg2-6" />
+      &lt;panel type="command" command="dialog,schema.db.Asset,edit"/&gt; <co
+            id="nav-tags-eg2-7" />
+      &lt;panel type="command" <co id="nav-tags-eg2-8" />
+        command="query,library.get-asset-loans,-,-,-,record-manager-compressed"/&gt;
+    &lt;/panels&gt;
   &lt;/page&gt;
-&lt;/navigation-tree&gt;</programlisting>
+  &lt;page name="delete" caption="Delete Asset" command="dialog,schema.db.Asset,delete" <co
+            id="nav-tags-eg2-9" />
+        require-request-param="asset_id" retain-params="asset_id"&gt;
+    &lt;missing-params-body&gt; <co id="nav-tags-eg2-10" />
+      Please choose an asset to delete from the &amp;lt;a href='view'&amp;gt; assets 
+      list&amp;lt;/a&amp;gt;.
+    &lt;/missing-params-body&gt;
+  &lt;/page&gt;
+&lt;/page&gt;</programlisting>
 
         <calloutlist>
-          <callout arearefs="declare-edit-page-eg-1">
-            <para>The <sgmltag>page</sgmltag> tag declares the <literal>Edit
-            Book</literal> page. The <sgmltag>command</sgmltag> attribute
-            displays and execute a dialog box for <literal>Book Info
-            </literal>table using the "<sgmltag>edit</sgmltag>"
+          <callout arearefs="nav-tags-eg2-1">
+            <para>The <sgmltag>page</sgmltag> tag in the example code defines
+            Library Application's <literal>Assets</literal> page. The name of
+            the page is set to <literal>asset</literal> and the caption for
+            the page is <literal>'Assets'</literal>. The
+            <sgmltag>dialog-next-action-url</sgmltag> attribute sets the next
+            action URL (to be used instead of a next action provider) for this
+            particular page. This example sets the '<literal>View
+            Assets</literal>' page as the page to be called after execution of
+            an action on any page within this page tree. </para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg2-2">
+            <para>Declaring the '<literal>View Assets</literal>' page within
+            the Assets page tree. The command attribute executes the query
+            get-all-assets to display a list of all the assets of the library.
+            </para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg2-3">
+            <para>Declaring the '<literal>Add Assets</literal>' page within
+            the Assets page tree. The <sgmltag>command</sgmltag> attribute
+            displays and executes a dialog box for Asset table using the
+            "<sgmltag>add</sgmltag>" perspective.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg2-4">
+            <para>Declaring the <literal>Edit Asset</literal> page. The
+            <sgmltag>require-request-parameter</sgmltag> attribute specifies
+            <varname>asset_id</varname> as the required request parameter. The
+            <varname>asset_id</varname> parameter contains unique identifier
+            for the asset record that is being edited. The
+            <sgmltag>retain-params</sgmltag> attribute specifies that the
+            "asset_id" parameter's value will be sent to another page (tab)
+            when that tab/page is clicked. </para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg2-5">
+            <para>The <sgmltag>missing-params-body</sgmltag> tag is used to
+            optionally produce automatic error message when required request
+            parameter <varname>('asset_id'</varname> in this case) is not
+            provided. </para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg2-6">
+            <para>Declaring the panels for <literal>Edit Asset</literal> page.
+            The panels will be arranged horizontally. </para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg2-7">
+            <para>The panels is used to display and execute a dialog box for
+            <literal>Asset</literal> table using the "<sgmltag>edit</sgmltag>"
             perspective.</para>
           </callout>
 
-          <callout arearefs="declare-edit-page-eg-2">
-            <para>The <sgmltag>require-request-parameter</sgmltag> attribute
-            specifies <varname>id</varname> as the required request parameter.
-            The <varname>id</varname> parameter contains unique identifier for
-            the book record that is being edited.</para>
+          <callout arearefs="nav-tags-eg2-8">
+            <para>Declaring the panel containing the list of all loans
+            associated with the selected asset. The value of
+            <sgmltag>type</sgmltag> attribute is again set to
+            <literal>'command</literal>'. The command attribute in this
+            example executes the query <literal>get-asset-loans</literal>. The
+            <sgmltag>record-manager-compressed</sgmltag> skin is used for
+            displaying the report.</para>
           </callout>
 
-          <callout arearefs="declare-edit-page-eg-3">
-            <para>The <sgmltag>retain-params</sgmltag> attribute allows you to
-            carry parameters from one page to another. In this example, the
-            "id" parameter's value will be sent to anothe page (tab) when that
-            tab/page is clicked.</para>
+          <callout arearefs="nav-tags-eg2-9">
+            <para>Declaring the <literal>Delete Asset</literal> page. The
+            <sgmltag>require-request-parameter</sgmltag> attribute specifies
+            <varname>asset_id</varname> as the required request parameter. The
+            <varname>asset_id</varname> parameter contains unique identifier
+            for the asset record that is being edited. The
+            <sgmltag>retain-params</sgmltag> attribute specifies that the
+            "asset_id" parameter's value will be sent to another page (tab)
+            when that tab/page is clicked. The <sgmltag>command</sgmltag>
+            attribute displays and executes a dialog box for Asset table using
+            the "<sgmltag>delete</sgmltag>" perspective.</para>
           </callout>
 
-          <callout arearefs="declare-edit-page-eg-4">
+          <callout arearefs="nav-tags-eg2-10">
             <para>The <sgmltag>missing-params-body</sgmltag> tag is used to
             optionally produce automatic error message when required request
-            parameter <varname>('id'</varname> in this case) is not
+            parameter <varname>('asset_id'</varname> in this case) is not
             provided.</para>
           </callout>
         </calloutlist>
@@ -1431,92 +1490,231 @@
     </section>
 
     <section>
-      <title>Creating the Delete Book Page</title>
+      <title>Creating the Borrowers Page</title>
 
-      <para>The Delete Book page is declared through the following XML:</para>
+      <para>The next step is to create a page for managing the borrowers. The
+      Borrowers management page will contains links to pages for viewing,
+      adding, editing and deleting the borrowers. The following XML
+      declaration creates the Borrowers management page:</para>
 
       <example>
-        <title>Creating "Delete Book" Page</title>
+        <title>Creating "Borrowers" Page</title>
 
-        <programlisting>&lt;navigation-tree name="app" default="yes"&gt;         
-    &lt;page name="delete" caption="Delete Book" 
-                        command="dialog,schema.db.Book_Info,<emphasis>delete</emphasis>" <co
-            id="declare-delete-page-eg-1" />
-          require-request-param="id" <co id="declare-delete-page-eg-2" />
-          retain-params="id"&gt; <co id="declare-delete-page-eg-3" />
-     &lt;missing-params-body&gt; <co id="declare-delete-page-eg-4" />
-        Please choose a book to delete from the &amp;lt;a href='home'&amp;gt; books list&amp;lt;/a&amp;gt;.
-     &lt;/missing-params-body&gt;
-    &lt;/page&gt;
-&lt;/navigation-tree&gt;</programlisting>
+        <programlisting>&lt;page name="borrower" caption="Borrowers" <emphasis>dialog-next-action-url</emphasis>="page-id:/borrower/view"&gt; <co
+            id="nav-tags-eg3-1" />
+  &lt;page name="view" caption="View Borrowers" <co id="nav-tags-eg3-2" />
+        command="query,library.get-all-borrowers,-,-,-,record-manager-compressed"/
+  &lt;page name="add" caption="Add Borrower" command="dialog,schema.db.borrower,add"/&gt; <co
+            id="nav-tags-eg3-3" />
+  &lt;page name="edit" caption="Edit Borrower" command="dialog,schema.db.borrower,edit" <co
+            id="nav-tags-eg3-4" />
+        require-request-param="borrower_id" retain-params="borrower_id"&gt;
+    &lt;missing-params-body&gt; <co id="nav-tags-eg3-5" />
+      Please choose a borrower to edit from the &amp;lt;a href='view'&amp;gt; borrowers 
+      list&amp;lt;/a&amp;gt;.
+    &lt;/missing-params-body&gt;
+    &lt;panels style="horizontal"&gt; <co id="nav-tags-eg3-6" />
+      &lt;panel type="command" command="dialog,schema.db.Borrower,edit"/&gt; <co
+            id="nav-tags-eg3-7" />
+      &lt;panel type="command" 
+          command="query,library.get-borrower-loans,-,-,-,record-manager-compressed"/&gt; <co
+            id="nav-tags-eg3-8" />
+    &lt;/panels&gt;
+  &lt;/page&gt;
+  &lt;page name="delete" caption="Delete Borrower" command="dialog,schema.db.borrower,delete" 
+        require-request-param="borrower_id" retain-params="borrower_id"&gt; <co
+            id="nav-tags-eg3-9" />
+    &lt;missing-params-body&gt; <co id="nav-tags-eg3-10" />
+      Please choose a borrower to delete from the &amp;lt;a href='view'&amp;gt; borrowers
+      list&amp;lt;/a&amp;gt;.
+    &lt;/missing-params-body&gt;
+  &lt;/page&gt;
+&lt;/page&gt;</programlisting>
 
         <calloutlist>
-          <callout arearefs="declare-delete-page-eg-1">
-            <para>The <sgmltag>page</sgmltag> tag declares the <literal>Delete
-            Book</literal> page. The <sgmltag>command</sgmltag> attribute
-            displays and execute a dialog box for <literal>Book Info</literal>
-            table using the "<sgmltag>delete</sgmltag>" perspective.</para>
+          <callout arearefs="nav-tags-eg3-1">
+            <para>The <sgmltag>page</sgmltag> tag defines Library
+            Application's <literal>Borrowers</literal> page. The name of the
+            page is set to <literal>borrower</literal> and the caption for the
+            page is <literal>'Borrowers'</literal>. The
+            <sgmltag>dialog-next-action-url</sgmltag> attribute sets the
+            '<literal><literal>View </literal>Borrowers</literal>' page as the
+            page to be called after execution of an action on any page within
+            this page tree.</para>
           </callout>
 
-          <callout arearefs="declare-delete-page-eg-2">
-            <para>The <sgmltag>require-request-parameter</sgmltag> attribute
-            specifies <varname>id</varname> as the required request parameter.
-            The <varname>id</varname> parameter contains unique identifier for
-            the book record that is being deleted.</para>
+          <callout arearefs="nav-tags-eg3-2">
+            <para>Declaring the '<literal>View Borrowers</literal>' page
+            within the <literal>Borrowers</literal> page tree. The command
+            attribute executes the query <literal>get-all-borrowers</literal>
+            to display a list of all the borrowers.</para>
           </callout>
 
-          <callout arearefs="declare-delete-page-eg-3">
-            <para>The <sgmltag>retain-params</sgmltag> attribute allows you to
-            carry parameters from one page to another. In this example, the
-            "id" parameter's value will be sent to anothe page (tab) when that
-            tab/page is clicked.</para>
+          <callout arearefs="nav-tags-eg3-3">
+            <para>Declaring the '<literal>Add Borrowers</literal>' page within
+            the Borrowers page tree. The <sgmltag>command</sgmltag> attribute
+            displays and executes a dialog box for Borrower table using the
+            "<sgmltag>add</sgmltag>" perspective.</para>
           </callout>
 
-          <callout arearefs="declare-delete-page-eg-4">
-            <para>The missing-params-body tag is used to optionally produce
-            automatic error message when required request parameter
-            <varname>('id'</varname> in this case) is not provided.</para>
+          <callout arearefs="nav-tags-eg3-4">
+            <para>Declaring the <literal>Edit Borrower</literal> page. The
+            <sgmltag>require-request-parameter</sgmltag> attribute specifies
+            <varname>borrower_id</varname> as the required request parameter.
+            The <varname>borrower_id</varname> parameter contains unique
+            identifier for the borrower record that is being edited. The
+            <sgmltag>retain-params</sgmltag> attribute specifies that the
+            "borrower_id" parameter's value will be sent to another page (tab)
+            when that tab/page is clicked.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg3-5">
+            <para>The <sgmltag>missing-params-body</sgmltag> tag is used to
+            optionally produce automatic error message when required request
+            parameter <varname>('borrower_id'</varname> in this case) is not
+            provided.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg3-6">
+            <para>Declaring the panels for <literal>Edit Borrower</literal>
+            page. The panels will be arranged horizontally.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg3-7">
+            <para>The panels is used to display and execute a dialog box for
+            Borrower table using the "<sgmltag>edit</sgmltag>"
+            perspective.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg3-8">
+            <para>Declaring the panel containing the list of all loans taken
+            by the selected borrower. The command attribute in this example
+            executes the query <literal>get-borrower-loans</literal>. The
+            <sgmltag>record-manager-compressed</sgmltag> skin is used for
+            displaying the report.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg3-9">
+            <para>Declaring the <literal>Delete Borrower</literal> page. The
+            <sgmltag>require-request-parameter</sgmltag> attribute specifies
+            <varname>borrower_id</varname> as the required request parameter.
+            The <varname>borrower_id</varname> parameter contains unique
+            identifier for the borrower record that is being edited. The
+            <sgmltag>retain-params</sgmltag> attribute specifies that the
+            "borrower_id" parameter's value will be sent to another page (tab)
+            when that tab/page is clicked. The <sgmltag>command</sgmltag>
+            attribute displays and executes a dialog box for Borrower table
+            using the "<sgmltag>delete</sgmltag>" perspective.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg3-10">
+            <para>The <sgmltag>missing-params-body</sgmltag> tag is used to
+            optionally produce automatic error message when required request
+            parameter <varname>('borrower_id'</varname> in this case) is not
+            provided.</para>
           </callout>
         </calloutlist>
       </example>
     </section>
 
     <section>
-      <title>Creating the Search Books Page</title>
+      <title>Creating the Loans Page</title>
 
-      <para>The Library Application has, at the moment, most of the
-      functionality originally intended for it. The only bit of functionality
-      that is left is that of being able to search for books matching any
-      criteria the user chooses. For a small collection, the result of the
-      <literal>get-all-books</literal> query is small enough to browse
-      manually for the information pertaining to a book. For larger numbers of
-      books, the power of a query definition can come in very handy to search
-      the database for all books matching any criteria specified by the end
-      user.</para>
-
-      <para>The following XML declaration defines the <literal>Search
-      Books</literal> page:</para>
+      <para>The next step is to create a page for managing the loans. The
+      Loans management page will contains links to pages for viewing, adding,
+      editing and deleting the loans. The following XML declaration creates
+      the Loans management page:</para>
 
       <example>
-        <title>Creating "Search Books" Page</title>
+        <title>Creating "Loans" Page</title>
 
-        <programlisting>&lt;navigation-tree name="app" default="yes"&gt;         
-   &lt;page name="search" caption="Search Books" 
-                       command="query-defn, books, test, searchBooksDialog"/&gt; <co
-            id="declare-qry-defn-use-eg-1" />
-&lt;/navigation-tree&gt;</programlisting>
+        <programlisting>&lt;page name="loan" caption="Loans" <emphasis>dialog-next-action-url</emphasis>="page-id:/loan/view"&gt; <co
+            id="nav-tags-eg4-1" />
+  &lt;page name="view" caption="View Loans" <co id="nav-tags-eg4-2" />
+        command="query,library.get-all-asset-loans,-,-,-,record-manager-compressed"/&gt;
+  &lt;page name="add" caption="Add Loan" command="dialog,schema.db.Asset_Loan,add"/&gt; <co
+            id="nav-tags-eg4-3" />
+  &lt;page name="edit" caption="Edit Loan" command="dialog,schema.db.Asset_Loan,edit" <co
+            id="nav-tags-eg4-4" />
+        require-request-param="asset_loan_id" retain-params="asset_loan_id"&gt;
+    &lt;missing-params-body&gt; <co id="nav-tags-eg4-5" />
+      Please choose an asset and select a loan from the &amp;lt;a 
+      href='../asset/view'&amp;gt;asset list&amp;lt;/a&amp;gt;.
+    &lt;/missing-params-body&gt;
+  &lt;/page&gt;
+  &lt;page name="delete" caption="Delete loan" command="dialog,schema.db.Asset_Loan,delete" <co
+            id="nav-tags-eg4-6" />
+        require-request-param="asset_loan_id" retain-params="asset_loan_id"&gt;
+    &lt;missing-params-body&gt; <co id="nav-tags-eg4-7" />
+      Please choose an asset and select a loan from the 
+      &amp;lt;a href='../asset/view'&amp;gt;asset list&amp;lt;/a&amp;gt;.
+    &lt;/missing-params-body&gt;
+  &lt;/page&gt;
+&lt;/page&gt;</programlisting>
 
         <calloutlist>
-          <callout arearefs="declare-qry-defn-use-eg-1">
-            <para>The page tag is used to declare the <literal>Search
-            Books</literal> page. The command attribute uses the "query-defn"
-            value source to display the search dialog and the query results.
-            The example declaration specifies the
-            <sgmltag>query-defn</sgmltag> named <literal>books</literal>. The
-            select statement being used for creating the search criteria is
-            <literal>test</literal> while the customization of query result is
-            done by the <sgmltag>select-dialog</sgmltag> named
-            <literal>searchBooksDialog</literal>.</para>
+          <callout arearefs="nav-tags-eg4-1">
+            <para>The <sgmltag>page</sgmltag> tag defines Library
+            Application's <literal>Loans</literal> page. The name of the page
+            is set to <literal>loan</literal> and the caption for the page is
+            <literal>'Loans'</literal>. The
+            <sgmltag>dialog-next-action-url</sgmltag> attribute sets the
+            '<literal><literal>View </literal>Loans</literal>' page as the
+            page to be called after execution of an action on any page within
+            this page tree.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg4-2">
+            <para>Declaring the '<literal>View Loans</literal>' page within
+            the <literal>Loans</literal> page tree. The command attribute
+            executes the query <literal>get-all-asset-loans</literal> to
+            display a list of all the loans.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg4-3">
+            <para>Declaring the '<literal>Add Loans</literal>' page within the
+            Loans page tree. The <sgmltag>command</sgmltag> attribute displays
+            and executes a dialog box for Asset_Loan table using the
+            "<sgmltag>add</sgmltag>" perspective.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg4-4">
+            <para>Declaring the <literal>Edit Loan</literal> page. The
+            <sgmltag>require-request-parameter</sgmltag> attribute specifies
+            <varname>asset_loan_id</varname> as the required request
+            parameter. The <varname>asset_loan_id</varname> parameter contains
+            unique identifier for the asset loan record that is being edited.
+            The <sgmltag>retain-params</sgmltag> attribute specifies that the
+            "<varname>asset_loan_id</varname>" parameter's value will be sent
+            to another page (tab) when that tab/page is clicked.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg4-5">
+            <para>The <sgmltag>missing-params-body</sgmltag> tag is used to
+            optionally produce automatic error message when required request
+            parameter <varname>(</varname>'<varname>asset_loan_id</varname>'
+            in this case) is not provided.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg4-6">
+            <para>Declaring the <literal>Delete Loan</literal> page. The
+            <sgmltag>require-request-parameter</sgmltag> attribute specifies
+            <varname>asset_loan_id</varname> as the required request
+            parameter. The <varname>asset_loan_id</varname> parameter contains
+            unique identifier for the asset loan record that is being edited.
+            The <sgmltag>retain-params</sgmltag> attribute specifies that the
+            "<varname>asset_loan_id</varname>" parameter's value will be sent
+            to another page (tab) when that tab/page is clicked. The
+            <sgmltag>command</sgmltag> attribute displays and executes a
+            dialog box for Asset_Loan table using the
+            "<sgmltag>delete</sgmltag>" perspective.</para>
+          </callout>
+
+          <callout arearefs="nav-tags-eg4-7">
+            <para>The <sgmltag>missing-params-body</sgmltag> tag is used to
+            optionally produce automatic error message when required request
+            parameter <varname>('asset_loan_id'</varname> in this case) is not
+            provided.</para>
           </callout>
         </calloutlist>
       </example>
@@ -1539,7 +1737,7 @@
 
         <calloutlist>
           <callout arearefs="declare-console-eg-1">
-            <para>The <sgmltag>page</sgmltag> tag declares <literal>Cosole
+            <para>The <sgmltag>page</sgmltag> tag declares <literal>Console
             </literal>page for the <literal>Library Application</literal>. The
             <sgmltag>redirect</sgmltag> attribute is set (using the
             <sgmltag>servlet-context-uri</sgmltag> value source) to
@@ -1578,121 +1776,17 @@
     </section>
 
     <section>
-      <title>Custom-Handling of Dialog's Next Action</title>
-
-      <para>You may implement the Sparx
-      <interfacename>DialogNextActionProvider</interfacename> interface to
-      customize what happens after your Library Application's dialogs (forms)
-      are submitted. In this example, you will try to send the dialogs (forms)
-      back to the Library Application Home page. Following is the Java class
-      (<classname>Util.java</classname>) that provides this functionality.
-      This Java file will be saved in the <filename
-      class="directory">WEB-INF</filename>/<filename
-      class="directory">classes</filename>/<filename
-      class="directory">app</filename> folder along with its class
-      file.</para>
-
-      <example>
-        <title>Class for Custom-Handling of Dialog's Next Action</title>
-
-        <programlisting>package app; <co id="util-class-eg-1" />
-
-import com.netspective.sparx.form.handler.DialogNextActionProvider; <co
-            id="util-class-eg-2" />
-import com.netspective.sparx.form.DialogContext;
-
-public class Util implements DialogNextActionProvider <co id="util-class-eg-3" />
-{
-  public String getDialogNextActionUrl(DialogContext dc, String defaultUrl) <co
-            id="util-class-eg-4" />
-  {
-    return dc.getServletRootUrl(); <co id="util-class-eg-5" />
-  }
-}</programlisting>
-
-        <calloutlist>
-          <callout arearefs="util-class-eg-1">
-            <para>Defines the package for this class (<filename
-            class="directory">app</filename> in this case)</para>
-          </callout>
-
-          <callout arearefs="util-class-eg-2">
-            <para>Importing the required classes</para>
-          </callout>
-
-          <callout arearefs="util-class-eg-3">
-            <para>The class <classname>Util</classname> Implements the Sparx
-            <interfacename>DialogNextActionProvider</interfacename>
-            interface.</para>
-          </callout>
-
-          <callout arearefs="util-class-eg-4">
-            <para>Implementing the method that gets the URL for the dialog's
-            next action.</para>
-          </callout>
-
-          <callout arearefs="util-class-eg-5">
-            <para>Returns the root URL of the current dialog context. The URL
-            in this case will be the one for the Library Application Home
-            page.</para>
-          </callout>
-        </calloutlist>
-
-        <para>To compile the Util.java, go to <guimenu>Project</guimenu> |
-        <guisubmenu>Ant Build</guisubmenu> section in Console and execute the
-        <sgmltag>Compile</sgmltag> target.</para>
-
-        <para></para>
-
-        <screenshot>
-          <graphic fileref="./resources/images/screen-console-build-compile.gif" />
-        </screenshot>
-
-        <para>The <filename>Util.java</filename> file is compiled and a
-        compile message is displayed.</para>
-
-        <para></para>
-
-        <screenshot>
-          <graphic fileref="./resources/images/screen-console-build-compile-msg.gif" />
-        </screenshot>
-
-        <para>You can define the custom class, for handling the next action of
-        your dialogs (forms), using the following XML declaration:</para>
-      </example>
-
-      <example>
-        <title>Declaring Custom-Class for Dialog's Next Action
-        Provider</title>
-
-        <programlisting>&lt;navigation-tree&gt;
-   &lt;dialog-next-action-provider class="app.Util"/&gt; <co
-            id="declare-util-class-eg-1" />
-&lt;/navigation-tree&gt;</programlisting>
-
-        <calloutlist>
-          <callout arearefs="declare-util-class-eg-1">
-            <para>Declaring custom class (<filename
-            class="directory">app</filename>.<classname>Util</classname> in
-            this case) for custom-handling of dialog's next action. The class
-            name is fully qualified.</para>
-          </callout>
-        </calloutlist>
-      </example>
-    </section>
-
-    <section>
       <title>Testing the Library Application</title>
 
       <para>Congratulations! The Library Application is complete. Now you
-      should open up your browser window and go to the Book Application’s main
-      page using the URL:
+      should open up your browser window and go to the Library Application’s
+      main page using the URL:
       http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/<replaceable>appName</replaceable>.
       Assuming you are using localhost and port <literal>8080</literal> for
-      your Resin server and <literal>nefs-sample-books</literal> as your
+      your Resin server and <literal>nefs-sample-library</literal> as your
       application's name, the URL for Library Application Home Page becomes:
       <ulink
-      url="http://localhost:8080/nefs-sample-books">http://localhost:8080/nefs-sample-books</ulink></para>
+      url="http://localhost:8080/nefs-sample-books">http://localhost:8080/nefs-sample-library</ulink></para>
 
       <para></para>
 
@@ -1700,9 +1794,8 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
         <graphic fileref="./resources/images/screen-books-app-home.gif" />
       </screenshot>
 
-      <para>The Home page lists all the books available in your Library
-      Application database along with the Edit and Delete buttons. Try adding
-      a new book from the Add Book section.</para>
+      <para>The Home page lists all the assets available in your Library
+      Application database along with the available borrowers. </para>
 
       <para></para>
 
@@ -1730,42 +1823,7 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
         <graphic fileref="./resources/images/screen-books-app-edit.gif" />
       </screenshot>
 
-      <para>Try searching for books by genre or name, or any other field for
-      that matter, by using the Search Books page.</para>
-
-      <para></para>
-
-      <screenshot>
-        <graphic fileref="./resources/images/screen-books-app-search.gif" />
-      </screenshot>
-
-      <para>The result of the search is displayed in tabular form.</para>
-
-      <para></para>
-
-      <screenshot>
-        <graphic fileref="./resources/images/screen-books-search-result.gif" />
-      </screenshot>
-
-      <para>You may see the SQL statement corresponding to a search criteria
-      by clicking on the <emphasis>View Generated SQL</emphasis> check box on
-      the Search Books page. The SQL statement is displayed along with the
-      bind parameters and their values.</para>
-
-      <note>
-        <para>You may turn this option off in the production application by
-        setting the <sgmltag>allow-debug</sgmltag> attribute of
-        <sgmltag>select-dialog</sgmltag> tag within the corresponding query
-        definition. See <xref linkend="desc-pres-dyn-qry" /></para>
-      </note>
-
-      <para></para>
-
-      <screenshot>
-        <graphic fileref="./resources/images/screen-books-app-search-qry.gif" />
-      </screenshot>
-
-      <para>Go to Home page and select the book to delete. The Delete Book
+      <para>Go to Home page and select the asset to delete. The Delete Book
       page is displayed containing the selected book's information. Click on
       the Delete button to delete the selected book's record.</para>
 
@@ -1797,24 +1855,11 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
     <section>
       <title>Conclusion</title>
 
-      <para>Your first Sparx application that does something meaningful is
-      complete and you have gone through the shallowest parts of almost
-      everything Sparx has to offer. You can now continue to improve the
-      Library Application with newer ideas, delving deeper into Sparx or you
-      can start a new application and use what you learned here to see how
-      fast you can have a running system.</para>
+      <para>Congratulations! Your Library application is now complete. This
+      application is relatively more complex in its use of nested pages and
+      multiple panels per page. You can now move on to more complex sample
+      applictions provided by Netspective Enterprise Suite to help you learn
+      more features provided by NEFS.</para>
     </section>
-  </section>
-
-  <section>
-    <title>Console Application</title>
-
-    <para>TODO: Link to Console's Tour. Documentation coming soon...</para>
-  </section>
-
-  <section>
-    <title>Moving to Another Database</title>
-
-    <para>TODO: Documentation coming soon...</para>
   </section>
 </article>
