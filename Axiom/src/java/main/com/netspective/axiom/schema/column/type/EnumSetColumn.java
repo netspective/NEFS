@@ -82,13 +82,6 @@ public class EnumSetColumn extends TextColumn implements DatabasePolicy.ColumnIn
 
     public void afterDelete(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
-        Column primaryKeyColumn = getTable().getPrimaryKeyColumns().getSole();
-        Object parentId = columnValues.getByColumn(primaryKeyColumn).getValue();
-        if(parentId == null)
-            return;
-
-        Table setTable = getColumnTables().getSole();
-        setTable.delete(cc, setTable.createRow(), "parent_id = ?", new Object[]{parentId});
     }
 
     public void afterInsert(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
@@ -121,12 +114,19 @@ public class EnumSetColumn extends TextColumn implements DatabasePolicy.ColumnIn
     public void afterUpdate(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
         // delete all the existing entries and reinsert them
-        afterDelete(cc, flags, columnValue, columnValues);
+        beforeDelete(cc, flags, columnValue, columnValues);
         afterInsert(cc, flags, columnValue, columnValues);
     }
 
     public void beforeDelete(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
+        Column primaryKeyColumn = getTable().getPrimaryKeyColumns().getSole();
+        Object parentId = columnValues.getByColumn(primaryKeyColumn).getValue();
+        if(parentId == null)
+            return;
+
+        Table setTable = getColumnTables().getSole();
+        setTable.delete(cc, setTable.createRow(), "parent_id = ?", new Object[]{parentId});
     }
 
     public void beforeInsert(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException

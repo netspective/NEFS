@@ -46,8 +46,8 @@ import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.table.type.EnumeratedValuesListTable;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
-import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.axiom.schema.table.type.EnumerationTableRow;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.commons.text.TextUtils;
 
 /**
@@ -136,22 +136,6 @@ public class EnumeratedValuesListColumn extends TextColumn implements DatabasePo
 
     public void afterDelete(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
-        Object parentId = columnValues.getByColumnIndex(thisTablePrimaryKeyColumnIndex).getValue();
-        if(parentId == null)
-            return;
-
-        try
-        {
-            PreparedStatement removeStmt = cc.getConnection().prepareStatement(enumeratedIdsListMemberTable.getDeleteChildrenSql());
-            removeStmt.setObject(1, parentId);
-            removeStmt.executeUpdate();
-            removeStmt.close();
-        }
-        catch(NamingException e)
-        {
-            throw new SQLException(e.getMessage());
-        }
-
     }
 
     public void afterInsert(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
@@ -179,12 +163,27 @@ public class EnumeratedValuesListColumn extends TextColumn implements DatabasePo
     public void afterUpdate(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
         // delete all the existing entries and reinsert them
-        afterDelete(cc, flags, columnValue, columnValues);
+        beforeDelete(cc, flags, columnValue, columnValues);
         afterInsert(cc, flags, columnValue, columnValues);
     }
 
     public void beforeDelete(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
+        Object parentId = columnValues.getByColumnIndex(thisTablePrimaryKeyColumnIndex).getValue();
+        if(parentId == null)
+            return;
+
+        try
+        {
+            PreparedStatement removeStmt = cc.getConnection().prepareStatement(enumeratedIdsListMemberTable.getDeleteChildrenSql());
+            removeStmt.setObject(1, parentId);
+            removeStmt.executeUpdate();
+            removeStmt.close();
+        }
+        catch(NamingException e)
+        {
+            throw new SQLException(e.getMessage());
+        }
     }
 
     public void beforeInsert(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
@@ -203,7 +202,7 @@ public class EnumeratedValuesListColumn extends TextColumn implements DatabasePo
             if(row != null)
                 values[i] = row.getIdAsInteger().toString();
             else
-                throw new RuntimeException("Unable to find enumeration '"+ values[i] +"' in table "+ listMemberTableValueColEnumerationTable.getName()  +". Valid values are " + listMemberTableValueColEnumerationRows.getValidValues());
+                throw new RuntimeException("Unable to find enumeration '" + values[i] + "' in table " + listMemberTableValueColEnumerationTable.getName() + ". Valid values are " + listMemberTableValueColEnumerationRows.getValidValues());
         }
 
         columnValue.setTextValue(TextUtils.getInstance().join(values, ","));
