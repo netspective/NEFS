@@ -66,7 +66,7 @@ import java.sql.DatabaseMetaData;
  * Class for handling stored procedure calls
  *
  * @author Aye Thu
- * @version $Id: StoredProcedure.java,v 1.7 2003-11-11 23:08:37 aye.thu Exp $
+ * @version $Id: StoredProcedure.java,v 1.8 2003-11-18 03:53:15 aye.thu Exp $
  */
 public class StoredProcedure
 {
@@ -305,13 +305,19 @@ public class StoredProcedure
 
     /**
      * Gets the stored procedure's metadata information from the database. This will search
-     * all available catalogs and schemas.
+     * all available catalogs and schemas. This method will ONLY return the metadata of the
+     * stored procedure only when the <i>procedure-name</i> attribute is set in the XML declaration.
      * @param cc
      * @throws NamingException
      * @throws SQLException
      */
-    public void getMetaData(ConnectionContext cc) throws NamingException, SQLException
+    public String getMetaData(ConnectionContext cc) throws NamingException, SQLException
     {
+        // TODO : Using this metadata, we can determine what variables are in and out so that the developer doesn't even have to set it in XML
+        // but currently the procedure-name attribute isn't required but the 'type' attribute is required. If we go the
+        // metadata route we need to change some handling to accept setting the 'type' and if it's not set, we can use
+        // the metadata to get the param type
+        StringBuffer sb = new StringBuffer();
         if (procedureName != null && procedureName.length() > 0)
         {
             // Get DatabaseMetaData
@@ -355,17 +361,18 @@ public class StoredProcedure
                         procReturn = "Unknown";
                 }
                 // Printout
-                  System.out.println("Procedure: " + dbProcedureCatalog + "." + dbProcedureSchema
-                                     + "." + dbProcedureName);
-                  System.out.println("   ColumnName [ColumnType(ColumnPrecision)]: " + dbColumnName
-                                     + " [" + dbColumnReturnTypeName + "(" + dbColumnPrecision + ")]");
-                  System.out.println("   ColumnReturns: " + procReturn + "(" + dbColumnReturnTypeName + ")");
-                  System.out.println("   Radix: " + dbColumnRadix + ", Scale: " + dbColumnScale);
-                  System.out.println("   Remarks: " + dbColumnRemarks);
+                sb.append("Procedure: " + dbProcedureCatalog + "." + dbProcedureSchema
+                                 + "." + dbProcedureName);
+                sb.append("   ColumnName [ColumnType(ColumnPrecision)]: " + dbColumnName
+                                 + " [" + dbColumnReturnTypeName + "(" + dbColumnPrecision + ")]");
+                sb.append("   ColumnReturns: " + procReturn + "(" + dbColumnReturnTypeName + ")");
+                sb.append("   Radix: " + dbColumnRadix + ", Scale: " + dbColumnScale);
+                sb.append("   Remarks: " + dbColumnRemarks);
             }
             rs.close();
             connection.close();
         }
+        return sb.toString();
     }
 
     public String createExceptionMessage(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
