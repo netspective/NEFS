@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.16 2003-11-16 15:15:58 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.17 2004-04-12 18:24:09 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -50,6 +50,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
 
 import javax.naming.NamingException;
 
@@ -282,5 +283,15 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     public void setContextLocation(Object locator)
     {
         dbvc.setContextLocation(locator);
+    }
+
+    public boolean isConditionalExpressionTrue(String expr, Map vars)
+    {
+        return dbvc.isConditionalExpressionTrue(expr, vars);
+    }
+
+    public Object evaluateExpression(String expr, Map vars)
+    {
+        return dbvc.evaluateExpression(expr, vars);
     }
 }
