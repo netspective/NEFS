@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.26 2004-04-12 22:24:48 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.27 2004-04-12 22:37:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -110,6 +110,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public static final String ELEMNAME_OTHERWISE = "otherwise";
     public static final String ELEMNAME_IF = "if";
     public static final String ATTRNAME_TEST = "test";
+    public static final String ATTRNAME_TEST_VS = "test-vs";
     public static final String ATTRNAME_CONDITION = "_condition";
     public static final String ATTRNAME_PRIMARYKEY_VALUE = "_pk-value";
     public static final String ATTRNAME_AUTOMAP = "_auto-map";
@@ -346,6 +347,20 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
      ****************************************************************************************************************
      */
 
+    public boolean isConditionalTestExpressionTrue(SchemaRecordEditorDialogContext sredc, TemplateElement element)
+    {
+        String testExpr = element.getAttributes().getValue(ATTRNAME_TEST);
+        if(testExpr != null || testExpr.length() > 0)
+            return sredc.isConditionalExpressionTrue(testExpr, null);
+
+        testExpr = element.getAttributes().getValue(ATTRNAME_TEST_VS);
+        if(testExpr != null || testExpr.length() > 0)
+            return ValueSources.getInstance().getValueSourceOrStatic(testExpr).getValue(sredc).getBooleanValue();
+
+        getLog().error("'test' attribute or 'test-vs' attribute with conditional expression is required");
+        return false;
+    }
+
     public TemplateElement getConditionalChoiceTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
         if(! template.getElementName().equals(ELEMNAME_CHOOSE))
@@ -362,14 +377,8 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 TemplateElement whenElement = (TemplateElement) chooseElementChildNode;
                 if(whenElement.getElementName().equals(ELEMNAME_WHEN))
                 {
-                    String testExpr = whenElement.getAttributes().getValue(ATTRNAME_TEST);
-                    if(testExpr == null || testExpr.length() == 0)
-                        getLog().error("Test expression is required");
-                    else
-                    {
-                        if(sredc.isConditionalExpressionTrue(testExpr, null))
-                            return whenElement;
-                    }
+                    if(isConditionalTestExpressionTrue(sredc, whenElement))
+                        return whenElement;
                 }
                 else if(whenElement.getElementName().equals(ELEMNAME_OTHERWISE))
                     otherwiseTemplate = whenElement;
@@ -395,7 +404,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
         else
         {
-            if(sredc.isConditionalExpressionTrue(testExpr, null))
+            if(isConditionalTestExpressionTrue(sredc, template))
                 return template;
             else
                 return null;
