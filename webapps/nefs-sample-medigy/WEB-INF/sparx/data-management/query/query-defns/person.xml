@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
     <query-defn name="searchPersons">
-
+        <field name="cr_stamp" caption="Created" join="Person" column="cr_stamp"/>
         <field name="person_id" caption="Person ID" join="Person" column="person_id"/>
         <field name="name_first" caption="First Name" join="Person" column="name_first"/>
         <field name="name_last" caption="Last Name" join="Person" column="name_last"/>
@@ -27,6 +27,37 @@
 
 
         <presentation>
+            <select-dialog name="searchPersonPopupDialog">
+                <frame heading="Search for People"/>
+                <field type="text" name="name_first" caption="First Name" />   <!-- required="yes" -->
+                <field type="text" name="name_last" caption="Last Name" /> <!-- required="yes" -->
+                <field type="text" name="birth_date" caption="Birth Date"/> <!-- required="yes" -->
+                <field type="select" name="order_by" caption="Order By" choices="text-list:Timestamp=cr_stamp;Last Name=name_last"/>
+                <select distinct="yes">
+                    <display field="person_id"/>
+                    <display field="name_first"/>
+                    <display field="name_last"/>
+                    <display field="birth_date"/>
+                    <condition field="name_first" allow-null="no" comparison="contains-ignore-case" value="field:name_first" connector="and"/>
+                    <condition field="name_last" allow-null="no" comparison="contains-ignore-case" value="field:name_last" connector="and"/>
+                    <condition field="birth_date" allow-null="no" comparison="equals" value="field:birth_date" connector="and"/>
+                    <order-by field="field:order_by"/>
+                    <presentation>
+                        <panel name="popup">
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="Person ID" hidden="yes"/>
+                                <column heading="First Name" redirect="javascript\:opener.activeDialogPopup.populateControls('${2}, ${1}', '${0}')"/>
+                                <column heading="Last Name" redirect="javascript\:opener.activeDialogPopup.populateControls('${2}, ${1}', '${0}')"/>
+                                <column heading="Birth Date"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+
+        <presentation>
             <select-dialog name="searchPersonDialog">
                 <frame heading="Search for People"/>
                 <field type="text" name="person_id" caption="Person ID"/>
@@ -38,7 +69,7 @@
                 <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
                 <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
                 <field type="select" name="marital_status" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
-
+                <field type="select" name="order_by" caption="Order By" choices="text-list:Timestamp=cr_stamp;Last Name=name_last"/>
                 <select distinct="yes">
                     <display field="person_id"/>
                     <display field="name_first"/>
@@ -46,7 +77,7 @@
                     <display field="birth_date"/>
                     <display field="gender"/>
                     <display field="marital_status"/>
-
+                    <display field="cr_stamp"/>
                     <condition field="person_id" allow-null="no" comparison="equals" value="field:person_id" connector="and"/>
                     <condition field="name_first" allow-null="no" comparison="contains-ignore-case" value="field:name_first" connector="and"/>
                     <condition field="name_last" allow-null="no" comparison="contains-ignore-case" value="field:name_last" connector="and"/>
@@ -56,19 +87,21 @@
                     <condition field="ethnicity" allow-null="no" comparison="equals" value="field:ethnicity" connector="and"/>
                     <condition field="language" allow-null="no" comparison="equals" value="field:language" connector="and"/>
                     <condition field="marital_status" allow-null="no" comparison="equals" value="field:marital_status" connector="and"/>
-
+                    <order-by field="field:order_by"/>
                     <presentation>
                         <panel>
                             <frame heading="Search Results"/>
                             <report>
-                                <column heading="Person ID"/>
+                                <column heading="Person ID" hidden="yes"/>
                                 <column heading="First Name" redirect="page-id:/person/summary?person_id=${0}"/>
                                 <column heading="Last Name" redirect="page-id:/person/summary?person_id=${0}"/>
                                 <column heading="Birth Date"/>
                                 <column heading="Gender"/>
                                 <column heading="Marital Status"/>
+                                <column heading="Created"/>
                             </report>
                         </panel>
+
                     </presentation>
                 </select>
             </select-dialog>
@@ -85,7 +118,7 @@
                 <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
                 <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
                 <field type="select" name="marital_status" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
-
+                <field type="select" name="order_by" caption="Order By" choices="text-list:cr_stamp"/>
                 <select>
                     <display field="person_id"/>
                     <display field="name_first"/>
@@ -103,7 +136,7 @@
                     <condition field="ethnicity" allow-null="no" comparison="equals" value="field:ethnicity" connector="and"/>
                     <condition field="language" allow-null="no" comparison="equals" value="field:language" connector="and"/>
                     <condition field="marital_status" allow-null="no" comparison="equals" value="field:marital_status" connector="and"/>
-
+                    <order-by field="field:order_by"/>
                     <presentation>
                         <panel>
                             <frame heading="Search Results"/>
