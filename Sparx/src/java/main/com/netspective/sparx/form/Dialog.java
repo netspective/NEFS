@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.25 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.26 2003-08-06 05:30:09 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -148,6 +148,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     public static final String PARAMNAME_SUBMIT_DATA = ".submit_data";
     public static final String PARAMNAME_PEND_DATA = ".pend_data";
     public static final String PARAMNAME_RESETCONTEXT = ".reset_context";
+    public static final String PARAMNAME_INITIALCONTEXT = ".initial_context";
 
     /*
 	   the debug flags when first passed in (start of dialog, run seq == 1)
@@ -403,6 +404,11 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     public String getPendDataParamName()
     {
         return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_PEND_DATA;
+    }
+
+    public final String getInitialContextParamName()
+    {
+        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_INITIALCONTEXT;
     }
 
     public String getValuesRequestAttrName()
