@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
-<!ENTITY include_nef_key_features SYSTEM "../nef-key-features.xml">
-<!ENTITY include_nef_project_file SYSTEM "../nef-project-file.xml">
+<!ENTITY __nef-starter-app-setup__dr4w0y2f SYSTEM "../nef-reusable-content/nef-starter-app-setup.xml">
+<!ENTITY __nef-key-features__dr4qnp41 SYSTEM "../nef-reusable-content/nef-key-features.xml">
+<!ENTITY __nef-project-file__dr4s5f91 SYSTEM "../nef-reusable-content/nef-project-file.xml">
+<!ENTITY __web-file__dr4thoqz SYSTEM "../nef-reusable-content/web-file.xml">
 ]>
-
 <article>
   <title>Books Application Tutorial</title>
 
-  <sect1>
+  <section>
     <title>Objectives</title>
 
     <para>The Books Application is a project meant to get you familiar with
@@ -20,11 +21,11 @@
     actual application up and running with special focus on developing the SQL
     and data management layers of your application.</para>
 
-    <sect2>
+    <section>
       <title>Learning Objectives Checklist</title>
 
       <para>At the end of this tutorial, you should be able to
-      understand: </para>
+      understand:</para>
 
       <itemizedlist>
         <listitem>
@@ -51,14 +52,14 @@
           <para>creation and testing of Presentation Layer</para>
         </listitem>
       </itemizedlist>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Assumptions</title>
 
-    <para>Following are the pre-requisites you need to work on the creation
-    and testing of NEF based applications:</para>
+    <para>For the purpose of this tutorial, we will be assuming that you
+    installed the following:</para>
 
     <itemizedlist>
       <listitem>
@@ -71,237 +72,241 @@
       </listitem>
     </itemizedlist>
 
-    <para> This tutorial also assumes your familiarity with XML, SQL, Java,
-    Servlets and JDBC.</para>
-  </sect1>
+    <para>We assume that you are using the default port
+    <literal>8080</literal> for your web server. If you chose different values
+    for the installation path andthe port number, you should substitute the
+    paths and the URLs in our example with your values as needed. This
+    tutorial also assumes your familiarity with XML, SQL, Java, Servlets and
+    JDBC.</para>
+  </section>
 
-  <sect1>
-    <title>NEF Starter Application</title>
+  &__nef-starter-app-setup__dr4w0y2f;
 
-    <para>For creation of a new NEF based application, you will need to
-    download the Starter Application. The starter application is just an empty
-    application that contains the minimal set of files required for NEF web
-    applications. It doesn't do anything particularly useful but you can use
-    this sample as your template for the new project.</para>
-
-    <sect2>
-      <title>Downloading the Starter Application</title>
-
-      <para>You can download the NEF Starter Application file from <ulink
-      url="http://www.netspective.com/corp/downloads/frameworks/samples">http://www.netspective.com/corp/downloads/frameworks/samples</ulink></para>
-    </sect2>
-
-    <sect2>
-      <title>Setting up the Starter Application</title>
-
-      <para>Copy the downloaded <filename>nefs-starter-empty.war</filename>
-      file to the <filename class="directory">webapps</filename> folder of
-      your servlet container (application server) and run (restart) the
-      application server. This will create a folder structure containing the
-      necessary NEF files and sub-folders under the <filename
-      class="directory">webapps</filename> folder of the application server.
-      You can access this Starter Application using the URL of the form
-      http://host:port/nefs-starter-empty.</para>
-
-      <para><figure>
-          <title>Figure 2.1: NEF Starter Application</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="./resources/images/screen-starter-home.gif" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-    </sect2>
-  </sect1>
-
-  <sect1>
+  <section>
     <title>Key Concepts</title>
 
     <para>This section outlines some of the important, global concepts that
     you should be familiar with before embarking on developing your own
     applications.</para>
-    <sect2>
-        <title>The NEF Application Directory Structure</title>
-	&include_nef_key_features;
-    </sect2>
-    <sect2 id="nef-project-file">
-	<title>The NEF Project File</title>
-        &include_nef_project_file;
-    </sect2>
-  </sect1>
 
-  <sect1>
-    <title>Starting Sample Books Application</title>
+    &__nef-key-features__dr4qnp41;
 
-    <para>You can get the <literal>NEF Books Application</literal> </para>
-  </sect1>
+    &__nef-project-file__dr4s5f91;
 
-  <sect1>
+    &__web-file__dr4thoqz;
+  </section>
+
+  <section>
     <title>Functionality</title>
 
-    <para></para>
-  </sect1>
+    <para>The NEF Books Application is a small application meant to be used
+    for a personal library of books. It allows you to track the books you have
+    and add more books to your collection or edit information stored about
+    existing books. It also allows you to search your collection for a
+    particular book based on your own custom search criteria.</para>
 
-  <sect1>
+    <para>The overall functionality of the application is limited but
+    complete. As such it demonstrates a few of the main types of data
+    manipulation that developers need to take care of in every application. In
+    the end, the goal is to show you just how much power can be wielded with
+    just a few lines of XML and Java code when armed with the strength of
+    Sparx.</para>
+  </section>
+
+  <section>
     <title>Design</title>
 
-    <para></para>
-
-    <sect2>
+    <section>
       <title>Application Design</title>
 
-      <para></para>
-    </sect2>
+      <para>The Books Application is designed around the basic Sparx
+      components. It will use static SQL and associated reports to help you
+      track the books stored in the application. Searches, on the other hand,
+      require a dynamically generated SQL in the form of a Query
+      Definition.</para>
 
-    <sect2>
+      <para>The last aspect to take care of is the data storage. It is
+      possible to use expensive abd overkill (in all certainty) database like
+      Oracle for this application. Instead, the data storage of choice is the
+      Java-based embedded database that is included in the Sparx Starter
+      Application: <productname>HypersonicSQL</productname><footnote>
+          <para>To learn more about <productname>HypersonicSQL, please go to
+          <ulink
+          url="http://hsqldb.sourceforge.net/">http://hsqldb.sourceforge.net/</ulink></productname></para>
+        </footnote>. All the application components are included in the
+      <filename>project.xml</filename> file for the Books Application. </para>
+    </section>
+
+    <section>
       <title>Database Design</title>
 
-      <para></para>
-    </sect2>
-  </sect1>
+      <para>The Books Application deals with books and only books. Therefore,
+      the information that needs to be stored in the database will be about
+      books. The four pieces of information that the Books Application will
+      store for this example are its ID, name, author, genre and ISBN. Of
+      these, the genre is the only one that can be common across multiple
+      books. In database language, the genre (book type) has a one-to-many
+      relationship with the books.<figure>
+          <title>Basic E-R Diagram for Books Application Database</title>
 
-  <sect1>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-books-app-schema.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>The figure shows the entity-relationship diagram for the data we
+      will be using. The database for the Books Application will be designed
+      to store each entity (and its attributes) in a separate table. As with
+      the application design, the database design will become clearer when it
+      is implemented later in this tutorial.</para>
+    </section>
+  </section>
+
+  <section>
     <title>Creating the Data Layer</title>
 
-    <para></para>
+    <para>With the empty (Starter) application successfully created and
+    running, it is time to work on the backbone of the Books Application: the
+    database. </para>
 
-    <sect2>
-      <title>The Database Schema</title>
-
-      <para></para>
-    </sect2>
-
-    <sect2>
+    <section>
       <title>Setting up the Database</title>
 
       <para></para>
-    </sect2>
+    </section>
 
-    <sect2>
-      <title>Unit Testing the Database Schema</title>
+    <section>
+      <title>Creating the Schema</title>
 
       <para></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
+      <title>Unit Testing the Schema</title>
+
+      <para></para>
+    </section>
+
+    <section>
       <title>Generating the Data Description Language</title>
 
       <para></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Generating the SQL</title>
 
       <para></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Unit Testing the SQL</title>
 
       <para></para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Creating the Presentation Layer</title>
 
     <para></para>
 
-    <sect2>
+    <section>
       <title>Creating the Home Page</title>
 
       <para></para>
 
-      <sect3>
+      <section>
         <title>Unit Testing the Home Page</title>
 
         <para></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Creating the Add Books Page</title>
 
       <para></para>
 
-      <sect3>
+      <section>
         <title>Unit Testing the Add Books Page</title>
 
         <para></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
-      <title>Creating the Edit Book Page </title>
+    <section>
+      <title>Creating the Edit Book Page</title>
 
       <para></para>
 
-      <sect3>
+      <section>
         <title>Unit Testing the Edit Book Page</title>
 
         <para></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Creating the Delete Book Page</title>
 
       <para></para>
 
-      <sect3>
+      <section>
         <title>Unit Testing the Delete Book Page</title>
 
         <para></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Creating the Search Books Page</title>
 
       <para></para>
 
-      <sect3>
+      <section>
         <title>Unit Testing the Search Books Page</title>
 
         <para></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Creating the Console Page</title>
 
       <para></para>
 
-      <sect3>
+      <section>
         <title>Unit Testing the Console Page</title>
 
         <para></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Creating the Sample Apps Home Page</title>
 
       <para></para>
 
-      <sect3>
+      <section>
         <title>Unit Testing the Sample Apps Home Page</title>
 
         <para></para>
-      </sect3>
-    </sect2>
-  </sect1>
+      </section>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Console Application</title>
 
     <para></para>
-  </sect1>
+  </section>
 
-  <sect1>
+  <section>
     <title>Moving to Another Database</title>
 
     <para></para>
-  </sect1>
+  </section>
 </article>
