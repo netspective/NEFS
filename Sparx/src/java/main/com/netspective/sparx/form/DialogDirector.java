@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.17 2003-11-26 15:25:40 roque.hernandez Exp $
+ * $Id: DialogDirector.java,v 1.18 2003-12-10 15:04:09 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.form;
@@ -339,7 +339,7 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
         writer.write(attrs);
         writer.write(">&nbsp;&nbsp;");
 
-        if(pendingCaption != null && cancelCaption.length() > 0)
+        if(pendingCaption != null && pendingCaption.getTextValue(dc) != null && pendingCaption.getTextValue(dc).length() > 0)
         {
             writer.write("<input type='submit' class=\"dialog-button\" name='"+ dialog.getPendDataParamName() +"' value='");
             writer.write(pendingCaption.getTextValue(dc));
