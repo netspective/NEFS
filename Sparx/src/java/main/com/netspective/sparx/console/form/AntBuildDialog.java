@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.4 2003-07-08 02:30:09 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.5 2003-07-09 02:14:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -152,6 +152,7 @@ public class AntBuildDialog extends ConsoleDialog
         logger.setOutputPrintStream(pstream);
         logger.setErrorPrintStream(pstream);
 
+        writer.flush();
         antProject.addBuildListener(logger);
         try
         {
