@@ -39,14 +39,13 @@
  */
 
 /**
- * $Id: SqlServerDatabasePolicy.java,v 1.2 2003-11-22 01:44:10 shahid.shah Exp $
+ * $Id: SqlServerDatabasePolicy.java,v 1.3 2003-11-22 01:44:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
 
 import java.sql.SQLException;
 
-import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
 
