@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.19 2004-08-09 22:13:32 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.20 2004-08-12 00:24:05 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -78,6 +78,8 @@ import com.netspective.axiom.schema.GeneratedValueColumn;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.column.type.GuidColumn;
+import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.sql.QueryExecutionLog;
 import com.netspective.axiom.sql.QueryExecutionLogEntry;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
@@ -599,6 +601,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
             logEntry.registerExecSqlBegin();
             stmt.execute();
+            stmt.close();
             logEntry.registerExecSqlEndSuccess();
         }
         catch (SQLException e)
@@ -650,6 +653,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             }
 
             stmt.execute();
+            stmt.close();
         }
         catch (SQLException e)
         {
@@ -714,7 +718,17 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             namesSql.append(column.getSqlName());
 
             if (value.isSqlExpr())
-                valuesSql.append(value.getSqlExprs().getByDbms(this).getSql(cc));
+            {
+                final DbmsSqlTexts sqlExprs = value.getSqlExprs();
+                final DbmsSqlText sqlExprForDb = sqlExprs != null ? sqlExprs.getByDbmsOrAnsi(this) : null;
+                if(sqlExprForDb != null)
+                    valuesSql.append(sqlExprForDb.getSql(cc));
+                else
+                {
+                    log.error("Column " + value.getColumn().getQualifiedName() + " is specifying a SQL Expression to insert but no expression is available for db '" + cc.getDatabasePolicy().getDbmsIdentifier() + "' or 'ansi'. Available: " + sqlExprs);
+                    valuesSql.append("NULL");
+                }
+            }
             else
             {
                 if (bindValue == null)
@@ -820,7 +834,18 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             setsSql.append(" = ");
 
             if (value.isSqlExpr())
-                setsSql.append(value.getSqlExprs().getByDbms(cc.getDatabasePolicy()).getSql(cc));
+            {
+                final DbmsSqlTexts sqlExprs = value.getSqlExprs();
+                final DbmsSqlText sqlExprForDb = sqlExprs != null ? sqlExprs.getByDbmsOrAnsi(this) : null;
+                if(sqlExprForDb != null)
+                    setsSql.append(sqlExprForDb.getSql(cc));
+                else
+                {
+                    log.error("Column " + value.getColumn().getQualifiedName() + " is specifying a SQL Expression to update but no expression is available for db '" + cc.getDatabasePolicy().getDbmsIdentifier() + "' or 'ansi'. Available: " + sqlExprs);
+                    setsSql.append("NULL");
+                }
+
+            }
             else
             {
                 if (bindValue == null)
