@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ENTITY % boolean "(true | false | on | off | yes | no)">
+<!ENTITY % elements "dal">
+
+<!ELEMENT dal (book-info)*>
+
+<!ELEMENT book-info (id | name | author | genre | isbn | dal:include)*>
+<!ATTLIST book-info
+          id CDATA #REQUIRED
+          name CDATA #IMPLIED
+          author CDATA #IMPLIED
+          genre CDATA #IMPLIED
+          isbn CDATA #IMPLIED>
+
+<!ELEMENT dal:include EMPTY>
+<!ATTLIST dal:include
+          file CDATA #IMPLIED
+          template CDATA #IMPLIED
+          resource CDATA #IMPLIED
+          relative-to CDATA #IMPLIED>

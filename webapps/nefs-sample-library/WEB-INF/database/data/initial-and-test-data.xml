@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE dal SYSTEM "library.dtd">
+
+<dal>
+    <book-info
+        id="test-001" name="Book 001"
+        author="Smith, James R." genre="Science Fiction"/>
+
+    <book-info
+        id="test-002" name="Book 002"
+        author="Jones, Rober. J." genre="Mystery"/>
+</dal>
+
