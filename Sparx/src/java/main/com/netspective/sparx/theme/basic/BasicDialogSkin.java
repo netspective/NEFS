@@ -19,6 +19,7 @@ import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.validate.ValidationContext;
 
 /**
  * @author Aye Thu
@@ -61,7 +62,7 @@ public class BasicDialogSkin extends StandardDialogSkin
     public void renderHtml(Writer writer, DialogContext dc) throws IOException
     {
         List fieldErrorMsgs = new ArrayList();
-        List dlgErrorMsgs = dc.getErrorMessages();
+        List dlgErrorMsgs = dc.getValidationContext().getValidationErrorsForScope(ValidationContext.VALIDATIONSCOPE_ENTIRE_CONTEXT);
         if(dlgErrorMsgs != null)
             fieldErrorMsgs.addAll(dlgErrorMsgs);
 
@@ -199,6 +200,16 @@ public class BasicDialogSkin extends StandardDialogSkin
         if(prependPostScript != null)
             writer.write(prependPostScript);
 
+        DialogFlags dflags = dialog.getDialogFlags();
+        if(dflags.flagIsSet(DialogFlags.DISABLE_CLIENT_VALIDATION))
+            writer.write("<script>ALLOW_CLIENT_VALIDATION = false;</script>");
+        if(dflags.flagIsSet(DialogFlags.TRANSLATE_ENTER_KEY_TO_TAB_KEY))
+            writer.write("<script>TRANSLATE_ENTER_KEY_TO_TAB_KEY = true;</script>");
+        if(dflags.flagIsSet(DialogFlags.SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE))
+            writer.write("<script>SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE = true;</script>");
+        if(dflags.flagIsSet(DialogFlags.DISABLE_CLIENT_KEYPRESS_FILTERS))
+            writer.write("<script>ENABLE_KEYPRESS_FILTERS = flase;</script>");
+
         String dialogName = dialog.getName();
 
         String encType = dialog.getDialogFlags().flagIsSet(DialogFlags.ENCTYPE_MULTIPART_FORMDATA) ? "enctype=\"multipart/form-data\"" : "";
@@ -302,7 +313,7 @@ public class BasicDialogSkin extends StandardDialogSkin
         boolean haveErrors = false;
         if(name != null)
         {
-            List errorMessages = state.getErrorMessages();
+            List errorMessages = dc.getValidationContext().getValidationErrorsForScope(state.getValidationContextScope());
             if(errorMessages != null)
             {
                 messagesHtml.append("<font " + errorMsgFontAttrs + ">");

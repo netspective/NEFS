@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.3 2003-05-10 16:50:02 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.4 2003-05-11 17:52:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -81,6 +81,7 @@ import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.validate.ValidationContext;
 
 public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
 {
@@ -485,7 +486,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
                 StringBuffer messagesHtml = new StringBuffer();
                 boolean haveErrors = false;
                 boolean firstMsg = true;
-                List errorMessages = dc.getFieldStates().getState(rowField).getErrorMessages();
+                List errorMessages = dc.getValidationContext().getValidationErrorsForScope(dc.getFieldStates().getState(rowField).getValidationContextScope());
                 if(errorMessages != null)
                 {
                     messagesHtml.append("<font " + errorMsgFontAttrs + ">");
@@ -626,7 +627,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
         boolean haveErrors = false;
         if(name != null)
         {
-            List errorMessages = state.getErrorMessages();
+            List errorMessages = dc.getValidationContext().getValidationErrorsForScope(state.getValidationContextScope());
             if(errorMessages != null)
             {
                 messagesHtml.append("<font " + errorMsgFontAttrs + ">");
@@ -669,7 +670,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
     public void renderHtml(Writer writer, DialogContext dc) throws IOException
     {
         List fieldErrorMsgs = new ArrayList();
-        List dlgErrorMsgs = dc.getErrorMessages();
+        List dlgErrorMsgs = dc.getValidationContext().getValidationErrorsForScope(ValidationContext.VALIDATIONSCOPE_ENTIRE_CONTEXT);
         if(dlgErrorMsgs != null)
             fieldErrorMsgs.addAll(dlgErrorMsgs);
 

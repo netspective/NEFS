@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.3 2003-05-10 16:50:00 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.4 2003-05-11 17:52:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -60,12 +60,10 @@ import java.io.IOException;
 import java.io.Writer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
@@ -89,8 +87,10 @@ import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextAtt
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesPanel;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesClassesPanel;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.validate.BasicValidationContext;
 import com.netspective.axiom.schema.Row;
 
 /**
@@ -150,20 +150,6 @@ public class DialogContext extends BasicDbHttpServletValueContext
      * The following constants are setup as flags but are most often used as enumerations. We use powers of two to
      * allow them to be used either as enums or as flags.
      */
-
-    /**
-     * Flag value indicating that the dialog validatation has not been performed
-     */
-    static public final int VALSTAGE_NOT_PERFORMED = 0;
-    /**
-     * Flag value indicating that the dialog validation failed
-     */
-    static public final int VALSTAGE_PERFORMED_FAILED = 1;
-    /**
-     * Flag value indicating that dialog validation succeeded
-     */
-    static public final int VALSTAGE_PERFORMED_SUCCEEDED = 2;
-    static public final int VALSTAGE_IGNORE = 3;
 
     /**
      * Used for indicating that the calculation of a dialog's stage is starting
@@ -256,12 +242,6 @@ public class DialogContext extends BasicDbHttpServletValueContext
             }
         }
 
-        public void addErrorMessage(DialogField field, String message)
-        {
-            DialogField.State state = getState(field);
-            state.addErrorMessage(message);
-        }
-
         public int size()
         {
             return statesByQualifiedName.size();
@@ -274,7 +254,7 @@ public class DialogContext extends BasicDbHttpServletValueContext
     }
 
     private DialogFieldStates fieldStates = new DialogFieldStates();
-    private ArrayList dlgErrorMessages;
+    private DialogValidationContext validationContext = new DialogValidationContext(this);
     private boolean resetContext;
     private String transactionId;
     private Dialog dialog;
@@ -283,13 +263,11 @@ public class DialogContext extends BasicDbHttpServletValueContext
     private char nextMode;
     private int runSequence;
     private int execSequence;
-    private int validationStage;
     private String originalReferer;
     private boolean executeHandled;
     private DialogDebugFlags debugFlags = new DialogDebugFlags();
     private DialogDataCommands dataCommands = new DialogDataCommands();
     private String[] retainReqParams;
-    private int errorsCount;
     private boolean redirectDisabled;
     private Row lastRowManipulated;
 
@@ -319,7 +297,6 @@ public class DialogContext extends BasicDbHttpServletValueContext
 
         activeMode = DIALOGMODE_UNKNOWN;
         nextMode = DIALOGMODE_UNKNOWN;
-        validationStage = VALSTAGE_NOT_PERFORMED;
         String runSeqValue = request.getParameter(dialog.getRunSequenceParamName());
         if(runSeqValue != null)
             runSequence = new Integer(runSeqValue).intValue();
@@ -382,6 +359,11 @@ public class DialogContext extends BasicDbHttpServletValueContext
             if(ncRetain != null && ncRetain.length() > 0)
                 addRetainRequestParams(TextUtils.split(ncRetain, ",", true));
         }
+    }
+
+    public DialogValidationContext getValidationContext()
+    {
+        return validationContext;
     }
 
     public void setLastRowManipulated(Row row)
@@ -656,7 +638,7 @@ public class DialogContext extends BasicDbHttpServletValueContext
         ServletRequest request = getRequest();
         String ignoreVal = request.getParameter(Dialog.PARAMNAME_IGNORE_VALIDATION);
         if(ignoreVal != null && !ignoreVal.equals("no"))
-            setValidationStage(VALSTAGE_IGNORE);
+            validationContext.setValidationStage(DialogValidationContext.VALSTAGE_IGNORE);
 
         String autoExec = request.getParameter(Dialog.PARAMNAME_AUTOEXECUTE);
         if (autoExec == null || autoExec.length() == 0)
@@ -713,7 +695,7 @@ public class DialogContext extends BasicDbHttpServletValueContext
                 nextMode = DIALOGMODE_INPUT;
         }
 
-        if(dlgErrorMessages != null)
+        if(! validationContext.isValid())
             nextMode = DIALOGMODE_VALIDATE;
 
         dialog.makeStateChanges(this, STATECALCSTAGE_FINAL);
@@ -847,7 +829,7 @@ public class DialogContext extends BasicDbHttpServletValueContext
      */
     public boolean isPending()
     {
-        return validationStage == VALSTAGE_IGNORE;
+        return validationContext.getValidationStage() == DialogValidationContext.VALSTAGE_IGNORE;
     }
 
     /**
@@ -876,16 +858,6 @@ public class DialogContext extends BasicDbHttpServletValueContext
     public DialogSkin getSkin()
     {
         return skin;
-    }
-
-    /**
-     * Returns the number of errors which occurred during validation
-     *
-     * @return int total error count
-     */
-    public int getErrorsCount()
-    {
-        return errorsCount;
     }
 
     public DialogDataCommands getDataCommands()
@@ -921,36 +893,6 @@ public class DialogContext extends BasicDbHttpServletValueContext
     public boolean printingData()
     {
         return dataCommands.flagIsSet(DialogDataCommands.PRINT);
-    }
-
-    /**
-     * Indicates whether or not validation has been performed for the dialog
-     *
-     * @return boolean True if validation has been done
-     */
-    public boolean validationPerformed()
-    {
-        return validationStage != VALSTAGE_NOT_PERFORMED ? true : false;
-    }
-
-    /**
-     * Returns the validation stage
-     *
-     * @return int
-     */
-    public int getValidationStage()
-    {
-        return validationStage;
-    }
-
-    /**
-     * Sets the validation stage
-     *
-     * @param value stage
-     */
-    public void setValidationStage(int value)
-    {
-        validationStage = value;
     }
 
     public boolean executeStageHandled()
@@ -1079,34 +1021,6 @@ public class DialogContext extends BasicDbHttpServletValueContext
         }
 
         return hiddens.toString();
-    }
-
-    /**
-     *  Return error messages that are not specific to a particular field (at the Dialog level)
-     */
-
-    public List getErrorMessages()
-    {
-        return dlgErrorMessages;
-    }
-
-    /**
-     *  Add error message that is not specific to a particular field (at the Dialog level)
-     */
-
-    public void addErrorMessage(String message)
-    {
-        if(dlgErrorMessages == null)
-            dlgErrorMessages = new ArrayList();
-
-        for(Iterator i = dlgErrorMessages.iterator(); i.hasNext();)
-        {
-            if(i.next().equals(message))
-                return;
-        }
-
-        dlgErrorMessages.add(message);
-        errorsCount++;
     }
 
     public void populateValuesFromStatement(String statementId)

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.5 2003-05-10 16:50:00 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.6 2003-05-11 17:52:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -72,6 +72,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.GridField;
+import com.netspective.sparx.form.field.type.CompositeField;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
 
@@ -477,7 +478,12 @@ public class Dialog
         fields.add(field);
     }
 
-    public void addComposite(DialogField field)
+    public CompositeField createComposite()
+    {
+        return new CompositeField(this);
+    }
+
+    public void addComposite(CompositeField field)
     {
         addField(field);
     }
@@ -780,26 +786,22 @@ public class Dialog
      */
     public boolean isValid(DialogContext dc)
     {
-        int valStage = dc.getValidationStage();
-        if(valStage == DialogContext.VALSTAGE_PERFORMED_SUCCEEDED || valStage == DialogContext.VALSTAGE_IGNORE)
+        DialogValidationContext dvc = dc.getValidationContext();
+        int valStage = dvc.getValidationStage();
+        if(valStage == DialogValidationContext.VALSTAGE_PERFORMED_SUCCEEDED || valStage == DialogValidationContext.VALSTAGE_IGNORE)
             return true;
-        if(valStage == DialogContext.VALSTAGE_PERFORMED_FAILED)
+        if(valStage == DialogValidationContext.VALSTAGE_PERFORMED_FAILED)
             return false;
-
-        int invalidFieldsCount = 0;
 
         for(int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
-            if((field.isAvailable(dc) && !field.isInputHidden(dc)) && (!field.isValid(dc)))
-                invalidFieldsCount++;
+            if((field.isAvailable(dc) && !field.isInputHidden(dc)))
+                field.validate(dvc);
         }
 
-        if(dc.getErrorMessages() != null)
-            invalidFieldsCount++;
-
-        boolean isValid = invalidFieldsCount == 0 ? true : false;
-        dc.setValidationStage(isValid ? DialogContext.VALSTAGE_PERFORMED_SUCCEEDED : DialogContext.VALSTAGE_PERFORMED_FAILED);
+        boolean isValid = dvc.isValid();
+        dvc.setValidationStage(isValid ? DialogValidationContext.VALSTAGE_PERFORMED_SUCCEEDED : DialogValidationContext.VALSTAGE_PERFORMED_FAILED);
         return isValid;
     }
 }

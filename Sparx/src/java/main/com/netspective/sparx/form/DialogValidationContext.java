@@ -39,38 +39,70 @@
  */
 
 /**
- * $Id: DialogFieldValidations.java,v 1.2 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: DialogValidationContext.java,v 1.1 2003-05-11 17:52:25 shahid.shah Exp $
  */
 
-package com.netspective.sparx.form.field;
+package com.netspective.sparx.form;
 
-import com.netspective.commons.validate.ValidationRulesCollection;
-import com.netspective.commons.validate.ValidationRule;
+import com.netspective.commons.validate.BasicValidationContext;
+import com.netspective.commons.value.ValueContext;
 
-public class DialogFieldValidations extends ValidationRulesCollection
+public class DialogValidationContext extends BasicValidationContext
 {
-    private DialogField field;
+    /**
+     * Flag value indicating that the dialog validatation has not been performed
+     */
+    public static final int VALSTAGE_NOT_PERFORMED = 0;
+    /**
+     * Flag value indicating that the dialog validation failed
+     */
+    public static final int VALSTAGE_PERFORMED_FAILED = 1;
+    /**
+     * Flag value indicating that dialog validation succeeded
+     */
+    public static final int VALSTAGE_PERFORMED_SUCCEEDED = 2;
+    public static final int VALSTAGE_IGNORE = 3;
 
-    public DialogFieldValidations(DialogField field)
+    private int validationStage = VALSTAGE_NOT_PERFORMED;
+
+    public DialogValidationContext(ValueContext valueContext)
     {
-        this.field = field;
+        super(valueContext);
     }
 
-    public void updateCaptions()
+    public DialogContext getDialogContext()
     {
-        for(int i = 0; i < size(); i++)
-        {
-            ValidationRule rule = get(i);
-            if(rule.getCaption() == null)
-                rule.setCaption(field.getCaption());
-        }
+        return (DialogContext) getValidationValueContext();
     }
 
-    public void addRule(ValidationRule rule)
+    /**
+     * Indicates whether or not validation has been performed for the dialog
+     *
+     * @return boolean True if validation has been done
+     */
+    public boolean validationPerformed()
     {
-        if(rule.getCaption() == null && field.getCaption() != null)
-            rule.setCaption(field.getCaption());
+        return validationStage != VALSTAGE_NOT_PERFORMED ? true : false;
+    }
 
-        super.addRule(rule);
+    /**
+     * Returns the validation stage
+     *
+     * @return int
+     */
+    public int getValidationStage()
+    {
+        return validationStage;
+    }
+
+    /**
+     * Sets the validation stage
+     *
+     * @param value stage
+     */
+    public void setValidationStage(int value)
+    {
+        validationStage = value;
     }
 }
+

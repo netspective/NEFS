@@ -39,38 +39,23 @@
  */
 
 /**
- * $Id: DialogFieldValidations.java,v 1.2 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: GridFieldRow.java,v 1.1 2003-05-11 17:52:25 shahid.shah Exp $
  */
 
-package com.netspective.sparx.form.field;
+package com.netspective.sparx.form.field.type;
 
-import com.netspective.commons.validate.ValidationRulesCollection;
-import com.netspective.commons.validate.ValidationRule;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.Dialog;
 
-public class DialogFieldValidations extends ValidationRulesCollection
+public class GridFieldRow extends DialogField
 {
-    private DialogField field;
-
-    public DialogFieldValidations(DialogField field)
+    public GridFieldRow(Dialog owner)
     {
-        this.field = field;
+        super(owner);
     }
 
-    public void updateCaptions()
+    public GridFieldRow(DialogField parent)
     {
-        for(int i = 0; i < size(); i++)
-        {
-            ValidationRule rule = get(i);
-            if(rule.getCaption() == null)
-                rule.setCaption(field.getCaption());
-        }
-    }
-
-    public void addRule(ValidationRule rule)
-    {
-        if(rule.getCaption() == null && field.getCaption() != null)
-            rule.setCaption(field.getCaption());
-
-        super.addRule(rule);
+        super(parent);
     }
 }

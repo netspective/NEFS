@@ -51,14 +51,13 @@
  */
  
 /**
- * $Id: DialogFieldConditionalAction.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogFieldConditionalAction.java,v 1.2 2003-05-11 17:52:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
 
-import org.w3c.dom.Element;
-
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.DialogContext;
 
 /**
  * Abstract class for defining conditional actions for dialog fields.
@@ -105,23 +104,13 @@ public abstract class DialogFieldConditionalAction
         return true;
     }
 
-    /**
-     * Import the condition from XML
-     *
-     * @param sourceField       parent dialog field
-     * @param elem              conditional XML element
-     * @param conditionalItem   conditional item name
-     */
-    public boolean importFromXml(DialogField sourceField, Element elem, int conditionalItem)
+    public boolean isValid(DialogContext dc)
     {
-        this.sourceField = sourceField;
-
         if(isPartnerRequired())
         {
-            partnerFieldName = elem.getAttribute("partner");
             if(partnerFieldName == null || partnerFieldName.length() == 0)
             {
-                sourceField.addErrorMessage("Conditional " + conditionalItem + " has no associated 'partner' (field).");
+                sourceField.invalidate(dc, "Conditional " + this + " has no associated 'partner' (field).");
                 partnerFieldName = null;
                 return false;
             }

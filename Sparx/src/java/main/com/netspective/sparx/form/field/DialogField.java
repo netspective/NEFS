@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.7 2003-05-10 21:35:44 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.8 2003-05-11 17:52:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -74,6 +74,7 @@ import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogDataCommands;
+import com.netspective.sparx.form.DialogValidationContext;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
@@ -82,7 +83,6 @@ import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
@@ -223,7 +223,6 @@ public class DialogField implements TemplateConsumer
         public DialogFieldValue value = constructValueInstance();
         public String adjacentAreaValue;
         public Flags stateFlags = createFlags();
-        public ArrayList errorMessages;
         public DialogContext dc;
 
         public State(DialogContext dc)
@@ -263,6 +262,12 @@ public class DialogField implements TemplateConsumer
             stateFlags.copy(flags);
         }
 
+        public boolean hasRequiredValue()
+        {
+            String textValue = value.getTextValue();
+            return textValue != null && textValue.length() > 0;
+        }
+
         public DialogFieldValue getValue()
         {
             return value;
@@ -283,28 +288,6 @@ public class DialogField implements TemplateConsumer
             return DialogField.this;
         }
 
-        public List getErrorMessages()
-        {
-            if(DialogField.this.getErrors() != null)
-                return DialogField.this.getErrors();
-
-            return errorMessages;
-        }
-
-        public void addErrorMessage(String message)
-        {
-            if(errorMessages == null)
-                errorMessages = new ArrayList();
-
-            for(Iterator i = errorMessages.iterator(); i.hasNext();)
-            {
-                if(i.next().equals(message))
-                    return;
-            }
-
-            errorMessages.add(message);
-        }
-
         public void persistValue()
         {
             if(stateFlags.flagIsSet(Flags.PERSIST) && value.hasValue())
@@ -313,6 +296,15 @@ public class DialogField implements TemplateConsumer
                 cookie.setMaxAge(60 * 60 * 24 * 365); // 1 year
                 dc.getHttpResponse().addCookie(cookie);
             }
+        }
+
+        /**
+         * Return the object that will be used to store the validation error messages in the ValidationContext
+         * @return
+         */
+        public Object getValidationContextScope()
+        {
+            return value;
         }
     }
 
@@ -340,7 +332,6 @@ public class DialogField implements TemplateConsumer
     private ValueSource defaultValue = ValueSource.NULL_VALUE_SOURCE;
     private ValueSource hint = ValueSource.NULL_VALUE_SOURCE;
 	private String cookieName;
-	private List errors;
 	private DialogFields children;
 	private List conditionalActions;
 	private List dependentConditions;
@@ -350,7 +341,8 @@ public class DialogField implements TemplateConsumer
     private DialogFieldScanEntry scanEntry;
     private DialogFieldAutoBlur autoBlur;
     private DialogFieldSubmitOnBlur submitOnBlur;
-    private ValidationRules validationRules = constructValidationRules();
+    private DialogFieldValidations validationRules = constructValidationRules();
+    private String requiredFieldMissingMessage = "{0} is required.";
 
 	/**
 	 * Creates a dialog field
@@ -403,22 +395,22 @@ public class DialogField implements TemplateConsumer
         return new State(dc);
     }
 
-    public ValidationRules constructValidationRules()
+    public DialogFieldValidations constructValidationRules()
     {
         return new DialogFieldValidations(this);
     }
 
-    public ValidationRules getValidationRules()
+    public DialogFieldValidations getValidationRules()
     {
         return validationRules;
     }
 
-    public ValidationRules createValidation()
+    public DialogFieldValidations createValidation()
     {
         return validationRules;
     }
 
-    public void addValidation(ValidationRules rules)
+    public void addValidation(DialogFieldValidations rules)
     {
         // do nothing but keep method because XDM needs to know rules are allowed
     }
@@ -517,7 +509,8 @@ public class DialogField implements TemplateConsumer
 
 	public void invalidate(DialogContext dc, String message)
 	{
-		dc.getFieldStates().addErrorMessage(parent != null ? parent : this, message);
+        State fieldState = dc.getFieldStates().getState(parent != null ? parent : this);
+        dc.getValidationContext().addValidationError(fieldState.getValidationContextScope(), message, null);
 	}
 
 	/**
@@ -661,6 +654,7 @@ public class DialogField implements TemplateConsumer
 	public void setCaption(ValueSource value)
 	{
 		caption = value;
+        validationRules.updateCaptions();
 	}
 
 	/**
@@ -767,27 +761,6 @@ public class DialogField implements TemplateConsumer
     }
 
 	/**
-	 * Gets a list of errors
-	 *
-	 * @return List list of errors
-	 */
-	public List getErrors()
-	{
-		return errors;
-	}
-
-	/**
-	 * Adds a error message for the field
-	 *
-	 * @param msg error message
-	 */
-	public void addErrorMessage(String msg)
-	{
-		if (errors == null) errors = new ArrayList();
-		errors.add(msg);
-	}
-
-	/**
 	 * Finalize the dialog field's contents: loops through each conditional action of the field to
 	 * assign partner fields and loops through each child field to finalize their contents.
 	 */
@@ -875,6 +848,16 @@ public class DialogField implements TemplateConsumer
 		}
 		return false;
 	}
+
+    public String getRequiredFieldMissingMessage()
+    {
+        return requiredFieldMissingMessage;
+    }
+
+    public void setRequiredFieldMissingMessage(String requiredFieldMissingMessage)
+    {
+        this.requiredFieldMissingMessage = requiredFieldMissingMessage;
+    }
 
 	/**
 	 * Checks whether or not the field is available in the form. The check is done by seeing if the available flag,
@@ -998,7 +981,7 @@ public class DialogField implements TemplateConsumer
 
 	public boolean needsValidation(DialogContext dc)
 	{
-		if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA))
+		if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA) || validationRules.size() > 0)
 			return true;
 
 		if (children == null)
@@ -1015,38 +998,46 @@ public class DialogField implements TemplateConsumer
 		return validateFieldsCount > 0 ? true : false;
 	}
 
-	public boolean defaultIsValid(DialogContext dc)
+	public void validate(DialogValidationContext dvc)
 	{
-		if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA))
-		{
-			Iterator i = conditionalActions.iterator();
-			while (i.hasNext())
-			{
-				DialogFieldConditionalAction action = (DialogFieldConditionalAction) i.next();
-				if (action instanceof DialogFieldConditionalData)
-				{
-					// if the partner field doesn't have data, then this field is "invalid"
-					if (isRequired(dc) && dc.getFieldStates().getState(action.getPartnerField()).getValue().getTextValue() == null)
-						return false;
-				}
-			}
-		}
-		if (children == null)
-			return true;
+        DialogContext dc = dvc.getDialogContext();
+        State fieldState = dc.getFieldStates().getState(this);
 
-		int invalidFieldsCount = 0;
-        for(int i = 0; i < children.size(); i++)
+        if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA))
         {
-            DialogField field = children.get(i);
-			if (field.isAvailable(dc) && (!field.isValid(dc)))
-				invalidFieldsCount++;
-		}
-		return invalidFieldsCount == 0 ? true : false;
-	}
+            Iterator i = conditionalActions.iterator();
+            while (i.hasNext())
+            {
+                DialogFieldConditionalAction action = (DialogFieldConditionalAction) i.next();
+                if (action instanceof DialogFieldConditionalData)
+                {
+                    // if the partner field doesn't have data, then this field is "invalid"
+                    if (isRequired(dc) && dc.getFieldStates().getState(action.getPartnerField()).getValue().getTextValue() == null)
+                        return;
+                }
+            }
+        }
 
-	public boolean isValid(DialogContext dc)
-	{
-		return defaultIsValid(dc);
+        if(isRequired(dvc.getDialogContext()))
+        {
+            if(! fieldState.hasRequiredValue())
+            {
+                dvc.addValidationError(fieldState.getValidationContextScope(), getRequiredFieldMissingMessage(), new Object[] { getCaption().getTextValue(dc) });
+                return;
+            }
+        }
+
+        if(validationRules.size() > 0)
+            validationRules.validateValue(dvc, fieldState.getValue());
+
+        if(children != null)
+        {
+            for(int i = 0; i < children.size(); i++)
+            {
+                DialogField field = children.get(i);
+                if (field.isAvailable(dc)) field.validate(dvc);
+            }
+        }
 	}
 
 	/**

@@ -8,7 +8,6 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.form.DialogSkin;
-import com.netspective.commons.report.tabular.TabularReportSkin;
 
 public class AbstractTheme implements Theme
 {
@@ -19,7 +18,7 @@ public class AbstractTheme implements Theme
     private NavigationSkin navigationSkin;
     private HtmlPanelSkin panelSkin;
     private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel/output", false);
-    private BasicDialogSkin defaultDialogSkin = new BasicDialogSkin(this);
+    private StandardDialogSkin defaultDialogSkin = new BasicDialogSkin(this);
 
     public AbstractTheme()
     {

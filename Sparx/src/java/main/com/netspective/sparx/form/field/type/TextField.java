@@ -51,19 +51,19 @@
  */
 
 /**
- * $Id: TextField.java,v 1.5 2003-05-10 18:14:22 shahid.shah Exp $
+ * $Id: TextField.java,v 1.6 2003-05-11 17:52:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.validate.rule.TextValueValidationRule;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldValidations;
 
 import org.apache.oro.text.perl.MalformedPerl5PatternException;
 import org.apache.oro.text.perl.Perl5Util;
@@ -124,9 +124,33 @@ public class TextField extends DialogField
         initialize();
     }
 
-    public ValidationRules constructValidationRules()
+    /**
+     * Convenience wrapper so that max-length will be available as a XDM attribute in XML
+     */
+    public void setMaxLength(int maxLength)
     {
-        ValidationRules rules = super.constructValidationRules();
+        textValidationRule.setMaxLength(maxLength);
+    }
+
+    /**
+     * Convenience wrapper so that min-length will be available as a XDM attribute in XML
+     */
+    public void setMinLength(int minLength)
+    {
+        textValidationRule.setMinLength(minLength);
+    }
+
+    /**
+     * Convenience wrapper so that reg-expr will be available as a XDM attribute in XML
+     */
+    public void setRegExpr(String regExpr)
+    {
+        textValidationRule.setRegExpr(regExpr);
+    }
+
+    public DialogFieldValidations constructValidationRules()
+    {
+        DialogFieldValidations rules = super.constructValidationRules();
         textValidationRule = new TextValueValidationRule();
         textValidationRule.setMinLength(0);
         textValidationRule.setMaxLength(255);
@@ -134,7 +158,7 @@ public class TextField extends DialogField
         return rules;
     }
 
-    public void addValidation(ValidationRules rules)
+    public void addValidation(DialogFieldValidations rules)
     {
         super.addValidation(rules);
 
@@ -204,7 +228,7 @@ public class TextField extends DialogField
         if((flags & Flags.LOWERCASE) != 0) value = value.toLowerCase();
         if((flags & Flags.TRIM) != 0) value = value.trim();
 
-        if(this.displayPattern != null)
+        if(displayPattern != null)
         {
             synchronized(perlUtil)
             {

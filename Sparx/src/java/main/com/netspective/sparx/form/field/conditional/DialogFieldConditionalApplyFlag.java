@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.1 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.2 2003-05-11 17:52:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -209,7 +209,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
             {
                 // if the dialog is being run in ACE, don't allow conditionals to be executed since
                 // conditionals can contain permission checking which is dependent upon the application
-                dc.getFieldStates().getState(getSourceField()).addErrorMessage(
+                getSourceField().invalidate(dc,
                         "Conditionals using permission checking are not allowed to run in ACE since " +
                         "they are dependent on the application's security settings.");
                 return;

@@ -51,63 +51,39 @@
  */
  
 /**
- * $Id: DialogFieldConditionalDisplay.java,v 1.1 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: DialogFieldConditionalDisplay.java,v 1.2 2003-05-11 17:52:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
 
-import org.w3c.dom.Element;
-
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.DialogContext;
 /**
  * A class for handling conditional logic for display of a dialog field. The condition logic for displaying
  * the field is defined in JavaScript and used in the dialog XML definition using the <code>&lt;conditional&gt;</code> tag
  * with the <code>partner</code> and <code>js-expr</code> attributes.
- *
  */
 public class DialogFieldConditionalDisplay extends DialogFieldConditionalAction
 {
     private String javaScriptExpression;
 
-    /**
-     * Construct a  <code>DialogFieldConditionalDisplay</code>
-     */
     public DialogFieldConditionalDisplay()
     {
         super();
     }
 
-    /**
-     * Construct a <code>DialogFieldConditionalDisplay</code>
-     *
-     * @param sourceField   parent dialog field
-     * @param partnetName   partner field on which the JavaScript expression is executed
-     * @param jsExpr        JavaScript expression
-     */
     public DialogFieldConditionalDisplay(DialogField sourceField, String partnerName, String jsExpr)
     {
         super(sourceField, partnerName);
         setExpression(jsExpr);
     }
 
-    /**
-     * Import the conditional definition
-     *
-     * @param sourceField   The parent dialog field which the conditional is associated with
-     * @param elem          the XML element
-     * @param conditionalItem
-     * @return boolean
-     */
-    public boolean importFromXml(DialogField sourceField, Element elem, int conditionalItem)
+    public boolean isValid(DialogContext dc)
     {
-        if(!super.importFromXml(sourceField, elem, conditionalItem))
-            return false;
-
-        javaScriptExpression = elem.getAttribute("js-expr");
         if(javaScriptExpression == null || javaScriptExpression.length() == 0)
         {
-            sourceField.addErrorMessage("Conditional " + conditionalItem + " has no associated 'js-expr' (JavaScript Expression).");
+            getSourceField().invalidate(dc, "Conditional " + this + " has no associated 'js-expr' (JavaScript Expression).");
             return false;
         }
 
