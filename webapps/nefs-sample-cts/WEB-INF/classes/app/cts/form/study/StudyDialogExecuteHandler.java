@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: StudyDialogExecuteHandler.java,v 1.1 2003-10-10 17:51:10 aye.thu Exp $
+ * $Id: StudyDialogExecuteHandler.java,v 1.2 2003-10-20 06:55:26 aye.thu Exp $
  */
 package app.cts.form.study;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogContextUtils;
+import com.netspective.sparx.form.handler.DialogExecuteRecordEditorHandler;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
@@ -64,12 +65,15 @@ import auto.id.sql.schema.db.enum.StudyOrgRelationType;
 import javax.naming.NamingException;
 
 import app.cts.form.AbstractDialogPerspectiveExecuteHandler;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
- * Class for handling the execution of the Study dialog
+ * Class for handling the execution of the Study dialog in different perspectives
  */
-public class StudyDialogExecuteHandler extends  AbstractDialogPerspectiveExecuteHandler
+public class StudyDialogExecuteHandler extends  DialogExecuteRecordEditorHandler
 {
+    private static Log log = LogFactory.getLog(StudyDialogExecuteHandler.class);
     /**
      * Adds a new study record and its related children records into the database
      * @param dc
@@ -100,9 +104,8 @@ public class StudyDialogExecuteHandler extends  AbstractDialogPerspectiveExecute
             svo.setStudyStatusInt(pc.getStudyStatus().getIntValue());
 
             // These are the optional fields
-            if (pc.getStudyPhase().getSelectedChoice() != null)
-                svo.setStudyStageInt(pc.getStudyPhase().getIntValue());
-
+            if (pc.getStudyStage().getSelectedChoice() != null)
+                svo.setStudyStageInt(pc.getStudyStage().getIntValue());
 
             studyRecord.setValues(svo);
             studyRecord.insert(cc);
@@ -142,7 +145,12 @@ public class StudyDialogExecuteHandler extends  AbstractDialogPerspectiveExecute
         try
         {
             StudyTable studyTable = DataAccessLayer.getInstance().getStudyTable();
-            StudyTable.Record record = studyTable.getRecordByPrimaryKey(cc, new Long(0), true);
+            StudyTable.Record record = studyTable.getRecordByPrimaryKey(cc, new Long(pc.getStudyId().getTextValue()), true);
+            if (record == null)
+            {
+                log.error("Failed to update record due to unknown study ID");
+                throw new DialogExecuteException("Failed to update record due to unknown study ID");
+            }
             StudyVO svo = new StudyVO();
             svo.setStudyName(pc.getStudyName().getTextValue());
             svo.setStudyDescr(pc.getStudyDescr().getTextValue());
@@ -154,14 +162,16 @@ public class StudyDialogExecuteHandler extends  AbstractDialogPerspectiveExecute
             svo.setIrbNumber(pc.getIrbNumber().getTextValue());
             svo.setRecStatId(new Integer(RecordStatus.ACTIVE));
             svo.setStudyStatusInt(pc.getStudyStatus().getIntValue());
-            svo.setStudyStageInt(pc.getStudyPhase().getIntValue());
+            svo.setStudyStageInt(pc.getStudyStage().getIntValue());
             record.setValues(svo);
-            record.insert(cc);
-            cc.getConnection().commit();
+            record.update(cc);
+            cc.commitAndClose();
+            System.out.println("Study Updated " + pc.getStudyStage().getIntValue());
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            log.error("Failed to edit record", e);
             throw new DialogExecuteException("Failed to edit record", e);
         }
     }
@@ -174,11 +184,13 @@ public class StudyDialogExecuteHandler extends  AbstractDialogPerspectiveExecute
      */
     public void deleteRecord(DialogContext dc, ConnectionContext cc) throws DialogExecuteException
     {
+        ProfileContext pc = new ProfileContext(dc);
         try
         {
             StudyTable studyTable = DataAccessLayer.getInstance().getStudyTable();
-            StudyTable.Record record = studyTable.getRecordByPrimaryKey(cc, new Long(0), true);
+            StudyTable.Record record = studyTable.getRecordByPrimaryKey(cc, new Long(pc.getStudyId().getTextValue()), true);
             record.delete(cc);
+            cc.commitAndClose();
         }
         catch (Exception e)
         {

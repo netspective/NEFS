@@ -168,6 +168,9 @@
 			ethnicity is "Other", this table also stores a string containing the word for the
 			person's ethnicity.
         </description>
+        <presentation>
+
+        </presentation>
     </table>
     <table name="Person_Ethnicity" abbrev="PerEth" type="Default">
         <description>

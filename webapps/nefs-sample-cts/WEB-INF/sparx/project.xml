@@ -43,100 +43,141 @@
     <navigation-tree name="app" default="yes" >
         <page caption="Home" name="home" heading="Welcome to CTS" title="CTS - Clinical Trial Management System" default="yes">
             <!--page caption="Summary" name="summary" heading="authenticated-user:complete_sortable_name" title="Welcome to CTS" -->
-                <panels >
-                    <panel  type="html" view="all" test="a" >
+                <panels>
+                    <panel  type="html" view="all" width="400">
                         <frame heading="Welcome"/>
                         <body>
                             <![CDATA[
                             <div align="left" style="padding:10">
-                                Welcome to the Netspective Clinical Trial System. This is your personal home page containing information
+                                Welcome to the Netspective Clinical Trial Management System. This is your personal home page containing information
                                 about the studies you are currently involved in and their related information.
                             </div>
                             ]]>
                         </body>
                     </panel>
-                    <panel type="command"  command="query,cts.active-studies-by-person,-,-,-,report-compressed" >
+                    <panel type="command"  command="query,person.self-active-studies,-,-,-,report-compressed" >
                         <frame heading="Studies"/>
                     </panel>
-                    <panel type="command"  command="query,cts.active-orgs-by-person,-,-,-,report-compressed" >
+                    <panel type="command"  command="query,person.self-active-orgs,-,-,-,report-compressed" >
                         <frame heading="Organizations"/>
                     </panel>
                     <!--panel type="command" command="statement,person.user-journal-report,-,-,report"/>
                     <panel type="command" command="statement,person.user-activity-report,-,-,report"/-->
                 </panels>
+
             <!--/page-->
-            <page caption="Personal Info" name="person_info" heading="Personal Information" title="CTS">
+            <page caption="My Info" name="person_info" heading="Personal Information" title="CTS">
                 <panels>
-                    <panel type="html">
+                    <panel type="html" width="400">
+                        <frame heading="Description"/>
                         <body>
-                        This is your personal information
+                        <![CDATA[
+                        <div align="left" style="padding:10">
+                        In this section you can update your personal information, and create or modify your
+                        contact information. You will also be able to save your application preferences in the future!
+                        </div>
+                        ]]>
                         </body>
                     </panel>
-                    <panel type="command" command="query,cts.user-info,-,-,-,detail-compressed"/>
+                    <panel type="command" command="query,person.self-info,-,-,-,detail-compressed"/>
+                    <panel type="command" command="query,person.self-contact-info,-,-,-,record-viewer-compressed" width="400"/>
                 </panels>
                 <page name="edit" caption="Edit Personal Info" command="dialog,subject.profile,edit"   hidden="yes"
                     require-request-param="id" retain-params="id" />
-                <page name="change_password" caption="Change Password" command="dialog,subject.login_info,edit"   hidden="yes"
+                <page name="change_password" caption="Change password" command="dialog,subject.login_info,edit"
                     require-request-param="person_id" retain-params="person_id" />
+                <page name="contacts" caption="Contacts" heading="Contacts" title="Contacts">
+                    <page name="add" caption="Add Contact Info" command="dialog,db.person-contact,add" hidden="yes"
+                    require-request-param="person_id"  />
+                    <page name="edit" caption="Edit Contact Info" command="dialog,cts.person-contact-info,edit"   hidden="yes"
+                    require-request-param="id" retain-params="id" />
+                </page>
             </page>
 
-            <page caption="Contact Info" name="contact_info" heading="Contact Information" title="Contact Information">
+
+            <page caption="Notes" name="notes" heading="Notes" title="Notes">
                 <panels>
-                    <panel type="html">
+                    <panel type="html" width="400">
+                        <frame heading="Description"/>
                         <body>
-                        The following are all the contact information available for the person.
+                        <![CDATA[
+                        <div align="left" style="padding:10">
+                        In this section you can create and view notes.
+                        </div>
+                        ]]>
                         </body>
                     </panel>
-                    <panel type="command" command="query,cts.contact-info,-,-,-,record-viewer" width="400"/>
+                    <panel type="command" command="query,person.self-notes,-,-,-,record-viewer-compressed" />
                 </panels>
-                <page name="add" caption="Add Contact Info" command="dialog,db.person-contact,add" hidden="yes"
-                require-request-param="person_id"  />
-                <page name="edit" caption="Edit Contact Info" command="dialog,cts.person-contact-info,edit"   hidden="yes"
-                require-request-param="id" retain-params="id" />
-                <page name="edit-person" caption="Edit Personal Info" command="dialog,cts.person-contact-info,edit" hidden="yes"
-                require-request-param="id" retain-params="id" />
+                <page caption="Add new note entry" name="add" command="dialog,person.notes,add" hidden="yes"/>
             </page>
-            <page caption="Journal" name="journal" heading="Add Journal Entry" title="Add Journal Entry">
-                <panels>
-                    <panel type="command" command="query,cts.get-notes-by-person-id,-,-,-,record-viewer-compressed" />
-                </panels>
-                <page caption="Add new journal entry" name="add" command="dialog,subject.journal,add" hidden="yes"/>
-            </page>
+
             <page caption="Study" name="study" heading="Study Information" title="CTS - Clinical Trial Management System" hidden="yes">
-                <panels>
-                    <panel type="command" command="query,cts.get-study-info-by-id,-,-,-,record-editor" />
-                    <panel type="command" command="query,cts.get-related-orgs-by-study-id,-,-,-,record-editor" />
-                    <panel type="command" command="query,cts.get-subjects-by-study-id,-,-,-,record-editor" />
-                    <panel type="command" command="query,cts.get-personnel-by-study-id,-,-,-,record-editor" />
-                </panels>
+                <page name="summary" caption="Trial Info"  heading="Clinical Trial Information"   retain-params="study_id"
+                     require-request-param="study_id">
+                    <panels>
+                        <panel type="command" command="query,study.get-study-info-by-id,-,-,-,detail-2col-compressed" />
+                        <panel type="command" command="query,study.get-sponsors-by-study-id,-,-,-,record-editor" />
+                        <panel type="command" command="query,study.get-sites-by-study-id,-,-,-,record-editor" />
+                    </panels>
+                </page>
+                <page name="subjects" caption="Subjects" heading="Clinical Trial Subjects"   retain-params="study_id"
+                    command="query,cts.get-subjects-by-study-id,-,-,-,record-editor" require-request-param="study_id"/>
+                <page name="physicians" caption="Physicians" heading="Clinical Trial Physicians"   retain-params="study_id"
+                    command="query,cts.get-personnel-by-study-id,-,-,-,record-editor" require-request-param="study_id"/>
+
                 <page name="add" caption="Add Study" heading="Add a new study" title="CTS - Add Study" command="dialog,study.profile,add" hidden="yes"/>
                 <page name="edit" caption="Edit Study" heading="Edit study" title="CTS - Edit Study" command="dialog,study.profile,edit" hidden="yes"/>
                 <page name="delete" caption="Delete Study" heading="Edit study" title="CTS - Delete Study" command="dialog,study.profile,delete" hidden="yes"/>
                 <page name="add_subject" caption="Create Subject" heading="Create a new subject" title="CTS - Create Study Subject"
                     command="dialog,subject.profile,add" hidden="yes"/>
             </page>
-            <page caption="Organization" name="org" heading="Organizations" title="CTS - Clinical Trial Management System" hidden="yes">
-                <panels>
-                    <panel type="command" command="query,org.get-org-info-by-id,-,-,-,report" />
-                    <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-editor" />
-                    <panel type="command" command="query,org.get-employees-by-org-id,-,-,-,record-editor" />
-                </panels>
-                <page name="add" caption="Add" heading="Add a new organization" title="CTS - Add Organization" hidden="yes" command="dialog,org.profile,add"/>
-                <page name="edit" caption="Edit" heading="Edit organization" title="CTS - Edit Organization" hidden="yes" command="dialog,org.profile,edit"/>
-                <page name="delete" caption="Delete" heading="Delete organization" title="CTS - Delete Organization" hidden="yes" command="dialog,org.profile,delete"/>
-                <page name="employee" caption="Employee" heading="Organization - Employee">
+            <page caption="Site" name="site" heading="Site" title="CTS - Clinical Trial Management System" hidden="yes">
+                <page name="summary" caption="Site Info"  heading="Site Information" retain-params="org_id"
+                     require-request-param="org_id">
+                    <panels style="two-columns">
+                        <panel type="command" command="query,org.get-site-info-by-id,-,-,-,detail-compressed" />
+                        <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-editor-compressed" />
+                    </panels>
+                </page>
+                <page name="trials" caption="Related Trials" heading="Related Trials" title="Related Trials" retain-params="org_id"
+                    command="query,org.get-trials-by-org-id,-,-,-,record-editor-compressed" require-request-param="org_id"/>
+                <page name="employees" caption="Employees" heading="Site Employees" title="Site Employees"  retain-params="org_id"
+                    command="query,org.get-employees-by-org-id,-,-,-,record-editor-compressed" require-request-param="org_id"/>
+            </page>
+            <page caption="Sponsor" name="sponsor" heading="Sponsor" title="CTS - Clinical Trial Management System" hidden="yes">
+                <page name="summary" caption="Sponsor Info"  heading="Sponsor Information" retain-params="org_id"
+                     require-request-param="org_id">
+                    <panels style="two-columns">
+                        <panel type="command" command="query,org.get-sponsor-info-by-id,-,-,-,detail-compressed" />
+                        <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-editor-compressed" />
+                    </panels>
+                </page>
+                <page name="trials" caption="Related Trials" heading="Related Trials" title="Related Trials" retain-params="org_id"
+                    command="query,org.get-trials-by-org-id,-,-,-,record-editor-compressed" require-request-param="org_id"/>
+                <page name="employees" caption="Employees" heading="Site Employees" title="Site Employees"  retain-params="org_id"
+                    command="query,org.get-employees-by-org-id,-,-,-,record-editor-compressed" require-request-param="org_id">
+                    <page name="add_employee" caption="Add new employee" heading="Organization - Add new employee"
+                        title="Organization - Add new employee" hidden="yes" command="dialog,org.employee,add"/>
+                    <page name="delete_employee" caption="Delete employee" heading="Organization - Delete employee"
+                        title="Organization - Delete employee" hidden="yes" command="dialog,org.employee,delete"/>
+                </page>
+                <page name="employee" caption="Employee" heading="Organization - Employee" hidden="yes">
                     <page name="summary" caption="Employee Information" heading="Organization - Employee Summary" title="">
                         <panels>
                             <panel type="command" command="query,org.get-employee-profile-by-org-and-person-id,-,-,-,detail-2col-compressed"/>
                             <panel type="command" command="query,org.get-employee-contact-info-by-org-and-person-id,-,-,-,record-viewer-compressed" />
                         </panels>
                     </page>
+                    <page name="contacts" caption="Contacts" heading="Employee's Contact Information" title="Employee's Contact Information">
+                        <page name="add" caption="Add Contact Info" command="dialog,person.contact_method,add" hidden="yes"
+                        require-request-param="person_id"  />
+                        <page name="edit" caption="Edit Contact Info" command="dialog,person.contact_method,edit"   hidden="yes"
+                        require-request-param="person_id,id" />
+                    </page>
                 </page>
-                <page name="add_employee" caption="Add new employee" heading="Organization - Add new employee"
-                    title="Organization - Add new employee" hidden="yes" command="dialog,org.employee,add"/>
-                <page name="delete_employee" caption="Delete employee" heading="Organization - Delete employee"
-                    title="Organization - Delete employee" hidden="yes" command="dialog,org.employee,delete"/>
-                <page name="address" caption="Address" heading="Organization Address">
+
+                <page name="address" caption="Address" heading="Organization Address" hidden="yes">
                     <page name="add" caption="Add Organization Address" heading="Add Organization Address" title="Add Organization Address"
                         hidden="yes" command="dialog,db.Org_Address,add"/>
                     <page name="edit" caption="Edit Organization Address" heading="Edit Organization Address" title="Edit Organization Address"
@@ -157,8 +198,9 @@
                     <ul>
                         <li><b><a href="search/subjects">Subject</a></b>: Search for study subjects </li>
                         <li><b><a href="search/physicians">Physician</a></b>: Search for doctors </li>
-                        <li><b><a href="search/organizations">Organizations</a></b>: Search for organizations</li>
-                        <li><b><a href="search/studies">Studies</a></b>: Search for studies</li>
+                        <li><b><a href="search/sites">Sites</a></b>: Search for Trial Sites</li>
+                        <li><b><a href="search/sponsors">Sponsors</a></b>: Search for Trial Sponsors</li>
+                        <li><b><a href="search/trials">Trials</a></b>: Search for Clinical Trials</li>
                     </ul>
                     </div>
                     ]]>
@@ -168,10 +210,67 @@
 
             <page caption="Subjects" name="subjects" heading="Search for subjects" command="query-defn,person,-,searchSubjectDialog"/>
             <page caption="Physicians" name="physicians" heading="Search for physicians" command="query-defn,person,-,searchPhysicianDialog"/>
-            <page caption="Organizations" name="organizations" heading="Search for organizations" command="query-defn,org,-,searchDialog"/>
-            <page name="search" caption="Studies" heading="Search for studies" title="CTS - Search Studies" default="yes" command="query-defn,study,-,searchDialog"/>
+            <page caption="Sites" name="sites" heading="Search for sites" command="query-defn,org,-,searchSites"/>
+            <page caption="Sponsors" name="sponsors" heading="Search for sponsors" command="query-defn,org,-,searchSponsors"/>
+            <page name="trials" caption="Clinical Trials" heading="Search for Clinical Trials" title="CTS - Search Clinical Trials" default="yes" command="query-defn,study,-,searchDialog"/>
         </page>
+        <page caption="Admin" name="admin" heading="Admin" title="">
 
+            <page name="create" caption="Create" heading="Create"  title="Create" hidden="no">
+                <panels>
+                <panel type="html">
+                    <frame heading="Description"/>
+                    <body>
+                        <![CDATA[
+                        <div align="left" style="padding:10">
+                        In this section, you can administer and manage the various entities associated with clinical trials.
+                        <ul>
+                            <li><b><a href="create/trial">Trial</a></b>: Create a new clinical trial</li>
+                            <li><b><a href="create/sponsor">Sponsor</a></b>: Create a sponsor for a clinical trial</li>
+                            <li><b><a href="create/site">Site</a></b>: Create a new site for a trial</li>
+                            <li><b><a href="create/site">Site</a></b>: Create a new site for a trial</li>
+                        </ul>
+                        You can also manage the different personnel involved with clinical trials.
+                        <ul>
+                            <li> <b><a href="admin/create/physician">Physicians</a></b>: Add a new physician </li>
+                            <li> <b><a href="admin/create/subject">Subject</a></b>: Add a new trial subject </li>
+                        </ul>
+                        </div>
+                        ]]>
+                    </body>
+                </panel>
+                </panels>
+                <page name="sponsor" caption="Sponsor" heading="Create a new Sponsor" title="Sponsor"
+                    command="dialog,org.sponsor,add" hidden="no"/>
+                <page name="trial" caption="Trial" heading="Create a new clinical trial" title="Create a new clinical trial"
+                    command="dialog,study.profile,add" hidden="no"/>
+                <page name="site" caption="Site" heading="Create a new clinical trial site" title="Create a new clinical trial site"
+                    command="dialog,site.profile,add" hidden="no">
+                    <page name="address" caption="Site Address"  heading="Create a new address" title="Site Address"
+                        command="dialog,org.address,add" hidden="no"/>
+                </page>
+            </page>
+            <page name="edit" caption="Edit" heading="Edit" title="Edit" hidden="no">
+                <panels>
+                <panel type="html">
+                    <frame heading="Description"/>
+                    <body>
+                        <![CDATA[
+                        <div align="left" style="padding:10">
+                        Please select a clinical trial related entity () by doing a search or selecting from your home page.
+                        ]]>
+                    </body>
+                </panel>
+                </panels>
+                <page name="trial" caption="Edit Clinical Trial" heading="Edit Clinical Trial Information"
+                    title="CTS - Edit Clinical Trial Information" command="dialog,study.profile,edit" hidden="yes"/>
+                <page name="site" caption="Edit Clinical Trial Site" heading="Edit Clinical Trial Site" require-request-param="org_id"
+                    title="CTS - Edit Clinical Trial Site" command="dialog,site.profile,edit" hidden="yes">
+
+                </page>
+            </page>
+
+        </page>
         <!--page caption="Person" name="person" heading="CTS - Personnel Management Section" title="CTS - Clinical Trial Management System">
             <panels>
 				<panel type="html">

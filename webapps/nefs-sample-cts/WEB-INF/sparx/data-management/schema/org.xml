@@ -40,7 +40,7 @@
         </column>
     </table>
     <table name="Org_Address" abbrev="OrgAdr" type="Physical_Address" xdm:param-parentRef="Org.org_id">
-        <presentation>
+        <!-- presentation>
             <dialog class="com.netspective.sparx.form.schema.TableDialog"
                     name="${table.name}"
                     bind-table="${table.schema.name}.${table.name}"
@@ -51,7 +51,7 @@
 
                 <data-type-presentation columns="*"/>
             </dialog>
-        </presentation>
+        </presentation-->
     </table>
     <table name="Org_Note" abbrev="ONote" type="Note" xdm:param-parentRef="Org.org_id" xdm:param-noteTypeEnum="Org_Note_Type">
         <!--presentation>
@@ -72,7 +72,7 @@
 			Stores a record of the different classifications for an org
         </description>
         <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-        <column name="org_id" parentref="Org.org_id" descr="The actual org record for which classification record is being defined">
+        <column name="parent_id" parentref="Org.org_id" descr="The actual org record for which classification record is being defined">
             <presentation>
                 <field type="guid32" name="${column.name}" caption="Org ID" required="yes">
                     <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
@@ -91,31 +91,8 @@
                 </field>
             </presentation>
         </column>
-        <!--presentation>
-            <dialog name="orgClassificationTableDialog" retain-params="org_id">
-                <field.table-column column="cr_sess_id"/>
-                <field.table-column column="cr_stamp"/>
-                <field.table-column column="rec_stat_id"/>
-                <field.table-column column="system_id"/>
-                <field.table-column column="org_id"/>
-                <field.table-column column="org_type_id"/>
-                <field.table-column column="org_type"/>
-            </dialog>
-        </presentation-->
     </table>
     <table name="Org_Contact" abbrev="OrgCnt" type="Contact_Method" xdm:param-parentRef="Org.org_id">
-        <!--presentation>
-            <dialog name="orgContactTableDialog" retain-params="parent_id,org_id">
-                <field.table-column column="cr_sess_id"/>
-                <field.table-column column="cr_stamp"/>
-                <field.table-column column="rec_stat_id"/>
-                <field.table-column column="system_id"/>
-                <field.table-column column="parent_id" caption="Org ID"/>
-                <field.table-column column="method_type"/>
-                <field.table-column column="method_name"/>
-                <field.table-column column="method_value"/>
-            </dialog>
-        </presentation-->
     </table>
     <table name="Org_Identifier" abbrev="OrgID" type="Default">
         <column name="system_id" type="guid32" primarykey="yes"/>

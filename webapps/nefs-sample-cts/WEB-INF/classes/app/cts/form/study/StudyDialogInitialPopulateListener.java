@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StudyDialogInitialPopulateListener.java,v 1.2 2003-10-12 05:15:32 aye.thu Exp $
+ * $Id: StudyDialogInitialPopulateListener.java,v 1.3 2003-10-20 06:55:26 aye.thu Exp $
  */
 package app.cts.form.study;
 
@@ -69,7 +69,7 @@ public class StudyDialogInitialPopulateListener implements DialogInitialPopulate
             String idParam = dc.getHttpRequest().getParameter("study_id");
             if (idParam == null || idParam.length() == 0)
                 throw new RuntimeException("Study ID was not found in the request object.");
-            Query query = dc.getSqlManager().getQuery(auto.id.sql.query.Cts.GET_STUDY_INFO_BY_ID);
+            Query query = dc.getSqlManager().getQuery(auto.id.sql.query.Study.GET_STUDY_INFO_BY_ID);
             try
             {
                 QueryResultSet qrs = query.execute(dc, new Object[] { idParam }, false);

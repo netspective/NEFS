@@ -4,7 +4,8 @@
 		ORGANIZATIONS
 	-->
 	<org ID="ORG 1" org-name="AETNA" org-code="AETNA" org-abbrev="ORG" rec-stat-id="Active" time-zone="EST" employees="1000">
-		<org-address address-name="Location 1" zip="22038" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Main Road" city="Fairfax" state-id="Virginia" county="Fairfax"/>
+		<org-address address-name="Location 1" zip="22038" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Main Road"
+            city="Fairfax" state-id="Virginia" county="Fairfax"/>
 		<org-classification rec-stat-id="Active" org-type-id="Insurance"/>
 		<org-contact rec-stat-id="Active" method-type="telephone: Business" method-value="532-5512" phone-ac="703"/>
 		<org-contact rec-stat-id="Active" method-type="telephone: Company" method-value="585-5574" phone-ac="703"/>
@@ -12,21 +13,26 @@
 	</org>
 	<!-- 2 -->
     <org ID="ORG 2" org-name="Acme Clinical Trial Company" org-code="ADC" org-abbrev="ACME CTC" rec-stat-id="Active" time-zone="EST" employees="100">
+        <org-classification rec-stat-id="Active" org-type-id="Trial Site"/>
         <org-address address-name="Location 1" zip="11111" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Acme Road" city="Acme City" state-id="California" />
 		<org-contact rec-stat-id="Active" method-type="telephone: Business" method-value="532-5512" phone-ac="703"/>
 		<org-contact rec-stat-id="Active" method-type="telephone: Company" method-value="585-5574" phone-ac="703"/>
 	</org>
 	<org ID="ORG 3" org-name="Stanford University Medical Center" org-code="SUMC" org-abbrev="STFD" rec-stat-id="Active" time-zone="PST" employees="300">
-		<org-address address-name="Location 1" zip="11111" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Acme Road" city="Acme City" state-id="California" />
+		<org-classification rec-stat-id="Active" org-type-id="Trial Site"/>
+        <org-address address-name="Location 1" zip="11111" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Acme Road" city="Acme City" state-id="California" />
 		<org-contact rec-stat-id="Active" method-type="telephone: Business" method-value="532-5512" phone-ac="703"/>
 		<org-contact rec-stat-id="Active" method-type="telephone: Company" method-value="585-5574" phone-ac="703"/>
 	</org>
     <org ID="ORG 4" org-name="National Institute of Allergy and Infectious Diseases" org-code="NIAID" org-abbrev="NIAID" rec-stat-id="Active" time-zone="PST" employees="300">
+        <org-classification rec-stat-id="Active" org-type-id="Trial Sponsor"/>
         <org-address address-name="Location 1" zip="11111" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="31 Center Drive" city="Bethesda" state-id="Maryland" />
 		<org-contact rec-stat-id="Active" method-type="Telephone: Business" method-value="123-4567" phone-ac="800"/>
 	</org>
 	<org ID="ORG 5" org-name="Bristol-Myers Squibb" org-code="BMS" org-abbrev="BMS" rec-stat-id="Active" time-zone="PST" employees="300">
-        <org-address address-name="Location 1" zip="10154" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="345 Park Avenue" city="New York" state-id="New York" />
+        <org-classification rec-stat-id="Active" org-type-id="Trial Sponsor"/>
+        <org-address address-name="Location 1" zip="10154" rec-stat-id="Active" mailing="true" address-type-id="Primary"
+            line1="345 Park Avenue" city="New York" state-id="New York" />
 		<org-contact rec-stat-id="Active" method-type="Telephone: Business" method-value="546-4000" phone-ac="212"/>
 	</org>
 
@@ -78,7 +84,8 @@
 	</person>
 
 
-    <study ID="STUDY 0" study-code="AAD" study-name="Acute Anxiety Disorder" study-descr="Acute Anxiety Disorder" rec-stat-id="Active" study-status="Proposed"
+    <study ID="STUDY 0" study-code="AAD" study-name="Acute Anxiety Disorder" study-descr="Acute Anxiety Disorder" rec-stat-id="Active"
+        study-status="Proposed" study-stage="Phase I"
         irb-name="Johns Hopkins University" irb-number="IRB00000025" start-date="May 10, 2003" target-end-date="July 10, 2004"
         irb-approval-date="December 12, 2002" irb-expiration-date="December 12, 2005">
         <studyorg-relationship rec-stat-id="Active" rel-type-id="Sponsor" rel-entity-id="IDREF:ORG 5" rel-begin="May 10, 2003"/>
@@ -87,7 +94,8 @@
         <studyperson-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:PERSON 1" rel-begin="May 10, 2003"/>
         <studyperson-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:PERSON 2" rel-begin="May 10, 2003"/>
     </study>
-    <study ID="STUDY 1" study-code="AL" study-name="Ragweed Allergy" study-descr="Study of ragweed allergy" rec-stat-id="Active" study-status="Proposed"
+    <study ID="STUDY 1" study-code="AL" study-name="Ragweed Allergy" study-descr="Study of ragweed allergy" rec-stat-id="Active"
+        study-status="Proposed" study-stage="Phase II"
         irb-name="Northwestern University" irb-number="IRB00000010" start-date="January 10, 2003" target-end-date="January 10, 2004"
         irb-approval-date="December 12, 2002" irb-expiration-date="December 12, 2005">
         <studyorg-relationship rec-stat-id="Active" rel-type-id="Sponsor" rel-entity-id="IDREF:ORG 1" rel-begin="January 10, 2003" />

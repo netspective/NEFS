@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: OrgDialog.java,v 1.2 2003-10-12 05:15:32 aye.thu Exp $
+ * $Id: OrgDialog.java,v 1.3 2003-10-20 06:55:26 aye.thu Exp $
  */
 package app.cts.form;
 
@@ -77,6 +77,7 @@ public class OrgDialog extends TableDialog
      */
     public void populateValues(DialogContext dc, int formatType)
     {
+        dc.getFieldStates().getState("").getValue().hasValue()
         super.populateValues(dc, formatType);
         if(dc.getAuthenticatedUser() == null)
             return;

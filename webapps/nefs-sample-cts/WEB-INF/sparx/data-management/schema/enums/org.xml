@@ -67,6 +67,8 @@
     </table>
     <table name="Org_Type" abbrev="OTy" type="Enumeration">
         <enumerations>
+            <enum>Trial Sponsor</enum>
+            <enum>Trial Site</enum>
             <enum>Practice</enum>
             <enum>Clinic</enum>
             <enum>Facility/Site</enum>

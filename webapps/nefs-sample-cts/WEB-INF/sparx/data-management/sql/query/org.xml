@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 <queries package="org">
+    <query name="get-trials-by-org-id">
+        select
+            study.study_id,
+            study.study_name,
+            study.study_code,
+            study.start_date,
+            study.study_status
+        from
+            study, studyorg_relationship
+        where
+            studyorg_relationship.rel_entity_id = ? and
+            studyorg_relationship.parent_id = study.study_id
+
+        <params>
+            <param value="request:org_id"/>
+        </params>
+        <presentation>
+            <panel>
+                <frame heading="static:Clinical Trials"/>
+                <report>
+                    <actions>
+                        <action type="edit" redirect="page-id:/admin/edit/trial?study_id=${0}"/>
+                    </actions>
+                    <column heading="ID"/>
+                    <column heading="Name" align="left" redirect="page-id:/home/study?study_id=${0}"/>
+                    <column heading="Code"/>
+                    <column heading="Start Date"/>
+                    <column heading="Status"/>
+                </report>
+            </panel>
+        </presentation>
+    </query>
+
     <query name="get-employee-profile-by-org-and-person-id">
             select
                 person.person_id "person-id",
@@ -33,7 +66,7 @@
                 </panel>
             </presentation>
         </query>
-    <query name="get-org-info-by-id">
+    <query name="get-sponsor-info-by-id">
         select
             org.org_id,
             org.org_name "org_name",
@@ -49,19 +82,67 @@
         </params>
         <presentation>
             <panel>
-                <frame heading="static:Organization Information"/>
+                <frame heading="static:Sponsor Information"/>
                 <banner>
-                    <action caption="Edit" redirect="page-id:/home/org/edit?org_id=${0}"/>
+                    <action caption="Edit" redirect="vs-expr:${page-id:/admin/edit/sponsor}?org_id=${0}"/>
                 </banner>
                 <report>
-                    <actions>
-                        <action type="edit" redirect="page-id:/home/org/edit?org_id=${0}"/>
-                    </actions>
+
                     <column heading="ID"/>
                     <column heading="Name" align="left"/>
                     <column heading="Code" />
                     <column heading="Abbrev" />
                     <column heading="Employees" />
+                </report>
+            </panel>
+        </presentation>
+    </query>
+    <query name="get-site-info-by-id">
+        select
+            org.org_id,
+            org.org_name "org_name",
+            org.org_code "org_code",
+            org.org_abbrev,
+            org.employees
+        from
+            org
+        where
+            org.org_id = ?
+        <params>
+            <param value="request:org_id"/>
+        </params>
+        <presentation>
+            <panel>
+                <frame heading="static:Site Information"/>
+                <banner>
+                    <action caption="Edit" redirect="vs-expr:${page-id:/admin/edit/site}?org_id=${request:org_id}"/>
+                </banner>
+                <report>
+
+                    <column heading="ID"/>
+                    <column heading="Name" align="left"/>
+                    <column heading="Code" />
+                    <column heading="Abbrev" />
+                    <column heading="Employees" />
+                </report>
+            </panel>
+        </presentation>
+    </query>
+    <query name="get-org-types-by-org-id">
+        select
+            org_classification.org_type
+        from
+            org_classification
+        where
+            parent_id = ?
+        <params>
+            <param value="request:org_id"/>
+        </params>
+        <presentation>
+            <panel>
+                <frame heading="static:Organization Types"/>
+                <report>
+                    <column heading="Type"/>
                 </report>
             </panel>
         </presentation>
@@ -83,7 +164,7 @@
         </params>
         <presentation>
             <panel>
-                <frame heading="static:Organization Addresses"/>
+                <frame heading="static:Addresses"/>
                 <banner>
                     <action caption="Add new address" redirect="vs-expr:${page-id:/home/org/address/add}?org_id=${request:org_id}"/>
                 </banner>
@@ -151,14 +232,10 @@
             <panel>
                 <frame heading="static:Contact Information"/>
                 <banner style="horizontal">
-                    <action caption="Add new contact" hint="Add" redirect="vs-expr:${page-id:/home/contact_info/add}?person_id=${request:person_id}"/>
+                    <action caption="Add new contact" hint="Add"
+                        redirect="vs-expr:${page-id:/home/org/employee/contacts/add}?org_id=${request:org_id}&amp;person_id=${request:person_id}"/>
                 </banner>
                 <report>
-                    <actions>
-                        <action type="add" caption="Add Contact" redirect="vs-expr:${servlet-context-uri:/home/contact_info/add}?person_id=${request:person_id}"/>
-                        <action type="edit" redirect="servlet-context-uri:/home/contact_info/edit?person_id=${authenticated-user:person_id}&amp;id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
-                        <action type="delete" redirect="servlet-context-uri:/home/contact_info/delete?person_id=${authenticated-user:person_id}&amp;id=${0}"/>
-                    </actions>
                     <column heading="ID" hidden="yes"/>
                     <column heading="Type" align="left"/>
                     <column heading="Value" />

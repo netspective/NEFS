@@ -4,6 +4,8 @@
     <xdm:include file="query-defns/org.xml"/>
     <xdm:include file="query-defns/person.xml"/>
     <xdm:include file="query/org.xml"/>
+    <xdm:include file="query/person.xml"/>
+    <xdm:include file="query/study.xml"/>
 
     <queries package="cts">
         <query name="get-all-studies">
@@ -113,68 +115,7 @@
                 </panel>
             </presentation>
         </query>
-        <query name="active-studies-by-person">
-            select
-                study_id,
-                study_name
-            from
-                study, studyperson_relationship spr
-            where
-                spr.rel_entity_id = ? and
-                spr.parent_id  = study.study_id
 
-            <params>
-                <param value="authenticated-user:person_id"/>
-            </params>
-            <presentation>
-                <panel>
-                    <frame heading="static:Related Studies"/>
-                    <banner>
-                        <action caption="Create Study" redirect="page-id:app,/home/study/add"/>
-                    </banner>
-                    <report>
-                        <actions>
-                            <action type="add" caption="Add Study" title="View Detailed Information" redirect="page-id:/home/study/add"/>
-                            <action type="edit" redirect="page-id:app,/home/study/edit?id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
-                            <action type="delete" redirect="page-id:/home/study/delete?id=${0}"/>
-                        </actions>
-                        <column heading="ID" align="left"/>
-                        <column heading="Name" redirect="page-id:/home/study?study_id=${0}"/>
-                    </report>
-                </panel>
-            </presentation>
-        </query>
-        <query name="active-orgs-by-person">
-            select
-                org_id,
-                org_name
-            from
-                org, personorg_relationship opr
-            where
-                opr.rel_entity_id = org.org_id and
-                opr.parent_id  = ?
-
-            <params>
-                <param value="authenticated-user:person_id"/>
-            </params>
-            <presentation>
-                <panel>
-                    <frame heading="static:Related Organizations"/>
-                    <banner>
-                        <action caption="Create Organization" redirect="page-id:app,/home/org/add"/>
-                    </banner>
-                    <report>
-                        <actions>
-                            <action type="add" caption="Create Organization" redirect="page-id:app,/home/org/add"/>
-                            <action type="edit" redirect="page-id:app,/edit?id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
-                            <action type="delete" redirect="page-id:/delete?id=${0}"/>
-                        </actions>
-                        <column heading="ID" align="left"/>
-                        <column heading="Name" redirect="page-id:/home/org?org_id=${0}"/>
-                    </report>
-                </panel>
-            </presentation>
-        </query>
         <query name="login-user-info">
             select
                 person.person_id "person-id",
@@ -202,64 +143,8 @@
                 </panel>
             </presentation>
         </query>
-        <query name="get-notes-by-person-id">
-            select
-                person_note.cr_stamp,
-                person_note.note_type,
-                person_note.notes
-            from person_note
-            where person_note.parent_id = ?
-            <params>
-                <param value="authenticated-user:person_id"/>
-            </params>
-            <presentation>
-                <panel>
-                    <frame heading="static:Journal Entries"/>
-                    <report >
-                        <actions>
-                            <action type="add" caption="Add entry" redirect="page-id:/home/journal/add"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
-                        </actions>
-                        <column heading="Date" align="left"/>
-                        <column heading="Type" />
-                        <column heading="Notes" />
-                    </report>
-                </panel>
-            </presentation>
-        </query>
-        <query name="user-info">
-            select
-                person.person_id "person-id",
-                person.name_last "last-name",
-                person.name_first "first-name",
-                person.complete_sortable_name "full-name",
-                person.ssn,
-                person.birth_date
-            from
-                person, person_login
-            where
-                person.person_id = ?
 
-            <params>
-                <param value="authenticated-user:person_id"/>
-            </params>
-            <presentation>
-                <panel>
-                    <frame heading="static:User Information"/>
-                    <banner style="horizontal">
-                        <action  caption="Edit Info" redirect="vs-expr:${page-id:/home/person_info/edit}?person_id=${authenticated-user:person_id}"/>
-                        <action  caption="Change Password" redirect="vs-expr:${page-id:/home/person_info/change_password}?person_id=${authenticated-user:person_id}"/>
-                    </banner>
-                    <report >
-                        <column heading="ID" align="left"/>
-                        <column heading="Last Name" />
-                        <column heading="First Name" />
-                        <column heading="Full Name" />
-                        <column heading="SSN" />
-                        <column heading="DOB" />
-                    </report>
-                </panel>
-            </presentation>
-        </query>
+
         <query name="get-person-by-study-id">
             select
                 person.person_id "person-id",
@@ -272,37 +157,7 @@
                 study_person_relation.parent_id = ? and
                 study_person_relation.
         </query>
-        <query name="contact-info">
-            select
-                person_contact.system_id,
-                contact_method_type.caption,
-                person_contact.method_value
-                person_contact, contact_method_type
-            where
-                person_contact.parent_id  = ? and
-                person_contact.method_type = contact_method_type.id
-            <params>
-                <param value="authenticated-user:person_id"/>
-            </params>
-            <presentation>
-                <panel>
-                    <frame heading="static:Contact Information"/>
-                    <banner style="horizontal">
-                        <action caption="Add new contact" hint="Add" redirect="vs-expr:${page-id:/home/contact_info/add}?person_id=${authenticated-user:person_id}"/>
-                    </banner>
-                    <report>
-                        <actions>
-                            <action type="add" caption="Add Contact" redirect="vs-expr:${servlet-context-uri:/home/contact_info/add}?person_id=${authenticated-user:person_id}"/>
-                            <action type="edit" redirect="servlet-context-uri:/home/contact_info/edit?person_id=${authenticated-user:person_id}&amp;id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
-                            <action type="delete" redirect="servlet-context-uri:/home/contact_info/delete?person_id=${authenticated-user:person_id}&amp;id=${0}"/>
-                        </actions>
-                        <column heading="ID" hidden="yes"/>
-                        <column heading="Type" align="left"/>
-                        <column heading="Value" />
-                    </report>
-                </panel>
-            </presentation>
-        </query>
+
 
         <query name="get-contact-info-by-id">
         	select
@@ -317,44 +172,7 @@
         		<param value="request:id"/>
         	</params>
         </query>
-        <query name="get-study-info-by-id">
-        	select
-        		study.study_id,
-                study.study_name,
-                study_descr,
-                study.study_status,
-                study.start_date,
-                study.target_end_date "target_end_date",
-                study.actual_end_date,
-                irb_name,
-                irb_number
-        	from
-        		study
-        	where
-        		study.study_id = ?
-        	<params>
-        		<param value="request:study_id"/>
-        	</params>
-            <presentation>
-                <panel>
-                    <frame heading="static:Trial Study Information"/>
-                    <banner style="horizontal">
-                        <action caption="Edit" hint="Edit" redirect="vs-expr:${page-id:/home/study/edit}?study_id=${request:study_id}"/>
-                    </banner>
-                    <report>
-                        <column heading="ID"/>
-                        <column heading="Name" align="left"/>
-                        <column heading="Description" />
-                        <column heading="Status" />
-                        <column heading="Start Date" />
-                        <column heading="Target End Date" />
-                        <column heading="Actual End Date" />
-                        <column heading="IRB Name" />
-                        <column heading="IRB Number" />
-                    </report>
-                </panel>
-            </presentation>
-        </query>
+
         <query name="get-related-orgs-by-study-id">
         	select
         		org.org_id,

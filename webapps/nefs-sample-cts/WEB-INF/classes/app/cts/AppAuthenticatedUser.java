@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppAuthenticatedUser.java,v 1.1 2003-10-10 17:51:40 aye.thu Exp $
+ * $Id: AppAuthenticatedUser.java,v 1.2 2003-10-20 06:55:26 aye.thu Exp $
  */
 
 package app.cts;
@@ -70,7 +70,7 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser
         try
         {
             cc = ldc.getConnection(null, false);
-            Query query = ldc.getProject().getQuery("cts.login-user-info");
+            Query query = ldc.getProject().getQuery(auto.id.sql.query.Person.AUTHENTICATED_USER_INFO);
             QueryResultSet qrs = query.execute(cc, new Object[] {getUserId()}, false);
             ResultSet rs = qrs.getResultSet();
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -79,6 +79,7 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser
                 for (int i=1; i <= rsmd.getColumnCount(); i++)
                 {
                     setAttribute(rsmd.getColumnName(i).toLowerCase(), rs.getString(i));
+                    System.out.println(rsmd.getColumnName(i).toLowerCase() + " " + rs.getString(i));
                 }
             }
         }

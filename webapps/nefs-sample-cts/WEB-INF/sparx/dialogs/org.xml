@@ -1,127 +1,112 @@
 <?xml version="1.0"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+    <xdm:template name="org-address" >
+        <field type="separator" heading="Address Information"/>
+        <field type="text" name="address_name" hidden="no" caption="Address Name" default="Mailing Address"/>
+        <field type="text" name="line1" caption="Address 1" required="no" size="64" />
+        <field type="text" name="line2" caption="Address 2" size="64" />
+        <field type="composite" name="cityStateZip" caption="*">
+            <field type="text" name="city" caption="City" required="yes" size="16" />
+            <field type="select" name="state" caption="State" choices="schema-enum:db.US_State_Type"
+                 required="yes"/>
+            <field type="zip-code" name="zip" caption="Zip Code" max-length="5" size="7" />
+        </field>
+        <field type="text" name="country" caption="Country" size="16" />
+        <field type="text" name="time_zone" caption="Time Zone"/>
 
+        <field type="separator" heading="Contact Information"/>
+        <field type="composite"  name="primary" caption="*">
+            <field type="phone"  name="phone" caption="Telephone"/>
+            <field type="phone" name="fax" caption="Fax"/>
+        </field>
+        <field type="e-mail" name="email" caption="E-Mail"/>
+        <field type="text" name="website" caption="Web Site"/>
+    </xdm:template>
+
+    <xdm:template name="org-profile">
+        <field type="text" name="org_name" caption="Organization Name" required="yes" size="32" />
+        <field type="text" name="org_code" required="yes" caption="Code" size="16" />
+        <field type="text" name="org_abbrev" caption="Abbreviated Name" size="16" />
+    </xdm:template>
+    
+    
+    <dialogs package="site">
+       <!--
+            This is the dialog for creating/updating/deleting trial sites
+        -->
+        <dialog name="profile" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Site"/>
+            <xdm:include template="org-profile"/>
+            <xdm:include template="org-address"/>
+            <on-add-data>
+                <org _auto_map="org_name,org_code,org_abbrev," rec-stat-id="static:Active">
+                    <org-classification rec-stat-id="static:Active" org-type-id="static:Trial Site"/>
+                </org>
+            </on-add-data>
+        </dialog>
+    </dialogs>
     <!--
         Organization related dialogs
      -->
     <dialogs package="org">
-        <dialog name="address" >
-            <frame heading="create-dialog-perspective-heading: Address"/>
-            <field type="separator" heading="Contact Information"/>
-            <field type="text" name="line1" caption="Mailing Address" required="yes" size="64"/>
-            <field type="text" name="line2" caption="Line 2" size="64"/>
-            <field type="composite" name="cityStateZip" caption="*">
-                <field type="text" name="city" caption="City" required="yes" size="16"/>
-                <field type="select" name="state" caption="State" choices="schema-enum:db.US_State_Type" required="yes"/>
-                <field type="zip-code" name="zip" caption="Zip Code"/>
-            </field>
-            <field type="text" name="country" caption="Country" size="16"/>
-            <field type="composite"  name="primary" caption="*">
-                <field type="phone"  name="phone" caption="Telephone"/>
-                <field type="phone" name="fax" caption="Fax"/>
-            </field>
-            <field type="composite" name="billing" caption="*">
-                <field type="text" name="contact" caption="Billing Contact"/>
-                <field type="phone" name="phone" caption="Phone"/>
-            </field>
-            <field type="e-mail" name="email" caption="E-Mail"/>
-            <field type="text" name="website" caption="Web Site"/>
+        
+        <dialog name="address" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Address"/>
+            <xdm:include template="org-address"/>
+            <on-add-data>
+                <org-address parent-id="request:org_id" rec-stat-id="static:Active"
+                    _auto_map="address_name,line1,line2,country"/>
+            </on-add-data>
         </dialog>
-
-        <dialog name="profile" type="table-dialog" retain-params="*" bind-table="org" auto-bind-fields-to-columns="no">
-            <frame heading="create-dialog-perspective-heading: Organization"/>
-            <field type="integer" name="org_id" hidden="yes" default="request:org_id"/>
-            <field type="separator" heading="Organization Profile"/>
-            <field type="text" name="org_name" caption="Organization Name" required="yes" size="32" bind-column="org_name"/>
-            <field type="text" name="org_code" required="yes" caption="Code" size="16" bind-column="org_code"/>
-            <field type="text" name="org_abbrev" caption="Abbreviated Name" size="16" bind-column="org_abbrev"/>
-            <field type="text" name="time_zone" caption="Time Zone of Organization Location" hint="The following fields should be filled with times in this timezone" size="16"/>
-
-            <field type="separator" heading="Classification"/>
-            <field type="select" name="org_type_id" caption="Organization Type" choices="schema-enum:Org_Type"
-                required="no"/>
-
-            <field type="separator" heading="Contact Information"/>
-            <field type="text" name="address_name" hidden="yes" caption="Address Name" default="Mailing Address"
-                bind-column="Org_Address.address_name"/>
-
-            <field type="text" name="line1" caption="Mailing Address" required="no" size="64" bind-column="Org_Address.line1"/>
-            <field type="text" name="line2" caption="Line 2" size="64" bind-column="Org_Address.line2"/>
-            <field type="composite" name="cityStateZip" caption="*">
-                <field type="text" name="city" caption="City" required="yes" size="16" bind-column="Org_Address.city"/>
-                <field type="select" name="state" caption="State" choices="schema-enum:db.US_State_Type"
-                    bind-column="Org_Address.state" required="yes"/>
-                <field type="zip-code" name="zip" caption="Zip Code" max-length="5" size="7" bind-column="Org_Address.zip"/>
-            </field>
-            <field type="text" name="country" caption="Country" size="16" bind-column="Org_Address.country"/>
-            <field type="composite"  name="primary" caption="*">
-                <field type="phone"  name="phone" caption="Telephone"/>
-                <field type="phone" name="fax" caption="Fax"/>
-            </field>
-            <field type="e-mail" name="email" caption="E-Mail"/>
-            <field type="text" name="website" caption="Web Site"/>
-
-            <field type="separator" heading="Demographic Information"/>
-            <!--field.select name="ownership_id" caption="Ownership Type" choices="schema-enum:Org_Ownership_Type"/>
-            <field.select name="org_level_id" caption="Organization Type" choices="schema-enum:Org_Level_Type"/-->
-            <field type="integer" name="employees" caption="Approx. Employees" bind-column="employees"/>
-            <!--director>
-                <next-actions>
-                    <choices>
-                        <choice value="config-expr:${create-app-url:/organization/home.jsp}/organization/home/summary?org_id=${request-attr:org_id}&amp;org_type=${request-attr:org_type}">Go to new organization home</choice>
-                        <choice value="config-expr:${create-app-url:/organization/create.jsp}">Add another organization</choice>
-                        <choice value="config-expr:${create-app-url:/}">Go back</choice>
-                    </choices>
-                </next-actions>
-            </director-->
+        <!--
+            This is the dialog for creating/updating/deleteing trial sponsors
+        -->
+        <dialog name="sponsor" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Sponsor"/>
+			<xdm:include template="org-profile"/>
+            <xdm:include template="org-address"/>
+            <on-add-data>
+                <org _auto_map="org_name,org_code,org_abbrev," rec-stat-id="static:Active">
+                    <org-classification rec-stat-id="static:Active" org-type-id="static:Trial Sponsor"/>
+                </org>
+            </on-add-data>
 		</dialog>
 
-        <!--dialog name="clinic" heading="create-data-cmd-heading:Main Clinic" >
-			<include-template id="org.org-profile"/>
-			<include-template id="org.classification-information"/>
-			<include-template id="org.contact-information"/>
-			<include-template id="org.demographic-information"/>
-		</dialog>
-        <dialog name="department" heading="create-data-cmd-heading:Department Organization" >
-			<include-template id="org.org-profile"/>
-			<include-template id="org.contact-information"/>
-			<include-template id="org.service-information"/>
-		</dialog-->
 
-        <dialog type="table-dialog" name="employee" retain-params="*" bind-table="person" connection-share-type="request">
+        <!--
+            This is the dialog for creating/updating/deleting employees of sponsors and sites
+        -->
+        <dialog name="employee" retain-params="*" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <frame heading="create-dialog-perspective-heading:Employee"/>
 
-            <field type="text" name="org_id" hidden="no" default="request:org_id"
-                bind-column="PersonOrg_Relationship.rel_entity_id"/>
+            <field type="text" name="org_id" hidden="no" default="request:org_id"/>
 
             <field type="separator" heading="Employee Profile"/>
-            <field type="text" name="name_last" size="16" caption="Last Name" required="yes" bind-column="person.name_last"/>
-            <field type="text" name="name_first" size="16" caption="First Name" required="yes" bind-column="person.name_first"/>
-            <field type="text" name="name_middle" size="2" caption="MI" bind-column="person.name_middle" />
-            <field type="text" name="name_suffix" size="4" caption="Suffix" bind-column="person.name_suffix" />
-            <field type="date" caption="Date of Birth" name="date_of_birth" size="12" bind-column="birthdate"/>
-            <field type="ssn" caption="Social Security Number"  name="ssn" required="yes" size="11" bind-column="ssn"/>
+            <field type="text" name="name_last" size="16" caption="Last Name" required="yes" />
+            <field type="text" name="name_first" size="16" caption="First Name" required="yes" />
+            <field type="text" name="name_middle" size="2" caption="MI"  />
+            <field type="text" name="name_suffix" size="4" caption="Suffix"  />
+            <field type="date" caption="Date of Birth" name="date_of_birth" size="12" />
+            <field type="ssn" caption="Social Security Number"  name="ssn" required="yes" size="11" />
 			<field type="select" name="gender_id" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"
-                required="yes" bind-column="person.gender_id"/>
+                required="yes" />
 			<field type="select" name="marital_status_id" caption="Marital Status"
-                choices="schema-enum:Marital_Status_Type" bind-column="person.marital_status_id"/>
+                choices="schema-enum:Marital_Status_Type" />
 
             <field type="separator" heading="Employment Information"/>
-            <field type="text" caption="Employee Number" name="employee_number" bind-column="employees" />
+            <field type="text" caption="Employee Number" name="employee_number"  />
             <field type="text" caption="Job Title" name="job_title"/>
-
-            <!-- The following information will be handled explicitly in the handler class-->
             <field type="phone"  name="phone" caption="Telephone"/>
             <field type="e-mail" name="email" caption="E-Mail"/>
-            <insert-additional-data>
-                <person name_last="name_last" name_first="name_first" name_middle="name_middle" name_suffix="name_suffix"
-                    gender-id="gender_id" marital-status-id="marital_status_id">
+            <on-add-data>
+                <person _auto-map="name_last,name_first,name_middle,name_suffix,ssn,gender_id,marital_status_id" rec-stat-id="static:Active" >
                     <personorg-relationship rel-entity-id="request:org_id" rec-stat-id="static:Active" rel-type-id="static:Employee"/>
-                    <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-value="phone" />
-                    <person-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-value="email" />
+                    <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-value="phone"
+                        _condition="vc.getFieldStates().getState('phone').getValue().hasValue()"/>
+                    <person-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-value="email"
+                         _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
                 </person>
-            </insert-additional-data>
-<!--            <on-execute class="app.cts.form.person.PersonDialogHandler"/>-->
+            </on-add-data>
 
             <!--director>
                 <next-actions>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+    <!--
+        Person related dialogs
+     -->
+    <dialogs package="person">
+        <dialog name="contact_method" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog" >
+            <frame heading="create-dialog-perspective-heading:Contact Information"/>
+            <field type="text" name="id" caption="ID" read-only="yes" default="request:person_id">
+				<conditional action="apply-flags" flags="unavailable" perspective="add"/>
+			</field>
+			<field type="composite" name="contactType" caption="Contact Type" required="yes">
+				<conditional action="apply-flags" flags="read_only" perspective="edit"/>
+				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type">
+
+				</field>
+				<field type="text" name="method_name" caption="Other Contact Type">
+					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</field>
+			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
+            <on-add-data>
+                <Person_Contact _auto-map="*" parent_id="request:person_id" rec_stat_id="Active"/>
+            </on-add-data>
+        </dialog>
+        <!--
+           This dialog is for adding/updating/deleting a subject's journal entry
+        -->
+        <dialog name="notes" hide-hints-until-focus="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Note Entry"/>
+            <field type="text" name="ID" caption="Person ID" default="authenticated-user:person_id" />
+            <field type="date-time" caption="Date/Time" name="date" hidden="no" default="now" read-only="yes" />
+            <field type="memo" caption="Note Entry" name="notes" required="yes" />
+            <on-add-data>
+                <person-note _notes="notes" note-type-id="static:Medical"
+                    parent-id="authenticated-user:person_id" rec-stat-id="Active"/>
+            </on-add-data>
+        </dialog>
+    </dialogs>
+</xdm:container>

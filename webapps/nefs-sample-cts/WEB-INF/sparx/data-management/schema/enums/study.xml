@@ -17,11 +17,42 @@
         </enumerations>
 	</table>
 
+    <!--
+        1. In Phase I trials, researchers test a new drug or treatment in a small group of people (20-80) for the
+        first time to evaluate its safety, determine a safe dosage range, and identify side effects
+        2. In Phase II trials, the study drug or treatment is given to a larger group of people (100-300) to see if it
+        is effective and to further evaluate its safety.
+        3. In Phase III trials, the study drug or treatment is given to large groups of people (1,000-3,000) to confirm
+        its effectiveness, monitor side effects, compare it to commonly used treatments, and collect information that
+        will allow the drug or treatment to be used safely.
+        4. In Phase IV trials, post marketing studies delineate additional information including the drugs risks, benefits,
+        and optimal use.
+    -->
     <table name="Study_Stage_Type" abbrev="StdStTy" type="Enumeration">
         <enumerations>
         <enum abbrev="I">Phase I</enum>
         <enum abbrev="II">Phase II</enum>
         <enum abbrev="III">Phase III</enum>
+        <enum abbrev="IV">Phase IV</enum>
+        </enumerations>
+    </table>
+
+    <!--
+        1. Treatment trials test new treatments, new combinations of drugs, or new approaches to surgery or radiation therapy.
+        2. Prevention trials look for better ways to prevent disease in people who have never had the disease or to
+        prevent a disease from returning. These approaches may include medicines, vitamins, vaccines, minerals, or lifestyle changes.
+        3. Diagnostic trials are conducted to find better tests or procedures for diagnosing a particular disease or condition.
+        4. Screening trials test the best way to detect certain diseases or health conditions.
+        5. Quality of Life trials (or Supportive Care trials) explore ways to improve comfort and the quality of life
+        for individuals with a chronic illness.
+    -->
+    <table name="Study_Type" abbrev="StdTy" type="Enumeration">
+        <enumerations>
+            <enum>Treatment</enum>
+            <enum>Prevention</enum>
+            <enum>Diagnostic</enum>
+            <enum>Screening</enum>
+            <enum>Supportive Care</enum>
         </enumerations>
     </table>
 

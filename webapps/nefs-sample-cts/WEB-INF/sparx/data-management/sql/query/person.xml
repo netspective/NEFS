@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+    <queries package="person">
+        <query name="authenticated-user-info">
+            select
+                person.person_id "person-id",
+                person.name_last "last-name",
+                person.name_first "first-name",
+                person.complete_sortable_name "full-name"
+            from
+                person, person_login
+            where
+                person_login.user_id = ?   and
+                person_login.person_id = person.person_id
+
+            <params>
+                <param value="authenticated-user:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:User Information"/>
+                    <report>
+                        <column heading="ID" align="left"/>
+                        <column heading="Last Name" />
+                        <column heading="First Name" />
+                        <column heading="Full Name" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="self-active-studies">
+            select
+                study_id,
+                study_name
+            from
+                study, studyperson_relationship spr
+            where
+                spr.rel_entity_id = ? and
+                spr.parent_id  = study.study_id
+
+            <params>
+                <param value="authenticated-user:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Related Clinical Trials"/>
+                    <report>
+                        <column heading="ID" align="left"/>
+                        <column heading="Name" redirect="page-id:/home/study?study_id=${0}"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="self-active-orgs">
+            select
+                org_id,
+                org_name
+            from
+                org, personorg_relationship opr
+            where
+                opr.rel_entity_id = org.org_id and
+                opr.parent_id  = ?
+
+            <params>
+                <param value="authenticated-user:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Related Organizations"/>
+                    <report>
+                        <column heading="ID" align="left"/>
+                        <column heading="Name" redirect="page-id:/home/org?org_id=${0}"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="self-info">
+            select
+                person.person_id "person-id",
+                person.name_last "last-name",
+                person.name_first "first-name",
+                person.ssn,
+                person.birth_date
+            from
+                person
+            where
+                person.person_id = ?
+
+            <params>
+                <param value="authenticated-user:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:User Information"/>
+                    <banner style="horizontal">
+                        <action  caption="Edit Info" redirect="vs-expr:${page-id:/home/person_info/edit}?person_id=${authenticated-user:person_id}"/>
+                        <action  caption="Change Password" redirect="vs-expr:${page-id:/home/person_info/change_password}?person_id=${authenticated-user:person_id}"/>
+                    </banner>
+                    <report >
+                        <column heading="ID" align="left"/>
+                        <column heading="Last Name" />
+                        <column heading="First Name" />
+                        <column heading="SSN" />
+                        <column heading="DOB" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="self-contact-info">
+            select
+                person_contact.system_id,
+                contact_method_type.caption,
+                person_contact.method_value
+            from
+                person_contact, contact_method_type
+
+            where
+                person_contact.parent_id  = ? and
+                person_contact.method_type = contact_method_type.id
+            <params>
+                <param value="authenticated-user:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Contact Information"/>
+                    <banner style="horizontal">
+                        <action caption="Add new contact" hint="Add" redirect="vs-expr:${page-id:/home/contact_info/add}?person_id=${authenticated-user:person_id}"/>
+                    </banner>
+                    <report>
+                        <actions>
+                            <action type="add" caption="Add Contact" redirect="vs-expr:${servlet-context-uri:/home/contact_info/add}?person_id=${authenticated-user:person_id}"/>
+                            <action type="edit" redirect="servlet-context-uri:/home/contact_info/edit?person_id=${authenticated-user:person_id}&amp;id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="servlet-context-uri:/home/contact_info/delete?person_id=${authenticated-user:person_id}&amp;id=${0}"/>
+                        </actions>
+                        <column heading="ID" hidden="yes"/>
+                        <column heading="Type" align="left"/>
+                        <column heading="Value" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="self-notes">
+            select
+                person_note.cr_stamp,
+                person_note.note_type,
+                person_note.notes
+            from person_note
+            where person_note.parent_id = ?
+            <params>
+                <param value="authenticated-user:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Note Entries"/>
+                    <banner style="horizontal">
+                        <action caption="Add new entry" hint="Add" redirect="page-id:/home/notes/add"/>
+                    </banner>
+                    <report >
+
+                        <column heading="Date" align="left"/>
+                        <column heading="Type" />
+                        <column heading="Notes" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+    </queries>
+</xdm:container>

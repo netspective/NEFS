@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <dialogs package="study">
+        <!--
+           This dialog is for adding/updating/deleting study profile information
+        -->
+        <dialog name="profile" hide-hints-until-focus="yes" >
+            <frame heading="Clinical Trial Profile"/>
+            <field type="separator" heading="Overview"/>
+            <field type="text" name="study_id" caption="Trial ID" default="request:study_id" hidden="yes"/>
+            <field type="text" name="study_name" caption="Trial Name"  uppercase="yes"   max-length="255" required="yes">
+                <conditional action="apply-flags" flags="browser_readonly" perspective="edit,delete"/>
+            </field>
+            <field type="text" name="study_code" caption="Code" max-length="64" required="yes"/>
+            <field type="memo" name="study_descr" caption="Description" required="yes"/>
+            <field type="select" name="study_status" caption="Status" required="yes" choices="schema-enum:Study_Status" prepend-blank="yes"
+                required="yes">
+                <conditional action="apply-flags" flags="browser_readonly" perspective="edit,delete"/>
+            </field>
+            <field type="select" name="study_stage" caption="Stage" choices="schema-enum:Study_Stage_Type"
+                prepend-blank="yes" hint="The phase study is in" required="yes"/>
+            <field type="select" name="study_type" caption="Type" choices="schema-enum:Study_Type" prepend-blank="yes"/>
+            <field type="select" name="sponsor_org_name" caption="Sponsor" size="50"
+                default="request:org_id">
+                <conditional action="apply-flags" flags="unavailable" perspective="delete,edit"/>
+            </field >
+            <!--field type="phone" name="primary_phone" caption="Contact Phone" size="16" hint="Trial Hotline number"/>
+            <field type="e-mail" name="primary_email" caption="Contact Email" hint="Trial email address"/-->
+
+            <field type="separator" heading="Planned Trial Period" column-break-before="yes"/>
+            <field type="date" name="start_date" caption="Start Date" required="yes" default="today" format="MM-dd-yyyy"
+                client-calendar-format="MM-dd-yyyy" hint="MM-dd-yyyy"/>
+            <field type="date" name="target_end_date" caption="Target End Date" required="yes" format="MM-dd-yyyy"
+                client-calendar-format="MM-dd-yyyy" hint="MM-dd-yyyy"/>
+            <field type="date" name="actual_end_date" caption="Actual End Date" format="MM-dd-yyyy"
+                client-calendar-format="MM-dd-yyyy" hint="MM-dd-yyyy">
+            </field>
+
+            <field type="separator" heading="Institutional Review Board (IRB) Information" />
+            <field type="text" name="irb_name" caption="IRB Name" max-length="255" required="yes"/>
+            <field type="text" name="irb_number" caption="IRB Number" max-length="15" required="yes"/>
+            <field type="date" name="irb_approval_date" caption="Approval Date"    format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
+            <field type="date" name="irb_expiration_date" caption="Expiration Date" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
+
+            <!-- declare the classes that are handling the dialog -->
+            <on-execute class="app.cts.form.study.StudyDialogExecuteHandler"/>
+            <listener class="app.cts.form.study.StudyDialogInitialPopulateListener"/>
+        </dialog>
+    </dialogs>
+</xdm:container>
