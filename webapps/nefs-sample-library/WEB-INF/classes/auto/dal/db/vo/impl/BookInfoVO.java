@@ -15,6 +15,16 @@ implements auto.dal.db.vo.BookInfo
         return genre;
     }
     
+    public int getGenreInt()
+    {
+        return getGenreInt(-1);
+    }
+    
+    public int getGenreInt(int defaultValue)
+    {
+        return genre != null ? genre.intValue() : defaultValue;
+    }
+    
     public java.lang.String getId()
     {
         return id;
@@ -38,6 +48,11 @@ implements auto.dal.db.vo.BookInfo
     public void setGenre(java.lang.Integer genre)
     {
         this.genre = genre;
+    }
+    
+    public void setGenreInt(int genre)
+    {
+        this.genre = new java.lang.Integer(genre);
     }
     
     public void setId(java.lang.String id)

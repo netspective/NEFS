@@ -28,17 +28,13 @@
     <navigation-tree name="app" default="yes">
         <page name="home" default="yes" caption="Home" command="query,library.get-all-books,-,-,-,record-editor-compressed"/>
 
-        <page name="add" caption="Add Book" command="dialog,library.book-info,add">
-            <panels>
-                <panel type="command" command="dialog,library.book-info,add"/>
-            </panels>
-        </page>
-        <page name="edit" caption="Edit Book" command="dialog,library.book-info,edit" require-request-param="id" retain-params="id">
+        <page name="add" caption="Add Book" command="dialog,schema.db.Book_Info,add"/>
+        <page name="edit" caption="Edit Book" command="dialog,schema.db.Book_Info,edit" require-request-param="id" retain-params="id">
             <missing-params-body>
                Please choose a book to edit from the &lt;a href='home'&gt; books list&lt;/a&gt;.
             </missing-params-body>
         </page>
-        <page name="delete" caption="Delete Book" command="dialog,library.book-info,delete" require-request-param="id" retain-params="id">
+        <page name="delete" caption="Delete Book" command="dialog,schema.db.Book_Info,delete" require-request-param="id" retain-params="id">
             <missing-params-body>
                Please choose a book to delete from the &lt;a href='home'&gt; books list&lt;/a&gt;.
             </missing-params-body>
@@ -48,34 +44,18 @@
         <page name="sampler" caption="Sampler" redirect="vs-expr:${servlet-context-uri:server-root}/nefs-sampler"/>
     </navigation-tree>
 
-    <dialogs package="library">
-        <dialog name="book-info" retain-params="*" hide-hints-until-focus="yes" class="app.form.BookDialog">
-            <frame heading="create-dialog-perspective-heading:Book"/>
-            <field type="text" name="id" caption="Book ID" required="yes"  hint="This field is required"/>
-            <field type="text" name="name" caption="Name" required="yes" hint="This field is required"/>
-            <field type="text" name="author" caption="Author" required="yes" hint="This field is required"/>
-            <field type="select" name="genre" caption="Genre" choices="query:library.get-book-genre-list"/>
-            <field type="text" name="isbn" caption="ISBN"/>
-        </dialog>
-    </dialogs>
-
-
-<!-- 
+<!--
     *******************************************************************************************************************
     ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
     ** ============================================================================================================= **
     ** Any data source called 'jdbc/default' will automatically be used as the default JDBC data source. If you wish **
     ** to change the name of the default data source, you may specify it as a tag in project.xml like the following: **
     ** <project>                                                                                                     **
-    **     <default-data-source>jdbc/other</default-data-source>						     **
-    **														     **
-    ** Or by specifying it in the data source definition as follows:						     **
-    **     <data-source name="theName" default="yes"								     **
-    **														     **
+    **     <default-data-source>jdbc/other</default-data-source>						                             **
+    **														                                                         **
     ** Note that data sources specified under this connection provider will be managed by the Jakarta Commons DBCP   **
     ** If you wish to use JNDI, you simply have to specify the resource according to the server you're using.	     **
-    **														     **
-    ******************************************************************************************************************* 
+    *******************************************************************************************************************
     -->
 
     <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
@@ -88,7 +68,6 @@
         </data-source>
 
     </connection-provider>
-
 
 	<!--
 	**********************************************************************
@@ -132,47 +111,16 @@
             where genre = book_type.id
 
             <presentation>
-                <panel name="Test">
-                    <frame heading="static:Book Report"/>
-                    <!--action caption="Frame action" hint="This is a hint" style="horizontal" command="redirect,yahoo.com"/-->
+                <panel name="main">
+                    <frame heading="static:All available books"/>
                     <report>
                         <actions>
                             <action type="add" caption="Add Book" redirect="page-id:/add"/>
                             <action type="edit" redirect="page-id:/edit?id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
                             <action type="delete" redirect="page-id:/delete?id=${0}"/>
-                            <action type="select" caption="Process selected rows" title="Process the selected rows"
-                                redirect="servlet-context-uri:/yahoo.com"/>
                         </actions>
-                        <column heading="ID" format="plain"/>
+                        <column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/>
                         <column heading="Name" />
-                        <column heading="Author"/>
-                        <column heading="Genre"/>
-                        <column heading="ISBN"/>
-                    </report>
-                </panel>
-            </presentation>
-        </query>
-
-        <query name="get-all-book-types">
-            select id,caption,abbrev from book_type
-        </query>
-
-        <query name="get-book-genre-list">
-            select caption,id from book_type
-        </query>
-
-        <query name="get-book-info">
-            select * from book_info where id = ?
-
-            <params>
-                <param value="request:id"/>
-            </params>
-            <presentation>
-                <panel name="Test">
-                    <frame heading="static:Book Information"/>
-                    <report>
-                        <column heading="ID"/>
-                        <column heading="Name" redirect="servlet-context-uri:/yahoo.com"/>
                         <column heading="Author"/>
                         <column heading="Genre"/>
                         <column heading="ISBN"/>
@@ -201,17 +149,32 @@
                 <field type="text" name="name" caption="Book Name"/>
                 <field type="text" name="author" caption="Author"/>
                 <field type="text" name="isbn" caption="ISBN"/>
-                <field type="select" style="list" name="genre" caption="Genre" choices="query:library.get-book-genre-list"/>
+                <field type="select" style="list" name="genre" caption="Genre" choices="schema-enum:Book_Type"/>
+
                 <select name="test">
                     <display field="book_id"/>
                     <display field="name"/>
                     <display field="author"/>
                     <display field="genre_caption"/>
                     <display field="isbn"/>
+
                     <condition field="book_id" allow-null="no" comparison="equals" value="field:book_id" connector="and"/>
                     <condition field="name" allow-null="no" comparison="starts-with" value="field:name" connector="and"/>
                     <condition field="author" allow-null="no" comparison="equals" value="field:author" connector="and"/>
                     <condition field="genre_id" allow-null="no" comparison="equals" value="field:genre" connector="and"/>
+
+                    <presentation>
+                        <panel name="report">
+                            <frame heading="static:Book Search Results"/>
+                            <report>
+                                <column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/>
+                                <column heading="Name" />
+                                <column heading="Author"/>
+                                <column heading="Genre"/>
+                                <column heading="ISBN"/>
+                            </report>
+                        </panel>
+                    </presentation>
                 </select>
             </select-dialog>
         </presentation>

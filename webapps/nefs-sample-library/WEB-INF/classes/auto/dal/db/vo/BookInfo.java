@@ -8,6 +8,10 @@ public interface BookInfo
     
     public java.lang.Integer getGenre();
     
+    public int getGenreInt();
+    
+    public int getGenreInt(int defaultValue);
+    
     public java.lang.String getId();
     
     public java.lang.String getIsbn();
@@ -17,6 +21,8 @@ public interface BookInfo
     public void setAuthor(java.lang.String author);
     
     public void setGenre(java.lang.Integer genre);
+    
+    public void setGenreInt(int genre);
     
     public void setId(java.lang.String id);
     

@@ -5,8 +5,5 @@ package auto.id.sql.query;
 
 public interface Library
 {
-    static public final String GET_ALL_BOOK_TYPES = "library.get-all-book-types";
     static public final String GET_ALL_BOOKS = "library.get-all-books";
-    static public final String GET_BOOK_GENRE_LIST = "library.get-book-genre-list";
-    static public final String GET_BOOK_INFO = "library.get-book-info";
 }
