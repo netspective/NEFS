@@ -34,14 +34,22 @@ package com.netspective.sparx.navigate.fts;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
 
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.PhraseQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 
 import com.netspective.commons.template.TemplateProcessor;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
@@ -90,10 +98,73 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
         return templateVars;
     }
 
+    public String getAdvancedSearchExpression(NavigationContext nc)
+    {
+        final ServletRequest request = nc.getRequest();
+        // we create a hidden field in the advanced data dialog telling us we have advanced data
+        if(request.getParameter("hasAdvancedData") == null)
+            return null;
+
+        final FullTextSearchPage searchPage = (FullTextSearchPage) nc.getActivePage();
+        final String defaultFieldName = searchPage.getDefaultAdvancedSearchFieldName();
+
+        final String allWordsParamValue = request.getParameter("all");
+        final String exactPhraseParamValue = request.getParameter("phrase");
+        final String atLeastOneWordParamValue = request.getParameter("one");
+
+        BooleanQuery advancedQuery = new BooleanQuery();
+        if(allWordsParamValue != null && allWordsParamValue.trim().length() > 0)
+        {
+            String[] words = TextUtils.getInstance().split(allWordsParamValue, " ", true);
+            for(int i = 0; i < words.length; i++)
+                advancedQuery.add(new TermQuery(new Term(defaultFieldName, words[i])), true, false);
+        }
+
+        if(exactPhraseParamValue != null && exactPhraseParamValue.trim().length() > 0)
+        {
+            final PhraseQuery phraseQuery = new PhraseQuery();
+            phraseQuery.add(new Term(defaultFieldName, exactPhraseParamValue));
+            advancedQuery.add(phraseQuery, true, false);
+        }
+
+        if(atLeastOneWordParamValue != null && atLeastOneWordParamValue.trim().length() > 0)
+        {
+            String[] words = TextUtils.getInstance().split(atLeastOneWordParamValue, " ", true);
+            for(int i = 0; i < words.length; i++)
+                advancedQuery.add(new TermQuery(new Term(defaultFieldName, words[i])), false, false);
+        }
+
+        String[] advancedSearchFieldNames = searchPage.getAdvancedSearchFieldNames();
+        for(int i = 0; i < advancedSearchFieldNames.length; i++)
+        {
+            final String fieldName = advancedSearchFieldNames[i];
+            final String fieldParamValue = request.getParameter("field_" + fieldName);
+            if(fieldParamValue != null && fieldParamValue.trim().length() > 0)
+            {
+                Query fieldQuery = null;
+                try
+                {
+                    fieldQuery = QueryParser.parse(fieldParamValue, fieldName, searchPage.getAnalyzer());
+                }
+                catch(ParseException e)
+                {
+                    searchPage.getLog().error("Error parsing field '" + fieldName + "' query '" + fieldParamValue + "', ignoring", e);
+                    continue;
+                }
+                advancedQuery.add(fieldQuery, true, false);
+            }
+        }
+
+        return advancedQuery.toString(defaultFieldName);
+    }
+
     public SearchExpression getSearchExpression(NavigationContext nc)
     {
         final ServletRequest request = nc.getRequest();
-        final String exprText = request.getParameter(getExpressionFormFieldName());
+        final String advancedExpression = getAdvancedSearchExpression(nc);
+        final String exprText = advancedExpression != null
+                                ? advancedExpression : request.getParameter(getExpressionFormFieldName());
+
         return exprText == null ? null : new SearchExpression()
         {
             public String getExprText()
@@ -109,6 +180,12 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
             public boolean isSearchWithinPreviousResults()
             {
                 return request.getParameter(searchWithinSearchResultsFormFieldName) != null;
+            }
+
+            public String getRewrittenExpressionRedirectParams()
+            {
+                return advancedExpression != null
+                       ? getExpressionFormFieldName() + "=" + URLEncoder.encode(exprText) : null;
             }
         };
     }

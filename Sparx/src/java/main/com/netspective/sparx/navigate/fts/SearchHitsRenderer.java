@@ -48,6 +48,8 @@ public interface SearchHitsRenderer
         public boolean isEmptyExpression();
 
         public boolean isSearchWithinPreviousResults();
+
+        public String getRewrittenExpressionRedirectParams();
     }
 
     /**

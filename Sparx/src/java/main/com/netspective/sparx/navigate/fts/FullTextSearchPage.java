@@ -68,17 +68,20 @@ public class FullTextSearchPage extends NavigationPage
     private IndexSearcher indexSearcher;
     private Analyzer analyzer = new StandardAnalyzer();
     private String defaultSearchFieldName;
+    private String defaultAdvancedSearchFieldName;
     private SearchHitsRenderer renderer;
     private int maxResultsPerPage = 25;
     private int totalDocsInIndex = 0;
     private String[] allFieldNames;
     private String[] allIndexedFieldNames;
     private Map fieldAttributes = new HashMap();
+    private String[] advancedSearchFieldNames;
 
     public FullTextSearchPage(NavigationTree owner)
     {
         super(owner);
         setBodyType(new NavigationPageBodyType(NavigationPageBodyType.CUSTOM_HANDLER));
+        getFlags().setFlag(Flags.BODY_AFFECTS_NAVIGATION); // because we can redirect advanced queries
     }
 
     public File getIndexDir()
@@ -156,6 +159,16 @@ public class FullTextSearchPage extends NavigationPage
         this.defaultSearchFieldName = defaultSearchFieldName;
     }
 
+    public String getDefaultAdvancedSearchFieldName()
+    {
+        return defaultAdvancedSearchFieldName;
+    }
+
+    public void setDefaultAdvancedSearchFieldName(String defaultAdvancedSearchFieldName)
+    {
+        this.defaultAdvancedSearchFieldName = defaultAdvancedSearchFieldName;
+    }
+
     public Analyzer getAnalyzer()
     {
         return analyzer;
@@ -229,10 +242,17 @@ public class FullTextSearchPage extends NavigationPage
     {
         final ServletRequest request = nc.getRequest();
         final SearchExpression expression = renderer.getSearchExpression(nc);
-        final String scrollToPage = request.getParameter(activeScrollPageParamName);
-
         if(expression != null)
         {
+            // if there was an advanced search, the search is rewritten and we want to redirect back to use with the new
+            // expression
+            String redirectParams = expression.getRewrittenExpressionRedirectParams();
+            if(redirectParams != null)
+            {
+                nc.getHttpResponse().sendRedirect(getUrl(nc) + "?" + redirectParams);
+                return;
+            }
+
             if(expression.isEmptyExpression())
             {
                 renderer.renderEmptyQuery(writer, nc);
@@ -241,6 +261,7 @@ public class FullTextSearchPage extends NavigationPage
 
             // check to see if we're requesting a scroll to another page; if so, we expect search results to be stored
             // in the session
+            final String scrollToPage = request.getParameter(activeScrollPageParamName);
             if(scrollToPage != null)
             {
                 final FullTextSearchResults searchResults = getActiveUserSearchResults(nc);
@@ -326,6 +347,16 @@ public class FullTextSearchPage extends NavigationPage
     public Map getFieldAttributes()
     {
         return fieldAttributes;
+    }
+
+    public String[] getAdvancedSearchFieldNames()
+    {
+        return advancedSearchFieldNames;
+    }
+
+    public void setAdvancedSearchFieldNames(String[] advancedSearchFieldNames)
+    {
+        this.advancedSearchFieldNames = advancedSearchFieldNames;
     }
 
     public class FieldAttribute
