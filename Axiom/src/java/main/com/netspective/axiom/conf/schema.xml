@@ -299,7 +299,10 @@
 
     <table-type name="Presentation">
         <presentation>
-            <dialog name="${table.name}">
+            <dialog class="com.netspective.sparx.form.schema.TableDialog"
+                    name="${table.name}"
+                    schemaName="${table.getSchema().getName()}"
+                    tableName="${table.getName()}">
                 <frame heading="create-dialog-perspective-heading:${table.getCaption()}"/>
                 <data-type-presentation columns="*"/>
             </dialog>
