@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.47 2004-06-16 17:24:15 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.48 2004-08-03 19:49:30 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -137,6 +137,7 @@ public class XmlDataModelSchema
     public interface InputSourceLocatorListener
     {
         public InputSourceLocator getInputSourceLocator();
+
         public void setInputSourceLocator(InputSourceLocator locator);
     }
 
@@ -171,12 +172,12 @@ public class XmlDataModelSchema
         public void setPropertyNames(PropertyNames propertyNames)
         {
             String[] allNames = propertyNames.getAllNames();
-            for(int i = 0; i < allNames.length; i++)
+            for (int i = 0; i < allNames.length; i++)
             {
                 String alias = allNames[i];
-                if(ignoreAttributes.contains(alias))
+                if (ignoreAttributes.contains(alias))
                     ignoreAttributes.addAll(propertyNames.getAliases());
-                if(ignoreNestedElements.contains(alias))
+                if (ignoreNestedElements.contains(alias))
                     ignoreNestedElements.addAll(propertyNames.getAliases());
             }
         }
@@ -240,14 +241,14 @@ public class XmlDataModelSchema
 
         public Options addIgnoreAttributes(String[] ignoreAttributesList)
         {
-            for(int i = 0; i < ignoreAttributesList.length; i++)
+            for (int i = 0; i < ignoreAttributesList.length; i++)
                 ignoreAttributes.add(ignoreAttributesList[i]);
             return this;
         }
 
         public Options addIgnoreNestedElements(String[] ignoreElementsList)
         {
-            for(int i = 0; i < ignoreElementsList.length; i++)
+            for (int i = 0; i < ignoreElementsList.length; i++)
                 ignoreNestedElements.add(ignoreElementsList[i]);
             return this;
         }
@@ -266,14 +267,14 @@ public class XmlDataModelSchema
 
         public Options addRequiredAttributes(String[] requiredAttributesList)
         {
-            for(int i = 0; i < requiredAttributesList.length; i++)
+            for (int i = 0; i < requiredAttributesList.length; i++)
                 requiredAttributes.add(requiredAttributesList[i]);
             return this;
         }
 
         public Options addRequiredNestedElements(String[] requiredElementsList)
         {
-            for(int i = 0; i < requiredElementsList.length; i++)
+            for (int i = 0; i < requiredElementsList.length; i++)
                 requiredNestedElements.add(requiredElementsList[i]);
             return this;
         }
@@ -302,15 +303,15 @@ public class XmlDataModelSchema
 
         public void addAliases(String primaryName, String[] alternateNames)
         {
-	        if (null == alternateNames)
-		        return;
+            if (null == alternateNames)
+                return;
 
             Set altNames = new HashSet();
-            for(int i = 0; i < alternateNames.length; i++)
+            for (int i = 0; i < alternateNames.length; i++)
                 altNames.add(alternateNames[i]);
 
             Set set = (Set) aliases.get(primaryName);
-            if(set == null)
+            if (set == null)
                 aliases.put(primaryName, altNames);
             else
                 set.addAll(altNames);
@@ -318,11 +319,11 @@ public class XmlDataModelSchema
 
         public void addAliases(String primaryName, Set alternateNames)
         {
-	        if (null == alternateNames)
-	            return;
+            if (null == alternateNames)
+                return;
 
             Set set = (Set) aliases.get(primaryName);
-            if(set == null)
+            if (set == null)
                 aliases.put(primaryName, alternateNames);
             else
                 set.addAll(alternateNames);
@@ -466,6 +467,7 @@ public class XmlDataModelSchema
 
     /**
      * Gets the description of the bean represented by this Schema by using the runtime JavaDoc XML resources.
+     *
      * @return The description of the class provided in the JavaDoc XML
      */
     public ClassJavaDoc getJavaDoc()
@@ -513,12 +515,12 @@ public class XmlDataModelSchema
         public boolean isInherited()
         {
             NestedStorer storer = (NestedStorer) nestedStorers.get(elemName);
-            if(storer != null)
+            if (storer != null)
                 return storer.isInherited();
             else
             {
                 NestedCreator creator = (NestedCreator) nestedCreators.get(elemName);
-                if(creator != null)
+                if (creator != null)
                     return creator.isInherited();
                 else
                     return false;
@@ -527,22 +529,24 @@ public class XmlDataModelSchema
 
         public Class getDeclaringClass()
         {
-            if(isTemplateProducer())
+            if (isTemplateProducer())
                 return XmlDataModelSchema.this.bean;
 
             NestedStorer storer = (NestedStorer) nestedStorers.get(elemName);
             NestedCreator creator = (NestedCreator) nestedCreators.get(elemName);
 
-            if((storer != null && storer.isInherited()) && (creator != null && creator.isInherited()))
+            if ((storer != null && storer.isInherited()) && (creator != null && creator.isInherited()))
                 return creator.getDeclaringClass();
 
-            if((storer != null && storer.isInherited()) && (creator != null && ! creator.isInherited()))
+            if ((storer != null && storer.isInherited()) && (creator != null && !creator.isInherited()))
                 return creator.getDeclaringClass();
 
-            if((storer != null && ! storer.isInherited()) && (creator != null && creator.isInherited()))
+            if ((storer != null && !storer.isInherited()) && (creator != null && creator.isInherited()))
                 return storer.getDeclaringClass();
 
-            return creator != null ? creator.getDeclaringClass() : (storer != null ? storer.getDeclaringClass() : XmlDataModelSchema.this.bean);
+            return creator != null
+                    ? creator.getDeclaringClass()
+                    : (storer != null ? storer.getDeclaringClass() : XmlDataModelSchema.this.bean);
         }
 
         public boolean isTemplateProducer()
@@ -573,12 +577,12 @@ public class XmlDataModelSchema
 
     public ElementDetailList getNestedElementsDetail() throws DataModelException
     {
-        if(nestedElementsDetail == null)
+        if (nestedElementsDetail == null)
         {
             nestedElementsDetail = new ElementDetailList();
 
             TemplateProducers templateProducers = null;
-            if(TemplateProducerParent.class.isAssignableFrom(getBean()))
+            if (TemplateProducerParent.class.isAssignableFrom(getBean()))
             {
                 try
                 {
@@ -597,7 +601,7 @@ public class XmlDataModelSchema
 
             Map childPropertyNames = getPropertyNames();
             Set sortedChildPropertyNames = new TreeSet(getNestedElements().keySet());
-            if(templateProducers != null)
+            if (templateProducers != null)
                 sortedChildPropertyNames.addAll(templateProducers.getElementNames());
 
             Iterator iterator = sortedChildPropertyNames.iterator();
@@ -606,17 +610,17 @@ public class XmlDataModelSchema
                 String attrName = (String) iterator.next();
 
                 TemplateProducer producer = templateProducers != null ? templateProducers.get(attrName) : null;
-                if(producer != null)
+                if (producer != null)
                 {
                     nestedElementsDetail.add(new ElementDetail(attrName, producer));
                     continue;
                 }
 
-                if(getOptions().ignoreAttribute(attrName))
+                if (getOptions().ignoreAttribute(attrName))
                     continue;
 
                 XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
-                if(attrNames != null && ! attrNames.isPrimaryName(attrName))
+                if (attrNames != null && !attrNames.isPrimaryName(attrName))
                     continue;
 
                 nestedElementsDetail.add(new ElementDetail(attrName));
@@ -639,7 +643,7 @@ public class XmlDataModelSchema
 
         public AttributeDetail(String name) throws DataModelException
         {
-            if(name.equals(ATTRNAME_CLASS))
+            if (name.equals(ATTRNAME_CLASS))
             {
                 this.attrName = name;
                 this.attrType = Class.class;
@@ -684,13 +688,13 @@ public class XmlDataModelSchema
         public String getAccessorValue(Object parent, String valueIfNull) throws DataModelException, IllegalAccessException, InvocationTargetException
         {
             AttributeAccessor accessor = getAccessor();
-            if(accessor == null)
+            if (accessor == null)
                 return valueIfNull;
             Object value = accessor.get(null, parent);
-            if(value == null)
+            if (value == null)
                 return valueIfNull;
 
-            if(value instanceof String[])
+            if (value instanceof String[])
                 return TextUtils.join((String[]) value, ", ");
 
             return value.toString();
@@ -703,11 +707,12 @@ public class XmlDataModelSchema
 
         public boolean isInherited()
         {
-            if(attrName.equals(ATTRNAME_CLASS))
+            if (attrName.equals(ATTRNAME_CLASS))
                 return true;
 
-            AttributeSetter setter = (AttributeSetter) attributeSetters.get(primaryFlagsAttrName != null ? primaryFlagsAttrName : attrName);
-            if(setter != null)
+            AttributeSetter setter = (AttributeSetter) attributeSetters.get(primaryFlagsAttrName != null
+                    ? primaryFlagsAttrName : attrName);
+            if (setter != null)
                 return setter.isInherited();
             else
                 return false;
@@ -715,11 +720,12 @@ public class XmlDataModelSchema
 
         public Class getDeclaringClass()
         {
-            if(attrName.equals(ATTRNAME_CLASS))
+            if (attrName.equals(ATTRNAME_CLASS))
                 return Object.class;
 
-            AttributeSetter setter = (AttributeSetter) attributeSetters.get(primaryFlagsAttrName != null ? primaryFlagsAttrName : attrName);
-            if(setter != null)
+            AttributeSetter setter = (AttributeSetter) attributeSetters.get(primaryFlagsAttrName != null
+                    ? primaryFlagsAttrName : attrName);
+            if (setter != null)
                 return setter.getDeclaringClass();
             else
                 return XmlDataModelSchema.this.bean;
@@ -727,10 +733,10 @@ public class XmlDataModelSchema
 
         public MethodJavaDoc getJavaDoc()
         {
-            if(isFlagAlias())
-                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set"+ TextUtils.xmlTextToJavaIdentifier(primaryFlagsAttrName, true));
+            if (isFlagAlias())
+                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set" + TextUtils.xmlTextToJavaIdentifier(primaryFlagsAttrName, true));
             else
-                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set"+ TextUtils.xmlTextToJavaIdentifier(attrName, true));
+                return JavaDocs.getInstance().getClassJavaDoc(getBean()).getMethodDoc("set" + TextUtils.xmlTextToJavaIdentifier(attrName, true));
         }
 
         public boolean isFlagsPrimary()
@@ -770,27 +776,27 @@ public class XmlDataModelSchema
 
         public boolean hasChoices()
         {
-            if(attrType == null)
+            if (attrType == null)
                 return false;
 
             return isFlagAlias() ||
-                   isFlagsPrimary() ||
-                   XdmEnumeratedAttribute.class.isAssignableFrom(attrType) ||
-                   (Boolean.class.isAssignableFrom(attrType) || (attrType == boolean.class));
+                    isFlagsPrimary() ||
+                    XdmEnumeratedAttribute.class.isAssignableFrom(attrType) ||
+                    (Boolean.class.isAssignableFrom(attrType) || (attrType == boolean.class));
         }
 
         public String getChoices()
         {
-            if(attrType == null)
+            if (attrType == null)
                 return "";
 
-            if(isFlagAlias())
+            if (isFlagAlias())
                 return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
 
-            if(isFlagsPrimary())
+            if (isFlagsPrimary())
                 return TextUtils.join(flags.getFlagNamesWithXdmAccess(), " | ");
 
-            if(XdmEnumeratedAttribute.class.isAssignableFrom(attrType))
+            if (XdmEnumeratedAttribute.class.isAssignableFrom(attrType))
             {
                 XdmEnumeratedAttribute ea;
                 try
@@ -806,7 +812,7 @@ public class XmlDataModelSchema
                 return TextUtils.join(ea.getValues(), ", ");
             }
 
-            if(Boolean.class.isAssignableFrom(attrType) || (attrType == boolean.class))
+            if (Boolean.class.isAssignableFrom(attrType) || (attrType == boolean.class))
                 return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
 
             return "";
@@ -819,28 +825,29 @@ public class XmlDataModelSchema
 
     public AttributeDetailList getSettableAttributesDetail(boolean expandFlagAliases) throws IllegalAccessException, InstantiationException, InvocationTargetException, DataModelException
     {
-        AttributeDetailList result = expandFlagAliases ? settableAttrsDetailWithFlagsExpanded : settableAttrsDetailWithoutFlagsExpanded;
-        if(result != null)
+        AttributeDetailList result = expandFlagAliases
+                ? settableAttrsDetailWithFlagsExpanded : settableAttrsDetailWithoutFlagsExpanded;
+        if (result != null)
             return result;
 
         Map childPropertyNames = getPropertyNames();
 
         Map flagSetterPrimaries = new HashMap();
         Map flagSetterAliases = new HashMap();
-        for(Iterator i = getAttributes().iterator(); i.hasNext(); )
+        for (Iterator i = getAttributes().iterator(); i.hasNext();)
         {
             String attrName = (String) i.next();
             Class attrType = getAttributeType(attrName);
-            if(! XdmBitmaskedFlagsAttribute.class.isAssignableFrom(attrType))
+            if (!XdmBitmaskedFlagsAttribute.class.isAssignableFrom(attrType))
                 continue;
 
             PropertyNames pNames = (PropertyNames) childPropertyNames.get(attrName);
-            if(! pNames.isPrimaryName(attrName))
+            if (!pNames.isPrimaryName(attrName))
                 continue;
 
             XdmBitmaskedFlagsAttribute bfa;
             XmlDataModelSchema.NestedCreator creator = (XmlDataModelSchema.NestedCreator) getNestedCreators().get(attrName);
-            if(creator != null)
+            if (creator != null)
             {
                 Object flagsGetterInstance;
                 try
@@ -854,7 +861,7 @@ public class XmlDataModelSchema
                     {
                         bfa = (XdmBitmaskedFlagsAttribute) attrType.newInstance();
                     }
-                    catch(Exception e1)
+                    catch (Exception e1)
                     {
                         log.error(e1);
                         bfa = null;
@@ -864,17 +871,19 @@ public class XmlDataModelSchema
             else
                 bfa = (XdmBitmaskedFlagsAttribute) attrType.newInstance();
 
-            if(bfa != null)
+            if (bfa != null)
             {
                 flagSetterPrimaries.put(attrName, bfa);
-                if(expandFlagAliases)
+                if (expandFlagAliases)
                 {
                     Map xmlNodeNames = bfa.getFlagSetterXmlNodeNames();
-                    for(Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext(); )
+                    for (Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext();)
                     {
                         String xmlNodeName = (String) xmliter.next();
-                        if(! childPropertyNames.containsKey(xmlNodeName))
-                            flagSetterAliases.put(xmlNodeName, new Object[] { attrName, bfa, xmlNodeNames.get(xmlNodeName) });
+                        if (!childPropertyNames.containsKey(xmlNodeName))
+                            flagSetterAliases.put(xmlNodeName, new Object[]{
+                                attrName, bfa, xmlNodeNames.get(xmlNodeName)
+                            });
                     }
                 }
             }
@@ -890,30 +899,30 @@ public class XmlDataModelSchema
         {
             String attrName = (String) iterator.next();
 
-            if(flagSetterAliases.containsKey(attrName))
+            if (flagSetterAliases.containsKey(attrName))
             {
                 Object[] flagSetterInfo = (Object[]) flagSetterAliases.get(attrName);
                 result.add(new AttributeDetail(attrName, (String) flagSetterInfo[0], (XdmBitmaskedFlagsAttribute) flagSetterInfo[1], (XdmBitmaskedFlagsAttribute.FlagDefn) flagSetterInfo[2]));
                 continue;
             }
 
-            if(flagSetterPrimaries.containsKey(attrName))
+            if (flagSetterPrimaries.containsKey(attrName))
             {
                 result.add(new AttributeDetail(attrName, (XdmBitmaskedFlagsAttribute) flagSetterPrimaries.get(attrName)));
                 continue;
             }
 
-            if(getOptions().ignoreAttribute(attrName))
+            if (getOptions().ignoreAttribute(attrName))
                 continue;
 
             XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
-            if(attrNames != null && ! attrNames.isPrimaryName(attrName))
+            if (attrNames != null && !attrNames.isPrimaryName(attrName))
                 continue;
 
             result.add(new AttributeDetail(attrName));
         }
 
-        if(expandFlagAliases)
+        if (expandFlagAliases)
             settableAttrsDetailWithFlagsExpanded = result;
         else
             settableAttrsDetailWithoutFlagsExpanded = result;
@@ -975,6 +984,7 @@ public class XmlDataModelSchema
     {
         return TemplateConsumer.class.isAssignableFrom(bean);
     }
+
     public Object createInstance() throws IllegalAccessException, InstantiationException
     {
         return bean.newInstance();
@@ -1042,9 +1052,9 @@ public class XmlDataModelSchema
             else if (name.startsWith("get") && args.length == 0)
             {
                 String[] propNames = getPropertyNames(name, "get");
-                for(int pn = 0; pn < propNames.length; pn++)
+                for (int pn = 0; pn < propNames.length; pn++)
                 {
-                    if(propNames[pn].length() == 0)
+                    if (propNames[pn].length() == 0)
                         continue;
 
                     AttributeAccessor aa = createAttributeAccessor(m, propNames[pn], returnType);
@@ -1055,9 +1065,9 @@ public class XmlDataModelSchema
             else if (name.startsWith("is") && args.length == 0)
             {
                 String[] propNames = getPropertyNames(name, "is");
-                for(int pn = 0; pn < propNames.length; pn++)
+                for (int pn = 0; pn < propNames.length; pn++)
                 {
-                    if(propNames[pn].length() == 0)
+                    if (propNames[pn].length() == 0)
                         continue;
 
                     AttributeAccessor aa = createAttributeAccessor(m, propNames[pn], returnType);
@@ -1071,9 +1081,9 @@ public class XmlDataModelSchema
                     && !args[0].isArray())
             {
                 String[] propNames = getPropertyNames(name, "set");
-                for(int pn = 0; pn < propNames.length; pn++)
+                for (int pn = 0; pn < propNames.length; pn++)
                 {
-                    if(propNames[pn].length() == 0)
+                    if (propNames[pn].length() == 0)
                         continue;
 
                     attributeSetterMethods.put(propNames[pn], m);
@@ -1091,12 +1101,12 @@ public class XmlDataModelSchema
                     && (args.length == 0))
             {
                 // prevent infinite recursion for nested recursive elements
-                if(! returnType.getClass().equals(bean.getClass()))
+                if (!returnType.getClass().equals(bean.getClass()))
                     getSchema(returnType);
                 String[] propNames = getPropertyNames(name, "create");
-                for(int pn = 0; pn < propNames.length; pn++)
+                for (int pn = 0; pn < propNames.length; pn++)
                 {
-                    if(propNames[pn].length() == 0)
+                    if (propNames[pn].length() == 0)
                         continue;
 
                     nestedTypes.put(propNames[pn], returnType);
@@ -1109,7 +1119,7 @@ public class XmlDataModelSchema
 
                         public boolean isInherited()
                         {
-                            return ! m.getDeclaringClass().equals(bean);
+                            return !m.getDeclaringClass().equals(bean);
                         }
 
                         public Class getDeclaringClass()
@@ -1125,12 +1135,12 @@ public class XmlDataModelSchema
                     && (args.length == 1 && args[0] == Class.class))
             {
                 // prevent infinite recursion for nested recursive elements
-                if(! returnType.getClass().equals(bean.getClass()))
+                if (!returnType.getClass().equals(bean.getClass()))
                     getSchema(returnType);
                 String[] propNames = getPropertyNames(name, "create");
-                for(int pn = 0; pn < propNames.length; pn++)
+                for (int pn = 0; pn < propNames.length; pn++)
                 {
-                    if(propNames[pn].length() == 0)
+                    if (propNames[pn].length() == 0)
                         continue;
 
                     nestedTypes.put(propNames[pn], returnType);
@@ -1138,12 +1148,12 @@ public class XmlDataModelSchema
                     {
                         public Object create(Object parent, Class cls) throws InvocationTargetException, IllegalAccessException
                         {
-                            return m.invoke(parent, new Object[]{ cls });
+                            return m.invoke(parent, new Object[]{cls});
                         }
 
                         public boolean isInherited()
                         {
-                            return ! m.getDeclaringClass().equals(bean);
+                            return !m.getDeclaringClass().equals(bean);
                         }
 
                         public Class getDeclaringClass()
@@ -1164,12 +1174,12 @@ public class XmlDataModelSchema
                 try
                 {
                     final Constructor c = args[0].getConstructor(new Class[]{});
-                    for(int pn = 0; pn < propNames.length; pn++)
+                    for (int pn = 0; pn < propNames.length; pn++)
                     {
-                        if(propNames[pn].length() == 0)
+                        if (propNames[pn].length() == 0)
                             continue;
 
-                        if(!nestedCreators.containsKey(propNames[pn]))
+                        if (!nestedCreators.containsKey(propNames[pn]))
                         {
                             nestedTypes.put(propNames[pn], args[0]);
                             nestedCreators.put(propNames[pn], new NestedCreator()
@@ -1185,12 +1195,12 @@ public class XmlDataModelSchema
                                 public Object create(Object parent, Class cls)
                                         throws InvocationTargetException, IllegalAccessException, InstantiationException
                                 {
-                                    return c.newInstance(new Object[]{ cls });
+                                    return c.newInstance(new Object[]{cls});
                                 }
 
                                 public boolean isInherited()
                                 {
-                                    return ! m.getDeclaringClass().equals(bean);
+                                    return !m.getDeclaringClass().equals(bean);
                                 }
 
                                 public Class getDeclaringClass()
@@ -1204,19 +1214,19 @@ public class XmlDataModelSchema
                 catch (NoSuchMethodException nse)
                 {
                     //log.warn("Unable to create nestedCreator for " + name + " " + args[0] + ", registering type only without a creator.", nse);
-                    for(int pn = 0; pn < propNames.length; pn++)
+                    for (int pn = 0; pn < propNames.length; pn++)
                     {
-                        if(propNames[pn].length() > 0)
+                        if (propNames[pn].length() > 0)
                             nestedTypes.put(propNames[pn], args[0]);
                     }
                 }
 
                 // prevent infinite recursion for nested recursive elements
-                if(! args[0].getClass().equals(bean.getClass()))
+                if (!args[0].getClass().equals(bean.getClass()))
                     getSchema(args[0]);
-                for(int pn = 0; pn < propNames.length; pn++)
+                for (int pn = 0; pn < propNames.length; pn++)
                 {
-                    if(propNames[pn].length() == 0)
+                    if (propNames[pn].length() == 0)
                         continue;
 
                     nestedStorers.put(propNames[pn], new NestedStorer()
@@ -1229,7 +1239,7 @@ public class XmlDataModelSchema
 
                         public boolean isInherited()
                         {
-                            return ! m.getDeclaringClass().equals(bean);
+                            return !m.getDeclaringClass().equals(bean);
                         }
 
                         public Class getDeclaringClass()
@@ -1249,10 +1259,10 @@ public class XmlDataModelSchema
     {
         boolean hasCustom = element instanceof CustomElementAttributeSetter;
         AttributeSetter as = (AttributeSetter) attributeSetters.get(attributeName);
-        if (as == null && (withinCustom || ! hasCustom))
+        if (as == null && (withinCustom || !hasCustom))
         {
             // see if we're trying to set a named flag
-            for(Iterator i = flagsAttributeAccessors.entrySet().iterator(); i.hasNext(); )
+            for (Iterator i = flagsAttributeAccessors.entrySet().iterator(); i.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) i.next();
                 AttributeAccessor accessor = (AttributeAccessor) entry.getValue();
@@ -1263,24 +1273,24 @@ public class XmlDataModelSchema
                 }
                 catch (Exception e)
                 {
-                    pc.addError("Unable to set attribute '"+ attributeName +"' to '"+ value +"' at " + pc.getLocator().getSystemId() +
-                                " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+                    pc.addError("Unable to set attribute '" + attributeName + "' to '" + value + "' at " + pc.getLocator().getSystemId() +
+                            " line " + pc.getLocator().getLineNumber() + ": " + e.getMessage());
                     log.error(e);
-                    if(pc.isThrowErrorException())
+                    if (pc.isThrowErrorException())
                         throw new DataModelException(pc, e);
                 }
 
-                if(returnVal instanceof XdmBitmaskedFlagsAttribute)
+                if (returnVal instanceof XdmBitmaskedFlagsAttribute)
                 {
                     XdmBitmaskedFlagsAttribute bfa = (XdmBitmaskedFlagsAttribute) returnVal;
-                    if(bfa.updateFlag(attributeName, TextUtils.toBoolean(value)))
+                    if (bfa.updateFlag(attributeName, TextUtils.toBoolean(value)))
                         return;
                 }
             }
 
             UnsupportedAttributeException e = new UnsupportedAttributeException(pc, element, attributeName);
             pc.addError(e);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
                 throw e;
             else
                 return;
@@ -1294,10 +1304,10 @@ public class XmlDataModelSchema
         }
         catch (InvocationTargetException ite)
         {
-            pc.addError("Unable to set attribute '"+ attributeName +"' to '"+ value +"' using "+ as.getDeclaringClass() +" at " + pc.getLocator().getSystemId() +
-                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getTargetException().getMessage());
+            pc.addError("Unable to set attribute '" + attributeName + "' to '" + value + "' using " + as.getDeclaringClass() + " at " + pc.getLocator().getSystemId() +
+                    " line " + pc.getLocator().getLineNumber() + ": " + ite.getTargetException().getMessage());
             log.error(ite.getTargetException());
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
             {
                 Throwable t = ite.getTargetException();
                 if (t instanceof DataModelException)
@@ -1309,10 +1319,10 @@ public class XmlDataModelSchema
         }
         catch (Exception e)
         {
-            pc.addError("Unable to set attribute '"+ attributeName +"' to '"+ value +"' at " + pc.getLocator().getSystemId() +
-                        " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            pc.addError("Unable to set attribute '" + attributeName + "' to '" + value + "' at " + pc.getLocator().getSystemId() +
+                    " line " + pc.getLocator().getLineNumber() + ": " + e.getMessage());
             log.error(e);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
                 throw new DataModelException(pc, e);
         }
     }
@@ -1322,13 +1332,13 @@ public class XmlDataModelSchema
      */
     public void addText(XdmParseContext pc, Object element, String text) throws DataModelException, UnsupportedTextException
     {
-        if(options.ignorePcData) return;
+        if (options.ignorePcData) return;
 
         if (addText == null)
         {
             UnsupportedTextException e = new UnsupportedTextException(pc, element, text);
             pc.addError(e);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
                 throw e;
             else
                 return;
@@ -1339,9 +1349,9 @@ public class XmlDataModelSchema
         }
         catch (InvocationTargetException ite)
         {
-            pc.addError("Unable to add text '"+ text +"' at " + pc.getLocator().getSystemId() + " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
+            pc.addError("Unable to add text '" + text + "' at " + pc.getLocator().getSystemId() + " line " + pc.getLocator().getLineNumber() + ": " + ite.getMessage());
             log.error(ite);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
             {
                 Throwable t = ite.getTargetException();
                 if (t instanceof DataModelException)
@@ -1353,9 +1363,9 @@ public class XmlDataModelSchema
         }
         catch (Exception e)
         {
-            pc.addError("Unable to add text '"+ text +"' at " + pc.getLocator().getSystemId() + " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            pc.addError("Unable to add text '" + text + "' at " + pc.getLocator().getSystemId() + " line " + pc.getLocator().getLineNumber() + ": " + e.getMessage());
             log.error(e);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
                 throw new DataModelException(pc, e);
         }
     }
@@ -1364,7 +1374,7 @@ public class XmlDataModelSchema
     {
         try
         {
-            if(alternateClassName != null)
+            if (alternateClassName != null)
             {
                 Class cls = null;
                 try
@@ -1373,33 +1383,33 @@ public class XmlDataModelSchema
                 }
                 catch (ClassNotFoundException e)
                 {
-                    pc.addError("Class '"+ alternateClassName +"' for element '"+ elementName +"' not found at " + pc.getLocator().getSystemId() +
-                                " line "+ pc.getLocator().getLineNumber() + ". " + e.getMessage());
+                    pc.addError("Class '" + alternateClassName + "' for element '" + elementName + "' not found at " + pc.getLocator().getSystemId() +
+                            " line " + pc.getLocator().getLineNumber() + ". " + e.getMessage());
                     log.error(e);
-                    if(pc.isThrowErrorException())
+                    if (pc.isThrowErrorException())
                         throw new DataModelException(pc, e);
                     else
                     {
                         NestedCreator nc = (NestedCreator) nestedCreators.get(elementName);
-                        if(nc != null)
+                        if (nc != null)
                             return nc.create(element);
                     }
                 }
 
                 NestedAltClassCreator nac = (NestedAltClassCreator) nestedAltClassNameCreators.get(elementName);
-                if(nac != null)
+                if (nac != null)
                     return nac.create(element, cls);
                 else
                 {
                     // check to make sure that either a storer or creator is available to ensure it's a valid tag
-                    if(nestedCreators.get(elementName) != null || nestedStorers.get(elementName) != null)
+                    if (nestedCreators.get(elementName) != null || nestedStorers.get(elementName) != null)
                         return cls.newInstance();
 
                     UnsupportedElementException e = new UnsupportedElementException(this, pc, element, elementName);
-                    if(pc != null)
+                    if (pc != null)
                     {
                         pc.addError(e);
-                        if(pc.isThrowErrorException())
+                        if (pc.isThrowErrorException())
                             throw e;
                         else
                             return null;
@@ -1411,16 +1421,16 @@ public class XmlDataModelSchema
             else
             {
                 NestedCreator nc = (NestedCreator) nestedCreators.get(elementName);
-                if(nc != null)
+                if (nc != null)
                     return nc.create(element);
             }
         }
         catch (InvocationTargetException ite)
         {
-            pc.addError("Could not create class '"+ alternateClassName +"' for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
-                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
+            pc.addError("Could not create class '" + alternateClassName + "' for element '" + elementName + "' at " + pc.getLocator().getSystemId() +
+                    " line " + pc.getLocator().getLineNumber() + ": " + ite.getMessage());
             log.error(ite);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
             {
                 Throwable t = ite.getTargetException();
                 if (t instanceof DataModelException)
@@ -1432,21 +1442,21 @@ public class XmlDataModelSchema
         }
         catch (Exception e)
         {
-            pc.addError("Could not create class '"+ alternateClassName +"' for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
-                        " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            pc.addError("Could not create class '" + alternateClassName + "' for element '" + elementName + "' at " + pc.getLocator().getSystemId() +
+                    " line " + pc.getLocator().getLineNumber() + ": " + e.getMessage());
             log.error(e);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
                 throw new DataModelException(pc, e);
         }
 
         // if the element is being defined as a sub-element but has an attribute of the same name, it's a convenience attribute setter
         AttributeSetter as = (AttributeSetter) attributeSetters.get(elementName);
-        if(as != null)
+        if (as != null)
             return element;
         else
         {
             // see if we're trying to set a named flag as a sub-element
-            for(Iterator i = flagsAttributeAccessors.entrySet().iterator(); i.hasNext(); )
+            for (Iterator i = flagsAttributeAccessors.entrySet().iterator(); i.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) i.next();
                 AttributeAccessor accessor = (AttributeAccessor) entry.getValue();
@@ -1459,15 +1469,15 @@ public class XmlDataModelSchema
                 {
                 }
 
-                if(returnVal instanceof XdmBitmaskedFlagsAttribute)
+                if (returnVal instanceof XdmBitmaskedFlagsAttribute)
                     return element;
             }
 
             UnsupportedElementException e = new UnsupportedElementException(this, pc, element, elementName);
-            if(pc != null)
+            if (pc != null)
             {
                 pc.addError(e);
-                if(pc.isThrowErrorException())
+                if (pc.isThrowErrorException())
                     throw e;
                 else
                     return null;
@@ -1486,17 +1496,17 @@ public class XmlDataModelSchema
 
         try
         {
-            if(element instanceof CustomElementCreator && ! withinCustom)
+            if (element instanceof CustomElementCreator && !withinCustom)
                 return ((CustomElementCreator) element).createCustomDataModelElement(pc, this, element, elementName, alternateClassName);
             else
                 return createElement(pc, alternateClassName, element, elementName);
         }
         catch (InvocationTargetException ite)
         {
-            pc.addError("Could not create class for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
-                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
+            pc.addError("Could not create class for element '" + elementName + "' at " + pc.getLocator().getSystemId() +
+                    " line " + pc.getLocator().getLineNumber() + ": " + ite.getMessage());
             log.error(ite);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
             {
                 Throwable t = ite.getTargetException();
                 if (t instanceof DataModelException)
@@ -1510,10 +1520,10 @@ public class XmlDataModelSchema
         }
         catch (Exception e)
         {
-            pc.addError("Could not create class for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
-                        " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            pc.addError("Could not create class for element '" + elementName + "' at " + pc.getLocator().getSystemId() +
+                    " line " + pc.getLocator().getLineNumber() + ": " + e.getMessage());
             log.error(e);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
                 throw new DataModelException(pc, e);
             return null;
         }
@@ -1527,17 +1537,17 @@ public class XmlDataModelSchema
         NestedStorer ns = (NestedStorer) nestedStorers.get(elementName);
         try
         {
-            if(ns == null && (!withinCustom && element instanceof CustomElementStorer))
+            if (ns == null && (!withinCustom && element instanceof CustomElementStorer))
                 ((CustomElementStorer) element).storeCustomDataModelElement(pc, this, element, child, elementName);
-            else if(ns != null)
+            else if (ns != null)
                 ns.store(element, child);
         }
         catch (InvocationTargetException ite)
         {
-            pc.addError("Could not store data for for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
-                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
+            pc.addError("Could not store data for for element '" + elementName + "' at " + pc.getLocator().getSystemId() +
+                    " line " + pc.getLocator().getLineNumber() + ": " + ite.getMessage());
             log.error(ite);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
             {
                 Throwable t = ite.getTargetException();
                 if (t instanceof DataModelException)
@@ -1549,18 +1559,76 @@ public class XmlDataModelSchema
         }
         catch (Exception e)
         {
-            pc.addError("Could not store data for for element '"+ elementName +"' at " + pc.getLocator().getSystemId() +
-                        " line "+ pc.getLocator().getLineNumber() + ": " + e.getMessage());
+            pc.addError("Could not store data for for element '" + elementName + "' at " + pc.getLocator().getSystemId() +
+                    " line " + pc.getLocator().getLineNumber() + ": " + e.getMessage());
             log.error(e);
-            if(pc.isThrowErrorException())
+            if (pc.isThrowErrorException())
                 throw new DataModelException(pc, e);
         }
     }
 
     public void finalizeElementConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
-        if(element instanceof ConstructionFinalizeListener)
+        if (element instanceof ConstructionFinalizeListener)
             ((ConstructionFinalizeListener) element).finalizeConstruction(pc, element, elementName);
+    }
+
+    public void assignMapValue(final Object element, final Map map, String key, final String defaultValue) throws IllegalAccessException, InvocationTargetException, DataModelException
+    {
+        boolean required = false;
+        if (key.endsWith("!"))
+        {
+            required = true;
+            key = key.substring(0, key.length() - 1);
+        }
+
+        Method method = (Method) getAttributeSetterMethods().get(key);
+        if (method != null)
+        {
+            Class[] args = method.getParameterTypes();
+            if (args.length == 1)
+            {
+                XmlDataModelSchema.AttributeSetter as = (XmlDataModelSchema.AttributeSetter) getAttributeSetters().get(key);
+                Object value = map.get(key);
+                if (value == null)
+                {
+                    if (required)
+                        throw new RuntimeException("Map key '" + key + "' is required but not available.");
+
+                    value = defaultValue;
+                }
+                as.set(null, element, value == null ? null : value.toString());
+            }
+            else if (required && log.isErrorEnabled())
+                log.error("Attempting to assign '" + key + "' to a method in '" + element.getClass() + "' but the method has more than one argument.");
+        }
+        else if (required && log.isErrorEnabled())
+            log.error("Attempting to assign '" + key + "' to a method in '" + element.getClass() + "' but there is no mutator available.");
+    }
+
+    public void assignMapValues(Object element, Map map, String keys) throws IllegalAccessException, DataModelException, InvocationTargetException
+    {
+        if (keys.equals("*"))
+        {
+            for (Iterator i = map.keySet().iterator(); i.hasNext();)
+            {
+                String key = (String) i.next();
+                assignMapValue(element, map, key, null);
+            }
+        }
+        else
+        {
+            String[] keysArray = TextUtils.split(keys, ",", true);
+            for (int i = 0; i < keysArray.length; i++)
+            {
+                String key = keysArray[i];
+                int defaultValuePos = key.indexOf('=');
+                if (defaultValuePos > 0)
+                    assignMapValue(element, map, key.substring(0, defaultValuePos), key.substring(defaultValuePos + 1));
+                else
+                    assignMapValue(element, map, key, null);
+            }
+        }
     }
 
     /**
@@ -1649,7 +1717,7 @@ public class XmlDataModelSchema
 
             public boolean isInherited()
             {
-                return ! m.getDeclaringClass().equals(bean);
+                return !m.getDeclaringClass().equals(bean);
             }
 
             public Class getDeclaringClass()
@@ -1683,7 +1751,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1707,7 +1775,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1728,7 +1796,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1749,7 +1817,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1770,7 +1838,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1791,7 +1859,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1812,7 +1880,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1833,7 +1901,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1856,7 +1924,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1879,11 +1947,11 @@ public class XmlDataModelSchema
                     }
                     catch (ClassNotFoundException ce)
                     {
-                        if(pc != null)
+                        if (pc != null)
                         {
                             DataModelException dme = new DataModelException(pc, ce);
                             pc.addError(dme);
-                            if(pc.isThrowErrorException())
+                            if (pc.isThrowErrorException())
                                 throw dme;
                         }
                         else
@@ -1893,7 +1961,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1910,12 +1978,12 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException
                 {
                     // resolve relative paths through DataModel
-                    m.invoke(parent, new File[]{ pc != null ? pc.resolveFile(value) : new File(value)});
+                    m.invoke(parent, new File[]{pc != null ? pc.resolveFile(value) : new File(value)});
                 }
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1932,29 +2000,29 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException
                 {
                     ValueSource vs = ValueSources.getInstance().getValueSourceOrStatic(value);
-                    if(vs == null)
+                    if (vs == null)
                     {
                         // better to throw an error here since if there are objects which are based on null/non-null
                         // value of the value source, it is easier to debug
-                        pc.addError("Unable to find ValueSource '"+ value +"' to wrap in RedirectValueSource at " + pc.getLocator().getSystemId() +
-                                " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                        pc.addError("Unable to find ValueSource '" + value + "' to wrap in RedirectValueSource at " + pc.getLocator().getSystemId() +
+                                " line " + pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                     }
                     try
                     {
                         RedirectValueSource redirectValueSource = (RedirectValueSource) arg.newInstance();
                         redirectValueSource.setValueSource(vs);
-                        m.invoke(parent, new RedirectValueSource[]{ redirectValueSource });
+                        m.invoke(parent, new RedirectValueSource[]{redirectValueSource});
                     }
                     catch (InstantiationException e)
                     {
-                        pc.addError("Unable to create RedirectValueSource for '"+ value +"' at " + pc.getLocator().getSystemId() +
-                                " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                        pc.addError("Unable to create RedirectValueSource for '" + value + "' at " + pc.getLocator().getSystemId() +
+                                " line " + pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                     }
                 }
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -1971,22 +2039,22 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException
                 {
                     ValueSource vs = ValueSources.getInstance().getValueSourceOrStatic(value);
-                    if(vs == null)
+                    if (vs == null)
                     {
                         // better to throw an error here since if there are objects which are based on null/non-null
                         // value of the value source, it is easier to debug
-                        if(pc != null)
-                            pc.addError("Unable to create ValueSource for '"+ value +"' at " + pc.getLocator().getSystemId() +
-                                                        " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                        if (pc != null)
+                            pc.addError("Unable to create ValueSource for '" + value + "' at " + pc.getLocator().getSystemId() +
+                                    " line " + pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                         else
-                            log.error("Unable to create ValueSource for '"+ value +". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                            log.error("Unable to create ValueSource for '" + value + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                     }
-                    m.invoke(parent, new ValueSource[]{ vs });
+                    m.invoke(parent, new ValueSource[]{vs});
                 }
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -2004,24 +2072,24 @@ public class XmlDataModelSchema
                 {
                     try
                     {
-                        m.invoke(parent, new Command[]{ Commands.getInstance().getCommand(value) });
+                        m.invoke(parent, new Command[]{Commands.getInstance().getCommand(value)});
                     }
                     catch (CommandNotFoundException e)
                     {
-                        if(pc != null)
+                        if (pc != null)
                         {
-                            pc.addError("Unable to create Command for '"+ value +"' at " + pc.getLocator().getSystemId() + " line "+ pc.getLocator().getLineNumber() + ".");
-                            if(pc.isThrowErrorException())
+                            pc.addError("Unable to create Command for '" + value + "' at " + pc.getLocator().getSystemId() + " line " + pc.getLocator().getLineNumber() + ".");
+                            if (pc.isThrowErrorException())
                                 throw new DataModelException(pc, e);
                         }
                         else
-                            log.error("Unable to create Command for '"+ value +"'", e);
+                            log.error("Unable to create Command for '" + value + "'", e);
                     }
                 }
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -2046,14 +2114,14 @@ public class XmlDataModelSchema
                     catch (InstantiationException ie)
                     {
                         pc.addError(ie);
-                        if(pc.isThrowErrorException())
+                        if (pc.isThrowErrorException())
                             throw new DataModelException(pc, ie);
                     }
                 }
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -2073,24 +2141,24 @@ public class XmlDataModelSchema
                     {
                         XdmBitmaskedFlagsAttribute bfa;
                         NestedCreator creator = (NestedCreator) nestedCreators.get(attrName);
-                        if(creator != null)
+                        if (creator != null)
                             bfa = (XdmBitmaskedFlagsAttribute) creator.create(parent);
                         else
                             bfa = (XdmBitmaskedFlagsAttribute) arg.newInstance();
                         bfa.setValue(pc, parent, attrName, value);
-                        m.invoke(parent, new XdmBitmaskedFlagsAttribute[]{ bfa });
+                        m.invoke(parent, new XdmBitmaskedFlagsAttribute[]{bfa});
                     }
                     catch (InstantiationException ie)
                     {
                         pc.addError(ie);
-                        if(pc.isThrowErrorException())
+                        if (pc.isThrowErrorException())
                             throw new DataModelException(pc, ie);
                     }
                 }
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -2107,22 +2175,22 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException, DataModelException
                 {
                     String[] items = TextUtils.split(value, ",", true);
-                    switch(items.length)
+                    switch (items.length)
                     {
                         case 1:
-                            m.invoke(parent, new Locale[] { new Locale(items[0], "") });
+                            m.invoke(parent, new Locale[]{new Locale(items[0], "")});
                             break;
 
                         case 2:
-                            m.invoke(parent, new Locale[] { new Locale(items[1], items[2]) });
+                            m.invoke(parent, new Locale[]{new Locale(items[1], items[2])});
                             break;
 
                         case 3:
-                            m.invoke(parent, new Locale[] { new Locale(items[1], items[2], items[3]) });
+                            m.invoke(parent, new Locale[]{new Locale(items[1], items[2], items[3])});
                             break;
 
                         case 4:
-                            if(pc != null)
+                            if (pc != null)
                                 throw new DataModelException(pc, "Too many items in Locale constructor.");
                             else
                                 log.error("Too many items in Locale constructor: " + value);
@@ -2131,7 +2199,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -2148,25 +2216,31 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException, DataModelException
                 {
                     String[] items = TextUtils.split(value, ",", true);
-                    switch(items.length)
+                    switch (items.length)
                     {
                         case 1:
-                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0]) });
+                            m.invoke(parent, new ResourceBundle[]{ResourceBundle.getBundle(items[0])});
                             break;
 
                         case 2:
-                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0], new Locale(items[1], Locale.US.getCountry())) });
+                            m.invoke(parent, new ResourceBundle[]{
+                                ResourceBundle.getBundle(items[0], new Locale(items[1], Locale.US.getCountry()))
+                            });
                             break;
 
                         case 3:
-                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0], new Locale(items[1], items[2])) });
+                            m.invoke(parent, new ResourceBundle[]{
+                                ResourceBundle.getBundle(items[0], new Locale(items[1], items[2]))
+                            });
                             break;
 
                         case 4:
-                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0], new Locale(items[1], items[2], items[3])) });
+                            m.invoke(parent, new ResourceBundle[]{
+                                ResourceBundle.getBundle(items[0], new Locale(items[1], items[2], items[3]))
+                            });
 
                         default:
-                            if(pc != null)
+                            if (pc != null)
                                 throw new DataModelException(pc, "Too many items in ResourceBundle constructor.");
                             else
                                 log.error("Too many items in Locale constructor: " + value);
@@ -2176,7 +2250,7 @@ public class XmlDataModelSchema
 
                 public boolean isInherited()
                 {
-                    return ! m.getDeclaringClass().equals(bean);
+                    return !m.getDeclaringClass().equals(bean);
                 }
 
                 public Class getDeclaringClass()
@@ -2203,10 +2277,10 @@ public class XmlDataModelSchema
                         }
                         catch (InstantiationException ie)
                         {
-                            if(pc != null)
+                            if (pc != null)
                             {
                                 pc.addError(ie);
-                                if(pc.isThrowErrorException())
+                                if (pc.isThrowErrorException())
                                     throw new DataModelException(pc, ie);
                             }
                             else
@@ -2216,7 +2290,7 @@ public class XmlDataModelSchema
 
                     public boolean isInherited()
                     {
-                        return ! m.getDeclaringClass().equals(bean);
+                        return !m.getDeclaringClass().equals(bean);
                     }
 
                     public Class getDeclaringClass()
@@ -2248,11 +2322,11 @@ public class XmlDataModelSchema
             primaryName = xmlNodeName.toLowerCase();
             aliases.add(primaryName);
 
-            if(options.isGenerateAutoAliases() && ! xmlNodeName.equals(nameMinusPrefix))
+            if (options.isGenerateAutoAliases() && !xmlNodeName.equals(nameMinusPrefix))
                 aliases.add(nameMinusPrefix.toLowerCase());
 
             // map all the property names to this object
-            for(Iterator i = aliases.iterator(); i.hasNext(); )
+            for (Iterator i = aliases.iterator(); i.hasNext();)
             {
                 String name = (String) i.next();
                 propertyNames.put(name, this);
@@ -2260,11 +2334,11 @@ public class XmlDataModelSchema
 
             Map customAliasesMap = options.getAliases();
             String[] allNames = getAllNames();
-            for(int i = 0; i < allNames.length; i++)
+            for (int i = 0; i < allNames.length; i++)
             {
                 String name = allNames[i];
                 Set customAliases = (Set) customAliasesMap.get(name);
-                if(customAliases != null)
+                if (customAliases != null)
                     aliases.addAll(customAliases);
             }
 
@@ -2291,42 +2365,43 @@ public class XmlDataModelSchema
             return (String[]) aliases.toArray(new String[aliases.size()]);
         }
 
-	    /**
-	     * Returns a string representation of the object. In general, the
-	     * <code>toString</code> method returns a string that
-	     * "textually represents" this object. The result should
-	     * be a concise but informative representation that is easy for a
-	     * person to read.
-	     * It is recommended that all subclasses override this method.
-	     * <p>
-	     * The <code>toString</code> method for class <code>Object</code>
-	     * returns a string consisting of the name of the class of which the
-	     * object is an instance, the at-sign character `<code>@</code>', and
-	     * the unsigned hexadecimal representation of the hash code of the
-	     * object. In other words, this method returns a string equal to the
-	     * value of:
-	     * <blockquote>
-	     * <pre>
-	     * getClass().getName() + '@' + Integer.toHexString(hashCode())
-	     * </pre></blockquote>
-	     *
-	     * @return  a string representation of the object.
-	     */
-	    public String toString () {
-		    String output = primaryName + ": [";
-		    String[] aliases = getAllNames();
+        /**
+         * Returns a string representation of the object. In general, the
+         * <code>toString</code> method returns a string that
+         * "textually represents" this object. The result should
+         * be a concise but informative representation that is easy for a
+         * person to read.
+         * It is recommended that all subclasses override this method.
+         * <p/>
+         * The <code>toString</code> method for class <code>Object</code>
+         * returns a string consisting of the name of the class of which the
+         * object is an instance, the at-sign character `<code>@</code>', and
+         * the unsigned hexadecimal representation of the hash code of the
+         * object. In other words, this method returns a string equal to the
+         * value of:
+         * <blockquote>
+         * <pre>
+         * getClass().getName() + '@' + Integer.toHexString(hashCode())
+         * </pre></blockquote>
+         *
+         * @return a string representation of the object.
+         */
+        public String toString()
+        {
+            String output = primaryName + ": [";
+            String[] aliases = getAllNames();
 
-            for (int i = 0; i < aliases.length; i ++)
+            for (int i = 0; i < aliases.length; i++)
             {
-	            if (0 != i)
-		            output += ", ";
+                if (0 != i)
+                    output += ", ";
 
-	            output += aliases[i];
-	        }
+                output += aliases[i];
+            }
 
-		    output += "]";
-		    return output;
-	    }
+            output += "]";
+            return output;
+        }
     }
 
     private String[] getPropertyNames(String methodName, String prefix)
@@ -2339,7 +2414,9 @@ public class XmlDataModelSchema
     {
         public Object create(Object parent)
                 throws InvocationTargetException, IllegalAccessException, InstantiationException;
+
         public boolean isInherited();
+
         public Class getDeclaringClass();
     }
 
@@ -2347,7 +2424,9 @@ public class XmlDataModelSchema
     {
         public Object create(Object parent, Class cls)
                 throws InvocationTargetException, IllegalAccessException, InstantiationException;
+
         public boolean isInherited();
+
         public Class getDeclaringClass();
     }
 
@@ -2355,7 +2434,9 @@ public class XmlDataModelSchema
     {
         public void store(Object parent, Object child)
                 throws InvocationTargetException, IllegalAccessException, InstantiationException;
+
         public boolean isInherited();
+
         public Class getDeclaringClass();
     }
 
@@ -2364,7 +2445,9 @@ public class XmlDataModelSchema
         public void set(XdmParseContext pc, Object parent, String value)
                 throws InvocationTargetException, IllegalAccessException,
                 DataModelException;
+
         public boolean isInherited();
+
         public Class getDeclaringClass();
     }
 
@@ -2373,7 +2456,9 @@ public class XmlDataModelSchema
         public Object get(XdmParseContext pc, Object parent)
                 throws InvocationTargetException, IllegalAccessException,
                 DataModelException;
+
         public boolean isInherited();
+
         public Class getDeclaringClass();
     }
 }
