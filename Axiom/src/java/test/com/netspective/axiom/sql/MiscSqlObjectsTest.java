@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MiscSqlObjectsTest.java,v 1.1 2003-04-12 05:46:39 shahbaz.javeed Exp $
+ * $Id: MiscSqlObjectsTest.java,v 1.2 2003-05-28 03:00:35 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -228,7 +228,7 @@ public class MiscSqlObjectsTest extends TestCase
         DatabasePolicies dbPolicies = new DatabasePolicies();
         assertEquals(6, dbPolicies.size());
 
-        DatabasePolicy[] selectedDbPolicies = dbPolicies.getMatchingPolices("o");
+        DatabasePolicy[] selectedDbPolicies = dbPolicies.getMatchingPolices("/o/");
         Set selectedDbPolicyNames = new HashSet(3);
         selectedDbPolicyNames.add("oracle");
         selectedDbPolicyNames.add("postgres");

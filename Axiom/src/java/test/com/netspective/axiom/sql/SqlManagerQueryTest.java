@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.7 2003-04-12 05:46:39 shahbaz.javeed Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.8 2003-05-28 03:00:35 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -113,6 +113,8 @@ public class SqlManagerQueryTest extends TestCase
 	public void testQueriesObject()
 	{
         QueriesCollection queries = (QueriesCollection) manager.getQueries();
+
+		assertSame(manager, queries.getSqlManager());
 
 		Set queryNames = queries.getNames();
 		assertEquals(this.queryNames.length, queryNames.size());
@@ -640,6 +642,12 @@ public class SqlManagerQueryTest extends TestCase
 
         // Test QueryExecutionLog class...
         QueryExecutionLog qelOne = stmtOne.getExecLog();
+		assertEquals(-1, qelOne.getResetLogAfterCount());
+		qelOne.setResetLogAfterCount(10);
+		assertEquals(10, qelOne.getResetLogAfterCount());
+		qelOne.setResetLogAfterCount(-1);
+		assertEquals(-1, qelOne.getResetLogAfterCount());
+
         QueryExecutionLog.QueryExecutionStatistics qesOne = qelOne.getStatistics();
         assertNotNull(qesOne);
         assertTrue(3 <= qesOne.totalExecutions);
