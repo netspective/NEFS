@@ -82,7 +82,7 @@
                 Upgraded the DHTML calendar JavaScript library from 0.9.2 to 0.9.6. The source of the library remains
                 <a href="http://dynarch.com/mishoo/calendar.epl">Mishoo DTHML Calendar</a>. The older version at
                 Sparx/resources/theme/common/calendar-0.9.2 is now no longer in the CVS repository and is replaced by
-                the Sparx/resources/theme/common/jscalendar-0.9.6 directory. If you have your own navigation skin, please
+                the Sparx/resources/theme/common/jscalendar-0.9.6 directory. <b>API CHANGE:</b> If you have your own navigation skin, please
                 be sure to update the reference to the new directory. For example, if you have a reference to
                 theme.getResourceUrl("/calendar-0.9.2/calendar-win2k-1.css") it needs to change to
                 theme.getResourceUrl("/jscalendar-0.9.6/calendar-win2k-1.css").
@@ -148,14 +148,14 @@
             <change-log-entry>
                 <![CDATA[
                 <code>HtmlTabularReport</code> interface now includes an extra method called addActions()
-                and <code>BasicHtmlTabularReport</code> implements it. All classes that directly implement the interface
+                and <code>BasicHtmlTabularReport</code> implements it. <b>API CHANGE:</b> All classes that directly implement the interface
                 WILL BREAK until the new method is implemented.
                 ]]>
             </change-log-entry>
             <change-log-entry>
                 <![CDATA[
                 Fixed problem where the dialog's retain-param values were being saved as hidden fields with a
-                value of "null" (4 char) instead  of an empty string.
+                value of "null" (4 char) instead of an empty string.
                 ]]>
             </change-log-entry>
         </change-log>
