@@ -74,7 +74,7 @@
     </#list>
 
     <#list node.children as childNode>
-    <set name="${textUtils.xmlTextToJavaIdentifier(childNode.table.name, false)}" inverse="true" cascade="all-delete-orphan" lazy="true">
+    <set name="${childNode.table.javaCollectionName}" inverse="true" cascade="all-delete-orphan" lazy="true">
         <key column="${table.primaryKeyColumns.sole.name}"/>
         <one-to-many class="${package}.${textUtils.xmlTextToJavaIdentifier(childNode.table.name, true)}"/>
     </set>
