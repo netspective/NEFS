@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: ReportColumnFactory.java,v 1.3 2003-04-03 12:45:47 shahid.shah Exp $
+ * $Id: ReportColumnFactory.java,v 1.4 2004-06-23 20:45:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -66,9 +66,6 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.netspective.commons.report.tabular.column.DecimalColumn;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -96,7 +93,7 @@ public class ReportColumnFactory
         TabularReportColumn column = null;
 
         int dataType = rsmd.getColumnType(resultSetColIndex);
-        switch(dataType)
+        switch (dataType)
         {
             case Types.INTEGER:
             case Types.SMALLINT:
@@ -113,7 +110,7 @@ public class ReportColumnFactory
 
             case Types.NUMERIC:
             case Types.DECIMAL:
-                if(rsmd.getScale(resultSetColIndex) > 0)
+                if (rsmd.getScale(resultSetColIndex) > 0)
                     column = new DecimalColumn();
                 else
                     column = new NumericColumn();
