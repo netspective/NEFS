@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlList.java,v 1.4 2003-03-20 22:38:15 shahid.shah Exp $
+ * $Id: AccessControlList.java,v 1.5 2003-10-11 14:31:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -50,13 +50,15 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.io.InputSourceLocator;
 
-public class AccessControlList
+public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String ACLNAME_DEFAULT = "acl";
     public static final String NAME_SEPARATOR = "/";
 
+    private InputSourceLocator inputSourceLocator;
     private AccessControlLists manager;
     private String name;
     private String qualifiedName;
@@ -74,6 +76,16 @@ public class AccessControlList
     public AccessControlLists getManager()
     {
         return manager;
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     protected void setManager(AccessControlLists manager)
@@ -182,6 +194,16 @@ public class AccessControlList
             throw new RoleNotFoundException("Role '"+ name +"' not found in ACL.", getOwner(), name);
         else
             return result;
+    }
+
+    public List getPermissions()
+    {
+        return permissions;
+    }
+
+    public List getRoles()
+    {
+        return roles;
     }
 
     public String toString()

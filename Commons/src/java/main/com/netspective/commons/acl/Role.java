@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Role.java,v 1.2 2003-03-23 16:43:33 shahbaz.javeed Exp $
+ * $Id: Role.java,v 1.3 2003-10-11 14:31:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -58,6 +58,7 @@ public class Role
     private AccessControlList owner;
     private Role parent;
     private int id = -1;
+    private int level = 0;
     private String name;
     private String qualifiedName;
     private BitSet permissions = new BitSet();
@@ -96,7 +97,11 @@ public class Role
     protected void setParent(Role parent)
     {
         this.parent = parent;
-        if(parent != null) setOwner(parent.getOwner());
+        if(parent != null)
+        {
+            setOwner(parent.getOwner());
+            setLevel(parent.getLevel() + 1);
+        }
     }
 
     public Role getParent()
@@ -112,6 +117,16 @@ public class Role
     protected void setId(int id)
     {
         this.id = id;
+    }
+
+    public int getLevel()
+    {
+        return level;
+    }
+
+    public void setLevel(int level)
+    {
+        this.level = level;
     }
 
     public String getName()
@@ -194,7 +209,7 @@ public class Role
         if(parent != null) parent.addRevoke(revoke);
     }
 
-    protected int getAncestorsCount()
+    public int getAncestorsCount()
     {
         int result = 0;
         Role parent = getParent();
@@ -204,6 +219,36 @@ public class Role
             parent = parent.getParent();
         }
         return result;
+    }
+
+    public List getAncestorsList()
+    {
+        List result = new ArrayList();
+        Role parent = getParent();
+        while(parent != null)
+        {
+            if(result.size() == 0)
+                result.add(parent);
+            else
+                result.add(0, parent);
+            parent = parent.getParent();
+        }
+        return result;
+    }
+
+    public List getChildren()
+    {
+        return children;
+    }
+
+    public RoleOrPermissionReferences getGrants()
+    {
+        return grants;
+    }
+
+    public RoleOrPermissionReferences getRevokes()
+    {
+        return revokes;
     }
 
     public String toString()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Permission.java,v 1.3 2003-03-20 22:38:15 shahid.shah Exp $
+ * $Id: Permission.java,v 1.4 2003-10-11 14:31:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -58,6 +58,7 @@ public class Permission
     private AccessControlList owner;
     private Permission parent;
     private int id = -1;
+    private int level = 0;
     private String name;
     private String qualifiedName;
     private BitSet childPermissions = new BitSet();
@@ -94,7 +95,11 @@ public class Permission
     protected void setParent(Permission parent)
     {
         this.parent = parent;
-        if(parent != null) setOwner(parent.getOwner());
+        if(parent != null)
+        {
+            setOwner(parent.getOwner());
+            setLevel(parent.getLevel() + 1);
+        }
     }
 
     public Permission getParent()
@@ -111,6 +116,16 @@ public class Permission
     {
         this.id = id;
         childPermissions.set(id);
+    }
+
+    public int getLevel()
+    {
+        return level;
+    }
+
+    public void setLevel(int level)
+    {
+        this.level = level;
     }
 
     public String getName()
@@ -161,13 +176,33 @@ public class Permission
         childPermissions.set(childPerm.getId());
     }
 
-    protected int getAncestorsCount()
+    public List getChildren()
+    {
+        return children;
+    }
+
+    public int getAncestorsCount()
     {
         int result = 0;
         Permission parent = getParent();
         while(parent != null)
         {
             result++;
+            parent = parent.getParent();
+        }
+        return result;
+    }
+
+    public List getAncestorsList()
+    {
+        List result = new ArrayList();
+        Permission parent = getParent();
+        while(parent != null)
+        {
+            if(result.size() == 0)
+                result.add(parent);
+            else
+                result.add(0, parent);
             parent = parent.getParent();
         }
         return result;

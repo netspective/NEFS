@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlLists.java,v 1.3 2003-03-20 22:38:15 shahid.shah Exp $
+ * $Id: AccessControlLists.java,v 1.4 2003-10-11 14:31:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -120,6 +120,11 @@ public class AccessControlLists
     {
         rolesByName.put(role.getQualifiedName(), role);
         nextRoleId++;
+    }
+
+    public Map getAccessControlLists()
+    {
+        return acls;
     }
 
     public AccessControlList getAccessControlList()
