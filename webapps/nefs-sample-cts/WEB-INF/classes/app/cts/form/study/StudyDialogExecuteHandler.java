@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StudyDialogExecuteHandler.java,v 1.3 2003-10-31 08:33:50 aye.thu Exp $
+ * $Id: StudyDialogExecuteHandler.java,v 1.4 2004-01-27 16:41:12 aye.thu Exp $
  */
 package app.cts.form.study;
 
@@ -96,14 +96,14 @@ public class StudyDialogExecuteHandler extends  DialogExecuteRecordEditorHandler
             svo.setStudyStatusInt(pc.getStudyStatus().getIntValue());
 
             // These are the optional fields
-            if (pc.getStudyStage().getSelectedChoice() != null)
+            if (pc.getStudyStageState().getValue().getTextValue() != null)
                 svo.setStudyStageInt(pc.getStudyStage().getIntValue());
 
             studyRecord.setValues(svo);
             studyRecord.insert(cc);
 
             // handle the children records
-            if (pc.getSponsorOrgName().getSelectedChoice() != null)
+            if (pc.getSponsorOrgNameState().getValue().getTextValue() != null)
             {
                 StudyOrgRelationshipVO sorVO = new StudyOrgRelationshipVO();
                 //sorVO.setParentIdLong(studyRecord.getStudyId().getLongValue());
