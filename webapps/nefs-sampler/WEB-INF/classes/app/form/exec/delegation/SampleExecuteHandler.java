@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,23 +28,16 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: SampleExecuteHandler.java,v 1.2 2004-03-05 14:48:57 zahara.khan Exp $
- */
-
 package app.form.exec.delegation;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
-import com.netspective.sparx.form.handler.DialogExecuteHandler;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.handler.DialogExecuteHandler;
 
 public class SampleExecuteHandler implements DialogExecuteHandler
 {
@@ -57,12 +45,12 @@ public class SampleExecuteHandler implements DialogExecuteHandler
     {
         writer.write("Welcome to NEFS <b>" + dc.getFieldStates().getState("full_name").getValue().getTextValue() +
                      "</b>. ");
-        writer.write("You are running the dialog called <b>"+ dc.getDialog().getName() +"</b> in package <b>"+
-                     dc.getDialog().getNameSpace().getNameSpaceId() +"</b>.");
+        writer.write("You are running the dialog called <b>" + dc.getDialog().getName() + "</b> in package <b>" +
+                     dc.getDialog().getNameSpace().getNameSpaceId() + "</b>.");
 
         // because we're handling both forms (exec1a and exec1b we need to check if we're running the second form)
         if(dc.getDialog().getQualifiedName().equals("form.exec.delegation.exec1b"))
-            writer.write("<p>You are <b>"+ dc.getFieldStates().getState("age").getValue().getIntValue() + "</b> " +
+            writer.write("<p>You are <b>" + dc.getFieldStates().getState("age").getValue().getIntValue() + "</b> " +
                          "years old.");
 
         writer.write("<p>");
@@ -72,11 +60,10 @@ public class SampleExecuteHandler implements DialogExecuteHandler
                      "Dialog class handles the execution.<p>");
 
         String relativePath = "/WEB-INF/classes/app/form/exec/delegation/SampleExecuteHandler.java";
-        String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt(
-                                   dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
-                                   relativePath);
+        String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt(dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
+                                                                    relativePath);
         writer.write("You may review the code at " + sourceFileLink + ".");
         writer.write("<p>");
-        writer.write("<a href=\""+ dc.getNavigationContext().getActivePage().getName() +"\">Clear the dialog</a>");
+        writer.write("<a href=\"" + dc.getNavigationContext().getActivePage().getName() + "\">Clear the dialog</a>");
     }
 }
