@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.27 2003-07-29 20:32:49 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.28 2003-07-29 21:11:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -421,10 +421,12 @@ public class DialogField implements TemplateConsumer
             String fieldName = fieldStateElem.getAttribute("name");
             if(fieldName == null)
                 return;
-            if(fieldName != getQualifiedName())
+            if(! fieldName.equals(getQualifiedName()))
                 throw new RuntimeException("Attempting to assign field state for '"+ fieldName +"' into '"+ getQualifiedName() +"'.");
             getStateFlags().setValue(fieldStateElem.getAttribute("flags"));
-            setAdjacentAreaValue(fieldStateElem.getAttribute("adjacent-area-value"));
+            String adjAreaValue = fieldStateElem.getAttribute("adjacent-area-value");
+            if(! adjAreaValue.equals("-NULL-"))
+                setAdjacentAreaValue(adjAreaValue);
             value.importFromXml(fieldStateElem);
         }
 
@@ -437,10 +439,8 @@ public class DialogField implements TemplateConsumer
             {
                 fieldStateElem.setAttribute("name", getQualifiedName());
                 String flagsText = getStateFlags().getFlagsText();
-                if(flagsText != null && flagsText.length() > 0)
-                    fieldStateElem.setAttribute("flags", flagsText);
-                if(adjacentAreaValue != null && adjacentAreaValue.length() > 0)
-                    fieldStateElem.setAttribute("adjacent-area-value", adjacentAreaValue);
+                fieldStateElem.setAttribute("flags", flagsText);
+                fieldStateElem.setAttribute("adjacent-area-value", adjacentAreaValue != null ? adjacentAreaValue : "-NULL-");
                 value.exportToXml(fieldStateElem);
                 parent.appendChild(fieldStateElem);
             }

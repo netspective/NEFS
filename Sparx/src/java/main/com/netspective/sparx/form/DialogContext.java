@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.15 2003-07-29 20:32:48 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.16 2003-07-29 21:11:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -660,6 +660,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         exportToXml(doc.getDocumentElement());
 
         // we use reflection so that org.apache.xml.serialize.* is not a package requirement
+        // TODO: when DOM Level 3 is finalized, switch it over to Load/Save methods in that DOM3 spec
 
         Class serializerCls = Class.forName("org.apache.xml.serialize.XMLSerializer");
         Class outputFormatCls = Class.forName("org.apache.xml.serialize.OutputFormat");

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextAttributesPanel.java,v 1.6 2003-07-29 20:32:48 shahid.shah Exp $
+ * $Id: DialogContextAttributesPanel.java,v 1.7 2003-07-29 21:11:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -135,7 +135,7 @@ public class DialogContextAttributesPanel extends DialogDetailPanel
                 e.printStackTrace(new PrintWriter(stack));
                 XML = e.toString() + stack.toString();
             }
-            result.add(createAttribute("XML", "<pre>" + XML + "</pre>"));
+            result.add(createAttribute("XML Representation", "<pre>" + XML + "</pre>"));
 
             return result;
         }
