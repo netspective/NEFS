@@ -39,13 +39,16 @@
  */
 
 /**
- * $Id: Project.java,v 1.18 2003-08-15 02:10:04 shahid.shah Exp $
+ * $Id: Project.java,v 1.19 2003-08-19 13:27:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.EventListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -180,6 +183,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         templateProducers.add(NAVIGATION_PAGE_CONDITIONAL_ACTIONS);
     }
 
+    private List lifecycleListeners = new ArrayList();
     private NavigationTrees navigationTrees = new NavigationTrees();
     private Dialogs dialogs = new Dialogs();
     private DialogsPackage activeDialogsNameSpace;
@@ -188,6 +192,21 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     public Project()
     {
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
+
+    public List getLifecycleListeners()
+    {
+        return lifecycleListeners;
+    }
+
+    public void addListener(EventListener listener)
+    {
+        if(listener instanceof ProjectLifecyleListener)
+            lifecycleListeners.add(listener);
+        else
+            log.error("Unknown listener type: " + listener.getClass());
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */

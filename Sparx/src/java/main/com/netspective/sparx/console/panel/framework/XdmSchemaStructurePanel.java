@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.2 2003-06-26 16:05:58 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.3 2003-08-19 13:27:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.framework;
@@ -123,6 +123,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         private XmlDataModelSchema schema;
         private Object instance;
         private TemplateProducer templateProducer;
+        private Class interfaceClass;
         private String elementName;
         private boolean recursive;
 
@@ -145,6 +146,21 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             this.ancestors = ancestors;
             this.recursive = recursive;
             this.templateProducer = templateProducer;
+        }
+
+        protected StructureRow(int level, String elementName, StructureRow parentRow, List ancestors, Class interfaceClass, boolean recursive)
+        {
+            this.parentRow = parentRow;
+            this.elementName = elementName;
+            this.level = level;
+            this.ancestors = ancestors;
+            this.recursive = recursive;
+            this.interfaceClass = interfaceClass;
+        }
+
+        public boolean isConcreteClass()
+        {
+            return templateProducer == null && interfaceClass == null;
         }
     }
 
@@ -171,7 +187,11 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                     schema = XmlDataModelSchema.getSchema(childInstance.getClass());
                 else
                 {
-                    log.error("Unable to create child for " + name);
+                    Class interfaceClass = parentSchema.getElementType(name);
+                    if(interfaceClass == null)
+                        interfaceClass = parentSchema.getAttributeType(name);
+                    rows.add(new StructureRow(level, propNames.getPrimaryName(), parentRow, ancestors, interfaceClass, false));
+                    log.warn("Unable to create child for " + name + ", must be an interface instead of a concrete class: " + interfaceClass);
                     return;
                 }
 
@@ -428,7 +448,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             switch(columnIndex)
             {
                 case 0:
-                    if(activeRow.templateProducer == null)
+                    if(activeRow.isConcreteClass())
                         return reportValueContext.getSkin().constructRedirect(reportValueContext, elementTagIdColumn.getCommand(), activeRow.elementName, null, null);
                     else
                         return activeRow.elementName;
@@ -438,6 +458,8 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                     {
                         if(activeRow.templateProducer != null)
                             return activeRow.templateProducer.getClass().getName();
+                        else if(activeRow.interfaceClass != null)
+                            return activeRow.interfaceClass.getName();
                         else
                             return activeRow.schema.getBean().getName();
                     }
@@ -450,12 +472,14 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                             else
                                 return "Template producer (dynamic namespace: "+ reportValueContext.getSkin().constructClassRef(activeRow.templateProducer.getClass()) +")";
                         }
+                        else if(activeRow.interfaceClass != null)
+                            return reportValueContext.getSkin().constructClassRef(activeRow.interfaceClass);
                         else
                             return reportValueContext.getSkin().constructClassRef(activeRow.schema.getBean());
                     }
 
                 case 2:
-                    if(activeRow.templateProducer == null)
+                    if(activeRow.isConcreteClass())
                         return activeRow.schema.supportsCharacters() ? "Yes" : reportValueContext.getSkin().getBlankValue();
                     else
                         return reportValueContext.getSkin().getBlankValue();
@@ -573,7 +597,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             switch(columnIndex)
             {
                 case 0:
-                    if(activeRow.templateProducer == null)
+                    if(activeRow.isConcreteClass())
                         return reportValueContext.getSkin().constructRedirect(reportValueContext, elementTagIdColumn.getCommand(), activeRow.elementName, null, null);
                     else
                         return activeRow.elementName;
@@ -583,6 +607,8 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                     {
                         if(activeRow.templateProducer != null)
                             return activeRow.templateProducer.getClass().getName();
+                        else if(activeRow.interfaceClass != null)
+                            return activeRow.interfaceClass.getName();
                         else
                             return activeRow.schema.getBean().getName();
                     }
@@ -595,12 +621,14 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                             else
                                 return "Template producer (dynamic namespace: "+ reportValueContext.getSkin().constructClassRef(activeRow.templateProducer.getClass()) +")";
                         }
+                        else if(activeRow.interfaceClass != null)
+                            return reportValueContext.getSkin().constructClassRef(activeRow.interfaceClass);
                         else
                             return reportValueContext.getSkin().constructClassRef(activeRow.schema.getBean());
                     }
 
                 case 2:
-                    if(activeRow.templateProducer == null)
+                    if(activeRow.isConcreteClass())
                         return activeRow.schema.supportsCharacters() ? "Yes" : reportValueContext.getSkin().getBlankValue();
                     else
                         return reportValueContext.getSkin().getBlankValue();
