@@ -43,20 +43,6 @@
  */
 package com.netspective.medigy.model;
 
-import com.netspective.medigy.util.HibernateConfiguration;
-import com.netspective.medigy.util.HibernateUtil;
-import com.netspective.medigy.util.HibernateDiagramFilter;
-import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
-import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
-import com.netspective.tool.hibernate.document.diagram.DefaultHibernateDiagramFilter;
-import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
-import com.netspective.tool.graphviz.GraphvizLayoutType;
-
-import org.hibernate.HibernateException;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.cfg.Environment;
-import org.hibernate.dialect.HSQLDialect;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -64,6 +50,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.LogManager;
+
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
+
+import com.netspective.medigy.util.HibernateConfiguration;
+import com.netspective.medigy.util.HibernateDiagramFilter;
+import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
+import com.netspective.tool.graphviz.GraphvizLayoutType;
+import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
+import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
 
 public abstract class TestCase extends junit.framework.TestCase
 {
@@ -91,14 +91,14 @@ public abstract class TestCase extends junit.framework.TestCase
         final Properties hibProperties = new Properties();
         hibProperties.setProperty(Environment.DIALECT, HSQLDialect.class.getName());
         hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".driver_class", "org.hsqldb.jdbcDriver");
-        hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".url", "jdbc:hsqldb:"+ DEFAULT_DB_DIR +"/db");
+        hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".url", "jdbc:hsqldb:" + DEFAULT_DB_DIR + "/db");
         hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".username", "sa");
         hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".password", "");
         hibProperties.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
         hibProperties.setProperty(Environment.SHOW_SQL, "false");
         config.addProperties(hibProperties);
 
-        for(final Class c : com.netspective.medigy.reference.Catalog.ALL_REFERENCE_TYPES)
+        for (final Class c : com.netspective.medigy.reference.Catalog.ALL_REFERENCE_TYPES)
             config.addAnnotatedClass(c);
 
         config.addAnnotatedClass(com.netspective.medigy.model.common.IdentifierType.class);
@@ -108,7 +108,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRole.class);        
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationship.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Priority.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationshipStatus.class);
@@ -124,6 +124,17 @@ public abstract class TestCase extends junit.framework.TestCase
         return config;
     }
 
+    protected void generateDiagram(final Configuration configuration,
+                                   final String dotFileName, final String diagramFileName,
+                                   final HibernateDiagramGeneratorFilter filter) throws IOException
+    {
+        final GraphvizDiagramGenerator gdg = new GraphvizDiagramGenerator("MEDIGY", true, GraphvizLayoutType.DOT);
+        final HibernateDiagramGenerator hdg = new HibernateDiagramGenerator(configuration, gdg, filter);
+        hdg.generate();
+        gdg.generateDOTSource(new File(dotFileName));
+        Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o" + diagramFileName + " " + dotFileName);
+    }
+
     protected void setUp() throws Exception
     {
         super.setUp();
@@ -136,20 +147,22 @@ public abstract class TestCase extends junit.framework.TestCase
         // Generate the DDL into a file so we can review it
         final SchemaExport se = new SchemaExport(hibernateConfiguration);
         final String dialectName = hibernateConfiguration.getProperties().getProperty(Environment.DIALECT);
-        final String dialectShortName = dialectName.substring(dialectName.lastIndexOf('.')+1);
+        final String dialectShortName = dialectName.substring(dialectName.lastIndexOf('.') + 1);
         se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".ddl");
         se.create(false, false);
 
         // Generate a DOT (GraphViz) diagram so we can visualize the DDL
-        final File dotDestFile = new File(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".dot");
-        final File diagramFile = new File(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".png");
-        final GraphvizDiagramGenerator diagrammer = new GraphvizDiagramGenerator("MEDIGY", true, GraphvizLayoutType.DOT);
-        final HibernateDiagramGeneratorFilter filter = new HibernateDiagramFilter(true);
-        final HibernateDiagramGenerator hdg = new HibernateDiagramGenerator(hibernateConfiguration, diagrammer, filter);
-        hdg.generate();
-        diagrammer.generateDOTSource(dotDestFile);
-        Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o"+ diagramFile + " " + dotDestFile);
-        
+        // the first version is good for software engineers
+        generateDiagram(hibernateConfiguration,
+                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-se.dot",
+                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-se.png",
+                new HibernateDiagramFilter(true, true));
+
+        // the second version is good for database administrators (simple ERD)
+        generateDiagram(hibernateConfiguration,
+                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-erd.dot",
+                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-erd.png",
+                new HibernateDiagramFilter(false, false));
     }
 
     protected void tearDown() throws Exception
