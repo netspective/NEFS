@@ -4,7 +4,7 @@
  */
 
 /**
- * $Id: SampleValidateAction.java,v 1.1 2004-04-03 23:16:35 shahid.shah Exp $
+ * $Id: SampleValidateAction.java,v 1.2 2004-04-10 18:10:03 shahid.shah Exp $
  */
 
 package app.form.exec.action;
@@ -64,7 +64,7 @@ public class SampleValidateAction
     }
 
     /**
-     * This method will be called by the Sparx action dialog handler to set the full_name field.
+     * This method will be called by the Sparx action dialog handler to set the full-name field.
      * @param fullName The name of the person
      */
     public void setFullName(String fullName)
@@ -78,8 +78,9 @@ public class SampleValidateAction
     }
 
     /**
-     * This method will be called by the Sparx action dialog handler to set the age field. Note that Sparx will figure
-     * ou that the age mutator is of type int and make the appropriate type conversion
+     * This method will be called by the Sparx action dialog handler to set the age field.
+     * Note that Sparx will figure out that the age mutator is of type int and make the
+     * appropriate type conversion
      * @param age The age of the person
      */
     public void setAge(int age)
@@ -93,8 +94,9 @@ public class SampleValidateAction
     }
 
     /**
-     * This method will be called by the Sparx action dialog handler to set the birth date field. Note that Sparx will figure
-     * ou that the bird date mutator is of type Date and make the appropriate type conversion
+     * This method will be called by the Sparx action dialog handler to set the birth date
+     * field. Note that Sparx will figure out that the bird date mutator is of type Date
+     * and make the appropriate type conversion
      * @param birthDate The birthdate of the person
      */
     public void setBirthDate(Date birthDate)
@@ -103,14 +105,16 @@ public class SampleValidateAction
     }
 
     /**
-     * This method is called right before execute to validate the action. If you need to perform any validation
-     * that the fields can't perform on their own (such as cross-field validation) then you should perform it here.
+     * This method is called right before execute to validate the action. If you need to
+     * perform any validation that the fields can't perform on their own (such as
+     * cross-field validation) then you should perform it here.
      * @param messages The list where our messages go
      * @return
      */
     public boolean isValid(List messages)
     {
-        // find out the current year and year of the birth of the person who entered data to validate
+        // find out the current year and year of the birth of the person who entered data
+        // to validate
         Calendar cal = Calendar.getInstance();
         int currentYear = cal.get(Calendar.YEAR);
         cal.setTime(birthDate);
@@ -134,9 +138,10 @@ public class SampleValidateAction
     }
 
     /**
-     * The dialog execute method is called as soon as all data is entered and validated. This method is guaranteed to
-     * only be called when all fields' data is valid. We are not returning a value because we want the container to
-     * automatically manage the next action (in our case, staty where its at to show our message).
+     * The dialog execute method is called as soon as all data is entered and validated.
+     * This method is guaranteed to only be called when all fields' data is valid. We
+     * are not returning a value because we want the container to automatically manage
+     * the next action (in our case, staty where its at to show our message).
      */
     public void execute(Writer writer) throws IOException
     {
