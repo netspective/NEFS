@@ -39,18 +39,22 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.8 2003-10-24 03:17:28 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.9 2003-11-14 18:09:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
 
-import java.util.StringTokenizer;
+import org.apache.oro.text.perl.Perl5Util;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.StringWriter;
-import java.io.PrintWriter;
-
-import org.apache.oro.text.perl.Perl5Util;
+import java.util.StringTokenizer;
 
 public class TextUtils
 {
@@ -544,6 +548,27 @@ public class TextUtils
         if (value.length() == 0) return true;
         if (value.trim().length() == 0) return true;
         return false;
+    }
+
+    /**
+     * Retrieve the contents of the given URL into a String.
+     * @param strLocation The URL
+     * @return The text of the contents of the URL
+     * @throws IOException
+     */
+    public static String getUrlContents(String strLocation) throws IOException
+    {
+        StringBuffer sb = new StringBuffer();
+        URL url = new URL(strLocation);
+        URLConnection urlConn = url.openConnection();
+        InputStream urlIn = urlConn.getInputStream();
+        int iRead = urlIn.read();
+        while (iRead != -1)
+        {
+            sb.append((char) iRead);
+            iRead = urlIn.read();
+        }
+        return sb.toString();
     }
 
     public static final String escapeHTML(String s)
