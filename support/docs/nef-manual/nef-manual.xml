@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.0 ($Date: 2004-02-20 14:05:53 $)</releaseinfo>
+    <releaseinfo>Release 7.0 ($Date: 2004-02-24 12:56:20 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until Feburary 15, 2004 when it's
     expected to be completed. Check back daily until then because material is
@@ -821,8 +821,7 @@
                 application and its application identifier is
                 <literal>nefs-sample-library</literal>. The URL for Library is
                 http://www.netspective.com/nefs-sample-library and its Console
-                URL is
-                http://www.netspective.com/nefs-sample-library/console.
+                URL is http://www.netspective.com/nefs-sample-library/console.
                 Note that the Console is accessed simply by adding the
                 <literal>/console</literal> path at the end of the
                 application's URL.</para>
@@ -3212,7 +3211,7 @@
         applications' Console and click the <guimenu>XDM Tags
         Reference</guimenu> tab. If you'd like to see the reference in the NEF
         Sampler application, go to <ulink
-        url="http://www.netspective.com/console/reference">http://www.netspective.com/console/reference</ulink>.
+        url="http://www.netspective.com/nefs-sampler/console/reference/tags">http://www.netspective.com/nefs-sampler/console/reference/tags</ulink>.
         The <guimenu>XDM Tags Reference</guimenu> pages provide three
         different views:</para>
 
@@ -5863,8 +5862,8 @@
           <para>The following sections contains examples of various fields and
           controls. Almost all of the examples are taken from the NEFS Test
           Bed application, which is available within the NEFS Sampler. To see
-          these examples online, please visit http://www.netspective.com
-          and then click the <menuchoice>
+          these examples online, please visit http://www.netspective.com and
+          then click the <menuchoice>
               <guimenu>Ted Bed</guimenu>
 
               <guisubmenu>Primary Test Bed</guisubmenu>
