@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaConstraintTest.java,v 1.4 2003-08-31 22:42:33 shahid.shah Exp $
+ * $Id: SchemaConstraintTest.java,v 1.5 2003-09-21 02:33:00 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -104,8 +104,8 @@ public class SchemaConstraintTest extends TestCase
         populatedSchema = component.getManager().getSchema("db");
         assertNotNull(populatedSchema);
 
-        TestUtils.getConnProvider(this.getClass().getPackage().getName(), false, false);
-        TestUtils.getConnProvider(this.getClass().getPackage().getName(), true, true);
+        //TestUtils.getConnProvider(this.getClass().getPackage().getName(), false, false);
+        //TestUtils.getConnProvider(this.getClass().getPackage().getName(), true, true);
     }
 
     public void testBasicTableColumnReference()
@@ -171,6 +171,8 @@ public class SchemaConstraintTest extends TestCase
         //TODO: Need to see why setReferencedColumns is checking for instanceof agains a class that could not be a child of Columns
         //Columns fkHolderCol = (Columns) new ForeignKeyPlaceholderColumn(table);
         //fKey.setReferencedColumns(fkHolderCol);
+
+        cc.close();
     }
 
     public void testParentForeignKey() throws NamingException, SQLException
@@ -196,7 +198,7 @@ public class SchemaConstraintTest extends TestCase
         }
 
         Row row = table3.createRow();
-        QueryResultSet result = table3.getAccessorByColumnEquality(table3.getColumns().getByName("column_a")).execute(dbvc,new String[]{"abc"}, false);
+        QueryResultSet result = table3.getAccessorByColumnEquality(table3.getColumns().getByName("column_a")).execute(cc,new String[]{"abc"}, false);
         ResultSet resultSet = result.getResultSet();
         if (resultSet.next())
             row.getColumnValues().populateValues(resultSet, 1);
@@ -214,6 +216,9 @@ public class SchemaConstraintTest extends TestCase
 
         pfKey.fillChildValuesFromParentConnector(row2.getColumnValues(),row.getColumnValues());
         assertEquals("abc", row2.getColumnValues().getByName("child_column_a").getTextValue());
+
+        result.close(true);
+        cc.close();
 
     }
 

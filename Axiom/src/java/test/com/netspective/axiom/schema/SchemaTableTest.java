@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableTest.java,v 1.6 2003-08-31 22:42:33 shahid.shah Exp $
+ * $Id: SchemaTableTest.java,v 1.7 2003-09-21 02:33:00 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -101,8 +101,8 @@ public class SchemaTableTest extends TestCase
         populatedSchema = component.getManager().getSchema("db");
         assertNotNull(populatedSchema);
 
-        TestUtils.getConnProvider(this.getClass().getPackage().getName(), false, false);
-        TestUtils.getConnProvider(this.getClass().getPackage().getName(), true, true);
+        //TestUtils.getConnProvider(this.getClass().getPackage().getName(), false, false);
+        //TestUtils.getConnProvider(this.getClass().getPackage().getName(), true, true);
     }
 
     public void testEnumTableType(){
@@ -178,6 +178,8 @@ public class SchemaTableTest extends TestCase
         if (rs.next())
             initialRow.getColumnValues().populateValues(rs,1);
 
+        qrs.close(true);
+
 
         Row row = table.createRow();
         row = table.getRowByPrimaryKeys(cc,initialRow.getPrimaryKeyValues(),row);
@@ -217,6 +219,7 @@ public class SchemaTableTest extends TestCase
 
         //getRowByPrimaryKeys
         //getRowByPrimaryKeys
+        cc.commitAndClose();
 
     }
 
@@ -249,6 +252,8 @@ public class SchemaTableTest extends TestCase
             initialRow.getColumnValues().populateValues(rs,1);
 
         assertNotNull(initialRow.toString());
+
+        qrs.close(true);
 
     }
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.12 2003-08-31 22:42:33 shahid.shah Exp $
+ * $Id: SchemaColumnsTest.java,v 1.13 2003-09-21 02:33:00 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -90,8 +90,9 @@ public class SchemaColumnsTest extends TestCase
         populatedSchema = component.getManager().getSchema("db");
         assertNotNull(populatedSchema);
 
-        TestUtils.getConnProvider(this.getClass().getPackage().getName(), false, false);
-        TestUtils.getConnProvider(this.getClass().getPackage().getName(), true, true);
+        //TestUtils.getConnProvider(this.getClass().getPackage().getName(), false, false);
+        //TestUtils.getConnProvider(this.getClass().getPackage().getName(), true, true);
+
     }
 
     public void testBooleanColumn()
@@ -349,10 +350,16 @@ public class SchemaColumnsTest extends TestCase
         //table.update(cc, row);
 
         //TODO: Figure out why when we try to delete we get a SQL Exception
+        resultSet.close(true);
 
         table.delete(cc, row);
-        result = query.execute(dbvc, this.getClass().getPackage().getName(), new Object[]{"def"}).getResultSet();
+        resultSet = query.execute(dbvc, this.getClass().getPackage().getName(), new Object[]{"def"});
+        result = resultSet.getResultSet();
         assertTrue(!result.next());
+
+        resultSet.close(true);
+
+        cc.close();
     }
 
     public void testEnumSetColumn() throws NamingException, SQLException
@@ -395,9 +402,15 @@ public class SchemaColumnsTest extends TestCase
         //System.out.println("row: " + row.getColumnValues());
         //table.update(cc, row);
 
+        resultSet.close(true);
+
         table.delete(cc, row);
-        result = query.execute(dbvc, this.getClass().getPackage().getName(), new Object[]{"abc"}).getResultSet();
+        resultSet = query.execute(dbvc, this.getClass().getPackage().getName(), new Object[]{"abc"});
+        result = resultSet.getResultSet();
         assertFalse(result.next());
+
+        resultSet.close(true);
+        cc.close();
     }
 
     public void testEnumIdRefColumn()
@@ -532,6 +545,8 @@ public class SchemaColumnsTest extends TestCase
         }
 
        assertNotNull(col2.toString());
+
+        cc.close();
     }
 
     public void testColumnsCollections(){

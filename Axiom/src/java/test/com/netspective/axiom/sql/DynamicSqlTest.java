@@ -28,7 +28,7 @@ import java.io.File;
 import java.sql.SQLException;
 
 /**
- * $Id: DynamicSqlTest.java,v 1.8 2003-08-31 22:42:33 shahid.shah Exp $
+ * $Id: DynamicSqlTest.java,v 1.9 2003-09-21 02:33:00 roque.hernandez Exp $
  */
 public class DynamicSqlTest extends TestCase
 {
@@ -388,8 +388,8 @@ public class DynamicSqlTest extends TestCase
             //TODO: See if this assertion is really necessary
             //assertEquals("jdbc:hsqldb:" + dbFilename, TestUtils.getConnprovider().getDataSourceInfo(this.getClass().getPackage().getName()).getConnUrl());
 
-            DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-            dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+            //DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+            //dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         //        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
             //ValueSource vs = ValueSources.getInstance().getValueSource("data-sources:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
@@ -649,6 +649,8 @@ public class DynamicSqlTest extends TestCase
 
         String dtd = new XmlDataModelDtd().getDtd(component);
         assertTrue(dtd != null);
+
+        cc.close();
 
         //System.out.println(dtd);
     }

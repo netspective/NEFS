@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.13 2003-08-31 22:42:34 shahid.shah Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.14 2003-09-21 02:33:00 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -205,6 +205,7 @@ public class SqlManagerQueryTest extends TestCase
 
             assertEquals(Types.VARCHAR, bindType[i].intValue());
         }
+        cc.close();
 	}
 
 	public void testDbmsTexts()
@@ -347,9 +348,10 @@ public class SqlManagerQueryTest extends TestCase
         assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
         assertNull(qeleOne);
         assertNotNull(qrsOne.getResultSet());
+        qrsOne.close(true);
 
 		// Verify query results...
-	    qrsOne = stmtOne.executeAndIgnoreStatistics(dbvc, null, true);
+	    qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);
 	    assertTrue(qrsOne.getExecutStmtResult());
 	    ResultSet rs = qrsOne.getResultSet();
 
@@ -375,7 +377,9 @@ public class SqlManagerQueryTest extends TestCase
         assertEquals(expectedNumGhi, numGhi);
 
         // Wrap up by closing connections...
+        rs.close();
         qrsOne.close(true);
+        cc.close();
     }
 
     public void testStmt1ExecutionWithLogging() throws NamingException, SQLException
@@ -416,7 +420,7 @@ public class SqlManagerQueryTest extends TestCase
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
         assertEquals(this.getClass().getPackage().getName(), dbvc.getDefaultDataSource());
 
-        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
         assertTrue(qrsOne.getExecutStmtResult());
         assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
@@ -426,7 +430,7 @@ public class SqlManagerQueryTest extends TestCase
         assertNull(qrsOne.getResultSet());
 
         // Verify query results...
-        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
         assertTrue(qrsOne.getExecutStmtResult());
         ResultSet rs = qrsOne.getResultSet();
 
@@ -461,7 +465,7 @@ public class SqlManagerQueryTest extends TestCase
         stmtOne.setDataSrc(ValueSources.getInstance().getValueSource("static:" + this.getClass().getPackage().getName(), ValueSources.VSNOTFOUNDHANDLER_NULL));
         assertEquals(this.getClass().getPackage().getName(), stmtOne.getDataSrc().getTextValue(dbvc));
 
-        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
         assertTrue(qrsOne.getExecutStmtResult());
         assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
@@ -470,7 +474,7 @@ public class SqlManagerQueryTest extends TestCase
         assertFalse(stmtOne.isSqlTextHasExpressions());
 
         // Verify query results...
-        qrsOne = stmtOne.executeAndIgnoreStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);
         assertTrue(qrsOne.getExecutStmtResult());
         rs = qrsOne.getResultSet();
 
@@ -494,6 +498,9 @@ public class SqlManagerQueryTest extends TestCase
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
         assertEquals(expectedNumGhi, numGhi);
+
+        qrsOne.close(true);
+        cc.close();
     }
 
     public void testStmt1ExecutionFailureWithoutLogging() throws NamingException, SQLException
@@ -519,6 +526,10 @@ public class SqlManagerQueryTest extends TestCase
         catch (Exception e)
         {
             assertTrue(exceptionThrown);
+        }
+        finally
+        {
+            cc.close();
         }
         assertTrue(exceptionThrown);
 
@@ -563,7 +574,7 @@ public class SqlManagerQueryTest extends TestCase
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
         assertEquals(this.getClass().getPackage().getName(), dbvc.getDefaultDataSource());
 
-        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
         assertTrue(qrsOne.getExecutStmtResult());
         assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
@@ -573,7 +584,7 @@ public class SqlManagerQueryTest extends TestCase
         assertNull(qrsOne.getResultSet());
 
         // Verify query results...
-        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
         assertTrue(qrsOne.getExecutStmtResult());
         ResultSet rs = qrsOne.getResultSet();
 
@@ -610,7 +621,7 @@ public class SqlManagerQueryTest extends TestCase
         stmtOne.setDataSrc(ValueSources.getInstance().getValueSource("static:" + this.getClass().getPackage().getName(), ValueSources.VSNOTFOUNDHANDLER_NULL));
         assertEquals(this.getClass().getPackage().getName(), stmtOne.getDataSrc().getTextValue(dbvc));
 
-        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
         assertTrue(qrsOne.getExecutStmtResult());
         assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
@@ -619,7 +630,7 @@ public class SqlManagerQueryTest extends TestCase
         assertFalse(stmtOne.isSqlTextHasExpressions());
 
         // Verify query results...
-        qrsOne = stmtOne.executeAndIgnoreStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);
         assertTrue(qrsOne.getExecutStmtResult());
         rs = qrsOne.getResultSet();
 
@@ -661,6 +672,9 @@ public class SqlManagerQueryTest extends TestCase
         assertTrue(0 <= qesOne.averageConnectionEstablishTime);
         assertTrue(0 <= qesOne.averageSqlExecTime);
         assertTrue(0 <= qesOne.averageTotalExecTime);
+
+        qrsOne.close(true);
+        cc.close();
     }
 
     public void testResultSetUtilities() throws NamingException, SQLException
@@ -682,12 +696,12 @@ public class SqlManagerQueryTest extends TestCase
         assertTrue(qrsOne.getExecutStmtResult());
         assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
         assertNull(qeleOne);
-        assertNotNull(qrsOne.getResultSet());
-        assertNotNull(qrsOne.getResultSet());
+        ResultSet rs = qrsOne.getResultSet();
+        assertNotNull(rs);
         assertSame(cc, qrsOne.getConnectionContext());
 
         // Verify query results...
-        ResultSet rs = qrsOne.getResultSet();
+        //ResultSet rs = qrsOne.getResultSet();
 
         String[] expectedColumns = new String[] { "cr_stamp", "rec_stat_id", "system_id", "column_a", "column_b", "column_c" };
         Map columnNames = ResultSetUtils.getInstance().getColumnNamesIndexMap(rs);
@@ -719,6 +733,9 @@ public class SqlManagerQueryTest extends TestCase
 
         // Wrap up by closing connections...
         qrsOne.close(true);
+        rs.close();
+        cc.close();
+
     }
 
     public void testStmt2Validity() throws DataModelException, NamingException, SQLException

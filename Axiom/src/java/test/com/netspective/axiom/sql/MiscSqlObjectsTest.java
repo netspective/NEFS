@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MiscSqlObjectsTest.java,v 1.5 2003-08-31 22:42:33 shahid.shah Exp $
+ * $Id: MiscSqlObjectsTest.java,v 1.6 2003-09-21 02:33:00 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -179,6 +179,8 @@ public class MiscSqlObjectsTest extends TestCase
 
             assertEquals(Types.VARCHAR, bindType[i].intValue());
         }
+
+        cc.close();
 	}
 
 	public void testDbmsTexts()
