@@ -25,10 +25,51 @@
 
             <library>
                 <name>FreeMarker Templating Library</name>
-                <version>2.3pre13</version>
+                <version>2.3pre14</version>
                 <class-path>freemarker.jar</class-path>
                 <source home-uri="http://www.freemarker.org"
                         license="BSD, OSI Certified"/>
+            </library>
+
+            <library>
+                <name>HttpUnit Servlet Unit Testing Library</name>
+                <version>1.5.4</version>
+                <class-path>httpunit.jar</class-path>
+                <source home-uri="http://httpunit.sourceforge.net/"
+                        license="Open Source, Free, Custom License"/>
+            </library>
+
+            <library>
+                <name>Rhino JavaScript Library</name>
+                <version>1.5R4+ (patched for HttpUnit)</version>
+                <class-path>js.jar</class-path>
+                <source home-uri="http://httpunit.sourceforge.net/"
+                        license="Mozilla Public License"/>
+            </library>
+
+            <library>
+                <name>TJidy HTML Syntax Checker Library</name>
+                <version>04aug2000r7</version>
+                <class-path>jtidy.jar</class-path>
+                <source home-uri="http://lempinen.net/sami/jtidy/"
+                        license="Open Source, Free, Custom License"/>
+            </library>
+
+            <library>
+                <name>NekoHTML HTML Scanner Library</name>
+                <version>0.8.1</version>
+                <class-path>nekohtml.jar</class-path>
+                <source home-uri="http://www.apache.org/~andyc/neko/doc/html/"
+                    license="CyberNeko Software License"
+                    license-uri="http://www.apache.org/~andyc/neko/LICENSE"/>
+            </library>
+
+            <library>
+                <name>jWebUnit Simplified web testing API for HttpUnit</name>
+                <version>1.1.1</version>
+                <class-path>jwebunit.jar</class-path>
+                <source home-uri="http://jwebunit.sourceforge.net/"
+                    license="Open Source, Free, Custom License"/>
             </library>
         </dependencies>
     </product>
