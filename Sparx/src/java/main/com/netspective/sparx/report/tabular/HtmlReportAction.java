@@ -49,7 +49,7 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
 /**
  * @author aye
- * $Id: HtmlReportAction.java,v 1.3 2003-07-14 04:13:01 aye.thu Exp $
+ * $Id: HtmlReportAction.java,v 1.4 2003-07-27 04:57:34 aye.thu Exp $
  */
 public class HtmlReportAction
 {
@@ -84,6 +84,7 @@ public class HtmlReportAction
 
     private ValueSource caption;
     private ValueSource command;
+    private ValueSource title;
     private Type type;
 
     public Type getType()
@@ -121,6 +122,24 @@ public class HtmlReportAction
     public void setCaption(ValueSource caption)
     {
         this.caption = caption;
+    }
+
+    /**
+     * Gets the mouse over title of the action
+     * @return
+     */
+    public ValueSource getTitle()
+    {
+        return title;
+    }
+
+    /**
+     * Sets the mouseover title of the action
+     * @param title
+     */
+    public void setTitle(ValueSource title)
+    {
+        this.title = title;
     }
 
     /**
