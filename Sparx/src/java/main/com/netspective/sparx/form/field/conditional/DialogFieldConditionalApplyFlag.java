@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.15 2004-06-24 04:31:13 jeremy.d.hulick Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.16 2004-07-26 13:14:53 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -60,6 +60,7 @@ import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.form.DialogContext;
@@ -67,6 +68,9 @@ import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.type.TextField;
+import com.netspective.sparx.form.field.type.SelectField;
+import com.netspective.sparx.value.source.DialogFieldValueSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -81,7 +85,9 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
     private String[] lackPermissions;
     private ValueSource valueSource;
     private ValueSource conditionalValueSource;
+
     private ValueSource hasValue;
+    private ValueSource value;
     private ValueSource isTrue;
 
     public DialogFieldConditionalApplyFlag()
@@ -125,9 +131,82 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         this.clear = clear;
     }
 
+    /**
+     * Gets the javascipt expression. This method will only be used when  {@link #setHasValue} has been
+     * configured with a dialog field value source.
+     *
+     * @param vc    value context
+     * @return  a javscript expression if this condition effects client side behavior
+     */
+    public String getExpression(ValueContext vc)
+    {
+        StringBuffer buffer = new StringBuffer();
+        DialogField partnerField = getPartnerField();
+        if (partnerField != null)
+        {
+            if (partnerField instanceof TextField)
+            {
+                if (value == null)
+                    buffer.append("control.value != ''");
+                else
+                    buffer.append("control.value == '" + value.getTextValue(vc) + "'");
+            }
+            else if (partnerField instanceof SelectField)
+            {
+                SelectField select = (SelectField) partnerField;
+                int style = select.getStyle().getValueIndex();
+                if (style == SelectField.Style.RADIO)
+                {
+                    if (value == null)
+                        buffer.append("control.value != ''");
+                    else
+                        buffer.append("control.value == '" + value.getTextValue(vc) + "'");
+                }
+                else if (style == SelectField.Style.LIST)
+                {
+                    if (value == null)
+                        buffer.append("control.options[control.selectedIndex] != ''");
+                    else
+                        buffer.append("control.options[control.selectedIndex] == '" + value.getTextValue(vc) + "'");
+                }
+                else if (style == SelectField.Style.MULTICHECK)
+                {
+                    if (value == null)
+                        buffer.append("control.value != ''");
+                    else
+                        buffer.append("checkedCheckedValue(control," + value + "')");
+
+                }
+            }
+        }
+        return buffer.toString();
+    }
+
+
+
+    /**
+     * Checks to see if a partner field needs to be declared.
+     *
+     * @return Always returns FALSE
+     */
     public boolean isPartnerRequired()
     {
         return false;
+    }
+
+    public ValueSource getValue()
+    {
+        return value;
+    }
+
+    /**
+     * Sub-condition that is related to the {@link DialogFieldConditionalApplyFlag#setHasValue} condition
+     *
+     * @param value
+     */
+    public void setValue(ValueSource value)
+    {
+        this.value = value;
     }
 
     public ValueSource getHasValue()
@@ -135,9 +214,22 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         return hasValue;
     }
 
+    /**
+     * Condition used to check if the value source contains a value or not but when the associated subcondition
+     * {@link DialogFieldConditionalApplyFlag#setHasValue} is also defined, the value in the value source MUST BE the same as
+     * whats defined in the 'value'.
+     * For example:
+     *  <pre>&lt;conditional ... has-value="field:id" value="123"/&gt;</pre>
+     *
+     * This means that the condition is deemed to be true if the field called 'id' contains a value of 123.
+     *
+     * @param hasValue
+     */
     public void setHasValue(ValueSource hasValue)
     {
         this.hasValue = hasValue;
+        if (hasValue instanceof DialogFieldValueSource)
+            setPartnerFieldName(((DialogFieldValueSource) hasValue).getFieldName());
     }
 
     public ValueSource getIsTrue()
@@ -145,6 +237,11 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         return isTrue;
     }
 
+    /**
+     * Condition used to check if the value source contains a boolean value of TRUE.
+     *
+     * @param aTrue
+     */
     public void setIsTrue(ValueSource aTrue)
     {
         isTrue = aTrue;
@@ -291,8 +388,17 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         // check the hasValue attribute
         if(status && hasValue != null)
         {
-            Value value = hasValue.getValue(dc);
-            status = value.getTextValue() != null && value.getTextValue().trim().length() > 0 ? true : false;
+            Value hasValueItem = hasValue.getValue(dc);
+            if (value == null)
+                status = hasValueItem.getTextValue() != null && hasValueItem.getTextValue().trim().length() > 0 ? true : false;
+            else
+            {
+                String valueCheck = value.getTextValue(dc);
+                if (valueCheck != null && valueCheck.equals(hasValueItem.getTextValue()))
+                    status = true;
+                else
+                    status = false;
+            }
         }
         // check the isTrue attribute
         if(status && isTrue != null)
