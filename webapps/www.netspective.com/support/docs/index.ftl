@@ -4,7 +4,10 @@
         <th>Purpose</th>
     </tr>
     <tr>
-        <td><a href="${resourcesPath}/support/docs/nef-articles/getting-started.html" target="nefs-getting-started">Getting Started with NEFS</a></td>
+        <td>
+            Getting Started with NEFS (<a href="${resourcesPath}/support/docs/nef-articles/getting-started.html" target="nefs-getting-started" title="Online (HTML) Version of doc">HTML</a>)
+            (<a href="${resourcesPath}/nefs-getting-started.pdf" target="nefs-getting-started" title="PDF Version of doc">PDF</a>)
+        </td>
         <td>Provides instructions for how to evaluate the Netspective Enterprise Frameworks Suite (<i>opens in a new window</i>).</td>
     </tr>
     <tr>
