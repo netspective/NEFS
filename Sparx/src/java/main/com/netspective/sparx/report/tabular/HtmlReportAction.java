@@ -40,17 +40,12 @@
 package com.netspective.sparx.report.tabular;
 
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.source.RedirectValueSource;
-import com.netspective.commons.command.Command;
-import com.netspective.commons.command.CommandNotFoundException;
-import com.netspective.commons.command.Commands;
-import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.sparx.panel.HtmlPanelAction;
 
 /**
- * @version $Id: HtmlReportAction.java,v 1.7 2004-03-03 08:20:36 aye.thu Exp $
+ * @version $Id: HtmlReportAction.java,v 1.8 2004-03-16 21:21:42 aye.thu Exp $
  */
 public class HtmlReportAction extends HtmlPanelAction
 {
@@ -84,6 +79,17 @@ public class HtmlReportAction extends HtmlPanelAction
     }
 
     private Type type;
+
+    /**
+     * Returns the caption of the report action. If there is no caption defined, then the
+     * type description is used as the caption.
+     *
+     * @return
+     */
+    public ValueSource getCaption()
+    {
+        return (super.getCaption() == null ? new StaticValueSource(type.getValue()) : super.getCaption());
+    }
 
     public Type getType()
     {
