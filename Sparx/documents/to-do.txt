@@ -18,7 +18,7 @@
 
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
-* Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
+* Add 'action', tags to <page> in navigation tree and connect to <director>
 * Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
 * Add feature to dialogs that allow forwarding, including freemarker or other templates, executing style-sheets in execute method (same features as <page>)
 * Add sorting to report data source (which should also use cookies to store active sort criteria)

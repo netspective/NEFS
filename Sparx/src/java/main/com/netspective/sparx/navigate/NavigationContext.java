@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.11 2003-07-09 13:12:00 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.12 2003-08-04 15:47:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -117,7 +117,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public NavigationPage findFirstMemberWithBody(NavigationPage parent)
     {
-        if(parent == null || (parent != null && parent.getFlags().flagIsSet(NavigationPage.Flags.HAS_BODY)))
+        if(parent == null || (parent != null && parent.getBodyType().getValueIndex() != NavigationPageBodyType.NONE))
             return parent;
 
         NavigationPage defNavigationPage = (NavigationPage) parent.getDefaultChild();

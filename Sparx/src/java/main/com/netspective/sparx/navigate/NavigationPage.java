@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.23 2003-06-12 14:36:09 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.24 2003-08-04 15:47:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -69,7 +69,6 @@ import com.netspective.commons.command.Command;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.BasicHtmlPanelValueContext;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.template.TemplateProcessor;
 import com.netspective.sparx.command.AbstractHttpServletCommand;
@@ -78,10 +77,10 @@ import com.netspective.sparx.command.HttpServletCommand;
 import java.io.IOException;
 import java.io.Writer;
 import java.io.StringWriter;
-import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
@@ -95,12 +94,18 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
 
+    protected static final int BODYTYPE_NONE     = 0;
+    protected static final int BODYTYPE_COMMAND  = 1;
+    protected static final int BODYTYPE_PANEL    = 2;
+    protected static final int BODYTYPE_TEMPLATE = 3;
+    protected static final int BODYTYPE_FORWARD  = 4;
+    protected static final int BODYTYPE_INCLUDE  = 5;
+
     static
     {
         for(int i = 0; i < NavigationPath.FLAG_DEFNS.length; i++)
             FLAG_DEFNS[i] = NavigationPath.FLAG_DEFNS[i];
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "REJECT_FOCUS", Flags.REJECT_FOCUS);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_BODY", Flags.HAS_BODY);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD_PARAM", Flags.ALLOW_PAGE_CMD_PARAM);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
@@ -124,8 +129,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     public class Flags extends NavigationPath.Flags
     {
         public static final int REJECT_FOCUS = NavigationPath.Flags.START_CUSTOM;
-        public static final int HAS_BODY = REJECT_FOCUS * 2;
-        public static final int HIDDEN = HAS_BODY * 2;
+        public static final int HIDDEN = REJECT_FOCUS * 2;
         public static final int ALLOW_PAGE_CMD_PARAM = HIDDEN * 2;
         public static final int HAS_CONDITIONAL_ACTIONS = ALLOW_PAGE_CMD_PARAM * 2;
         public static final int INHERIT_RETAIN_PARAMS = HAS_CONDITIONAL_ACTIONS * 2;
@@ -163,6 +167,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     }
 
     private TemplateConsumerDefn templateConsumer;
+    private NavigationPageBodyType bodyType = new NavigationPageBodyType(NavigationPageBodyType.NONE);
     private ValueSource caption;
     private ValueSource title;
     private ValueSource heading;
@@ -170,6 +175,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     private ValueSource retainParams;
     private ValueSource assignStateParams;
     private ValueSource redirect;
+    private ValueSource forward;
+    private ValueSource include;
     private HtmlLayoutPanel bodyPanel;
     private TemplateProcessor bodyTemplate;
     private Command bodyCommand;
@@ -428,6 +435,28 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         this.redirect = redirect;
     }
 
+    public ValueSource getForward()
+    {
+        return forward;
+    }
+
+    public void setForward(ValueSource forward)
+    {
+        this.forward = forward;
+        getBodyType().setValue(NavigationPageBodyType.FORWARD);
+    }
+
+    public ValueSource getInclude()
+    {
+        return include;
+    }
+
+    public void setInclude(ValueSource include)
+    {
+        this.include = include;
+        getBodyType().setValue(NavigationPageBodyType.INCLUDE);
+    }
+
     public String getCaption(ValueContext vc)
     {
         ValueSource vs = getCaption();
@@ -537,14 +566,25 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     public void setCommand(Command command)
     {
         this.bodyCommand = command;
+        getBodyType().setValue(NavigationPageBodyType.COMMAND);
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/
 
+    public NavigationPageBodyType getBodyType()
+    {
+        return bodyType;
+    }
+
+    public void setBodyType(NavigationPageBodyType bodyType)
+    {
+        this.bodyType = bodyType;
+    }
+
     public HtmlLayoutPanel createPanels()
     {
         bodyPanel = new HtmlLayoutPanel();
-        getFlags().setFlag(Flags.HAS_BODY);
+        getBodyType().setValue(NavigationPageBodyType.PANEL);
         return bodyPanel;
     }
 
@@ -553,10 +593,20 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         return new com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor();
     }
 
+    public HtmlLayoutPanel getBodyPanel()
+    {
+        return bodyPanel;
+    }
+
     public void addBody(TemplateProcessor templateProcessor)
     {
         bodyTemplate = templateProcessor;
-        getFlags().setFlag(Flags.HAS_BODY);
+        getBodyType().setValue(NavigationPageBodyType.TEMPLATE);
+    }
+
+    public TemplateProcessor getBodyTemplate()
+    {
+        return bodyTemplate;
     }
 
     public boolean requireLogin(NavigationContext nc)
@@ -583,6 +633,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
+        // see if dynamic commands should be allowed
         if(getFlags().flagIsSet(Flags.ALLOW_PAGE_CMD_PARAM))
         {
             String commandSpec = nc.getRequest().getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
@@ -602,33 +653,47 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
             }
         }
 
-        if(bodyCommand != null)
+        switch(getBodyType().getValueIndex())
         {
-            try
-            {
-                ((HttpServletCommand) bodyCommand).handleCommand(writer, nc, false);
-            }
-            catch (CommandException e)
-            {
-                log.error("Command error in body", e);
-                throw new ServletException(e);
-            }
-            return;
-        }
+            case NavigationPageBodyType.NONE:
+                writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
+                break;
 
-        if(bodyPanel != null)
-        {
-            bodyPanel.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
-            return;
-        }
+            case NavigationPageBodyType.CUSTOM:
+                writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class and the body type is set to CUSTOM but the page class does not override NavigationPage.handlePageBody(Writer, NavigationContext).");
+                break;
 
-        if(bodyTemplate != null)
-        {
-            bodyTemplate.process(writer, nc, null);
-            return;
-        }
+            case NavigationPageBodyType.COMMAND:
+                try
+                {
+                    ((HttpServletCommand) getCommand()).handleCommand(writer, nc, false);
+                }
+                catch (CommandException e)
+                {
+                    log.error("Command error in body", e);
+                    throw new ServletException(e);
+                }
+                break;
 
-        writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
+            case NavigationPageBodyType.PANEL:
+                getBodyPanel().render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+                break;
+
+            case NavigationPageBodyType.TEMPLATE:
+                getBodyTemplate().process(writer, nc, null);
+                break;
+
+            case NavigationPageBodyType.INCLUDE:
+                // NOTE: the tricky thing about rd.include is that it has it uses the getReponse().getWriter(), not our writer
+                //       that was passed in -- that may cause some confusion in the output
+                String includeUrl = getInclude().getTextValue(nc);
+                RequestDispatcher rd = nc.getRequest().getRequestDispatcher(includeUrl);
+                rd.include(nc.getRequest(), nc.getResponse());
+                break;
+
+            default:
+                writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " but doesn't know how to handle body type " + getBodyType().getValueIndex() + ".");
+        }
     }
 
     public void handlePageFooter(Writer writer, NavigationContext nc) throws ServletException, IOException
@@ -648,7 +713,17 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     public void handlePage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         enterPage(nc);
-        if(bodyAffectsNavigationContext(nc))
+        if(getBodyType().getValueIndex() == NavigationPageBodyType.FORWARD)
+        {
+            // if we're forwarding to another resource we don't want to put anything into the response otherwise
+            // there will be an illegal state exception -- so, we don't create headers, footers, etc because that's
+            // the user's responsibility in the forwarded resource.
+
+            String forwardUrl = getForward().getTextValue(nc);
+            RequestDispatcher rd = nc.getRequest().getRequestDispatcher(forwardUrl);
+            rd.forward(nc.getRequest(), nc.getResponse());
+        }
+        else if(bodyAffectsNavigationContext(nc))
         {
             // render the body first and let it modify the navigation context
             StringWriter body = new StringWriter();
@@ -658,22 +733,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
             handlePageHeader(writer, nc);
             writer.write(body.getBuffer().toString());
             handlePageFooter(writer, nc);
+
+            // try and do an early GC if possible
+            body = null;
         }
         else
         {
-            // render the body "inline" (no need to buffer) since the body doesn't affect the context
-            //try
-            //{
-                handlePageMetaData(writer, nc);
-                handlePageHeader(writer, nc);
-            //if(!ComponentCommandFactory.handleDefaultBodyItem(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse()))
-                handlePageBody(writer, nc);
-                handlePageFooter(writer, nc);
-            //}
-            //catch (ComponentCommandException e)
-            //{
-            //    throw new NavigationPageException(e);
-            //}
+            handlePageMetaData(writer, nc);
+            handlePageHeader(writer, nc);
+            handlePageBody(writer, nc);
+            handlePageFooter(writer, nc);
         }
         exitPage(nc);
     }

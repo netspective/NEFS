@@ -39,43 +39,39 @@
  */
 
 /**
- * $Id: AntProjectPage.java,v 1.3 2003-08-04 15:47:33 shahid.shah Exp $
+ * $Id: NavigationPageBodyType.java,v 1.1 2003-08-04 15:47:33 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.page.project;
+package com.netspective.sparx.navigate;
 
-import java.io.Writer;
-import java.io.IOException;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
-import javax.servlet.ServletException;
-
-import com.netspective.sparx.console.ConsoleServletPage;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationPageBodyType;
-import com.netspective.sparx.ant.AntProject;
-import com.netspective.sparx.panel.HtmlPanel;
-
-public class AntProjectPage extends ConsoleServletPage
+public class NavigationPageBodyType extends XdmEnumeratedAttribute
 {
-    private AntProject antProject;
+    private static final String[] VALUES = new String[] { "none", "custom", "command", "panel", "template", "forward", "include" };
 
-    public AntProjectPage()
+    public static final int NONE     = 0;
+    public static final int CUSTOM   = 1;
+    public static final int COMMAND  = 2;
+    public static final int PANEL    = 3;
+    public static final int TEMPLATE = 4;
+    public static final int FORWARD  = 5;
+    public static final int INCLUDE  = 6;
+
+    public NavigationPageBodyType()
     {
-        getBodyType().setValue(NavigationPageBodyType.CUSTOM);
     }
 
-    public AntProject getAntProject()
+    public NavigationPageBodyType(int valueIndex)
     {
-        return antProject;
+        super(valueIndex);
     }
 
-    public void setAntProject(AntProject antProject)
+    public String[] getValues()
     {
-        this.antProject = antProject;
+        return VALUES;
     }
 
-    public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
-    {
-        antProject.getDialog().render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
-    }
+
 }
+
