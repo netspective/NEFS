@@ -444,6 +444,8 @@
         </page>
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
         <page name="sample-apps-home" caption="Sample Apps Home" redirect="netspective-url:nefs-sample-apps-home"/>
+
+        <page  name="test" hidden="yes" caption="TEST" include="jsp/test_sp.jsp"/>
     </navigation-tree>
 
     <!--
@@ -503,4 +505,25 @@
               <!-- other settings can be provided too, see source code -->
         </login-dialog>
     </login-manager>
+
+    <!-- This is a sample datasource declaration -->
+    <!--connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
+        <data-source name="jdbc/oracle">
+            <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+            <url>vs-expr:jdbc:oracle:thin:@10.161.34.37:1521:TEST</url>
+            <user>test</user>
+            <password>test</password>
+        </data-source>
+    </connection-provider-->
+
+    <!-- This is a sample stored procedure declaration -->
+    <!--stored-procedures package="test">
+        <stored-procedure name="sp" data-src="jdbc/oracle">
+            <sql>{ ? = call pkg_test.testRefCursor(?) }</sql>
+            <params>
+                <param name="str2" type="out" sql-type="resultset"  value="session:rs"/>
+                <param name="str1" type="in" sql-type="varchar"  value="request-attr:string1"/>
+            </params>
+        </stored-procedure>
+    </stored-procedures-->
 </project>
