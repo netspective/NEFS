@@ -43,7 +43,7 @@ public class ContainsComparisonIgnoreCase extends BinaryOpComparison
 {
     public ContainsComparisonIgnoreCase()
     {
-        super("contains-ignore-case", "contains-ignore-case", "string");
+        super("contains-ignore-case", "contains (ignore-case)", "string");
     }
 
     public String getWhereCondExpr(ValueContext vc, QueryDefnSelect select, QueryDefnSelectStmtGenerator statement, QueryDefnCondition cond) throws QueryDefinitionException
