@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.84 2004-07-14 18:59:37 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.85 2004-08-03 23:11:40 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -125,6 +125,7 @@
 
     <dialog-field-conditional-action name="apply-flags" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag"/>
     <dialog-field-conditional-action name="display" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay"/>
+    <dialog-field-conditional-action name="clear" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalClear"/>
 
     <navigation-page-conditional-action name="apply-flags" class="com.netspective.sparx.navigate.NavigationConditionalApplyFlag"/>
 
