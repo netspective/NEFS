@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.6 2003-03-29 13:00:25 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.7 2003-04-01 01:45:33 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -64,6 +64,9 @@ import com.netspective.commons.io.InputSourceTracker;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.command.Command;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.command.CommandNotFoundException;
 
 /**
  * This class is used to introspect existing classes and allow parsing of XML
@@ -1010,6 +1013,24 @@ public class XmlDataModelSchema
                 }
             };
         }
+        else if (Command.class.isAssignableFrom(arg))
+        {
+            return new AttributeSetter()
+            {
+                public void set(XdmParseContext pc, Object parent, String value)
+                        throws InvocationTargetException, IllegalAccessException, DataModelException
+                {
+                    try
+                    {
+                        m.invoke(parent, new Command[]{ Commands.getInstance().getCommand(value) });
+                    }
+                    catch (CommandNotFoundException e)
+                    {
+                        throw new DataModelException(pc, e);
+                    }
+                }
+            };
+        }
         else if (XdmEnumeratedAttribute.class.isAssignableFrom(arg))
         {
             return new AttributeSetter()
@@ -1022,6 +1043,26 @@ public class XmlDataModelSchema
                         XdmEnumeratedAttribute ea = (XdmEnumeratedAttribute) arg.newInstance();
                         ea.setValue(pc, parent, attrName, value);
                         m.invoke(parent, new XdmEnumeratedAttribute[]{ea});
+                    }
+                    catch (InstantiationException ie)
+                    {
+                        throw new DataModelException(pc, ie);
+                    }
+                }
+            };
+        }
+        else if (XdmBitmaskedFlagsAttribute.class.isAssignableFrom(arg))
+        {
+            return new AttributeSetter()
+            {
+                public void set(XdmParseContext pc, Object parent, String value)
+                        throws InvocationTargetException, IllegalAccessException, DataModelException
+                {
+                    try
+                    {
+                        XdmBitmaskedFlagsAttribute bfa = (XdmBitmaskedFlagsAttribute) arg.newInstance();
+                        bfa.setValue(pc, parent, attrName, value);
+                        m.invoke(parent, new XdmBitmaskedFlagsAttribute[]{ bfa });
                     }
                     catch (InstantiationException ie)
                     {

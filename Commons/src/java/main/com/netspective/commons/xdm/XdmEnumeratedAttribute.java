@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: XdmEnumeratedAttribute.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: XdmEnumeratedAttribute.java,v 1.2 2003-04-01 01:45:33 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
 import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xdm.exception.UnsupportedAttributeValueException;
+import com.netspective.commons.xdm.exception.UnsupportedEnumeratedAttributeValueException;
 import com.netspective.commons.xdm.XdmParseContext;
 
 /**
@@ -94,7 +94,7 @@ public abstract class XdmEnumeratedAttribute
         int indexFound = getValueIndex(value);
         if (indexFound == UNKNOWN_VALUE_INDEX)
         {
-            UnsupportedAttributeValueException e = new UnsupportedAttributeValueException(pc, this, element, attribute, value);
+            UnsupportedEnumeratedAttributeValueException e = new UnsupportedEnumeratedAttributeValueException(pc, this, element, attribute, value);
             pc.addError(e);
             if(pc.isThrowErrorException())
                 throw e;
