@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.19 2003-10-20 22:18:54 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.20 2003-10-26 14:33:13 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -654,6 +654,11 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             result[i] = triggers[i];
         result[triggers.length] = trigger;
         triggers = result;
+    }
+
+    public TableRowTrigger createTrigger()
+    {
+        return null;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

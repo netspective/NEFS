@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.9 2003-10-17 15:58:03 shahid.shah Exp $
+ * $Id: Table.java,v 1.10 2003-10-26 14:33:13 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -371,6 +371,12 @@ public interface Table extends QueriesNameSpace
      * @param trigger The class that should be called when trigger events occur
      */
     public void addTrigger(TableRowTrigger trigger);
+
+    /**
+     * Contruct a trigger object
+     * @return
+     */
+    public TableRowTrigger createTrigger();
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
