@@ -53,6 +53,12 @@ if(args.length < 2)
 	WScript.quit();
 }
 
+if(!fso.folderExists(args(0)))
+{
+	WScript.echo("Application directory " + args(0) + " does not exist.");
+	WScript.quit();
+}
+
 var appRootFolder = fso.getFolder(args(0));
 var webInfFolder = fso.getFolder(appRootFolder + "\\WEB-INF");
 var webInfLibFolderName = webInfFolder + "\\lib";
