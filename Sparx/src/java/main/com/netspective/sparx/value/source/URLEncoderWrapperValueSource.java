@@ -65,7 +65,8 @@ public class URLEncoderWrapperValueSource extends AbstractValueSource
 
     public Value getValue(ValueContext vc) throws ValueSourceException
     {
-        return new GenericValue(URLEncoder.encode(wrappedValueSource.getTextValue(vc)));
+        final String textValue = wrappedValueSource.getTextValue(vc);
+        return new GenericValue(textValue != null ? URLEncoder.encode(textValue) : null);
     }
 
     public PresentationValue getPresentationValue(ValueContext vc)
