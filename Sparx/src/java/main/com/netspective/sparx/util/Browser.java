@@ -15,7 +15,7 @@ import javax.servlet.http.*;
  *  The public constructor (previously deprecated) has been removed.
  * </p>
  */
-public class Browser
+public class Browser implements java.io.Serializable
 {
 
     private boolean moz = false, NS6 = false, NS7 = false, minNS61 = false, gecko = false;
