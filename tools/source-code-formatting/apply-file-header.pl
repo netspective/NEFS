@@ -34,17 +34,18 @@ sub processJava
 		$foundPkgDecl = 1 if m/^package /;
 		push(@fileContentsAfterPackageDecl, $_) if $foundPkgDecl;
 	}
-	
-	#my $before = scalar(@fileContents);
-	#my $after = scalar(@fileContentsAfterPackageDecl);
-	#my $total = $before - $after;
-	
-	#print "$File::Find::name $before $after = $total\n";
-	
-	open(DEST, ">$File::Find::name");
-	print DEST @JAVA_LICENSE;		
-	print DEST @fileContentsAfterPackageDecl;
+
+	replaceSourceFile($File::Find::name, \@fileContentsAfterPackageDecl);
+}
+
+sub replaceSourceFile
+{
+    my ($fileName, $sourceCode) = @_;
+
+	open(DEST, ">$fileName");
+	print DEST @JAVA_LICENSE;
+	print DEST @$sourceCode;
 	close(DEST);
 }
-           
+
 main();
