@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.18 2003-11-19 17:25:23 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.19 2003-12-03 00:32:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -62,6 +62,7 @@ import com.netspective.commons.value.source.FilesystemEntriesValueSource;
 import com.netspective.commons.value.source.GloballyUniqueIdValueSource;
 import com.netspective.commons.value.source.SystemPropertyValueSource;
 import com.netspective.commons.value.source.JavaExpressionValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.value.exception.ValueSourceNotFoundException;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.exception.UnexpectedValueContextException;
@@ -144,6 +145,7 @@ public class ValueSources implements MetricsProducer
         registerValueSource(StaticValueSource.class);
         registerValueSource(StaticListValueSource.class);
         registerValueSource(SystemPropertyValueSource.class);
+        registerValueSource(RedirectValueSource.class);
     }
 
     public Map getValueSourceClassesMap()
