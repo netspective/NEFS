@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.4 2003-11-03 06:41:32 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.5 2003-11-03 22:50:47 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -50,13 +50,13 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.GenericValue;
 import com.netspective.axiom.ConnectionContext;
 
 import java.sql.Types;
 import java.sql.SQLException;
 import java.sql.CallableStatement;
 import java.sql.Clob;
+import java.sql.Array;
 
 /**
  * Class representing an in or out parameter of a callable statement object
@@ -218,6 +218,23 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         }
     }
 
+    /**
+     * Checks to see if this parameter is available as an Output type
+     * @return
+     */
+    public boolean isOutType()
+    {
+        return (type.getValueIndex() == Type.OUT || type.getValueIndex() == Type.IN_OUT) ? true: false;
+    }
+
+
+    /**
+     * Extract the OUT parameter values from the callable statment and
+     * assign them to the value of the parameter.
+     * @param cc
+     * @param stmt
+     * @throws SQLException
+     */
     public void extract(ConnectionContext cc, CallableStatement stmt) throws SQLException
     {
         if (getType().getValueIndex() == StoredProcedureParameter.Type.IN)
@@ -238,6 +255,82 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
             case Types.CLOB:
                 Clob clob = stmt.getClob(index);
                 value.getValue(cc).setTextValue(clob.getSubString(1,(int) clob.length()));
+                break;
+            case java.sql.Types.ARRAY:
+                Array array = stmt.getArray(index);
+                value.getValue(cc).setValue(array);
+                break;
+            case java.sql.Types.BIGINT:
+                long bigint = stmt.getLong(index);
+                value.getValue(cc).setValue(new Long(bigint));
+                break;
+            case java.sql.Types.BINARY:
+                value.getValue(cc).setTextValue(new String(stmt.getBytes(index)));
+                break;
+            case java.sql.Types.BIT:
+                boolean bit = stmt.getBoolean(index);
+                value.getValue(cc).setValue(new Boolean(bit));
+            case java.sql.Types.BLOB:
+                value.getValue(cc).setValue(stmt.getBlob(index));
+                break;
+            case java.sql.Types.CHAR:
+                value.getValue(cc).setTextValue(stmt.getString(index));
+                break;
+            case java.sql.Types.DATE:
+                value.getValue(cc).setValue(stmt.getDate(index));
+                break;
+            case java.sql.Types.DECIMAL:
+                value.getValue(cc).setValue(stmt.getBigDecimal(index));
+                break;
+            case java.sql.Types.DISTINCT:
+                value.getValue(cc).setValue(stmt.getObject(index));
+                break;
+            case java.sql.Types.FLOAT:
+                value.getValue(cc).setValue(new Float(stmt.getFloat(index)));
+                break;
+            case java.sql.Types.JAVA_OBJECT:
+                value.getValue(cc).setValue(stmt.getObject(index));
+                break;
+            case java.sql.Types.LONGVARBINARY:
+                value.getValue(cc).setTextValue(new String(stmt.getBytes(index)));
+                break;
+            case java.sql.Types.LONGVARCHAR:
+                value.getValue(cc).setTextValue(stmt.getString(index));
+                break;
+            //case java.sql.Types.NULL:
+            //    value.getValue(cc).setValue(null);
+            //    break;
+            case java.sql.Types.NUMERIC:
+                value.getValue(cc).setValue(stmt.getBigDecimal(index));
+                break;
+            case java.sql.Types.OTHER:
+                 value.getValue(cc).setValue(stmt.getObject(index));
+                 break;
+            case java.sql.Types.REAL:
+                value.getValue(cc).setValue(new Float(stmt.getFloat(index)));
+                break;
+            //case java.sql.Types.REF:
+            //    Ref ref = stmt.getRef(index);
+            //    break;
+            case java.sql.Types.SMALLINT:
+                short sh = stmt.getShort(index);
+                value.getValue(cc).setValue(new Short(sh));
+                break;
+            case java.sql.Types.STRUCT:
+                value.getValue(cc).setValue(stmt.getObject(index));
+                break;
+            case java.sql.Types.TIME:
+                value.getValue(cc).setValue(stmt.getTime(index));
+                break;
+            case java.sql.Types.TIMESTAMP:
+                value.getValue(cc).setValue(stmt.getTimestamp(index));
+                break;
+            case java.sql.Types.TINYINT:
+                byte b = stmt.getByte(index);
+                value.getValue(cc).setValue(new Byte(b));
+                break;
+            case java.sql.Types.VARBINARY:
+                 value.getValue(cc).setValue(stmt.getBytes(index));
                 break;
             default:
                 break;
