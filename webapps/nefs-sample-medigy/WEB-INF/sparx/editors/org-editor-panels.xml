@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+    <!--
+       ======================================
+       Organization related  record editor panels
+       ======================================
+    -->
+    <panel-editors package="orgAttribute">
+
+        <!-- ORG CONTACTS AND ADDRESSES -->
+        <panel-editor  name="contact" require-request-param="org_id">
+            <frame heading="Contact Methods/Addresses"/>
+            <element type="report" name="contacts" caption="Contact Method" pk-column-index="0">
+                <dialog retain-params="*" type="schema-record-editor">
+                    <frame heading="create-dialog-perspective-heading:Contact"/>
+                    <field type="integer" name="system_id" caption="" hidden="yes"/>
+                    <field type="text" name="parent_id" caption="Org ID" required="yes" default="request:org_id" hidden="yes"/>
+
+                    <composite name="contactType" caption="Contact Type">
+                        <field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type"
+                            required="yes" prepend-blank="yes"/>
+                        <field type="text" name="method_name" caption="Other Contact Type">
+                            <conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                        </field>
+                    </composite>
+                    <field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
+
+                    <on-add-data>
+                        <org-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                            rec-stat-id="static:Active"/>
+                    </on-add-data>
+                    <on-edit-data>
+                        <org-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                            rec-stat-id="static:Active"/>
+                    </on-edit-data>
+                    <on-delete-data>
+                        <org-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                            rec-stat-id="static:Active"/>
+                    </on-delete-data>
+                </dialog>
+                <query>
+                    select
+                    system_id,
+                    Contact_Method_Type.caption "Method",
+                    method_value "Value"
+                    from
+                        Org_Contact,
+                        Contact_Method_Type
+                    where
+                        Org_Contact.parent_id = ? and
+                        Org_Contact.method_type = Contact_Method_Type.id
+                    <params>
+                        <param value="request:org_id"/>
+                    </params>
+                    <presentation>
+                        <panel no-data-msg="No contact methods found.">
+                            <frame heading="Contact Information"/>
+                            <report>
+                                <column hidden="yes"/>
+                                <column heading="Method" hidden="no"/>
+                                <column heading="Value" hidden="no"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </query>
+            </element>
+            <element type="report" name="address" caption="Address" dialog-ref="orgAttribute.address" pk-column-index="0">
+                <query>
+                    select
+                    system_id,
+                    Contact_Address_Type.caption,
+                    line1 || '&lt;br&gt;' || city || ', ' || US_State_Type.caption || ' ' || zip
+                from
+                    Org_Address,
+                    US_State_Type,
+                    Contact_Address_Type,
+                    Record_Status
+                where
+                    Org_Address.parent_id = ? and
+                    Org_Address.address_type_id = Contact_Address_Type.id and
+                    Org_Address.state_id = US_State_Type.id and
+                    Org_Address.rec_stat_id = Record_Status.id and
+                    Record_Status.caption = 'Active'
+
+                <params>
+                    <param value="request:org_id"/>
+                </params>
+                <presentation>
+                    <panel no-data-msg="No addresses found.">
+                        <frame heading="Address"/>
+                        <report>
+                            <column hidden="yes"/>
+                            <column heading="Address Type"/>
+                            <column heading="City"/>
+                        </report>
+                    </panel>
+                </presentation>
+                </query>
+            </element>
+        </panel-editor>
+
+        <!-- ORG IDENTIFICATIONS -->
+        <panel-editor name="identifier" require-request-param="org_id">
+            <frame heading="Identifier"/>
+            <element type="report" name="identifier" caption="Identifier" pk-column-index="0">
+                <dialog retain-params="*" type="schema-record-editor">
+                    <frame heading="create-dialog-perspective-heading:Identifier"/>
+                    <field type="integer" name="system_id" caption="" hidden="yes"/>
+                    <field type="text" name="parent_id" caption="Org ID" required="yes" default="request:org_id" hidden="yes"/>
+                    <field type="select" name="identifier_type_id" caption="Identifier Type" choices="schema-enum:Org_Identifier_Type"
+                        required="yes" prepend-blank="yes"/>
+                    <field type="text" name="identifier" caption="Value" required="yes"/>
+                    <on-add-data>
+                        <org-identifier identifier="identifier" org_id="parent_id" identifier_type_id="identifier_type_id"
+                            rec-stat-id="static:Active"/>
+                    </on-add-data>
+                    <on-edit-data>
+                        <org-identifier identifier="identifier" org_id="parent_id" identifier_type_id="identifier_type_id"
+                            rec-stat-id="static:Active"/>
+                    </on-edit-data>
+                    <on-delete-data>
+                        <org-identifier identifier="identifier" org_id="parent_id" identifier_type_id="identifier_type_id"
+                            rec-stat-id="static:Active"/>
+                    </on-delete-data>
+                </dialog>
+                <query>
+                    select
+                        org_identifier.system_id,
+                        org_identifier_type.caption,
+                        org_identifier.identifier
+                    from
+                        org_identifier, org_identifier_type
+                    where
+                        org_identifier.org_id = ? and
+                        org_identifier.identifier_type_id =   org_identifier_type.id
+                    <params>
+                        <param value="request:org_id"/>
+                    </params>
+                    <presentation>
+                        <panel no-data-msg="No identifiers found.">
+                            <frame heading="Identifiers"/>
+                            <report>
+                                <column hidden="yes"/>
+                                <column heading="Type"/>
+                                <column heading="Value"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </query>
+            </element>
+        </panel-editor>
+    </panel-editors>
+</xdm:container>
