@@ -1,5 +1,6 @@
 * Take a look at http://xmljs.sourceforge.net/ for JavaScript XML parsing and record set management
 * Take a look at http://www.duncanlamb.com/sdba/ for SDBA Revolution Instant Messaging Application Server and see if it's useful to create Sparx-based IM apps
+* Add support for listeners in as many places in Sparx as makes sense -- e.g. for dialogs that don't want to be subclassed let them add DialogExecuteListener? DialogPopuplateListener? etc...
 * Incorporate features from http://www.irongrid.com (IronEye SQL and IronEye Cache) into Console
 * Take a look at http://www.softwareplanner.com to see what kinds of features from there can be added to Console, Beacon
 * Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
@@ -27,7 +28,7 @@
 * Add a 'development tip of the day' feature to Console that would give general software development tips
 * Consider adding rich text editing field mode (for field.memo) for IE/Moz using examples at http://www.kevinroth.com/rte/demo.htm and http://www.bris.ac.uk/is/projects/cms/ttw/ttw.html
 * Consider using Jakarta Commons VFS (http://jakarta.apache.org/commons/sandbox/vfs/api.html) for panel body source locations so that they can be obtained from anywhere
-* Allow documentation panels in console which borrow ideas form Sparx 2.0 documentation (XSL, etc)
+* Allow documentation panels in console which borrow ideas from Sparx 2.0 documentation (summary blocks, XSL, etc)
 * Add <panel-type>, <page-type> and other style page templates
 * Look at Struts' MessageResources class for creating and 'rb' (resource-bundle) value source for internationlization
 * Add DCB's that can populate actions
@@ -40,6 +41,7 @@
 * Implement JavaScript menu system using http://www.cs.ucla.edu/~heng/JSCookMenu/ (free for use)
 * Review Jakarta Commons Messenger (http://jakarta.apache.org/commons/sandbox/messenger/index.html) for JMS processing via Servlet container (very cool)
 * Review Jakarta Commons Resources (http://jakarta.apache.org/commons/sandbox/resources/index.html) for internationalization (i18n) of message strings
+* Review Logidex Asset Center (http://www.logiclibrary.com) to see if we can use JavaDoc tags to create similar asset manager for Sparx code in Console
 
 BUGS
 * SelectField:
