@@ -40,8 +40,8 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.type.PartyRelationshipType;
 import com.netspective.medigy.reference.type.PriorityType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
