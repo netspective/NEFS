@@ -32,6 +32,32 @@
 		</dialog>
     </dialogs>
 
+    <dialogs package="study">
+        <dialog name="profile">
+            <field type="separator" heading="Overview"/>
+            <field type="text" name="study_name" caption="Name"  uppercase="yes"   max-length="255" required="yes">
+                <conditional action="apply-flags" flag="browser-read-only" data-cmd="edit,delete"/>
+            </field>
+            <field type="text" name="study_code" caption="Code" max-length="64" required="yes"/>
+            <field type="memo" name="study_descr" caption="Description" required="yes"/>
+            <field type="select" name="study_status" caption="Status" required="yes" choices="schema-enum:Study_Status" prepend-blank="yes">
+                <conditional action="apply-flags" flag="browser-read-only" perspective="edit,delete"/>
+            </field>
+            <field type="select" name="study_phase" caption="Stage" choices="schema-enum:Study_Stage_Type" prepend-blank="yes"/>
+            <field type="select" name="sponsor_org_name" caption="Sponsor" size="50"
+                default="request:org_id">
+                <conditional action="apply-flags" flag="invisible" perspective="delete,edit"/>
+            </field >
+            <field type="phone" name="primary_phone" caption="Contact Phone" size="16" hint="Study Hotline number"/>
+            <field type="e-mail" name="primary_email" caption="Contact Email" hint="Study email address"/>
+
+            <field type="separator" heading="Planned Trial Period"/>
+            <field type="date" name="start_date" caption="Start Date" required="yes" default="today" popup-calendar="yes"/>
+            <field type="date" name="actual_end_date" caption="End Date" required="yes" popup-calendar="yes">
+            </field>
+        </dialog>
+    </dialogs>
+
     <dialogs package="person">
         <dialog name="subject-profile" hide-hints-until-focus="yes">
             <field type="integer" name="person_id" hidden="yes"/>
