@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: RiskResponseDialog.java,v 1.3 2003-08-31 03:15:28 shahid.shah Exp $
+ * $Id: RiskResponseDialog.java,v 1.4 2003-08-31 23:14:30 shahid.shah Exp $
  */
 
 package app;
@@ -170,7 +170,7 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
         try
         {
             RiskResponseTable riskResponseTable = DataAccessLayer.getInstance().getRiskResponseTable();
-            cc = dc.getConnection(null, true, ConnectionContext.OWNERSHIP_DEFAULT);
+            cc = dc.getConnection(null, true);
             DialogContext.DialogFieldStates fieldStates = dc.getFieldStates();
 
             for(int i = 0; i < riskIdentifiers.size(); i++)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedRespondent.java,v 1.3 2003-08-31 03:15:28 shahid.shah Exp $
+ * $Id: AuthenticatedRespondent.java,v 1.4 2003-08-31 23:14:30 shahid.shah Exp $
  */
 
 package app;
@@ -58,19 +58,19 @@ import auto.dal.db.vo.VisitedPage;
 import auto.dal.db.vo.Respondent;
 import auto.dal.db.vo.impl.VisitedPageVO;
 
-import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.security.LoginDialogContext;
+import com.netspective.sparx.security.HttpSessionAuthenticatedUser;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.TableRowTrigger;
 import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.sql.QueryResultSet;
 
-public class AuthenticatedRespondent extends BasicAuthenticatedUser implements TableRowTrigger
+public class AuthenticatedRespondent extends HttpSessionAuthenticatedUser implements TableRowTrigger
 {
     private static final String REQATTRNAME_VISITED_PAGES_CACHE = AuthenticatedRespondent.class.getName() + ".VISITED_PAGES_CACHE";
     private Respondent respondent;
@@ -87,7 +87,7 @@ public class AuthenticatedRespondent extends BasicAuthenticatedUser implements T
         RespondentTable.Record record = null;
         try
         {
-            cc = ldc.getConnection(null, false, ConnectionContext.OWNERSHIP_DEFAULT);
+            cc = ldc.getConnection(null, false);
             record = respondentTable.getRecordByPrimaryKey(cc, Integer.valueOf(ldc.getUserIdInput()));
         }
         catch(Exception e)
@@ -127,7 +127,7 @@ public class AuthenticatedRespondent extends BasicAuthenticatedUser implements T
         ConnectionContext cc = null;
         try
         {
-            cc = nc.getConnection(null, false, ConnectionContext.OWNERSHIP_DEFAULT);
+            cc = nc.getConnection(null, false);
             RespondentTable.Record record = respondentTable.getRecordByPrimaryKey(cc, respondent.getPin());
             if(record != null)
             {
@@ -153,7 +153,7 @@ public class AuthenticatedRespondent extends BasicAuthenticatedUser implements T
             try
             {
                 VisitedPageTable table = DataAccessLayer.getInstance().getVisitedPageTable();
-                cc = nc.getConnection(null, true, ConnectionContext.OWNERSHIP_DEFAULT);
+                cc = nc.getConnection(null, true);
                 VisitedPageTable.Records records = table.getAccessorRecords(cc, table.getAccessorByPinEquality(), new Object[] { respondent.getPin() });
                 for(int i = 0; i < records.size(); i++)
                 {
@@ -199,7 +199,7 @@ public class AuthenticatedRespondent extends BasicAuthenticatedUser implements T
         VisitedPageTable table = DataAccessLayer.getInstance().getVisitedPageTable();
         try
         {
-            cc = nc.getConnection(null, true, ConnectionContext.OWNERSHIP_DEFAULT);
+            cc = nc.getConnection(null, true);
 
             QueryResultSet qrs = table.getAccessorByIndexUniqueVisitEquality().execute(cc, new Object[] { respondent.getPin(), page.getQualifiedName() }, false);
             boolean existsAlready = qrs.getResultSet().next();
