@@ -247,14 +247,16 @@
     <section>
       <title>Forms Input</title>
 
-      <para>This page and its chldren pages contain samples that demonstrate
-      how forms and input fields are created in Sparx. There are many examples
-      that show how quick and easy it is to set up forms to accept input
-      values and automatically validate them. The examples contained in this
-      section are further divided into sub-categories. The Forms Input page
-      contains a list of links to its children pages containing the
-      categorized example pages. Links to these children pages are also
-      provided through a submenu bar under the Forms Input tab.</para>
+      <para>This module contains samples that demonstrate how forms and input
+      fields are created in Sparx. There are many examples that show how quick
+      and easy it is to set up forms to accept input values and automatically
+      validate them. </para>
+
+      <para>The examples contained in this section are further divided into
+      sub-categories. The <emphasis>Forms Input</emphasis> page contains a
+      list of links to its children pages containing the categorized example
+      pages. Links to these children pages are also provided through a submenu
+      bar under the <emphasis>Forms Input</emphasis> tab.</para>
 
       <screenshot>
         <graphic fileref="./resources/images/screen-sampler-form-inputs-main.gif" />
@@ -292,7 +294,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="./resources/images/screen-sampler-text-block.gif" />
+              <imagedata fileref="./resources/images/screen-sampler-line-validate.gif" />
             </imageobject>
           </mediaobject>
         </figure>
@@ -311,7 +313,7 @@
 
         <para>This page shows the usage of <type>memo</type> and template
         fields using custom <acronym>CSS</acronym> and
-        <acronym>HTML</acronym>. This sample page also incorporates error
+        <acronym>HTML</acronym>. The sample page also incorporates error
         messages using message boxes (as shown in the above image).</para>
       </section>
 
@@ -472,72 +474,832 @@
 
         <para>This page and its children pages are for demonstrating more
         advanced usage of the built-in features of the dialog fields.</para>
+
+        <section>
+          <title>Client-side Script</title>
+
+          <para>This page demonstrates how to "plug" <emphasis>custom
+          javascript</emphasis> calls to the client-side events (e.g. click,
+          value-changed, lose-focus, key-press, is-valid) of the dialog
+          fields. </para>
+
+          <figure>
+            <title>Sample Page for Custom Javascript</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-js.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+
+        <section>
+          <title>Perspectives</title>
+
+          <para>Generally dialogs are used for different data processing
+          actions: entering new data, editing existing data, and deleting
+          existing data. The Framework considers these separate data
+          processing actions as <emphasis>perspectives</emphasis> of the
+          dialog. Thus, there are several different perspectives to which a
+          dialog can be set to: <emphasis>add</emphasis>,
+          <emphasis>edit</emphasis>, <emphasis>delete</emphasis>,
+          <emphasis>print</emphasis>, and <emphasis>confirm</emphasis>. This
+          page demonstrates the usage of data perspectives for filling dialog
+          fields. </para>
+
+          <figure>
+            <title>Sample Page for Perspectives</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-perspective.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+
+        <section>
+          <title>Hidden Fields</title>
+
+          <para>This page demonstrates different usages of <emphasis>hidden
+          fields</emphasis> in a dialog. Hidden fields are useful for keeping
+          track of information that you don't want the user to see. </para>
+
+          <figure>
+            <title>Sample Page for Hidden Fields</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-hidden.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Click the <command>OK</command> button. The dialog context is
+          displayed in debug mode (as shown below). You may check the values
+          of the hidden fields and other dialog fields from there.</para>
+
+          <figure>
+            <title>Dialog Context Debug Information</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-hidden-dc-debug.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+
+        <section>
+          <title>Command Fields</title>
+
+          <para>This page demonstrates the usage of a <sgmltag>List</sgmltag>
+          command to populate a dialog field. Only certain commands can be
+          used for dialog fields. Commands execute arbitrary tasks defined
+          either by you or the framework. They are used to encapsulate common
+          logic and reuse that logic across pages and dialogs (forms). For
+          information on <emphasis>Commands</emphasis> in general, please
+          consult the <emphasis>User Manual</emphasis>. </para>
+
+          <figure>
+            <title>Sample Page for List Command</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-command.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
       </section>
     </section>
 
     <section>
       <title>Forms Execution</title>
 
-      <para></para>
+      <para>This module contains samples that demonstrate how forms are
+      executed in Sparx. While the Forms Input module described how to create
+      forms and fields, this module deals with how to perform actions based on
+      already validated input. Numerous examples delve into how to perform
+      custom validation and execute dialog handlers based on existing Sparx
+      functionality or creating your own through inheritance and delegation.
+      </para>
+
+      <para>The examples contained in this section are further divided into
+      sub-categories. The <emphasis>Forms Execution</emphasis> page contains a
+      list of links to its children pages containing the categorized example
+      pages. Links to these children pages are also provided through a submenu
+      bar under the <emphasis>Forms Execution</emphasis> tab.</para>
 
       <section>
         <title>Director</title>
 
-        <para></para>
+        <para>This page demonstrates the usage of a <emphasis>Dialog
+        Director</emphasis> which controls destinations after successful form
+        submission and the display of the dialog buttons. </para>
+
+        <figure>
+          <title>Sample Page for Director</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-director.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>Select the value from the <varname>Next Action</varname> select
+        box and click the <command>OK</command> button to see the execution of
+        next action for this dialog.</para>
       </section>
 
       <section>
         <title>Templates</title>
 
-        <para></para>
+        <para>This page demonstrates the ability to
+        <emphasis>execute</emphasis> templates or display JSP output after
+        successful submission of a dialog. Usually executing a template means
+        displaying the output from a template processing engine. </para>
+
+        <section>
+          <title>Body in XML</title>
+
+          <para>This page contains an example of a dialog which will execute a
+          template body defined in the dialog's XML declaration and display
+          the output. </para>
+
+          <figure>
+            <title>Sample Page for Templates using Body in XML</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-template-xml.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>The XML template is used to display the Welcome message to
+          user.</para>
+        </section>
+
+        <section>
+          <title>Body in File</title>
+
+          <para>This page contains an example of a dialog which will execute a
+          template body defined in a seperate file and display the output.
+          </para>
+
+          <figure>
+            <title>Sample Page for Templates using Body in a Separate
+            File</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-template-file.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>This example shows a Welcome message, obtained from a separate
+          file, to the user. It also explains the loop attribute of dialog
+          tag. To return to the dialog, you will need to click on the
+          <emphasis>Return to dialog</emphasis> link provided on the page (as
+          shown below):</para>
+
+          <figure>
+            <title>Returning to the Dialog</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-template-file-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+
+        <section>
+          <title>Body in JSP</title>
+
+          <para>This page contains an example of a dialog which will display
+          an output from a JSP upon execution. </para>
+
+          <figure>
+            <title>Sample Page for Templates using Body in a JSP File</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-template-jsp.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>This example shows a Welcome message, obtained from a JSP
+          file, to the user. It also explains the loop attribute of dialog
+          tag. To return to the dialog, you will need to click on the
+          <emphasis>Return to dialog</emphasis> link provided on the page (as
+          shown below):</para>
+
+          <figure>
+            <title>Returning to the Dialog</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-template-jsp-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
       </section>
 
       <section>
         <title>Handlers</title>
 
-        <para></para>
+        <para>This page demonstrates the usage of various
+        <emphasis>handlers</emphasis> for the execution of a dialog. These
+        handlers are processed once the internal validation of the dialog is
+        complete and the dialog is ready to be be executed. Handlers are
+        special built-in actions defined for convenience and reusability:
+        <emphasis>url</emphasis>, <emphasis>mail</emphasis>,
+        <emphasis>command</emphasis>, <emphasis>panels</emphasis>, and
+        <emphasis>style-sheet</emphasis>. For defining more complex actions
+        and logic for execution, please take a look at the
+        <emphasis>inheritence</emphasis> or <emphasis>delegation</emphasis>
+        examples. </para>
+
+        <section>
+          <title>Include URL</title>
+
+          <para>This page contains an example of a dialog which has a handler
+          that will display HTML from an external page. </para>
+
+          <figure>
+            <title>Sample Page for HTML Include of an External Page</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-include-url.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Enter a URL and click the OK button. The contents of the
+          target page, pointed to by this supplied URL, is displayed (as shown
+          below):</para>
+
+          <figure>
+            <title>Contents of the External Page</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-inc-url-html.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+
+        <section>
+          <title>Send Mail</title>
+
+          <para>This page contains an example of a dialog which has a handler
+          that will send an email upon execution of the dialog. </para>
+
+          <figure>
+            <title>Sample Page for Send Mail</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-send-mail.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Enter the values for the mail dialog fields and click the
+          <command>OK</command> button. [TODO: put details/image of successful
+          mail send]</para>
+        </section>
+
+        <section>
+          <title>Exec Command</title>
+
+          <para>This page contains an example of a dialog which has a handler
+          that will process a command upon execution of the dialog. [TODO:
+          image of exec command]</para>
+        </section>
+
+        <section>
+          <title>Exec Panels</title>
+
+          <para>This page contains an example of a dialog which has a handler
+          that will display panels upon execution of the dialog. The panels
+          can contain html from various entities such as JSPs or URLs. </para>
+
+          <figure>
+            <title>Sample Page for Execution of Panels</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-exec-handler.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Provide a local source for HTML
+          (<literal>/jsp/panel-inc-test.jsp</literal> in the above example)
+          for <varname>Include Local</varname> field and a URL
+          (<literal>http://www.yahoo/com</literal> in this case) as the value
+          for <varname>Command 2</varname> field. Click the
+          <command>OK</command> button. The HTML contents from the jsp and the
+          yahoo web site are displayed in two different panels (as shown
+          below):</para>
+
+          <figure>
+            <title>HTML Loaded in Two Panels</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-exec-handler-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+
+        <section>
+          <title>Transform Bean</title>
+
+          <para>This page contains an example of a dialog which has a handler
+          that will display output from a XSL style sheet transformation upon
+          execution of the dialog. </para>
+
+          <figure>
+            <title>Sample Page for XSL Transformation</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-transform-bean.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>The XSL style sheet is provided in the dialog. Click on the
+          <command>OK</command> button to see the transformed XML for the
+          dialog's <emphasis>Context Bean</emphasis> (as shown below):</para>
+
+          <figure>
+            <title>Transformed XML for Dialog's Context Bean</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-transform-bean-1.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+
+        <section>
+          <title>Transform File</title>
+
+          <para>This page contains an example of a dialog which has a handler
+          that will display output from a XSL style sheet transformation upon
+          execution of the dialog.</para>
+
+          <figure>
+            <title>Sample Page for XSL Transformation</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-transform-file.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>This dialog asks for a source XML or XSL file to be converted.
+          The XSL to be applied can also be selected using the
+          <varname>Stylesheet File</varname> select field in the dialog.
+          Select the XML <filename>test-transform.xml</filename> file as the
+          <varname>Source File</varname> and click the <command>OK</command>
+          button. The transformed XML is displayed (as shown below):</para>
+
+          <figure>
+            <title>Transformed XML File</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-transform-file-1.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>You may also test the transformation of the XSL source file
+          itself by selecting it as the source file. The transformed XSL file
+          is displayed (as shown below):</para>
+
+          <figure>
+            <title>Transformed XSL File</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-transform-file-2.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
       </section>
 
       <section>
         <title>Inheritance</title>
 
-        <para></para>
+        <para>This page demonstrates the <emphasis>inheritance</emphasis>
+        model for defining custom logic or action for different stages of a
+        dialog. This model should only be used for the most complex cases
+        where you need to override the default behavior of the dialog. By
+        extending the default dialog class, com.netspective.sparx.form.Dialog,
+        you have full control over the dialog and its behavior. </para>
+
+        <section>
+          <title>Exec 1 A</title>
+
+          <para>This page contains a dialog which has a custom dialog class
+          that overrides only the default execution behavior of the dialog.
+          </para>
+
+          <figure>
+            <title>Sample Page for Handling Dialog 1A (through
+            Inheritance)</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-dialog-1a.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Enter a value for <varname>Full Name</varname> field and click
+          the <command>OK</command> button. The custome java class
+          (<classname>SampleExecuteDialog</classname> in this case) displays a
+          <emphasis>Welcome</emphasis> message along with the supplied name
+          (as shown below): </para>
+
+          <figure>
+            <title>Welcome Message Generated by the Custom Class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-dialog-1a-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>[TODO: Replace with new image after correcting the class path
+          issue]</para>
+        </section>
+
+        <section>
+          <title>Exec 1 B</title>
+
+          <para>This page contains a dialog which has a custom dialog class
+          that overrides only the default execution behavior of the dialog.
+          </para>
+
+          <figure>
+            <title>Sample Page for Handling Dialog 1B (through
+            Inheritance)</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-dialog-1b.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Enter a value for <varname>Full Name</varname> and
+          <varname>Age</varname> fields and click the <command>OK</command>
+          button. In the Sampler app, the custom java class
+          <classname>SampleExecuteDialog</classname> handles this dialog as
+          well. Note the message about the supplied age (as shown
+          below):</para>
+
+          <figure>
+            <title>Welcome Message Generated by the Custom Class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-dialog-1b-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>[TODO: Replace with new image after correcting the class path
+          issue] You may view the code for custom java class using the link
+          provided in the message. This opens the java source code in the
+          Console. </para>
+
+          <figure>
+            <title>Source File for Custom Class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-inherit-custom-class.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+
+        <section>
+          <title>Validation</title>
+
+          <para>This page contains a dialog which has a custom dialog class
+          that overrides the default population, validation, and execution
+          behaviors of the dialog. </para>
+
+          <figure>
+            <title>Sample Page for Validation using Custom Class (through
+            Inheritance)</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-inherit-validate.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Enter the values for the dialog fields and click the
+          <command>OK</command> button (as shown in the image above). The
+          custom validation class (<classname>SampleValidateDialog</classname>
+          in this case) checks the entered values and displays the validation
+          messages, if any (as shown below):</para>
+
+          <figure>
+            <title>Validation Messages Generated by Custom Class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-inherit-validate-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
       </section>
 
       <section>
         <title>Delegation</title>
 
-        <para></para>
+        <para>This page demonstrates the delegation model for defining custom
+        logic or action for different stages of a dialog. The Framework allows
+        definition of various listeners for different stages of a dialog. By
+        implementing the listener interfaces and then assigning the custom
+        listeners to a dialog, these listeners will get executed. </para>
+
+        <section>
+          <title>Exec 1 A</title>
+
+          <para>This page demonstrates an <emphasis>execution</emphasis>
+          listener for the <emphasis>delegation</emphasis> model. An execution
+          listener implements the
+          com.netspective.sparx.form.handler.DialogExecuteHandler interface.
+          </para>
+
+          <figure>
+            <title>Sample Page for Handling Dialog 1A (through
+            Delegation)</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-deleg-1a.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Enter a value for <varname>Full Name</varname> field and click
+          the <command>OK</command> button. The custome java class
+          (<classname>SampleExecuteHandler</classname> in this case) displays
+          a <emphasis>Welcome</emphasis> message along with the supplied name
+          (as shown below):</para>
+
+          <figure>
+            <title>Welcome Message Generated by the Custom Class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-deleg-1a-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>[TODO: Replace with new image after correcting the class path
+          issue]</para>
+        </section>
+
+        <section>
+          <title>Exec 1 B</title>
+
+          <para>This page demonstrates an <emphasis>execution</emphasis>
+          listener for the <emphasis>delegation</emphasis> model. An execution
+          listener implements the
+          com.netspective.sparx.form.handler.DialogExecuteHandler interface.
+          </para>
+
+          <figure>
+            <title>Sample Page for Handling Dialog 1B (through
+            Delegation)</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-deleg-1b.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Enter a value for <varname>Full Name</varname> and
+          <varname>Age</varname> fields and click the <command>OK</command>
+          button. In the Sampler app, the custom java class
+          <classname>SampleExecuteHandler</classname> handles this dialog as
+          well. Note the message about the supplied age (as shown
+          below):</para>
+
+          <figure>
+            <title>Welcome Message Generated by the Custom Class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-deleg-1b-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>[TODO: Replace with new image after correcting the class path
+          issue] You may view the code for custom java class using the link
+          provided in the message. This opens the java source code in the
+          Console.</para>
+
+          <figure>
+            <title>Source File for Custom Class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-deleg-class.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+
+        <section>
+          <title>Validation</title>
+
+          <para>This page contains a dialog that demonstrates
+          <emphasis>validation</emphasis>, <emphasis>population</emphasis>,
+          and <emphasis>execution</emphasis> listeners for the
+          <emphasis>delegation</emphasis> model. A listener class can
+          implement various listener interfaces to define custom business
+          logic for various dialog stages. </para>
+
+          <figure>
+            <title>Sample Page for Validation using Custom Class (through
+            Delegation)</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-deleg-validate.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>Enter the values for the dialog fields and click the
+          <command>OK</command> button (as shown in the image above). The
+          custom validation class (<classname>SampleValidateDialog</classname>
+          in this case) checks the entered values and displays the validation
+          messages, if any (as shown below):</para>
+
+          <figure>
+            <title>Validation Messages Generated by Custom Class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-deleg-validate-msg.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
       </section>
     </section>
 
     <section>
       <title>Access Control</title>
 
-      <para></para>
+      <para>This module is for demonstrating how the Access Control feature
+      can be used. This feature is for setting up roles and capabilities to
+      handle controlling access to various parts of an application. An
+      application user can be assigned a role which will control whether or
+      not the user can access a page, a report, a dialog, or even a field.
+      </para>
+
+      <para>The examples contained in this section are further divided into
+      sub-categories. The <emphasis>Access Control</emphasis> page contains a
+      list of links to its children pages containing the categorized example
+      pages. Links to these children pages are also provided through a submenu
+      bar under the <emphasis>Access Control</emphasis> tab.</para>
 
       <section>
         <title>Change Role</title>
 
-        <para></para>
+        <para>This page is for changing a Role assigned to the user. A Role
+        (<sgmltag>role</sgmltag>) is a logical grouping of a set of
+        permissions and permissions are usually defined and grouped logically
+        also. By assigning a permission (<sgmltag>permission</sgmltag>) to a
+        role, its child permissions are also automatically assigned. Changing
+        a role might result in a completely new set of permissions or just one
+        permission being added or removed. </para>
+
+        <figure>
+          <title>Changing User Roles</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-change-role.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>Select a new user role from the <varname>Available
+        Roles</varname> select box and click the <command>OK</command> button
+        to assign a new role to the user. </para>
+
+        <figure>
+          <title>Role Changed</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-change-role.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>The links visible in the Navigation Menu bar change based on the
+        selected Role. When you change the role from
+        <sgmltag>acl/role/super-user</sgmltag> to
+        <sgmltag>acl/role/super-user/role</sgmltag>, the navigation menu bar
+        links change from <guimenuitem>Test2</guimenuitem> and
+        <guimenuitem>Test3</guimenuitem> to
+        <guimenuitem>Test1</guimenuitem>.</para>
+
+        <figure>
+          <title>Navigation Menu Changed After Role Change</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-roles-links-changed.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>Test the Access Control option by further changing the role and
+        observing the change in the links visible on the Navigation Menu
+        bar.</para>
       </section>
 
       <section>
         <title>Test 1</title>
 
-        <para></para>
+        <para>This page is hidden in the navigation menu when the user has the
+        following permission: /acl/app/forms/execution. Clicking on this link
+        from the Navigation Meny bar displays a message informing you about
+        the permission rights currently available:</para>
+
+        <figure>
+          <title>Permission Available Message</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-has-permission-1.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>When this link is not visible in the navigation menu tab, you
+        may select it from the Access Control page. In that case, it displays
+        a permission lacking message.</para>
       </section>
 
       <section>
         <title>Test 2</title>
 
-        <para></para>
+        <para>This page is hidden in the navigation menu when the user lacks
+        the following permission: /acl/app/forms/execution. You may click on
+        this link from the Access Control page. You may also test it from the
+        Navigation Manu bar when it is visible there. Clicking this link
+        displays a message informing you about the permission rights currently
+        available:</para>
       </section>
 
       <section>
         <title>Test 3</title>
 
-        <para></para>
+        <para>This page is hidden in the navigation menu when the user lacks
+        the following permission: /acl/app/forms. You may click on this link
+        from the Access Control page. You may also test it from the Navigation
+        Manu bar when it is visible there. Clicking this link displays a
+        message informing you about the permission rights currently
+        available:</para>
       </section>
     </section>
 
