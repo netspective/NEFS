@@ -41,6 +41,30 @@
         <dialog-skin class="app.theme.ModernDialogSkin" name="modern" default="yes" panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
     </theme>
 
+    <!--
+        ======================================
+        LOGIN DIALOG
+        ======================================
+    -->
+    <login-manager name="app" default="yes">
+        <login-authenticator class="com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator">
+            <authenticated-user-class>app.AppAuthenticatedUser</authenticated-user-class>
+            <password-query>
+                select
+                    person_login.password
+                from
+                    person_login
+                where
+                    person_login.user_id = ?
+            </password-query>
+        </login-authenticator>
+
+        <login-dialog retain-params="*">
+            <frame heading="Welcome to Medigy"/>
+            <field name="user-id" type="text" caption="Login ID" required="yes" persist="yes" initial-focus="yes"/>
+            <field name="password" type="text" caption="Password" mask-entry="yes" required="yes"/>
+        </login-dialog>
+    </login-manager>
 
     <!--
        ======================================
@@ -200,6 +224,8 @@
             <page type="entity-view" name="thinnsf" caption="THIN NSF" command="query,claimAttribute.profile,-,-,-,detail"/>
             <page type="entity-view" name="halleynsf" caption="Halley NSF" command="query,claimAttribute.profile,-,-,-,detail"/>
         </page>
+        <!-- temporary logout page -->
+        <page name="logout" caption="Logout" redirect="page-id:/home?_logout=yes"/>
     </navigation-tree>
 
 <!--
