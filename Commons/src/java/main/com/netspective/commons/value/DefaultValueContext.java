@@ -39,13 +39,26 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.2 2003-03-15 21:39:19 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.3 2003-03-16 16:25:13 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
+import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.config.ConfigurationsManager;
+
 public class DefaultValueContext implements ValueContext
 {
+    public AccessControlListsManager getAccessControlListsManager()
+    {
+        return null;
+    }
+
+    public ConfigurationsManager getConfigurationsManager()
+    {
+        return null;
+    }
+
     public Object getAttribute(String attributeId)
     {
         return null;
