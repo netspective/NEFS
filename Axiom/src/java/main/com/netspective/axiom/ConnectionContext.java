@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConnectionContext.java,v 1.1 2003-03-13 18:25:38 shahid.shah Exp $
+ * $Id: ConnectionContext.java,v 1.2 2003-03-16 21:21:14 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -77,7 +77,7 @@ public interface ConnectionContext extends DatabasePolicyValueContext
      */
     public void close() throws SQLException;
 
-    void commitAndClose() throws SQLException;
+    public void commitAndClose() throws SQLException;
 
-    void rollbackAndClose() throws SQLException;
+    public void rollbackAndClose() throws SQLException;
 }
