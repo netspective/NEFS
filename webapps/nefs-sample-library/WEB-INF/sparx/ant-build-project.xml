@@ -14,12 +14,14 @@
 
         <property name="app.WEB-INF.path" value="${app.home}/WEB-INF"/>
         <property name="app.WEB-INF.classes.path" value="${app.WEB-INF.path}/classes"/>
+        <available file="${app.WEB-INF.classes.path}" type="dir" property="app.WEB-INF.classes.path.exists"/>
 
         <property name="app.sparx.project.home" value="${app.WEB-INF.path}/sparx"/>
         <property name="app.sparx.project.file" value="${app.sparx.project.home}/project.xml"/>
 
         <property name="app.database.home" value="${app.WEB-INF.path}/database"/>
         <property name="app.database.defn.path" value="${app.database.home}/defn"/>
+
         <sparx action="get-default-schema-name" projectFile="${app.sparx.project.file}" property="app.database.default-schema-name"/>
     </target>
 
@@ -31,6 +33,10 @@
         <echo message="app.sparx.project.file = '${app.sparx.project.file}'"/>
         <echo message="app.database.home = '${app.database.home}'"/>
         <echo message="app.database.default-schema-name = '${app.database.default-schema-name}'"/>
+    </target>
+
+    <target name="compile" depends=".init" if="app.WEB-INF.classes.path.exists" description="Compiles all the Java source files in WEB-INF/classes.">
+        <javac srcdir="${app.WEB-INF.classes.path}" deprecation="on"/>
     </target>
 
     <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants. This target will delete the WEB-INF/classes/app/auto/id directory first before generating identifiers.">
