@@ -51,30 +51,28 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.19 2004-02-04 23:14:49 min-gu.lee Exp $
+ * $Id: SelectField.java,v 1.20 2004-03-22 07:49:33 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogFieldPopup;
+import com.netspective.sparx.form.field.DialogFieldValue;
+import com.netspective.sparx.navigate.NavigationPage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.field.DialogFieldPopup;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFieldValue;
-import com.netspective.sparx.form.field.DialogFieldFlags;
-import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.PresentationValue;
-import com.netspective.commons.value.source.StaticValueSource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.Writer;
 
 public class SelectField extends TextField
 {
@@ -294,6 +292,7 @@ public class SelectField extends TextField
     private ValueSource multiDualCaptionLeft = new StaticValueSource("Available");
     private ValueSource multiDualCaptionRight = new StaticValueSource("Selected");
     private String controlSeparator = "<br>";
+    private int maxItemPerRow = 1;
 
     public SelectField()
     {
@@ -617,20 +616,38 @@ public class SelectField extends TextField
                     boolean selected = (choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0;
                     if(options.length() > 0)
                         options.append(controlSeparator);
-                    options.append("<nobr><input type='radio' name='" + id + "' id='" + id + itemIndex + "' value=\"" + choice.getValue() + "\" " + (selected ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + itemIndex + "'>" + choice.getCaption() + "</label></nobr>");
+                    options.append("<nobr><input type='radio' name='" + id + "' id='" + id + itemIndex + "' value=\"" + choice.getValue() + "\" " + (selected ? "checked " : "") + defaultControlAttrs + "> " +
+                            "<label for='" + id + itemIndex + "'>" + choice.getCaption() + "</label></nobr>");
                 }
                 writer.write(options.toString());
                 return;
 
             case Style.MULTICHECK:
+                options.append("<table class=\"dialog-field-select-options\">\n");
+                int itemCount = 0;
                 for(int i = 0; i < choices.size(); i++)
                 {
+                    if (itemCount == 0)
+                        options.append("<tr>\n");
                     PresentationValue.Items.Item choice = choices.getItem(i);
                     boolean selected = (choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0;
-                    if(options.length() > 0)
-                        options.append(controlSeparator);
+                    //if(options.length() > 0)
+                    //    options.append(controlSeparator);
+                    options.append("<td>\n");
                     options.append("<nobr><input type='checkbox' name='" + id + "' id='" + id + itemIndex + "' value=\"" + choice.getValue() + "\" " + (selected ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + itemIndex + "'>" + choice.getCaption() + "</label></nobr>");
+                    options.append("</td>\n");
+                    itemCount++;
+                    if (itemCount == maxItemPerRow)
+                    {
+                        itemCount = 0;
+                        options.append("</tr>\n");
+                    }
                 }
+                if (itemCount != 0)
+                {
+                    options.append("<td colspan=\"" + (maxItemPerRow - itemCount) + "\">&nbsp;</td>\n</tr>\n");
+                }
+                options.append("</table>\n");
                 writer.write(options.toString());
                 return;
 
@@ -681,19 +698,19 @@ public class SelectField extends TextField
                     switch(styleValueIndex)
                     {
                         case Style.COMBO:
-                            writer.write("<select id = '" + id + "' class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' " + defaultControlAttrs +
+                            writer.write("<select id=\"" + id + "\" class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' " + defaultControlAttrs +
                                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
                                     ">\n" + options + "</select>\n");
                             break;
 
                         case Style.LIST:
-                            writer.write("<select id = '" + id + "' class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' " + defaultControlAttrs +
+                            writer.write("<select id=\"" + id + "\" class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' " + defaultControlAttrs +
                                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
                                     ">\n" + options + "</select>\n");
                             break;
 
                         case Style.MULTILIST:
-                            writer.write("<select id = '" + id + "' class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' multiple='yes' " + defaultControlAttrs +
+                            writer.write("<select id=\"" + id + "\" class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' multiple='yes' " + defaultControlAttrs +
                                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
                                     ">\n" + options + "</select>\n");
                             break;
@@ -742,5 +759,21 @@ public class SelectField extends TextField
             buf.append(captionBuf.toString() + valueBuf.toString());
         }
         return buf.toString();
+    }
+
+    public int getMaxItemPerRow()
+    {
+        return maxItemPerRow;
+    }
+
+    /**
+     * Sets the maximum number of checkbox or radio button per row. This will be used
+     * by the skin to display the radio or checkboxes in multiple column format.
+     *
+     * @param maxItemPerRow
+     */
+    public void setMaxItemPerRow(int maxItemPerRow)
+    {
+        this.maxItemPerRow = maxItemPerRow;
     }
 }
