@@ -33,10 +33,28 @@
                     <body source="products/frameworks/features.ftl"/>
                 </page>
 
-                <page name="architecture" caption="Architecture" tag-line="The Secret Sauce: Declare More, Code Less">
+                <page name="what-nefs-does" caption="What does NEFS do?" tag-line="The Secret Sauce: Declare More, Code Less">
                     <summary>
                         If you find J2EE app development to be difficult, you're using the wrong ingredients in your
                         development process.
+                    </summary>
+                    <body source="products/frameworks/what-nefs-does.ftl"/>
+                </page>
+
+                <page name="why-you-need-nefs" caption="Why use NEFS?" tag-line="Why should you use use the NEFS?">
+                    <summary>
+                        If you have enough expert programmers, if you already have a great-looking user interface for
+                        your web application, or if your tools already save you from writing tedious and repetitive Java and HTML
+                        code you don't need our Java Frameworks. In case you live in the real world, though, you probably
+                        need the NEFS.
+                    </summary>
+                    <body source="products/frameworks/why-you-need-nefs.ftl"/>
+                </page>
+
+                <page name="architecture" caption="Architecture" tag-line="An Architecture you're Already Familiar with">
+                    <summary>
+                        A standards-based, pattern-oriented architecture that follows industry best-practices assures
+                        that the NEFS will fit right into your development environment.
                     </summary>
                     <body source="products/frameworks/architecture.ftl"/>
                 </page>
