@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServletOptions.java,v 1.7 2003-11-24 20:11:51 shahid.shah Exp $
+ * $Id: NavigationControllerServletOptions.java,v 1.8 2003-12-18 21:45:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -193,6 +193,11 @@ public class NavigationControllerServletOptions
                                               .withDescription("Initialize the servlet using an Ant build file and a given target. This build file and target will always be executed each time the servlet is initialized (and if a init-first-time-using-ant option is provided, it will be run after that file:target too).")
                                               .create('i'));
 
+        servletOptions.addOption(OptionBuilder.withLongOpt("init-using-ant-log")
+                                              .hasArg().withArgName("file")
+                                              .withDescription("The name of the log file to store ant init output (defaults to location of ant file)")
+                                              .create('B'));
+
         servletOptions.addOption(OptionBuilder.withLongOpt("init-success")
                                               .hasArg().withArgName("type")
                                               .withDescription("Determine when the initialization will be considered successful (to increment the init count). Options are END_INIT which means at the end of the Servlet init() method or FIRST_GET_POST which means at the end of the first successful GET/POST. Default is FIRST_GET_POST")
@@ -286,6 +291,11 @@ public class NavigationControllerServletOptions
     public String getInitFirstTimeUsingAnt()
     {
         return commandLine.getOptionValue("I");
+    }
+
+    public String getInitUsingAntLogFile()
+    {
+        return commandLine.getOptionValue("B");
     }
 
     public String getServletExecutionPropertiesFileName()

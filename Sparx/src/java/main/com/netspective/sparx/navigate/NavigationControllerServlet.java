@@ -39,20 +39,14 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.37 2003-11-27 19:31:22 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.38 2003-12-18 21:45:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.*;
+import java.text.SimpleDateFormat;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -310,6 +304,42 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         }
         else
             log.debug(ostream.toString());
+
+        int extnPos = buildFile.getName().lastIndexOf('.');
+        String nameNoExtn = extnPos != -1 ? buildFile.getName().substring(0, extnPos) : buildFile.getName();
+        File logFile = servletOptions.getInitUsingAntLogFile() != null ?
+                          new File(servletOptions.getInitUsingAntLogFile()) :
+                          new File(buildFile.getParentFile(), nameNoExtn + ".log");
+
+        FileOutputStream fos = null;
+        PrintWriter logWriter = null;
+        try
+        {
+            fos = new FileOutputStream(logFile.getAbsolutePath(), logFile.exists());
+            logWriter = new PrintWriter(fos);
+            logWriter.println("-----------------------------------------------------------------------------");
+            logWriter.println("Started build at " + SimpleDateFormat.getDateTimeInstance().format(new Date()) +" in Servlet " + getServletName() + " (Context " + getServletContext().getServletContextName() + ", BuildFile "+ buildFile.getAbsolutePath() +")");
+            logWriter.write(ostream.toString());
+            if(exceptionThrown != null)
+                logWriter.write(TextUtils.getStackTrace(exceptionThrown));
+            logWriter.println("Ended build at " + SimpleDateFormat.getDateTimeInstance().format(new Date()) +" in Servlet " + getServletName() + " (Context " + getServletContext().getServletContextName() + ", BuildFile "+ buildFile.getAbsolutePath() +")");
+        }
+        catch(IOException e)
+        {
+            throw new ServletException(e);
+        }
+        finally
+        {
+            logWriter.close();
+            try
+            {
+                fos.close();
+            }
+            catch (IOException e)
+            {
+                throw new ServletException(e);
+            }
+        }
 
         System.setOut(saveOut);
         System.setErr(saveErr);
