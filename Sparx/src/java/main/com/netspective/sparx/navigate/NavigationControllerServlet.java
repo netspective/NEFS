@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.19 2003-08-24 18:50:11 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.20 2003-08-27 22:33:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -644,6 +644,13 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         httpServletRequest.setAttribute(REQATTRNAME_RENDER_START_TIME, new Long(System.currentTimeMillis()));
 
         NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
+        if(nc.getActivePage() == null)
+        {
+            httpServletResponse.setContentType("text/html");
+            httpServletResponse.getWriter().println("No active page located in NavigationTree '" + getNavigationTree().getName() + "' -- did you set a default page in the tree?<p>For example <code>&lt;page name=\"blah\" default=\"yes\"/&gt;</code>");
+            return;
+        }
+
         checkForLogout(nc);
         if(nc.isRedirectToAlternateChildRequired())
         {
