@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.29 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.30 2003-08-24 18:47:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -52,47 +52,34 @@ import javax.servlet.ServletResponse;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import freemarker.template.Configuration;
 
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.SqlManager;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.ProjectComponent;
+import com.netspective.sparx.ProjectManager;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
-import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.RuntimeEnvironment;
 
 public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContext
                                       implements ServletValueContext, HttpServletValueContext,
                                                  DatabaseServletValueContext, DatabaseHttpServletValueContext
 {
-    private static final Log log = LogFactory.getLog(BasicDbHttpServletValueContext.class);
-    public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS = "com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS";
-    public static final String CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS = INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS;
-
-    public static final String INITPARAMNAME_PROJECT_FILE = "com.netspective.sparx.PROJECT_FILE_NAME";
-    public static final String CONTEXTATTRNAME_PROJECT_FILE = INITPARAMNAME_PROJECT_FILE;
-
     public static final String CONTEXTATTRNAME_FREEMARKER_CONFIG = "freemarker-config";
     public static final String INITPARAMNAME_DEFAULT_DATA_SRC_ID = "com.netspective.sparx.DEFAULT_DATA_SOURCE";
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
     public static final String REQATTRNAME_ACTIVE_LOGIN_MANAGER = "sparx-active-login-manager";
-
-    public static final Class PROJECT_COMPONENT_CLASS = discoverClass.find(ProjectComponent.class, ProjectComponent.class.getName());
 
     private NavigationContext navigationContext;
     private DialogContext dialogContext;
@@ -101,7 +88,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     private ServletRequest request;
     private ServletResponse response;
     private String rootUrl;
-    private RuntimeEnvironmentFlags contextEnvFlags;
 
     public BasicDbHttpServletValueContext()
     {
@@ -237,98 +223,14 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return getProject();
     }
 
-    public final static RuntimeEnvironmentFlags getEnvironmentFlags(ServletContext context)
+    public RuntimeEnvironmentFlags getRuntimeEnvironmentFlags()
     {
-        RuntimeEnvironmentFlags contextEnvFlags = (RuntimeEnvironmentFlags) context.getAttribute(CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS);
-        if(contextEnvFlags == null)
-        {
-            String envFlagsText = context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS);
-            if(envFlagsText == null)
-                envFlagsText = "DEVELOPMENT | FRAMEWORK_DEVELOPMENT";
-            try
-            {
-                contextEnvFlags = (RuntimeEnvironmentFlags) discoverClass.newInstance(RuntimeEnvironmentFlags.class, RuntimeEnvironmentFlags.class.getName());
-            }
-            catch (Exception e)
-            {
-                log.error("Unable to instantiate environment flags using SPI -- creating statically instead", e);
-                contextEnvFlags = new RuntimeEnvironmentFlags();
-            }
-            contextEnvFlags.setValue(envFlagsText);
-            context.setAttribute(CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS, contextEnvFlags);
-        }
-
-        return contextEnvFlags;
-    }
-
-    public RuntimeEnvironmentFlags getEnvironmentFlags()
-    {
-        if(contextEnvFlags == null)
-            contextEnvFlags = getEnvironmentFlags(context);
-
-        if(request.getAttribute(ConsoleServlet.REQATTRNAME_INCONSOLE) != null)
-            contextEnvFlags.setFlag(RuntimeEnvironmentFlags.CONSOLE_MODE);
-
-        return contextEnvFlags;
-    }
-
-    public static final String getProjectFileName(ServletContext context)
-    {
-        String result = (String) context.getAttribute(CONTEXTATTRNAME_PROJECT_FILE);
-        if(result == null)
-        {
-            result = context.getInitParameter(INITPARAMNAME_PROJECT_FILE);
-            if(result == null)
-                result = "/WEB-INF/sparx/project.xml";
-            if(result.startsWith("/WEB-INF"))
-                result = context.getRealPath(result);
-            context.setAttribute(CONTEXTATTRNAME_PROJECT_FILE, result);
-        }
-        return result;
-    }
-
-    public final static ProjectComponent getProjectComponent(ServletContext context)
-    {
-        try
-        {
-            int compFlags = XdmComponentFactory.XDMCOMPFLAG_CACHE_ALWAYS;
-            if(getEnvironmentFlags(context).flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
-                compFlags |= XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
-
-            // never store the ProjectComponent instance since it may change if it needs to be reloaded
-            // (always use the factory get() method)
-            ProjectComponent amComponent =
-                (ProjectComponent) XdmComponentFactory.get(
-                        PROJECT_COMPONENT_CLASS, getProjectFileName(context), compFlags);
-
-            if(amComponent.getErrors().size() > 0)
-            {
-                String message = "You have " + amComponent.getErrors().size() + " error(s) in the Sparx project. To see the messages, visit\nhttp://<your-host>"+ context.getServletContextName() +"/console/project/input-source#errors.";
-                if(log.isErrorEnabled())
-                    log.error(message);
-                else
-                    System.err.println(message);
-            }
-            if(amComponent.getWarnings().size() > 0)
-            {
-                String message = "You have " + amComponent.getWarnings().size() + " warning(s) in the Sparx project. To see the messages, visit\nhttp://<your-host>"+ context.getServletContextName() +"/console/project/input-source#warnings.";
-                if(log.isWarnEnabled())
-                    log.warn(message);
-                else
-                    System.out.println(message);
-            }
-
-            return amComponent;
-        }
-        catch(Exception e)
-        {
-            throw new NestableRuntimeException(e);
-        }
+        return ((RuntimeEnvironment) getServlet()).getRuntimeEnvironmentFlags();
     }
 
     public ProjectComponent getProjectComponent()
     {
-        return getProjectComponent(getServletContext());
+        return ((ProjectManager) getServlet()).getProjectComponent();
     }
 
     public Project getProject()
