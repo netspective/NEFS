@@ -39,22 +39,23 @@
  */
 
 /**
- * $Id: AccessControlListDialog.java,v 1.1 2004-01-12 04:57:47 aye.thu Exp $
+ * $Id: AccessControlListDialog.java,v 1.2 2004-08-08 13:44:28 shahid.shah Exp $
  */
 package app.form.acl;
 
-import com.netspective.sparx.form.listener.DialogPopulateListener;
-import com.netspective.sparx.form.handler.DialogExecuteHandler;
+import java.io.IOException;
+import java.io.Writer;
+
+import com.netspective.commons.acl.AccessControlList;
+import com.netspective.commons.acl.RoleNotFoundException;
+import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.security.MutableAuthenticatedUser;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.type.SelectFieldChoicesValueSource;
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.acl.AccessControlList;
-import com.netspective.commons.acl.RoleNotFoundException;
-
-import java.io.Writer;
-import java.io.IOException;
+import com.netspective.sparx.form.handler.DialogExecuteHandler;
+import com.netspective.sparx.form.listener.DialogPopulateListener;
 
 import auto.dcb.form.acl.RoleContext;
 
@@ -87,7 +88,7 @@ public class AccessControlListDialog implements DialogPopulateListener, DialogEx
         RoleContext rc = new RoleContext(dc);
         // get the newly selected roles for the user
         String[] selectedRoles = rc.getRoleList().getTextValues();
-        AuthenticatedUser user = dc.getAuthenticatedUser();
+        MutableAuthenticatedUser user = (MutableAuthenticatedUser) dc.getAuthenticatedUser();
         try
         {
             // change the user's assigned roles
