@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.6 2003-04-03 12:46:09 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.7 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report;
@@ -50,11 +50,56 @@ import java.io.IOException;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.panel.HtmlPanels;
+import com.netspective.sparx.panel.HtmlPanelFrame;
+import com.netspective.sparx.panel.HtmlPanelBanner;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportHttpServletValueContext;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 
 public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
 {
+    private HtmlPanelFrame frame;
+    private HtmlPanelBanner banner;
+
+    public AbstractHtmlTabularReportPanel()
+    {
+        frame = createFrame();
+        banner = createBanner();
+    }
+
+    public HtmlPanelFrame getFrame()
+    {
+        return frame;
+    }
+
+    public void setFrame(HtmlPanelFrame rf)
+    {
+        frame = rf;
+    }
+
+    public HtmlPanelBanner getBanner()
+    {
+        return banner;
+    }
+
+    public void setBanner(HtmlPanelBanner value)
+    {
+        banner = value;
+    }
+
+    public HtmlPanelFrame createFrame()
+    {
+        if(frame == null)
+            frame = new HtmlPanelFrame();
+        return frame;
+    }
+
+    public HtmlPanelBanner createBanner()
+    {
+        if(banner == null)
+            banner = new HtmlPanelBanner();
+        return banner;
+    }
+
     public HtmlPanels getChildren()
     {
         return null;
@@ -65,9 +110,9 @@ public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularRepor
         return false;
     }
 
-    public HtmlTabularReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
+    public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
     {
-        return new HtmlTabularReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(nc), skin);
+        return new HtmlTabularReportValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this, getReport(nc), skin);
     }
 
     public void render(Writer writer, NavigationContext nc) throws IOException

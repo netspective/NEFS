@@ -39,21 +39,104 @@
  */
 
 /**
- * $Id: HtmlTabularReportPanel.java,v 1.6 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: HtmlPanelAction.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report;
+package com.netspective.sparx.panel;
 
-import com.netspective.sparx.panel.HtmlOutputPanel;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.command.Command;
+import com.netspective.commons.command.CommandNotFoundException;
+import com.netspective.commons.command.Commands;
 
-public interface HtmlTabularReportPanel extends HtmlOutputPanel
+public class HtmlPanelAction
 {
-    public HtmlTabularReport getReport(NavigationContext nc);
-    public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin);
-    public TabularReportDataSource createDataSource(NavigationContext nc);
+    private ValueSource icon;
+    private ValueSource caption;
+    private ValueSource hint;
+    private ValueSource command;
+    private HtmlPanelActions children = new HtmlPanelActions();
+
+    public ValueSource getCaption()
+    {
+        return caption;
+    }
+
+    public void setCaption(ValueSource caption)
+    {
+        this.caption = caption;
+    }
+
+    public ValueSource getHint()
+    {
+        return hint;
+    }
+
+    public void setHint(ValueSource hint)
+    {
+        this.hint = hint;
+    }
+
+    public ValueSource getIcon()
+    {
+        return icon;
+    }
+
+    public void setIcon(ValueSource icon)
+    {
+        this.icon = icon;
+    }
+
+    public ValueSource getCommand()
+    {
+        return command;
+    }
+
+    public Command getCommand(ValueContext vc) throws CommandNotFoundException
+    {
+        if(command == null)
+            return null;
+
+        String cmd = command.getTextValue(vc);
+        if(cmd == null)
+            return null;
+
+        return Commands.getInstance().getCommand(cmd);
+    }
+
+    public void setCommand(ValueSource command)
+    {
+        this.command = command;
+    }
+
+    public HtmlPanelActions.Style getStyle()
+    {
+        return children.getStyle();
+    }
+
+    public void setStyle(HtmlPanelActions.Style style)
+    {
+        children.setStyle(style);
+    }
+
+    public HtmlPanelActions getChildren()
+    {
+        return children;
+    }
+
+    public void setChildren(HtmlPanelActions children)
+    {
+        this.children = children;
+    }
+
+    public HtmlPanelAction createAction()
+    {
+        return new HtmlPanelAction();
+    }
+
+    public void addAction(HtmlPanelAction item)
+    {
+        children.add(item);
+    }
 }

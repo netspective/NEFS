@@ -39,104 +39,68 @@
  */
 
 /**
- * $Id: HtmlTabularReportAction.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
+ * $Id: HtmlPanelActions.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report.tabular;
+package com.netspective.sparx.panel;
 
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.command.Command;
-import com.netspective.commons.command.CommandNotFoundException;
-import com.netspective.commons.command.Commands;
+import java.util.ArrayList;
+import java.util.List;
 
-public class HtmlTabularReportAction
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.sparx.panel.HtmlPanelAction;
+
+public class HtmlPanelActions
 {
-    private ValueSource icon;
-    private ValueSource caption;
-    private ValueSource hint;
-    private ValueSource command;
-    private HtmlTabularReportActions children = new HtmlTabularReportActions();
-
-    public ValueSource getCaption()
+    public static class Style extends XdmEnumeratedAttribute
     {
-        return caption;
+        public static final short HORIZONTAL = 0;
+        public static final short VERTICAL = 1;
+
+        public Style()
+        {
+        }
+
+        public Style(int valueIndex)
+        {
+            super(valueIndex);
+        }
+
+        public String[] getValues()
+        {
+            return new String[] { "horizontal", "vertical" };
+        }
     }
 
-    public void setCaption(ValueSource caption)
+    private List actions = new ArrayList();
+    private Style style = new Style(Style.HORIZONTAL);
+
+    public HtmlPanelActions()
     {
-        this.caption = caption;
     }
 
-    public ValueSource getHint()
+    public HtmlPanelAction get(int i)
     {
-        return hint;
+        return (HtmlPanelAction) actions.get(i);
     }
 
-    public void setHint(ValueSource hint)
+    public void add(HtmlPanelAction action)
     {
-        this.hint = hint;
+        actions.add(action);
     }
 
-    public ValueSource getIcon()
+    public int size()
     {
-        return icon;
+        return actions.size();
     }
 
-    public void setIcon(ValueSource icon)
+    public Style getStyle()
     {
-        this.icon = icon;
+        return style;
     }
 
-    public ValueSource getCommand()
+    public void setStyle(Style style)
     {
-        return command;
-    }
-
-    public Command getCommand(ValueContext vc) throws CommandNotFoundException
-    {
-        if(command == null)
-            return null;
-
-        String cmd = command.getTextValue(vc);
-        if(cmd == null)
-            return null;
-
-        return Commands.getInstance().getCommand(cmd);
-    }
-
-    public void setCommand(ValueSource command)
-    {
-        this.command = command;
-    }
-
-    public HtmlTabularReportActions.Style getStyle()
-    {
-        return children.getStyle();
-    }
-
-    public void setStyle(HtmlTabularReportActions.Style style)
-    {
-        children.setStyle(style);
-    }
-
-    public HtmlTabularReportActions getChildren()
-    {
-        return children;
-    }
-
-    public void setChildren(HtmlTabularReportActions children)
-    {
-        this.children = children;
-    }
-
-    public HtmlTabularReportAction createAction()
-    {
-        return new HtmlTabularReportAction();
-    }
-
-    public void addAction(HtmlTabularReportAction item)
-    {
-        children.add(item);
+        this.style = style;
     }
 }

@@ -39,68 +39,15 @@
  */
 
 /**
- * $Id: HtmlTabularReportActions.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
+ * $Id: HtmlPanelValueContext.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report.tabular;
+package com.netspective.sparx.panel;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.netspective.commons.value.ValueContext;
 
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
-import com.netspective.sparx.report.tabular.HtmlTabularReportAction;
-
-public class HtmlTabularReportActions
+public interface HtmlPanelValueContext extends ValueContext
 {
-    public static class Style extends XdmEnumeratedAttribute
-    {
-        public static final short HORIZONTAL = 0;
-        public static final short VERTICAL = 1;
-
-        public Style()
-        {
-        }
-
-        public Style(int valueIndex)
-        {
-            super(valueIndex);
-        }
-
-        public String[] getValues()
-        {
-            return new String[] { "horizontal", "vertical" };
-        }
-    }
-
-    private List actions = new ArrayList();
-    private Style style = new Style(Style.HORIZONTAL);
-
-    public HtmlTabularReportActions()
-    {
-    }
-
-    public HtmlTabularReportAction get(int i)
-    {
-        return (HtmlTabularReportAction) actions.get(i);
-    }
-
-    public void add(HtmlTabularReportAction action)
-    {
-        actions.add(action);
-    }
-
-    public int size()
-    {
-        return actions.size();
-    }
-
-    public Style getStyle()
-    {
-        return style;
-    }
-
-    public void setStyle(Style style)
-    {
-        this.style = style;
-    }
+    public HtmlPanel getPanel();
+    public boolean isMinimized();
 }

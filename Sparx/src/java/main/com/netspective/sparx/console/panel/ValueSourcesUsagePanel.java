@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesUsagePanel.java,v 1.7 2003-04-02 23:57:33 shahid.shah Exp $
+ * $Id: ValueSourcesUsagePanel.java,v 1.8 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -65,8 +65,6 @@ public class ValueSourcesUsagePanel extends AbstractHtmlTabularReportPanel
 
     static
     {
-        usageReport.getFrame().setHeading(new StaticValueSource("Value Sources Usage"));
-
         NumericColumn index = new NumericColumn();
         usageReport.addColumn(index);
 
@@ -80,6 +78,11 @@ public class ValueSourcesUsagePanel extends AbstractHtmlTabularReportPanel
         usage.setColIndex(2);
         usage.setCalc("sum");
         usageReport.addColumn(usage);
+    }
+
+    public ValueSourcesUsagePanel()
+    {
+        getFrame().setHeading(new StaticValueSource("Value Sources Usage"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc)

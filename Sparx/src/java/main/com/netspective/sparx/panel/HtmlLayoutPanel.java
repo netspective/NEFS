@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.3 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.4 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -52,6 +52,48 @@ import com.netspective.sparx.navigate.NavigationContext;
 public class HtmlLayoutPanel implements HtmlPanel
 {
     private HtmlPanels children = new BasicHtmlPanels();
+    private HtmlPanelFrame frame;
+    private HtmlPanelBanner banner;
+
+    public HtmlLayoutPanel()
+    {
+        frame = createFrame();
+        banner = createBanner();
+    }
+
+    public HtmlPanelFrame getFrame()
+    {
+        return frame;
+    }
+
+    public void setFrame(HtmlPanelFrame rf)
+    {
+        frame = rf;
+    }
+
+    public HtmlPanelBanner getBanner()
+    {
+        return banner;
+    }
+
+    public void setBanner(HtmlPanelBanner value)
+    {
+        banner = value;
+    }
+
+    public HtmlPanelFrame createFrame()
+    {
+        if(frame == null)
+            frame = new HtmlPanelFrame();
+        return frame;
+    }
+
+    public HtmlPanelBanner createBanner()
+    {
+        if(banner == null)
+            banner = new HtmlPanelBanner();
+        return banner;
+    }
 
     public boolean affectsNavigationContext(NavigationContext nc)
     {

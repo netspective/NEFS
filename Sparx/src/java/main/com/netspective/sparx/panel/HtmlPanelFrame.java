@@ -51,17 +51,17 @@
  */
 
 /**
- * $Id: HtmlTabularReportFrame.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
+ * $Id: HtmlPanelFrame.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report.tabular;
+package com.netspective.sparx.panel;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.sparx.report.tabular.HtmlTabularReportAction;
-import com.netspective.sparx.report.tabular.HtmlTabularReportActions;
+import com.netspective.sparx.panel.HtmlPanelAction;
+import com.netspective.sparx.panel.HtmlPanelActions;
 
-public class HtmlTabularReportFrame
+public class HtmlPanelFrame
 {
     public static class Flags extends XdmBitmaskedFlagsAttribute
     {
@@ -92,9 +92,9 @@ public class HtmlTabularReportFrame
     private ValueSource footing;
     private ValueSource allowSelect;
     private Flags flags = new Flags();
-    private HtmlTabularReportActions actions = new HtmlTabularReportActions();
+    private HtmlPanelActions actions = new HtmlPanelActions();
 
-    public HtmlTabularReportFrame()
+    public HtmlPanelFrame()
     {
     }
 
@@ -105,7 +105,7 @@ public class HtmlTabularReportFrame
 
     public void setFlags(Flags flags)
     {
-        this.flags.setFlag(flags.getFlags());
+        this.flags.copy(flags);
     }
 
     public ValueSource getAllowSelect()
@@ -146,17 +146,17 @@ public class HtmlTabularReportFrame
         flags.updateFlag(Flags.HAS_FOOTING, footing != null);
     }
 
-    public HtmlTabularReportActions getActions()
+    public HtmlPanelActions getActions()
     {
         return actions;
     }
 
-    public HtmlTabularReportAction createAction()
+    public HtmlPanelAction createAction()
     {
-        return new HtmlTabularReportAction();
+        return new HtmlPanelAction();
     }
 
-    public void addAction(HtmlTabularReportAction item)
+    public void addAction(HtmlPanelAction item)
     {
         actions.add(item);
     }

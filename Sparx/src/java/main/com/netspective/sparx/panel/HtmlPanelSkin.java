@@ -39,11 +39,16 @@
  */
 
 /**
- * $Id: HtmlPanelSkin.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: HtmlPanelSkin.java,v 1.2 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
+import java.io.Writer;
+import java.io.IOException;
+
 public interface HtmlPanelSkin
 {
+    public void renderFrameBegin(Writer writer, HtmlPanelValueContext vc) throws IOException;
+    public void renderFrameEnd(Writer writer, HtmlPanelValueContext vc) throws IOException;
 }

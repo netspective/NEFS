@@ -51,60 +51,17 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReport.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReport.java,v 1.2 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
-import com.netspective.sparx.report.tabular.HtmlTabularReportBanner;
-import com.netspective.sparx.report.tabular.HtmlTabularReportFrame;
+import com.netspective.sparx.panel.HtmlPanelBanner;
+import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.commons.report.tabular.AbstractTabularReport;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class BasicHtmlTabularReport extends AbstractTabularReport implements HtmlTabularReport, XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-
-    private HtmlTabularReportFrame frame;
-    private HtmlTabularReportBanner banner;
-
-    public BasicHtmlTabularReport()
-    {
-        frame = createFrame();
-        banner = createBanner();
-    }
-
-    public HtmlTabularReportFrame getFrame()
-    {
-        return frame;
-    }
-
-    public void setFrame(HtmlTabularReportFrame rf)
-    {
-        frame = rf;
-    }
-
-    public HtmlTabularReportBanner getBanner()
-    {
-        return banner;
-    }
-
-    public void setBanner(HtmlTabularReportBanner value)
-    {
-        banner = value;
-    }
-
-    public HtmlTabularReportFrame createFrame()
-    {
-        if(frame == null)
-            frame = new HtmlTabularReportFrame();
-        return frame;
-    }
-
-    public HtmlTabularReportBanner createBanner()
-    {
-        if(banner == null)
-            banner = new HtmlTabularReportBanner();
-        return banner;
-    }
 }

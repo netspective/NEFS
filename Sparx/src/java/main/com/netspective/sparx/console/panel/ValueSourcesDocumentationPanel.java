@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesDocumentationPanel.java,v 1.7 2003-04-02 23:57:33 shahid.shah Exp $
+ * $Id: ValueSourcesDocumentationPanel.java,v 1.8 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -48,8 +48,8 @@ import java.util.Set;
 import java.util.Iterator;
 
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.HtmlTabularReportAction;
-import com.netspective.sparx.report.tabular.HtmlTabularReportFrame;
+import com.netspective.sparx.panel.HtmlPanelAction;
+import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.navigate.NavigationContext;
@@ -67,16 +67,6 @@ public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPan
     public static final HtmlTabularReport documentationReport = new BasicHtmlTabularReport();
     static
     {
-        HtmlTabularReportAction action = documentationReport.getFrame().createAction();
-        action.setCaption(new StaticValueSource("Caption"));
-        action.setIcon(new StaticValueSource("URL"));
-
-        documentationReport.getFrame().setHeading(new StaticValueSource("Value Sources Documentation"));
-        documentationReport.getFrame().setFooting(new StaticValueSource("Footing"));
-        documentationReport.getFrame().addAction(action);
-        documentationReport.getFrame().getFlags().setFlag(HtmlTabularReportFrame.Flags.ALLOW_COLLAPSE);
-        documentationReport.getBanner().setContent(new StaticValueSource("This is a value source report"));
-
         TabularReportColumn identifiers = documentationReport.createColumn();
         identifiers.setHeading(new StaticValueSource("Identifier(s)"));
         identifiers.setColIndex(0);
@@ -86,6 +76,21 @@ public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPan
         TabularReportColumn doc = documentationReport.createColumn();
         doc.setHeading(new StaticValueSource("Documentation"));
         documentationReport.addColumn(doc);
+    }
+
+    public ValueSourcesDocumentationPanel()
+    {
+        HtmlPanelFrame frame = getFrame();
+
+        HtmlPanelAction action = frame.createAction();
+        action.setCaption(new StaticValueSource("Caption"));
+        action.setIcon(new StaticValueSource("URL"));
+
+        frame.setHeading(new StaticValueSource("Value Sources Documentation"));
+        frame.setFooting(new StaticValueSource("Footing"));
+        frame.addAction(action);
+        frame.getFlags().setFlag(HtmlPanelFrame.Flags.ALLOW_COLLAPSE);
+        getBanner().setContent(new StaticValueSource("This is a value source report"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc)

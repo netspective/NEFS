@@ -51,10 +51,10 @@
  */
  
 /**
- * $Id: HtmlTabularReportBanner.java,v 1.1 2003-04-02 23:57:34 shahid.shah Exp $
+ * $Id: HtmlPanelBanner.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report.tabular;
+package com.netspective.sparx.panel;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -62,15 +62,15 @@ import java.util.ArrayList;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
-import com.netspective.sparx.report.tabular.HtmlTabularReportAction;
-import com.netspective.sparx.report.tabular.HtmlTabularReportActions;
+import com.netspective.sparx.panel.HtmlPanelAction;
+import com.netspective.sparx.panel.HtmlPanelActions;
 
-public class HtmlTabularReportBanner
+public class HtmlPanelBanner
 {
-    private HtmlTabularReportActions actions = new HtmlTabularReportActions();
+    private HtmlPanelActions actions = new HtmlPanelActions();
     private ValueSource content;
 
-    public HtmlTabularReportBanner()
+    public HtmlPanelBanner()
     {
     }
 
@@ -84,17 +84,17 @@ public class HtmlTabularReportBanner
         this.content = content;
     }
 
-    public HtmlTabularReportActions getActions()
+    public HtmlPanelActions getActions()
     {
         return actions;
     }
 
-    public HtmlTabularReportAction createAction()
+    public HtmlPanelAction createAction()
     {
-        return new HtmlTabularReportAction();
+        return new HtmlPanelAction();
     }
 
-    public void addAction(HtmlTabularReportAction item)
+    public void addAction(HtmlPanelAction item)
     {
         actions.add(item);
     }

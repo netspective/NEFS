@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.8 2003-04-02 23:57:33 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.9 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -69,8 +69,6 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
 
     static
     {
-        report.getFrame().setHeading(new StaticValueSource("XDM Components Usage"));
-
         NumericColumn index = new NumericColumn();
         report.addColumn(index);
 
@@ -84,6 +82,11 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
         xdmSystemId.setColIndex(2);
         xdmSystemId.setWordWrap(false);
         report.addColumn(xdmSystemId);
+    }
+
+    public XdmComponentsPanel()
+    {
+        getFrame().setHeading(new StaticValueSource("XDM Components Usage"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.4 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: HtmlPanel.java,v 1.5 2003-04-03 14:08:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -52,6 +52,14 @@ import com.netspective.sparx.navigate.NavigationContext;
 public interface HtmlPanel
 {
     public HtmlPanels getChildren();
+
+    public HtmlPanelFrame getFrame();
+
+    public void setFrame(HtmlPanelFrame rf);
+
+    public HtmlPanelBanner getBanner();
+
+    public void setBanner(HtmlPanelBanner value);
 
     /**
      * return true if the panel changes anything in the page heading, title, etc -- basically anything outside
