@@ -61,7 +61,6 @@ import java.util.logging.LogManager;
 public abstract class TestCase extends junit.framework.TestCase
 {
     protected static final File DEFAULT_DB_DIR = new File("C:\\temp\\medigy-test-db-01");
-    protected static final File DEFAULT_DDL_NAME = new File("medigy.ddl");
 
     protected String getClassNameWithoutPackage()
     {
