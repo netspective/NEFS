@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.12 2003-07-05 19:19:44 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.13 2003-07-07 01:02:05 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -253,6 +253,23 @@ public class ValueSources implements MetricsProducer
     public final ValueContext createDefaultValueContext()
     {
         return new DefaultValueContext();
+    }
+
+    public int getUsageCount(Class vsClass)
+    {
+        if(vsClass.equals(StaticValueSource.class))
+            return StaticValueSource.getUsageCount();
+        else
+        {
+            int count = 0;
+            for(Iterator i = srcInstancesMap.values().iterator(); i.hasNext(); )
+            {
+                ValueSource instance = (ValueSource) i.next();
+                if(instance.getClass() == vsClass)
+                    count++;
+            }
+            return count;
+        }
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
