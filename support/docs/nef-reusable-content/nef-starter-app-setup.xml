@@ -33,7 +33,7 @@
 
     <para>Use a web browser to access the root of the starter application
     using the URL of the form
-    http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/nefs-startert-empty.
+    http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/nefs-starter-empty.
     If everything worked as it should, you will see the Starter Application
     Welcome Page.</para>
 
@@ -49,7 +49,7 @@
     will ensure not just the proper configuration of the application but also
     its proper configuration in relax to Sparx. In a web browser, we can go to
     the following URL:
-    http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/nefs-startert-empty/console.
+    http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/nefs-starter-empty/console.
     If everything is working, you will see the application Console login
     screen.</para>
 
