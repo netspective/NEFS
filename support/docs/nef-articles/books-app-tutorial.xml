@@ -134,7 +134,7 @@
           <ulink
           url="http://hsqldb.sourceforge.net/">http://hsqldb.sourceforge.net/</ulink></productname></para>
         </footnote>. All the application components are included in the
-      <filename>project.xml</filename> file for the Books Application. </para>
+      <filename>project.xml</filename> file for the Books Application.</para>
     </section>
 
     <section>
@@ -165,32 +165,365 @@
   </section>
 
   <section>
+    <title>Renaming the Starter Application</title>
+
+    <para>You can now build your Books Application upon the Starter
+    Application's directory structure. Rename the Starter Application's root
+    folder (<filename class="directory">nefs-starter-empty</filename>) to your
+    application's name. This tutorial uses <filename
+    class="directory">nefs-sample-books</filename> as the root folder name for
+    the Books Application.</para>
+  </section>
+
+  <section>
+    <title>Dissecting the project.xml of Starter Application</title>
+
+    <para>TODO: Description of include files.</para>
+  </section>
+
+  <section>
     <title>Creating the Data Layer</title>
 
     <para>With the empty (Starter) application successfully created and
     running, it is time to work on the backbone of the Books Application: the
-    database. </para>
+    database.</para>
 
     <section>
-      <title>Setting up the Database</title>
+      <title>Setting up the Data Source</title>
 
-      <para></para>
+      <para>To set up the Books Application database, you need to have a
+      database connection (data source) pointing towards your database. This
+      is accomplished by using the <sgmltag>connection-provider</sgmltag> tag
+      in the Project File (<filename>project.xml</filename>). <example>
+          <title>Setting up the Data Source for Books Application</title>
+
+          <programlisting>&lt;project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt;
+...
+
+&lt;<emphasis>connection-provider</emphasis> <emphasis>class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider"</emphasis>&gt; <co
+              id="declare-conn-provider-tags-eg-1" />
+
+    &lt;<emphasis>data-source</emphasis> name="<emphasis>jdbc/default</emphasis>"&gt; <co
+              id="declare-conn-provider-tags-eg-2" />
+        &lt;<emphasis>driver-class</emphasis>&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; <co
+              id="declare-conn-provider-tags-eg-3" />
+        &lt;<emphasis>url</emphasis>&gt;vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}&lt;/url&gt; <co
+              id="declare-conn-provider-tags-eg-4" />
+        &lt;<emphasis>user</emphasis>&gt;sa&lt;/user&gt; <co
+              id="declare-conn-provider-tags-eg-5" />
+        &lt;<emphasis>password</emphasis>&gt;&lt;/password&gt; <co
+              id="declare-conn-provider-tags-eg-6" />
+    &lt;/data-source&gt;
+
+&lt;/connection-provider&gt;</programlisting>
+        </example><calloutlist>
+          <callout arearefs="declare-conn-provider-tags-eg-1">
+            <para>A <sgmltag>connection-provider</sgmltag> tag is used to
+            declare the connection to your application's database. <note>
+                <para>Note that data sources specified under this connection
+                provider will be managed by the Jakarta Commons DBCP. If you
+                wish to use JNDI, you simply have to specify the resource
+                according to the server you're using.</para>
+              </note></para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-2">
+            <para>Each <sgmltag>connection-provider</sgmltag> tag may contain
+            one or more <sgmltag>data-source</sgmltag> tags. The
+            <sgmltag>data-source</sgmltag> tag is used to specify the data
+            source for the application. Any data source called
+            '<emphasis>jdbc/default</emphasis>' is automatically used as the
+            default JDBC data source. That is why the name of the data source
+            in the above example code is set to "<literal>jdbc/default".
+            </literal><note>
+                <para>If you wish to change the name of the default data
+                source, you may specify it in <filename>project.xml</filename>
+                using the <sgmltag>default-data-source</sgmltag> tag.</para>
+              </note></para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-3">
+            <para>The <sgmltag>driver-class</sgmltag> tag is used to provide
+            the driver to be used for the specified database. Since the Books
+            Application uses HSQL database, our sample code specifies the
+            appropriate JDBC driver.</para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-4">
+            <para>The <sgmltag>url</sgmltag> tag is used to specify the
+            location where your database is stored. (TODO: More
+            explanation)</para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-5">
+            <para>The <sgmltag>user</sgmltag> tag defines a default user to
+            log in to the database. The example code specifies
+            '<literal>sa</literal>' which is the default user for System
+            Administrator.</para>
+          </callout>
+
+          <callout arearefs="declare-conn-provider-tags-eg-6">
+            <para>The <sgmltag>password </sgmltag>tag is used to provide the
+            password for the log in user. The default '<literal>sa</literal>'
+            user has no password.</para>
+          </callout>
+        </calloutlist><note>
+          <para>Please see the User's Manual or review tag documentation in
+          the Console to get further details on the each tag.</para>
+        </note></para>
+
+      <para>The above sample code creates a data source for the Books
+      Application database.</para>
+
+      <section>
+        <title>Unit Testing the Data Source</title>
+
+        <para>You may test the data source by using <guimenu>Data
+        Management</guimenu> | <guisubmenu>Data Sources</guisubmenu> section
+        in the Console of your Books Application. </para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/screen-console-datasource.gif" />
+          </screenshot></para>
+      </section>
     </section>
 
     <section>
       <title>Creating the Schema</title>
 
+      <para>After analyzing the information that needs to be stored in the
+      database and judging from the E-R diagram shown earlier, you can derive
+      the database schema that is necessary for the Books Application. It is a
+      very simple schema consisting of only two tables:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Book Type</emphasis>: This table is used to store
+          information aboout the different genres (types) of books.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Book Info</emphasis>: This table stores all the
+          attributes of the books.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The two tables are 1:n related by the <literal>genre</literal> (in
+      Book Info) and type (in Book Type) fields. Once entered as XML, this
+      schema is available for platform-independent database access from your
+      application.<note>
+          <para>The entire schema, and the other larger and more complex ones
+          that you might develop for enterprise applications, can be
+          represented entirely in <filename>project.xml</filename> file of
+          your application.</para>
+        </note></para>
+
+      <para>Following is the code that creates the Books Application
+      schema:</para>
+
+      <example>
+        <title>Creating the Books Application Schema</title>
+
+        <programlisting>&lt;<emphasis>schema</emphasis> name="db"&gt; <co
+            id="declare-schema-tags-eg-1" />
+  &lt;<emphasis>xdm:include resource="com/netspective/axiom/conf/schema.xml"</emphasis>/&gt; <co
+            id="declare-schema-tags-eg-2" />
+
+  &lt;<emphasis>table</emphasis> name="Book_Info" abbrev="bkI" <emphasis>type="Presentation"</emphasis>&gt; <co
+            id="declare-schema-tags-eg-3" />
+   &lt;<emphasis>column</emphasis> name="id" type="text" size="10" <emphasis>primary-key="yes"</emphasis> descr="Unique ID for every book in the database"/&gt; <co
+            id="declare-schema-tags-eg-4" />
+   &lt;column name="name" type="text" size="64" descr="Name of the book"/&gt;
+   &lt;column name="author" type="text" size="64" descr="Name of the author(s)"/&gt;
+   &lt;column name="genre" <emphasis>lookup-ref="Book_Type"</emphasis>/&gt; <co
+            id="declare-schema-tags-eg-5" />
+   &lt;column name="isbn" type="text" size="10" <emphasis>unique="yes"</emphasis> descr="The 10 digit ISBN number"/&gt; <co
+            id="declare-schema-tags-eg-6" />
+  &lt;/table&gt;
+
+  &lt;table name="Book_Type" abbrev="bkT" <emphasis>type="Enumeration"</emphasis>&gt; <co
+            id="declare-schema-tags-eg-7" />
+   <emphasis>&lt;enumerations&gt;</emphasis> <co id="declare-schema-tags-eg-8" />
+    <emphasis>&lt;enum&gt;</emphasis>Science Fiction&lt;/enum&gt; 
+    &lt;enum&gt;Mystery&lt;/enum&gt;
+    &lt;enum&gt;Business&lt;/enum&gt;
+    &lt;enum&gt;Information Technology&lt;/enum&gt;
+    &lt;enum&gt;Nuclear Physics&lt;/enum&gt;
+    &lt;enum&gt;Chemistry&lt;/enum&gt;
+   &lt;/enumerations&gt;
+  &lt;/table&gt;
+&lt;/schema&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-schema-tags-eg-1">
+            <para>All schemas are declared using the <sgmltag
+            class="starttag">schema</sgmltag> tag and are uniquely identified
+            with a <sgmltag>name</sgmltag> (<literal>db</literal> in this
+            case). You may define multiple schemas within the same
+            project.</para>
+          </callout>
+
+          <callout arearefs="declare-schema-tags-eg-2">
+            <para>The default
+            <filename>com/netspective/axiom/conf/schema.xml</filename>
+            resource file contains dozens of built-in data types and table
+            types that may be extended or just used. Types such as
+            <literal>text</literal>, <literal>integer</literal>,
+            <literal>float</literal>, <literal>currency</literal>,
+            <literal>date</literal>, and even composite types such as
+            <literal>duration</literal> are built-into Axiom.</para>
+          </callout>
+
+          <callout arearefs="declare-schema-tags-eg-3">
+            <para>Each schema may contain one or more <sgmltag>table</sgmltag>
+            tags to define database tables. Each table has a
+            <sgmltag>name</sgmltag> and <sgmltag>abbrev</sgmltag>(iation)
+            attribute associated with it. The table also has a
+            <sgmltag>type</sgmltag> attribute. Axiom supplies various built-in
+            table types. The <sgmltag>type </sgmltag>attribute for the
+            <literal>Book_Info</literal> table is set to
+            '<sgmltag>presentation</sgmltag>' which gives it a default
+            dialog.</para>
+          </callout>
+
+          <callout arearefs="declare-schema-tags-eg-4">
+            <para>The <sgmltag>column</sgmltag> tag is used to define a field
+            (column) in the table. Each column has <sgmltag>name</sgmltag>,
+            <sgmltag>type</sgmltag>, <sgmltag>size</sgmltag> and
+            <sgmltag>descr</sgmltag>(iption) attributes associated with it. To
+            specify a field as the primary key of the table, set the
+            <sgmltag>primary-key</sgmltag> attribute's value to
+            '<literal>yes</literal>'. <note>
+                <para>Please note that only a single primary key column per
+                table is supported.</para>
+              </note></para>
+          </callout>
+
+          <callout arearefs="declare-schema-tags-eg-5">
+            <para>The <sgmltag>lookup-ref</sgmltag> attribute specifies a
+            general foreign key relationship. The format is
+            <varname>Table_X</varname>.<varname>Column_Y</varname>. This
+            creates a 1:1 or 1:N relationship from the defining column which
+            references the foreign <varname>Column_Y</varname> of
+            <varname>Table_X</varname>. The example code only specifies the
+            table name (<literal>Book_Type</literal>) for the
+            <sgmltag>lookup-ref</sgmltag> attribute. This defines the foreign
+            key relationship between the referncing column
+            (<literal>genre</literal> in this case) and the primary key column
+            (<literal>type</literal> in this case) of the referenced
+            (<literal>Book_Type</literal>) table.<note>
+                <para>If you use this attribute, the type attribute is not
+                required. It is set to the same type as the referenced
+                column.</para>
+              </note></para>
+          </callout>
+
+          <callout arearefs="declare-schema-tags-eg-6">
+            <para>The unique attribute specifies whether the column's values
+            should be unique. This means that no two rows should share the
+            same valuefor this column. When this value is set to 'yes', this
+            attribute creates a unique index based on this single column.
+            <note>
+                <para>If more than one column need to be unique (as a
+                composite), use the index child element of the table element
+                to create a unique index based on multiple columns.</para>
+              </note></para>
+          </callout>
+
+          <callout arearefs="declare-schema-tags-eg-7">
+            <para>The second <sgmltag>table</sgmltag> tag block is defining
+            the Book Type table. This table is defined as an
+            <sgmltag>Enumeration</sgmltag>. An <sgmltag>Enumeration</sgmltag>
+            is a special type of table that is generated by Sparx. It consists
+            of the following three fields per record:</para>
+
+            <itemizedlist>
+              <listitem>
+                <para><sgmltag>id</sgmltag>: contains a unique value which is
+                used to relate the enumeration table in a 1:n manner with
+                other tables</para>
+              </listitem>
+
+              <listitem>
+                <para><sgmltag>caption</sgmltag>: contains non-null value that
+                is used to to provide a short description of each value in the
+                enumeration</para>
+              </listitem>
+
+              <listitem>
+                <para><sgmltag>abbrev</sgmltag>: an optional field containing
+                the abbreviation for the caption.</para>
+              </listitem>
+            </itemizedlist>
+
+            <para>The syntax of an enumeration table is unlike that of regular
+            tables. However, once parsed and interpreted, enumeration tables
+            are translated into a set of regular tables for relational
+            integrity purposes.<note>
+                <para>An enumeration table is used to established a 1:n
+                relationship between an attribute of an object (e.g.
+                <literal>genre</literal> of the book in this case) and the
+                object itself (the <literal>book</literal> in this case). It
+                does this by letting the <sgmltag>id</sgmltag> field of the
+                attribute enumeration table be inserted as a foreign key in
+                the table containing records for the object. In this
+                particular scenario, the <sgmltag>lookup-ref</sgmltag>
+                attribute of the <literal>genre</literal> field in the
+                <literal>Book_Info </literal>table makes that happen.</para>
+              </note></para>
+          </callout>
+
+          <callout arearefs="declare-schema-tags-eg-8">
+            <para>Each enumeration type table contains an
+            <sgmltag>enumerations</sgmltag> tag. The values for the
+            enumeration table (book types in this case) are specified with the
+            help of <sgmltag>enum</sgmltag> tag. Each value is enclose within
+            <sgmltag>enum</sgmltag> and <sgmltag>/enum</sgmltag> tag.</para>
+          </callout>
+        </calloutlist>
+      </example>
+
+      <section>
+        <title>Unit Testing the Schema</title>
+
+        <para>You may view the newly defined schema by using <guimenu>Data
+        Management</guimenu> | <guisubmenu>Schemas</guisubmenu> section in the
+        Console of your Books Application. </para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/screen-console-schemas.gif" />
+          </screenshot></para>
+
+        <para>There is a list of all the tables contained in the schema. It
+        should list a total of 4 tables, of which the most important to you
+        are the ones you explicitly created: <literal>Book_Info</literal> and
+        <literal>Book_Type</literal>. Click on the Book_Info table to see more
+        details about it. </para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/screen-console-tabledoc.gif" />
+          </screenshot></para>
+
+        <para>As you can see, the detailed view of the Book_Info tables gives
+        a lot of information about the table and the information stored in it.
+        For each field in the table, you can see its name, data type, actual
+        SQL data type it was created as, whether it is a field referencing
+        other fields (e.g. genre field in the Book _Info table) abd the
+        index(es) defined on this table.</para>
+
+        <para>You can view the details for the Book_Info and other tables in
+        the same manner.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Generating the Data Definition Language (DDL)</title>
+
       <para></para>
     </section>
 
     <section>
-      <title>Unit Testing the Schema</title>
-
-      <para></para>
-    </section>
-
-    <section>
-      <title>Generating the Data Description Language</title>
+      <title>Generating the Data Access Layer</title>
 
       <para></para>
     </section>
