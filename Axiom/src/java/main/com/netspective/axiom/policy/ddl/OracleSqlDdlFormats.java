@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: OracleSqlDdlFormats.java,v 1.3 2004-08-09 22:29:21 shahid.shah Exp $
+ * $Id: OracleSqlDdlFormats.java,v 1.4 2004-08-10 16:11:09 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -55,10 +55,10 @@ public class OracleSqlDdlFormats extends AnsiSqlDdlFormats
         super();
         setCreateSequenceStatementFormat("CREATE SEQUENCE ${column.sequenceName} increment by 1 start with 1 nomaxvalue nocache nocycle");
         setTableCommentClauseFormat("CREATE COMMENT ON TABLE ${table.name} IS " +
-                "${textUtils.createLiteral(table.description, \"'\", \"''\", \"''\", true, true, " +
+                "${textUtils.createLiteral(table.description, \"'\", \"'\", \"''\", true, true, " +
                 "\"'No description provided.'\")}");
         setColumnCommentClauseFormat("CREATE COMMENT ON COLUMN ${column.qualifiedName} IS " +
-                "${textUtils.createLiteral(column.descr, \"'\", \"''\", \"''\", true, true, " +
+                "${textUtils.createLiteral(column.descr, \"'\", \"'\", \"''\", true, true, " +
                 "\"'No descr provided.'\")}");
     }
 }
