@@ -576,7 +576,7 @@
         <column name="${params.hierDistanceColName}" type="long-integer" indexed="yes" descr="The distance from which the related item is related by rel_type_id (used by ancestor, descentant)"/>
 
         <!-- make sure a relationship record remains unique -->
-        <index name="${owner.abbrev}_${params.uniqueHierIndexName}" unique="yes" columns="${params.hierTypeIdColName},${params.primaryIdColName},${params.relatedIdColName}"/>
+        <index name="${owner.abbrev}_${params.uniqueHierIndexName}" unique="yes" columns="${params.hierTypeIdColName},${params.primaryIdColName},${params.relatedIdColName},${params.hierDistanceColName}"/>
 
         <!-- required for the RelationshipMapTable class so that it knows the columns it is working with -->
         <hier-type-id-col-name>${params.hierTypeIdColName}</hier-type-id-col-name>
