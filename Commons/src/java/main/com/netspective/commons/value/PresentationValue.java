@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PresentationValue.java,v 1.6 2003-10-20 04:13:03 aye.thu Exp $
+ * $Id: PresentationValue.java,v 1.7 2004-02-11 21:11:04 aye.thu Exp $
  */
 
 package com.netspective.commons.value;
@@ -179,7 +179,8 @@ public class PresentationValue implements Value
         {
             String textValue = value.getTextValue();
             Items items = createItems();
-            items.addItem(textValue);
+            if (textValue != null && textValue.length() > 0)
+                items.addItem(textValue);
             return items;
         }
     }
