@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.12 2003-11-13 21:15:31 shahid.shah Exp $
+ * $Id: DialogFlags.java,v 1.13 2003-11-13 22:36:06 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -84,10 +84,11 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     public static final int DISABLE_AUTO_EXECUTE = RETAIN_INITIAL_STATE * 2;
     // allow the dialog to execute multiple times (using back button)
     public static final int ALLOW_MULTIPLE_EXECUTES = DISABLE_AUTO_EXECUTE * 2;
-    // custom start
     public static final int ALLOW_PENDING_DATA = ALLOW_MULTIPLE_EXECUTES * 2;
+    // allow the dialog to execute when the cancel button is pressed
+    public static final int ALLOW_EXECUTE_WITH_CANCEL_BUTTON = ALLOW_PENDING_DATA * 2;
     // custom start
-    public static final int CUSTOM_START = ALLOW_PENDING_DATA * 2;
+    public static final int CUSTOM_START = ALLOW_EXECUTE_WITH_CANCEL_BUTTON * 2;
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
@@ -105,7 +106,8 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_XDM, "RETAIN_INITIAL_STATE", RETAIN_INITIAL_STATE),
         new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_AUTO_EXECUTE", DISABLE_AUTO_EXECUTE),
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_MULTIPLE_EXECUTES", ALLOW_MULTIPLE_EXECUTES),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_PENDING_DATA", ALLOW_PENDING_DATA)
+        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_PENDING_DATA", ALLOW_PENDING_DATA),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_EXECUTE_WITH_CANCEL_BUTTON", ALLOW_EXECUTE_WITH_CANCEL_BUTTON)
     };
 
     public DialogFlags()
