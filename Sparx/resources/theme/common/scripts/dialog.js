@@ -42,7 +42,8 @@ var ALLOW_CLIENT_VALIDATION            = true;
 var TRANSLATE_ENTER_KEY_TO_TAB_KEY     = false;
 var ENABLE_KEYPRESS_FILTERS            = true;
 var SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE = false;
-var HIDE_HINTS_UNTIL_FOCUS            = false;
+var HIDE_HINTS_UNTIL_FOCUS             = false;
+var CLEAR_TEXT_ON_VALIDATE_ERROR       = false;
 
 var anyControlChangedEventCalled = false;
 var submittedDialogValid = false;
@@ -577,7 +578,11 @@ function DialogField_alertMessage(control, message)
 	{
 		alert(this.caption + ":   " + message);
 	}
-	control.value = "";
+
+	if (CLEAR_TEXT_ON_VALIDATE_ERROR)
+	{
+	    control.value = "";
+	}
 	control.focus();
 	handleCancelBubble(control);
 }
@@ -1302,7 +1307,10 @@ function TextField_isValid(field, control)
 			if (valid == false)
 			{
 				field.alertMessage(control, "value '" + control.value + "' is not valid. ");
-				control.value = "";
+				if (CLEAR_TEXT_ON_VALIDATE_ERROR)
+				{
+				    control.value = "";
+				}
 				return false;
 			}
 		}
@@ -1314,7 +1322,10 @@ function TextField_isValid(field, control)
 			if (test == false)
 			{
 				field.alertMessage(control, field.text_format_err_msg);
-				control.value = "";
+				if (CLEAR_TEXT_ON_VALIDATE_ERROR)
+				{
+				    control.value = "";
+				}
 				return false;
 			}
 		}
@@ -1585,7 +1596,10 @@ function SelectField_isValid(field, control)
 			if (valid < 0)
 			{
 				field.alertMessage(control, "Entered field value '" + control.value + "' is not valid. ");
-				control.value = "";
+				if (CLEAR_TEXT_ON_VALIDATE_ERROR)
+				{
+				    control.value = "";
+				}
 				return false;
 			}
 			else
