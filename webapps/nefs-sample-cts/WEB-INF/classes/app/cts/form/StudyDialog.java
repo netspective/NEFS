@@ -39,24 +39,18 @@
  */
 
 /**
- * $Id: StudyDialog.java,v 1.1 2003-09-22 05:23:08 aye.thu Exp $
+ * $Id: StudyDialog.java,v 1.2 2003-09-23 04:23:49 aye.thu Exp $
  */
 package app.cts.form;
 
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogContextUtils;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
-import com.netspective.axiom.sql.ResultSetUtils;
-import com.netspective.commons.value.PresentationValue;
 
-import java.io.Writer;
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Map;
 
 import auto.dcb.study.ProfileContext;
 import auto.dal.db.DataAccessLayer;
@@ -67,7 +61,7 @@ import auto.id.sql.schema.db.enum.RecordStatus;
 import javax.naming.NamingException;
 
 
-public class StudyDialog extends  Dialog
+public class StudyDialog extends  AbstractPerspectiveDialog
 {
     /**
      *
@@ -104,92 +98,89 @@ public class StudyDialog extends  Dialog
     }
 
     /**
-     * Executes the study dialog
-     * @param writer
+     *
      * @param dc
-     * @throws IOException
-     * @throws DialogExecuteException
+     * @param cc
      */
-    public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
+    public void addRecord(DialogContext dc, ConnectionContext cc) throws DialogExecuteException
     {
         ProfileContext pc = new ProfileContext(dc);
-        ConnectionContext cc = null;
-
         try
         {
-            cc = dc.getConnection(null, true);
-            if (dc.addingData())
-            {
-                StudyTable studyTable = DataAccessLayer.getInstance().getStudyTable();
-                StudyTable.Record record = studyTable.createRecord();
+            StudyTable studyTable = DataAccessLayer.getInstance().getStudyTable();
+            StudyTable.Record record = studyTable.createRecord();
 
-                StudyVO svo = new StudyVO();
-                svo.setStudyName(pc.getStudyName().getTextValue());
-                svo.setStudyDescr(pc.getStudyDescr().getTextValue());
-                svo.setStudyCode(pc.getStudyCode().getTextValue());
-                svo.setStartDate(pc.getStartDate().getDateValue());
-                svo.setActualEndDate(pc.getActualEndDate().getDateValue());
-                svo.setTargetEndDate(pc.getTargetEndDate().getDateValue());
-                svo.setIrbName(pc.getIrbName().getTextValue());
-                svo.setIrbNumber(pc.getIrbNumber().getTextValue());
-                svo.setRecStatId(new Integer(RecordStatus.ACTIVE));
-                svo.setStudyStatus(new Integer(pc.getStudyStatus().getIntValue()));
-                svo.setStudyStage(new Integer(pc.getStudyPhase().getIntValue()));
+            StudyVO svo = new StudyVO();
+            svo.setStudyName(pc.getStudyName().getTextValue());
+            svo.setStudyDescr(pc.getStudyDescr().getTextValue());
+            svo.setStudyCode(pc.getStudyCode().getTextValue());
+            svo.setStartDate(pc.getStartDate().getDateValue());
+            svo.setActualEndDate(pc.getActualEndDate().getDateValue());
+            svo.setTargetEndDate(pc.getTargetEndDate().getDateValue());
+            svo.setIrbName(pc.getIrbName().getTextValue());
+            svo.setIrbNumber(pc.getIrbNumber().getTextValue());
+            svo.setRecStatId(new Integer(RecordStatus.ACTIVE));
+            svo.setStudyStatusInt(pc.getStudyStatus().getIntValue());
+            svo.setStudyStageInt(pc.getStudyPhase().getIntValue());
 
-                record.setValues(svo);
-                try
-                {
-                    record.insert(cc);
-                    cc.getConnection().commit();
-                    getLog().info("Study added: id=" + record.getStudyId().getTextValue());
-                }
-                catch (NamingException e)
-                {
-                    e.printStackTrace();
-                    getLog().error("Failed to insert row", e);
-                    handlePostExecuteException(writer, dc, "Failed to insert row.", e);
-                }
-                catch (SQLException e)
-                {
-                    e.printStackTrace();
-                    getLog().error("Failed to insert row", e);
-                    handlePostExecuteException(writer, dc, "Failed to insert row.", e);
-                }
-            }
-            else if (dc.editingData())
-            {
-
-            }
-            else if (dc.deletingData())
-            {
-
-            }
-            handlePostExecute(writer, dc);
+            record.setValues(svo);
+            record.insert(cc);
+            cc.getConnection().commit();
         }
-        catch (SQLException e)
+        catch (Exception e)
         {
             e.printStackTrace();
-            getLog().error("Failed to get connection", e);
-            handlePostExecuteException(writer, dc, "Failed to get connection.", e);
+            getLog().error("Failed to insert row", e);
+            throw new DialogExecuteException(e);
         }
-        catch (NamingException ne)
+
+    }
+
+    public void editRecord(DialogContext dc, ConnectionContext cc) throws DialogExecuteException
+    {
+        ProfileContext pc = new ProfileContext(dc);
+        try
         {
-            ne.printStackTrace();
-            getLog().error("Failed to get connection", ne);
-            handlePostExecuteException(writer, dc, "Failed to get connection.", ne);
+            StudyTable studyTable = DataAccessLayer.getInstance().getStudyTable();
+            StudyTable.Record record = studyTable.getRecordByPrimaryKey(cc, new Long(0), true);
+            StudyVO svo = new StudyVO();
+            svo.setStudyName(pc.getStudyName().getTextValue());
+            svo.setStudyDescr(pc.getStudyDescr().getTextValue());
+            svo.setStudyCode(pc.getStudyCode().getTextValue());
+            svo.setStartDate(pc.getStartDate().getDateValue());
+            svo.setActualEndDate(pc.getActualEndDate().getDateValue());
+            svo.setTargetEndDate(pc.getTargetEndDate().getDateValue());
+            svo.setIrbName(pc.getIrbName().getTextValue());
+            svo.setIrbNumber(pc.getIrbNumber().getTextValue());
+            svo.setRecStatId(new Integer(RecordStatus.ACTIVE));
+            svo.setStudyStatusInt(pc.getStudyStatus().getIntValue());
+            svo.setStudyStageInt(pc.getStudyPhase().getIntValue());
+            record.setValues(svo);
+            record.insert(cc);
+            cc.getConnection().commit();
         }
-        finally
+        catch (Exception e)
         {
-            try
-            {
-                if(cc != null)
-                    cc.close();
-            }
-            catch (SQLException se)
-            {
-                se.printStackTrace();
-                handlePostExecuteException(writer, dc, "Unable to close connection", se);
-            }
+            e.printStackTrace();
+            getLog().error("Failed to edit record", e);
+            throw new DialogExecuteException(e);
         }
     }
+
+    public void deleteRecord(DialogContext dc, ConnectionContext cc) throws DialogExecuteException
+    {
+        try
+        {
+            StudyTable studyTable = DataAccessLayer.getInstance().getStudyTable();
+            StudyTable.Record record = studyTable.getRecordByPrimaryKey(cc, new Long(0), true);
+            record.delete(cc);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            getLog().error("Failed to delete record", e);
+            throw new DialogExecuteException(e);
+        }
+    }
+
 }
