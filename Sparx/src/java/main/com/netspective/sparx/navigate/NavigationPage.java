@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.57 2004-02-10 16:29:55 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.58 2004-02-10 16:30:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -328,7 +328,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         if(NavigationErrorPage.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[] { NavigationTree.class });
-            return (NavigationErrorPage) c.newInstance(new Object[] { this });
+            return (NavigationErrorPage) c.newInstance(new Object[] { getOwner() });
         }
         else
             throw new RuntimeException("Don't know what to do with with class: " + cls);
