@@ -60,6 +60,11 @@
         <change-log>
             <summary>Major enhancements and code roll-up</summary>
             <change-log-entry>
+                Made change to DateTimeField so that if the size or max-length attributes are provided they override
+                the format pattern length. Before this change, even if a 'size' or 'max-length' was provided,
+                they were not honored (it always used the length of the date/time format pattern).
+            </change-log-entry>
+            <change-log-entry>
                 <![CDATA[
                 Upgraded the DHTML calendar JavaScript library from 0.9.2 to 0.9.6. The source of the library remains
                 <a href="http://dynarch.com/mishoo/calendar.epl">Mishoo DTHML Calendar</a>. The older version at
