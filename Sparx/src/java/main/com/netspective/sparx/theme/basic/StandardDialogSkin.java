@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.9 2003-06-20 04:11:29 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.10 2003-06-30 02:12:54 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -84,6 +84,7 @@ import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.commons.validate.ValidationContext;
 
 public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
@@ -685,6 +686,8 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         int panelRenderFlags = dc.getPanelRenderFlags();
         if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
         {
+            if (dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.HIDE_HEADING_IN_EXEC_MODE))
+                dc.getPanel().getFrame().setHideHeading(true);
             renderFrameBegin(writer, dc);
             writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
         }
