@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportDtd.java,v 1.6 2004-07-28 01:37:27 shahid.shah Exp $
+ * $Id: DataImportDtd.java,v 1.7 2004-07-28 03:11:27 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -61,7 +61,6 @@ public class DataImportDtd
     private final String lSep = System.getProperty("line.separator");
 
     private final String BOOLEAN = "%boolean;";
-    private final String ELEMNAME_INCLUDE = "dal:include";
 
     private Map visited = new HashMap();
 
@@ -147,22 +146,8 @@ public class DataImportDtd
                 first = false;
             out.print(table.getXmlNodeName());
         }
-        out.print(" | " + ELEMNAME_INCLUDE);
         out.println(")*>");
         out.println("");
-    }
-
-    private void printIncludeDecl(PrintWriter out)
-    {
-        out.print("<!ELEMENT ");
-        out.print(ELEMNAME_INCLUDE);
-        out.println(" EMPTY>");
-        out.print("<!ATTLIST ");
-        out.println(ELEMNAME_INCLUDE);
-        out.println("          file CDATA #IMPLIED");
-        out.println("          template CDATA #IMPLIED");
-        out.println("          resource CDATA #IMPLIED");
-        out.println("          relative-to CDATA #IMPLIED>");
     }
 
     /**
@@ -187,8 +172,6 @@ public class DataImportDtd
 
         for(int i = 0; i < childTables.size(); i++)
             list.add(childTables.get(i).getXmlNodeName());
-
-        list.add(ELEMNAME_INCLUDE);
 
         if (list.isEmpty())
         {
@@ -291,7 +274,6 @@ public class DataImportDtd
 
     private void printTail(PrintWriter out)
     {
-        printIncludeDecl(out);
     }
 
     /**
