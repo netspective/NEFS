@@ -71,14 +71,16 @@
     <!--
     *********************************************************************
     * Setup Netspective Administration Console servlet                  *
+    * - if no security is desired, simply remove or comment out all of  *
+    *   the login-* init parameters.                                    *
     *********************************************************************
     -->
 	<servlet>
 		<servlet-name>NetspectiveConsole</servlet-name>
 		<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
         <init-param>
-            <param-name>secure</param-name>
-            <param-value>yes</param-value> <!-- set to "no" if console should not require login -->
+            <param-name>login-manager-id</param-name>
+            <param-value>console</param-value> <!-- the <login-manager> defined in the project that should be used -->
         </init-param>
         <init-param>
             <param-name>login-user-id</param-name>
