@@ -53,7 +53,7 @@ import javax.ejb.OneToOne;
 import javax.ejb.Table;
 
 @Entity
-@Table(name = "party_fac_role")
+@Table(name = "Party_Fac_Role")
 public class PartyFacilityRole extends AbstractTopLevelEntity
 {
     private Long partyFacilityRoleId;
