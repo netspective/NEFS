@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.12 2003-06-12 14:36:08 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.13 2003-07-02 14:04:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -186,6 +186,15 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             DialogField field = dialog.getFields().getByQualifiedName(qualifiedName);
             if(field == null)
                 throw new RuntimeException("Field '"+ qualifiedName +"' not found in dialog '"+ dialog.getName() +"'.");
+            else
+                return getState(field);
+        }
+
+        public DialogField.State getState(String qualifiedName, DialogField.State defaultValue)
+        {
+            DialogField field = dialog.getFields().getByQualifiedName(qualifiedName);
+            if(field == null)
+                return defaultValue;
             else
                 return getState(field);
         }
@@ -1049,6 +1058,35 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         }
 
         return hiddens.toString();
+    }
+
+    /**
+     * Copy any request parameters or attributes that match field names in our dialog
+     */
+    public void populateValuesFromRequestParamsAndAttrs()
+    {
+        Map params = getRequest().getParameterMap();
+        Iterator i = params.entrySet().iterator();
+        while(i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+            String name = (String) entry.getKey();
+            DialogField.State state = fieldStates.getState(name, null);
+            if(state != null)
+            {
+                String[] values = (String[]) entry.getValue();
+                state.getValue().setValue(values);
+            }
+        }
+
+        Enumeration e = getRequest().getAttributeNames();
+        while(e.hasMoreElements())
+        {
+            String name = (String) e.nextElement();
+            DialogField.State state = fieldStates.getState(name, null);
+            if(state != null)
+                state.getValue().setValue(getRequest().getAttribute(name));
+        }
     }
 
     public void populateValuesFromStatement(String statementId)
