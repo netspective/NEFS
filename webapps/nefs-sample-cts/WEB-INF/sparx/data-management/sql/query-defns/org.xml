@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<query-defn name="org">
+        <field name="org_id" caption="Organization ID" join="Org" column="org_id"/>
+        <field name="org_name" caption="Name" join="Org" column="org_name"/>
+        <field name="line1" caption="Street Address" join="Org_Address" column="line1"/>
+        <field name="city" caption="City" join="Org_Address" column="city"/>
+        <field name="state_id" caption="State ID" join="Org_Address" column="state_id"/>
+        <field name="state" caption="State" join="US_State_Type" column="caption"/>
+        <field name="zip" caption="Zip" join="Org_Address" column="zip"/>
+
+        <join name="Org" table="Org"/>
+        <join name="Org_Address" table="Org_Address" condition="Org.org_id = Org_Address.parent_id"/>
+        <join name="US_State_Type" table="US_State_Type" condition="US_State_Type.id = Org_Address.state_id"/>
+		<!--join name="Study_Stage_Type" table="Study_Stage_Type" condition="Study.study_stage = Study_Stage_Type.id"/-->
+        <presentation>
+            <select-dialog name="searchDialog">
+                <frame heading="Search for Organizations"/>
+                <field type="text" name="org_id" caption="ID"/>
+                <field type="text" name="org_name" caption="Name"/>
+                <select>
+                    <display field="org_id"/>
+                    <display field="org_name"/>
+                    <display field="line1"/>
+                    <display field="city"/>
+                    <display field="state"/>
+                    <display field="zip"/>
+                    <condition field="org_id" allow-null="no" comparison="equals" value="field:org_id" connector="and"/>
+                    <condition field="org_name" allow-null="no" comparison="contains-ignore-case" value="field:org_name" connector="and"/>
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="ID" align="left"/>
+                                <column heading="Organization Name" redirect="page-id:/home/org?org_id=${0}"/>
+                                <column heading="Street Address" />
+                                <column heading="City"/>
+                                <column heading="State"/>
+                                <column heading="Zip"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+    </query-defn>
+</xdm:container>

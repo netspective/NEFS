@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+<queries package="org">
+    <query name="get-employee-profile-by-org-and-person-id">
+            select
+                person.person_id "person-id",
+                person.name_last "last-name",
+                person.name_first "first-name",
+                person.ssn,
+                gender_type.caption
+            from
+                person, personorg_relationship, gender_type
+            where
+                person.person_id = ?   and
+                personorg_relationship.parent_id = person.person_id  and
+                personorg_relationship.rel_entity_id = ?  and
+                gender_type.id = person.gender_id
+
+            <params>
+                <param value="request:person_id"/>
+                <param value="request:org_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Employee Profile"/>
+                    <report>
+                        <column heading="ID" align="left"/>
+                        <column heading="Last Name" />
+                        <column heading="First Name" />
+                        <column heading="SSN" />
+                        <column heading="Gender" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+    <query name="get-org-info-by-id">
+        select
+            org.org_id,
+            org.org_name "org_name",
+            org.org_code "org_code",
+            org.org_abbrev,
+            org.employees
+        from
+            org
+        where
+            org.org_id = ?
+        <params>
+            <param value="request:org_id"/>
+        </params>
+        <presentation>
+            <panel>
+                <frame heading="static:Organization Information"/>
+                <banner>
+                    <action caption="Edit" redirect="page-id:/home/org/edit?org_id=${0}"/>
+                </banner>
+                <report>
+                    <actions>
+                        <action type="edit" redirect="page-id:/home/org/edit?org_id=${0}"/>
+                    </actions>
+                    <column heading="ID"/>
+                    <column heading="Name" align="left"/>
+                    <column heading="Code" />
+                    <column heading="Abbrev" />
+                    <column heading="Employees" />
+                </report>
+            </panel>
+        </presentation>
+    </query>
+    <query name="get-org-addresses-by-id">
+        select
+            org_address.system_id,
+            org_address.address_name,
+            org_address.line1 || ' ' || org_address.line2,
+            org_address.city,
+            org_address.state,
+            org_address.zip
+        from
+            org_address
+        where
+            org_address.parent_id = ?
+        <params>
+            <param value="request:org_id"/>
+        </params>
+        <presentation>
+            <panel>
+                <frame heading="static:Organization Addresses"/>
+                <banner>
+                    <action caption="Add new address" redirect="vs-expr:${page-id:/home/org/address/add}?org_id=${request:org_id}"/>
+                </banner>
+                <report>
+                    <actions>
+                        <action type="add" caption="Add Address" redirect="vs-expr:${page-id:/home/org/address/add}?org_id=${request:org_id}"/>
+                        <action type="edit" redirect="vs-expr:${page-id:/home/org/address/edit}?org_id=${request:org_id}&amp;id=${0}"/>
+                        <action type="delete" redirect="vs-expr:${page-id:/home/org/address/delete}?org_id=${request:org_id}&amp;id=${0}"/>
+                    </actions>
+                    <column heading="ID" hidden="yes"/>
+                    <column heading="Name"/>
+                    <column heading="Street Address"/>
+                    <column heading="City" />
+                    <column heading="State" />
+                    <column heading="Zip" />
+                </report>
+            </panel>
+        </presentation>
+    </query>
+    <query name="get-employees-by-org-id">
+        select
+            person.person_id "person-id",
+            person.name_last "last-name",
+            person.name_first "first-name"
+        from person, personorg_relationship   por
+        where
+            por.rel_entity_id = ? and
+            por.parent_id = person.person_id
+        <params>
+            <param value="request:org_id"/>
+        </params>
+        <presentation>
+            <panel>
+                <frame heading="static:Organization Employees"/>
+                <banner>
+                    <action caption="Add new employee" redirect="vs-expr:${page-id:/home/org/add_employee}?org_id=${request:org_id}"/>
+                </banner>
+                <report>
+                    <actions>
+                        <action type="edit" redirect="vs-expr:${page-id:/home/org/address/edit}?org_id=${request:org_id}&amp;id=${0}"/>
+                        <action type="delete" redirect="vs-expr:${page-id:/home/org/delete_employee}?org_id=${request:org_id}&amp;id=${0}"/>
+                    </actions>
+                    <column heading="ID"/>
+                    <column heading="Last Name" redirect="vs-expr:${page-id:/home/org/employee}?person_id=${0}&amp;org_id=${request:org_id}"/>
+                    <column heading="First Name"/>
+                </report>
+            </panel>
+        </presentation>
+    </query>
+
+    <query name="get-employee-contact-info-by-org-and-person-id">
+        select
+            person_contact.system_id,
+            contact_method_type.caption,
+            person_contact.method_value
+        from
+            person_contact, contact_method_type
+        where
+            person_contact.parent_id  = ? and
+            person_contact.method_type = contact_method_type.id
+        <params>
+            <param value="request:person_id"/>
+        </params>
+        <presentation>
+            <panel>
+                <frame heading="static:Contact Information"/>
+                <banner style="horizontal">
+                    <action caption="Add new contact" hint="Add" redirect="vs-expr:${page-id:/home/contact_info/add}?person_id=${request:person_id}"/>
+                </banner>
+                <report>
+                    <actions>
+                        <action type="add" caption="Add Contact" redirect="vs-expr:${servlet-context-uri:/home/contact_info/add}?person_id=${request:person_id}"/>
+                        <action type="edit" redirect="servlet-context-uri:/home/contact_info/edit?person_id=${authenticated-user:person_id}&amp;id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                        <action type="delete" redirect="servlet-context-uri:/home/contact_info/delete?person_id=${authenticated-user:person_id}&amp;id=${0}"/>
+                    </actions>
+                    <column heading="ID" hidden="yes"/>
+                    <column heading="Type" align="left"/>
+                    <column heading="Value" />
+                </report>
+            </panel>
+        </presentation>
+    </query>
+</queries>
+</xdm:container>

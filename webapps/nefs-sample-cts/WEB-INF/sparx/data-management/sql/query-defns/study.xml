@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<query-defn name="study">
+        <field name="study_id" caption="Study ID" join="Study" column="study_id"/>
+        <field name="study_code" caption="Code" join="Study" column="study_code"/>
+        <field name="study_name" caption="Name" join="Study" column="study_name"/>
+        <field name="study_descr" caption="Description" join="Study" column="study_descr"/>
+        <field name="start_date" caption="Start Date" join="Study" column="start_date"/>
+        <field name="target_end_date" caption="Target End Date" join="Study" column="target_end_date"/>
+        <field name="irb_number" caption="IRB" join="Study" column="irb_number"/>
+        <field name="irb_approval_date" caption="IRB Approval Date" join="Study" column="irb_approval_date"/>
+        <field name="irb_expiration_date" caption="IRB Expiration Date" join="Study" column="irb_expiration_date"/>
+        <field name="study_stage" caption="Stage" join="Study_Stage_Type" column="caption"/>
+        <field name="study_stage_id" caption="Stage ID" join="Study_Stage_Type" column="id"/>
+        <field name="study_status" caption="Status" join="Study_Status" column="caption"/>
+        <field name="study_status_id" caption="Status ID" join="Study_Status" column="id"/>
+
+        <join name="Study" table="Study"/>
+		<!--join name="Study_Stage_Type" table="Study_Stage_Type" condition="Study.study_stage = Study_Stage_Type.id"/-->
+		<join name="Study_Status" table="Study_Status" condition="Study.study_status = Study_Status.id"/>
+
+		<presentation>
+            <select-dialog name="searchDialog">
+                <frame heading="Search for Studies"/>
+                <field type="text" name="study_id" caption="Study ID"/>
+                <field type="text" name="study_name" caption="Name"/>
+                <!--field  type="select" name="study_stage_id" caption="Stage" choices="schema-enum:Study_Stage_Type" prepend-blank="yes"/-->
+                <field type="select" name="study_status_id" caption="Status" choices="schema-enum:Study_Status" prepend-blank="yes"/>
+                <select>
+                    <display field="study_id"/>
+                    <display field="study_name"/>
+                    <display field="study_status"/>
+                    <display field="start_date"/>
+                    <display field="target_end_date"/>
+                    <display field="irb_number"/>
+                    <display field="irb_approval_date"/>
+                    <display field="irb_expiration_date"/>
+                    <condition field="study_id" allow-null="no" comparison="equals" value="field:study_id" connector="and"/>
+                    <condition field="study_name" allow-null="no" comparison="contains-ignore-case" value="field:study_name" connector="and"/>
+                    <condition field="study_status_id" allow-null="no" comparison="equals" value="field:study_status_id" connector="and"/>
+                    <!--condition field="study_stage_id" allow-null="no" comparison="equals" value="field:study_stage_id" connector="and"/-->
+                    <presentation>
+                        <panel>
+                            <frame heading="Search Results"/>
+                            <report>
+                                <column heading="Study ID" align="left"/>
+                                <column heading="Name" redirect="servlet-context-uri:/home/study?study_id=${0}"/>
+                                <column heading="Status"/>
+                                <column heading="Start Date"/>
+                                <column heading="Target End Date"/>
+                                <column heading="IRB"/>
+                                <column heading="IRB Approval Date"/>
+                                <column heading="IRB Expiration Date"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+		    </select-dialog>
+        </presentation>
+    </query-defn>
+</xdm:container>

@@ -80,7 +80,6 @@
                     require-request-param="person_id" retain-params="person_id" />
             </page>
 
-
             <page caption="Contact Info" name="contact_info" heading="Contact Information" title="Contact Information">
                 <panels>
                     <panel type="html">
@@ -118,13 +117,21 @@
             </page>
             <page caption="Organization" name="org" heading="Organizations" title="CTS - Clinical Trial Management System" hidden="yes">
                 <panels>
-                    <panel type="command" command="query,cts.get-org-info-by-id,-,-,-,report" />
-                    <panel type="command" command="query,cts.get-org-addresses-by-id,-,-,-,record-editor" />
-                    <panel type="command" command="query,cts.get-persons-by-org-id,-,-,-,record-editor" />
+                    <panel type="command" command="query,org.get-org-info-by-id,-,-,-,report" />
+                    <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-editor" />
+                    <panel type="command" command="query,org.get-employees-by-org-id,-,-,-,record-editor" />
                 </panels>
                 <page name="add" caption="Add" heading="Add a new organization" title="CTS - Add Organization" hidden="yes" command="dialog,org.profile,add"/>
                 <page name="edit" caption="Edit" heading="Edit organization" title="CTS - Edit Organization" hidden="yes" command="dialog,org.profile,edit"/>
                 <page name="delete" caption="Delete" heading="Delete organization" title="CTS - Delete Organization" hidden="yes" command="dialog,org.profile,delete"/>
+                <page name="employee" caption="Employee" heading="Organization - Employee">
+                    <page name="summary" caption="Employee Information" heading="Organization - Employee Summary" title="">
+                        <panels>
+                            <panel type="command" command="query,org.get-employee-profile-by-org-and-person-id,-,-,-,detail-2col-compressed"/>
+                            <panel type="command" command="query,org.get-employee-contact-info-by-org-and-person-id,-,-,-,record-viewer-compressed" />
+                        </panels>
+                    </page>
+                </page>
                 <page name="add_employee" caption="Add new employee" heading="Organization - Add new employee"
                     title="Organization - Add new employee" hidden="yes" command="dialog,org.employee,add"/>
                 <page name="delete_employee" caption="Delete employee" heading="Organization - Delete employee"
@@ -297,7 +304,7 @@
 	**********************************************************************
 	** DATA MANAGEMENT QUERY (SQL) SPECIFICATIONS                       **
 	********************************************************************** -->
-    <xdm:include file="data-management/query/statements.xml"/>
+    <xdm:include file="data-management/sql/statements.xml"/>
 
 
     <!--query-defn name="study">

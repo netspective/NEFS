@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<query-defn name="person">
+        <field name="person_id" caption="Person ID" join="Person" column="person_id"/>
+		<field name="name_first" caption="First Name" join="Person" column="name_first"/>
+		<field name="name_last" caption="Last Name" join="Person" column="name_last"/>
+
+		<field name="class" caption="Person Type" join="PersonClass" column="person_type_id"/>
+		<field name="classCaption" caption="Person Type" join="PersonType" column="caption"/>
+
+		<field name="birth_date" caption="Birth Date" join="Person" column="birth_date"/>
+		<field name="gender" caption="Gender" join="Gender" column="id" column-expr="Gender.caption"/>
+		<field name="ethnicity" caption="Ethnicity" join="Ethnicity" column="id" column-expr="Ethnicity.caption"/>
+		<field name="language" caption="Language" join="Language" column="id" column-expr="Language.caption"/>
+		<field name="marital_status" caption="Marital Status" join="Marital_Status" column="id" column-expr="Marital_Status.caption"/>
+
+		<join name="Person" table="Person"/>
+		<join name="PersonClass" table="Person_Classification" condition="PersonClass.person_id = Person.person_id" imply-join="PersonType"/>
+		<join name="PersonEthnicity" table="Per_ethnicity_id_Set" condition="PersonEthnicity.parent_id = Person.person_id"/>
+		<join name="PersonLanguage" table="Per_language_id_Set" condition="PersonLanguage.parent_id = Person.person_id"/>
+		<join name="PersonType" table="Person_Type" condition="PersonType.id = PersonClass.person_type_id" imply-join="PersonClass"/>
+		<join name="Gender" table="Gender_Type" condition="Gender.id = Person.gender_id"/>
+		<join name="Ethnicity" table="Ethnicity_Type" condition="Ethnicity.id = PersonEthnicity.enum_value" imply-join="PersonEthnicity"/>
+		<join name="Language" table="Language_Type" condition="Language.id = PersonLanguage.enum_value" imply-join="PersonLanguage"/>
+		<join name="Marital_Status" table="Marital_Status_Type" condition="Marital_Status.id = Person.marital_status_id"/>
+
+
+	    <presentation>
+            <select-dialog name="searchPersonDialog"><frame heading="Search for People"/>
+			<field type="text" name="person_id" caption="Person ID"/>
+			<field type="text" name="name_first" caption="First Name" />
+			<field type="text" name="name_last" caption="Last Name"/>
+			<field type="text" name="birth_date" caption="Birth Date" />
+			<field type="select" name="gender" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
+			<field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
+			<field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
+			<field type="select" name="marital_status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
+
+			<select distinct="yes">
+				<display field="person_id"/>
+				<display field="name_first"/>
+				<display field="name_last"/>
+				<display field="birth_date"/>
+				<display field="gender"/>
+				<display field="marital_status"/>
+
+				<condition field="person_id" allow-null="no" comparison="equals" value="field:person_id" connector="and"/>
+				<condition field="name_first" allow-null="no" comparison="contains-ignore-case" value="field:name_first" connector="and"/>
+				<condition field="name_last" allow-null="no" comparison="contains-ignore-case" value="field:name_last" connector="and"/>
+				<condition field="birth_date" allow-null="no" comparison="equals" value="field:birth_date" connector="and"/>
+				<condition field="gender" allow-null="no" comparison="equals" value="field:gender" connector="and"/>
+				<condition field="ethnicity" allow-null="no" comparison="equals" value="field:ethnicity" connector="and"/>
+				<condition field="language" allow-null="no" comparison="equals" value="field:language" connector="and"/>
+				<condition field="marital_status" allow-null="no" comparison="equals" value="field:marital_status" connector="and"/>
+
+				<presentation>
+                    <panel>
+                        <report>
+                            <column heading="Person ID"/>
+                            <column heading="First Name" />
+                            <column heading="Last Name" />
+                            <column heading="Birth Date"/>
+                            <column heading="Gender"/>
+                            <column heading="Marital Status"/>
+                        </report>
+                    </panel>
+                </presentation>
+			</select>
+		    </select-dialog>
+        </presentation>
+
+		<presentation><select-dialog name="searchSubjectDialog"><frame heading="Search for Subjects"/>
+            <field type="text" name="person_id" caption="Person ID"/>
+            <field type="text" name="name_first" caption="First Name" />
+            <field type="text" name="name_last" caption="Last Name"/>
+            <field type="text" name="birth_date" caption="Birth Date" />
+            <field type="select" name="gender" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
+            <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
+            <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
+            <field type="select" name="marital_status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
+
+			<select>
+				<display field="person_id"/>
+				<display field="name_first"/>
+				<display field="name_last"/>
+				<display field="birth_date"/>
+
+				<display field="gender"/>
+
+				<display field="marital_status"/>
+
+				<condition field="person_id" allow-null="no" comparison="equals" value="field:person_id" connector="and"/>
+				<condition field="name_first" allow-null="no" comparison="contains-ignore-case" value="field:name_first" connector="and"/>
+				<condition field="name_last" allow-null="no" comparison="contains-ignore-case" value="field:name_last" connector="and"/>
+				<condition field="birth_date" allow-null="no" comparison="equals" value="field:birth_date" connector="and"/>
+				<condition field="gender" allow-null="no" comparison="equals" value="field:gender" connector="and"/>
+				<condition field="ethnicity" allow-null="no" comparison="equals" value="field:ethnicity" connector="and"/>
+				<condition field="language" allow-null="no" comparison="equals" value="field:language" connector="and"/>
+				<condition field="marital_status" allow-null="no" comparison="equals" value="field:marital_status" connector="and"/>
+
+				<presentation>
+                    <panel>
+                        <frame heading="Subject Search Results"/>
+                        <report>
+                            <column heading="Person ID"/>
+                            <column heading="First Name" />
+                            <column heading="Last Name" />
+                            <column heading="Birth Date"/>
+                            <column heading="Gender"/>
+                            <column heading="Marital Status"/>
+                        </report>
+                    </panel>
+                </presentation>
+			</select>
+		</select-dialog></presentation>
+
+		<presentation><select-dialog name="searchPhysicianDialog"><frame heading="Search for Physicians"/>
+            <field type="text" name="person_id" caption="Person ID"/>
+            <field type="text" name="name_first" caption="First Name" />
+            <field type="text" name="name_last" caption="Last Name"/>
+            <field type="select" name="gender" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes"/>
+            <field type="select" name="ethnicity" caption="Ethnicity" choices="schema-enum:Ethnicity_Type" prepend-blank="yes"/>
+            <field type="select" name="language" caption="Language" choices="schema-enum:Language_Type" prepend-blank="yes"/>
+
+			<select>
+				<display field="person_id"/>
+				<display field="name_first"/>
+				<display field="name_last"/>
+				<display field="gender"/>
+                <display field="language"/>
+
+				<condition field="person_id" allow-null="no" comparison="equals" value="field:person_id" connector="and"/>
+				<condition field="name_first" allow-null="no" comparison="contains-ignore-case" value="field:name_first" connector="and"/>
+				<condition field="name_last" allow-null="no" comparison="contains-ignore-case" value="field:name_last" connector="and"/>
+				<condition field="gender" allow-null="no" comparison="equals" value="field:gender" connector="and"/>
+				<condition field="ethnicity" allow-null="no" comparison="equals" value="field:ethnicity" connector="and"/>
+				<condition field="language" allow-null="no" comparison="equals" value="field:language" connector="and"/>
+
+				<presentation>
+                    <panel>
+                        <frame heading="Subject Search Results"/>
+                        <report>
+                            <column heading="Person ID"/>
+                            <column heading="First Name" />
+                            <column heading="Last Name" />
+                            <column heading="Birth Date"/>
+                            <column heading="Gender"/>
+                            <column heading="Language"/>
+                        </report>
+                    </panel>
+                </presentation>
+			</select>
+		</select-dialog></presentation>
+    </query-defn>
+</xdm:container>
