@@ -238,7 +238,7 @@ public class EntityHierarchyTable extends BasicTable
         }
     }
 
-    public void addAncestor(ConnectionContext cc, PreparedStatement stmt, Object activeParentId, Object childId, int distance) throws SQLException
+    public void addAncestor(ConnectionContext cc, PreparedStatement stmt, Object activeParentId, Object childId, int distance) throws NamingException, SQLException
     {
         stmt.setObject(1, activeParentId);
         ResultSet rs = stmt.executeQuery();
@@ -254,7 +254,7 @@ public class EntityHierarchyTable extends BasicTable
                 parentRowColumnValues.getByColumn(primaryIdColumn).setValue(ancestorId);
                 parentRowColumnValues.getByColumn(relatedIdColumn).setValue(childId);
                 parentRowColumnValues.getByColumn(relationshipDistanceColumn).setValue(new Long(distance));
-                insert(cc, ancestorRow);
+                insertOrUpdateIfDuplicateRowFound(cc, ancestorRow);
 
                 addAncestor(cc, stmt, ancestorId, childId, distance + 1);
             }
@@ -323,7 +323,7 @@ public class EntityHierarchyTable extends BasicTable
                 parentRowColumnValues.getByColumn(primaryIdColumn).setValue(parentId);
                 parentRowColumnValues.getByColumn(relatedIdColumn).setValue(childId);
                 parentRowColumnValues.getByColumn(relationshipDistanceColumn).setValue(new Long(0));
-                insert(cc, ancestorRow);
+                insertOrUpdateIfDuplicateRowFound(cc, ancestorRow);
 
                 PreparedStatement stmt = cc.getConnection().prepareStatement(selectParentsSql);
                 addAncestor(cc, stmt, parentId, childId, 1);
