@@ -57,7 +57,7 @@ public class FileTracker extends AbstractSourceTracker
 
     public void setFile(File file)
     {
-        if (null == file) return;
+        if(null == file) return;
 
         this.file = file;
         lastModified = file.lastModified();
@@ -65,7 +65,7 @@ public class FileTracker extends AbstractSourceTracker
 
     public boolean sourceChanged()
     {
-        if (file.lastModified() > this.lastModified)
+        if(file.lastModified() > this.lastModified)
             return true;
 
         return dependenciesSourcesChanged();
@@ -73,16 +73,16 @@ public class FileTracker extends AbstractSourceTracker
 
     public void reset()
     {
-        if (file.lastModified() >= this.lastModified)
+        if(file.lastModified() >= this.lastModified)
             this.lastModified = file.lastModified();
     }
 
     public InputStream openStream() throws IOException
     {
-        if (file == null)
+        if(file == null)
             return null;
 
-        if (file.exists())
+        if(file.exists())
             return new FileInputStream(file);
         else
             return null;

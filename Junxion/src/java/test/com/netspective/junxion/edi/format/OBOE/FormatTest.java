@@ -51,7 +51,7 @@ public class FormatTest extends TestCase
         XmlDataModelSchema.getSchema(Format.class);
 
         /* Parse the given file into the object model */
-        if (pc == null)
+        if(pc == null)
             pc = XdmParseContext.parse(format, new File("c:/projects/Frameworks/Junxion/resources/edi/formats/OBOE/ansi/x.12/270.xml"));
     }
 

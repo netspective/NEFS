@@ -93,22 +93,16 @@ public interface MutableAttributes extends Attributes
 
     /**
      * Any time a preference is added, this method is called
-     *
-     * @param attribute
      */
     public void observeAttributeAdd(Attribute attribute);
 
     /**
      * Any time a preference is changed this method is called
-     *
-     * @param attribute
      */
     public void observeAttributeChange(Attribute attribute);
 
     /**
      * Any time a preference is removed, this method is called
-     *
-     * @param attribute
      */
     public void observeAttributeRemove(Attribute attribute);
 }

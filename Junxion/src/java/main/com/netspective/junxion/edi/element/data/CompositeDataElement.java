@@ -112,6 +112,6 @@ public class CompositeDataElement extends BasicDataElementCollection implements 
     public void setRequired(boolean required)
     {
         this.required = required;
-        if (required && minRepeat == 0) setMinRepeat(1);
+        if(required && minRepeat == 0) setMinRepeat(1);
     }
 }

@@ -63,7 +63,7 @@ public class CreditCardValueValidationRule extends BasicValidationRule
     public boolean isValid(ValidationContext vc, Value value)
     {
         String cardNumber = value.getTextValue();
-        if (cardNumber != null && !ValidationUtils.isCreditCard(cardNumber))
+        if(cardNumber != null && !ValidationUtils.isCreditCard(cardNumber))
         {
             vc.addValidationError(value, getInvalidCardNumMessage(), new Object[]{getValueCaption(vc), cardNumber});
             return false;

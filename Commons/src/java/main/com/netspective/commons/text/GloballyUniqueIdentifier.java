@@ -82,7 +82,7 @@ public class GloballyUniqueIdentifier extends Object
         long time = System.currentTimeMillis();
         long rand = 0;
 
-        if (secure)
+        if(secure)
         {
             rand = secureRandom.nextLong();
         }
@@ -108,10 +108,10 @@ public class GloballyUniqueIdentifier extends Object
 
         byte[] array = md5.digest();
         StringBuffer sb = new StringBuffer();
-        for (int j = 0; j < array.length; ++j)
+        for(int j = 0; j < array.length; ++j)
         {
             int b = array[j] & 0xFF;
-            if (b < 0x10) sb.append('0');
+            if(b < 0x10) sb.append('0');
             sb.append(Integer.toHexString(b));
         }
 

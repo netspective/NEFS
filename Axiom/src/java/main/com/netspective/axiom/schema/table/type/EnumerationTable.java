@@ -46,7 +46,7 @@ public class EnumerationTable extends BasicTable
     static
     {
         XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addAliases("data", new String[] { "enumerations" });
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addAliases("data", new String[]{"enumerations"});
     }
 
     public EnumerationTable(Column parentColumn)

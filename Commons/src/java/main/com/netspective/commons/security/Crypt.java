@@ -480,15 +480,15 @@ public class Crypt
         c = results[1];
 
         d = (((d & 0x000000ff) << 16) | (d & 0x0000ff00) |
-                ((d & 0x00ff0000) >>> 16) | ((c & 0xf0000000) >>> 4));
+             ((d & 0x00ff0000) >>> 16) | ((c & 0xf0000000) >>> 4));
         c &= 0x0fffffff;
 
         int s, t;
         int j = 0;
 
-        for (int i = 0; i < ITERATIONS; i++)
+        for(int i = 0; i < ITERATIONS; i++)
         {
-            if (shifts2[i])
+            if(shifts2[i])
             {
                 c = (c >>> 2) | (c << 26);
                 d = (d >>> 2) | (d << 26);
@@ -503,15 +503,15 @@ public class Crypt
             d &= 0x0fffffff;
 
             s = skb[0][(c) & 0x3f] |
-                    skb[1][((c >>> 6) & 0x03) | ((c >>> 7) & 0x3c)] |
-                    skb[2][((c >>> 13) & 0x0f) | ((c >>> 14) & 0x30)] |
-                    skb[3][((c >>> 20) & 0x01) | ((c >>> 21) & 0x06) |
-                    ((c >>> 22) & 0x38)];
+                skb[1][((c >>> 6) & 0x03) | ((c >>> 7) & 0x3c)] |
+                skb[2][((c >>> 13) & 0x0f) | ((c >>> 14) & 0x30)] |
+                skb[3][((c >>> 20) & 0x01) | ((c >>> 21) & 0x06) |
+                       ((c >>> 22) & 0x38)];
 
             t = skb[4][(d) & 0x3f] |
-                    skb[5][((d >>> 7) & 0x03) | ((d >>> 8) & 0x3c)] |
-                    skb[6][(d >>> 15) & 0x3f] |
-                    skb[7][((d >>> 21) & 0x0f) | ((d >>> 22) & 0x30)];
+                skb[5][((d >>> 7) & 0x03) | ((d >>> 8) & 0x3c)] |
+                skb[6][(d >>> 15) & 0x3f] |
+                skb[7][((d >>> 21) & 0x0f) | ((d >>> 22) & 0x30)];
 
             schedule[j++] = ((t << 16) | (s & 0x0000ffff)) & 0xffffffff;
             s = ((s >>> 16) | (t & 0xffff0000));
@@ -535,13 +535,13 @@ public class Crypt
         t = (t >>> 4) | (t << 28);
 
         L ^= SPtrans[1][(t) & 0x3f] |
-                SPtrans[3][(t >>> 8) & 0x3f] |
-                SPtrans[5][(t >>> 16) & 0x3f] |
-                SPtrans[7][(t >>> 24) & 0x3f] |
-                SPtrans[0][(u) & 0x3f] |
-                SPtrans[2][(u >>> 8) & 0x3f] |
-                SPtrans[4][(u >>> 16) & 0x3f] |
-                SPtrans[6][(u >>> 24) & 0x3f];
+             SPtrans[3][(t >>> 8) & 0x3f] |
+             SPtrans[5][(t >>> 16) & 0x3f] |
+             SPtrans[7][(t >>> 24) & 0x3f] |
+             SPtrans[0][(u) & 0x3f] |
+             SPtrans[2][(u >>> 8) & 0x3f] |
+             SPtrans[4][(u >>> 16) & 0x3f] |
+             SPtrans[6][(u >>> 24) & 0x3f];
 
         return (L);
     }
@@ -552,9 +552,9 @@ public class Crypt
         int right = 0;
         int t = 0;
 
-        for (int j = 0; j < 25; j++)
+        for(int j = 0; j < 25; j++)
         {
-            for (int i = 0; i < ITERATIONS * 2; i += 4)
+            for(int i = 0; i < ITERATIONS * 2; i += 4)
             {
                 left = D_ENCRYPT(left, right, i, Eswap0, Eswap1, schedule);
                 right = D_ENCRYPT(right, left, i + 2, Eswap0, Eswap1, schedule);
@@ -604,7 +604,7 @@ public class Crypt
 
     public static final String crypt(String salt, String original)
     {
-        while (salt.length() < 2)
+        while(salt.length() < 2)
             salt += "A";
 
         StringBuffer buffer = new StringBuffer("             ");
@@ -620,10 +620,10 @@ public class Crypt
 
         byte key[] = new byte[8];
 
-        for (int i = 0; i < key.length; i++)
+        for(int i = 0; i < key.length; i++)
             key[i] = (byte) 0;
 
-        for (int i = 0; i < key.length && i < original.length(); i++)
+        for(int i = 0; i < key.length && i < original.length(); i++)
         {
             int iChar = (int) original.charAt(i);
 
@@ -639,18 +639,18 @@ public class Crypt
         intToFourBytes(out[1], b, 4);
         b[8] = 0;
 
-        for (int i = 2, y = 0, u = 0x80; i < 13; i++)
+        for(int i = 2, y = 0, u = 0x80; i < 13; i++)
         {
-            for (int j = 0, c = 0; j < 6; j++)
+            for(int j = 0, c = 0; j < 6; j++)
             {
                 c <<= 1;
 
-                if (((int) b[y] & u) != 0)
+                if(((int) b[y] & u) != 0)
                     c |= 1;
 
                 u >>>= 1;
 
-                if (u == 0)
+                if(u == 0)
                 {
                     y++;
                     u = 0x80;
@@ -663,11 +663,11 @@ public class Crypt
 
     public static void main(String args[])
     {
-        if (args.length >= 2)
+        if(args.length >= 2)
         {
             System.out.println
                     ("[" + args[0] + "] [" + args[1] + "] => [" +
-                    Crypt.crypt(args[0], args[1]) + "]");
+                     Crypt.crypt(args[0], args[1]) + "]");
         }
     }
 }

@@ -80,24 +80,24 @@ public class Resource
     public URL getResource()
     {
         return sourceClass != null ?
-                sourceClass.getResource(resourceName) :
-                sourceLoader.getResource(resourceName);
+               sourceClass.getResource(resourceName) :
+               sourceLoader.getResource(resourceName);
     }
 
     public InputStream getResourceAsStream()
     {
         return sourceClass != null ?
-                sourceClass.getResourceAsStream(resourceName) :
-                sourceLoader.getResourceAsStream(resourceName);
+               sourceClass.getResourceAsStream(resourceName) :
+               sourceLoader.getResourceAsStream(resourceName);
     }
 
     public File getFile()
     {
         URL classUrl = getResource();
-        if (classUrl != null)
+        if(classUrl != null)
         {
             File resourceFile = new File(classUrl.getFile());
-            if (resourceFile.exists())
+            if(resourceFile.exists())
                 return resourceFile;
         }
 

@@ -53,11 +53,11 @@ public class RoleOrPermissionReference
     public BitSet getPermissions() throws PermissionNotFoundException, RoleNotFoundException
     {
         BitSet result = null;
-        if (permission != null)
+        if(permission != null)
             result = getPermission().getChildPermissions();
-        if (role != null)
+        if(role != null)
         {
-            if (result == null)
+            if(result == null)
                 result = getRole().getPermissions();
             else
                 result.or(getRole().getPermissions());
@@ -68,7 +68,7 @@ public class RoleOrPermissionReference
     public void setPermission(String permission)
     {
         this.permission = permission;
-        if (!permission.startsWith(AccessControlList.NAME_SEPARATOR))
+        if(!permission.startsWith(AccessControlList.NAME_SEPARATOR))
             permission += accessControlList.getQualifiedName() + AccessControlList.NAME_SEPARATOR;
     }
 
@@ -80,7 +80,7 @@ public class RoleOrPermissionReference
     public void setRole(String role)
     {
         this.role = role;
-        if (!role.startsWith(AccessControlList.NAME_SEPARATOR))
+        if(!role.startsWith(AccessControlList.NAME_SEPARATOR))
             role += accessControlList.getQualifiedName() + AccessControlList.NAME_SEPARATOR;
     }
 

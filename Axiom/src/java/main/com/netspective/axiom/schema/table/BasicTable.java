@@ -168,7 +168,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
     {
-        if (templateConsumer == null)
+        if(templateConsumer == null)
             templateConsumer = new TableTypeTemplateConsumerDefn();
         return templateConsumer;
     }
@@ -185,14 +185,14 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public TemplateProducer getPresentation()
     {
-        if (presentation == null)
+        if(presentation == null)
             presentation = new TablePresentationTemplate();
         return presentation;
     }
 
     public TemplateProducers getTemplateProducers()
     {
-        if (templateProducers == null)
+        if(templateProducers == null)
         {
             templateProducers = new TemplateProducers();
             templateProducers.add(getPresentation());
@@ -213,10 +213,10 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     public void finishConstruction()
     {
         columns.finishConstruction();
-        if (hierarchyRef != null)
+        if(hierarchyRef != null)
         {
             Table parentTable = schema.getTables().getByName(hierarchyRef.getParent());
-            if (parentTable == null)
+            if(parentTable == null)
                 throw new RuntimeException("Unable to find table '" + hierarchyRef.getParent() + "' for '" + getName() + "' parent hierarchy");
             parentTable.registerChildTable(this);
         }
@@ -340,13 +340,13 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public PrimaryKeyColumns getPrimaryKeyColumns()
     {
-        if (primaryKeyColumns == null)
+        if(primaryKeyColumns == null)
         {
             primaryKeyColumns = new PrimaryKeyColumnsCollection();
-            for (int i = 0; i < columns.size(); i++)
+            for(int i = 0; i < columns.size(); i++)
             {
                 Column column = columns.get(i);
-                if (column.isPrimaryKey())
+                if(column.isPrimaryKey())
                     primaryKeyColumns.add(column);
             }
         }
@@ -356,11 +356,11 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     public Columns getForeignKeyColumns(int fkeyType)
     {
         Columns result = new ColumnsCollection();
-        for (int i = 0; i < columns.size(); i++)
+        for(int i = 0; i < columns.size(); i++)
         {
             Column column = columns.get(i);
             ForeignKey fkey = column.getForeignKey();
-            if (fkey != null && fkey.getType() == fkeyType)
+            if(fkey != null && fkey.getType() == fkeyType)
                 result.add(column);
         }
         return result;
@@ -369,11 +369,11 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     public Columns getForeignKeyColumns()
     {
         Columns result = new ColumnsCollection();
-        for (int i = 0; i < columns.size(); i++)
+        for(int i = 0; i < columns.size(); i++)
         {
             Column column = columns.get(i);
             ForeignKey fkey = column.getForeignKey();
-            if (fkey != null)
+            if(fkey != null)
                 result.add(column);
         }
         return result;
@@ -381,7 +381,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public Columns getParentRefColumns()
     {
-        if (parentRefColumns == null)
+        if(parentRefColumns == null)
             parentRefColumns = getForeignKeyColumns(ForeignKey.FKEYTYPE_PARENT);
 
         return parentRefColumns;
@@ -394,7 +394,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public Column createColumn(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if (Column.class.isAssignableFrom(cls))
+        if(Column.class.isAssignableFrom(cls))
         {
             Constructor c = cls.getConstructor(new Class[]{Table.class});
             return (Column) c.newInstance(new Object[]{this});
@@ -416,7 +416,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     public void addColumn(Column column)
     {
         // columns that contain <composite> don't want to be added since they have children that have been added
-        if (column.isAllowAddToTable())
+        if(column.isAllowAddToTable())
         {
             int indexInRow = columns.add(column);
             column.setIndexInRow(indexInRow);
@@ -430,7 +430,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public Rows createData()
     {
-        if (staticData == null)
+        if(staticData == null)
             staticData = createRows();
         return staticData;
     }
@@ -457,7 +457,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void registerChildTable(Table table)
     {
-        if (childTables == null)
+        if(childTables == null)
             childTables = new TablesCollection();
         childTables.add(table);
         table.getParentTables().add(table);
@@ -465,13 +465,13 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void removeChildTable(Table table)
     {
-        if (childTables != null)
+        if(childTables != null)
             childTables.remove(table);
     }
 
     public TableHierarchyReference createHierarchy()
     {
-        if (hierarchyRef == null)
+        if(hierarchyRef == null)
             hierarchyRef = new BasicTableHierarchyReference();
         return hierarchyRef;
     }
@@ -544,12 +544,12 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
         Row resultRow = row;
         QueryResultSet qrs = pkSelect.execute(cc, pkValues, false);
-        if (qrs != null)
+        if(qrs != null)
         {
             ResultSet rs = qrs.getResultSet();
-            if (rs.next())
+            if(rs.next())
             {
-                if (resultRow == null) resultRow = createRow();
+                if(resultRow == null) resultRow = createRow();
                 resultRow.getColumnValues().populateValues(rs, ColumnValues.RESULTSETROWNUM_SINGLEROW);
             }
             qrs.close(false);
@@ -563,7 +563,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     public void registerForeignKeyDependency(ForeignKey fKey)
     {
         // if we are the "referenced" foreign key, then the source is a child of ours
-        if (fKey.getType() == ForeignKey.FKEYTYPE_PARENT)
+        if(fKey.getType() == ForeignKey.FKEYTYPE_PARENT)
         {
             Table parentTable = fKey.getReferencedColumns().getFirst().getTable();
             parentTable.registerChildTable(this);
@@ -573,7 +573,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     public void removeForeignKeyDependency(ForeignKey fKey)
     {
         // if we are the "referenced" foreign key, then the source is a child of ours
-        if (fKey.getType() == ForeignKey.FKEYTYPE_PARENT)
+        if(fKey.getType() == ForeignKey.FKEYTYPE_PARENT)
         {
             Table parentTable = fKey.getReferencedColumns().getFirst().getTable();
             parentTable.removeChildTable(this);
@@ -599,7 +599,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public Index createIndex(Column column)
     {
-        if (column.getTable() != this)
+        if(column.getTable() != this)
             throw new RuntimeException("Unable to create index -- column '" + column.getQualifiedName() + "' does not belong to table '" + getName() + "'. (" + this + " != " + column.getTable() + ")");
         else
         {
@@ -618,20 +618,20 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void insert(ConnectionContext cc, Row row) throws SQLException
     {
-        for (int i = 0; i < triggers.length; i++)
+        for(int i = 0; i < triggers.length; i++)
             triggers[i].beforeTableRowInsert(cc, row);
 
         try
         {
             cc.getDatabasePolicy().insertValues(cc, DatabasePolicy.DMLFLAG_EXECUTE | DatabasePolicy.DMLFLAG_USE_BIND_PARAMS, row.getColumnValues(), row);
         }
-        catch (NamingException e)
+        catch(NamingException e)
         {
             log.error("Error while inserting row " + row, e);
             throw new SQLException(e.getMessage());
         }
 
-        for (int i = 0; i < triggers.length; i++)
+        for(int i = 0; i < triggers.length; i++)
             triggers[i].afterTableRowInsert(cc, row);
 
     }
@@ -643,20 +643,20 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void update(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws SQLException
     {
-        for (int i = 0; i < triggers.length; i++)
+        for(int i = 0; i < triggers.length; i++)
             triggers[i].beforeTableRowUpdate(cc, row);
 
         try
         {
             cc.getDatabasePolicy().updateValues(cc, DatabasePolicy.DMLFLAG_EXECUTE | DatabasePolicy.DMLFLAG_USE_BIND_PARAMS, row.getColumnValues(), row, whereCond, whereCondBindParams);
         }
-        catch (NamingException e)
+        catch(NamingException e)
         {
             log.error("Error while updating row " + row + " whereCond " + whereCond, e);
             throw new SQLException(e.getMessage());
         }
 
-        for (int i = 0; i < triggers.length; i++)
+        for(int i = 0; i < triggers.length; i++)
             triggers[i].afterTableRowUpdate(cc, row);
     }
 
@@ -667,27 +667,27 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void delete(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws SQLException
     {
-        for (int i = 0; i < triggers.length; i++)
+        for(int i = 0; i < triggers.length; i++)
             triggers[i].beforeTableRowDelete(cc, row);
 
         try
         {
             cc.getDatabasePolicy().deleteValues(cc, DatabasePolicy.DMLFLAG_EXECUTE | DatabasePolicy.DMLFLAG_USE_BIND_PARAMS, row.getColumnValues(), row, whereCond, whereCondBindParams);
         }
-        catch (NamingException e)
+        catch(NamingException e)
         {
             log.error("Error deleting row " + row + " whereCond " + whereCond, e);
             throw new SQLException(e.getMessage());
         }
 
-        for (int i = 0; i < triggers.length; i++)
+        for(int i = 0; i < triggers.length; i++)
             triggers[i].afterTableRowDelete(cc, row);
     }
 
     public void addTrigger(TableRowTrigger trigger)
     {
         TableRowTrigger[] result = new TableRowTrigger[triggers.length + 1];
-        for (int i = 0; i < triggers.length; i++)
+        for(int i = 0; i < triggers.length; i++)
             result[i] = triggers[i];
         result[triggers.length] = trigger;
         triggers = result;
@@ -707,20 +707,20 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         QueryDefnJoin join = tqd.createJoin();
         join.setName(getName());
         join.setTable(getName());
-        if (isQuoteNameInSql())
+        if(isQuoteNameInSql())
             join.setFromExpr(getSqlName());
         join.setAutoInclude(true);
         tqd.addJoin(join);
 
-        for (int i = 0; i < columns.size(); i++)
+        for(int i = 0; i < columns.size(); i++)
         {
             QueryDefnField field = columns.get(i).createQueryDefnField(tqd);
             try
             {
-                if (field.getJoin() == null)
+                if(field.getJoin() == null)
                     field.setJoin(join.getName());
             }
-            catch (QueryDefinitionException e)
+            catch(QueryDefinitionException e)
             {
                 log.error("Error while initializing query definition.", e);
             }
@@ -734,7 +734,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         getAccessorByParentKeyEquality();
 
         // create all the accessors by single column equality
-        for (int i = 0; i < columns.size(); i++)
+        for(int i = 0; i < columns.size(); i++)
         {
             Column column = columns.get(i);
             QueryDefnSelect selectByColumn = tqd.createSelect();
@@ -747,7 +747,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 populateTableColumnsAsDisplayFields(selectByColumn);
                 populateColumnEqualityCondition(selectByColumn, column);
             }
-            catch (QueryDefinitionException e)
+            catch(QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
             }
@@ -755,12 +755,12 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
         // create all the accessors by index equality
         Indexes indexes = getIndexes();
-        for (int i = 0; i < indexes.size(); i++)
+        for(int i = 0; i < indexes.size(); i++)
         {
             Index index = indexes.get(i);
 
             // if it's a single column, we already have the equality accessor
-            if (index.getColumns().size() == 1)
+            if(index.getColumns().size() == 1)
                 continue;
 
             QueryDefnSelect selectByIndex = tqd.createSelect();
@@ -773,7 +773,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 populateTableColumnsAsDisplayFields(selectByIndex);
                 populateColumnEqualityConditions(selectByIndex, index.getColumns());
             }
-            catch (QueryDefinitionException e)
+            catch(QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
             }
@@ -783,7 +783,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     protected void populateTableColumnsAsDisplayFields(QueryDefnSelect select) throws QueryDefinitionException
     {
         Columns columns = getColumns();
-        for (int i = 0; i < columns.size(); i++)
+        for(int i = 0; i < columns.size(); i++)
         {
             QueryDefnFieldReference qdfr = select.createDisplay();
             qdfr.setField(columns.get(i).getName());
@@ -807,7 +807,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     protected void populateColumnEqualityConditions(QueryDefnSelect qds, Columns cols) throws QueryDefnFieldNotFoundException, QueryDefnSqlComparisonNotFoundException
     {
         int lastColumn = cols.size() - 1;
-        for (int c = 0; c <= lastColumn; c++)
+        for(int c = 0; c <= lastColumn; c++)
         {
             QueryDefnCondition cond = qds.createCondition();
             cond.setField(cols.get(c).getName());
@@ -817,7 +817,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             scea.setValue("equals");
             cond.setComparison(scea);
 
-            if (c < lastColumn)
+            if(c < lastColumn)
             {
                 QueryDefnConditionConnectorEnumeratedAttribute qdccea = new QueryDefnConditionConnectorEnumeratedAttribute();
                 qdccea.setValue("and");
@@ -830,7 +830,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public QueryDefnSelect getAccessorByPrimaryKeyEquality()
     {
-        if (selectByPrimaryKey == null)
+        if(selectByPrimaryKey == null)
         {
             TableQueryDefinition queryDefn = getQueryDefinition();
             selectByPrimaryKey = queryDefn.createSelect();
@@ -843,7 +843,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 populateTableColumnsAsDisplayFields(selectByPrimaryKey);
                 populateColumnEqualityConditions(selectByPrimaryKey, getPrimaryKeyColumns());
             }
-            catch (QueryDefinitionException e)
+            catch(QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
             }
@@ -851,9 +851,9 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             PrimaryKeyColumns columns = getPrimaryKeyColumns();
             StringBuffer whereClausExprBuf = new StringBuffer();
             int lastColumn = columns.size() - 1;
-            for (int c = 0; c <= lastColumn; c++)
+            for(int c = 0; c <= lastColumn; c++)
             {
-                if (c > 0) whereClausExprBuf.append(" and ");
+                if(c > 0) whereClausExprBuf.append(" and ");
                 whereClausExprBuf.append(columns.get(c).getName());
                 whereClausExprBuf.append(" = ");
                 whereClausExprBuf.append(" ? ");
@@ -867,7 +867,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private QueryDefnSelect getAccessorByParentKeyEquality()
     {
         Columns parentRefCols = getParentRefColumns();
-        if (selectByParentKey == null && parentRefCols.size() > 0)
+        if(selectByParentKey == null && parentRefCols.size() > 0)
         {
             TableQueryDefinition queryDefn = getQueryDefinition();
             selectByParentKey = queryDefn.createSelect();
@@ -880,7 +880,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 populateTableColumnsAsDisplayFields(selectByParentKey);
                 populateColumnEqualityConditions(selectByParentKey, parentRefCols);
             }
-            catch (QueryDefinitionException e)
+            catch(QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
             }
@@ -891,7 +891,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public TableQueryDefinition getQueryDefinition()
     {
-        if (queryDefn == null)
+        if(queryDefn == null)
         {
             queryDefn = new TableQueryDefinition(this);
             initQueryDefinition(queryDefn);
@@ -907,7 +907,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void addAccessor(QueryDefnSelect accessor) throws QueryDefinitionException
     {
-        if (accessor.getDisplayFields().size() == 0)
+        if(accessor.getDisplayFields().size() == 0)
             populateTableColumnsAsDisplayFields(accessor);
 
         getQueryDefinition().addSelect(accessor);
@@ -925,7 +925,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
         String accessorName = "by-index-" + index.getName() + "-equality";
 
-        if (index.getColumns().size() == 1)
+        if(index.getColumns().size() == 1)
             accessorName = "by-" + index.getColumns().get(0).getName() + "-equality";
 
         return tqd.getSelects().get(accessorName);
@@ -936,7 +936,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         TableQueryDefinition tqd = getQueryDefinition();
         String accessorName = "by-" + columns.getOnlyXmlNodeNames("-") + "-equality";
         QueryDefnSelect qds = tqd.getSelects().get("by-" + columns.getOnlyXmlNodeNames("-") + "-equality");
-        if (qds == null)
+        if(qds == null)
         {
             qds = queryDefn.createSelect();
             qds.setName(accessorName);
@@ -948,7 +948,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 populateTableColumnsAsDisplayFields(qds);
                 populateColumnEqualityConditions(qds, columns);
             }
-            catch (QueryDefinitionException e)
+            catch(QueryDefinitionException e)
             {
                 log.error(e.getMessage(), e);
             }
@@ -979,20 +979,20 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         boolean foundAnyDataElement = false;
 
         List copyChildren = elem.getChildren();
-        for (int i = 0; i < copyChildren.size(); i++)
+        for(int i = 0; i < copyChildren.size(); i++)
         {
             TemplateNode dialogChildNode = (TemplateNode) copyChildren.get(i);
-            if (dialogChildNode instanceof TemplateElement)
+            if(dialogChildNode instanceof TemplateElement)
             {
                 TemplateElement dialogChildElem = (TemplateElement) dialogChildNode;
                 final String elementName = dialogChildElem.getElementName();
-                if (elementName.equals("data-type-presentation"))
+                if(elementName.equals("data-type-presentation"))
                 {
                     String colsFilterRegEx = dialogChildElem.getAttributes().getValue("columns");
-                    if (colsFilterRegEx == null || colsFilterRegEx.length() == 0 || colsFilterRegEx.equals("*"))
+                    if(colsFilterRegEx == null || colsFilterRegEx.length() == 0 || colsFilterRegEx.equals("*"))
                     {
                         Columns columns = getColumns();
-                        for (int c = 0; c < columns.size(); c++)
+                        for(int c = 0; c < columns.size(); c++)
                         {
                             Column column = columns.get(c);
                             column.addSchemaRecordEditorDialogTemplates(dialogTemplate, jexlVars);
@@ -1001,7 +1001,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                     else
                     {
                         Columns columns = getColumns();
-                        for (int c = 0; c < columns.size(); c++)
+                        for(int c = 0; c < columns.size(); c++)
                         {
                             Column column = columns.get(c);
                             ValidationUtils.matchRegexp(column.getName(), colsFilterRegEx);
@@ -1011,12 +1011,12 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                 }
                 else
                 {
-                    if (elementName.equals("on-add-data") || elementName.equals("on-edit-data") || elementName.equals("on-delete-data"))
+                    if(elementName.equals("on-add-data") || elementName.equals("on-edit-data") || elementName.equals("on-delete-data"))
                         foundAnyDataElement = true;
                     dialogTemplate.addCopyOfChildAndReplaceExpressions((TemplateElement) dialogChildNode, jexlVars, true);
                 }
             }
-            else if (dialogChildNode instanceof TemplateText)
+            else if(dialogChildNode instanceof TemplateText)
                 dialogTemplate.addChild(new TemplateText(dialogTemplate, ((TemplateText) dialogChildNode).getText()));
             else
                 throw new RuntimeException("This should never happen.");
@@ -1024,7 +1024,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
         // if no meta data editor is provided, add defaults -- if any of the on-add/edit/delete-data templates are found
         // it means the user wants full control so we will leave it to them to implement
-        if (!foundAnyDataElement)
+        if(!foundAnyDataElement)
         {
             TemplateElement addDataTemplateElement = dialogTemplate.addChild("on-add-data", null);
             addDataTemplateElement.addChild(getSchema().getName() + "." + getXmlNodeName(), new String[][]{
@@ -1050,7 +1050,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         TemplateProducer tablePresentation = getPresentation();
         List instances = tablePresentation.getInstances();
 
-        if (instances.size() < 1)
+        if(instances.size() < 1)
             return;
 
         Map jexlVars = new HashMap();
@@ -1059,13 +1059,13 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         // only get the last instance since the final one is the one we're going to use (it will override earlier templates)
         Template tmpl = (Template) instances.get(instances.size() - 1);
         List presentationTmplChildren = tmpl.getChildren();
-        for (int j = 0; j < presentationTmplChildren.size(); j++)
+        for(int j = 0; j < presentationTmplChildren.size(); j++)
         {
             TemplateNode presentationTmplChildNode = (TemplateNode) presentationTmplChildren.get(j);
-            if (presentationTmplChildNode instanceof TemplateElement)
+            if(presentationTmplChildNode instanceof TemplateElement)
             {
                 TemplateElement elem = (TemplateElement) presentationTmplChildNode;
-                if (elem.getElementName().equals("dialog"))
+                if(elem.getElementName().equals("dialog"))
                     copySchemaRecordEditorDialogTemplate(dialogsPackageTemplate, elem, jexlVars);
                 else
                     dialogsPackageTemplate.addCopyOfChildAndReplaceExpressions(elem, jexlVars, true);
@@ -1096,17 +1096,17 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             this.level = level;
 
             Columns parentRefColumns = getParentRefColumns();
-            for (int i = 0; i < parentRefColumns.size(); i++)
+            for(int i = 0; i < parentRefColumns.size(); i++)
             {
                 Column parentRefColumn = parentRefColumns.get(i);
                 ParentForeignKey fKey = (ParentForeignKey) parentRefColumn.getForeignKey();
-                if (fKey.getReferencedColumns().getFirst().getTable() == parent.getTable())
+                if(fKey.getReferencedColumns().getFirst().getTable() == parent.getTable())
                     parentForeignKey = fKey;
             }
 
             Set sortedChildren = new TreeSet(BasicSchema.TABLE_TREE_NODE_COMPARATOR);
             Tables childTables = getChildTables();
-            for (int i = 0; i < childTables.size(); i++)
+            for(int i = 0; i < childTables.size(); i++)
             {
                 Table childTable = childTables.get(i);
                 sortedChildren.add(childTable.createTreeNode(owner, this, level + 1));
@@ -1142,14 +1142,14 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         public String getAncestorTableNames(String delimiter)
         {
             List ancestors = getAncestors();
-            if (ancestors.size() == 0)
+            if(ancestors.size() == 0)
                 return null;
 
             StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < ancestors.size(); i++)
+            for(int i = 0; i < ancestors.size(); i++)
             {
                 Schema.TableTreeNode node = (Schema.TableTreeNode) ancestors.get(i);
-                if (i > 0)
+                if(i > 0)
                     sb.append(delimiter);
                 sb.append(node.getTable().getName());
             }
@@ -1158,13 +1158,13 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
         public List getAncestors()
         {
-            if (ancestors == null)
+            if(ancestors == null)
             {
                 ancestors = new ArrayList();
                 Schema.TableTreeNode activeParentNode = getParentNode();
-                while (activeParentNode != null)
+                while(activeParentNode != null)
                 {
-                    if (ancestors.size() == 0)
+                    if(ancestors.size() == 0)
                         ancestors.add(activeParentNode);
                     else
                         ancestors.add(0, activeParentNode);
@@ -1183,13 +1183,13 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
         public boolean hasGrandchildren()
         {
-            if (!hasChildren())
+            if(!hasChildren())
                 return false;
 
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
             {
                 // if any of our children have children then we have grandchildren
-                if (((Schema.TableTreeNode) children.get(i)).hasChildren())
+                if(((Schema.TableTreeNode) children.get(i)).hasChildren())
                     return true;
             }
 
@@ -1200,7 +1200,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         {
             StringBuffer sb = new StringBuffer();
 
-            for (int i = 0; i < level; i++)
+            for(int i = 0; i < level; i++)
                 sb.append("  ");
             sb.append(getTable().getName());
             sb.append(" [");
@@ -1210,7 +1210,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             sb.append(")");
             sb.append("\n");
 
-            for (int c = 0; c < children.size(); c++)
+            for(int c = 0; c < children.size(); c++)
                 sb.append(children.get(c));
 
             return sb.toString();

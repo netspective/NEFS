@@ -58,13 +58,13 @@ public class ActivityObserversList implements ActivityObservers
 
     public void addActivityObserver(ActivityObserver activityObserver)
     {
-        if (!observers.contains(activityObserver))
+        if(!observers.contains(activityObserver))
             observers.add(activityObserver);
     }
 
     public void observeActivity(Activity activity)
     {
-        for (int i = 0; i < observers.size(); i++)
+        for(int i = 0; i < observers.size(); i++)
         {
             ActivityObserver observer = (ActivityObserver) observers.get(i);
             observer.observeActivity(activity);

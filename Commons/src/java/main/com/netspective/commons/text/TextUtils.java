@@ -70,17 +70,12 @@ public class TextUtils
     /**
      * Return the name of the given cls that is different from the relativeTo class. Basically, this chops off the
      * package name of the cls that is equivalent to that of the relativeTo class.
-     *
-     * @param relativeTo
-     * @param cls
-     *
-     * @return
      */
     public String getRelativeClassName(Class relativeTo, Class cls)
     {
         String className = cls.getName();
         String relativeToPkg = relativeTo.getPackage().getName();
-        if (className.startsWith(relativeToPkg))
+        if(className.startsWith(relativeToPkg))
             return className.substring(relativeToPkg.length() + 1);
         else
             return className;
@@ -95,10 +90,6 @@ public class TextUtils
     /**
      * A version of getClassNameWithoutPackage with sensible defaults for most common usage: getting only the class
      * name (without the package name) for a Java class
-     *
-     * @param pkgAndClassName
-     *
-     * @return
      */
     public String getClassNameWithoutPackage(String pkgAndClassName)
     {
@@ -114,10 +105,6 @@ public class TextUtils
     /**
      * A version of getPackageName with sensible defaults for most common usage: getting the package name for a Java
      * class
-     *
-     * @param pkgAndClassName
-     *
-     * @return
      */
     public String getPackageName(String pkgAndClassName)
     {
@@ -126,22 +113,22 @@ public class TextUtils
 
     public String[] split(String source, String delimiter, boolean trim)
     {
-        if (source == null)
+        if(source == null)
             return null;
 
-        if (null == delimiter)
+        if(null == delimiter)
             delimiter = " ";
 
         List list = new ArrayList();
         StringTokenizer st = new StringTokenizer(source, delimiter);
-        if (trim)
+        if(trim)
         {
-            while (st.hasMoreTokens())
+            while(st.hasMoreTokens())
                 list.add(st.nextToken().trim());
         }
         else
         {
-            while (st.hasMoreTokens())
+            while(st.hasMoreTokens())
                 list.add(st.nextToken());
         }
         return (String[]) list.toArray(new String[list.size()]);
@@ -149,10 +136,6 @@ public class TextUtils
 
     /**
      * A version of split with sensible defaults for most common usage: splitting sentences into words
-     *
-     * @param source
-     *
-     * @return
      */
     public String[] split(String source)
     {
@@ -161,15 +144,15 @@ public class TextUtils
 
     public String join(String[] source, String delimiter)
     {
-        if (source == null) return null;
-        if (null == delimiter)
+        if(source == null) return null;
+        if(null == delimiter)
             delimiter = "";
 
         StringBuffer result = new StringBuffer();
-        for (int i = 0; i < source.length; i++)
+        for(int i = 0; i < source.length; i++)
         {
             result.append(source[i]);
-            if (i < source.length - 1)
+            if(i < source.length - 1)
                 result.append(delimiter);
         }
         return result.toString();
@@ -177,10 +160,6 @@ public class TextUtils
 
     /**
      * A version of join with sensible defaults for most common usage: concatenating multiple String objects together
-     *
-     * @param source
-     *
-     * @return
      */
     public String join(String[] source)
     {
@@ -190,18 +169,12 @@ public class TextUtils
     /**
      * A version of join with an additional parameter (trim) which automatically trims each String in the source and
      * then does the join.
-     *
-     * @param source
-     * @param delimiter
-     * @param trim
-     *
-     * @return
      */
     public String join(String[] source, String delimiter, boolean trim)
     {
-        if (trim)
+        if(trim)
         {
-            for (int i = 0; i < source.length; i++)
+            for(int i = 0; i < source.length; i++)
                 source[i] = source[i].trim();
         }
 
@@ -218,7 +191,7 @@ public class TextUtils
      */
     public String replaceTextValues(final String originalText, final String findText, final String replaceText)
     {
-        if (findText == null || replaceText == null)
+        if(findText == null || replaceText == null)
             return originalText;
 
         final StringBuffer result = new StringBuffer();
@@ -226,7 +199,7 @@ public class TextUtils
         //chunks always end where aOldPattern begins
         int startIdx = 0;
         int idxOld = 0;
-        while ((idxOld = originalText.indexOf(findText, startIdx)) >= 0)
+        while((idxOld = originalText.indexOf(findText, startIdx)) >= 0)
         {
             //grab a part of aInput which does not include aOldPattern
             result.append(originalText.substring(startIdx, idxOld));
@@ -255,10 +228,10 @@ public class TextUtils
     {
         String[] returnValue = new String[originalText.length];
 
-        if (null == findText || null == replaceText)
+        if(null == findText || null == replaceText)
             returnValue = originalText;
         else
-            for (int i = 0; i < originalText.length; i++)
+            for(int i = 0; i < originalText.length; i++)
                 returnValue[i] = replaceTextValues(originalText[i], findText, replaceText);
 
         return returnValue;
@@ -286,7 +259,7 @@ public class TextUtils
      */
     public boolean toBoolean(String s, boolean valueIfNull)
     {
-        if (s == null)
+        if(s == null)
             return valueIfNull;
         else
             return toBoolean(s);
@@ -308,16 +281,16 @@ public class TextUtils
     public String createLiteral(String text, String surroundWith, String escapeText, String replaceWith,
                                 boolean trim, boolean stripNewLines, String valueIfNullOrBlank)
     {
-        if (text == null || text.length() == 0)
+        if(text == null || text.length() == 0)
             return valueIfNullOrBlank;
 
-        if (stripNewLines)
+        if(stripNewLines)
             text = replaceTextValues(text, "\n", " ");
 
-        if (trim)
+        if(trim)
             text = text.trim();
 
-        if (escapeText != null)
+        if(escapeText != null)
             text = replaceTextValues(text, escapeText, replaceWith);
 
         StringBuffer sb = new StringBuffer(surroundWith);
@@ -332,21 +305,21 @@ public class TextUtils
      */
     public String sqlIdentifierToText(String original, boolean uppercaseEachWord)
     {
-        if (original == null || original.length() == 0)
+        if(original == null || original.length() == 0)
             return original;
 
         StringBuffer text = new StringBuffer();
         text.append(Character.toUpperCase(original.charAt(0)));
         boolean wordBreak = false;
-        for (int i = 1; i < original.length(); i++)
+        for(int i = 1; i < original.length(); i++)
         {
             char ch = original.charAt(i);
-            if (ch == '_')
+            if(ch == '_')
             {
                 text.append(' ');
                 wordBreak = true;
             }
-            else if (wordBreak)
+            else if(wordBreak)
             {
                 text.append(uppercaseEachWord ? Character.toUpperCase(ch) : Character.toLowerCase(ch));
                 wordBreak = false;
@@ -365,16 +338,16 @@ public class TextUtils
      */
     public String javaIdentifierToXmlNodeName(final String javaIdentifier)
     {
-        if (javaIdentifier == null || javaIdentifier.length() == 0)
+        if(javaIdentifier == null || javaIdentifier.length() == 0)
             return javaIdentifier;
 
         StringBuffer nodeName = new StringBuffer();
         nodeName.append(javaIdentifier.charAt(0));
-        for (int i = 1; i < javaIdentifier.length(); i++)
+        for(int i = 1; i < javaIdentifier.length(); i++)
         {
             //TODO: Might be a good idea to replace _ with - and to lower the case of any uppercase letters
             char ch = javaIdentifier.charAt(i);
-            if (Character.isLowerCase(ch))
+            if(Character.isLowerCase(ch))
                 nodeName.append(ch);
             else
             {
@@ -397,32 +370,32 @@ public class TextUtils
      */
     public String xmlTextToJavaIdentifier(String xml, boolean ucaseInitial)
     {
-        if (xml == null || xml.length() == 0)
+        if(xml == null || xml.length() == 0)
             return xml;
 
         StringBuffer identifier = new StringBuffer();
         char ch = xml.charAt(0);
-        if (Character.isJavaIdentifierStart(ch))
+        if(Character.isJavaIdentifierStart(ch))
             identifier.append(ucaseInitial ? Character.toUpperCase(ch) : Character.toLowerCase(ch));
         else
         {
             identifier.append('_');
-            if (Character.isJavaIdentifierPart(ch))
+            if(Character.isJavaIdentifierPart(ch))
                 identifier.append(ucaseInitial ? Character.toUpperCase(ch) : Character.toLowerCase(ch));
         }
 
         boolean uCase = false;
-        for (int i = 1; i < xml.length(); i++)
+        for(int i = 1; i < xml.length(); i++)
         {
             ch = xml.charAt(i);
-            if (ch == '.')
+            if(ch == '.')
             {
                 identifier.append('_');
             }
-            else if (ch != '_' && Character.isJavaIdentifierPart(ch))
+            else if(ch != '_' && Character.isJavaIdentifierPart(ch))
             {
                 identifier.append(Character.isUpperCase(ch)
-                        ? ch : (uCase ? Character.toUpperCase(ch) : Character.toLowerCase(ch)));
+                                  ? ch : (uCase ? Character.toUpperCase(ch) : Character.toLowerCase(ch)));
                 uCase = false;
             }
             else
@@ -437,15 +410,15 @@ public class TextUtils
      */
     public String xmlTextToJavaPackageName(String xml)
     {
-        if (xml == null || xml.length() == 0)
+        if(xml == null || xml.length() == 0)
             return xml;
 
         StringBuffer result = new StringBuffer();
         StringTokenizer st = new StringTokenizer(xml, ".");
-        while (st.hasMoreTokens())
+        while(st.hasMoreTokens())
         {
             result.append(xmlTextToJavaIdentifier(st.nextToken(), false).toLowerCase());
-            if (st.hasMoreTokens())
+            if(st.hasMoreTokens())
                 result.append(".");
         }
 
@@ -459,11 +432,11 @@ public class TextUtils
      */
     public String xmlTextToJavaConstant(String xml)
     {
-        if (xml == null || xml.length() == 0)
+        if(xml == null || xml.length() == 0)
             return xml;
 
         StringBuffer constant = new StringBuffer();
-        for (int i = 0; i < xml.length(); i++)
+        for(int i = 0; i < xml.length(); i++)
         {
             char ch = xml.charAt(i);
             constant.append(Character.isJavaIdentifierPart(ch) ? Character.toUpperCase(ch) : '_');
@@ -479,20 +452,20 @@ public class TextUtils
      */
     public String xmlTextToJavaConstantTrimmed(String xml)
     {
-        if (xml == null || xml.length() == 0)
+        if(xml == null || xml.length() == 0)
             return xml;
 
         boolean stringStarted = false;
         StringBuffer constant = new StringBuffer();
-        for (int i = 0; i < xml.length(); i++)
+        for(int i = 0; i < xml.length(); i++)
         {
             char ch = xml.charAt(i);
-            if (Character.isJavaIdentifierPart(ch))
+            if(Character.isJavaIdentifierPart(ch))
             {
                 stringStarted = true;
                 constant.append(Character.toUpperCase(ch));
             }
-            else if (stringStarted)
+            else if(stringStarted)
                 constant.append('_');
         }
         return constant.toString();
@@ -505,11 +478,11 @@ public class TextUtils
      */
     public String xmlTextToNodeName(String xml)
     {
-        if (xml == null || xml.length() == 0)
+        if(xml == null || xml.length() == 0)
             return xml;
 
         StringBuffer constant = new StringBuffer();
-        for (int i = 0; i < xml.length(); i++)
+        for(int i = 0; i < xml.length(); i++)
         {
             char ch = xml.charAt(i);
             constant.append(Character.isLetterOrDigit(ch) ? Character.toLowerCase(ch) : '-');
@@ -530,10 +503,10 @@ public class TextUtils
          * if the string is indented, find out how far the first line is indented
          */
         StringBuffer replStr = new StringBuffer();
-        for (int i = 0; i < text.length(); i++)
+        for(int i = 0; i < text.length(); i++)
         {
             char ch = text.charAt(i);
-            if (Character.isWhitespace(ch))
+            if(Character.isWhitespace(ch))
                 replStr.append(ch);
             else
                 break;
@@ -544,7 +517,7 @@ public class TextUtils
          */
         Perl5Util perlUtil = new Perl5Util();
 
-        if (replStr.length() > 0)
+        if(replStr.length() > 0)
             return perlUtil.substitute("s/^" + replStr + "//gm", text).trim();
         else
             return text;
@@ -580,18 +553,18 @@ public class TextUtils
     /* make the table name title cased (cap each letter after _) */
     public String fixupTableNameCase(String tableNameOrig)
     {
-        if (null == tableNameOrig)
+        if(null == tableNameOrig)
             return null;
 
         StringBuffer tableNameBuf = new StringBuffer(tableNameOrig.toLowerCase());
         boolean capNext = false;
-        for (int i = 0; i < tableNameBuf.length(); i++)
+        for(int i = 0; i < tableNameBuf.length(); i++)
         {
-            if (tableNameBuf.charAt(i) == '_')
+            if(tableNameBuf.charAt(i) == '_')
                 capNext = true;
             else
             {
-                if (i == 0 || capNext)
+                if(i == 0 || capNext)
                 {
                     tableNameBuf.setCharAt(i, Character.toUpperCase(tableNameBuf.charAt(i)));
                     capNext = false;
@@ -610,9 +583,9 @@ public class TextUtils
      */
     public boolean isEmpty(String value)
     {
-        if (value == null) return true;
-        if (value.length() == 0) return true;
-        if (value.trim().length() == 0) return true;
+        if(value == null) return true;
+        if(value.length() == 0) return true;
+        if(value.trim().length() == 0) return true;
         return false;
     }
 
@@ -622,8 +595,6 @@ public class TextUtils
      * @param strLocation The URL
      *
      * @return The text of the contents of the URL
-     *
-     * @throws IOException
      */
     public String getUrlContents(String strLocation) throws IOException
     {
@@ -632,7 +603,7 @@ public class TextUtils
         URLConnection urlConn = url.openConnection();
         InputStream urlIn = urlConn.getInputStream();
         int iRead = urlIn.read();
-        while (iRead != -1)
+        while(iRead != -1)
         {
             sb.append((char) iRead);
             iRead = urlIn.read();
@@ -646,15 +617,13 @@ public class TextUtils
      * @param location The URL
      *
      * @return The text of the contents of the File
-     *
-     * @throws IOException
      */
     public String getFileContents(String location) throws IOException
     {
         StringBuffer sb = new StringBuffer();
         InputStream is = new BufferedInputStream(new FileInputStream(location));
         int iRead = is.read();
-        while (iRead != -1)
+        while(iRead != -1)
         {
             sb.append((char) iRead);
             iRead = is.read();
@@ -664,14 +633,14 @@ public class TextUtils
 
     public String pad(String text, int length, String fillWith)
     {
-        if (text != null && text.length() > length)
+        if(text != null && text.length() > length)
             return text;
 
-        if (text == null)
+        if(text == null)
             text = "";
 
         StringBuffer sb = new StringBuffer(text);
-        while (sb.length() < length)
+        while(sb.length() < length)
             sb.append(fillWith);
         return sb.toString();
     }
@@ -684,8 +653,6 @@ public class TextUtils
      * @param endLineNumber   The ending line number
      *
      * @return The text contained in line numbers startingLineNumber to endingLineNumber
-     *
-     * @throws IOException
      */
     public String getTextFileLines(String location, int startLineNumber, int endLineNumber) throws IOException
     {
@@ -700,15 +667,13 @@ public class TextUtils
      * @param endLineNumber   The ending line number
      *
      * @return The text contained in line numbers startingLineNumber to endingLineNumber
-     *
-     * @throws IOException
      */
     public String getTextStreamLines(InputStream is, int startLineNumber, int endLineNumber) throws IOException
     {
-        if (is == null)
+        if(is == null)
             return null;
 
-        if (startLineNumber <= 0 && endLineNumber <= 0)
+        if(startLineNumber <= 0 && endLineNumber <= 0)
             return null;
 
         Reader isReader = null;
@@ -722,25 +687,25 @@ public class TextUtils
 
             String line = null;
 
-            if (startLineNumber > 0 && endLineNumber <= 0)
+            if(startLineNumber > 0 && endLineNumber <= 0)
             {
-                while ((line = reader.readLine()) != null)
+                while((line = reader.readLine()) != null)
                 {
-                    if (reader.getLineNumber() == startLineNumber)
+                    if(reader.getLineNumber() == startLineNumber)
                         return line;
                 }
 
             }
             else
             {
-                while ((line = reader.readLine()) != null)
+                while((line = reader.readLine()) != null)
                 {
                     int lineNumber = reader.getLineNumber();
 
-                    if (lineNumber < startLineNumber)
+                    if(lineNumber < startLineNumber)
                         continue;
 
-                    if (lineNumber > endLineNumber)
+                    if(lineNumber > endLineNumber)
                         break;
 
                     result.append(line);
@@ -750,10 +715,10 @@ public class TextUtils
         }
         finally
         {
-            if (reader != null)
+            if(reader != null)
                 reader.close();
 
-            if (isReader != null)
+            if(isReader != null)
                 is.close();
 
             is.close();
@@ -764,13 +729,13 @@ public class TextUtils
 
     public final String escapeHTML(String s)
     {
-        if (s == null) return null;
+        if(s == null) return null;
         StringBuffer sb = new StringBuffer();
         int n = s.length();
-        for (int i = 0; i < n; i++)
+        for(int i = 0; i < n; i++)
         {
             char c = s.charAt(i);
-            switch (c)
+            switch(c)
             {
                 case '<':
                     sb.append("&lt;");

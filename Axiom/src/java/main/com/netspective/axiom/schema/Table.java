@@ -106,8 +106,6 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Return the name of this column with the column name quoted for output in SQL
-     *
-     * @return
      */
     public String getSqlName();
 
@@ -128,8 +126,6 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
      * Ascertain whether or not the column's name should be quoted when referenced in SQL. This is so that if the
      * column name is not a valid SQL identifier (like starts with a number or something) it can be properly generated
      * in SQL.
-     *
-     * @return
      */
     public boolean isQuoteNameInSql();
 
@@ -188,8 +184,6 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Factory method to create a default column instance.
-     *
-     * @return
      */
     public Column createColumn();
 
@@ -222,8 +216,6 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Returns all the columns that are foreign key references.
-     *
-     * @return
      */
     public Columns getForeignKeyColumns();
 
@@ -431,8 +423,6 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Contruct a trigger object
-     *
-     * @return
      */
     public TableRowTrigger createTrigger();
 

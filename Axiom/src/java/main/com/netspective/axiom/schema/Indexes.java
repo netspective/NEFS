@@ -35,8 +35,11 @@ package com.netspective.axiom.schema;
 public interface Indexes
 {
     public void add(Index index);
+
     public Index get(int i);
+
     public Index get(String name);
+
     public int size();
 
     void merge(Indexes indexes);

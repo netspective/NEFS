@@ -100,7 +100,7 @@ public class ParentForeignKey extends BasicForeignKey
     public Rows getChildRowsByParentRow(ConnectionContext cc, Row row) throws NamingException, SQLException
     {
         if(row.getTable() != getReferencedColumns().getFirst().getTable())
-            throw new SQLException("Row value is from table '"+ row.getTable().getName() +"' while referenced column is from table '" + getReferencedColumns().getFirst().getTable().getName() + "'.");
+            throw new SQLException("Row value is from table '" + row.getTable().getName() + "' while referenced column is from table '" + getReferencedColumns().getFirst().getTable().getName() + "'.");
         return getChildRowsByParentValues(cc, row.getColumnValues());
     }
 

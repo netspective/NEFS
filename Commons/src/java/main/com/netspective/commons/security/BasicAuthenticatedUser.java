@@ -124,17 +124,15 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Attribu
 
     /**
      * Gets the names of all assigned roles as one comma separated string
-     *
-     * @return
      */
     public String getUserRoleNamesAsString()
     {
-        if (userRoleNames != null)
+        if(userRoleNames != null)
         {
             StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < userRoleNames.length; i++)
+            for(int i = 0; i < userRoleNames.length; i++)
             {
-                if (i != 0)
+                if(i != 0)
                     sb.append(", ");
                 sb.append(userRoleNames[i]);
             }
@@ -152,11 +150,11 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Attribu
     {
         userPermissionNames = permissions;
         userPermissions = null;
-        if (userPermissionNames == null)
+        if(userPermissionNames == null)
             return;
 
         userPermissions = createPermissionsBitSet(aclsManager);
-        for (int i = 0; i < permissions.length; i++)
+        for(int i = 0; i < permissions.length; i++)
         {
             String permName = permissions[i];
             Permission permission = aclsManager.getPermission(permName);
@@ -168,11 +166,11 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Attribu
     {
         userRoleNames = roles;
         userPermissions = null;
-        if (userRoleNames == null)
+        if(userRoleNames == null)
             return;
 
         userPermissions = createPermissionsBitSet(aclsManager);
-        for (int i = 0; i < roles.length; i++)
+        for(int i = 0; i < roles.length; i++)
         {
             String roleName = roles[i];
             Role role = aclsManager.getRole(roleName);
@@ -183,16 +181,16 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Attribu
     public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException
     {
         Permission perm = aclsManager.getPermission(permissionName);
-        if (perm == null)
+        if(perm == null)
             throw new RuntimeException("Permission '" + permissionName + "' does not exist in ACL.");
         return userPermissions.get(perm.getId());
     }
 
     public boolean hasAnyPermission(AccessControlListsManager aclsManager, String[] permissionNames) throws PermissionNotFoundException
     {
-        for (int i = 0; i < permissionNames.length; i++)
+        for(int i = 0; i < permissionNames.length; i++)
         {
-            if (hasPermission(aclsManager, permissionNames[i]))
+            if(hasPermission(aclsManager, permissionNames[i]))
                 return true;
         }
         return false;

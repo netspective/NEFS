@@ -72,9 +72,9 @@ public class TokenMgrError extends Error
     {
         StringBuffer retval = new StringBuffer();
         char ch;
-        for (int i = 0; i < str.length(); i++)
+        for(int i = 0; i < str.length(); i++)
         {
-            switch (str.charAt(i))
+            switch(str.charAt(i))
             {
                 case 0:
                     continue;
@@ -103,7 +103,7 @@ public class TokenMgrError extends Error
                     retval.append("\\\\");
                     continue;
                 default:
-                    if ((ch = str.charAt(i)) < 0x20 || ch > 0x7e)
+                    if((ch = str.charAt(i)) < 0x20 || ch > 0x7e)
                     {
                         String s = "0000" + Integer.toString(ch, 16);
                         retval.append("\\u" + s.substring(s.length() - 4, s.length()));
@@ -136,7 +136,7 @@ public class TokenMgrError extends Error
                 errorLine + ", column " +
                 errorColumn + ".  Encountered: " +
                 (EOFSeen
-                ? "<EOF> " : ("\"" + addEscapes(String.valueOf(curChar)) + "\"") + " (" + (int) curChar + "), ") +
+                 ? "<EOF> " : ("\"" + addEscapes(String.valueOf(curChar)) + "\"") + " (" + (int) curChar + "), ") +
                 "after : \"" + addEscapes(errorAfter) + "\"");
     }
 

@@ -76,7 +76,7 @@ public class TablesCollection implements Tables
     public Table getSole()
     {
         if(size() != 1)
-            throw new RuntimeException("Only a single table is expected in this collection (not "+ size() +"): " + this);
+            throw new RuntimeException("Only a single table is expected in this collection (not " + size() + "): " + this);
         return (Table) tables.get(0);
     }
 

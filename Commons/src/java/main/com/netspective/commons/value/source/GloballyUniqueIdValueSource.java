@@ -52,10 +52,10 @@ public class GloballyUniqueIdValueSource extends AbstractValueSource
     private static final Log log = LogFactory.getLog(GloballyUniqueIdValueSource.class);
     public static final String[] IDENTIFIERS = new String[]{"generate-id", "guid"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Returns a GUID each time the value source is called.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("secure", false, "no", "Whether or not to generate a secure GUID.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("secure", false, "no", "Whether or not to generate a secure GUID.")
+                                                                                              });
 
     boolean secure;
 
@@ -78,7 +78,7 @@ public class GloballyUniqueIdValueSource extends AbstractValueSource
         super.initialize(spec);
 
         StringTokenizer st = new StringTokenizer(spec.getParams(), ",");
-        if (st.hasMoreTokens())
+        if(st.hasMoreTokens())
             secure = TextUtils.getInstance().toBoolean(st.nextToken().trim());
     }
 
@@ -88,7 +88,7 @@ public class GloballyUniqueIdValueSource extends AbstractValueSource
         {
             return new GenericValue(GloballyUniqueIdentifier.getRandomGUID(secure));
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error generating GUID", e);
             return new GenericValue(e.getMessage());

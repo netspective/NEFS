@@ -139,7 +139,7 @@ public abstract class QueryDefnItemValueSource extends AbstractValueSource
         {
             sqlManager = getSqlManager(dbcvc);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to retrieve Sql Manager", e);
             throw new NestableRuntimeException(e);
@@ -147,7 +147,7 @@ public abstract class QueryDefnItemValueSource extends AbstractValueSource
 
         QueryDefinition result = sqlManager.getQueryDefinition(queryDefnId, true);
         if(result == null)
-            throw new RuntimeException("QueryDefinition '"+ queryDefnId +"' could not be located in SQL Manager " + sqlManager);
+            throw new RuntimeException("QueryDefinition '" + queryDefnId + "' could not be located in SQL Manager " + sqlManager);
 
         return result;
     }
@@ -158,7 +158,6 @@ public abstract class QueryDefnItemValueSource extends AbstractValueSource
      * resource id or a file name. If a resource id is required, use 'r resourceId' (prefix 'r ' in front of the value
      * to indicate it's a resource). The Query id is always a static text item and data-source-id may be a value source,
      * null, or a static text string.
-     * @param params
      */
     public void setSource(String params)
     {
@@ -170,12 +169,12 @@ public abstract class QueryDefnItemValueSource extends AbstractValueSource
             if(querySrcIdDelim != -1)
             {
                 queryDefnSourceId = ValueSources.getInstance().getValueSourceOrStatic(srcParams.substring(0, querySrcIdDelim));
-                queryDefnId = srcParams.substring(querySrcIdDelim+1);
+                queryDefnId = srcParams.substring(querySrcIdDelim + 1);
             }
             else
                 queryDefnId = srcParams;
 
-            setDataSourceId(ValueSources.getInstance().getValueSourceOrStatic(params.substring(dataSrcIdDelim+1)));
+            setDataSourceId(ValueSources.getInstance().getValueSourceOrStatic(params.substring(dataSrcIdDelim + 1)));
         }
         else
             dataSourceId = null;
@@ -197,11 +196,11 @@ public abstract class QueryDefnItemValueSource extends AbstractValueSource
     {
         public QueryDefnSourceParameter()
         {
-            super("query-defn-source", true, "The format is 'query-defn-source/query-defn-id@data-source-id'. Where the only required "+
-                                        "item is the query-defn-id. Query-defn-source may be either a static value or a value source and may resolve to either a " +
-                                        "resource id or a file name. If a resource id is required, use 'r resourceId' (prefix 'r ' in front of the value "+
-                                        "to indicate it's a resource). The query-defn-id is always a static text item and data-source-id may be a value source, "+
-                                        "null, or a static text string.");
+            super("query-defn-source", true, "The format is 'query-defn-source/query-defn-id@data-source-id'. Where the only required " +
+                                             "item is the query-defn-id. Query-defn-source may be either a static value or a value source and may resolve to either a " +
+                                             "resource id or a file name. If a resource id is required, use 'r resourceId' (prefix 'r ' in front of the value " +
+                                             "to indicate it's a resource). The query-defn-id is always a static text item and data-source-id may be a value source, " +
+                                             "null, or a static text string.");
         }
     }
 }

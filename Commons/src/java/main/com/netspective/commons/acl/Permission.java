@@ -66,7 +66,7 @@ public class Permission
     public void unionChildPermissions(Permission perm)
     {
         childPermissions.or(perm.getChildPermissions());
-        if (getParent() != null) getParent().unionChildPermissions(this);
+        if(getParent() != null) getParent().unionChildPermissions(this);
     }
 
     protected void setOwner(AccessControlList owner)
@@ -82,7 +82,7 @@ public class Permission
     protected void setParent(Permission parent)
     {
         this.parent = parent;
-        if (parent != null)
+        if(parent != null)
         {
             setOwner(parent.getOwner());
             setLevel(parent.getLevel() + 1);
@@ -127,10 +127,10 @@ public class Permission
 
     public String getQualifiedName()
     {
-        if (null == qualifiedName)
+        if(null == qualifiedName)
         {
             String qName = AccessControlList.NAME_SEPARATOR + getName();
-            if (parent != null)
+            if(parent != null)
                 qName = parent.getQualifiedName() + qName;
             else
                 qName = owner.getQualifiedName() + qName;
@@ -172,7 +172,7 @@ public class Permission
     {
         int result = 0;
         Permission parent = getParent();
-        while (parent != null)
+        while(parent != null)
         {
             result++;
             parent = parent.getParent();
@@ -184,9 +184,9 @@ public class Permission
     {
         List result = new ArrayList();
         Permission parent = getParent();
-        while (parent != null)
+        while(parent != null)
         {
-            if (result.size() == 0)
+            if(result.size() == 0)
                 result.add(parent);
             else
                 result.add(0, parent);
@@ -200,7 +200,7 @@ public class Permission
         int depth = getAncestorsCount();
 
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < depth; i++)
+        for(int i = 0; i < depth; i++)
             sb.append("  ");
 
         sb.append(getQualifiedName());
@@ -210,7 +210,7 @@ public class Permission
         sb.append(childPermissions);
         sb.append("\n");
 
-        for (int i = 0; i < children.size(); i++)
+        for(int i = 0; i < children.size(); i++)
         {
             Permission perm = (Permission) children.get(i);
             sb.append(perm.toString());

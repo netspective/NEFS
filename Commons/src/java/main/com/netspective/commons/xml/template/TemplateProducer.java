@@ -70,7 +70,7 @@ public class TemplateProducer
     public String getTemplateName(String url, String localName, String qName, Attributes attributes) throws SAXException
     {
         String templateName = attributes.getValue(getTemplateNameAttrName());
-        if (templateName == null || templateName.length() == 0)
+        if(templateName == null || templateName.length() == 0)
             throw new SAXException("Template must have a '" + getTemplateNameAttrName() + "' attribute in <" + elementName + "> ");
         return templateName;
     }

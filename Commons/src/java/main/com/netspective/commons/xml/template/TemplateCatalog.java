@@ -78,22 +78,22 @@ public class TemplateCatalog
 
         public Map getTemplates(TemplateCatalog templateCatalog)
         {
-            if (consumerDefn != null)
+            if(consumerDefn != null)
                 return templateCatalog.getConsumerTemplates(consumerDefn);
 
             Map templates = (Map) templateCatalog.getTemplatesByNameSpace().get(nameSpaceId);
-            if (templates != null)
+            if(templates != null)
                 return templates;
 
             String regEx = "/" + nameSpaceId + "/";
 
             // no templates found, see if we can match any using a regular expression
-            for (Iterator i = templateCatalog.getTemplatesByNameSpace().entrySet().iterator(); i.hasNext();)
+            for(Iterator i = templateCatalog.getTemplatesByNameSpace().entrySet().iterator(); i.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) i.next();
                 String searchNameSpaceId = (String) entry.getKey();
 
-                if (ValidationUtils.matchRegexp(searchNameSpaceId, regEx))
+                if(ValidationUtils.matchRegexp(searchNameSpaceId, regEx))
                     return (Map) entry.getValue();
             }
 
@@ -104,17 +104,17 @@ public class TemplateCatalog
     protected static void storeClassData(TemplateConsumerData data, Class cls, boolean interfaces, boolean ancestors)
     {
         templateDataByClassName.put(cls.getName(), data);
-        if (interfaces)
+        if(interfaces)
         {
-            for (int i = 0; i < cls.getInterfaces().length; i++)
+            for(int i = 0; i < cls.getInterfaces().length; i++)
             {
                 templateDataByClassName.put(cls.getInterfaces()[i].getName(), data);
             }
         }
-        if (ancestors)
+        if(ancestors)
         {
             Class superClass = cls.getSuperclass();
-            while (superClass != null && superClass != Object.class)
+            while(superClass != null && superClass != Object.class)
             {
                 templateDataByClassName.put(superClass.getName(), data);
                 superClass = superClass.getSuperclass();
@@ -155,10 +155,6 @@ public class TemplateCatalog
 
     /**
      * Get the sorted list of all template names for a particular namespace
-     *
-     * @param nameSpaceId
-     *
-     * @return
      */
     public Set getTemplateNames(String nameSpaceId)
     {
@@ -179,7 +175,7 @@ public class TemplateCatalog
     public Map getProducerTemplates(TemplateProducer producer)
     {
         Map result = getProducerCatalog(producer);
-        if (result == null)
+        if(result == null)
         {
             result = new HashMap();
             templatesByNameSpace.put(producer.getNameSpaceId(), result);
@@ -200,7 +196,7 @@ public class TemplateCatalog
     public Template getTemplate(TemplateProducer producer, String templateName)
     {
         Map producerCatalog = getProducerCatalog(producer);
-        if (producerCatalog != null)
+        if(producerCatalog != null)
             return (Template) producerCatalog.get(templateName);
         else
             return null;

@@ -45,10 +45,10 @@ import com.netspective.commons.text.TextUtils;
 
 public class TextSetColumn extends TextColumn implements DatabasePolicy.ColumnInsertListener, DatabasePolicy.ColumnUpdateListener, DatabasePolicy.ColumnDeleteListener
 {
-    static public final int COLINDEX_SYSTEM_ID   = 0;
-    static public final int COLINDEX_PARENT_ID   = 1;
+    static public final int COLINDEX_SYSTEM_ID = 0;
+    static public final int COLINDEX_PARENT_ID = 1;
     static public final int COLINDEX_VALUE_INDEX = 2;
-    static public final int COLINDEX_VALUE_TEXT  = 3;
+    static public final int COLINDEX_VALUE_TEXT = 3;
 
     private String delimiter = ",";
     private boolean trim = true;
@@ -86,13 +86,15 @@ public class TextSetColumn extends TextColumn implements DatabasePolicy.ColumnIn
             return;
 
         Table setTable = getColumnTables().getSole();
-        setTable.delete(cc, setTable.createRow(), "parent_id = ?", new Object[] { parentId });
+        setTable.delete(cc, setTable.createRow(), "parent_id = ?", new Object[]{parentId});
     }
 
     public void afterInsert(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
-        String[] values = columnValue.isListValue() ?
-                            columnValue.getTextValues() : TextUtils.getInstance().split(columnValue.getTextValue(), delimiter, true);
+        String[] values = columnValue.isListValue()
+                          ?
+                          columnValue.getTextValues()
+                          : TextUtils.getInstance().split(columnValue.getTextValue(), delimiter, true);
         if(values == null)
             return;
 

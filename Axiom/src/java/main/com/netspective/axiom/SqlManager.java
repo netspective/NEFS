@@ -141,9 +141,9 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     protected Queries constructQueries()
     {
         QueriesCollection queriesCollection = new QueriesCollection();
-		queriesCollection.setSqlManager(this);
+        queriesCollection.setSqlManager(this);
 
-		return queriesCollection;
+        return queriesCollection;
     }
 
     protected QueryDefinitions constructQueryDefinitions()
@@ -167,14 +167,14 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     {
         StoredProcedure sp = null;
         String actualName = "";
-        if (name != null && name.length() > 0)
+        if(name != null && name.length() > 0)
         {
             actualName = StoredProcedure.translateNameForMapKey(name);
             sp = storedProcedures.get(actualName);
         }
         if(sp == null && log.isDebugEnabled())
         {
-            log.debug("Unable to find stored procedure object '"+ name +"' as '"+ actualName +"'. Available: " + storedProcedures);
+            log.debug("Unable to find stored procedure object '" + name + "' as '" + actualName + "'. Available: " + storedProcedures);
             return null;
         }
         return sp;
@@ -189,14 +189,14 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     {
         Query query = null;
         String actualName = "";
-        if (name != null && name.length() > 0)
+        if(name != null && name.length() > 0)
         {
             actualName = Query.translateNameForMapKey(name);
             query = queries.get(actualName);
         }
         if(query == null && log.isDebugEnabled())
         {
-            log.debug("Unable to find query object '"+ name +"' as '"+ actualName +"'. Available: " + queries);
+            log.debug("Unable to find query object '" + name + "' as '" + actualName + "'. Available: " + queries);
             return null;
         }
         return query;
@@ -206,7 +206,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     {
         Object[][] ret = null;
         Query query = getQuery(queryName);
-        if (query != null)
+        if(query != null)
         {
             QueryResultSet queryResultSet = query.execute(cc, bindParams, false);
             ret = ResultSetUtils.getInstance().getResultSetRowsAsMatrix(queryResultSet.getResultSet());
@@ -220,7 +220,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     {
         Map[] ret = null;
         Query query = getQuery(queryName);
-        if (query != null)
+        if(query != null)
         {
             QueryResultSet queryResultSet = query.execute(cc, bindParams, false);
             ret = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(queryResultSet.getResultSet());
@@ -271,7 +271,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
         if(queryDefn == null && log.isDebugEnabled())
         {
-            log.debug("Unable to find query definition object '"+ name +"' as '"+ actualName +"'. Available: " + queryDefns);
+            log.debug("Unable to find query definition object '" + name + "' as '" + actualName + "'. Available: " + queryDefns);
             return null;
         }
         return queryDefn;
@@ -298,13 +298,13 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
                     return table.getQueryDefinition();
                 else
                 {
-                    log.debug("Unable to find table '"+ tableName +"' from '"+ name +"' in getQueryDefinition(). Available: " + queryDefns);
+                    log.debug("Unable to find table '" + tableName + "' from '" + name + "' in getQueryDefinition(). Available: " + queryDefns);
                     return null;
                 }
             }
             else
             {
-                log.debug("Unable to find schema '"+ schemaName +"' from '"+ name +"' in getQueryDefinition(). Available: " + queryDefns);
+                log.debug("Unable to find schema '" + schemaName + "' from '" + name + "' in getQueryDefinition(). Available: " + queryDefns);
                 return null;
             }
         }
@@ -336,7 +336,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
         if(schema == null && log.isDebugEnabled())
         {
-            log.debug("Unable to find schema object '"+ name +"' as '"+ actualName +"'. Available: " + schemas);
+            log.debug("Unable to find schema object '" + name + "' as '" + actualName + "'. Available: " + schemas);
             return null;
         }
         return schema;
@@ -379,7 +379,6 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     /* ------------------------------------------------------------------------------------------------------------- */
     /**
      * Produces metrics associated with database related entities such as static queries and stored procedures
-     * @param parent
      */
     public void produceMetrics(Metric parent)
     {

@@ -81,7 +81,8 @@ public class QueryDefnJoin
     public String getFromExpr()
     {
         String tableName = getTable();
-        return fromClauseExpr != null ? fromClauseExpr : (tableName.equals(name) ? tableName : (tableName + " " + name));
+        return fromClauseExpr != null
+               ? fromClauseExpr : (tableName.equals(name) ? tableName : (tableName + " " + name));
     }
 
     public QueryDefnJoin[] getImpliedJoins() throws QueryDefinitionException

@@ -168,7 +168,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         if(gc.getDelayedConstraints().size() > 0)
         {
             writer.write("\n");
-            for(Iterator iter = gc.getDelayedConstraints().iterator(); iter.hasNext(); )
+            for(Iterator iter = gc.getDelayedConstraints().iterator(); iter.hasNext();)
             {
                 ForeignKey fKey = (ForeignKey) iter.next();
                 renderSqlDdlConstraintClause(gc, null, fKey);
@@ -199,7 +199,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                         writer.write("\n");
                     }
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     log.error(e.getMessage(), e);
                 }
@@ -223,7 +223,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         {
             Table table = tables.get(t);
             final String tableAbbrev = table.getAbbrev();
-            if(! tableAbbrev.equals(table.getName()))
+            if(!tableAbbrev.equals(table.getName()))
             {
                 if(tableAbbrev.length() > maxTableAbbrevWidth)
                     maxTableAbbrevWidth = tableAbbrev.length();
@@ -250,7 +250,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
             {
                 Column column = columns.get(c);
                 final String colAbbrev = column.getAbbrev();
-                if(! colAbbrev.equals(column.getName()))
+                if(!colAbbrev.equals(column.getName()))
                 {
                     final String qualifiedColAbbrev = tableAbbrev + "." + colAbbrev;
                     if(qualifiedColAbbrev.length() > maxColumnAbbrevWidth)
@@ -284,7 +284,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
             writer.write("   Some table names have been abbreviated in constraint and/or index names.\n");
             writer.write("   ========================================================================\n");
 
-            for(Iterator i = tablesSortedByAbbrev.entrySet().iterator(); i.hasNext(); )
+            for(Iterator i = tablesSortedByAbbrev.entrySet().iterator(); i.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) i.next();
                 boolean dupes = entry.getValue() instanceof List;
@@ -309,7 +309,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
             writer.write("   Some column names have been abbreviated in constraint and/or index names.\n");
             writer.write("   =========================================================================\n");
 
-            for(Iterator i = columnsSortedByAbbrev.entrySet().iterator(); i.hasNext(); )
+            for(Iterator i = columnsSortedByAbbrev.entrySet().iterator(); i.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) i.next();
                 boolean dupes = entry.getValue() instanceof List;
@@ -369,7 +369,8 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         Writer writer = gc.getWriter();
         SqlDdlFormats ddlFormats = gc.getSqlDdlFormats();
 
-        String format = isDropSql ? ddlFormats.getDropSequenceStatementFormat() : ddlFormats.getCreateSequenceStatementFormat();
+        String format = isDropSql
+                        ? ddlFormats.getDropSequenceStatementFormat() : ddlFormats.getCreateSequenceStatementFormat();
 
         int seqCount = 0;
         Map vars = ddlFormats.createJavaExpressionVars();
@@ -396,9 +397,9 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 }
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            log.error("Error in "+ AnsiDatabasePolicy.class +".renderSqlDdlSequenceStatements(): " + e.getMessage(), e);
+            log.error("Error in " + AnsiDatabasePolicy.class + ".renderSqlDdlSequenceStatements(): " + e.getMessage(), e);
             throw new IOException(e.toString());
         }
 
@@ -410,7 +411,8 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         Writer writer = gc.getWriter();
         SqlDdlFormats ddlFormats = gc.getSqlDdlFormats();
 
-        String format = isDropSql ? ddlFormats.getDropIndexStatementFormat() : ddlFormats.getCreateIndexStatementFormat();
+        String format = isDropSql
+                        ? ddlFormats.getDropIndexStatementFormat() : ddlFormats.getCreateIndexStatementFormat();
 
         Map vars = ddlFormats.createJavaExpressionVars();
         vars.put("table", table);
@@ -477,9 +479,9 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 writer.write("\n");
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            log.error("Error in "+ AnsiDatabasePolicy.class +".renderSqlDdlIndexStatements(): " + e.getMessage(), e);
+            log.error("Error in " + AnsiDatabasePolicy.class + ".renderSqlDdlIndexStatements(): " + e.getMessage(), e);
             throw new IOException(e.toString());
         }
 
@@ -491,7 +493,9 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         Writer writer = gc.getWriter();
         SqlDdlFormats ddlFormats = gc.getSqlDdlFormats();
 
-        String format = table != null ? ddlFormats.getFkeyConstraintTableClauseFormat() : ddlFormats.getfkeyConstraintAlterTableStatementFormat();
+        String format = table != null
+                        ? ddlFormats.getFkeyConstraintTableClauseFormat()
+                        : ddlFormats.getfkeyConstraintAlterTableStatementFormat();
         if(format == null)
             return;
 
@@ -548,7 +552,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 if(gc.getDatabasePolicy().supportsForeignKeyConstraints())
                 {
                     ForeignKey fKey = column.getForeignKey();
-                    if(fKey != null && ! fKey.isLogical())
+                    if(fKey != null && !fKey.isLogical())
                     {
                         /*
                           1) if visitedTables is not provided, we'll assume that we'll place the foreign key contraints inside the table
@@ -573,7 +577,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
 
                 writer.write(" /* ");
                 writer.write(textUtils.getRelativeClassName(BasicColumn.class, column.getClass()));
-                if(! column.getAbbrev().equals(column.getName()))
+                if(!column.getAbbrev().equals(column.getName()))
                     writer.write(", Abbrev '" + column.getAbbrev() + "'");
                 writer.write(" */");
 
@@ -587,7 +591,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
 
                 int lastConstr = tableConstraints.size() - 1;
                 int constrIndex = 0;
-                for(Iterator constr = tableConstraints.iterator(); constr.hasNext(); )
+                for(Iterator constr = tableConstraints.iterator(); constr.hasNext();)
                 {
                     ForeignKey fKey = (ForeignKey) constr.next();
 
@@ -605,7 +609,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 {
                     writer.write("\n");
 
-                    for(Iterator constr = tableDelayedConstraints.iterator(); constr.hasNext(); )
+                    for(Iterator constr = tableDelayedConstraints.iterator(); constr.hasNext();)
                     {
                         ForeignKey fKey = (ForeignKey) constr.next();
 
@@ -613,7 +617,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
 
                         writer.write("/* DELAYED: ");
                         renderSqlDdlConstraintClause(gc, table, fKey);
-                        writer.write(" ("+ fKey.getReferencedColumns().getFirst().getTable().getName() +" table not created yet) */");
+                        writer.write(" (" + fKey.getReferencedColumns().getFirst().getTable().getName() + " table not created yet) */");
 
                         writer.write("\n");
                         constrIndex++;
@@ -637,9 +641,9 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 }
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            log.error("Error in "+ AnsiDatabasePolicy.class +".renderSqlDdlTableStatement(): " + e.getMessage(), e);
+            log.error("Error in " + AnsiDatabasePolicy.class + ".renderSqlDdlTableStatement(): " + e.getMessage(), e);
             throw new IOException(e.toString());
         }
 
@@ -661,7 +665,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         if(defineExpr != null)
             writer.write(defineExpr.getSql(gc.getValueContext()).toUpperCase());
         else
-            writer.write("No definition found in column '"+ column +"' for policy '"+ policy.getDbmsIdentifier() +"' or ANSI. Available: " + sqlDataDefns.getSqlDefns().getAvailableDbmsIds());
+            writer.write("No definition found in column '" + column + "' for policy '" + policy.getDbmsIdentifier() + "' or ANSI. Available: " + sqlDataDefns.getSqlDefns().getAvailableDbmsIds());
 
         if(defaultExpr != null)
         {

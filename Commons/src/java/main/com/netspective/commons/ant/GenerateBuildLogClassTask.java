@@ -101,10 +101,10 @@ public class GenerateBuildLogClassTask extends Task
 
             writer.write("  public static final String[] BUILD_CLASS_PATH = new String[] {\n");
             ClassPath.ClassPathInfo[] cpi = ClassPath.getSystemClassPaths();
-            for (int i = 0; i < cpi.length; i++)
+            for(int i = 0; i < cpi.length; i++)
             {
                 ClassPath.ClassPathInfo info = cpi[i];
-                if (i > 0)
+                if(i > 0)
                     writer.write(", \n");
                 String path = info.getClassPath().getAbsolutePath();
                 writer.write("      \"" + path.replace('\\', '/') + (info.isValid() ? "" : " (INVALID)") + "\"");
@@ -120,7 +120,7 @@ public class GenerateBuildLogClassTask extends Task
 
             log("Generated '" + propertiesPrefix + ".*' properties for " + javaFile.getAbsolutePath());
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new BuildException(e);
         }

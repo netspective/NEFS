@@ -69,7 +69,7 @@ public class ReportColumnFactory
         TabularReportColumn column = null;
 
         int dataType = rsmd.getColumnType(resultSetColIndex);
-        switch (dataType)
+        switch(dataType)
         {
             case Types.INTEGER:
             case Types.SMALLINT:
@@ -86,7 +86,7 @@ public class ReportColumnFactory
 
             case Types.NUMERIC:
             case Types.DECIMAL:
-                if (rsmd.getScale(resultSetColIndex) > 0)
+                if(rsmd.getScale(resultSetColIndex) > 0)
                     column = new DecimalColumn();
                 else
                     column = new NumericColumn();

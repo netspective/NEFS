@@ -55,7 +55,7 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
 
     private ConnectionProvider provider;
 
-	protected String defaultDataSource = DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE;
+    protected String defaultDataSource = DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE;
 
     public ConnectionContext getConnection(String dataSourceId, boolean transaction) throws NamingException, SQLException
     {
@@ -66,7 +66,7 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
             result = new AutoCommitConnectionContext(dataSourceId, this);
 
         if(log.isTraceEnabled())
-            log.trace("Obtained " + result + " for data source '"+ result.getDataSourceId() +"'.");
+            log.trace("Obtained " + result + " for data source '" + result.getDataSourceId() + "'.");
 
         return result;
     }
@@ -79,7 +79,7 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
     public void returnConnection(ConnectionContext cc) throws SQLException
     {
         if(log.isTraceEnabled())
-            log.trace("Returned " + cc + " for data source '"+ cc.getDataSourceId() +"'.");
+            log.trace("Returned " + cc + " for data source '" + cc.getDataSourceId() + "'.");
         cc.close();
     }
 
@@ -113,21 +113,23 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
         return null;
     }
 
-	/**
-	 * Sets the default data source to a user-defined string.
-	 * @param defaultDataSource A string representing the new data source
-	 */
-	public void setDefaultDataSource (String defaultDataSource)
-	{
-		this.defaultDataSource = defaultDataSource;
-	}
+    /**
+     * Sets the default data source to a user-defined string.
+     *
+     * @param defaultDataSource A string representing the new data source
+     */
+    public void setDefaultDataSource(String defaultDataSource)
+    {
+        this.defaultDataSource = defaultDataSource;
+    }
 
-	/**
-	 * Retrieves the default data source
-	 * @return A string representing the default data source
-	 */
-	public String getDefaultDataSource ()
-	{
-		return null == defaultDataSource ? DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE : defaultDataSource;
-	}
+    /**
+     * Retrieves the default data source
+     *
+     * @return A string representing the default data source
+     */
+    public String getDefaultDataSource()
+    {
+        return null == defaultDataSource ? DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE : defaultDataSource;
+    }
 }

@@ -92,14 +92,14 @@ public class ValueSourcesTest extends TestCase
         List valuesTwoList = valueTwo.getListValue();
 
         assertEquals(inputValues.length, valuesTwoList.size());
-        for (int i = 0; i < inputValues.length; i++)
+        for(int i = 0; i < inputValues.length; i++)
             assertTrue(valuesTwoList.contains(inputValues[i]));
 
         assertEquals(inputValues[0], valueTwo.getTextValue());
 
         String[] valuesTwoArray = valueTwo.getTextValues();
         assertEquals(inputValues.length, valuesTwoArray.length);
-        for (int i = 0; i < inputValues.length; i++)
+        for(int i = 0; i < inputValues.length; i++)
             assertEquals(inputValues[i], valuesTwoArray[i]);
 
         // Testing List routines/sections using AbstractValue instead of the Value interface
@@ -113,14 +113,14 @@ public class ValueSourcesTest extends TestCase
         List valueThreeList = valueTwo.getListValue();
 
         assertEquals(inputValues.length, valueThreeList.size());
-        for (int i = 0; i < inputValues.length; i++)
+        for(int i = 0; i < inputValues.length; i++)
             assertTrue(valueThreeList.contains(inputValues[i]));
 
         assertEquals(inputValues[0], valueThree.getTextValue());
 
         String[] valueThreeArray = valueThree.getTextValues();
         assertEquals(inputValues.length, valueThreeArray.length);
-        for (int i = 0; i < inputValues.length; i++)
+        for(int i = 0; i < inputValues.length; i++)
             assertEquals(inputValues[i], valueThreeArray[i]);
 
     }
@@ -188,7 +188,7 @@ public class ValueSourcesTest extends TestCase
             assertEquals(3, valueOne.getIntValue());
             exceptionThrown = false;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             assertTrue(exceptionThrown);
         }
@@ -213,7 +213,7 @@ public class ValueSourcesTest extends TestCase
 
         assertEquals(expectedClassesMapKeySet.length, srcClassesMapKeySet.size());
 
-        for (int i = 0; i < expectedClassesMapKeySet.length; i++)
+        for(int i = 0; i < expectedClassesMapKeySet.length; i++)
             assertTrue(srcClassesMapKeySet.contains(expectedClassesMapKeySet[i]));
 
         Set srcClassesSet = vs.getValueSourceClassesSet();
@@ -226,7 +226,7 @@ public class ValueSourcesTest extends TestCase
             SystemPropertyValueSource.class
         };
 
-        for (int i = 0; i < expectedClassesSet.length; i++)
+        for(int i = 0; i < expectedClassesSet.length; i++)
             assertTrue(srcClassesMapKeySet.contains(expectedClassesMapKeySet[i]));
     }
 

@@ -128,7 +128,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public TemplateProducer getDynamicTemplatesProducer()
     {
-        if (parseContext.getParentPC() != null)
+        if(parseContext.getParentPC() != null)
             return ((TemplateContentHandler) parseContext.getParentPC().getParser().getContentHandler()).getDynamicTemplatesProducer();
         else
             return nodeIdentifiers.getDynamicTemplatesProducer();
@@ -177,9 +177,9 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
             vars.put("nodeStack", nodeStack);
             return expression.evaluate(context);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            if (e instanceof ContentHandlerException)
+            if(e instanceof ContentHandlerException)
                 throw (ContentHandlerException) e;
             else
                 throw new ContentHandlerException(parseContext, e);
@@ -190,48 +190,48 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     {
         String resourceName = attrs.getValue(NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE);
         String templateName = attrs.getValue(NodeIdentifiers.ATTRNAME_INCLUDE_TEMPLATE);
-        if (resourceName != null && resourceName.length() > 0)
+        if(resourceName != null && resourceName.length() > 0)
         {
             Resource resource = null;
             Object relativeTo = activeEntry.getResourceIncludeRelativeTo();
             String relativeToExpr = attrs.getValue(NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO);
-            if (relativeToExpr != null)
+            if(relativeToExpr != null)
                 relativeTo = evaluateHandlerExpression(relativeToExpr);
 
             log.trace("Including resource '" + resourceName + "' relative to '" + relativeTo + "'.");
 
-            if (relativeTo instanceof Class)
+            if(relativeTo instanceof Class)
                 resource = new Resource((Class) relativeTo, resourceName);
-            else if (relativeTo instanceof ClassLoader)
+            else if(relativeTo instanceof ClassLoader)
                 resource = new Resource((ClassLoader) relativeTo, resourceName);
-            else if (relativeTo instanceof String)
+            else if(relativeTo instanceof String)
             {
                 try
                 {
                     resource = new Resource(Class.forName((String) relativeTo), resourceName);
                 }
-                catch (ClassNotFoundException e)
+                catch(ClassNotFoundException e)
                 {
                     throw new ContentHandlerException(parseContext, "The result of '" + NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO + "' attribute expression '" + relativeTo + "' in <" + nodeIdentifiers.getIncludeElementName() + "> (" + relativeToExpr + ") must be either a Class or a ClassLoader.");
                 }
             }
-            else if (relativeToExpr != null)
+            else if(relativeToExpr != null)
                 throw new ContentHandlerException(parseContext, "The result of '" + NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO + "' attribute expression '" + relativeTo + "' in <" + nodeIdentifiers.getIncludeElementName() + "> (" + relativeToExpr + ") must be either a Class or a ClassLoader.");
             else
                 resource = new Resource(activeEntry.getClass(), resourceName);
 
             ParseContext includePC = resource.getFile() != null ?
-                    activeEntry.parseInclude(parseContext, resource.getFile()) :
-                    activeEntry.parseInclude(parseContext, resource);
+                                     activeEntry.parseInclude(parseContext, resource.getFile()) :
+                                     activeEntry.parseInclude(parseContext, resource);
 
             parseContext.getErrors().addAll(includePC.getErrors());
         }
-        else if (templateName != null && templateName.length() > 0)
+        else if(templateName != null && templateName.length() > 0)
         {
             log.trace("Including template '" + templateName + "'.");
 
             Template template = parseContext.getTemplateCatalog().getTemplate(nodeIdentifiers.getGenericTemplateProducer(), templateName);
-            if (template == null)
+            if(template == null)
                 throw new SAXParseException("Generic template '" + templateName + "' was not found in the active document.", parseContext.getLocator());
             template.applyChildren(template.createApplyContext(this, nodeIdentifiers.getIncludeElementName(), attrs));
         }
@@ -249,13 +249,13 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     protected boolean handleDefaultText(String text) throws SAXException
     {
-        if (!templateDefnStack.isEmpty())
+        if(!templateDefnStack.isEmpty())
         {
             TemplateElement activeTemplate = (TemplateElement) templateDefnStack.peek();
             activeTemplate.addChild(new TemplateText(activeTemplate, text));
             return true;
         }
-        else if (nodeStack.isEmpty() || !ignoreStack.isEmpty())
+        else if(nodeStack.isEmpty() || !ignoreStack.isEmpty())
             return true;
         else
             return false;
@@ -268,7 +268,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public void consumeCharacters() throws SAXException
     {
-        if (characters.length() > 0)
+        if(characters.length() > 0)
         {
             text(characters.toString());
             characters = new StringBuffer();
@@ -278,13 +278,13 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     protected boolean defaultHandleTemplateStartElement(String url, String localName, String qName, Attributes attributes) throws SAXException
     {
         String elementName = qName.toLowerCase();
-        if (!templateDefnStack.isEmpty())
+        if(!templateDefnStack.isEmpty())
         {
             // we're inside a template already so just grab the contents
             TemplateElement activeTemplate = (TemplateElement) templateDefnStack.peek();
-            if (nodeIdentifiers.getTemplateParamDecl().equals(elementName))
+            if(nodeIdentifiers.getTemplateParamDecl().equals(elementName))
             {
-                if (activeTemplate instanceof Template)
+                if(activeTemplate instanceof Template)
                 {
                     ((Template) activeTemplate).declareParameter(this, url, localName, qName, attributes);
                     templateDefnStack.push(activeTemplate);
@@ -300,10 +300,10 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
             }
             return true;
         }
-        else if (elementName.equals(nodeIdentifiers.getTemplateElementName()))
+        else if(elementName.equals(nodeIdentifiers.getTemplateElementName()))
         {
             String templateName = attributes.getValue(NodeIdentifiers.ATTRNAME_GENERIC_TEMPLATE_NAME);
-            if (templateName == null || templateName.length() == 0)
+            if(templateName == null || templateName.length() == 0)
                 throw new SAXParseException("Template must have a '" + NodeIdentifiers.ATTRNAME_GENERIC_TEMPLATE_NAME + "' attribute in <" + elementName + "> ", parseContext.getLocator());
 
             final Locator locator = getParseContext().getLocator();
@@ -320,7 +320,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     public String getStackDepthPrefix()
     {
         StringBuffer sb = new StringBuffer();
-        for (int i = 1; i < nodeStack.size(); i++)
+        for(int i = 1; i < nodeStack.size(); i++)
             sb.append("  ");
         return sb.toString();
     }
@@ -328,7 +328,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     public String getAttributeNames(Attributes attributes)
     {
         StringBuffer sb = new StringBuffer(" Attrs: [");
-        for (int i = 0; i < attributes.getLength(); i++)
+        for(int i = 0; i < attributes.getLength(); i++)
         {
             sb.append(attributes.getQName(i));
             sb.append("=");
@@ -344,10 +344,10 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     {
         // see if we have any dynamic templates that we now need to process
         List dynTemplates = getDynamicTemplatesProducer().getInstances();
-        if (dynTemplates.size() > 0)
+        if(dynTemplates.size() > 0)
         {
             TemplateApplyContext tac = new TemplateApplyContext(this);
-            for (int i = 0; i < dynTemplates.size(); i++)
+            for(int i = 0; i < dynTemplates.size(); i++)
             {
                 Template template = (Template) dynTemplates.get(i);
                 template.applySelfAndChildren(tac);
@@ -367,7 +367,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
         consumeCharacters();
 
         // containers are simply holders of other elements and should not be processed
-        if (qName.equals(nodeIdentifiers.getContainerElementName()))
+        if(qName.equals(nodeIdentifiers.getContainerElementName()))
             return true;
 
         return false;
@@ -379,10 +379,10 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
         consumeCharacters();
 
         // containers are simply holders of other elements and should not be processed
-        if (qName.equals(nodeIdentifiers.getContainerElementName()))
+        if(qName.equals(nodeIdentifiers.getContainerElementName()))
             return true;
 
-        if (inInclude)
+        if(inInclude)
         {
             inInclude = false;
             return true;
@@ -401,9 +401,9 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public void processingInstruction(String target, String pi) throws SAXException
     {
-        if (target.equals(parseContext.getTransformInstruction()))
+        if(target.equals(parseContext.getTransformInstruction()))
         {
-            if (parseContext.prepareTransformInstruction(pi))
+            if(parseContext.prepareTransformInstruction(pi))
                 throw new SAXException(new TransformProcessingInstructionEncounteredException());
         }
     }

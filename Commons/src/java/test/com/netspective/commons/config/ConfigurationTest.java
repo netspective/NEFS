@@ -61,8 +61,8 @@ public class ConfigurationTest extends TestCase
     {
         ConfigurationsComponent component =
                 (ConfigurationsComponent) XdmComponentFactory.get(ConfigurationsComponent.class,
-                        new Resource(ConfigurationTest.class, RESOURCE_NAME_ONE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                  new Resource(ConfigurationTest.class, RESOURCE_NAME_ONE),
+                                                                  XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         ConfigurationsManager configManager = component.getItems();
         assertNotNull("Configuration Manager is null", configManager);
@@ -142,8 +142,8 @@ public class ConfigurationTest extends TestCase
     {
         ConfigurationsComponent component =
                 (ConfigurationsComponent) XdmComponentFactory.get(ConfigurationsComponent.class,
-                        new Resource(ConfigurationTest.class, RESOURCE_NAME_ONE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                  new Resource(ConfigurationTest.class, RESOURCE_NAME_ONE),
+                                                                  XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         ConfigurationsManager configManager = component.getItems();
         assertNotNull("Configuration Manager is null", configManager);
@@ -183,7 +183,7 @@ public class ConfigurationTest extends TestCase
             propertyValue = defaultConfig.getTextValue(null, "test00-non-existant-property");
             exceptionThrown = false;
         }
-        catch (PropertyNotFoundException e)
+        catch(PropertyNotFoundException e)
         {
             assertTrue(exceptionThrown);
             assertNull(propertyValue);
@@ -198,7 +198,7 @@ public class ConfigurationTest extends TestCase
             propertyValue = defaultConfig.getTextValue(null, "test00-non-existant-property", errorTestDefaultValue);
             exceptionThrown = false;
         }
-        catch (PropertyNotFoundException e)
+        catch(PropertyNotFoundException e)
         {
             assertTrue(exceptionThrown);
             assertEquals(errorTestDefaultValue, propertyValue);
@@ -214,7 +214,7 @@ public class ConfigurationTest extends TestCase
             propertyValue = defaultConfig.getExpression("test00-non-existant-property");
             exceptionThrown = false;
         }
-        catch (PropertyNotFoundException e)
+        catch(PropertyNotFoundException e)
         {
             assertTrue(exceptionThrown);
             assertNull(propertyValue);
@@ -228,8 +228,8 @@ public class ConfigurationTest extends TestCase
     {
         ConfigurationsComponent component =
                 (ConfigurationsComponent) XdmComponentFactory.get(ConfigurationsComponent.class,
-                        new Resource(ConfigurationTest.class, RESOURCE_NAME_ONE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                  new Resource(ConfigurationTest.class, RESOURCE_NAME_ONE),
+                                                                  XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         Configuration notDefaultConfig = component.getItems().getConfigurations().getConfiguration("not-default");
         assertNotNull(notDefaultConfig);

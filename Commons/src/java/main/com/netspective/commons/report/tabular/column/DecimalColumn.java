@@ -53,17 +53,17 @@ public class DecimalColumn extends NumericColumn
         Object oData = ds.getActiveRowColumnData(colIndex, flags);
         String data = "";
         double value = 0;
-        if (oData != null)
+        if(oData != null)
         {
             value = ((Number) oData).doubleValue();
             NumberFormat fmt = (NumberFormat) getFormatter();
             data = fmt == null ? Double.toString(value) : fmt.format(value);
         }
 
-        if ((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
+        if((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
         {
             ColumnDataCalculator calc = rc.getCalc(colIndex);
-            if (calc != null)
+            if(calc != null)
                 calc.addValue(rc, this, ds, value);
         }
         return data;

@@ -65,15 +65,15 @@ public class TimeZoneValidationRule extends BasicValidationRule
     {
         boolean status = super.isValid(vc, value);
 
-        if (!status) return status;
+        if(!status) return status;
 
         String text = value.getTextValue();
-        if (text == null || text.length() == 0)
+        if(text == null || text.length() == 0)
             return true;
 
         TimeZone tz = TimeZone.getTimeZone(text);
 
-        if (!"GMT".equalsIgnoreCase(text) && tz.equals(TimeZone.getTimeZone("GMT")))
+        if(!"GMT".equalsIgnoreCase(text) && tz.equals(TimeZone.getTimeZone("GMT")))
         {
             // getTimeZone returns the ID for GMT if it's argument is not a valid timezone...
             // Our check: If the passed in timezon was NOT GMT but the return value IS, we've

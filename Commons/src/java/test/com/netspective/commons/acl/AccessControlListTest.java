@@ -59,20 +59,13 @@ public class AccessControlListTest extends TestCase
     /**
      * This test makes sure that an ACL is read properly from a file containing just a single <access-control-list>
      * tag with the default name of "acl"
-     *
-     * @throws DataModelException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IOException
      */
     public void testSingleACLDataModelSchemaImportFromXmlValid() throws PermissionNotFoundException, DataModelException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, RoleNotFoundException
     {
         AccessControlListsComponent aclc =
                 (AccessControlListsComponent) XdmComponentFactory.get(AccessControlListsComponent.class,
-                        new Resource(AccessControlListTest.class, RESOURCE_NAME_ONE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                      new Resource(AccessControlListTest.class, RESOURCE_NAME_ONE),
+                                                                      XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         // Verify _something_ was loaded...
         assertNotNull(aclc);
@@ -121,20 +114,13 @@ public class AccessControlListTest extends TestCase
     /**
      * This test makes sure that an ACL is read properly from a file containing just a single <access-control-list>
      * tag with the name "main".
-     *
-     * @throws DataModelException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IOException
      */
     public void testSingleACLNonDefaultDataModelSchemaImportFromXmlValid() throws RoleNotFoundException, PermissionNotFoundException, DataModelException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException
     {
         AccessControlListsComponent aclc =
                 (AccessControlListsComponent) XdmComponentFactory.get(AccessControlListsComponent.class,
-                        new Resource(AccessControlListTest.class, RESOURCE_NAME_TWO),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                      new Resource(AccessControlListTest.class, RESOURCE_NAME_TWO),
+                                                                      XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         // Verify _something_ was loaded...
         assertNotNull(aclc);
@@ -193,20 +179,13 @@ public class AccessControlListTest extends TestCase
     /**
      * This test makes sure that an ACL is read properly from a file containing multiple <access-control-list>
      * tags with one having the default name of "acl" and the rest having other names.
-     *
-     * @throws DataModelException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IOException
      */
     public void testMultipleACLWithDefaultDataModelSchemaImportFromXmlValid() throws RoleNotFoundException, PermissionNotFoundException, DataModelException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException
     {
         AccessControlListsComponent aclc =
                 (AccessControlListsComponent) XdmComponentFactory.get(AccessControlListsComponent.class,
-                        new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                      new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
+                                                                      XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         // Verify _something_ was loaded...
         assertNotNull(aclc);
@@ -307,8 +286,8 @@ public class AccessControlListTest extends TestCase
     {
         AccessControlListsComponent aclc =
                 (AccessControlListsComponent) XdmComponentFactory.get(AccessControlListsComponent.class,
-                        new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                      new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
+                                                                      XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         // Verify _something_ was loaded...
         assertNotNull(aclc);
@@ -335,7 +314,7 @@ public class AccessControlListTest extends TestCase
             readOnlyUser = aclThree.getRole("/acl_three/role/readonlyuser");
             exceptionThrown = false;
         }
-        catch (RoleNotFoundException e)
+        catch(RoleNotFoundException e)
         {
             assertTrue("No exception thrown on attempt to get invalid role", exceptionThrown);
             assertEquals("/acl_three/role/readonlyuser", e.getReference());
@@ -349,7 +328,7 @@ public class AccessControlListTest extends TestCase
             readOnlyUser = aclThree.getRole("/acl_three/role/read-only-user");
             exceptionThrown = false;
         }
-        catch (RoleNotFoundException e)
+        catch(RoleNotFoundException e)
         {
             assertFalse("Exception thrown on attempt to get _valid_ role", exceptionThrown);
             assertEquals("/acl_three/role/read-only-user", e.getReference());
@@ -366,7 +345,7 @@ public class AccessControlListTest extends TestCase
             viewOrder = aclThree.getPermission("/acl_three/app/orders/vieworder");
             exceptionThrown = false;
         }
-        catch (PermissionNotFoundException e)
+        catch(PermissionNotFoundException e)
         {
             assertTrue(exceptionThrown);
             assertEquals("/acl_three/app/orders/vieworder", e.getReference());
@@ -380,7 +359,7 @@ public class AccessControlListTest extends TestCase
             viewOrder = aclThree.getPermission("/acl_three/app/orders/view_order");
             exceptionThrown = false;
         }
-        catch (PermissionNotFoundException e)
+        catch(PermissionNotFoundException e)
         {
             assertFalse(exceptionThrown);
             assertEquals("/acl_three/app/orders/view_order", e.getReference());
@@ -396,8 +375,8 @@ public class AccessControlListTest extends TestCase
     {
         AccessControlListsComponent aclc =
                 (AccessControlListsComponent) XdmComponentFactory.get(AccessControlListsComponent.class,
-                        new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                      new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
+                                                                      XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         // Verify _something_ was loaded...
         assertNotNull(aclc);
@@ -427,8 +406,8 @@ public class AccessControlListTest extends TestCase
     {
         AccessControlListsComponent aclc =
                 (AccessControlListsComponent) XdmComponentFactory.get(AccessControlListsComponent.class,
-                        new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                      new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
+                                                                      XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         // Verify _something_ was loaded...
         assertNotNull(aclc);
@@ -484,8 +463,8 @@ public class AccessControlListTest extends TestCase
     {
         AccessControlListsComponent aclc =
                 (AccessControlListsComponent) XdmComponentFactory.get(AccessControlListsComponent.class,
-                        new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                      new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
+                                                                      XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         // Verify _something_ was loaded...
         assertNotNull(aclc);
@@ -539,8 +518,8 @@ public class AccessControlListTest extends TestCase
     {
         AccessControlListsComponent aclc =
                 (AccessControlListsComponent) XdmComponentFactory.get(AccessControlListsComponent.class,
-                        new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                                      new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
+                                                                      XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         // Verify _something_ was loaded...
         assertNotNull(aclc);
@@ -567,7 +546,7 @@ public class AccessControlListTest extends TestCase
             userTwo.setRoles(aclm, new String[]{"/acl/role/invalid-user"});
             exceptionThrown = false;
         }
-        catch (RoleNotFoundException e)
+        catch(RoleNotFoundException e)
         {
             assertTrue(exceptionThrown);
         }
@@ -579,7 +558,7 @@ public class AccessControlListTest extends TestCase
             userTwo.setPermissions(aclm, new String[]{"/acl/app/orders/invalidate_order"});
             exceptionThrown = false;
         }
-        catch (PermissionNotFoundException e)
+        catch(PermissionNotFoundException e)
         {
             assertTrue(exceptionThrown);
         }
@@ -629,7 +608,7 @@ public class AccessControlListTest extends TestCase
             });
             exceptionThrown = false;
         }
-        catch (PermissionNotFoundException e)
+        catch(PermissionNotFoundException e)
         {
             assertTrue(exceptionThrown);
         }
@@ -641,7 +620,7 @@ public class AccessControlListTest extends TestCase
             userTwo.hasPermission(aclm, "/acl/app/orders/invalidate_order");
             exceptionThrown = false;
         }
-        catch (PermissionNotFoundException e)
+        catch(PermissionNotFoundException e)
         {
             assertTrue(exceptionThrown);
         }

@@ -270,7 +270,7 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
 
     public Script createScript()
     {
-        if (activeScriptsNameSpace != null)
+        if(activeScriptsNameSpace != null)
             return activeScriptsNameSpace.createScript();
         else
             return scripts.createBeanScript();

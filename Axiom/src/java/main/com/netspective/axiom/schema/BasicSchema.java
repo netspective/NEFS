@@ -193,13 +193,12 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
             TemplateContentHandler handler = (TemplateContentHandler) pc.getParser().getContentHandler();
             AttributesImpl dialogsPackageAttrs = new AttributesImpl();
             dialogsPackageAttrs.addAttribute(null, null, "package", "CDATA", "schema." + getName());
-            Template dialogsPackage = new Template(
-                    "schema." + getName() + "-tables",
-                    handler,
-                    new InputSourceLocator(pc.getInputSrcTracker(), pc.getLocator().getLineNumber(), pc.getLocator().getColumnNumber()),
-                    handler.getTemplatCatalog(),
-                    handler.getDynamicTemplatesProducer(),
-                    null, "dialogs", "dialogs", dialogsPackageAttrs);
+            Template dialogsPackage = new Template("schema." + getName() + "-tables",
+                                                   handler,
+                                                   new InputSourceLocator(pc.getInputSrcTracker(), pc.getLocator().getLineNumber(), pc.getLocator().getColumnNumber()),
+                                                   handler.getTemplatCatalog(),
+                                                   handler.getDynamicTemplatesProducer(),
+                                                   null, "dialogs", "dialogs", dialogsPackageAttrs);
 
             // now go through and generate dialog templates for each of the tables
             Tables tables = getTables();
@@ -211,7 +210,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
 
             handler.addDynamicTemplate(dialogsPackage);
         }
-        catch (SAXException e)
+        catch(SAXException e)
         {
             throw new DataModelException(pc, e);
         }
@@ -261,8 +260,8 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     {
         if(Table.class.isAssignableFrom(cls))
         {
-            Constructor c = cls.getConstructor(new Class[] { Schema.class });
-            return (Table) c.newInstance(new Object[] { this });
+            Constructor c = cls.getConstructor(new Class[]{Schema.class});
+            return (Table) c.newInstance(new Object[]{this});
         }
         else
             throw new RuntimeException("Don't know what to do with with class: " + cls);
@@ -341,8 +340,8 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
                     writer.write(table.getName());
                     writer.write(" -> ");
                     writer.write(referenced.getTable().getName());
-                    if(! source.getName().equalsIgnoreCase(referenced.getName()))
-                        writer.write(" [label=\""+ source.getName() + "=" + referenced.getName() + "\"]");
+                    if(!source.getName().equalsIgnoreCase(referenced.getName()))
+                        writer.write(" [label=\"" + source.getName() + "=" + referenced.getName() + "\"]");
                     writer.write(";\n");
                 }
             }
@@ -408,7 +407,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
             for(int i = 0; i < tables.size(); i++)
             {
                 Table table = tables.get(i);
-                if(table.isApplicationTable() && ! table.isChildTable())
+                if(table.isApplicationTable() && !table.isChildTable())
                     sortedChildren.add(table.createTreeNode(this, null, 1));
             }
             children.addAll(sortedChildren);

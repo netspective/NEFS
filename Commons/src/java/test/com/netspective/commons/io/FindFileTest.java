@@ -56,7 +56,7 @@ public class FindFileTest extends TestCase
         String[] classPath = TextUtils.getInstance().split(System.getProperty("java.class.path"), File.pathSeparator, true);
         String[] searchPath = ffrDir.getSearchPaths();
 
-        for (int i = 0; i < searchPath.length; i++)
+        for(int i = 0; i < searchPath.length; i++)
             assertEquals(classPath[i], searchPath[i]);
 
         File foundDir = ffrDir.getFoundFile();

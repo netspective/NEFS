@@ -2,64 +2,64 @@
 
 <component>
 
-	<access-control-list name="acl">
-		<permission name="app">
-			<permission name="orders">
-				<permission name="order_list"/>
-				<permission name="create_order"/>
-				<permission name="edit_order"/>
-				<permission name="view_order"/>
-				<permission name="delete_order"/>
-			</permission>
-		</permission>
+    <access-control-list name="acl">
+        <permission name="app">
+            <permission name="orders">
+                <permission name="order_list"/>
+                <permission name="create_order"/>
+                <permission name="edit_order"/>
+                <permission name="view_order"/>
+                <permission name="delete_order"/>
+            </permission>
+        </permission>
 
-		<role name="role">
-			<role name="super-user">
-				<grant permission="/acl/app/orders"/>
-			</role>
-			<role name="normal-user">
-				<grant permission="/acl/app/orders"/>
-				<revoke permission="/acl/app/orders/delete_order"/>
-			</role>
-		</role>
-	</access-control-list>
+        <role name="role">
+            <role name="super-user">
+                <grant permission="/acl/app/orders"/>
+            </role>
+            <role name="normal-user">
+                <grant permission="/acl/app/orders"/>
+                <revoke permission="/acl/app/orders/delete_order"/>
+            </role>
+        </role>
+    </access-control-list>
 
-	<access-control-list name="acl_two">
-		<permission name="app">
-			<permission name="orders">
-				<permission name="order_list"/>
-				<permission name="create_order"/>
-				<permission name="delete_order"/>
-			</permission>
-		</permission>
+    <access-control-list name="acl_two">
+        <permission name="app">
+            <permission name="orders">
+                <permission name="order_list"/>
+                <permission name="create_order"/>
+                <permission name="delete_order"/>
+            </permission>
+        </permission>
 
-		<role name="role">
-			<role name="super-user">
-				<grant permission="/acl_two/app/orders"/>
-			</role>
-			<role name="normal-user">
-				<grant permission="/acl_two/app/orders"/>
-				<revoke permission="/acl_two/app/orders/delete_order"/>
-			</role>
-		</role>
-	</access-control-list>
+        <role name="role">
+            <role name="super-user">
+                <grant permission="/acl_two/app/orders"/>
+            </role>
+            <role name="normal-user">
+                <grant permission="/acl_two/app/orders"/>
+                <revoke permission="/acl_two/app/orders/delete_order"/>
+            </role>
+        </role>
+    </access-control-list>
 
-	<access-control-list name="acl_three">
-		<permission name="app">
-			<permission name="orders">
-				<permission name="edit_order"/>
-				<permission name="view_order"/>
-				<permission name="delete_order"/>
-			</permission>
-		</permission>
+    <access-control-list name="acl_three">
+        <permission name="app">
+            <permission name="orders">
+                <permission name="edit_order"/>
+                <permission name="view_order"/>
+                <permission name="delete_order"/>
+            </permission>
+        </permission>
 
-		<role name="role">
-			<role name="read-only-user">
-				<grant permission="/acl_three/app/orders"/>
-				<revoke permission="/acl_three/app/orders/delete_order"/>
-				<revoke permission="/acl_three/app/orders/edit_order"/>
-			</role>
-		</role>
-	</access-control-list>
+        <role name="role">
+            <role name="read-only-user">
+                <grant permission="/acl_three/app/orders"/>
+                <revoke permission="/acl_three/app/orders/delete_order"/>
+                <revoke permission="/acl_three/app/orders/edit_order"/>
+            </role>
+        </role>
+    </access-control-list>
 
 </component>

@@ -131,8 +131,6 @@ public interface TabularReportDataSource
 
     /**
      * Return true if this data source has some structure
-     *
-     * @return
      */
     public boolean isHierarchical();
 

@@ -85,15 +85,15 @@ public abstract class AbstractSourceTracker implements InputSourceTracker
 
     public void addPreProcessor(InputSourceTracker value)
     {
-        if (null == value) return;
+        if(null == value) return;
 
-        if (preProcessors == null) preProcessors = new ArrayList();
+        if(preProcessors == null) preProcessors = new ArrayList();
         preProcessors.add(value);
     }
 
     public void addPreProcessor(File file)
     {
-        if (null == file) return;
+        if(null == file) return;
 
         FileTracker tracker = new FileTracker();
         tracker.setFile(file);
@@ -102,7 +102,7 @@ public abstract class AbstractSourceTracker implements InputSourceTracker
 
     public void addPreProcessor(String filename)
     {
-        if (null == filename) return;
+        if(null == filename) return;
 
         FileTracker tracker = new FileTracker();
         File file = new File(filename);
@@ -112,15 +112,15 @@ public abstract class AbstractSourceTracker implements InputSourceTracker
 
     public void addInclude(InputSourceTracker value)
     {
-        if (null == value) return;
+        if(null == value) return;
 
-        if (includes == null) includes = new ArrayList();
+        if(includes == null) includes = new ArrayList();
         includes.add(value);
     }
 
     public void addInclude(File file)
     {
-        if (null == file) return;
+        if(null == file) return;
 
         FileTracker tracker = new FileTracker();
         tracker.setFile(file);
@@ -129,7 +129,7 @@ public abstract class AbstractSourceTracker implements InputSourceTracker
 
     public void addInclude(String filename)
     {
-        if (null == filename) return;
+        if(null == filename) return;
 
         FileTracker tracker = new FileTracker();
         File file = new File(filename);
@@ -139,20 +139,20 @@ public abstract class AbstractSourceTracker implements InputSourceTracker
 
     public boolean dependenciesSourcesChanged()
     {
-        if (preProcessors != null)
+        if(preProcessors != null)
         {
-            for (int i = 0; i < preProcessors.size(); i++)
+            for(int i = 0; i < preProcessors.size(); i++)
             {
-                if (((InputSourceTracker) preProcessors.get(i)).sourceChanged())
+                if(((InputSourceTracker) preProcessors.get(i)).sourceChanged())
                     return true;
             }
         }
 
-        if (includes != null)
+        if(includes != null)
         {
-            for (int i = 0; i < includes.size(); i++)
+            for(int i = 0; i < includes.size(); i++)
             {
-                if (((InputSourceTracker) includes.get(i)).sourceChanged())
+                if(((InputSourceTracker) includes.get(i)).sourceChanged())
                     return true;
             }
         }

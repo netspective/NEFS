@@ -46,11 +46,11 @@ public class GloballyUniqueIdentifierTest extends TestCase
         {
             GloballyUniqueIdentifier.getRandomGUID(false);
         }
-        catch (NoSuchAlgorithmException e)
+        catch(NoSuchAlgorithmException e)
         {
             ok = false;
         }
-        catch (UnknownHostException e)
+        catch(UnknownHostException e)
         {
             ok = false;
         }
@@ -65,11 +65,11 @@ public class GloballyUniqueIdentifierTest extends TestCase
         {
             GloballyUniqueIdentifier.getRandomGUID(true);
         }
-        catch (NoSuchAlgorithmException e)
+        catch(NoSuchAlgorithmException e)
         {
             ok = false;
         }
-        catch (UnknownHostException e)
+        catch(UnknownHostException e)
         {
             ok = false;
         }

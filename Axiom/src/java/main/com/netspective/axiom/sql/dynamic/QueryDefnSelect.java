@@ -53,11 +53,12 @@ public class QueryDefnSelect extends Query
 {
     private static final Log log = LogFactory.getLog(Query.class);
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options(Query.XML_DATA_MODEL_SCHEMA_OPTIONS);
+
     static
     {
         XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "always-dirty", "is-dirty" });
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[] { "params" });
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[]{"always-dirty", "is-dirty"});
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[]{"params"});
     }
 
     private QueryDefinition queryDefn;
@@ -123,14 +124,14 @@ public class QueryDefnSelect extends Query
         {
             QueryDefnFields fields = fieldRef.findFieldsInstances();
             if(fields == null)
-                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Fields '"+ fieldRef.getField() +"' not found in "+ this.getClass().getName() +" <group-by> tag");
+                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Fields '" + fieldRef.getField() + "' not found in " + this.getClass().getName() + " <group-by> tag");
             groupByFields.add(fields);
         }
         else
         {
             QueryDefnField field = fieldRef.findFieldInstance();
             if(field == null)
-                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Field '"+ fieldRef.getField() +"' not found in "+ this.getClass().getName() +" <group-by> tag");
+                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Field '" + fieldRef.getField() + "' not found in " + this.getClass().getName() + " <group-by> tag");
             groupByFields.add(field);
         }
         isDirty = true;
@@ -175,7 +176,7 @@ public class QueryDefnSelect extends Query
         {
             QueryDefnFields fields = fieldRef.findFieldsInstances();
             if(fields == null)
-                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Fields '"+ fieldRef.getField() +"' not found in query definition '"+ getQualifiedName() +"' <display> tag");
+                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Fields '" + fieldRef.getField() + "' not found in query definition '" + getQualifiedName() + "' <display> tag");
             displayFields.add(fields);
 
         }
@@ -183,7 +184,7 @@ public class QueryDefnSelect extends Query
         {
             QueryDefnField field = fieldRef.findFieldInstance();
             if(field == null)
-                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Field '"+ fieldRef.getField() +"' not found in query definition '"+ getQualifiedName() +"' <display> tag");
+                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Field '" + fieldRef.getField() + "' not found in query definition '" + getQualifiedName() + "' <display> tag");
             displayFields.add(field);
         }
     }
@@ -236,7 +237,7 @@ public class QueryDefnSelect extends Query
 
     public boolean isSqlStatic()
     {
-        return ! isDirty && ! alwaysDirty;
+        return !isDirty && !alwaysDirty;
     }
 
     public String getSqlText(ConnectionContext cc) throws NamingException, SQLException
@@ -248,7 +249,7 @@ public class QueryDefnSelect extends Query
             {
                 setSqlText(selectStmt.generateSql(cc));
             }
-            catch (QueryDefinitionException e)
+            catch(QueryDefinitionException e)
             {
                 log.error("Unable to generate a valid SQL statement", e);
                 return null;

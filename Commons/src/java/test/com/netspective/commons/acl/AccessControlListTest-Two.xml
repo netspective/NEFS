@@ -2,28 +2,28 @@
 
 <component>
 
-	<access-control-list name="main">
-		<permission name="app">
-			<permission name="orders">
-				<permission name="order_list"/>
-				<permission name="create_order"/>
-				<permission name="edit_order"/>
-				<permission name="view_order"/>
-				<permission name="delete_order"/>
-				<permission name="test_order"/>
-			</permission>
-		</permission>
+    <access-control-list name="main">
+        <permission name="app">
+            <permission name="orders">
+                <permission name="order_list"/>
+                <permission name="create_order"/>
+                <permission name="edit_order"/>
+                <permission name="view_order"/>
+                <permission name="delete_order"/>
+                <permission name="test_order"/>
+            </permission>
+        </permission>
 
-		<role name="role">
-			<role name="super-user">
-				<grant permission="/main/app/orders"/>
-			</role>
-			<role name="normal-user">
-				<grant permission="/main/app/orders"/>
-				<revoke permission="/main/app/orders/delete_order"/>
-				<revoke permission="/main/app/orders/test_order"/>
-			</role>
-		</role>
-	</access-control-list>
+        <role name="role">
+            <role name="super-user">
+                <grant permission="/main/app/orders"/>
+            </role>
+            <role name="normal-user">
+                <grant permission="/main/app/orders"/>
+                <revoke permission="/main/app/orders/delete_order"/>
+                <revoke permission="/main/app/orders/test_order"/>
+            </role>
+        </role>
+    </access-control-list>
 
 </component>

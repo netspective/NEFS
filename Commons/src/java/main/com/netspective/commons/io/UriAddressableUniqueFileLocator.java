@@ -77,11 +77,11 @@ public class UriAddressableUniqueFileLocator implements UriAddressableFileLocato
                         throws
                         IOException
                 {
-                    if (!baseDir.exists())
+                    if(!baseDir.exists())
                     {
                         throw new FileNotFoundException(baseDir + " does not exist.");
                     }
-                    if (!baseDir.isDirectory())
+                    if(!baseDir.isDirectory())
                     {
                         throw new IOException(baseDir + " is not a directory.");
                     }
@@ -94,7 +94,7 @@ public class UriAddressableUniqueFileLocator implements UriAddressableFileLocato
             this.baseDir = (File) retval[0];
             this.canonicalPath = (String) retval[1];
         }
-        catch (PrivilegedActionException e)
+        catch(PrivilegedActionException e)
         {
             throw (IOException) e.getException();
         }
@@ -103,14 +103,14 @@ public class UriAddressableUniqueFileLocator implements UriAddressableFileLocato
     public UriAddressableFile findUriAddressableFile(final String name) throws IOException
     {
         final boolean logging = log.isDebugEnabled();
-        if (logging) log.debug("SingleUriAddressableFileLocator searching for " + name);
+        if(logging) log.debug("SingleUriAddressableFileLocator searching for " + name);
 
-        if (cacheLocations)
+        if(cacheLocations)
         {
             UriAddressableFile resource = (UriAddressableFile) cache.get(name);
-            if (resource != null)
+            if(resource != null)
             {
-                if (logging) log.debug("SingleUriAddressableFileLocator cache hit for " + resource);
+                if(logging) log.debug("SingleUriAddressableFileLocator cache hit for " + resource);
                 return resource;
             }
         }
@@ -125,23 +125,23 @@ public class UriAddressableUniqueFileLocator implements UriAddressableFileLocato
                     // Security check for inadvertently returning something outside the
                     // resource directory.
                     String normalized = source.getCanonicalPath();
-                    if (!normalized.startsWith(canonicalPath))
+                    if(!normalized.startsWith(canonicalPath))
                     {
                         throw new SecurityException();
                     }
 
-                    if (logging) log.debug("SingleUriAddressableFileLocator looking for '" + name + "' as " + source);
+                    if(logging) log.debug("SingleUriAddressableFileLocator looking for '" + name + "' as " + source);
                     UriAddressableFile result = source.exists() ? new UriAddressableFile(rootUrl, name, source) : null;
-                    if (result != null)
+                    if(result != null)
                     {
-                        if (logging) log.debug("SingleUriAddressableFileLocator found " + result);
-                        if (cacheLocations) cache.put(name, result);
+                        if(logging) log.debug("SingleUriAddressableFileLocator found " + result);
+                        if(cacheLocations) cache.put(name, result);
                     }
                     return result;
                 }
             });
         }
-        catch (PrivilegedActionException e)
+        catch(PrivilegedActionException e)
         {
             throw (IOException) e.getException();
         }

@@ -116,7 +116,7 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
             {
                 conn.close();
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 log.error("SQL Exception while closing connection", e);
             }
@@ -130,7 +130,7 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
             this.dataSource = dataSource;
             init(dataSourceId, dataSource.getConnection());
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             this.dataSourceId = dataSourceId;
             exception = e;
@@ -221,7 +221,7 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
             stats.setConnectionProviderEntry(this);
             return stats;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error instantiating statistics provider ", e);
             return null;

@@ -86,6 +86,6 @@ public class DbmsSqlText
 
     public String toString()
     {
-        return "dbms '"+ dbms +"' (" + sqlText.getStaticExpr() + ")";
+        return "dbms '" + dbms + "' (" + sqlText.getStaticExpr() + ")";
     }
 }

@@ -195,7 +195,9 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
         {
             public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
-            private static final String[] VALUES = new String[]{"WHEN_EXHAUSTED_FAIL", "WHEN_EXHAUSTED_BLOCK", "WHEN_EXHAUSTED_GROW"};
+            private static final String[] VALUES = new String[]{
+                "WHEN_EXHAUSTED_FAIL", "WHEN_EXHAUSTED_BLOCK", "WHEN_EXHAUSTED_GROW"
+            };
 
             public String[] getValues()
             {
@@ -234,7 +236,8 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
 
     public void addDataSource(DataSourceInfo dataSourceInfo)
     {
-        if (dataSourceInfo.getName() == null || dataSourceInfo.getName().equals("")){
+        if(dataSourceInfo.getName() == null || dataSourceInfo.getName().equals(""))
+        {
             dataSourceInfo.setName("data-source-" + this.dataSourceInfoIndex);
         }
         this.dataSourceInfoIndex++;
@@ -253,7 +256,8 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
             super(objectPool);
         }
 
-        public ObjectPool getPool(){
+        public ObjectPool getPool()
+        {
             return _pool;
         }
     }
@@ -263,7 +267,7 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
 
         DataSourceInfo dataSourceInfo = (DataSourceInfo) dataSourcesInfo.get(dataSourceId);
 
-        if (dataSourceInfo == null)
+        if(dataSourceInfo == null)
             throw new NamingException("Data Source: '" + dataSourceId + "' not defined as a data source for Jakarta Commons DBCP provider.");
 
         String driverClassName = dataSourceInfo.driverClass.getTextValueOrBlank(vc);
@@ -271,13 +275,14 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
         {
             Class.forName(driverClassName);
         }
-        catch (ClassNotFoundException cnfe)
+        catch(ClassNotFoundException cnfe)
         {
             log.error("Driver '" + driverClassName + "' not found for name '" + dataSourceId + "'");
             throw new NamingException("Driver '" + driverClassName + "' not found for name '" + dataSourceId + "'");
         }
 
-        if (log.isDebugEnabled()){
+        if(log.isDebugEnabled())
+        {
             log.debug("Initializing data source: '" + dataSourceInfo.getName() + "'\n" +
                       "                  driver: '" + driverClassName + "'\n" +
                       "                     url: '" + dataSourceInfo.url.getTextValueOrBlank(vc) + "'\n" +
@@ -293,13 +298,13 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
             //in the conectionPool object we pass as a parameter.
             PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, connectionPool, null, null, false, true);
         }
-        catch (IllegalStateException e)
+        catch(IllegalStateException e)
         {
             log.error("Trying to reset the pool factory for data source: '" + dataSourceInfo.name + "' when the pool objects are already in use, thus the pool is active.");
             return null;
         }
 
-        catch (Exception e) //Generic Exception being caught here because Constructor of PoolableConnectionFactory is declared that way
+        catch(Exception e) //Generic Exception being caught here because Constructor of PoolableConnectionFactory is declared that way
         {
             log.error("An Exception was encountered when creating the pool factory in the Jakarta Commons DBCP framework.", e);
             return null;
@@ -314,10 +319,10 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
     {
 
         DataSource dataSource = (DataSource) dataSources.get(dataSourceId);
-        if (dataSource == null)
+        if(dataSource == null)
         {
             dataSource = createDataSource(vc, dataSourceId);
-            if (dataSource != null)
+            if(dataSource != null)
                 dataSources.put(dataSourceId, dataSource);
         }
         return dataSource;
@@ -325,14 +330,14 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
 
     public final Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException
     {
-        if (dataSourceId == null)
+        if(dataSourceId == null)
             throw new NamingException("name is NULL in " + this.getClass().getName() + ".getConnection(String)");
 
         DataSource source = getDataSource(vc, dataSourceId);
 
-        if (source == null)
+        if(source == null)
         {
-            if (log.isDebugEnabled())
+            if(log.isDebugEnabled())
                 log.debug("name not found in " + JakartaCommonsDbcpConnectionProvider.class.getName() + ".getConnection('" + dataSourceId + "'). Available: " + getAvailableDataSources());
             throw new NamingException("Data source '" + dataSourceId + "' not found in Jakarta Commons DBCP provider.");
         }
@@ -345,12 +350,12 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
         try
         {
             DataSource source = getDataSource(vc, dataSourceId);
-            if (source == null)
+            if(source == null)
                 return null;
 
             return getDataSourceEntry(dataSourceId, source);
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             log.error(JakartaCommonsDbcpConnectionProvider.class.getName() + ".getDataSourceEntry('" + dataSourceId + "')", ex);
             return null;
@@ -373,11 +378,11 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
     {
         ConnectionProviderEntries entries = new BasicConnectionProviderEntries();
         Set available = getAvailableDataSources();
-        for (Iterator i = available.iterator(); i.hasNext();)
+        for(Iterator i = available.iterator(); i.hasNext();)
         {
 
             ConnectionProviderEntry entry = getDataSourceEntry(vc, (String) i.next());
-            if (entry != null)
+            if(entry != null)
                 entries.add(entry);
         }
         return entries;

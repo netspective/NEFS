@@ -85,6 +85,7 @@ public class QueryDefnConditions
 
     /**
      * Insert a new condition into the list
+     *
      * @param condition the condition to insert
      */
     public void add(QueryDefnCondition condition)
@@ -112,8 +113,9 @@ public class QueryDefnConditions
      * used conditions, we will use the QueryCondition.keepCondition method which will automatically process
      * child (nested) conditions. Also, while processing we will call the SelectStmtGenerator.addJoin method to
      * add the joins for each of the fields we're going to put into the used conditions list.
+     *
      * @param stmtGen the active SelectStmtGenerator
-     * @param vc the active ValueContext
+     * @param vc      the active ValueContext
      */
     public QueryDefnConditions getUsedConditions(QueryDefnSelectStmtGenerator stmtGen, ValueContext vc) throws QueryDefinitionException
     {
@@ -137,9 +139,7 @@ public class QueryDefnConditions
 
     /**
      * Create the SQL string for the list of Query conditions
-     * @param stmtGen
-     * @param vc
-     * @param usedConditions
+     *
      * @return String
      */
     public String createSql(QueryDefnSelectStmtGenerator stmtGen, ValueContext vc, QueryDefnConditions usedConditions) throws QueryDefinitionException
@@ -151,12 +151,12 @@ public class QueryDefnConditions
 
         for(int c = 0; c < usedCondsCount; c++)
         {
-            boolean conditionAdded  = false;
+            boolean conditionAdded = false;
             Object condObj = usedConditions.list.get(c);
-            if (condObj instanceof QueryDefnConditions)
+            if(condObj instanceof QueryDefnConditions)
             {
                 String sql = createSql(stmtGen, vc, (QueryDefnConditions) condObj);
-                if (sql != null && sql.length() > 0)
+                if(sql != null && sql.length() > 0)
                 {
                     sb.append("(" + sql + ")");
                     conditionAdded = true;
@@ -168,17 +168,17 @@ public class QueryDefnConditions
             {
                 // single query condition. not a list.
                 QueryDefnCondition cond = (QueryDefnCondition) usedConditions.list.get(c);
-                if (!cond.isJoinOnly())
+                if(!cond.isJoinOnly())
                 {
                     // create and add the where condition string only if this condition has a valid comparison
                     // (meaning the Select Condition was not inluded only for the sake of including the Join Condition of the table)
                     sb.append(" (" + cond.getWhereCondExpr(vc, select, stmtGen) + ")");
                     conditionAdded = true;
                 }
-                if (c != condsUsedLast && !((QueryDefnCondition) usedConditions.list.get(c+1)).isJoinOnly())
-                        sb.append(cond.getConnectorSql());
+                if(c != condsUsedLast && !((QueryDefnCondition) usedConditions.list.get(c + 1)).isJoinOnly())
+                    sb.append(cond.getConnectorSql());
             }
-            if (conditionAdded)
+            if(conditionAdded)
                 sb.append("\n");
         }
         return sb.toString();

@@ -115,9 +115,9 @@ public class JavaDoc
     {
         String lead = getDescriptionLead();
         String detail = getDescriptionDetail();
-        if (lead != null && detail != null)
+        if(lead != null && detail != null)
             return lead + detail;
-        else if (lead != null)
+        else if(lead != null)
             return lead;
         else
             return null;

@@ -224,7 +224,7 @@ public class Transform
     public StreamSource getStreamSource(ValueSource vs, ValueContext vc, boolean isFile)
     {
         String sourceValue = vs.getTextValue(vc);
-        if (isFile)
+        if(isFile)
             return new StreamSource(new File(sourceValue));
         else
         {
@@ -243,17 +243,17 @@ public class Transform
 
     public boolean render(Writer writer, ValueContext vc, Source transformSource, Map additionalParams, boolean writeErrors) throws TransformerConfigurationException, TransformerException, IOException
     {
-        if (source == null && transformSource == null)
+        if(source == null && transformSource == null)
         {
-            if (writeErrors)
+            if(writeErrors)
                 writer.write("No source attribute provided.");
             log.error("No source attribute provided for " + this);
             return false;
         }
 
-        if (styleSheet == null)
+        if(styleSheet == null)
         {
-            if (writeErrors)
+            if(writeErrors)
                 writer.write("No style-sheet attribute provided.");
             log.error("No style-sheet attribute provided for " + this);
             return false;
@@ -262,11 +262,11 @@ public class Transform
         try
         {
             Map savedProps = new HashMap();
-            for (int i = 0; i < systemProperties.size(); i++)
+            for(int i = 0; i < systemProperties.size(); i++)
             {
                 SystemProperty prop = (SystemProperty) systemProperties.get(i);
                 String currentValue = System.getProperty(prop.getName());
-                if (currentValue != null)
+                if(currentValue != null)
                     savedProps.put(prop.getName(), currentValue);
                 System.setProperty(prop.getName(), prop.getValue().getTextValue(vc));
             }
@@ -274,22 +274,22 @@ public class Transform
             TransformerFactory tFactory = TransformerFactory.newInstance();
             Transformer transformer = tFactory.newTransformer(getStreamSource(styleSheet, vc, styleSheetIsFile));
 
-            for (Iterator i = savedProps.entrySet().iterator(); i.hasNext();)
+            for(Iterator i = savedProps.entrySet().iterator(); i.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) i.next();
                 System.setProperty((String) entry.getKey(), (String) entry.getValue());
             }
 
             List params = getParams();
-            for (int i = 0; i < params.size(); i++)
+            for(int i = 0; i < params.size(); i++)
             {
                 StyleSheetParameter param = (StyleSheetParameter) params.get(i);
                 transformer.setParameter(param.getName(), param.getValue().getTextValue(vc));
             }
 
-            if (additionalParams != null)
+            if(additionalParams != null)
             {
-                for (Iterator i = additionalParams.entrySet().iterator(); i.hasNext();)
+                for(Iterator i = additionalParams.entrySet().iterator(); i.hasNext();)
                 {
                     Map.Entry entry = (Map.Entry) i.next();
                     transformer.setParameter(entry.getKey().toString(), entry.getValue());
@@ -297,15 +297,15 @@ public class Transform
             }
 
             transformer.transform(transformSource != null
-                    ? transformSource : getStreamSource(source, vc, sourceIsFile),
-                    new StreamResult(writer));
+                                  ? transformSource : getStreamSource(source, vc, sourceIsFile),
+                                  new StreamResult(writer));
 
             return true;
         }
-        catch (TransformerConfigurationException e)
+        catch(TransformerConfigurationException e)
         {
             log.error("XSLT error in " + this.getClass().getName(), e);
-            if (writeErrors)
+            if(writeErrors)
             {
                 writer.write("<pre>" + TextUtils.getInstance().getStackTrace(e) + "</pre>");
                 return false;
@@ -313,10 +313,10 @@ public class Transform
             else
                 throw e;
         }
-        catch (TransformerException e)
+        catch(TransformerException e)
         {
             log.error("XSLT error in " + this.getClass().getName(), e);
-            if (writeErrors)
+            if(writeErrors)
             {
                 writer.write("<pre>" + TextUtils.getInstance().getStackTrace(e) + "</pre>");
                 return false;

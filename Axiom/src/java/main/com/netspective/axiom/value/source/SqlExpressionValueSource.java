@@ -37,15 +37,13 @@ import com.netspective.commons.value.source.ValueSrcExpressionValueSource;
 
 public class SqlExpressionValueSource extends ValueSrcExpressionValueSource
 {
-    public static final String[] IDENTIFIERS = new String[] { "sql-expr" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "This is just like a simple-expr or vs-expr value source but is designed to hold SQL expressions when " +
-            "the application needs to construct SQL and pass it through to the database.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("path", true, "The expression (which can contain ${} variables)."),
-            }
-    );
+    public static final String[] IDENTIFIERS = new String[]{"sql-expr"};
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("This is just like a simple-expr or vs-expr value source but is designed to hold SQL expressions when " +
+                                                                                              "the application needs to construct SQL and pass it through to the database.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("path", true, "The expression (which can contain ${} variables)."),
+                                                                                              });
 
     public static String[] getIdentifiers()
     {

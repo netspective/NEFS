@@ -39,11 +39,14 @@ import com.netspective.axiom.ConnectionContext;
 public interface TableRowTrigger
 {
     public void beforeTableRowInsert(ConnectionContext cc, Row row) throws SQLException;
+
     public void afterTableRowInsert(ConnectionContext cc, Row row) throws SQLException;
 
     public void beforeTableRowUpdate(ConnectionContext cc, Row row) throws SQLException;
+
     public void afterTableRowUpdate(ConnectionContext cc, Row row) throws SQLException;
 
     public void beforeTableRowDelete(ConnectionContext cc, Row row) throws SQLException;
+
     public void afterTableRowDelete(ConnectionContext cc, Row row) throws SQLException;
 }

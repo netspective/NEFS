@@ -92,7 +92,7 @@ public abstract class Metric
     public void setParent(Metric metric)
     {
         parent = metric;
-        if (parent != null) metric.setOwner(parent.getOwner());
+        if(parent != null) metric.setOwner(parent.getOwner());
     }
 
     public abstract String getFormattedValue();
@@ -120,10 +120,10 @@ public abstract class Metric
     public final void setFlag(long flag, boolean includeChildren)
     {
         flags |= flag;
-        if (includeChildren && children != null)
+        if(includeChildren && children != null)
         {
             Iterator i = children.iterator();
-            while (i.hasNext())
+            while(i.hasNext())
             {
                 ((Metric) i.next()).setFlag(flag);
             }
@@ -133,10 +133,10 @@ public abstract class Metric
     public final void clearFlag(long flag, boolean includeChildren)
     {
         flags &= ~flag;
-        if (includeChildren && children != null)
+        if(includeChildren && children != null)
         {
             Iterator i = children.iterator();
-            while (i.hasNext())
+            while(i.hasNext())
             {
                 ((Metric) i.next()).clearFlag(flag);
             }
@@ -151,7 +151,7 @@ public abstract class Metric
     protected void addChild(Metric metric)
     {
         metric.setParent(this);
-        if (children == null)
+        if(children == null)
         {
             children = new ArrayList();
             childMap = new HashMap();
@@ -163,7 +163,7 @@ public abstract class Metric
     public MetricsGroup addGroupMetric(String name)
     {
         MetricsGroup metric = (MetricsGroup) getChild(name);
-        if (metric != null)
+        if(metric != null)
             return metric;
 
         metric = new MetricsGroup(this, name);
@@ -174,7 +174,7 @@ public abstract class Metric
     public ValueMetric addValueMetric(String name, String value)
     {
         ValueMetric metric = (ValueMetric) getChild(name);
-        if (metric != null)
+        if(metric != null)
             return metric;
 
         metric = new ValueMetric(this, name, value);
@@ -185,7 +185,7 @@ public abstract class Metric
     public CountMetric addCountMetric(String name)
     {
         CountMetric metric = (CountMetric) getChild(name);
-        if (metric != null)
+        if(metric != null)
             return metric;
 
         metric = new CountMetric(this, name);
@@ -196,7 +196,7 @@ public abstract class Metric
     public AverageMetric addAverageMetric(String name)
     {
         AverageMetric metric = (AverageMetric) getChild(name);
-        if (metric != null)
+        if(metric != null)
             return metric;
 
         metric = new AverageMetric(this, name);
@@ -207,7 +207,7 @@ public abstract class Metric
     public FileTypeMetric addFileTypeMetric(String name, boolean isCode)
     {
         FileTypeMetric metric = (FileTypeMetric) getChild(name);
-        if (metric != null)
+        if(metric != null)
             return metric;
 
         metric = new FileTypeMetric(this, name, isCode);
@@ -217,7 +217,7 @@ public abstract class Metric
 
     public Metric getChild(String name)
     {
-        if (childMap == null)
+        if(childMap == null)
             return null;
 
         return (Metric) childMap.get(name);
@@ -227,7 +227,7 @@ public abstract class Metric
     {
         int count = 0;
         Metric parent = getParent();
-        while (parent != null)
+        while(parent != null)
         {
             count++;
             parent = parent.getParent();
@@ -238,22 +238,22 @@ public abstract class Metric
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < getAncestorCount(); i++)
+        for(int i = 0; i < getAncestorCount(); i++)
             sb.append("  ");
 
         sb.append(getName());
 
         String fv = getFormattedValue();
-        if (fv != null)
+        if(fv != null)
         {
             sb.append(": ");
             sb.append(fv);
         }
         sb.append("\n");
 
-        if (children != null)
+        if(children != null)
         {
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
             {
                 Metric childMetric = (Metric) children.get(i);
                 sb.append(childMetric);

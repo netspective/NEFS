@@ -85,7 +85,7 @@ public class FileTypeMetric extends Metric
         int result = 0;
 
         BufferedReader reader = new BufferedReader(new FileReader(entry));
-        while (reader.readLine() != null)
+        while(reader.readLine() != null)
             result++;
         reader.close();
 
@@ -99,7 +99,7 @@ public class FileTypeMetric extends Metric
         totalBytes += entry.length();
         avgBytes = (double) totalBytes / (double) count;
 
-        if (isCode)
+        if(isCode)
         {
             try
             {
@@ -107,7 +107,7 @@ public class FileTypeMetric extends Metric
                 totalLines += lineCount;
                 avgLines = (double) totalLines / (double) count;
             }
-            catch (Exception IOException)
+            catch(Exception IOException)
             {
             }
         }
@@ -121,11 +121,11 @@ public class FileTypeMetric extends Metric
         metricElem.setAttribute("name", getName());
         metricElem.setAttribute("type", "file-type");
 
-        if (flagIsSet(METRICFLAG_SORT_CHILDREN))
+        if(flagIsSet(METRICFLAG_SORT_CHILDREN))
             metricElem.setAttribute("sort-children", "yes");
 
         List children = getChildren();
-        if (children != null && flagIsSet(METRICFLAG_SUM_CHILDREN))
+        if(children != null && flagIsSet(METRICFLAG_SUM_CHILDREN))
         {
             metricElem.setAttribute("type", "file-types");
 
@@ -133,7 +133,7 @@ public class FileTypeMetric extends Metric
             totalLines = 0;
             totalBytes = 0;
 
-            for (Iterator i = children.iterator(); i.hasNext();)
+            for(Iterator i = children.iterator(); i.hasNext();)
             {
                 FileTypeMetric ftMetric = ((FileTypeMetric) i.next());
                 count += ftMetric.getCount();
@@ -141,7 +141,7 @@ public class FileTypeMetric extends Metric
                 totalBytes += ftMetric.getTotalBytes();
             }
 
-            if (count > 0)
+            if(count > 0)
             {
                 avgLines = (double) totalLines / (double) count;
                 avgBytes = (double) totalBytes / (double) count;
@@ -154,22 +154,22 @@ public class FileTypeMetric extends Metric
         metricElem.setAttribute("total-bytes", fmt.format(totalBytes));
         metricElem.setAttribute("avg-bytes", fmt.format((long) avgBytes));
 
-        if (flagIsSet(METRICFLAG_SUM_CHILDREN) && totalLines > 0)
+        if(flagIsSet(METRICFLAG_SUM_CHILDREN) && totalLines > 0)
         {
             metricElem.setAttribute("total-lines", fmt.format(totalLines));
             metricElem.setAttribute("avg-lines", fmt.format((long) avgLines));
         }
 
-        if (isCode)
+        if(isCode)
         {
             metricElem.setAttribute("is-code", "yes");
             metricElem.setAttribute("total-lines", fmt.format(totalLines));
             metricElem.setAttribute("avg-lines", fmt.format((long) avgLines));
         }
 
-        if (children != null)
+        if(children != null)
         {
-            for (Iterator i = children.iterator(); i.hasNext();)
+            for(Iterator i = children.iterator(); i.hasNext();)
             {
                 Metric childMetric = (Metric) i.next();
                 //childMetric.createElement(metricElem);

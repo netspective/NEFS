@@ -84,7 +84,7 @@ public class InputSourceLocator
 
     public String getLineNumbersText()
     {
-        if (endLineNumber > startLineNumber)
+        if(endLineNumber > startLineNumber)
             return " lines " + startLineNumber + " to " + endLineNumber;
         else
             return " line " + startLineNumber;

@@ -85,7 +85,7 @@ public class SqlDdlGeneratorContext
         {
             return valueContext.getDatabasePolicy();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error(e);
             throw new NestableRuntimeException(e);

@@ -79,8 +79,6 @@ abstract public class ExpressionText
      * Callback method that is called within getFinalText() whenever there is a ${xxx} formatted text string found.
      *
      * @param replaceToken The text inside the ${ and } characters.
-     *
-     * @return
      */
     abstract protected String getReplacement(ValueContext vc, String entireText, String replaceToken) throws ExpressionTextException;
 
@@ -101,10 +99,10 @@ abstract public class ExpressionText
      */
     public String getFinalText(ValueContext vc)
     {
-        if (staticExpr == null)
+        if(staticExpr == null)
             throw new RuntimeException("Static expression not provided.");
 
-        if (staticExprHasReplacements)
+        if(staticExprHasReplacements)
             return getFinalText(vc, staticExpr);
         else
             return staticExpr;
@@ -124,18 +122,18 @@ abstract public class ExpressionText
         int prev = 0;
 
         int pos;
-        while ((pos = value.indexOf(EXPRESSION_REPLACEMENT_FIRST_CHAR, prev)) >= 0)
+        while((pos = value.indexOf(EXPRESSION_REPLACEMENT_FIRST_CHAR, prev)) >= 0)
         {
-            if (pos > 0)
+            if(pos > 0)
             {
                 result.append(value.substring(prev, pos));
             }
-            if (pos == (value.length() - 1))
+            if(pos == (value.length() - 1))
             {
                 result.append('$');
                 prev = pos + 1;
             }
-            else if (value.charAt(pos + 1) != EXPRESSION_REPLACEMENT_SECOND_CHAR)
+            else if(value.charAt(pos + 1) != EXPRESSION_REPLACEMENT_SECOND_CHAR)
             {
                 result.append(value.charAt(pos + 1));
                 prev = pos + 2;
@@ -143,7 +141,7 @@ abstract public class ExpressionText
             else
             {
                 int endName = value.indexOf(EXPRESSION_REPLACEMENT_LAST_CHAR, pos);
-                if (endName < 0)
+                if(endName < 0)
                     throw new RuntimeException("Syntax error in expression: " + value);
 
                 String replaceText = value.substring(pos + 2, endName);
@@ -154,7 +152,7 @@ abstract public class ExpressionText
             }
         }
 
-        if (prev < value.length()) result.append(value.substring(prev));
+        if(prev < value.length()) result.append(value.substring(prev));
         return result.toString();
     }
 }

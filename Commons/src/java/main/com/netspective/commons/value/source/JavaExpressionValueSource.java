@@ -70,7 +70,7 @@ public class JavaExpressionValueSource extends AbstractValueSource
         {
             e = ExpressionFactory.createExpression(getSpecification().getParams());
         }
-        catch (Exception e1)
+        catch(Exception e1)
         {
             throw new ExpressionTextException("<" + JavaExpressionValueSource.class + " creation exception: '" + getSpecification().getParams() + "'. Scope variables: " + jexlContext.getVars(), e1);
         }
@@ -79,12 +79,12 @@ public class JavaExpressionValueSource extends AbstractValueSource
         {
             o = e.evaluate(jexlContext);
         }
-        catch (Exception e1)
+        catch(Exception e1)
         {
             throw new ExpressionTextException("<" + JavaExpressionValueSource.class + " evaluation exception: '" + getSpecification().getParams() + "'. Scope variables: " + jexlContext.getVars(), e1);
         }
 
-        if (o != null)
+        if(o != null)
             return new GenericValue(o);
         else
             throw new ExpressionTextException("<" + JavaExpressionValueSource.class + " NULL value exception: '" + getSpecification().getParams() + "'. Scope variables: " + jexlContext.getVars());

@@ -60,7 +60,7 @@ public class ProductReleaseTask extends Task
             Class productClass = Class.forName(productClassName);
             product = (Product) productClass.newInstance();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new BuildException(e);
         }

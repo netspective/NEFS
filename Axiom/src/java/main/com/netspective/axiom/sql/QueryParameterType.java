@@ -46,18 +46,18 @@ import java.util.Map;
  */
 public class QueryParameterType
 {
-    public static final String STRING_ARRAY_IDENTIFIER    = "strings";
-    public static final String INTEGER_IDENTIFIER   = "integer";
-    public static final String DOUBLE_IDENTIFIER    = "double";
-    public static final String VARCHAR_IDENTIFIER   = "varchar";
-    public static final String REAL_IDENTIFIER      = "real";
-    public static final String FLOAT_IDENTIFIER     = "float";
-    public static final String CLOB_IDENTIFIER      = "clob";
-    public static final String DECIMAL_IDENTIFIER   = "decimal";
-    public static final String DATE_IDENTIFIER      = "date";
-    public static final String BLOB_IDENTIFIER      = "blob";
-    public static final String SMALLINT_IDENTIFIER  = "smallint";
-    public static final String BIGINT_IDENTIFIER    = "bigint";
+    public static final String STRING_ARRAY_IDENTIFIER = "strings";
+    public static final String INTEGER_IDENTIFIER = "integer";
+    public static final String DOUBLE_IDENTIFIER = "double";
+    public static final String VARCHAR_IDENTIFIER = "varchar";
+    public static final String REAL_IDENTIFIER = "real";
+    public static final String FLOAT_IDENTIFIER = "float";
+    public static final String CLOB_IDENTIFIER = "clob";
+    public static final String DECIMAL_IDENTIFIER = "decimal";
+    public static final String DATE_IDENTIFIER = "date";
+    public static final String BLOB_IDENTIFIER = "blob";
+    public static final String SMALLINT_IDENTIFIER = "smallint";
+    public static final String BIGINT_IDENTIFIER = "bigint";
     public static final String RESULTSET_IDENTIFIER = "resultset";
     public static final String CHAR_IDENTIFIER = "char";
 
@@ -97,7 +97,6 @@ public class QueryParameterType
     /**
      * Add a new query parameter type to the static map holding all the
      * identifiers
-     * @param type
      */
     public final static void add(QueryParameterType type)
     {
@@ -109,9 +108,6 @@ public class QueryParameterType
     /**
      * Add a new query parameter type to the static map holding all the
      * identifiers
-     * @param identifier
-     * @param jdbcType
-     * @param javaClass
      */
     public final static void add(String identifier, int jdbcType, Class javaClass)
     {
@@ -121,8 +117,6 @@ public class QueryParameterType
     /**
      * Gets a query parameter type by its identifier which is the java data type name
      * (not the JDBC data type)
-     * @param identifier
-     * @return
      */
     public final static QueryParameterType get(String identifier)
     {
@@ -131,8 +125,6 @@ public class QueryParameterType
 
     /**
      * Gets the query parameter type by its JDBC data type (java.sql.Types)
-     * @param jdbcType
-     * @return
      */
     public final static QueryParameterType get(int jdbcType)
     {
@@ -141,7 +133,6 @@ public class QueryParameterType
 
     /**
      * Gets all the java data type names
-     * @return
      */
     public final static String[] getTypeIdentifiers()
     {
@@ -151,9 +142,6 @@ public class QueryParameterType
     /**
      * Creates a new QueryParameterType with the java data type identifier string,
      * the JDBC Sql type, and the actual java data class.
-     * @param identifier
-     * @param jdbcType
-     * @param javaClass
      */
     public QueryParameterType(String identifier, int jdbcType, Class javaClass)
     {
@@ -164,7 +152,6 @@ public class QueryParameterType
 
     /**
      * Gets the java data type identifier string for this parameter
-     * @return
      */
     public String getIdentifier()
     {
@@ -173,7 +160,6 @@ public class QueryParameterType
 
     /**
      * Gets the java data type class for this parameter
-     * @return
      */
     public Class getJavaClass()
     {
@@ -182,7 +168,6 @@ public class QueryParameterType
 
     /**
      * Gets the JDBC Sql type for this parameter
-     * @return
      */
     public int getJdbcType()
     {

@@ -56,8 +56,9 @@ public interface DatabaseConnValueContext extends ValueContext
     /**
      * Obtains a connection (with appropriate pooling) for the given dataSourceId. The returnConnection method should
      * be called when the connection is no longer needed.
+     *
      * @param dataSourceId the data source identifier to use -- it is passed through the translateDataSourceId() method before use
-     * @param transaction true if this will be the start of a transaction (multiple SQL statements) or false for auto-commit
+     * @param transaction  true if this will be the start of a transaction (multiple SQL statements) or false for auto-commit
      */
     public ConnectionContext getConnection(String dataSourceId, boolean transaction) throws NamingException, SQLException;
 
@@ -65,12 +66,14 @@ public interface DatabaseConnValueContext extends ValueContext
      * Returns a connection to the pool for the given dataSourceId. If the connection was retrieved for transaction
      * processing (shared connection across multiple SQL statements) then it is the responsiblity of the caller to
      * call rollback() or commit() before returning the connection.
+     *
      * @param cc the connection context instance for connection no longer being used
      */
     public void returnConnection(ConnectionContext cc) throws SQLException;
 
     /**
      * Retrieves the connection provider that should be used for obtaining connections from the database.
+     *
      * @return the ConnectionProvider instance that should be used for connections
      */
     public ConnectionProvider getConnectionProvider();
@@ -78,7 +81,6 @@ public interface DatabaseConnValueContext extends ValueContext
     /**
      * Specifies the connection provider that this value context should use for retrieving connections. If no
      * connection provider is specified, a default one will be used.
-     * @param provider
      */
     public void setConnectionProvider(ConnectionProvider provider);
 
@@ -87,15 +89,17 @@ public interface DatabaseConnValueContext extends ValueContext
      */
     public SqlManager getSqlManager();
 
-	/**
-	 * Sets the default data source to a user-defined string.
-	 * @param defaultDataSource A string representing the new data source
-	 */
-	public void setDefaultDataSource(String defaultDataSource);
+    /**
+     * Sets the default data source to a user-defined string.
+     *
+     * @param defaultDataSource A string representing the new data source
+     */
+    public void setDefaultDataSource(String defaultDataSource);
 
-	/**
-	 * Retrieves the default data source
-	 * @return A string representing the default data source
-	 */
-	public String getDefaultDataSource();
+    /**
+     * Retrieves the default data source
+     *
+     * @return A string representing the default data source
+     */
+    public String getDefaultDataSource();
 }

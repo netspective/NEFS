@@ -87,10 +87,10 @@ public class DbmsSqlTexts implements Cloneable
         byDbms.putAll(exprs.byDbms);
     }
 
-	public DbmsSqlText removeByDbms(String dbmsId)
-	{
-		return (DbmsSqlText) byDbms.remove(dbmsId);
-	}
+    public DbmsSqlText removeByDbms(String dbmsId)
+    {
+        return (DbmsSqlText) byDbms.remove(dbmsId);
+    }
 
     public DbmsSqlText getByDbms(DatabasePolicy dbPolicy)
     {

@@ -43,7 +43,7 @@ public class ParseException extends JunxionException
     public ParseException(String message, Locator locator)
     {
         super(message);
-        if (locator != null)
+        if(locator != null)
         {
             init(locator.getSourceIdentifier(), locator.getLineNumber(), locator.getColumnNumber());
         }
@@ -56,7 +56,7 @@ public class ParseException extends JunxionException
     public ParseException(String message, Locator locator, Exception e)
     {
         super(message, e);
-        if (locator != null)
+        if(locator != null)
         {
             init(locator.getSourceIdentifier(), locator.getLineNumber(), locator.getColumnNumber());
         }

@@ -48,14 +48,14 @@ public class DoubleColumn extends BasicColumn
 
         public void setValue(Object value)
         {
-            if (value != null && !value.getClass().isAssignableFrom(Double.class))
+            if(value != null && !value.getClass().isAssignableFrom(Double.class))
             {
                 try
                 {
                     // try and get the text representation and assign it instead
                     setTextValue(value.toString());
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
                 }
@@ -70,7 +70,7 @@ public class DoubleColumn extends BasicColumn
             {
                 setValue(new Double(Double.parseDouble(value)));
             }
-            catch (NumberFormatException e)
+            catch(NumberFormatException e)
             {
                 throw new ValueException(e);
             }

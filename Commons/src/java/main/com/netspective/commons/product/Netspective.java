@@ -82,11 +82,11 @@ public class Netspective
     public List getAllLibraryDependencies()
     {
         Map libsBySortedName = new TreeMap();
-        for (int productInfoIndex = 0; productInfoIndex < productInfos.size(); productInfoIndex++)
+        for(int productInfoIndex = 0; productInfoIndex < productInfos.size(); productInfoIndex++)
         {
             ProductInfo info = (ProductInfo) productInfos.get(productInfoIndex);
             List libDependencies = info.getDependencies().getLibraries();
-            for (int libDepIndex = 0; libDepIndex < libDependencies.size(); libDepIndex++)
+            for(int libDepIndex = 0; libDepIndex < libDependencies.size(); libDepIndex++)
             {
                 LibraryDependency libDependency = (LibraryDependency) libDependencies.get(libDepIndex);
                 libsBySortedName.put(libDependency.getName(), libDependency);
@@ -94,7 +94,7 @@ public class Netspective
         }
 
         List result = new ArrayList();
-        for (Iterator i = libsBySortedName.keySet().iterator(); i.hasNext();)
+        for(Iterator i = libsBySortedName.keySet().iterator(); i.hasNext();)
             result.add(libsBySortedName.get(i.next()));
         return result;
     }

@@ -51,7 +51,7 @@ public class IgmlFormat extends DefaultXdmComponent implements InterchangeFormat
      */
     public TextContainer createStandard() throws DataModelException
     {
-        if (standard != null)
+        if(standard != null)
             throw new DataModelException(null, "Only a single <Standard> is allowed in any given Format");
         standard = new Standard();
         return standard;

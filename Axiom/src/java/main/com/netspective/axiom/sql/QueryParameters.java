@@ -126,9 +126,10 @@ public class QueryParameters
 
     /**
      * Retrieve the bind parameters that would be applied to a prepared statement (useful for debugging).
+     *
      * @param cc The connection context
+     *
      * @return An object that holds all the bind parameters and associated SQL types
-     * @throws SQLException
      */
     public ValueRetrieveContext retrieve(ConnectionContext cc) throws SQLException
     {
@@ -146,10 +147,11 @@ public class QueryParameters
 
     /**
      * Apply the parameters in this list to the given prepared statement.
-     * @param cc The connection context
+     *
+     * @param cc   The connection context
      * @param stmt The prepared statement
+     *
      * @return The index of the last parameter applied
-     * @throws SQLException
      */
     public int apply(ConnectionContext cc, PreparedStatement stmt) throws SQLException
     {

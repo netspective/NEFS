@@ -50,10 +50,11 @@ import com.netspective.commons.xdm.exception.DataModelException;
 public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
+
     static
     {
         XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "index" });
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[]{"index"});
     }
 
     private QueryParameters parent;
@@ -142,7 +143,7 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
         {
             QueryParameterType type = QueryParameterType.get(paramTypeName);
             if(type == null)
-                throw new RuntimeException("param type '" + paramTypeName + "' is invalid for param '"+ getName() +"' in query '" + parent.getQuery().getQualifiedName() + "'");
+                throw new RuntimeException("param type '" + paramTypeName + "' is invalid for param '" + getName() + "' in query '" + parent.getQuery().getQualifiedName() + "'");
             setSqlTypeCode(type.getJdbcType());
             setJavaType(type.getJavaClass());
         }
@@ -263,19 +264,16 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
 
     /**
      * Appends a list of bind parameters and their respective information used for debugging to the buffer
-     * @param text
-     * @param vc
-     * @param terminator
      */
     public void appendBindText(StringBuffer text, ValueContext vc, String terminator)
     {
-        text.append("["+ index +"]");
+        text.append("[" + index + "]");
         if(sqlType != Types.ARRAY)
         {
             Object ov = value.getValue(vc);
             text.append(value.getSpecification().getSpecificationText());
             text.append(" = ");
-            text.append(((Value)ov).getValueForSqlBindParam());
+            text.append(((Value) ov).getValueForSqlBindParam());
             text.append(" (java: ");
             text.append(ov != null ? ov.getClass().getName() : "<NULL>");
             text.append(", sql: ");

@@ -40,9 +40,6 @@ public interface ErrorHandler
      * Receive notification of a non-recoverable error.
      *
      * @param exception The error information encapsulated in a parse exception.
-     *
-     * @throws com.netspective.junxion.JunxionException
-     *
      */
     public void fatalError(ParseException exception) throws JunxionException;
 
@@ -50,9 +47,6 @@ public interface ErrorHandler
      * Receive notification of a recoverable error.
      *
      * @param exception The error information encapsulated in a parse exception.
-     *
-     * @throws com.netspective.junxion.JunxionException
-     *
      */
     public void error(ParseException exception) throws JunxionException;
 
@@ -60,9 +54,6 @@ public interface ErrorHandler
      * Receive notification of a warning.
      *
      * @param exception The warning information encapsulated in a parse exception.
-     *
-     * @throws com.netspective.junxion.JunxionException
-     *
      */
     public void warning(ParseException exception) throws JunxionException;
 }

@@ -79,7 +79,7 @@ public class DynamicComparison implements SqlComparison
         String comparisonId = dynamicComparisonId.getTextValue(vc);
         SqlComparison comparison = SqlComparisonFactory.getComparison(comparisonId);
         if(comparison == null)
-            throw new QueryDefnSqlComparisonNotFoundException(select.getQueryDefn(), comparisonId, "SQL comparison '"+ comparisonId +"' not found.");
+            throw new QueryDefnSqlComparisonNotFoundException(select.getQueryDefn(), comparisonId, "SQL comparison '" + comparisonId + "' not found.");
         return comparison.getWhereCondExpr(vc, select, statement, cond);
     }
 }

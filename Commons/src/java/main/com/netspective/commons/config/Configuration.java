@@ -78,7 +78,7 @@ public class Configuration extends Property implements XmlDataModelSchema.Custom
     public Object createCustomDataModelElement(XdmParseContext pc, XmlDataModelSchema schema, Object parent, String elementName, String alternateClassName)
             throws InvocationTargetException, IllegalAccessException, InstantiationException
     {
-        if (elementName.equals("system-property"))
+        if(elementName.equals("system-property"))
             return createSystemProperty();
 
         /* all custom elements are treated as properties with the element name as the property name */
@@ -91,7 +91,7 @@ public class Configuration extends Property implements XmlDataModelSchema.Custom
             throws InvocationTargetException, IllegalAccessException, InstantiationException
     {
         // the system property is "registered" automatically in the construction finalization listener
-        if (elementName.equals("system-property"))
+        if(elementName.equals("system-property"))
             return;
 
         /* just add the property that was created in createCustomElement */
@@ -110,14 +110,14 @@ public class Configuration extends Property implements XmlDataModelSchema.Custom
 
     public void registerProperty(Property property)
     {
-        if (property.getName() != null)
+        if(property.getName() != null)
             allProperties.put(property.getName(), property);
     }
 
     public String getTextValue(ValueContext vc, String propertyName, String defaultValue)
     {
         Property property = (Property) allProperties.get(propertyName);
-        if (property == null)
+        if(property == null)
             return defaultValue;
         else
             return property.getValue(vc);
@@ -126,7 +126,7 @@ public class Configuration extends Property implements XmlDataModelSchema.Custom
     public String getTextValue(ValueContext vc, String propertyName) throws PropertyNotFoundException
     {
         Property property = (Property) allProperties.get(propertyName);
-        if (property == null)
+        if(property == null)
             throw new PropertyNotFoundException(this, propertyName);
         else
             return property.getValue(vc);
@@ -135,7 +135,7 @@ public class Configuration extends Property implements XmlDataModelSchema.Custom
     public String getExpression(String propertyName) throws PropertyNotFoundException
     {
         Property property = (Property) allProperties.get(propertyName);
-        if (property == null)
+        if(property == null)
             throw new PropertyNotFoundException(this, propertyName);
         else
             return property.getValue();
@@ -149,7 +149,7 @@ public class Configuration extends Property implements XmlDataModelSchema.Custom
     public void dumpProperties()
     {
         Set set = new TreeSet(allProperties.keySet());
-        for (Iterator i = set.iterator(); i.hasNext();)
+        for(Iterator i = set.iterator(); i.hasNext();)
         {
             String key = (String) i.next();
             Property property = findProperty(key);

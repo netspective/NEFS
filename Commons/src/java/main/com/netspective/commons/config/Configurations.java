@@ -64,7 +64,7 @@ public class Configurations
         String actualName = Property.getNameForMapKey(name);
         Configuration config = (Configuration) configurations.get(actualName);
 
-        if (config == null && log.isDebugEnabled())
+        if(config == null && log.isDebugEnabled())
         {
             log.debug("Unable to find configuration object '" + name + "' as '" + actualName + "'. Available: " + configurations);
             return null;
@@ -78,7 +78,7 @@ public class Configurations
         config.setManager(this);
         String configName = Property.getNameForMapKey(DEFAULT_CONFIG_NAME);
 
-        if (config.getName() == null || DEFAULT_CONFIG_NAME.equalsIgnoreCase(config.getName()))
+        if(config.getName() == null || DEFAULT_CONFIG_NAME.equalsIgnoreCase(config.getName()))
         {
             config.setName(DEFAULT_CONFIG_NAME);
             defaultConfig = config;

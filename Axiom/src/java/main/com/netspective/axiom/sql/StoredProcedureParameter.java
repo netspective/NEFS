@@ -71,7 +71,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         public static final String OUT_NAME = "out";
         public static final String IN_OUT_NAME = "in-out";
 
-        public static final String[] VALUES = new String[] { IN_NAME, OUT_NAME, IN_OUT_NAME };
+        public static final String[] VALUES = new String[]{IN_NAME, OUT_NAME, IN_OUT_NAME};
 
         public Type()
         {
@@ -110,7 +110,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Sets the type of value the parameter will contain
-     * @param sqlType
      */
     public void setSqlType(QueryParameterTypeEnumeratedAttribute sqlType)
     {
@@ -119,15 +118,13 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         {
             paramType = QueryParameterType.get(paramTypeName);
             if(paramType == null)
-                throw new RuntimeException("param type '" + paramTypeName + "' is invalid for param '"+
-                        getName() +"' in stored procedure '" + parent.getProcedure().getQualifiedName() + "'");
+                throw new RuntimeException("param type '" + paramTypeName + "' is invalid for param '" +
+                                           getName() + "' in stored procedure '" + parent.getProcedure().getQualifiedName() + "'");
         }
     }
 
     /**
      * Gets the special TYPE defined in database
-     *
-     * @return
      */
     public String getTypeName()
     {
@@ -137,11 +134,9 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     /**
      * Sets the special TYPE defined in database
      * (e.g create or replace type NUM_ARRAY as table of number;)
-     *
+     * <p/>
      * IMPORTANT: PLSQL types are known to exactly PLSQL and PLSQL alone. SQL types -- stored in the data dictionary --
      * are visible to all, usable by all. you must use a SQL type via create type.
-     *
-     * @param typeName
      */
     public void setTypeName(String typeName)
     {
@@ -150,7 +145,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Gets the parameter's value type object
-     * @return
      */
     public QueryParameterType getSqlType()
     {
@@ -159,16 +153,14 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Gets the parameters java data type name
-     * @return
      */
     public String getSqlIdentifierType()
     {
-        return (paramType != null ? paramType.getIdentifier(): null);
+        return (paramType != null ? paramType.getIdentifier() : null);
     }
 
     /**
      * Gets the parameter's JDBC data type
-     * @return
      */
     public int getSqlJdbcType()
     {
@@ -177,7 +169,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Gets the type of parameter (IN, OUT, or IN/OUT)
-     * @return
      */
     public Type getType()
     {
@@ -186,7 +177,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Sets the type of parameter ( in or Out)
-     * @param type
      */
     public void setType(Type type)
     {
@@ -194,10 +184,10 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     }
 
     /**
-     *
      * @param pc
      * @param element
      * @param elementName
+     *
      * @throws DataModelException
      */
     public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
@@ -206,16 +196,16 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         if(type == null)
         {
             RuntimeException e = new RuntimeException("Parameter '" + getName() +
-                    "'  for stored procedure '" +
-                    this.parent.getProcedure().getQualifiedName() + "' has no 'type' attribute.");
+                                                      "'  for stored procedure '" +
+                                                      this.parent.getProcedure().getQualifiedName() + "' has no 'type' attribute.");
             this.parent.getProcedure().getLog().error(e.getMessage(), e);
             throw e;
         }
         if(value == null)
         {
             RuntimeException e = new RuntimeException("Parameter '" + getName() +
-                    "'  for stored procedure '" +
-                    this.parent.getProcedure().getQualifiedName() + "' has no 'value' or 'values' attribute.");
+                                                      "'  for stored procedure '" +
+                                                      this.parent.getProcedure().getQualifiedName() + "' has no 'value' or 'values' attribute.");
             this.parent.getProcedure().getLog().error(e.getMessage(), e);
             throw e;
         }
@@ -225,48 +215,48 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     /**
      * Apply the IN/OUT parameters of the callable statement object
      *
-     * @param vac               the context in which the apply action is being performed
-     * @param stmt              the statement object
-     * @throws SQLException
+     * @param vac  the context in which the apply action is being performed
+     * @param stmt the statement object
      */
     public void apply(StoredProcedureParameters.ValueApplyContext vac, ConnectionContext cc, CallableStatement stmt) throws SQLException
     {
         int paramNum = vac.getNextParamNum();
         int jdbcType = getSqlType().getJdbcType();
-        if (getType().getValueIndex() == Type.IN || getType().getValueIndex() == Type.IN_OUT)
+        if(getType().getValueIndex() == Type.IN || getType().getValueIndex() == Type.IN_OUT)
         {
             String text = value.getTextValue(cc);
-            switch (jdbcType)
+            switch(jdbcType)
             {
                 case Types.VARCHAR:
                     // user override value if it exists
-                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                    if(vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
                         text = (String) vac.getActiveParamOverrideValue();
-                    if (allowNull && text == null)
+                    if(allowNull && text == null)
                         stmt.setNull(paramNum, Types.VARCHAR);
-                    else if (text != null)
+                    else if(text != null)
                         stmt.setObject(paramNum, text);
                     else
                         log.warn("Parameter '" + getName() + "' was not bound. Value = " + text);
                     break;
 
                 case Types.CHAR:
-                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                    if(vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
                         text = (String) vac.getActiveParamOverrideValue();
-                    if (allowNull && text == null)
+                    if(allowNull && text == null)
                         stmt.setNull(paramNum, Types.CHAR);
-                    else if (text != null)
-                        stmt.setObject(paramNum, text.substring(0,1));
+                    else if(text != null)
+                        stmt.setObject(paramNum, text.substring(0, 1));
                     else
                         log.warn("Parameter '" + getName() + "' was not bound. Value = " + text);
                     break;
 
                 case Types.INTEGER:
-                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
-                        text = vac.getActiveParamOverrideValue() != null ? vac.getActiveParamOverrideValue().toString() : null;
-                    if (allowNull && text == null)
+                    if(vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                        text = vac.getActiveParamOverrideValue() != null
+                               ? vac.getActiveParamOverrideValue().toString() : null;
+                    if(allowNull && text == null)
                         stmt.setNull(paramNum, Types.INTEGER);
-                    else if (text != null)
+                    else if(text != null)
                         stmt.setInt(paramNum, Integer.parseInt(text));
                     else
                         log.warn("Parameter '" + getName() + "' was not bound. Value = " + text);
@@ -274,11 +264,12 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                     break;
 
                 case Types.DOUBLE:
-                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
-                        text = vac.getActiveParamOverrideValue() != null ? vac.getActiveParamOverrideValue().toString() : null;
-                    if (allowNull && text == null)
+                    if(vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                        text = vac.getActiveParamOverrideValue() != null
+                               ? vac.getActiveParamOverrideValue().toString() : null;
+                    if(allowNull && text == null)
                         stmt.setNull(paramNum, Types.DOUBLE);
-                    else if (text != null)
+                    else if(text != null)
                         stmt.setDouble(paramNum, Double.parseDouble(text));
                     else
                         log.warn("Parameter '" + getName() + "' was not bound. Value = " + text);
@@ -289,21 +280,21 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                     // Arrays are quite tricky. Right now, this is supporting String arrays only.
                     // TODO: Support integer and float arrays also
                     String[] textValues = value.getTextValues(cc);
-                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                    if(vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
                         textValues = (String[]) vac.getActiveParamOverrideValue();
                     applyInArrayValue(cc, stmt, paramNum, textValues);
                     break;
                 default:
                     log.warn("Unknown JDBC type for parameter '" + getName() + "' (index=" +
-                            paramNum + ") of stored procedure '" + parent.getProcedure() + "'.");
+                             paramNum + ") of stored procedure '" + parent.getProcedure() + "'.");
                     break;
             }
         }
-        if (getType().getValueIndex() == Type.OUT || getType().getValueIndex() == Type.IN_OUT)
+        if(getType().getValueIndex() == Type.OUT || getType().getValueIndex() == Type.IN_OUT)
         {
             String identifier = getSqlType().getIdentifier();
             // result sets are returned differently for different vendors
-            if (identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
+            if(identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
                 stmt.registerOutParameter(paramNum, getVendorSpecificResultSetType(cc));
             else
                 stmt.registerOutParameter(paramNum, jdbcType);
@@ -311,19 +302,19 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     }
 
     /**
-     *  Applies an array object as an IN parameter
+     * Applies an array object as an IN parameter
      *
-     * @param cc        Connection context
-     * @param stmt      Callable statement object
-     * @param paramNum  the index
-     * @param array     the java array object
+     * @param cc       Connection context
+     * @param stmt     Callable statement object
+     * @param paramNum the index
+     * @param array    the java array object
      */
     private void applyInArrayValue(ConnectionContext cc, CallableStatement stmt, int paramNum, Object[] array)
     {
         // TODO: This is the initial implementation. NOT TESTED YET. 01/13/2004 AT
         try
         {
-            if (isOracleDriver(cc))
+            if(isOracleDriver(cc))
             {
                 // doing the following ORACLE specific calls
                 // oracle.sql.ArrayDescriptor descriptor =  oracle.sql.ArrayDescriptor.createDescriptor( "NUM_ARRAY", conn );
@@ -332,33 +323,33 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
                 // create the array descriptor
                 Class arrayDescriptorClass = Class.forName("oracle.sql.ArrayDescriptor");
-                Method createDescriptor = arrayDescriptorClass.getMethod("createDescriptor", new Class[] {String.class, Connection.class});
-                Object descriptor = createDescriptor.invoke(null, new Object[] {getTypeName(), cc.getConnection()});
+                Method createDescriptor = arrayDescriptorClass.getMethod("createDescriptor", new Class[]{
+                    String.class, Connection.class
+                });
+                Object descriptor = createDescriptor.invoke(null, new Object[]{getTypeName(), cc.getConnection()});
 
                 // create the array to pass to the database
                 Class arrayClass = Class.forName("oracle.sql.ARRAY");
-                Constructor arrayConstructor = arrayClass.getConstructor(new Class[] {arrayDescriptorClass, Connection.class,
-                                                                                      getSqlType().getJavaClass()});
-                arrayConstructor.newInstance(new Object[] {descriptor, cc.getConnection(), array});
+                Constructor arrayConstructor = arrayClass.getConstructor(new Class[]{
+                    arrayDescriptorClass, Connection.class,
+                    getSqlType().getJavaClass()
+                });
+                arrayConstructor.newInstance(new Object[]{descriptor, cc.getConnection(), array});
 
                 Class oracleStmt = Class.forName("oracle.jdbc.OracleCallableStatement");
-                Method setArrayMethod = oracleStmt.getMethod("setARRAY", new Class[] {int.class, arrayClass});
-                setArrayMethod.invoke(stmt, new Object[] {new Integer(paramNum), array});
+                Method setArrayMethod = oracleStmt.getMethod("setARRAY", new Class[]{int.class, arrayClass});
+                setArrayMethod.invoke(stmt, new Object[]{new Integer(paramNum), array});
             }
         }
         catch(Exception e)
         {
-            log.error("Failed to apply the ARRAY IN parameter at index "+ paramNum + " in stored procedure " +
-                    "'" + parent.getProcedure() + "'.");
+            log.error("Failed to apply the ARRAY IN parameter at index " + paramNum + " in stored procedure " +
+                      "'" + parent.getProcedure() + "'.");
         }
     }
 
     /**
      * Checks to see if the connection context is connected to an Oracle database
-     * @param cc
-     * @return
-     * @throws NamingException
-     * @throws SQLException
      */
     private boolean isOracleDriver(ConnectionContext cc) throws NamingException, SQLException
     {
@@ -372,8 +363,10 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
      * register the correct out parameter type specific to the vendor.
      * If it isn't able to guess the database from the drive name, it will return <code>Types.OTHER</code>
      * as the result set type.
-     * @param cc  connection context object
-     * @return  the JDBC type code defined by <code>java.sql.Types</code>.
+     *
+     * @param cc connection context object
+     *
+     * @return the JDBC type code defined by <code>java.sql.Types</code>.
      */
     public int getVendorSpecificResultSetType(ConnectionContext cc)
     {
@@ -381,51 +374,47 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         int sqlType = Types.OTHER;
         try
         {
-            if (isOracleDriver(cc))
+            if(isOracleDriver(cc))
             {
                 // ORACLE DRIVER
                 Class oClass = Class.forName("oracle.jdbc.driver.OracleTypes");
                 sqlType = oClass.getField("CURSOR").getInt(null);
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Failed to get the column type for the result set cursor for stored procedure" +
-                    "'" + parent.getProcedure() + "'.");
+                      "'" + parent.getProcedure() + "'.");
         }
         return sqlType;
     }
 
     /**
      * Checks to see if this parameter is available as an Output type
-     * @return
      */
     public boolean isOutType()
     {
-        return (type.getValueIndex() == Type.OUT || type.getValueIndex() == Type.IN_OUT) ? true: false;
+        return (type.getValueIndex() == Type.OUT || type.getValueIndex() == Type.IN_OUT) ? true : false;
     }
 
 
     /**
      * Gets the extracted value
+     *
      * @param vc the value context
-     * @return
      */
     public Object getExtractedValue(ValueContext vc)
     {
-       return value.getValue(vc).getValue();
+        return value.getValue(vc).getValue();
     }
 
     /**
      * Extract the OUT parameter values from the callable statment and
      * assign them to the value of the parameter.
-     * @param cc
-     * @param stmt
-     * @throws SQLException
      */
     public void extract(ConnectionContext cc, CallableStatement stmt) throws SQLException
     {
-        if (getType().getValueIndex() == StoredProcedureParameter.Type.IN)
+        if(getType().getValueIndex() == StoredProcedureParameter.Type.IN)
             return;
 
         int index = this.getIndex();
@@ -434,7 +423,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         String identifier = paramType.getIdentifier();
 
         // result sets are special
-        if (identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
+        if(identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
         {
             ResultSet rs = (ResultSet) stmt.getObject(index);
             QueryResultSet qrs = new QueryResultSet(getParent().getProcedure(), cc, rs);
@@ -442,7 +431,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
             return;
         }
 
-        switch (jdbcType)
+        switch(jdbcType)
         {
             case Types.VARCHAR:
                 value.getValue(cc).setTextValue(stmt.getString(index));
@@ -455,7 +444,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                 break;
             case Types.CLOB:
                 Clob clob = stmt.getClob(index);
-                value.getValue(cc).setTextValue(clob.getSubString(1,(int) clob.length()));
+                value.getValue(cc).setTextValue(clob.getSubString(1, (int) clob.length()));
                 break;
             case java.sql.Types.ARRAY:
                 Array array = stmt.getArray(index);
@@ -498,9 +487,9 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
             case java.sql.Types.LONGVARCHAR:
                 value.getValue(cc).setTextValue(stmt.getString(index));
                 break;
-            //case java.sql.Types.NULL:
-            //    value.getValue(cc).setValue(null);
-            //    break;
+                //case java.sql.Types.NULL:
+                //    value.getValue(cc).setValue(null);
+                //    break;
             case java.sql.Types.NUMERIC:
                 value.getValue(cc).setValue(stmt.getBigDecimal(index));
                 break;
@@ -510,9 +499,9 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
             case java.sql.Types.REAL:
                 value.getValue(cc).setValue(new Float(stmt.getFloat(index)));
                 break;
-            //case java.sql.Types.REF:
-            //    Ref ref = stmt.getRef(index);
-            //    break;
+                //case java.sql.Types.REF:
+                //    Ref ref = stmt.getRef(index);
+                //    break;
             case java.sql.Types.SMALLINT:
                 short sh = stmt.getShort(index);
                 value.getValue(cc).setValue(new Short(sh));
@@ -531,18 +520,18 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                 value.getValue(cc).setValue(new Byte(b));
                 break;
             case java.sql.Types.VARBINARY:
-                 value.getValue(cc).setValue(stmt.getBytes(index));
+                value.getValue(cc).setValue(stmt.getBytes(index));
                 break;
             default:
                 throw new RuntimeException("Unknown JDBC Type set for stored procedure parameter '" +
-                        this.getName() + "'.");
+                                           this.getName() + "'.");
         }
     }
 
     /**
-     *
      * @param vrc
      * @param cc
+     *
      * @throws SQLException
      */
     public void retrieve(StoredProcedureParameters.ValueRetrieveContext vrc, ConnectionContext cc) throws SQLException
@@ -571,7 +560,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         }
         else
         {
-            if (value != null && type.getValueIndex() == Type.IN)
+            if(value != null && type.getValueIndex() == Type.IN)
             {
                 String[] textValues = value.getTextValues(cc);
                 for(int q = 0; q < textValues.length; q++)
@@ -583,7 +572,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Gets teh index of this parameter
-     * @return
      */
     public int getIndex()
     {
@@ -592,7 +580,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Sets the index of this parameter
-     * @param index
      */
     public void setIndex(int index)
     {
@@ -603,7 +590,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Gets the name of this parameter
-     * @return
      */
     public String getName()
     {
@@ -612,7 +598,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Sets the name of this parameter
-     * @param name
      */
     public void setName(String name)
     {
@@ -621,7 +606,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Gets the parent collection object
-     * @return
      */
     public StoredProcedureParameters getParent()
     {
@@ -630,7 +614,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Sets the parent collection object
-     * @param parent
      */
     public void setParent(StoredProcedureParameters parent)
     {
@@ -640,7 +623,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Gets the dynamic value for this parameter
-     * @return
      */
     public ValueSource getValue()
     {
@@ -649,7 +631,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     /**
      * Sets the dynamic value for this parameter
-     * @param value
      */
     public void setValue(ValueSource value)
     {
@@ -658,25 +639,22 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
 
     public boolean isListType()
     {
-        return paramType != null  && paramType.getJdbcType() == Types.ARRAY ? true : false;
+        return paramType != null && paramType.getJdbcType() == Types.ARRAY ? true : false;
     }
 
     /**
      * Appends a list of bind parameters and their respective information used for debugging to the buffer
-     * @param text
-     * @param vc
-     * @param terminator
      */
     public void appendBindText(StringBuffer text, ValueContext vc, String terminator)
     {
-        text.append("["+ index +"]");
+        text.append("[" + index + "]");
         int jdbcType = getSqlType().getJdbcType();
         if(jdbcType != Types.ARRAY)
         {
             Object ov = value.getValue(vc);
             text.append(value.getSpecification().getSpecificationText());
             text.append(" = ");
-            text.append(((Value)ov).getValueForSqlBindParam());
+            text.append(((Value) ov).getValueForSqlBindParam());
             text.append(" (java: ");
             text.append(ov != null ? ov.getClass().getName() : "<NULL>");
             text.append(", sql: ");

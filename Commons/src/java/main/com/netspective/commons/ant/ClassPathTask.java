@@ -99,32 +99,32 @@ public class ClassPathTask extends Task
         Set itemSet = new HashSet();
         Map filesMap = new HashMap();
 
-        for (int i = 0; i < items.length; i++)
+        for(int i = 0; i < items.length; i++)
         {
             String item = items[i];
-            if (itemSet.contains(item))
+            if(itemSet.contains(item))
                 continue;
 
             File file = new File(item);
-            if (file.isFile() && file.exists())
+            if(file.isFile() && file.exists())
             {
                 // Compute Adler-32 checksum of the file
                 try
                 {
                     CheckedInputStream cis = new CheckedInputStream(new FileInputStream(file), new Adler32());
                     byte[] tempBuf = new byte[512];
-                    while (cis.read(tempBuf) >= 0)
+                    while(cis.read(tempBuf) >= 0)
                     { }
 
                     String fileName = file.getName();
                     Checksum existingChecksum = (Checksum) filesMap.get(fileName);
 
-                    if (existingChecksum != null && cis.getChecksum().getValue() == existingChecksum.getValue())
+                    if(existingChecksum != null && cis.getChecksum().getValue() == existingChecksum.getValue())
                         continue;
                     else
                         filesMap.put(fileName, cis.getChecksum());
                 }
-                catch (IOException ioe)
+                catch(IOException ioe)
                 {
                     // we're going to eat the error, but keep the item in the finalList
                 }
@@ -140,27 +140,27 @@ public class ClassPathTask extends Task
 
     public Path createAdditionalClasspath()
     {
-        if (additionalClassPath == null)
+        if(additionalClassPath == null)
             additionalClassPath = new Path(project);
         return additionalClassPath.createPath();
     }
 
     public void execute() throws BuildException
     {
-        if (listAll)
+        if(listAll)
         {
             ClassPath.ClassPathInfo[] cpi = additionalClassPath != null ?
-                    ClassPath.getClassPaths(additionalClassPath.toString()) :
-                    ClassPath.getSystemClassPaths();
+                                            ClassPath.getClassPaths(additionalClassPath.toString()) :
+                                            ClassPath.getSystemClassPaths();
 
-            for (int i = 0; i < cpi.length; i++)
+            for(int i = 0; i < cpi.length; i++)
             {
                 ClassPath.ClassPathInfo info = cpi[i];
                 log(info.getClassPath().getAbsolutePath() + (info.isValid() ? "" : " (INVALID)"));
             }
         }
 
-        if (showLocOfClass != null)
+        if(showLocOfClass != null)
         {
             log(showLocOfClass + " is " + ClassPath.getClassFileName(showLocOfClass));
         }

@@ -82,28 +82,28 @@ public class XdmParseContext extends ParseContext
             parser.setContentHandler(handler);
             parser.parse(inputSource);
         }
-        catch (SAXParseException exc)
+        catch(SAXParseException exc)
         {
             throw new DataModelException(this, exc.getMessage(), exc);
         }
-        catch (SAXException exc)
+        catch(SAXException exc)
         {
             Throwable t = exc.getException();
-            if (t instanceof TransformProcessingInstructionEncounteredException)
+            if(t instanceof TransformProcessingInstructionEncounteredException)
             {
                 throw (TransformProcessingInstructionEncounteredException) t;
             }
-            else if (t instanceof DataModelException)
+            else if(t instanceof DataModelException)
             {
                 throw (DataModelException) t;
             }
             throw new DataModelException(this, exc.getMessage(), t);
         }
-        catch (FileNotFoundException exc)
+        catch(FileNotFoundException exc)
         {
             throw new DataModelException(this, exc);
         }
-        catch (IOException exc)
+        catch(IOException exc)
         {
             throw new DataModelException(this, "Error reading XML data model file", exc);
         }
@@ -113,7 +113,7 @@ public class XdmParseContext extends ParseContext
             {
                 closeInputSource();
             }
-            catch (IOException e)
+            catch(IOException e)
             {
             }
         }
@@ -130,7 +130,7 @@ public class XdmParseContext extends ParseContext
             pc.setTemplateCatalog(null); // free explicitly other will cause memory leak because the template catalog is not owned by the PC
             return pc;
         }
-        catch (TransformProcessingInstructionEncounteredException exc)
+        catch(TransformProcessingInstructionEncounteredException exc)
         {
             try
             {
@@ -138,16 +138,16 @@ public class XdmParseContext extends ParseContext
                 pc.parse(dm);
                 return pc;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new DataModelException(pc, e);
             }
         }
-        catch (ParserConfigurationException exc)
+        catch(ParserConfigurationException exc)
         {
             throw new DataModelException(pc, "Parser has not been configured correctly", exc);
         }
-        catch (SAXException exc)
+        catch(SAXException exc)
         {
             throw new DataModelException(pc, exc);
         }
@@ -164,7 +164,7 @@ public class XdmParseContext extends ParseContext
             pc.setTemplateCatalog(null); // free explicitly other will cause memory leak because the template catalog is not owned by the PC
             return pc;
         }
-        catch (TransformProcessingInstructionEncounteredException exc)
+        catch(TransformProcessingInstructionEncounteredException exc)
         {
             try
             {
@@ -172,16 +172,16 @@ public class XdmParseContext extends ParseContext
                 pc.parse(dm);
                 return pc;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new DataModelException(pc, e);
             }
         }
-        catch (ParserConfigurationException exc)
+        catch(ParserConfigurationException exc)
         {
             throw new DataModelException(pc, "Parser has not been configured correctly", exc);
         }
-        catch (SAXException exc)
+        catch(SAXException exc)
         {
             throw new DataModelException(pc, exc);
         }
@@ -198,7 +198,7 @@ public class XdmParseContext extends ParseContext
             pc.setTemplateCatalog(null); // free explicitly other will cause memory leak because the template catalog is not owned by the PC
             return pc;
         }
-        catch (TransformProcessingInstructionEncounteredException exc)
+        catch(TransformProcessingInstructionEncounteredException exc)
         {
             try
             {
@@ -206,16 +206,16 @@ public class XdmParseContext extends ParseContext
                 pc.parse(dm);
                 return pc;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new DataModelException(pc, e);
             }
         }
-        catch (ParserConfigurationException exc)
+        catch(ParserConfigurationException exc)
         {
             throw new DataModelException(pc, "Parser has not been configured correctly", exc);
         }
-        catch (SAXException exc)
+        catch(SAXException exc)
         {
             throw new DataModelException(pc, exc);
         }
@@ -232,7 +232,7 @@ public class XdmParseContext extends ParseContext
             pc.setTemplateCatalog(null); // free explicitly other will cause memory leak because the template catalog is not owned by the PC
             return pc;
         }
-        catch (TransformProcessingInstructionEncounteredException exc)
+        catch(TransformProcessingInstructionEncounteredException exc)
         {
             try
             {
@@ -240,16 +240,16 @@ public class XdmParseContext extends ParseContext
                 pc.parse(dm);
                 return pc;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new DataModelException(pc, e);
             }
         }
-        catch (ParserConfigurationException exc)
+        catch(ParserConfigurationException exc)
         {
             throw new DataModelException(pc, "Parser has not been configured correctly", exc);
         }
-        catch (SAXException exc)
+        catch(SAXException exc)
         {
             throw new DataModelException(pc, exc);
         }

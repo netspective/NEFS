@@ -95,7 +95,7 @@ public class JndiConnectionProvider implements ConnectionProvider
             else
                 return null;
         }
-        catch (NamingException e)
+        catch(NamingException e)
         {
             return null;
         }
@@ -112,7 +112,7 @@ public class JndiConnectionProvider implements ConnectionProvider
         if(source == null)
         {
             if(log.isDebugEnabled())
-                log.debug("dataSourceId not found in "+ JndiConnectionProvider.class.getName() + ".getConnection('" + dataSourceId + "'). Available: " + getAvailableDataSources());
+                log.debug("dataSourceId not found in " + JndiConnectionProvider.class.getName() + ".getConnection('" + dataSourceId + "'). Available: " + getAvailableDataSources());
             throw new NamingException("Data source '" + dataSourceId + "' not found in JNDI provider " + env);
         }
 
@@ -138,7 +138,7 @@ public class JndiConnectionProvider implements ConnectionProvider
         }
         catch(Exception ex)
         {
-            log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntry('"+ dataSourceId +"')", ex);
+            log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntry('" + dataSourceId + "')", ex);
             return null;
         }
     }
@@ -158,7 +158,7 @@ public class JndiConnectionProvider implements ConnectionProvider
                 }
             }
         }
-        catch (NamingException e)
+        catch(NamingException e)
         {
             log.debug(JndiConnectionProvider.class.getName() + ".getAvailableDataSources()", e);
         }
@@ -184,18 +184,18 @@ public class JndiConnectionProvider implements ConnectionProvider
                         DataSource source = (DataSource) env.lookup(entry.getName());
                         entries.add(getDataSourceEntry(dataSourceId, source));
                     }
-                    catch (NamingException ex)
+                    catch(NamingException ex)
                     {
                         log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", ex);
                     }
-                    catch (SQLException ex)
+                    catch(SQLException ex)
                     {
                         log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", ex);
                     }
                 }
             }
         }
-        catch (NamingException e)
+        catch(NamingException e)
         {
             log.error("Errorw in getDataSourceEntries()", e);
             throw new NestableRuntimeException(e);

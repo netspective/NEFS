@@ -50,10 +50,10 @@ public class RedirectValueSource implements ValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"redirect"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("A special value source wrapper that handles redirects.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("redirect value", true, "")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("redirect value", true, "")
+                                                                                              });
 
     private ValueSource valueSource;
 

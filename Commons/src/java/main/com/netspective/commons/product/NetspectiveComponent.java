@@ -66,18 +66,18 @@ public class NetspectiveComponent extends DefaultXdmComponent
         {
             XdmComponentFactory.load(this, new Resource(product.getClass(), productInfoConfFile));
             List errors = getErrors();
-            if (errors.size() > 0)
+            if(errors.size() > 0)
             {
-                for (int i = 0; i < errors.size(); i++)
+                for(int i = 0; i < errors.size(); i++)
                 {
                     Object error = errors.get(i);
-                    if (error instanceof Exception)
+                    if(error instanceof Exception)
                         throw new BuildException((Exception) error);
                     log.error(error.toString());
                 }
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to load component", e);
             return;

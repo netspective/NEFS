@@ -95,13 +95,13 @@ public class TextReportSkin implements TabularReportSkin
         int lastDataCol = dataColsCount - 1;
 
         StringBuffer row = new StringBuffer();
-        for (int i = 0; i < dataColsCount; i++)
+        for(int i = 0; i < dataColsCount; i++)
         {
-            if (!states[i].isVisible())
+            if(!states[i].isVisible())
                 continue;
 
             String colHeading = ds.getHeadingRowColumnData(i);
-            if (colHeading != null)
+            if(colHeading != null)
                 writeText(row, colHeading, i < lastDataCol);
             else
                 writeText(row, getBlankValue(), i < lastDataCol);
@@ -120,12 +120,12 @@ public class TextReportSkin implements TabularReportSkin
         int lastDataCol = dataColsCount - 1;
         boolean hierarchical = ds.isHierarchical();
 
-        while (ds.next())
+        while(ds.next())
         {
             int hiearchyCol = 0;
             int activeLevel = 0;
 
-            if (hierarchical)
+            if(hierarchical)
             {
                 TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHierarchy();
                 hiearchyCol = activeHierarchy.getColumn();
@@ -133,12 +133,12 @@ public class TextReportSkin implements TabularReportSkin
             }
 
             StringBuffer row = new StringBuffer();
-            for (int i = 0; i < dataColsCount; i++)
+            for(int i = 0; i < dataColsCount; i++)
             {
                 TabularReportColumn column = columns.getColumn(i);
                 TabularReportColumnState state = states[i];
 
-                if (!state.isVisible())
+                if(!state.isVisible())
                     continue;
 
                 String data =
@@ -146,9 +146,9 @@ public class TextReportSkin implements TabularReportSkin
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
 
-                if (hierarchical && (hiearchyCol == i) && activeLevel > 0)
+                if(hierarchical && (hiearchyCol == i) && activeLevel > 0)
                 {
-                    for (int sp = 0; sp < activeLevel; sp++)
+                    for(int sp = 0; sp < activeLevel; sp++)
                         data = " " + data;
                 }
 
@@ -163,7 +163,7 @@ public class TextReportSkin implements TabularReportSkin
     public void produceFootRow(Writer writer, TabularReportValueContext rc) throws IOException
     {
         int calcsCount = rc.getCalcsCount();
-        if (calcsCount == 0)
+        if(calcsCount == 0)
             return;
 
         TabularReportColumnState[] states = rc.getStates();
@@ -172,14 +172,14 @@ public class TextReportSkin implements TabularReportSkin
         int lastDataCol = dataColsCount - 1;
 
         StringBuffer row = new StringBuffer();
-        for (int i = 0; i < dataColsCount; i++)
+        for(int i = 0; i < dataColsCount; i++)
         {
             TabularReportColumn column = columns.getColumn(i);
-            if (!states[i].isVisible())
+            if(!states[i].isVisible())
                 continue;
 
             String summary = column.getFormattedData(rc, states[i].getCalc());
-            if (summary == null)
+            if(summary == null)
                 summary = "";
 
             writeText(row, summary, i < lastDataCol);
@@ -190,17 +190,17 @@ public class TextReportSkin implements TabularReportSkin
 
     public void writeText(StringBuffer sb, String text, boolean delimiterColumn) throws IOException
     {
-        if (textQualifier != null)
+        if(textQualifier != null)
         {
             sb.append(textQualifier);
-            if (text != null)
+            if(text != null)
                 sb.append(text);
             sb.append(textQualifier);
         }
-        else if (text != null)
+        else if(text != null)
             sb.append(text);
 
-        if (delimiterColumn)
+        if(delimiterColumn)
             sb.append(delimiter);
     }
 }

@@ -57,7 +57,7 @@ public class ValidationRulesCollection implements ValidationRules
 
     public void merge(ValidationRules rules)
     {
-        for (int i = 0; i < rules.size(); i++)
+        for(int i = 0; i < rules.size(); i++)
             addRule(rules.get(i));
     }
 
@@ -73,7 +73,7 @@ public class ValidationRulesCollection implements ValidationRules
 
     public void validateValue(ValidationContext vc, Value value)
     {
-        for (int i = 0; i < rules.size(); i++)
+        for(int i = 0; i < rules.size(); i++)
         {
             ValidationRule rule = (ValidationRule) rules.get(i);
             rule.isValid(vc, value);

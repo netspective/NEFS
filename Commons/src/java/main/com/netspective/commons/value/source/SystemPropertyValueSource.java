@@ -52,11 +52,11 @@ public class SystemPropertyValueSource extends AbstractValueSource
     private static final Log log = LogFactory.getLog(SystemPropertyValueSource.class);
     public static final String[] IDENTIFIERS = new String[]{"system-property"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides access to the system property indicated by the property name.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("property-name", true, "The system property name that should be looked up."),
-                new ValueSourceDocumentation.Parameter("default-value", false, "The default value of the property if it was not found. This is a value source specficiation.")
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("property-name", true, "The system property name that should be looked up."),
+                                                                                                  new ValueSourceDocumentation.Parameter("default-value", false, "The default value of the property if it was not found. This is a value source specficiation.")
+                                                                                              });
 
     private String propertyName;
     private ValueSource defaultValue;
@@ -80,16 +80,16 @@ public class SystemPropertyValueSource extends AbstractValueSource
         super.initialize(spec);
 
         StringTokenizer st = new StringTokenizer(spec.getParams(), ",");
-        if (st.hasMoreTokens())
+        if(st.hasMoreTokens())
             propertyName = st.nextToken();
 
-        if (st.hasMoreTokens())
+        if(st.hasMoreTokens())
             defaultValue = ValueSources.getInstance().getValueSourceOrStatic(st.nextToken().trim());
     }
 
     public Value getValue(ValueContext vc)
     {
-        if (defaultValue != null)
+        if(defaultValue != null)
             return new GenericValue(System.getProperty(propertyName, defaultValue.getTextValue(vc)));
         else
             return new GenericValue(System.getProperty(propertyName));

@@ -38,8 +38,6 @@ public interface Command
 {
     /**
      * Set the parameters for the component
-     *
-     * @param params
      */
     public void setParameters(String params);
 

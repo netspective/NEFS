@@ -55,7 +55,7 @@ public class FormattingUtils implements Serializable
         {
             result = new Byte(value);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
 
@@ -75,7 +75,7 @@ public class FormattingUtils implements Serializable
         {
             result = new Short(value);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
 
@@ -95,7 +95,7 @@ public class FormattingUtils implements Serializable
         {
             result = new Integer(value);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
 
@@ -115,7 +115,7 @@ public class FormattingUtils implements Serializable
         {
             result = new Long(value);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
 
@@ -135,7 +135,7 @@ public class FormattingUtils implements Serializable
         {
             result = new Float(value);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
 
@@ -155,7 +155,7 @@ public class FormattingUtils implements Serializable
         {
             result = new Double(value);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
 
@@ -174,12 +174,12 @@ public class FormattingUtils implements Serializable
     {
         Date date = null;
 
-        if (value != null)
+        if(value != null)
         {
             try
             {
                 DateFormat formatter = null;
-                if (locale != null)
+                if(locale != null)
                 {
                     formatter = DateFormat.getDateInstance(DateFormat.SHORT, locale);
                 }
@@ -192,7 +192,7 @@ public class FormattingUtils implements Serializable
 
                 date = formatter.parse(value);
             }
-            catch (ParseException e)
+            catch(ParseException e)
             {
             }
         }
@@ -215,7 +215,7 @@ public class FormattingUtils implements Serializable
     {
         Date date = null;
 
-        if (value != null && datePattern != null && datePattern.length() > 0)
+        if(value != null && datePattern != null && datePattern.length() > 0)
         {
             try
             {
@@ -224,15 +224,15 @@ public class FormattingUtils implements Serializable
 
                 date = formatter.parse(value);
 
-                if (strict)
+                if(strict)
                 {
-                    if (datePattern.length() != value.length())
+                    if(datePattern.length() != value.length())
                     {
                         date = null;
                     }
                 }
             }
-            catch (ParseException e)
+            catch(ParseException e)
             {
             }
         }
@@ -253,12 +253,12 @@ public class FormattingUtils implements Serializable
 
         try
         {
-            if (ValidationUtils.validateCreditCardLuhnCheck(value) && ValidationUtils.validateCreditCardPrefixCheck(value))
+            if(ValidationUtils.validateCreditCardLuhnCheck(value) && ValidationUtils.validateCreditCardPrefixCheck(value))
             {
                 result = new Long(value);
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
 

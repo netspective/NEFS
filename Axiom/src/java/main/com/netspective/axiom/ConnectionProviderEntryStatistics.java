@@ -37,9 +37,12 @@ public interface ConnectionProviderEntryStatistics
     public String getImplementationClassName();
 
     public ConnectionProviderEntry getConnectionProviderEntry();
+
     public void setConnectionProviderEntry(ConnectionProviderEntry entry);
 
     public int getActiveConnections();
+
     public int getMaxConnections();
+
     public int getTotalConnections();
 }

@@ -39,7 +39,7 @@ import com.netspective.junxion.edi.element.Segment;
 import com.netspective.junxion.edi.input.Locator;
 
 /**
- * $Id: InputValidator.java,v 1.2 2004-08-15 01:42:32 shahid.shah Exp $
+ * $Id: InputValidator.java,v 1.3 2004-08-15 02:18:27 shahid.shah Exp $
  */
 public interface InputValidator extends Validator
 {
@@ -52,8 +52,6 @@ public interface InputValidator extends Validator
 
     /**
      * Set the current locator for this validation context
-     *
-     * @param locator
      */
     public void setLocator(Locator locator);
 

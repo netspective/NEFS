@@ -164,23 +164,23 @@ public class ValueSourceDocumentation
     public ValueSourceDocumentation(String descr, Parameter[] params)
     {
         this.description = descr;
-        for (int i = 0; i < params.length; i++)
+        for(int i = 0; i < params.length; i++)
             addParameter(params[i]);
     }
 
     public String getUsageHtml()
     {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < parameters.size(); i++)
+        for(int i = 0; i < parameters.size(); i++)
         {
-            if (i > 0)
+            if(i > 0)
                 sb.append(",");
 
             Parameter param = (Parameter) parameters.get(i);
             String name = param.getName();
-            if (param.required)
+            if(param.required)
                 name = "<b>" + name + "</b>";
-            if (param.enums != null)
+            if(param.enums != null)
                 name = "<u>" + name + "</u>";
             sb.append(name);
         }

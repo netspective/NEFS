@@ -38,7 +38,7 @@ import com.netspective.commons.value.ValueSources;
 import junit.framework.TestCase;
 
 /**
- * $Id: StaticListValueSourceTest.java,v 1.2 2004-08-15 01:41:14 shahid.shah Exp $
+ * $Id: StaticListValueSourceTest.java,v 1.3 2004-08-15 02:17:07 shahid.shah Exp $
  */
 public class StaticListValueSourceTest extends TestCase
 {
@@ -51,7 +51,7 @@ public class StaticListValueSourceTest extends TestCase
         String[] stringList = vs.getTextValues(null);
 
         assertEquals(expectedList.length, stringList.length);
-        for (int i = 0; i < stringList.length; i++)
+        for(int i = 0; i < stringList.length; i++)
             assertEquals(expectedList[i], stringList[i]);
 
         StaticListValueSource slVS = new StaticListValueSource(expectedList);
@@ -59,7 +59,7 @@ public class StaticListValueSourceTest extends TestCase
         String[] stringListTwo = slVS.getTextValues(null);
 
         assertEquals(expectedList.length, stringListTwo.length);
-        for (int i = 0; i < stringListTwo.length; i++)
+        for(int i = 0; i < stringListTwo.length; i++)
             assertEquals(expectedList[i], stringListTwo[i]);
 
         slVS = (StaticListValueSource) ValueSources.getInstance().getValueSource("text-list:[+]one+two+three+four", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
@@ -68,7 +68,7 @@ public class StaticListValueSourceTest extends TestCase
         String[] stringListThree = vs.getTextValues(null);
 
         assertEquals(expectedList.length, stringListThree.length);
-        for (int i = 0; i < stringListThree.length; i++)
+        for(int i = 0; i < stringListThree.length; i++)
             assertEquals(expectedList[i], stringListThree[i]);
     }
 }

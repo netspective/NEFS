@@ -42,10 +42,11 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 public class QueryDefnField
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
+
     {
         XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "select-clause-expr-and-label" } );
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[] { "presentation" } );
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[]{"select-clause-expr-and-label"});
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[]{"presentation"});
     }
 
     private QueryDefinition owner;
@@ -110,7 +111,10 @@ public class QueryDefnField
 
     public String getSelectClauseExprAndLabel() throws QueryDefinitionException
     {
-        return allowDisplay ? (selectClauseExprAndLabel != null ? selectClauseExprAndLabel : (getColumnExpr() + " as \"" + getColumnLabel() + "\"")) : null;
+        return allowDisplay
+               ? (selectClauseExprAndLabel != null
+                  ? selectClauseExprAndLabel : (getColumnExpr() + " as \"" + getColumnLabel() + "\""))
+               : null;
     }
 
     public String getColumnExpr() throws QueryDefinitionException
@@ -163,8 +167,6 @@ public class QueryDefnField
     /**
      * Sets the field name, for a query-defn selectable field, as it is defined
      * in the schema table.
-     *
-     * @param columnName
      */
     public void setColumn(String columnName)
     {

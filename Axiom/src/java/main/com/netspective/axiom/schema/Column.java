@@ -82,8 +82,6 @@ public interface Column extends TemplateConsumer
 
     /**
      * Return the name of this column with the column name quoted (if necessary) for output in SQL
-     *
-     * @return 
      */
     public String getSqlName();
 
@@ -107,8 +105,6 @@ public interface Column extends TemplateConsumer
      * Ascertain whether or not the column's name should be quoted when referenced in SQL. This is so that if the
      * column name is not a valid SQL identifier (like starts with a number or something) it can be properly generated
      * in SQL.
-     *
-     * @return
      */
     public boolean isQuoteNameInSql();
 
@@ -396,15 +392,12 @@ public interface Column extends TemplateConsumer
     public void addSqlDdl(SqlDataDefns sqlDataDefn);
 
     /**
-     * Creates a JDBC type 
-     *
+     * Creates a JDBC type
      */
     public void setJdbcType(JdbcTypesEnumeratedAttribute type);
 
     /**
      * Gets the JDBC type associated with the column
-     *
-     * @return
      */
     public JdbcTypesEnumeratedAttribute getJdbcType();
 

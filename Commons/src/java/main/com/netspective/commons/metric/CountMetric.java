@@ -57,7 +57,7 @@ public class CountMetric extends Metric
 
     public String getPercentageOfParent()
     {
-        if (getParent() != null && flagIsSet(this.METRICFLAG_SHOW_PCT_OF_PARENT))
+        if(getParent() != null && flagIsSet(this.METRICFLAG_SHOW_PCT_OF_PARENT))
             return " (" + PCT_FORMAT.format((double) sum / (double) (((CountMetric) getParent()).getSum())) + ")";
         else
             return "";
@@ -80,12 +80,12 @@ public class CountMetric extends Metric
 
     public long getSum()
     {
-        if (getChildren() != null && flagIsSet(METRICFLAG_SUM_CHILDREN))
+        if(getChildren() != null && flagIsSet(METRICFLAG_SUM_CHILDREN))
         {
             count = 0;
             sum = 0;
 
-            for (Iterator i = getChildren().iterator(); i.hasNext();)
+            for(Iterator i = getChildren().iterator(); i.hasNext();)
             {
                 count++;
                 sum += ((CountMetric) i.next()).getSum();
@@ -116,9 +116,9 @@ public class CountMetric extends Metric
     {
         this.count++;
         this.sum += value;
-        if (value < min)
+        if(value < min)
             min = value;
-        if (value > max)
+        if(value > max)
             max = value;
     }
 }

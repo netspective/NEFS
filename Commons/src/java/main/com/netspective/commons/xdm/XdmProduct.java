@@ -107,7 +107,7 @@ public class XdmProduct implements Product
         {
             setBuildDate(dateFormat.parse(buildDate.get(o).toString()));
         }
-        catch (ParseException e)
+        catch(ParseException e)
         {
             throw new RuntimeException("Unable to parse build date '" + buildDate.get(o) + "' using format '" + dateFormat + "'");
         }
@@ -116,7 +116,7 @@ public class XdmProduct implements Product
     public final String getBuildFilePrefix(boolean includeBuildNumber)
     {
         String filePrefix = productId + "-" + releaseNumber + "." + versionMajor + "." + versionMinor;
-        if (includeBuildNumber)
+        if(includeBuildNumber)
             filePrefix = filePrefix + "_" + buildNumber;
         return filePrefix;
     }

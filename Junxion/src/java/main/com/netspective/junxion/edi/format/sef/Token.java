@@ -104,7 +104,7 @@ public class Token
      */
     public static final Token newToken(int ofKind)
     {
-        switch (ofKind)
+        switch(ofKind)
         {
             default :
                 return new Token();

@@ -53,10 +53,10 @@ public final class UriAddressableFile
         this.relativeUrl = relativeUrl;
         this.physicalFile = physicalFile;
 
-        if (!rootUrl.endsWith("/"))
+        if(!rootUrl.endsWith("/"))
             rootUrl += "/";
 
-        if (relativeUrl.startsWith("/"))
+        if(relativeUrl.startsWith("/"))
             relativeUrl = relativeUrl.substring(1);
 
         this.url = rootUrl + relativeUrl;

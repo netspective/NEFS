@@ -51,12 +51,12 @@ public class ScriptValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"script"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("A value source that wraps a bean script to provide dynamic values. A function called getValue(ValueContext) must be" +
-            "present in the script. Optionally, the script may contain getPresentationValue(ValueContext) and hasValue(ValueContext)" +
-            "methods.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("script-name", true, "The name of the script (must have been defined elsewhere)")
-            });
+                                                                                              "present in the script. Optionally, the script may contain getPresentationValue(ValueContext) and hasValue(ValueContext)" +
+                                                                                              "methods.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("script-name", true, "The name of the script (must have been defined elsewhere)")
+                                                                                              });
 
     public static String[] getIdentifiers()
     {
@@ -88,16 +88,16 @@ public class ScriptValueSource extends AbstractValueSource
     public Object callFunctionInScript(ValueContext vc, String method, Object[] params)
     {
         Script script = vc.getScriptsManager().getScript(scriptName);
-        if (script == null)
+        if(script == null)
             throw new RuntimeException("Script '" + scriptName + "' not found in " + this + ". Available: " +
-                    vc.getScriptsManager().getScriptNames());
+                                       vc.getScriptsManager().getScriptNames());
 
         Object result;
         try
         {
             result = script.callFunction(vc, null, method, params);
         }
-        catch (ScriptException e)
+        catch(ScriptException e)
         {
             throw new NestableRuntimeException(e);
         }
@@ -112,22 +112,22 @@ public class ScriptValueSource extends AbstractValueSource
         {
             result = callFunctionInScript(vc, "getPresentationValue", new Object[]{vc});
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             // if we get any exceptions, just use the getValue() function
             result = getValue(vc);
         }
 
-        if (result instanceof PresentationValue)
+        if(result instanceof PresentationValue)
             return (PresentationValue) result;
 
-        if (result instanceof Value)
+        if(result instanceof Value)
             return new PresentationValue((Value) result);
 
-        if (result instanceof String[])
+        if(result instanceof String[])
             return new PresentationValue(new GenericValue((String[]) result));
 
-        if (result instanceof List)
+        if(result instanceof List)
             return new PresentationValue(new GenericValue((List) result));
 
         return new PresentationValue(new GenericValue(result));
@@ -137,16 +137,16 @@ public class ScriptValueSource extends AbstractValueSource
     {
         Object result = callFunctionInScript(vc, "getValue", new Object[]{vc});
 
-        if (result instanceof Value)
+        if(result instanceof Value)
             return (Value) result;
 
-        if (result == null)
+        if(result == null)
             return null;
 
-        if (result instanceof String[])
+        if(result instanceof String[])
             return new GenericValue((String[]) result);
 
-        if (result instanceof List)
+        if(result instanceof List)
             return new GenericValue((List) result);
 
         return new GenericValue(result);
@@ -159,16 +159,16 @@ public class ScriptValueSource extends AbstractValueSource
         {
             result = callFunctionInScript(vc, "hasValue", new Object[]{vc});
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             // if we get any exceptions, just use the getValue() function
             result = getValue(vc);
         }
 
-        if (result instanceof Boolean)
+        if(result instanceof Boolean)
             return ((Boolean) result).booleanValue();
 
-        if (result instanceof Value)
+        if(result instanceof Value)
             return ((Value) result).hasValue();
 
         return result != null ? TextUtils.getInstance().toBoolean(result.toString(), false) : false;

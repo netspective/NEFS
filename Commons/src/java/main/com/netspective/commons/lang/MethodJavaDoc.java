@@ -62,14 +62,14 @@ public class MethodJavaDoc extends JavaDoc
     protected void setName(String name)
     {
         super.setName(name);
-        if (!getClassDoc().isValid() || getClassDoc().isFound())
+        if(!getClassDoc().isValid() || getClassDoc().isFound())
         {
             setFound(false);
             return;
         }
 
         locator = JavaDocs.getInstance().getMethodDocXmlNodeLocator(getClassDoc().getOwner(), getName(), true);
-        if (locator.getRetrievalError() != null)
+        if(locator.getRetrievalError() != null)
         {
             setRetrievalError(locator.getRetrievalError());
             return;
@@ -77,23 +77,23 @@ public class MethodJavaDoc extends JavaDoc
 
         try
         {
-            if (locator.isFound())
+            if(locator.isFound())
             {
                 Node methodDocNode = locator.getLocatedNode();
 
                 Node descrLeadNode = XPathAPI.selectSingleNode(methodDocNode, "description/lead");
                 Node descrDetailNode = XPathAPI.selectSingleNode(methodDocNode, "description/detail");
 
-                if (descrLeadNode != null)
+                if(descrLeadNode != null)
                     setDescriptionLead(descrLeadNode.getFirstChild().getNodeValue());
 
-                if (descrDetailNode != null)
+                if(descrDetailNode != null)
                     setDescriptionDetail(descrDetailNode.getFirstChild().getNodeValue());
 
                 setFound(true);
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to get method documentation for " + getClassDoc().getOwner() + " method " + getName(), e);
             setRetrievalError(e);

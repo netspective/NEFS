@@ -74,11 +74,11 @@ public class DefaultValueContext implements ValueContext
 
     public ScriptContext getScriptContext(Script script) throws ScriptException
     {
-        if (scriptContexts == null)
+        if(scriptContexts == null)
             scriptContexts = new HashMap();
 
         ScriptContext result = (ScriptContext) scriptContexts.get(script.getQualifiedName());
-        if (result == null)
+        if(result == null)
         {
             result = script.createScriptContext();
             scriptContexts.put(script.getQualifiedName(), result);
@@ -89,13 +89,13 @@ public class DefaultValueContext implements ValueContext
 
     public RuntimeEnvironmentFlags getRuntimeEnvironmentFlags()
     {
-        if (environmentFlags == null)
+        if(environmentFlags == null)
         {
             try
             {
                 environmentFlags = (RuntimeEnvironmentFlags) discoverClass.newInstance(RuntimeEnvironmentFlags.class, RuntimeEnvironmentFlags.class.getName());
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Unable to instantiate environment flags using SPI -- creating statically instead", e);
                 environmentFlags = new RuntimeEnvironmentFlags();
@@ -158,13 +158,13 @@ public class DefaultValueContext implements ValueContext
 
     public final String getContextId()
     {
-        if (contextId == null)
+        if(contextId == null)
         {
             try
             {
                 contextId = GloballyUniqueIdentifier.getRandomGUID(false);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 contextId = Long.toString(contextNum);
                 log.error("Unable to create context id.", e);
@@ -177,9 +177,9 @@ public class DefaultValueContext implements ValueContext
     public boolean isConditionalExpressionTrue(String expr, Map vars)
     {
         Object evalResult = evaluateExpression(expr, vars);
-        if (evalResult instanceof Boolean)
+        if(evalResult instanceof Boolean)
             return ((Boolean) evalResult).booleanValue();
-        else if (evalResult != null)
+        else if(evalResult != null)
             return TextUtils.getInstance().toBoolean(evalResult.toString(), false);
         else
         {
@@ -193,7 +193,7 @@ public class DefaultValueContext implements ValueContext
         try
         {
             Expression e = ExpressionFactory.createExpression(expr);
-            if (jexlContext == null)
+            if(jexlContext == null)
                 jexlContext = JexlHelper.createContext();
 
             Map jexlVars = vars != null ? vars : new HashMap();
@@ -202,7 +202,7 @@ public class DefaultValueContext implements ValueContext
 
             return e.evaluate(jexlContext);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Unable to evaluate '" + expr + "': ", e);
             return null;

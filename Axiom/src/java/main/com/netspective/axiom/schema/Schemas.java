@@ -37,27 +37,33 @@ import java.util.Set;
 public interface Schemas
 {
     public void add(Schema schema);
+
     public Schema getDefault();
+
     public Schema get(int i);
+
     public Schema getByName(String name);
+
     public Schema getByNameOrXmlNodeName(String name);
+
     public Set getNames();
+
     public int size();
 
     /**
      * Return the table identified by the format Schema_Name.Table_Name. If no schema is provided, then the "default"
      * schema is used (usually the first schema). If both schema and table names are provided then both items are used.
+     *
      * @param schemaTableNames The table in the format Schema.Table
-     * @return
      */
     public Table getTable(String schemaTableNames);
 
     /**
      * Return the table identified by the format Schema_Name.Table_Name.column_name. If no table is provided (e.g. only
      * a column_name is provided, then the defaultTable parameter is used.
+     *
      * @param schemaTableColumnNames The column in the format Schema.Table.Column
-     * @param defaultTable The default table to use if no table is provided in the schemaTableColumnNames parameter
-     * @return
+     * @param defaultTable           The default table to use if no table is provided in the schemaTableColumnNames parameter
      */
     public Column getColumn(String schemaTableColumnNames, Table defaultTable);
 }

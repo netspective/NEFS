@@ -10,8 +10,8 @@
                 <version>1.7.1</version>
                 <class-path>hsqldb.jar</class-path>
                 <source home-uri="http://hsqldb.sourceforge.net"
-                        license="Open Source, Free, Custom License"
-                        license-uri="http://hsqldb.sourceforge.net/web/hsqlLicense.html"/>
+                    license="Open Source, Free, Custom License"
+                    license-uri="http://hsqldb.sourceforge.net/web/hsqlLicense.html"/>
             </library>
 
             <library>
@@ -19,7 +19,7 @@
                 <version>3.0.9</version>
                 <class-path>mysql.jar</class-path>
                 <source home-uri="http://www.mysql.com/products/connector-j/index.html"
-                        license="GPL"/>
+                    license="GPL"/>
             </library>
 
             <library>
@@ -27,7 +27,7 @@
                 <version>1.0</version>
                 <class-path>zql.jar</class-path>
                 <source home-uri="mailto:pierreyves.gibello@experlog.com"
-                        license="Open Source, Free, Custom License"/>
+                    license="Open Source, Free, Custom License"/>
             </library>
         </dependencies>
     </product>

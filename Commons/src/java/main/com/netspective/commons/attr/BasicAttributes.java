@@ -104,7 +104,7 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
             TextAttribute result = (TextAttribute) getAttribute(name);
             return result != null ? result.getAttributeValue() : defaultValue;
         }
-        catch (ClassCastException e)
+        catch(ClassCastException e)
         {
             return defaultValue;
         }
@@ -117,7 +117,7 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
             IntegerAttribute result = (IntegerAttribute) getAttribute(name);
             return result != null ? result.getAttributeValue() : defaultValue;
         }
-        catch (ClassCastException e)
+        catch(ClassCastException e)
         {
             return defaultValue;
         }
@@ -135,7 +135,7 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
             int intValue = Integer.parseInt(value);
             return new BasicIntegerAttribute(this, key, intValue);
         }
-        catch (NumberFormatException e)
+        catch(NumberFormatException e)
         {
             return new BasicTextAttribute(this, key, value);
         }
@@ -150,7 +150,7 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
         Object attrValue = attrMapCopy.get(MAPKEY_ATTR_VALUE);
         String textValue = attrValue != null ? attrValue.toString() : null;
 
-        if (attrName == null)
+        if(attrName == null)
         {
             log.error("Unable to create attribute. No attr name provided as '" + MAPKEY_ATTR_NAME + "' key: " + attrMap);
             return null;
@@ -158,7 +158,7 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
 
         Attribute result = null;
         final String keyText = attrName.toString();
-        if (cls != null && cls.toString().length() > 0)
+        if(cls != null && cls.toString().length() > 0)
         {
             try
             {
@@ -167,14 +167,14 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
 
                 // find a constructor that can take an owner, a key, and text value
                 Constructor c = prefClass.getConstructor(new Class[]{Attributes.class, String.class, String.class});
-                if (c == null)
+                if(c == null)
                 {
                     // find a constructor that can take an owner, a key
                     c = prefClass.getConstructor(new Class[]{Attributes.class, String.class});
-                    if (c == null)
+                    if(c == null)
                     {
                         c = prefClass.getConstructor(new Class[]{Attributes.class});
-                        if (c != null)
+                        if(c != null)
                             result = (Attribute) c.newInstance(new Object[]{this});
                         else
                             result = new ExceptionAttribute(this, keyText, textValue, new RuntimeException("No valid constructor found for Preference " + prefClass));
@@ -192,12 +192,12 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
                     attrMapCopy.remove(MAPKEY_ATTR_VALUE);  // value is set, don't let XDM set it again below
                 }
             }
-            catch (ClassNotFoundException e)
+            catch(ClassNotFoundException e)
             {
                 log.error("Unable to find Preference " + cls, e);
                 result = new ExceptionAttribute(this, keyText, textValue, e);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Unable to create Preference " + cls, e);
                 result = new ExceptionAttribute(this, keyText, textValue, e);
@@ -211,7 +211,7 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
             XmlDataModelSchema schema = XmlDataModelSchema.getSchema(result.getClass());
             schema.assignMapValues(result, attrMapCopy, "*");
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error assigning Preference " + cls, e);
             result = new ExceptionAttribute(this, keyText, textValue, e);
@@ -232,19 +232,19 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
 
     public Attribute addAttribute(Attribute attribute)
     {
-        if (serializableRequired && !(attribute instanceof java.io.Serializable))
+        if(serializableRequired && !(attribute instanceof java.io.Serializable))
         {
             log.error("A Non-Serializable attribute " + attribute.getClass() + " was added to " +
-                    this.getClass() + " object. \n" +
-                    "The process of serializing the session would fail if the server is configured for clustering or persistant sessions.\n" +
-                    "Make sure any attribute added to the AuthenticatedUser object implements Serializable and that it either implements the \n" +
-                    "serialization of its members or its members implement Serializable as well.");
+                      this.getClass() + " object. \n" +
+                      "The process of serializing the session would fail if the server is configured for clustering or persistant sessions.\n" +
+                      "Make sure any attribute added to the AuthenticatedUser object implements Serializable and that it either implements the \n" +
+                      "serialization of its members or its members implement Serializable as well.");
         }
 
-        if (attribute.isAllowMultiple())
+        if(attribute.isAllowMultiple())
         {
             Collection coll = (Collection) attributes.get(attribute.getAttributeName());
-            if (coll == null)
+            if(coll == null)
             {
                 coll = ((MutableAttribute) attribute).createMultiAttributeCollection();
                 attributes.put(attribute.getAttributeName(), coll);
@@ -260,10 +260,10 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
 
     public void removeAttribute(Attribute attribute)
     {
-        if (attribute.isAllowMultiple())
+        if(attribute.isAllowMultiple())
         {
             Collection coll = (Collection) attributes.get(attribute.getAttributeName());
-            if (coll != null)
+            if(coll != null)
                 coll.remove(attribute);
         }
         else
@@ -274,27 +274,27 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
 
     public void observeAttributeAdd(Attribute attribute)
     {
-        if (isObserving())
+        if(isObserving())
         {
-            for (int i = 0; i < observers.size(); i++)
+            for(int i = 0; i < observers.size(); i++)
                 ((AttributeMutationObserver) observers.get(i)).observeAttributeAdd(this, attribute);
         }
     }
 
     public void observeAttributeChange(Attribute attribute)
     {
-        if (isObserving())
+        if(isObserving())
         {
-            for (int i = 0; i < observers.size(); i++)
+            for(int i = 0; i < observers.size(); i++)
                 ((AttributeMutationObserver) observers.get(i)).observeAttributeChange(this, attribute);
         }
     }
 
     public void observeAttributeRemove(Attribute attribute)
     {
-        if (isObserving())
+        if(isObserving())
         {
-            for (int i = 0; i < observers.size(); i++)
+            for(int i = 0; i < observers.size(); i++)
                 ((AttributeMutationObserver) observers.get(i)).observeAttributeRemove(this, attribute);
         }
     }
@@ -381,20 +381,18 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
          *
          * @param key   The preference key
          * @param value The EntityPreference instance
-         *
-         * @return
          */
         public Object put(Object key, Object value)
         {
             // if value is a List, we're not going to assign it to a mutator
-            if (value instanceof Attribute)
+            if(value instanceof Attribute)
             {
                 Attribute attr = (Attribute) value;
                 try
                 {
                     schema.assignInstanceValue(BasicAttributes.this, attr.getAttributeName(), attr.getAttributeTextValue(), false);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     log.error(e);
                 }

@@ -80,7 +80,6 @@ public class QueryDefinitionsCollection implements QueryDefinitions
 
     /**
      * Generates various metrics about query definitions defined in the project
-     * @param parent
      */
     public void produceMetrics(Metric parent)
     {
@@ -89,7 +88,7 @@ public class QueryDefinitionsCollection implements QueryDefinitions
         CountMetric qdfMetric = qdMetric.addCountMetric("Query Definition Fields");
         CountMetric qdjMetric = qdMetric.addCountMetric("Query Definition Joins");
 
-        for (int i=0; i < queryDefns.size(); i++)
+        for(int i = 0; i < queryDefns.size(); i++)
         {
             int qdFieldsCount = ((QueryDefinition) queryDefns.get(i)).getFields().size();
             int qdJoinsCount = ((QueryDefinition) queryDefns.get(i)).getJoins().size();

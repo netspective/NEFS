@@ -43,11 +43,11 @@ public class OracleSqlDdlFormats extends AnsiSqlDdlFormats
         super();
         setCreateSequenceStatementFormat("CREATE SEQUENCE ${column.sequenceName} increment by 1 start with 1 nomaxvalue nocache nocycle");
         setTableCommentClauseFormat("COMMENT ON TABLE ${table.name} IS " +
-                "${textUtils.createLiteral(table.description, \"'\", \"'\", \"''\", true, true, " +
-                "\"'No description provided.'\")}");
+                                    "${textUtils.createLiteral(table.description, \"'\", \"'\", \"''\", true, true, " +
+                                    "\"'No description provided.'\")}");
         setColumnCommentClauseFormat("COMMENT ON COLUMN ${column.qualifiedName} IS " +
-                "${textUtils.createLiteral(column.descr, \"'\", \"'\", \"''\", true, true, " +
-                "\"'No descr provided.'\")}");
+                                     "${textUtils.createLiteral(column.descr, \"'\", \"'\", \"''\", true, true, " +
+                                     "\"'No descr provided.'\")}");
         setCreatePrimaryKeyIndex(false);
         setBlankLineAllowedInCreateTable(false);
     }

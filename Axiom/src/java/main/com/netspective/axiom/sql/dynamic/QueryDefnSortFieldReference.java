@@ -69,8 +69,6 @@ public class QueryDefnSortFieldReference
      * in the order-by clause.
      *
      * @param value value source containing the order by field
-     *
-     * @throws QueryDefnFieldNotFoundException
      */
     public void setField(ValueSource value) throws QueryDefnFieldNotFoundException
     {

@@ -39,17 +39,27 @@ import javax.sql.DataSource;
 public interface ConnectionProviderEntry extends Map
 {
     public String getDataSourceId();
+
     public String getDriverName();
+
     public String getDatabasePolicyClassName();
+
     public String getDatabaseProductName();
+
     public String getDatabaseProductVersion();
+
     public String getDriverVersion();
+
     public String getURL();
+
     public String getUserName();
+
     public String getResultSetType();
+
     public DataSource getDataSource();
 
     public boolean isValid();
+
     public Throwable getException();
 
     public ConnectionProviderEntryStatistics getStatistics();

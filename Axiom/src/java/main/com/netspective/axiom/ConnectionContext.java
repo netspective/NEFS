@@ -47,6 +47,7 @@ public interface ConnectionContext extends DatabasePolicyValueContext
 {
     /**
      * Is this a shared connection across a user's session?
+     *
      * @return True if this connection is bound to a user's session or false if it belongs to the application
      */
     public boolean isBoundToSession();
@@ -88,14 +89,14 @@ public interface ConnectionContext extends DatabasePolicyValueContext
      * (for stack trace purposes). If the connection is properly closed, the exception is not important. If, however,
      * the connection context remains open (such as at the end of an application, end of a session, etc) the exception
      * is available to be thrown and it will have the stack trace of the original code where the connection was created.
-     * @return
      */
     public ConnectionContextNotClosedException getContextNotClosedException();
 
     /**
      * This method is useful in error handlers at application closing or other times when this connection should be
      * considered a connection leak and log message should be presented.
-     * @param log The log to use to send the error to
+     *
+     * @param log     The log to use to send the error to
      * @param message If null, a default message will appear before the stack trace of the originating cc opener is displayed
      */
     public void rollbackAndCloseAndLogAsConnectionLeak(Log log, String message);

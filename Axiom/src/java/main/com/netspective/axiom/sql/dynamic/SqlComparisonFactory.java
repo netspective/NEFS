@@ -95,16 +95,16 @@ public class SqlComparisonFactory
         comparisonsMap.put(comp.getName(), comp);
 
         List groupList = (List) comparisonsListByGroup.get(comp.getGroupName());
-        if (groupList == null)
+        if(groupList == null)
         {
             groupList = new ArrayList();
             comparisonsListByGroup.put(comp.getGroupName(), groupList);
         }
         groupList.add(comp);
 
-        if (aliases != null)
+        if(aliases != null)
         {
-            for (int i = 0; i < aliases.length; i++)
+            for(int i = 0; i < aliases.length; i++)
                 comparisonsMap.put(aliases[i], comp);
         }
     }
@@ -145,17 +145,17 @@ public class SqlComparisonFactory
 
     public static List getComparisonsList(String groupNames)
     {
-        if (groupNames == null || groupNames.length() == 0)
+        if(groupNames == null || groupNames.length() == 0)
             return new ArrayList();
 
         List result = (List) comparisonsListByGroup.get(groupNames);
-        if (result != null)
+        if(result != null)
             return result;
 
         result = new ArrayList();
 
         String[] groups = TextUtils.getInstance().split(groupNames, ",", true);
-        for (int i = 0; i < groups.length; i++)
+        for(int i = 0; i < groups.length; i++)
         {
             List list = (List) comparisonsListByGroup.get(groups[i]);
             result.addAll(list);

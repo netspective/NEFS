@@ -50,17 +50,21 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
  * full relational integrity and may actually be used to define meta data to support
  * Java-based relational integrity for existing and legacy databases that may not
  * be built with fully relational integrity.
-
  */
 public interface Schema extends XmlDataModelSchema.InputSourceLocatorListener
 {
     public String getName();
+
     public String getNameForMapKey();
+
     public String getXmlNodeName();
 
     public String getPresentationTemplatesNameSpaceId();
+
     public String getDataTypesTemplatesNameSpaceId();
+
     public String getTableTypesTemplatesNameSpaceId();
+
     public String getIndexTypesTemplatesNameSpaceId();
 
     /**
@@ -72,12 +76,11 @@ public interface Schema extends XmlDataModelSchema.InputSourceLocatorListener
 
     /**
      * Sets name of this schema suitable for use as an XML node/element.
-     *
-     * @param xmlNodeName
      */
     public void setXmlNodeName(String xmlNodeName);
 
     public SqlManager getSqlManager();
+
     public void setSqlManager(SqlManager manager);
 
     /**
@@ -123,11 +126,12 @@ public interface Schema extends XmlDataModelSchema.InputSourceLocatorListener
     /**
      * Using the structure of this schema, generate a data access layer (lightweight data access objects) that wraps
      * the tables, columns, and foreign keys in the schema.
-     * @param rootDir The physical location of the .java class files
+     *
+     * @param rootDir             The physical location of the .java class files
      * @param dalClassPackageName The package name of the main data access layer class
-     * @param dalClassName The class name of the main data access layer class
+     * @param dalClassName        The class name of the main data access layer class
+     *
      * @return The generator class used to generate the data access layer
-     * @throws IOException
      */
     public DataAccessLayerGenerator generateDataAccessLayer(File rootDir, String dalClassPackageName, String dalClassName) throws IOException;
 

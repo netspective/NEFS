@@ -132,10 +132,14 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
 
         public boolean setInfo(Map dsInfoMap, String keyPrefix)
         {
-            String driverName = dsInfoMap.get(keyPrefix != null ? keyPrefix + "jdbc-driver-class" : "jdbc-driver-class").toString();
-            String connUrl = dsInfoMap.get(keyPrefix != null ? keyPrefix + "jdbc-connection-url" : "jdbc-connection-url").toString();
-            String connUser = dsInfoMap.get(keyPrefix != null ? keyPrefix + "jdbc-connection-user" : "jdbc-connection-user").toString();
-            String connPassword = dsInfoMap.get(keyPrefix != null ? keyPrefix + "jdbc-connection-password" : "jdbc-connection-password").toString();
+            String driverName = dsInfoMap.get(keyPrefix != null
+                                              ? keyPrefix + "jdbc-driver-class" : "jdbc-driver-class").toString();
+            String connUrl = dsInfoMap.get(keyPrefix != null
+                                           ? keyPrefix + "jdbc-connection-url" : "jdbc-connection-url").toString();
+            String connUser = dsInfoMap.get(keyPrefix != null
+                                            ? keyPrefix + "jdbc-connection-user" : "jdbc-connection-user").toString();
+            String connPassword = dsInfoMap.get(keyPrefix != null
+                                                ? keyPrefix + "jdbc-connection-password" : "jdbc-connection-password").toString();
 
             if(driverName == null || connUrl == null)
                 return false;
@@ -190,7 +194,7 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
 
     public DataSourceInfo getDataSourceInfo(String dataSourceId)
     {
-        return (DataSourceInfo ) dataSources.get(dataSourceId);
+        return (DataSourceInfo) dataSources.get(dataSourceId);
     }
 
     public void addDataSourceInfo(String dataSourceId, String driverName, String connUrl, String connUser, String connPassword)
@@ -214,12 +218,12 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
             }
             catch(ClassNotFoundException cnfe)
             {
-                throw new NamingException("Driver '"+ dsInfo.getDriverName() +"' not found for dataSourceId '"+ dataSourceId +"'");
+                throw new NamingException("Driver '" + dsInfo.getDriverName() + "' not found for dataSourceId '" + dataSourceId + "'");
             }
             return DriverManager.getConnection(dsInfo.getConnUrl(), dsInfo.getConnUser(), dsInfo.getConnPassword());
         }
         else
-            throw new NamingException("Information for DataSource '"+ dataSourceId +"' not found.");
+            throw new NamingException("Information for DataSource '" + dataSourceId + "' not found.");
     }
 
     public Set getAvailableDataSources()
@@ -231,7 +235,7 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
     {
         ConnectionProviderEntries entries = new BasicConnectionProviderEntries();
         Set available = getAvailableDataSources();
-        for(Iterator i = available.iterator(); i.hasNext(); )
+        for(Iterator i = available.iterator(); i.hasNext();)
         {
             ConnectionProviderEntry entry = getDataSourceEntry(vc, (String) i.next());
             if(entry != null)
@@ -251,7 +255,7 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
             }
             catch(ClassNotFoundException cnfe)
             {
-                log.debug(DriverManagerConnectionProvider.class.getName() + ".getDataSourceEntry('"+ dataSourceId +"')", cnfe);
+                log.debug(DriverManagerConnectionProvider.class.getName() + ".getDataSourceEntry('" + dataSourceId + "')", cnfe);
                 return null;
             }
 
@@ -262,9 +266,9 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
                 entry.init(dataSourceId, conn); // the connection will be closed in the init method
                 return entry;
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
-                log.debug(DriverManagerConnectionProvider.class.getName() + ".getDataSourceEntry('"+ dataSourceId +"')", e);
+                log.debug(DriverManagerConnectionProvider.class.getName() + ".getDataSourceEntry('" + dataSourceId + "')", e);
                 return null;
             }
         }

@@ -35,7 +35,7 @@ package com.netspective.commons.value;
 import junit.framework.TestCase;
 
 /**
- * $Id: DefaultValueContextTest.java,v 1.5 2004-08-15 01:41:14 shahid.shah Exp $
+ * $Id: DefaultValueContextTest.java,v 1.6 2004-08-15 02:17:07 shahid.shah Exp $
  */
 public class DefaultValueContextTest extends TestCase
 {
@@ -44,7 +44,7 @@ public class DefaultValueContextTest extends TestCase
         DefaultValueContext vc = new DefaultValueContext();
 
         long currTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() == currTime) ;
+        while(System.currentTimeMillis() == currTime) ;
         currTime = System.currentTimeMillis();
 
         // Test ValueContext...

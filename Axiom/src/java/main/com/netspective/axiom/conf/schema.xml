@@ -162,7 +162,7 @@
 
         <composite>
             <column name="${params.name}_begin_stamp" type="date-time" caption="${owner.getCaption()} Begin" required="${owner.isRequiredByApp() || owner.isPrimaryKey()}"/>
-            <column name="${params.name}_end_stamp" type="date-time" caption="${owner.getCaption()} End" required="${owner.isRequiredByApp() || owner.isPrimaryKey()}" />
+            <column name="${params.name}_end_stamp" type="date-time" caption="${owner.getCaption()} End" required="${owner.isRequiredByApp() || owner.isPrimaryKey()}"/>
         </composite>
     </data-type>
 
@@ -395,7 +395,7 @@
     <table-type name="Presentation">
         <presentation>
             <dialog class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog"
-                    name="${table.name}">
+                name="${table.name}">
                 <frame heading="create-dialog-perspective-heading:${table.getCaption()}"/>
                 <data-type-presentation columns="*"/>
             </dialog>
@@ -437,7 +437,7 @@
 
     <!-- ************************************************************************** -->
 
-    <table-type name="Status"  class="com.netspective.axiom.schema.table.type.EnumerationTable">
+    <table-type name="Status" class="com.netspective.axiom.schema.table.type.EnumerationTable">
         <xdm:template-param name="capsize" default="96"/>
         <xdm:template-param name="abbrevsize" default="32"/>
 

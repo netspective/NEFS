@@ -120,7 +120,7 @@ public class ParseContext
     public ParseContext(ParseContext parentPC, String text) throws ParserConfigurationException, SAXException
     {
         this.parentPC = parentPC;
-        if (parentPC != null)
+        if(parentPC != null)
             setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(text));
     }
@@ -128,7 +128,7 @@ public class ParseContext
     public ParseContext(ParseContext parentPC, File srcFile) throws ParserConfigurationException, SAXException, FileNotFoundException
     {
         this.parentPC = parentPC;
-        if (parentPC != null)
+        if(parentPC != null)
             setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(srcFile));
     }
@@ -136,7 +136,7 @@ public class ParseContext
     public ParseContext(ParseContext parentPC, Resource resource) throws ParserConfigurationException, SAXException, IOException
     {
         this.parentPC = parentPC;
-        if (parentPC != null)
+        if(parentPC != null)
             setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(resource));
     }
@@ -144,7 +144,7 @@ public class ParseContext
     public ParseContext(ParseContext parentPC, File jarFile, ZipEntry jarFileEntry) throws ParserConfigurationException, SAXException, FileNotFoundException, IOException
     {
         this.parentPC = parentPC;
-        if (parentPC != null)
+        if(parentPC != null)
             setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(jarFile, jarFileEntry));
     }
@@ -166,7 +166,7 @@ public class ParseContext
 
     public TemplateCatalog getTemplateCatalog()
     {
-        if (templateCatalog == null && parentPC != null)
+        if(templateCatalog == null && parentPC != null)
             return parentPC.getTemplateCatalog();
 
         return templateCatalog;
@@ -193,7 +193,7 @@ public class ParseContext
     public InputSource createInputSource(File srcFile) throws FileNotFoundException
     {
         String uri = "file:" + srcFile.getAbsolutePath().replace('\\', '/');
-        for (int index = uri.indexOf('#'); index != -1; index = uri.indexOf('#'))
+        for(int index = uri.indexOf('#'); index != -1; index = uri.indexOf('#'))
         {
             uri = uri.substring(0, index) + "%23" + uri.substring(index + 1);
         }
@@ -205,7 +205,7 @@ public class ParseContext
 
         this.inputSrcTracker = new FileTracker();
         ((FileTracker) this.inputSrcTracker).setFile(srcFile);
-        if (parentSrcTracker != null)
+        if(parentSrcTracker != null)
             this.inputSrcTracker.setParent(parentSrcTracker);
         this.sourceFile = srcFile;
 
@@ -217,14 +217,14 @@ public class ParseContext
         this.sourceResource = resource;
 
         InputStream stream = resource.getResourceAsStream();
-        if (stream != null)
+        if(stream != null)
         {
             InputSource inputSource = new InputSource(stream);
             inputSource.setSystemId(resource.getSystemId());
 
             this.inputSrcTracker = new URLTracker();
             ((URLTracker) this.inputSrcTracker).setUrl(resource.getResource());
-            if (parentSrcTracker != null)
+            if(parentSrcTracker != null)
                 this.inputSrcTracker.setParent(parentSrcTracker);
 
             return inputSource;
@@ -240,14 +240,14 @@ public class ParseContext
         this.sourceJarFile = new ZipFile(jarFile);
 
         InputStream stream = sourceJarFile.getInputStream(jarFileEntry);
-        if (stream != null)
+        if(stream != null)
         {
             InputSource inputSource = new InputSource(stream);
             inputSource.setSystemId(sourceJarFile.getName() + "!" + jarFileEntry.getName());
 
             this.inputSrcTracker = new FileTracker();
             ((FileTracker) this.inputSrcTracker).setFile(jarFile);
-            if (parentSrcTracker != null)
+            if(parentSrcTracker != null)
                 this.inputSrcTracker.setParent(parentSrcTracker);
 
             return inputSource;
@@ -262,7 +262,7 @@ public class ParseContext
         this.errors = new ArrayList();
         this.warnings = new ArrayList();
 
-        if (inputSource.getSystemId() == null)
+        if(inputSource.getSystemId() == null)
             throw new ParserConfigurationException("Please set the system id.");
 
         SAXParser saxParser = getParserFactory().newSAXParser();
@@ -276,13 +276,13 @@ public class ParseContext
         {
             cmd = CLPARSER.parse(TRANSFORM_OPTIONS, StringUtils.split(instructionParams));
         }
-        catch (ParseException e)
+        catch(ParseException e)
         {
             errors.add("Unable to process transformation command <?" + TRANSFORM_INSTRUCTION + " " + instructionParams + "?>: " + e.toString());
             return false;
         }
 
-        if (!cmd.hasOption('s'))
+        if(!cmd.hasOption('s'))
         {
             errors.add("No style-sheet options specified for <?" + TRANSFORM_INSTRUCTION + " " + instructionParams + "?> PI.");
             HelpFormatter formatter = new HelpFormatter();
@@ -293,12 +293,12 @@ public class ParseContext
         boolean isResource = cmd.hasOption("r");
         List sources = new ArrayList();
         String[] styleSheets = cmd.getOptionValues('s');
-        for (int i = 0; i < styleSheets.length; i++)
+        for(int i = 0; i < styleSheets.length; i++)
         {
-            if (isResource)
+            if(isResource)
             {
                 InputStream stream = getClass().getClassLoader().getResourceAsStream(styleSheets[i].trim());
-                if (stream == null)
+                if(stream == null)
                     errors.add("Error in <?" + TRANSFORM_INSTRUCTION + " " + instructionParams + "?>, stylesheet '" + styleSheets[i].trim() + "' not found as a resource in ClassLoader " + getClass().getClassLoader());
                 else
                 {
@@ -310,7 +310,7 @@ public class ParseContext
                 File sourceFile = resolveFile(styleSheets[i].trim());
                 try
                 {
-                    if (inputSrcTracker != null)
+                    if(inputSrcTracker != null)
                     {
                         FileTracker preProcessor = new FileTracker();
                         preProcessor.setFile(sourceFile);
@@ -318,7 +318,7 @@ public class ParseContext
                     }
                     sources.add(new StreamSource(new FileInputStream(sourceFile)));
                 }
-                catch (FileNotFoundException e)
+                catch(FileNotFoundException e)
                 {
                     errors.add("Error in <?" + TRANSFORM_INSTRUCTION + " " + instructionParams + "?>, stylesheet '" + sourceFile.getAbsolutePath() + "': " + e.toString());
                     continue;
@@ -326,7 +326,7 @@ public class ParseContext
             }
         }
 
-        if (sources.size() == 0)
+        if(sources.size() == 0)
             return false;
 
         transformSources = (Source[]) sources.toArray(new Source[sources.size()]);
@@ -335,16 +335,16 @@ public class ParseContext
 
     public InputSource recreateInputSource() throws FileNotFoundException, IOException
     {
-        if (sourceFile != null && sourceJarEntry == null)
+        if(sourceFile != null && sourceJarEntry == null)
             return createInputSource(sourceFile);
 
-        if (sourceText != null)
+        if(sourceText != null)
             return createInputSource(sourceText);
 
-        if (sourceResource != null)
+        if(sourceResource != null)
             return createInputSource(sourceResource);
 
-        if (sourceFile != null && sourceJarEntry != null)
+        if(sourceFile != null && sourceJarEntry != null)
             return createInputSource(sourceFile, sourceJarEntry);
 
         return null;
@@ -352,36 +352,36 @@ public class ParseContext
 
     public void closeInputSource() throws IOException
     {
-        if (inputSource.getCharacterStream() != null)
+        if(inputSource.getCharacterStream() != null)
         {
             try
             {
                 inputSource.getCharacterStream().close();
             }
-            catch (IOException ioe)
+            catch(IOException ioe)
             {
                 // ignore this
             }
         }
-        if (inputSource.getByteStream() != null)
+        if(inputSource.getByteStream() != null)
         {
             try
             {
                 inputSource.getByteStream().close();
             }
-            catch (IOException ioe)
+            catch(IOException ioe)
             {
                 // ignore this
             }
         }
 
-        if (activeFileInputStream != null)
+        if(activeFileInputStream != null)
         {
             activeFileInputStream.close();
             activeFileInputStream = null;
         }
 
-        if (sourceJarFile != null)
+        if(sourceJarFile != null)
             sourceJarFile.close();
     }
 
@@ -391,8 +391,8 @@ public class ParseContext
         InputSource inputSource = recreateInputSource();
 
         Source activeSource = inputSource.getByteStream() != null ?
-                new StreamSource(inputSource.getByteStream()) :
-                new StreamSource(inputSource.getCharacterStream());
+                              new StreamSource(inputSource.getByteStream()) :
+                              new StreamSource(inputSource.getCharacterStream());
         activeSource.setSystemId(inputSource.getSystemId());
 
         Writer activeResultBuffer = new StringWriter();
@@ -401,12 +401,12 @@ public class ParseContext
 
         TransformerFactory factory = TransformerFactory.newInstance();
         int lastTransformer = transformSources.length - 1;
-        for (int i = 0; i <= lastTransformer; i++)
+        for(int i = 0; i <= lastTransformer; i++)
         {
             Transformer transformer = factory.newTransformer(transformSources[i]);
             transformer.transform(activeSource, activeResult);
 
-            if (i < lastTransformer)
+            if(i < lastTransformer)
             {
                 activeSource = new StreamSource(new StringReader(activeResultBuffer.toString()));
                 activeResultBuffer = new StringWriter();
@@ -421,7 +421,7 @@ public class ParseContext
 
     private static SAXParserFactory getParserFactory()
     {
-        if (parserFactory == null)
+        if(parserFactory == null)
             parserFactory = SAXParserFactory.newInstance();
 
         return parserFactory;
@@ -430,11 +430,11 @@ public class ParseContext
     public File resolveFile(String src)
     {
         File file = new File(src);
-        if (file.isAbsolute())
+        if(file.isAbsolute())
             return file;
         else
             return inputSrcTracker != null && inputSrcTracker instanceof FileTracker
-                    ? new File(((FileTracker) inputSrcTracker).getFile().getParent(), src) : file;
+                   ? new File(((FileTracker) inputSrcTracker).getFile().getParent(), src) : file;
     }
 
     public void setThrowErrorException(boolean throwErrorException)

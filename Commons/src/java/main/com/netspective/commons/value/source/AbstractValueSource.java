@@ -84,7 +84,7 @@ abstract public class AbstractValueSource implements ValueSource
     public PresentationValue.Items.Item getPresentationItem(ValueContext vc, String value)
     {
         PresentationValue pValue = getPresentationValue(vc);
-        if (pValue.isListValue())
+        if(pValue.isListValue())
             return pValue.getItems().getItemWithValue(value);
 
         return null;

@@ -78,7 +78,7 @@ public class SqlManagerQueryTest extends TestCase
         super.setUp();
 
         component =
-                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SqlManagerQueryTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+        (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SqlManagerQueryTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
         assertNotNull(component);
 
         component.printErrorsAndWarnings();
@@ -116,7 +116,7 @@ public class SqlManagerQueryTest extends TestCase
         Set queryNames = queries.getNames();
         assertEquals(this.queryNames.length, queryNames.size());
 
-        for (int i = 0; i < queries.size(); i++)
+        for(int i = 0; i < queries.size(); i++)
         {
             Query q = queries.get(i);
             assertEquals(this.queryNames[i], q.getName());
@@ -128,7 +128,7 @@ public class SqlManagerQueryTest extends TestCase
         Set nsNames = queries.getNameSpaceNames();
         assertEquals(expectedNsNames.length, nsNames.size());
 
-        for (int i = 0; i < expectedNsNames.length; i++)
+        for(int i = 0; i < expectedNsNames.length; i++)
             assertTrue(nsNames.contains(expectedNsNames[i]));
     }
 
@@ -177,7 +177,7 @@ public class SqlManagerQueryTest extends TestCase
 
         String[] expectedColBParamValues = new String[]{"abc", "def", "ghi", "jkl"};
         String[] actualColBParamValues = columnB.getValue().getTextValues(null);
-        for (int i = 0; i < expectedColBParamValues.length; i++)
+        for(int i = 0; i < expectedColBParamValues.length; i++)
             assertEquals(expectedColBParamValues[i], actualColBParamValues[i]);
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
@@ -190,9 +190,9 @@ public class SqlManagerQueryTest extends TestCase
         Integer[] bindType = vrc.getBindTypes();
 
         assertEquals(bindValue.length, bindType.length);
-        for (int i = 0; i < bindValue.length; i++)
+        for(int i = 0; i < bindValue.length; i++)
         {
-            if (0 == i)
+            if(0 == i)
                 assertEquals("abc", bindValue[i]);
             else
                 assertEquals(expectedColBParamValues[i - 1], bindValue[i]);
@@ -254,7 +254,7 @@ public class SqlManagerQueryTest extends TestCase
         String[] expectedDbmsIds = new String[]{"ansi", "oracle"};
         Set availableDbmsIds = dbmsSqlTexts.getAvailableDbmsIds();
 
-        for (int i = 0; i < expectedDbmsIds.length; i++)
+        for(int i = 0; i < expectedDbmsIds.length; i++)
             assertTrue(availableDbmsIds.contains(expectedDbmsIds[i]));
 
         assertEquals("", dbmsSqlTexts.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql().trim());
@@ -303,7 +303,7 @@ public class SqlManagerQueryTest extends TestCase
 
         String[] expectedColBParamValues = new String[]{"abc", "def", "ghi", "jkl"};
         String[] actualColBParamValues = stmt1ColumnBParam.getValue().getTextValues(null);
-        for (int i = 0; i < expectedColBParamValues.length; i++)
+        for(int i = 0; i < expectedColBParamValues.length; i++)
             assertEquals(expectedColBParamValues[i], actualColBParamValues[i]);
     }
 
@@ -355,7 +355,7 @@ public class SqlManagerQueryTest extends TestCase
         int expectedNumGhi = 1;
         int numAbc = 0;
         int numGhi = 0;
-        while (rs.next())
+        while(rs.next())
         {
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
@@ -363,8 +363,8 @@ public class SqlManagerQueryTest extends TestCase
             assertEquals("abc", rs.getString(4));
             assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(5))) numGhi++;
-            if ("abc".equals(rs.getString(5))) numAbc++;
+            if("ghi".equals(rs.getString(5))) numGhi++;
+            if("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -434,7 +434,7 @@ public class SqlManagerQueryTest extends TestCase
         int expectedNumGhi = 1;
         int numAbc = 0;
         int numGhi = 0;
-        while (rs.next())
+        while(rs.next())
         {
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
@@ -442,8 +442,8 @@ public class SqlManagerQueryTest extends TestCase
             assertEquals("abc", rs.getString(4));
             assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(5))) numGhi++;
-            if ("abc".equals(rs.getString(5))) numAbc++;
+            if("ghi".equals(rs.getString(5))) numGhi++;
+            if("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -478,7 +478,7 @@ public class SqlManagerQueryTest extends TestCase
         expectedNumGhi = 1;
         numAbc = 0;
         numGhi = 0;
-        while (rs.next())
+        while(rs.next())
         {
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
@@ -486,8 +486,8 @@ public class SqlManagerQueryTest extends TestCase
             assertEquals("abc", rs.getString(4));
             assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(5))) numGhi++;
-            if ("abc".equals(rs.getString(5))) numAbc++;
+            if("ghi".equals(rs.getString(5))) numGhi++;
+            if("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -517,7 +517,7 @@ public class SqlManagerQueryTest extends TestCase
             qrsOne = badStmt.executeAndIgnoreStatistics(cc, null, true);
             exceptionThrown = false;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             assertTrue(exceptionThrown);
         }
@@ -588,7 +588,7 @@ public class SqlManagerQueryTest extends TestCase
         int expectedNumGhi = 1;
         int numAbc = 0;
         int numGhi = 0;
-        while (rs.next())
+        while(rs.next())
         {
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
@@ -596,8 +596,8 @@ public class SqlManagerQueryTest extends TestCase
             assertEquals("abc", rs.getString(4));
             assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(5))) numGhi++;
-            if ("abc".equals(rs.getString(5))) numAbc++;
+            if("ghi".equals(rs.getString(5))) numGhi++;
+            if("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -634,7 +634,7 @@ public class SqlManagerQueryTest extends TestCase
         expectedNumGhi = 1;
         numAbc = 0;
         numGhi = 0;
-        while (rs.next())
+        while(rs.next())
         {
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
@@ -642,8 +642,8 @@ public class SqlManagerQueryTest extends TestCase
             assertEquals("abc", rs.getString(4));
             assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(5))) numGhi++;
-            if ("abc".equals(rs.getString(5))) numAbc++;
+            if("ghi".equals(rs.getString(5))) numGhi++;
+            if("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -703,7 +703,7 @@ public class SqlManagerQueryTest extends TestCase
         Map columnNames = ResultSetUtils.getInstance().getColumnNamesIndexMap(rs);
 
         assertEquals(expectedColumns.length, columnNames.size());
-        for (int i = 0; i < expectedColumns.length; i++)
+        for(int i = 0; i < expectedColumns.length; i++)
             assertTrue(columnNames.containsKey(expectedColumns[i]));
 
         int numRows = 0;
@@ -712,7 +712,7 @@ public class SqlManagerQueryTest extends TestCase
         int expectedNumGhi = 1;
         int numAbc = 0;
         int numGhi = 0;
-        while (rs.next())
+        while(rs.next())
         {
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
@@ -720,8 +720,8 @@ public class SqlManagerQueryTest extends TestCase
             assertEquals("abc", rs.getString(4));
             assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(5))) numGhi++;
-            if ("abc".equals(rs.getString(5))) numAbc++;
+            if("ghi".equals(rs.getString(5))) numGhi++;
+            if("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);

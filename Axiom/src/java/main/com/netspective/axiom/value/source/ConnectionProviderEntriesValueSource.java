@@ -55,15 +55,13 @@ import com.netspective.commons.value.source.AbstractValueSource;
 
 public class ConnectionProviderEntriesValueSource extends AbstractValueSource
 {
-    public static final String[] IDENTIFIERS = new String[] { "data-sources" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Provides a list of all JDBC data sources in the default ConnectionProvider prefixed by a particular " +
-            "filter criteria.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("filter-reg-ex", false, ".*", "The Perl5 regular expression to use as a filter.")
-            }
-    );
+    public static final String[] IDENTIFIERS = new String[]{"data-sources"};
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides a list of all JDBC data sources in the default ConnectionProvider prefixed by a particular " +
+                                                                                              "filter criteria.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("filter-reg-ex", false, ".*", "The Perl5 regular expression to use as a filter.")
+                                                                                              });
 
     static public Perl5Util perlUtil = new Perl5Util();
     static public String ALL_ENTRIES_FILTER = "/.*/";
@@ -124,7 +122,7 @@ public class ConnectionProviderEntriesValueSource extends AbstractValueSource
         ConnectionProviderEntries entries = cp.getDataSourceEntries(vc);
 
         List entriesSelected = new ArrayList();
-        for(Iterator i = entries.entrySet().iterator(); i.hasNext(); )
+        for(Iterator i = entries.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             String dataSourceId = (String) entry.getKey();
@@ -145,7 +143,7 @@ public class ConnectionProviderEntriesValueSource extends AbstractValueSource
 
         PresentationValue result = new PresentationValue();
         PresentationValue.Items items = result.createItems();
-        for(Iterator i = entries.entrySet().iterator(); i.hasNext(); )
+        for(Iterator i = entries.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             String dataSourceId = (String) entry.getKey();

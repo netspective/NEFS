@@ -54,15 +54,13 @@ public class QueryDefnSelectsValueSource extends QueryDefnItemValueSource
     static public final String CUSTOMIZE_TEXT = "Customize...";
     static public final ValueSource CUSTOMIZE_VS = new StaticValueSource(CUSTOMIZE_TEXT);
 
-    public static final String[] IDENTIFIERS = new String[] { "query-defn-selects" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Retrieves the list of selects defined in a particular query definition.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new QueryDefnSourceParameter(),
-                new ValueSourceDocumentation.Parameter("allow-custom", false, "Set to 'yes' to add 'Customize...' or a custom non-null string to list of selects."),
-            }
-    );
+    public static final String[] IDENTIFIERS = new String[]{"query-defn-selects"};
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Retrieves the list of selects defined in a particular query definition.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new QueryDefnSourceParameter(),
+                                                                                                  new ValueSourceDocumentation.Parameter("allow-custom", false, "Set to 'yes' to add 'Customize...' or a custom non-null string to list of selects."),
+                                                                                              });
 
     public static String[] getIdentifiers()
     {

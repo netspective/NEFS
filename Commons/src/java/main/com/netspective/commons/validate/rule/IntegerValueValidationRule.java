@@ -107,21 +107,21 @@ public class IntegerValueValidationRule extends BasicValidationRule
 
     public boolean isValid(ValidationContext vc, Value value)
     {
-        if (!isValidType(vc, value, Integer.class))
+        if(!isValidType(vc, value, Integer.class))
             return false;
 
         Integer intValue = (Integer) value.getValue();
-        if (intValue != null && !ValidationUtils.isInRange(intValue.intValue(), min, max))
+        if(intValue != null && !ValidationUtils.isInRange(intValue.intValue(), min, max))
         {
             vc.addValidationError(value, getInvalidRangeMessage(),
-                    new Object[]{getValueCaption(vc), new Integer(min), new Integer(max)});
+                                  new Object[]{getValueCaption(vc), new Integer(min), new Integer(max)});
             return false;
         }
         // only check for multiple-of when the value is not zero
-        if (intValue != null && multipleOf != 0 && !ValidationUtils.isMultipleOf(intValue.intValue(), multipleOf))
+        if(intValue != null && multipleOf != 0 && !ValidationUtils.isMultipleOf(intValue.intValue(), multipleOf))
         {
             vc.addValidationError(value, getInvalidMultipleMessage(),
-                    new Object[]{getValueCaption(vc), new Integer(multipleOf)});
+                                  new Object[]{getValueCaption(vc), new Integer(multipleOf)});
             return false;
         }
 

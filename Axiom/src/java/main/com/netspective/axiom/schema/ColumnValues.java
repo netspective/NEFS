@@ -43,9 +43,13 @@ public interface ColumnValues extends Values
     public final static int RESULTSETROWNUM_SINGLEROW = -1;
 
     public ColumnValue getByColumnIndex(int columnIndex);
+
     public ColumnValue getByColumn(Column column);
+
     public ColumnValues getByColumns(Columns columns);
+
     public ColumnValue getByName(String columnName);
+
     public ColumnValue getByNameOrXmlNodeName(String colXmlNodeName);
 
     public Object[] getValuesForSqlBindParams();
@@ -80,6 +84,7 @@ public interface ColumnValues extends Values
 
     /**
      * Conduct validation and return the resulting validation context.
+     *
      * @param vc optional validation context (if it's null, one will be created)
      */
     public ValidationContext getValidationResult(ValidationContext vc);
@@ -87,7 +92,8 @@ public interface ColumnValues extends Values
     /**
      * Assign the given text array to the columns in this structure. This is most often used when a CSV or tab-delimited
      * set of text values should be assigned.
-     * @param textValues The values that should be assigned (must be in same order as the column definitions)
+     *
+     * @param textValues        The values that should be assigned (must be in same order as the column definitions)
      * @param treatBlanksAsNull What to do with blank values (treat them as nulls or assign blanks).
      */
     public void setValues(String[] textValues, boolean treatBlanksAsNull);

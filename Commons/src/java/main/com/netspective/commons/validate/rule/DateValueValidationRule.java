@@ -74,7 +74,7 @@ public class DateValueValidationRule extends BasicValidationRule
     {
         String xlatedDate = str;
 
-        if (str != null && (str.startsWith("today") || str.startsWith("now")))
+        if(str != null && (str.startsWith("today") || str.startsWith("now")))
         {
             Date dt = new Date();
             xlatedDate = format(dt);
@@ -93,20 +93,20 @@ public class DateValueValidationRule extends BasicValidationRule
     {
         String xlatedDate = str;
 
-        if (str != null && (str.startsWith("today") || str.startsWith("now")))
+        if(str != null && (str.startsWith("today") || str.startsWith("now")))
         {
             int strLength = 0;
-            if (str.startsWith("today"))
+            if(str.startsWith("today"))
                 strLength = "today".length();
             else
                 strLength = "now".length();
             Date dt = null;
-            if (str.length() > strLength)
+            if(str.length() > strLength)
             {
                 try
                 {
                     String opValueStr = null;
-                    if (str.charAt(strLength) == '+')
+                    if(str.charAt(strLength) == '+')
                         opValueStr = str.substring(strLength + 1);
                     else
                         opValueStr = str.substring(strLength);
@@ -116,7 +116,7 @@ public class DateValueValidationRule extends BasicValidationRule
                     dt = calendar.getTime();
                     xlatedDate = format(dt);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     log.error("Unable to translate date string " + str, e);
                 }
@@ -142,7 +142,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public String format(Date date)
     {
-        synchronized (format)
+        synchronized(format)
         {
             return format.format(date);
         }
@@ -150,7 +150,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public Date parse(String text) throws ParseException
     {
-        synchronized (format)
+        synchronized(format)
         {
             return format.parse(text);
         }
@@ -158,7 +158,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public String toPattern()
     {
-        synchronized (format)
+        synchronized(format)
         {
             return format.toPattern();
         }
@@ -191,7 +191,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public void setMaxDateSource(ValueSource maxDate) throws ParseException
     {
-        if (maxDate instanceof StaticValueSource)
+        if(maxDate instanceof StaticValueSource)
             this.maxDate = parse(translateDateString(maxDate.getTextValue(null)));
         else
             maxDateSource = maxDate;
@@ -204,7 +204,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public void setMinDateSource(ValueSource minDate) throws ParseException
     {
-        if (minDate instanceof StaticValueSource)
+        if(minDate instanceof StaticValueSource)
             this.minDate = parse(translateDateString(minDate.getTextValue(null)));
         else
             minDateSource = minDate;
@@ -282,43 +282,43 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public Date getValueSourceOrDate(String name, Value value, ValueSource vs, ValidationContext vc, Date date)
     {
-        if (vs == null)
+        if(vs == null)
             return date;
 
         String dateText = vs.getTextValue(vc.getValidationValueContext());
-        if (dateText == null)
+        if(dateText == null)
             return date;
 
         try
         {
             return parse(dateText);
         }
-        catch (ParseException e)
+        catch(ParseException e)
         {
             vc.addValidationError(value, getInvalidNamedDateMessage(),
-                    new Object[]{getValueCaption(vc), name, dateText, toPattern()});
+                                  new Object[]{getValueCaption(vc), name, dateText, toPattern()});
             return date;
         }
     }
 
     public boolean isValid(ValidationContext vc, Value value)
     {
-        if (!isValidType(vc, value, Date.class))
+        if(!isValidType(vc, value, Date.class))
             return false;
 
         Date dateValue = (Date) value.getValue();
-        if (dateValue == null)
+        if(dateValue == null)
             return true;
 
-        if (pastOnly || futureOnly)
+        if(pastOnly || futureOnly)
         {
             Date now = new Date();
-            if (pastOnly && dateValue.after(now))
+            if(pastOnly && dateValue.after(now))
             {
                 vc.addValidationError(value, getPastOnlyDateMessage(), new Object[]{getValueCaption(vc), format(now)});
                 return false;
             }
-            if (futureOnly && dateValue.before(now))
+            if(futureOnly && dateValue.before(now))
             {
                 vc.addValidationError(value, getFutureOnlyDateMessage(), new Object[]{
                     getValueCaption(vc), format(now)
@@ -328,7 +328,7 @@ public class DateValueValidationRule extends BasicValidationRule
         }
 
         Date minimumDate = getValueSourceOrDate("Minimum", value, minDateSource, vc, minDate);
-        if (minimumDate != null && dateValue.before(minimumDate))
+        if(minimumDate != null && dateValue.before(minimumDate))
         {
             vc.addValidationError(value, getPreMinDateDateMessage(), new Object[]{
                 getValueCaption(vc), format(minimumDate)
@@ -337,7 +337,7 @@ public class DateValueValidationRule extends BasicValidationRule
         }
 
         Date maximumDate = getValueSourceOrDate("Maximum", value, maxDateSource, vc, maxDate);
-        if (maximumDate != null && dateValue.after(maximumDate))
+        if(maximumDate != null && dateValue.after(maximumDate))
         {
             vc.addValidationError(value, getPostMaxDateMessage(), new Object[]{
                 getValueCaption(vc), format(maximumDate)

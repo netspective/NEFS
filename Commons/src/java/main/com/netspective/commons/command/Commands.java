@@ -106,10 +106,10 @@ public class Commands implements MetricsProducer
     {
         Class actualClass = discoverClass.find(vsClass, vsClass.getName());
         String[] identifiers = getCommandIdentifiers(actualClass);
-        for (int i = 0; i < identifiers.length; i++)
+        for(int i = 0; i < identifiers.length; i++)
         {
             srcClassesMap.put(identifiers[i], actualClass);
-            if (log.isTraceEnabled())
+            if(log.isTraceEnabled())
                 log.trace("Registered command " + actualClass.getName() + " as '" + identifiers[i] + "'.");
         }
         srcClassesSet.add(actualClass);
@@ -122,7 +122,7 @@ public class Commands implements MetricsProducer
         {
             getIdsMethod = cmdClass.getMethod(CMDMETHODNAME_GETIDENTIFIERS, null);
         }
-        catch (NoSuchMethodException e)
+        catch(NoSuchMethodException e)
         {
             log.error("Error retreiving method " + CMDMETHODNAME_GETIDENTIFIERS, e);
             throw new NestableRuntimeException("Static method 'String[] " + CMDMETHODNAME_GETIDENTIFIERS + "()' not found in command " + cmdClass.getName(), e);
@@ -132,7 +132,7 @@ public class Commands implements MetricsProducer
         {
             return (String[]) getIdsMethod.invoke(null, null);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error executing method " + CMDMETHODNAME_GETIDENTIFIERS, e);
             throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] " + CMDMETHODNAME_GETIDENTIFIERS + "()' method in command " + cmdClass.getName(), e);
@@ -146,7 +146,7 @@ public class Commands implements MetricsProducer
         {
             getDocsMethod = cmdClass.getMethod(CMDMETHODNAME_GETDOCUMENTATION, null);
         }
-        catch (NoSuchMethodException e)
+        catch(NoSuchMethodException e)
         {
             return null;
         }
@@ -155,7 +155,7 @@ public class Commands implements MetricsProducer
         {
             return (CommandDocumentation) getDocsMethod.invoke(null, null);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error executing method " + CMDMETHODNAME_GETDOCUMENTATION + " in command " + cmdClass.getName(), e);
             return null;
@@ -167,15 +167,15 @@ public class Commands implements MetricsProducer
     public Command getCommand(String name, String params) throws CommandCreationException
     {
         Class ccClass = (Class) srcClassesMap.get(name);
-        if (ccClass != null)
+        if(ccClass != null)
         {
             try
             {
                 Command command = (Command) ccClass.newInstance();
-                if (params != null) command.setParameters(params);
+                if(params != null) command.setParameters(params);
                 return command;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Error instantiating command " + name + " with params " + params, e);
                 throw new CommandCreationException(e, name, params);
@@ -190,14 +190,14 @@ public class Commands implements MetricsProducer
         String cmd = cmdSpecification;
         String cmdParam = null;
         int cmdDelimPos = cmdSpecification.indexOf(CMDNAME_AND_FIRST_PARAM_DELIM);
-        if (cmdDelimPos != -1)
+        if(cmdDelimPos != -1)
         {
             cmd = cmdSpecification.substring(0, cmdDelimPos);
             cmdParam = cmdSpecification.substring(cmdDelimPos + 1);
         }
 
         Command command = getCommand(cmd, cmdParam);
-        if (command != null)
+        if(command != null)
             return command;
         else
             throw new CommandNotFoundException("Command '" + cmd + "' not found for specification '" + cmdSpecification + "'.", cmdSpecification);

@@ -81,7 +81,7 @@ public class DataImportParseContext extends ParseContext
     {
         String tableName = table.getNameForMapKey();
         TableImportStatistic stat = (TableImportStatistic) statistics.get(tableName);
-        if (stat == null)
+        if(stat == null)
         {
             stat = new TableImportStatistic(tableName);
             statistics.put(tableName, stat);
@@ -104,51 +104,51 @@ public class DataImportParseContext extends ParseContext
             parser.setContentHandler(new DataImportHandler(this, cc, schema));
             parser.parse(getInputSource());
         }
-        catch (SAXParseException exc)
+        catch(SAXParseException exc)
         {
             throw new ContentHandlerException(this, exc.getMessage(), exc);
         }
-        catch (SAXException exc)
+        catch(SAXException exc)
         {
             Throwable t = exc.getException();
-            if (t instanceof TransformProcessingInstructionEncounteredException)
+            if(t instanceof TransformProcessingInstructionEncounteredException)
             {
                 throw (TransformProcessingInstructionEncounteredException) t;
             }
-            else if (t instanceof ContentHandlerException)
+            else if(t instanceof ContentHandlerException)
             {
                 throw (ContentHandlerException) t;
             }
             throw new ContentHandlerException(this, exc.getMessage(), t);
         }
-        catch (FileNotFoundException exc)
+        catch(FileNotFoundException exc)
         {
             throw new ContentHandlerException(this, exc);
         }
-        catch (IOException exc)
+        catch(IOException exc)
         {
             throw new ContentHandlerException(this, "Error reading XML data model file", exc);
         }
         finally
         {
-            if (inputSource.getCharacterStream() != null)
+            if(inputSource.getCharacterStream() != null)
             {
                 try
                 {
                     inputSource.getCharacterStream().close();
                 }
-                catch (IOException ioe)
+                catch(IOException ioe)
                 {
                     // ignore this
                 }
             }
-            if (inputSource.getByteStream() != null)
+            if(inputSource.getByteStream() != null)
             {
                 try
                 {
                     inputSource.getByteStream().close();
                 }
-                catch (IOException ioe)
+                catch(IOException ioe)
                 {
                     // ignore this
                 }
@@ -165,7 +165,7 @@ public class DataImportParseContext extends ParseContext
             pc.parse(cc, schema);
             return pc;
         }
-        catch (TransformProcessingInstructionEncounteredException exc)
+        catch(TransformProcessingInstructionEncounteredException exc)
         {
             try
             {
@@ -173,16 +173,16 @@ public class DataImportParseContext extends ParseContext
                 pc.parse(cc, schema);
                 return pc;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new ContentHandlerException(pc, e);
             }
         }
-        catch (ParserConfigurationException exc)
+        catch(ParserConfigurationException exc)
         {
             throw new ContentHandlerException(pc, "Parser has not been configured correctly", exc);
         }
-        catch (SAXException exc)
+        catch(SAXException exc)
         {
             throw new ContentHandlerException(pc, exc);
         }
@@ -197,7 +197,7 @@ public class DataImportParseContext extends ParseContext
             pc.parse(cc, schema);
             return pc;
         }
-        catch (TransformProcessingInstructionEncounteredException exc)
+        catch(TransformProcessingInstructionEncounteredException exc)
         {
             try
             {
@@ -205,16 +205,16 @@ public class DataImportParseContext extends ParseContext
                 pc.parse(cc, schema);
                 return pc;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new ContentHandlerException(pc, e);
             }
         }
-        catch (ParserConfigurationException exc)
+        catch(ParserConfigurationException exc)
         {
             throw new ContentHandlerException(pc, "Parser has not been configured correctly", exc);
         }
-        catch (SAXException exc)
+        catch(SAXException exc)
         {
             throw new ContentHandlerException(pc, exc);
         }
@@ -229,7 +229,7 @@ public class DataImportParseContext extends ParseContext
             pc.parse(cc, schema);
             return pc;
         }
-        catch (TransformProcessingInstructionEncounteredException exc)
+        catch(TransformProcessingInstructionEncounteredException exc)
         {
             try
             {
@@ -237,16 +237,16 @@ public class DataImportParseContext extends ParseContext
                 pc.parse(cc, schema);
                 return pc;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new ContentHandlerException(pc, e);
             }
         }
-        catch (ParserConfigurationException exc)
+        catch(ParserConfigurationException exc)
         {
             throw new ContentHandlerException(pc, "Parser has not been configured correctly", exc);
         }
-        catch (SAXException exc)
+        catch(SAXException exc)
         {
             throw new ContentHandlerException(pc, exc);
         }

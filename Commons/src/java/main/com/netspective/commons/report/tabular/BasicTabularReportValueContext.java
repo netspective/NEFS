@@ -66,10 +66,10 @@ public class BasicTabularReportValueContext extends DefaultValueContext implemen
 
         calcsCount = 0;
         states = new TabularReportColumnState[columnsCount];
-        for (int i = 0; i < columns.size(); i++)
+        for(int i = 0; i < columns.size(); i++)
         {
             TabularReportColumnState state = columns.getColumn(i).constructState(this);
-            if (state.haveCalc())
+            if(state.haveCalc())
                 calcsCount++;
             states[i] = state;
         }
@@ -107,16 +107,16 @@ public class BasicTabularReportValueContext extends DefaultValueContext implemen
 
     public final int getVisibleColsCount()
     {
-        if (visibleColsCount != -1)
+        if(visibleColsCount != -1)
             return visibleColsCount;
 
         TabularReportColumns columns = reportDefn.getColumns();
         int columnsCount = columns.size();
 
         visibleColsCount = 0;
-        for (int i = 0; i < columnsCount; i++)
+        for(int i = 0; i < columnsCount; i++)
         {
-            if (states[i].isVisible())
+            if(states[i].isVisible())
                 visibleColsCount++;
         }
         return visibleColsCount;

@@ -37,11 +37,16 @@ public interface Tables
     public void finishConstruction();
 
     public void add(Table table);
+
     public Table getSole();
+
     public Table get(int i);
+
     public Table getByName(String name);
+
     public Table getByNameOrXmlNodeName(String name);
 
     public int size();
+
     public void remove(Table table);
 }

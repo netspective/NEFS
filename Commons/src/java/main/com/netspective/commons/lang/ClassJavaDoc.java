@@ -66,7 +66,7 @@ public class ClassJavaDoc extends JavaDoc
         {
             setXmlDocument(JavaDocs.getInstance().getXmlDocForClass(getOwner()));
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             log.error("Unable to retrievel XML document for class " + owner.getName(), e);
             setRetrievalError(e);
@@ -76,7 +76,7 @@ public class ClassJavaDoc extends JavaDoc
     protected void setXmlDocument(Document xmlDocument)
     {
         this.xmlDocument = xmlDocument;
-        if (xmlDocument == null)
+        if(xmlDocument == null)
         {
             setFound(false);
             return;
@@ -87,13 +87,13 @@ public class ClassJavaDoc extends JavaDoc
             Node descrLeadNode = XPathAPI.selectSingleNode(xmlDocument.getDocumentElement(), "/*/description/lead");
             Node descrDetailNode = XPathAPI.selectSingleNode(xmlDocument.getDocumentElement(), "/*/description/detail");
 
-            if (descrLeadNode != null)
+            if(descrLeadNode != null)
                 setDescriptionLead(descrLeadNode.getFirstChild().getNodeValue());
 
-            if (descrDetailNode != null)
+            if(descrDetailNode != null)
                 setDescriptionDetail(descrDetailNode.getFirstChild().getNodeValue());
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error retrieving description for class " + getOwner(), e);
             setRetrievalError(e);
@@ -103,7 +103,7 @@ public class ClassJavaDoc extends JavaDoc
     public MethodJavaDoc getMethodDoc(String methodName)
     {
         MethodJavaDoc result = (MethodJavaDoc) methodJavaDocsByMethodName.get(methodName);
-        if (result == null)
+        if(result == null)
         {
             result = new MethodJavaDoc(this, methodName);
             methodJavaDocsByMethodName.put(methodName, result);

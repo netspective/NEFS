@@ -141,7 +141,7 @@ public class BasicRow implements Row, XmlDataModelSchema.CustomElementAttributeS
         str.append(", Primary Key = ");
         str.append(getPrimaryKeyValues());
         str.append("\n");
-        for (int columnIndex = 0; columnIndex < columns.size(); columnIndex++)
+        for(int columnIndex = 0; columnIndex < columns.size(); columnIndex++)
         {
             Column column = columns.get(columnIndex);
             ColumnValue value = values.getByColumn(column);
@@ -149,7 +149,7 @@ public class BasicRow implements Row, XmlDataModelSchema.CustomElementAttributeS
             str.append(columnIndex + ") " + value.toString() + " (" + value.getClass().getName() + ")");
             if(valueForBindParam != null)
             {
-                if (!value.getClass().getName().equals(valueForBindParam.getClass().getName()))
+                if(!value.getClass().getName().equals(valueForBindParam.getClass().getName()))
                     str.append("[BIND AS " + valueForBindParam.getClass().getName() + "]");
             }
             str.append("\n");
@@ -157,18 +157,19 @@ public class BasicRow implements Row, XmlDataModelSchema.CustomElementAttributeS
         return str.toString();
     }
 
-    public boolean equals(Object o){
+    public boolean equals(Object o)
+    {
 
         BasicRow rowObject;
 
-        if (o == null)
+        if(o == null)
             return false;
 
         try
         {
             rowObject = (BasicRow) o;
         }
-        catch (ClassCastException cce)
+        catch(ClassCastException cce)
         {
             return false;
         }

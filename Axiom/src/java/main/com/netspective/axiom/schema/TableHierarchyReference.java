@@ -35,5 +35,6 @@ package com.netspective.axiom.schema;
 public interface TableHierarchyReference
 {
     public String getParent();
+
     public void setParent(String tableName);
 }

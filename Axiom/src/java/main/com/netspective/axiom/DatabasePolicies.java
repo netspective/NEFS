@@ -101,12 +101,12 @@ public class DatabasePolicies
             if(log.isDebugEnabled() && policiesById.containsKey(dbmsIdentifier))
             {
                 DatabasePolicy existingPolicy = getDatabasePolicy(dbmsIdentifier);
-                log.debug("Replacing existing policy id '' class "+ existingPolicy.getClass().getName() +" with " + policy.getClass().getName());
+                log.debug("Replacing existing policy id '' class " + existingPolicy.getClass().getName() + " with " + policy.getClass().getName());
             }
 
             policiesById.put(dbmsIdentifier, policy);
             policiesSet.add(policy);
-            log.trace("Registered database policy "+ policy.getClass().getName() +" as '"+ dbmsIdentifier +"'.");
+            log.trace("Registered database policy " + policy.getClass().getName() + " as '" + dbmsIdentifier + "'.");
         }
     }
 
@@ -136,15 +136,13 @@ public class DatabasePolicies
     /**
      * Return the database policies with identifiers (keys) that match the given regular expression. A special case,
      * called '*' will simply return all the database policies.
-     * @param regularExpression
-     * @return
      */
 
     public DatabasePolicy[] getMatchingPolices(String regularExpression)
     {
         Set policies = new HashSet();
 
-        for(Iterator i = policiesById.entrySet().iterator(); i.hasNext(); )
+        for(Iterator i = policiesById.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             String id = (String) entry.getKey();

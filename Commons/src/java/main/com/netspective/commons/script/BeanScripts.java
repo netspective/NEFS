@@ -59,12 +59,12 @@ public class BeanScripts implements Scripts
 
     public void add(Script script)
     {
-        if (script.getName() == null)
+        if(script.getName() == null)
             throw new RuntimeException("Bean scripts must have a name");
 
         scripts.add(script);
         byName.put(script.getQualifiedName(), script);
-        if (null != script.getNameSpace())
+        if(null != script.getNameSpace())
             nameSpaceNames.add(script.getNameSpace().getNameSpaceId());
     }
 

@@ -60,23 +60,23 @@ public class ResourceLoader
         try
         {
             classLoader = Thread.currentThread().getContextClassLoader();
-            if (classLoader != null)
+            if(classLoader != null)
             {
                 url = classLoader.getResource(resource);
-                if (url != null)
+                if(url != null)
                     return url;
             }
 
             // We could not find resource. Lets try with the classloader that loaded this class.
             classLoader = ResourceLoader.class.getClassLoader();
-            if (classLoader != null)
+            if(classLoader != null)
             {
                 url = classLoader.getResource(resource);
-                if (url != null)
+                if(url != null)
                     return url;
             }
         }
-        catch (Throwable t)
+        catch(Throwable t)
         {
             log.warn("Caught Exception while in ResourceLoader.getResource.", t);
         }
@@ -97,11 +97,11 @@ public class ResourceLoader
      */
     public static URL getFirstResource(String[] resources)
     {
-        for (int i = 0; i < resources.length; i++)
+        for(int i = 0; i < resources.length; i++)
         {
             String resource = resources[i];
             URL result = getResource(resource);
-            if (result != null)
+            if(result != null)
                 return result;
         }
 

@@ -66,7 +66,7 @@ public class LikeExpressionComparison extends BinaryOpComparison
     {
         ValueSource bindParam = null;
         String textValue = cond.getValue().getTextValue(vc);
-        if (textValue == null || textValue.trim().length() == 0)
+        if(textValue == null || textValue.trim().length() == 0)
         {
             bindParam = new StaticValueSource("%");
         }
@@ -77,7 +77,7 @@ public class LikeExpressionComparison extends BinaryOpComparison
         statement.addParam(bindParam);
         String retString = "";
         String bindExpression = cond.getBindExpr();
-        if (bindExpression != null && bindExpression.length() > 0)
+        if(bindExpression != null && bindExpression.length() > 0)
         {
             retString = cond.getField().getWhereExpr() + " like UPPER(" + bindExpression + ")";
         }

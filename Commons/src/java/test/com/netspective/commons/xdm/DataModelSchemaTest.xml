@@ -11,14 +11,14 @@
          in the attribute above -->
     <root-attr-1>root-attr-1-text</root-attr-1>
 
-	<test-boolean>yes</test-boolean>
-	<path-separator-char>:</path-separator-char>
-	<test-byte>96</test-byte>
-	<test-short>128</test-short>
+    <test-boolean>yes</test-boolean>
+    <path-separator-char>:</path-separator-char>
+    <test-byte>96</test-byte>
+    <test-short>128</test-short>
     <test-long>1234567890</test-long>
-	<test-float>3.1415926535</test-float>
-	<test-double>3.1415926535897932384626433</test-double>
-	<test-file>DataModelSchemaTest.xml</test-file>
+    <test-float>3.1415926535</test-float>
+    <test-double>3.1415926535897932384626433</test-double>
+    <test-file>DataModelSchemaTest.xml</test-file>
 
     <xdm:include file="DataModelSchemaTest-include.xml"/>
 
@@ -37,12 +37,12 @@
 
         <!-- if the following example, bit-three="on", bit-ten="on" is the same as saying bit-mask="BIT_THREE | BIT_TEN" -->
         <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test"
-                  text="CustomTestText12"
-                  integer="122"
-                  bit-mask="BIT_THREE | BIT_FIVE | BIT_EIGHT"
-                  bit-three="on"
-                  bit-ten="on"
-                  />
+            text="CustomTestText12"
+            integer="122"
+            bit-mask="BIT_THREE | BIT_FIVE | BIT_EIGHT"
+            bit-three="on"
+            bit-ten="on"
+            />
     </nested1>
 
     <!-- this element has been registered as an 'ignore' element so test to make sure it is ignored -->
@@ -71,8 +71,8 @@
             <nested11 text="${params.param1}" integer="${params.param2}"/>
             <nested11 type="type-A" text="TestText12" integer="12"/>
             <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test"
-                      text="CustomTestText12"
-                      integer="122"/>
+                text="CustomTestText12"
+                integer="122"/>
         </nested1>
     </xdm:template>
 

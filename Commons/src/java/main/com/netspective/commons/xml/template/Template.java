@@ -148,7 +148,7 @@ public class Template extends TemplateElement
     public void declareParameter(TemplateContentHandler contentHandler, String url, String localName, String qName, Attributes attributes) throws SAXException
     {
         String paramName = attributes.getValue(NodeIdentifiers.ATTRNAME_TEMPLATE_PARAM_DECL_NAME);
-        if (paramName == null || paramName.length() == 0)
+        if(paramName == null || paramName.length() == 0)
             throw new SAXParseException("Template parameter has no '" + NodeIdentifiers.ATTRNAME_TEMPLATE_PARAM_DECL_NAME + "' attribute.", contentHandler.getDocumentLocator());
 
         Parameter param = new Parameter(paramName);
@@ -158,32 +158,32 @@ public class Template extends TemplateElement
 
         String paramRequiredStr = attributes.getValue(NodeIdentifiers.ATTRNAME_TEMPLATE_PARAM_DECL_REQUIRED);
         param.setRequired(paramRequiredStr != null && paramRequiredStr.length() > 0
-                ? TextUtils.getInstance().toBoolean(paramRequiredStr) : false);
+                          ? TextUtils.getInstance().toBoolean(paramRequiredStr) : false);
 
         param.setCopyAttribute(attributes.getValue(NodeIdentifiers.ATTRNAME_TEMPLATE_PARAM_DECL_COPYATTR));
     }
 
     public Template[] getInheritedTemplates() throws SAXException
     {
-        if (!calculatedInheritedTemplates)
+        if(!calculatedInheritedTemplates)
         {
             Map myTemplatesMap = templateCatalog.getProducerTemplates(templateProducer);
-            if (myTemplatesMap == null)
+            if(myTemplatesMap == null)
                 throw new SAXException("Unable to locate templates catalog for namespace '" + templateProducer.getNameSpaceId() + "'");
 
-            if (templateProducer.getTemplateInhAttrName() != null)
+            if(templateProducer.getTemplateInhAttrName() != null)
             {
                 String inheritTemplatesNames = getAttributes().getValue(templateProducer.getTemplateInhAttrName());
-                if (inheritTemplatesNames != null && inheritTemplatesNames.length() > 0)
+                if(inheritTemplatesNames != null && inheritTemplatesNames.length() > 0)
                 {
                     List inherited = new ArrayList();
                     StringTokenizer st = new StringTokenizer(inheritTemplatesNames, ",");
-                    while (st.hasMoreTokens())
+                    while(st.hasMoreTokens())
                     {
                         String templateName = st.nextToken().trim();
 
                         Template template = (Template) myTemplatesMap.get(templateName);
-                        if (template == null)
+                        if(template == null)
                             throw new SAXException("Inherited template '" + templateName + "' for template '" + templateProducer.getElementName() + "' (namespace '" + templateProducer.getNameSpaceId() + "') was not found in the active document. Available: " + myTemplatesMap.keySet() + " at " + getDefnSourceLocation());
                         inherited.add(template);
                     }
@@ -215,17 +215,17 @@ public class Template extends TemplateElement
     {
         // if this template has an alternate class name, return it immediately
         String alternateClassName = getAttributes().getValue(NodeIdentifiers.ATTRNAME_ALTERNATE_CLASS_NAME);
-        if (alternateClassName != null)
+        if(alternateClassName != null)
             return alternateClassName;
 
         // no alternate class name provided in the main template, check inheritance tree
         Template[] inheritedTemplates = getInheritedTemplates();
-        if (inheritedTemplates != null)
+        if(inheritedTemplates != null)
         {
-            for (int i = 0; i < inheritedTemplates.length; i++)
+            for(int i = 0; i < inheritedTemplates.length; i++)
             {
                 String inhAlternateClassName = inheritedTemplates[i].getAlternateClassName();
-                if (inhAlternateClassName != null)
+                if(inhAlternateClassName != null)
                     alternateClassName = inhAlternateClassName;
             }
         }
@@ -235,21 +235,21 @@ public class Template extends TemplateElement
 
     public void applyChildren(TemplateApplyContext ac) throws SAXException
     {
-        if (!defnFinalized())
+        if(!defnFinalized())
             finalizeDefinition(ac);
 
         TemplateContentHandler contentHandler = ac.getContentHandler();
         contentHandler.registerTemplateConsumption(this);
 
         Template[] inheritedTemplates = getInheritedTemplates();
-        if (inheritedTemplates != null)
+        if(inheritedTemplates != null)
         {
-            for (int i = 0; i < inheritedTemplates.length; i++)
+            for(int i = 0; i < inheritedTemplates.length; i++)
                 inheritedTemplates[i].applyChildren(ac);
         }
 
         List children = getChildren();
-        for (int i = 0; i < children.size(); i++)
+        for(int i = 0; i < children.size(); i++)
         {
             ((TemplateNode) children.get(i)).apply(ac);
         }
@@ -257,16 +257,16 @@ public class Template extends TemplateElement
 
     public void applySelfAndChildren(TemplateApplyContext ac) throws SAXException
     {
-        if (!defnFinalized())
+        if(!defnFinalized())
             finalizeDefinition(ac);
 
         TemplateContentHandler contentHandler = ac.getContentHandler();
         contentHandler.registerTemplateConsumption(this);
 
         Template[] inheritedTemplates = getInheritedTemplates();
-        if (inheritedTemplates != null)
+        if(inheritedTemplates != null)
         {
-            for (int i = 0; i < inheritedTemplates.length; i++)
+            for(int i = 0; i < inheritedTemplates.length; i++)
                 inheritedTemplates[i].applyChildren(ac);
         }
 
@@ -277,8 +277,8 @@ public class Template extends TemplateElement
     {
         String exprsFlag = attributes.getValue(contentHandler.getNodeIdentifiers().getTemplateReplaceExprsAttrName());
         boolean allowReplaceExpressions = exprsFlag != null && exprsFlag.length() > 0
-                ? TextUtils.getInstance().toBoolean(exprsFlag) : true;
-        if (!allowReplaceExpressions)
+                                          ? TextUtils.getInstance().toBoolean(exprsFlag) : true;
+        if(!allowReplaceExpressions)
             return new TemplateApplyContext(contentHandler);
 
         Map vars = new HashMap();
@@ -293,8 +293,8 @@ public class Template extends TemplateElement
         activeEntry.fillCreateApplyContextExpressionsVars(vars);
 
         Map templateParamsValues = allowReplaceExpressions
-                ? getTemplateParamsValues(contentHandler.getNodeIdentifiers(), attributes) : null;
-        if (templateParamsValues != null) vars.put(EXPRVARNAME_PARAMS, templateParamsValues);
+                                   ? getTemplateParamsValues(contentHandler.getNodeIdentifiers(), attributes) : null;
+        if(templateParamsValues != null) vars.put(EXPRVARNAME_PARAMS, templateParamsValues);
 
         jc.setVars(vars);
 
@@ -305,9 +305,9 @@ public class Template extends TemplateElement
     {
         Template[] inheritedTemplates = getInheritedTemplates();
 
-        if (inheritedTemplates != null)
+        if(inheritedTemplates != null)
         {
-            for (int i = 0; i < inheritedTemplates.length; i++)
+            for(int i = 0; i < inheritedTemplates.length; i++)
             {
                 Template template = inheritedTemplates[i];
                 template.fillTemplateParamsRequiredAndDefaultValues(requiredParamNames, templateParamsValues, attributesFromCaller);
@@ -315,28 +315,28 @@ public class Template extends TemplateElement
         }
 
         Map templateParametersDecls = getTemplateParamsDeclarations();
-        if (templateParametersDecls.size() > 0)
+        if(templateParametersDecls.size() > 0)
         {
-            for (Iterator i = templateParametersDecls.entrySet().iterator(); i.hasNext();)
+            for(Iterator i = templateParametersDecls.entrySet().iterator(); i.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) i.next();
                 Parameter paramDefn = (Parameter) entry.getValue();
-                if (paramDefn.isRequired())
+                if(paramDefn.isRequired())
                     requiredParamNames.add(paramDefn);
 
-                if (paramDefn.hasDefaultValue())
+                if(paramDefn.hasDefaultValue())
                     templateParamsValues.put(paramDefn.getName(), paramDefn.getDefaultValue());
 
-                if (paramDefn.hasCopyAttribute())
+                if(paramDefn.hasCopyAttribute())
                 {
                     // if we have attributes to copy, it may be a comma-separated list; we will find the first one
                     // with a value and set it as the parameter value
                     StringTokenizer st = new StringTokenizer(paramDefn.getCopyAttribute(), ",");
-                    while (st.hasMoreTokens())
+                    while(st.hasMoreTokens())
                     {
                         String attrName = st.nextToken().trim();
                         String attrValue = attributesFromCaller.getValue(attrName);
-                        if (attrValue != null)
+                        if(attrValue != null)
                         {
                             templateParamsValues.put(paramDefn.getName(), attrValue);
                             break;
@@ -354,20 +354,20 @@ public class Template extends TemplateElement
 
         fillTemplateParamsRequiredAndDefaultValues(requiredParams, templateParamsValues, attributesFromCaller);
 
-        for (int i = 0; i < attributesFromCaller.getLength(); i++)
+        for(int i = 0; i < attributesFromCaller.getLength(); i++)
         {
             String attrName = attributesFromCaller.getQName(i);
-            if (attrName.startsWith(nodeIdentifiers.getTemplateParamAttrPrefix()))
+            if(attrName.startsWith(nodeIdentifiers.getTemplateParamAttrPrefix()))
                 templateParamsValues.put(attrName.substring(nodeIdentifiers.getTemplateParamAttrPrefix().length()), attributesFromCaller.getValue(i));
         }
 
         // validate that all required parameters are available
-        for (Iterator i = requiredParams.iterator(); i.hasNext();)
+        for(Iterator i = requiredParams.iterator(); i.hasNext();)
         {
             Parameter param = (Parameter) i.next();
             String paramValue = (String) templateParamsValues.get(param.getName());
 
-            if (paramValue == null)
+            if(paramValue == null)
                 throw new SAXException("Required param '" + param.getName() + "' not found. Available: " + templateParamsValues);
         }
 

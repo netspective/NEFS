@@ -67,8 +67,6 @@ public class ConcatenateValueSource extends AbstractValueSource
      * the value source to which strings are being appended/prepended. There is no
      * specification defined for the ConcatenateValueSource since it cannot be created
      * using ValueSourceSpecification currently.
-     *
-     * @return
      */
     public ValueSourceSpecification getSpecification()
     {
@@ -79,14 +77,14 @@ public class ConcatenateValueSource extends AbstractValueSource
     {
         Value value = valueSource.getValue(vc);
         String text = value.getTextValue();
-        if (appendText == null && prependText == null)
+        if(appendText == null && prependText == null)
             return value;
 
         StringBuffer result = new StringBuffer();
-        if (prependText != null)
+        if(prependText != null)
             result.append(prependText);
         result.append(text);
-        if (appendText != null)
+        if(appendText != null)
             result.append(appendText);
 
         return new GenericValue(result.toString());

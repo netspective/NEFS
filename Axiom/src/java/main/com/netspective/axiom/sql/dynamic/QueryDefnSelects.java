@@ -71,7 +71,7 @@ public class QueryDefnSelects
     {
         QueryDefnSelect result = (QueryDefnSelect) selectsByName.get(name);
         if(result == null && log.isDebugEnabled())
-            log.debug("Unable to find QueryDefnSelect '"+ name +"'. Available: " + selectsByName.keySet());
+            log.debug("Unable to find QueryDefnSelect '" + name + "'. Available: " + selectsByName.keySet());
         return result;
     }
 

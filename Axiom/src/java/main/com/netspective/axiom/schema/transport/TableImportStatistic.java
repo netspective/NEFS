@@ -130,7 +130,7 @@ public class TableImportStatistic
         if(idReferences == null)
             idReferences = new ArrayList();
 
-        idReferences.add("IDREF '"+ id +"' is '"+ values +"'");
+        idReferences.add("IDREF '" + id + "' is '" + values + "'");
     }
 
     public void addProcessingTimeSpent(long startTime, long endTime)

@@ -39,8 +39,12 @@ import com.netspective.commons.metric.MetricsProducer;
 public interface QueryDefinitions extends MetricsProducer
 {
     public void add(QueryDefinition queryDefn);
+
     public QueryDefinition get(int i);
+
     public QueryDefinition get(String name);
+
     public Set getNames();
+
     public int size();
 }

@@ -50,10 +50,10 @@ public class BooleanColumn extends BasicColumn
         public void setValue(Object value)
         {
             if(value instanceof Long)
-                value = new Boolean(((Long) value).longValue() == 0 ? false: true);
+                value = new Boolean(((Long) value).longValue() == 0 ? false : true);
             else if(value instanceof Integer)
-                value = new Boolean(((Integer) value).intValue() == 0 ? false: true);
-            else if(value != null && ! value.getClass().isAssignableFrom(Boolean.class))
+                value = new Boolean(((Integer) value).intValue() == 0 ? false : true);
+            else if(value != null && !value.getClass().isAssignableFrom(Boolean.class))
                 throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
 
             super.setValue(value);

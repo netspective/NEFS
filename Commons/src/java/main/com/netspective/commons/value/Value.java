@@ -128,10 +128,6 @@ public interface Value
 
     /**
      * Copy the given Value by reference
-     *
-     * @param value
-     *
-     * @throws ValueException
      */
     public void copyValueByReference(Value value) throws ValueException;
 

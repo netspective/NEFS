@@ -35,8 +35,10 @@ package com.netspective.axiom.sql;
 public interface StoredProceduresNameSpace
 {
     public StoredProcedures getContainer();
+
     public void setContainer(StoredProcedures container);
 
     String getNameSpaceId();
+
     void setNameSpaceId(String identifier);
 }

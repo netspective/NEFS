@@ -71,7 +71,7 @@ public class SchemaTableTest extends TestCase
         super.setUp();
 
         component =
-                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SchemaTableTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+        (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SchemaTableTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
         assertNotNull(component);
 
         schema = component.getManager().getSchema("local");
@@ -120,23 +120,23 @@ public class SchemaTableTest extends TestCase
             table.createColumn(Byte.class);
             fail();
         }
-        catch (RuntimeException e)
+        catch(RuntimeException e)
         {
             //This is good
         }
-        catch (NoSuchMethodException e)
+        catch(NoSuchMethodException e)
         {
             fail();
         }
-        catch (InstantiationException e)
+        catch(InstantiationException e)
         {
             fail();
         }
-        catch (IllegalAccessException e)
+        catch(IllegalAccessException e)
         {
             fail();
         }
-        catch (InvocationTargetException e)
+        catch(InvocationTargetException e)
         {
             fail();
         }
@@ -154,7 +154,7 @@ public class SchemaTableTest extends TestCase
         QueryDefnSelect query = table.getAccessorByColumnEquality(table.getColumns().getByName("column_a"));
         QueryResultSet qrs = query.execute(dbvc, new Object[]{"abc"}, false);
         ResultSet rs = qrs.getResultSet();
-        if (rs.next())
+        if(rs.next())
             initialRow.getColumnValues().populateValues(rs, 1);
 
         qrs.close(true);
@@ -191,7 +191,7 @@ public class SchemaTableTest extends TestCase
         {
             assertNotNull(table.createAccessor());
         }
-        catch (QueryDefinitionException e)
+        catch(QueryDefinitionException e)
         {
             fail();
         }
@@ -227,7 +227,7 @@ public class SchemaTableTest extends TestCase
         QueryDefnSelect query = table.getAccessorByColumnEquality(table.getColumns().getByName("column_a"));
         QueryResultSet qrs = query.execute(dbvc, new Object[]{"abc"}, false);
         ResultSet rs = qrs.getResultSet();
-        if (rs.next())
+        if(rs.next())
             initialRow.getColumnValues().populateValues(rs, 1);
 
         assertNotNull(initialRow.toString());
@@ -254,7 +254,7 @@ public class SchemaTableTest extends TestCase
             tables.getSole();
             fail();
         }
-        catch (RuntimeException e)
+        catch(RuntimeException e)
         {
             // This is good
         }

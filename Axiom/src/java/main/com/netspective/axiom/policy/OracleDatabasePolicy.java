@@ -61,7 +61,7 @@ public class OracleDatabasePolicy extends AnsiDatabasePolicy
     public Object handleAutoIncPreDmlInsertExecute(ConnectionContext cc, AutoIncColumn column) throws SQLException
     {
         Object autoIncValue = executeAndGetSingleValue(cc, "select " + column.getSequenceName() + ".nextval from dual");
-        if (autoIncValue == null)
+        if(autoIncValue == null)
             throw new SQLException("Unable to obtain next ORACLE sequence value from sequence '" + column + "'");
         return autoIncValue;
     }

@@ -45,8 +45,8 @@ public class StoredProceduresPackage implements StoredProceduresNameSpace
     static
     {
         XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "container" });
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addAliases("name-space-id", new String[] { "package" });
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[]{"container"});
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addAliases("name-space-id", new String[]{"package"});
     }
 
     private StoredProcedures container;

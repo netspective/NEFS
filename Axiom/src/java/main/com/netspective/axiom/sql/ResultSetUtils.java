@@ -68,7 +68,7 @@ public class ResultSetUtils
         Map map = new HashMap();
         ResultSetMetaData rsmd = rs.getMetaData();
         int colsCount = rsmd.getColumnCount();
-        for (int i = 1; i <= colsCount; i++)
+        for(int i = 1; i <= colsCount; i++)
         {
             map.put(rsmd.getColumnName(i).toLowerCase(), new Integer(i));
         }
@@ -77,7 +77,7 @@ public class ResultSetUtils
 
     public Object getResultSetSingleColumn(ResultSet rs) throws SQLException
     {
-        if (rs.next())
+        if(rs.next())
             return rs.getObject(1);
         else
             return null;
@@ -85,12 +85,12 @@ public class ResultSetUtils
 
     public Object[] getResultSetSingleRowArray(ResultSet rs) throws SQLException
     {
-        if (rs.next())
+        if(rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
             Object[] result = new Object[colsCount];
-            for (int i = 1; i <= colsCount; i++)
+            for(int i = 1; i <= colsCount; i++)
             {
                 result[i - 1] = rs.getObject(i);
             }
@@ -108,11 +108,11 @@ public class ResultSetUtils
     public Map getResultSetSingleRowAsMap(ResultSet rs, boolean useLabelAsKey) throws SQLException
     {
         Map result = new HashMap();
-        if (rs.next())
+        if(rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
-            for (int i = 1; i <= colsCount; i++)
+            for(int i = 1; i <= colsCount; i++)
             {
                 result.put(useLabelAsKey ? rsmd.getColumnLabel(i).toLowerCase() : rsmd.getColumnName(i).toLowerCase(), rs.getObject(i));
             }
@@ -132,24 +132,24 @@ public class ResultSetUtils
         ResultSetMetaData rsmd = rs.getMetaData();
         int colsCount = rsmd.getColumnCount();
         String[] columnNames = new String[colsCount];
-        for (int c = 1; c <= colsCount; c++)
+        for(int c = 1; c <= colsCount; c++)
         {
             columnNames[c - 1] = useLabelAsKey
-                    ? rsmd.getColumnLabel(c).toLowerCase() : rsmd.getColumnName(c).toLowerCase();
+                                 ? rsmd.getColumnLabel(c).toLowerCase() : rsmd.getColumnName(c).toLowerCase();
         }
 
         ArrayList result = new ArrayList();
-        while (rs.next())
+        while(rs.next())
         {
             Map rsMap = new HashMap();
-            for (int i = 1; i <= colsCount; i++)
+            for(int i = 1; i <= colsCount; i++)
             {
                 rsMap.put(columnNames[i - 1], rs.getObject(i));
             }
             result.add(rsMap);
         }
 
-        if (result.size() > 0)
+        if(result.size() > 0)
             return (Map[]) result.toArray(new Map[result.size()]);
         else
             return null;
@@ -157,12 +157,12 @@ public class ResultSetUtils
 
     public Object[] getResultSetSingleRowAsArray(ResultSet rs) throws SQLException
     {
-        if (rs.next())
+        if(rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
             Object[] result = new Object[colsCount];
-            for (int i = 1; i <= colsCount; i++)
+            for(int i = 1; i <= colsCount; i++)
             {
                 result[i - 1] = rs.getObject(i);
             }
@@ -174,12 +174,12 @@ public class ResultSetUtils
 
     public String[] getResultSetSingleRowAsStrings(ResultSet rs) throws SQLException
     {
-        if (rs.next())
+        if(rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
             String[] result = new String[colsCount];
-            for (int i = 1; i <= colsCount; i++)
+            for(int i = 1; i <= colsCount; i++)
             {
                 result[i - 1] = rs.getString(i);
             }
@@ -192,19 +192,19 @@ public class ResultSetUtils
     public Object[][] getResultSetRowsAsMatrix(ResultSet rs) throws SQLException
     {
         ArrayList result = new ArrayList();
-        while (rs.next())
+        while(rs.next())
         {
             ResultSetMetaData rsmd = rs.getMetaData();
             int colsCount = rsmd.getColumnCount();
             Object[] row = new Object[colsCount];
-            for (int i = 1; i <= colsCount; i++)
+            for(int i = 1; i <= colsCount; i++)
             {
                 row[i - 1] = rs.getObject(i);
             }
             result.add(row);
         }
 
-        if (result.size() > 0)
+        if(result.size() > 0)
             return (Object[][]) result.toArray(new Object[result.size()][]);
         else
             return null;
@@ -213,12 +213,12 @@ public class ResultSetUtils
     public String[] getResultSetRowsAsStrings(ResultSet rs) throws SQLException
     {
         ArrayList result = new ArrayList();
-        while (rs.next())
+        while(rs.next())
         {
             result.add(rs.getString(1));
         }
 
-        if (result.size() > 0)
+        if(result.size() > 0)
             return (String[]) result.toArray(new String[result.size()]);
         else
             return null;
@@ -240,9 +240,6 @@ public class ResultSetUtils
      * @param useLabelsAsKeys true if the keys provided are column labels and not column names
      *
      * @return The Map created using getResultSetSingleRowAsMap(rs) since this method requires the Map to be created anyway
-     *
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
     public Map assignColumnValuesToInstance(ResultSet rs, Object instance, String columnKeys, boolean useLabelsAsKeys) throws IllegalAccessException, InvocationTargetException, DataModelException, SQLException
     {
@@ -273,7 +270,7 @@ public class ResultSetUtils
     {
         XmlDataModelSchema schema = XmlDataModelSchema.getSchema(type);
 
-        while (rs.next())
+        while(rs.next())
         {
             Object row = type.newInstance();
             Map result = getResultSetSingleRowAsMap(rs, useLabelsAsKeys);

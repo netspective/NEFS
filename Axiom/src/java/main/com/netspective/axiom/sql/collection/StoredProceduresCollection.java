@@ -74,8 +74,8 @@ public class StoredProceduresCollection implements StoredProcedures
         storedProcs.add(sp);
         byName.put(sp.getNameForMapKey(), sp);
 
-		//TODO: Modify this to also use a method similar to getNameForMapKey() for case-insensitive namespaces
-		if (null != sp.getNameSpace())
+        //TODO: Modify this to also use a method similar to getNameForMapKey() for case-insensitive namespaces
+        if(null != sp.getNameSpace())
             nameSpaceNames.add(sp.getNameSpace().getNameSpaceId());
     }
 
@@ -106,7 +106,6 @@ public class StoredProceduresCollection implements StoredProcedures
 
     /**
      * Generates various metrics associated with stored procedures
-     * @param parent
      */
     public void produceMetrics(Metric parent)
     {
@@ -115,9 +114,9 @@ public class StoredProceduresCollection implements StoredProcedures
         AverageMetric avgFieldCountMetric = qdMetric.addAverageMetric("Avg Parameters Per Stored Procedure");
         CountMetric fieldCountMetric = qdMetric.addCountMetric("Total Parameters");
 
-        for (int i=0; i < storedProcs.size(); i++)
+        for(int i = 0; i < storedProcs.size(); i++)
         {
-            int paramCount = ((StoredProcedure)storedProcs.get(i)).getParams().size();
+            int paramCount = ((StoredProcedure) storedProcs.get(i)).getParams().size();
             avgFieldCountMetric.incrementAverage(paramCount);
             fieldCountMetric.incrementCount(paramCount);
         }

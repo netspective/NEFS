@@ -74,7 +74,7 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import junit.framework.TestCase;
 
 /**
- * $Id: DynamicSqlTest.java,v 1.13 2004-08-15 01:51:48 shahid.shah Exp $
+ * $Id: DynamicSqlTest.java,v 1.14 2004-08-15 02:13:10 shahid.shah Exp $
  */
 public class DynamicSqlTest extends TestCase
 {
@@ -122,7 +122,7 @@ public class DynamicSqlTest extends TestCase
         super.setUp();
 
         component =
-                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(DynamicSqlTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+        (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(DynamicSqlTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
         assertNotNull(component);
 
         component.printErrorsAndWarnings();
@@ -139,7 +139,7 @@ public class DynamicSqlTest extends TestCase
         Set queryDefnNames = queryDefns.getNames();
         assertEquals(this.queryDefnNames.length, queryDefnNames.size());
 
-        for (int i = 0; i < this.queryDefnNames.length; i++)
+        for(int i = 0; i < this.queryDefnNames.length; i++)
         {
             assertEquals(this.queryDefnNames[i], queryDefns.get(i).getName());
             assertNull(queryDefns.get(i).getContainer());
@@ -154,7 +154,7 @@ public class DynamicSqlTest extends TestCase
         assertEquals(queryDefnNames.length, queryDefns.size());
 
         Set actualQueryDefnNames = queryDefns.getNames();
-        for (int i = 0; i < queryDefnNames.length; i++)
+        for(int i = 0; i < queryDefnNames.length; i++)
         {
             assertNotNull(queryDefns.get(queryDefnNames[i]));
             assertTrue(actualQueryDefnNames.contains(queryDefnNames[i].toUpperCase()));
@@ -217,7 +217,7 @@ public class DynamicSqlTest extends TestCase
             new String[]{"join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"}
         };
 
-        for (int item = 0; item < queryDefns.size(); item++)
+        for(int item = 0; item < queryDefns.size(); item++)
         {
             QueryDefinition queryDefn = manager.getQueryDefinition(queryDefnNames[item]);
             assertNotNull(queryDefn);
@@ -248,10 +248,10 @@ public class DynamicSqlTest extends TestCase
                 expectedJoinTable[2] + " " + expectedJoinName[2], expectedJoinTable[3] + " " + expectedJoinName[3]
             };
 
-            for (int i = 0; i < fields.size(); i++)
+            for(int i = 0; i < fields.size(); i++)
             {
                 boolean exceptionThrownStatus = (queryDefnIndexWithMalformedSyntax == item && fieldIndexWithBadJoin == i)
-                        ? true : false;
+                                                ? true : false;
                 boolean qdExceptionThrown = true;
 
                 QueryDefnField field = fields.get(i);
@@ -267,7 +267,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals(expectedFieldQualifiedColName[i], field.getQualifiedColName());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -282,7 +282,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals(expectedFieldTableName[i], field.getTableName());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -297,7 +297,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals(expectedFieldTableAlias[i], field.getTableAlias());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -312,7 +312,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals("Select Clause Expected: " + expectedSelectClauseExprAndLabel[i] + ", Actual: " + field.getSelectClauseExprAndLabel(), expectedSelectClauseExprAndLabel[i], field.getSelectClauseExprAndLabel());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -327,7 +327,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals(expectedFieldColExpr[i], field.getColumnExpr());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -342,7 +342,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals("Expected: " + expectedFieldColExpr[i] + ", Actual: " + field.getColumnExpr(), expectedFieldColExpr[i], field.getColumnExpr());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -357,7 +357,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals(expectedFieldWhereExpr[i], field.getWhereExpr());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -372,7 +372,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals(expectedFieldQualifiedColName[i], field.getWhereExpr());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -387,7 +387,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals(expectedFieldOrderByExpr[i], field.getOrderByExpr());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -402,7 +402,7 @@ public class DynamicSqlTest extends TestCase
                     assertEquals(expectedFieldQualifiedColName[i], field.getOrderByExpr());
                     qdExceptionThrown = false;
                 }
-                catch (QueryDefinitionException e)
+                catch(QueryDefinitionException e)
                 {
                     assertTrue(qdExceptionThrown);
                     assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -411,7 +411,7 @@ public class DynamicSqlTest extends TestCase
 
                 assertEquals(exceptionThrownStatus, qdExceptionThrown);
 
-                if (1 < i)
+                if(1 < i)
                 {
                     QueryDefnJoin qdJoin = null;
                     try
@@ -420,7 +420,7 @@ public class DynamicSqlTest extends TestCase
                         qdJoin = field.getJoin();
                         qdExceptionThrown = false;
                     }
-                    catch (QueryDefinitionException e)
+                    catch(QueryDefinitionException e)
                     {
                         assertTrue(qdExceptionThrown);
                         assertEquals(queryDefnIndexWithMalformedSyntax, item);  // query-defn-2 is the one with the missing join...
@@ -435,13 +435,13 @@ public class DynamicSqlTest extends TestCase
                     joinList.add(field.getJoin());
                     QueryDefnJoin[] impliedJoins = getJoins(field.getJoin());
 
-                    if (null != impliedJoins)
-                        for (int j = 0; j < impliedJoins.length; j++)
+                    if(null != impliedJoins)
+                        for(int j = 0; j < impliedJoins.length; j++)
                             joinList.add(impliedJoins[j]);
                 }
             }
 
-            for (int i = 0; i < joinList.size(); i++)
+            for(int i = 0; i < joinList.size(); i++)
             {
                 QueryDefnJoin join = (QueryDefnJoin) joinList.get(i);
 
@@ -482,7 +482,7 @@ public class DynamicSqlTest extends TestCase
         assertEquals(queryDefnNames.length, queryDefns.size());
 
         Set actualQueryDefnNames = queryDefns.getNames();
-        for (int i = 0; i < queryDefnNames.length; i++)
+        for(int i = 0; i < queryDefnNames.length; i++)
         {
             assertNotNull(queryDefns.get(queryDefnNames[i]));
             assertTrue(actualQueryDefnNames.contains(queryDefnNames[i].toUpperCase()));
@@ -526,7 +526,7 @@ public class DynamicSqlTest extends TestCase
             "join_01.column_01", "join_02.column_02", "column_03", "column_04", "column_05"
         };
 
-        for (int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < fields.size(); i++)
         {
             QueryDefnField field = fields.get(i);
             assertEquals("field_0" + (i + 1), field.getName());
@@ -554,7 +554,7 @@ public class DynamicSqlTest extends TestCase
         assertEquals(queryDefnNames.length, queryDefns.size());
 
         Set actualQueryDefnNames = queryDefns.getNames();
-        for (int i = 0; i < queryDefnNames.length; i++)
+        for(int i = 0; i < queryDefnNames.length; i++)
         {
             assertNotNull(queryDefns.get(queryDefnNames[i]));
             assertTrue(actualQueryDefnNames.contains(queryDefnNames[i].toUpperCase()));
@@ -577,24 +577,24 @@ public class DynamicSqlTest extends TestCase
             expectedJoinTable[2] + " " + expectedJoinName[2], expectedJoinTable[3] + " " + expectedJoinName[3]
         };
 
-        for (int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < fields.size(); i++)
         {
             QueryDefnField field = fields.get(i);
 
-            if (1 < i)
+            if(1 < i)
                 assertNull(field.getJoin());
             else
             {
                 joinList.add(field.getJoin());
                 QueryDefnJoin[] impliedJoins = getJoins(field.getJoin());
 
-                if (null != impliedJoins)
-                    for (int j = 0; j < impliedJoins.length; j++)
+                if(null != impliedJoins)
+                    for(int j = 0; j < impliedJoins.length; j++)
                         joinList.add(impliedJoins[j]);
             }
         }
 
-        for (int i = 0; i < joinList.size(); i++)
+        for(int i = 0; i < joinList.size(); i++)
         {
             QueryDefnJoin join = (QueryDefnJoin) joinList.get(i);
 
@@ -620,7 +620,7 @@ public class DynamicSqlTest extends TestCase
         assertEquals(queryDefnNames.length, queryDefns.size());
 
         Set actualQueryDefnNames = queryDefns.getNames();
-        for (int i = 0; i < queryDefnNames.length; i++)
+        for(int i = 0; i < queryDefnNames.length; i++)
         {
             assertNotNull(queryDefns.get(queryDefnNames[i]));
             assertTrue(actualQueryDefnNames.contains(queryDefnNames[i].toUpperCase()));
@@ -686,7 +686,7 @@ public class DynamicSqlTest extends TestCase
 
         assertEquals(numDisplayFields[0], select.getDisplayFields().size());
         QueryDefnFields qdDisplayFields = select.getDisplayFields();
-        for (int i = 0; i < qdDisplayFields.size(); i++)
+        for(int i = 0; i < qdDisplayFields.size(); i++)
         {
             QueryDefnField qdField = qdDisplayFields.get(i);
 
@@ -695,7 +695,7 @@ public class DynamicSqlTest extends TestCase
 
         assertEquals(numGroupBys[0], select.getGroupByFields().size());
         QueryDefnFields qdGroupByFields = select.getGroupByFields();
-        for (int i = 0; i < qdGroupByFields.size(); i++)
+        for(int i = 0; i < qdGroupByFields.size(); i++)
         {
             QueryDefnField qdField = qdGroupByFields.get(i);
 
@@ -704,13 +704,13 @@ public class DynamicSqlTest extends TestCase
 
         assertEquals(numOrderBys[0], select.getOrderByFieldRefs().size());
         QueryDefnSortFieldReferences qdSortFieldRefs = select.getOrderByFieldRefs();
-        for (int i = 0; i < qdSortFieldRefs.size(); i++)
+        for(int i = 0; i < qdSortFieldRefs.size(); i++)
         {
             QueryDefnSortFieldReference qdSortFieldRef = qdSortFieldRefs.get(i);
 
             QueryDefinition.QueryFieldSortInfo[] qfSortInfo = qdSortFieldRef.getFields(null);
 
-            for (int j = 0; j < qfSortInfo.length; j++)
+            for(int j = 0; j < qfSortInfo.length; j++)
             {
                 assertEquals(expectedOrderByFieldNames[j], qfSortInfo[j].getField().getName());
                 assertFalse(qfSortInfo[j].isDescending());
@@ -721,7 +721,7 @@ public class DynamicSqlTest extends TestCase
         QueryDefnSqlWhereExpressions whereExprs = select.getWhereExprs();
         QueryDefnSelectStmtGenerator stmtGen = dbPolicy.createSelectStatementGenerator(select);
 
-        for (int i = 0; i < whereExprs.size(); i++)
+        for(int i = 0; i < whereExprs.size(); i++)
         {
             QueryDefnSqlWhereExpression whereExpr = whereExprs.get(i);
 
@@ -732,7 +732,7 @@ public class DynamicSqlTest extends TestCase
         assertEquals(numConditions[0], select.getConditions().size());
         QueryDefnConditions qdConditions = select.getConditions();
 
-        for (int i = 0; i < qdConditions.size(); i++)
+        for(int i = 0; i < qdConditions.size(); i++)
         {
             QueryDefnCondition qdCondition = qdConditions.get(i);
             String[] expectedConditionExpression = expectedConditionExpressions[i];
@@ -778,16 +778,16 @@ public class DynamicSqlTest extends TestCase
 
         QueryDefnJoin[] joins = join.getImpliedJoins();
 
-        if (null == joins) return joins;
+        if(null == joins) return joins;
 
-        for (int i = 0; i < joins.length; i++)
+        for(int i = 0; i < joins.length; i++)
         {
             impliedJoins.add(joins[i]);
 
             QueryDefnJoin[] deeperJoins = getJoins(joins[i]);
 
-            if (null != deeperJoins)
-                for (int j = 0; j < deeperJoins.length; j++)
+            if(null != deeperJoins)
+                for(int j = 0; j < deeperJoins.length; j++)
                     impliedJoins.add(deeperJoins[j]);
         }
 

@@ -58,15 +58,13 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
 {
     private static final Log log = LogFactory.getLog(SchemaEnumerationsValueSource.class);
 
-    public static final String[] IDENTIFIERS = new String[] { "schema-enum" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Obtains the values or a value from a schema's enumeration table.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("enum-table", true, "The format is 'schema-name.table-name'. Where the only required value is the table-name (if schema-name is not provided, the first available schema is used)."),
-                new ValueSourceDocumentation.Parameter("enum-name", false, "The name/caption of the enumeration entry in the table"),
-            }
-    );
+    public static final String[] IDENTIFIERS = new String[]{"schema-enum"};
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Obtains the values or a value from a schema's enumeration table.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("enum-table", true, "The format is 'schema-name.table-name'. Where the only required value is the table-name (if schema-name is not provided, the first available schema is used)."),
+                                                                                                  new ValueSourceDocumentation.Parameter("enum-name", false, "The name/caption of the enumeration entry in the table"),
+                                                                                              });
 
     private String schemaName;
     private String tableName;
@@ -126,12 +124,12 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
         if(schemaDelimPos != -1)
         {
             setSchemaName(schemaAndTableName.substring(0, schemaDelimPos));
-            setTableName(schemaAndTableName.substring(schemaDelimPos+1));
+            setTableName(schemaAndTableName.substring(schemaDelimPos + 1));
         }
         else
             setTableName(schemaAndTableName);
 
-        if (st.hasMoreTokens())
+        if(st.hasMoreTokens())
         {
             setEnumCaption(st.nextToken());
         }
@@ -140,7 +138,7 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
     public EnumerationTable getEnumerationTable(ValueContext vc)
     {
         DatabaseConnValueContext dcvc = null;
-        if (vc instanceof AbstractConnectionContext)
+        if(vc instanceof AbstractConnectionContext)
             dcvc = ((AbstractConnectionContext) vc).getDatabaseValueContext();
         else
             dcvc = (DatabaseConnValueContext) vc;
@@ -153,16 +151,16 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
 
             Schema schema = schemaName == null ? schemas.getDefault() : schemas.getByNameOrXmlNodeName(schemaName);
             if(schema == null)
-                throw new RuntimeException("Schema '"+ schemaName +"' not found.");
+                throw new RuntimeException("Schema '" + schemaName + "' not found.");
 
             table = schema.getTables().getByNameOrXmlNodeName(tableName);
             if(table == null)
-                throw new RuntimeException("Table '"+ tableName +"' not found in schema '"+ schemaName +"'");
+                throw new RuntimeException("Table '" + tableName + "' not found in schema '" + schemaName + "'");
 
-            if(! (table instanceof EnumerationTable))
-                throw new RuntimeException("Table '"+ tableName +"' in schema '"+ schemaName +"' is not an enumeration table.");
+            if(!(table instanceof EnumerationTable))
+                throw new RuntimeException("Table '" + tableName + "' in schema '" + schemaName + "' is not an enumeration table.");
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Failed to get enumeration table.", e);
             throw new NestableRuntimeException(e);
@@ -173,7 +171,7 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
 
     public Value getValue(ValueContext vc)
     {
-        if (getEnumCaption() == null)
+        if(getEnumCaption() == null)
             return getEnumerationTable(vc).getEnums().getEnumerationsValue();
         else
         {
@@ -184,7 +182,7 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
 
     public PresentationValue getPresentationValue(ValueContext vc)
     {
-        if (getEnumCaption() == null)
+        if(getEnumCaption() == null)
             return getEnumerationTable(vc).getEnums().getEnumerationsPresentationValue();
         else
         {

@@ -86,7 +86,7 @@ public class BasicSegment extends BasicDataElementCollection implements Segment,
         StringBuffer sb = new StringBuffer(indent);
         sb.append("Segment: ");
         sb.append(getIdentifier());
-        for (int i = 0; i < childSegments.size(); i++)
+        for(int i = 0; i < childSegments.size(); i++)
         {
             BasicSegment segment = (BasicSegment) childSegments.get(0);
             sb.append((segment.getDebugText(indent + "  ")));

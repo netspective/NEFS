@@ -42,7 +42,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
     private static final int jjStopStringLiteralDfa_0(int pos, long active0)
     {
         debugStream.println("   No more string literal token matches are possible.");
-        switch (pos)
+        switch(pos)
         {
             default :
                 return -1;
@@ -71,7 +71,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
         try
         { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch(java.io.IOException e)
         { return pos + 1; }
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         return jjMoveNfa_0(state, pos + 1);
@@ -79,7 +79,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final int jjMoveStringLiteralDfa0_0()
     {
-        switch (curChar)
+        switch(curChar)
         {
             case 40:
                 return jjStopAtPos(0, 10);
@@ -114,25 +114,25 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final int jjMoveStringLiteralDfa1_0(long active0)
     {
-        if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+        if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
             debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
         debugStream.println("   Possible string literal matches : { "
-                +
-                jjKindsForBitVector(0, active0) + " } ");
+                            +
+                            jjKindsForBitVector(0, active0) + " } ");
         try
         { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch(java.io.IOException e)
         {
             jjStopStringLiteralDfa_0(0, active0);
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
             return 1;
         }
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
-        switch (curChar)
+        switch(curChar)
         {
             case 49:
-                if ((active0 & 0x40L) != 0L)
+                if((active0 & 0x40L) != 0L)
                     return jjStopAtPos(1, 6);
                 break;
             case 73:
@@ -152,24 +152,24 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final int jjMoveStringLiteralDfa2_0(long old0, long active0)
     {
-        if (((active0 &= old0)) == 0L)
+        if(((active0 &= old0)) == 0L)
             return jjStartNfa_0(0, old0);
-        if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+        if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
             debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
         debugStream.println("   Possible string literal matches : { "
-                +
-                jjKindsForBitVector(0, active0) + " } ");
+                            +
+                            jjKindsForBitVector(0, active0) + " } ");
         try
         { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch(java.io.IOException e)
         {
             jjStopStringLiteralDfa_0(1, active0);
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
             return 2;
         }
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
-        switch (curChar)
+        switch(curChar)
         {
             case 69:
                 return jjMoveStringLiteralDfa3_0(active0, 0x12L);
@@ -186,27 +186,27 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final int jjMoveStringLiteralDfa3_0(long old0, long active0)
     {
-        if (((active0 &= old0)) == 0L)
+        if(((active0 &= old0)) == 0L)
             return jjStartNfa_0(1, old0);
-        if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+        if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
             debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
         debugStream.println("   Possible string literal matches : { "
-                +
-                jjKindsForBitVector(0, active0) + " } ");
+                            +
+                            jjKindsForBitVector(0, active0) + " } ");
         try
         { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch(java.io.IOException e)
         {
             jjStopStringLiteralDfa_0(2, active0);
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
             return 3;
         }
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
-        switch (curChar)
+        switch(curChar)
         {
             case 73:
-                if ((active0 & 0x4L) != 0L)
+                if((active0 & 0x4L) != 0L)
                     return jjStopAtPos(3, 2);
                 return jjMoveStringLiteralDfa4_0(active0, 0x8L);
             case 82:
@@ -222,31 +222,31 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final int jjMoveStringLiteralDfa4_0(long old0, long active0)
     {
-        if (((active0 &= old0)) == 0L)
+        if(((active0 &= old0)) == 0L)
             return jjStartNfa_0(2, old0);
-        if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+        if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
             debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
         debugStream.println("   Possible string literal matches : { "
-                +
-                jjKindsForBitVector(0, active0) + " } ");
+                            +
+                            jjKindsForBitVector(0, active0) + " } ");
         try
         { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch(java.io.IOException e)
         {
             jjStopStringLiteralDfa_0(3, active0);
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
             return 4;
         }
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
-        switch (curChar)
+        switch(curChar)
         {
             case 32:
-                if ((active0 & 0x2L) != 0L)
+                if((active0 & 0x2L) != 0L)
                     return jjStopAtPos(4, 1);
                 break;
             case 83:
-                if ((active0 & 0x10L) != 0L)
+                if((active0 & 0x10L) != 0L)
                     return jjStopAtPos(4, 4);
                 break;
             case 86:
@@ -260,24 +260,24 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final int jjMoveStringLiteralDfa5_0(long old0, long active0)
     {
-        if (((active0 &= old0)) == 0L)
+        if(((active0 &= old0)) == 0L)
             return jjStartNfa_0(3, old0);
-        if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+        if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
             debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
         debugStream.println("   Possible string literal matches : { "
-                +
-                jjKindsForBitVector(0, active0) + " } ");
+                            +
+                            jjKindsForBitVector(0, active0) + " } ");
         try
         { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch(java.io.IOException e)
         {
             jjStopStringLiteralDfa_0(4, active0);
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
             return 5;
         }
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
-        switch (curChar)
+        switch(curChar)
         {
             case 65:
                 return jjMoveStringLiteralDfa6_0(active0, 0x8L);
@@ -290,24 +290,24 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final int jjMoveStringLiteralDfa6_0(long old0, long active0)
     {
-        if (((active0 &= old0)) == 0L)
+        if(((active0 &= old0)) == 0L)
             return jjStartNfa_0(4, old0);
-        if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+        if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
             debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
         debugStream.println("   Possible string literal matches : { "
-                +
-                jjKindsForBitVector(0, active0) + " } ");
+                            +
+                            jjKindsForBitVector(0, active0) + " } ");
         try
         { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch(java.io.IOException e)
         {
             jjStopStringLiteralDfa_0(5, active0);
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
             return 6;
         }
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
-        switch (curChar)
+        switch(curChar)
         {
             case 84:
                 return jjMoveStringLiteralDfa7_0(active0, 0x8L);
@@ -320,27 +320,27 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final int jjMoveStringLiteralDfa7_0(long old0, long active0)
     {
-        if (((active0 &= old0)) == 0L)
+        if(((active0 &= old0)) == 0L)
             return jjStartNfa_0(5, old0);
-        if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+        if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
             debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
         debugStream.println("   Possible string literal matches : { "
-                +
-                jjKindsForBitVector(0, active0) + " } ");
+                            +
+                            jjKindsForBitVector(0, active0) + " } ");
         try
         { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch(java.io.IOException e)
         {
             jjStopStringLiteralDfa_0(6, active0);
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
             return 7;
         }
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
-        switch (curChar)
+        switch(curChar)
         {
             case 69:
-                if ((active0 & 0x8L) != 0L)
+                if((active0 & 0x8L) != 0L)
                     return jjStopAtPos(7, 3);
                 break;
             default :
@@ -352,7 +352,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final void jjCheckNAdd(int state)
     {
-        if (jjrounds[state] != jjround)
+        if(jjrounds[state] != jjround)
         {
             jjstateSet[jjnewStateCnt++] = state;
             jjrounds[state] = jjround;
@@ -365,7 +365,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         {
             jjstateSet[jjnewStateCnt++] = jjnextStates[start];
         }
-        while (start++ != end);
+        while(start++ != end);
     }
 
     static private final void jjCheckNAddTwoStates(int state1, int state2)
@@ -380,7 +380,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         {
             jjCheckNAdd(jjnextStates[start]);
         }
-        while (start++ != end);
+        while(start++ != end);
     }
 
     static private final void jjCheckNAddStates(int start)
@@ -399,58 +399,58 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         debugStream.println("   Starting NFA to match one of : " + jjKindsForStateVector(curLexState, jjstateSet, 0, 1));
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         int j, kind = 0x7fffffff;
-        for (; ;)
+        for(; ;)
         {
-            if (++jjround == 0x7fffffff)
+            if(++jjround == 0x7fffffff)
                 ReInitRounds();
-            if (curChar < 64)
+            if(curChar < 64)
             {
                 long l = 1L << curChar;
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 0:
-                            if ((0x3ff000000000000L & l) != 0L)
+                            if((0x3ff000000000000L & l) != 0L)
                             {
-                                if (kind > 20)
+                                if(kind > 20)
                                     kind = 20;
                                 jjCheckNAdd(3);
                             }
-                            else if ((0x2400L & l) != 0L)
+                            else if((0x2400L & l) != 0L)
                             {
-                                if (kind > 9)
+                                if(kind > 9)
                                     kind = 9;
                             }
-                            if (curChar == 13)
+                            if(curChar == 13)
                                 jjstateSet[jjnewStateCnt++] = 1;
                             break;
                         case 1:
-                            if (curChar == 10 && kind > 9)
+                            if(curChar == 10 && kind > 9)
                                 kind = 9;
                             break;
                         case 2:
-                            if (curChar == 13)
+                            if(curChar == 13)
                                 jjstateSet[jjnewStateCnt++] = 1;
                             break;
                         case 3:
-                            if ((0x3ff000000000000L & l) == 0L)
+                            if((0x3ff000000000000L & l) == 0L)
                                 break;
-                            if (kind > 20)
+                            if(kind > 20)
                                 kind = 20;
                             jjCheckNAdd(3);
                             break;
                         case 6:
-                            if ((0x3ff200000000000L & l) == 0L)
+                            if((0x3ff200000000000L & l) == 0L)
                                 break;
-                            if (kind > 8)
+                            if(kind > 8)
                                 kind = 8;
                             jjAddStates(0, 1);
                             break;
                         case 8:
-                            if ((0x3ff200000000000L & l) == 0L)
+                            if((0x3ff200000000000L & l) == 0L)
                                 break;
-                            if (kind > 19)
+                            if(kind > 19)
                                 kind = 19;
                             jjstateSet[jjnewStateCnt++] = 8;
                             break;
@@ -458,33 +458,33 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            else if (curChar < 128)
+            else if(curChar < 128)
             {
                 long l = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 0:
-                            if ((0x7fffffe87fffffeL & l) == 0L)
+                            if((0x7fffffe87fffffeL & l) == 0L)
                                 break;
-                            if (kind > 8)
+                            if(kind > 8)
                                 kind = 8;
                             jjCheckNAddStates(2, 5);
                             break;
                         case 5:
-                            if ((0x7fffffe87fffffeL & l) == 0L)
+                            if((0x7fffffe87fffffeL & l) == 0L)
                                 break;
-                            if (kind > 8)
+                            if(kind > 8)
                                 kind = 8;
                             jjCheckNAddTwoStates(5, 6);
                             break;
                         case 7:
-                            if ((0x7fffffe87fffffeL & l) == 0L)
+                            if((0x7fffffe87fffffeL & l) == 0L)
                                 break;
-                            if (kind > 19)
+                            if(kind > 19)
                                 kind = 19;
                             jjCheckNAddTwoStates(7, 8);
                             break;
@@ -492,7 +492,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
             else
             {
@@ -500,29 +500,29 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                 long l2 = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         default :
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            if (kind != 0x7fffffff)
+            if(kind != 0x7fffffff)
             {
                 jjmatchedKind = kind;
                 jjmatchedPos = curPos;
                 kind = 0x7fffffff;
             }
             ++curPos;
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
-            if ((i = jjnewStateCnt) == (startsAt = 9 - (jjnewStateCnt = startsAt)))
+            if((i = jjnewStateCnt) == (startsAt = 9 - (jjnewStateCnt = startsAt)))
                 return curPos;
             debugStream.println("   Possible kinds of longer matches : " + jjKindsForStateVector(curLexState, jjstateSet, startsAt, i));
             try
             { curChar = input_stream.readChar(); }
-            catch (java.io.IOException e)
+            catch(java.io.IOException e)
             { return curPos; }
             debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         }
@@ -531,7 +531,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
     private static final int jjStopStringLiteralDfa_1(int pos, long active0)
     {
         debugStream.println("   No more string literal token matches are possible.");
-        switch (pos)
+        switch(pos)
         {
             default :
                 return -1;
@@ -551,7 +551,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
         try
         { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch(java.io.IOException e)
         { return pos + 1; }
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         return jjMoveNfa_1(state, pos + 1);
@@ -559,7 +559,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static private final int jjMoveStringLiteralDfa0_1()
     {
-        switch (curChar)
+        switch(curChar)
         {
             case 61:
                 return jjStopAtPos(0, 22);
@@ -583,19 +583,19 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         debugStream.println("   Starting NFA to match one of : " + jjKindsForStateVector(curLexState, jjstateSet, 0, 1));
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         int j, kind = 0x7fffffff;
-        for (; ;)
+        for(; ;)
         {
-            if (++jjround == 0x7fffffff)
+            if(++jjround == 0x7fffffff)
                 ReInitRounds();
-            if (curChar < 64)
+            if(curChar < 64)
             {
                 long l = 1L << curChar;
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 0:
-                            if ((0xdfffffffffffffffL & l) == 0L)
+                            if((0xdfffffffffffffffL & l) == 0L)
                                 break;
                             kind = 21;
                             jjstateSet[jjnewStateCnt++] = 0;
@@ -604,14 +604,14 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            else if (curChar < 128)
+            else if(curChar < 128)
             {
                 long l = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 0:
                             kind = 21;
@@ -621,7 +621,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
             else
             {
@@ -629,12 +629,12 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                 long l2 = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 0:
-                            if ((jjbitVec0[i2] & l2) == 0L)
+                            if((jjbitVec0[i2] & l2) == 0L)
                                 break;
-                            if (kind > 21)
+                            if(kind > 21)
                                 kind = 21;
                             jjstateSet[jjnewStateCnt++] = 0;
                             break;
@@ -642,23 +642,23 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            if (kind != 0x7fffffff)
+            if(kind != 0x7fffffff)
             {
                 jjmatchedKind = kind;
                 jjmatchedPos = curPos;
                 kind = 0x7fffffff;
             }
             ++curPos;
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
-            if ((i = jjnewStateCnt) == (startsAt = 1 - (jjnewStateCnt = startsAt)))
+            if((i = jjnewStateCnt) == (startsAt = 1 - (jjnewStateCnt = startsAt)))
                 return curPos;
             debugStream.println("   Possible kinds of longer matches : " + jjKindsForStateVector(curLexState, jjstateSet, startsAt, i));
             try
             { curChar = input_stream.readChar(); }
-            catch (java.io.IOException e)
+            catch(java.io.IOException e)
             { return curPos; }
             debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         }
@@ -679,75 +679,75 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         debugStream.println("   Starting NFA to match one of : " + jjKindsForStateVector(curLexState, jjstateSet, 0, 1));
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         int j, kind = 0x7fffffff;
-        for (; ;)
+        for(; ;)
         {
-            if (++jjround == 0x7fffffff)
+            if(++jjround == 0x7fffffff)
                 ReInitRounds();
-            if (curChar < 64)
+            if(curChar < 64)
             {
                 long l = 1L << curChar;
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 1:
-                            if ((0x2400L & l) != 0L && kind > 27)
+                            if((0x2400L & l) != 0L && kind > 27)
                                 kind = 27;
                             break;
                         case 2:
-                            if (curChar == 10 && kind > 27)
+                            if(curChar == 10 && kind > 27)
                                 kind = 27;
                             break;
                         case 3:
-                            if (curChar == 13)
+                            if(curChar == 13)
                                 jjstateSet[jjnewStateCnt++] = 2;
                             break;
                         case 9:
-                            if (curChar == 46)
+                            if(curChar == 46)
                                 jjstateSet[jjnewStateCnt++] = 8;
                             break;
                         default :
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            else if (curChar < 128)
+            else if(curChar < 128)
             {
                 long l = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 0:
-                            if (curChar == 67)
+                            if(curChar == 67)
                                 jjAddStates(6, 7);
                             break;
                         case 4:
-                            if (curChar == 73)
+                            if(curChar == 73)
                                 jjstateSet[jjnewStateCnt++] = 0;
                             break;
                         case 5:
-                            if (curChar == 76)
+                            if(curChar == 76)
                                 jjstateSet[jjnewStateCnt++] = 4;
                             break;
                         case 6:
-                            if (curChar == 66)
+                            if(curChar == 66)
                                 jjstateSet[jjnewStateCnt++] = 5;
                             break;
                         case 7:
-                            if (curChar == 85)
+                            if(curChar == 85)
                                 jjstateSet[jjnewStateCnt++] = 6;
                             break;
                         case 8:
-                            if (curChar == 80)
+                            if(curChar == 80)
                                 jjstateSet[jjnewStateCnt++] = 7;
                             break;
                         default :
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
             else
             {
@@ -755,29 +755,29 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                 long l2 = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         default :
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            if (kind != 0x7fffffff)
+            if(kind != 0x7fffffff)
             {
                 jjmatchedKind = kind;
                 jjmatchedPos = curPos;
                 kind = 0x7fffffff;
             }
             ++curPos;
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
-            if ((i = jjnewStateCnt) == (startsAt = 10 - (jjnewStateCnt = startsAt)))
+            if((i = jjnewStateCnt) == (startsAt = 10 - (jjnewStateCnt = startsAt)))
                 return curPos;
             debugStream.println("   Possible kinds of longer matches : " + jjKindsForStateVector(curLexState, jjstateSet, startsAt, i));
             try
             { curChar = input_stream.readChar(); }
-            catch (java.io.IOException e)
+            catch(java.io.IOException e)
             { return curPos; }
             debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         }
@@ -798,58 +798,58 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         debugStream.println("   Starting NFA to match one of : " + jjKindsForStateVector(curLexState, jjstateSet, 0, 1));
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         int j, kind = 0x7fffffff;
-        for (; ;)
+        for(; ;)
         {
-            if (++jjround == 0x7fffffff)
+            if(++jjround == 0x7fffffff)
                 ReInitRounds();
-            if (curChar < 64)
+            if(curChar < 64)
             {
                 long l = 1L << curChar;
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 1:
-                            if ((0xffffffffffffdbffL & l) != 0L)
+                            if((0xffffffffffffdbffL & l) != 0L)
                             {
-                                if (kind > 23)
+                                if(kind > 23)
                                     kind = 23;
                                 jjCheckNAdd(0);
                             }
-                            else if ((0x2400L & l) != 0L)
+                            else if((0x2400L & l) != 0L)
                             {
-                                if (kind > 24)
+                                if(kind > 24)
                                     kind = 24;
                             }
-                            if (curChar == 13)
+                            if(curChar == 13)
                                 jjstateSet[jjnewStateCnt++] = 2;
                             break;
                         case 0:
-                            if ((0xffffffffffffdbffL & l) == 0L)
+                            if((0xffffffffffffdbffL & l) == 0L)
                                 break;
                             kind = 23;
                             jjCheckNAdd(0);
                             break;
                         case 2:
-                            if (curChar == 10 && kind > 24)
+                            if(curChar == 10 && kind > 24)
                                 kind = 24;
                             break;
                         case 3:
-                            if (curChar == 13)
+                            if(curChar == 13)
                                 jjstateSet[jjnewStateCnt++] = 2;
                             break;
                         default :
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            else if (curChar < 128)
+            else if(curChar < 128)
             {
                 long l = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 1:
                         case 0:
@@ -860,7 +860,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
             else
             {
@@ -868,13 +868,13 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                 long l2 = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 1:
                         case 0:
-                            if ((jjbitVec0[i2] & l2) == 0L)
+                            if((jjbitVec0[i2] & l2) == 0L)
                                 break;
-                            if (kind > 23)
+                            if(kind > 23)
                                 kind = 23;
                             jjCheckNAdd(0);
                             break;
@@ -882,23 +882,23 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            if (kind != 0x7fffffff)
+            if(kind != 0x7fffffff)
             {
                 jjmatchedKind = kind;
                 jjmatchedPos = curPos;
                 kind = 0x7fffffff;
             }
             ++curPos;
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
-            if ((i = jjnewStateCnt) == (startsAt = 4 - (jjnewStateCnt = startsAt)))
+            if((i = jjnewStateCnt) == (startsAt = 4 - (jjnewStateCnt = startsAt)))
                 return curPos;
             debugStream.println("   Possible kinds of longer matches : " + jjKindsForStateVector(curLexState, jjstateSet, startsAt, i));
             try
             { curChar = input_stream.readChar(); }
-            catch (java.io.IOException e)
+            catch(java.io.IOException e)
             { return curPos; }
             debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         }
@@ -919,19 +919,19 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         debugStream.println("   Starting NFA to match one of : " + jjKindsForStateVector(curLexState, jjstateSet, 0, 1));
         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         int j, kind = 0x7fffffff;
-        for (; ;)
+        for(; ;)
         {
-            if (++jjround == 0x7fffffff)
+            if(++jjround == 0x7fffffff)
                 ReInitRounds();
-            if (curChar < 64)
+            if(curChar < 64)
             {
                 long l = 1L << curChar;
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 0:
-                            if ((0xffffefffffffdbffL & l) == 0L)
+                            if((0xffffefffffffdbffL & l) == 0L)
                                 break;
                             kind = 25;
                             jjstateSet[jjnewStateCnt++] = 0;
@@ -940,14 +940,14 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            else if (curChar < 128)
+            else if(curChar < 128)
             {
                 long l = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 0:
                             kind = 25;
@@ -957,7 +957,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
             else
             {
@@ -965,12 +965,12 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                 long l2 = 1L << (curChar & 077);
                 MatchLoop: do
                 {
-                    switch (jjstateSet[--i])
+                    switch(jjstateSet[--i])
                     {
                         case 0:
-                            if ((jjbitVec0[i2] & l2) == 0L)
+                            if((jjbitVec0[i2] & l2) == 0L)
                                 break;
-                            if (kind > 25)
+                            if(kind > 25)
                                 kind = 25;
                             jjstateSet[jjnewStateCnt++] = 0;
                             break;
@@ -978,23 +978,23 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                             break;
                     }
                 }
-                while (i != startsAt);
+                while(i != startsAt);
             }
-            if (kind != 0x7fffffff)
+            if(kind != 0x7fffffff)
             {
                 jjmatchedKind = kind;
                 jjmatchedPos = curPos;
                 kind = 0x7fffffff;
             }
             ++curPos;
-            if (jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
+            if(jjmatchedKind != 0 && jjmatchedKind != 0x7fffffff)
                 debugStream.println("   Currently matched the first " + (jjmatchedPos + 1) + " characters as a " + tokenImage[jjmatchedKind] + " token.");
-            if ((i = jjnewStateCnt) == (startsAt = 1 - (jjnewStateCnt = startsAt)))
+            if((i = jjnewStateCnt) == (startsAt = 1 - (jjnewStateCnt = startsAt)))
                 return curPos;
             debugStream.println("   Possible kinds of longer matches : " + jjKindsForStateVector(curLexState, jjstateSet, startsAt, i));
             try
             { curChar = input_stream.readChar(); }
-            catch (java.io.IOException e)
+            catch(java.io.IOException e)
             { return curPos; }
             debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
         }
@@ -1036,7 +1036,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     public StandardExchangeFormatParserTokenManager(SimpleCharStream stream)
     {
-        if (input_stream != null)
+        if(input_stream != null)
             throw new TokenMgrError("ERROR: Second call to constructor of static lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
         input_stream = stream;
     }
@@ -1059,7 +1059,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
     {
         int i;
         jjround = 0x80000001;
-        for (i = 10; i-- > 0;)
+        for(i = 10; i-- > 0;)
             jjrounds[i] = 0x80000000;
     }
 
@@ -1071,7 +1071,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static public void SwitchTo(int lexState)
     {
-        if (lexState >= 5 || lexState < 0)
+        if(lexState >= 5 || lexState < 0)
             throw new TokenMgrError("Error: Ignoring invalid lexical state : " + lexState + ". State unchanged.", TokenMgrError.INVALID_LEXICAL_STATE);
         else
             curLexState = lexState;
@@ -1081,7 +1081,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
     {
         Token t = Token.newToken(jjmatchedKind);
         t.kind = jjmatchedKind;
-        if (jjmatchedPos < 0)
+        if(jjmatchedPos < 0)
         {
             t.image = "";
             t.beginLine = t.endLine = input_stream.getBeginLine();
@@ -1114,13 +1114,13 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         int curPos = 0;
 
         EOFLoop :
-        for (; ;)
+        for(; ;)
         {
             try
             {
                 curChar = input_stream.BeginToken();
             }
-            catch (java.io.IOException e)
+            catch(java.io.IOException e)
             {
                 debugStream.println("Returning the <EOF> token.");
                 jjmatchedKind = 0;
@@ -1130,9 +1130,9 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
             image = null;
             jjimageLen = 0;
 
-            for (; ;)
+            for(; ;)
             {
-                switch (curLexState)
+                switch(curLexState)
                 {
                     case 0:
                         jjmatchedKind = 0x7fffffff;
@@ -1167,31 +1167,31 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                         jjmatchedPos = 0;
                         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
                         curPos = jjMoveStringLiteralDfa0_4();
-                        if (jjmatchedPos == 0 && jjmatchedKind > 26)
+                        if(jjmatchedPos == 0 && jjmatchedKind > 26)
                         {
                             debugStream.println("   Current character matched as a " + tokenImage[26] + " token.");
                             jjmatchedKind = 26;
                         }
                         break;
                 }
-                if (jjmatchedKind != 0x7fffffff)
+                if(jjmatchedKind != 0x7fffffff)
                 {
-                    if (jjmatchedPos + 1 < curPos)
+                    if(jjmatchedPos + 1 < curPos)
                     {
                         debugStream.println("   Putting back " + (curPos - jjmatchedPos - 1) + " characters into the input stream.");
                         input_stream.backup(curPos - jjmatchedPos - 1);
                     }
                     debugStream.println("****** FOUND A " + tokenImage[jjmatchedKind] + " MATCH (" + TokenMgrError.addEscapes(new String(input_stream.GetSuffix(jjmatchedPos + 1))) + ") ******\n");
-                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+                    if((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
                     {
                         matchedToken = jjFillToken();
                         TokenLexicalActions(matchedToken);
-                        if (jjnewLexState[jjmatchedKind] != -1)
+                        if(jjnewLexState[jjmatchedKind] != -1)
                             curLexState = jjnewLexState[jjmatchedKind];
                         return matchedToken;
                     }
                     jjimageLen += jjmatchedPos + 1;
-                    if (jjnewLexState[jjmatchedKind] != -1)
+                    if(jjnewLexState[jjmatchedKind] != -1)
                         curLexState = jjnewLexState[jjmatchedKind];
                     curPos = 0;
                     jjmatchedKind = 0x7fffffff;
@@ -1201,7 +1201,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                         debugStream.println("<" + lexStateNames[curLexState] + ">" + "Current character : " + TokenMgrError.addEscapes(String.valueOf(curChar)) + " (" + (int) curChar + ")");
                         continue;
                     }
-                    catch (java.io.IOException e1)
+                    catch(java.io.IOException e1)
                     { }
                 }
                 int error_line = input_stream.getEndLine();
@@ -1213,11 +1213,11 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                     input_stream.readChar();
                     input_stream.backup(1);
                 }
-                catch (java.io.IOException e1)
+                catch(java.io.IOException e1)
                 {
                     EOFSeen = true;
                     error_after = curPos <= 1 ? "" : input_stream.GetImage();
-                    if (curChar == '\n' || curChar == '\r')
+                    if(curChar == '\n' || curChar == '\r')
                     {
                         error_line++;
                         error_column = 0;
@@ -1225,7 +1225,7 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
                     else
                         error_column++;
                 }
-                if (!EOFSeen)
+                if(!EOFSeen)
                 {
                     input_stream.backup(1);
                     error_after = curPos <= 1 ? "" : input_stream.GetImage();
@@ -1285,15 +1285,15 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
     protected static final String jjKindsForBitVector(int i, long vec)
     {
         String retVal = "";
-        if (i == 0)
+        if(i == 0)
             kindCnt = 0;
-        for (int j = 0; j < 64; j++)
+        for(int j = 0; j < 64; j++)
         {
-            if ((vec & (1L << j)) != 0L)
+            if((vec & (1L << j)) != 0L)
             {
-                if (kindCnt++ > 0)
+                if(kindCnt++ > 0)
                     retVal += ", ";
-                if (kindCnt % 5 == 0)
+                if(kindCnt % 5 == 0)
                     retVal += "\n     ";
                 retVal += tokenImage[i * 64 + j];
             }
@@ -1306,26 +1306,26 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
         boolean[] kindDone = new boolean[28];
         String retVal = "";
         int cnt = 0;
-        for (int i = start; i < end; i++)
+        for(int i = start; i < end; i++)
         {
-            if (vec[i] == -1)
+            if(vec[i] == -1)
                 continue;
             int[] stateSet = statesForState[curLexState][vec[i]];
-            for (int j = 0; j < stateSet.length; j++)
+            for(int j = 0; j < stateSet.length; j++)
             {
                 int state = stateSet[j];
-                if (!kindDone[kindForState[lexState][state]])
+                if(!kindDone[kindForState[lexState][state]])
                 {
                     kindDone[kindForState[lexState][state]] = true;
-                    if (cnt++ > 0)
+                    if(cnt++ > 0)
                         retVal += ", ";
-                    if (cnt % 5 == 0)
+                    if(cnt % 5 == 0)
                         retVal += "\n     ";
                     retVal += tokenImage[kindForState[lexState][state]];
                 }
             }
         }
-        if (cnt == 0)
+        if(cnt == 0)
             return "{  }";
         else
             return "{ " + retVal + " }";
@@ -1337,14 +1337,14 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
 
     static final void TokenLexicalActions(Token matchedToken)
     {
-        switch (jjmatchedKind)
+        switch(jjmatchedKind)
         {
             case 23:
-                if (jjmatchedPos == -1)
+                if(jjmatchedPos == -1)
                 {
-                    if (jjbeenHere[2] &&
-                            jjemptyLineNo[2] == input_stream.getBeginLine() &&
-                            jjemptyColNo[2] == input_stream.getBeginColumn())
+                    if(jjbeenHere[2] &&
+                       jjemptyLineNo[2] == input_stream.getBeginLine() &&
+                       jjemptyColNo[2] == input_stream.getBeginColumn())
                         throw new TokenMgrError(("Error: Bailing out of infinite loop caused by repeated empty string matches at line " + input_stream.getBeginLine() + ", column " + input_stream.getBeginColumn() + "."), TokenMgrError.LOOP_DETECTED);
                     jjemptyLineNo[2] = input_stream.getBeginLine();
                     jjemptyColNo[2] = input_stream.getBeginColumn();
@@ -1354,11 +1354,11 @@ public class StandardExchangeFormatParserTokenManager implements StandardExchang
             case 24:
                 break;
             case 25:
-                if (jjmatchedPos == -1)
+                if(jjmatchedPos == -1)
                 {
-                    if (jjbeenHere[3] &&
-                            jjemptyLineNo[3] == input_stream.getBeginLine() &&
-                            jjemptyColNo[3] == input_stream.getBeginColumn())
+                    if(jjbeenHere[3] &&
+                       jjemptyLineNo[3] == input_stream.getBeginLine() &&
+                       jjemptyColNo[3] == input_stream.getBeginColumn())
                         throw new TokenMgrError(("Error: Bailing out of infinite loop caused by repeated empty string matches at line " + input_stream.getBeginLine() + ", column " + input_stream.getBeginColumn() + "."), TokenMgrError.LOOP_DETECTED);
                     jjemptyLineNo[3] = input_stream.getBeginLine();
                     jjemptyColNo[3] = input_stream.getBeginColumn();

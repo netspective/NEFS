@@ -117,7 +117,7 @@ public class Group implements TextContainer, SegmentContainer
 
     public void setMaxUse(String maxUse)
     {
-        if (maxUse.equals("N/A"))
+        if(maxUse.equals("N/A"))
             this.maxUse = Integer.MAX_VALUE;
         else
             this.maxUse = Integer.parseInt(maxUse);

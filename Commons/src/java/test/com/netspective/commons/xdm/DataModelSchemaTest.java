@@ -276,7 +276,7 @@ public class DataModelSchemaTest extends TestCase
         public Object createCustomDataModelElement(XdmParseContext pc, XmlDataModelSchema schema, Object parent, String elementName, String alternateClassName)
                 throws DataModelException, InvocationTargetException, IllegalAccessException, InstantiationException
         {
-            if (elementName.equals("custom-1"))
+            if(elementName.equals("custom-1"))
                 encounteredCustom1 = true;
             else
                 return schema.createElement(pc, null, this, elementName, true);
@@ -427,7 +427,7 @@ public class DataModelSchemaTest extends TestCase
 
         static
         {
-            for (int i = 0; i < SampleBitmaskedFlagsAttribute.FLAG_DEFNS.length; i++)
+            for(int i = 0; i < SampleBitmaskedFlagsAttribute.FLAG_DEFNS.length; i++)
                 FLAG_DEFNS[i] = SampleBitmaskedFlagsAttribute.FLAG_DEFNS[i];
             FLAG_DEFNS[SampleBitmaskedFlagsAttribute.FLAG_DEFNS.length + 0] = new FlagDefn(ACCESS_XDM, "BIT_EIGHT", BIT_EIGHT);
             FLAG_DEFNS[SampleBitmaskedFlagsAttribute.FLAG_DEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "BIT_NINE", BIT_NINE);
@@ -520,13 +520,13 @@ public class DataModelSchemaTest extends TestCase
         dmt = (DataModelTest) XdmComponentFactory.get(DataModelTest.class, new Resource(DataModelSchemaTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         errors = dmt.getErrors();
-        if (errors.size() != 0)
+        if(errors.size() != 0)
         {
-            for (int i = 0; i < errors.size(); i++)
+            for(int i = 0; i < errors.size(); i++)
             {
                 Object error = errors.get(i);
                 System.out.print(error.getClass().getName());
-                if (error instanceof Throwable)
+                if(error instanceof Throwable)
                     ((Throwable) error).printStackTrace();
                 else
                     System.out.println(error.toString());
@@ -535,11 +535,11 @@ public class DataModelSchemaTest extends TestCase
 
         // Massage the Root Schema Property Names...
         Set modifiedPropertyNames = new HashSet();
-        for (int i = 0; i < rootSchemaPropertyNames.length; i++)
+        for(int i = 0; i < rootSchemaPropertyNames.length; i++)
         {
             String removeDashes = textUtils.replaceTextValues(rootSchemaPropertyNames[i], "-", "");
 
-            if (!rootSchemaPropertyNames[i].equals(removeDashes))
+            if(!rootSchemaPropertyNames[i].equals(removeDashes))
                 modifiedPropertyNames.add(removeDashes);
         }
         schemaModifiedPropertyNames = (String[]) modifiedPropertyNames.toArray(new String[modifiedPropertyNames.size()]);
@@ -692,9 +692,9 @@ public class DataModelSchemaTest extends TestCase
             "ignored-nested-elem-too"
         };
 
-        for (int i = 0; i < nestedElementAliasList.length; i++)
+        for(int i = 0; i < nestedElementAliasList.length; i++)
         {
-            if (i < 2)
+            if(i < 2)
                 nestedElementAliasesOne.add(nestedElementAliasList[i]);
 
             nestedElementAliasesTwo.add(nestedElementAliasList[i]);
@@ -735,7 +735,7 @@ public class DataModelSchemaTest extends TestCase
         //TODO: Shahbaz, why is this failing? What's the test for?
         //assertEquals(rootSchemaPropertyNames.length + schemaModifiedPropertyNames.length, schemaPropertySet.size());
         int numAliases = 0;
-        for (int i = 0; i < rootSchemaPropertyNames.length; i++)
+        for(int i = 0; i < rootSchemaPropertyNames.length; i++)
         {
             assertTrue(schemaPropertySet.contains(rootSchemaPropertyNames[i]));
             XmlDataModelSchema.PropertyNames xdmspn = (XmlDataModelSchema.PropertyNames) schema.getPropertyNames().get(rootSchemaPropertyNames[i]);
@@ -745,7 +745,7 @@ public class DataModelSchemaTest extends TestCase
 
         assertEquals(rootSchemaPropertyNames.length + schemaModifiedPropertyNames.length, numAliases);
 
-        for (int i = 0; i < schemaModifiedPropertyNames.length; i++)
+        for(int i = 0; i < schemaModifiedPropertyNames.length; i++)
             assertTrue(schemaPropertySet.contains(schemaModifiedPropertyNames[i]));
 
         // Removed a println containing a Property object => reduces coverage of Property by ~ 27%
@@ -759,7 +759,7 @@ public class DataModelSchemaTest extends TestCase
             DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class
         };
 
-        for (int i = 0; i < expectedSchemas.length; i++)
+        for(int i = 0; i < expectedSchemas.length; i++)
             assertTrue(schemaNames.contains(expectedSchemas[i]));
 
         XmlDataModelSchema rootSchema = XmlDataModelSchema.getSchema(RootTest.class);
@@ -775,7 +775,7 @@ public class DataModelSchemaTest extends TestCase
         assertEquals(rootSchema.getAttributes(), rootSchemaAttributeSetterKeys);
 
         //TODO: Why cant the object named 'test' be cast to XmlDataModelSchema?  It certainly shows XmlDataModelSchema as the output of getClass()
-        for (Iterator iter = rootSchemaAttributeSetters.keySet().iterator(); iter.hasNext();)
+        for(Iterator iter = rootSchemaAttributeSetters.keySet().iterator(); iter.hasNext();)
         {
             Object key = iter.next();
             Object test = rootSchemaAttributeSetters.get(key);
@@ -804,7 +804,7 @@ public class DataModelSchemaTest extends TestCase
 
         Map rootSchemaAttributeTypes = rootSchema.getAttributeTypes();
 
-        for (Iterator iter = expectedAttributeTypes.keySet().iterator(); iter.hasNext();)
+        for(Iterator iter = expectedAttributeTypes.keySet().iterator(); iter.hasNext();)
         {
             String key = (String) iter.next();
             assertEquals(expectedAttributeTypes.get(key), rootSchemaAttributeTypes.get(key));
@@ -830,7 +830,7 @@ public class DataModelSchemaTest extends TestCase
             xea.setValue(null);
             exceptionThrown = false;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             assertTrue(exceptionThrown);
         }
@@ -844,7 +844,7 @@ public class DataModelSchemaTest extends TestCase
             xea.setValue("type-B");
             exceptionThrown = false;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             // Must not reach here...
             assertFalse(exceptionThrown);
@@ -864,7 +864,7 @@ public class DataModelSchemaTest extends TestCase
 
         assertEquals(0, bmfa.getFlags());
 
-        for (int i = 0; i < 8; i++)
+        for(int i = 0; i < 8; i++)
             assertFalse(bmfa.flagIsSet(i));
 
         // BitMask: 10101010
@@ -879,11 +879,11 @@ public class DataModelSchemaTest extends TestCase
         String[] actualBitStringsOne = bmfa.getFlagNames();
         assertEquals(possibleFlagNames.length, actualBitStringsOne.length);
 
-        for (int i = 0; i < 8; i++)
+        for(int i = 0; i < 8; i++)
         {
             assertEquals(possibleFlagNames[i], actualBitStringsOne[i]);
 
-            if (0 == i % 2)
+            if(0 == i % 2)
                 assertFalse(bmfa.flagIsSet(1 << i));
             else
                 assertTrue(bmfa.flagIsSet(1 << i));
@@ -893,11 +893,11 @@ public class DataModelSchemaTest extends TestCase
         long expectedBitMaskTwo = 85;
         String[] expectedBitStringsTwo = new String[]{"BIT_ZERO", "BIT_TWO", "BIT_FOUR", "BIT_SIX"};
 
-        for (int i = 0; i < 8; i++)
+        for(int i = 0; i < 8; i++)
         {
             long flagValue = 1 << i;
 
-            if (bmfa.flagIsSet(flagValue))
+            if(bmfa.flagIsSet(flagValue))
                 bmfa.clearFlag(flagValue);
             else
                 bmfa.setFlag(flagValue);
@@ -906,16 +906,16 @@ public class DataModelSchemaTest extends TestCase
         assertEquals(expectedBitMaskTwo, bmfa.getFlags());
         assertEquals(textUtils.join(expectedBitStringsTwo, " | "), bmfa.getFlagsText());
 
-        for (int i = 0; i < 8; i++)
+        for(int i = 0; i < 8; i++)
         {
-            if (0 == i % 2)
+            if(0 == i % 2)
                 assertTrue(bmfa.flagIsSet(1 << i));
             else
                 assertFalse(bmfa.flagIsSet(1 << i));
         }
 
         // Reverse the bits again ... using a different routine
-        for (int i = 0; i < 8; i++)
+        for(int i = 0; i < 8; i++)
             bmfa.updateFlag(1 << i, 0 != i % 2);
 
         assertEquals(170, bmfa.getFlags());
@@ -923,7 +923,7 @@ public class DataModelSchemaTest extends TestCase
         // Finally, do a basic test of the FlagDefn class
         SampleBitmaskedFlagsAttribute.FlagDefn[] fd = bmfa.getFlagsDefns();
 
-        for (int i = 0; i < fd.length; i++)
+        for(int i = 0; i < fd.length; i++)
         {
             assertEquals(1 << i, fd[i].getMask());
             fd[i].setMask(0);
@@ -943,7 +943,7 @@ public class DataModelSchemaTest extends TestCase
             DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class
         };
 
-        for (int i = 0; i < expectedSchemas.length; i++)
+        for(int i = 0; i < expectedSchemas.length; i++)
             assertTrue(schemaNames.contains(expectedSchemas[i]));
 
         XmlDataModelSchema rootSchema = XmlDataModelSchema.getSchema(RootTest.class);

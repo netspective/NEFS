@@ -97,9 +97,9 @@ public class TemplateElement extends TemplateNode
     public TemplateElement addChild(String elementName, String[][] attrNamesValues)
     {
         AttributesImpl attrs = new AttributesImpl();
-        if (attrNamesValues != null)
+        if(attrNamesValues != null)
         {
-            for (int i = 0; i < attrNamesValues.length; i++)
+            for(int i = 0; i < attrNamesValues.length; i++)
                 attrs.addAttribute(null, null, attrNamesValues[i][0], "CDATA", attrNamesValues[i][1]);
         }
 
@@ -116,8 +116,6 @@ public class TemplateElement extends TemplateNode
      * @param jexlVars   A Map that defines some Jexl variables that should be replaced or empty map if no variables should
      *                   be replaced. The map should not be null.
      * @param recurse    True if the children should be copied as well or false if only the primary element should be copied
-     *
-     * @return
      */
     public TemplateElement addCopyOfChildAndReplaceExpressions(TemplateElement elemToCopy, Map jexlVars, boolean recurse)
     {
@@ -126,22 +124,22 @@ public class TemplateElement extends TemplateNode
         JavaExpressionText jet = new JavaExpressionText();
         jet.init(jexlVars);
 
-        for (int i = 0; i < copyAttrs.getLength(); i++)
+        for(int i = 0; i < copyAttrs.getLength(); i++)
         {
             attrNamesAndValues[i][0] = copyAttrs.getQName(i);
             attrNamesAndValues[i][1] = jet.getFinalText(null, copyAttrs.getValue(i));
         }
 
         TemplateElement result = addChild(elemToCopy.getElementName(), attrNamesAndValues);
-        if (recurse)
+        if(recurse)
         {
             List copyChildren = elemToCopy.getChildren();
-            for (int i = 0; i < copyChildren.size(); i++)
+            for(int i = 0; i < copyChildren.size(); i++)
             {
                 TemplateNode node = (TemplateNode) copyChildren.get(i);
-                if (node instanceof TemplateElement)
+                if(node instanceof TemplateElement)
                     result.addCopyOfChildAndReplaceExpressions((TemplateElement) node, jexlVars, recurse);
-                else if (node instanceof TemplateText)
+                else if(node instanceof TemplateText)
                     result.addChild(new TemplateText(result, ((TemplateText) node).getText()));
                 else
                     throw new RuntimeException("This should never happen.");
@@ -161,12 +159,12 @@ public class TemplateElement extends TemplateNode
     {
         TemplateContentHandler contentHandler = ac.getContentHandler();
 
-        if (!contentHandler.isInIgnoreNode() && ac.isAllowReplaceExpressions() && isAllowReplaceExpressions())
+        if(!contentHandler.isInIgnoreNode() && ac.isAllowReplaceExpressions() && isAllowReplaceExpressions())
         {
-            if (!defnFinalized)
+            if(!defnFinalized)
                 finalizeDefinition(ac);
 
-            if (attrExpressionsCount > 0)
+            if(attrExpressionsCount > 0)
             {
                 ac.pushActiveTemplate(this, true);
                 contentHandler.startTemplateElement(ac, url, localName, qName, attributes);
@@ -175,7 +173,7 @@ public class TemplateElement extends TemplateNode
             else
                 contentHandler.startElement(url, localName, qName, attributes);
 
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
                 ((TemplateNode) children.get(i)).apply(ac);
 
             contentHandler.endElement(url, localName, qName);
@@ -183,7 +181,7 @@ public class TemplateElement extends TemplateNode
         else
         {
             contentHandler.startElement(url, localName, qName, attributes);
-            for (int i = 0; i < children.size(); i++)
+            for(int i = 0; i < children.size(); i++)
                 ((TemplateNode) children.get(i)).apply(ac);
             contentHandler.endElement(url, localName, qName);
         }
@@ -194,10 +192,10 @@ public class TemplateElement extends TemplateNode
         defnFinalized = true;
         attrExpressionsCount = 0;
         attrHasExpression = new boolean[attributes.getLength()];
-        for (int i = 0; i < attributes.getLength(); i++)
+        for(int i = 0; i < attributes.getLength(); i++)
         {
             String attrValue = attributes.getValue(i);
-            if (attrValue.indexOf(ExpressionText.EXPRESSION_REPLACEMENT_PREFIX) != -1)
+            if(attrValue.indexOf(ExpressionText.EXPRESSION_REPLACEMENT_PREFIX) != -1)
             {
                 attrHasExpression[i] = true;
                 attrExpressionsCount++;

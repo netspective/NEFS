@@ -73,10 +73,10 @@ public class QueryDefnJoins
 
     public List getAutoIncludeJoins()
     {
-        if(! autoIncCached)
+        if(!autoIncCached)
         {
             autoIncludeJoins.clear();
-            for(Iterator i = joins.iterator(); i.hasNext(); )
+            for(Iterator i = joins.iterator(); i.hasNext();)
             {
                 QueryDefnJoin join = (QueryDefnJoin) i.next();
                 if(join.shouldAutoInclude())

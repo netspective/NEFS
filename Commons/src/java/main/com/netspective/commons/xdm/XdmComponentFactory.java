@@ -71,14 +71,14 @@ public class XdmComponentFactory
     public static XdmComponent getCachedComponent(String systemId, int flags)
     {
         XdmComponent component = (XdmComponent) componentsBySystemId.get(systemId);
-        if (component != null)
+        if(component != null)
         {
             // If we have a component and we don't want to allow re-loads then we use what we have
-            if ((flags & XDMCOMPFLAG_ALLOWRELOAD) == 0)
+            if((flags & XDMCOMPFLAG_ALLOWRELOAD) == 0)
                 return component;
 
             // If we have a component and we do allow reloads but the source has not changed, then use what we have
-            if (!component.getInputSource().sourceChanged())
+            if(!component.getInputSource().sourceChanged())
                 return component;
 
             // If we get to this point, we have an existing component and we are allowing reloads but the source seems
@@ -107,13 +107,11 @@ public class XdmComponentFactory
      *
      * @param file  The file to obtain the content from
      * @param flags Whether or not to allow reloading if the input source has changed and other flags
-     *
-     * @throws java.io.FileNotFoundException
      */
     public static XdmComponent get(Class componentClass, File file, int flags) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, FileNotFoundException, NoSuchMethodException
     {
         XdmComponent component = getCachedComponent(file.getAbsolutePath(), flags);
-        if (component != null)
+        if(component != null)
             return component;
 
         // if we we get to this point, we're parsing an XML file into a given component class
@@ -135,16 +133,16 @@ public class XdmComponentFactory
         component.setLoadDuration(startTime, System.currentTimeMillis());
 
         // if we had some syntax errors, make sure the component records them for later use
-        if (pc != null && pc.getErrors().size() != 0)
+        if(pc != null && pc.getErrors().size() != 0)
             errors.addAll(pc.getErrors());
 
-        if (pc != null && pc.getWarnings().size() != 0)
+        if(pc != null && pc.getWarnings().size() != 0)
             warnings.addAll(pc.getWarnings());
 
         component.loadedFromXml(flags);
 
         // if there are no errors, cache this component so if the file is needed again, it's available immediately
-        if ((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))
+        if((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))
             cacheComponent(file.getAbsolutePath(), component, flags);
 
         return component;
@@ -155,8 +153,6 @@ public class XdmComponentFactory
      * the appropriate component file but not cache it for future use.
      *
      * @param file The file to obtain the content from
-     *
-     * @throws java.io.FileNotFoundException
      */
     public static void load(XdmComponent component, File file) throws DataModelException, FileNotFoundException
     {
@@ -169,10 +165,10 @@ public class XdmComponentFactory
         component.setLoadDuration(startTime, System.currentTimeMillis());
 
         // if we had some syntax errors, make sure the component records them for later use
-        if (pc != null && pc.getErrors().size() != 0)
+        if(pc != null && pc.getErrors().size() != 0)
             component.getErrors().addAll(pc.getErrors());
 
-        if (pc != null && pc.getWarnings().size() != 0)
+        if(pc != null && pc.getWarnings().size() != 0)
             component.getWarnings().addAll(pc.getWarnings());
     }
 
@@ -185,7 +181,7 @@ public class XdmComponentFactory
     {
         // if the resource resolves to an actual file, just treat it as a normal file
         File resourceFile = resource.getFile();
-        if (resourceFile != null)
+        if(resourceFile != null)
             return get(componentClass, resourceFile, flags);
 
         // if we get to here, the resource is being loaded remotely or through a JAR or other source so it's not a physical file
@@ -208,10 +204,10 @@ public class XdmComponentFactory
         component.setLoadDuration(startTime, System.currentTimeMillis());
 
         // if we had some syntax errors, make sure the component records them for later use
-        if (pc != null && pc.getErrors().size() != 0)
+        if(pc != null && pc.getErrors().size() != 0)
             errors.addAll(pc.getErrors());
 
-        if (pc != null && pc.getWarnings().size() != 0)
+        if(pc != null && pc.getWarnings().size() != 0)
             warnings.addAll(pc.getWarnings());
 
         component.loadedFromXml(flags);
@@ -234,10 +230,10 @@ public class XdmComponentFactory
         component.setLoadDuration(startTime, System.currentTimeMillis());
 
         // if we had some syntax errors, make sure the component records them for later use
-        if (pc != null && pc.getErrors().size() != 0)
+        if(pc != null && pc.getErrors().size() != 0)
             component.getErrors().addAll(pc.getErrors());
 
-        if (pc != null && pc.getWarnings().size() != 0)
+        if(pc != null && pc.getWarnings().size() != 0)
             component.getWarnings().addAll(pc.getWarnings());
     }
 
@@ -248,16 +244,16 @@ public class XdmComponentFactory
     public static XdmComponent get(Class componentClass, String fileName, int flags) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException, NoSuchMethodException, FileNotFoundException
     {
         FileFind.FileFindResults ffResults = FileFind.findInClasspath(fileName, FileFind.FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_LAST);
-        if (ffResults.isFileFound())
+        if(ffResults.isFileFound())
         {
-            if (ffResults.isFoundFileInJar())
+            if(ffResults.isFoundFileInJar())
             {
                 ZipFile zipFile = new ZipFile(ffResults.getFoundFile());
                 ZipEntry zipEntry = zipFile.getEntry(ffResults.getSearchFileName());
                 String systemId = ffResults.getFoundFile().getAbsolutePath() + "!" + ffResults.getSearchFileName();
 
                 XdmComponent component = getCachedComponent(systemId, flags);
-                if (component != null)
+                if(component != null)
                     return component;
 
                 // if we we get to this point, we're parsing an XML file into a given component class
@@ -279,16 +275,16 @@ public class XdmComponentFactory
                 component.setLoadDuration(startTime, System.currentTimeMillis());
 
                 // if we had some syntax errors, make sure the component records them for later use
-                if (pc != null && pc.getErrors().size() != 0)
+                if(pc != null && pc.getErrors().size() != 0)
                     errors.addAll(pc.getErrors());
 
-                if (pc != null && pc.getWarnings().size() != 0)
+                if(pc != null && pc.getWarnings().size() != 0)
                     warnings.addAll(pc.getWarnings());
 
                 component.loadedFromXml(flags);
 
                 // if there are no errors, cache this component so if the file is needed again, it's available immediately
-                if ((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))
+                if((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))
                     cacheComponent(systemId, component, flags);
 
                 return component;

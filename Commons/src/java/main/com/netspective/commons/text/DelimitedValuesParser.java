@@ -97,7 +97,7 @@ public class DelimitedValuesParser
         list.clear();			// discard previous, if any
         int i = 0;
 
-        if (line.length() == 0)
+        if(line.length() == 0)
         {
             list.add(line);
             return (String[]) list.toArray(new String[]{});
@@ -106,7 +106,7 @@ public class DelimitedValuesParser
         do
         {
             sb.setLength(0);
-            if (i < line.length() && line.charAt(i) == '"')
+            if(i < line.length() && line.charAt(i) == '"')
                 i = advQuoted(line, sb, ++i);	// skip quote
             else
                 i = advPlain(line, sb, i);
@@ -114,7 +114,7 @@ public class DelimitedValuesParser
 //Debug.println("csv", sb.toString());
             i++;
         }
-        while (i < line.length());
+        while(i < line.length());
 
         return (String[]) list.toArray(new String[]{});
     }
@@ -126,21 +126,21 @@ public class DelimitedValuesParser
     {
         int j;
         int len = s.length();
-        for (j = i; j < len; j++)
+        for(j = i; j < len; j++)
         {
-            if (s.charAt(j) == '"' && j + 1 < len)
+            if(s.charAt(j) == '"' && j + 1 < len)
             {
-                if (s.charAt(j + 1) == '"')
+                if(s.charAt(j + 1) == '"')
                 {
                     j++; // skip escape char
                 }
-                else if (s.charAt(j + 1) == fieldSep)
+                else if(s.charAt(j + 1) == fieldSep)
                 { //next delimeter
                     j++; // skip end quotes
                     break;
                 }
             }
-            else if (s.charAt(j) == '"' && j + 1 == len)
+            else if(s.charAt(j) == '"' && j + 1 == len)
             { // end quotes at end of line
                 break; //done
             }
@@ -158,7 +158,7 @@ public class DelimitedValuesParser
 
         j = s.indexOf(fieldSep, i); // look for separator
         //Debug.println("csv", "i = " + i + ", j = " + j);
-        if (j == -1)
+        if(j == -1)
         {               	// none found
             sb.append(s.substring(i));
             return s.length();

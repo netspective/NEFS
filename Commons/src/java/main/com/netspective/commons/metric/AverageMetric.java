@@ -42,7 +42,7 @@ public class AverageMetric extends CountMetric
     public String getFormattedValue()
     {
         long count = getCount();
-        if (count > 0)
+        if(count > 0)
             return Double.toString(getSum() / getCount()) + " (min = " + getMin() + ", max = " + getMax() + getPercentageOfParent() + ")";
         else
             return "0.0";

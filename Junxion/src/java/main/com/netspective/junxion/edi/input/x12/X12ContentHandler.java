@@ -75,10 +75,10 @@ public class X12ContentHandler extends BasicContentHandler
 
     public void endHeaderSegment(String segmentText) throws JunxionException
     {
-        if (!segmentText.startsWith(SEGMENTID_INTERCHANGE_START))
+        if(!segmentText.startsWith(SEGMENTID_INTERCHANGE_START))
             throw new ParseException("An X12 message must begin with an '" + SEGMENTID_INTERCHANGE_START + "' segment.", getDocumentLocator());
 
-        if (segmentText.length() < 105)
+        if(segmentText.length() < 105)
             throw new ParseException("An X12 '" + SEGMENTID_INTERCHANGE_START + "' segment must be 105 characters long.", getDocumentLocator());
 
         String dataElemsDelim = String.valueOf(segmentText.charAt(3));
@@ -91,7 +91,7 @@ public class X12ContentHandler extends BasicContentHandler
 
         headerDataElems = new ArrayList();
         StringTokenizer dataElems = new StringTokenizer(segmentText, dataElemsDelim);
-        while (dataElems.hasMoreTokens())
+        while(dataElems.hasMoreTokens())
             headerDataElems.add(dataElems.nextToken());
 
         interchange = ElementFactory.createInterchange();
@@ -102,25 +102,25 @@ public class X12ContentHandler extends BasicContentHandler
     public void endSegment() throws JunxionException
     {
         String segmentId = getActiveSegmentId();
-        if (SEGMENTID_FUNCGROUP_START.equals(segmentId))
+        if(SEGMENTID_FUNCGROUP_START.equals(segmentId))
         {
-            if (interchange == null)
+            if(interchange == null)
                 throw new ParseException("Encountered functional group '" + segmentId + "' without an interchange.", getDocumentLocator());
 
             activeFunctionalGroup = new FunctionalGroupSegment();
             interchange.addFunctionalGroup(activeFunctionalGroup);
         }
-        else if (SEGMENTID_FUNCGROUP_END.equals(segmentId))
+        else if(SEGMENTID_FUNCGROUP_END.equals(segmentId))
         {
             activeFunctionalGroup = null;
         }
-        else if (SEGMENTID_INTERCHANGE_END.equals(segmentId))
+        else if(SEGMENTID_INTERCHANGE_END.equals(segmentId))
         {
             interchange = null;
         }
         else
         {
-            if (activeFunctionalGroup == null)
+            if(activeFunctionalGroup == null)
                 throw new ParseException("Encountered segment '" + segmentId + "' without a functional group.", getDocumentLocator());
 
             getValidator().validate(getActiveSegment(), activeFunctionalGroup);
@@ -129,18 +129,18 @@ public class X12ContentHandler extends BasicContentHandler
 
     public void endDocument() throws JunxionException
     {
-        if (!log.isDebugEnabled())
+        if(!log.isDebugEnabled())
             return;
 
         log.debug("Header segment: " + headerDataElems);
 
         List segments = getValidator().getSegments();
-        if (segments != null)
+        if(segments != null)
         {
-            for (int segment = 0; segment < segments.size(); segment++)
+            for(int segment = 0; segment < segments.size(); segment++)
             {
                 List dataElements = (List) segments.get(segment);
-                if (dataElements.size() > 0)
+                if(dataElements.size() > 0)
                     log.debug("Segment " + (segment + 1) + ": " + dataElements);
                 else
                     log.debug("No data elements found in segment " + (segment + 1));

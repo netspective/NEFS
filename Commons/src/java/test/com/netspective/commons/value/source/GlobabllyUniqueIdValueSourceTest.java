@@ -58,7 +58,7 @@ public class GlobabllyUniqueIdValueSourceTest extends TestCase
         Map uniqueGuids = new HashMap();
         int malformedGuids = 0;
 
-        for (int i = 0; i < maxGuids; i++)
+        for(int i = 0; i < maxGuids; i++)
         {
             ValueSource vs = ValueSources.getInstance().getValueSource("generate-id:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
             assertTrue(vs.hasValue(null));
@@ -72,7 +72,7 @@ public class GlobabllyUniqueIdValueSourceTest extends TestCase
             {
                 assertTrue(perlUtil.match(guid32Filter, guidValue));
             }
-            catch (MalformedPerl5PatternException e)
+            catch(MalformedPerl5PatternException e)
             {
                 malformedGuids++;
             }
@@ -86,7 +86,7 @@ public class GlobabllyUniqueIdValueSourceTest extends TestCase
 
         uniqueGuids.clear();
 
-        for (int i = 0; i < maxGuids; i++)
+        for(int i = 0; i < maxGuids; i++)
         {
             ValueSource vs = ValueSources.getInstance().getValueSource("generate-id:,yes", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
             assertTrue(vs.hasValue(null));
@@ -100,7 +100,7 @@ public class GlobabllyUniqueIdValueSourceTest extends TestCase
             {
                 assertTrue(perlUtil.match(guid32Filter, guidValue));
             }
-            catch (MalformedPerl5PatternException e)
+            catch(MalformedPerl5PatternException e)
             {
                 malformedGuids++;
             }

@@ -39,7 +39,7 @@ import java.io.InputStream;
 import junit.framework.TestCase;
 
 /**
- * $Id: ResourceTest.java,v 1.4 2004-08-15 01:41:14 shahid.shah Exp $
+ * $Id: ResourceTest.java,v 1.5 2004-08-15 02:17:06 shahid.shah Exp $
  */
 public class ResourceTest extends TestCase
 {
@@ -62,7 +62,7 @@ public class ResourceTest extends TestCase
 
         // Build the resource name by changing all \ to / (if needed) and prepending a 'file:/' to the result...
         String fileOneFQN = rsrcFileOne.getCanonicalPath();
-        if (File.separatorChar == '\\')
+        if(File.separatorChar == '\\')
             fileOneFQN = "/" + fileOneFQN.replace('\\', '/');
         assertEquals("file:" + fileOneFQN, rsrcOne.getResource().toString());
 
@@ -84,7 +84,7 @@ public class ResourceTest extends TestCase
 
         // Build the resource name by changing all \ to / (if needed) and prepending a 'file:/' to the result...
         String fileTwoFQN = rsrcFileTwo.getCanonicalPath();
-        if (File.separatorChar == '\\')
+        if(File.separatorChar == '\\')
             fileTwoFQN = "/" + fileTwoFQN.replace('\\', '/');
         assertEquals("file:" + fileTwoFQN, rsrcTwo.getResource().toString());
 

@@ -86,16 +86,16 @@ public class ImportConfigurationTask extends XdmComponentTask
 
         int imported = 0;
         Configuration config = manager.getConfiguration(configId);
-        for (Iterator i = config.getChildrenMap().keySet().iterator(); i.hasNext();)
+        for(Iterator i = config.getChildrenMap().keySet().iterator(); i.hasNext();)
         {
             Map.Entry configEntry = (Map.Entry) i.next();
             Property property = (Property) configEntry.getValue();
 
             String antPropertyName = prefix + property.getName();
-            if (!property.isDynamic())
+            if(!property.isDynamic())
             {
                 project.setProperty(antPropertyName, config.getTextValue(null, property.getName()));
-                if (isDebug()) log(antPropertyName + " = " + project.getProperty(antPropertyName));
+                if(isDebug()) log(antPropertyName + " = " + project.getProperty(antPropertyName));
                 imported++;
             }
         }

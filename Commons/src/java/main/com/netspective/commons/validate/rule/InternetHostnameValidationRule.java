@@ -66,10 +66,10 @@ public class InternetHostnameValidationRule extends BasicValidationRule
     {
         boolean status = super.isValid(vc, value);
 
-        if (!status) return status;
+        if(!status) return status;
 
         String text = value.getTextValue();
-        if (text == null || text.length() == 0)
+        if(text == null || text.length() == 0)
             return true;
 
         InetAddress inetAddr = null;
@@ -77,14 +77,14 @@ public class InternetHostnameValidationRule extends BasicValidationRule
         {
             inetAddr = InetAddress.getByName(text);
         }
-        catch (UnknownHostException e)
+        catch(UnknownHostException e)
         {
             status = false;
             vc.addValidationError(value, getInvalidHostnameMessage(),
-                    new Object[]{getValueCaption(vc)});
+                                  new Object[]{getValueCaption(vc)});
         }
 
-        if (null == inetAddr && status == true)
+        if(null == inetAddr && status == true)
         {
             status = false;
         }

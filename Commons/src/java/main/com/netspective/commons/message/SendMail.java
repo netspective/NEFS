@@ -222,11 +222,11 @@ public class SendMail
 
     protected Address[] getAddresses(Value value) throws AddressException, MessagingException
     {
-        if (value.isListValue())
+        if(value.isListValue())
         {
             String[] addressTexts = value.getTextValues();
             Address[] result = new Address[addressTexts.length];
-            for (int i = 0; i < addressTexts.length; i++)
+            for(int i = 0; i < addressTexts.length; i++)
                 result[i] = new InternetAddress(addressTexts[i]);
             return result;
         }
@@ -236,10 +236,10 @@ public class SendMail
 
     public void send(ValueContext vc, Map bodyTemplateVars) throws IOException, AddressException, MessagingException, SendMailNoFromAddressException, SendMailNoRecipientsException
     {
-        if (from == null)
+        if(from == null)
             throw new SendMailNoFromAddressException("No FROM address provided.");
 
-        if (to == null && cc == null && bcc == null)
+        if(to == null && cc == null && bcc == null)
             throw new SendMailNoRecipientsException("No TO, CC, or BCC addresses provided.");
 
         Properties props = System.getProperties();
@@ -249,10 +249,10 @@ public class SendMail
 
         MimeMessage message = new MimeMessage(mailSession);
 
-        if (headers != null)
+        if(headers != null)
         {
             List headersList = headers.getHeaders();
-            for (int i = 0; i < headersList.size(); i++)
+            for(int i = 0; i < headersList.size(); i++)
             {
                 Header header = (Header) headersList.get(i);
                 message.setHeader(header.getName(), header.getValue().getTextValue(vc));
@@ -261,22 +261,22 @@ public class SendMail
 
         message.setFrom(new InternetAddress(from.getTextValue(vc)));
 
-        if (replyTo != null)
+        if(replyTo != null)
             message.setReplyTo(getAddresses(replyTo.getValue(vc)));
 
-        if (to != null)
+        if(to != null)
             message.setRecipients(Message.RecipientType.TO, getAddresses(to.getValue(vc)));
 
-        if (cc != null)
+        if(cc != null)
             message.setRecipients(Message.RecipientType.CC, getAddresses(cc.getValue(vc)));
 
-        if (bcc != null)
+        if(bcc != null)
             message.setRecipients(Message.RecipientType.BCC, getAddresses(bcc.getValue(vc)));
 
-        if (subject != null)
+        if(subject != null)
             message.setSubject(subject.getTextValue(vc));
 
-        if (body != null)
+        if(body != null)
         {
             StringWriter messageText = new StringWriter();
             body.process(messageText, vc, bodyTemplateVars);

@@ -52,7 +52,7 @@ public class NumericColumn extends GeneralColumn
     public void setFormat(String value)
     {
         Format formatter = ReportColumnFactory.getFormat(value);
-        if (formatter == null)
+        if(formatter == null)
         {
             formatter = new DecimalFormat(value);
             ReportColumnFactory.addFormat(value, formatter);
@@ -66,9 +66,9 @@ public class NumericColumn extends GeneralColumn
         Object oData = ds.getActiveRowColumnData(colIndex, flags);
         String data = "";
         long value = 0;
-        if (oData != null)
+        if(oData != null)
         {
-            if (oData instanceof Boolean)
+            if(oData instanceof Boolean)
             {
                 data = ((Boolean) oData).toString();
             }
@@ -80,10 +80,10 @@ public class NumericColumn extends GeneralColumn
             }
         }
 
-        if ((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
+        if((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
         {
             ColumnDataCalculator calc = rc.getCalc(colIndex);
-            if (calc != null)
+            if(calc != null)
                 calc.addValue(rc, this, ds, value);
         }
 

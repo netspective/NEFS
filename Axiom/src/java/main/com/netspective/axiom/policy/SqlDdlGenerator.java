@@ -42,5 +42,6 @@ import com.netspective.axiom.value.DatabasePolicyValueContext;
 public interface SqlDdlGenerator
 {
     public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects, boolean createAbbreviationsMapCommentBlock) throws IOException;
+
     public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects, boolean createAbbreviationsMapCommentBlock) throws IOException;
 }

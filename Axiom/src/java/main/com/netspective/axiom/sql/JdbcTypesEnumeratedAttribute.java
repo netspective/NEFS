@@ -51,7 +51,7 @@ public class JdbcTypesEnumeratedAttribute extends XdmEnumeratedAttribute
     {
         Object[] keys = map.keySet().toArray();
         String[] jdbcTypeNames = new String[keys.length];
-        for (int i=0; i < keys.length; i++)
+        for(int i = 0; i < keys.length; i++)
         {
             jdbcTypeNames[i] = (String) keys[i];
         }
@@ -59,21 +59,19 @@ public class JdbcTypesEnumeratedAttribute extends XdmEnumeratedAttribute
     }
 
     /**
-     * Gets the java.sql.Types value related to this attribute. 
-     *
-     * @return
+     * Gets the java.sql.Types value related to this attribute.
      */
     public int getJdbcValue()
     {
         // Return the JDBC type name
-        if (map.containsKey(getValue()))
-            return  ((Integer) map.get(getValue())).intValue();
+        if(map.containsKey(getValue()))
+            return ((Integer) map.get(getValue())).intValue();
         else
             return java.sql.Types.OTHER;
     }
 
     /**
-     *  Returns the name-value mapping map of all JDBC SQL types.
+     * Returns the name-value mapping map of all JDBC SQL types.
      *
      * @return jdbc sql type mappings
      */
@@ -83,7 +81,7 @@ public class JdbcTypesEnumeratedAttribute extends XdmEnumeratedAttribute
         Map map = new HashMap();
         // Get all field in java.sql.Types
         Field[] fields = java.sql.Types.class.getFields();
-        for (int i = 0; i < fields.length; i++)
+        for(int i = 0; i < fields.length; i++)
         {
             try
             {
@@ -95,7 +93,7 @@ public class JdbcTypesEnumeratedAttribute extends XdmEnumeratedAttribute
                 // Add to map
                 map.put(name, value);
             }
-            catch (IllegalAccessException e)
+            catch(IllegalAccessException e)
             {
                 log.error(e);
             }

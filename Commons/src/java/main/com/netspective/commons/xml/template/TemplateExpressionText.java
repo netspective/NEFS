@@ -54,33 +54,33 @@ public class TemplateExpressionText extends ExpressionText
         {
             e = ExpressionFactory.createExpression(replaceToken);
         }
-        catch (Exception e1)
+        catch(Exception e1)
         {
             throw new ExpressionTextException("<" + TemplateExpressionText.class + " creation exception: '" + replaceToken + "' in '" + entireText + "' " +
-                    "Scope variables: " + ac.getExprContext().getVars() +
-                    " at " + ac.getContentHandler().getDocumentLocator().getSystemId() + " line " + ac.getContentHandler().getDocumentLocator().getLineNumber() + ": " + e1.getMessage() + " "
-                    , e1);
+                                              "Scope variables: " + ac.getExprContext().getVars() +
+                                              " at " + ac.getContentHandler().getDocumentLocator().getSystemId() + " line " + ac.getContentHandler().getDocumentLocator().getLineNumber() + ": " + e1.getMessage() + " "
+                                              , e1);
         }
 
         try
         {
             o = e.evaluate(ac.getExprContext());
         }
-        catch (Exception e1)
+        catch(Exception e1)
         {
             throw new ExpressionTextException("<" + TemplateExpressionText.class + " evaluation exception: '" + replaceToken + "' in '" + entireText + "' " +
-                    "Scope variables: " + ac.getExprContext().getVars() +
-                    " at " + ac.getContentHandler().getDocumentLocator().getSystemId() + " line " + ac.getContentHandler().getDocumentLocator().getLineNumber() + ": " + e1.getMessage() + " "
-                    , e1);
+                                              "Scope variables: " + ac.getExprContext().getVars() +
+                                              " at " + ac.getContentHandler().getDocumentLocator().getSystemId() + " line " + ac.getContentHandler().getDocumentLocator().getLineNumber() + ": " + e1.getMessage() + " "
+                                              , e1);
         }
 
-        if (o != null)
+        if(o != null)
             return o.toString();
         else
         {
             throw new ExpressionTextException("<" + TemplateExpressionText.class + " NULL exception: '" + replaceToken + "' in '" + entireText + "' " +
-                    "Scope variables: " + ac.getExprContext().getVars() +
-                    " at " + ac.getContentHandler().getDocumentLocator().getSystemId() + " line " + ac.getContentHandler().getDocumentLocator().getLineNumber());
+                                              "Scope variables: " + ac.getExprContext().getVars() +
+                                              " at " + ac.getContentHandler().getDocumentLocator().getSystemId() + " line " + ac.getContentHandler().getDocumentLocator().getLineNumber());
         }
     }
 }

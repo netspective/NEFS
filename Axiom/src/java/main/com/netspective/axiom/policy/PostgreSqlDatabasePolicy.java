@@ -56,7 +56,7 @@ public class PostgreSqlDatabasePolicy extends AnsiDatabasePolicy
     public Object handleAutoIncPreDmlInsertExecute(ConnectionContext cc, AutoIncColumn column) throws SQLException
     {
         Object autoIncValue = executeAndGetSingleValue(cc, "select nextval('" + column.getSequenceName() + "')");
-        if (autoIncValue == null)
+        if(autoIncValue == null)
             throw new SQLException("Unable to obtain next PostgreSQL sequence value from sequence '" + column + "'");
         return autoIncValue;
     }

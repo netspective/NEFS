@@ -78,9 +78,9 @@ public class XdmHandlerNodeStackEntry implements ContentHandlerNodeStackEntry
             includePC.parse(getInstance());
             return includePC;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            if (e instanceof ContentHandlerException)
+            if(e instanceof ContentHandlerException)
                 throw (ContentHandlerException) e;
             else
                 throw new ContentHandlerException(parentPC, e);
@@ -95,9 +95,9 @@ public class XdmHandlerNodeStackEntry implements ContentHandlerNodeStackEntry
             includePC.parse(getInstance());
             return includePC;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            if (e instanceof ContentHandlerException)
+            if(e instanceof ContentHandlerException)
                 throw (ContentHandlerException) e;
             else
                 throw new ContentHandlerException(parentPC, e);
@@ -136,9 +136,9 @@ public class XdmHandlerNodeStackEntry implements ContentHandlerNodeStackEntry
         vars.put("this", activeEntry.getInstance());
 
         AttributesImpl attrs = new AttributesImpl(attributes);
-        for (int i = 0; i < attrs.getLength(); i++)
+        for(int i = 0; i < attrs.getLength(); i++)
         {
-            if (attrHasExpression[i])
+            if(attrHasExpression[i])
                 attrs.setValue(i, tet.getFinalText(ac, attrs.getValue(i)));
         }
         return attrs;

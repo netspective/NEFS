@@ -69,7 +69,7 @@ public class Segment implements TextContainer
 
     public void setIgnoreBaseStructure(String ignoreBaseStructure)
     {
-        if (ignoreBaseStructure.equals("YES"))
+        if(ignoreBaseStructure.equals("YES"))
             this.ignoreBaseStructure = true;
         else
             this.ignoreBaseStructure = false;

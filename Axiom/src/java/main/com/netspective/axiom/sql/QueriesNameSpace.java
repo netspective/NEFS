@@ -35,8 +35,10 @@ package com.netspective.axiom.sql;
 public interface QueriesNameSpace
 {
     public Queries getContainer();
+
     public void setContainer(Queries container);
 
     String getNameSpaceId();
+
     void setNameSpaceId(String identifier);
 }

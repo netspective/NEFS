@@ -58,9 +58,9 @@ public class StaticListValueSource extends AbstractValueSource
     public StaticListValueSource(String[] staticValues)
     {
         PresentationValue.Items items = staticValue.createItems();
-        if (staticValues != null)
+        if(staticValues != null)
         {
-            for (int i = 0; i < staticValues.length; i++)
+            for(int i = 0; i < staticValues.length; i++)
                 items.addItem(staticValues[i]);
         }
     }
@@ -71,14 +71,14 @@ public class StaticListValueSource extends AbstractValueSource
         String pi = spec.getProcessingInstructions();
         String[] textItems = TextUtils.getInstance().split(spec.getParams(), pi != null ? pi.substring(0, 1) : ";", false);
         PresentationValue.Items items = staticValue.createItems();
-        if (textItems != null && textItems.length > 0)
+        if(textItems != null && textItems.length > 0)
         {
             char valueCaptionDelim = pi != null ? (pi.length() > 1 ? pi.charAt(1) : '=') : '=';
-            for (int i = 0; i < textItems.length; i++)
+            for(int i = 0; i < textItems.length; i++)
             {
                 String item = textItems[i];
                 int valueCaptionDelimPos = item.indexOf(valueCaptionDelim);
-                if (valueCaptionDelimPos > 0)
+                if(valueCaptionDelimPos > 0)
                     items.addItem(item.substring(0, valueCaptionDelimPos), item.substring(valueCaptionDelimPos + 1));
                 else
                     items.addItem(item);

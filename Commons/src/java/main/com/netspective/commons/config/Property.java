@@ -60,29 +60,29 @@ public class Property
         protected String getReplacement(ValueContext vc, String entireText, String replaceToken)
         {
             Property property = getOwner().findProperty(replaceToken);
-            if (property != null)
+            if(property != null)
             {
                 PropertyTextExpression subExpr = new PropertyTextExpression();
                 String result = subExpr.getFinalText(vc, property.getValue(vc));
-                if (subExpr.dynamicReplacementsCount == 0)
+                if(subExpr.dynamicReplacementsCount == 0)
                     property.setFinalValue(result);
                 else
                     dynamicReplacementsCount += subExpr.dynamicReplacementsCount;
 
                 return result;
             }
-            else if (replaceToken.startsWith("/"))
+            else if(replaceToken.startsWith("/"))
             {
                 String[] items = StringUtils.split(replaceToken, "/");
                 Configuration alternateConfig = owner.getManager().getConfiguration(items[0]);
-                if (alternateConfig != null)
+                if(alternateConfig != null)
                 {
                     property = alternateConfig.findProperty(items[1]);
-                    if (property != null)
+                    if(property != null)
                     {
                         PropertyTextExpression subExpr = new PropertyTextExpression();
                         String result = subExpr.getFinalText(vc, property.getValue(vc));
-                        if (subExpr.dynamicReplacementsCount == 0)
+                        if(subExpr.dynamicReplacementsCount == 0)
                             property.setFinalValue(result);
                         else
                             dynamicReplacementsCount += subExpr.dynamicReplacementsCount;
@@ -184,7 +184,7 @@ public class Property
 
     public void setValue(String expr)
     {
-        if (expr.indexOf(ExpressionText.EXPRESSION_REPLACEMENT_PREFIX) >= 0)
+        if(expr.indexOf(ExpressionText.EXPRESSION_REPLACEMENT_PREFIX) >= 0)
             setDynamicValue(expr);
         else
             setFinalValue(expr);
@@ -202,7 +202,7 @@ public class Property
 
     protected String getValue(ValueContext vc)
     {
-        if (!isDynamic()) return value;
+        if(!isDynamic()) return value;
 
         PropertyTextExpression expr = new PropertyTextExpression();
         return expr.getFinalText(vc, value);
@@ -230,18 +230,18 @@ public class Property
 
     public void addProperty(Property property)
     {
-        if (property.getOwner() == null)
+        if(property.getOwner() == null)
             property.setOwner(getOwner());
         setParent(this);
 
-        if (childrenList == null)
+        if(childrenList == null)
         {
             childrenList = new ArrayList();
             childrenMap = new HashMap();
         }
 
         childrenList.add(property);
-        if (property.getName() != null)
+        if(property.getName() != null)
             childrenMap.put(property.getName(), property);
 
         property.getOwner().registerProperty(property);

@@ -235,8 +235,6 @@ public interface DatabasePolicy
 
     /**
      * Return the select statement generator for the given query definition select instance.
-     *
-     * @param queryDefnSelect
      */
     public QueryDefnSelectStmtGenerator createSelectStatementGenerator(QueryDefnSelect queryDefnSelect);
 

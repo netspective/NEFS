@@ -91,7 +91,7 @@ public class BasicContentHandler implements ContentHandler
 
     public Delimiter[] getDelimiters()
     {
-        if (delimiters == null)
+        if(delimiters == null)
         {
             delimiters = new Delimiter[]
             {

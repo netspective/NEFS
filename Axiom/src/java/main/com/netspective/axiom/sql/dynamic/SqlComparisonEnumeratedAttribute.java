@@ -67,7 +67,7 @@ public class SqlComparisonEnumeratedAttribute extends XdmEnumeratedAttribute
     {
         String[] staticIds = SqlComparisonFactory.getComparisonIdentifiers();
         values = new String[staticIds.length + 1];
-        for(int i = 0; i< staticIds.length; i++)
+        for(int i = 0; i < staticIds.length; i++)
             values[i] = staticIds[i];
         values[staticIds.length] = DynamicComparison.DYNAMIC_ID;
     }

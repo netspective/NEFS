@@ -54,6 +54,7 @@ public interface Row extends DatabasePolicy.RowInsertListener, DatabasePolicy.Ro
 
     /**
      * Conduct validation and return the resulting validation context.
+     *
      * @param vc optional validation context (if it's null, one will be created)
      */
     public ValidationContext getValidationResult(ValidationContext vc);

@@ -48,14 +48,14 @@ public class LongIntegerColumn extends BasicColumn
 
         public void setValue(Object value)
         {
-            if (value != null && !value.getClass().isAssignableFrom(Long.class))
+            if(value != null && !value.getClass().isAssignableFrom(Long.class))
             {
                 try
                 {
                     // try and get the text representation and assign it instead
                     setTextValue(value.toString());
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
                 }

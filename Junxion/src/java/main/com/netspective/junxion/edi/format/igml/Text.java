@@ -99,7 +99,7 @@ public class Text
 
     public void addText(String text)
     {
-        if (this.text != null)
+        if(this.text != null)
             this.text += text;
         else
             this.text = text;

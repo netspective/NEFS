@@ -120,7 +120,7 @@ public class SystemProperty implements XmlDataModelSchema.ConstructionFinalizeLi
 
     public void register()
     {
-        if (file != null)
+        if(file != null)
         {
             Properties properties = new Properties();
             try
@@ -129,13 +129,13 @@ public class SystemProperty implements XmlDataModelSchema.ConstructionFinalizeLi
                 properties.load(is);
                 is.close();
             }
-            catch (IOException e)
+            catch(IOException e)
             {
                 throw new NestableRuntimeException(e);
             }
             System.setProperties(properties);
         }
-        else if (resource != null)
+        else if(resource != null)
         {
             Resource res = new Resource(resourceRelativeToClass, resource);
             Properties properties = new Properties();
@@ -145,7 +145,7 @@ public class SystemProperty implements XmlDataModelSchema.ConstructionFinalizeLi
                 properties.load(is);
                 is.close();
             }
-            catch (IOException e)
+            catch(IOException e)
             {
                 throw new NestableRuntimeException(e);
             }

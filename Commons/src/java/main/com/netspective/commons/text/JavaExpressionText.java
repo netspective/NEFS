@@ -83,7 +83,7 @@ public class JavaExpressionText extends ExpressionText
 
     protected String getReplacement(ValueContext vc, String entireText, String replaceToken) throws ExpressionTextException
     {
-        if (vc != null)
+        if(vc != null)
             jexlContext.getVars().put(VARNAME_ACTIVE_VALUE_CONTEXT, vc);
 
         Object o = null;
@@ -92,7 +92,7 @@ public class JavaExpressionText extends ExpressionText
         {
             e = ExpressionFactory.createExpression(replaceToken);
         }
-        catch (Exception e1)
+        catch(Exception e1)
         {
             throw new ExpressionTextException("<" + JavaExpressionText.class + " creation exception: '" + replaceToken + "' in '" + entireText + "'. Scope variables: " + jexlContext.getVars(), e1);
         }
@@ -101,12 +101,12 @@ public class JavaExpressionText extends ExpressionText
         {
             o = e.evaluate(jexlContext);
         }
-        catch (Exception e1)
+        catch(Exception e1)
         {
             throw new ExpressionTextException("<" + JavaExpressionText.class + " evaluation exception: '" + replaceToken + "' in '" + entireText + "'. Scope variables: " + jexlContext.getVars(), e1);
         }
 
-        if (o != null)
+        if(o != null)
             return o.toString();
         else
             throw new ExpressionTextException("<" + JavaExpressionText.class + " NULL value exception: '" + replaceToken + "' in '" + entireText + "'. Scope variables: " + jexlContext.getVars());

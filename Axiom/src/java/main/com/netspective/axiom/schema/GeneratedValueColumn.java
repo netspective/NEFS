@@ -41,7 +41,10 @@ import com.netspective.axiom.ConnectionContext;
 public interface GeneratedValueColumn
 {
     public boolean retainValueInInsertDml(ConnectionContext cc) throws NamingException, SQLException;
+
     public boolean retainValueInUpdateDml(ConnectionContext cc) throws NamingException, SQLException;
+
     public Object handlePreDmlExecute(ConnectionContext cc) throws NamingException, SQLException;
+
     public Object handlePostDmlExecute(ConnectionContext cc, Object valueFromPreDmlExecute) throws NamingException, SQLException;
 }

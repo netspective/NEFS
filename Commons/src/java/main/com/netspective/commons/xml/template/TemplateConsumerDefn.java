@@ -57,9 +57,9 @@ public class TemplateConsumerDefn implements Cloneable
         this.nameSpaceId = nameSpaceId;
         this.templateRefAttrName = templateRefAttrName;
         this.attrNamesToSetBeforeConsuming = setAttribsFirst;
-        if (setAttribsFirst != null)
+        if(setAttribsFirst != null)
         {
-            for (int i = 0; i < setAttribsFirst.length; i++)
+            for(int i = 0; i < setAttribsFirst.length; i++)
                 attrNamesToSetBeforeConsumingSet.add(setAttribsFirst[i]);
         }
     }
@@ -92,16 +92,16 @@ public class TemplateConsumerDefn implements Cloneable
     public String getAlternateClassName(TemplateContentHandler contentHandler, List templates, String elementName, Attributes attributes) throws SAXException
     {
         String alternateClassName = attributes.getValue(NodeIdentifiers.ATTRNAME_ALTERNATE_CLASS_NAME);
-        if (alternateClassName != null)
+        if(alternateClassName != null)
             return alternateClassName;
 
-        if (templates != null)
+        if(templates != null)
         {
-            for (int i = 0; i < templates.size(); i++)
+            for(int i = 0; i < templates.size(); i++)
             {
                 Template template = (Template) templates.get(i);
                 String tmplAlternateClassName = template.getAlternateClassName();
-                if (tmplAlternateClassName != null)
+                if(tmplAlternateClassName != null)
                     alternateClassName = tmplAlternateClassName;
             }
         }
@@ -114,19 +114,19 @@ public class TemplateConsumerDefn implements Cloneable
         List templates = null;
 
         String templateNames = attributes.getValue(getTemplateRefAttrName());
-        if (templateNames != null && templateNames.length() > 0)
+        if(templateNames != null && templateNames.length() > 0)
         {
             Map consumerTemplates = contentHandler.getTemplatCatalog().getConsumerTemplates(this);
-            if (consumerTemplates == null)
+            if(consumerTemplates == null)
                 throw new SAXException("Element '" + elementName + "' has no templates in namespace '" + getNameSpaceId() + "'.");
 
             templates = new ArrayList();
             StringTokenizer st = new StringTokenizer(templateNames, ",");
-            while (st.hasMoreTokens())
+            while(st.hasMoreTokens())
             {
                 String templateName = st.nextToken().trim();
                 Template template = (Template) consumerTemplates.get(templateName);
-                if (template == null)
+                if(template == null)
                     throw new SAXException("Template '" + templateName + "' for element '" + elementName + "' in namespace '" + getNameSpaceId() + "'. was not found in the active document. Available: " + consumerTemplates.keySet());
                 templates.add(template);
             }
@@ -138,7 +138,7 @@ public class TemplateConsumerDefn implements Cloneable
     public Map consume(TemplateContentHandler contentHandler, List templates, String elementName, Attributes attributes) throws SAXException
     {
         Map paramValues = new HashMap();
-        for (int i = 0; i < templates.size(); i++)
+        for(int i = 0; i < templates.size(); i++)
         {
             Template template = (Template) templates.get(i);
             TemplateApplyContext tac = template.createApplyContext(contentHandler, elementName, attributes);

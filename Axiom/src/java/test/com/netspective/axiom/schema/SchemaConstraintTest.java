@@ -68,7 +68,7 @@ public class SchemaConstraintTest extends TestCase
         super.setUp();
 
         component =
-                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SchemaConstraintTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+        (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SchemaConstraintTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
         assertNotNull(component);
 
         schema = component.getManager().getSchema("local");
@@ -132,7 +132,7 @@ public class SchemaConstraintTest extends TestCase
             fKey.getReferencedRows(cc, table.createRow());
             fail();
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             // This is good
         }
@@ -165,7 +165,7 @@ public class SchemaConstraintTest extends TestCase
             rows = pfKey.getChildRowsByParentRow(cc, table4.createRow());
             fail();
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             // Thi is ok
         }
@@ -175,7 +175,7 @@ public class SchemaConstraintTest extends TestCase
             "abc"
         }, false);
         ResultSet resultSet = result.getResultSet();
-        if (resultSet.next())
+        if(resultSet.next())
             row.getColumnValues().populateValues(resultSet, 1);
 
         rows = pfKey.getChildRowsByParentRow(cc, row);

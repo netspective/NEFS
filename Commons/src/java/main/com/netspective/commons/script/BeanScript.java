@@ -130,7 +130,7 @@ public class BeanScript implements Script
 
     public void addText(String text)
     {
-        if (script == null)
+        if(script == null)
             script = text;
         else
             script += text;
@@ -139,7 +139,7 @@ public class BeanScript implements Script
     public Object callFunction(ScriptContext scriptContext, Object className, String methodName, Object[] params) throws ScriptException
     {
         DefaultScriptContext dsc = (DefaultScriptContext) scriptContext;
-        if (!dsc.isExecuted())
+        if(!dsc.isExecuted())
             execute(scriptContext);
 
         BSFEngine bsfEngine = scriptContext.getBSFEngine();
@@ -147,7 +147,7 @@ public class BeanScript implements Script
         {
             return bsfEngine.call(className, methodName, params);
         }
-        catch (BSFException e)
+        catch(BSFException e)
         {
             log.error("Error executing script: " + getScript() + " language " + getLanguage(), e);
             throw new ScriptException(e);
@@ -161,7 +161,7 @@ public class BeanScript implements Script
         {
             return bsfEngine.eval("(java)", 1, 1, getScript());
         }
-        catch (BSFException e)
+        catch(BSFException e)
         {
             log.error("Error executing script: " + getScript() + " language " + getLanguage(), e);
             throw new ScriptException(e);
@@ -177,7 +177,7 @@ public class BeanScript implements Script
             bsfEngine.exec("(java)", 1, 1, getScript());
             dsc.setExecuted(true);
         }
-        catch (BSFException e)
+        catch(BSFException e)
         {
             log.error("Error executing script: " + getScript() + " language " + getLanguage(), e);
             throw new ScriptException(e);

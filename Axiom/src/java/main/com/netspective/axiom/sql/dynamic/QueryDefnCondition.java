@@ -48,8 +48,8 @@ public class QueryDefnCondition
 {
     static public final int CONNECT_AND = 0;
     static public final int CONNECT_OR = 1;
-    static public final String[] CONNECTOR_TOKENS = new String[] {"and", "or"};
-    static public final String[] CONNECTOR_SQL = new String[] {" and ", " or "};
+    static public final String[] CONNECTOR_TOKENS = new String[]{"and", "or"};
+    static public final String[] CONNECTOR_SQL = new String[]{" and ", " or "};
 
     private QueryDefinition owner;
     private QueryDefnCondition parentCondition;
@@ -114,13 +114,12 @@ public class QueryDefnCondition
      * using &lt;condition&gt; tag.
      *
      * @param fieldName name of the conditional field
-     * @throws QueryDefnFieldNotFoundException
      */
     public void setField(String fieldName) throws QueryDefnFieldNotFoundException
     {
         field = owner.getFields().get(fieldName);
         if(field == null)
-            throw new QueryDefnFieldNotFoundException(owner, fieldName, "Field name '"+ fieldName +"' not found in condition.");
+            throw new QueryDefnFieldNotFoundException(owner, fieldName, "Field name '" + fieldName + "' not found in condition.");
     }
 
     public SqlComparison getComparison()
@@ -133,14 +132,16 @@ public class QueryDefnCondition
      * gte-date, greater-than-equal and ends-with.
      *
      * @param attr comparison operator
-     * @throws QueryDefnSqlComparisonNotFoundException when the given value does not
-     *                                                 correspond to a valid operator
+     *
+     * @throws QueryDefnSqlComparisonNotFoundException
+     *          when the given value does not
+     *          correspond to a valid operator
      */
     public void setComparison(SqlComparisonEnumeratedAttribute attr) throws QueryDefnSqlComparisonNotFoundException
     {
         comparison = SqlComparisonFactory.getComparison(attr.getValue());
         if(comparison == null)
-            throw new QueryDefnSqlComparisonNotFoundException(owner, attr.getValue(), "SQL comparison '"+ attr.getValue() +"' not found.");
+            throw new QueryDefnSqlComparisonNotFoundException(owner, attr.getValue(), "SQL comparison '" + attr.getValue() + "' not found.");
         setJoinOnly(false);
     }
 
@@ -207,15 +208,15 @@ public class QueryDefnCondition
     /**
      * Sets whether or not to allow <code>NULL</code> as a valid bind parameter value.
      *
-     * @param allowNull   If set to <code>false</code>, the select generated will
-     *                    omit the field if the corresponding dialog field happens
-     *                    to be empty.  Otherwise, it keeps the field in the generated
-     *                    sql (with NULL value) if the corresponding dialog field
-     *                    happens to be empty.
+     * @param allowNull If set to <code>false</code>, the select generated will
+     *                  omit the field if the corresponding dialog field happens
+     *                  to be empty.  Otherwise, it keeps the field in the generated
+     *                  sql (with NULL value) if the corresponding dialog field
+     *                  happens to be empty.
      */
     public void setAllowNull(boolean allowNull)
     {
-        removeIfValueNull = ! allowNull;
+        removeIfValueNull = !allowNull;
     }
 
     public String getWhereCondExpr(ValueContext vc, QueryDefnSelect select, QueryDefnSelectStmtGenerator stmt) throws QueryDefinitionException
@@ -260,7 +261,7 @@ public class QueryDefnCondition
     public boolean useCondition(QueryDefnSelectStmtGenerator stmtGen, ValueContext vc, QueryDefnConditions usedConditions) throws QueryDefinitionException
     {
         // if we don't allow nulls, always use the condition
-        if(! removeIfValueNull)
+        if(!removeIfValueNull)
             return true;
 
         if(nestedConditions != null)

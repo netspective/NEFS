@@ -174,16 +174,16 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
 
     public Map getFlagDefnsByName()
     {
-        if (flagDefnsByName == null)
+        if(flagDefnsByName == null)
         {
             flagDefnsByName = new HashMap();
             flagSetterXmlNodeNames = new HashMap();
 
             FlagDefn[] flagDefns = getFlagsDefns();
-            for (int i = 0; i < flagDefns.length; i++)
+            for(int i = 0; i < flagDefns.length; i++)
             {
                 FlagDefn flagDefn = flagDefns[i];
-                if (flagDefns == null)
+                if(flagDefns == null)
                     throw new RuntimeException("Flags " + i + " in " + this.getClass().getName() + " is null");
 
                 String flagName = flagDefn.getName();
@@ -194,7 +194,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
                 flagDefnsByName.put(javaId, flagDefn);
                 flagDefnsByName.put(xmlNodeName, flagDefn);
 
-                if (flagDefn.access == ACCESS_XDM)
+                if(flagDefn.access == ACCESS_XDM)
                     flagSetterXmlNodeNames.put(xmlNodeName, flagDefn);
             }
         }
@@ -204,7 +204,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
 
     public Map getFlagSetterXmlNodeNames()
     {
-        if (flagSetterXmlNodeNames == null)
+        if(flagSetterXmlNodeNames == null)
             getFlagDefnsByName();
 
         return flagSetterXmlNodeNames;
@@ -220,7 +220,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
         {
             return (XdmBitmaskedFlagsAttribute) super.clone();
         }
-        catch (CloneNotSupportedException e)
+        catch(CloneNotSupportedException e)
         {
             log.error("Error cloning flags", e);
             return null;
@@ -234,10 +234,10 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
 
     public void setValue(String value, boolean clearFirst)
     {
-        if (clearFirst)
+        if(clearFirst)
         {
             this.flags = 0;
-            if (value == null || value.length() == 0)
+            if(value == null || value.length() == 0)
             {
                 flagsChanged();
                 return;
@@ -246,34 +246,34 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
 
         String[] flagNames = TextUtils.getInstance().split(value, flagDelimiter, true);
         FlagDefn[] flagDefns = getFlagsDefns();
-        for (int i = 0; i < flagNames.length; i++)
+        for(int i = 0; i < flagNames.length; i++)
         {
             boolean set = true;
             String flagName = flagNames[i];
-            if (flagName.charAt(0) == '~')
+            if(flagName.charAt(0) == '~')
             {
                 set = false;
                 flagName = flagName.substring(1);
             }
 
             boolean found = false;
-            for (int j = 0; j < flagDefns.length; j++)
+            for(int j = 0; j < flagDefns.length; j++)
             {
                 FlagDefn flagDefn = flagDefns[j];
-                if (flagDefn.name.equalsIgnoreCase(flagName))
+                if(flagDefn.name.equalsIgnoreCase(flagName))
                 {
-                    if (flagDefn.access == ACCESS_PRIVATE)
+                    if(flagDefn.access == ACCESS_PRIVATE)
                         throw new RuntimeException("Attempting to set ACCESS_PRIVATE flag '" + flagDefn.name + "' from outside Java.");
 
                     found = true;
-                    if (set)
+                    if(set)
                         this.flags |= flagDefn.mask;
                     else
                         this.flags &= ~flagDefn.mask;
                 }
             }
 
-            if (!found)
+            if(!found)
                 throw new RuntimeException("Invalid " + this.getClass().getName() + " value: " + value + " (flag '" + flagName + "' not found)");
         }
 
@@ -291,11 +291,11 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
         {
             setValue(value);
         }
-        catch (RuntimeException e)
+        catch(RuntimeException e)
         {
             UnsupportedBitmaskedFlagsAttributeValueException bfae = new UnsupportedBitmaskedFlagsAttributeValueException(pc, this, element, attribute, value);
             pc.addError(bfae);
-            if (pc.isThrowErrorException())
+            if(pc.isThrowErrorException())
                 throw e;
         }
     }
@@ -324,13 +324,13 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
 
     public void updateFlag(long flag, boolean set)
     {
-        if (set) setFlag(flag); else clearFlag(flag);
+        if(set) setFlag(flag); else clearFlag(flag);
     }
 
     public boolean updateFlag(String flagName, boolean set)
     {
         FlagDefn flagDefn = (FlagDefn) getFlagDefnsByName().get(flagName);
-        if (flagDefn == null)
+        if(flagDefn == null)
             return false;
         else
         {
@@ -342,7 +342,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
     public void copy(XdmBitmaskedFlagsAttribute flags)
     {
         FlagDefn[] flagDefns = flags.getFlagsDefns();
-        for (int i = 0; i < flagDefns.length; i++)
+        for(int i = 0; i < flagDefns.length; i++)
         {
             int copyMask = flagDefns[i].mask;
             updateFlag(copyMask, flags.flagIsSet(copyMask));
@@ -358,10 +358,10 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
     public void inherit(XdmBitmaskedFlagsAttribute flags, int inherit)
     {
         FlagDefn[] flagDefns = flags.getFlagsDefns();
-        for (int i = 0; i < flagDefns.length; i++)
+        for(int i = 0; i < flagDefns.length; i++)
         {
             int copyMask = flagDefns[i].mask;
-            if ((copyMask & inherit) != 0)
+            if((copyMask & inherit) != 0)
                 updateFlag(copyMask, flags.flagIsSet(copyMask));
         }
     }
@@ -369,29 +369,29 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
     public String[] getFlagNames()
     {
         FlagDefn[] flagDefns = getFlagsDefns();
-        if (flagDefns == null)
+        if(flagDefns == null)
             return new String[]{this.getClass().getName() + ".getFlagsDefns() is NULL"};
 
         String[] result = new String[flagDefns.length];
-        for (int i = 0; i < flagDefns.length; i++)
+        for(int i = 0; i < flagDefns.length; i++)
             result[i] = flagDefns[i] != null
-                    ? flagDefns[i].getName() : (this.getClass().getName() + ".getFlagsDefns()[" + i + "] is NULL");
+                        ? flagDefns[i].getName() : (this.getClass().getName() + ".getFlagsDefns()[" + i + "] is NULL");
         return result;
     }
 
     public String[] getFlagNamesWithXdmAccess()
     {
         FlagDefn[] flagDefns = getFlagsDefns();
-        if (flagDefns == null)
+        if(flagDefns == null)
             return new String[]{this.getClass().getName() + ".getFlagsDefns() is NULL"};
 
         List result = new ArrayList();
-        for (int i = 0; i < flagDefns.length; i++)
+        for(int i = 0; i < flagDefns.length; i++)
         {
-            if (flagDefns[i] != null && flagDefns[i].getAccess() != ACCESS_XDM)
+            if(flagDefns[i] != null && flagDefns[i].getAccess() != ACCESS_XDM)
                 continue;
             result.add(flagDefns[i] != null
-                    ? flagDefns[i].getName() : (this.getClass().getName() + ".getFlagsDefns()[" + i + "] is NULL"));
+                       ? flagDefns[i].getName() : (this.getClass().getName() + ".getFlagsDefns()[" + i + "] is NULL"));
         }
         return (String[]) result.toArray(new String[result.size()]);
     }
@@ -401,13 +401,13 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializa
         StringBuffer text = new StringBuffer();
 
         FlagDefn[] flagDefns = getFlagsDefns();
-        for (int i = 0; i < flagDefns.length; i++)
+        for(int i = 0; i < flagDefns.length; i++)
         {
-            if (flagDefns[i] != null)
+            if(flagDefns[i] != null)
             {
-                if ((flags & flagDefns[i].mask) != 0)
+                if((flags & flagDefns[i].mask) != 0)
                 {
-                    if (text.length() > 0)
+                    if(text.length() > 0)
                         text.append(" " + flagDelimiter + " ");
                     text.append(flagDefns[i].getName());
                 }

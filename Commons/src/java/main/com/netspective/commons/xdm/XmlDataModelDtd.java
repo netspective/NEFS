@@ -76,7 +76,7 @@ public class XmlDataModelDtd
             printHead(out, nestedElements.keySet().iterator());
 
             Iterator elements = nestedElements.keySet().iterator();
-            while (elements.hasNext())
+            while(elements.hasNext())
             {
                 String elementName = (String) elements.next();
                 printElementDecl(out, model, schema, elementName, (Class) nestedElements.get(elementName));
@@ -86,7 +86,7 @@ public class XmlDataModelDtd
         }
         finally
         {
-            if (out != null) out.close();
+            if(out != null) out.close();
             visitedElements.clear();
         }
     }
@@ -98,7 +98,7 @@ public class XmlDataModelDtd
         {
             out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(output), "UTF8"));
         }
-        catch (UnsupportedEncodingException ue)
+        catch(UnsupportedEncodingException ue)
         {
             /*
              * Plain impossible with UTF8, see
@@ -130,10 +130,10 @@ public class XmlDataModelDtd
         out.println("<!ENTITY % boolean \"(true | false | on | off | yes | no)\">");
         out.print("<!ENTITY % elements \"");
         boolean first = true;
-        while (elements.hasNext())
+        while(elements.hasNext())
         {
             String elementName = (String) elements.next();
-            if (!first)
+            if(!first)
             {
                 out.print(" | ");
             }
@@ -166,10 +166,10 @@ public class XmlDataModelDtd
     private void printElementDecl(PrintWriter out, XmlDataModel model, XmlDataModelSchema parentSchema, String name, Class element) throws DataModelException
     {
         TemplateProducers templateProducers = null;
-        if (parentSchema instanceof TemplateProducerParent)
+        if(parentSchema instanceof TemplateProducerParent)
             templateProducers = ((TemplateProducerParent) parentSchema).getTemplateProducers();
 
-        if (visitedElements.containsKey(name))
+        if(visitedElements.containsKey(name))
         {
             return;
         }
@@ -183,23 +183,23 @@ public class XmlDataModelDtd
         sb.append(name).append(" ");
 
         List list = new ArrayList();
-        if (schema.supportsCharacters())
+        if(schema.supportsCharacters())
         {
             list.add("#PCDATA");
         }
 
         Iterator iterator = schema.getNestedElements().keySet().iterator();
-        while (iterator.hasNext())
+        while(iterator.hasNext())
         {
             String nestedName = (String) iterator.next();
-            if (schema.getOptions().ignoreNestedElement(nestedName))
+            if(schema.getOptions().ignoreNestedElement(nestedName))
                 continue;
             list.add(nestedName);
         }
 
         list.add(ELEMNAME_INCLUDE);
 
-        if (list.isEmpty())
+        if(list.isEmpty())
         {
             sb.append("EMPTY");
         }
@@ -207,28 +207,28 @@ public class XmlDataModelDtd
         {
             sb.append("(");
             final int count = list.size();
-            for (int i = 0; i < count; i++)
+            for(int i = 0; i < count; i++)
             {
-                if (i != 0)
+                if(i != 0)
                     sb.append(" | ");
                 sb.append(list.get(i));
             }
 
             boolean first = count > 0 ? false : true;
 
-            if (templateProducers != null)
+            if(templateProducers != null)
             {
                 iterator = templateProducers.getElementNames().iterator();
-                while (iterator.hasNext())
+                while(iterator.hasNext())
                 {
-                    if (!first)
+                    if(!first)
                         sb.append(" | ");
                     sb.append(iterator.next());
                 }
             }
 
             sb.append(")");
-            if (count > 1 || !list.get(0).equals("#PCDATA"))
+            if(count > 1 || !list.get(0).equals("#PCDATA"))
             {
                 sb.append("*");
             }
@@ -236,7 +236,7 @@ public class XmlDataModelDtd
         sb.append(">");
 
         XmlDataModelSchema.PropertyNames elemNames = (XmlDataModelSchema.PropertyNames) parentPropertyNames.get(name);
-        if (!elemNames.isPrimaryName(name))
+        if(!elemNames.isPrimaryName(name))
             sb.append(" <!-- alias for '" + elemNames.getPrimaryName() + "' element -->");
 
         out.println(sb);
@@ -245,45 +245,45 @@ public class XmlDataModelDtd
         sb.append("<!ATTLIST ").append(name);
         sb.append(lSep).append("          class CDATA \"" + element.getName() + "\"");
 
-        if (model instanceof TemplateConsumer)
+        if(model instanceof TemplateConsumer)
         {
             TemplateConsumerDefn tcd = ((TemplateConsumer) model).getTemplateConsumerDefn();
             sb.append(lSep).append("          " + tcd.getTemplateRefAttrName() + " CDATA #IMPLIED <!-- template consumer namespace: " + tcd.getNameSpaceId() + " -->");
         }
 
         iterator = schema.getAttributes().iterator();
-        while (iterator.hasNext())
+        while(iterator.hasNext())
         {
             String attrName = (String) iterator.next();
-            if (schema.getOptions().ignoreAttribute(attrName))
+            if(schema.getOptions().ignoreAttribute(attrName))
                 continue;
 
             sb.append(lSep).append("          ").append(attrName).append(" ");
             Class type = schema.getAttributeType(attrName);
-            if (type.equals(Boolean.class) || type.equals(Boolean.TYPE))
+            if(type.equals(Boolean.class) || type.equals(Boolean.TYPE))
             {
                 sb.append(BOOLEAN).append(" ");
             }
-            else if (XdmEnumeratedAttribute.class.isAssignableFrom(type))
+            else if(XdmEnumeratedAttribute.class.isAssignableFrom(type))
             {
                 try
                 {
                     XdmEnumeratedAttribute ea = (XdmEnumeratedAttribute) type.newInstance();
                     String[] values = ea.getValues();
-                    if (values == null || values.length == 0)
+                    if(values == null || values.length == 0)
                     {
                         sb.append("CDATA ");
                     }
-                    else if (!areNmtokens(values))
+                    else if(!areNmtokens(values))
                     {
                         sb.append("CDATA (NOT VALID XML-NMTOKENS) ");
                     }
                     else
                     {
                         sb.append("(");
-                        for (int i = 0; i < values.length; i++)
+                        for(int i = 0; i < values.length; i++)
                         {
-                            if (i != 0)
+                            if(i != 0)
                             {
                                 sb.append(" | ");
                             }
@@ -292,11 +292,11 @@ public class XmlDataModelDtd
                         sb.append(") ");
                     }
                 }
-                catch (InstantiationException ie)
+                catch(InstantiationException ie)
                 {
                     sb.append("CDATA (" + ie.getMessage() + ") ");
                 }
-                catch (IllegalAccessException iae)
+                catch(IllegalAccessException iae)
                 {
                     sb.append("CDATA (" + iae.getMessage() + ") ");
                 }
@@ -307,7 +307,7 @@ public class XmlDataModelDtd
             }
             sb.append("#IMPLIED <!-- ");
             XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
-            if (attrNames != null && !attrNames.isPrimaryName(attrName))
+            if(attrNames != null && !attrNames.isPrimaryName(attrName))
                 sb.append("alias for '" + attrNames.getPrimaryName() + "' attribute, ");
             sb.append(type.getName());
             sb.append(" -->");
@@ -317,28 +317,28 @@ public class XmlDataModelDtd
         out.println(sb);
 
         final int count = list.size();
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
             String nestedName = (String) list.get(i);
-            if (schema.getOptions().ignoreNestedElement(nestedName))
+            if(schema.getOptions().ignoreNestedElement(nestedName))
                 continue;
 
-            if (!"#PCDATA".equals(nestedName)
-                    && !ELEMENTS.equals(nestedName)
-                    && !ELEMNAME_INCLUDE.equals(nestedName))
+            if(!"#PCDATA".equals(nestedName)
+               && !ELEMENTS.equals(nestedName)
+               && !ELEMNAME_INCLUDE.equals(nestedName))
             {
                 printElementDecl(out, model, schema, nestedName, schema.getElementType(nestedName));
             }
         }
 
-        if (templateProducers != null)
+        if(templateProducers != null)
         {
             iterator = templateProducers.getElementNames().iterator();
-            while (iterator.hasNext())
+            while(iterator.hasNext())
             {
                 String producerName = (String) iterator.next();
                 TemplateProducer tp = templateProducers.get(producerName);
-                if (visitedProducers.contains(tp))
+                if(visitedProducers.contains(tp))
                     continue;
 
                 visitedProducers.add(tp);
@@ -366,13 +366,13 @@ public class XmlDataModelDtd
     protected boolean isNmtoken(String s)
     {
         final int length = s.length();
-        for (int i = 0; i < length; i++)
+        for(int i = 0; i < length; i++)
         {
             char c = s.charAt(i);
             // XXX - we are ommitting CombiningChar and Extender here
-            if (!Character.isLetterOrDigit(c) &&
-                    c != '.' && c != '-' &&
-                    c != '_' && c != ':')
+            if(!Character.isLetterOrDigit(c) &&
+               c != '.' && c != '-' &&
+               c != '_' && c != ':')
             {
                 return false;
             }
@@ -388,9 +388,9 @@ public class XmlDataModelDtd
      */
     protected boolean areNmtokens(String[] s)
     {
-        for (int i = 0; i < s.length; i++)
+        for(int i = 0; i < s.length; i++)
         {
-            if (!isNmtoken(s[i]))
+            if(!isNmtoken(s[i]))
             {
                 return false;
             }

@@ -90,7 +90,7 @@ public class SchemaColumnsTest extends TestCase
         super.setUp();
 
         component =
-                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SchemaColumnsTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+        (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SchemaColumnsTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
         assertNotNull(component);
 
         schema = component.getManager().getSchema("local");
@@ -150,7 +150,7 @@ public class SchemaColumnsTest extends TestCase
             floatColValue.setTextValue("abc");
             fail();
         }
-        catch (ValueException e)
+        catch(ValueException e)
         {
             //This is good
         }
@@ -168,7 +168,7 @@ public class SchemaColumnsTest extends TestCase
             intColValue.setValue(new Float(0.0));
             fail();
         }
-        catch (ClassCastException e)
+        catch(ClassCastException e)
         {
             //This is good
         }
@@ -178,7 +178,7 @@ public class SchemaColumnsTest extends TestCase
             intColValue.setTextValue("abc");
             fail();
         }
-        catch (ValueException e)
+        catch(ValueException e)
         {
             //This is good
         }
@@ -200,7 +200,7 @@ public class SchemaColumnsTest extends TestCase
             intColValue.setValue(new Float(0.0));
             fail();
         }
-        catch (ClassCastException e)
+        catch(ClassCastException e)
         {
             //This is good
         }
@@ -210,7 +210,7 @@ public class SchemaColumnsTest extends TestCase
             intColValue.setTextValue("abc");
             fail();
         }
-        catch (ValueException e)
+        catch(ValueException e)
         {
             //This is good
         }
@@ -228,7 +228,7 @@ public class SchemaColumnsTest extends TestCase
             intColValue.setValue(new String(""));
             fail();
         }
-        catch (ClassCastException e)
+        catch(ClassCastException e)
         {
             //This is good
         }
@@ -238,7 +238,7 @@ public class SchemaColumnsTest extends TestCase
             intColValue.setTextValue("abc");
             fail();
         }
-        catch (ValueException e)
+        catch(ValueException e)
         {
             //This is good
         }
@@ -262,7 +262,7 @@ public class SchemaColumnsTest extends TestCase
             //dateVal = myFormat.parse("Jan 1, 2003");
             //M/d/yy h:mm a  --  MMM d, yyyy
         }
-        catch (ParseException e)
+        catch(ParseException e)
         {
             fail(); // This should never happen because is depends on the hardcoded string just above.
         }
@@ -284,7 +284,7 @@ public class SchemaColumnsTest extends TestCase
             colValue.setTextValue("abc");
             fail();
         }
-        catch (ValueException e)
+        catch(ValueException e)
         {
             //This is good
         }
@@ -330,7 +330,7 @@ public class SchemaColumnsTest extends TestCase
         Row row = table.createRow();
         ColumnValues values = row.getColumnValues();
 
-        if (result.next())
+        if(result.next())
             values.populateValues(result, 0);
 
         assertEquals(values.getByName("column_a").getTextValue(), "def");
@@ -382,7 +382,7 @@ public class SchemaColumnsTest extends TestCase
         Row row = table.createRow();
         ColumnValues values = row.getColumnValues();
 
-        if (result.next())
+        if(result.next())
             values.populateValues(result, 0);
 
         //TODO: Somehow data is deleted when running this along with the previous test, the DB is supposed to get recreated
@@ -420,7 +420,7 @@ public class SchemaColumnsTest extends TestCase
             colValue.setTextValue("AAA");
             fail();
         }
-        catch (EnumerationIdRefColumn.InvalidEnumerationValueException e)
+        catch(EnumerationIdRefColumn.InvalidEnumerationValueException e)
         {
             assertEquals(e.getTable().getName(), "Enum_set_Lookup");
             //This is good
@@ -431,7 +431,7 @@ public class SchemaColumnsTest extends TestCase
             colValue.setValue("9");
             fail();
         }
-        catch (EnumerationIdRefColumn.InvalidEnumerationValueException e)
+        catch(EnumerationIdRefColumn.InvalidEnumerationValueException e)
         {
             //This is good
             assertEquals(e.getTable().getName(), "Enum_set_Lookup");
@@ -443,7 +443,7 @@ public class SchemaColumnsTest extends TestCase
             colValue.setValue(new Integer(9));
             fail();
         }
-        catch (EnumerationIdRefColumn.InvalidEnumerationValueException e)
+        catch(EnumerationIdRefColumn.InvalidEnumerationValueException e)
         {
             //This is good
             assertEquals(e.getTable().getName(), "Enum_set_Lookup");
@@ -504,15 +504,15 @@ public class SchemaColumnsTest extends TestCase
             floatColValue.getReferencedForeignKeyRow(cc);
             fail();
         }
-        catch (NamingException e)
+        catch(NamingException e)
         {
             fail();
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             fail();
         }
-        catch (RuntimeException e)
+        catch(RuntimeException e)
         {
             //This is good.
         }
@@ -522,15 +522,15 @@ public class SchemaColumnsTest extends TestCase
             floatColValue.getReferencedForeignKeyRows(cc);
             fail();
         }
-        catch (NamingException e)
+        catch(NamingException e)
         {
             fail();
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             fail();
         }
-        catch (RuntimeException e)
+        catch(RuntimeException e)
         {
             //This is good.
         }
@@ -562,7 +562,7 @@ public class SchemaColumnsTest extends TestCase
             cols.getSole();
             fail();
         }
-        catch (RuntimeException e)
+        catch(RuntimeException e)
         {
             //This is good
         }

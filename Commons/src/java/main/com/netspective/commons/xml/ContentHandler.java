@@ -43,8 +43,6 @@ public interface ContentHandler extends org.xml.sax.ContentHandler
      * Called by characters() method to handle a string of text instead of a buffer of a characters
      *
      * @param text The text string
-     *
-     * @throws SAXException
      */
     public void text(String text) throws SAXException;
 

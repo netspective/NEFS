@@ -132,7 +132,7 @@ public class DataElementRef implements TextContainer
 
     public void setMax(String max)
     {
-        if ("N/A".equals(max))
+        if("N/A".equals(max))
             this.max = BINARY_DATA_LENGTH;
         else
             this.max = Integer.parseInt(max);
@@ -155,7 +155,7 @@ public class DataElementRef implements TextContainer
 
     public void setMaxUse(String maxUse)
     {
-        if (maxUse.equals("N/A"))
+        if(maxUse.equals("N/A"))
             this.maxUse = Integer.MAX_VALUE;
         else
             this.maxUse = Integer.parseInt(maxUse);

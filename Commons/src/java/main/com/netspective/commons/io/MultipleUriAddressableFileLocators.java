@@ -57,25 +57,25 @@ public class MultipleUriAddressableFileLocators implements UriAddressableFileLoc
     {
         final boolean logging = log.isDebugEnabled();
 
-        if (cacheLocations)
+        if(cacheLocations)
         {
             UriAddressableFile resource = (UriAddressableFile) cache.get(name);
-            if (resource != null)
+            if(resource != null)
             {
-                if (logging) log.debug("MultipleUriAddressableFileLocators cache hit for " + resource);
+                if(logging) log.debug("MultipleUriAddressableFileLocators cache hit for " + resource);
                 return resource;
             }
         }
 
-        for (int i = 0; i < locators.length; ++i)
+        for(int i = 0; i < locators.length; ++i)
         {
             UriAddressableFileLocator locator = locators[i];
-            if (logging) log.debug("MultipleUriAddressableFileLocators checking '" + name + "' in locator " + locator);
+            if(logging) log.debug("MultipleUriAddressableFileLocators checking '" + name + "' in locator " + locator);
             UriAddressableFile resource = locator.findUriAddressableFile(name);
-            if (resource != null)
+            if(resource != null)
             {
-                if (logging) log.debug("MultipleUriAddressableFileLocators found '" + name + "' in locator " + locator);
-                if (cacheLocations) cache.put(name, resource);
+                if(logging) log.debug("MultipleUriAddressableFileLocators found '" + name + "' in locator " + locator);
+                if(cacheLocations) cache.put(name, resource);
                 return resource;
             }
         }

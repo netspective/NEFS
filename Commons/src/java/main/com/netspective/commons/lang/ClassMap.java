@@ -72,14 +72,14 @@ public class ClassMap
      */
     public Object get(Class cls, boolean searchSuperClasses)
     {
-        if (!searchSuperClasses)
+        if(!searchSuperClasses)
             return map.get(cls);
 
         Class c = cls;
-        while (c != null)
+        while(c != null)
         {
             Object value = map.get(c);
-            if (value != null)
+            if(value != null)
                 return value;
 
             c = c.getSuperclass();

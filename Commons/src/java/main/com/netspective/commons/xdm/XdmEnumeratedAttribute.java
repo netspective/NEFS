@@ -73,7 +73,7 @@ public abstract class XdmEnumeratedAttribute
     public void setValue(String value) throws InvalidXdmEnumeratedAttributeValueException
     {
         int indexFound = getValueIndex(value);
-        if (indexFound == UNKNOWN_VALUE_INDEX)
+        if(indexFound == UNKNOWN_VALUE_INDEX)
             throw new InvalidXdmEnumeratedAttributeValueException(this, value);
         else
         {
@@ -85,11 +85,11 @@ public abstract class XdmEnumeratedAttribute
     public void setValue(XdmParseContext pc, Object element, String attribute, String value) throws DataModelException
     {
         int indexFound = getValueIndex(value);
-        if (indexFound == UNKNOWN_VALUE_INDEX)
+        if(indexFound == UNKNOWN_VALUE_INDEX)
         {
             UnsupportedEnumeratedAttributeValueException e = new UnsupportedEnumeratedAttributeValueException(pc, this, element, attribute, value);
             pc.addError(e);
-            if (pc.isThrowErrorException())
+            if(pc.isThrowErrorException())
                 throw e;
         }
         else
@@ -105,12 +105,12 @@ public abstract class XdmEnumeratedAttribute
     public int getValueIndex(String value)
     {
         String[] values = getValues();
-        if (values == null || value == null)
+        if(values == null || value == null)
             return UNKNOWN_VALUE_INDEX;
 
-        for (int i = 0; i < values.length; i++)
+        for(int i = 0; i < values.length; i++)
         {
-            if (value.equals(values[i]))
+            if(value.equals(values[i]))
             {
                 return i;
             }
@@ -124,14 +124,14 @@ public abstract class XdmEnumeratedAttribute
     public boolean containsValue(String value)
     {
         String[] values = getValues();
-        if (values == null || value == null)
+        if(values == null || value == null)
         {
             return false;
         }
 
-        for (int i = 0; i < values.length; i++)
+        for(int i = 0; i < values.length; i++)
         {
-            if (value.equals(values[i]))
+            if(value.equals(values[i]))
             {
                 return true;
             }

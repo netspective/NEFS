@@ -61,7 +61,7 @@ public class Query
 
     static
     {
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "sql-dynamic", "sql-text-has-expressions" });
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[]{"sql-dynamic", "sql-text-has-expressions"});
         XML_DATA_MODEL_SCHEMA_OPTIONS.setPcDataHandlerMethodName("appendSqlText");
     }
 
@@ -89,7 +89,7 @@ public class Query
                     {
                         QueryParameter param = parameters.get(paramNum);
                         if(!param.isListType())
-                            throw new RuntimeException("Query '"+ getNameForMapKey() +"': only list parameters may be specified here (param '" + paramNum + "')");
+                            throw new RuntimeException("Query '" + getNameForMapKey() + "': only list parameters may be specified here (param '" + paramNum + "')");
 
                         ValueSource source = param.getValue();
                         String[] values = source.getTextValues(vc);
@@ -102,7 +102,7 @@ public class Query
                         }
                     }
                     else
-                        throw new RuntimeException("Query '"+ getQualifiedName() +"': parameter '" + paramNum + "' does not exist");
+                        throw new RuntimeException("Query '" + getQualifiedName() + "': parameter '" + paramNum + "' does not exist");
                 }
                 catch(Exception e)
                 {
@@ -277,13 +277,13 @@ public class Query
     public void trace(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
     {
         StringBuffer traceMsg = new StringBuffer();
-        traceMsg.append(QueryExecutionLogEntry.class.getName() + " '"+ getQualifiedName() +"' at "+ cc.getContextLocation() +"\n");
+        traceMsg.append(QueryExecutionLogEntry.class.getName() + " '" + getQualifiedName() + "' at " + cc.getContextLocation() + "\n");
         traceMsg.append(getSqlText(cc));
         if(overrideParams != null)
         {
             for(int i = 0; i < overrideParams.length; i++)
             {
-                traceMsg.append("["+ i +"] ");
+                traceMsg.append("[" + i + "] ");
                 traceMsg.append(overrideParams[i]);
                 if(overrideParams[i] != null)
                     traceMsg.append(" (" + overrideParams[i].getClass().getName() + ")");
@@ -316,9 +316,9 @@ public class Query
             text.append("\nBind Parameters (overridden in method):\n");
             for(int i = 0; i < overrideParams.length; i++)
             {
-                text.append("["+ (i + 1) +"] ");
+                text.append("[" + (i + 1) + "] ");
                 if(overrideParams[i] != null)
-                    text.append(overrideParams[i] + " ("+ overrideParams[i].getClass().getName() +")");
+                    text.append(overrideParams[i] + " (" + overrideParams[i].getClass().getName() + ")");
                 else
                     text.append("NULL");
             }
@@ -345,7 +345,7 @@ public class Query
             logEntry.registerGetConnectionEnd(conn);
             PreparedStatement stmt = null;
             String sql = getSqlText(cc);
-            if (scrollable)
+            if(scrollable)
                 stmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             else
                 stmt = conn.prepareStatement(sql);
@@ -385,7 +385,7 @@ public class Query
             Connection conn = cc.getConnection();
             PreparedStatement stmt = null;
             String sql = getSqlText(cc);
-            if (scrollable)
+            if(scrollable)
                 stmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             else
                 stmt = conn.prepareStatement(sql);
@@ -411,32 +411,40 @@ public class Query
     protected QueryResultSet executeAndRecordStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
-        return executeAndRecordStatistics(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                    overrideParams, scrollable);
+        return executeAndRecordStatistics(dataSrcIdText != null
+                                          ? dbvc.getConnection(dataSrcIdText, false)
+                                          : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
+                                          overrideParams, scrollable);
     }
 
     protected QueryResultSet executeAndIgnoreStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
-        return executeAndIgnoreStatistics(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                    overrideParams, scrollable);
+        return executeAndIgnoreStatistics(dataSrcIdText != null
+                                          ? dbvc.getConnection(dataSrcIdText, false)
+                                          : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
+                                          overrideParams, scrollable);
     }
 
     public QueryResultSet execute(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
     {
-        return log.isInfoEnabled() ? executeAndRecordStatistics(dbvc, overrideParams, scrollable) : executeAndIgnoreStatistics(dbvc, overrideParams, scrollable);
+        return log.isInfoEnabled()
+               ? executeAndRecordStatistics(dbvc, overrideParams, scrollable)
+               : executeAndIgnoreStatistics(dbvc, overrideParams, scrollable);
     }
 
     public QueryResultSet execute(DatabaseConnValueContext dbvc, String dataSourceId, Object[] overrideParams) throws NamingException, SQLException
     {
-        return log.isInfoEnabled() ? executeAndRecordStatistics(dbvc, overrideParams, false) : executeAndIgnoreStatistics(dbvc, overrideParams, false);
+        return log.isInfoEnabled()
+               ? executeAndRecordStatistics(dbvc, overrideParams, false)
+               : executeAndIgnoreStatistics(dbvc, overrideParams, false);
     }
 
     public QueryResultSet execute(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
     {
-        return log.isInfoEnabled() ? executeAndRecordStatistics(cc, overrideParams, scrollable) : executeAndIgnoreStatistics(cc, overrideParams, scrollable);
+        return log.isInfoEnabled()
+               ? executeAndRecordStatistics(cc, overrideParams, scrollable)
+               : executeAndIgnoreStatistics(cc, overrideParams, scrollable);
     }
 
     public int executeUpdateAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
@@ -471,6 +479,6 @@ public class Query
     public int executeUpdate(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean autoCommit) throws NamingException, SQLException
     {
         String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
-        return executeUpdateAndIgnoreStatistics(dbvc.getConnection(dataSrcIdText, ! autoCommit), overrideParams);
+        return executeUpdateAndIgnoreStatistics(dbvc.getConnection(dataSrcIdText, !autoCommit), overrideParams);
     }
 }

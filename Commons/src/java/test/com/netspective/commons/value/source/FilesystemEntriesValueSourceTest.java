@@ -53,10 +53,10 @@ public class FilesystemEntriesValueSourceTest extends TestCase
         assertTrue(roots.length > 0);
 
         String rootPath = null;
-        for (int i = 0; i < roots.length; i++)
+        for(int i = 0; i < roots.length; i++)
         {
             rootPath = roots[i].getAbsolutePath();
-            if (new File(rootPath).exists())
+            if(new File(rootPath).exists())
                 break;
         }
         assertTrue(rootPath + " does not seem to exist.", new File(rootPath).exists());
@@ -80,7 +80,7 @@ public class FilesystemEntriesValueSourceTest extends TestCase
 
         assertEquals(theValue.length, altValueItems.size());
         assertFalse(fsVS.isPathInSelection());
-        for (int i = 0; i < theValue.length; i++)
+        for(int i = 0; i < theValue.length; i++)
         {
             assertFalse(altValueItems.contains(theValue[i]));
         }
@@ -90,7 +90,7 @@ public class FilesystemEntriesValueSourceTest extends TestCase
 
         assertEquals(theValue.length, altValueItemsWithPath.size());
         assertTrue(fsVS.isPathInSelection());
-        for (int i = 0; i < theValue.length; i++)
+        for(int i = 0; i < theValue.length; i++)
         {
             assertEquals(theValue[i], altValueItemsWithPath.getItem(i).getValue());
             assertEquals(altValueItems.getItem(i).getValue(), altValueItemsWithPath.getItem(i).getCaption());
@@ -106,12 +106,12 @@ public class FilesystemEntriesValueSourceTest extends TestCase
         assertTrue(filterValueItems.size() <= altValueItems.size());
 
         List altValueWithPathList = new ArrayList();
-        for (int i = 0; i < altValueItemsWithPath.size(); i++)
+        for(int i = 0; i < altValueItemsWithPath.size(); i++)
             altValueWithPathList.add(altValueItemsWithPath.getItem(i).getValue());
 
         assertEquals(altValueItemsWithPath.size(), altValueWithPathList.size());
 
-        for (int i = 0; i < filterValueItems.size(); i++)
+        for(int i = 0; i < filterValueItems.size(); i++)
             assertTrue(altValueWithPathList.contains(filterValueItems.getItem(i).getValue()));
 
 

@@ -64,9 +64,9 @@ public class DateColumn extends BasicColumn
         public String getTextValue()
         {
             Date date = (Date) getValue();
-            if (date == null)
+            if(date == null)
                 return null;
-            
+
             synchronized(dateFormat)
             {
                 return dateFormat.format(date);
@@ -82,14 +82,14 @@ public class DateColumn extends BasicColumn
                     setValue(dateFormat.parse(value));
                 }
             }
-            catch (ParseException e)
+            catch(ParseException e)
             {
                 throw new ValueException(e);
             }
         }
     }
 
-	private DateFormat dateFormat = java.text.DateFormat.getDateInstance();
+    private DateFormat dateFormat = java.text.DateFormat.getDateInstance();
 
     public DateColumn(Table table)
     {

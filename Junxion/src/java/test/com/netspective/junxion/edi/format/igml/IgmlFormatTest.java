@@ -51,17 +51,17 @@ public class IgmlFormatTest extends TestCase
         IgmlFormat format = (IgmlFormat) XdmComponentFactory.get(IgmlFormat.class, new File("c:/Projects/Frameworks/Junxion/resources/edi/formats/igml/IGML4010.xml"), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         List errors = format.getErrors();
-        if (errors.size() != 0)
+        if(errors.size() != 0)
         {
-            for (int i = 0; i < errors.size(); i++)
+            for(int i = 0; i < errors.size(); i++)
                 log.error(errors.get(i));
         }
         assertEquals(0, errors.size());
 
         List warnings = format.getErrors();
-        if (warnings.size() != 0)
+        if(warnings.size() != 0)
         {
-            for (int i = 0; i < warnings.size(); i++)
+            for(int i = 0; i < warnings.size(); i++)
                 log.error(warnings.get(i));
         }
         assertEquals(0, warnings.size());

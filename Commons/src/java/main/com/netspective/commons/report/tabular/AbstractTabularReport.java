@@ -96,12 +96,12 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
 
     public void finalizeContents()
     {
-        for (int c = 0; c < columns.size(); c++)
+        for(int c = 0; c < columns.size(); c++)
         {
             TabularReportColumn colDefn = columns.getColumn(c);
             colDefn.finalizeContents(this);
 
-            if (colDefn.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_PLACEHOLDERS))
+            if(colDefn.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_PLACEHOLDERS))
                 flags.setFlag(Flags.HAS_PLACE_HOLDERS);
         }
     }
@@ -154,9 +154,9 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
         boolean encrypt = false;
 
         int pos = source.indexOf("{", prev);
-        if (pos > 0 && pos < lastCharPos)
+        if(pos > 0 && pos < lastCharPos)
         {
-            switch (source.charAt(pos - 1))
+            switch(source.charAt(pos - 1))
             {
                 case '$':
                     encode = false;
@@ -180,45 +180,45 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
         else
             pos = -1;
 
-        while (pos >= 0)
+        while(pos >= 0)
         {
-            if (pos > 0)
+            if(pos > 0)
             {
                 // append the substring before the '$' or '%' character
                 sb.append(source.substring(prev, pos));
             }
 
             int endExpr = source.indexOf('}', pos);
-            if (endExpr < 0)
+            if(endExpr < 0)
             {
                 throw new RuntimeException("Syntax error in: " + source);
             }
             String expression = source.substring(pos + 2, endExpr);
 
-            if (expression.equals("#"))
+            if(expression.equals("#"))
                 sb.append(ds.getActiveRowNumber());
             else
             {
                 try
                 {
                     int colIndex = Integer.parseInt(expression);
-                    if (encrypt)
+                    if(encrypt)
                     {
                         ValueSource vs = ValueSources.getInstance().getValueSource("encrypt:" + columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_FOR_URL), ValueSources.VSNOTFOUNDHANDLER_NULL);
-                        if (vs == null)
+                        if(vs == null)
                             sb.append("Invalid: '" + expression + "'");
                         else
                             sb.append(URLEncoder.encode(vs.getTextValue(rc)));
                     }
-                    else if (encode)
+                    else if(encode)
                         sb.append(URLEncoder.encode(columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_FOR_URL)));
                     else
                         sb.append(columns.getColumn(colIndex).getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAGS_DEFAULT));
                 }
-                catch (NumberFormatException e)
+                catch(NumberFormatException e)
                 {
                     ValueSource vs = ValueSources.getInstance().getValueSource(expression, ValueSources.VSNOTFOUNDHANDLER_NULL);
-                    if (vs == null)
+                    if(vs == null)
                         sb.append("Invalid: '" + expression + "'");
                     else
                         sb.append(vs.getTextValue(rc));
@@ -228,9 +228,9 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
             prev = endExpr + 1;
 
             pos = source.indexOf("{", prev);
-            if (pos > 0 && pos < lastCharPos)
+            if(pos > 0 && pos < lastCharPos)
             {
-                switch (source.charAt(pos - 1))
+                switch(source.charAt(pos - 1))
                 {
                     case '$':
                         encode = false;
@@ -255,14 +255,14 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
                 pos = -1;
         }
 
-        if (prev < source.length()) sb.append(source.substring(prev));
+        if(prev < source.length()) sb.append(source.substring(prev));
         return sb.toString();
     }
 
     public void makeStateChanges(TabularReportValueContext rc, TabularReportDataSource ds)
     {
         List listeners = rc.getListeners();
-        for (int i = 0; i < listeners.size(); i++)
+        for(int i = 0; i < listeners.size(); i++)
             ((TabularReportContextListener) listeners.get(i)).makeReportStateChanges(rc, ds);
     }
 }

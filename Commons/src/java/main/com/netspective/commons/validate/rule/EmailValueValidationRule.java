@@ -63,7 +63,7 @@ public class EmailValueValidationRule extends BasicValidationRule
     public boolean isValid(ValidationContext vc, Value value)
     {
         String emailAddress = value.getTextValue();
-        if (emailAddress != null && emailAddress.length() > 0 && !ValidationUtils.isEmail(emailAddress))
+        if(emailAddress != null && emailAddress.length() > 0 && !ValidationUtils.isEmail(emailAddress))
         {
             vc.addValidationError(value, getInvalidEmailAddrMessage(), new Object[]{getValueCaption(vc), emailAddress});
             return false;

@@ -74,12 +74,12 @@ public class XdmHandler extends AbstractContentHandler
         sb.append("[Active Locator: " + getDocumentLocator().getSystemId() + " line " + getDocumentLocator().getLineNumber());
         sb.append(", NodeStack: " + getNodeStack().size());
         sb.append(" ");
-        for (Iterator i = getNodeStack().iterator(); i.hasNext();)
+        for(Iterator i = getNodeStack().iterator(); i.hasNext();)
         {
             XdmHandlerNodeStackEntry entry = (XdmHandlerNodeStackEntry) i.next();
             sb.append(entry.getElementName() + " ");
             sb.append(entry.getInstance());
-            if (i.hasNext()) sb.append(" / ");
+            if(i.hasNext()) sb.append(" / ");
         }
         sb.append(", Ignore stack size: " + getIgnoreStack().size());
         sb.append(", Template stack size: " + getTemplateDefnStack().size());
@@ -93,18 +93,18 @@ public class XdmHandler extends AbstractContentHandler
 
     public void text(String text) throws SAXException
     {
-        if (handleDefaultText(text))
+        if(handleDefaultText(text))
             return;
 
         XdmHandlerNodeStackEntry activeEntry = (XdmHandlerNodeStackEntry) getNodeStack().peek();
         try
         {
-            if (inAttrSetterTextEntry != null)
+            if(inAttrSetterTextEntry != null)
             {
-                if (inAttrSetterTextEntry.getAttributes().getLength() > 0)
+                if(inAttrSetterTextEntry.getAttributes().getLength() > 0)
                 {
                     Exception e = new DataModelSyntaxException(((XdmParseContext) getParseContext()), "<" + inAttrSetterTextEntry.getElementName() + "> under <" + activeEntry.getElementName() + "> should not have attributes, they will be ignored.");
-                    if (getParseContext().isThrowErrorException())
+                    if(getParseContext().isThrowErrorException())
                         throw new SAXException(e);
                     else
                         getParseContext().addError(e);
@@ -115,7 +115,7 @@ public class XdmHandler extends AbstractContentHandler
 
             activeEntry.getSchema().addText(((XdmParseContext) getParseContext()), activeEntry.getInstance(), text);
         }
-        catch (DataModelException exc)
+        catch(DataModelException exc)
         {
             throw new SAXException(exc.getMessage() + " " + getStateText(), exc);
         }
@@ -123,16 +123,16 @@ public class XdmHandler extends AbstractContentHandler
 
     private boolean handleTemplateStartElement(XdmHandlerNodeStackEntry activeEntry, String url, String localName, String qName, Attributes attributes) throws SAXException
     {
-        if (defaultHandleTemplateStartElement(url, localName, qName, attributes))
+        if(defaultHandleTemplateStartElement(url, localName, qName, attributes))
             return true;
 
         String elementName = qName.toLowerCase();
 
-        if (activeEntry.getInstance() instanceof TemplateProducerParent)
+        if(activeEntry.getInstance() instanceof TemplateProducerParent)
         {
             TemplateProducers templateProducers = ((TemplateProducerParent) activeEntry.getInstance()).getTemplateProducers();
             TemplateProducer tp = templateProducers.get(elementName);
-            if (tp != null)
+            if(tp != null)
             {
                 String templateName = tp.getTemplateName(url, localName, qName, attributes);
                 final Locator locator = getParseContext().getLocator();
@@ -158,7 +158,7 @@ public class XdmHandler extends AbstractContentHandler
     public void registerTemplateConsumption(Template template)
     {
         XdmHandlerNodeStackEntry entry = (XdmHandlerNodeStackEntry) getActiveNodeEntry();
-        if (entry.getInstance() instanceof TemplateConsumer)
+        if(entry.getInstance() instanceof TemplateConsumer)
             ((TemplateConsumer) entry.getInstance()).registerTemplateConsumption(template);
     }
 
@@ -166,16 +166,16 @@ public class XdmHandler extends AbstractContentHandler
     {
         //System.out.println(getStackDepthPrefix() + qName + " " + getAttributeNames(attributes));
 
-        if (handleDefaultStartElement(url, localName, qName, attributes))
+        if(handleDefaultStartElement(url, localName, qName, attributes))
             return;
 
         String elementName = qName.toLowerCase();
         XdmHandlerNodeStackEntry activeEntry = (XdmHandlerNodeStackEntry) getNodeStack().peek();
 
-        if (!unmarshallingTemplate && handleTemplateStartElement(activeEntry, url, localName, qName, attributes))
+        if(!unmarshallingTemplate && handleTemplateStartElement(activeEntry, url, localName, qName, attributes))
             return;
 
-        if (elementName.equals(getNodeIdentifiers().getIncludeElementName()))
+        if(elementName.equals(getNodeIdentifiers().getIncludeElementName()))
         {
             try
             {
@@ -183,25 +183,25 @@ public class XdmHandler extends AbstractContentHandler
                 setInInclude(true);
                 return;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new SAXException(e);
             }
         }
 
-        if (activeEntry.getInstance() instanceof XmlDataModelSchema.InputSourceTrackerListener)
+        if(activeEntry.getInstance() instanceof XmlDataModelSchema.InputSourceTrackerListener)
         {
             try
             {
                 ((XmlDataModelSchema.InputSourceTrackerListener) activeEntry.getInstance()).setInputSourceTracker(getParseContext().getInputSrcTracker());
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new SAXException(e.getMessage() + " " + getStateText(), e);
             }
         }
 
-        if (!getIgnoreStack().isEmpty() || activeEntry.getOptions().ignoreNestedElement(elementName))
+        if(!getIgnoreStack().isEmpty() || activeEntry.getOptions().ignoreNestedElement(elementName))
         {
             getIgnoreStack().push(elementName);
         }
@@ -219,44 +219,44 @@ public class XdmHandler extends AbstractContentHandler
 
                 boolean inAttrSetterText = childInstance == activeEntry.getInstance();
 
-                if (childInstance != null && !inAttrSetterText)
+                if(childInstance != null && !inAttrSetterText)
                 {
                     // see if we have any templates that need to be applied
-                    if (childInstance instanceof TemplateConsumer)
+                    if(childInstance instanceof TemplateConsumer)
                     {
                         // check to see if we don't have our own alternate class but one of our the templates we're about to apply want to override our class
                         templateConsumer = ((TemplateConsumer) childInstance).getTemplateConsumerDefn();
                         templatesToConsume = templateConsumer.getTemplatesToApply(this, elementName, attributes);
-                        if (alternateClassName == null)
+                        if(alternateClassName == null)
                         {
                             alternateClassName = templateConsumer.getAlternateClassName(this, templatesToConsume, elementName, attributes);
-                            if (alternateClassName != null)
+                            if(alternateClassName != null)
                                 childInstance = activeSchema.createElement(((XdmParseContext) getParseContext()), alternateClassName, activeEntry.getInstance(), elementName, false);
                         }
                     }
                 }
 
-                if (childInstance == null)
+                if(childInstance == null)
                 {
                     getIgnoreStack().push(elementName);
                     return;
                 }
 
-                if (inAttrSetterText)
+                if(inAttrSetterText)
                 {
                     inAttrSetterTextEntry = new XdmHandlerNodeStackEntry(elementName, attributes, childInstance);
                     return;
                 }
             }
-            catch (DataModelException e)
+            catch(DataModelException e)
             {
                 log.error(e.getMessage() + " " + getStateText(), e);
                 throw new SAXException(e.getMessage() + " " + getStateText(), e);
             }
 
-            if (childInstance != null)
+            if(childInstance != null)
             {
-                if (childInstance instanceof XmlDataModelSchema.InputSourceLocatorListener)
+                if(childInstance instanceof XmlDataModelSchema.InputSourceLocatorListener)
                 {
                     final Locator locator = getParseContext().getLocator();
                     ((XmlDataModelSchema.InputSourceLocatorListener) childInstance).setInputSourceLocator(new InputSourceLocator(getParseContext().getInputSrcTracker(), locator.getLineNumber(), locator.getColumnNumber()));
@@ -271,20 +271,20 @@ public class XdmHandler extends AbstractContentHandler
                     // if we're already inside a template, then check to see if we have any attributes that need their
                     // expressions replaced
                     TemplateApplyContext activeApplyTemplateContext = activeEntry.getActiveApplyContext();
-                    if (activeApplyTemplateContext != null)
+                    if(activeApplyTemplateContext != null)
                     {
                         TemplateApplyContext.StackEntry atcEntry = activeApplyTemplateContext.getActiveEntry();
-                        if (atcEntry != null && atcEntry.isReplacementExprsFoundInAttrs())
+                        if(atcEntry != null && atcEntry.isReplacementExprsFoundInAttrs())
                             attributes = atcEntry.getActiveTemplate().replaceAttributeExpressions(activeApplyTemplateContext);
                     }
 
                     // if the current element indicates the start of a template, apply it now
-                    if (templateConsumer != null && templatesToConsume != null)
+                    if(templateConsumer != null && templatesToConsume != null)
                     {
                         String[] attrNamesToSet = templateConsumer.getAttrNamesToApplyBeforeConsuming();
-                        if (attrNamesToSet != null)
+                        if(attrNamesToSet != null)
                         {
-                            for (int i = 0; i < attrNamesToSet.length; i++)
+                            for(int i = 0; i < attrNamesToSet.length; i++)
                             {
                                 String attrValue = attributes.getValue(attrNamesToSet[i]);
                                 String lowerCaseAttrName = attrNamesToSet[i].toLowerCase();
@@ -295,19 +295,19 @@ public class XdmHandler extends AbstractContentHandler
                         templateConsumer.consume(this, templatesToConsume, elementName, attributes);
                     }
 
-                    for (int i = 0; i < attributes.getLength(); i++)
+                    for(int i = 0; i < attributes.getLength(); i++)
                     {
                         String origAttrName = attributes.getQName(i);
                         String lowerCaseAttrName = origAttrName.toLowerCase();
-                        if (!childEntry.getOptions().ignoreAttribute(lowerCaseAttrName) && !lowerCaseAttrName.equals(NodeIdentifiers.ATTRNAME_ALTERNATE_CLASS_NAME) &&
-                                !(getNodeStack().size() < 3 && lowerCaseAttrName.startsWith(NodeIdentifiers.ATTRNAMEPREFIX_NAMESPACE_BINDING)) &&
-                                !(templateConsumer != null && templateConsumer.isTemplateAttribute(origAttrName)) &&
-                                !(origAttrName.startsWith(getNodeIdentifiers().getXmlNameSpacePrefix())))
+                        if(!childEntry.getOptions().ignoreAttribute(lowerCaseAttrName) && !lowerCaseAttrName.equals(NodeIdentifiers.ATTRNAME_ALTERNATE_CLASS_NAME) &&
+                           !(getNodeStack().size() < 3 && lowerCaseAttrName.startsWith(NodeIdentifiers.ATTRNAMEPREFIX_NAMESPACE_BINDING)) &&
+                           !(templateConsumer != null && templateConsumer.isTemplateAttribute(origAttrName)) &&
+                           !(origAttrName.startsWith(getNodeIdentifiers().getXmlNameSpacePrefix())))
 
                             childEntry.getSchema().setAttribute(((XdmParseContext) getParseContext()), childEntry.getInstance(), lowerCaseAttrName, attributes.getValue(i), false);
                     }
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     log.error(e.getMessage() + " " + getStateText(), e);
                     throw new SAXException(e.getMessage() + " " + getStateText(), e);
@@ -317,7 +317,7 @@ public class XdmHandler extends AbstractContentHandler
                 {
                     activeEntry.getSchema().storeElement(((XdmParseContext) getParseContext()), activeEntry.getInstance(), childEntry.getInstance(), elementName, false);
                 }
-                catch (DataModelException e)
+                catch(DataModelException e)
                 {
                     log.error(e.getMessage() + " " + getStateText(), e);
                     throw new SAXException(e.getMessage() + " " + getStateText(), e);
@@ -328,26 +328,26 @@ public class XdmHandler extends AbstractContentHandler
 
     public void endElement(String url, String localName, String qName) throws SAXException
     {
-        if (handleDefaultEndElement(url, localName, qName))
+        if(handleDefaultEndElement(url, localName, qName))
             return;
 
-        if (inAttrSetterTextEntry != null)
+        if(inAttrSetterTextEntry != null)
         {
             inAttrSetterTextEntry = null;
             return;
         }
 
-        if (!getTemplateDefnStack().isEmpty())
+        if(!getTemplateDefnStack().isEmpty())
         {
             Object templateNode = getTemplateDefnStack().pop();
 
             // if, after popping the stack, the stack is empty it means we're at the root template definition element
-            if (getTemplateDefnStack().isEmpty())
+            if(getTemplateDefnStack().isEmpty())
             {
                 // now that we have finished "recording" the template, see if we're supposed to treat this template
                 // as an object/instance also -- if we are, immediately apply the template at the active entry level
                 Template template = (Template) templateNode;
-                if (template.getTemplateProducer().isUnmarshallContents())
+                if(template.getTemplateProducer().isUnmarshallContents())
                 {
                     unmarshallingTemplate = true;
                     XdmHandlerNodeStackEntry activeEntry = (XdmHandlerNodeStackEntry) getNodeStack().peek();
@@ -356,20 +356,20 @@ public class XdmHandler extends AbstractContentHandler
                 }
             }
         }
-        else if (!getIgnoreStack().isEmpty())
+        else if(!getIgnoreStack().isEmpty())
             getIgnoreStack().pop();
         else
         {
             try
             {
                 XdmHandlerNodeStackEntry activeEntry = (XdmHandlerNodeStackEntry) getNodeStack().peek();
-                if (activeEntry != null)
+                if(activeEntry != null)
                 {
-                    if (activeEntry.getInstance() instanceof XmlDataModelSchema.InputSourceLocatorListener)
+                    if(activeEntry.getInstance() instanceof XmlDataModelSchema.InputSourceLocatorListener)
                     {
                         InputSourceLocator isl = ((XmlDataModelSchema.InputSourceLocatorListener) activeEntry.getInstance()).getInputSourceLocator();
                         final Locator locator = getParseContext().getLocator();
-                        if (isl != null)
+                        if(isl != null)
                             isl.setEndLine(locator.getLineNumber(), locator.getColumnNumber());
                     }
 
@@ -377,7 +377,7 @@ public class XdmHandler extends AbstractContentHandler
                 }
                 getNodeStack().pop();
             }
-            catch (DataModelException e)
+            catch(DataModelException e)
             {
                 throw new SAXException(e.getMessage() + " " + getStateText(), e);
             }

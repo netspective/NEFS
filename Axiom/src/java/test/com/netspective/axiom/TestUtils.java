@@ -101,7 +101,7 @@ public class TestUtils
 
         ConnectionProviderEntry entry = connProvider.getDataSourceEntry(null, connProviderId);
 
-        if (entry == null || reCreateDb)
+        if(entry == null || reCreateDb)
             setupDb(connProviderId, true, true);
 
         return connProvider;
@@ -113,7 +113,7 @@ public class TestUtils
 
         ConnectionProviderEntry entry = connProvider.getDataSourceEntry(null, connProviderId);
 
-        if (entry == null)
+        if(entry == null)
             setupDb(connProviderId, createDb, loadData);
 
         return connProvider;
@@ -126,7 +126,7 @@ public class TestUtils
 
         Set connContextsWithOpenConnections = new HashSet(AbstractConnectionContext.getConnectionContextsWithOpenConnections());
 
-        for (Iterator i = connContextsWithOpenConnections.iterator(); i.hasNext();)
+        for(Iterator i = connContextsWithOpenConnections.iterator(); i.hasNext();)
         {
             ConnectionContext cc = (ConnectionContext) i.next();
 
@@ -137,12 +137,12 @@ public class TestUtils
         String classDir = connProviderId.replace('.', '/');
 
         FileFind.FileFindResults ffr = FileFind.findInClasspath(classDir + "/" + schemaFilename, FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
-        if (!ffr.isFileFound())
+        if(!ffr.isFileFound())
         {
             ffr = FileFind.findInClasspath(classDir + "-" + schemaFilename, FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
         }
 
-        if (!ffr.isFileFound())
+        if(!ffr.isFileFound())
         {
             return;
         }
@@ -169,7 +169,7 @@ public class TestUtils
         SqlManager manager = task.getSqlManager();
         task.generateDdlFiles(manager);
 
-        if (!createDb)
+        if(!createDb)
             return;
 
 
@@ -201,7 +201,7 @@ public class TestUtils
         task.setDalPackage(connProviderId + ".dal");
         task.generateDalFiles(manager);
 
-        if (!loadData)
+        if(!loadData)
             return;
 
         task.setImport(new File(rootPath + "/" + dataImportFile));

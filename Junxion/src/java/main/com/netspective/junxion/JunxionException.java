@@ -125,7 +125,7 @@ public class JunxionException extends Exception
     {
         String message = super.getMessage();
 
-        if (message == null && exception != null)
+        if(message == null && exception != null)
         {
             return exception.getMessage();
         }
@@ -154,7 +154,7 @@ public class JunxionException extends Exception
      */
     public String toString()
     {
-        if (exception != null)
+        if(exception != null)
         {
             return exception.toString();
         }

@@ -85,14 +85,14 @@ public class FloatValueValidationRule extends BasicValidationRule
 
     public boolean isValid(ValidationContext vc, Value value)
     {
-        if (!isValidType(vc, value, Float.class))
+        if(!isValidType(vc, value, Float.class))
             return false;
 
         Float floatValue = (Float) value.getValue();
-        if (floatValue != null && !ValidationUtils.isInRange(floatValue.floatValue(), min, max))
+        if(floatValue != null && !ValidationUtils.isInRange(floatValue.floatValue(), min, max))
         {
             vc.addValidationError(value, getInvalidRangeMessage(),
-                    new Object[]{getValueCaption(vc), new Float(min), new Float(max)});
+                                  new Object[]{getValueCaption(vc), new Float(min), new Float(max)});
             return false;
         }
 

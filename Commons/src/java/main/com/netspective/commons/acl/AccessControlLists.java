@@ -123,7 +123,7 @@ public class AccessControlLists
     {
         AccessControlList acl = (AccessControlList) acls.get(name);
 
-        if (acl == null && log.isDebugEnabled())
+        if(acl == null && log.isDebugEnabled())
         {
             log.debug("Unable to find ACL object '" + name + "'. Available: " + acls);
             return null;
@@ -139,7 +139,7 @@ public class AccessControlLists
 
     public void addAccessControlList(AccessControlList acl)
     {
-        if (acl.getName() == null || AccessControlList.ACLNAME_DEFAULT.equalsIgnoreCase(acl.getName()))
+        if(acl.getName() == null || AccessControlList.ACLNAME_DEFAULT.equalsIgnoreCase(acl.getName()))
         {
             acl.setName(AccessControlList.ACLNAME_DEFAULT);
             defaultAcl = acl;
@@ -151,7 +151,7 @@ public class AccessControlLists
     public Permission getPermission(String name) throws PermissionNotFoundException
     {
         Permission result = (Permission) permissionsByName.get(name);
-        if (result == null)
+        if(result == null)
             throw new PermissionNotFoundException("Permission '" + name + "' not found in ACL", this, name);
         else
             return result;
@@ -160,7 +160,7 @@ public class AccessControlLists
     public Role getRole(String name) throws RoleNotFoundException
     {
         Role result = (Role) rolesByName.get(name);
-        if (result == null)
+        if(result == null)
             throw new RoleNotFoundException("Role '" + name + "' not found in ACL", this, name);
         else
             return result;

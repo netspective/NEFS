@@ -188,7 +188,7 @@ public class ColumnsCollection implements Columns
     public Column getSole()
     {
         if(size() != 1)
-            throw new RuntimeException("Only a single column is expected in this collection (not "+ size() +"): " + this);
+            throw new RuntimeException("Only a single column is expected in this collection (not " + size() + "): " + this);
         return (Column) columns.get(0);
     }
 
@@ -225,7 +225,7 @@ public class ColumnsCollection implements Columns
     public int getColumnIndexInRowByName(String name)
     {
         Column column = (Column) mapByName.get(BasicColumn.translateColumnNameForMapKey(name));
-        if (column != null)
+        if(column != null)
             return column.getIndexInRow();
         else
             return COLUMN_INDEX_NOT_FOUND;
@@ -234,7 +234,7 @@ public class ColumnsCollection implements Columns
     public int getColumnIndexInRowByNameOrXmlNodeName(String name)
     {
         Column column = (Column) mapByNameOrXmlNodeName.get(BasicColumn.translateColumnNameForMapKey(name));
-        if (column != null)
+        if(column != null)
             return column.getIndexInRow();
         else
             return COLUMN_INDEX_NOT_FOUND;
@@ -359,7 +359,7 @@ public class ColumnsCollection implements Columns
         public void populateValues(ResultSet resultSet, int rowNum) throws SQLException
         {
             for(int i = 0; i < values.length; i++)
-                values[i].setValueFromSqlResultSet(resultSet, rowNum, i+1);
+                values[i].setValueFromSqlResultSet(resultSet, rowNum, i + 1);
         }
 
         public void populateValues(ColumnValuesProducer cvp)
@@ -394,7 +394,7 @@ public class ColumnsCollection implements Columns
         {
             StringBuffer sb = new StringBuffer();
             sb.append(this.getClass().getName());
-            sb.append(" ("+ size() +")");
+            sb.append(" (" + size() + ")");
             sb.append(" [");
             for(int i = 0; i < values.length; i++)
             {
@@ -406,7 +406,8 @@ public class ColumnsCollection implements Columns
             return sb.toString();
         }
 
-        public boolean equals(Object o){
+        public boolean equals(Object o)
+        {
 
             ColumnsCollection.BasicValues columnsObject;
             try
@@ -414,17 +415,17 @@ public class ColumnsCollection implements Columns
 
                 columnsObject = (ColumnsCollection.BasicValues) o;
             }
-            catch (ClassCastException cce)
+            catch(ClassCastException cce)
             {
                 return false;
             }
 
-            if (this.values.length != columnsObject.size())
+            if(this.values.length != columnsObject.size())
                 return false;
 
-            for (int i = 0; i < values.length; i++)
+            for(int i = 0; i < values.length; i++)
             {
-                if (!values[i].equals(columnsObject.values[i]))
+                if(!values[i].equals(columnsObject.values[i]))
                     return false;
             }
 

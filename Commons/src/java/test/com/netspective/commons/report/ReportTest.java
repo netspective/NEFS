@@ -71,7 +71,7 @@ public class ReportTest extends TestCase
         public TestReportDataSource(TabularReportValueContext vc)
         {
             super();
-            for (int i = 0; i < 25; i++)
+            for(int i = 0; i < 25; i++)
             {
                 rows.add(new Object[]{"row " + i, new Integer(100 + i), new Double(200 + i + (200.0 + i) / 1000.0)});
             }
@@ -101,7 +101,7 @@ public class ReportTest extends TestCase
 
         public boolean next()
         {
-            if (!hasMoreRows())
+            if(!hasMoreRows())
                 return false;
 
             setActiveRow(activeRowNum + 1);
@@ -126,7 +126,7 @@ public class ReportTest extends TestCase
         assertNotNull(trds);
         assertFalse(trds.isHierarchical());
 
-        for (int i = 0; i < 25; i++)
+        for(int i = 0; i < 25; i++)
         {
             assertTrue(trds.next());
             assertEquals(i, trds.getActiveRowNumber());
@@ -143,12 +143,12 @@ public class ReportTest extends TestCase
         super.setUp();
 
         component = (ReportsComponent) XdmComponentFactory.get(ReportsComponent.class,
-                new Resource(ReportTest.class, RESOURCE_NAME_ONE),
-                XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                                                               new Resource(ReportTest.class, RESOURCE_NAME_ONE),
+                                                               XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         assertNotNull(component);
 
-        if (component.getErrors().size() > 0)
+        if(component.getErrors().size() > 0)
             System.out.println(component.getErrors());
         assertEquals(0, component.getErrors().size());
 
@@ -264,7 +264,7 @@ public class ReportTest extends TestCase
         assertEquals(4, columns.size());
 
         String[] colHeading = new String[]{"Column A", "Column B", "Column C", "Column D"};
-        for (int i = 0; i < columns.size(); i++)
+        for(int i = 0; i < columns.size(); i++)
         {
             TabularReportColumn column = columns.getColumn(i);
 
@@ -288,14 +288,14 @@ public class ReportTest extends TestCase
             assertEquals(10, column.getWidth());
 
             // Tests that apply to the non-output columns only ...
-            if (3 > i)
+            if(3 > i)
             {
                 assertEquals(0, column.getFlags().getFlags());
                 assertNull(column.getOutput());
             }
 
             // Tests that apply to the summed numeric columns only ...
-            if (1 == i || 2 == i)
+            if(1 == i || 2 == i)
             {
                 assertEquals(TabularReportColumn.ALIGN_RIGHT, column.getAlign());
                 assertEquals("sum", column.getCalcCmd());
@@ -303,14 +303,14 @@ public class ReportTest extends TestCase
             }
 
             // Tests that apply to the floating point column only ...
-            if (2 == i)
+            if(2 == i)
             {
                 column.setFormat("currency");
                 assertEquals(DecimalFormat.class, column.getFormatter().getClass());
             }
 
             // Tests that apply to the two string columns only ...
-            if (0 == i || 3 == i)
+            if(0 == i || 3 == i)
             {
                 assertNull(column.getFormatter());
 
@@ -319,13 +319,13 @@ public class ReportTest extends TestCase
             }
 
             // Tests that apply to the counted column only ...
-            if (0 == i)
+            if(0 == i)
             {
                 assertEquals("count", column.getCalcCmd());
             }
 
             // Tests that apply to the output column only ...
-            if (3 == i)
+            if(3 == i)
             {
                 assertEquals("${0} ${1} ${2}", column.getOutput());
                 assertEquals(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN, column.getFlags().getFlags());
@@ -345,7 +345,7 @@ public class ReportTest extends TestCase
 
         TabularReportColumnState[] trcState = vc.getStates();
         String[] colHeadings = new String[]{"Column A", "Column B", "Column C", "Column D"};
-        for (int i = 0; i < trcState.length; i++)
+        for(int i = 0; i < trcState.length; i++)
         {
             assertEquals(trcState[i], vc.getState(i));
             assertTrue(trcState[i].isVisible());
@@ -356,12 +356,12 @@ public class ReportTest extends TestCase
             assertEquals("${" + i + "}", trcState[i].getOutputFormat());
             trcState[i].setOutputFormat(origOutputFormat);
 
-            if (1 == i || 2 == i)
+            if(1 == i || 2 == i)
                 assertEquals("text-align: right;", trcState[i].getCssStyleAttrValue());
             else
                 assertEquals("", trcState[i].getCssStyleAttrValue());
 
-            if (i < 3)
+            if(i < 3)
             {
                 trcState[i].setOutputFormat(null);
 

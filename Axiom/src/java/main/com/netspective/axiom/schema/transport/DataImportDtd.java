@@ -77,7 +77,7 @@ public class DataImportDtd
             for(int i = 0; i < tables.size(); i++)
                 printElementDecl(out, tables.get(i), childColumnElemNames);
 
-            for(Iterator i = childColumnElemNames.iterator(); i.hasNext(); )
+            for(Iterator i = childColumnElemNames.iterator(); i.hasNext();)
             {
                 String elemName = (String) i.next();
                 out.println("<!ELEMENT " + elemName + " (#PCDATA)>");
@@ -89,7 +89,7 @@ public class DataImportDtd
         }
         finally
         {
-            if (out != null) out.close();
+            if(out != null) out.close();
             visited.clear();
         }
     }
@@ -101,7 +101,7 @@ public class DataImportDtd
         {
             out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(output), "UTF8"));
         }
-        catch (UnsupportedEncodingException ue)
+        catch(UnsupportedEncodingException ue)
         {
             /*
              * Plain impossible with UTF8, see
@@ -123,7 +123,7 @@ public class DataImportDtd
 
     /**
      * Prints the header of the generated output.
-     *
+     * <p/>
      * <p>Basically this prints the XML declaration, defines some
      * entities and the DAL element.</p>
      */
@@ -141,7 +141,7 @@ public class DataImportDtd
             if(table.isChildTable())
                 continue;
 
-            if (!first)
+            if(!first)
                 out.print(" | ");
             else
                 first = false;
@@ -156,7 +156,7 @@ public class DataImportDtd
      */
     private void printElementDecl(PrintWriter out, Table parentTable, Set childColumnElemNames)
     {
-        if (visited.containsKey(parentTable.getName()))
+        if(visited.containsKey(parentTable.getName()))
             return;
         visited.put(parentTable.getName(), "");
 
@@ -174,7 +174,7 @@ public class DataImportDtd
         for(int i = 0; i < childTables.size(); i++)
             list.add(childTables.get(i).getXmlNodeName());
 
-        if (list.isEmpty())
+        if(list.isEmpty())
         {
             sb.append("EMPTY");
         }
@@ -182,16 +182,16 @@ public class DataImportDtd
         {
             sb.append("(");
             final int count = list.size();
-            for (int i = 0; i < count; i++)
+            for(int i = 0; i < count; i++)
             {
-                if (i != 0)
+                if(i != 0)
                     sb.append(" | ");
                 sb.append(list.get(i));
                 childColumnElemNames.add(list.get(i));
             }
 
             sb.append(")");
-            if (count > 1 || !list.get(0).equals("#PCDATA"))
+            if(count > 1 || !list.get(0).equals("#PCDATA"))
             {
                 sb.append("*");
             }
@@ -214,11 +214,11 @@ public class DataImportDtd
 
             sb.append(lSep).append("          ").append(attrName).append(" ");
             Class type = column.getClass();
-            if (type.equals(Boolean.class) || type.equals(Boolean.TYPE))
+            if(type.equals(Boolean.class) || type.equals(Boolean.TYPE))
             {
                 sb.append(BOOLEAN).append(" ");
             }
-            else if (column instanceof EnumerationIdRefColumn)
+            else if(column instanceof EnumerationIdRefColumn)
             {
                 EnumerationTable enumTable = (EnumerationTable) column.getForeignKey().getReferencedColumns().getFirst().getTable();
                 EnumerationTableRows enumRows = (EnumerationTableRows) enumTable.getData();
@@ -226,7 +226,7 @@ public class DataImportDtd
                 if(enumRows != null)
                 {
                     String[] values = enumRows.getValidValues();
-                    if (values == null || values.length == 0)
+                    if(values == null || values.length == 0)
                     {
                         sb.append("CDATA ");
                     }
@@ -237,9 +237,9 @@ public class DataImportDtd
                     else
                     {
                         sb.append("(");
-                        for (int v = 0; v < values.length; v++)
+                        for(int v = 0; v < values.length; v++)
                         {
-                            if (v != 0)
+                            if(v != 0)
                             {
                                 sb.append(" | ");
                             }
@@ -249,7 +249,7 @@ public class DataImportDtd
                     }
                 }
                 else
-                    // Enum table enumTable.getName() (referenced by column.getQualifiedName() has no enumerations
+                // Enum table enumTable.getName() (referenced by column.getQualifiedName() has no enumerations
                     sb.append("CDATA ");
             }
             else
@@ -283,13 +283,13 @@ public class DataImportDtd
     protected boolean isNmtoken(String s)
     {
         final int length = s.length();
-        for (int i = 0; i < length; i++)
+        for(int i = 0; i < length; i++)
         {
             char c = s.charAt(i);
             // XXX - we are ommitting CombiningChar and Extender here
-            if (!Character.isLetterOrDigit(c) &&
-                    c != '.' && c != '-' &&
-                    c != '_' && c != ':')
+            if(!Character.isLetterOrDigit(c) &&
+               c != '.' && c != '-' &&
+               c != '_' && c != ':')
             {
                 return false;
             }
@@ -299,15 +299,15 @@ public class DataImportDtd
 
     /**
      * Do the Strings all match the XML-NMTOKEN production?
-     *
+     * <p/>
      * <p>Otherwise they are not suitable as an enumerated attribute,
      * for example.</p>
      */
     protected boolean areNmtokens(String[] s)
     {
-        for (int i = 0; i < s.length; i++)
+        for(int i = 0; i < s.length; i++)
         {
-            if (!isNmtoken(s[i]))
+            if(!isNmtoken(s[i]))
             {
                 return false;
             }

@@ -103,102 +103,102 @@ public class AxiomTask extends XdmComponentTask
     {
         super.setupActionHandlers();
 
-        addActionHandler(
-                new ActionHandler()
-                {
-                    public String getName() { return "get-default-schema-name"; }
-                    public void execute() throws BuildException
-                    {
-                        getDefaultSchemaName(getSqlManager());
-                    }
-                });
+        addActionHandler(new ActionHandler()
+        {
+            public String getName() { return "get-default-schema-name"; }
 
-        addActionHandler(
-                new ActionHandler()
-                {
-                    public String getName() { return "generate-id-constants"; }
-                    public void execute() throws BuildException
-                    {
-                        generateIdentifierConstants(getComponent());
-                    }
-                });
+            public void execute() throws BuildException
+            {
+                getDefaultSchemaName(getSqlManager());
+            }
+        });
 
-        addActionHandler(
-                new ActionHandler()
-                {
-                    public String getName() { return "generate-dtd"; }
-                    public void execute() throws BuildException
-                    {
-                        try
-                        {
-                            new XmlDataModelDtd().generate(getComponent(), dtdFile);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new BuildException(e);
-                        }
-                    }
-                });
+        addActionHandler(new ActionHandler()
+        {
+            public String getName() { return "generate-id-constants"; }
 
-        addActionHandler(
-                new ActionHandler()
-                {
-                    public String getName() { return "generate-ddl"; }
-                    public void execute() throws BuildException
-                    {
-                        generateDdlFiles(getSqlManager());
-                    }
-                });
+            public void execute() throws BuildException
+            {
+                generateIdentifierConstants(getComponent());
+            }
+        });
 
-        addActionHandler(
-                new ActionHandler()
-                {
-                    public String getName() { return "generate-dal"; }
-                    public void execute() throws BuildException
-                    {
-                        generateDalFiles(getSqlManager());
-                    }
-                });
+        addActionHandler(new ActionHandler()
+        {
+            public String getName() { return "generate-dtd"; }
 
-        addActionHandler(
-                new ActionHandler()
+            public void execute() throws BuildException
+            {
+                try
                 {
-                    public String getName() { return "import-data"; }
-                    public void execute() throws BuildException
-                    {
-                        importData(getSqlManager());
-                    }
-                });
+                    new XmlDataModelDtd().generate(getComponent(), dtdFile);
+                }
+                catch(Exception e)
+                {
+                    throw new BuildException(e);
+                }
+            }
+        });
 
-        addActionHandler(
-                new ActionHandler()
-                {
-                    public String getName() { return "generate-import-data-dtd"; }
-                    public void execute() throws BuildException
-                    {
-                        generateImportDtd(getSqlManager());
-                    }
-                });
+        addActionHandler(new ActionHandler()
+        {
+            public String getName() { return "generate-ddl"; }
 
-        addActionHandler(
-                new ActionHandler()
-                {
-                    public String getName() { return "generate-graphviz-erd"; }
-                    public void execute() throws BuildException
-                    {
-                        generateGraphVizErd(getSqlManager());
-                    }
-                });
+            public void execute() throws BuildException
+            {
+                generateDdlFiles(getSqlManager());
+            }
+        });
 
-        addActionHandler(
-                new ActionHandler()
-                {
-                    public String getName() { return "reverse-engineer-schema"; }
-                    public void execute() throws BuildException
-                    {
-                        reverseEngineer();
-                    }
-                });
+        addActionHandler(new ActionHandler()
+        {
+            public String getName() { return "generate-dal"; }
+
+            public void execute() throws BuildException
+            {
+                generateDalFiles(getSqlManager());
+            }
+        });
+
+        addActionHandler(new ActionHandler()
+        {
+            public String getName() { return "import-data"; }
+
+            public void execute() throws BuildException
+            {
+                importData(getSqlManager());
+            }
+        });
+
+        addActionHandler(new ActionHandler()
+        {
+            public String getName() { return "generate-import-data-dtd"; }
+
+            public void execute() throws BuildException
+            {
+                generateImportDtd(getSqlManager());
+            }
+        });
+
+        addActionHandler(new ActionHandler()
+        {
+            public String getName() { return "generate-graphviz-erd"; }
+
+            public void execute() throws BuildException
+            {
+                generateGraphVizErd(getSqlManager());
+            }
+        });
+
+        addActionHandler(new ActionHandler()
+        {
+            public String getName() { return "reverse-engineer-schema"; }
+
+            public void execute() throws BuildException
+            {
+                reverseEngineer();
+            }
+        });
     }
 
     /* ----- reusable attributes and methods ------------------------------------------------------------------------*/
@@ -244,7 +244,7 @@ public class AxiomTask extends XdmComponentTask
 
         Schema schema = sqlManager.getSchema(schemaName);
         if(schema == null)
-            throw new BuildException("Schema '"+ schemaName +"' does not exist.");
+            throw new BuildException("Schema '" + schemaName + "' does not exist.");
 
         return schema;
     }
@@ -306,11 +306,11 @@ public class AxiomTask extends XdmComponentTask
         {
             new DataImportDtd().generate(schema, dtdFile);
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             throw new BuildException(e);
         }
-        log("Created XML import data dtd "+ dtdFile +" for schema '"+ schema.getName() +"'.");
+        log("Created XML import data dtd " + dtdFile + " for schema '" + schema.getName() + "'.");
     }
 
     public void importData(SqlManager sqlManager) throws BuildException
@@ -329,7 +329,7 @@ public class AxiomTask extends XdmComponentTask
         {
             cc = dbvc.getConnection(dataSourceId, true);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new BuildException(e);
         }
@@ -338,7 +338,7 @@ public class AxiomTask extends XdmComponentTask
         {
             pc = DataImportParseContext.parse(cc, schema, importFile);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new BuildException(e);
         }
@@ -348,7 +348,7 @@ public class AxiomTask extends XdmComponentTask
             {
                 dbvc.returnConnection(cc);
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 throw new BuildException(e);
             }
@@ -371,12 +371,12 @@ public class AxiomTask extends XdmComponentTask
         for(int i = 0; i < tables.size(); i++)
         {
             Table table = tables.get(i);
-            if(! table.isApplicationTable())
+            if(!table.isApplicationTable())
                 continue;
 
             TableImportStatistic tis = pc.getStatistics(table);
             if(tis.getSuccessfulRows() > 0)
-                log(tis.getTableName() + ": successful rows=" + tis.getSuccessfulRows() + ", unsuccessful rows="+ tis.getUnsuccessfulRows() + ", time=" + tis.getSqlTimeSpent());
+                log(tis.getTableName() + ": successful rows=" + tis.getSuccessfulRows() + ", unsuccessful rows=" + tis.getUnsuccessfulRows() + ", time=" + tis.getSqlTimeSpent());
         }
     }
 
@@ -397,11 +397,11 @@ public class AxiomTask extends XdmComponentTask
             file.close();
             file = null;
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             throw new BuildException(e);
         }
-        log("Created GraphViz digraph " + graphVizErdFile + " for schema '"+ schema.getName() +"'.");
+        log("Created GraphViz digraph " + graphVizErdFile + " for schema '" + schema.getName() + "'.");
     }
 
     /* ----- reverse-engineer specific attributes and methods -------------------------------------------------------*/
@@ -434,7 +434,7 @@ public class AxiomTask extends XdmComponentTask
         {
             cc = dbvc.getConnection(dataSourceId, true);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new BuildException(e);
         }
@@ -453,7 +453,7 @@ public class AxiomTask extends XdmComponentTask
             {
                 dbvc.returnConnection(cc);
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 throw new BuildException(e);
             }
@@ -506,7 +506,7 @@ public class AxiomTask extends XdmComponentTask
 
         DatabasePolicy[] policies = DatabasePolicies.getInstance().getMatchingPolices(dbPolicyIdMatchRegEx);
         if(policies.length == 0)
-            throw new BuildException("Can not generate DDL -- no policies matched '"+ dbPolicyIdMatchRegEx +"'.");
+            throw new BuildException("Can not generate DDL -- no policies matched '" + dbPolicyIdMatchRegEx + "'.");
 
         Schema schema = getSchema(sqlManager, true);
         for(int i = 0; i < policies.length; i++)
@@ -519,11 +519,11 @@ public class AxiomTask extends XdmComponentTask
             {
                 policy.getDdlGenerator().generateSqlDdl(ddlFile, vc, schema, createDdlDropSql, createDdlCommentObjects, createAbbreviationsMapCommentBlock);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new BuildException("Error generating DDL for " + policy.getDbmsIdentifier() + ": " + e.getMessage(), e);
             }
-            log(policy.getDbmsIdentifier() + " DDL file " + ddlFile.getAbsolutePath() + " created for schema '"+ schema.getName() +"'.");
+            log(policy.getDbmsIdentifier() + " DDL file " + ddlFile.getAbsolutePath() + " created for schema '" + schema.getName() + "'.");
         }
     }
 
@@ -561,11 +561,11 @@ public class AxiomTask extends XdmComponentTask
         {
             schema.generateDataAccessLayer(getDestDir(), dalRootPackage, dalClassNameWithoutPackage);
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             throw new BuildException(e);
         }
-        log("Created DAL package '"+ dalRootPackage +"' for schema '"+ schema.getName() +"' in " + getDestDir() + ".");
+        log("Created DAL package '" + dalRootPackage + "' for schema '" + schema.getName() + "' in " + getDestDir() + ".");
     }
 
     /* ----- Utility methods ----------------------------------------------------------------------------------------*/

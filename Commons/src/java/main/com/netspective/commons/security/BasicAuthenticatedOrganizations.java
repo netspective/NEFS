@@ -64,9 +64,9 @@ public class BasicAuthenticatedOrganizations implements MutableAuthenticatedOrga
 
     public void addOrganization(MutableAuthenticatedOrganization organization)
     {
-        if (organization.isPrimary())
+        if(organization.isPrimary())
         {
-            if (primary != null)
+            if(primary != null)
                 log.warn("Overriding primary org '" + primary.toString() + "' with '" + organization.toString() + "'.");
 
             primary = organization;

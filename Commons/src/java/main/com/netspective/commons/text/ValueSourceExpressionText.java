@@ -55,7 +55,7 @@ public class ValueSourceExpressionText extends ExpressionText
         {
             vs = ValueSources.getInstance().getValueSource(replaceToken, ValueSources.VSNOTFOUNDHANDLER_ERROR_VS);
         }
-        catch (ValueSourceInitializeException e)
+        catch(ValueSourceInitializeException e)
         {
             vs = ValueSources.getInstance().createExceptionValueSource(e);
         }

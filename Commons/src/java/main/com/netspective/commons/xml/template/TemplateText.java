@@ -65,15 +65,15 @@ public class TemplateText extends TemplateNode
     protected void apply(TemplateApplyContext ac) throws SAXException
     {
         TemplateContentHandler contentHandler = ac.getContentHandler();
-        if (!contentHandler.isInIgnoreNode() && ac.isAllowReplaceExpressions() && isAllowReplaceExpressions())
+        if(!contentHandler.isInIgnoreNode() && ac.isAllowReplaceExpressions() && isAllowReplaceExpressions())
         {
-            if (!textExpressionsCounted)
+            if(!textExpressionsCounted)
             {
                 hasTextExpressions = text.indexOf(ExpressionText.EXPRESSION_REPLACEMENT_PREFIX) != -1;
                 textExpressionsCounted = true;
             }
 
-            if (hasTextExpressions)
+            if(hasTextExpressions)
             {
                 TemplateExpressionText tet = new TemplateExpressionText();
                 Stack nodeStack = ac.getContentHandler().getNodeStack();

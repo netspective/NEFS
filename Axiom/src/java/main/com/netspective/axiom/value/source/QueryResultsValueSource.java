@@ -71,23 +71,24 @@ import com.netspective.commons.xdm.exception.DataModelException;
 public class QueryResultsValueSource extends AbstractValueSource
 {
     private static final Log log = LogFactory.getLog(QueryResultsValueSource.class);
-    static private String[] RESULT_STYLE_NAMES = new String[] { "single-column", "row-map", "multi-row-map", "single-row-array", "multi-row-matrix", "result-set", "presentation" };
+    static private String[] RESULT_STYLE_NAMES = new String[]{
+        "single-column", "row-map", "multi-row-map", "single-row-array", "multi-row-matrix", "result-set",
+        "presentation"
+    };
 
-    public static final String[] IDENTIFIERS = new String[] { "query" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Executes a static query and returns the results.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("query-source", true, "The format is 'query-source/query-id@data-source-id'. Where the only required "+
-                                                                                         "item is the query-id. Query-source may be either a static value or a value source and may resolve to either a " +
-                                                                                         "resource id or a file name. If a resource id is required, use 'r resourceId' (prefix 'r ' in front of the value "+
-                                                                                         "to indicate it's a resource). The Query id is always a static text item and data-source-id may be a value source, "+
-                                                                                         "null, or a static text string."),
-                new ValueSourceDocumentation.Parameter("style", false, RESULT_STYLE_NAMES, "multi-row-matrix", "The style of result requested."),
-                new ValueSourceDocumentation.Parameter("cache-timeout", false, "0", "Number of milliseconds to cache the query results."),
-                new ValueSourceDocumentation.Parameter("params", false, "Bind parameters.")
-            }
-    );
+    public static final String[] IDENTIFIERS = new String[]{"query"};
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Executes a static query and returns the results.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("query-source", true, "The format is 'query-source/query-id@data-source-id'. Where the only required " +
+                                                                                                                                                               "item is the query-id. Query-source may be either a static value or a value source and may resolve to either a " +
+                                                                                                                                                               "resource id or a file name. If a resource id is required, use 'r resourceId' (prefix 'r ' in front of the value " +
+                                                                                                                                                               "to indicate it's a resource). The Query id is always a static text item and data-source-id may be a value source, " +
+                                                                                                                                                               "null, or a static text string."),
+                                                                                                  new ValueSourceDocumentation.Parameter("style", false, RESULT_STYLE_NAMES, "multi-row-matrix", "The style of result requested."),
+                                                                                                  new ValueSourceDocumentation.Parameter("cache-timeout", false, "0", "Number of milliseconds to cache the query results."),
+                                                                                                  new ValueSourceDocumentation.Parameter("params", false, "Bind parameters.")
+                                                                                              });
 
     static public final int RESULTSTYLE_SINGLECOLUMN_OBJECT = 0;
     static public final int RESULTSTYLE_FIRST_ROW_MAP_OBJECT = 1;
@@ -132,7 +133,6 @@ public class QueryResultsValueSource extends AbstractValueSource
      * resource id or a file name. If a resource id is required, use 'r resourceId' (prefix 'r ' in front of the value
      * to indicate it's a resource). The Query id is always a static text item and data-source-id may be a value source,
      * null, or a static text string.
-     * @param params
      */
     public void setSource(String params)
     {
@@ -144,17 +144,17 @@ public class QueryResultsValueSource extends AbstractValueSource
             if(querySrcIdDelim != -1)
             {
                 sourceId = ValueSources.getInstance().getValueSourceOrStatic(srcParams.substring(0, querySrcIdDelim));
-                queryId = srcParams.substring(querySrcIdDelim+1);
+                queryId = srcParams.substring(querySrcIdDelim + 1);
             }
             else
                 queryId = srcParams;
 
-            setDataSourceId(ValueSources.getInstance().getValueSourceOrStatic(params.substring(dataSrcIdDelim+1)));
+            setDataSourceId(ValueSources.getInstance().getValueSourceOrStatic(params.substring(dataSrcIdDelim + 1)));
         }
         else
         {
             int querySrcIdDelim = params.lastIndexOf('/');
-            if (querySrcIdDelim != -1)
+            if(querySrcIdDelim != -1)
             {
                 sourceId = ValueSources.getInstance().getValueSourceOrStatic(params.substring(0, querySrcIdDelim));
                 queryId = params.substring(querySrcIdDelim + 1);
@@ -192,7 +192,7 @@ public class QueryResultsValueSource extends AbstractValueSource
                     }
                 }
                 if(resultStyle == -1)
-                    throw new ValueSourceInitializeException("Invalid style '"+ styleText +"' specified", this, spec);
+                    throw new ValueSourceInitializeException("Invalid style '" + styleText + "' specified", this, spec);
             }
         }
 
@@ -272,7 +272,7 @@ public class QueryResultsValueSource extends AbstractValueSource
             if(sqlManager == null)
                 throw new RuntimeException("Unable to locate SQL Manager for " + this);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error retrieving SQL Manager", e);
             throw new NestableRuntimeException(e);
@@ -281,7 +281,7 @@ public class QueryResultsValueSource extends AbstractValueSource
         Query query = sqlManager.getQuery(queryId);
         if(query == null)
         {
-            log.error("Unable to locate Query '"+ queryId +"' in SQL Manager '"+ sqlManager +"' in " + this + ". Available: " + sqlManager.getQueries().getNames());
+            log.error("Unable to locate Query '" + queryId + "' in SQL Manager '" + sqlManager + "' in " + this + ". Available: " + sqlManager.getQueries().getNames());
             if(style == RESULTSTYLE_PRESENTATION)
             {
                 PresentationValue pValue = new PresentationValue();
@@ -308,7 +308,7 @@ public class QueryResultsValueSource extends AbstractValueSource
                 qrs = query.execute(dcvc, dataSourceIdText, parameters);
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error executing query", e);
             throw new NestableRuntimeException(e);
@@ -407,7 +407,7 @@ public class QueryResultsValueSource extends AbstractValueSource
                     throw new RuntimeException("Invalid style " + resultStyle + " in " + this);
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error retrieving results", e);
             throw new NestableRuntimeException(e);
@@ -420,7 +420,7 @@ public class QueryResultsValueSource extends AbstractValueSource
                 {
                     if(qrs != null) qrs.close(true);
                 }
-                catch (SQLException e)
+                catch(SQLException e)
                 {
                     log.error("Error closing result set", e);
                     throw new NestableRuntimeException(e);
@@ -484,7 +484,7 @@ public class QueryResultsValueSource extends AbstractValueSource
         StringBuffer result = new StringBuffer(super.toString());
         result.append(", source-id: " + sourceId);
         result.append(", query-id: " + queryId);
-        result.append(", result-style: " + resultStyle + " ("+ RESULT_STYLE_NAMES[resultStyle] +")");
+        result.append(", result-style: " + resultStyle + " (" + RESULT_STYLE_NAMES[resultStyle] + ")");
         result.append(", cache-timeout: " + cacheTimeoutMillis);
         result.append(", params: " + (params != null ? Integer.toString(params.length) : "null"));
         return result.toString();

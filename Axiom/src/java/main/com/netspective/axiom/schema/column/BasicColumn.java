@@ -117,15 +117,15 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         public String getAlternateClassName(TemplateContentHandler contentHandler, List templates, String elementName, Attributes attributes) throws SAXException
         {
             String altClassName = attributes.getValue(NodeIdentifiers.ATTRNAME_ALTERNATE_CLASS_NAME);
-            if (altClassName != null)
+            if(altClassName != null)
                 return altClassName;
 
             // if we have a reference to a foreign key, mark it as a placeholder and the Schema will come back to it
-            for (int i = 0; i < ATTRNAMES_FKEYREFS.length; i++)
+            for(int i = 0; i < ATTRNAMES_FKEYREFS.length; i++)
             {
                 String attrName = ATTRNAMES_FKEYREFS[i];
                 String attrValue = attributes.getValue(attrName);
-                if (attrValue != null)
+                if(attrValue != null)
                     return ForeignKeyPlaceholderColumn.class.getName();
             }
 
@@ -153,7 +153,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         public BasicColumnValue()
         {
             DbmsSqlTexts columnDefaultExprs = valueDefn.getDefaultSqlExprValues();
-            if (columnDefaultExprs.size() > 0)
+            if(columnDefaultExprs.size() > 0)
                 sqlExprs = columnDefaultExprs.getCopy();
         }
 
@@ -175,7 +175,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
         public DbmsSqlText createSqlExpr()
         {
-            if (sqlExprs == null) sqlExprs = new DbmsSqlTexts(this, "value");
+            if(sqlExprs == null) sqlExprs = new DbmsSqlTexts(this, "value");
             return sqlExprs.create();
         }
 
@@ -191,15 +191,15 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
         public Row getReferencedForeignKeyRow(ConnectionContext cc) throws NamingException, SQLException
         {
-            if (!hasValue())
+            if(!hasValue())
                 return null;
 
             ForeignKey fKey = getForeignKey();
-            if (fKey != null)
+            if(fKey != null)
             {
                 Columns fkCol = fKey.getReferencedColumns();
                 Table fkTable = fkCol.getFirst().getTable();
-                if (fkTable instanceof EnumerationTable)
+                if(fkTable instanceof EnumerationTable)
                 {
                     int id = getIntValue();
                     EnumerationTableRows rows = ((EnumerationTable) fkTable).getEnums();
@@ -214,15 +214,15 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
         public Rows getReferencedForeignKeyRows(ConnectionContext cc) throws NamingException, SQLException
         {
-            if (!hasValue())
+            if(!hasValue())
                 return null;
 
             ForeignKey fKey = getForeignKey();
-            if (fKey != null)
+            if(fKey != null)
             {
                 Columns fkCol = fKey.getReferencedColumns();
                 Table fkTable = fkCol.getFirst().getTable();
-                if (fkTable instanceof EnumerationTable)
+                if(fkTable instanceof EnumerationTable)
                 {
                     int id = getIntValue();
                     EnumerationTableRows allRows = ((EnumerationTable) fkTable).getEnums();
@@ -243,12 +243,12 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
             {
                 return (EnumerationTableRow) getReferencedForeignKeyRow(null);
             }
-            catch (NamingException e)
+            catch(NamingException e)
             {
                 log.error("This should never happen!", e);
                 throw new NestableRuntimeException("This should never happen!", e);
             }
-            catch (SQLException e)
+            catch(SQLException e)
             {
                 log.error("This should never happen!", e);
                 throw new NestableRuntimeException("This should never happen!", e);
@@ -261,7 +261,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
             sb.append(getName());
             sb.append("=");
             sb.append(getValue());
-            if (sqlExprs != null) sb.append(" (SQL Exprs: " + sqlExprs.size() + ")");
+            if(sqlExprs != null) sb.append(" (SQL Exprs: " + sqlExprs.size() + ")");
             return sb.toString();
         }
     }
@@ -329,7 +329,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
     {
-        if (templateConsumer == null)
+        if(templateConsumer == null)
             templateConsumer = new DataTypeTemplateConsumerDefn();
         return templateConsumer;
     }
@@ -341,7 +341,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public TemplateProducer getPresentation()
     {
-        if (presentation == null)
+        if(presentation == null)
             presentation = new ColumnPresentationTemplate();
 
         return presentation;
@@ -349,7 +349,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public TemplateProducers getTemplateProducers()
     {
-        if (templateProducers == null)
+        if(templateProducers == null)
         {
             templateProducers = new TemplateProducers();
             templateProducers.add(getPresentation());
@@ -369,7 +369,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public ValidationRules getValidationRules()
     {
-        if (validationRules == null)
+        if(validationRules == null)
         {
             validationRules = new ValidationRulesCollection();
             initValidationRules(validationRules);
@@ -391,7 +391,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     {
         ColumnQueryDefnField result = (ColumnQueryDefnField) owner.createField();
         result.setName(getName());
-        if (isQuoteNameInSql())
+        if(isQuoteNameInSql())
         {
             final String sqlName = getSqlName();
             result.setColumnExpr(sqlName);
@@ -407,14 +407,14 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public void finishConstruction()
     {
-        if (this instanceof ForeignKeyPlaceholderColumn)
+        if(this instanceof ForeignKeyPlaceholderColumn)
         {
             ForeignKey fkey = getForeignKey();
-            if (fkey.getReferencedColumns() == null)
+            if(fkey.getReferencedColumns() == null)
                 throw new RuntimeException("Invalid Foreign Key " + fkey + " in column " + this);
 
             Column referenced = fkey.getReferencedColumns().getSole();
-            if (referenced == null)
+            if(referenced == null)
                 throw new RuntimeException("Unable to finish construction of '" + getQualifiedName() + "': referenced foreign key '" + fkey + "' not found.");
 
             // make sure the referenced column has completed its construction
@@ -425,7 +425,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
             {
                 actualColumn = getTable().createColumn(referenced.getForeignKeyReferenceeClass());
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new NestableRuntimeException(e);
             }
@@ -437,12 +437,12 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         }
 
         // we want to make sure each of the rules have a valid caption
-        if (validationRules != null)
+        if(validationRules != null)
         {
-            for (int i = 0; i < validationRules.size(); i++)
+            for(int i = 0; i < validationRules.size(); i++)
             {
                 ValidationRule rule = validationRules.get(i);
-                if (rule.getCaption() == null)
+                if(rule.getCaption() == null)
                     rule.setCaption(new StaticValueSource(getQualifiedName()));
             }
         }
@@ -647,7 +647,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     {
         return jdbcDefn;
     }
-    
+
     public void setJdbcType(JdbcTypesEnumeratedAttribute type)
     {
         jdbcDefn = type;
@@ -728,14 +728,14 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public void removeForeignKeyDependency(ForeignKey fKey)
     {
-        if (dependentFKeys != null)
+        if(dependentFKeys != null)
             dependentFKeys.remove(fKey);
         fKey.getSourceColumns().getFirst().getTable().removeForeignKeyDependency(fKey);
     }
 
     public void registerForeignKeyDependency(ForeignKey fKey)
     {
-        if (dependentFKeys == null) dependentFKeys = new HashSet();
+        if(dependentFKeys == null) dependentFKeys = new HashSet();
         dependentFKeys.add(fKey);
         fKey.getSourceColumns().getFirst().getTable().registerForeignKeyDependency(fKey);
     }
@@ -828,7 +828,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     public void addTable(Table table)
     {
-        if (autoGeneratedColumnTables == null)
+        if(autoGeneratedColumnTables == null)
             autoGeneratedColumnTables = new TablesCollection();
         autoGeneratedColumnTables.add(table);
         schema.addTable(table);
@@ -867,7 +867,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         sb.append(getName());
 
         ForeignKey fkey = getForeignKey();
-        if (fkey != null)
+        if(fkey != null)
         {
             sb.append(" ");
             sb.append(fkey);
@@ -895,51 +895,51 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         jexlVars.put("column", this);
 
         ForeignKey fKey = getForeignKey();
-        if (fKey != null && fKey.getReferencedColumns().getFirst().getTable() instanceof EnumerationTable)
+        if(fKey != null && fKey.getReferencedColumns().getFirst().getTable() instanceof EnumerationTable)
         {
             addEnumerationSchemaRecordEditorDialogTemplates(dialogTemplate, jexlVars);
             return;
         }
 
         TemplateProducer columnPresentationTemplates = getPresentation();
-        if (columnPresentationTemplates.getInstances().size() > 0)
+        if(columnPresentationTemplates.getInstances().size() > 0)
         {
             // get only the last template because if there was inheritace of a data-type we want the "final" one
             Template columnPresentationTemplate = (Template) columnPresentationTemplates.getInstances().get(columnPresentationTemplates.getInstances().size() - 1);
             List copyColumnPresTmplChildren = columnPresentationTemplate.getChildren();
-            for (int i = 0; i < copyColumnPresTmplChildren.size(); i++)
+            for(int i = 0; i < copyColumnPresTmplChildren.size(); i++)
             {
                 TemplateNode colTmplChildNode = (TemplateNode) copyColumnPresTmplChildren.get(i);
-                if (colTmplChildNode instanceof TemplateElement)
+                if(colTmplChildNode instanceof TemplateElement)
                 {
                     TemplateElement elem = dialogTemplate.addCopyOfChildAndReplaceExpressions((TemplateElement) colTmplChildNode, jexlVars, true);
-                    if (elem.getElementName().equals("field"))
+                    if(elem.getElementName().equals("field"))
                     {
                         boolean changedAttrs = false;
                         AttributesImpl attrs = new AttributesImpl(elem.getAttributes());
-                        if (isPrimaryKey() &&
-                                (attrs.getIndex("primary-key") == -1 && attrs.getIndex("primarykey") == -1 &&
-                                attrs.getIndex("primary-key-generated") == -1 && attrs.getIndex("primarykeygenerated") == -1))
+                        if(isPrimaryKey() &&
+                           (attrs.getIndex("primary-key") == -1 && attrs.getIndex("primarykey") == -1 &&
+                            attrs.getIndex("primary-key-generated") == -1 && attrs.getIndex("primarykeygenerated") == -1))
                         {
-                            if (this instanceof GeneratedValueColumn)
+                            if(this instanceof GeneratedValueColumn)
                                 attrs.addAttribute(null, null, "primary-key-generated", "CDATA", "yes");
                             else
                                 attrs.addAttribute(null, null, "primary-key", "CDATA", "yes");
-                            if (attrs.getIndex("required") == -1) // unless required is being overidden, make the primary key field required
+                            if(attrs.getIndex("required") == -1) // unless required is being overidden, make the primary key field required
                                 attrs.addAttribute(null, null, "required", "CDATA", "yes");
                             changedAttrs = true;
                         }
 
-                        if (isRequiredByApp() && attrs.getIndex("required") == -1)
+                        if(isRequiredByApp() && attrs.getIndex("required") == -1)
                         {
                             attrs.addAttribute(null, null, "required", "CDATA", "yes");
                             changedAttrs = true;
                         }
-                        if (changedAttrs)
+                        if(changedAttrs)
                             elem.setAttributes(attrs);
                     }
                 }
-                else if (colTmplChildNode instanceof TemplateText)
+                else if(colTmplChildNode instanceof TemplateText)
                     dialogTemplate.addChild(new TemplateText(dialogTemplate, ((TemplateText) colTmplChildNode).getText()));
                 else
                     throw new RuntimeException("This should never happen.");

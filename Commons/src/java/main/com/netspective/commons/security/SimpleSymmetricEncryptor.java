@@ -44,9 +44,9 @@ public class SimpleSymmetricEncryptor
         StringBuffer result = new StringBuffer();
         int keyLen = key.length();
         char temp = ' ';
-        for (int nIndex = 0; nIndex < plainText.length(); nIndex++)
+        for(int nIndex = 0; nIndex < plainText.length(); nIndex++)
         {
-            for (int bIndex = 0; bIndex < keyLen; bIndex++)
+            for(int bIndex = 0; bIndex < keyLen; bIndex++)
             {
                 int x = plainText.charAt(nIndex) ^ key.charAt(bIndex);
                 temp = (char) x;
@@ -61,9 +61,9 @@ public class SimpleSymmetricEncryptor
         StringBuffer result = new StringBuffer();
         int keyLen = key.length();
         char temp = ' ';
-        for (int nIndex = 0; nIndex < encryptedText.length(); nIndex++)
+        for(int nIndex = 0; nIndex < encryptedText.length(); nIndex++)
         {
-            for (int bIndex = 0; bIndex < keyLen; bIndex++)
+            for(int bIndex = 0; bIndex < keyLen; bIndex++)
             {
                 int x = encryptedText.charAt(nIndex) ^ key.charAt(bIndex);
                 temp = (char) x;

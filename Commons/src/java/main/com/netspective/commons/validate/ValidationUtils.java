@@ -80,7 +80,7 @@ public class ValidationUtils
     {
         boolean match = false;
 
-        if (regexp != null && regexp.length() > 0)
+        if(regexp != null && regexp.length() > 0)
         {
             Perl5Util r = new Perl5Util();
             match = r.match(regexp, value);
@@ -162,12 +162,12 @@ public class ValidationUtils
     {
         boolean bValid = true;
 
-        if (value != null)
+        if(value != null)
         {
             try
             {
                 DateFormat formatter = null;
-                if (locale != null)
+                if(locale != null)
                 {
                     formatter = DateFormat.getDateInstance(DateFormat.SHORT, locale);
                 }
@@ -180,7 +180,7 @@ public class ValidationUtils
 
                 formatter.parse(value);
             }
-            catch (ParseException e)
+            catch(ParseException e)
             {
                 bValid = false;
             }
@@ -209,7 +209,7 @@ public class ValidationUtils
 
         boolean bValid = true;
 
-        if (value != null && datePattern != null && datePattern.length() > 0)
+        if(value != null && datePattern != null && datePattern.length() > 0)
         {
             try
             {
@@ -218,16 +218,16 @@ public class ValidationUtils
 
                 formatter.parse(value);
 
-                if (strict)
+                if(strict)
                 {
-                    if (datePattern.length() != value.length())
+                    if(datePattern.length() != value.length())
                     {
                         bValid = false;
                     }
                 }
 
             }
-            catch (ParseException e)
+            catch(ParseException e)
             {
                 bValid = false;
             }
@@ -318,33 +318,33 @@ public class ValidationUtils
         int no_digit = cardNumber.length();
         int oddoeven = no_digit & 1;
         long sum = 0;
-        for (int count = 0; count < no_digit; count++)
+        for(int count = 0; count < no_digit; count++)
         {
             int digit = 0;
             try
             {
                 digit = Integer.parseInt(String.valueOf(cardNumber.charAt(count)));
             }
-            catch (NumberFormatException e)
+            catch(NumberFormatException e)
             {
                 return false;
             }
-            if (((count & 1) ^ oddoeven) == 0)
+            if(((count & 1) ^ oddoeven) == 0)
             { // not
                 digit *= 2;
-                if (digit > 9)
+                if(digit > 9)
                 {
                     digit -= 9;
                 }
             }
             sum += digit;
         }
-        if (sum == 0)
+        if(sum == 0)
         {
             return false;
         }
 
-        if (sum % 10 == 0)
+        if(sum % 10 == 0)
         {
             return true;
         }
@@ -367,7 +367,7 @@ public class ValidationUtils
         final String DS_PREFIX = "6011";
 
         int length = cardNumber.length();
-        if (length < 13)
+        if(length < 13)
         {
             return false;
         }
@@ -377,36 +377,36 @@ public class ValidationUtils
 
         String prefix2 = cardNumber.substring(0, 2) + ",";
 
-        if (AX_PREFIX.indexOf(prefix2) != -1)
+        if(AX_PREFIX.indexOf(prefix2) != -1)
         {
             cardType = 3;
         }
-        if (cardNumber.substring(0, 1).equals(VS_PREFIX))
+        if(cardNumber.substring(0, 1).equals(VS_PREFIX))
         {
             cardType = 4;
         }
-        if (MC_PREFIX.indexOf(prefix2) != -1)
+        if(MC_PREFIX.indexOf(prefix2) != -1)
         {
             cardType = 5;
         }
-        if (cardNumber.substring(0, 4).equals(DS_PREFIX))
+        if(cardNumber.substring(0, 4).equals(DS_PREFIX))
         {
             cardType = 6;
         }
 
-        if ((cardType == 3) && (length == 15))
+        if((cardType == 3) && (length == 15))
         {
             valid = true;
         }
-        if ((cardType == 4) && ((length == 13) || (length == 16)))
+        if((cardType == 4) && ((length == 13) || (length == 16)))
         {
             valid = true;
         }
-        if ((cardType == 5) && (length == 16))
+        if((cardType == 5) && (length == 16))
         {
             valid = true;
         }
-        if ((cardType == 6) && (length == 16))
+        if((cardType == 6) && (length == 16))
         {
             valid = true;
         }
@@ -453,7 +453,7 @@ public class ValidationUtils
             bValid = matchEmailPat.match(emailPat, value);
 
             // Check the user component of the email address
-            if (bValid)
+            if(bValid)
             {
                 String user = matchEmailPat.group(1);
 
@@ -462,32 +462,32 @@ public class ValidationUtils
             }
 
             // Check the domain component of the email address
-            if (bValid)
+            if(bValid)
             {
                 String domain = matchEmailPat.group(2);
 
                 // check if domain is IP address or symbolic
                 ipAddress = matchIPPat.match(ipDomainPat, domain);
 
-                if (ipAddress)
+                if(ipAddress)
                 {
                     // this is an IP address so check components
-                    for (int i = 1; i <= 4; i++)
+                    for(int i = 1; i <= 4; i++)
                     {
                         String ipSegment = matchIPPat.group(i);
-                        if (ipSegment != null && ipSegment.length() > 0)
+                        if(ipSegment != null && ipSegment.length() > 0)
                         {
                             int iIpSegment = 0;
                             try
                             {
                                 iIpSegment = Integer.parseInt(ipSegment);
                             }
-                            catch (Exception e)
+                            catch(Exception e)
                             {
                                 bValid = false;
                             }
 
-                            if (iIpSegment > 255)
+                            if(iIpSegment > 255)
                             {
                                 bValid = false;
                             }
@@ -504,7 +504,7 @@ public class ValidationUtils
                     symbolic = matchDomainPat.match(domainPat, domain);
                 }
 
-                if (symbolic)
+                if(symbolic)
                 {
                     // this is a symbolic domain so check components
                     String[] domainSegment = new String[10];
@@ -512,10 +512,10 @@ public class ValidationUtils
                     int i = 0;
                     int l = 0;
 
-                    while (match)
+                    while(match)
                     {
                         match = matchAtomPat.match(atomPat, domain);
-                        if (match)
+                        if(match)
                         {
                             domainSegment[i] = matchAtomPat.group(1);
                             l = domainSegment[i].length() + 1;
@@ -525,20 +525,20 @@ public class ValidationUtils
                     }
 
                     int len = i;
-                    if (domainSegment[len - 1].length() < 2 || domainSegment[len - 1].length() > 4)
+                    if(domainSegment[len - 1].length() < 2 || domainSegment[len - 1].length() > 4)
                     {
                         bValid = false;
                     }
 
                     // Make sure there's a host name preceding the domain.
-                    if (len < 2)
+                    if(len < 2)
                     {
                         bValid = false;
                     }
                 }
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             bValid = false;
         }
@@ -588,7 +588,7 @@ public class ValidationUtils
      */
     public static boolean isMultipleOf(int value, int multiple)
     {
-        if (multiple == 0)
+        if(multiple == 0)
             return false;
 
         int quotient = value / multiple;

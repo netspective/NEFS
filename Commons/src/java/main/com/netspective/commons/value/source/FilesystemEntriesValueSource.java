@@ -55,16 +55,16 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
 {
     public static final String[] IDENTIFIERS = new String[]{"filesystem-entries"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides list of files contained in a directory (either all files or by filter). If only a path is " +
-            "provided then this LVS returns a list of all the files in the given path. If a regular expression is " +
-            "provided (filter-reg-ex) then it must be a Perl5 regular expression that will be used to match the " +
-            "files that should be included in the list. If the {include-path} parameter is set to 1 then the full " +
-            "path included in the selected value otherwise just the filename is provided.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new ValueSourceDocumentation.Parameter("path", true, "The path to search in."),
-                new ValueSourceDocumentation.Parameter("filter-reg-ex", false, ".*", "The Perl5 regular expression to use as filter."),
-                new ValueSourceDocumentation.Parameter("include-path", false, "no", "Whether or not to include the path in the files returned.")
-            });
+                                                                                              "provided then this LVS returns a list of all the files in the given path. If a regular expression is " +
+                                                                                              "provided (filter-reg-ex) then it must be a Perl5 regular expression that will be used to match the " +
+                                                                                              "files that should be included in the list. If the {include-path} parameter is set to 1 then the full " +
+                                                                                              "path included in the selected value otherwise just the filename is provided.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new ValueSourceDocumentation.Parameter("path", true, "The path to search in."),
+                                                                                                  new ValueSourceDocumentation.Parameter("filter-reg-ex", false, ".*", "The Perl5 regular expression to use as filter."),
+                                                                                                  new ValueSourceDocumentation.Parameter("include-path", false, "no", "Whether or not to include the path in the files returned.")
+                                                                                              });
 
     static public Perl5Util perlUtil = new Perl5Util();
     static public String ALL_FILES_FILTER = "/.*/";
@@ -120,7 +120,7 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
 
     public void setFilter(String filter)
     {
-        if (filter.startsWith("/"))
+        if(filter.startsWith("/"))
             this.filter = filter;
         else
             this.filter = "/" + filter + "/";
@@ -136,23 +136,23 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
         super.initialize(spec);
 
         StringTokenizer st = new StringTokenizer(spec.getParams(), ",");
-        if (st.hasMoreTokens())
+        if(st.hasMoreTokens())
             setRootPath(st.nextToken());
 
-        if (rootPathValue == null)
+        if(rootPathValue == null)
             throw new ValueSourceInitializeException("Root path was not specified (" + spec.getParams() + ")", this, spec);
 
-        if (st.hasMoreTokens())
+        if(st.hasMoreTokens())
         {
             String filterParam = st.nextToken().trim();
-            if (filterParam.equals(""))
+            if(filterParam.equals(""))
                 filter = ALL_FILES_FILTER;
             else
                 setFilter(filterParam);
         }
         else
             filter = ALL_FILES_FILTER;
-        if (st.hasMoreTokens())
+        if(st.hasMoreTokens())
             setIncludePathInSelection(TextUtils.getInstance().toBoolean(st.nextToken().trim()));
     }
 
@@ -162,9 +162,9 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
         String[] allFilesInPath = rootPath.list(this);
         List filesSelected = new ArrayList();
 
-        if (allFilesInPath != null && allFilesInPath.length > 0)
+        if(allFilesInPath != null && allFilesInPath.length > 0)
         {
-            for (int f = 0; f < allFilesInPath.length; f++)
+            for(int f = 0; f < allFilesInPath.length; f++)
             {
                 File file = new File(rootPath, allFilesInPath[f]);
                 filesSelected.add(file.getAbsolutePath());
@@ -182,11 +182,11 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
         File rootPath = new File(rootPathValue.getValue(vc).getTextValue());
         String[] allFilesInPath = rootPath.list(this);
 
-        if (allFilesInPath != null && allFilesInPath.length > 0)
+        if(allFilesInPath != null && allFilesInPath.length > 0)
         {
-            if (!includePathInValue)
+            if(!includePathInValue)
             {
-                for (int f = 0; f < allFilesInPath.length; f++)
+                for(int f = 0; f < allFilesInPath.length; f++)
                 {
                     // a string will mean that both the presentation (what to show to user) and the value (what to
                     // store as a value) will be the same
@@ -195,7 +195,7 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
             }
             else
             {
-                for (int f = 0; f < allFilesInPath.length; f++)
+                for(int f = 0; f < allFilesInPath.length; f++)
                 {
                     // a string[] will mean that both the presentation (what to show to user) and the value (what to
                     // store as a value) will be different

@@ -75,7 +75,7 @@ public class ClassPath
     {
         String resource = new String(clsName);
 
-        if (!resource.startsWith("/"))
+        if(!resource.startsWith("/"))
             resource = "/" + resource;
 
         resource = resource.replace('.', '/');
@@ -83,7 +83,7 @@ public class ClassPath
 
         java.net.URL classUrl = ClassPath.class.getResource(resource);
 
-        if (classUrl == null)
+        if(classUrl == null)
             return null;
         else
             return classUrl.getFile();
@@ -106,9 +106,9 @@ public class ClassPath
         {
             classPath = new File(path);
 
-            if (classPath.exists())
+            if(classPath.exists())
             {
-                if (classPath.isDirectory())
+                if(classPath.isDirectory())
                 {
                     isValid = true;
                     isDirectory = true;
@@ -117,9 +117,9 @@ public class ClassPath
                 {
                     isValid = true;
                     String pathLower = path.toLowerCase();
-                    if (pathLower.endsWith(".jar"))
+                    if(pathLower.endsWith(".jar"))
                         isJar = true;
-                    else if (pathLower.endsWith(".zip"))
+                    else if(pathLower.endsWith(".zip"))
                         isZip = true;
                     else
                         isValid = false;
@@ -158,7 +158,7 @@ public class ClassPath
     public static void addClassPaths(List classPathList, String path)
     {
         StringTokenizer tokenizer = new StringTokenizer(path, File.pathSeparator);
-        while (tokenizer.hasMoreTokens())
+        while(tokenizer.hasMoreTokens())
         {
             String pathName = tokenizer.nextToken();
             classPathList.add(new ClassPathInfo(pathName));
@@ -168,9 +168,9 @@ public class ClassPath
     public static ClassPathInfo[] getClassPaths(String[] paths)
     {
         List classPathList = new ArrayList();
-        for (int i = 0; i < paths.length; i++)
+        for(int i = 0; i < paths.length; i++)
             addClassPaths(classPathList, paths[i]);
-        if (classPathList.size() == 0)
+        if(classPathList.size() == 0)
             return null;
 
         return (ClassPathInfo[]) classPathList.toArray(new ClassPathInfo[classPathList.size()]);
@@ -180,7 +180,7 @@ public class ClassPath
     {
         List classPathList = new ArrayList();
         addClassPaths(classPathList, path);
-        if (classPathList.size() == 0)
+        if(classPathList.size() == 0)
             return null;
 
         return (ClassPathInfo[]) classPathList.toArray(new ClassPathInfo[classPathList.size()]);
@@ -189,7 +189,7 @@ public class ClassPath
     public static ClassPathInfo[] getClassPaths(ClassLoader classLoader)
     {
         ClassPathProvider provider = getClassPathProvider(classLoader);
-        if (provider != null)
+        if(provider != null)
             return getClassPaths(provider.getClassLoaderClassPath());
 
         return getSystemClassPaths();

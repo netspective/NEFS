@@ -39,7 +39,7 @@ import com.netspective.commons.value.ValueSources;
 import junit.framework.TestCase;
 
 /**
- * $Id: ValueSourceExceptionTest.java,v 1.3 2004-08-15 01:41:14 shahid.shah Exp $
+ * $Id: ValueSourceExceptionTest.java,v 1.4 2004-08-15 02:17:07 shahid.shah Exp $
  */
 public class ValueSourceExceptionTest extends TestCase
 {
@@ -54,7 +54,7 @@ public class ValueSourceExceptionTest extends TestCase
             rov.setTextValue("Test");
             exceptionThrown = false;
         }
-        catch (ValueReadOnlyException e)
+        catch(ValueReadOnlyException e)
         {
             assertTrue(exceptionThrown);
         }
@@ -72,7 +72,7 @@ public class ValueSourceExceptionTest extends TestCase
             vs = ValueSources.getInstance().getValueSource("blah:test", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
             exceptionThrown = false;
         }
-        catch (ValueSourceNotFoundException e)
+        catch(ValueSourceNotFoundException e)
         {
             assertTrue(exceptionThrown);
         }

@@ -67,12 +67,12 @@ public class BasicDelimiter implements Delimiter
 
     public int getTokenType(char ch, boolean inEscapeSeq)
     {
-        if (inEscapeSeq)
+        if(inEscapeSeq)
             return DELIMTOKEN_NONE;
 
-        if (escapeSequence != null && escapeSequence.indexOf(ch) != -1)
+        if(escapeSequence != null && escapeSequence.indexOf(ch) != -1)
             return DELIMTOKEN_ESCAPE;
-        else if (delimiter.indexOf(ch) != -1)
+        else if(delimiter.indexOf(ch) != -1)
             return DELIMTOKEN_DELIMITER;
         else
             return DELIMTOKEN_NONE;

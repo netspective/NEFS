@@ -64,18 +64,18 @@ public class UriAddressableInheritableFileResource extends UriAddressableUniqueF
         final boolean logging = log.isDebugEnabled();
         UriAddressableFile result = null;
 
-        if (cacheLocations)
+        if(cacheLocations)
         {
             result = (UriAddressableFile) cache.get(name);
-            if (result != null)
+            if(result != null)
             {
-                if (logging) log.debug("UriAddressableInheritableFileResource cache hit for " + result);
+                if(logging) log.debug("UriAddressableInheritableFileResource cache hit for " + result);
                 return result;
             }
         }
 
         result = super.findUriAddressableFile(name);
-        if (result != null)
+        if(result != null)
         {
             cache.put(name, result);
             return result;
@@ -87,10 +87,10 @@ public class UriAddressableInheritableFileResource extends UriAddressableUniqueF
         // get just the name then start looking "up" the parents until we get to the base directory
         // e.g. if pathItems is /a/b/c/d.gif then we start searching at /a/b/d.gif, then /a/d.gif, then /d.gif, etc
         int pathItemToSearch = pathItems.length - 2;
-        while (pathItemToSearch >= 0)
+        while(pathItemToSearch >= 0)
         {
             StringBuffer buildPath = new StringBuffer();
-            for (int i = 0; i < pathItemToSearch; i++)
+            for(int i = 0; i < pathItemToSearch; i++)
             {
                 buildPath.append(pathItems[i]);
                 buildPath.append('/');
@@ -98,10 +98,10 @@ public class UriAddressableInheritableFileResource extends UriAddressableUniqueF
             buildPath.append(justName);
 
             result = super.findUriAddressableFile(buildPath.toString());
-            if (result != null)
+            if(result != null)
             {
                 // even if we inherited the file we look for it in the cache as the original name
-                if (cacheLocations) cache.put(name, result);
+                if(cacheLocations) cache.put(name, result);
                 return result;
             }
 

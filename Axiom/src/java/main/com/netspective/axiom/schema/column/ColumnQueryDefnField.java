@@ -40,8 +40,9 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 public class ColumnQueryDefnField extends QueryDefnField
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options(QueryDefnField.XML_DATA_MODEL_SCHEMA_OPTIONS);
+
     {
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "table-column" } );
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[]{"table-column"});
     }
 
     private Column tableColumn;

@@ -112,7 +112,7 @@ public class CompositeRef implements TextContainer
 
     public void setMaxUse(String maxUse)
     {
-        if ("N/A".equals(maxUse))
+        if("N/A".equals(maxUse))
             this.maxUse = Integer.MAX_VALUE;
         else
             this.maxUse = Integer.parseInt(maxUse);

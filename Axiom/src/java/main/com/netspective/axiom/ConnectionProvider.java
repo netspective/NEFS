@@ -44,15 +44,16 @@ public interface ConnectionProvider
 {
     /**
      * Given a valid data source identifier, return a database connection for the data source
+     *
      * @param dataSourceId The data source identifier
+     *
      * @return An open database connection for the given identifier
-     * @throws NamingException
-     * @throws SQLException
      */
     public Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException;
 
     /**
      * Get the class that actually implements the connection provider.
+     *
      * @return The class that is actually providing the connections -- JNDI context, etc.
      */
     public Class getUnderlyingImplementationClass();
@@ -60,6 +61,7 @@ public interface ConnectionProvider
     /**
      * Retrieve a list of all data source identifiers being managed by this provider. Each item in the Set is a String
      * with the name/id of the datasource.
+     *
      * @return List
      */
     public Set getAvailableDataSources();
@@ -67,6 +69,7 @@ public interface ConnectionProvider
     /**
      * Retrieve an informational list of all data sources being managed by this provider. This method is used to
      * catalog the available datasources and inquire about their details.
+     *
      * @return ConnectionProviderEntries
      */
     public ConnectionProviderEntries getDataSourceEntries(ValueContext vc);
@@ -74,6 +77,7 @@ public interface ConnectionProvider
     /**
      * Retrieve an informational record of a particular data sources being managed by this provider. This method is used
      * to inquire about the details of a particular data source.
+     *
      * @return ConnectionProviderEntry
      */
     public ConnectionProviderEntry getDataSourceEntry(ValueContext vc, String dataSourceId);

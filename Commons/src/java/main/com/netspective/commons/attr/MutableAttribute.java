@@ -42,8 +42,6 @@ public interface MutableAttribute extends Attribute
      * If the Attribute allows multiple sub-attributes to be stored, this method creates the collection that
      * holds the multiple attributes. By default the collection is an ArrayList but could be replaced by any
      * collection concrete class.
-     *
-     * @return
      */
     public Collection createMultiAttributeCollection();
 }

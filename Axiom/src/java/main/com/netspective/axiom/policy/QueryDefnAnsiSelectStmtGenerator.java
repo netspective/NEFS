@@ -105,11 +105,11 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
         {
             StringBuffer comments = new StringBuffer();
             comments.append("/* ");
-            if(autoInc) comments.append("auto-included for join definition '"+ join.getName() +"'");
+            if(autoInc) comments.append("auto-included for join definition '" + join.getName() + "'");
             if(impliedBy != null)
             {
                 if(autoInc) comments.append(", ");
-                comments.append("implied by join definition '"+ impliedBy.getName() +"'");
+                comments.append("implied by join definition '" + impliedBy.getName() + "'");
             }
             comments.append(" */");
             fromClauseComments.add(comments.toString());
@@ -222,9 +222,9 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
         if(usedCondsCount > 0)
         {
             String conditionSql = usedSelectConditions.createSql(this, vc, usedSelectConditions);
-            if (conditionSql != null && conditionSql.length() > 0)
+            if(conditionSql != null && conditionSql.length() > 0)
             {
-                if (haveJoinWheres)
+                if(haveJoinWheres)
                 {
                     whereClauseSql.append(" and (\n");
                 }
@@ -321,9 +321,11 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
 
     private String getSchemaPrefix()
     {
-        if ( policy.isPrefixTableNamesWithSchemaName() && (select instanceof TableQueryDefnSelect) ) {
-            return ((TableQueryDefnSelect)select).getOwner().getSchema().getName() + ".";
-        } else
+        if(policy.isPrefixTableNamesWithSchemaName() && (select instanceof TableQueryDefnSelect))
+        {
+            return ((TableQueryDefnSelect) select).getOwner().getSchema().getName() + ".";
+        }
+        else
             return "";
     }
 }

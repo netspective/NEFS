@@ -38,9 +38,9 @@ import com.netspective.commons.text.TextUtils;
 
 public class EnumerationTableRow extends BasicRow
 {
-    public final static int COLINDEXINROW_ID      = 0;
+    public final static int COLINDEXINROW_ID = 0;
     public final static int COLINDEXINROW_CAPTION = 1;
-    public final static int COLINDEXINROW_ABBREV  = 2;
+    public final static int COLINDEXINROW_ABBREV = 2;
 
     private EnumerationTableRows owner;
     private String javaConstant;

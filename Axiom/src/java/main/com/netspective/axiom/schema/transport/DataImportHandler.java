@@ -136,19 +136,19 @@ public class DataImportHandler extends AbstractContentHandler
         {
             if(allowColumnAssignments && row != null)
             {
-                for (int i = 0; i < attributes.getLength(); i++)
+                for(int i = 0; i < attributes.getLength(); i++)
                 {
                     String attrName = attributes.getQName(i);
-                    if (! SPECIAL_ATTRIBUTES.contains(attrName))
+                    if(!SPECIAL_ATTRIBUTES.contains(attrName))
                     {
                         Column column = row.getTable().getColumns().getByNameOrXmlNodeName(attrName);
                         if(column != null)
                         {
                             String value = attributes.getValue(i);
-                            if (value.startsWith(ATTRVALUE_RETRIEVE_ID))
+                            if(value.startsWith(ATTRVALUE_RETRIEVE_ID))
                             {
                                 String idRef = value.substring(ATTRVALUE_RETRIEVE_ID.length());
-                                if (idRef != null)
+                                if(idRef != null)
                                 {
                                     idRefValues = (PrimaryKeyColumnValues) idReferences.get(idRef);
                                     if(idRefValues != null)
@@ -156,7 +156,7 @@ public class DataImportHandler extends AbstractContentHandler
                                 }
                                 else
                                 {
-                                    getParseContext().addError("IDREF '"+ idRef +"' not found in table '"+ row.getTable().getName() +"'. Available: " + idReferences.keySet() + " ");
+                                    getParseContext().addError("IDREF '" + idRef + "' not found in table '" + row.getTable().getName() + "'. Available: " + idReferences.keySet() + " ");
                                 }
                             }
                             else
@@ -180,7 +180,7 @@ public class DataImportHandler extends AbstractContentHandler
                     sqlExprDbmsId = sqlExprAttrValue;
                 }
                 else
-                    getParseContext().addError("DBMS id '"+ sqlExprAttrValue +"' is not valid in " + ATTRNAME_SQL_EXPR + "'"+ row.getTable().getName() +"'");
+                    getParseContext().addError("DBMS id '" + sqlExprAttrValue + "' is not valid in " + ATTRNAME_SQL_EXPR + "'" + row.getTable().getName() + "'");
             }
 
             String storeId = attributes.getValue(ATTRNAME_STORE_ID);
@@ -194,7 +194,7 @@ public class DataImportHandler extends AbstractContentHandler
                 if(idRefValues != null)
                     row.getColumnValues().copyValuesUsingColumnNames(idRefValues);
                 else
-                    getParseContext().addError("IDREF '"+ idRef +"' not found in table '"+ row.getTable().getName() +"'. Available: " + idReferences.keySet() + " ");
+                    getParseContext().addError("IDREF '" + idRef + "' not found in table '" + row.getTable().getName() + "'. Available: " + idReferences.keySet() + " ");
             }
 
             String csv = attributes.getValue(ATTRNAME_CSV);
@@ -202,12 +202,11 @@ public class DataImportHandler extends AbstractContentHandler
             {
                 if(row != null)
                 {
-                    row.getColumnValues().setValues(
-                            new DelimitedValuesParser().parse(csv),
-                            TextUtils.getInstance().toBoolean(attributes.getValue(ATTRNAME_CSV_BLANK_IS_NULL), true));
+                    row.getColumnValues().setValues(new DelimitedValuesParser().parse(csv),
+                                                    TextUtils.getInstance().toBoolean(attributes.getValue(ATTRNAME_CSV_BLANK_IS_NULL), true));
                 }
                 else
-                    getParseContext().addError("Trying to assign CSV value '"+ csv +"' but there is no active row.");
+                    getParseContext().addError("Trying to assign CSV value '" + csv + "' but there is no active row.");
             }
         }
 
@@ -238,11 +237,11 @@ public class DataImportHandler extends AbstractContentHandler
 
         public void write() throws NamingException, SQLException
         {
-            if (!written && row != null)
+            if(!written && row != null)
             {
                 ValidationContext vc = row.getValidationResult(null);
 
-                if (vc.isValid())
+                if(vc.isValid())
                 {
                     written = true;
                     Table table = row.getTable();
@@ -252,7 +251,7 @@ public class DataImportHandler extends AbstractContentHandler
                     {
                         table.insert(cc, row);
                     }
-                    catch (SQLException e)
+                    catch(SQLException e)
                     {
                         throw new SQLException(e.getMessage() + "\n" + row + "\nIDREF values: " + idRefValues + "\n" + getParseContext().getLocator().getSystemId() + " line " + getParseContext().getLocator().getLineNumber());
                     }
@@ -305,7 +304,7 @@ public class DataImportHandler extends AbstractContentHandler
             }
             catch(Exception e)
             {
-                if (e instanceof ContentHandlerException)
+                if(e instanceof ContentHandlerException)
                     throw (ContentHandlerException) e;
                 else
                     throw new ContentHandlerException(parentPC, e);
@@ -322,7 +321,7 @@ public class DataImportHandler extends AbstractContentHandler
             }
             catch(Exception e)
             {
-                if (e instanceof ContentHandlerException)
+                if(e instanceof ContentHandlerException)
                     throw (ContentHandlerException) e;
                 else
                     throw new ContentHandlerException(parentPC, e);
@@ -354,7 +353,7 @@ public class DataImportHandler extends AbstractContentHandler
             return;
 
         NodeStackEntry entry = (NodeStackEntry) getActiveNodeEntry();
-        if (!entry.isColumnEntry())
+        if(!entry.isColumnEntry())
             return;
 
         try
@@ -378,7 +377,7 @@ public class DataImportHandler extends AbstractContentHandler
                     value.appendText(text);
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new SAXParseException(e.getMessage(), getParseContext().getLocator(), e);
         }
@@ -402,17 +401,17 @@ public class DataImportHandler extends AbstractContentHandler
 
         try
         {
-            if (depth == 0)
+            if(depth == 0)
             {
                 // root node, do nothing
                 getNodeStack().push(new NodeStackEntry(qName, depth));
             }
-            else if (depth == 1)
+            else if(depth == 1)
             {
                 // all the primary (top level) row inserts are done as single transactions and all children of
                 // top-level rows are part of the same transaction
                 Table childTable = schema.getTables().getByNameOrXmlNodeName(qName);
-                if (childTable == null)
+                if(childTable == null)
                 {
                     getNodeStack().push(new NodeStackEntry(qName, depth));
                     getParseContext().addError("Table '" + qName + "' not found in the schema");
@@ -430,12 +429,12 @@ public class DataImportHandler extends AbstractContentHandler
                 if(haveActiveNodeEntry())
                 {
                     NodeStackEntry entry = (NodeStackEntry) getActiveNodeEntry();
-                    if (entry.row != null)
+                    if(entry.row != null)
                     {
                         Tables childTables = entry.row.getTable().getChildTables();
                         Table childTable = childTables.size() > 0 ? childTables.getByNameOrXmlNodeName(qName) : null;
 
-                        if (childTable != null)
+                        if(childTable != null)
                         {
                             // if we're starting a child row, be sure to write out the active entry so that if there
                             // are relational dependencies everything will work
@@ -450,7 +449,7 @@ public class DataImportHandler extends AbstractContentHandler
                         else
                         {
                             Column column = entry.row.getTable().getColumns().getByNameOrXmlNodeName(qName);
-                            if (column != null)
+                            if(column != null)
                             {
                                 NodeStackEntry newEntry = new NodeStackEntry(qName, entry.row, qName, depth);
                                 newEntry.handleAttributes(attributes, false);
@@ -478,49 +477,50 @@ public class DataImportHandler extends AbstractContentHandler
                 {
                     // the file is relative to the current XML file unless it doesn't exist
                     File xdmFile = new File(getParseContext().getInputSource().getSystemId());
-                    File csvFile = xdmFile.exists() ? new File(xdmFile.getParentFile(), csvFileName)  : new File(csvFileName);
+                    File csvFile = xdmFile.exists()
+                                   ? new File(xdmFile.getParentFile(), csvFileName) : new File(csvFileName);
                     if(csvFile.exists())
                     {
                         NodeStackEntry entry = (NodeStackEntry) getActiveNodeEntry();
-                        if (entry.row != null)
+                        if(entry.row != null)
                             loadFromCsv(entry.row.getTable(), csvFile, TextUtils.getInstance().toBoolean(attributes.getValue(ATTRNAME_CSV_BLANK_IS_NULL), true));
                         else
-                            getParseContext().addError("Request for CSV file import from '"+ csvFile.getAbsolutePath() +"' not possible: '" + qName + "' does not have a valid row.");
+                            getParseContext().addError("Request for CSV file import from '" + csvFile.getAbsolutePath() + "' not possible: '" + qName + "' does not have a valid row.");
                     }
                     else
                         getParseContext().addError("Request for CSV file import not possible: '" + csvFile.getAbsolutePath() + "' does not exist.");
                 }
                 else
-                    getParseContext().addError("Request for CSV file import from '"+ csvFileName +"' not possible: '" + qName + "' does not seem to be a valid table.");
+                    getParseContext().addError("Request for CSV file import from '" + csvFileName + "' not possible: '" + qName + "' does not seem to be a valid table.");
             }
             else
                 isCsvImport = false;
         }
-        catch (NamingException exc)
+        catch(NamingException exc)
         {
             throw new SAXParseException(exc.getMessage(), getParseContext().getLocator(), exc);
         }
-        catch (IOException exc)
+        catch(IOException exc)
         {
             throw new SAXParseException(exc.getMessage(), getParseContext().getLocator(), exc);
         }
-        catch (SQLException exc)
+        catch(SQLException exc)
         {
             try
             {
                 cc.getConnection().rollback();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new SAXParseException(exc.getMessage(), getParseContext().getLocator(), e);
             }
             throw new SAXParseException(exc.getMessage(), getParseContext().getLocator(), exc);
         }
-        catch (ParseException exc)
+        catch(ParseException exc)
         {
             throw new SAXParseException(exc.getMessage(), getParseContext().getLocator(), exc);
         }
-        catch (DataException exc)
+        catch(DataException exc)
         {
             throw new SAXParseException(exc.getMessage(), getParseContext().getLocator(), exc);
         }
@@ -547,7 +547,7 @@ public class DataImportHandler extends AbstractContentHandler
 
                 ValidationContext vc = row.getValidationResult(null);
 
-                if (vc.isValid())
+                if(vc.isValid())
                 {
                     long startTime = System.currentTimeMillis();
                     long endTime;
@@ -555,7 +555,7 @@ public class DataImportHandler extends AbstractContentHandler
                     {
                         table.insert(cc, row);
                     }
-                    catch (SQLException e)
+                    catch(SQLException e)
                     {
                         throw new SQLException(e.getMessage() + "\n" + row + "\n CSV File: " + file.getAbsolutePath() + " line " + reader.getLineNumber());
                     }
@@ -597,29 +597,29 @@ public class DataImportHandler extends AbstractContentHandler
         try
         {
             depth--;
-            if (! getNodeStack().isEmpty())
+            if(!getNodeStack().isEmpty())
             {
                 NodeStackEntry entry = (NodeStackEntry) getNodeStack().pop();
                 if(entry != null)
                 {
-                    if (!entry.isColumnEntry() && entry.row != null && ! isCsvImport)
+                    if(!entry.isColumnEntry() && entry.row != null && !isCsvImport)
                         entry.write();
-                    if (entry.depth == 1)
+                    if(entry.depth == 1)
                         cc.getConnection().commit();
                 }
             }
         }
-        catch (NamingException exc)
+        catch(NamingException exc)
         {
             throw new SAXParseException(exc.getMessage(), getParseContext().getLocator(), exc);
         }
-        catch (SQLException se)
+        catch(SQLException se)
         {
             try
             {
                 cc.getConnection().rollback();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new SAXParseException(e.getMessage(), getParseContext().getLocator(), e);
             }

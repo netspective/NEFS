@@ -37,9 +37,13 @@ import com.netspective.axiom.schema.table.IndexSqlDataDefns;
 public interface Index
 {
     public String getName();
+
     public Table getTable();
+
     public IndexColumns getColumns();
+
     public boolean isUnique();
+
     public void setUnique(boolean unique);
 
     void setColumns(String columnNames);

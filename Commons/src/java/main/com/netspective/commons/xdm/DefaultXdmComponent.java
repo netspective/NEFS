@@ -60,10 +60,10 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
     public void removedFromCache(Map cache, Object key, int flags)
     {
         List listeners = getLifecycleListeners();
-        if (listeners.size() > 0)
+        if(listeners.size() > 0)
         {
             XdmComponentEvent event = new XdmComponentEvent(this, flags);
-            for (int i = 0; i < listeners.size(); i++)
+            for(int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentRemovedFromCache(event);
         }
     }
@@ -71,10 +71,10 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
     public void addedToCache(Map cache, Object key, int flags)
     {
         List listeners = getLifecycleListeners();
-        if (listeners.size() > 0)
+        if(listeners.size() > 0)
         {
             XdmComponentEvent event = new XdmComponentEvent(this, flags);
-            for (int i = 0; i < listeners.size(); i++)
+            for(int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentAddedToCache(event);
         }
     }
@@ -82,10 +82,10 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
     public void loadedFromXml(int flags)
     {
         List listeners = getLifecycleListeners();
-        if (listeners.size() > 0)
+        if(listeners.size() > 0)
         {
             XdmComponentEvent event = new XdmComponentEvent(this, flags);
-            for (int i = 0; i < listeners.size(); i++)
+            for(int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentLoadedFromXml(event);
         }
     }
@@ -134,13 +134,13 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
 
     public void printErrorsAndWarnings()
     {
-        if (errors.size() != 0)
+        if(errors.size() != 0)
         {
             System.out.println("*** ERRORS: " + errors.size());
-            for (int i = 0; i < errors.size(); i++)
+            for(int i = 0; i < errors.size(); i++)
             {
                 Object error = errors.get(i);
-                if (error instanceof Throwable)
+                if(error instanceof Throwable)
                     System.out.println(((Throwable) error).getMessage());
                 else
                     System.out.println(error.toString());
@@ -178,7 +178,7 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
 
     public Metrics getMetrics()
     {
-        if (metrics == null)
+        if(metrics == null)
         {
             metrics = new Metrics(this, this.getClass().getName() + " Metrics");
             produceMetrics(metrics);

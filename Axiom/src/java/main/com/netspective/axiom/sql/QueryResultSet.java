@@ -73,10 +73,6 @@ public class QueryResultSet
     /**
      * Creates a wrapper class to handle the <code>ResultSet</code> object returned
      * by the stored procedure.
-     *
-     * @param sp
-     * @param cc
-     * @param resultSet
      */
     public QueryResultSet(StoredProcedure sp, ConnectionContext cc, ResultSet resultSet)
     {
@@ -91,11 +87,6 @@ public class QueryResultSet
     /**
      * Creates a wrapper class to handle the <code>ResultSet</code> object returned
      * by the stored procedure.
-     *
-     * @param sp
-     * @param cc
-     * @param resultSet
-     * @param executionLogEntry
      */
     public QueryResultSet(StoredProcedure sp, ConnectionContext cc, ResultSet resultSet,
                           QueryExecutionLogEntry executionLogEntry)
@@ -113,8 +104,6 @@ public class QueryResultSet
     /**
      * Retrieves the boolean result returned from javax.jdbc.sql.Statement.execute() method.
      * For stored procedure executions, this returns TRUE always.
-     *
-     * @return
      */
     public boolean getExecutStmtResult()
     {
@@ -191,8 +180,6 @@ public class QueryResultSet
     /**
      * Closes the result set object's database and JDBC resources immediately instead of waiting for this to happen. The related
      * database Connection object is also closed/returned based on the boolean flag passed in.
-     * @param closeConnToo
-     * @throws SQLException
      */
     public void close(boolean closeConnToo) throws SQLException
     {
@@ -216,7 +203,6 @@ public class QueryResultSet
     /**
      * Throw away the existing result set and re-execute the query given the same parameters -- this is used mainly
      * for non-scrollable cursors used in paged results.
-     * @throws SQLException
      */
     public void reExecute() throws SQLException
     {

@@ -62,7 +62,7 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
  * Class for handling stored procedure calls
  *
  * @author Aye Thu
- * @version $Id: StoredProcedure.java,v 1.13 2004-08-15 01:38:22 shahid.shah Exp $
+ * @version $Id: StoredProcedure.java,v 1.14 2004-08-15 02:13:09 shahid.shah Exp $
  */
 public class StoredProcedure
 {
@@ -72,7 +72,7 @@ public class StoredProcedure
 
     static
     {
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "sql-dynamic", "sql-text-has-expressions" });
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[]{"sql-dynamic", "sql-text-has-expressions"});
         XML_DATA_MODEL_SCHEMA_OPTIONS.setPcDataHandlerMethodName("appendSqlText");
     }
 
@@ -100,8 +100,8 @@ public class StoredProcedure
                     {
                         StoredProcedureParameter param = parameters.get(paramNum);
                         if(!param.isListType())
-                            throw new RuntimeException("Stored Procedure '"+ getNameForMapKey() +
-                                    "': only list parameters may be specified here (param '" + paramNum + "')");
+                            throw new RuntimeException("Stored Procedure '" + getNameForMapKey() +
+                                                       "': only list parameters may be specified here (param '" + paramNum + "')");
 
                         ValueSource source = param.getValue();
                         String[] values = source.getTextValues(vc);
@@ -114,7 +114,7 @@ public class StoredProcedure
                         }
                     }
                     else
-                        throw new RuntimeException("Stored Procedure '"+ getQualifiedName() +"': parameter '" + paramNum + "' does not exist");
+                        throw new RuntimeException("Stored Procedure '" + getQualifiedName() + "': parameter '" + paramNum + "' does not exist");
                 }
                 catch(Exception e)
                 {
@@ -178,7 +178,6 @@ public class StoredProcedure
 
     /**
      * Gets the actual name of the stored procedure defined in the database
-     * @return
      */
     public String getProcedureName()
     {
@@ -189,7 +188,6 @@ public class StoredProcedure
      * Sets the actual name of the stored procedure defined in the database. This name
      * is used to dynamically investigate in/out types of the parameters of the stored
      * procedure.
-     * @param name
      */
     public void setProcedureName(String name)
     {
@@ -208,12 +206,12 @@ public class StoredProcedure
 
     public static String translateNameForMapKey(String name)
     {
-       return name != null ? name.toUpperCase() : null;
+        return name != null ? name.toUpperCase() : null;
     }
 
     public Log getLog()
     {
-       return log;
+        return log;
     }
 
     public QueryExecutionLog getExecLog()
@@ -239,7 +237,6 @@ public class StoredProcedure
 
     /**
      * Gets the IN/OUT parameters registered for this stored procedure call
-     * @return
      */
     public StoredProcedureParameters getParams()
     {
@@ -258,12 +255,10 @@ public class StoredProcedure
 
     /**
      * Gets a parameter by its index
-     * @param index
-     * @return
      */
     public StoredProcedureParameter getParam(int index)
     {
-        return  parameters.get(index);
+        return parameters.get(index);
     }
 
     public ValueSource getDataSrc()
@@ -317,9 +312,6 @@ public class StoredProcedure
      * Gets the stored procedure's metadata information from the database. This will search
      * all available catalogs and schemas. This method will ONLY return the metadata of the
      * stored procedure only when the <i>procedure-name</i> attribute is set in the XML declaration.
-     * @param cc
-     * @throws NamingException
-     * @throws SQLException
      */
     public String getMetaData(ConnectionContext cc) throws NamingException, SQLException
     {
@@ -328,7 +320,7 @@ public class StoredProcedure
         // metadata route we need to change some handling to accept setting the 'type' and if it's not set, we can use
         // the metadata to get the param type
         StringBuffer sb = new StringBuffer();
-        if (procedureName != null && procedureName.length() > 0)
+        if(procedureName != null && procedureName.length() > 0)
         {
             // Get DatabaseMetaData
             Connection connection = cc.getConnection();
@@ -338,17 +330,17 @@ public class StoredProcedure
             while(rs.next())
             {
                 // Get procedure metadata
-                String dbProcedureCatalog   = rs.getString(1);
-                String dbProcedureSchema    = rs.getString(2);
-                String dbProcedureName      = rs.getString(3);
-                String dbColumnName         = rs.getString(4);
-                short  dbColumnReturn       = rs.getShort(5);
+                String dbProcedureCatalog = rs.getString(1);
+                String dbProcedureSchema = rs.getString(2);
+                String dbProcedureName = rs.getString(3);
+                String dbColumnName = rs.getString(4);
+                short dbColumnReturn = rs.getShort(5);
                 String dbColumnReturnTypeName = rs.getString(7);
-                int    dbColumnPrecision      = rs.getInt(8);
-                int    dbColumnByteLength     = rs.getInt(9);
-                short  dbColumnScale          = rs.getShort(10);
-                short  dbColumnRadix          = rs.getShort(11);
-                String dbColumnRemarks        = rs.getString(13);
+                int dbColumnPrecision = rs.getInt(8);
+                int dbColumnByteLength = rs.getInt(9);
+                short dbColumnScale = rs.getShort(10);
+                short dbColumnRadix = rs.getShort(11);
+                String dbColumnRemarks = rs.getString(13);
                 // Interpret the return type (readable for humans)
                 String procReturn;
                 switch(dbColumnReturn)
@@ -372,9 +364,9 @@ public class StoredProcedure
                 }
                 // Printout
                 sb.append("Procedure: " + dbProcedureCatalog + "." + dbProcedureSchema
-                                 + "." + dbProcedureName);
+                          + "." + dbProcedureName);
                 sb.append("   ColumnName [ColumnType(ColumnPrecision)]: " + dbColumnName
-                                 + " [" + dbColumnReturnTypeName + "(" + dbColumnPrecision + ")]");
+                          + " [" + dbColumnReturnTypeName + "(" + dbColumnPrecision + ")]");
                 sb.append("   ColumnReturns: " + procReturn + "(" + dbColumnReturnTypeName + ")");
                 sb.append("   Radix: " + dbColumnRadix + ", Scale: " + dbColumnScale);
                 sb.append("   Remarks: " + dbColumnRemarks);
@@ -399,10 +391,10 @@ public class StoredProcedure
             text.append("\nBind Parameters (overridden in method):\n");
             for(int i = 0; i < overrideIndexes.length; i++)
             {
-                text.append("["+ overrideIndexes[i]  +"] ");
+                text.append("[" + overrideIndexes[i] + "] ");
                 text.append(overrideValues[i]);
                 if(overrideValues[i] != null)
-                    text.append(" ("+ overrideValues[i].getClass().getName() +")");
+                    text.append(" (" + overrideValues[i].getClass().getName() + ")");
                 text.append("\n");
             }
         }
@@ -418,23 +410,21 @@ public class StoredProcedure
 
     /**
      * Appends tracing messages to the executions log
-     * @param cc
-     * @param overrideIndexes       parameter indexes to override
-     * @param overrideValues        parameter override values
-     * @throws NamingException
-     * @throws SQLException
+     *
+     * @param overrideIndexes parameter indexes to override
+     * @param overrideValues  parameter override values
      */
     public void trace(ConnectionContext cc, int[] overrideIndexes, Object[] overrideValues) throws NamingException, SQLException
     {
         StringBuffer traceMsg = new StringBuffer();
-        traceMsg.append(QueryExecutionLogEntry.class.getName() + " '"+ getQualifiedName() +"' at "+
-                cc.getContextLocation() +"\n");
+        traceMsg.append(QueryExecutionLogEntry.class.getName() + " '" + getQualifiedName() + "' at " +
+                        cc.getContextLocation() + "\n");
         traceMsg.append(getSqlText(cc));
         if(overrideIndexes != null)
         {
             for(int i = 0; i < overrideIndexes.length; i++)
             {
-                traceMsg.append("["+ overrideIndexes[i] +"] ");
+                traceMsg.append("[" + overrideIndexes[i] + "] ");
                 traceMsg.append(overrideValues[i]);
                 if(overrideValues[i] != null)
                     traceMsg.append(" (" + overrideValues[i].getClass().getName() + ")");
@@ -455,11 +445,10 @@ public class StoredProcedure
 
     /**
      * Executes the stored procedure without any statistical logging
-     * @param cc                    Connection context
-     * @param overrideIndexes       parameter indexes to override
-     * @param overrideValues        parameter override values
-     * @throws NamingException
-     * @throws SQLException
+     *
+     * @param cc              Connection context
+     * @param overrideIndexes parameter indexes to override
+     * @param overrideValues  parameter override values
      */
     protected QueryResultSet executeAndIgnoreStatistics(ConnectionContext cc, int[] overrideIndexes, Object[] overrideValues,
                                                         boolean scrollable)
@@ -475,7 +464,7 @@ public class StoredProcedure
             getMetaData(cc);
             conn = cc.getConnection();
             String sql = StringUtils.strip(getSqlText(cc));
-            if (scrollable)
+            if(scrollable)
                 stmt = conn.prepareCall(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             else
                 stmt = conn.prepareCall(sql);
@@ -486,7 +475,7 @@ public class StoredProcedure
                 stmt.execute();
                 parameters.extract(cc, stmt);
                 StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
-                if (rsParameter != null)
+                if(rsParameter != null)
                 {
                     closeConnection = false;
                     return (QueryResultSet) rsParameter.getExtractedValue(cc.getDatabaseValueContext());
@@ -514,9 +503,6 @@ public class StoredProcedure
      * must return an update count. The CallableStatement.executeBatch method
      * (inherited from PreparedStatement) will throw a BatchUpdateException if the stored procedure
      * returns anything other than an update count or takes OUT or INOUT parameters.
-     * @param cc
-     * @throws SQLException
-     * @throws NamingException
      */
     protected int[] batchExecute(ConnectionContext cc) throws SQLException, NamingException
     {
@@ -539,12 +525,9 @@ public class StoredProcedure
     /**
      * Executes the stored procedure and records different statistics such as database connection times,
      * parameetr binding times, and procedure execution times.
-     * @param cc
-     * @param overrideIndexes       parameter indexes to override
-     * @param overrideValues        parameter override values
-     * @param scrollable
-     * @throws NamingException
-     * @throws SQLException
+     *
+     * @param overrideIndexes parameter indexes to override
+     * @param overrideValues  parameter override values
      */
     protected QueryResultSet executeAndRecordStatistics(ConnectionContext cc, int[] overrideIndexes, Object[] overrideValues,
                                                         boolean scrollable)
@@ -561,7 +544,7 @@ public class StoredProcedure
             conn = cc.getConnection();
             logEntry.registerGetConnectionEnd(conn);
             String sql = StringUtils.strip(getSqlText(cc));
-            if (scrollable)
+            if(scrollable)
                 stmt = conn.prepareCall(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             else
                 stmt = conn.prepareCall(sql);
@@ -578,7 +561,7 @@ public class StoredProcedure
                 logEntry.registerExecSqlEndSuccess();
                 parameters.extract(cc, stmt);
                 StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
-                if (rsParameter != null)
+                if(rsParameter != null)
                 {
                     closeConnection = false;
                     Value val = rsParameter.getValue().getValue(cc.getDatabaseValueContext());
@@ -605,53 +588,49 @@ public class StoredProcedure
 
     /**
      * Executes the stored procedure  without any statistical logging
-     * @param dbvc
-     * @param overrideIndexes       parameter indexes to override
-     * @param overrideValues        parameter override values
-     * @throws SQLException
-     * @throws NamingException
+     *
+     * @param overrideIndexes parameter indexes to override
+     * @param overrideValues  parameter override values
      */
     public QueryResultSet executeAndIgnoreStatistics(DatabaseConnValueContext dbvc, int[] overrideIndexes, Object[] overrideValues,
                                                      boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
-        return executeAndIgnoreStatistics(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                    overrideIndexes, overrideValues, scrollable);
+        return executeAndIgnoreStatistics(dataSrcIdText != null
+                                          ? dbvc.getConnection(dataSrcIdText, false)
+                                          : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
+                                          overrideIndexes, overrideValues, scrollable);
     }
 
     /**
      * Executes the stored procedure and records different statistics such as database connection times,
      * parameetr binding times, and procedure execution times.
-     * @param dbvc
-     * @param overrideIndexes       parameter indexes to override
-     * @param overrideValues        parameter override values
-     * @param scrollable
-     * @throws SQLException
-     * @throws NamingException
+     *
+     * @param overrideIndexes parameter indexes to override
+     * @param overrideValues  parameter override values
      */
     protected QueryResultSet executeAndRecordStatistics(DatabaseConnValueContext dbvc, int[] overrideIndexes, Object[] overrideValues,
                                                         boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
-        return executeAndRecordStatistics(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                    overrideIndexes, overrideValues, scrollable);
+        return executeAndRecordStatistics(dataSrcIdText != null
+                                          ? dbvc.getConnection(dataSrcIdText, false)
+                                          : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
+                                          overrideIndexes, overrideValues, scrollable);
     }
 
     /**
      * Executes the stored procedure
-     * @param dbvc                  database connection value context
-     * @param overrideIndexes       parameter indexes to override
-     * @param overrideValues        parameter override values
-     * @param scrollable            whether or not the report is pageable (NOT SUPPORTED YET)
-     * @throws NamingException
-     * @throws SQLException
+     *
+     * @param dbvc            database connection value context
+     * @param overrideIndexes parameter indexes to override
+     * @param overrideValues  parameter override values
+     * @param scrollable      whether or not the report is pageable (NOT SUPPORTED YET)
      */
     public QueryResultSet execute(DatabaseConnValueContext dbvc, int[] overrideIndexes, Object[] overrideValues,
                                   boolean scrollable) throws NamingException, SQLException
     {
-        if (log.isInfoEnabled())
+        if(log.isInfoEnabled())
             return executeAndRecordStatistics(dbvc, overrideIndexes, overrideValues, scrollable);
         else
             return executeAndIgnoreStatistics(dbvc, overrideIndexes, overrideValues, scrollable);
@@ -659,17 +638,16 @@ public class StoredProcedure
 
     /**
      * Executes the stored procedure
-     * @param cc                    Connection context
-     * @param overrideIndexes       parameter indexes to override
-     * @param overrideValues        parameter override values
-     * @param scrollable            whether or not the report is pageable (NOT SUPPORTED YET)
-     * @throws NamingException
-     * @throws SQLException
+     *
+     * @param cc              Connection context
+     * @param overrideIndexes parameter indexes to override
+     * @param overrideValues  parameter override values
+     * @param scrollable      whether or not the report is pageable (NOT SUPPORTED YET)
      */
     public QueryResultSet execute(ConnectionContext cc, int[] overrideIndexes, Object[] overrideValues,
                                   boolean scrollable) throws NamingException, SQLException
     {
-        if (log.isInfoEnabled())
+        if(log.isInfoEnabled())
             return executeAndRecordStatistics(cc, overrideIndexes, overrideValues, scrollable);
         else
             return executeAndIgnoreStatistics(cc, overrideIndexes, overrideValues, scrollable);

@@ -78,8 +78,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Sets the lists manager
-     *
-     * @param manager
      */
     protected void setManager(AccessControlLists manager)
     {
@@ -93,8 +91,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Sets the name of the list
-     *
-     * @param name
      */
     public void setName(String name)
     {
@@ -103,12 +99,10 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Gets the qualified name of the ACL
-     *
-     * @return
      */
     public String getQualifiedName()
     {
-        if (null == qualifiedName)
+        if(null == qualifiedName)
         {
             String qName = AccessControlList.NAME_SEPARATOR + getName();
             setQualifiedName(qName);
@@ -119,8 +113,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Sets the qualified name for the list
-     *
-     * @param qualifiedName
      */
     public void setQualifiedName(String qualifiedName)
     {
@@ -129,8 +121,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Gets a map of all permissions including children
-     *
-     * @return
      */
     protected Map getPermissionsByName()
     {
@@ -139,8 +129,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Gets a map of all roles including children
-     *
-     * @return
      */
     protected Map getRolesByName()
     {
@@ -156,7 +144,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     {
         String[] roleNames = new String[rolesByName.size()];
         Object[] names = rolesByName.keySet().toArray();
-        for (int i = 0; i < roleNames.length; i++)
+        for(int i = 0; i < roleNames.length; i++)
             roleNames[i] = (String) names[i];
 
         return roleNames;
@@ -171,7 +159,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     {
         String[] roleNames = new String[rolesByName.size()];
         Object[] names = rolesByName.keySet().toArray();
-        for (int i = 0; i < roleNames.length; i++)
+        for(int i = 0; i < roleNames.length; i++)
         {
             Role role = (Role) rolesByName.get((String) names[i]);
             roleNames[i] = role.getName();
@@ -181,8 +169,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Gets the owner of this ACL. Currently, all ACL's are their own owners.
-     *
-     * @return
      */
     public AccessControlList getOwner()
     {
@@ -224,8 +210,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Creates a permission object
-     *
-     * @return
      */
     public Permission createPermission()
     {
@@ -234,8 +218,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Adds and registers a permission to the ACL
-     *
-     * @param perm
      */
     public void addPermission(Permission perm)
     {
@@ -250,8 +232,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Adds and registers a role to the ACL
-     *
-     * @param role
      */
     public void addRole(Role role)
     {
@@ -263,15 +243,11 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
      * Gets a registered permission by its qualified name
      *
      * @param name the permission's qualified name
-     *
-     * @return
-     *
-     * @throws PermissionNotFoundException
      */
     public Permission getPermission(String name) throws PermissionNotFoundException
     {
         Permission result = (Permission) permissionsByName.get(name);
-        if (result == null)
+        if(result == null)
             throw new PermissionNotFoundException("Permission '" + name + "' not found in ACL.", getOwner(), name);
         else
             return result;
@@ -281,15 +257,11 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
      * Gets a registered role by its qualified name
      *
      * @param name the role's qualified name
-     *
-     * @return
-     *
-     * @throws RoleNotFoundException
      */
     public Role getRole(String name) throws RoleNotFoundException
     {
         Role result = (Role) rolesByName.get(name);
-        if (result == null)
+        if(result == null)
             throw new RoleNotFoundException("Role '" + name + "' not found in ACL.", getOwner(), name);
         else
             return result;
@@ -297,8 +269,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Gets root permissions defined to the ACL. This does not include children permissions.
-     *
-     * @return
      */
     public List getPermissions()
     {
@@ -307,8 +277,6 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Gets root roles belonging to the ACL. This does not include children roles.
-     *
-     * @return
      */
     public List getRoles()
     {
@@ -319,10 +287,10 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     {
         StringBuffer sb = new StringBuffer();
         sb.append("Permissions:\n");
-        for (int i = 0; i < permissions.size(); i++)
+        for(int i = 0; i < permissions.size(); i++)
             sb.append(permissions.get(i));
         sb.append("Roles:\n");
-        for (int i = 0; i < roles.size(); i++)
+        for(int i = 0; i < roles.size(); i++)
             sb.append(roles.get(i));
         return sb.toString();
     }

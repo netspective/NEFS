@@ -64,10 +64,10 @@ public class TabularReportCalcs
     {
         Class actualClass = discoverClass.find(cls, cls.getName());
         String[] identifiers = getCalcIdentifiers(actualClass);
-        for (int i = 0; i < identifiers.length; i++)
+        for(int i = 0; i < identifiers.length; i++)
         {
             calcsClassesMap.put(identifiers[i], actualClass);
-            if (log.isTraceEnabled())
+            if(log.isTraceEnabled())
                 log.trace("Registered column data calculator " + actualClass.getName() + " as '" + identifiers[i] + "'.");
         }
         calcsClassesSet.add(actualClass);
@@ -80,7 +80,7 @@ public class TabularReportCalcs
         {
             getIdsMethod = vsClass.getMethod(CALCMETHODNAME_GETIDENTIFIERS, null);
         }
-        catch (NoSuchMethodException e)
+        catch(NoSuchMethodException e)
         {
             log.error("Error retrieving method " + CALCMETHODNAME_GETIDENTIFIERS, e);
             throw new NestableRuntimeException("Static method 'String[] " + CALCMETHODNAME_GETIDENTIFIERS + "()' not found in column data calc " + vsClass.getName(), e);
@@ -90,7 +90,7 @@ public class TabularReportCalcs
         {
             return (String[]) getIdsMethod.invoke(null, null);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Error executing method " + CALCMETHODNAME_GETIDENTIFIERS, e);
             throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] " + CALCMETHODNAME_GETIDENTIFIERS + "()' method in column data calc " + vsClass.getName(), e);
@@ -106,14 +106,14 @@ public class TabularReportCalcs
     public ColumnDataCalculator createDataCalc(String id)
     {
         Class cls = (Class) calcsClassesMap.get(id);
-        if (cls == null)
+        if(cls == null)
         {
             try
             {
                 cls = Class.forName(id);
                 registerColumnDataCalc(cls);
             }
-            catch (ClassNotFoundException e)
+            catch(ClassNotFoundException e)
             {
                 return null;
             }
@@ -123,7 +123,7 @@ public class TabularReportCalcs
         {
             return (ColumnDataCalculator) cls.newInstance();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new RuntimeException(e.toString());
         }

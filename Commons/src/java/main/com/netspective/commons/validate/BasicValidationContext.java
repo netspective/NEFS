@@ -76,7 +76,7 @@ public class BasicValidationContext implements ValidationContext
     public List getValidationErrorsForScope(Object scope)
     {
         List errors = (List) errorsByKey.get(scope);
-        if (errors == null)
+        if(errors == null)
         {
             errors = new ArrayList();
             errorsByKey.put(scope, errors);

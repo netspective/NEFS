@@ -39,9 +39,14 @@ import com.netspective.commons.metric.MetricsProducer;
 public interface StoredProcedures extends MetricsProducer
 {
     public void add(StoredProcedure query);
+
     public StoredProcedure get(int i);
+
     public StoredProcedure get(String name);
+
     public Set getNames();
+
     public Set getNameSpaceNames();
+
     public int size();
 }

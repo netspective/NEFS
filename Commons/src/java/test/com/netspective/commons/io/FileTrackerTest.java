@@ -39,7 +39,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 /**
- * $Id: FileTrackerTest.java,v 1.3 2004-08-15 01:41:14 shahid.shah Exp $
+ * $Id: FileTrackerTest.java,v 1.4 2004-08-15 02:17:06 shahid.shah Exp $
  */
 public class FileTrackerTest extends TestCase
 {
@@ -70,7 +70,7 @@ public class FileTrackerTest extends TestCase
         assertFalse(parentTracker.sourceChanged());
 
         // Wait for the current time to change (1 second)...
-        while ((System.currentTimeMillis() - currTime) < 1000) ;
+        while((System.currentTimeMillis() - currTime) < 1000) ;
 
         // Change the modified time to a new known value... different from the previous
         long newTime = System.currentTimeMillis();
@@ -173,7 +173,7 @@ public class FileTrackerTest extends TestCase
         // Now do the modification tests ...
 
         // Modify fileOne and observe sourceChanged() signals...
-        while (currTime == System.currentTimeMillis()) ;
+        while(currTime == System.currentTimeMillis()) ;
         long newTime = System.currentTimeMillis();
         parent.setLastModified(newTime);
 
@@ -190,7 +190,7 @@ public class FileTrackerTest extends TestCase
         trackerFive.reset();
 
         // Modify fileTwo and observe sourceChanged() signals...
-        while (newTime == System.currentTimeMillis()) ;
+        while(newTime == System.currentTimeMillis()) ;
         newTime = System.currentTimeMillis();
         child.setLastModified(newTime);
 
@@ -207,7 +207,7 @@ public class FileTrackerTest extends TestCase
         trackerFive.reset();
 
         // Modify fileThree and observe sourceChanged() signals...
-        while (newTime == System.currentTimeMillis()) ;
+        while(newTime == System.currentTimeMillis()) ;
         newTime = System.currentTimeMillis();
         ffrThree.getFoundFile().setLastModified(newTime);
 
@@ -224,7 +224,7 @@ public class FileTrackerTest extends TestCase
         trackerFive.reset();
 
         // Modify fileFour and observe sourceChanged() signals...
-        while (newTime == System.currentTimeMillis()) ;
+        while(newTime == System.currentTimeMillis()) ;
         newTime = System.currentTimeMillis();
         ffrFour.getFoundFile().setLastModified(newTime);
 
@@ -241,7 +241,7 @@ public class FileTrackerTest extends TestCase
         trackerFive.reset();
 
         // Modify fileFive and observe sourceChanged() signals...
-        while (newTime == System.currentTimeMillis()) ;
+        while(newTime == System.currentTimeMillis()) ;
         newTime = System.currentTimeMillis();
         ffrFive.getFoundFile().setLastModified(newTime);
 

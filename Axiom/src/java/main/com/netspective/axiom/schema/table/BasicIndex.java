@@ -87,7 +87,7 @@ public class BasicIndex implements Index, TemplateConsumer
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
     {
-        if (templateConsumer == null)
+        if(templateConsumer == null)
             templateConsumer = new IndexTypeTemplateConsumerDefn();
         return templateConsumer;
     }
@@ -112,7 +112,7 @@ public class BasicIndex implements Index, TemplateConsumer
                 String columnName = st.nextToken().trim();
                 Column column = tableColumns.getByName(columnName);
                 if(column == null)
-                    throw new RuntimeException("Column '"+ columnName +"' not found in table '"+ table.getName() +"' in index "+ this +".");
+                    throw new RuntimeException("Column '" + columnName + "' not found in table '" + table.getName() + "' in index " + this + ".");
 
                 indexColumns.add(column);
             }

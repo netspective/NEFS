@@ -101,7 +101,7 @@ public class EnumerationTableRows extends BasicRows
             int id = Integer.parseInt(text);
             return (EnumerationTableRow) mapById.get(new Integer(id));
         }
-        catch (NumberFormatException e)
+        catch(NumberFormatException e)
         {
             return (EnumerationTableRow) mapByAbbrevOrCaption.get(text.toUpperCase());
         }

@@ -53,14 +53,14 @@ public class ValueSourceSpecification
 
     public static String escapeFirstDelim(String origText)
     {
-        if (origText == null || origText.length() < 2 || origText.indexOf(VALUE_SOURCE_ID_DELIM) == -1)
+        if(origText == null || origText.length() < 2 || origText.indexOf(VALUE_SOURCE_ID_DELIM) == -1)
             return origText;
 
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < origText.length(); i++)
+        for(int i = 0; i < origText.length(); i++)
         {
             char ch = origText.charAt(i);
-            if (ch == VALUE_SOURCE_ID_DELIM)
+            if(ch == VALUE_SOURCE_ID_DELIM)
                 sb.append(VALUE_SOURCE_ID_DELIM_ESCAPE);
             sb.append(ch);
         }
@@ -113,9 +113,9 @@ public class ValueSourceSpecification
         idDelimPos = text.indexOf(VALUE_SOURCE_ID_DELIM);
         valid = idDelimPos >= 0;
 
-        if (valid)
+        if(valid)
         {
-            if (idDelimPos > 0 && text.charAt(idDelimPos - 1) == VALUE_SOURCE_ID_DELIM_ESCAPE)
+            if(idDelimPos > 0 && text.charAt(idDelimPos - 1) == VALUE_SOURCE_ID_DELIM_ESCAPE)
             {
                 escaped = true;
                 valid = false;
@@ -125,13 +125,13 @@ public class ValueSourceSpecification
                 idOrClassName = text.substring(0, idDelimPos);
                 params = text.substring(idDelimPos + 1);
 
-                if (params.length() > 0)
+                if(params.length() > 0)
                 {
-                    switch (params.charAt(0))
+                    switch(params.charAt(0))
                     {
                         case VALUE_SOURCE_PI_START:
                             int endPos = params.indexOf(VALUE_SOURCE_PI_END);
-                            if (endPos == -1)
+                            if(endPos == -1)
                                 valid = false;
                             else
                             {
@@ -152,7 +152,7 @@ public class ValueSourceSpecification
     public StaticValueSource getStaticValueSource()
     {
         StaticValueSource result = null;
-        if (escaped)
+        if(escaped)
         {
             StringBuffer sb = new StringBuffer(specificationText);
             sb.deleteCharAt(idDelimPos - 1);

@@ -55,7 +55,8 @@ public class UnsupportedElementException extends DataModelSyntaxException
     public UnsupportedElementException(XmlDataModelSchema schema, XdmParseContext pc, Object element, String nestedElemName)
     {
         super(pc, "Class " + element.getClass().getName() + " does not support nested element '" + nestedElemName + "' (" + (pc != null
-                ? (pc.getLocator().getSystemId() + " line " + pc.getLocator().getLineNumber()) : "") + ") Elems: " + schema.getNestedCreators().keySet() + " Attrs:" + schema.getAttributes());
+                                                                                                                             ? (pc.getLocator().getSystemId() + " line " + pc.getLocator().getLineNumber())
+                                                                                                                             : "") + ") Elems: " + schema.getNestedCreators().keySet() + " Attrs:" + schema.getAttributes());
         this.schema = schema;
         this.element = element;
         this.nestedElemName = nestedElemName;

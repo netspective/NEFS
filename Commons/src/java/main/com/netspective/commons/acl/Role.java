@@ -68,7 +68,7 @@ public class Role
     public void unionChildPermissions(Role role)
     {
         permissions.or(role.getPermissions());
-        if (getParent() != null) getParent().unionChildPermissions(this);
+        if(getParent() != null) getParent().unionChildPermissions(this);
     }
 
     protected void setOwner(AccessControlList owner)
@@ -84,7 +84,7 @@ public class Role
     protected void setParent(Role parent)
     {
         this.parent = parent;
-        if (parent != null)
+        if(parent != null)
         {
             setOwner(parent.getOwner());
             setLevel(parent.getLevel() + 1);
@@ -128,10 +128,10 @@ public class Role
 
     public String getQualifiedName()
     {
-        if (null == qualifiedName)
+        if(null == qualifiedName)
         {
             String qName = AccessControlList.NAME_SEPARATOR + getName();
-            if (parent != null)
+            if(parent != null)
                 qName = parent.getQualifiedName() + qName;
             else
                 qName = owner.getQualifiedName() + qName;
@@ -162,7 +162,7 @@ public class Role
         unionChildPermissions(childRole);
         getOwner().registerRole(childRole);
 
-        if (permissions == null)
+        if(permissions == null)
             permissions = childRole.getPermissions();
         else
             permissions.or(childRole.getPermissions());
@@ -175,11 +175,11 @@ public class Role
 
     public void addGrant(RoleOrPermissionReference grant) throws PermissionNotFoundException, RoleNotFoundException
     {
-        if (grants == null)
+        if(grants == null)
             grants = new RoleOrPermissionReferences();
         permissions.or(grant.getPermissions());
         grants.add(grant);
-        if (parent != null) parent.addGrant(grant);
+        if(parent != null) parent.addGrant(grant);
     }
 
     public RoleOrPermissionReference createRevoke()
@@ -189,18 +189,18 @@ public class Role
 
     public void addRevoke(RoleOrPermissionReference revoke) throws PermissionNotFoundException, RoleNotFoundException
     {
-        if (revokes == null)
+        if(revokes == null)
             revokes = new RoleOrPermissionReferences();
         permissions.andNot(revoke.getPermissions());
         revokes.add(revoke);
-        if (parent != null) parent.addRevoke(revoke);
+        if(parent != null) parent.addRevoke(revoke);
     }
 
     public int getAncestorsCount()
     {
         int result = 0;
         Role parent = getParent();
-        while (parent != null)
+        while(parent != null)
         {
             result++;
             parent = parent.getParent();
@@ -212,9 +212,9 @@ public class Role
     {
         List result = new ArrayList();
         Role parent = getParent();
-        while (parent != null)
+        while(parent != null)
         {
-            if (result.size() == 0)
+            if(result.size() == 0)
                 result.add(parent);
             else
                 result.add(0, parent);
@@ -243,7 +243,7 @@ public class Role
         int depth = getAncestorsCount();
 
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < depth; i++)
+        for(int i = 0; i < depth; i++)
             sb.append("  ");
 
         sb.append(getQualifiedName());
@@ -253,7 +253,7 @@ public class Role
         sb.append(permissions);
         sb.append("\n");
 
-        for (int i = 0; i < children.size(); i++)
+        for(int i = 0; i < children.size(); i++)
         {
             Role perm = (Role) children.get(i);
             sb.append(perm.toString());

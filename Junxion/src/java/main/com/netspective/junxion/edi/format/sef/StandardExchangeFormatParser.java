@@ -54,7 +54,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
 
     static final public void header() throws ParseException
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
             case 1:
                 versionSection();
@@ -64,7 +64,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
                 ;
         }
         initSection();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
             case 3:
                 privateSection();
@@ -108,9 +108,9 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
     {
         segmentRef();
         label_1:
-        while (true)
+        while(true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch((jj_ntk == -1) ? jj_ntk() : jj_ntk)
             {
                 case 5:
                 case TABLE_START:
@@ -129,7 +129,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
     static final public void segmentRef() throws ParseException
     {
         Token segmentId = null;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
             case TABLE_START:
                 jj_consume_token(TABLE_START);
@@ -138,7 +138,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
                 jj_la1[3] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
             case 5:
                 jj_consume_token(5);
@@ -150,11 +150,11 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         }
         jj_consume_token(LBRACKET);
         segmentId = jj_consume_token(SEGMENT_ID);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
             case COMMA:
                 jj_consume_token(COMMA);
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch((jj_ntk == -1) ? jj_ntk() : jj_ntk)
                 {
                     case 6:
                         jj_consume_token(6);
@@ -186,9 +186,9 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         List list = new ArrayList();
         commaSeparatedText(list);
         label_2:
-        while (true)
+        while(true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch((jj_ntk == -1) ? jj_ntk() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -200,7 +200,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
             jj_consume_token(COMMA);
             commaSeparatedText(list);
         }
-        {if (true) return list;}
+        {if(true) return list;}
         throw new Error("Missing return statement in function");
     }
 
@@ -211,7 +211,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         token = jj_consume_token(COMMASEPTEXTDATA);
         token_source.SwitchTo(DEFAULT);
         list.add(token.toString());
-        {if (true) return token;}
+        {if(true) return token;}
         throw new Error("Missing return statement in function");
     }
 
@@ -226,7 +226,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         token_source.SwitchTo(StandardExchangeFormatParserConstants.FreeTextDataSect);
         token = jj_consume_token(FREE_TEXT_DATA);
         jj_consume_token(FREE_TEXT_DATA_END);
-        {if (true) return token;}
+        {if(true) return token;}
         throw new Error("Missing return statement in function");
     }
 
@@ -236,7 +236,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         token_source.SwitchTo(StandardExchangeFormatParserConstants.EqualTextDataSect);
         token = jj_consume_token(EQUAL_TEXT_DATA);
         jj_consume_token(EQUAL_TEXT_DATA_END);
-        {if (true) return token;}
+        {if(true) return token;}
         throw new Error("Missing return statement in function");
     }
 
@@ -257,7 +257,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
 
     public StandardExchangeFormatParser(java.io.InputStream stream)
     {
-        if (jj_initialized_once)
+        if(jj_initialized_once)
         {
             System.out.println("ERROR: Second call to constructor of static parser.  You must");
             System.out.println("       either use ReInit() or set the JavaCC option STATIC to false");
@@ -270,7 +270,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 8; i++) jj_la1[i] = -1;
+        for(int i = 0; i < 8; i++) jj_la1[i] = -1;
     }
 
     static public void ReInit(java.io.InputStream stream)
@@ -280,12 +280,12 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 8; i++) jj_la1[i] = -1;
+        for(int i = 0; i < 8; i++) jj_la1[i] = -1;
     }
 
     public StandardExchangeFormatParser(java.io.Reader stream)
     {
-        if (jj_initialized_once)
+        if(jj_initialized_once)
         {
             System.out.println("ERROR: Second call to constructor of static parser.  You must");
             System.out.println("       either use ReInit() or set the JavaCC option STATIC to false");
@@ -298,7 +298,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 8; i++) jj_la1[i] = -1;
+        for(int i = 0; i < 8; i++) jj_la1[i] = -1;
     }
 
     static public void ReInit(java.io.Reader stream)
@@ -308,12 +308,12 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 8; i++) jj_la1[i] = -1;
+        for(int i = 0; i < 8; i++) jj_la1[i] = -1;
     }
 
     public StandardExchangeFormatParser(StandardExchangeFormatParserTokenManager tm)
     {
-        if (jj_initialized_once)
+        if(jj_initialized_once)
         {
             System.out.println("ERROR: Second call to constructor of static parser.  You must");
             System.out.println("       either use ReInit() or set the JavaCC option STATIC to false");
@@ -325,7 +325,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 8; i++) jj_la1[i] = -1;
+        for(int i = 0; i < 8; i++) jj_la1[i] = -1;
     }
 
     public void ReInit(StandardExchangeFormatParserTokenManager tm)
@@ -334,18 +334,18 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
         token = new Token();
         jj_ntk = -1;
         jj_gen = 0;
-        for (int i = 0; i < 8; i++) jj_la1[i] = -1;
+        for(int i = 0; i < 8; i++) jj_la1[i] = -1;
     }
 
     static final private Token jj_consume_token(int kind) throws ParseException
     {
         Token oldToken;
-        if ((oldToken = token).next != null)
+        if((oldToken = token).next != null)
             token = token.next;
         else
             token = token.next = token_source.getNextToken();
         jj_ntk = -1;
-        if (token.kind == kind)
+        if(token.kind == kind)
         {
             jj_gen++;
             return token;
@@ -357,7 +357,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
 
     static final public Token getNextToken()
     {
-        if (token.next != null)
+        if(token.next != null)
             token = token.next;
         else
             token = token.next = token_source.getNextToken();
@@ -369,9 +369,9 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
     static final public Token getToken(int index)
     {
         Token t = token;
-        for (int i = 0; i < index; i++)
+        for(int i = 0; i < index; i++)
         {
-            if (t.next != null)
+            if(t.next != null)
                 t = t.next;
             else
                 t = t.next = token_source.getNextToken();
@@ -381,7 +381,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
 
     static final private int jj_ntk()
     {
-        if ((jj_nt = token.next) == null)
+        if((jj_nt = token.next) == null)
             return (jj_ntk = (token.next = token_source.getNextToken()).kind);
         else
             return (jj_ntk = jj_nt.kind);
@@ -395,31 +395,31 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
     {
         jj_expentries.removeAllElements();
         boolean[] la1tokens = new boolean[28];
-        for (int i = 0; i < 28; i++)
+        for(int i = 0; i < 28; i++)
         {
             la1tokens[i] = false;
         }
-        if (jj_kind >= 0)
+        if(jj_kind >= 0)
         {
             la1tokens[jj_kind] = true;
             jj_kind = -1;
         }
-        for (int i = 0; i < 8; i++)
+        for(int i = 0; i < 8; i++)
         {
-            if (jj_la1[i] == jj_gen)
+            if(jj_la1[i] == jj_gen)
             {
-                for (int j = 0; j < 32; j++)
+                for(int j = 0; j < 32; j++)
                 {
-                    if ((jj_la1_0[i] & (1 << j)) != 0)
+                    if((jj_la1_0[i] & (1 << j)) != 0)
                     {
                         la1tokens[j] = true;
                     }
                 }
             }
         }
-        for (int i = 0; i < 28; i++)
+        for(int i = 0; i < 28; i++)
         {
-            if (la1tokens[i])
+            if(la1tokens[i])
             {
                 jj_expentry = new int[1];
                 jj_expentry[0] = i;
@@ -427,7 +427,7 @@ public class StandardExchangeFormatParser implements StandardExchangeFormatParse
             }
         }
         int[][] exptokseq = new int[jj_expentries.size()][];
-        for (int i = 0; i < jj_expentries.size(); i++)
+        for(int i = 0; i < jj_expentries.size(); i++)
         {
             exptokseq[i] = (int[]) jj_expentries.elementAt(i);
         }

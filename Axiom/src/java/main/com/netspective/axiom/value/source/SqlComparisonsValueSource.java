@@ -50,9 +50,9 @@ public class SqlComparisonsValueSource extends AbstractValueSource
 {
     public static final String[] IDENTIFIERS = new String[]{"sql-comparisons"};
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Retrieves the list of all defined SQL comparisons.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-            });
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                              });
 
     public static String[] getIdentifiers()
     {
@@ -74,7 +74,7 @@ public class SqlComparisonsValueSource extends AbstractValueSource
     {
         super.initialize(spec);
         groupNames = spec.getParams();
-        if (groupNames != null && groupNames.length() == 0)
+        if(groupNames != null && groupNames.length() == 0)
             groupNames = null;
     }
 
@@ -84,8 +84,9 @@ public class SqlComparisonsValueSource extends AbstractValueSource
         PresentationValue.Items items = result.createItems();
 
         List comparisons = groupNames != null
-                ? SqlComparisonFactory.getComparisonsList(groupNames) : SqlComparisonFactory.getComparisonsList();
-        for (int i = 0; i < comparisons.size(); i++)
+                           ? SqlComparisonFactory.getComparisonsList(groupNames)
+                           : SqlComparisonFactory.getComparisonsList();
+        for(int i = 0; i < comparisons.size(); i++)
         {
             SqlComparison sqlComparison = (SqlComparison) comparisons.get(i);
             items.addItem(sqlComparison.getCaption(), sqlComparison.getName());
@@ -98,8 +99,9 @@ public class SqlComparisonsValueSource extends AbstractValueSource
     {
         List result = new ArrayList();
         List comparisons = groupNames != null
-                ? SqlComparisonFactory.getComparisonsList(groupNames) : SqlComparisonFactory.getComparisonsList();
-        for (int i = 0; i < comparisons.size(); i++)
+                           ? SqlComparisonFactory.getComparisonsList(groupNames)
+                           : SqlComparisonFactory.getComparisonsList();
+        for(int i = 0; i < comparisons.size(); i++)
             result.add(((SqlComparison) comparisons.get(i)).getName());
 
         return new GenericValue(result);

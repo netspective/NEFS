@@ -95,7 +95,7 @@ public class PresentationValue implements Value
 
             public void setValue(String value)
             {
-                if (this.value != null)
+                if(this.value != null)
                     valueMap.remove(this.value);
                 this.value = value;
                 valueMap.put(value, this);
@@ -162,13 +162,13 @@ public class PresentationValue implements Value
 
     public Items getItems()
     {
-        if (value.isListValue())
+        if(value.isListValue())
             return (Items) value.getValue();
         else
         {
             String textValue = value.getTextValue();
             Items items = createItems();
-            if (textValue != null && textValue.length() > 0)
+            if(textValue != null && textValue.length() > 0)
                 items.addItem(textValue);
             return items;
         }

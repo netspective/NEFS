@@ -71,8 +71,8 @@ public class QueriesCollection implements Queries
         queries.add(query);
         byName.put(query.getNameForMapKey(), query);
 
-		//TODO: Modify this to also use a method similar to getNameForMapKey() for case-insensitive namespaces
-		if (null != query.getNameSpace())
+        //TODO: Modify this to also use a method similar to getNameForMapKey() for case-insensitive namespaces
+        if(null != query.getNameSpace())
             nameSpaceNames.add(query.getNameSpace().getNameSpaceId());
     }
 
@@ -103,7 +103,6 @@ public class QueriesCollection implements Queries
 
     /**
      * Generates various metrics about queries
-     * @param parent
      */
     public void produceMetrics(Metric parent)
     {

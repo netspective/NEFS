@@ -49,7 +49,7 @@ public class Format implements XmlDataModel
      */
     public TransactionSet createTransactionSet() throws DataModelException
     {
-        if (transactionSet != null)
+        if(transactionSet != null)
             throw new DataModelException(null, "Only a single transaction set is allowed in any given Format");
         transactionSet = new TransactionSet();
         return transactionSet;

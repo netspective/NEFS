@@ -63,12 +63,12 @@ public class URLTracker extends AbstractSourceTracker
         {
             conn = url.openConnection();
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             return -1L;
         }
         long lastModf = conn.getLastModified();
-        if (lastModf == -1L && url.getProtocol().equals("file"))
+        if(lastModf == -1L && url.getProtocol().equals("file"))
         {
             // Hack for obtaining accurate last modified time for
             // URLs that point to the local file system. This is fixed
@@ -82,7 +82,7 @@ public class URLTracker extends AbstractSourceTracker
     {
         this.url = url;
 
-        if (null == url)
+        if(null == url)
             return;
 
         this.lastModified = lastModified();
@@ -90,7 +90,7 @@ public class URLTracker extends AbstractSourceTracker
 
     public boolean sourceChanged()
     {
-        if (lastModified() > this.lastModified)
+        if(lastModified() > this.lastModified)
             return true;
 
         return dependenciesSourcesChanged();
@@ -103,7 +103,7 @@ public class URLTracker extends AbstractSourceTracker
 
     public InputStream openStream() throws IOException
     {
-        if (url == null)
+        if(url == null)
             return null;
 
         return url.openStream();

@@ -68,8 +68,6 @@ public class StoredProcedureParameters
 
         /**
          * Check to see if the apply context has override values
-         *
-         * @return
          */
         public boolean hasOverrideValues()
         {
@@ -78,13 +76,12 @@ public class StoredProcedureParameters
 
         /**
          * Checks to see if the active parameter has an override value
-         * @return
          */
         public boolean hasActiveParamOverrideValue()
         {
-            for (int i=0; i < overrideIndexes.length; i++)
+            for(int i = 0; i < overrideIndexes.length; i++)
             {
-                if (overrideIndexes[i] == activeParamNum)
+                if(overrideIndexes[i] == activeParamNum)
                     return true;
             }
             return false;
@@ -92,8 +89,6 @@ public class StoredProcedureParameters
 
         /**
          * Gets the override values
-         *
-         * @return
          */
         public Object[] getOverrideValues()
         {
@@ -102,8 +97,6 @@ public class StoredProcedureParameters
 
         /**
          * Sets the override values
-         *
-         * @param overrideValues
          */
         public void setOverrideValues(Object[] overrideValues)
         {
@@ -112,7 +105,6 @@ public class StoredProcedureParameters
 
         /**
          * Gets the override parameters indexes
-         * @return
          */
         public int[] getOverrideIndexes()
         {
@@ -121,7 +113,6 @@ public class StoredProcedureParameters
 
         /**
          * Sets the override parameter indexes
-         * @param overrideIndexes
          */
         public void setOverrideIndexes(int[] overrideIndexes)
         {
@@ -130,16 +121,16 @@ public class StoredProcedureParameters
 
         /**
          * Gets the override value for the active parameter.
-         * @return  Returns a NULL when the override parameter is null or when the active param DOES
-         *          NOT have an override. Use {@link #hasActiveParamOverrideValue() hasActiveParamOverrideValue}
-         *          to make sure the active param does have an override value.
          *
+         * @return Returns a NULL when the override parameter is null or when the active param DOES
+         *         NOT have an override. Use {@link #hasActiveParamOverrideValue() hasActiveParamOverrideValue}
+         *         to make sure the active param does have an override value.
          */
         public Object getActiveParamOverrideValue()
         {
-            for (int i=0; i < overrideIndexes.length; i++)
+            for(int i = 0; i < overrideIndexes.length; i++)
             {
-                if (overrideIndexes[i] == activeParamNum)
+                if(overrideIndexes[i] == activeParamNum)
                     return overrideValues[i];
             }
             return null;
@@ -207,7 +198,6 @@ public class StoredProcedureParameters
 
     /**
      * Gets the procedure object associated with this object
-     * @return
      */
     public StoredProcedure getProcedure()
     {
@@ -216,7 +206,6 @@ public class StoredProcedureParameters
 
     /**
      * Sets the procedure object associated with this object
-     * @param procedure
      */
     public void setProcedure(StoredProcedure procedure)
     {
@@ -225,7 +214,6 @@ public class StoredProcedureParameters
 
     /**
      * Creates a stored procedure parameter
-     * @return
      */
     public StoredProcedureParameter createParam()
     {
@@ -235,25 +223,23 @@ public class StoredProcedureParameters
     /**
      * Adds a stored procedure parameter to the parameter list and if the param is a result set, the
      * position of the param in the list is saved.
-     * @param param
      */
     public void addParam(StoredProcedureParameter param)
     {
         params.add(param);
         param.setIndex(params.size());
         int inoutType = param.getType().getValueIndex();
-        if (inoutType == StoredProcedureParameter.Type.OUT ||
-            inoutType == StoredProcedureParameter.Type.IN_OUT)
+        if(inoutType == StoredProcedureParameter.Type.OUT ||
+           inoutType == StoredProcedureParameter.Type.IN_OUT)
             outParams.add(param);
-        if (inoutType == StoredProcedureParameter.Type.IN ||
-            inoutType == StoredProcedureParameter.Type.IN_OUT)
+        if(inoutType == StoredProcedureParameter.Type.IN ||
+           inoutType == StoredProcedureParameter.Type.IN_OUT)
             inParams.add(param);
 
     }
 
     /**
      * Gets the index of an out parameter which is a result set
-     * @return
      */
     public int getResultSetPrameterIndex()
     {
@@ -262,14 +248,15 @@ public class StoredProcedureParameters
 
     /**
      * Gets the result set out parameter
+     *
      * @return Null if there is no result set out parameter
      */
     public StoredProcedureParameter getResultSetParameter()
     {
-        for (int i=0; i < outParams.size(); i++)
+        for(int i = 0; i < outParams.size(); i++)
         {
-            StoredProcedureParameter spp = (StoredProcedureParameter)outParams.get(i);
-            if (spp.getSqlIdentifierType().equals(QueryParameterType.RESULTSET_IDENTIFIER))
+            StoredProcedureParameter spp = (StoredProcedureParameter) outParams.get(i);
+            if(spp.getSqlIdentifierType().equals(QueryParameterType.RESULTSET_IDENTIFIER))
                 return spp;
         }
         return null;
@@ -277,9 +264,10 @@ public class StoredProcedureParameters
 
     /**
      * Retrieve the bind parameters that would be applied to a prepared statement (useful for debugging).
+     *
      * @param cc The connection context
+     *
      * @return An object that holds all the bind parameters and associated SQL types
-     * @throws java.sql.SQLException
      */
     public StoredProcedureParameters.ValueRetrieveContext retrieve(ConnectionContext cc) throws SQLException
     {
@@ -298,15 +286,15 @@ public class StoredProcedureParameters
     /**
      * Apply the parameters in this list to the given prepared statement.
      *
-     * @param cc The connection context
+     * @param cc   The connection context
      * @param stmt The callable statement
+     *
      * @return The index of the last parameter applied
-     * @throws SQLException
      */
     public int apply(ConnectionContext cc, CallableStatement stmt, int[] overrideIndexes, Object[] overrideValues) throws SQLException, NamingException
     {
         StoredProcedureParameters.ValueApplyContext vac = new StoredProcedureParameters.ValueApplyContext();
-        if (overrideIndexes != null)
+        if(overrideIndexes != null)
         {
             vac.setOverrideIndexes(overrideIndexes);
             vac.setOverrideValues(overrideValues);
@@ -327,10 +315,10 @@ public class StoredProcedureParameters
     /**
      * Apply the parameters in this list to the given prepared statement.
      *
-     * @param cc The connection context
+     * @param cc   The connection context
      * @param stmt The callable statement
+     *
      * @return The index of the last parameter applied
-     * @throws SQLException
      */
     public int apply(ConnectionContext cc, CallableStatement stmt) throws SQLException, NamingException
     {
@@ -351,7 +339,7 @@ public class StoredProcedureParameters
     /**
      * Retrieve the values of the parameters in this list which are OUT parameters
      *
-     * @param cc The connection context
+     * @param cc   The connection context
      * @param stmt The callable statement
      */
     public void extract(ConnectionContext cc, CallableStatement stmt) throws SQLException
@@ -360,8 +348,8 @@ public class StoredProcedureParameters
         for(int i = 0; i < paramsCount; i++)
         {
             StoredProcedureParameter spp = (StoredProcedureParameter) params.get(i);
-            if (spp.getType().getValueIndex() == StoredProcedureParameter.Type.OUT ||
-                spp.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
+            if(spp.getType().getValueIndex() == StoredProcedureParameter.Type.OUT ||
+               spp.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
             {
                 spp.extract(cc, stmt);
             }
@@ -370,8 +358,6 @@ public class StoredProcedureParameters
 
     /**
      * Gets the stored procedure parameter by index
-     * @param index
-     * @return
      */
     public StoredProcedureParameter get(int index)
     {
@@ -380,7 +366,6 @@ public class StoredProcedureParameters
 
     /**
      * Gets the total number of parameters
-     * @return
      */
     public int size()
     {
@@ -405,46 +390,44 @@ public class StoredProcedureParameters
     /**
      * Gets an array of stored procedures by their type. In/out parameters will satisfy
      * both in and out criterias.
-     * @param type
-     * @return
      */
     public StoredProcedureParameter[] getByType(int type)
     {
         ArrayList list = new ArrayList();
         int paramsCount = params.size();
-        if (type == StoredProcedureParameter.Type.IN)
+        if(type == StoredProcedureParameter.Type.IN)
         {
             // this will get all IN parameters and also IN/OUT params
             for(int i = 0; i < paramsCount; i++)
             {
                 StoredProcedureParameter spParameter = (StoredProcedureParameter) params.get(i);
-                if (spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN ||
-                    spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
+                if(spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN ||
+                   spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
                 {
                     list.add(spParameter);
                 }
             }
         }
-        else if (type == StoredProcedureParameter.Type.OUT)
+        else if(type == StoredProcedureParameter.Type.OUT)
         {
             // this will get all OUT parameters and also IN/OUT params
             for(int i = 0; i < paramsCount; i++)
             {
                 StoredProcedureParameter spParameter = (StoredProcedureParameter) params.get(i);
-                if (spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.OUT ||
-                    spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
+                if(spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.OUT ||
+                   spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
                 {
                     list.add(spParameter);
                 }
             }
         }
-        else if (type == StoredProcedureParameter.Type.IN_OUT)
+        else if(type == StoredProcedureParameter.Type.IN_OUT)
         {
             // this will get only IN/OUT params
             for(int i = 0; i < paramsCount; i++)
             {
                 StoredProcedureParameter spParameter = (StoredProcedureParameter) params.get(i);
-                if (spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
+                if(spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
                 {
                     list.add(spParameter);
                 }

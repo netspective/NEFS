@@ -62,7 +62,7 @@ public class TextValueValidationRule extends BasicValidationRule implements XmlD
 
     public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
-        if (regExpr != null && !regExprPatternValid)
+        if(regExpr != null && !regExprPatternValid)
             pc.addError("Reg-expr '" + regExpr + "' is not valid at " + pc.getLocator().getSystemId() + " line " + pc.getLocator().getLineNumber());
     }
 
@@ -120,7 +120,7 @@ public class TextValueValidationRule extends BasicValidationRule implements XmlD
     {
         this.regExpr = regExpr;
 
-        if (regExpr != null)
+        if(regExpr != null)
         {
             regExprMatcher = new Perl5Matcher();
             Perl5Compiler p5c = new Perl5Compiler();
@@ -129,7 +129,7 @@ public class TextValueValidationRule extends BasicValidationRule implements XmlD
                 regExprPattern = p5c.compile(regExpr);
                 regExprPatternValid = true;
             }
-            catch (MalformedPatternException e)
+            catch(MalformedPatternException e)
             {
                 regExprPattern = null;
                 regExprPatternValid = false;
@@ -146,17 +146,19 @@ public class TextValueValidationRule extends BasicValidationRule implements XmlD
     public boolean isValid(ValidationContext vc, Value value)
     {
         String text = value.getTextValue();
-        if (text == null || text.length() == 0)
+        if(text == null || text.length() == 0)
             return true;
 
-        if (!ValidationUtils.isInRange(text.length(), minLength, maxLength))
+        if(!ValidationUtils.isInRange(text.length(), minLength, maxLength))
         {
             vc.addValidationError(value, getInvalidLengthMessage(),
-                    new Object[]{getValueCaption(vc), text, new Integer(minLength), new Integer(maxLength)});
+                                  new Object[]{
+                                      getValueCaption(vc), text, new Integer(minLength), new Integer(maxLength)
+                                  });
             return false;
         }
 
-        if (regExprPatternValid && !regExprMatcher.matches(text, regExprPattern))
+        if(regExprPatternValid && !regExprMatcher.matches(text, regExprPattern))
         {
             vc.addValidationError(value, getInvalidRegExMessage(), new Object[]{getValueCaption(vc), text, regExpr});
             return false;

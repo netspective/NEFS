@@ -159,7 +159,7 @@ public class ExpressionTextTest extends TestCase
             javaExpOutputSix = jetFour.getFinalText(null, javaExpInputSix);
             exceptionThrown = false;
         }
-        catch (ExpressionTextException e)
+        catch(ExpressionTextException e)
         {
             assertTrue(exceptionThrown);
         }
@@ -178,7 +178,7 @@ public class ExpressionTextTest extends TestCase
             javaExpOutputString = jetFour.getFinalText(null);
             exceptionThrown = false;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             assertTrue(exceptionThrown);
             assertNull(javaExpOutputString);
@@ -192,7 +192,7 @@ public class ExpressionTextTest extends TestCase
             javaExpOutputString = jetFour.getFinalText(testVC);
             exceptionThrown = false;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             assertTrue(exceptionThrown);
             assertNull(javaExpOutputString);
@@ -220,7 +220,7 @@ public class ExpressionTextTest extends TestCase
             String vsOutputTwo = vsetTwo.getFinalText(null, vsInputTwo);
             exceptionThrown = false;
         }
-        catch (ExpressionTextException e)
+        catch(ExpressionTextException e)
         {
             assertTrue(exceptionThrown);
         }
@@ -309,7 +309,7 @@ public class ExpressionTextTest extends TestCase
             javaExpOutputSix = jetFour.getFinalText(null, javaExpInputSix);
             exceptionThrown = false;
         }
-        catch (ExpressionTextException e)
+        catch(ExpressionTextException e)
         {
             assertTrue(exceptionThrown);
         }
@@ -328,7 +328,7 @@ public class ExpressionTextTest extends TestCase
             javaExpOutputString = jetFour.getFinalText(null);
             exceptionThrown = false;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             assertTrue(exceptionThrown);
             assertNull(javaExpOutputString);
@@ -342,7 +342,7 @@ public class ExpressionTextTest extends TestCase
             javaExpOutputString = jetFour.getFinalText(testVC);
             exceptionThrown = false;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             assertTrue(exceptionThrown);
             assertNull(javaExpOutputString);

@@ -40,7 +40,7 @@ public class RequirementEnumeratedAttribute extends XdmEnumeratedAttribute
     public static final int REQUIRED_BY_APP = 1;
     public static final int REQUIRED_BY_DBMS = 2;
 
-    private static final String[] VALUES = new String[] { "no", "yes", "dbms" };
+    private static final String[] VALUES = new String[]{"no", "yes", "dbms"};
 
     public RequirementEnumeratedAttribute()
     {

@@ -73,23 +73,19 @@ public class JavaDocs
      * <li>Looks for resources/java-doc-xml/x.y.z.xml
      * </ol>
      *
-     * @param cls
-     *
      * @return The DOM document for the given class or null if x.y.z.xml resource could not be located.
-     *
-     * @throws IOException
      */
     public Document getXmlDocForClass(Class cls) throws IOException
     {
         Document javaDoc = (Document) xmlDocsByClass.get(cls);
-        if (javaDoc != null)
+        if(javaDoc != null)
             return javaDoc;
 
         String javaDocXmlFileName = (cls.getName() + ".xml").replace('$', '.');
         URL javaDocUrl = ResourceLoader.getFirstResource(new String[]{
             javaDocXmlFileName, "java-doc-xml/" + javaDocXmlFileName, "resources/java-doc-xml/" + javaDocXmlFileName
         });
-        if (javaDocUrl != null)
+        if(javaDocUrl != null)
         {
             InputStream is = javaDocUrl.openStream();
             try
@@ -98,11 +94,11 @@ public class JavaDocs
                 javaDoc = factory.newDocumentBuilder().parse(is);
                 xmlDocsByClass.put(cls, javaDoc);
             }
-            catch (SAXException e)
+            catch(SAXException e)
             {
                 log.error("A parsing error occurred; the xml input is not valid: " + javaDocUrl.getRef(), e);
             }
-            catch (ParserConfigurationException e)
+            catch(ParserConfigurationException e)
             {
                 log.error("A parser configuration error occurred; the xml input is not valid", e);
             }
@@ -118,7 +114,7 @@ public class JavaDocs
     public ClassJavaDoc getClassJavaDoc(Class cls)
     {
         ClassJavaDoc result = (ClassJavaDoc) classJavaDocsByClass.get(cls);
-        if (result == null)
+        if(result == null)
         {
             result = new ClassJavaDoc(cls);
             classJavaDocsByClass.put(cls, result);
@@ -186,10 +182,10 @@ public class JavaDocs
         protected Class getSuperClass(Document xmlDoc) throws TransformerException, ClassNotFoundException
         {
             Element superClassDocElem = (Element) XPathAPI.selectSingleNode(xmlDoc.getDocumentElement(), "//superclass");
-            if (superClassDocElem != null)
+            if(superClassDocElem != null)
             {
                 String superClassName = superClassDocElem.getAttribute("inPackage") + "." +
-                        superClassDocElem.getAttribute("name");
+                                        superClassDocElem.getAttribute("name");
                 return Class.forName(superClassName);
             }
             else
@@ -219,12 +215,12 @@ public class JavaDocs
         protected void locate(Class activeClass, int inhLevel) throws IOException, ClassNotFoundException, TransformerException
         {
             Document xmlDoc = getXmlDocForClass(activeClass);
-            if (xmlDoc == null)
+            if(xmlDoc == null)
                 return;
 
             String mutatorDocNodeXPathExpr = "//method[@name = '" + getMethodName() + "']";
             Node methodDocNode = XPathAPI.selectSingleNode(xmlDoc.getDocumentElement(), mutatorDocNodeXPathExpr);
-            if (methodDocNode != null)
+            if(methodDocNode != null)
             {
                 this.locatedInAncestorIndex = inhLevel;
                 this.locatedInClass = activeClass;
@@ -232,10 +228,10 @@ public class JavaDocs
                 return;
             }
 
-            if (isSearchParents())
+            if(isSearchParents())
             {
                 Class superClass = getSuperClass(xmlDoc);
-                if (superClass != null)
+                if(superClass != null)
                     locate(superClass, inhLevel + 1);
             }
         }
@@ -246,7 +242,7 @@ public class JavaDocs
             {
                 locate(getStartingClass(), 0);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 JavaDocs.log.error("Error retrieving description for " + getStartingClass() + " method " + getMethodName(), e);
                 retrievalError = e;

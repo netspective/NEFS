@@ -69,7 +69,7 @@ public class FileFind
     public static boolean isJarFile(String fileName)
     {
         File f = new File(fileName);
-        if (TextUtils.getInstance().isEmpty(f.getName())) return false;
+        if(TextUtils.getInstance().isEmpty(f.getName())) return false;
         String fileExt = getExtension(f).toLowerCase();
         return (fileExt.equals("jar") || fileExt.equals("zip"));
     }
@@ -89,11 +89,11 @@ public class FileFind
      */
     public static String getExtension(File f)
     {
-        if (f != null)
+        if(f != null)
         {
             String filename = f.getName();
             int pos = filename.lastIndexOf('.');
-            if (pos > 0 && pos < filename.length() - 1)
+            if(pos > 0 && pos < filename.length() - 1)
                 return filename.substring(pos + 1);
         }
         return "";
@@ -134,19 +134,19 @@ public class FileFind
         try
         {
             ZipFile zf = new ZipFile(jarFile);
-            if (zf.getEntry(fileName) != null) return true;
-            if (perhapsDirectory)
+            if(zf.getEntry(fileName) != null) return true;
+            if(perhapsDirectory)
             {
-                if (!fileName.endsWith("/")) fileName = fileName + "/";
+                if(!fileName.endsWith("/")) fileName = fileName + "/";
                 String name;
-                for (Enumeration en = zf.entries(); en.hasMoreElements();)
+                for(Enumeration en = zf.entries(); en.hasMoreElements();)
                 {
                     name = ((ZipEntry) en.nextElement()).getName();
-                    if (name.startsWith(fileName)) return true;
+                    if(name.startsWith(fileName)) return true;
                 }
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
         return false;
@@ -168,17 +168,17 @@ public class FileFind
         // find if the wanted entry exists and how big it is
         ZipFile zf = new ZipFile(jarFile);
         ZipEntry ze = zf.getEntry(entryName);
-        if (ze == null)
+        if(ze == null)
             throw new FileNotFoundException("'" + entryName + "' was not found in '" +
-                    jarFile.getAbsolutePath() + "'.");
-        if (ze.isDirectory())
+                                            jarFile.getAbsolutePath() + "'.");
+        if(ze.isDirectory())
             throw new IOException("'" + entryName + "' found in '" +
-                    jarFile.getAbsolutePath() + "' is a directory.");
+                                  jarFile.getAbsolutePath() + "' is a directory.");
         int size = (int) ze.getSize();
-        if (size == 1)
+        if(size == 1)
             throw new IOException("'" + entryName + "' was found in '" +
-                    jarFile.getAbsolutePath() +
-                    "' but it reports unknown size.");
+                                  jarFile.getAbsolutePath() +
+                                  "' but it reports unknown size.");
         zf.close();
 
         // extract the entry
@@ -190,22 +190,22 @@ public class FileFind
         int chunk = 0;
         byte[] buf = new byte[size];  // here we read contents in
 
-        while ((ze = zis.getNextEntry()) != null)
+        while((ze = zis.getNextEntry()) != null)
         {
-            if (!ze.getName().equals(entryName)) continue;
+            if(!ze.getName().equals(entryName)) continue;
 
             // yes, that's the entry we want to read...
-            while ((size - rb) > 0)
+            while((size - rb) > 0)
             {
                 chunk = zis.read(buf, rb, size - rb);
-                if (chunk == -1) break;
+                if(chunk == -1) break;
                 rb += chunk;
             }
             zf.close();
             return buf;
         }
         throw new FileNotFoundException("'" + entryName + "' was not found in '" +
-                jarFile.getAbsolutePath() + "'");
+                                        jarFile.getAbsolutePath() + "'");
     }
 
     public static class FileFindResults
@@ -234,9 +234,9 @@ public class FileFind
             this.foundFileInPathItem = -1;
 
             File file = new File(searchFileName);
-            if (file.isAbsolute())
+            if(file.isAbsolute())
             {
-                if (file.exists())
+                if(file.exists())
                 {
                     foundFile = file;
                     return;
@@ -312,9 +312,9 @@ public class FileFind
         protected boolean locatedInJar(int searchPathItemIndex)
         {
             File potentialJarFile = new File(searchPaths[searchPathItemIndex]);
-            if (potentialJarFile.isFile())
+            if(potentialJarFile.isFile())
             {
-                if (isJarFile(potentialJarFile.getAbsolutePath()) && existsInJarFile(potentialJarFile, searchFileName, searchFileMayBeDirectory))
+                if(isJarFile(potentialJarFile.getAbsolutePath()) && existsInJarFile(potentialJarFile, searchFileName, searchFileMayBeDirectory))
                 {
                     foundFile = potentialJarFile;
                     foundFileInJar = true;
@@ -331,27 +331,27 @@ public class FileFind
          */
         public void locate()
         {
-            if (isFileFound() || isFoundFileAbsoluteAndDoesntExist())
+            if(isFileFound() || isFoundFileAbsoluteAndDoesntExist())
                 return;
 
-            if (searchJarsEarly)
+            if(searchJarsEarly)
             {
-                for (int i = 0; i < searchPaths.length; i++)
+                for(int i = 0; i < searchPaths.length; i++)
                 {
-                    if (locatedInJar(i))
+                    if(locatedInJar(i))
                         return;
                 }
             }
 
-            for (int i = 0; i < searchPaths.length; i++)
+            for(int i = 0; i < searchPaths.length; i++)
             {
                 File searchPath = new File(searchPaths[i]);
 
-                if (searchJarsDuring && locatedInJar(i))
+                if(searchJarsDuring && locatedInJar(i))
                     return;
 
                 File findFile = new File(searchPath, searchFileName);
-                if (findFile.exists())
+                if(findFile.exists())
                 {
                     foundFile = findFile;
                     foundFileInPathItem = i;
@@ -359,7 +359,7 @@ public class FileFind
                 }
                 else
                 {
-                    if (searchPath.isDirectory())
+                    if(searchPath.isDirectory())
                     {
                         // Do a breadth first search if the file isnt found ...
                         RegexpFileFilter fileFilter = new RegexpFileFilter("^" + searchFileName + "$", true);
@@ -367,13 +367,13 @@ public class FileFind
                         List dynamicallyUpdatedCandidates = new ArrayList();
                         File[] initialCandidates = searchPath.listFiles(fileFilter);
 
-                        for (int j = 0; j < initialCandidates.length; j++)
+                        for(int j = 0; j < initialCandidates.length; j++)
                             searchCandidates.add(initialCandidates[j]);
 
                         Iterator candidate = searchCandidates.listIterator();
-                        while (candidate.hasNext() || dynamicallyUpdatedCandidates.size() > 0)
+                        while(candidate.hasNext() || dynamicallyUpdatedCandidates.size() > 0)
                         {
-                            if (!candidate.hasNext())
+                            if(!candidate.hasNext())
                             {
                                 // We're at the end of the initial set of directories...
                                 // Populate them with the ones we found during our search ...
@@ -382,15 +382,15 @@ public class FileFind
                                 dynamicallyUpdatedCandidates.clear();
                                 candidate = searchCandidates.listIterator();
 
-                                if (!candidate.hasNext()) continue;
+                                if(!candidate.hasNext()) continue;
                             }
 
                             File theCandidate = (File) candidate.next();
 
-                            if (theCandidate.isDirectory())
+                            if(theCandidate.isDirectory())
                             {
                                 File findFileInCandidate = new File(theCandidate, searchFileName);
-                                if (findFileInCandidate.exists())
+                                if(findFileInCandidate.exists())
                                 {
                                     foundFile = findFileInCandidate;
                                     foundFileInPathItem = i;
@@ -399,13 +399,13 @@ public class FileFind
 
                                 File[] moreCandidates = theCandidate.listFiles(fileFilter);
 
-                                for (int c = 0; c < moreCandidates.length; c++)
+                                for(int c = 0; c < moreCandidates.length; c++)
                                     dynamicallyUpdatedCandidates.add(moreCandidates[c]);
                             }
                             else
                             {
                                 // This must be a file...
-                                if (theCandidate.getName().equals(searchFileName))
+                                if(theCandidate.getName().equals(searchFileName))
                                 {
                                     // Exact match found...
                                     foundFile = theCandidate;
@@ -418,11 +418,11 @@ public class FileFind
                 }
             }
 
-            if (searchJarsLate)
+            if(searchJarsLate)
             {
-                for (int i = 0; i < searchPaths.length; i++)
+                for(int i = 0; i < searchPaths.length; i++)
                 {
-                    if (locatedInJar(i))
+                    if(locatedInJar(i))
                         return;
                 }
             }
@@ -431,7 +431,7 @@ public class FileFind
 
     public static final FileFindResults findInPath(String[] searchPaths, String searchFileName, int flags)
     {
-        if (searchPaths == null || searchPaths.length == 0 || TextUtils.getInstance().isEmpty(searchFileName))
+        if(searchPaths == null || searchPaths.length == 0 || TextUtils.getInstance().isEmpty(searchFileName))
             return null;
 
         FileFindResults results = new FileFindResults(searchPaths, searchFileName, flags);
@@ -441,7 +441,7 @@ public class FileFind
 
     public static final FileFindResults findInPath(String searchPaths, String searchPathsDelim, String searchFileName, int flags)
     {
-        if (TextUtils.getInstance().isEmpty(searchPaths) || TextUtils.getInstance().isEmpty(searchFileName))
+        if(TextUtils.getInstance().isEmpty(searchPaths) || TextUtils.getInstance().isEmpty(searchFileName))
             return null;
 
         FileFindResults results = new FileFindResults(searchPaths, searchPathsDelim, searchFileName, flags);

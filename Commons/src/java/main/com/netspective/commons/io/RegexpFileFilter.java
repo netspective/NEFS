@@ -78,28 +78,28 @@ public class RegexpFileFilter implements java.io.FileFilter
     public boolean accept(File pathname)
     {
         // if we're given a null pattern, return false...
-        if (null == fileRegexp)
+        if(null == fileRegexp)
             return false;
 
         // if the pattern hasnt been initialized yet, initialize it...
-        if (!patternInitialized)
+        if(!patternInitialized)
             try
             {
                 pattern = pc.compile(fileRegexp, patternType);
                 patternInitialized = true;
             }
-            catch (MalformedPatternException e)
+            catch(MalformedPatternException e)
             {
                 pattern = null;
                 patternInitialized = true;
             }
 
         // if the pattern is null => previous initialization failed => return false so no files are 'accepted'
-        if (null == pattern)
+        if(null == pattern)
             return false;
 
         // if this is a dir _and_ dirs are allowed, dont check their filenames...
-        if (pathname.isDirectory())
+        if(pathname.isDirectory())
             return (allowDirectories ? true : false);
 
         // otherwise, do a regexp match...
@@ -119,7 +119,7 @@ public class RegexpFileFilter implements java.io.FileFilter
 
     public void setCaseSensitive(boolean sensitivity)
     {
-        if (false == sensitivity)
+        if(false == sensitivity)
             patternType = Perl5Compiler.DEFAULT_MASK | Perl5Compiler.SINGLELINE_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK;
         else
             patternType = Perl5Compiler.DEFAULT_MASK;

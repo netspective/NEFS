@@ -54,7 +54,7 @@ public class BasicValidationRule implements ValidationRule
 
     public boolean equals(Object obj)
     {
-        if (super.equals(obj))
+        if(super.equals(obj))
             return true;
 
         return name.equals(((ValidationRule) obj).getName());
@@ -93,10 +93,10 @@ public class BasicValidationRule implements ValidationRule
     protected boolean isValidType(ValidationContext vc, Value value, Class type)
     {
         Object ov = value.getValue();
-        if (ov != null && !ov.getClass().isAssignableFrom(type))
+        if(ov != null && !ov.getClass().isAssignableFrom(type))
         {
             vc.addValidationError(value, getInvalidTypeMessage(),
-                    new Object[]{getValueCaption(vc), type.getName(), ov.getClass().getName()});
+                                  new Object[]{getValueCaption(vc), type.getName(), ov.getClass().getName()});
             return false;
         }
 

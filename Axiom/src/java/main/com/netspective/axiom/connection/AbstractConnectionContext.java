@@ -105,7 +105,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
             connectionContextsWithOpenConnections.add(this);
 
             if(log.isTraceEnabled())
-                log.trace("Obtained " + connection + " for data source '"+ getDataSourceId() +"'.");
+                log.trace("Obtained " + connection + " for data source '" + getDataSourceId() + "'.");
 
             initializeConnection(connection);
         }
@@ -134,7 +134,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         if(connection != null)
         {
             if(log.isTraceEnabled())
-                log.trace("Closed " + connection + " for data source '"+ getDataSourceId() +"'.");
+                log.trace("Closed " + connection + " for data source '" + getDataSourceId() + "'.");
             connection.close();
             connection = null;
             connectionContextsWithOpenConnections.remove(this);
@@ -144,7 +144,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     public void timeOut() throws SQLException
     {
         if(log.isTraceEnabled())
-            log.trace("Connection " + connection + " for data source '"+ getDataSourceId() +"' timed-out.");
+            log.trace("Connection " + connection + " for data source '" + getDataSourceId() + "' timed-out.");
         rollbackAndClose();
     }
 
@@ -194,7 +194,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     public void rollbackAndCloseAndLogAsConnectionLeak(Log log, String message)
     {
         if(message == null)
-            message = "** CONNECTION LEAK DETECTED ** Connection for DataSource '"+ getDataSourceId() +"' not closed -- rolling back and forcing close now.\n";
+            message = "** CONNECTION LEAK DETECTED ** Connection for DataSource '" + getDataSourceId() + "' not closed -- rolling back and forcing close now.\n";
 
         if(log.isErrorEnabled())
             log.error(message, getContextNotClosedException());
@@ -207,7 +207,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         {
             rollbackAndClose();
         }
-        catch (SQLException e)
+        catch(SQLException e)
         {
             log.error("Unable to close leaking connection", e);
         }

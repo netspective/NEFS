@@ -83,7 +83,7 @@ public class MiscSqlObjectsTest extends TestCase
         super.setUp();
 
         component =
-                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(MiscSqlObjectsTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+        (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(MiscSqlObjectsTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
         assertNotNull(component);
 
         component.printErrorsAndWarnings();
@@ -156,7 +156,7 @@ public class MiscSqlObjectsTest extends TestCase
 
         String[] expectedColBParamValues = new String[]{"abc", "def", "ghi", "jkl"};
         String[] actualColBParamValues = columnB.getValue().getTextValues(null);
-        for (int i = 0; i < expectedColBParamValues.length; i++)
+        for(int i = 0; i < expectedColBParamValues.length; i++)
             assertEquals(expectedColBParamValues[i], actualColBParamValues[i]);
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
@@ -169,9 +169,9 @@ public class MiscSqlObjectsTest extends TestCase
         Integer[] bindType = vrc.getBindTypes();
 
         assertEquals(bindValue.length, bindType.length);
-        for (int i = 0; i < bindValue.length; i++)
+        for(int i = 0; i < bindValue.length; i++)
         {
-            if (0 == i)
+            if(0 == i)
                 assertEquals("abc", bindValue[i]);
             else
                 assertEquals(expectedColBParamValues[i - 1], bindValue[i]);
@@ -235,7 +235,7 @@ public class MiscSqlObjectsTest extends TestCase
         selectedDbPolicyNames.add("postgres");
         selectedDbPolicyNames.add("mssql");     // Microsoft Sql Server (from dbPolicy.getIdentifiers()
         assertEquals(selectedDbPolicyNames.size(), selectedDbPolicies.length);
-        for (int i = 0; i < selectedDbPolicies.length; i++)
+        for(int i = 0; i < selectedDbPolicies.length; i++)
             assertTrue(selectedDbPolicyNames.contains(selectedDbPolicies[i].getDbmsIdentifier()));
 
         Set policySet = dbPolicies.getPolicies();
@@ -248,7 +248,7 @@ public class MiscSqlObjectsTest extends TestCase
         expectedPolicyNames.add("mssql");
         expectedPolicyNames.add("access");
         assertEquals(expectedPolicyNames.size(), policySet.size());
-        for (Iterator iter = policySet.iterator(); iter.hasNext();)
+        for(Iterator iter = policySet.iterator(); iter.hasNext();)
             assertTrue(expectedPolicyNames.contains(((DatabasePolicy) iter.next()).getDbmsIdentifier()));
     }
 
@@ -274,10 +274,10 @@ public class MiscSqlObjectsTest extends TestCase
         comparisonTypeMap.put("gte-date", new DateComparison("gte-date", ">="));
         comparisonTypeMap.put("gt-date", new DateComparison("gt-date", ">"));
 
-        for (int i = 0; i < comparisonIds.length; i++)
+        for(int i = 0; i < comparisonIds.length; i++)
             assertNotNull(SqlComparisonFactory.getComparison(comparisonIds[i]));
 
-        for (Iterator iter = comparisonTypeMap.keySet().iterator(); iter.hasNext();)
+        for(Iterator iter = comparisonTypeMap.keySet().iterator(); iter.hasNext();)
         {
             String compId = (String) iter.next();
             BinaryOpComparison expectedComparison = (BinaryOpComparison) comparisonTypeMap.get(compId);

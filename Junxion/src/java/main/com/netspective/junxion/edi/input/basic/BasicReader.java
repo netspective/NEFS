@@ -117,7 +117,7 @@ public class BasicReader implements Reader
     protected void endDataElement(StringBuffer value) throws JunxionException
     {
         contentHandler.dataElement(value.toString());
-        if (locator.dataElementNumber == 1)
+        if(locator.dataElementNumber == 1)
             locator.segmentIdentifier = value.toString();
     }
 
@@ -130,7 +130,7 @@ public class BasicReader implements Reader
     {
         beginParse(input);
         beginSegment();
-        if (inHeaderSegment)
+        if(inHeaderSegment)
             beginHeaderSegment();
 
         StringBuffer segmentText = new StringBuffer();
@@ -138,13 +138,13 @@ public class BasicReader implements Reader
 
         java.io.Reader reader = input.getCharacterStream();
         int segmentChInt = reader.read();
-        while (segmentChInt != -1)
+        while(segmentChInt != -1)
         {
             char segmentCh = (char) segmentChInt;
-            switch (segmentDelimiter.getTokenType(segmentCh, escapeNextSegmentCh))
+            switch(segmentDelimiter.getTokenType(segmentCh, escapeNextSegmentCh))
             {
                 case Delimiter.DELIMTOKEN_NONE:
-                    if (inHeaderSegment)
+                    if(inHeaderSegment)
                     {
                         segmentText.append(segmentCh);
                     }
@@ -153,17 +153,17 @@ public class BasicReader implements Reader
                         StringBuffer dataElementText = beginDataElement();
                         int dataElemChInt = segmentChInt;
                         READ_DATA_ELEMENT:
-                          while (dataElemChInt != -1)
+                          while(dataElemChInt != -1)
                           {
                               char dataElemCh = (char) dataElemChInt;
-                              switch (dataElementDelimiter.getTokenType(dataElemCh, escapeNextDataElementCh))
+                              switch(dataElementDelimiter.getTokenType(dataElemCh, escapeNextDataElementCh))
                               {
                                   case Delimiter.DELIMTOKEN_NONE:
-                                      if (segmentDelimiter.getTokenType(dataElemCh, false) == Delimiter.DELIMTOKEN_DELIMITER)
+                                      if(segmentDelimiter.getTokenType(dataElemCh, false) == Delimiter.DELIMTOKEN_DELIMITER)
                                       {
                                           endDataElement(dataElementText);
                                           endSegment();
-                                          if (dataElemCh == '\n')
+                                          if(dataElemCh == '\n')
                                               locator.newLine();
                                           beginSegment();
                                           break READ_DATA_ELEMENT;
@@ -190,15 +190,15 @@ public class BasicReader implements Reader
                     break;
 
                 case Delimiter.DELIMTOKEN_DELIMITER:
-                    if (inHeaderSegment)
+                    if(inHeaderSegment)
                     {
                         segmentText.append(segmentCh); // we want the delimiter in the header in case anyone needs it
                         endHeaderSegment(segmentText);
-                        if (segmentCh == '\n')
+                        if(segmentCh == '\n')
                             locator.newLine();
                         segmentText = new StringBuffer();
                         beginSegment();
-                        if (inHeaderSegment)
+                        if(inHeaderSegment)
                             beginHeaderSegment();
                     }
                     escapeNextSegmentCh = false;

@@ -56,7 +56,7 @@ public class ScriptValidationRule extends BasicValidationRule implements XmlData
 
     public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
-        if (script == null && scriptName == null)
+        if(script == null && scriptName == null)
             throw new DataModelException(pc, "bean script expects either 'script' or 'script-name'");
     }
 
@@ -83,10 +83,10 @@ public class ScriptValidationRule extends BasicValidationRule implements XmlData
     public boolean isValid(ValidationContext vc, Value value)
     {
         Script activeScript = script;
-        if (scriptName != null)
+        if(scriptName != null)
         {
             activeScript = vc.getValidationValueContext().getScriptsManager().getScript(scriptName);
-            if (activeScript == null)
+            if(activeScript == null)
                 throw new RuntimeException("Script '" + scriptName + "' could not be found.");
         }
 
@@ -96,15 +96,15 @@ public class ScriptValidationRule extends BasicValidationRule implements XmlData
             ScriptContext sc = vc.getValidationValueContext().getScriptContext(activeScript);
             result = activeScript.callFunction(sc, null, "isValid", new Object[]{vc, value});
         }
-        catch (ScriptException e)
+        catch(ScriptException e)
         {
             throw new NestableRuntimeException(e);
         }
 
-        if (result instanceof Boolean)
+        if(result instanceof Boolean)
             return ((Boolean) result).booleanValue();
 
-        if (result != null)
+        if(result != null)
             return TextUtils.getInstance().toBoolean(result.toString(), false);
         else
             return false;

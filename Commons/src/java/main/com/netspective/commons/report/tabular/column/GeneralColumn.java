@@ -260,14 +260,14 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         // find all occurrences of ${.} and replace with ${x} where x is the col index (array)
 
         int findLoc = srcStr.indexOf(PLACEHOLDER_COLDATA);
-        if (findLoc == -1)
+        if(findLoc == -1)
             return srcStr;
 
         getFlags().setFlag(Flags.HAS_PLACEHOLDERS);
 
         String replacedIn = srcStr;
         String replaceWith = PLACEHOLDER_OPEN + colIndex + PLACEHOLDER_CLOSE;
-        while (findLoc >= 0)
+        while(findLoc >= 0)
         {
             StringBuffer sb = new StringBuffer(replacedIn);
             sb.replace(findLoc, findLoc + PLACEHOLDER_COLDATA.length(), replaceWith);
@@ -281,14 +281,14 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     {
         Object oData = ds.getActiveRowColumnData(getColIndex(), flags);
         String data = oData == null ? "" : oData.toString();
-        if ((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
+        if((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
         {
             ColumnDataCalculator calc = rc.getCalc(getColIndex());
-            if (calc != null)
+            if(calc != null)
                 calc.addValue(rc, this, ds, data);
         }
 
-        if (this.flags.flagIsSet(Flags.ESCAPE_HTML))
+        if(this.flags.flagIsSet(Flags.ESCAPE_HTML))
             data = TextUtils.getInstance().escapeHTML(data);
 
         return data;
@@ -296,15 +296,15 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 
     public String getFormattedData(TabularReportValueContext rc, ColumnDataCalculator calc)
     {
-        if (calc != null)
+        if(calc != null)
         {
-            if (formatter != null)
-                synchronized (formatter)
+            if(formatter != null)
+                synchronized(formatter)
                 {
                     return formatter.format(new Double(calc.getValue(rc)));
                 }
             else
-                synchronized (generalNumberFmt)
+                synchronized(generalNumberFmt)
                 {
                     return generalNumberFmt.format(calc.getValue(rc));
                 }
@@ -330,7 +330,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         setWidth(rc.getWidth());
         setCalc(rc.getCalcCmd());
         Format fmt = rc.getFormatter();
-        if (fmt != null)
+        if(fmt != null)
             setFormatter(fmt);
         setOutput(rc.getOutput());
     }
@@ -342,7 +342,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 
     public void addConditional(TabularReportColumnConditionalState state)
     {
-        if (conditionals == null)
+        if(conditionals == null)
             conditionals = new ArrayList();
         conditionals.add(state);
     }
@@ -368,25 +368,25 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             this.rc = rc;
 
             String calcCmd = getCalcCmd();
-            if (calcCmd != null)
+            if(calcCmd != null)
             {
                 calc = TabularReportCalcs.getInstance().createDataCalc(calcCmd);
-                if (calc == null)
+                if(calc == null)
                     throw new RuntimeException("Unable to find calc '" + calcCmd + "' in column " + getHeading());
             }
 
             flags = (Flags) GeneralColumn.this.getFlags().cloneFlags();
 
-            if (!flags.flagIsSet(Flags.HIDDEN))
+            if(!flags.flagIsSet(Flags.HIDDEN))
             {
-                if (flags.flagIsSet(Flags.HAS_OUTPUT_PATTERN))
+                if(flags.flagIsSet(Flags.HAS_OUTPUT_PATTERN))
                     outputFormat = resolvePattern(GeneralColumn.this.getOutput());
             }
 
-            if (flags.flagIsSet(Flags.HAVE_CONDITIONALS))
+            if(flags.flagIsSet(Flags.HAVE_CONDITIONALS))
             {
                 List conditionals = getConditionals();
-                for (int i = 0; i < conditionals.size(); i++)
+                for(int i = 0; i < conditionals.size(); i++)
                     ((TabularReportColumnConditionalState) conditionals.get(i)).makeStateChanges(rc, this);
             }
         }
@@ -419,7 +419,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         public String getCssStyleAttrValue()
         {
             StringBuffer style = new StringBuffer();
-            switch (getAlign())
+            switch(getAlign())
             {
                 case TabularReportColumn.ALIGN_CENTER:
                     style.append("text-align: center;");
@@ -430,7 +430,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
                     break;
             }
 
-            if (flags.flagIsSet(Flags.PREVENT_WORD_WRAP))
+            if(flags.flagIsSet(Flags.PREVENT_WORD_WRAP))
                 style.append(" white-space: nowrap;");
 
             return style.toString();

@@ -107,7 +107,7 @@ public abstract class XdmComponentTask extends Task
 
     public void setupActionHandlers()
     {
-        if (actionHandlers != null)
+        if(actionHandlers != null)
             return;
         actionHandlers = new HashMap();
     }
@@ -121,7 +121,7 @@ public abstract class XdmComponentTask extends Task
     {
         setupActionHandlers();
         actionHandler = (ActionHandler) actionHandlers.get(action);
-        if (actionHandler == null)
+        if(actionHandler == null)
             throw new BuildException("Unknown action '" + action + "'. Available: " + actionHandlers.keySet());
     }
 
@@ -132,11 +132,11 @@ public abstract class XdmComponentTask extends Task
 
     public void setCleanFirst(String cleanFirstStyle)
     {
-        if ("no".equals(cleanFirstStyle))
+        if("no".equals(cleanFirstStyle))
             this.cleanFirst = CLEAN_FIRST_FALSE;
-        else if ("yes".equals(cleanFirstStyle))
+        else if("yes".equals(cleanFirstStyle))
             this.cleanFirst = CLEAN_FIRST_DIR;
-        else if ("preserve-cvs".equals(cleanFirstStyle))
+        else if("preserve-cvs".equals(cleanFirstStyle))
             this.cleanFirst = CLEAN_FIRST_PRESERVE_CVS;
     }
 
@@ -147,7 +147,7 @@ public abstract class XdmComponentTask extends Task
      */
     public synchronized void delete(File dir)
     {
-        switch (cleanFirst)
+        switch(cleanFirst)
         {
             case CLEAN_FIRST_DIR:
                 deleteTask.setDir(dir);
@@ -155,7 +155,7 @@ public abstract class XdmComponentTask extends Task
                 break;
 
             case CLEAN_FIRST_PRESERVE_CVS:
-                if (dir.exists())
+                if(dir.exists())
                 {
                     FileSet everythingButCVSFileSet = new FileSet();
                     everythingButCVSFileSet.setDir(dir);
@@ -235,12 +235,12 @@ public abstract class XdmComponentTask extends Task
 
     public boolean generateIdentifierConstants(XdmComponent component) throws BuildException
     {
-        if (getDestDir() != null || genIdConstantsRootPkgAndClass != null)
+        if(getDestDir() != null || genIdConstantsRootPkgAndClass != null)
         {
-            if (getDestDir() == null || genIdConstantsRootPkgAndClass == null)
+            if(getDestDir() == null || genIdConstantsRootPkgAndClass == null)
                 throw new BuildException("destDir and idConstantsClass are both required to generate Identifier Constants.");
 
-            if (isCleanFirst())
+            if(isCleanFirst())
                 delete(new File(getDestDir(), genIdConstantsRootPkgAndClass.replace('.', '/')));
 
             try
@@ -248,7 +248,7 @@ public abstract class XdmComponentTask extends Task
                 component.generateIdentifiersConstants(getDestDir(), genIdConstantsRootPkgAndClass);
                 log("Created ID constants package '" + genIdConstantsRootPkgAndClass + "' in " + getDestDir().getAbsolutePath());
             }
-            catch (IOException e)
+            catch(IOException e)
             {
                 throw new BuildException(e);
             }
@@ -262,7 +262,7 @@ public abstract class XdmComponentTask extends Task
 
     protected XdmComponent getComponent(Class componentClass) throws BuildException
     {
-        if (projectFile == null && xdmResource == null)
+        if(projectFile == null && xdmResource == null)
             throw new BuildException("No project resource or file attributes supplied (projectFile).");
 
         XdmComponent component = null;
@@ -270,29 +270,29 @@ public abstract class XdmComponentTask extends Task
 
         try
         {
-            if (projectFile != null)
+            if(projectFile != null)
                 component = XdmComponentFactory.get(componentClass, projectFile, flags);
-            else if (xdmResource != null)
+            else if(xdmResource != null)
                 component = XdmComponentFactory.get(componentClass, xdmResource, flags);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new BuildException(e);
         }
 
         List errors = component.getErrors();
-        if (errors.size() > 0)
+        if(errors.size() > 0)
         {
-            for (int i = 0; i < errors.size(); i++)
+            for(int i = 0; i < errors.size(); i++)
             {
                 Object error = errors.get(i);
-                if (error instanceof Exception)
+                if(error instanceof Exception)
                     throw new BuildException((Exception) error);
                 log(error.toString());
             }
         }
 
-        if (isMetrics())
+        if(isMetrics())
             log(component.getMetrics().toString());
 
         return component;
@@ -300,7 +300,7 @@ public abstract class XdmComponentTask extends Task
 
     public void execute() throws BuildException
     {
-        if (getActionHandler() == null)
+        if(getActionHandler() == null)
         {
             setupActionHandlers();
             throw new BuildException("action attribute expected with one of the following values: " + actionHandlers.keySet());

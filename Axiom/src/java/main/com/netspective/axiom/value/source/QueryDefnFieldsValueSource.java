@@ -47,14 +47,12 @@ import com.netspective.commons.value.ValueSourceDocumentation;
 
 public class QueryDefnFieldsValueSource extends QueryDefnItemValueSource
 {
-    public static final String[] IDENTIFIERS = new String[] { "query-defn-fields" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Retrieves the list of fields defined in a particular query definition.",
-            new ValueSourceDocumentation.Parameter[]
-            {
-                new QueryDefnSourceParameter()
-            }
-    );
+    public static final String[] IDENTIFIERS = new String[]{"query-defn-fields"};
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Retrieves the list of fields defined in a particular query definition.",
+                                                                                              new ValueSourceDocumentation.Parameter[]
+                                                                                              {
+                                                                                                  new QueryDefnSourceParameter()
+                                                                                              });
 
     public static String[] getIdentifiers()
     {

@@ -61,7 +61,7 @@ public class BasicTableColumnReference implements TableColumnsReference
         this.reference = reference;
 
         int delimPos = reference.indexOf(QUALIFIED_TABLENAME_COLUMNNAME_SEPARATOR);
-        if (delimPos == -1)
+        if(delimPos == -1)
         {
             tableName = reference;
             columnName = null;
@@ -80,11 +80,11 @@ public class BasicTableColumnReference implements TableColumnsReference
 
     public String getReference()
     {
-        if (hasColumnNames())
+        if(hasColumnNames())
             return reference;
 
         Table table = schema.getTables().getByName(getTableName());
-        if (table == null)
+        if(table == null)
             return null;
 
         return table.getName() + "." + table.getPrimaryKeyColumns().getOnlyNames(",");
@@ -103,12 +103,12 @@ public class BasicTableColumnReference implements TableColumnsReference
     public Columns getColumns()
     {
         Table table = schema.getTables().getByName(getTableName());
-        if (table == null)
+        if(table == null)
             return null;
 
         return hasColumnNames() ?
-                table.getColumns().getByNames(getColumnNames(), ",") :
-                table.getPrimaryKeyColumns();
+               table.getColumns().getByNames(getColumnNames(), ",") :
+               table.getPrimaryKeyColumns();
     }
 
     public String toString()

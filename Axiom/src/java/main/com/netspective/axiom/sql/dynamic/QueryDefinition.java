@@ -51,8 +51,8 @@ public class QueryDefinition implements QueriesNameSpace
     static
     {
         XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "container", "identifier" });
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[] { "presentation" });
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[]{"container", "identifier"});
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[]{"presentation"});
     }
 
     static public class QueryFieldSortInfo
@@ -106,7 +106,7 @@ public class QueryDefinition implements QueriesNameSpace
 
     public static String translateNameForMapKey(String name)
     {
-        if (name == null)
+        if(name == null)
             return null;
         else
             return name.toUpperCase();
@@ -198,7 +198,7 @@ public class QueryDefinition implements QueriesNameSpace
             }
             QueryDefnField fieldDefn = fields.get(fieldName);
             if(fieldDefn == null)
-                throw new QueryDefnFieldNotFoundException(this, fieldName, "Field name '"+ fieldName +"' not found in sort definition '"+ names + "'");
+                throw new QueryDefnFieldNotFoundException(this, fieldName, "Field name '" + fieldName + "' not found in sort definition '" + names + "'");
             result.add(new QueryFieldSortInfo(fieldDefn, isDescending));
         }
         return (QueryFieldSortInfo[]) result.toArray(new QueryFieldSortInfo[result.size()]);

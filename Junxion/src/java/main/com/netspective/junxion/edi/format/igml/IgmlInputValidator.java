@@ -62,23 +62,23 @@ public class IgmlInputValidator extends BasicInputValidator
         super.validate(segmentDataElems, owner);
 
         String segmentId = (String) segmentDataElems.get(0);
-        if (SEGMENTID_TRANSACTIONSET_START.equals(segmentId))
+        if(SEGMENTID_TRANSACTIONSET_START.equals(segmentId))
         {
             String messageId = (String) segmentDataElems.get(1);
             message = getIgmlFormat().getStandard().getMessageDirectory().getMessage(messageId);
-            if (message == null)
+            if(message == null)
                 throw new JunxionException("Message ID '" + messageId + "' not found in message directory.");
 
             activeTransactionSet = new BasicTransactionSet();
             owner.addSegment(activeTransactionSet);
         }
-        else if (SEGMENTID_TRANSACTIONSET_END.equals(segmentId))
+        else if(SEGMENTID_TRANSACTIONSET_END.equals(segmentId))
         {
             activeTransactionSet = null;
         }
         else
         {
-            if (activeTransactionSet == null)
+            if(activeTransactionSet == null)
                 throw new JunxionException("Encountered segment '" + segmentId + "' outside of a transaction set.");
         }
     }

@@ -49,7 +49,7 @@ public class EnumerationIdRefColumn extends IntegerColumn
 
         public InvalidEnumerationValueException(EnumerationTable table, String value)
         {
-            super("Column '"+ getQualifiedName() +"' value is invalid -- enumeration '"+ table.getName() +"' does not contain an id, caption, or abbrevation called ["+ value +"]. Available: " + TextUtils.getInstance().join(table.getEnums().getValidValues(), ", "));
+            super("Column '" + getQualifiedName() + "' value is invalid -- enumeration '" + table.getName() + "' does not contain an id, caption, or abbrevation called [" + value + "]. Available: " + TextUtils.getInstance().join(table.getEnums().getValidValues(), ", "));
             this.table = table;
             this.value = value;
         }

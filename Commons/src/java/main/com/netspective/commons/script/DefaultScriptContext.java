@@ -53,7 +53,7 @@ public class DefaultScriptContext implements ScriptContext
         {
             this.bsfEngine = bsfManager.loadScriptingEngine(script.getLanguage());
         }
-        catch (BSFException e)
+        catch(BSFException e)
         {
             log.error(e);
             throw new ScriptException(e);
