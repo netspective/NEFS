@@ -75,8 +75,6 @@
          <column name="auto_inc_column" type="auto-inc" descr="Auto Inc Column"/>
          <column name="guid_text_column" type="guid-text" descr="Guid Text Column"/>
          <column name="guid32_column" type="guid32" descr="Guid32 Column"/>
-
-         <!-- column name="enum_set_column" type="enum-set" descr="Enum Set Column"/ -->
          <column name="currency_column" type="currency" descr="Currency Column"/>
          <column name="percentage_column" type="percentage" descr="Percentage Column"/>
          <column name="email_column" type="email" descr="Email Column"/>
@@ -169,7 +167,17 @@
          </description>
          <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
          <column name="text_set_column" type="text-set" descr="Text Set Column"/>
+         <column xdm:param-enumerationTable="Enum_set_Lookup" name="enum_set_column" type="enum-set"  descr="Enum Set Column"/>
          <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+         <column name="enumIdRef" lookupref="Enum_set_Lookup" descr="Testing the EnumerationIdRefColumn"/>
+      </table>
+
+        <table name="Enum_set_Lookup" abbrev="EnumLookup" type="Enumeration">
+            <enumerations>
+                <enum id="0">Zero</enum>
+                <enum id="1">One</enum>
+                <enum id="2">Two</enum>
+            </enumerations>
       </table>
 
     </schema>
