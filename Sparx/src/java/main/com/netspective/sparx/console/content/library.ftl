@@ -183,7 +183,7 @@
             </td>
             <td class="report-column-${classSuffix}">
                 <#if attrDetail.isFlagAlias()>
-                    <span title="alias for ${attrDetail.primaryFlagsAttrName}='${attrDetail.flagAlias.name}' (${attrDetail.attrType})">boolean (flag alias)</title>
+                    <span title="alias for ${attrDetail.primaryFlagsAttrName}='${attrDetail.getFlagAlias().name}' (${attrDetail.attrType})">boolean (flag alias)</title>
                 <#elseif attrDetail.attrType.isPrimitive()>
                     ${attrDetail.attrType.name}
                 <#else>
