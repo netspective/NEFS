@@ -90,7 +90,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.77 2004-09-07 00:28:45 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.78 2004-09-07 03:08:20 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -174,7 +174,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         {
             setFlag(REQUIRE_LOGIN | HANDLE_META_DATA | HANDLE_HEADER | HANDLE_FOOTER | INHERIT_RETAIN_PARAMS |
                     INHERIT_ASSIGN_STATE_PARAMS | ALLOW_PANEL_EDITING | VALIDATE_PANEL_EDITOR_IN_PAGE |
-                    ANNOUNCE_PAGE_VISIT_ACTIVITY | BODY_AFFECTS_NAVIGATION);
+                    ANNOUNCE_PAGE_VISIT_ACTIVITY);
         }
 
         public FlagDefn[] getFlagsDefns()
