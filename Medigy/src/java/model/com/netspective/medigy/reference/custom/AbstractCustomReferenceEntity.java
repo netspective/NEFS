@@ -39,31 +39,28 @@
  */
 package com.netspective.medigy.reference.custom;
 
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.common.EntitySeedData;
+import com.netspective.medigy.model.party.Party;
+
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
 import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
 import javax.ejb.Transient;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.common.DataEncryptionType;
-import com.netspective.medigy.model.common.EntitySeedData;
-import com.netspective.medigy.model.party.Party;
-
 
 public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implements CustomReferenceEntity, Comparable
 {
     private Long systemId;
     private String code;
-    private String name;
+    private String label;
     private String description;
-    private DataEncryptionType encryptionType;
-    private int maxAllowed = 1;
 
     private Party party;
 
     @Transient
-            public Long getSystemId()
+    public Long getSystemId()
     {
         return systemId;
     }
@@ -73,8 +70,8 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
         this.systemId = systemId;
     }
 
-    @Column(name = "code")
-            public String getCode()
+    @Column(name = "code", length = 8)
+    public String getCode()
     {
         return code;
     }
@@ -85,40 +82,18 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     }
 
     @Column(nullable = false)
-            public String getName()
+    public String getLabel()
     {
-        return name;
+        return label;
     }
 
-    public void setName(String name)
+    public void setLabel(String label)
     {
-        this.name = name;
-    }
-
-    @Column(nullable = false)
-            public DataEncryptionType getEncryptionType()
-    {
-        return encryptionType;
-    }
-
-    public void setEncryptionType(DataEncryptionType encryptionType)
-    {
-        this.encryptionType = encryptionType;
-    }
-
-    @Column(nullable = false)
-            public int getMaxAllowed()
-    {
-        return maxAllowed;
-    }
-
-    public void setMaxAllowed(int maxAllowed)
-    {
-        this.maxAllowed = maxAllowed;
+        this.label = label;
     }
 
     @Column(length = 256)
-            public String getDescription()
+    public String getDescription()
     {
         return description;
     }
@@ -129,8 +104,8 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-            @JoinColumn(name = "party_id")
-            public Party getParty()
+    @JoinColumn(name = "party_id", nullable = false)
+    public Party getParty()
     {
         return party;
     }
