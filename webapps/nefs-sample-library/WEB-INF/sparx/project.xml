@@ -28,7 +28,7 @@
 
 	<dialogs package="library">
 		<dialog name="bookInfo" retain-params="*">
-			<frame heading="create-data-cmd-heading:Book Information"/>
+			<frame heading="create-dialog-perspective-heading:Book Information"/>
 
 			<field name="id" type="text" caption="Book ID" required="yes" max-length="10"/>
 			<field name="name" type="text" caption="Name" required="yes"/>
@@ -57,7 +57,7 @@
             <field name="static_field2" type="static" caption="Static 2 " default="Static Field's Value"/>
             <field name="text_field_required" type="text" caption="Text Required" hint="Text field is required when req param 'abc' has value"
                 default="conditional Required Text" required="no">
-                <conditional action="apply-flag" flag="required" has-value="request:abc"/>
+                <conditional action="apply-flags" flags="required" has-value="request:abc"/>
             </field>
             <!-- When max-length is turned on then the default text should be truncated or an error should be displayed??? -->
             <field name="text_field" type="text" caption="Text" hint="Text field optional (max-length=5, uppercase=yes)" max-length="5" uppercase="yes"/>
@@ -212,15 +212,15 @@
                 <!--conditional action="display" partner="checkbox_field" js-expr="control.checked == true"/-->
             </field>
             <field type="text" name="text_field_1" caption="Text Field" size="50" hint="Unavailable when ADD" default="I guess the data command is not 'add'">
-                <conditional action="apply-flag" flag="unavailable" data-cmd="add"/>
+                <conditional action="apply-flags" flags="unavailable" perspective="add"/>
             </field>
             <field type="select" name="select_field" caption="Select Field" style="combo"
                 choices="Choice 1=Choice 1's value;Choice 2=Choice 2's value;Choice 3=Choice 3's value" default="Choice 1's value">
-                <conditional action="apply-flag" flag="unavailable" data-cmd="add"/>
+                <conditional action="apply-flags" flags="unavailable" perspective="add"/>
             </field>
             <field type="static" name="static_field_4" default="The data command is not 'add' or 'edit'">
-                <conditional action="apply-flag" flag="unavailable" data-cmd="add"/>
-                <conditional action="apply-flag" flag="unavailable" data-cmd="edit"/>
+                <conditional action="apply-flags" flags="unavailable" perspective="add"/>
+                <conditional action="apply-flags" flags="unavailable" perspective="edit"/>
             </field>
         </dialog>
         <!--dialog name="DialogTest_11" retain-params="*">
