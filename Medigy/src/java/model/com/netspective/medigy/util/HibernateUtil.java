@@ -43,10 +43,9 @@
  */
 package com.netspective.medigy.util;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
+import com.netspective.medigy.model.data.EntitySeedDataPopulator;
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
@@ -56,10 +55,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.NestableRuntimeException;
 
-import com.netspective.medigy.reference.CachedReferenceEntity;
-import com.netspective.medigy.reference.ReferenceEntity;
-import com.netspective.medigy.reference.CachedReferenceEntity;
-import com.netspective.medigy.reference.ReferenceEntity;
+import java.util.List;
+import java.util.Map;
 
 public class HibernateUtil
 {
@@ -202,4 +199,11 @@ public class HibernateUtil
         for(final Map.Entry<Class, Class> entry : referenceEntitiesAndCachesMap.entrySet())
             initReferenceEntityCache(entry.getKey(), (CachedReferenceEntity[]) entry.getValue().getEnumConstants());
     }
+
+    public static void initCustomReferenceEntityCaches(final Map<Class, Class> customReferenceEntitiesAndCachesMap)
+    {
+        EntitySeedDataPopulator populator = new EntitySeedDataPopulator(getSession());
+        populator.populateSeedData();
+    }
+
 }

@@ -153,6 +153,7 @@ public abstract class TestCase extends junit.framework.TestCase
         final HibernateConfiguration hibernateConfiguration = getHibernateConfiguration();
         HibernateUtil.setConfiguration(hibernateConfiguration);
         HibernateUtil.initReferenceEntityCaches(hibernateConfiguration.getReferenceEntitiesAndCachesMap());
+        HibernateUtil.initCustomReferenceEntityCaches(hibernateConfiguration.getCustomReferenceEntitiesAndCachesMap());
 
         // Generate the DDL into a file so we can review it
         final SchemaExport se = new SchemaExport(hibernateConfiguration);
@@ -171,6 +172,7 @@ public abstract class TestCase extends junit.framework.TestCase
         generateDiagram(hibernateConfiguration,
                 DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-erd",
                 new HibernateDiagramFilter(false, false, false));
+
     }
 
     protected void tearDown() throws Exception

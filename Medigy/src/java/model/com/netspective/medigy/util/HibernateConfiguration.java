@@ -43,6 +43,19 @@
  */
 package com.netspective.medigy.util;
 
+import com.netspective.medigy.model.common.EntitySeedData;
+import com.netspective.medigy.model.common.EntitySeedDataProvider;
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import org.hibernate.HibernateException;
+import org.hibernate.MappingException;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.HSQLDialect;
+
+import javax.ejb.Table;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,22 +63,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.ejb.Table;
-
-import org.hibernate.HibernateException;
-import org.hibernate.MappingException;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.HSQLDialect;
-
-import com.netspective.medigy.model.common.EntitySeedData;
-import com.netspective.medigy.model.common.EntitySeedDataProvider;
-import com.netspective.medigy.reference.CachedReferenceEntity;
-import com.netspective.medigy.reference.ReferenceEntity;
-
 public class HibernateConfiguration extends AnnotationConfiguration
 {
     private final Map<Class, Class> referenceEntitiesAndCachesMap = new HashMap<Class, Class>();
+    private final Map<Class, Class> customReferenceEntitiesAndCachesMap = new HashMap<Class, Class>();
     private final Set<Class> entitiesWithSeedDataSet = new HashSet<Class>();
 
     public HibernateConfiguration()
@@ -77,6 +78,12 @@ public class HibernateConfiguration extends AnnotationConfiguration
     {
         return referenceEntitiesAndCachesMap;
     }
+
+    public Map<Class, Class> getCustomReferenceEntitiesAndCachesMap()
+    {
+        return customReferenceEntitiesAndCachesMap;
+    }
+
 
     public AnnotationConfiguration addAnnotatedClass(final Class aClass) throws MappingException
     {
@@ -97,13 +104,33 @@ public class HibernateConfiguration extends AnnotationConfiguration
 
                     break;
                 }
+
             }
 
             if (!foundCache)
                 throw new HibernateException(aClass + " is marked as a ReferenceEntity but does not contain a ReferenceEntityCache enum.");
 
             // TODO: find out how to ensure the new mapping for reference type is immutable and read only
-            // final PersistentClass pClass = getClassMapping(aClass.getName());
+            // final PersistentClass pClass = getClassMapping(aClass.getLabel());
+        }
+        else if (CustomReferenceEntity.class.isAssignableFrom(aClass))
+        {
+            for (final Class ic : aClass.getClasses())
+            {
+                if (CachedCustomReferenceEntity.class.isAssignableFrom(ic))
+                {
+                    if (ic.isEnum())
+                    {
+                        customReferenceEntitiesAndCachesMap.put(aClass, ic);
+                    }
+                    else
+                        throw new HibernateException(ic + " must be an enum since " + aClass + " is a " +
+                                CachedCustomReferenceEntity.class.getName());
+
+                    break;
+                }
+            }
+            // if no cache is found, its ok since these are custom
         }
 
         if (EntitySeedDataProvider.class.isAssignableFrom(aClass))
