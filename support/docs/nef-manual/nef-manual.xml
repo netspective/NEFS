@@ -10,7 +10,7 @@
     <title>Netspective Enterprise Frameworks (NEF) 7.0 Release Candidate 1
     User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-11 22:36:43 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-12 17:29:09 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 30, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -6732,7 +6732,20 @@ public class Test1  extends com.netspective.sparx.form.Dialog
     will require access to a relational database management system to store
     data, retrieve it, and report on it. NEF&#39;s Axiom framework provides
     sophisticated data management capabilities using simple XML tags and Java
-    APIs.</para>
+    APIs. All of the database-related functionality is managed in Axiom while
+    the presentation portions are handled by Sparx.</para>
+
+    <section>
+      <title>Connection Providers</title>
+
+      <para>TODO: documentation coming soon...</para>
+    </section>
+
+    <section>
+      <title>Database Policies</title>
+
+      <para></para>
+    </section>
 
     <section>
       <title>Static Queries</title>
@@ -6809,47 +6822,57 @@ public class Test1  extends com.netspective.sparx.form.Dialog
             <para>Return collection to calling code</para>
           </step>
         </procedure>
+
+        <para>Now, the same steps with Axiom for the data manament and Sparx
+        for the presentation layer would become:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>TODO: documentation coming soon...</para>
+          </listitem>
+        </orderedlist>
       </section>
 
       <section id="Creating-Query">
         <title>Creating a static query</title>
 
         <para>All static queries regardless of their data source are defined
-        in <filename>WEB-INF/ui/statement.xml</filename>. Each query statement
-        must belong to a query package also.</para>
+        in the Project File (<filename>WEB-INF/sparx/project.xml</filename>).</para>
 
         <section>
           <title>Defining the query</title>
 
-          <para>A static query is defined(with or without bind parameters) by
-          using the XML tag, <emphasis role="bold">&#60;statement&#62;</emphasis>.
-          It is important to remember that in Sparx, every static query must
-          belong to a statement package represented by <emphasis role="bold">&#60;sql-statements&#62;</emphasis>
-          XML tag. Two XML tags <emphasis role="bold">&#60;params&#62;</emphasis>
-          and <emphasis role="bold">&#60;param&#62;</emphasis> are used to
-          indicate the replacement values for the bind parameters. The
-          following is an example of a SQL statement with two bind parameters
-          belonging to a sql package: <programlisting role="xml">
-                &#60;sql-statements package=&#34;user&#34;&#62;
-                    &#60;statement name=&#34;info&#34;&#62;
-                        select
-                            name,
-                            address,
-                            phone,
-                            email
-                        from
-                            Customers
-                        where
-                            regionid = ? and
-                            custid = ?
-                        &#60;params&#62;
-                            &#60;param value=&#34;request:region_id&#34;/&#62;
-                            &#60;param value=&#34;request:cust_id&#34;/&#62;
-                        &#60;/params&#62;
-                    &#60;/statement&#62;
-                &#60;/sql-statements&#62;
-                </programlisting> The listing above show that the
-          <emphasis>regionid</emphasis> and <emphasis>custid</emphasis>
+          <para>A static query is defined (with or without bind parameters) by
+          using the <sgmltag class="starttag">query</sgmltag> tag. It is
+          important to remember that in Axiom, every static query must belong
+          to a statement package represented by <sgmltag class="starttag">queries</sgmltag>
+          XML tag. Two XML tags <sgmltag class="starttag">params</sgmltag> and
+          <sgmltag class="starttag">param</sgmltag> are used to indicate the
+          replacement values for the bind parameters. Even if you supply
+          default bind parameters you may always override them when calling
+          the query. The following is an example of a SQL statement with two
+          bind parameters belonging to a sql queries package: <programlisting
+          role="xml">&#60;project&#62;
+    ....
+    &#60;queries package=&#34;user&#34;&#62;
+        &#60;query name=&#34;info&#34;&#62;
+            select
+                name,
+                address,
+                phone,
+                email
+            from
+                Customers
+            where
+                regionid = ? and
+                custid = ?
+            &#60;params&#62;
+                &#60;param value=&#34;request:region_id&#34;/&#62;
+                &#60;param value=&#34;request:cust_id&#34;/&#62;
+            &#60;/params&#62;
+        &#60;/query&#62;
+    &#60;/queries&#62;               </programlisting> The listing above show
+          that the <emphasis>regionid</emphasis> and <emphasis>custid</emphasis>
           columns are defined with bind parameters. In the example, the values
           for the bind parameters are obtained from the HTTP request using the
           <emphasis>request</emphasis> Single Value Source. The order in which
@@ -6861,26 +6884,26 @@ public class Test1  extends com.netspective.sparx.form.Dialog
           parameter attribute is available. The attribute is called
           <emphasis>param-list</emphasis> and it follows the value source
           format(param-list:paramIndex). For example: <programlisting
-          role="xml">
-        &#60;sql-statements package=&#34;user&#34;&#62;
-            &#60;statement name=&#34;info&#34;&#62;
-                select
-                    name,
-                    address,
-                    phone,
-                    email
-                from
-                    Customers
-                where
-                    regionid IN (${param-list:0}) and
-                    custid = ?
-                &#60;params&#62;
-                    &#60;param values=&#34;request:region_id&#34;/&#62;
-                    &#60;param value=&#34;request:cust_id&#34;/&#62;
-                &#60;/params&#62;
-            &#60;/statement&#62;
-        &#60;/sql-statements&#62;
-                </programlisting> Note that <emphasis>regionid</emphasis>
+          role="xml">&#60;project&#62;
+    ....
+    &#60;queries package=&#34;user&#34;&#62;
+        &#60;query name=&#34;info&#34;&#62;
+            select
+                name,
+                address,
+                phone,
+                email
+            from
+                Customers
+            where
+                regionid IN (${param-list:0}) and
+                custid = ?
+            &#60;params&#62;
+                &#60;param values=&#34;request:region_id&#34;/&#62;
+                &#60;param value=&#34;request:cust_id&#34;/&#62;
+            &#60;/params&#62;
+        &#60;/query&#62;
+    &#60;/queries&#62;</programlisting> Note that <emphasis>regionid</emphasis>
           values are obtained from the <emphasis>region_id</emphasis> request
           parameter which is returning a list of values. The value attribute
           for the <emphasis role="bold">&#60;param&#62;</emphasis> tag in this
@@ -6895,6 +6918,29 @@ public class Test1  extends com.netspective.sparx.form.Dialog
           static data source, or a dynamic data source (meaning the data comes
           from a source that will be determined automatically based on some
           rule).</para>
+
+          <para>To use the default data source, just leave the <sgmltag
+          class="starttag">query</sgmltag> <sgmltag class="attribute">data-src</sgmltag>
+          attribute out of the tag.</para>
+
+          <programlisting>&#60;queries package=&#34;user&#34;&#62;
+    &#60;query name=&#34;info&#34;&#62;</programlisting>
+
+          <para>To use a static data source name (JNDI or other connection
+          provider), just <sgmltag class="attribute">provide the data-src</sgmltag>
+          attribute value with the name of the data source.</para>
+
+          <programlisting>&#60;queries package=&#34;user&#34;&#62;
+    &#60;query name=&#34;info&#34; <emphasis role="bold">data-src=&#34;jdbc/some_specific_datasource&#34;</emphasis>&#62;</programlisting>
+
+          <para>To use a dynamic data source name you can supply any value
+          source for the data source name. So, for example, if the data source
+          name is stored in a session attribute called <sgmltag
+          class="attvalue">user_data_src</sgmltag> when the user logs in you
+          can use:</para>
+
+          <programlisting>&#60;queries package=&#34;user&#34;&#62;
+    &#60;query name=&#34;info&#34; <emphasis role="bold">data-src=&#34;session:user_data_src&#34;</emphasis>&#62;</programlisting>
         </section>
 
         <section>
@@ -6917,47 +6963,40 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         </section>
 
         <section>
-          <title>Defining the report</title>
+          <title>Presenting the results of a Query</title>
 
           <para>The display result of the query execution can be configured
-          easily using the <emphasis>&#60;report&#62;</emphasis> XML tag .
-          Column names can be assigned and the acutal result itself can be
-          aligned or modified as a URL. An example is shown below for adding a
-          customized report for the query created above: <programlisting
-          role="xml">
-                &#60;sql-statements package=&#34;user&#34;&#62;
-                    &#60;statement name=&#34;info&#34;&#62;
-                        select
-                            name,
-                            address,
-                            phone,
-                            email
-                        from
-                            Customers
-                        where
-                            regionid = ? and
-                            custid = ?
-                        &#60;params&#62;
-                            &#60;param value=&#34;request:region_id&#34;/&#62;
-                            &#60;param value=&#34;request:cust_id&#34;/&#62;
-                        &#60;/params&#62;
-                        &#60;report heading=&#34;Customer Information&#34;&#62;
-                            &#60;column index=&#34;0&#34; heading=&#34;Name&#34; align=&#34;left&#34; url=&#34;http://clickme/${0}&#34;/&#62;
-                            &#60;column index=&#34;1&#34; heading=&#34;Address&#34; align=&#34;left&#34;/&#62;
-                            &#60;column index=&#34;2&#34; heading=&#34;Phone&#34; align=&#34;left&#34;/&#62;
-                            &#60;column index=&#34;3&#34; heading=&#34;ID&#34; align=&#34;left&#34;/&#62;
-                        &#60;/report&#62;
-                    &#60;/statement&#62;
-                &#60;/sql-statements&#62;
-                </programlisting> Each <emphasis role="bold">&#60;column&#62;</emphasis>
-          XML tag of the report corresponds to the query statement&#39;s
-          result set column entry though the the attribute
-          <emphasis>index</emphasis>. The query above does not specify the
-          data source thus giving it the flexibility to be used for multiple
-          data sources. If the data source needs to be defined with the
-          statement, an attribute called <emphasis>data-src</emphasis> is also
-          available for the <emphasis role="bold">&#60;statement&#62;</emphasis>
-          tag.</para>
+          easily using the <sgmltag class="starttag">report</sgmltag> XML tag
+          . Column names can be assigned and the acutal result itself can be
+          aligned or modified as a URL.<programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;queries package=&#34;books&#34;&#62;
+        &#60;query name=&#34;get-all-books&#34;&#62;
+
+            select id, name, author, book_type.caption, isbn
+            from book_info, book_type
+            where genre = book_type.id
+
+            &#60;presentation&#62;
+                &#60;panel name=&#34;main&#34; height=&#34;300&#34;&#62;
+                    &#60;frame heading=&#34;static:All available books&#34;/&#62;
+                    &#60;report&#62;
+                        &#60;column heading=&#34;ID&#34; format=&#34;plain&#34; redirect=&#34;page-id:/edit?id=${0}&#34;/&#62;
+                        &#60;column heading=&#34;Name&#34; /&#62;
+                        &#60;column heading=&#34;Author&#34;/&#62;
+                        &#60;column heading=&#34;Genre&#34;/&#62;
+                        &#60;column heading=&#34;ISBN&#34;/&#62;
+                    &#60;/report&#62;
+                &#60;/panel&#62;
+            &#60;/presentation&#62;
+        &#60;/query&#62;
+    &#60;/queries&#62;                </programlisting>Each <sgmltag
+          class="starttag">column</sgmltag> XML tag of the report corresponds
+          to the query statement&#39;s result set column entry though the the
+          attribute <emphasis>index</emphasis> (if all the columns follow the
+          order of the columns in the SQL select clause the index attribute
+          may be left out). The query above does not specify the data source
+          thus giving it the flexibility to be used for multiple data sources.</para>
         </section>
       </section>
 
@@ -6996,13 +7035,12 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         <title>Using the static query</title>
 
         <section id="Using-Query-Tag">
-          <title>Using the query tag</title>
+          <title>Using the query command</title>
 
-          <para>Static queries can be executed inside a JSP using the custom
-          tag <sgmltag class="starttag"> xaf:query</sgmltag>. The execution of
-          the query can also be configured in different ways: to display
-          reports, to fill in HTML dialogs, or to save the data in arrays
-          inside of displaying them.</para>
+          <para>Static queries can be executed inside Sparx pages using the
+          query command. The execution of the query can also be configured in
+          different ways: to display reports, to fill in HTML dialogs, or to
+          save the data in arrays inside of displaying them.</para>
 
           <section>
             <title>Used as a report</title>
@@ -7010,11 +7048,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
             <para>By default a static query report can be created by including
             the query within a JSP and describing the report type.</para>
 
-            <programlisting role="xml">
-
-    &#60;xaf:query name=&#34;user.info&#34; skin=&#34;report&#34; debug=&#34;no&#34;/&#62;
-
-                    </programlisting>
+            <programlisting role="xml">TODO: documentation coming soon...                    </programlisting>
 
             <para>The <sgmltag class="attribute">skin</sgmltag> attribute
             determines how the report is displayed on the screen. For example,
@@ -7029,13 +7063,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
             one can ensure that the query will only be executed when the
             dialog is submitted:</para>
 
-            <programlisting role="xml">
-
-    &#60;xaf:dialog name=&#34;test.test1&#34;&#62;
-        &#60;xaf:query name=&#34;user.info&#34; skin=&#34;report&#34; debug=&#34;no&#34;/&#62;
-    &#60;/xaf:dialog&#62;
-
-                    </programlisting>
+            <programlisting role="xml">TODO: documentation coming soon...                    </programlisting>
           </section>
 
           <section>
@@ -7045,10 +7073,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
             data from the static query can be saved into a proceeding dialog.
             The following JSP sample is an example of this:</para>
 
-            <programlisting role="xml">
-    &#60;xaf:query name=&#34;user.info&#34; report=&#34;none&#34; store=&#34;form:*&#34; debug=&#34;no&#34;/&#62;
-    &#60;xaf:dialog name=&#34;test.test1&#34;/&#62;
-                    </programlisting>
+            <programlisting role="xml">TODO: documentation coming soon...     </programlisting>
 
             <para>The data retrieved from the query is not displayed but it is
             filled into the dialog through the <emphasis>store=&#34;form:*&#34;</emphasis>
@@ -7065,16 +7090,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
             following is an example of saving the data inside a request
             attribute:</para>
 
-            <programlisting role="xml">
-    &#60;xaf:query name=&#34;user.info&#34;
-                report=&#34;none&#34;
-                store=&#34;request-attr:userInfo&#34;
-                storeType=&#34;row-map&#34;
-                debug=&#34;no&#34;/&#62;
-    &#60;%
-    Map user = (Map)request.getAttribute(&#34;userInfo&#34;);
-    %&#62;
-                    </programlisting>
+            <programlisting role="xml">TODO: documentation coming soon...                   </programlisting>
 
             <para>The above example saves the query data inside a request
             attribute called <emphasis>userInfo</emphasis> of
@@ -7108,37 +7124,17 @@ public class Test1  extends com.netspective.sparx.form.Dialog
             <title>Defined Query</title>
 
             <para>The following is an example of using the
-            <classname>com.netspective.sparx.sql.StatementManager</classname>
-            class within a JSP to execute a query defined in
-            <filename>statement.xml</filename>:</para>
+            <classname>com.netspective.sparx.sql.Queries</classname> class
+            within a JSP to execute a query defined in <filename>statement.xml</filename>:</para>
 
-            <programlisting role="java">
-
-        &#60;%
-        DatabaseContext dbContext = DatabaseContextFactory.getSystemContext();
-        Map result = StatementManager.executeStmtGetValuesMap(dbContext, pageContext,
-            &#34;jdbc/cura&#34;, &#34;org.name-only&#34;, new Object[new String(&#34;123&#34;)]);
-        %&#62;
-
-                    </programlisting>
+            <programlisting role="java">TODO: documentation coming soon...</programlisting>
 
             <para>The above example is doing exactly the same as the following
             JSP snippet using the query custom tag (assuming the query is
             expecting the bind parameter from a request attribute called
             <literal>org_id</literal>):</para>
 
-            <programlisting role="xml">
-
-        &#60;%
-        request.setAttribute(&#34;org_id&#34;, &#34;123&#34;);
-        %&#62;
-        &#60;xaf:query name=&#34;org.name-only&#34; dataSource=&#34;jdbc/cura&#34; report=&#34;none&#34;
-        store=&#34;request-attr:result&#34;  storeType=&#34;row-map&#34;/&#62;
-        &#60;%
-        Map result = (Map)request.getAttribute(&#34;result&#34;);
-        %&#62;
-
-                    </programlisting>
+            <programlisting role="xml">TODO: documentation coming soon...</programlisting>
           </example>
 
           <example>
@@ -7149,22 +7145,8 @@ public class Test1  extends com.netspective.sparx.form.Dialog
             class within a JSP to execute a query which is passed in (not
             defined in <filename>statement.xml</filename>):</para>
 
-            <programlisting role="java">
-
-        &#60;%
-        DatabaseContext dbContext = DatabaseContextFactory.getSystemContext();
-        Map result = StatementManager.executeSqlGetValuesMap(dbContext, pageContext,
-            &#34;jdbc/cura&#34;, &#34;select org_name from org where org_id = ?&#34;, new Object[new String(&#34;123&#34;)]);
-        %&#62;
-
-                    </programlisting>
+            <programlisting role="java">TODO: documentation coming soon...                    </programlisting>
           </example>
-
-          <note>
-            <para>It is recommended that all static queries be defined in
-            <filename>statement.xml</filename> and this way of exeuting
-            queries should be only used for debugging or development purposes.</para>
-          </note>
         </section>
       </section>
     </section>
@@ -7214,51 +7196,62 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         XML tag. Within this XML element, other XML element representations of
         column data fields, join tables and conditions, query definition
         dialog, conditions, and order fields are defined. The following is a
-        sample dynamic query definition: <programlisting role="xml">
+        sample dynamic query definition: <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;query-defn name=&#34;books&#34;&#62;
+        &#60;field name=&#34;book_id&#34; caption=&#34;Book ID&#34; join=&#34;BookInfo&#34; column=&#34;id&#34;/&#62;
+        &#60;field name=&#34;name&#34; caption=&#34;Name&#34; join=&#34;BookInfo&#34; column=&#34;name&#34;/&#62;
+        &#60;field name=&#34;author&#34; caption=&#34;Author&#34; join=&#34;BookInfo&#34; column=&#34;author&#34;/&#62;
+        &#60;field name=&#34;genre_id&#34; caption=&#34;Genre ID&#34; join=&#34;BookInfo&#34; column=&#34;genre&#34;/&#62;
+        &#60;field name=&#34;genre_caption&#34; caption=&#34;Genre&#34; join=&#34;BookType&#34; column=&#34;caption&#34;/&#62;
+        &#60;field name=&#34;isbn&#34; caption=&#34;ISBN&#34; join=&#34;BookInfo&#34; column=&#34;isbn&#34;/&#62;
 
-            &#60;query-defn id=&#34;Organization&#34;&#62;
-                &#60;!-- Fields --&#62;
-                &#60;field id=&#34;org_id&#34; caption=&#34;Account ID&#34; join=&#34;org&#34; column=&#34;org_id&#34;&#62;
-                    &#60;report heading=&#34;ID&#34; url=&#34;create-app-url:/account/home.jsp?org_id=${.}&#34;/&#62;
-                &#60;/field&#62;
-                ...
-                &#60;field id=&#34;org_code&#34; caption=&#34;Account Code&#34; join=&#34;org&#34; column=&#34;org_code&#34;&#62;
-                    &#60;report heading=&#34;Code&#34;/&#62;
-                &#60;/field&#62;
+        &#60;join name=&#34;BookInfo&#34; table=&#34;book_info&#34;/&#62;
+        &#60;join name=&#34;BookType&#34; table=&#34;book_type&#34; condition=&#34;BookType.id = BookInfo.genre&#34;/&#62;
 
-                &#60;!-- Joins --&#62;
-                &#60;join id=&#34;org&#34; table=&#34;org&#34; auto-include=&#34;yes&#34;/&#62;
-                &#60;join id=&#34;org_industry&#34; table=&#34;org_industry&#34;
-                    condition=&#34;org.org_id = org_industry.org_id (+)&#34;/&#62;
+        &#60;presentation&#62;
+            &#60;select-dialog name=&#34;searchBooksDialog&#34;  allow-debug=&#34;yes&#34; hide-output-dests=&#34;no&#34; 
+                                                     hide-readonly-hints=&#34;yes&#34; &#62;
+                &#60;frame heading=&#34;Search for Books&#34; /&#62;
+                &#60;field type=&#34;text&#34; name=&#34;book_id&#34; caption=&#34;Book ID&#34; /&#62;
+                &#60;field type=&#34;text&#34; name=&#34;name&#34; caption=&#34;Book Name&#34;/&#62;
+                &#60;field type=&#34;text&#34; name=&#34;author&#34; caption=&#34;Author&#34;/&#62;
+                &#60;field type=&#34;text&#34; name=&#34;isbn&#34; caption=&#34;ISBN&#34;/&#62;
+                &#60;field type=&#34;select&#34; style=&#34;list&#34; name=&#34;genre&#34; caption=&#34;Genre&#34; 
+                                     choices=&#34;schema-enum:Book_Type&#34;/&#62;
 
-                &#60;select-dialog name=&#34;org_search&#34; allow-debug=&#34;yes&#34; show-output-dests=&#34;no&#34;
-                    hide-readonly-hints=&#34;yes&#34; heading=&#34;Search Accounts&#34;&#62;
-                    &#60;field type=&#34;text&#34; query-field=&#34;org_code&#34;/&#62;
-                    ...
-                    ...
-                    &#60;select&#62;
-                        &#60;display field=&#34;org_id&#34;/&#62;
-                        &#60;display field=&#34;org_code&#34;/&#62;
-                        ...
-                        ...
-                        &#60;order-by field=&#34;form:sort_order&#34;/&#62;
+                &#60;select name=&#34;test&#34;&#62;
+                    &#60;display field=&#34;book_id&#34;/&#62;
+                    &#60;display field=&#34;name&#34;/&#62;
+                    &#60;display field=&#34;author&#34;/&#62;
+                    &#60;display field=&#34;genre_caption&#34;/&#62;
+                    &#60;display field=&#34;isbn&#34;/&#62;
 
-                        &#60;condition field=&#34;org_name&#34; allow-null=&#34;no&#34; comparison=&#34;starts-with&#34;
-                            value=&#34;form:org_name&#34;
-                            connector=&#34;and&#34; bind-expr=&#34;upper(?)&#34;/&#62;
-                        &#60;condition field=&#34;org_abbrev&#34; allow-null=&#34;no&#34; comparison=&#34;starts-with&#34;
-                            value=&#34;form:org_abbrev&#34;
-                            connector=&#34;and&#34; bind-expr=&#34;upper(?)&#34;/&#62;
-                        &#60;condition field=&#34;org_industry&#34; allow-null=&#34;no&#34; comparison=&#34;equals&#34;
-                            value=&#34;form:org_industry&#34;
-                            connector=&#34;and&#34;/&#62;
-                    &#60;/select&#62;
-                    &#60;director cancel-url=&#34;index.jsp&#34; submit-caption=&#34;Search&#34;/&#62;
-                &#60;/select-dialog&#62;
+                    &#60;condition field=&#34;book_id&#34; allow-null=&#34;no&#34; comparison=&#34;equals&#34; value=&#34;field:book_id&#34; 
+                               connector=&#34;and&#34;/&#62;
+                    &#60;condition field=&#34;name&#34; allow-null=&#34;no&#34; comparison=&#34;starts-with&#34; value=&#34;field:name&#34; 
+                               connector=&#34;and&#34;/&#62;
+                    &#60;condition field=&#34;author&#34; allow-null=&#34;no&#34; comparison=&#34;equals&#34; value=&#34;field:author&#34; 
+                               connector=&#34;and&#34;/&#62;
+                    &#60;condition field=&#34;genre_id&#34; allow-null=&#34;no&#34; comparison=&#34;equals&#34; value=&#34;field:genre&#34; 
+                               connector=&#34;and&#34;/&#62;
 
-            &#60;/query-defn&#62;
-
-                </programlisting></para>
+                    &#60;presentation&#62;
+                        &#60;panel name=&#34;report&#34;&#62;
+                            &#60;frame heading=&#34;static:Book Search Results&#34;/&#62;
+                            &#60;report&#62;
+                                &#60;column heading=&#34;ID&#34; format=&#34;plain&#34; redirect=&#34;page-id:/edit?id=${0}&#34;/&#62;
+                                &#60;column heading=&#34;Name&#34; /&#62;
+                                &#60;column heading=&#34;Author&#34;/&#62;
+                                &#60;column heading=&#34;Genre&#34;/&#62;
+                                &#60;column heading=&#34;ISBN&#34;/&#62;
+                            &#60;/report&#62;
+                        &#60;/panel&#62;
+                    &#60;/presentation&#62;
+                &#60;/select&#62;
+            &#60;/select-dialog&#62;
+        &#60;/presentation&#62;
+    &#60;/query-defn&#62;                </programlisting></para>
 
         <para>The dynamic query definition show above contains various XML
         tags which are summarized below: <variablelist><title>XML Tag
@@ -7323,39 +7316,33 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         class="attribute">field</sgmltag>:&#x00A0; The value for this
         attribute must correspond to one of the fields defined by the <sgmltag
         class="starttag">field</sgmltag>. For example, <programlisting
-        role="xml">
-
+        role="xml">&#60;query-defn&#62;
     &#60;field id=&#34;org_id&#34; caption=&#34;Account ID&#34; join=&#34;org&#34; column=&#34;org_id&#34;/&#62;
     ...
-    &#60;select-dialog ..&#62;
-        ...
-        ...
-        &#60;select&#62;
-            &#60;display field=&#34;org_id&#34;/&#62;
+        &#60;select-dialog ..&#62;
             ...
-        &#60;/select&#62;
-    &#60;/select-dialog&#62;
-
-                                    </programlisting></para></listitem></itemizedlist></para></listitem></varlistentry><varlistentry><term><sgmltag
+            ...
+            &#60;select&#62;
+                &#60;display field=&#34;org_id&#34;/&#62;
+                ...
+            &#60;/select&#62;
+        &#60;/select-dialog&#62;                                   </programlisting></para></listitem></itemizedlist></para></listitem></varlistentry><varlistentry><term><sgmltag
         class="starttag">order-by</sgmltag></term><listitem><para>Represents
         the sort criteria. The following attributes are available:
         <itemizedlist><listitem><para><sgmltag class="attribute">field</sgmltag>:&#x00A0;
         The value for this attribute must correspond to one of the fields
         defined by the <sgmltag class="starttag">field</sgmltag>. For example,
-        <programlisting role="xml">
-
+        <programlisting role="xml">&#60;query-defn&#62;
     &#60;field id=&#34;org_id&#34; caption=&#34;Account ID&#34; join=&#34;org&#34; column=&#34;org_id&#34;/&#62;
     ...
-    &#60;select-dialog ..&#62;
-        ...
-        ...
-        &#60;select&#62;
-            &#60;order-by field=&#34;org_id&#34;/&#62;
-            ...
-        &#60;/select&#62;
-    &#60;/select-dialog&#62;
-
-                                    </programlisting></para></listitem><listitem><para><sgmltag
+      &#60;select-dialog ..&#62;
+          ...
+          ...
+          &#60;select&#62;
+              &#60;order-by field=&#34;org_id&#34;/&#62;
+              ...
+          &#60;/select&#62;
+      &#60;/select-dialog&#62;                                    </programlisting></para></listitem><listitem><para><sgmltag
         class="attribute">descending</sgmltag>:&#x00A0; Indicates whether or
         not the sort order should be descending or ascending.</para></listitem></itemizedlist></para></listitem></varlistentry><varlistentry><term><sgmltag
         class="starttag">condition</sgmltag></term><listitem><para>Represents
@@ -7375,21 +7362,17 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         <sgmltag class="attvalue">is-defined</sgmltag>, <sgmltag
         class="attvalue">starts-with</sgmltag>, <sgmltag class="attvalue">ends-with</sgmltag>,
         and <sgmltag class="attvalue">not-equals</sgmltag>.</para></listitem></itemizedlist><para>For
-        example,</para><programlisting role="xml">
-
-        &#60;field id=&#34;org_id&#34; caption=&#34;Account ID&#34; join=&#34;org&#34; column=&#34;org_id&#34;/&#62;
-        ...
+        example,</para><programlisting role="xml">&#60;query-defn&#62;
+    &#60;field id=&#34;org_id&#34; caption=&#34;Account ID&#34; join=&#34;org&#34; column=&#34;org_id&#34;/&#62;
+    ...
         &#60;select-dialog ..&#62;
-        ...
-        ...
-        &#60;select&#62;
-        &#60;condition field=&#34;org_id&#34; allow-null=&#34;no&#34; comparison=&#34;starts-with&#34;
-        bind-expr=&#34;upper(?)&#34; value=&#34;form:customer_id&#34; connector=&#34;and&#34;/&#62;
-        ...
-        &#60;/select&#62;
-        &#60;/select-dialog&#62;
-
-                            </programlisting></listitem></varlistentry><varlistentry><term><sgmltag
+            ...
+            &#60;select&#62;
+                &#60;condition field=&#34;org_id&#34; allow-null=&#34;no&#34; comparison=&#34;starts-with&#34;
+                           bind-expr=&#34;upper(?)&#34; value=&#34;form:customer_id&#34; connector=&#34;and&#34;/&#62;
+            ...
+            &#60;/select&#62;
+        &#60;/select-dialog&#62;</programlisting></listitem></varlistentry><varlistentry><term><sgmltag
         class="starttag">director</sgmltag></term><listitem><para>Represents
         the dialog director object which can be used to change the text of the
         action buttons and their respective URLs. The following attributes are
@@ -7398,12 +7381,13 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         class="attribute">cancel-caption</sgmltag>:&#x00A0; Defines what the
         Cancel button should be called.</para></listitem><listitem><para><sgmltag
         class="attribute">submit-caption</sgmltag>:&#x00A0; Defines what
-        Submit button should be called.</para></listitem></itemizedlist>
-        <programlisting role="xml">
-
-    &#60;director submit-caption=&#34;Submit&#34; cancel-caption=&#34;Cancel&#34; cancel-url=&#34;/go&#34;/&#62;
-
-                            </programlisting></para></listitem></varlistentry></variablelist></para>
+        Submit button should be called.</para></listitem></itemizedlist><programlisting
+        role="xml">&#60;query-defn&#62;
+    &#60;field id=&#34;org_id&#34; caption=&#34;Account ID&#34; join=&#34;org&#34; column=&#34;org_id&#34;/&#62;
+    ...
+        &#60;select-dialog ..&#62;
+            ...
+            &#60;director submit-caption=&#34;Submit&#34; cancel-caption=&#34;Cancel&#34; cancel-url=&#34;/go&#34;/&#62;</programlisting></para></listitem></varlistentry></variablelist></para>
       </section>
 
       <section id="Testing-Dynamic-Query">
@@ -7442,11 +7426,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
           <para>The query definition dialog can be used in a JSP using the
           custom tag <emphasis role="bold">&#60;xaf:query-select-dialog&#62;</emphasis>.
           For example, the following entry displays a query definition dialog
-          inside a JSP: <programlisting role="xml">
-
-    &#60;xaf:query-select-dialog source=&#34;Order&#34; name=&#34;region_order_search&#34;/&#62;
-
-                </programlisting></para>
+          inside a JSP: <programlisting role="xml">TODO: documentation coming soon...   </programlisting></para>
         </section>
       </section>
 
@@ -7455,11 +7435,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
 
         <para>A dynamic query statement is generated from the query definition
         dialog and the resulting report can be configured in different ways.
-        <programlisting role="xml">
-
-    &#60;xaf:query-select-dialog source=&#34;Order&#34; name=&#34;region_order_search&#34;/&#62;
-
-                </programlisting></para>
+        <programlisting role="xml">TODO: documentation coming soon...  </programlisting></para>
       </section>
     </section>
 
@@ -7513,38 +7489,38 @@ public class Test1  extends com.netspective.sparx.form.Dialog
             <para>Allows for re-use of Schemas across applications and
             produces and maintains Schema documentation. XIF encourages the
             creation and re-use of a set of datatypes and tabletypes that
-            define standard behaviors for columns and tables. Datatypes and
-            tabletypes comprise the SchemaDoc database dictionary and can
-            easily be inherited and extended.</para>
+            define standard behaviors for columns and tables. Data types and
+            table types comprise the Axiom database dictionary and can easily
+            be inherited and extended.</para>
           </listitem>
 
           <listitem>
             <para>Almost all schema objects like tables, columns, data types,
-            etc. are managed in a database-independent XML SchemaDoc. The
-            entire schema is managed in XML as an XML document (a SchemaDoc)
-            and SQL is generated through XSLT style sheets (the templates).
-            The same SchemaDoc can be used to generate database-specific SQL
-            DDL allowing a single XML source schema to work in a variety of
-            SQL relational databases (like Oracle, SQL Server, MySQL, etc.).</para>
+            etc. are managed in a database-independent XML tags. The entire
+            schema is managed in XML as a part of your project file and SQL is
+            generated through XSLT style sheets (the templates). The same XML
+            tags can be used to generate database-specific SQL DDL allowing a
+            single XML source schema to work in a variety of SQL relational
+            databases (like Oracle, SQL Server, MySQL, etc.).</para>
           </listitem>
 
           <listitem>
-            <para>Database-specific SQL DDL is created by applying XSLT style
-            sheets to a SchemaDoc. Experienced DBAs are not required to create
-            consistent, high-quality SQL DDL during the design and
-            construction phases of an application. Database-dependent objects
-            like triggers and stored procedures are not managed by the XIF and
-            are created using existing means.</para>
+            <para>Database-specific SQL DDL is created by applying Database
+            Policies to the <sgmltag class="starttag">schema</sgmltag> tags.
+            Experienced DBAs are not required to create consistent,
+            high-quality SQL DDL during the design and construction phases of
+            an application. Database-dependent objects like triggers and
+            stored procedures are not managed by the XIF and are created using
+            existing means.</para>
           </listitem>
 
           <listitem>
             <para>Database-independent Java Object-relational classes are
-            created by applying XSLT style sheets to a SchemaDoc. This is a
-            called the Application DAL (Data Access Layer). XIF can
-            automatically generate a Java Object-relational DAL (Data Access
-            Layer) for an entire schema, automating the majority of SQL calls
-            by providing strongly-typed Java wrappers for all tables and
-            columns.</para>
+            created by using a Java source code generator. This is called the
+            Application DAL (Data Access Layer). Axiom can automatically
+            generate a Java Object-relational DAL (Data Access Layer) for an
+            entire schema, automating the majority of SQL calls by providing
+            strongly-typed Java wrappers for all tables and columns.</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -7553,105 +7529,93 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         <title>Creating Datatypes</title>
 
         <para>Datatypes should be considered <quote>column templates</quote>
-        that allow a programmer to specify a column type. They are completely
-        schema dependent but may be reused across applications. This means
-        that the basic templating system (SchemaDoc to XSLT generator) does
-        not have any <quote>built-in</quote> datatypes. Datatypes may be
+        that allow a programmer to specify a column type. Datatypes may be
         inherited from other datatypes, allowing better reuse and
         object-orientation in relational databases. They can be easily
         generated and maintains a database-independent data dictionary. The
-        XML tag for creating datatypes is <sgmltag class="starttag">datatype</sgmltag>.</para>
-
-        <para>The database schema datatypes are created in one central
-        location which is application specific, <filename>Database/schema-src/datatypes.xml</filename>.
-        The Axiom DTD is located in <filename>resources/images/dtd/schema-markup.dtd</filename>
-        and it needs to be referenced to create datatypes. The following is a
-        sample header for <filename>Database/schema-src/datatypes.xml</filename>:
-        <programlisting role="xml">
-
-    &#60;?xml version=&#34;1.0&#34;?&#62;
-    &#60;!DOCTYPE schema SYSTEM &#34;D:/projects/Framework/web-shared/resources/images/dtd/schema-markup.dtd&#34;&#62;
-
-            </programlisting> The data types can be defined within the
-        <sgmltag class="element">schema</sgmltag> XML tag. The following is an
-        example of several common data types defined for a relational
-        database: <programlisting role="xml">
-
-    &#60;schema name=&#34;generic-datatypes&#34;&#62;
-        &#60;datatype name=&#34;text&#34; test=&#34;1&#34;&#62;
-            &#60;sqldefn&#62;varchar2(%size%)&#60;/sqldefn&#62;
+        data types are be defined within <sgmltag>the</sgmltag> <sgmltag
+        class="starttag">schema</sgmltag> XML tag. The following is an example
+        of several common data types defined for a relational database (these
+        are complex examples because they are samples of built-in data-types,
+        yours may be much simpler): <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;schema name=&#34;mySchema&#34;&#62;
+        &#60;data-type name=&#34;text&#34; class=&#34;com.netspective.axiom.schema.column.type.TextColumn&#34;&#62;
             &#60;size&#62;32&#60;/size&#62;
-        &#60;/datatype&#62;
+            &#60;sql-ddl&#62;
+                &#60;define dbms=&#34;ansi&#34; xdm:replace-template-expressions=&#34;no&#34;&#62;
+                     varchar(${column.getSize()})
+                &#60;/define&#62;
+            &#60;/sql-ddl&#62;
+        &#60;/data-type&#62;
 
-        &#60;datatype name=&#34;float&#34;&#62;
-            &#60;sqldefn&#62;float&#60;/sqldefn&#62;
-        &#60;/datatype&#62;
-
-        &#60;datatype name=&#34;number&#34;&#62;
-            &#60;sqldefn&#62;number(%size%)&#60;/sqldefn&#62;
-            &#60;size&#62;3&#60;/size&#62;
-        &#60;/datatype&#62;
-
-        &#60;datatype name=&#34;integer&#34;&#62;
-            &#60;sqldefn&#62;integer&#60;/sqldefn&#62;
-        &#60;/datatype&#62;
-
-        &#60;datatype name=&#34;date&#34;&#62;
-            &#60;sqldefn&#62;date&#60;/sqldefn&#62;
-        &#60;/datatype&#62;
-
-        &#60;datatype name=&#34;duration&#34;&#62;
-            &#60;composite&#62;
-                &#60;column name=&#34;$name$_begin_date&#34; type=&#34;date&#34;/&#62;
-                &#60;column name=&#34;$name$_end_date&#34; type=&#34;date&#34;/&#62;
-            &#60;/composite&#62;
-        &#60;/datatype&#62;
-    &#60;/schema&#62;
-
-            </programlisting> Datatypes provide their SQL DDL using the
-        <sgmltag class="element">sqldefn</sgmltag> tag. Datatypes are usually
-        simple types like <quote>text</quote>, <quote>integer</quote>, or
-        <quote>float</quote>. More complex types like <quote>duration</quote>
+        &#60;data-type name=&#34;float&#34; class=&#34;com.netspective.axiom.schema.column.type.FloatColumn&#34;&#62;
+            &#60;sql-ddl&#62;
+                &#60;define dbms=&#34;ansi&#34; xdm:replace-template-expressions=&#34;no&#34;&#62;
+                     float
+                 &#60;/define&#62;
+                &#60;define dbms=&#34;oracle&#34; xdm:replace-template-expressions=&#34;no&#34;&#62;
+                     number(20,6)
+                &#60;/define&#62;
+            &#60;/sql-ddl&#62;
+        &#60;/data-type&#62;           </programlisting>Datatypes provide
+        their SQL DDL using the <sgmltag class="starttag">define</sgmltag> tag
+        under <sgmltag class="starttag">sql-ddl</sgmltag> tag. Datatypes are
+        usually simple types like <quote>text</quote>, <quote>integer</quote>,
+        or <quote>float</quote>. More complex types like <quote>duration</quote>
         can be created by using the <sgmltag class="element">composite</sgmltag>
         tag allowing a single datatype to automatically generate multiple
         columns in tables.</para>
+
+        <note>
+          <para>There are many built-in data types that serve as building
+          blocks and examples for how you can create your own data types. The
+          built-in data types can also be used as-is for the majority of
+          cases. To include the built-in data types into your schema you can
+          use the following <sgmltag class="starttag">xdm:include</sgmltag>
+          instruction. Once you have created a schema tag and provided the
+          xdm:include instruction, you may view all of the default data types
+          in Console&#39;s <menuchoice><guimenu>XDM Tag Referecne</guimenu><guimenu>Template
+          Catalog</guimenu></menuchoice> page.</para>
+
+          <programlisting>&#60;project&#62;
+    ....
+    &#60;schema name=&#34;db&#34;&#62;
+        <emphasis role="bold">&#60;xdm:include resource=&#34;com/netspective/axiom/conf/schema.xml&#34;/&#62;</emphasis>
+
+        ... the rest of your schema declarations go here ...</programlisting>
+        </note>
       </section>
 
       <section>
         <title>Creating Table Types</title>
 
-        <para>Tabletypes should be considered <quote>table templates</quote>
-        that allow a programmer to specify a table type. They are completely
-        schema dependent but may be reused across applications. This means
-        that the basic templating system (SchemaDoc to XSLT generator) does
-        not have any <quote>built-in</quote> tabletypes. Tabletypes may be
-        inherited from other tabletypes, allowing better reuse and
-        object-orientation in relational databases. They can be created using
-        the <sgmltag class="element">tabletype</sgmltag> tag. The following is
-        an example of defining tables in <filename>Database/schema-src/tabletypes.xml</filename>:
-        <programlisting role="xml">
+        <para>Table types should be considered <quote>table templates</quote>
+        that allow a programmer to specify a table type. Table types may be
+        inherited from other table types, allowing better reuse and
+        object-orientation in relational databases. <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;schema name=&#34;mySchema&#34;&#62;
+        ....
+        &#60;table-type name=&#34;Entity&#34;&#62;
+            &#60;column name=&#34;${owner.name.toLowerCase()}_id&#34; type=&#34;auto-inc&#34; 
+                    primary-key=&#34;yes&#34; descr=&#34;Unique identifier for ${owner.name}&#34;/&#62;
+        &#60;/table-type&#62;
 
-    &#60;?xml version=&#34;1.0&#34;?&#62;
-    &#60;!DOCTYPE schema SYSTEM &#34;D:/projects/Framework/web-shared/resources/images/dtd/schema-markup.dtd&#34;&#62;
-
-    &#60;schema name=&#34;tabletypes&#34;&#62;
-        &#60;tabletype name=&#34;Default&#34;&#62;
-            &#60;column name=&#34;cr_stamp&#34; type=&#34;stamp&#34; required=&#34;dbms&#34; default=&#34;sysdate&#34;/&#62;
-            &#60;column name=&#34;cr_person_id&#34; lookupref=&#34;Person.person_id&#34;/&#62;
-            &#60;column name=&#34;cr_org_id&#34; lookupref=&#34;Org.org_id&#34;/&#62;
-        &#60;/tabletype&#62;
-    &#60;/schema&#62;
-
-            </programlisting> The <sgmltag class="element">column</sgmltag>
-        element in the <sgmltag class="element">tabletype</sgmltag> elements
+        &#60;table-type name=&#34;Person&#34; type=&#34;Entity&#34;&#62;
+            &#60;column name=&#34;first_name&#34; type=&#34;text&#34; size=&#34;64&#34; descr=&#34;The person&#39;s first name&#34;/&#62;
+            &#60;column name=&#34;last_name&#34; type=&#34;text&#34; size=&#34;64&#34; descr=&#34;The person&#39;s last name&#34;/&#62;
+        &#60;/table-type&#62;</programlisting>The <sgmltag class="starttag">column</sgmltag>
+        element in the <sgmltag class="starttag">table-type</sgmltag> elements
         creates actual columns derived from a particular <sgmltag
-        class="element">datatype</sgmltag>. The <sgmltag class="element">column</sgmltag>
+        class="starttag">data-type</sgmltag>. The <sgmltag class="starttag">column</sgmltag>
         elements will automatically maintain all type definitions and links to
         foreign keys automatically. The columns are arguably the most
-        important definitions in the entire SchemaDoc. They take abstract
-        representations of datatypes and instantiate actual columns in tables.
-        The following are attributes for the <sgmltag class="element">column</sgmltag>
-        element: <variablelist><varlistentry><term><sgmltag class="attribute">name</sgmltag></term><listitem><para>The
+        important definitions in the entire <sgmltag class="starttag">schema</sgmltag>
+        tag hierarchy. They take abstract representations of data types and
+        instantiate actual columns in tables. The following are attributes for
+        the <sgmltag class="starttag">column</sgmltag> element:
+        <variablelist><varlistentry><term><sgmltag class="attribute">name</sgmltag></term><listitem><para>The
         name of the column. Each column is usually named as a singular noun in
         all lower case with each word inside a name separated by underscores.
         For instance, person_id is a good column name but personid is harder
@@ -7716,38 +7680,48 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         you create a table based on a table type, that table will include all
         the columns of the table type as well as its own. Each <sgmltag
         class="element">table</sgmltag> can be based on one or more table
-        types as shown in the following example: <programlisting role="xml">
+        types as shown in the following example: <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;schema name=&#34;db&#34;&#62;
+        &#60;xdm:include resource=&#34;com/netspective/axiom/conf/schema.xml&#34;/&#62;
 
-    &#60;table name=&#34;Person&#34; abbrev=&#34;Per&#34; type=&#34;Default&#34;&#62;
-        &#60;description&#62;Any person (client, staff member, etc.)&#60;/description&#62;
-        &#60;column name=&#34;person_id&#34; primarykey=&#34;yes&#34; type=&#34;autoinc&#34;/&#62;
-        &#60;column name=&#34;name_prefix&#34; type=&#34;text&#34; size=&#34;16&#34;/&#62;
-        &#60;column name=&#34;name_first&#34; type=&#34;text&#34; required=&#34;yes&#34; size=&#34;32&#34;/&#62;
-        &#60;column name=&#34;name_middle&#34; type=&#34;text&#34; size=&#34;32&#34;/&#62;
-        &#60;column name=&#34;name_last&#34; type=&#34;text&#34; required=&#34;yes&#34; size=&#34;32&#34;/&#62;
-        &#60;column name=&#34;name_suffix&#34; type=&#34;text&#34; size=&#34;16&#34;/&#62;
-        &#60;column name=&#34;short_name&#34; type=&#34;text&#34; required=&#34;dbms&#34; size=&#34;42&#34;/&#62;
-        &#60;column name=&#34;simple_name&#34; type=&#34;text&#34; required=&#34;dbms&#34; size=&#34;96&#34;/&#62;
-        &#60;column name=&#34;complete_name&#34; type=&#34;text&#34; required=&#34;dbms&#34; size=&#34;128&#34;/&#62;
-        &#60;column name=&#34;short_sortable_name&#34; type=&#34;text&#34; required=&#34;dbms&#34; size=&#34;42&#34;/&#62;
-        &#60;column name=&#34;complete_sortable_name&#34; type=&#34;text&#34; required=&#34;dbms&#34; size=&#34;128&#34;/&#62;
-        &#60;column name=&#34;ssn&#34; indexed=&#34;yes&#34; type=&#34;text&#34; size=&#34;11&#34;/&#62;
-        &#60;column name=&#34;gender&#34; lookupref=&#34;Gender&#34; default=&#34;0&#34;/&#62;
-        &#60;column name=&#34;marital_status&#34; lookupref=&#34;Marital_Status&#34; default=&#34;0&#34;/&#62;
-        &#60;column name=&#34;date_of_birth&#34; type=&#34;date&#34;/&#62;
-        &#60;column name=&#34;age&#34; type=&#34;integer&#34;/&#62;
-    &#60;/table&#62;
+        &#60;table-type name=&#34;Entity&#34;&#62;
+            &#60;column name=&#34;${owner.name.toLowerCase()}_id&#34; type=&#34;auto-inc&#34; 
+                    primary-key=&#34;yes&#34; descr=&#34;Unique identifier for ${owner.name}&#34;/&#62;
+        &#60;/table-type&#62;
 
-            </programlisting> Using table types, one can quickly and
-        consistently create similar tables that are automatically updated
-        whenever the tabletypes change. The following attributes are allowed
-        for the <sgmltag class="element">table</sgmltag> element:
-        <variablelist><varlistentry><term><sgmltag class="attribute">name</sgmltag></term><listitem><para>the
-        name of the table</para></listitem></varlistentry><varlistentry><term><sgmltag
+        &#60;table-type name=&#34;Person&#34; type=&#34;Entity&#34;&#62;
+            &#60;column name=&#34;first_name&#34; type=&#34;text&#34; size=&#34;64&#34; descr=&#34;The person&#39;s first name&#34;/&#62;
+            &#60;column name=&#34;last_name&#34; type=&#34;text&#34; size=&#34;64&#34; descr=&#34;The person&#39;s last name&#34;/&#62;
+        &#60;/table-type&#62;
+
+        <emphasis role="bold">&#60;table name=&#34;Asset&#34; abbrev=&#34;asset&#34; type=&#34;Entity,Presentation&#34;&#62;</emphasis>
+            &#60;column name=&#34;type&#34; lookup-ref=&#34;Asset_Type&#34; required=&#34;yes&#34;/&#62;
+            &#60;column name=&#34;name&#34; type=&#34;text&#34; size=&#34;64&#34; required=&#34;yes&#34;/&#62;
+            &#60;column name=&#34;quantity&#34; type=&#34;integer&#34; required=&#34;yes&#34;/&#62;
+        &#60;/table&#62;
+
+        <emphasis role="bold">&#60;table name=&#34;Borrower&#34; type=&#34;Person,Presentation&#34;&#62;</emphasis>
+            &#60;!-- no columns are being added, it&#39;s just first name and last name --&#62;
+        &#60;/table&#62;
+
+        &#60;table name=&#34;Asset_Loan&#34; abbrev=&#34;asloan&#34; type=&#34;Entity,Presentation&#34;&#62;
+            &#60;column name=&#34;asset_id&#34; parent-ref=&#34;Asset.asset_id&#34;/&#62;
+            &#60;column name=&#34;borrower_id&#34; lookup-ref=&#34;Borrower.borrower_id&#34;/&#62;
+            &#60;column name=&#34;loan_type&#34; lookup-ref=&#34;Loan_Type&#34;/&#62;
+            &#60;column name=&#34;loan&#34; type=&#34;duration&#34; required=&#34;yes&#34;/&#62;
+            &#60;column name=&#34;returned&#34; type=&#34;boolean&#34;/&#62;
+        &#60;/table&#62;
+</programlisting> Using table types, one can quickly and consistently create
+        similar tables that are automatically updated whenever the tabletypes
+        change. The following attributes are allowed for the <sgmltag
+        class="element">table</sgmltag> element: <variablelist><varlistentry><term><sgmltag
+        class="attribute">name</sgmltag></term><listitem><para>the name of the
+        table</para></listitem></varlistentry><varlistentry><term><sgmltag
         class="attribute">abbrev</sgmltag></term><listitem><para>should be
         kept to 3 or 4 characters to allow constraint names and indexe names
         to be created properly</para></listitem></varlistentry><varlistentry><term><sgmltag
-        class="attribute">type</sgmltag></term><listitem><para>the tabletype
+        class="attribute">type</sgmltag></term><listitem><para>the table-type
         of the table</para></listitem></varlistentry></variablelist></para>
       </section>
 
@@ -7793,180 +7767,14 @@ public class Test1  extends com.netspective.sparx.form.Dialog
       <section>
         <title>Generating SQL DDL File</title>
 
-        <para>Using Console, a database-independent SchemaDoc XML file becomes
-        a database-dependent SQL DDL file. Regenerating SQL DDL is the
-        preferred method to modifying DDL during the design and construction
-        phases (pre-production) of a web application. In post-production
-        usage, the entire SQL is regenerated for changed tables and
-        relationships but a experienced DBA should be involved for the
-        alteration of live schemas. The main XML file, <filename>Database/schema-src/schema.xml</filename>,
-        which is used to generate the SQL DDL contains all the different
-        component XML files as shown in the example below: <programlisting
-        role="xml">
-
-    &#60;?xml version=&#34;1.0&#34;?&#62;
-    &#60;!DOCTYPE schema SYSTEM &#34;D:/projects/Framework/web-shared/resources/images/dtd/schema-markup.dtd&#34;&#62;
-
-    &#60;schema name=&#34;db&#34;&#62;
-
-        &#60;include file=&#34;datatypes.xml&#34;/&#62;
-        &#60;include file=&#34;tabletypes.xml&#34;/&#62;
-        ....
-        ...
-    &#60;/schema&#62;
-
-            </programlisting> All the schema definitions can be viewed by
-        going to Console and selecting the <menuchoice><guimenu>Database</guimenu><guimenuitem>Schema
-        (XML)</guimenuitem></menuchoice> menu item. A sample screenshot of the
-        page is as shown below:</para>
-
-        <para><mediaobject><imageobject><imagedata
-        fileref="./resources/images/db-schema/ace-schema.jpg" format="JPEG" /></imageobject></mediaobject></para>
-
-        <para>The SQL DLL file is generated by going to the
-        <menuchoice><guimenu>Database</guimenu><guimenuitem>Generate DDL</guimenuitem></menuchoice>
-        menu item in Console and selecting the location of the physical file
-        as shown below:</para>
-
-        <para><mediaobject><imageobject><imagedata
-        fileref="./resources/images/db-schema/ace-ddl.jpg" format="JPEG" /></imageobject></mediaobject></para>
+        <para>Using Console, database-independent XML tags become a
+        database-dependent SQL DDL file. Regenerating SQL DDL is the preferred
+        method to modifying DDL during the design and construction phases
+        (pre-production) of a web application. In post-production usage, the
+        entire SQL is regenerated for changed tables and relationships but a
+        experienced DBA should be involved for the alteration of live schemas.
+        </para>
       </section>
-    </section>
-
-    <section>
-      <title>Connection Providers</title>
-
-      <para>TODO: documentation coming soon...</para>
-    </section>
-
-    <section>
-      <title>Database Policies</title>
-
-      <para>TODO: documentation coming soon...</para>
-    </section>
-  </chapter>
-
-  <chapter>
-    <title>Creating the Web Application</title>
-
-    <section id="WebApp">
-      <title>Overview</title>
-
-      <para>A Web application is a collection of HTML/XML documents, Web
-      components (servlets and JSP pages), and other resources such as images
-      and scripts in a directory structure. Sparx libraries support using
-      different methodologies based on different building blocks such as JSP
-      pages, custom tags, JavaBeans components, and servlets to produce a web
-      application that delivers dynamically generated content. Based on
-      application requirements, developers can pursue a design which is purely
-      servlet based or they can pursue a design which is a combination of JSPs
-      and servlets (also known as the <quote>Model 2</quote> design). Sparx
-      also provides a more XML-centric approach where most business logic can
-      be defined with the forms themselves so that the JSPs can purely
-      concentrate on the presentation.</para>
-
-      <para>This chapter describes the different approaches described above so
-      that developers can choose dependent upon application specific
-      requirements. The different approaches have their own benefits and
-      failings and it is up to the developer to decide which is the best way
-      to use to create and deliver a web application.</para>
-    </section>
-
-    <section id="Servlet">
-      <title>Servlets</title>
-
-      <para>Although JSP pages can be used for most presentation purposes,
-      there are some circumstances such as low-level application functions
-      that don&#39;t require frequent modification where servlets are more
-      appropriate. Thus Sparx does not restrict the use of Servlets and fully
-      supports both servlets and JSPs. Following the common web application
-      atchitecture, all custom servlet Java classes must exist under <filename
-      class="directory">web-app/Site/WEB-INF/classes</filename> (if JAR files
-      are used, they must exist under <filename class="directory">web-app/Site/WEB-INF/lib</filename>
-      directory). Servlets are named and mapped in <filename>Site/WEB-INF/web.xml</filename>
-      as shown below: <programlisting role="xml">
-
-    &#60;servlet&#62;
-        &#60;servlet-name&#62;Navigator&#60;/servlet-name&#62;
-        &#60;servlet-class&#62;com.netspective.sparx.navigate.NavigateFileSystemServlet&#60;/servlet-class&#62;
-    &#60;/servlet&#62;
-    &#60;servlet-mapping&#62;
-        &#60;servlet-name&#62;Navigator&#60;/servlet-name&#62;
-        &#60;url-pattern&#62;/navigate/*&#60;/url-pattern&#62;
-    &#60;/servlet-mapping&#62;
-
-        </programlisting> The above example is a built-in navigation servlet
-      provided by Sparx and can be used to display directory listings.</para>
-
-      <para>Sparx provides an interface called <classname>com.netspective.sparx.page.ServletPage</classname>
-      and an implementing class called <classname>com.netspective.sparx.page.AbstractServletPage</classname>
-      to create web pages purely in Java. The <classname>AbstractServletPage</classname>
-      class should be extended since it does not define any behavior (the
-      methods are empty). For example, Console uses a class called
-      <classname>com.netspective.sparx.ace.AceServletPage</classname> which
-      overwrites the methods defined in <classname>AbstractServletPage</classname>
-      such as <methodname>handlePageHeader</methodname> and
-      <methodname>handlePageMetaData</methodname>. It also defines other
-      methods such as <methodname>transform</methodname> which can be used by
-      other subclasses. Developers should create classes extending
-      <classname>com.netspective.sparx.page.AbstractServletPage</classname>
-      and then overwrite the various methods to define the functionality of
-      each page. The following is an example of the dialogs listing page in
-      Console: <example><title><classname>com.netspective.sparx.ace.AppDialogsPage
-      </classname> class</title><para><programlisting role="java">
-
-    public class AppDialogsPage extends AceServletPage
-    {
-        ...
-
-        public void handlePageBody(PageContext pc) throws ServletException, IOException
-        {
-            ServletContext context = pc.getServletContext();
-            DialogManager manager = DialogManagerFactory.getManager(context);
-            manager.addMetaInfoOptions();
-
-            String testItem = getTestCommandItem(pc);
-            if(testItem != null)
-            {
-                ...
-            }
-            else
-            {
-                ...
-            }
-        }
-    }
-
-            </programlisting> The example above describes how a web page can
-      be created by overwriting the various methods available in
-      <classname>com.netspective.sparx.ace.AceServletPage</classname> which
-      extends the <classname>com.netspective.sparx.page.AbstractServletPage</classname>.
-      The <classname>com.netspective.sparx.ace.AceServletPage</classname>
-      defines the functionality common to all pages in Console and the
-      <classname>AppDialogsPage</classname> base class extending this class
-      can define content specific to the page itself.</para></example></para>
-
-      <para>All pages created using <classname>com.netspective.sparx.page.AbstractServletPage</classname>
-      as a super class must be registered so that they can be navigated to
-      through a servlet. Sparx provides a servlet class called
-      <classname>com.netspective.sparx.page.PageControllerServlet</classname>.
-      This servlet class contains a method called <methodname>registerPages</methodname>
-      which is used to register the Java defined web pages. For example,
-      Console registers its pages through a servlet called
-      <classname>com.netspective.sparx.ace.AppComponentsExplorerServlet</classname>
-      and the servlet is registered in <filename>web.xml</filename>:
-      <programlisting role="xml">
-
-    &#60;servlet&#62;
-        &#60;servlet-name&#62;AppComponentsExplorer&#60;/servlet-name&#62;
-        &#60;servlet-class&#62;com.netspective.sparx.ace.AppComponentsExplorerServlet&#60;/servlet-class&#62;
-    &#60;/servlet&#62;
-    &#60;servlet-mapping&#62;
-        &#60;servlet-name&#62;AppComponentsExplorer&#60;/servlet-name&#62;
-        &#60;url-pattern&#62;/ace/*&#60;/url-pattern&#62;
-    &#60;/servlet-mapping&#62;
-
-        </programlisting></para>
     </section>
   </chapter>
 </book>
