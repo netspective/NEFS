@@ -16,6 +16,7 @@
 
 .dialog-input-required              { color: #000; font-family: Tahoma; background: white url(../images/panel/input/content-required.gif) no-repeat right top; padding-left: 3px; border: solid 1px #009; width: auto }
 .dialog-input          { color: #000; font-family: Tahoma; padding-left: 3px; border: solid 1px #009; width: auto }
+.dialog-input-readonly { background: #dcdcdc }
 .dialog-select         { color: black; font-family: Tahoma; border: solid 1px #009 }
 
 .dialog-fields-hint-table { padding-left: 7px; width: auto; height: 12px }
