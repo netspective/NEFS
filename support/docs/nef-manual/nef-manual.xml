@@ -1,13 +1,15 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
-"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+<!ENTITY include_nef_faq_non_tech SYSTEM "../nef-faq-non-tech-section.xml">
+]>
 <book>
   <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
 
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-10-27 18:38:46 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-10-28 16:56:48 $)</releaseinfo>
 
     <authorgroup>
       <author>
@@ -71,68 +73,353 @@
     accelerate and standardize.</para>
 
     <section>
-      <title>High-level Features</title>
+      <title id="nef-features">Features</title>
 
       <para>The <acronym>NEF</acronym> has hundreds of features that support
       the development of sophisticated applications with exceptional ease.
       Some of the important ones include:</para>
 
-      <itemizedlist>
-        <listitem>
-          <para>Instantly create sophisticated mission- and safety-critical
-          web-based applications that run on <emphasis>any application server.</emphasis></para>
-        </listitem>
+      <section>
+        <title>General Features</title>
 
-        <listitem>
-          <para>Declare components for the presentation and data management
-          layers in XML and have NEF assemble up to 80% of your application
-          for you with little or no Java code. All the Java code you write
-          will be related to application functionality, not user interface
-          (HTML) generation or database access.</para>
-        </listitem>
+        <itemizedlist>
+          <listitem>
+            <para>Instantly create sophisticated mission- and safety-critical
+            web-based applications that run on <emphasis>any application
+            server.</emphasis></para>
+          </listitem>
 
-        <listitem>
-          <para>Write all your business logic using EJBs, rules processing
-          systems, or plain Java objects and connect them to NEF components
-          like dialogs, fields, and schemas easily.</para>
-        </listitem>
+          <listitem>
+            <para>Declare components for the presentation and data management
+            layers in XML and have NEF assemble up to 80% of your application
+            for you with little or no Java code. All the Java code you write
+            will be related to application functionality, not user interface
+            (HTML) generation or database access.</para>
+          </listitem>
 
-        <listitem>
-          <para>Use the automatically-generated web services that change as
-          the rest of your application changes. As you add features, tables,
-          forms, and functionality the web services will remain in sync.</para>
-        </listitem>
+          <listitem>
+            <para>Write all your business logic using EJBs, rules processing
+            systems, or plain Java objects and connect them to NEF components
+            like dialogs, fields, and schemas easily.</para>
+          </listitem>
 
-        <listitem>
-          <para>Declare your user interface forms, fields, validation rules,
-          conditional logic, and security policies using simple XML tags and
-          get fully functional theme- and skin-based HTML output
-          automatically.</para>
-        </listitem>
+          <listitem>
+            <para>Use the automatically-generated web services that change as
+            the rest of your application changes. As you add features, tables,
+            forms, and functionality the web services will remain in sync.</para>
+          </listitem>
 
-        <listitem>
-          <para>Declare your database structures and relationships using
-          simple XML tags and get fully functional SQL DDL, SQL DML, HTML
-          documentation and XML import/export capabilities automatically.</para>
-        </listitem>
+          <listitem>
+            <para>Declare your user interface forms, fields, validation rules,
+            conditional logic, and security policies using simple XML tags and
+            get fully functional theme- and skin-based HTML output
+            automatically.</para>
+          </listitem>
 
-        <listitem>
-          <para>Declare your database SQL and parameters using simple XML tags
-          and get fully functional reports and synchronized and validated
-          input capabilities automatically.</para>
-        </listitem>
+          <listitem>
+            <para>Declare your database structures and relationships using
+            simple XML tags and get fully functional SQL DDL, SQL DML, HTML
+            documentation and XML import/export capabilities automatically.</para>
+          </listitem>
 
-        <listitem>
-          <para>Automatically produce programmer artifacts like HTML
-          documentation, unit tests, functional specifications, and
-          requirements traceability maps just by using XML tags and the NEF
-          API.</para>
-        </listitem>
-      </itemizedlist>
+          <listitem>
+            <para>Declare your database SQL and parameters using simple XML
+            tags and get fully functional reports and synchronized and
+            validated input capabilities automatically.</para>
+          </listitem>
+
+          <listitem>
+            <para>Automatically produce programmer artifacts like HTML
+            documentation, unit tests, functional specifications, and
+            requirements traceability maps just by using XML tags and the NEF
+            API.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section>
+        <title>Feature List</title>
+
+        <section>
+          <title>Global</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>Works with any IDE, editor, studio apps</para>
+            </listitem>
+
+            <listitem>
+              <para>Works with but does not require EJBs</para>
+            </listitem>
+
+            <listitem>
+              <para>Native J2EE API always available</para>
+            </listitem>
+
+            <listitem>
+              <para>Low learning curve</para>
+            </listitem>
+
+            <listitem>
+              <para>Works well with other frameworks</para>
+            </listitem>
+
+            <listitem>
+              <para>Source code available</para>
+            </listitem>
+
+            <listitem>
+              <para>Ability to version-control components and apps</para>
+            </listitem>
+
+            <listitem>
+              <para>Operating system independence</para>
+            </listitem>
+
+            <listitem>
+              <para>App-server independence</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+
+        <section>
+          <title>Architecture</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>J2EE Design/Architecture Patterns</para>
+            </listitem>
+
+            <listitem>
+              <para>Application Integration Patterns</para>
+            </listitem>
+
+            <listitem>
+              <para>Application Functionality Patterns</para>
+            </listitem>
+
+            <listitem>
+              <para>Web-services</para>
+            </listitem>
+
+            <listitem>
+              <para>Externalization of Resources</para>
+            </listitem>
+
+            <listitem>
+              <para>Executable Specifications</para>
+            </listitem>
+
+            <listitem>
+              <para>Logging and Performance Stats</para>
+            </listitem>
+
+            <listitem>
+              <para>Business Rules Repository</para>
+            </listitem>
+
+            <listitem>
+              <para>Centralized Configuration Parameters</para>
+            </listitem>
+
+            <listitem>
+              <para>Allows production, testing, development modes</para>
+            </listitem>
+
+            <listitem>
+              <para>Code Generation</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+
+        <section>
+          <title>Process &#38; Methodology</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>Administration Console</para>
+            </listitem>
+
+            <listitem>
+              <para>Unit Testing of Common Components</para>
+            </listitem>
+
+            <listitem>
+              <para>Unit Testing of Custom Components</para>
+            </listitem>
+
+            <listitem>
+              <para>Integration Testing</para>
+            </listitem>
+
+            <listitem>
+              <para>System Testing</para>
+            </listitem>
+
+            <listitem>
+              <para>Functional Specifications</para>
+            </listitem>
+
+            <listitem>
+              <para>Metrics (Function Points, SLOC)</para>
+            </listitem>
+
+            <listitem>
+              <para>Implementation documentation</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+
+        <section>
+          <title>Presentation Layer</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>Forms and Controls</para>
+            </listitem>
+
+            <listitem>
+              <para>Client-side Validation</para>
+            </listitem>
+
+            <listitem>
+              <para>Server-side Validation</para>
+            </listitem>
+
+            <listitem>
+              <para>Template Language</para>
+            </listitem>
+
+            <listitem>
+              <para>Automatic Form Reload on Error</para>
+            </listitem>
+
+            <listitem>
+              <para>Dialog Data State Machine</para>
+            </listitem>
+
+            <listitem>
+              <para>Complete HTML generation</para>
+            </listitem>
+
+            <listitem>
+              <para>Data Binding to Presentation Layer</para>
+            </listitem>
+
+            <listitem>
+              <para>Reports</para>
+            </listitem>
+
+            <listitem>
+              <para>Navigation and Workflow</para>
+            </listitem>
+
+            <listitem>
+              <para>Wireless, PDA, Browser Support</para>
+            </listitem>
+
+            <listitem>
+              <para>Multiple skins support (with no code changes)</para>
+            </listitem>
+
+            <listitem>
+              <para>Presentation Object Performance Statistics</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+
+        <section>
+          <title>Data Management Layer</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>Schema Management</para>
+            </listitem>
+
+            <listitem>
+              <para>Lightweight Data Access Objects</para>
+            </listitem>
+
+            <listitem>
+              <para>Object-relational mapping and persistence</para>
+            </listitem>
+
+            <listitem>
+              <para>Connection Pooling</para>
+            </listitem>
+
+            <listitem>
+              <para>SQL DML Generation</para>
+            </listitem>
+
+            <listitem>
+              <para>SQL DDL Generation</para>
+            </listitem>
+
+            <listitem>
+              <para>Static SQL Queries Library</para>
+            </listitem>
+
+            <listitem>
+              <para>Dynamic SQL Queries Library</para>
+            </listitem>
+
+            <listitem>
+              <para>HTML Design Documentation</para>
+            </listitem>
+
+            <listitem>
+              <para>Dynamic Data sources</para>
+            </listitem>
+
+            <listitem>
+              <para>SQL performance statistics</para>
+            </listitem>
+
+            <listitem>
+              <para>Transaction Management and Isolation</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+
+        <section>
+          <title>Security and Personalization Layer</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>User Login Form</para>
+            </listitem>
+
+            <listitem>
+              <para>User Management Objects</para>
+            </listitem>
+
+            <listitem>
+              <para>Access Control Lists</para>
+            </listitem>
+
+            <listitem>
+              <para>Permissions Management</para>
+            </listitem>
+
+            <listitem>
+              <para>Roles Management</para>
+            </listitem>
+
+            <listitem>
+              <para>Forms/Controls Conditional Security</para>
+            </listitem>
+
+            <listitem>
+              <para>Reports Conditional Security</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+      </section>
     </section>
 
     <section>
-      <title>Major Benefits</title>
+      <title>Benefits</title>
 
       <para>The NEF features provide the following benefits to technical
       managers and engineers of all levels:</para>
@@ -205,6 +492,190 @@
     </section>
 
     <section>
+      <title>Alternative Frameworks</title>
+
+      <para>Why use the Netspective Frameworks Suite instead of creating your
+      own, using commercial embedded, commercial standalone, or other
+      open-source frameworks. Because NEF is a comprehensive and easy to use
+      J2EE architectural framework solution (whereas other products are only
+      partial solutions).</para>
+
+      <section>
+        <title>Why not create your own custom framework?</title>
+
+        <para>Due to the lack of robust commercial offerings, today most
+        enterprises choose to build their own frameworks and platforms. Your
+        In-house and home-grown solutions tend to have a great deal of
+        momentum behind them because they may be favored internally by the
+        experienced and senior engineers that construct them. However,
+        home-grown solutions exhibit the following shortcomings:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>They often have limited features (to compare, see <xref
+            linkend="nef-features" />)</para>
+          </listitem>
+
+          <listitem>
+            <para>They are usually poorly documented.</para>
+          </listitem>
+
+          <listitem>
+            <para>They are notoriously difficult to extend because they are
+            usually designed for special-purpose jobs.</para>
+          </listitem>
+
+          <listitem>
+            <para>They are usually expensive to create and maintain and
+            require engineering attention which is taken away from business
+            requirements. Programmers often end up spending time on
+            infrastructure issues instead of issues that directly affect
+            end-users.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>With its unique architecture, NEF can supplement in-house
+        frameworks or replace them completely. We will be able to work
+        alongside home-grown solutions and be extensible enough to allow
+        enterprises to make a slow switch over to NEF.</para>
+
+        <para>Even if all of your engineers are very experienced and your
+        architecture is very sound, part of every J2EE application development
+        process is spent in prototyping, technical writing, testing, and
+        maintenance. Even if the code is completed on time, these other tasks
+        take up to another 30 to 40% of the total project resources. NEF can
+        take an experienced J2EE programmer and improve their productivity and
+        in many cases eliminate the need for specialized resources for
+        architecture and design, prototyping, documentation, logging,
+        deployment, and maintenance.</para>
+      </section>
+
+      <section>
+        <title>I have an application server, isn’t that sufficient for me to
+        write my J2EE applications?</title>
+
+        <para>Most J2EE application servers contain a great deal of common
+        infrastructure code that helps <emphasis>contain</emphasis>,
+        <emphasis>manage</emphasis>, <emphasis>deploy</emphasis>, and
+        <emphasis>execute</emphasis> applications. They also have features the
+        increase scalability, reliability, and availability of applications by
+        providing features like clustering and failover. What they lack,
+        because it’s not part of their product requirements, is the ability to
+        help build the applications they contain. Just as an operating system
+        is a container for executing applications written in any language but
+        does not assist in the development of the applications, a J2EE
+        application server is a container for executing Java and J2EE
+        applications but does not assist in the development of the Java/J2EE
+        applications. Sparx, as a J2EE framework, helps create the
+        applications that you can then deploy onto any J2EE container or
+        application server.</para>
+      </section>
+
+      <section>
+        <title>Why not use the frameworks that come with my application
+        server?</title>
+
+        <para>Many commercial embedded frameworks are provided by application
+        server vendors like WebLogic or WebSphere. The main issues you&#39;ll
+        face with these frameworks are:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>They are usually vendor-specific and tie you to a particular
+            application server, operating system, or database server</para>
+          </listitem>
+
+          <listitem>
+            <para>The frameworks are not designed for complete coverage of
+            sophisticated applications and engineers end up having to do a
+            great deal of infrastructure work on their own.</para>
+          </listitem>
+
+          <listitem>
+            <para>Unlike NEF&#39;s feature list (see <xref
+            linkend="nef-features" />) most embedded application server
+            frameworks are very light on functionality.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>With its unique architecture, NEF can supplement or replace your
+        application server vendor&#39;s frameworks with a good mix of easy to
+        use components for faster development and the sophistication that
+        senior architects need to create robust applications. Also, keep in
+        mind that all NEF-based applications are application-server,
+        database-server, and operating-system independent.</para>
+      </section>
+
+      <section>
+        <title>Why not use open source frameworks like Struts?</title>
+
+        <para>There are many freely-available open source frameworks are quite
+        good for certain types of applications. There are a number of good
+        tools in this category like Struts, Enhydra, Expresso, and others;
+        however, they all share the following issues:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>None of these free products match NEF from a feature or
+            functionality perspective (see <xref linkend="nef-features" />).</para>
+          </listitem>
+
+          <listitem>
+            <para>Most of the open source tools cater to very talented Java
+            engineers since they require a serious understanding of low-level
+            computer science concepts, J2EE APIs, and Java programming.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>Most open source tools are written by experienced
+            programmers <emphasis>for</emphasis> experienced programmers and
+            as such depend on mutual understanding instead of heavy
+            documentation.</para>
+          </listitem>
+
+          <listitem>
+            <para>While they save money in the beginning (since they are free)
+            they end up costing much more because they often require more
+            experienced engineers, usually require a higher number of
+            engineers, and don&#39;t have the quality management tools
+            built-in.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>NEF can complement or replace most frameworks like Struts or
+        Expresso.</para>
+      </section>
+
+      <section>
+        <title>What are the primary advantages of NEF versus other frameworks?</title>
+
+        <para>There are two primary competitive advantages that
+        Netspective&#39;s frameworks have over other frameworks.</para>
+
+        <orderedlist>
+          <listitem>
+            <para>Simplification — we are focusing on pure reduction of time
+            and effort for the engineer and the use of the technology by
+            less-experienced staff members. If you&#39;re not an expert in
+            Java, web development, persistence, or other topics then NEF is
+            the perfect suite of frameworks because all the hard stuff is
+            abstracted. If you&#39;re already an expert in many of the areas
+            then you&#39;ll enjoy working on end-user and application domain
+            tasks instead of grunt coding in the infrastructure.</para>
+          </listitem>
+
+          <listitem>
+            <para>Holistic approach to engineering — which refers to our
+            concentration not on just the coding aspects but the engineering
+            aspects -- testing (quality), metrics (measurement), monitoring,
+            performance), and documentation.</para>
+          </listitem>
+        </orderedlist>
+      </section>
+    </section>
+
+    <section>
       <title>Libraries and Components</title>
 
       <para>The NEF suite is comprised of multiple libraries and frameworks,
@@ -215,8 +686,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata
-            fileref="./resources/images/nefs-overview.gif" />
+            <imagedata fileref="./resources/images/nefs-overview.gif" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -395,8 +865,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata
-            fileref="./resources/images/nefs-outputs.gif" />
+            <imagedata fileref="./resources/images/nefs-outputs.gif" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -509,6 +978,8 @@
         </listitem>
       </itemizedlist>
     </section>
+
+    &include_nef_faq_non_tech;
   </chapter>
 
   <chapter>
@@ -664,8 +1135,7 @@
       applications, test beds, and starter projects.</para>
 
       <screenshot>
-        <graphic
-        fileref="./resources/images/screen-sampler-home.gif" />
+        <graphic fileref="./resources/images/screen-sampler-home.gif" />
       </screenshot>
 
       <section>
@@ -688,8 +1158,7 @@
         combination you should use if the Console prompts you to login.</para>
 
         <screenshot>
-          <graphic
-          fileref="./resources/images/screen-console-login.gif" />
+          <graphic fileref="./resources/images/screen-console-login.gif" />
         </screenshot>
 
         <para>Once you have logged into the Console for any particular
@@ -735,8 +1204,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata
-            fileref="./resources/images/screen-starter-folders.gif" />
+            <imagedata fileref="./resources/images/screen-starter-folders.gif" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -938,8 +1406,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata
-          fileref="./resources/images/nefs-swdev-process.gif" />
+          <imagedata fileref="./resources/images/nefs-swdev-process.gif" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -1432,12 +1899,12 @@ id="project-file-basic-eg-7" />
           <title>How to use the <sgmltag class="starttag">xdm:include</sgmltag>
           tag</title>
 
-          <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62; 
+          <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 
-    &#60;xdm:include file=&#34;/some/absolute/file.name&#34;/&#62; 
-    &#60;xdm:include file=&#34;a/relative/file.name&#34;/&#62; 
-    
-    &#60;xdm:include resource=&#34;a/resource/relative/to/Project.class&#34;/&#62; 
+    &#60;xdm:include file=&#34;/some/absolute/file.name&#34;/&#62;
+    &#60;xdm:include file=&#34;a/relative/file.name&#34;/&#62;
+
+    &#60;xdm:include resource=&#34;a/resource/relative/to/Project.class&#34;/&#62;
     &#60;xdm:include resource=&#34;a/resource/relative/to/my.custom.className.class&#34; relative-to=&#34;my.custom.className&#34;/&#62;
 
     &#60;xdm:include template=&#34;template-name&#34;/&#62;</programlisting>
@@ -2166,8 +2633,7 @@ public class NewField extends com.xaf.form.DialogField
           class="attribute">hint</sgmltag> which is used to display a helpful
           hint for the user on what to enter into the field. The following is
           a screenshot of how the actual dialog looks like:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test1.jpg"
-          format="JPEG" /></imageobject></mediaobject></para></example>
+          fileref="./resources/images/dialogs/test1.jpg" format="JPEG" /></imageobject></mediaobject></para></example>
           <example><title>Memo, Date &#38; Time, Boolean fields</title><para>The
           following is a definition for a dialog which contains a memo field,
           several versions of the date and time field, and several versions of
@@ -2244,8 +2710,7 @@ public class NewField extends com.xaf.form.DialogField
           <emphasis>combo</emphasis>. A &#34;No&#34; selection submits a value
           of 0 and a &#34;Yes&#34; selection submits a value of 1.</para></listitem></varlistentry></variablelist>
           The XML definition above is shown as:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test2.jpg"
-          format="JPEG" /></imageobject></mediaobject></para></example>
+          fileref="./resources/images/dialogs/test2.jpg" format="JPEG" /></imageobject></mediaobject></para></example>
           <example><title>Select fields</title><para>The following is a XML
           definition example to show the different styles available for select
           fields: <programlisting>
@@ -2315,8 +2780,7 @@ public class NewField extends com.xaf.form.DialogField
           functionality of these two attributes is to prepend a blank to the
           choice list and to append a blank to the choice list respectively.
           The following is a screenshot of the dialog defined above:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test3.jpg"
-          format="JPEG" /></imageobject></mediaobject></para></example>
+          fileref="./resources/images/dialogs/test3.jpg" format="JPEG" /></imageobject></mediaobject></para></example>
           <example><title>Conditional fields</title><para><trademark>XAF</trademark>
           provides a dynamic field displaying and hiding functionality which
           is defined by the <sgmltag class="starttag">conditional </sgmltag>
@@ -2353,21 +2817,19 @@ public class NewField extends com.xaf.form.DialogField
           its&#39; display status is dependent upon the <emphasis>checkbox_field</emphasis>
           being &#34;checked&#34;. The following is a screen shot of the
           initial stage of the dialog:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test6_1.jpg"
-          format="JPEG" /></imageobject></mediaobject></para><para>The
+          fileref="./resources/images/dialogs/test6_1.jpg" format="JPEG" /></imageobject></mediaobject></para><para>The
           following is a screen shot of the dialog after the select
           field&#39;s selection has been changed:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test6_2.jpg"
-          format="JPEG" /></imageobject></mediaobject></para><para>The
+          fileref="./resources/images/dialogs/test6_2.jpg" format="JPEG" /></imageobject></mediaobject></para><para>The
           following is a screen shot of the dialog after the checkbox has been
           checked:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test6_3.jpg"
-          format="JPEG" /></imageobject></mediaobject></para><para>Aside from
-          the <sgmltag class="attribute">action</sgmltag> attribute, there are
-          other useful attributes available such as <sgmltag class="attribute">apply-flag</sgmltag>
-          and <sgmltag class="attribute">clear-flag</sgmltag>. The following
-          values are available for these two attributes: For setting or
-          removing these flags depend upon other attributes such as <sgmltag
+          fileref="./resources/images/dialogs/test6_3.jpg" format="JPEG" /></imageobject></mediaobject></para><para>Aside
+          from the <sgmltag class="attribute">action</sgmltag> attribute,
+          there are other useful attributes available such as <sgmltag
+          class="attribute">apply-flag</sgmltag> and <sgmltag
+          class="attribute">clear-flag</sgmltag>. The following values are
+          available for these two attributes: For setting or removing these
+          flags depend upon other attributes such as <sgmltag
           class="attribute"> data-cmd</sgmltag>, <sgmltag class="attribute">has-permission</sgmltag>,
           and <sgmltag class="attribute">lack-permission</sgmltag>. The
           <sgmltag class="attribute">data-cmd</sgmltag> is used to indicate
@@ -2579,8 +3041,7 @@ public class NewField extends com.xaf.form.DialogField
           menu item.</para>
 
           <para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/ace-dialogs.jpg"
-          format="JPEG" /></imageobject></mediaobject></para>
+          fileref="./resources/images/dialogs/ace-dialogs.jpg" format="JPEG" /></imageobject></mediaobject></para>
 
           <para>Clicking on the Action icon of any dialog displays a test page
           with the dialog in it. Each dialog can be tested by entering values
@@ -3968,8 +4429,7 @@ public class Test1  extends com.xaf.form.Dialog
         page is as shown below:</para>
 
         <para><mediaobject><imageobject><imagedata
-        fileref="./resources/images/db-schema/ace-schema.jpg"
-        format="JPEG" /></imageobject></mediaobject></para>
+        fileref="./resources/images/db-schema/ace-schema.jpg" format="JPEG" /></imageobject></mediaobject></para>
 
         <para>The SQL DLL file is generated by going to the
         <menuchoice><guimenu>Database</guimenu><guimenuitem>Generate DDL</guimenuitem></menuchoice>
@@ -3977,8 +4437,7 @@ public class Test1  extends com.xaf.form.Dialog
         as shown below:</para>
 
         <para><mediaobject><imageobject><imagedata
-        fileref="./resources/images/db-schema/ace-ddl.jpg"
-        format="JPEG" /></imageobject></mediaobject></para>
+        fileref="./resources/images/db-schema/ace-ddl.jpg" format="JPEG" /></imageobject></mediaobject></para>
       </section>
     </section>
 

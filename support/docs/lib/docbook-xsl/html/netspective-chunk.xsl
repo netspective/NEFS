@@ -6,6 +6,8 @@
 
 <xsl:import href="../../redist/docbook-xsl-1.62.4/html/chunk.xsl"/>
 
+<xsl:variable name="chunk.quietly">1</xsl:variable>
+
 <xsl:variable name="toc.section.depth">3</xsl:variable>
 <xsl:variable name="admon.graphics">1</xsl:variable>
 <xsl:variable name="navig.graphics">0</xsl:variable>

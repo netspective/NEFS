@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section>
+  <title>NEF Frequently Asked Questions (FAQ)</title>
+
+  <qandaset>
+    <?dbhtml toc="0"?>
+    <qandadiv>
+      <qandaentry>
+        <question>
+          <para>What is the Netspective Enterprise Frameworks Suite?</para>
+        </question>
+
+        <answer>
+          <para>NEF is a standards-compliant suite of frameworks that
+          simplifies the development of complex Java 2 Enterprise Edition
+          (J2EE) applications by providing out-of-the-box general-purpose
+          e-business functionality and making it accessible to junior
+          programmers through XML. NEF is built on top of J2EE and consists of
+          a framework that cleanly separates and encourages the proper use of
+          presentation, business, and data layers/tiers. It supports, but does
+          not require, EJBs and follows the J2EE specification religiously –
+          this means that a NEF-based application will run on any web or J2EE
+          application server (you won’t be tied to any specific vendor’s
+          implementation).</para>
+        </answer>
+      </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>How does NEF benefit the Enterprise?</para>
+          </question>
+
+          <answer>
+            <para>NEF allows Enterprises to build and deploy more e-business Java and XML applications and Web Services using fewer programmers, in less time, with higher-quality, and better documentation.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>How does NEF leverage existing investments in J2EE?</para>
+          </question>
+
+          <answer>
+            <para>NEF enhances (does not compete with) app servers like WebLogic and WebSphere, IDEs like JBuilder, and development tools like Rational and TogetherSoft.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>What is a framework?</para>
+          </question>
+
+          <answer>
+            <para>A framework is a set of building blocks that encompass common components, patterns, and guidelines and can be reused across projects without requiring tweaking by different programmers. To be useful, a framework should be reusable, extensible, well documented, it should contain functionality useful across a wide variety of application domains, and it should be easy to learn.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>Why do I need to buy a J2EE Framework?</para>
+          </question>
+
+          <answer>
+            <para>Frameworks built on top of J2EE are a necessity in today’s Java-based application development environments because J2EE is complex, difficult to understand for non-experienced developers, and it’s very easy to make architectural and mistakes without appropriate tools. NEF, which is a J2EE simplification framework, reduces the complexity of J2EE by providing architecture patterns, design patterns, and functionality patterns that allow inexperienced developers to produce extensible and robust applications.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>I have an application server, isn’t that sufficient for me to write my J2EE applications?</para>
+          </question>
+
+          <answer>
+            <para>Most J2EE application servers contain a great deal of common infrastructure code that helps contain, manage, deploy, and execute applications. They also have features the increase scalability, reliability, and availability of applications by providing features like clustering and failover. What they lack, because it’s not part of their product requirements, is the ability to help build the applications they contain. Just as an operating system is a container for executing applications written in any language but does not assist in the development of the applications, a J2EE application server is a container for executing Java and J2EE applications but does not assist in the development of the Java/J2EE applications. NEF, as a J2EE framework, helps create the applications that you can then deploy onto any J2EE container or application server.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>How does NEF help me manage my team?</para>
+          </question>
+
+          <answer>
+            <para>Most development teams are comprised of business analysts, architects, senior and junior developers, testers, technical writers, and maintenance engineers. NEF, by providing pre-packaged architecture, functionality, code, documentation, and guidelines, significantly enhances your ability to improve the resource utilization of your team. Your expensive architects and senior developers can be used for true architectural and business analysis tasks and quality improvement; they will no longer be needed for helping junior engineers complete their code. This is because NEF is engineered for use by junior- and mid-level developers. Also, because NEF uses XML your business analysts will be able work directly with junior- and mid-level engineers to provide business and user interface requirements to help produce working prototypes that don’t need to be thrown away. Later, the XML that developers use to produce the working prototypes can be tested by the QA staff with little or no work on their part other than test planning. Maintenance headaches are reduced through the use of automatic deployment descriptors, packaging, logging, performance statistics, and application metrics. Technical writing is greatly simplified because of automatic generation of implementation documentation like functional specifications and database design documents.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>We are already building J2EE applications; why would I need NEF to help with our J2EE development? </para>
+          </question>
+
+          <answer>
+            <para>Even if all of your engineers are very experienced and your architecture is very sound, part of every J2EE application development process is spent in prototyping, technical writing, testing, and maintenance. Even if the code is completed on time, these other tasks take up to another 30 to 40% of the total project resources. NEF can take an experienced J2EE programmer and improve their productivity and in many cases eliminate the need for specialized resources for architecture and design, prototyping, documentation, logging, deployment, and maintenance.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>At what stage of development can NEF be introduced?</para>
+          </question>
+
+          <answer>
+            <para>Although the earlier the stage of development, the more NEF will be helpful, you can actually introduce NEF at almost any stage before your code is completed. Because NEF is deployed as a simple Java library, it can be “dropped-into” your projects at almost anytime.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>The Netspective Enterprise Frameworks Suite is run-time software; does this cause any performance issues?</para>
+          </question>
+
+          <answer>
+            <para>Absolutely not. Because it is a pure Java library, NEF runs inside your application. This is an important distinction – many frameworks are containers for your application meaning you’re tied to their framework. As a library, NEF is not running your code – it’s simply providing hundreds of features and a great deal of functionality that you or your engineers would normally have to write themselves.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>What do I produce when I use NEF?  And how do I use this in my application?</para>
+          </question>
+
+          <answer>
+            <para>You product two things: XML and Java. NEF translates the XML into Java objects which are executed by the Java Virtual Machine (JVM) and application server. NEF is distributed as a simple JAR file and set of HTML and JavaScript components and through that simplicity it can be used in your application just as any other Java library.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>How does NEF work with an application server?</para>
+          </question>
+
+          <answer>
+            <para>NEF uses XML defined in the presentation, business, and data tiers that can be created by business analysts or developers and translates the XML into either Java objects or Java source code. The XML, along with any Java written by programmers, is passed along to the application server for execution. For example, NEF produces Servlets and Java Server Pages (JSPs) and those components are compiled and executed by your application server. </para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>What Application Server does NEF support?</para>
+          </question>
+
+          <answer>
+            <para>NEF is fully J2EE-compliant meaning that NEF will support almost any J2EE application. Since EJBs are supported by not required by NEF, any basic web container for Servlets or JSPs will also suffice. NEF is known to run on WebLogic, WebSphere, JRun, Resin, Tomcat, JBoss, and numerous other application servers.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>How does NEF work in a Rapid Application Development (RAD) environment?</para>
+          </question>
+
+          <answer>
+            <para>RAD environments are used to (a) converge early toward a design acceptable to the customer and feasible for the developers, (b) to limit a project's exposure to the forces of change, and (c) to save development time, possibly at the expense of economy or product quality. NEF supports each of these requirements by (a) producing rapid user interface and database design prototypes by using XML and requiring no Java or experience programmers, (b) use XML to store as much logic as possible and automatically translate changing business and user requirements from XML to Java, and (c) saves development time by increasing speed of development, reduces cost of projects by using junior engineering talent yet significantly increases code quality.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>How does NEF work in an Extreme Programming (XP) environment?</para>
+          </question>
+
+          <answer>
+            <para>Extreme Programming supporters propose to never do any more coding, more testing, more process, or more documentation than is absolutely necessary to delight the customer. Using XP, (a) software stays soft, (b) software is tested early and often, (c) changing requirements are expected, not feared, (d) quickly produces something useful, keeps making useful enhancements, and delivered when the customer is ready, and (e) average developers can produce great software. NEF supports each of principles because (a) XML and small amounts of Java keeps software soft, (b) all of the XML produces testable functionality immediately, (c, d) the XML specifications are written with change in mind since the XML gets translated to Java automatically whenever needed, (e) junior engineers can produce great software without the need for dedicated senior architects, developers, and QA staff.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>How does NEF accelerate my application development? </para>
+          </question>
+
+          <answer>
+            <para>NEF improves developer productivity and reduces time to market by eliminating repetitive coding through an extensive library of pre-built and well-tested e-business functionality and database components. NEF requires less-qualified engineers to complete a project by using XML to code in a declarative style instead of a programmatic style. NEF reduces the number of engineers on a project by producing and automatically maintaining process artifacts like unit tests and documentation. NEF increases reusability and consistency across projects by providing built-in metrics, an administration console, and performance statistics.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>What skills do my developers need to learn?</para>
+          </question>
+
+          <answer>
+            <para>There are two skills required: general familiarity with XML and basic Java knowledge. Any developer can be taught the skills to become productive with NEF and J2EE within one week.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>What skills do developers need to have?</para>
+          </question>
+
+          <answer>
+            <para>There are two skills required: general familiarity with XML and basic Java knowledge. Any developer can be taught the skills to become productive with NEF and J2EE within one week.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>What is the difference between an IDE and NEF?</para>
+          </question>
+
+          <answer>
+            <para>An Integrated Development Environment (IDE) is a single application that integrates different tools like an editor, compiler, and debugger to help improve the way code is written, understood, and debugged. NEF is not an IDE, it is an application framework. The purpose of an IDE is to help you code better or faster. The goal of NEF is to eliminate code where possible. NEF will work with any IDE like JBuilder, Rational, or TogetheSoft but no IDE is actually required. If you are happy with a simple editor and a command-line compiler NEF will work just as well in that environment.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>What documentation does NEF produce?</para>
+          </question>
+
+          <answer>
+            <para>NEF produces functional specifications that show all user interface elements like dialogs, validation rules, and fields for forms. NEF also produces documentation of Servlet variables, configuration files, logs, and object factories. Complete documentation of SQL queries, dynamic queries, database structure/design is also provided.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>What types of Metrics does NEF give me as an IT manger?</para>
+          </question>
+
+          <answer>
+            <para>For management, metrics for project comparison, project complexity, feature and function points, and source lines of code are provided by NEF.</para>
+          </answer>
+        </qandaentry>
+
+        <qandaentry>
+          <question>
+            <para>What types of Metrics does NEF give me as a developer?</para>
+          </question>
+
+          <answer>
+            <para>For developers, metrics for performance statistics like SQL query execution, user interface usage, page display, table and columns usage, and security statistics are provided by NEF.</para>
+          </answer>
+        </qandaentry>
+    </qandadiv>
+  </qandaset>
+</section>
