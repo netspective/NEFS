@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TabularReportColumn.java,v 1.8 2004-03-20 22:25:27 shahid.shah Exp $
+ * $Id: TabularReportColumn.java,v 1.9 2004-03-23 19:50:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -93,7 +93,8 @@ public interface TabularReportColumn
         public static final int ALLOW_SORT = PREVENT_WORD_WRAP * 2;
         public static final int SORTED_ASCENDING = ALLOW_SORT * 2;
         public static final int SORTED_DESCENDING = SORTED_ASCENDING * 2;
-        public static final int START_CUSTOM = SORTED_DESCENDING * 2;
+        public static final int ESCAPE_HTML = SORTED_DESCENDING * 2;
+        public static final int START_CUSTOM = ESCAPE_HTML * 2;
 
         public FlagDefn[] getFlagsDefns()
         {

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.13 2003-11-07 17:37:49 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.14 2004-03-23 19:50:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -79,6 +79,7 @@ import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandNotFoundException;
+import com.netspective.commons.text.TextUtils;
 
 public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 {
@@ -302,6 +303,10 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             if(calc != null)
                 calc.addValue(rc, this, ds, data);
         }
+
+        if(this.flags.flagIsSet(Flags.ESCAPE_HTML))
+            data = TextUtils.escapeHTML(data);
+
         return data;
     }
 
