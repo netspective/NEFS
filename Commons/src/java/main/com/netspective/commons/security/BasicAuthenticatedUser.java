@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.16 2004-08-14 19:53:32 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.17 2004-08-15 01:08:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -235,13 +235,6 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Attribu
     protected MutableAuthenticatedOrganizations createOrganizations()
     {
         return new BasicAuthenticatedOrganizations();
-    }
-
-    protected MutableAttributes createAttributes()
-    {
-        MutableAttributes result = new BasicAttributes();
-        result.addMutationObserver(this);
-        return result;
     }
 
     protected MutableAttributes createPreferences()
