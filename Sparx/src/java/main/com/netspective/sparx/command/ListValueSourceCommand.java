@@ -131,7 +131,6 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
         Theme theme = nc.getActiveTheme();
-        // TODO: currently, the 'instance' format is the only one that is handled.
         switch (valueSourceType)
         {
             case LVSTYPE_INSTANCE:
@@ -146,10 +145,19 @@ public class ListValueSourceCommand extends AbstractHttpServletCommand
                     panel.render(writer, nc, theme, 1);
                 }
                 break;
+
             case LVSTYPE_REFERENCE:
+                if(valueSource != null)
+                {
+                    SelectFieldChoicesPanel panel = new SelectFieldChoicesPanel();
+                    panel.setReportSkin(skinName);
+                    panel.setDataSource(new PresentationValueDataSource(valueSource.getPresentationValue(nc)));
+                    panel.render(writer, nc, theme, 1);
+                }
                 break;
+
             default:
-                log.warn("Unknown value source type for List Value Source command");
+                log.error("Unknown value source type for List Value Source command");
                 break;
         }
     }
