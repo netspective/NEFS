@@ -869,12 +869,13 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         {
             Index index = indexes.get(i);
 
-            // if it's a single column, we already have the equality accessor
-            if(index.getColumns().size() == 1)
-                continue;
-
             QueryDefnSelect selectByIndex = tqd.createSelect();
-            selectByIndex.setName("by-index-" + index.getName() + "-equality");
+            if(index.getColumns().size() == 1)
+            {
+                selectByIndex.setName("by-" + index.getColumns().get(0).getName() + "-equality");
+            } else
+                selectByIndex.setName("by-index-" + index.getName() + "-equality");
+
             selectByIndex.setDistinct(false);
             tqd.addSelect(selectByIndex);
 
@@ -1037,7 +1038,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
         if(index.getColumns().size() == 1)
             accessorName = "by-" + index.getColumns().get(0).getName() + "-equality";
-
+        
         return tqd.getSelects().get(accessorName);
     }
 
