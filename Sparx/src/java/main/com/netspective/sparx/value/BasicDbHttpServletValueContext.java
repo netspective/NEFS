@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.20 2003-06-27 01:12:53 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.21 2003-06-27 01:37:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -55,6 +55,8 @@ import javax.servlet.ServletContext;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.discovery.tools.DiscoverSingleton;
+import org.apache.commons.discovery.tools.DiscoverClass;
 
 import freemarker.template.Configuration;
 
@@ -89,6 +91,8 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public static final String CONTEXTATTRNAME_FREEMARKER_CONFIG = "freemarker-config";
     public static final String INITPARAMNAME_DEFAULT_DATA_SRC_ID = "com.netspective.sparx.DEFAULT_DATA_SOURCE";
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
+
+    public static final Class PROJECT_COMPONENT_CLASS = discoverClass.find(ProjectComponent.class, ProjectComponent.class.getName());
 
     private NavigationContext navigationContext;
     private DialogContext dialogContext;
@@ -321,7 +325,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
             // (always use the factory get() method)
             ProjectComponent amComponent =
                 (ProjectComponent) XdmComponentFactory.get(
-                        ProjectComponent.class, getProjectFileName(context), compFlags);
+                        PROJECT_COMPONENT_CLASS, getProjectFileName(context), compFlags);
 
             for(int i = 0; i < amComponent.getErrors().size(); i++)
                 System.err.println(amComponent.getErrors().get(i));
@@ -348,7 +352,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
             // (always use the factory get() method)
             ProjectComponent amComponent =
                 (ProjectComponent) XdmComponentFactory.get(
-                        ProjectComponent.class, getProjectFileName(context), compFlags);
+                        PROJECT_COMPONENT_CLASS, getProjectFileName(context), compFlags);
 
             for(int i = 0; i < amComponent.getErrors().size(); i++)
                 System.err.println(amComponent.getErrors().get(i));
