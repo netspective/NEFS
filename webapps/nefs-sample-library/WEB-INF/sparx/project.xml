@@ -12,6 +12,13 @@
     <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
 
+    <!--
+    **********************************************************************
+    ** PROJECT (GENERAL) SPECIFICATIONS                                 **
+    ********************************************************************** -->
+
+    <listener class="app.Util"/>
+
 	<!--
 	**********************************************************************
 	** USER INTERFACE (PRESENTATION) SPECIFICATIONS                     **
