@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.14 2003-11-26 15:21:58 roque.hernandez Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.15 2003-12-03 01:25:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -206,16 +206,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         {
             // see if a primary key value is provided -- if it is, we're going to populate using the primary key value
             String primaryKeyValueSpec = templateElement.getAttributes().getValue(ATTRNAME_PRIMARYKEY_VALUE);
-            System.out.println("&&&&&&&&&&&&&&&&&&primaryKeyValueSpec1" + primaryKeyValueSpec);
             if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
             {
                 primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getName());
-                System.out.println("&&&&&&&&&&&&&&&&&&primaryKeyValueSpec2" + primaryKeyValueSpec);
                 if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
-                {
                     primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getXmlNodeName());
-                    System.out.println("&&&&&&&&&&&&&&&&&&primaryKeyValueSpec3" + primaryKeyValueSpec);
-                }
             }
 
             return ValueSources.getInstance().getValueSourceOrStatic(primaryKeyValueSpec);
@@ -652,8 +647,6 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
         Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue }, null);
-System.out.println("***********************primaryKeyValueSource: " + primaryKeyValueSource);
-System.out.println("***********************primaryKeyValue: " + primaryKeyValue);
         if(activeRow == null)
         {
             if(getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
