@@ -7,8 +7,8 @@
     -->
     <panel-editors package="personAttribute">
         <panel-editor  name="contact" require-request-param="person_id">
-            <frame heading="Contact Information"/>
-            <element type="report" name="contacts" caption="Contacts" dialog-ref="personAttribute.contact">
+            <frame heading="Contact Methods/Addresses"/>
+            <element type="report" name="contacts" caption="Contact Method" dialog-ref="personAttribute.contact" pk-column-index="0">
                 <query>
                     select
                     system_id,
@@ -35,12 +35,12 @@
                     </presentation>
                 </query>                
             </element>
-            <element type="report" name="address" caption="Address" dialog-ref="personAttribute.address">
+            <element type="report" name="address" caption="Address" dialog-ref="personAttribute.address" pk-column-index="0">
                 <query>
                     select
                     system_id,
                     Contact_Address_Type.caption,
-                    city || ', ' || US_State_Type.caption
+                    line1 || '&lt;br&gt;' || city || ', ' || US_State_Type.caption || ' ' || zip
                 from
                     Person_Address,
                     US_State_Type,
@@ -71,7 +71,7 @@
         </panel-editor>
         <panel-editor name="classification"  require-request-param="person_id">
             <frame heading="Classification"/>
-            <element type="report" caption="Classification" dialog-ref="personAttribute.classification">
+            <element type="report" caption="Classification" dialog-ref="personAttribute.classification" pk-column-index="0">
                 <query>
                     select
                     system_id,
@@ -105,7 +105,7 @@
 
         <panel-editor  name="relationship"  require-request-param="person_id">
             <frame heading="Relationships"/>
-            <element type="report" dialog-ref="personAttribute.relationship">
+            <element type="report" dialog-ref="personAttribute.relationship" pk-column-index="0">
                 <query>
                     select
                     system_id,
