@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.2 2003-03-17 20:02:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -380,5 +380,19 @@ public class TextUtils
             }
         }
         return tableNameBuf.toString();
+    }
+
+    /**
+     * Check if the given string is null, empty or made up only of whitespace.
+     *
+     * @param value a tested string
+     * @return true if the string is empty
+     **/
+    public static boolean isEmpty (String value)
+    {
+        if (value == null) return true;
+        if (value.length() == 0) return true;
+        if (value.trim().length() == 0) return true;
+        return false;
     }
 }
