@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.20 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: TextField.java,v 1.21 2003-11-02 17:30:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -114,19 +114,9 @@ public class TextField extends DialogField
             super(dfs);
         }
 
-        public Flags(State dfs, int flags)
-        {
-            super(dfs, flags);
-        }
-
         public Flags(TextField df)
         {
             super(df);
-        }
-
-        public Flags(TextField field, int flags)
-        {
-            super(field, flags);
         }
 
         public FlagDefn[] getFlagsDefns()
