@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.8 2003-11-16 15:15:59 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.9 2003-11-19 02:17:19 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -1368,7 +1368,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         if(column.isPrimaryKey())
             writer.write(" PRIMARY KEY");
 
-        if(column.isRequiredByDbms())
+        if(column.isRequiredByApp() || column.isRequiredByDbms())
             writer.write(" NOT NULL");
     }
 }
