@@ -29,31 +29,42 @@
     <!--
     *********************************************************************
     * Setup application front-controller servlet                        *
-    * 1) The NavigationController servlet handles all requests          *
+    * 1) The SparxNavigationController servlet handles all requests     *
     * 2) Anything under the /sparx URL is assumed to be a resource or   *
     *    asset so it's forwarded to the normal static file servlet.     *
     * 3) Anything under the /resources URL is assumed to be a resource  *
     *    so it's forwarded to the normal static file servlet.           *
+    *                                                                   *
+    * NOTE: if you will be using the NavigationPage forward or include  *
+    *       attributes (<page ... forward=''> or <page include=''>)     *
+    *       then you will need to ensure that those pages get handled   *
+    *       by the appropriate app server servlets so you may need      *
+    *       additional servlet-mappings for the forwarded or included   *
+    *       resources.                                                  *
     *********************************************************************
     -->
 	<servlet>
-		<servlet-name>NavigationController</servlet-name>
+		<servlet-name>SparxNavigationController</servlet-name>
 		<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
 	</servlet>
 
     <servlet>
-        <servlet-name>StaticContent</servlet-name>
+        <servlet-name>AppServerStaticFileServlet</servlet-name>
         <servlet-class>com.caucho.server.http.FileServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>NavigationController</servlet-name>
+        <servlet-name>SparxNavigationController</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>StaticContent</servlet-name>
+        <servlet-name>AppServerStaticFileServlet</servlet-name>
         <url-pattern>/sparx/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AppServerStaticFileServlet</servlet-name>
         <url-pattern>/resources/*</url-pattern>
     </servlet-mapping>
 

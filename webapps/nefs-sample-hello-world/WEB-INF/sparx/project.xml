@@ -34,6 +34,13 @@
                 </ul>]]>
             </body>
         </page>
+
+        <!--
+        ** If foward or include attributes need to be used/tested then be sure to provide appropriate mappings in the
+           web.xml file
+        <page name="next-steps-fwd" caption="Next Steps (Forward)" heading="What's next?" forward="/next-steps.jsp"/>
+        <page name="next-steps-inc" caption="Next Steps (Include)" heading="What's next?" include="/next-steps.jsp"/>
+        -->
     </navigation-tree>
 
     <dialogs package="test">
