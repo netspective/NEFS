@@ -241,6 +241,35 @@ public class TextUtils
     }
 
     /**
+     * Ascertain whether the find string occurs in the source string list
+     *
+     * @param source The array to search
+     * @param find   The string to look for
+     *
+     * @return True if find is in source
+     */
+    public boolean contains(String[] source, String find, boolean ignoreCase)
+    {
+        if(source != null)
+        {
+            if(ignoreCase)
+            {
+                for(int i = 0; i < source.length; i++)
+                    if(source[i].equalsIgnoreCase(find))
+                        return true;
+            }
+            else
+            {
+                for(int i = 0; i < source.length; i++)
+                    if(source[i].equals(find))
+                        return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Perform a simple string replacement of findStr to replStr in origStr and returns the result. All instances
      * of findStr are replaced to replStr (regardless of how many there are). Not optimized for performance.
      *
