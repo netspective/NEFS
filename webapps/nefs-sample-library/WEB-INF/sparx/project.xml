@@ -23,7 +23,9 @@
                 Welcome to the home page.
             </body>
         </page>
-        <page name="add" caption="Add Book" command="dialog,library.book-info,add"/>
+        <page name="add" caption="Add Book" command="dialog,library.book-info,add">
+            <conditional action="apply-flags" hidden="yes" has-value="request:abc"/>
+        </page>
     </navigation-tree>
 
 	<!--
@@ -85,9 +87,46 @@
         </query>
 
         <query name="get-all-book-types">
-            select * from book_type
+            select id,caption,abbrev from book_type
+        </query>
+
+        <query name="get-book-genre-list">
+            select caption,id from book_type
         </query>
 
     </queries>
 
+    <query-defn>
+        <field name="book_id" caption="Book ID" join="BookInfo" column="id"/>
+        <field name="name" caption="Name" join="BookInfo" column="name"/>
+        <field name="author" caption="Author" join="BookInfo" column="author"/>
+        <field name="genre_id" caption="Genre ID" join="BookInfo" column="genre"/>
+        <field name="genre_caption" caption="Genre" join="BookType" column="caption"/>
+        <field name="isbn" caption="ISBN" join="BookInfo" column="isbn"/>
+
+        <join name="BookInfo" table="book_info"/>
+		<join name="BookType" table="book_type" condition="book_type.id = book_info.genre"/>
+
+        <presentation>
+
+            <select-dialog name="searchBooksDialog"  allow-debug="yes" hide-output-dests="yes" hide-readonly-hints="yes" >
+                <frame heading="Search for Books" />
+                <field type="text" name="book_id" caption="Book ID" />
+                <field type="text" name="name" caption="Book Name"/>
+                <field type="text" name="author" caption="Author"/>
+                <field type="text" name="isbn" caption="ISBN"/>
+                <field type="select" style="list" name="genre" caption="Genre" choices="query:get-book-genre-list"/>
+                <select name="test">
+                    <display field="book_id"/>
+                    <display field="name"/>
+                    <display field="author"/>
+                    <display field="genre_caption"/>
+                    <display field="isbn"/>
+                    <condition field="book_id" allow-null="no" comparison="equals" value="field:book_id" connector="and"/>
+                    <condition field="name" allow-null="no" comparison="starts-with" value="field:name" connector="and"/>
+                    <condition field="author" allow-null="no" comparison="equals" value="field:author" connector="and"/>
+                </select>
+            </select-dialog>
+        </presentation>
+    </query-defn>
 </project>
