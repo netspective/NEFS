@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceSpecification.java,v 1.2 2003-03-21 13:56:20 shahbaz.javeed Exp $
+ * $Id: ValueSourceSpecification.java,v 1.3 2003-11-08 18:47:55 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -62,6 +62,22 @@ public class ValueSourceSpecification
     public static final char VALUE_SOURCE_PI_START = '[';
     public static final char VALUE_SOURCE_PI_END = ']';
     public static final char VALUE_SOURCE_PI_ESCAPE = '\\';
+
+    public static String escapeFirstDelim(String origText)
+    {
+        if(origText == null || origText.length() < 2 || origText.indexOf(VALUE_SOURCE_ID_DELIM) == -1)
+            return origText;
+
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < origText.length(); i++)
+        {
+            char ch = origText.charAt(i);
+            if(ch == VALUE_SOURCE_ID_DELIM)
+                sb.append(VALUE_SOURCE_ID_DELIM_ESCAPE);
+            sb.append(ch);
+        }
+        return sb.toString();
+    }
 
     /**
      * The original string that was parsed.
