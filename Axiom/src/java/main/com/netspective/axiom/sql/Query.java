@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
+ * $Id: Query.java,v 1.3 2003-04-09 04:24:11 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -56,6 +56,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.text.ExpressionText;
 import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -432,11 +433,12 @@ public class Query
 
     public QueryResultSet execute(DatabaseConnValueContext dbvc, String dataSourceId, Object[] overrideParams) throws NamingException, SQLException
     {
+		this.dataSourceId = null == dataSourceId ? null : ValueSources.getInstance().getValueSource(dataSourceId, ValueSources.VSNOTFOUNDHANDLER_NULL);
         return log.isInfoEnabled() ? executeAndRecordStatistics(dbvc, overrideParams, false) : executeAndIgnoreStatistics(dbvc, overrideParams, false);
     }
 
     public QueryResultSet execute(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
     {
-        return log.isInfoEnabled() ? executeAndRecordStatistics(cc, overrideParams, false) : executeAndIgnoreStatistics(cc, overrideParams, false);
+        return log.isInfoEnabled() ? executeAndRecordStatistics(cc, overrideParams, scrollable) : executeAndIgnoreStatistics(cc, overrideParams, scrollable);
     }
 }
