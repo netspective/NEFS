@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.8 2003-03-24 13:24:31 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.9 2003-03-25 20:57:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -156,7 +156,7 @@ public class ValueSources implements MetricsProducer
 
     public Map getValueSourceInstancesMap()
     {
-        return srcClassesMap;
+        return srcInstancesMap;
     }
 
     public void registerValueSource(Class vsClass)
@@ -205,7 +205,6 @@ public class ValueSources implements MetricsProducer
         }
         catch (NoSuchMethodException e)
         {
-            log.error(e);
             return null;
         }
 
