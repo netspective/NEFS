@@ -61,6 +61,9 @@
             </page>
             <page name="access-control" caption="Access Control"/>
             <page name="documents" caption="Documents"/>
+            <page name="lib-dependencies" caption="Dependencies">
+                <body config="console" source="console-page-content:../lib-dependencies.ftl"/>
+            </page>
         </page>
 
         <page name="presentation" caption="Presentation" heading="Presentation Layer">
