@@ -131,7 +131,7 @@
             <param name="param.web-xml-file" value="${web-xml-file}"/>
         </antcall>
         <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="nefs-test-bed"/>
+            <param name="param.test-app-id" value="nefs-sample-petstore"/>
             <param name="param.web-xml-file" value="${web-xml-file}"/>
         </antcall>
         <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
@@ -202,7 +202,7 @@
             <param name="param.test-app-id" value="nefs-sample-survey"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="nefs-test-bed"/>
+            <param name="param.test-app-id" value="nefs-sample-petstore"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-cts"/>
@@ -261,7 +261,7 @@
             <param name="param.test-app-id" value="nefs-sample-survey"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="nefs-test-bed"/>
+            <param name="param.test-app-id" value="nefs-sample-petstore"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-cts"/>
@@ -308,7 +308,7 @@
         <copy todir="${nefs.webapps.home}/nefs-sample-survey" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
-        <copy todir="${nefs.webapps.home}/nefs-test-bed" overwrite="${force}">
+        <copy todir="${nefs.webapps.home}/nefs-sample-petstore" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
         <copy todir="${nefs.webapps.home}/nefs-sample-cts" overwrite="${force}">
@@ -328,7 +328,7 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
     </target>
@@ -343,7 +343,7 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
     </target>
@@ -358,7 +358,7 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
     </target>
@@ -373,7 +373,7 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
     </target>
@@ -388,7 +388,7 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
     </target>
@@ -403,7 +403,7 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-petstore/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
     </target>
