@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FindFileTest.java,v 1.2 2003-03-25 08:03:15 shahbaz.javeed Exp $
+ * $Id: FindFileTest.java,v 1.3 2003-03-25 17:50:50 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.io;
@@ -119,7 +119,7 @@ public class FindFileTest extends TestCase
 		String dirNameOne = foundDir.getCanonicalPath();
 
 		// Look for particular files known to be in this directory...
-        FileFind .FileFindResults ffrFile11C = FileFind.findInPath(new String[] { dirNameOne }, "file11.c", FileFind.FINDINPATHFLAG_DEFAULT);
+        FileFind.FileFindResults ffrFile11C = FileFind.findInPath(new String[] { dirNameOne }, "file11.c", FileFind.FINDINPATHFLAG_DEFAULT);
 		assertNotNull(ffrFile11C);
 		assertTrue(ffrFile11C.isFileFound());
 		assertFalse(ffrFile11C.isFoundFileInJar());
@@ -131,6 +131,16 @@ public class FindFileTest extends TestCase
 		assertFalse(FileFind.isJarFile(file11C.getCanonicalPath()));
 		assertEquals("c", FileFind.getExtension(file11C));
 		assertEquals("c", FileFind.getExtension(file11C.getCanonicalPath()));
+
+		// Look for an absolute filename
+		FileFind.FileFindResults ffr = FileFind.findInPath(new String[] { dirNameOne }, dirNameOne + File.separator + "file11.c", FileFind.FINDINPATHFLAG_DEFAULT);
+		assertTrue(ffr.isFileFound());
+		assertFalse(ffr.isFoundFileAbsoluteAndDoesntExist());
+
+		// Look for an absolute filename
+		FileFind.FileFindResults ffrTwo = FileFind.findInPath(new String[] { dirNameOne }, dirNameOne + File.separator + "file11.c" + "garbage", FileFind.FINDINPATHFLAG_DEFAULT);
+		assertFalse(ffrTwo.isFileFound());
+		assertTrue(ffrTwo.isFoundFileAbsoluteAndDoesntExist());
 	}
 
 	public void testJarFileFinder() throws IOException
@@ -146,6 +156,7 @@ public class FindFileTest extends TestCase
 		String[] searchPath = ffrManifest.getSearchPaths();
 		int searchPathIdx = ffrManifest.getFoundFileInPathItem();
 		assertTrue(FileFind.existsInJarFile(ffrManifest.getFoundFile(), manifest, true));
+		assertTrue(FileFind.existsInJarFile(ffrManifest.getFoundFile(), manifest, false));
 
 		String fileContents = new String (FileFind.getJarEntry(ffrManifest.getFoundFile(), manifest));
 		assertTrue(fileContents.indexOf("Manifest-Version") != -1);
@@ -168,6 +179,11 @@ public class FindFileTest extends TestCase
 		assertNotNull(ffrDirRecursive);
 		assertFalse(ffrDirRecursive.isFileFound());
         assertNull(ffrDirRecursive.getFoundFile());
+
+		assertFalse(FileFind.isJarFile("  "));
+
+		File f = null;
+		assertEquals("", FileFind.getExtension(f));
 	}
 
 }
