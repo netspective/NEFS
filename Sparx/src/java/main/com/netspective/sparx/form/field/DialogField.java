@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.51 2004-03-22 14:31:28 zahara.khan Exp $
+ * $Id: DialogField.java,v 1.52 2004-04-20 13:14:09 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -995,7 +995,8 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     }
 
 	/**
-	 * Adds a child field.
+	 * Adds a child field to current field. If any of the flags that belong to CHILD_CARRY_FLAGS list is <em>set</em> in the parent
+     * then those flags are also set in the child field. This means that the parent will not clear any flags in the child.
 	 *
 	 * @param field child field
 	 */
@@ -1090,7 +1091,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 	{
     	if (dc.getFieldStates().getState(this).getStateFlags().flagIsSet(DialogFieldFlags.REQUIRED))
             return true;
-
+        /*
 		if (children != null)
 		{
             for(int i = 0; i < children.size(); i++)
@@ -1099,6 +1100,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 					return true;
 			}
 		}
+        */
 		return false;
 	}
 
