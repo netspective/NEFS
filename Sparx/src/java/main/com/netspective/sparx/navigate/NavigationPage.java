@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.24 2003-08-04 15:47:33 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.25 2003-08-04 16:49:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -81,6 +81,7 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
@@ -683,6 +684,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
                 getBodyTemplate().process(writer, nc, null);
                 break;
 
+            case NavigationPageBodyType.FORWARD:
+                // this should never happen -- forwards should never get to this point but we'll add a sanity check
+                writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class and the body type is set to FORWARD but forwarding should happen before any response is committed.");
+                break;
+
             case NavigationPageBodyType.INCLUDE:
                 // NOTE: the tricky thing about rd.include is that it has it uses the getReponse().getWriter(), not our writer
                 //       that was passed in -- that may cause some confusion in the output
@@ -720,8 +726,9 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
             // the user's responsibility in the forwarded resource.
 
             String forwardUrl = getForward().getTextValue(nc);
-            RequestDispatcher rd = nc.getRequest().getRequestDispatcher(forwardUrl);
-            rd.forward(nc.getRequest(), nc.getResponse());
+            ServletRequest req = nc.getRequest();
+            RequestDispatcher rd = req.getRequestDispatcher(forwardUrl);
+            rd.forward(req, nc.getResponse());
         }
         else if(bodyAffectsNavigationContext(nc))
         {
