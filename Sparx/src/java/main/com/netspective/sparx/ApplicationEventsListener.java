@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationEventsListener.java,v 1.1 2003-08-17 00:10:02 shahid.shah Exp $
+ * $Id: ApplicationEventsListener.java,v 1.2 2003-08-17 13:37:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -48,6 +48,7 @@ import java.util.Enumeration;
 import java.util.Set;
 import java.util.Iterator;
 import java.sql.SQLException;
+import java.sql.Connection;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -67,7 +68,9 @@ public class ApplicationEventsListener implements ServletContextListener, HttpSe
     private static final Log log = LogFactory.getLog(ApplicationEventsListener.class);
 
     /**
-     * Properly dispose of all Sparx objects stored in a user's session.
+     * Properly dispose of all Sparx objects stored in a user's session. It will timeout any authenticated users,
+     * timeout any scroll states (from pageable queries, query defns, etc), rollback and close any database Connections,
+     * and timeOut all ConnectionContexts.
      * @param session The user's HttpSession where session-specific data is stored in session attributes
      */
     public void cleanupSession(HttpSession session)
@@ -90,11 +93,42 @@ public class ApplicationEventsListener implements ServletContextListener, HttpSe
                 continue;
             }
 
+            if(sessAttrValue instanceof Connection)
+            {
+                Connection sharedConn = (Connection) sessAttrValue;
+                try
+                {
+                    try
+                    {
+                        sharedConn.rollback();
+                    }
+                    finally
+                    {
+                        sharedConn.close();
+                    }
+                }
+                catch (SQLException se)
+                {
+                    log.error("Unable to rollback and close the shared (session) connection.", se);
+                }
+            }
+
             if(sessAttrValue instanceof ConnectionContext)
             {
                 ConnectionContext cc = (ConnectionContext) sessAttrValue;
                 if(cc.getOwnership() != ConnectionContext.OWNERSHIP_AUTHENTICATED_USER)
-                    log.error("A connection context was created and stored in the session but was not marked as being owned by a user. It will still be closed but needs to be marked.", cc.getContextNotClosedException());
+                {
+                    String message = "A connection context for DataSource '"+ cc.getDataSourceId() +"' was created and " +
+                                     "stored in the session but was not marked as being owned by a user. It will still " +
+                                     "be closed but needs to be marked if you don't want this error message to appear again.";
+                    if(log.isErrorEnabled())
+                        log.error(message, cc.getContextNotClosedException());
+                    else
+                    {
+                        System.err.println(message);
+                        cc.getContextNotClosedException().printStackTrace(System.err);
+                    }
+                }
 
                 try
                 {
@@ -126,7 +160,16 @@ public class ApplicationEventsListener implements ServletContextListener, HttpSe
             // if the connection is owned by a particular user than it's probably stored in a session so we're not
             // going to meddle with it (it will be disposed of appropriately in the session cleanup)
             if(cc.getOwnership() != ConnectionContext.OWNERSHIP_AUTHENTICATED_USER)
-                log.error("Connection not closed: ownership = " + cc.getOwnership(), cc.getContextNotClosedException());
+            {
+                String message = "Connection for DataSource '"+ cc.getDataSourceId() +"' not closed (ownership = " + cc.getOwnership() + ")";
+                if(log.isErrorEnabled())
+                    log.error(message, cc.getContextNotClosedException());
+                else
+                {
+                    System.err.println(message);
+                    cc.getContextNotClosedException().printStackTrace(System.err);
+                }
+            }
         }
     }
 
