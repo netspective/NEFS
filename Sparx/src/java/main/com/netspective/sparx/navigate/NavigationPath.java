@@ -290,6 +290,15 @@ public class NavigationPath
             if(defaultChildOfParent)
                 parent.setDefaultChild(this);
             generateAncestorList();
+
+            // in case we got added to our parent after our children were already added to us, recompute the
+            // parents/ancestors for our children -- this will happen if a <page type="xxx"> template is used for a page
+            List children = getChildrenList();
+            if(children != null)
+            {
+                for(int i = 0; i < children.size(); i++)
+                    ((NavigationPage) children.get(i)).setParent(this);
+            }
         }
         else
             parent = null;
