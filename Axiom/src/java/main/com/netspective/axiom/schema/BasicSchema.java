@@ -34,7 +34,6 @@ package com.netspective.axiom.schema;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.Collator;
@@ -300,54 +299,6 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
                 result.add(table.getQueryDefinition());
         }
         return result;
-    }
-
-    public void generateGraphVizErd(Writer writer) throws IOException
-    {
-        writer.write("digraph ");
-        writer.write(getName());
-        writer.write("\n");
-        writer.write("{\n");
-
-        String indent = "    ";
-
-        Tables tables = getTables();
-        for(int i = 0; i < tables.size(); i++)
-        {
-            Table table = tables.get(i);
-            if(table.isApplicationTable())
-            {
-                writer.write(indent);
-                writer.write(table.getName());
-                writer.write(";\n");
-            }
-        }
-
-        writer.write("\n");
-
-        for(int i = 0; i < tables.size(); i++)
-        {
-            Table table = tables.get(i);
-            if(table.isApplicationTable())
-            {
-                Columns columns = table.getParentRefColumns();
-                for(int c = 0; c < columns.size(); c++)
-                {
-                    Column source = columns.get(c);
-                    Column referenced = source.getForeignKey().getReferencedColumns().getSole();
-
-                    writer.write(indent);
-                    writer.write(table.getName());
-                    writer.write(" -> ");
-                    writer.write(referenced.getTable().getName());
-                    if(!source.getName().equalsIgnoreCase(referenced.getName()))
-                        writer.write(" [label=\"" + source.getName() + "=" + referenced.getName() + "\"]");
-                    writer.write(";\n");
-                }
-            }
-        }
-
-        writer.write("}\n");
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

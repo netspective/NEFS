@@ -33,10 +33,11 @@
 package com.netspective.axiom.ant;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+import javax.naming.NamingException;
 
 import org.apache.tools.ant.BuildException;
 
@@ -47,8 +48,12 @@ import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.SqlManagerComponent;
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.axiom.schema.Schema;
+import com.netspective.axiom.schema.Schema.TableTree;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Tables;
+import com.netspective.axiom.schema.diagram.DefaultSchemaDiagramFilter;
+import com.netspective.axiom.schema.diagram.FocusedTableSchemaDiagramFilter;
+import com.netspective.axiom.schema.diagram.GraphvizSchemaDiagramGenerator;
 import com.netspective.axiom.schema.transport.DataImportDtd;
 import com.netspective.axiom.schema.transport.DataImportParseContext;
 import com.netspective.axiom.schema.transport.TableImportStatistic;
@@ -57,6 +62,9 @@ import com.netspective.axiom.value.BasicDatabasePolicyValueContext;
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.axiom.value.DatabasePolicyValueContext;
 import com.netspective.commons.ant.XdmComponentTask;
+import com.netspective.commons.diagram.GraphvizDiagramGenerator;
+import com.netspective.commons.diagram.GraphvizLayoutType;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XdmComponent;
 import com.netspective.commons.xdm.XmlDataModelDtd;
 
@@ -72,6 +80,9 @@ public class AxiomTask extends XdmComponentTask
     private boolean createAbbreviationsMapCommentBlock;
     private File importFile;
     private File graphVizErdFile;
+    private String graphVizErdFocusedFileNameFormat;
+    private String graphVizErdIgnoreColumnNames;
+    private String graphVizErdIgnoreTableNames;
     private File dtdFile;
     private DriverManagerConnectionProvider.DataSourceInfo dsInfo;
     private String dalRootPackage;
@@ -91,6 +102,9 @@ public class AxiomTask extends XdmComponentTask
         createAbbreviationsMapCommentBlock = true;
         importFile = null;
         graphVizErdFile = null;
+        graphVizErdFocusedFileNameFormat = null;
+        graphVizErdIgnoreColumnNames = null;
+        graphVizErdIgnoreTableNames = null;
         dsInfo = null;
         dalRootPackage = null;
         dalClassNameWithoutPackage = DEFAULTCLASSNAME_DAL;
@@ -387,21 +401,72 @@ public class AxiomTask extends XdmComponentTask
         graphVizErdFile = file;
     }
 
+    public void setGraphVizErdFocusedFileNameFormat(String format)
+    {
+        graphVizErdFocusedFileNameFormat = format;
+    }
+
+    public void setGraphVizErdIgnoreColumnNames(String graphVizErdIgnoreColumnNames)
+    {
+        this.graphVizErdIgnoreColumnNames = graphVizErdIgnoreColumnNames;
+    }
+
+    public void setGraphVizErdIgnoreTableNames(String graphVizErdIgnoreTableNames)
+    {
+        this.graphVizErdIgnoreTableNames = graphVizErdIgnoreTableNames;
+    }
+
     public void generateGraphVizErd(SqlManager sqlManager) throws BuildException
     {
         Schema schema = getSchema(sqlManager, true);
         try
         {
-            FileWriter file = new FileWriter(graphVizErdFile);
-            schema.generateGraphVizErd(file);
-            file.close();
-            file = null;
+            final DefaultSchemaDiagramFilter defaultSchemaDiagramFilter = new DefaultSchemaDiagramFilter();
+            if(graphVizErdIgnoreTableNames != null) defaultSchemaDiagramFilter.setIgnoreTableNamesAndPatterns(graphVizErdIgnoreTableNames);
+            if(graphVizErdIgnoreColumnNames != null) defaultSchemaDiagramFilter.setIgnoreColumnNamesAndPatterns(graphVizErdIgnoreColumnNames);
+
+            GraphvizDiagramGenerator diagramGenerator = new GraphvizDiagramGenerator(schema.getName(), true, GraphvizLayoutType.DOT);
+            GraphvizSchemaDiagramGenerator schemaDiagramGenerator = new GraphvizSchemaDiagramGenerator(null, schema, diagramGenerator, defaultSchemaDiagramFilter);
+            schemaDiagramGenerator.generate();
+            diagramGenerator.generateDOTSource(graphVizErdFile);
+            log("Created GraphViz digraph " + graphVizErdFile + " for schema '" + schema.getName() + "'.");
+
+            if(graphVizErdFocusedFileNameFormat != null)
+            {
+                final TableTree tableTree = schema.getStructure();
+                final List children = tableTree.getChildren();
+                for(int i = 0; i < children.size(); i++)
+                {
+                    final Schema.TableTreeNode tableNode = (Schema.TableTreeNode) children.get(i);
+                    final Table table = tableNode.getTable();
+                    final String tableName = table.getName();
+                    final File focusedFile = new File(TextUtils.getInstance().replaceTextValues(graphVizErdFocusedFileNameFormat, "{tableName}", tableName));
+
+                    final FocusedTableSchemaDiagramFilter focusedSchemaDiagramFilter = new FocusedTableSchemaDiagramFilter(tableName);
+                    if(graphVizErdIgnoreTableNames != null) focusedSchemaDiagramFilter.setIgnoreTableNamesAndPatterns(graphVizErdIgnoreTableNames);
+                    if(graphVizErdIgnoreColumnNames != null) focusedSchemaDiagramFilter.setIgnoreColumnNamesAndPatterns(graphVizErdIgnoreColumnNames);
+
+                    diagramGenerator = new GraphvizDiagramGenerator(tableName, true, GraphvizLayoutType.DOT);
+                    schemaDiagramGenerator = new GraphvizSchemaDiagramGenerator(null, schema, diagramGenerator, focusedSchemaDiagramFilter);
+                    schemaDiagramGenerator.generate();
+                    diagramGenerator.generateDOTSource(focusedFile);
+                    log("Created GraphViz digraph " + focusedFile + " for schema '" + schema.getName() + "' table '" + tableName + "'.");
+                }
+            }
+
         }
         catch(IOException e)
         {
             throw new BuildException(e);
         }
-        log("Created GraphViz digraph " + graphVizErdFile + " for schema '" + schema.getName() + "'.");
+        catch(SQLException e)
+        {
+            throw new BuildException(e);
+        }
+        catch(NamingException e)
+        {
+            throw new BuildException(e);
+        }
     }
 
     /* ----- reverse-engineer specific attributes and methods -------------------------------------------------------*/
