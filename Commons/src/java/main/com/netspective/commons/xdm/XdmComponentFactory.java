@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentFactory.java,v 1.3 2003-03-25 20:57:44 shahid.shah Exp $
+ * $Id: XdmComponentFactory.java,v 1.4 2003-05-17 17:51:04 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -118,10 +118,12 @@ public class XdmComponentFactory
         // if we we get to this point, we're parsing an XML file into a given component class
         XdmParseContext pc = null;
         List errors = null;
+        List warnings = null;
 
         // create a new class instance and hang onto the error list for use later
         component = (XdmComponent) discoverClass.newInstance(componentClass, componentClass.getName());
         errors = component.getErrors();
+        warnings = component.getWarnings();
 
         // if the class's attributes and model is not known, get it now
         XmlDataModelSchema.getSchema(componentClass);
@@ -134,6 +136,9 @@ public class XdmComponentFactory
         // if we had some syntax errors, make sure the component records them for later use
         if(pc != null && pc.getErrors().size() != 0)
             errors.addAll(pc.getErrors());
+
+        if(pc != null && pc.getWarnings().size() != 0)
+            warnings.addAll(pc.getWarnings());
 
         // if there are no errors, cache this component so if the file is needed again, it's available immediately
         if((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))
@@ -158,10 +163,12 @@ public class XdmComponentFactory
         XdmParseContext pc = null;
         XdmComponent component = null;
         List errors = null;
+        List warnings = null;
 
         // create a new class instance and hang onto the error list for use later
         component = (XdmComponent) discoverClass.newInstance(componentClass, componentClass.getName());
         errors = component.getErrors();
+        warnings = component.getWarnings();
 
         // if the class's attributes and model is not known, get it now
         XmlDataModelSchema.getSchema(componentClass);
@@ -174,6 +181,9 @@ public class XdmComponentFactory
         // if we had some syntax errors, make sure the component records them for later use
         if(pc != null && pc.getErrors().size() != 0)
             errors.addAll(pc.getErrors());
+
+        if(pc != null && pc.getWarnings().size() != 0)
+            warnings.addAll(pc.getWarnings());
 
         return component;
     }
@@ -200,10 +210,12 @@ public class XdmComponentFactory
                 // if we we get to this point, we're parsing an XML file into a given component class
                 XdmParseContext pc = null;
                 List errors = null;
+                List warnings = null;
 
                 // create a new class instance and hang onto the error list for use later
                 component = (XdmComponent) discoverClass.newInstance(componentClass, componentClass.getName());
                 errors = component.getErrors();
+                warnings = component.getWarnings();
 
                 // if the class's attributes and model is not known, get it now
                 XmlDataModelSchema.getSchema(componentClass);
@@ -216,6 +228,9 @@ public class XdmComponentFactory
                 // if we had some syntax errors, make sure the component records them for later use
                 if(pc != null && pc.getErrors().size() != 0)
                     errors.addAll(pc.getErrors());
+
+                if(pc != null && pc.getWarnings().size() != 0)
+                    warnings.addAll(pc.getWarnings());
 
                 // if there are no errors, cache this component so if the file is needed again, it's available immediately
                 if((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))

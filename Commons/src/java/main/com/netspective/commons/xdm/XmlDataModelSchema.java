@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.14 2003-05-13 02:12:21 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.15 2003-05-17 17:51:04 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -64,6 +64,7 @@ import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.io.InputSourceTracker;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
@@ -1107,7 +1108,10 @@ public class XmlDataModelSchema
                 public void set(XdmParseContext pc, Object parent, String value)
                         throws InvocationTargetException, IllegalAccessException
                 {
-                    m.invoke(parent, new ValueSource[]{ ValueSources.getInstance().getValueSourceOrStatic(value) });
+                    ValueSource vs = ValueSources.getInstance().getValueSourceOrStatic(value);
+                    if(vs == null)
+                        pc.addWarning("Unable to create ValueSource for '"+ value +"' at " + pc.getLocator().getSystemId() +" line "+ pc.getLocator().getLineNumber());
+                    m.invoke(parent, new ValueSource[]{ vs });
                 }
             };
         }

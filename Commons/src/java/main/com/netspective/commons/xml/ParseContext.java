@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ParseContext.java,v 1.3 2003-04-05 18:02:45 shahid.shah Exp $
+ * $Id: ParseContext.java,v 1.4 2003-05-17 17:51:04 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -119,6 +119,7 @@ public class ParseContext
     private Locator locator;
     private boolean throwErrorException;
     private List errors;
+    private List warnings;
     private Source[] transformSources;
 
     public ParseContext(ParseContext parentPC, String text) throws ParserConfigurationException, SAXException
@@ -235,6 +236,7 @@ public class ParseContext
     {
         this.inputSource = inputSource;
         this.errors = new ArrayList();
+        this.warnings = new ArrayList();
 
         if(inputSource.getSystemId() == null)
             throw new ParserConfigurationException("Please set the system id.");
@@ -442,16 +444,26 @@ public class ParseContext
 
     public void addError(String message)
     {
-        errors.add(message);
+        this.errors.add(message);
+    }
+
+    public void addWarning(String message)
+    {
+        this.warnings.add(message);
     }
 
     public void addErrors(List errors)
     {
-        errors.addAll(errors);
+        this.errors.addAll(errors);
     }
 
     public List getErrors()
     {
         return errors;
+    }
+
+    public List getWarnings()
+    {
+        return warnings;
     }
 }
