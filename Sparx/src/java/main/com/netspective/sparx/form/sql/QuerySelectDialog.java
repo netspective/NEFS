@@ -73,7 +73,11 @@ import java.io.Writer;
 import java.sql.SQLException;
 
 /**
- * $Id: QuerySelectDialog.java,v 1.11 2003-11-16 15:18:03 shahid.shah Exp $
+ * Dialog class for executing dynamic queries defined in XML. This class is based on
+ * <code>QueryBuilderDialog</code> and can handle pageable reporting by keeping track of
+ * the scrolled state of the result set.
+ *
+ * @version $Id: QuerySelectDialog.java,v 1.12 2004-02-10 16:48:44 aye.thu Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -196,6 +200,14 @@ public class QuerySelectDialog extends QueryBuilderDialog
 
     }
 
+    /**
+     * Handles the execution of the query select dialog
+     *
+     * @param writer            the writer object to write any output to
+     * @param dc                current dialog context
+     * @throws IOException
+     * @throws DialogExecuteException
+     */
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         DialogFieldStates states = dc.getFieldStates();
@@ -302,7 +314,15 @@ public class QuerySelectDialog extends QueryBuilderDialog
         }
     }
 
-
+    /**
+     * Renders the report output of the query executed by the dialog.
+     *
+     * @param dc                curent dialog context in which the query was executed
+     * @param destination       the output format such as html, csv, etc
+     * @param reportSkin        the skin for the output
+     * @throws IOException
+     * @throws QueryDefinitionException
+     */
     public void renderReport(DialogContext dc, HtmlTabularReportDestination destination, HtmlTabularReportSkin reportSkin) throws IOException, QueryDefinitionException
     {
         QueryReportPanel reportPanel = null;
