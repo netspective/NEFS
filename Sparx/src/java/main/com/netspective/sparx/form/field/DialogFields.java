@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFields.java,v 1.4 2003-07-09 16:51:40 shahid.shah Exp $
+ * $Id: DialogFields.java,v 1.5 2003-09-29 02:51:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -52,6 +52,8 @@ import java.util.StringTokenizer;
 
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContextBeanMemberInfo;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.axiom.schema.Column;
 
 public class DialogFields
 {
@@ -176,6 +178,11 @@ public class DialogFields
         return sublist;
     }
 
+    public DialogField getFieldForColumn(Column column)
+    {
+        return (DialogField) owner.getBindColumnFieldsMap().get(column);
+    }
+
     public void clearFlags(long flags)
     {
         for(int i = 0; i < fields.size(); i++)
@@ -238,6 +245,22 @@ public class DialogFields
         }
 
         return parentMI;
+    }
+
+    public synchronized void finalizeContents(NavigationContext nc)
+    {
+        for(int i = 0; i < fields.size(); i++)
+        {
+            DialogField field = get(i);
+            field.finalizeContents(nc);
+
+            Column bindColumn = field.getBindColumn();
+            if(bindColumn != null)
+            {
+                owner.getBindColumnFieldsMap().put(bindColumn, field);
+                owner.getBindColumnTablesSet().add(bindColumn.getTable());
+            }
+        }
     }
 
     public String toString()
