@@ -51,23 +51,48 @@
  */
 
 /**
- * $Id: DialogFieldConditionalAction.java,v 1.6 2003-06-05 23:22:11 aye.thu Exp $
+ * $Id: DialogFieldConditionalAction.java,v 1.7 2003-06-09 06:41:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
 
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.Template;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
- * Abstract class for defining conditional actions for dialog fields.
+ * Class for defining conditional actions for dialog fields.
  */
-public class DialogFieldConditionalAction
+public class DialogFieldConditionalAction implements TemplateConsumer
 {
     private DialogField sourceField = null;
     private DialogField partnerField = null;
     private String partnerFieldName = null;
     private String jsExpr = null;
+    private String name;
+
+    public static final String ATTRNAME_TYPE = "action";
+    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
+    private static ConditionalTypeTemplateConsumerDefn conditionalActionConsumer = new ConditionalTypeTemplateConsumerDefn();
+    private List conditionalActions = new ArrayList();
+
+    protected static class ConditionalTypeTemplateConsumerDefn extends TemplateConsumerDefn
+    {
+        public ConditionalTypeTemplateConsumerDefn()
+        {
+            super(null, ATTRNAME_TYPE, ATTRNAMES_SET_BEFORE_CONSUMING);
+        }
+
+        public String getNameSpaceId()
+        {
+            return DialogFieldConditionalAction.class.getName();
+        }
+    }
 
     /**
      * Empty constructor
@@ -95,6 +120,24 @@ public class DialogFieldConditionalAction
     {
         setSourceField(sourceField);
         setPartnerFieldName(partnerName);
+    }
+
+    /**
+     * Gets the template cosumer object
+     * @return
+     */
+    public TemplateConsumerDefn getTemplateConsumerDefn()
+    {
+        return conditionalActionConsumer;
+    }
+
+    /**
+     * Registers a template for consumption
+     * @param template
+     */
+    public void registerTemplateConsumption(Template template)
+    {
+        conditionalActions.add(template.getTemplateName());
     }
 
     /**
@@ -160,5 +203,16 @@ public class DialogFieldConditionalAction
     public void setJsExpr(String jsExpr)
     {
         this.jsExpr = jsExpr;
+    }
+
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 }
