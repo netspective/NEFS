@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EnumerationIdRefColumn.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
+ * $Id: EnumerationIdRefColumn.java,v 1.3 2003-06-21 21:38:48 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -82,6 +82,12 @@ public class EnumerationIdRefColumn extends IntegerColumn
         public Class getValueHolderClass()
         {
             return Integer.class;
+        }
+
+        // we never really append id refs, we replace them
+        public void appendText(String text)
+        {
+            setTextValue(text);
         }
 
         public void setTextValue(String value) throws ColumnValueException
