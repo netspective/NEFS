@@ -33,6 +33,7 @@
 package com.netspective.commons.text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Parse comma-separated values (CSV), a common Windows file format.
@@ -84,6 +85,39 @@ public class DelimitedValuesParser
      * the separator char for this parser
      */
     protected char fieldSep;
+
+    /**
+     * parse: break the input String into fields
+     *
+     * @return String array containing each field
+     *         from the original as a String, in order.
+     */
+    public List parseAsList(String line)
+    {
+        StringBuffer sb = new StringBuffer();
+        list.clear();			// discard previous, if any
+        int i = 0;
+
+        if(line.length() == 0)
+        {
+            list.add(line);
+            return list;
+        }
+
+        do
+        {
+            sb.setLength(0);
+            if(i < line.length() && line.charAt(i) == '"')
+                i = advQuoted(line, sb, ++i);	// skip quote
+            else
+                i = advPlain(line, sb, i);
+            list.add(sb.toString());
+            i++;
+        }
+        while(i < line.length());
+
+        return list;
+    }
 
     /**
      * parse: break the input String into fields
