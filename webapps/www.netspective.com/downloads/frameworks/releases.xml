@@ -2,6 +2,43 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.1.2"/>
+        <change-log>
+            <summary>Major enhancements</summary>
+            <change-log-entry>
+                <![CDATA[
+                Adding new method for for defining custom logic or action for execution of a dialog. This model is
+                probably the best model for most types of customization because action classes may be written as
+                standard Java beans with no reference to the Sparx framework packages. Inversion of Control (IoC)
+                using Java reflection is used to analyze the bean and use setXXX() style calls to the action class to
+                set the dialog's fields values in a type-safe manner. Then, once all the field values are set, a simple
+                execute() method is called giving the action class a chance to perform some process. After execution,
+                the action class can either delegate the next action processing back to the framework or provide a
+                framework-independent way of providing the next action's URL (like through workflow analysis). See
+                <a href="http://www.netspective.com/community/kb.php?mode=article&k=4">this tutorial</a> for an example
+                of how to use the new feature.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Added feature that allows insertion template code for Schema Record Editors so that it will be able to
+                handle insertion of multiple rows when there is a "_loop-column" attribute present. This new attribute
+                signifies that multiple rows should be inserted based on the number of values assigned to the specified
+                column. This is useful for cases where a select field returns multiple values.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Updated the display of the state values in dialog debug code so that they show all the values when
+                the field can contain multiple values (e.g SelectField). The displayed format in the Dialog Context
+                Debug panel will be "[x, y, z]" for fields that can have multiple values. Normal fields will still
+                display "x" as before.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Commons" version="7.1.1"/>
         <change-log>
             <summary>Minor enhancements</summary>
@@ -14,6 +51,29 @@
                 Added a new ESCAPE_HTML flag to the &lt;column&gt; tag so that if it is a GeneralColumn and flag is set,
                 then any HTML provided as part of the column data will be escaped automatically. Usage:
                 &gt;column ... escape-html="yes"/&gt;.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Axiom" version="7.1.1"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                <![CDATA[
+                Refactored the AnsiDatabasePolicy so that the DDL generator and the DDL formats are delegated to
+                separate classes and their parameters may be specified via XDM. For example, now when defining the
+                database policy programmers can override one or more of the DDL format attributes by creating a
+                <ddl-formats> or specify an alternate DDL generator by using the <ddl-generator class="x.y.z"/>.
+                <br>
+                &lt;project><br>
+                &nbsp;&nbsp;....<br>
+                &nbsp;&nbsp;&lt;database-policy class="com.netspective.axiom.policy.SqlServerDatabasePolicy"><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;ddl-formats><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;create-table-clause-format>create table tableSpace.${table.name}&lt;/create-table-clause-format><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/ddl-formats><br>
+                &nbsp;&nbsp;&lt;/database-policy><br>
                 ]]>
             </change-log-entry>
         </change-log>
