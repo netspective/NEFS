@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.27 2004-06-23 21:06:45 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.28 2004-07-15 23:23:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -67,13 +67,11 @@ import javax.servlet.ServletResponse;
 
 import org.apache.oro.text.perl.Perl5Util;
 
-import com.netspective.commons.activity.Activity;
-import com.netspective.commons.activity.ActivityManager;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
-public class NavigationContext extends BasicDbHttpServletValueContext implements Activity
+public class NavigationContext extends BasicDbHttpServletValueContext
 {
     private NavigationTree ownerTree;
     private NavigationPage activePage;
@@ -116,25 +114,6 @@ public class NavigationContext extends BasicDbHttpServletValueContext implements
             if (activePage.getRedirect() != null)
                 redirectRequired = true;
         }
-    }
-
-    /**
-     * -------------------------------------------- ACTIVITY MANAGEMENT METHODS for Activity interface ------------ *
-     */
-
-    public ActivityManager getActivityManager()
-    {
-        return getProject();
-    }
-
-    public void broadcastChildActivity(Activity activity)
-    {
-        getProject().broadcastActivity(activity);
-    }
-
-    public Activity getParentActivity()
-    {
-        return null;  // no parent activity (we are a top-level activity)
     }
 
     /**

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.56 2004-04-27 04:05:02 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.57 2004-07-15 23:23:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -66,6 +66,8 @@ import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.commons.RuntimeEnvironment;
 import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.activity.ActivityManager;
+import com.netspective.commons.activity.Activity;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.lang.ClassPath;
@@ -141,6 +143,25 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     {
         initialize(nc.getServlet(), nc.getRequest(), nc.getResponse());
         setNavigationContext(nc);
+    }
+
+    /**
+     * -------------------------------------------- ACTIVITY MANAGEMENT METHODS for Activity interface ------------ *
+     */
+
+    public ActivityManager getActivityManager()
+    {
+        return getProject();
+    }
+
+    public void broadcastChildActivity(Activity activity)
+    {
+        getProject().broadcastActivity(activity);
+    }
+
+    public Activity getParentActivity()
+    {
+        return null;  // no parent activity (we are a top-level activity)
     }
 
     /**

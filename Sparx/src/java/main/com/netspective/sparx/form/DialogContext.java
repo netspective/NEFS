@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.38 2004-06-23 21:06:45 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.39 2004-07-15 23:23:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -113,7 +113,7 @@ import com.netspective.sparx.value.source.DialogFieldValueSource;
  *
  * @see DialogState
  */
-public class DialogContext extends BasicDbHttpServletValueContext implements HtmlPanelValueContext, Activity
+public class DialogContext extends BasicDbHttpServletValueContext implements HtmlPanelValueContext
 {
     private static final Log log = LogFactory.getLog(DialogContext.class);
 
@@ -167,11 +167,6 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     /**
      * -------------------------------------------- ACTIVITY MANAGEMENT METHODS for Activity interface ------------ *
      */
-
-    public ActivityManager getActivityManager()
-    {
-        return getProject();
-    }
 
     public void broadcastChildActivity(Activity activity)
     {
