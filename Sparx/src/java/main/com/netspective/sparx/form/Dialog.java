@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.47 2003-11-19 02:25:04 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.48 2003-11-19 17:27:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -68,6 +68,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.collections.LRUMap;
 import org.apache.tools.ant.Main;
 
 import com.netspective.sparx.navigate.NavigationContext;
@@ -119,6 +120,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
+
     private static DialogTypeTemplateConsumerDefn dialogTypeConsumer = new DialogTypeTemplateConsumerDefn();
     private static int dialogNumber = 0;
 
@@ -150,6 +152,9 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     public static final String PARAMNAME_CONTROLPREFIX = "_dc.";
 
     public static final String ATTRNAME_DIALOG_STATES = "dialog_states";
+    public static final String ATTRNAME_DIALOG_STATES_MAX_ENTRIES = "dialog_states_max_entries";
+    public static final int    DIALOG_STATES_LRU_MAP_DEFAULT_MAX_SIZE = 16; // keep the last 32 dialog states in the session at any time
+
     public static final String PARAMNAME_DIALOG_STATE_ID = ".dialog_state_id";
     public static final String PARAMNAME_POST_EXECUTE_REDIRECT = ".post_exec_redirect";
     public static final String PARAMNAME_SUBMIT_DATA = ".submit_data";
@@ -910,7 +915,8 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         Map dialogStates = (Map) session.getAttribute(ATTRNAME_DIALOG_STATES);
         if(dialogStates == null)
         {
-            dialogStates = new HashMap();
+            Integer maxEntriesAttr = (Integer) session.getAttribute(ATTRNAME_DIALOG_STATES_MAX_ENTRIES);
+            dialogStates = new LRUMap(maxEntriesAttr != null ? maxEntriesAttr.intValue() : DIALOG_STATES_LRU_MAP_DEFAULT_MAX_SIZE);
             session.setAttribute(ATTRNAME_DIALOG_STATES, dialogStates);
         }
 
