@@ -133,7 +133,7 @@
             <field type="select" name="rel_type_id" caption="Relationship" choices="schema-enum:Person_Relationship_Type"
                 prepend-blank="yes" style="combo"/>
             <field type="text" name="rel_descr" caption="Other Relationship" size="16">
-                <conditional action="display" partner-field-name="relationshipResponsible.rel_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                <conditional action="display" partner-field-name="relResp.rel_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
             </field>
         </composite>
         <field type="select" name="care_provider_id" caption="Care Provider ID" choices="query:person.get-all-physicians"/>
