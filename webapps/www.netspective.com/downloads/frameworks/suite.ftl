@@ -40,7 +40,7 @@ latest releases, please refer to the <a href="${servletPath}/support/documentati
         <td><a href="${latestAxiomJarDownloadHref}">${latestAxiomVersion}</a></td>
     </tr>
     <tr>
-        <td>Commons Core Library</td>
+        <td>Sparx Application Platform</td>
         <td><a href="${latestSparxJarDownloadHref}">${latestSparxVersion}</a></td>
     </tr>
 </table>
