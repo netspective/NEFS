@@ -32,6 +32,8 @@
  */
 package com.netspective.sparx.navigate;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -64,5 +66,5 @@ public interface NavigationControllerAuthenticatedUser
      *
      * @param nc The NavigationContext which led to the invalid tree being used
      */
-    public void redirectToUserTree(NavigationContext nc);
+    public void redirectToUserTree(NavigationContext nc) throws IOException;
 }
