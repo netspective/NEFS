@@ -146,6 +146,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private String abbrev;
     private String caption;
     private String xmlNodeName;
+    private String javaClassName;
     private List tableTypesConsumed = new ArrayList();
     private String description;
     private Tables parentTables = new TablesCollection();
@@ -345,6 +346,21 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     public void setCaption(String caption)
     {
         this.caption = caption;
+    }
+
+    public String getJavaClassName()
+    {
+        return javaClassName == null ? TextUtils.getInstance().xmlTextToJavaIdentifier(getName(), true) : javaClassName;
+    }
+
+    public String getJavaClassName(String defaultJavaClassName)
+    {
+        return javaClassName == null ? defaultJavaClassName : javaClassName;
+    }
+
+    public void setJavaClassName(String javaClassName)
+    {
+        this.javaClassName = javaClassName;
     }
 
     public String getDescription()
