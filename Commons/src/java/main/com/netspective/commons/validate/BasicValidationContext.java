@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicValidationContext.java,v 1.2 2003-05-11 17:51:41 shahid.shah Exp $
+ * $Id: BasicValidationContext.java,v 1.3 2004-03-23 20:33:30 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
@@ -70,6 +70,14 @@ public class BasicValidationContext implements ValidationContext
     {
         this();
         this.valueContext = valueContext;
+    }
+
+    public void reset()
+    {
+        valid = true;
+        errorsByKey.clear();
+        contextErrors = getValidationErrorsForScope(VALIDATIONSCOPE_ENTIRE_CONTEXT);
+        allErrors.clear();
     }
 
     public boolean isValid()
