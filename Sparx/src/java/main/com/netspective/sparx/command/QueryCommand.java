@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.4 2003-06-12 14:36:08 shahid.shah Exp $
+ * $Id: QueryCommand.java,v 1.5 2003-06-30 02:44:27 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -59,6 +59,7 @@ package com.netspective.sparx.command;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogDebugFlags;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.HtmlTabularReportPanel;
 import com.netspective.sparx.panel.QueryReportPanel;
@@ -77,6 +78,8 @@ import java.io.Writer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class QueryCommand extends AbstractHttpServletCommand
 {
@@ -321,18 +324,34 @@ public class QueryCommand extends AbstractHttpServletCommand
 
         if(additionalDialogCommand != null)
             writer.write("<table><tr valign='top'><td>");
-
         if(queryDialogName != null)
         {
+
             com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
             if(queryDialog != null)
                 queryDialog.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
         }
         else
         {
-            HtmlTabularReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
-            if(panel != null)
-                panel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+            // if rows per page has been set without a specific query dialog, use the default one
+            if (rowsPerPage < UNLIMITED_ROWS && rowsPerPage > 0)
+            {
+                queryDialogName = "default";
+                com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
+                if(queryDialog != null)
+                {
+                    // auto-execute the dialog
+                    queryDialog.setRowsPerPage(rowsPerPage);
+                    ((HttpServletRequest)nc.getRequest()).setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
+                    queryDialog.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+                }
+            }
+            else
+            {
+                HtmlTabularReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
+                if(panel != null)
+                    panel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+            }
         }
 
         if(additionalDialogCommand != null)
