@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.3 2003-04-26 17:24:52 shahid.shah Exp $
+ * $Id: Table.java,v 1.4 2003-04-29 02:26:45 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -47,6 +47,7 @@ package com.netspective.axiom.schema;
 import java.sql.SQLException;
 import java.lang.reflect.InvocationTargetException;
 import java.io.IOException;
+import java.util.List;
 import javax.naming.NamingException;
 
 import com.netspective.axiom.ConnectionContext;
@@ -354,4 +355,9 @@ public interface Table
     /* ------------------------------------------------------------------------------------------------------------- */
 
     public Schema.TableTreeNode createTreeNode(Schema.TableTree owner, Schema.TableTreeNode parent, int level);
+
+    /**
+     * Gets the list of table types consumed by the table.
+     */
+    public List getTableTypes();
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.10 2003-04-29 02:27:41 shahid.shah Exp $
+ * $Id: TemplateContentPanel.java,v 1.1 2003-04-29 02:27:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -49,26 +49,37 @@ import java.io.IOException;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.template.TemplateProcessor;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
-public class HtmlLayoutPanel implements HtmlPanel
+public class TemplateContentPanel implements HtmlOutputPanel
 {
     private static int panelNumber = 0;
     private int height = -1, width = -1;
-    private HtmlPanels children = new BasicHtmlPanels();
     private HtmlPanelFrame frame;
     private HtmlPanelBanner banner;
-    private String identifier = "HtmlLayoutPanel_" + getNextPanelNumber();
+    private String identifier = "TemplateContentPanel_" + getNextPanelNumber();
+    private TemplateProcessor bodyTemplate;
 
     synchronized static private final int getNextPanelNumber()
     {
         return ++panelNumber;
     }
 
-    public HtmlLayoutPanel()
+    public TemplateContentPanel()
     {
         frame = createFrame();
         banner = createBanner();
-        banner = createBanner();
+    }
+
+    public TemplateProcessor createBody()
+    {
+        return new FreeMarkerTemplateProcessor();
+    }
+
+    public void addBody(TemplateProcessor templateProcessor)
+    {
+        bodyTemplate = templateProcessor;
     }
 
     public String getIdentifier()
@@ -121,16 +132,6 @@ public class HtmlLayoutPanel implements HtmlPanel
         banner = value;
     }
 
-    public HtmlLayoutPanel createPanels()
-    {
-        return new HtmlLayoutPanel();
-    }
-
-    public void addPanels(HtmlLayoutPanel panel)
-    {
-        children.add(panel);
-    }
-
     public HtmlPanelFrame createFrame()
     {
         if(frame == null)
@@ -145,89 +146,22 @@ public class HtmlLayoutPanel implements HtmlPanel
         return banner;
     }
 
-    public boolean affectsNavigationContext(NavigationContext nc)
-    {
-        for(int i = 0; i < children.size(); i++)
-        {
-            if(children.get(i).affectsNavigationContext(nc))
-                return true;
-        }
-
-        return false;
-    }
-
-    public int getStyle()
-    {
-        return children.getStyle();
-    }
-
-    public void setStyle(HtmlPanelsStyleEnumeratedAttribute style)
-    {
-        children.setStyle(style);
-    }
-
-    public void addPanel(HtmlPanel panel)
-    {
-        children.add(panel);
-    }
-
     public HtmlPanels getChildren()
     {
-        return children;
+        return null;
+    }
+
+    public boolean affectsNavigationContext(NavigationContext nc)
+    {
+        return false;
     }
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        switch(getStyle())
-        {
-            case HtmlPanelsStyleEnumeratedAttribute.VERTICAL:
-                for(int i = 0; i < children.size(); i++)
-                {
-                    writer.write("<div style='padding-bottom: 6'>");
-                    children.get(i).render(writer, nc, theme, flags);
-                    writer.write("</div>");
-                }
-                break;
-
-            case HtmlPanelsStyleEnumeratedAttribute.HORIZONTAL:
-                writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
-                for(int i = 0; i < children.size(); i++)
-                {
-                    writer.write("<td>");
-                    children.get(i).render(writer, nc, theme, flags);
-                    writer.write("</td>");
-                }
-                writer.write("</tr></table>");
-                break;
-
-            case HtmlPanelsStyleEnumeratedAttribute.TABBED:
-                HtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
-                theme.getPanelSkin().renderPanelRegistration(writer, vc);
-                theme.getPanelSkin().renderFrameBegin(writer, vc);
-                writer.write("<script>startParentPanel(ALL_PANELS.getPanel(\""+ getIdentifier() +"\"))</script>\n");
-                writer.write("<div class=\"panel-tabs-output\">");
-                writer.write("<table id=\""+ getIdentifier() + "_tabs\" class=\"panel-tabs-output\"><tr>");
-                for(int i = 0; i < children.size(); i++)
-                {
-                    HtmlPanel panel = children.get(i);
-                    writer.write("<td>");
-                    writer.write("  <a id=\""+ panel.getIdentifier() +"_tab\" class=\"panel-tab-output\" href=\"javascript:ALL_PANELS.getPanel('"+ getIdentifier() +"').children.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">");
-                    writer.write(      panel.getFrame().getHeading().getTextValue(vc));
-                    writer.write("  </a></td>");
-                }
-                writer.write("</tr></table></div>");
-
-                for(int i = 0; i < children.size(); i++)
-                {
-                    HtmlPanel panel = children.get(i);
-                    writer.write("<div id=\""+ panel.getIdentifier() + "_container\" style='display: none'>");
-                    panel.render(writer, nc, theme, HtmlPanel.RENDERFLAG_NOFRAME);
-                    writer.write("</div>");
-                    writer.write("<script>ACTIVE_PANEL_PARENT.getPanel(\""+ panel.getIdentifier() +"\").setStyle(PANELSTYLE_TABBED);</script>\n");
-                }
-                theme.getPanelSkin().renderFrameEnd(writer, vc);
-                writer.write("<script>endParentPanel()</script>\n");
-                break;
-        }
+        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
+        theme.getPanelSkin().renderFrameBegin(writer, vc);
+        bodyTemplate.process(writer, nc);
+        theme.getPanelSkin().renderFrameEnd(writer, vc);
     }
+
 }

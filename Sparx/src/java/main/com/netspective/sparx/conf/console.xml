@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.23 2003-04-28 16:01:39 shahid.shah Exp $
+  * $Id: console.xml,v 1.24 2003-04-29 02:27:41 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -14,7 +14,12 @@
     <navigation-tree name="ace" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" default="yes" sub-heading="trying something here">
             <panels>
-                <panel class="com.netspective.sparx.console.panel.app.XdmComponentsPanel"/>
+                <panel class="com.netspective.sparx.panel.TemplateContentPanel">
+                    <frame heading="Hello"/>
+                    <body>
+                        <![CDATA[ <b>Hello</b> World! ${nc.pageHeading} ]]>
+                    </body>
+                </panel>
             </panels>
         </page>
         <page name="application" caption="Application">
@@ -125,6 +130,7 @@
                             <frame heading="Schema Tables"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesPanel" view="all"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesDescriptionsPanel" view="all"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesInheritancePanel" view="all"/>
                         </panels>
                     </panels>
                 </page>
@@ -134,6 +140,7 @@
                             <frame heading="Table Hierarchy" allow-collapse="yes"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesPanel" view="active-table"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesDescriptionsPanel" view="active-table"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesInheritancePanel" view="active-table"/>
                         </panels>
                         <panels style="tabbed">
                             <frame heading="Table Columns"/>

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.13 2003-04-24 17:01:11 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.14 2003-04-29 02:27:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -63,6 +63,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.util.HttpUtils;
+import com.netspective.sparx.template.TemplateProcessor;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -74,7 +75,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class NavigationPage extends NavigationPath
 {
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 4];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 7];
 
     static
     {
@@ -83,7 +84,10 @@ public class NavigationPage extends NavigationPath
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "REJECT_FOCUS", Flags.REJECT_FOCUS);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_BODY", Flags.HAS_BODY);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "IGNORE_PAGE_CMD", Flags.IGNORE_PAGE_CMD);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 5] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_RETAIN_PARAMS", Flags.INHERIT_RETAIN_PARAMS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 6] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_ASSIGN_STATE_PARAMS", Flags.INHERIT_ASSIGN_STATE_PARAMS);
     }
 
     public class Flags extends NavigationPath.Flags
@@ -91,8 +95,11 @@ public class NavigationPage extends NavigationPath
         public static final int REJECT_FOCUS = NavigationPath.Flags.START_CUSTOM;
         public static final int HAS_BODY = REJECT_FOCUS * 2;
         public static final int HIDDEN = HAS_BODY * 2;
-        public static final int HAS_CONDITIONAL_ACTIONS = HIDDEN * 2;
-        public static final int START_CUSTOM = HAS_CONDITIONAL_ACTIONS * 2;
+        public static final int IGNORE_PAGE_CMD = HIDDEN * 2;
+        public static final int HAS_CONDITIONAL_ACTIONS = IGNORE_PAGE_CMD * 2;
+        public static final int INHERIT_RETAIN_PARAMS = HAS_CONDITIONAL_ACTIONS * 2;
+        public static final int INHERIT_ASSIGN_STATE_PARAMS = INHERIT_RETAIN_PARAMS * 2;
+        public static final int START_CUSTOM = INHERIT_ASSIGN_STATE_PARAMS * 2;
 
         public FlagDefn[] getFlagsDefns()
         {
@@ -125,10 +132,9 @@ public class NavigationPage extends NavigationPath
     private ValueSource subHeading;
     private ValueSource retainParams;
     private ValueSource assignStateParams;
-    private boolean inheritRetainParams = true;
-    private boolean inheritAssignStateParams = true;
     private ValueSource redirect;
     private HtmlLayoutPanel bodyPanel;
+    private TemplateProcessor bodyTemplate;
 
     /* --- XDM Callbacks --------------------------------------------------------------------------------------------*/
 
@@ -421,32 +427,12 @@ public class NavigationPage extends NavigationPath
         return result;
     }
 
-    public boolean isInheritRetainParams()
-    {
-        return inheritRetainParams;
-    }
-
-    public void setInheritRetainParams(boolean inheritRetainParams)
-    {
-        this.inheritRetainParams = inheritRetainParams;
-    }
-
-    public boolean isInheritAssignStateParams()
-    {
-        return inheritAssignStateParams;
-    }
-
-    public void setInheritAssignStateParams(boolean inheritAssignStateParams)
-    {
-        this.inheritAssignStateParams = inheritAssignStateParams;
-    }
-
     public ValueSource getAssignStateParams()
     {
         if(assignStateParams != null)
             return assignStateParams;
 
-        if(! inheritAssignStateParams)
+        if(! getFlags().flagIsSet(Flags.INHERIT_ASSIGN_STATE_PARAMS))
             return null;
 
         NavigationPage parentPage = (NavigationPage) getParent();
@@ -466,7 +452,7 @@ public class NavigationPage extends NavigationPath
         if(retainParams != null)
             return retainParams;
 
-        if(! inheritRetainParams)
+        if(! getFlags().flagIsSet(Flags.INHERIT_RETAIN_PARAMS))
             return null;
 
         NavigationPage parentPage = (NavigationPage) getParent();
@@ -496,6 +482,12 @@ public class NavigationPage extends NavigationPath
         return bodyPanel;
     }
 
+    public void addBody(TemplateProcessor templateProcessor)
+    {
+        bodyTemplate = templateProcessor;
+        getFlags().setFlag(Flags.HAS_BODY);
+    }
+
     public boolean requireLogin(NavigationContext nc)
     {
         return true;
@@ -522,6 +514,8 @@ public class NavigationPage extends NavigationPath
     {
         if(bodyPanel != null)
             bodyPanel.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDEFFLAGS_DEFAULT);
+        else if(bodyTemplate != null)
+            bodyTemplate.process(writer, nc);
         else
             writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.7 2003-04-26 17:24:52 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.8 2003-04-29 02:26:45 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -173,6 +173,11 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     public void registerTemplateConsumption(Template template)
     {
         tableTypesConsumed.add(template.getTemplateName());
+    }
+
+    public List getTableTypes()
+    {
+        return tableTypesConsumed;
     }
 
     public TemplateProducers getTemplateProducers()

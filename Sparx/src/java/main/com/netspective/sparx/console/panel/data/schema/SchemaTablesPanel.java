@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTablesPanel.java,v 1.1 2003-04-28 16:01:39 shahid.shah Exp $
+ * $Id: SchemaTablesPanel.java,v 1.2 2003-04-29 02:27:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -340,11 +340,14 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             {
                 this.rows = new ArrayList();
 
-                for(int i = 0; i < structureRows.size(); i++)
+                if(selectedRow != null)
                 {
-                    StructureRow checkRow = (StructureRow) structureRows.get(i);
-                    if(checkRow == selectedRow || selectedRow.ancestors.contains(checkRow) || (checkRow.ancestors != null && checkRow.ancestors.contains(selectedRow)))
-                        this.rows.add(structureRows.get(i));
+                    for(int i = 0; i < structureRows.size(); i++)
+                    {
+                        StructureRow checkRow = (StructureRow) structureRows.get(i);
+                        if(checkRow == selectedRow || selectedRow.ancestors.contains(checkRow) || (checkRow.ancestors != null && checkRow.ancestors.contains(selectedRow)))
+                            this.rows.add(structureRows.get(i));
+                    }
                 }
 
                 lastRow = this.rows.size() - 1;
