@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ClassPathTask.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: ClassPathTask.java,v 1.2 2003-08-09 16:36:34 shahid.shah Exp $
  */
 
 package com.netspective.commons.ant;
@@ -162,7 +162,7 @@ public class ClassPathTask extends Task
         {
             ClassPath.ClassPathInfo[] cpi = additionalClassPath != null ?
                 ClassPath.getClassPaths(additionalClassPath.toString()) :
-                ClassPath.getClassPaths();
+                ClassPath.getSystemClassPaths();
 
             for(int i = 0; i < cpi.length; i++)
             {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ClassPath.java,v 1.2 2003-03-26 00:36:59 shahid.shah Exp $
+ * $Id: ClassPath.java,v 1.3 2003-08-09 16:36:34 shahid.shah Exp $
  */
 
 package com.netspective.commons.lang;
@@ -48,14 +48,39 @@ import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.Map;
+import java.util.HashMap;
 
 public class ClassPath
 {
+    private static final Map CLASS_PATH_PROVIDERS = new HashMap();
+
+    public interface ClassPathProvider
+    {
+        public String getClassLoaderImplementationClassName();
+        public String getClassLoaderClassPath();
+    }
+
+    public static Map getClassPathProviders()
+    {
+        return CLASS_PATH_PROVIDERS;
+    }
+
+    public static ClassPathProvider getClassPathProvider(ClassLoader classLoader)
+    {
+        return (ClassPathProvider) CLASS_PATH_PROVIDERS.get(classLoader.getClass().getName());
+    }
+
+    public static void registerClassPathProvider(ClassPathProvider provider)
+    {
+        CLASS_PATH_PROVIDERS.put(provider.getClassLoaderImplementationClassName(), provider);
+    }
+
     /**
      * Prints the absolute pathname of the class file containing the specified class name, as prescribed by
      * the class path.
      *
-     * @param cls The class whose class location we're interested in
+     * @param clsName The class whose class location we're interested in
      */
     public static String getClassFileName(String clsName)
     {
@@ -172,8 +197,27 @@ public class ClassPath
         return (ClassPathInfo[]) classPathList.toArray(new ClassPathInfo[classPathList.size()]);
     }
 
-    public static ClassPathInfo[] getClassPaths()
+    public static ClassPathInfo[] getClassPaths(ClassLoader classLoader)
+    {
+        ClassPathProvider provider = getClassPathProvider(classLoader);
+        if(provider != null)
+            return getClassPaths(provider.getClassLoaderClassPath());
+
+        return getSystemClassPaths();
+    }
+
+    public static ClassPathInfo[] getDefaultClassLoaderClassPaths()
+    {
+        return getClassPaths(ClassPath.class.getClassLoader());
+    }
+
+    public static ClassPathInfo[] getSystemClassPaths()
     {
         return getClassPaths(System.getProperty("java.class.path"));
+    }
+
+    public static ClassLoader getDefaultClassLoader()
+    {
+        return ClassPath.class.getClassLoader();
     }
 }
