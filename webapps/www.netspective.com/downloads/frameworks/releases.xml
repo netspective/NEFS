@@ -6,9 +6,11 @@
         <change-log>
             <summary>Minor enhancement</summary>
             <change-log-entry>
+                <![CDATA[
                 Added a minor enhancement to the stored procedure feature to support a new
                 datatype, <code>CHAR</code>. Developers can utilize this new data type for stored procedure parameters
-                using the following setting: <code>sql-type="char"</code>. 
+                using the following setting: <code>sql-type="char"</code>.
+                ]]>
             </change-log-entry>
         </change-log>
     </release>
