@@ -4,12 +4,14 @@
     <release>
         <product name="Sparx" version="7.0.21"/>
         <change-log>
-            <summary>Minor bug fixes and minor enhancement</summary>
+            <summary>Minor bug fixes and enhancements</summary>
             <change-log-entry>
                 Added a new rule that a field that is hidden on the client side should not have the required validation
                 rule run (on the client side). The server side check remains the responsibility of the programmer but a
                 sample is provided in the NEFS Sampler application's "Sample Conditionals" input dialog example to
-                help show how the server side can be done by adding a second conditional tag.
+                help show how the server side can be done by adding a second conditional tag.  NOTE: this change was
+                made to the dialog.js (JavaScript) file so be sure to update your local APP_ROOT/sparx folder (use
+                the upgrade instructions found on this site).
             </change-log-entry>
             <change-log-entry>
                 Added 'summary' and 'description' properties to Navigation Pages so that skins may use those attributes
