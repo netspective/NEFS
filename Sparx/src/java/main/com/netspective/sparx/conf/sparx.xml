@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.25 2003-06-12 14:36:08 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.26 2003-06-19 03:27:04 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -40,9 +40,15 @@
     <dialog-field-type name="social-security" class="com.netspective.sparx.form.field.type.SocialSecurityField"/>
     <dialog-field-type name="zip-code" class="com.netspective.sparx.form.field.type.ZipCodeField"/>
     <dialog-field-type name="phone" class="com.netspective.sparx.form.field.type.PhoneField"/>
-    <dialog-field-type name="date" class="com.netspective.sparx.form.field.type.DateTimeField" data-type="date-only"/>
-    <dialog-field-type name="time" class="com.netspective.sparx.form.field.type.DateTimeField" data-type="time-only"/>
-    <dialog-field-type name="date-time" class="com.netspective.sparx.form.field.type.DateTimeField" data-type="date-and-time"/>
+    <dialog-field-type name="date" class="com.netspective.sparx.form.field.type.DateTimeField">
+        <data-type>date-only</data-type>
+    </dialog-field-type>
+    <dialog-field-type name="time" class="com.netspective.sparx.form.field.type.DateTimeField">
+        <data-type>time-only</data-type>
+    </dialog-field-type>
+    <dialog-field-type name="date-time" class="com.netspective.sparx.form.field.type.DateTimeField" >
+        <data-type>date-and-time</data-type>
+    </dialog-field-type>
     <dialog-field-type name="duration" class="com.netspective.sparx.form.field.type.DurationField"/>
     <dialog-field-type name="html" class="com.netspective.sparx.form.field.type.HtmlField"/>
     <dialog-field-type name="file" class="com.netspective.sparx.form.field.type.FileField"/>
