@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: ForeignKey.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
+ * $Id: ForeignKey.java,v 1.3 2004-07-25 21:11:30 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
 import java.sql.SQLException;
+
 import javax.naming.NamingException;
 
 import com.netspective.axiom.ConnectionContext;
@@ -62,6 +63,8 @@ public interface ForeignKey extends Constraint
     public void setReference(TableColumnsReference reference);
 
     public short getType();
+
+    public boolean isLogical();
 
     public Columns getSourceColumns();
 

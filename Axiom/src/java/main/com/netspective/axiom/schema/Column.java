@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Column.java,v 1.11 2004-06-10 19:57:45 shahid.shah Exp $
+ * $Id: Column.java,v 1.12 2004-07-25 21:11:30 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -262,6 +262,11 @@ public interface Column extends TemplateConsumer
      * Sets this column's foreign key
      */
     public void setLookupRef(String reference);
+
+    /**
+     * Sets this column's foreign key as a logical one (instead of physical)
+     */
+    public void setForeignKeyLogical(boolean logical);
 
     /**
      * Sets this column's foreign key as a parent-ref foreign key

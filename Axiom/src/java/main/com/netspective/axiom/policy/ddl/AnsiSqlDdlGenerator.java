@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlGenerator.java,v 1.1 2004-03-26 02:15:36 shahid.shah Exp $
+ * $Id: AnsiSqlDdlGenerator.java,v 1.2 2004-07-25 21:11:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -362,7 +362,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 if(gc.getDatabasePolicy().supportsForeignKeyConstraints())
                 {
                     ForeignKey fKey = column.getForeignKey();
-                    if(fKey != null)
+                    if(fKey != null && ! fKey.isLogical())
                     {
                         /*
                           1) if visitedTables is not provided, we'll assume that we'll place the foreign key contraints inside the table

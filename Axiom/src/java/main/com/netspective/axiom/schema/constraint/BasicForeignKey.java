@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicForeignKey.java,v 1.5 2004-06-21 04:28:59 shahid.shah Exp $
+ * $Id: BasicForeignKey.java,v 1.6 2004-07-25 21:11:30 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.constraint;
@@ -75,6 +75,7 @@ public class BasicForeignKey implements ForeignKey
     private TableColumnsReference reference;
     private Columns source;
     private Columns referenced;
+    private boolean logical;
 
     public BasicForeignKey(Column source, TableColumnsReference reference)
     {
@@ -109,6 +110,16 @@ public class BasicForeignKey implements ForeignKey
     public short getType()
     {
         return ForeignKey.FKEYTYPE_LOOKUP;
+    }
+
+    public boolean isLogical()
+    {
+        return logical;
+    }
+
+    public void setLogical(boolean logical)
+    {
+        this.logical = logical;
     }
 
     public Columns getSourceColumns()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.22 2004-06-21 04:28:59 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.23 2004-07-25 21:11:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -699,6 +699,12 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     public void setLookupRef(String reference)
     {
         setForeignKey(new BasicForeignKey(this, new BasicTableColumnReference(schema, reference)));
+    }
+
+    public void setForeignKeyLogical(boolean logical)
+    {
+        if(foreignKey != null)
+            ((BasicForeignKey) foreignKey).setLogical(logical);
     }
 
     public void setParentRef(String reference)
