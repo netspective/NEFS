@@ -39,12 +39,10 @@
  */
 
 /**
- * $Id: Util.java,v 1.1 2003-11-13 17:38:45 shahid.shah Exp $
+ * $Id: Util.java,v 1.2 2003-11-16 02:03:35 shahid.shah Exp $
  */
 
 package app;
-
-import auto.dal.db.DataAccessLayer;
 
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.DialogContext;
