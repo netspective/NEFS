@@ -39,38 +39,40 @@
  */
 package com.netspective.medigy.reference.custom.party;
 
-import com.netspective.medigy.model.common.EntitySeedData;
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
-
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
+import javax.ejb.Table;
 import javax.ejb.Transient;
 
+import com.netspective.medigy.model.common.EntitySeedData;
+import com.netspective.medigy.model.common.EntitySeedDataProvider;
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+
 @Entity
-public class PartyRoleType extends AbstractCustomReferenceEntity implements  EntitySeedData
+        @Table(name = "Party_Role_Type")
+        public class PartyRoleType extends AbstractCustomReferenceEntity implements EntitySeedDataProvider
 {
 
     /**
-     *
-     *  PROSPECT, SHAREHOLDER
-
-        // PERSON ROLES
-        EMPLOYEE CONTRACTOR FAMILY_MEMBER CONTACT
-
-        // ORGANIZATION ROLES
-        PARENT_ORGANIZATION DEPARTMENT SUBSIDIARY DIVISION OTHER_ORGANIZATION_UNIT INTERNAL_ORGANIZATION
-        PARTNER HOUSEHOLD SUPPLIER ASSOCIATION COMPETITOR REGULATORY_AGENCY AGENT DISTRIBUTOR
-
-        // CUSTOMER ROLES
-        BILL_TO_CUSTOMER SHIP_TO_CUSTOMER END_USER_CUSTOMER
+     * PROSPECT, SHAREHOLDER
+     * <p/>
+     * // PERSON ROLES
+     * EMPLOYEE CONTRACTOR FAMILY_MEMBER CONTACT
+     * <p/>
+     * // ORGANIZATION ROLES
+     * PARENT_ORGANIZATION DEPARTMENT SUBSIDIARY DIVISION OTHER_ORGANIZATION_UNIT INTERNAL_ORGANIZATION
+     * PARTNER HOUSEHOLD SUPPLIER ASSOCIATION COMPETITOR REGULATORY_AGENCY AGENT DISTRIBUTOR
+     * <p/>
+     * // CUSTOMER ROLES
+     * BILL_TO_CUSTOMER SHIP_TO_CUSTOMER END_USER_CUSTOMER
      */
     public PartyRoleType()
     {
     }
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getPartyRoleTypeId()
+            public Long getPartyRoleTypeId()
     {
         return super.getSystemId();
     }
@@ -81,14 +83,10 @@ public class PartyRoleType extends AbstractCustomReferenceEntity implements  Ent
     }
 
     @Transient
-    public String[] getColumnNames()
+            public EntitySeedData getEntitySeedData()
     {
-        return new String[] {"code", "description"};
-    }
-
-    @Transient
-    public Object[][] getSeedData()
-    {
-        return new Object[][] {{"P", "Prospect"}};
+        return createSeedData(new CustomSeedData[]{
+            new CustomSeedData("P", "Prospect", "A sales prospect")
+        });
     }
 }

@@ -43,23 +43,25 @@
  */
 package com.netspective.medigy.util;
 
-import com.netspective.medigy.model.common.EntitySeedData;
-import com.netspective.medigy.model.common.EntitySeedDataProvider;
-import com.netspective.medigy.reference.CachedReferenceEntity;
-import com.netspective.medigy.reference.ReferenceEntity;
-import org.hibernate.HibernateException;
-import org.hibernate.MappingException;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.HSQLDialect;
-
-import javax.ejb.Table;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.ejb.Table;
+
+import org.hibernate.HibernateException;
+import org.hibernate.MappingException;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.HSQLDialect;
+
+import com.netspective.medigy.model.common.EntitySeedData;
+import com.netspective.medigy.model.common.EntitySeedDataProvider;
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
 
 public class HibernateConfiguration extends AnnotationConfiguration
 {
@@ -105,10 +107,7 @@ public class HibernateConfiguration extends AnnotationConfiguration
         }
 
         if (EntitySeedDataProvider.class.isAssignableFrom(aClass))
-        {
-            if (!entitiesWithSeedDataSet.contains(aClass))
-                entitiesWithSeedDataSet.add(aClass);
-        }
+            entitiesWithSeedDataSet.add(aClass);
 
         return super.addAnnotatedClass(aClass);
     }
@@ -144,7 +143,14 @@ public class HibernateConfiguration extends AnnotationConfiguration
         }
         for (final Class seedDataEntityClass : entitiesWithSeedDataSet)
         {
-            final String tableName = ((Table) seedDataEntityClass.getAnnotation(Table.class)).name();
+            final Table tableAnn = (Table) seedDataEntityClass.getAnnotation(Table.class);
+            if (tableAnn == null)
+                throw new HibernateException(seedDataEntityClass + " does not have a Table annotation.");
+
+            final String tableName = tableAnn.name();
+            if (tableName == null)
+                throw new HibernateException(seedDataEntityClass + " does not have a name property set in the Table annotation.");
+
             try
             {
                 final EntitySeedDataProvider esdp = (EntitySeedDataProvider) seedDataEntityClass.newInstance();
@@ -178,7 +184,9 @@ public class HibernateConfiguration extends AnnotationConfiguration
                             if (column != 0)
                                 rowSql.append(", ");
                             final Object element = rowData[column];
-                            if (element instanceof Number)
+                            if (element == null)
+                                rowSql.append("NULL");
+                            else if (element instanceof Number)
                                 rowSql.append(element.toString());
                             else
                                 rowSql.append("'" + element.toString().replaceAll("'", "''") + "'");

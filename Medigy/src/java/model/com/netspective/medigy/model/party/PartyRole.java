@@ -39,10 +39,8 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.model.common.EntitySeedDataProvider;
-import com.netspective.medigy.model.common.EntitySeedData;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -51,16 +49,16 @@ import javax.ejb.GeneratorType;
 import javax.ejb.Id;
 import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
+import javax.ejb.OneToMany;
 import javax.ejb.OneToOne;
 import javax.ejb.Table;
-import javax.ejb.OneToMany;
-import javax.ejb.Transient;
-import java.util.Set;
-import java.util.HashSet;
+
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
 @Entity
-@Table(name = "Party_Role")
-public class PartyRole extends AbstractDateDurationEntity implements Comparable,  EntitySeedDataProvider
+        @Table(name = "Party_Role")
+        public class PartyRole extends AbstractDateDurationEntity implements Comparable
 {
     public static final String PK_COLUMN_NAME = "party_role_id";
 
@@ -76,15 +74,9 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable,
 
     }
 
-    @Transient
-    public EntitySeedData getEntitySeedData()
-    {
-        return new PartyRoleType();
-    }
-
-    @Id(generate=GeneratorType.AUTO)
-    @Column(name = PartyRole.PK_COLUMN_NAME)
-    public Long getPartyRoleId()
+    @Id(generate = GeneratorType.AUTO)
+            @Column(name = PartyRole.PK_COLUMN_NAME)
+            public Long getPartyRoleId()
     {
         return partyRoleId;
     }
@@ -96,8 +88,8 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable,
 
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_role_id")
-    public Set<PartyRelationship> getPartyRelationships()
+            @JoinColumn(name = "party_role_id")
+            public Set<PartyRelationship> getPartyRelationships()
     {
         return partyRelationships;
     }
@@ -109,8 +101,8 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable,
 
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "party_id")
-    public Party getParty()
+            @JoinColumn(name = "party_id")
+            public Party getParty()
     {
         return party;
     }
@@ -120,9 +112,9 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable,
         this.party = party;
     }
 
-    @OneToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_role_type_id")
-    public PartyRoleType getType()
+    @OneToOne(cascade = {CascadeType.ALL})
+            @JoinColumn(name = "party_role_type_id")
+            public PartyRoleType getType()
     {
         return type;
     }
@@ -134,7 +126,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable,
 
     public int compareTo(Object o)
     {
-        if(o == this)
+        if (o == this)
             return 0;
 
         final PartyRole otherRole = (PartyRole) o;
@@ -142,7 +134,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable,
     }
 
     @Override
-    public String toString()
+            public String toString()
     {
         return "PartyRole{" +
                 "party_role_id=" + partyRoleId +

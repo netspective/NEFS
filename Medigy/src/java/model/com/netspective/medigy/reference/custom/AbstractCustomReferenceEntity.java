@@ -39,16 +39,16 @@
  */
 package com.netspective.medigy.reference.custom;
 
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.common.DataEncryptionType;
-
+import javax.ejb.CascadeType;
 import javax.ejb.Column;
-import javax.ejb.Transient;
 import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
-import javax.ejb.CascadeType;
+import javax.ejb.Transient;
+
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.common.DataEncryptionType;
+import com.netspective.medigy.model.common.EntitySeedData;
+import com.netspective.medigy.model.party.Party;
 
 
 public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implements CustomReferenceEntity, Comparable
@@ -63,7 +63,7 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     private Party party;
 
     @Transient
-    public Long getSystemId()
+            public Long getSystemId()
     {
         return systemId;
     }
@@ -73,8 +73,8 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
         this.systemId = systemId;
     }
 
-    @Column()
-    public String getCode()
+    @Column(name = "code")
+            public String getCode()
     {
         return code;
     }
@@ -96,7 +96,7 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     }
 
     @Column(nullable = false)
-    public DataEncryptionType getEncryptionType()
+            public DataEncryptionType getEncryptionType()
     {
         return encryptionType;
     }
@@ -107,7 +107,7 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     }
 
     @Column(nullable = false)
-    public int getMaxAllowed()
+            public int getMaxAllowed()
     {
         return maxAllowed;
     }
@@ -118,7 +118,7 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     }
 
     @Column(length = 256)
-    public String getDescription()
+            public String getDescription()
     {
         return description;
     }
@@ -129,8 +129,8 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_id")
-    public Party getParty()
+            @JoinColumn(name = "party_id")
+            public Party getParty()
     {
         return party;
     }
@@ -145,10 +145,64 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
         if (o == this)
             return 0;
 
-        final CustomReferenceEntity otherType  =(CustomReferenceEntity) o;
+        final CustomReferenceEntity otherType = (CustomReferenceEntity) o;
         if (otherType.getSystemId().longValue() == this.getSystemId().longValue())
             return 0;
         else
             return -1;
+    }
+
+    protected class CustomSeedData
+    {
+        private String code;
+        private String label;
+        private String description;
+
+        public CustomSeedData(String code)
+        {
+            this.code = code;
+        }
+
+        public CustomSeedData(String code, String label)
+        {
+            this.code = code;
+            this.label = label;
+        }
+
+        public CustomSeedData(String code, String label, String description)
+        {
+            this.code = code;
+            this.label = label;
+            this.description = description;
+        }
+    }
+
+    protected static final EntitySeedData createSeedData(final CustomSeedData[] customSeedData)
+    {
+        final String[] columnNames = new String[]{"code", "label", "description"};
+        final Object[][] data = new Object[customSeedData.length][];
+        for (int i = 0; i < customSeedData.length; i++)
+        {
+            final CustomSeedData srcRow = customSeedData[i];
+            final Object[] destRow = new Object[3];
+            destRow[0] = srcRow.code;
+            destRow[1] = srcRow.label;
+            destRow[2] = srcRow.description;
+            data[i] = destRow;
+        }
+
+        return new EntitySeedData()
+        {
+            public String[] getColumnNames()
+            {
+                return columnNames;
+            }
+
+            public Object[][] getSeedData()
+            {
+                return data;
+            }
+        };
+
     }
 }
