@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EntityPage.java,v 1.3 2004-08-11 05:08:03 shahid.shah Exp $
+ * $Id: EntityPage.java,v 1.4 2004-08-11 05:10:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.entity;
@@ -197,7 +197,14 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
         ActiveEntity activeEntity;
 
         // if we're coming from a redirector then it means that we may not need to rerun our queries
-        EntitySubtypeRedirectInfo esri = EntityRedirectorPage.getEntitySubtypeRedirectInfo(nc, getRedirectorPage().getEntityIdRequestParamValue(nc));
+        final EntityRedirectorPage redirectorPage = getRedirectorPage();
+        if(redirectorPage == null)
+        {
+            log.error("No redirector page specified for entity page " + getQualifiedNameIncludingTreeId());
+            return false;
+        }
+
+        EntitySubtypeRedirectInfo esri = EntityRedirectorPage.getEntitySubtypeRedirectInfo(nc, redirectorPage.getEntityIdRequestParamValue(nc));
         if(esri != null)
             activeEntity = (ActiveEntity) esri.getData();
         else
@@ -216,7 +223,7 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
 
             try
             {
-                activeEntity = redirectorPage.getEntityProfile(nc, cc);
+                activeEntity = this.redirectorPage.getEntityProfile(nc, cc);
             }
             catch (Exception e)
             {
