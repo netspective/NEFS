@@ -23,7 +23,7 @@
 
             <params>
                 <param name="column_a" value="text:abc"/>
-                <param name="column_b" values="strings:abc,def,ghi,jkl"/>
+                <param name="column_b" values="strings:abc;def;ghi;jkl"/>
             </params>
         </query>
 
@@ -35,7 +35,7 @@
 
             <params>
                 <param name="column_a" value="text:abc"/>
-                <param name="column_b" values="strings:abc,def,ghi,jkl"/>
+                <param name="column_b" values="strings:abc;def;ghi;jkl"/>
             </params>
         </query>
 
