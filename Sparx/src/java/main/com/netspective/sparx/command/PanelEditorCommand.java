@@ -70,7 +70,7 @@ import java.util.StringTokenizer;
  * Class for handling the record-editor-panel command
  *
  *
- * @version $Id: PanelEditorCommand.java,v 1.3 2004-03-03 16:07:13 aye.thu Exp $
+ * @version $Id: PanelEditorCommand.java,v 1.4 2004-03-03 22:10:49 aye.thu Exp $
  */
 public class PanelEditorCommand extends AbstractHttpServletCommand
 {
@@ -215,8 +215,10 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
             log.error("Unexpected mode encountered for the record editor panel '" + getPanelEditorName() + "'.");
             throw new RuntimeException("Unexpected mode encountered for the record editor panel '" + getPanelEditorName() + "'.");
         }
-
+        // TODO: maybe these context settings should be changed to methods in the PanelEditor 
         nc.setAttribute(PanelEditor.DISPLAY_MODE_CONTEXT_ATTRIBUTE, new Integer(mode));
+        if (recordKey != null)
+            nc.setAttribute(PanelEditor.POPULATE_KEY_CONTEXT_ATTRIBUTE, recordKey);
         ePanel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
 
     }
