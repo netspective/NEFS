@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServletOptions.java,v 1.5 2003-10-25 19:18:37 shahid.shah Exp $
+ * $Id: NavigationControllerServletOptions.java,v 1.6 2003-11-20 02:10:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -212,6 +212,7 @@ public class NavigationControllerServletOptions
                                               .create('g'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("default-data-source")
+                                              .hasArg().withArgName("id")
                                               .withDescription("The identifier of the default data source.")
                                               .create('d'));
     }
