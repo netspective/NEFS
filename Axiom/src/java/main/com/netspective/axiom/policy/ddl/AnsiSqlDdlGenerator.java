@@ -607,7 +607,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
 
                 if(tableDelayedConstraints.size() > 0)
                 {
-                    writer.write("\n");
+                    if(ddlFormats.isBlankLineAllowedInCreateTable()) writer.write("\n");
 
                     for(Iterator constr = tableDelayedConstraints.iterator(); constr.hasNext();)
                     {
