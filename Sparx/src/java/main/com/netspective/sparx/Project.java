@@ -35,6 +35,7 @@ package com.netspective.sparx;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
@@ -370,6 +371,17 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public HttpLoginManager createLoginManager()
     {
         return new HttpLoginManager(this);
+    }
+
+    public HttpLoginManager createLoginManager(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(HttpLoginManager.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[]{ Project.class });
+            return (HttpLoginManager) c.newInstance(new Object[]{this});
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
     public void addLoginManager(HttpLoginManager loginManager)
