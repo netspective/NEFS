@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.32 2003-09-07 20:37:24 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.33 2003-10-07 01:35:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -80,6 +80,7 @@ import com.netspective.commons.lang.ClassJavaDoc;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateConsumer;
 
 /**
  * This class is used to introspect existing classes and allow parsing of XML
@@ -488,6 +489,16 @@ public class XmlDataModelSchema
         public boolean isTemplateProducer()
         {
             return templateProducer != null;
+        }
+
+        public TemplateProducer getTemplateProducer()
+        {
+            return templateProducer;
+        }
+
+        public boolean isTemplateConsumer()
+        {
+            return TemplateConsumer.class.isAssignableFrom(elemType);
         }
 
         public ClassJavaDoc getJavaDoc()
