@@ -19,20 +19,25 @@
                 <body source="products/frameworks/index.ftl"/>
                 <summary>
                     The Netspective Enterprise Frameworks Suite (NEFS) is the fastest path to building production-ready,
-                    secure, data-driven web applications. Ease development using &amp;lt;declarative&amp;gt; constructs
+                    secure, data-driven Java web applications. Ease development using &amp;lt;declarative&amp;gt; constructs
                     instead of hand coding.
                 </summary>
 
-                <page name="features" caption="Features">
+                <page name="features" caption="Features" tag-line="Features that Jump-start Development">
+                    <summary>
+                        Stop cobbling together solutions from dozens of open-source and commercial offerings. The
+                        Netspective Java Frameworks contain everything you need in one
+                        integrated suite that works with any Servlet container or J2EE app server.
+                    </summary>
                     <body source="products/frameworks/features.ftl"/>
                 </page>
 
                 <page name="architecture" caption="Architecture" tag-line="The Secret Sauce: Declare More, Code Less">
-                    <body source="products/frameworks/architecture.ftl"/>
                     <summary>
                         If you find J2EE app development to be difficult, you're using the wrong ingredients in your
                         development process.
                     </summary>
+                    <body source="products/frameworks/architecture.ftl"/>
                 </page>
 
                 <page name="sparx" caption="Application Platform">
