@@ -41,30 +41,27 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsForeignKeysPanel.java,v 1.2 2003-04-28 01:10:37 shahid.shah Exp $
+ * $Id: SchemaTableColumnsRefByPanel.java,v 1.1 2003-04-28 01:10:37 shahid.shah Exp $
  */
 
-import java.io.StringWriter;
-import java.io.IOException;
+import java.util.Iterator;
 
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
-import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.ForeignKey;
-import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.column.ColumnsCollection;
 
-public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
+public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
 {
     private static final HtmlTabularReport fKeysReport = new BasicHtmlTabularReport();
-    private static final SchemaTableDataPanel dataPanel = new SchemaTableDataPanel();
 
     static
     {
@@ -80,21 +77,13 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
         fKeysReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("References"));
-        fKeysReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Ref Type"));
-        fKeysReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Ref Static Data"));
+        column.setHeading(new StaticValueSource("Referenced By"));
         fKeysReport.addColumn(column);
     }
 
-    public SchemaTableColumnsForeignKeysPanel()
+    public SchemaTableColumnsRefByPanel()
     {
-        getFrame().setHeading(new StaticValueSource("Foreign Keys"));
+        getFrame().setHeading(new StaticValueSource("Referenced By"));
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -104,7 +93,15 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
 
     public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
     {
-        return new ColumnsFKeysDataSource(nc, vc, table.getForeignKeyColumns());
+        Columns depColumns = new ColumnsCollection();
+        for(int i = 0; i < table.getColumns().size(); i++)
+        {
+            Column col = table.getColumns().get(i);
+            if(col.getDependentForeignKeys() != null)
+                depColumns.add(col);
+        }
+
+        return new ColumnsFKeysDataSource(nc, vc, depColumns);
     }
 
     protected class ColumnsFKeysDataSource extends ColumnsDataSource
@@ -126,58 +123,14 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
                     return super.getActiveRowColumnData(columnIndex, flags);
 
                 case 3:
-                    ForeignKey fKey = column.getForeignKey();
-                    if(fKey == null) return null;
-                    Table fKeyTable = fKey.getReferencedColumns().getFirst().getTable();
-                    return "<a href=\"?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"="+
-                                fKeyTable.getSchema().getName() + "." +
-                                fKeyTable.getName() +"\">" + fKey.getReference().getReference() +
-                            "</a>";
-
-                case 4:
-                    fKey = column.getForeignKey();
-                    if(fKey == null) return null;
-                    switch(fKey.getType())
+                    StringBuffer sb = new StringBuffer();
+                    for(Iterator i = column.getDependentForeignKeys().iterator(); i.hasNext(); )
                     {
-                        case ForeignKey.FKEYTYPE_LOOKUP:
-                            return "Lookup";
-
-                        case ForeignKey.FKEYTYPE_PARENT:
-                            return "Parent";
-
-                        case ForeignKey.FKEYTYPE_SELF:
-                            return "Self";
-
-                        default:
-                            return null;
+                        ForeignKey fKey = (ForeignKey) i.next();
+                        sb.append(fKey.getSourceColumns().getFirst().getQualifiedName());
+                        sb.append("<br>");
                     }
-
-                case 5:
-                    fKey = column.getForeignKey();
-                    if(fKey == null) return null;
-                    fKeyTable = fKey.getReferencedColumns().getFirst().getTable();
-
-                    if(fKeyTable instanceof EnumerationTable && fKeyTable.getData() != null && fKeyTable.getData().size() > 0)
-                    {
-                        HtmlTabularReportValueContext thisVC = (HtmlTabularReportValueContext) reportValueContext;
-                        HtmlTabularReportValueContext dataVC = new HtmlTabularReportValueContext(
-                                thisVC.getServletContext(), thisVC.getServlet(),
-                                thisVC.getRequest(), thisVC.getResponse(), dataPanel, dataPanel.createDataReport(fKeyTable),
-                                thisVC.getSkin()
-                                );
-                        StringWriter sw = new StringWriter();
-                        try
-                        {
-                            dataVC.setPanelRenderFlags(HtmlPanel.RENDERFLAG_NOFRAME);
-                            dataVC.produceReport(sw, dataPanel.createDataSource(dataVC, fKeyTable));
-                        }
-                        catch (IOException e)
-                        {
-                            return e.toString();
-                        }
-
-                        return sw.toString();
-                    }
+                    return sb.toString();
 
                 default:
                     return null;

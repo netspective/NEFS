@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.5 2003-04-24 17:01:11 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.6 2003-04-28 01:10:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -153,9 +153,12 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
         int panelRenderFlags = ((HtmlTabularReportValueContext) rc).getPanelRenderFlags();
         if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+        {
             renderFrameBegin(writer, (HtmlPanelValueContext) rc);
-
-        writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+            writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+        }
+        else
+            writer.write("    <table id=\""+ ((HtmlPanelValueContext) rc).getPanel().getIdentifier() +"_content\" class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
         if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
             produceHeadingRow(writer, (HtmlTabularReportValueContext) rc, (HtmlTabularReportDataSource) ds);

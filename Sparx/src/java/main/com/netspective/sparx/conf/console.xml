@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.21 2003-04-26 17:25:14 shahid.shah Exp $
+  * $Id: console.xml,v 1.22 2003-04-28 01:10:37 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -119,12 +119,15 @@
 		        <page name="sql-comparisons" caption="SQL Comparisons"/>
 	        </page>
 	        <page name="schema" caption="Schemas">
-                <page name="schema" caption="Schema" heading="Schema Structure" retain-params="schema-table,schema-table-column">
+                <page name="schema" caption="Schema" heading="Schema Structure" retain-params="schema-table">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.data.schema.SchemaStructurePanel"/>
+                        <panels style="tabbed">
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaStructurePanel"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableDescriptionsPanel"/>
+                        </panels>
                     </panels>
                 </page>
-                <page name="table" caption="Table" heading="Table Documentation" retain-params="schema-table,schema-table-column">
+                <page name="table" caption="Table" heading="Table Documentation" retain-params="schema-table">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableAncestorsPanel"/>
                         <panels style="tabbed">
@@ -133,10 +136,19 @@
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsDescrsPanel"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPriKeysPanel"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsForeignKeysPanel"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsRefByPanel"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsInheritancePanel"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsDalPanel"/>
                         </panels>
                         <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableIndexesPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableDataPanel"/>
+                    </panels>
+                </page>
+                <page name="query-def" caption="Query Defn" retain-params="schema-table">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnFieldsPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnJoinsPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnSelectsPanel"/>
                     </panels>
                 </page>
 	        </page>

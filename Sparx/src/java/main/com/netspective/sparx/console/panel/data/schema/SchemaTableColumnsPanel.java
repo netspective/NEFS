@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableColumnsPanel.java,v 1.6 2003-04-26 17:25:15 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPanel.java,v 1.7 2003-04-28 01:10:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -70,18 +70,16 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
 {
     private static final Log log = LogFactory.getLog(SchemaTableColumnsPanel.class);
     public static final String REQPARAMNAME_SHOW_DETAIL_TABLE = "schema-table";
-    public static final String REQPARAMNAME_SHOW_DETAIL_COLUMN = "schema-table-column";
     private static final HtmlTabularReport columnsReport = new BasicHtmlTabularReport();
-    private static final GeneralColumn schemaTableColumn = new GeneralColumn();
 
     static
     {
         GeneralColumn column = new GeneralColumn();
         columnsReport.addColumn(column);
 
-        schemaTableColumn.setHeading(new StaticValueSource("SQL Name"));
-        schemaTableColumn.setCommand("redirect,detail?"+ REQPARAMNAME_SHOW_DETAIL_COLUMN +"=%{0}");
-        columnsReport.addColumn(schemaTableColumn);
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("SQL Name"));
+        columnsReport.addColumn(column);
 
         column = new GeneralColumn();
         column.setHeading(new StaticValueSource("Domain"));
@@ -228,7 +226,12 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
 
                 case 6:
                     ForeignKey fKey = column.getForeignKey();
-                    return fKey == null ? null : fKey.getReference().getReference();
+                    if(fKey == null) return null;
+                    Table fKeyTable = fKey.getReferencedColumns().getFirst().getTable();
+                    return "<a href=\"?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"="+
+                                fKeyTable.getSchema().getName() + "." +
+                                fKeyTable.getName() +"\">" + fKey.getReference().getReference() +
+                            "</a>";
 
                 default:
                     return null;

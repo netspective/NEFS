@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaStructurePanel.java,v 1.6 2003-04-26 17:25:15 shahid.shah Exp $
+ * $Id: SchemaStructurePanel.java,v 1.7 2003-04-28 01:10:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -163,6 +163,11 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
     }
 
     private static Map rowsCache = new HashMap();
+
+    public SchemaStructurePanel()
+    {
+        getFrame().setHeading(new StaticValueSource("Overview"));
+    }
 
     public static void addStructurRow(List rows, int level, Schema.TableTreeNode treeNode, List ancestors)
     {

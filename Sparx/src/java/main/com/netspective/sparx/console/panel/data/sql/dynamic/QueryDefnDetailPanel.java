@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnDetailPanel.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
+ * $Id: QueryDefnDetailPanel.java,v 1.2 2003-04-28 01:10:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql.dynamic;
@@ -53,6 +53,7 @@ import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.Table;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
 
 abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPanel
 {
@@ -137,8 +138,15 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
 
     public SelectedQueryDefinition getSelectedQueryDefn(HtmlTabularReportValueContext rc)
     {
-        return new SelectedQueryDefinition(rc,
-                        rc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN_SOURCE),
-                        rc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN));
+        String schemaTable = rc.getHttpRequest().getParameter(SchemaTableColumnsPanel.REQPARAMNAME_SHOW_DETAIL_TABLE);
+        if(schemaTable != null)
+        {
+            String[] items = TextUtils.split(schemaTable, ".", false);
+            return new SelectedQueryDefinition(rc, "schema," + items[0], items[1]);
+        }
+        else
+            return new SelectedQueryDefinition(rc,
+                            rc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN_SOURCE),
+                            rc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN));
     }
 }
