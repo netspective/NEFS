@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUserValueSource.java,v 1.1 2003-08-14 17:59:19 shahid.shah Exp $
+ * $Id: AuthenticatedUserValueSource.java,v 1.2 2003-09-01 17:05:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -85,6 +85,7 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
 
     public AuthenticatedUserValueSource()
     {
+
     }
 
     public static String[] getIdentifiers()
@@ -128,13 +129,15 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
             attrType.setValue(AttributeType.CUSTOM);
             customAttrName = spec.getParams();
         }
+
     }
 
     public Value getAuthenticatedUserAttrValue(AuthenticatedUser authUser)
     {
+        System.out.println("HEY HEY");
+
         if(authUser == null)
             return new GenericValue("No active user");
-
         switch(attrType.getValueIndex())
         {
             case AttributeType.USER_ID:
@@ -191,7 +194,7 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
         public static final int ORG_ID       = 2;
         public static final int ORG_NAME     = 3;
         public static final int ENC_PASSWORD = 4;
-        public static final int CUSTOM       = 99;
+        public static final int CUSTOM       = 5;
 
         public AttributeType()
         {
