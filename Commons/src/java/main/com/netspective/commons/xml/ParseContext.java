@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ParseContext.java,v 1.4 2003-05-17 17:51:04 shahid.shah Exp $
+ * $Id: ParseContext.java,v 1.5 2003-06-10 02:51:05 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -399,7 +399,11 @@ public class ParseContext
 
     public File resolveFile(String src)
     {
-        return inputFileTracker != null ? new File(inputFileTracker.getFile().getParent(), src) : new File(src);
+        File file = new File(src);
+        if(file.isAbsolute())
+            return file;
+        else
+            return inputFileTracker != null ? new File(inputFileTracker.getFile().getParent(), src) : file;
     }
 
     public void setThrowErrorException(boolean throwErrorException)
