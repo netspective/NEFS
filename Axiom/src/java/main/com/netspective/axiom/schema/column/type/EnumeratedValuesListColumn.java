@@ -202,7 +202,7 @@ public class EnumeratedValuesListColumn extends TextColumn implements DatabasePo
             if(row != null)
                 values[i] = row.getIdAsInteger().toString();
             else
-                throw new RuntimeException("Unable to find enumeration '" + values[i] + "' in table " + listMemberTableValueColEnumerationTable.getName() + ". Valid values are " + listMemberTableValueColEnumerationRows.getValidValues());
+                throw new RuntimeException("Unable to find enumeration '" + values[i] + "' in table " + listMemberTableValueColEnumerationTable.getName() + ". Valid values are " + TextUtils.getInstance().join(listMemberTableValueColEnumerationRows.getValidValues()));
         }
 
         columnValue.setTextValue(TextUtils.getInstance().join(values, ","));
