@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.7 2003-03-24 18:43:46 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.8 2003-03-25 17:49:56 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value;
@@ -60,7 +60,7 @@ public class DefaultValueContext implements ValueContext
     private static DiscoverClass discoverClass = new DiscoverClass();
 
     private boolean inConsole;
-    static public final int VCFLAG_HASERROR = 0;
+    static public final int VCFLAG_HASERROR = 1;
     protected static int contextNum = 0;
     private String contextId;
     private int flags;
