@@ -50,9 +50,6 @@
  * @author Shahid N. Shah
  */
 
-/**
- * $Id: dialog.js,v 1.7 2004-07-26 14:00:09 aye.thu Exp $
- */
 
  /**
   * CHANGES FROM SPARX 2.x:
@@ -66,6 +63,7 @@ var FIELDROW_PREFIX = "_dfr.";
 var GRIDFIELDROW_PREFIX = "_dgfr.";
 var GRIDHEADROW_PREFIX = "_dghr.";
 var FIELDNAME_IGNORE_VALIDATION = DIALOGFIELD_PREFIX + ".ignore_val";
+var FIELDNAME_VALIDATE_TRIGGER_FIELD = "validate_trigger_field";
 
 var ALLOW_CLIENT_VALIDATION            = true;
 var TRANSLATE_ENTER_KEY_TO_TAB_KEY     = false;
@@ -386,6 +384,14 @@ function DialogField(type, id, name, qualifiedName, caption, flags)
 	this.isVisible = DialogField_isVisible;
 	this.setVisible = DialogField_setVisible;
 	this.setRequired = DialogField_setRequired;
+	this.setValue = DialogField_setValue;
+	this.setReadOnly = DialogField_setReadOnly;
+}
+
+function DialogField_setValue(value)
+{
+    var control = this.getControl(dialog);
+    control.value = value;
 }
 
 function DialogField_isRequired()
@@ -417,12 +423,14 @@ function DialogField_setRequired(required)
     {
         this.flags = this.flags | FLDFLAG_REQUIRED;
         var objLabels = document.getElementsByTagName("LABEL");
+        var control = this.getControl(dialog);
         for (var i = 0; i < objLabels.length; i++)
         {
             if (objLabels[i].htmlFor == this.controlId)
             {
                 //  NOTE: This is dependent on how the skin looks!
-                objLabels[i].style['font'] = 'bold 12px Verdana';
+                objLabels[i].className = 'dialog-field-caption-required';
+                control.className = 'dialog-field-input-required';
                 break;
             }
         }
@@ -431,17 +439,37 @@ function DialogField_setRequired(required)
     {
         this.flags = this.flags & ~FLDFLAG_REQUIRED; //flags &= ~flag;
         var objLabels = document.getElementsByTagName("LABEL");
+        var control = this.getControl(dialog);
         for (var i = 0; i < objLabels.length; i++)
         {
             if (objLabels[i].htmlFor == this.controlId)
             {
                 //  NOTE: This is dependent on how the skin looks!
-                objLabels[i].style['font'] = 'normal 12px Verdana';
+                objLabels[i].className = 'dialog-field-caption';
+                control.className = 'dialog-field-input';
                 break;
             }
         }
     }
 }
+
+function DialogField_setReadOnly(readOnly)
+{
+    var control = this.getControl(dialog);
+    if (readOnly)
+    {
+        this.flags = this.flags | FLDFLAG_BROWSER_READONLY;
+        control.className= 'dialog-field-input-readonly';
+        control.readOnly = true;
+    }
+    else
+    {
+        this.flags = this.flags & ~FLDFLAG_BROWSER_READONLY;
+        control.className= 'dialog-field-input';
+        control.readOnly = false;
+    }
+}
+
 
 function DialogField_isReadOnly()
 {
@@ -556,7 +584,7 @@ function DialogField_evaluateConditionals(dialog)
 	if(control == null)
 	{
 	    // TODO: Need to add this back in later
-		//alert("Unable to find control '"+this.controlId+"' in DialogField.evaluateConditionals()");
+		alert("Unable to find control '"+this.controlId+"' in DialogField.evaluateConditionals()");
 		return;
 	}
 
@@ -811,12 +839,13 @@ function setAllCheckboxes(sourceCheckbox, otherCheckboxesPrefix)
 	}
 }
 
-function DialogFieldConditionalFlag(source, partner, expression, flag)
+function DialogFieldConditionalFlag(source, partner, expression, flag, applyFlag)
 {
 	this.source = source;
 	this.partner = partner;
 	this.expression = expression;
     this.flag = flag;
+    this.applyFlag = applyFlag; // if applyFlag is true, then the flag is set. If applyFlag is false, then the flag is cleared.
 	// the remaining are object-based methods
 	this.evaluate = DialogFieldConditionalFlag_evaluate;
 }
@@ -832,13 +861,65 @@ function DialogFieldConditionalFlag_evaluate(dialog, control)
     if(eval(this.expression) == true)
 	{
 	    // set the flag on the dialog
-	    if (this.flag == FLDFLAG_REQUIRED)
-    		condSource.setRequired(true);
+	    if ((this.flag & FLDFLAG_REQUIRED) != 0)
+	    {
+	        if (this.applyFlag == true)
+    		    condSource.setRequired(true);
+    		else
+    		    condSource.setRequired(false);
+        }
+        if ((this.flag & FLDFLAG_BROWSER_READONLY) != 0)
+        {
+            if (this.applyFlag == true)
+                condSource.setReadOnly(true);
+            else
+                condSource.setReadOnly(false);
+        }
+
 	}
 	else
 	{
-	    if (this.flag == FLDFLAG_REQUIRED)
+	    // the evaluation condition was false
+	    if ((this.flag & FLDFLAG_REQUIRED) != 0)
+	    {
     		condSource.setRequired(false);
+    		if (this.applyFlag == true)
+    		    condSource.setRequired(false);
+    		else
+    		    condSource.setRequired(true);
+        }
+        if ((this.flag & FLDFLAG_BROWSER_READONLY) != 0)
+        {
+            if (this.applyFlag == true)
+                condSource.setReadOnly(false);
+            else
+                condSource.setReadOnly(true);
+        }
+	}
+}
+
+function DialogFieldConditionalClear(source, partner, expression)
+{
+	this.source = source;
+	this.partner = partner;
+	this.expression = expression;
+
+	// the remaining are object-based methods
+	this.evaluate = DialogFieldConditionalClear_evaluate;
+}
+
+function DialogFieldConditionalClear_evaluate(dialog, control)
+{
+	if(control == null)
+	{
+		alert("control is null in DialogFieldConditionalClear.evaluate(control)");
+		return;
+	}
+
+	var condSource = dialog.fieldsByQualName[this.source];
+	if(eval(this.expression) == true)
+	{	    
+        condSource.setValue('');
 	}
 }
 
@@ -890,7 +971,6 @@ function DialogFieldConditionalDisplay_evaluate(dialog, control)
 	if(eval(this.expression) == true)
 	{
 		condSource.setVisible(dialog, true);
-
 		//fieldAreaElem.className = 'section_field_area_conditional_expanded';
 		if (fieldAreaElem.style)
 			fieldAreaElem.style.display = '';
@@ -900,7 +980,6 @@ function DialogFieldConditionalDisplay_evaluate(dialog, control)
 	else
 	{
 		condSource.setVisible(dialog, false);
-
 		//fieldAreaElem.className = 'section_field_area_conditional';
 		if (fieldAreaElem.style)
 			fieldAreaElem.style.display = 'none';
@@ -1051,6 +1130,7 @@ function controlOnChange(control, event)
 		for(var i = 0; i < conditionalFields.length; i++)
 			conditionalFields[i].evaluate(activeDialog, control);
 	}
+
 	if(field.type == null) return;
 	if (field.customHandlers.valueChanged != null)
 	{
@@ -1121,26 +1201,15 @@ function controlOnBlur(control, event)
 
 function submitOnblur(field, control)
 {
-	var okToSubmit = true;
-	if(field.submitOnBlurPartnerField != "")
+	if (control.value != '')
 	{
-		var partnerField = dialog.fieldsByQualName[field.submitOnBlurPartnerField];
-		var partnerControl = partnerField.getControl(dialog);
+        setAllowValidation(false);
+        SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE = false;
 
-		okToSubmit = (partnerControl.value == "") ? true : false;
-	}
-
-	if(okToSubmit && field.submitOnBlurCustomScript != "")
-	{
-		okToSubmit = field.submitOnBlurCustomScript(field, control);
-	}
-
-	if(okToSubmit)
-	{
-		setAllowValidation(false);
-		SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE = false;
-		document.forms[0].submit();
-	}
+        var vFieldName = "_d."+ dialog.name + "." + FIELDNAME_VALIDATE_TRIGGER_FIELD;
+        document.forms[control.form.name].elements[vFieldName].value = field.name;
+        control.form.submit();
+    }
 }
 
 //****************************************************************************
@@ -1485,12 +1554,32 @@ function SocialSecurityField_onKeyPress(field, control, event)
 	return keypressAcceptRanges(field, control, [NUM_KEYS_RANGE, DASH_KEY_RANGE], event);
 }
 
+function SelectField_onClick(field, control)
+{
+    var fieldControl;
+    // The onclick event handling is only here for RADIO buttons because the onChange doesn't work for them.
+    if (field.style == SELECTSTYLE_RADIO)
+    {
+        // the 'control' object sent from the browser event actually represents just the one radio button and not
+        // the array so get the array control object by using the common name shared by all the radio buttons.
+        fieldControl = field.getControl(dialog);
+        if(field.dependentConditions.length > 0)
+        {
+            var conditionalFields = field.dependentConditions;
+            for(var i = 0; i < conditionalFields.length; i++)
+                conditionalFields[i].evaluate(activeDialog, fieldControl);
+        }
+    }
+    return true;
+}
+
 function SelectField_loseFocus(field, control)
 {
 	if(control.value == "")
 		return true;
 
-	return SelectField_isValid(field, control);
+	//return SelectField_isValid(field, control);
+	return this.isValid(field, control);
 }
 
 function SelectField_isValid(field, control)
@@ -1578,12 +1667,11 @@ function SelectField_isValid(field, control)
 			}
 		}
 	}
-
 	return true;
 }
 
 addFieldType("com.netspective.sparx.form.field.type.TextField", null, TextField_isValid, null, TextField_onFocus, TextField_valueChanged, null, null);
-addFieldType("com.netspective.sparx.form.field.type.SelectField", null, SelectField_isValid, null, null, SelectField_loseFocus, null, null);
+addFieldType("com.netspective.sparx.form.field.type.SelectField", null, SelectField_isValid, null, null, SelectField_loseFocus, null, SelectField_onClick);
 addFieldType("com.netspective.sparx.form.field.type.BooleanField", null, null, null, null, null, null, BooleanField_onClick);
 addFieldType("com.netspective.sparx.form.field.type.MemoField", null, MemoField_isValid, null, null, null, MemoField_onKeyPress);
 addFieldType("com.netspective.sparx.form.field.type.DateTimeField", DateField_finalizeDefn, DateField_isValid, null, null, DateField_valueChanged, DateField_onKeyPress, null);
@@ -2532,4 +2620,6 @@ function splitNotInArray(strString, arrArray)
 	}
 	return a;
 }
+
+
 
