@@ -337,7 +337,8 @@ public final class RiskResponseTable
         
         public final auto.dal.db.vo.RiskResponse getValues(auto.dal.db.vo.RiskResponse valueObject)
         {
-            valueObject.setSystemId((java.lang.Long) values.getByColumnIndex(COLINDEX_SYSTEM_ID).getValue());
+            Object autoIncSystemIdValue = values.getByColumnIndex(COLINDEX_SYSTEM_ID).getValue();
+            valueObject.setSystemId(autoIncSystemIdValue instanceof Integer ? new Long(((Integer) autoIncSystemIdValue).intValue()) : (Long) autoIncSystemIdValue);
             valueObject.setPin((java.lang.Integer) values.getByColumnIndex(COLINDEX_PIN).getValue());
             valueObject.setRiskGroup((java.lang.String) values.getByColumnIndex(COLINDEX_RISK_GROUP).getValue());
             valueObject.setRisk((java.lang.String) values.getByColumnIndex(COLINDEX_RISK).getValue());

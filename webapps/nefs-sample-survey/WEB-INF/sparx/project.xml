@@ -279,7 +279,7 @@
                         name="${table.name}"
                         schemaName="${table.getSchema().getName()}"
                         tableName="${table.getName()}"
-                        primary-key-value-for-edit-or-delete="session:respondent-pin">
+                        primary-key-value-for-edit-or-delete="authenticated-user:user-id">
                     <frame heading="create-dialog-perspective-heading:My General Information"/>
                     <data-type-presentation columns="*"/>
                 </dialog>
@@ -306,14 +306,6 @@
             <column name="pin" type="integer" indexed="yes" descr="The respondent's public identifier (PIN)."/>
             <column name="page_id" type="text" size="256" indexed="yes" descr="The visited page Id."/>
             <column name="visit_count" type="integer" descr="The number of times the page was visited."/>
-
-            <query name="lookup-by-pin">
-                select page_id, visit_count from Visited_Page where pin = ?
-
-                <params>
-                    <param value="session:respondent-pin"/>
-                </params>
-            </query>
 
             <index name="unique_visit" unique="yes" columns="pin,page_id"/>
         </table>

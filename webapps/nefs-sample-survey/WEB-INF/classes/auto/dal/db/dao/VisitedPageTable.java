@@ -187,7 +187,8 @@ public final class VisitedPageTable
         
         public final auto.dal.db.vo.VisitedPage getValues(auto.dal.db.vo.VisitedPage valueObject)
         {
-            valueObject.setSystemId((java.lang.Long) values.getByColumnIndex(COLINDEX_SYSTEM_ID).getValue());
+            Object autoIncSystemIdValue = values.getByColumnIndex(COLINDEX_SYSTEM_ID).getValue();
+            valueObject.setSystemId(autoIncSystemIdValue instanceof Integer ? new Long(((Integer) autoIncSystemIdValue).intValue()) : (Long) autoIncSystemIdValue);
             valueObject.setPin((java.lang.Integer) values.getByColumnIndex(COLINDEX_PIN).getValue());
             valueObject.setPageId((java.lang.String) values.getByColumnIndex(COLINDEX_PAGE_ID).getValue());
             valueObject.setVisitCount((java.lang.Integer) values.getByColumnIndex(COLINDEX_VISIT_COUNT).getValue());

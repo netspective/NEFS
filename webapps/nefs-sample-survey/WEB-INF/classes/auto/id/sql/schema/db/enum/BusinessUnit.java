@@ -21,16 +21,17 @@ public interface BusinessUnit
     static public final int FACILITIES = 13;
     static public final int FINANCE = 14;
     static public final int HEALTHCARE_PRODUCTS = 16;
-    static public final int HEALTH___HUMAN_SRVS = 15;
+    static public final int HEALTH_AND_HUMAN_SRVS = 15;
     static public final int HUMAN_RESOURCES = 17;
     static public final int INFORMATION_MANAGEMENT = 18;
     static public final int INTEGRATED_PRODUCT_DEVELOPMENT = 19;
     static public final int LEGAL = 20;
     static public final int NASA = 21;
-    static public final int NAVY = 22;
-    static public final int OCEO = 23;
-    static public final int ORGANIZATIONAL_DEVELOPMENT = 24;
-    static public final int OTHER = 27;
-    static public final int SPECIAL_PROGRAMS = 25;
-    static public final int TRANSPORTATION = 26;
+    static public final int NAVY = 23;
+    static public final int NSD = 22;
+    static public final int OCEO = 24;
+    static public final int ORGANIZATIONAL_DEVELOPMENT = 25;
+    static public final int OTHER = 28;
+    static public final int SPECIAL_PROGRAMS = 26;
+    static public final int TRANSPORTATION = 27;
 }

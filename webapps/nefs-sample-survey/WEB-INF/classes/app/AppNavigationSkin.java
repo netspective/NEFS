@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AppNavigationSkin.java,v 1.1 2003-08-28 02:53:19 shahid.shah Exp $
+ * $Id: AppNavigationSkin.java,v 1.2 2003-08-28 14:50:16 shahid.shah Exp $
  */
 
 package app;
@@ -87,6 +87,7 @@ import com.netspective.sparx.command.DialogCommand;
 import com.netspective.sparx.ProductRelease;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.sql.QueryResultSet;
 
 public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSkin
 {
@@ -237,21 +238,30 @@ public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSk
         // eliminate cache because we're going to change it
         nc.getRequest().removeAttribute(REQATTRNAME_VISITEDPAGES);
 
-        AuthenticatedUser user = nc.getAuthenticatedUser();
+        AuthenticatedRespondent user = (AuthenticatedRespondent) nc.getAuthenticatedUser();
         if(user != null)
         {
-            VisitedPage visitedPage = new VisitedPageVO();
-            visitedPage.setPin(Integer.valueOf(user.getUserId()));
-            visitedPage.setPageId(page.getQualifiedName());
-            VisitedPageTable table = DataAccessLayer.getInstance().getVisitedPageTable();
-
             ConnectionContext cc = null;
+            VisitedPageTable table = DataAccessLayer.getInstance().getVisitedPageTable();
             try
             {
                 cc = nc.getConnection(null, true, ConnectionContext.OWNERSHIP_DEFAULT);
-                VisitedPageTable.Record record = table.createRecord();
-                record.setValues(visitedPage);
-                record.insert(cc);
+
+                QueryResultSet qrs = table.getAccessorByIndexUniqueVisitEquality().execute(cc, new Object[] { user.getRespondentPin(), page.getQualifiedName() }, false);
+                boolean existsAlready = qrs.getResultSet().next();
+                qrs.close(false);
+
+                if(! existsAlready)
+                {
+                    VisitedPage visitedPage = new VisitedPageVO();
+                    visitedPage.setPin(Integer.valueOf(user.getUserId()));
+                    visitedPage.setPageId(page.getQualifiedName());
+
+                    VisitedPageTable.Record record = table.createRecord();
+                    record.setValues(visitedPage);
+                    record.insert(cc);
+                }
+
                 cc.commitAndClose();
             }
             catch (NamingException e)
