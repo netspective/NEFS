@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldFlags.java,v 1.2 2003-09-09 05:24:17 aye.thu Exp $
+ * $Id: DialogFieldFlags.java,v 1.3 2003-09-11 04:23:12 aye.thu Exp $
  */
 package com.netspective.sparx.form.field;
 
@@ -149,6 +149,16 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     public FlagDefn[] getFlagsDefns()
     {
         return FLAG_DEFNS;
+    }
+
+    public DialogField.State getState()
+    {
+        return state;
+    }
+
+    public void setState(DialogField.State state)
+    {
+        this.state = state;
     }
 
     /**
