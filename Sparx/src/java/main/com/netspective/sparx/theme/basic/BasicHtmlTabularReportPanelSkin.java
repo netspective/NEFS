@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.27 2003-09-15 03:58:35 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.28 2003-10-21 16:54:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -583,19 +583,5 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
     protected int getRowDecoratorAppendColsCount(HtmlTabularReportValueContext rc)
     {
         return 0;
-    }
-
-    /**
-     * Produces the HTML for the panel actions and for report actions that are included by default such as selectables
-     * @param writer
-     * @param vc
-     * @param frame
-     * @throws IOException
-     */
-    public void produceHeadingExtras(Writer writer, HtmlPanelValueContext vc, HtmlPanelFrame frame) throws IOException
-    {
-        super.produceHeadingExtras(writer, vc, frame);
-
-
     }
 }

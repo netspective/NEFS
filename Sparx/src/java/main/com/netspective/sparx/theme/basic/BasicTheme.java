@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTheme.java,v 1.6 2003-09-13 23:05:52 shahid.shah Exp $
+ * $Id: BasicTheme.java,v 1.7 2003-10-21 16:54:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -53,8 +53,8 @@ public class BasicTheme extends AbstractTheme
 
     public BasicTheme()
     {
-        addReportSkin(new RecordViewerReportSkin(this, "record-viewer", "panel-output", "panel/output", true));
-        addReportSkin(new RecordViewerReportSkin(this, "record-viewer-compressed", "panel-output", "panel/output", false));
+        addReportSkin(new RecordManagerReportSkin(this, "record-manager", "panel-output", "panel/output", true));
+        addReportSkin(new RecordManagerReportSkin(this, "record-manager-compressed", "panel-output", "panel/output", false));
         addReportSkin(new RecordEditorReportSkin(this, "record-editor", "panel-output", "panel/output", true));
         addReportSkin(new RecordEditorReportSkin(this, "record-editor-compressed", "panel-output", "panel/output", false));
 

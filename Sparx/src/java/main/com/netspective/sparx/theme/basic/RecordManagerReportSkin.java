@@ -69,27 +69,20 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordViewerReportSkin.java,v 1.13 2003-10-05 03:40:27 shahid.shah Exp $
+ * $Id: RecordManagerReportSkin.java,v 1.1 2003-10-21 16:54:33 shahid.shah Exp $
  */
-public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
+public class RecordManagerReportSkin extends BasicHtmlTabularReportPanelSkin
 {
-    public RecordViewerReportSkin()
+    public RecordManagerReportSkin()
     {
         super();
     }
 
-    public RecordViewerReportSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
+    public RecordManagerReportSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
         super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
 
-    /**
-     * Adds action items including frame actions and record action items
-     * @param writer
-     * @param vc
-     * @param frame
-     * @throws IOException
-     */
     public void produceHeadingExtras(Writer writer, HtmlPanelValueContext vc, HtmlPanelFrame frame) throws IOException
     {
         super.produceHeadingExtras(writer, vc, frame);
@@ -104,15 +97,18 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
             if (reportAction != null)
             {
                 Theme theme = rc.getActiveTheme();
-                RedirectValueSource redirect = (RedirectValueSource) reportAction.getRedirect();
-                if (frameActions.size() > 0)
-                    writer.write("            <td bgcolor=\"white\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
-                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"15\"></td>");
+                RedirectValueSource redirect = reportAction.getRedirect();
                 if (redirect != null)
                 {
-                     writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
-                        "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ redirect.getUrl(rc)  +
-                        "\"><nobr>&nbsp;" + reportAction.getCaption().getTextValue(vc) + "&nbsp;</nobr></a></td>");
+                    writer.write("<td align=right><table cellspacing=0 cellpadding=0><tr>");
+                    writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"15\"></td>");
+                    if (redirect != null)
+                    {
+                         writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
+                            "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ redirect.getUrl(rc)  +
+                            "\"><nobr>&nbsp;" + reportAction.getCaption().getTextValue(vc) + "&nbsp;</nobr></a></td>");
+                    }
+                    writer.write("</td></tr></table></td>");
                 }
             }
         }
@@ -138,7 +134,7 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
         HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
         if (reportAction != null)
         {
-            RedirectValueSource redirect = (RedirectValueSource) reportAction.getRedirect();
+            RedirectValueSource redirect = reportAction.getRedirect();
             Theme theme = rc.getActiveTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-edit.gif") + "\" " +
