@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: IntegerField.java,v 1.5 2003-09-14 05:35:38 shahid.shah Exp $
+ * $Id: IntegerField.java,v 1.6 2003-09-15 03:53:56 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -60,6 +60,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValidations;
+import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.commons.value.exception.ValueException;
 import com.netspective.commons.validate.rule.IntegerValueValidationRule;
 
@@ -118,6 +119,10 @@ public class IntegerField extends TextField
             super(dc, field);
         }
 
+        public DialogFieldValue constructValueInstance()
+        {
+            return new IntegerFieldValue();
+        }
     }
 
     private IntegerValueValidationRule integerValidationRule;
