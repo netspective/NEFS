@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.14 2003-10-16 04:53:30 aye.thu Exp $
+ * $Id: TableDialog.java,v 1.15 2003-10-16 12:27:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -438,8 +438,9 @@ public class TableDialog extends Dialog implements TemplateProducerParent
         {
             // open the connection with the selected shared mode. The default mode
             // is no sharing.
-            cc = dc.getSharedConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, true,
-                    getConnectionShareType().getValueIndex());
+            // cc = dc.getSharedConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, true,
+            //        getConnectionShareType().getValueIndex());
+            cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, true);
         }
         catch (Exception e)
         {
