@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.11 2003-08-17 00:00:40 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.12 2003-08-17 13:28:26 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -160,7 +160,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     {
         if(log.isTraceEnabled())
             log.trace("Connection " + connection + " for data source '"+ getDataSourceId() +"' timed-out.");
-        close();
+        rollbackAndClose();
     }
 
     public void commitAndClose() throws SQLException
