@@ -707,8 +707,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
     protected void renderPage(NavigationContext nc) throws ServletException, IOException
     {
-        setThreadNavigationContext(nc);
-
         final HttpServletResponse httpResponse = nc.getHttpResponse();
         if(isSecure())
         {
@@ -860,6 +858,8 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         setThreadRequest(httpServletRequest);
 
         NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
+        setThreadNavigationContext(nc);
+
         if(clientServiceRequestHandler != null)
         {
             clientServiceRequestHandler.handleClientServiceRequest(nc, httpServletRequest, httpServletResponse);
@@ -893,6 +893,8 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         // means we're going to assume our initialization was properly done and increment the persistent init count
         if(!initCountWritten)
             persistInitCount();
+
+        setThreadNavigationContext(null);
     }
 
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
