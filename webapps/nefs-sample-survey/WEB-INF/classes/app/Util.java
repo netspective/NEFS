@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Util.java,v 1.1 2003-08-28 13:54:28 shahid.shah Exp $
+ * $Id: Util.java,v 1.2 2003-08-30 00:32:43 shahid.shah Exp $
  */
 
 package app;
@@ -48,8 +48,10 @@ import auto.dal.db.DataAccessLayer;
 
 import com.netspective.sparx.ProjectLifecyleListener;
 import com.netspective.sparx.ProjectEvent;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
+import com.netspective.sparx.form.DialogContext;
 
-public class Util implements ProjectLifecyleListener
+public class Util implements ProjectLifecyleListener, DialogNextActionProvider
 {
     public void projectAddedToCache(ProjectEvent event)
     {
@@ -64,5 +66,16 @@ public class Util implements ProjectLifecyleListener
 
     public void projectRemovedFromCache(ProjectEvent event)
     {
+    }
+
+    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
+    {
+        // if this is being called, it means we've executed and we're ready to move on so record the user visited page
+        // and then move on to the next page
+        AuthenticatedRespondent user = (AuthenticatedRespondent) dc.getAuthenticatedUser();
+        if(user != null)
+            user.setVisitedPage(dc.getNavigationContext(), dc.getNavigationContext().getActivePage());
+
+        return dc.getNavigationContext().getActivePage().getNextPath().getUrl(dc);
     }
 }

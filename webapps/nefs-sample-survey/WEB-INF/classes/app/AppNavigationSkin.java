@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AppNavigationSkin.java,v 1.2 2003-08-28 14:50:16 shahid.shah Exp $
+ * $Id: AppNavigationSkin.java,v 1.3 2003-08-30 00:32:43 shahid.shah Exp $
  */
 
 package app;
@@ -59,24 +59,13 @@ package app;
 import java.io.Writer;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-import java.sql.SQLException;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.naming.NamingException;
 
-import auto.dal.db.DataAccessLayer;
-import auto.dal.db.vo.VisitedPage;
-import auto.dal.db.vo.impl.VisitedPageVO;
-import auto.dal.db.dao.VisitedPageTable;
-
-import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationSkin;
@@ -86,13 +75,9 @@ import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.command.DialogCommand;
 import com.netspective.sparx.ProductRelease;
 import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.sql.QueryResultSet;
 
 public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSkin
 {
-    public static final String REQATTRNAME_VISITEDPAGES = "visited";
-
     public AppNavigationSkin(Theme theme)
     {
         super(theme);
@@ -160,7 +145,8 @@ public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSk
             String checkmark = "<img src='"+ nc.getRootUrl() +"/resources/check-box-empty.gif'>";
             if(activePage.getChildrenList().size() == 0)
             {
-                if(visitedPage(nc, activePage))
+                AuthenticatedRespondent user = (AuthenticatedRespondent) nc.getAuthenticatedUser();
+                if(user != null && user.visitedPage(nc, activePage))
                     checkmark = "<img src='"+ nc.getRootUrl() +"/resources/check-box-checked.gif'>";
                 else
                     checkmark = "<img src='"+ nc.getRootUrl() +"/resources/check-box-unchecked.gif'>";
@@ -179,132 +165,6 @@ public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSk
         }
         writer.write("</table>");
     }
-
-    private static Set getVisitedPaths(NavigationContext nc)
-    {
-        ServletRequest request = nc.getRequest();
-        Set visited = (Set) request.getAttribute(REQATTRNAME_VISITEDPAGES);
-        if(visited == null)
-        {
-            AuthenticatedUser user = nc.getAuthenticatedUser();
-
-            visited = new HashSet();
-            if(user != null)
-            {
-                ConnectionContext cc = null;
-                try
-                {
-                    VisitedPageTable table = DataAccessLayer.getInstance().getVisitedPageTable();
-                    cc = nc.getConnection(null, true, ConnectionContext.OWNERSHIP_DEFAULT);
-                    VisitedPageTable.Records records = table.getAccessorRecords(cc, table.getAccessorByPinEquality(), new Object[] { Integer.valueOf(user.getUserId()) });
-                    for(int i = 0; i < records.size(); i++)
-                    {
-                        VisitedPage visitedPage = records.get(i).getValues();
-                        visited.add(visitedPage.getPageId());
-                    }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-                finally
-                {
-                    try
-                    {
-                        if(cc != null) cc.close();
-                    }
-                    catch (SQLException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        request.setAttribute(REQATTRNAME_VISITEDPAGES, visited);
-        return visited;
-    }
-
-    public static boolean visitedPage(NavigationContext nc, NavigationPath path)
-    {
-        Set visited = getVisitedPaths(nc);
-        return visited.contains(path.getQualifiedName());
-    }
-
-    public static void setVisitedPage(NavigationContext nc, NavigationPage page)
-    {
-        if(visitedPage(nc, page))
-            return;
-
-        // eliminate cache because we're going to change it
-        nc.getRequest().removeAttribute(REQATTRNAME_VISITEDPAGES);
-
-        AuthenticatedRespondent user = (AuthenticatedRespondent) nc.getAuthenticatedUser();
-        if(user != null)
-        {
-            ConnectionContext cc = null;
-            VisitedPageTable table = DataAccessLayer.getInstance().getVisitedPageTable();
-            try
-            {
-                cc = nc.getConnection(null, true, ConnectionContext.OWNERSHIP_DEFAULT);
-
-                QueryResultSet qrs = table.getAccessorByIndexUniqueVisitEquality().execute(cc, new Object[] { user.getRespondentPin(), page.getQualifiedName() }, false);
-                boolean existsAlready = qrs.getResultSet().next();
-                qrs.close(false);
-
-                if(! existsAlready)
-                {
-                    VisitedPage visitedPage = new VisitedPageVO();
-                    visitedPage.setPin(Integer.valueOf(user.getUserId()));
-                    visitedPage.setPageId(page.getQualifiedName());
-
-                    VisitedPageTable.Record record = table.createRecord();
-                    record.setValues(visitedPage);
-                    record.insert(cc);
-                }
-
-                cc.commitAndClose();
-            }
-            catch (NamingException e)
-            {
-                e.printStackTrace();  //To change body of catch statement use Options | File Templates.
-            }
-            catch (SQLException e)
-            {
-                try
-                {
-                    if(cc != null) cc.rollbackAndClose();
-                }
-                catch (SQLException e1)
-                {
-                    e1.printStackTrace();  //To change body of catch statement use Options | File Templates.
-                }
-            }
-        }
-    }
-
-/*
-    public static void sendEmail(String subject, String messageText) throws AddressException, MessagingException
-    {
-        String host = "localhost";
-        String from = "marsh.survey@netspective.com";
-        String to = "Julian.S.Wassenaar@marsh.com";
-        String cc = "shahid.shah@netspective.com";
-
-        Properties props = System.getProperties();
-        props.put("mail.smtp.host", host);
-
-        Session mailSession = Session.getDefaultInstance(props, null);
-
-        MimeMessage message = new MimeMessage(mailSession);
-        message.setFrom(new InternetAddress(from));
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-        message.addRecipient(Message.RecipientType.CC, new InternetAddress(cc));
-        message.setSubject(subject);
-        message.setText(messageText);
-
-        Transport.send(message);
-    }
-*/
 
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException
     {
@@ -383,6 +243,12 @@ public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSk
         writer.write("</body>\n");
         writer.write("</html>\n");
 
-        if(! isDialogPage) AppNavigationSkin.setVisitedPage(nc, activePage);
+        // for dialogs we want the visited page to be set only if the dialog executes properly
+        if(! isDialogPage)
+        {
+            AuthenticatedRespondent user = (AuthenticatedRespondent) nc.getAuthenticatedUser();
+            if(user != null)
+                user.setVisitedPage(nc, activePage);
+        }
     }
 }

@@ -2,49 +2,49 @@
 <project version="3" relativePaths="true">
   <component name="FileEditorManager">
     <history>
-      <source-position-entry url="file://$PROJECT_DIR$/../../../../../tools/idea/classes/com/netspective/sparx/form/DialogContext.class" line="341" column="24" vertical-scroll-proportion="0.33291298" horizontal-scroll-proportion="0.1426146" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/id/sql/schema/db/table/RiskResponse.java" line="16" column="28" vertical-scroll-proportion="0.28247163" horizontal-scroll-proportion="0.1663837" />
-      <source-position-entry url="file://$PROJECT_DIR$/../pre-process-project.xsl" line="46" column="107" vertical-scroll-proportion="0.64674634" horizontal-scroll-proportion="1.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../../../../tools/idea/classes/com/netspective/axiom/schema/table/BasicTable.class" line="398" column="16" vertical-scroll-proportion="0.3324709" horizontal-scroll-proportion="0.0950764" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/AuthenticatedRespondent.java" line="48" column="25" vertical-scroll-proportion="0.63612217" horizontal-scroll-proportion="0.23616734" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/Util.java" line="44" column="26" vertical-scroll-proportion="0.5653299" horizontal-scroll-proportion="0.15449916" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/AppNavigationSkin.java" line="201" column="58" vertical-scroll-proportion="0.4954722" horizontal-scroll-proportion="0.34465197">
+      <source-position-entry url="file://$PROJECT_DIR$/../../../../../tools/idea/classes/com/netspective/sparx/form/handler/DialogNextActionProvider.class" line="9" column="25" vertical-scroll-proportion="0.1630013" horizontal-scroll-proportion="0.14855687" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/Util.java" line="62" column="157" vertical-scroll-proportion="0.61752987" horizontal-scroll-proportion="1.0">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/VisitedPageTable.java" line="190" column="141" vertical-scroll-proportion="0.35058215" horizontal-scroll-proportion="0.83786076" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/RiskResponseTable.java" line="340" column="141" vertical-scroll-proportion="0.35058215" horizontal-scroll-proportion="0.83786076" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/RespondentTable.java" line="19" column="19" vertical-scroll-proportion="0.07244502" horizontal-scroll-proportion="0.11290322" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/CurrentEnvironmentTable.java" line="19" column="19" vertical-scroll-proportion="0.07244502" horizontal-scroll-proportion="0.11290322" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/RiskResponseDialog.java" line="101" column="36" vertical-scroll-proportion="0.38680467" horizontal-scroll-proportion="0.2139219">
+      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/AuthenticatedRespondent.java" line="136" column="58" vertical-scroll-proportion="0.36520585" horizontal-scroll-proportion="0.54790825">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/../../database/data/initial-and-test-data.xml" line="3" column="26" vertical-scroll-proportion="0.054333765" horizontal-scroll-proportion="0.15449916" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/vo/VisitedPage.java" line="21" column="17" vertical-scroll-proportion="0.38033634" horizontal-scroll-proportion="0.101018675" />
-      <source-position-entry url="file://$PROJECT_DIR$/../project.xml" line="397" column="70" vertical-scroll-proportion="0.51617074" horizontal-scroll-proportion="0.41595924" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/RiskResponseDialog.java" line="234" column="78" vertical-scroll-proportion="2.495352" horizontal-scroll-proportion="0.7368421">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/AppNavigationSkin.java" line="217" column="56" vertical-scroll-proportion="0.30789134" horizontal-scroll-proportion="0.5290148">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/../project.xml" line="404" column="72" vertical-scroll-proportion="0.75808537" horizontal-scroll-proportion="0.4278438" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../business-goals.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../business-risks.ftl" line="14" column="26" vertical-scroll-proportion="0.25355756" horizontal-scroll-proportion="0.15449916" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../index.ftl" line="28" column="14" vertical-scroll-proportion="0.5071151" horizontal-scroll-proportion="0.08319185" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../ratings-system.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../risk-identification.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../risk-inv.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../rm-effectiveness.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../submit.ftl" line="26" column="52" vertical-scroll-proportion="0.47089264" horizontal-scroll-proportion="0.30899832" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../summary.ftl" line="33" column="63" vertical-scroll-proportion="0.5976714" horizontal-scroll-proportion="0.37436333" />
     </history>
     <open-files>
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/AppNavigationSkin.java" line="201" column="58" vertical-scroll-proportion="0.4954722" horizontal-scroll-proportion="0.34465197">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/VisitedPageTable.java" line="190" column="141" vertical-scroll-proportion="0.35058215" horizontal-scroll-proportion="0.83786076" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/RiskResponseDialog.java" line="101" column="36" vertical-scroll-proportion="0.38680467" horizontal-scroll-proportion="0.2139219">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/RiskResponseTable.java" line="340" column="141" vertical-scroll-proportion="0.35058215" horizontal-scroll-proportion="0.83786076" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/RespondentTable.java" line="19" column="19" vertical-scroll-proportion="0.07244502" horizontal-scroll-proportion="0.11290322" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/CurrentEnvironmentTable.java" line="19" column="19" vertical-scroll-proportion="0.07244502" horizontal-scroll-proportion="0.11290322" />
-      <source-position-entry url="file://$PROJECT_DIR$/../project.xml" line="397" column="70" vertical-scroll-proportion="0.51617074" horizontal-scroll-proportion="0.41595924" selected="true" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/vo/VisitedPage.java" line="21" column="17" vertical-scroll-proportion="0.38033634" horizontal-scroll-proportion="0.101018675" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/Util.java" line="44" column="26" vertical-scroll-proportion="0.5653299" horizontal-scroll-proportion="0.15449916" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../database/data/initial-and-test-data.xml" line="3" column="26" vertical-scroll-proportion="0.054333765" horizontal-scroll-proportion="0.15449916" />
+      <source-position-entry url="file://$PROJECT_DIR$/../project.xml" line="404" column="72" vertical-scroll-proportion="0.75808537" horizontal-scroll-proportion="0.4278438" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../business-goals.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../business-risks.ftl" line="14" column="26" vertical-scroll-proportion="0.25355756" horizontal-scroll-proportion="0.15449916" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../index.ftl" line="28" column="14" vertical-scroll-proportion="0.5071151" horizontal-scroll-proportion="0.08319185" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../ratings-system.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../risk-identification.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../risk-inv.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../rm-effectiveness.ftl" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../submit.ftl" line="26" column="52" vertical-scroll-proportion="0.47089264" horizontal-scroll-proportion="0.30899832" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../../summary.ftl" line="33" column="63" vertical-scroll-proportion="0.5976714" horizontal-scroll-proportion="0.37436333" selected="true" />
     </open-files>
   </component>
   <component name="ToolWindowManager">
@@ -262,16 +262,8 @@
   <component name="ProjectViewSettings">
     <navigator currentView="ProjectPane" flattenPackages="false" showMembers="false" showStructure="false" autoscrollToSource="false" splitterProportion="0.5" />
     <view id="ProjectPane">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../database/data" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/.." />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../classes/app" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../.." />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../database" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../classes/auto" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../classes/auto/dal" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../classes" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../classes/auto/dal/db" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/../.." />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../.." />
     </view>
     <view id="SourcepathPane" />
     <view id="ClasspathPane" />
@@ -392,7 +384,7 @@
     <EjbView showMembers="false" autoscrollToSource="false" />
   </component>
   <component name="LvcsConfiguration">
-    <option name="LOCAL_VCS_ENABLED" value="true" />
+    <option name="LOCAL_VCS_ENABLED" value="false" />
     <option name="LOCAL_VCS_PURGING_PERIOD" value="259200000" />
     <option name="ADD_LABEL_ON_PROJECT_OPEN" value="true" />
     <option name="ADD_LABEL_ON_PROJECT_COMPILATION" value="true" />

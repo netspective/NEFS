@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: RiskResponseDialog.java,v 1.1 2003-08-29 01:27:43 shahid.shah Exp $
+ * $Id: RiskResponseDialog.java,v 1.2 2003-08-30 00:32:43 shahid.shah Exp $
  */
 
 package app;
@@ -158,9 +158,8 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
     public void execute(Writer writer, DialogContext dc) throws IOException
     {
         NavigationPage page = dc.getNavigationContext().getActivePage();
-        AppNavigationSkin.setVisitedPage(dc.getNavigationContext(), page);
-
-        if(dc.getAuthenticatedUser() == null)
+        AuthenticatedRespondent user = (AuthenticatedRespondent) dc.getAuthenticatedUser();
+        if(user == null)
         {
             handlePostExecute(writer, dc, page.getNextPath().getUrl(dc));
             return;
@@ -232,6 +231,7 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
             e.printStackTrace();  //To change body of catch statement use Options | File Templates.
         }
 
-        AppNavigationSkin.setVisitedPage(dc.getNavigationContext(), page);
+        user.setVisitedPage(dc.getNavigationContext(), page);
+        handlePostExecute(writer, dc, dc.getNavigationContext().getActivePage().getNextPath().getUrl(dc));
     }
 }

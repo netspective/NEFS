@@ -281,6 +281,7 @@
                         tableName="${table.getName()}"
                         primary-key-value-for-edit-or-delete="authenticated-user:user-id">
                     <frame heading="create-dialog-perspective-heading:My General Information"/>
+                    <next-action-provider class="app.Util"/>
                     <data-type-presentation columns="*"/>
                 </dialog>
             </presentation>
@@ -396,6 +397,7 @@
                         allow-insert-if-edit-pk-not-found="yes"
                         primary-key-value-for-edit-or-delete="authenticated-user:user-id">
                     <frame heading="create-dialog-perspective-heading:Risk Management Environment"/>
+                    <next-action-provider class="app.Util"/>
                     <data-type-presentation columns="*"/>
                 </dialog>
             </presentation>

@@ -1,28 +1,3 @@
-<%@ page import="com.netspective.sparx.xaf.report.ReportBanner,
-                 com.netspective.sparx.xaf.sql.StatementManager,
-                 com.netspective.sparx.xaf.sql.StatementInfo,
-                 com.netspective.sparx.util.value.ServletValueContext,
-                 com.netspective.sparx.xaf.sql.ResultInfo,
-                 com.netspective.sparx.xif.db.DatabaseContextFactory,
-                 com.netspective.sparx.xaf.sql.StatementManagerFactory,
-                 app.dal.table.RiskRatingTable,
-                 com.netspective.sparx.xaf.report.ReportColumn,
-                 com.netspective.sparx.xaf.report.column.GeneralColumn,
-                 com.netspective.sparx.xaf.report.Report,
-                 com.netspective.sparx.xaf.report.StandardReport,
-                 com.netspective.sparx.xaf.skin.SkinFactory,
-                 com.netspective.sparx.xaf.report.ReportSkin,
-                 com.netspective.sparx.xaf.report.ReportContext,
-                 app.dal.table.CurrentEnvironmentTable,
-                 app.dal.DataAccessLayer,
-                 app.dal.domain.row.CurrentEnvironmentRow,
-                 com.netspective.sparx.xif.dal.ConnectionContext,
-                 app.security.AppLoginDialog"%>
-
-<jsp:directive.taglib prefix="app" uri="/WEB-INF/tld/page.tld"/>
-<jsp:directive.taglib prefix="sparx" uri="/WEB-INF/tld/sparx.tld"/>
-
-<app:page navId="/summary">
 <div align="left" style="padding:10">
     <font size="3">
         <b>Have you completed the survey? If so, please click <a href="../submit.jsp">here</a> to submit the results to Marsh.</b>
@@ -143,4 +118,3 @@
     %>
     </sparx:panel>
 </div>
-</app:page>
