@@ -102,6 +102,11 @@ public class EnumerationIdRefColumn extends IntegerColumn
             else if(value != null)
                 setTextValue(value.toString());
         }
+
+        public void setValue(int value)
+        {
+            super.setValue(new Integer(value));
+        }
     }
 
     public EnumerationIdRefColumn(Table table)
