@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDetailPanel.java,v 1.1 2003-05-06 14:52:13 shahid.shah Exp $
+ * $Id: QueryDetailPanel.java,v 1.2 2003-05-23 02:18:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -95,6 +95,10 @@ public abstract class QueryDetailPanel extends AbstractHtmlTabularReportPanel
 
     public SelectedQuery getSelectedQuery(HtmlTabularReportValueContext rc)
     {
-        return new SelectedQuery(rc, rc.getHttpRequest().getParameter(REQPARAMNAME_QUERY));
+        String name = (String) rc.getHttpRequest().getAttribute(REQPARAMNAME_QUERY);
+        if(name == null)
+            name = rc.getHttpRequest().getParameter(REQPARAMNAME_QUERY);
+
+        return new SelectedQuery(rc, name);
     }
 }

@@ -39,19 +39,33 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.1 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: QueryDialog.java,v 1.2 2003-05-23 02:18:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
 
+import java.io.Writer;
+import java.io.IOException;
+
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogSkin;
+import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.type.TextField;
+import com.netspective.sparx.form.field.type.IntegerField;
+import com.netspective.sparx.form.field.type.PanelsField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.axiom.sql.Query;
+import com.netspective.sparx.panel.HtmlLayoutPanel;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel;
+import com.netspective.sparx.console.panel.data.sql.QueryDetailPanel;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.sql.Query;
 import com.netspective.axiom.sql.QueryParameter;
+import com.netspective.axiom.sql.QueryParameters;
 import com.netspective.commons.value.source.StaticValueSource;
 
 public class QueryDialog extends Dialog
@@ -83,15 +97,37 @@ public class QueryDialog extends Dialog
 
     public void createParamFields()
     {
-        for(int i = 0; i < query.getParams().size(); i++)
+        PanelsField pfield = new PanelsField();
+        HtmlLayoutPanel panels = pfield.createPanels();
+        panels.addPanel(new QueryDbmsSqlTextsPanel());
+        addField(pfield);
+
+        QueryParameters params = query.getParams();
+        if(params != null)
         {
-            QueryParameter param = query.getParams().get(i);
-            DialogField field = new TextField();
-            field.setName("param_" + i);
-            field.setCaption(new StaticValueSource(param.getName() != null ? param.getName() : ("Parameter " + i)));
-            field.setDefault(param.getValue());
-            addField(field);
+            for(int i = 0; i < query.getParams().size(); i++)
+            {
+                QueryParameter param = query.getParams().get(i);
+                DialogField field = new TextField();
+                field.setName("param_" + i);
+                field.setCaption(new StaticValueSource(param.getName() != null ? param.getName() : ("Parameter " + i)));
+                field.setDefault(param.getValue());
+                addField(field);
+            }
         }
+
+        DialogField field = new IntegerField();
+        field.setName("rows_per_page");
+        field.setCaption(new StaticValueSource("Rows per page"));
+        field.setDefault(new StaticValueSource("10"));
+        addField(field);
+    }
+
+    public DialogContext createContext(NavigationContext nc, DialogSkin skin)
+    {
+        DialogContext dc = super.createContext(nc, skin);
+        dc.getRequest().setAttribute(QueryDetailPanel.REQPARAMNAME_QUERY, query.getQualifiedName());
+        return dc;
     }
 
     public HtmlTabularReport getReport()
@@ -132,5 +168,10 @@ public class QueryDialog extends Dialog
     public void setUrlFormats(String[] urlFormats)
     {
         this.urlFormats = urlFormats;
+    }
+
+    public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
+    {
+        query.getPresentation().getDefaultPanel().render(writer, dc, dc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
     }
 }

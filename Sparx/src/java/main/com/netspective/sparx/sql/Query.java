@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.2 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: Query.java,v 1.3 2003-05-23 02:18:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -50,6 +50,7 @@ import java.util.Map;
 import com.netspective.sparx.panel.QueryReportPanel;
 import com.netspective.sparx.form.sql.QueryDialog;
 import com.netspective.axiom.sql.QueriesNameSpace;
+import com.netspective.commons.value.source.StaticValueSource;
 
 public class Query extends com.netspective.axiom.sql.Query
 {
@@ -70,6 +71,8 @@ public class Query extends com.netspective.axiom.sql.Query
         public QueryDialog createDialog()
         {
             QueryDialog result = new QueryDialog();
+            result.setName("query-" + Query.this.getQualifiedName());
+            result.getFrame().setHeading(new StaticValueSource("Query: " + Query.this.getQualifiedName()));
             result.setQuery(Query.this);
             return result;
         }
@@ -90,6 +93,12 @@ public class Query extends com.netspective.axiom.sql.Query
 
         public QueryReportPanel getDefaultPanel()
         {
+            if(defaultPanel == null)
+            {
+                defaultPanel = new QueryReportPanel();
+                defaultPanel.setQuery(Query.this);
+            }
+
             return defaultPanel;
         }
 

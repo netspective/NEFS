@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.18 2003-05-17 17:51:29 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.19 2003-05-23 02:18:40 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -43,6 +43,8 @@
     <dialog-field-type name="duration" class="com.netspective.sparx.form.field.type.DurationField"/>
     <dialog-field-type name="html" class="com.netspective.sparx.form.field.type.HtmlField"/>
     <dialog-field-type name="file" class="com.netspective.sparx.form.field.type.FileField"/>
+    <dialog-field-type name="command" class="com.netspective.sparx.form.field.type.CommandField"/>
+    <dialog-field-type name="panels" class="com.netspective.sparx.form.field.type.PanelsField"/>
 
     <dialog-field-type name="e-mail" class="com.netspective.sparx.form.field.type.TextField">
         <validation>

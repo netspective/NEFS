@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.8 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.9 2003-05-23 02:18:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -88,6 +88,7 @@ import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextAtt
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesPanel;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesClassesPanel;
 import com.netspective.sparx.console.panel.presentation.HttpRequestParametersPanel;
+import com.netspective.sparx.command.AbstractHttpServletCommand;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
@@ -969,6 +970,10 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         hiddens.append("<input type='hidden' name='" + dialog.getRunSequenceParamName() + "' value='" + (runSequence + 1) + "'>\n");
         hiddens.append("<input type='hidden' name='" + dialog.getExecuteSequenceParamName() + "' value='" + execSequence + "'>\n");
         hiddens.append("<input type='hidden' name='" + dialog.getActiveModeParamName() + "' value='" + nextMode + "'>\n");
+
+        String pageCmd = request.getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
+        if(pageCmd != null)
+            hiddens.append("<input type='hidden' name='" + AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME + "' value='" + pageCmd + "'>\n");
         //TODO: hiddens.append("<input type='hidden' name='" + dialog.PARAMNAME_DIALOGQNAME + "' value='" + (runSequence > 1 ? request.getParameter(Dialog.PARAMNAME_DIALOGQNAME) : request.getParameter(DialogManager.REQPARAMNAME_DIALOG)) + "'>\n");
 
         String redirectUrlParamValue = (runSequence > 1 ? request.getParameter(dialog.getPostExecuteRedirectUrlParamName()) : request.getParameter(DialogContext.DEFAULT_REDIRECT_PARAM_NAME));

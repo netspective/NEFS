@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JndiConnectionProvider.java,v 1.2 2003-05-16 20:32:56 shahid.shah Exp $
+ * $Id: JndiConnectionProvider.java,v 1.3 2003-05-23 02:18:01 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -57,6 +57,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import com.netspective.axiom.ConnectionProvider;
 import com.netspective.axiom.ConnectionProviderEntry;
@@ -138,22 +139,31 @@ public class JndiConnectionProvider implements ConnectionProvider
 
         try
         {
-            Context env = (Context) new InitialContext().lookup(JNDIKEY_JDBC);
+            if(env == null)
+                env = (Context) new InitialContext().lookup(JNDIKEY_JDBC);
             for(NamingEnumeration e = env.list(""); e.hasMore();)
             {
                 NameClassPair entry = (NameClassPair) e.nextElement();
                 String dataSourceId = JNDIKEY_JDBC_ENTRY_PREFIX + entry.getName();
-                DataSource source = (DataSource) env.lookup(entry.getName());
-                entries.add(getDataSourceEntry(dataSourceId, source));
+                try
+                {
+                    DataSource source = (DataSource) env.lookup(entry.getName());
+                    entries.add(getDataSourceEntry(dataSourceId, source));
+                }
+                catch (NamingException ex)
+                {
+                    log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", ex);
+                }
+                catch (SQLException ex)
+                {
+                    log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", ex);
+                }
             }
         }
         catch (NamingException e)
         {
-            log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", e);
-        }
-        catch (SQLException e)
-        {
-            log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", e);
+            log.error(e);
+            throw new NestableRuntimeException(e);
         }
 
         return entries;

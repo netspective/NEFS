@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportDtd.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
+ * $Id: DataImportDtd.java,v 1.3 2003-05-23 02:18:01 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -125,7 +125,8 @@ public class DataImportDtd
     {
         out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
         out.println("<!ENTITY % boolean \"(true | false | on | off | yes | no)\">");
-        out.print("<!ENTITY % elements \"");
+        out.println("<!ENTITY % elements \"dal\">\n");
+        out.print("<!ELEMENT dal (");
         boolean first = true;
         for(int i = 0; i < tables.size(); i++)
         {
@@ -139,7 +140,7 @@ public class DataImportDtd
                 first = false;
             out.print(table.getXmlNodeName());
         }
-        out.println("\">");
+        out.println(")*>");
         out.println("");
     }
 
@@ -152,7 +153,7 @@ public class DataImportDtd
         out.println(ELEMNAME_INCLUDE);
         out.println("          file CDATA #IMPLIED");
         out.println("          template CDATA #IMPLIED");
-        out.println("          resource CDATA #IMPLIED>");
+        out.println("          resource CDATA #IMPLIED");
         out.println("          relative-to CDATA #IMPLIED>");
     }
 
@@ -172,6 +173,9 @@ public class DataImportDtd
         sb.append(parentTable.getXmlNodeName()).append(" ");
 
         List list = new ArrayList();
+
+        for(int i = 0; i < columns.size(); i++)
+            list.add(columns.get(i).getXmlNodeName());
 
         for(int i = 0; i < childTables.size(); i++)
             list.add(childTables.get(i).getXmlNodeName());
@@ -231,7 +235,7 @@ public class DataImportDtd
                     }
                     else if(!areNmtokens(values))
                     {
-                        sb.append("CDATA (NOT VALID XML-NMTOKENS) ");
+                        sb.append("CDATA ");
                     }
                     else
                     {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletRequestParameterValueSource.java,v 1.3 2003-05-13 19:52:04 shahid.shah Exp $
+ * $Id: ServletRequestParameterValueSource.java,v 1.4 2003-05-23 02:18:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -56,6 +56,7 @@ import com.netspective.commons.value.AbstractValue;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.sparx.value.ServletValueContext;
+import com.netspective.axiom.ConnectionContext;
 
 public class ServletRequestParameterValueSource extends AbstractValueSource
 {
@@ -91,8 +92,12 @@ public class ServletRequestParameterValueSource extends AbstractValueSource
         return new PresentationValue(getValue(vc));
     }
 
-    public Value getValue(final ValueContext vc)
+    public Value getValue(ValueContext vc)
     {
+        final ServletValueContext svc = (ServletValueContext)
+                (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
+                vc);
+
         return new AbstractValue()
         {
             public Object getValue()
@@ -102,18 +107,18 @@ public class ServletRequestParameterValueSource extends AbstractValueSource
 
             public String getTextValue()
             {
-                return ((ServletValueContext) vc).getRequest().getParameter(parameterName);
+                return svc.getRequest().getParameter(parameterName);
             }
 
             public String[] getTextValues()
             {
-                return ((ServletValueContext) vc).getRequest().getParameterValues(parameterName);
+                return svc.getRequest().getParameterValues(parameterName);
             }
 
             public List getListValue()
             {
                 List list = new ArrayList();
-                String[] values = ((ServletValueContext) vc).getRequest().getParameterValues(parameterName);
+                String[] values = svc.getRequest().getParameterValues(parameterName);
                 for(int i = 0; i < values.length; i++)
                     list.add(values[i]);
                 return list;

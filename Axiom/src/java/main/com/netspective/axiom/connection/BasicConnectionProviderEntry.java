@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicConnectionProviderEntry.java,v 1.1 2003-03-13 18:25:39 shahid.shah Exp $
+ * $Id: BasicConnectionProviderEntry.java,v 1.2 2003-05-23 02:18:01 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -79,10 +79,14 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
     public void init(String dataSourceId, DataSource dataSource, Connection conn)
     {
         put(KEYNAME_DATA_SOURCE_ID, dataSourceId);
+        if(conn == null)
+        {
+            put(KEYNAME_EXCEPTION, "Connection could not be established.");
+            return;
+        }
+
         try
         {
-            DatabaseMetaData dbmd = conn.getMetaData();
-
             try
             {
                 DatabasePolicy policy = DatabasePolicies.getInstance().getDatabasePolicy(conn);
@@ -93,6 +97,8 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
             {
                 put(KEYNAME_DATABASE_POLICY_CLASSNAME, dpe.toString());
             }
+
+            DatabaseMetaData dbmd = conn.getMetaData();
 
             put(KEYNAME_DRIVER_NAME, dbmd.getDriverName());
             put(KEYNAME_DATA_SOURCE_CLASS, dataSource != null ? dataSource.getClass().getName() : "<NULL>");

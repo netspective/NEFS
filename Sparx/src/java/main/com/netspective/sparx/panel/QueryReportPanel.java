@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.2 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: QueryReportPanel.java,v 1.3 2003-05-23 02:18:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -141,7 +141,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         catch (Exception e)
         {
             log.error(e);
-            return new SimpleMessageDataSource(vc, e.toString());
+            throw new NestableRuntimeException(e);
         }
     }
 
@@ -150,6 +150,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         HtmlTabularReport report = getReport();
         if(report == null)
         {
+            // if the report is null, we need to create it by running the query and getting the meta data
             report = new BasicHtmlTabularReport();
             try
             {
@@ -160,6 +161,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             catch (Exception e)
             {
                 log.error(e);
+                throw new NestableRuntimeException(e);
             }
         }
 

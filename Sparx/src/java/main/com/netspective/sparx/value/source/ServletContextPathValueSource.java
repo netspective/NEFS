@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletContextPathValueSource.java,v 1.4 2003-05-16 21:23:15 shahid.shah Exp $
+ * $Id: ServletContextPathValueSource.java,v 1.5 2003-05-23 02:18:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -56,6 +56,7 @@ import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.sparx.value.ServletValueContext;
+import com.netspective.axiom.ConnectionContext;
 
 public class ServletContextPathValueSource extends AbstractValueSource
 {
@@ -93,7 +94,9 @@ public class ServletContextPathValueSource extends AbstractValueSource
 
     public Value getValue(ValueContext vc)
     {
-        ServletValueContext svc = (ServletValueContext) vc;
+        final ServletValueContext svc = (ServletValueContext)
+                (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
+                vc);
 
         if(vc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.ANT_BUILD))
         {

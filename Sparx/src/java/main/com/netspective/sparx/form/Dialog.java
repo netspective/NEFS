@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.12 2003-05-19 00:58:56 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.13 2003-05-23 02:18:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -104,7 +104,6 @@ public class Dialog extends AbstractPanel
     public static final String PARAMNAME_OVERRIDE_SKIN = "_d_skin";
     public static final String PARAMNAME_DIALOGPREFIX = "_d.";
     public static final String PARAMNAME_CONTROLPREFIX = "_dc.";
-    public static final String PARAMNAME_DIALOGQNAME = "_d.dialog_qname";
 
     public static final String PARAMNAME_ACTIVEMODE = ".active_mode";
     public static final String PARAMNAME_NEXTMODE = ".next_mode";
@@ -694,7 +693,7 @@ public class Dialog extends AbstractPanel
         DialogContext dc = createContext(nc, theme.getDialogSkin());
         try
         {
-            render(nc.getResponse().getWriter(), dc, false);
+            render(writer, dc, false);
         }
         catch (DialogExecuteException e)
         {

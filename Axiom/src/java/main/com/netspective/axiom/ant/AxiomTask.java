@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.3 2003-05-19 00:58:04 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.4 2003-05-23 02:18:01 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -287,6 +287,7 @@ public class AxiomTask extends XdmComponentTask
 
     public void generateImportDtd(SqlManager sqlManager) throws BuildException
     {
+        dtdFile.getParentFile().mkdirs();
         Schema schema = getSchema(sqlManager);
         try
         {
