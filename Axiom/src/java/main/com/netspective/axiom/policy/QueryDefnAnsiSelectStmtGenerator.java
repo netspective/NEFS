@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnAnsiSelectStmtGenerator.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: QueryDefnAnsiSelectStmtGenerator.java,v 1.2 2003-05-31 17:16:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -156,14 +156,19 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
     {
         QueryDefnFields showFields = select.getDisplayFields();
         int showFieldsCount = showFields.size();
-        for(int sf = 0; sf < showFieldsCount; sf++)
+        if(showFieldsCount > 0)
         {
-            QueryDefnField field = showFields.get(sf);
-            String selClauseAndLabel = field.getSelectClauseExprAndLabel();
-            if(selClauseAndLabel != null)
-                selectClause.add(field.getSelectClauseExprAndLabel());
-            addJoin(field);
+            for(int sf = 0; sf < showFieldsCount; sf++)
+            {
+                QueryDefnField field = showFields.get(sf);
+                String selClauseAndLabel = field.getSelectClauseExprAndLabel();
+                if(selClauseAndLabel != null)
+                    selectClause.add(field.getSelectClauseExprAndLabel());
+                addJoin(field);
+            }
         }
+        else
+            selectClause.add("*");
 
         QueryDefnConditions allSelectConditions = select.getConditions();
         QueryDefnConditions usedSelectConditions = allSelectConditions.getUsedConditions(this, vc);

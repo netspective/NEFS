@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSelect.java,v 1.3 2003-05-30 23:06:53 shahid.shah Exp $
+ * $Id: QueryDefnSelect.java,v 1.4 2003-05-31 17:16:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -252,7 +252,7 @@ public class QueryDefnSelect extends Query
                 for(int i = 0; i < bindParams.size(); i++)
                 {
                     QueryParameter param = params.createParam();
-                    param.setValue((ValueSource) params.get(i));
+                    param.setValue((ValueSource) bindParams.get(i));
                     params.addParam(param);
                 }
 
@@ -269,6 +269,7 @@ public class QueryDefnSelect extends Query
     {
         distinctRows = select.distinctRowsOnly();
 
+        displayFields.copy(select.getDisplayFields());
         conditions.copy(queryDefn.getDefaultConditions());
         conditions.copy(select.getConditions());
         orderByFieldRefs.copy(select.getOrderByFieldRefs());

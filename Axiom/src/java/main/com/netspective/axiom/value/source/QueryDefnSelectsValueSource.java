@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: QueryDefnSelectsValueSource.java,v 1.1 2003-05-30 23:06:54 shahid.shah Exp $
+ * $Id: QueryDefnSelectsValueSource.java,v 1.2 2003-05-31 17:16:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -65,6 +65,8 @@ import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.axiom.sql.dynamic.QueryDefnFields;
 import com.netspective.axiom.sql.dynamic.QueryDefnField;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.ValueContext;
@@ -76,7 +78,8 @@ import com.netspective.commons.value.source.StaticValueSource;
 
 public class QueryDefnSelectsValueSource extends QueryDefnItemValueSource
 {
-    static public final ValueSource CUSTOMIZE = new StaticValueSource("Customize...");
+    static public final String CUSTOMIZE_TEXT = "Customize...";
+    static public final ValueSource CUSTOMIZE_VS = new StaticValueSource(CUSTOMIZE_TEXT);
 
     public static final String[] IDENTIFIERS = new String[] { "query-defn-selects" };
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
@@ -98,7 +101,7 @@ public class QueryDefnSelectsValueSource extends QueryDefnItemValueSource
         return DOCUMENTATION;
     }
 
-    private ValueSource allowCustom;
+    private ValueSource allowCustom = CUSTOMIZE_VS;
 
     public QueryDefnSelectsValueSource()
     {
@@ -118,27 +121,27 @@ public class QueryDefnSelectsValueSource extends QueryDefnItemValueSource
             if(allowCustom.equals("no"))
                 this.allowCustom = null;
             else if(allowCustom.equals("yes"))
-                this.allowCustom = CUSTOMIZE;
+                this.allowCustom = CUSTOMIZE_VS;
             else
                 this.allowCustom = ValueSources.getInstance().getValueSourceOrStatic(allowCustom);
         }
         else
-            this.allowCustom = CUSTOMIZE;
+            this.allowCustom = CUSTOMIZE_VS;
     }
 
     public PresentationValue getPresentationValue(ValueContext vc)
     {
         DatabaseConnValueContext dcvc = (DatabaseConnValueContext) vc;
         com.netspective.axiom.sql.dynamic.QueryDefinition qd = getQueryDefn(dcvc);
-        QueryDefnFields fields = qd.getFields();
+        QueryDefnSelects selects = qd.getSelects();
 
         PresentationValue result = new PresentationValue();
         PresentationValue.Items items = result.createItems();
 
-        for(int i = 0; i < fields.size(); i++)
+        for(int i = 0; i < selects.size(); i++)
         {
-            QueryDefnField field = fields.get(i);
-            items.addItem(field.getCaption(), field.getName());
+            QueryDefnSelect select = selects.get(i);
+            items.addItem(select.getName());
         }
 
         if(allowCustom != null)
@@ -151,11 +154,11 @@ public class QueryDefnSelectsValueSource extends QueryDefnItemValueSource
     {
         DatabaseConnValueContext dcvc = (DatabaseConnValueContext) vc;
         com.netspective.axiom.sql.dynamic.QueryDefinition qd = getQueryDefn(dcvc);
-        QueryDefnFields fields = qd.getFields();
+        QueryDefnSelects selects = qd.getSelects();
 
         List result = new ArrayList();
-        for(int i = 0; i < fields.size(); i++)
-            result.add(fields.get(i).getName());
+        for(int i = 0; i < selects.size(); i++)
+            result.add(selects.get(i).getName());
 
         if(allowCustom != null)
             result.add(allowCustom.getTextValue(vc));

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.7 2003-05-21 11:04:28 shahid.shah Exp $
+ * $Id: Query.java,v 1.8 2003-05-31 17:16:58 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -312,23 +312,21 @@ public class Query
         text.append("\n");
         text.append(getSqlText(cc));
         text.append("\n");
-        if(parameters != null)
+        if(overrideParams != null)
         {
-            if(overrideParams != null)
+            text.append("\nBind Parameters (overridden in method):\n");
+            for(int i = 0; i < overrideParams.length; i++)
             {
-                text.append("\nBind Parameters (overridden in method):\n");
-                for(int i = 0; i < overrideParams.length; i++)
-                {
-                    text.append("["+ (i + 1) +"] ");
-                    text.append(overrideParams[i] + " ("+ overrideParams[i].getClass().getName() +")");
-                }
+                text.append("["+ (i + 1) +"] ");
+                text.append(overrideParams[i] + " ("+ overrideParams[i].getClass().getName() +")");
             }
-            else if(parameters != null)
-            {
-                text.append("\nBind Parameters (in query):\n");
-                for(int i = 0; i < parameters.size(); i++)
-                    (parameters.get(i)).appendBindText(text, cc, "\n");
-            }
+            text.append("\n");
+        }
+        else if(parameters != null)
+        {
+            text.append("\nBind Parameters (in query):\n");
+            for(int i = 0; i < parameters.size(); i++)
+                (parameters.get(i)).appendBindText(text, cc, "\n");
             text.append("\n");
         }
         return text.toString();
