@@ -35,19 +35,19 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
  */
 package com.netspective.sparx.form.sql;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.panel.QueryReportPanel;
+import com.netspective.sparx.panel.HtmlTabularReportPanel;
 import com.netspective.sparx.sql.Query;
 
 import java.io.IOException;
 
 /**
- * @author aye
- * $Id: QueryDialogContext.java,v 1.2 2003-08-01 05:45:08 aye.thu Exp $
+ * @author Aye Thu
+ * @version $Id: QueryDialogContext.java,v 1.3 2003-11-07 04:59:57 aye.thu Exp $
  */
 public class QueryDialogContext extends DialogContext
 {
@@ -83,7 +83,7 @@ public class QueryDialogContext extends DialogContext
      * Gets the report panel for the current context
      * @return
      */
-    public QueryReportPanel getReportPanel()
+    public HtmlTabularReportPanel getReportPanel()
     {
         return reportPanel;
     }
