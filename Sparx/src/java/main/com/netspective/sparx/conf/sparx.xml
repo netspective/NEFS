@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-*****************************************************************************************
-* Sparx standard configuration file (designed to be included in other Sparx XDM files).
-* $Id: sparx.xml,v 1.3 2003-04-05 17:08:29 shahid.shah Exp $
-*****************************************************************************************
+  *****************************************************************************************
+  * Sparx standard configuration file (designed to be included in other Sparx XDM files).
+  * $Id: sparx.xml,v 1.4 2003-04-05 17:12:02 shahid.shah Exp $
+  *****************************************************************************************
  -->
 
  <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
