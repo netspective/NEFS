@@ -58,6 +58,15 @@
             </library>
 
             <library>
+                <name>Jakarta BCEL</name>
+                <version>5.1</version>
+                <class-path>bcel.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/bcel/"
+                    license="Apache Software License"
+                    license-uri="http://www.apache.org/LICENSE"/>
+            </library>
+
+            <library>
                 <name>Jakarta Commons Collections</name>
                 <version>2.1.0</version>
                 <class-path>commons-collections.jar</class-path>
