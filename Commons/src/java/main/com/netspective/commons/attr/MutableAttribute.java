@@ -39,14 +39,12 @@
  */
 
 /**
- * $Id: EntityPreference.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
+ * $Id: MutableAttribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.security;
+package com.netspective.commons.attr;
 
-public interface EntityPreference
+public interface MutableAttribute extends Attribute
 {
-    public Object getPreferenceType();
-    public String getPreferenceKey();
-    public String getPreferenceValue();
+    public MutableAttributes getMutableOwner();
 }

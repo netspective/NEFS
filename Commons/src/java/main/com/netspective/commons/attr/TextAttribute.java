@@ -39,60 +39,12 @@
  */
 
 /**
- * $Id: BasicEntityPreference.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
+ * $Id: TextAttribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.security;
+package com.netspective.commons.attr;
 
-public class BasicEntityPreference implements EntityPreference, MutableEntityPreference, java.io.Serializable
+public interface TextAttribute extends Attribute
 {
-    private Object type;
-    private String key;
-    private String value;
-
-    public BasicEntityPreference()
-    {
-    }
-
-    public BasicEntityPreference(String key, String value)
-    {
-        this(null, key, value);
-    }
-
-    public BasicEntityPreference(Object type, String key, String value)
-    {
-        this.type = type;
-        this.key = key;
-        this.value = value;
-    }
-
-    public Object getPreferenceType()
-    {
-        return type;
-    }
-
-    public void setPreferenceType(Object type)
-    {
-        this.type = type;
-    }
-
-    public String getPreferenceKey()
-    {
-        return key;
-    }
-
-    public void setPreferenceKey(String key)
-    {
-        this.key = key;
-    }
-
-    public String getPreferenceValue()
-    {
-        return value;
-    }
-
-    public void setPreferenceValue(String value)
-    {
-        this.value = value;
-    }
+    public String getAttributeValue();
 }

@@ -39,16 +39,44 @@
  */
 
 /**
- * $Id: MutableEntityPreference.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
+ * $Id: Attribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.security;
+package com.netspective.commons.attr;
 
-public interface MutableEntityPreference extends EntityPreference
+public interface Attribute
 {
-    void setPreferenceType(Object type);
+    /**
+     * Obtain the attributes collection that owns this attribute.
+     * @return The collecion that owns this attribute
+     */
+    public Attributes getOwner();
 
-    void setPreferenceKey(String key);
+    /**
+     * Obtain the unique identifier assigned to this attribute. It is often the same as "name" but may be different
+     * at times. For example, if the attribute were read from a DBMS, it is often the primary key of the record that
+     * was read.
+     * @return The unique identifier (either in a DBMS or memory) of the attribute
+     */
+    public Object getAttributeIdentifier();
 
-    void setPreferenceValue(String value);
+    /**
+     * Obtain the name of the attribute that would be meaning for an end-user application or user interface.
+     * @return The name of the attribute
+     */
+    public String getAttributeName();
+
+    /**
+     * Obtain the value, as a string, of this Attribute. The default implementation just returns toString() on the
+     * instance but may be something else if necessary.
+     * @return The text representation of this attribute.
+     */
+    public String getAttributeTextValue();
+
+    /**
+     * Ascertain whether mutliple attributes of the same name are allowed. If allow multiple returns true, then the
+     * owner will manage the attributes as list instead of a single value.
+     * @return True if multiple attributes of the same name are allowed, false if only a single one is allowed
+     */
+    public boolean isAllowMultiple();
 }

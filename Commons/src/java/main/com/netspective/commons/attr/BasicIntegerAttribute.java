@@ -39,19 +39,40 @@
  */
 
 /**
- * $Id: MutableAuthenticatedOrganization.java,v 1.2 2004-08-14 19:53:32 shahid.shah Exp $
+ * $Id: BasicIntegerAttribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.security;
+package com.netspective.commons.attr;
 
-import com.netspective.commons.attr.Attributes;
-
-public interface MutableAuthenticatedOrganization extends AuthenticatedOrganization
+public class BasicIntegerAttribute extends AbstractAttribute implements IntegerAttribute
 {
-    public void setPrimary(boolean primary);
-    public void setOrgId(Object id);
-    public void setOrgType(Object type);
-    public void setOrgName(String name);
-    public Attributes createPreferences();
-    public void setPreferences(Attributes attributes);
+    private int value;
+
+    public BasicIntegerAttribute(Attributes owner, String key, int value)
+    {
+        super(owner, key);
+        setAttributeValue(value);
+    }
+
+    public BasicIntegerAttribute(Attributes owner, String key, String value)
+    {
+        super(owner, key);
+        this.value = Integer.parseInt(value);
+    }
+
+    public int getAttributeValue()
+    {
+        return value;
+    }
+
+    public void setAttributeValue(int value)
+    {
+        this.value = value;
+        getMutableOwner().observeAttributeChange(this);
+    }
+
+    public String toString()
+    {
+        return Integer.toString(value);
+    }
 }

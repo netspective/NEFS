@@ -39,14 +39,12 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.15 2004-08-08 22:53:32 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.16 2004-08-14 19:53:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
 
 import java.util.BitSet;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,9 +54,14 @@ import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.Role;
 import com.netspective.commons.acl.RoleNotFoundException;
+import com.netspective.commons.attr.Attribute;
+import com.netspective.commons.attr.Attributes;
+import com.netspective.commons.attr.BasicAttributes;
+import com.netspective.commons.attr.MutableAttributes;
+import com.netspective.commons.attr.MutableAttributes.AttributeMutationObserver;
 import com.netspective.commons.value.ValueContext;
 
-public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io.Serializable
+public class BasicAuthenticatedUser implements MutableAuthenticatedUser, AttributeMutationObserver, java.io.Serializable
 {
     private static final Log log = LogFactory.getLog(BasicAuthenticatedUser.class);
 
@@ -69,8 +72,7 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io
     private String[] userRoleNames;
     private String[] userPermissionNames;
     private BitSet userPermissions;
-    private Map attributes = new HashMap();
-    private EntityPreferences preferences = createPreferences();
+    private Attributes preferences = createPreferences();
     private AuthenticatedOrganizations organizations = createOrganizations();
 
     public BasicAuthenticatedUser()
@@ -207,30 +209,6 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io
         return false;
     }
 
-    public Object getAttribute(String attrName)
-    {
-        return attributes.get(attrName);
-    }
-
-    public void setAttribute(String attrName, Object attrValue)
-    {
-        if (!(attrValue instanceof java.io.Serializable))
-        {
-            log.error("A Non-Serializable attribute '"+  attrName + "' of type '" + attrValue.getClass() + "' was added to " +
-                      this.getClass() + " object with User Name '" + this.getUserName() + "' and User Id '" + this.getUserId() + "'.\n" +
-                      "The process of serializing the session would fail if the server is configured for clustering or persistant sessions.\n" +
-                      "Make sure any attribute added to the AuthenticatedUser object implements Serializable and that it either implements the \n" +
-                      "serialization of its members or its members implement Serializable as well.");
-        }
-
-        attributes.put(attrName, attrValue);
-    }
-
-    public void removeAttribute(String attrName)
-    {
-        attributes.remove(attrName);
-    }
-
     public boolean isRemembered()
     {
         return isRemembered;
@@ -259,18 +237,39 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io
         return new BasicAuthenticatedOrganizations();
     }
 
-    protected MutableEntityPreferences createPreferences()
+    protected MutableAttributes createAttributes()
     {
-        return new BasicEntityPreferences();
+        MutableAttributes result = new BasicAttributes();
+        result.addMutationObserver(this);
+        return result;
     }
 
-    public void setPreferences(EntityPreferences preferences)
+    protected MutableAttributes createPreferences()
     {
-        this.preferences = preferences;
+        MutableAttributes result = new BasicAttributes();
+        result.addMutationObserver(this);
+        return result;
     }
 
-    public EntityPreferences getPreferences()
+    public void setPreferences(Attributes attributes)
+    {
+        this.preferences = attributes;
+    }
+
+    public Attributes getPreferences()
     {
         return preferences;
+    }
+
+    public void observeAttributeAdd(Attributes attributes, Attribute attribute)
+    {
+    }
+
+    public void observeAttributeChange(Attributes attributes, Attribute attribute)
+    {
+    }
+
+    public void observeAttributeRemove(Attributes attributes, Attribute attribute)
+    {
     }
 }

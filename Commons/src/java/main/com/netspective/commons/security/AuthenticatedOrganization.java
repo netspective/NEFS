@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: AuthenticatedOrganization.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
+ * $Id: AuthenticatedOrganization.java,v 1.2 2004-08-14 19:53:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
+
+import com.netspective.commons.attr.Attributes;
 
 public interface AuthenticatedOrganization
 {
@@ -50,5 +52,5 @@ public interface AuthenticatedOrganization
     public Object getOrgId();
     public Object getOrgType();
     public String getOrgName();
-    public EntityPreferences getPreferences();
+    public Attributes getPreferences();
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.15 2004-08-03 19:53:41 shahid.shah Exp $
+ * $Id: AccessControlListTest.java,v 1.16 2004-08-14 19:53:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -484,11 +484,6 @@ public class AccessControlListTest extends TestCase
 	    vcThree.setAuthenticatedUser(userThree);
 	    assertEquals(userThree, vcThree.getAuthenticatedUser());
 */
-
-	    userThree.setAttribute("pi", new Float(3.14159));
-	    assertEquals(new Float(3.14159), userThree.getAttribute("pi"));
-	    userThree.removeAttribute("pi");
-	    assertNull(userThree.getAttribute("pi"));
     }
 
 	public void testAuthenticatedUsersPermissions() throws DataModelException, InvocationTargetException, InstantiationException, NoSuchMethodException, IllegalAccessException, IOException, PermissionNotFoundException, RoleNotFoundException

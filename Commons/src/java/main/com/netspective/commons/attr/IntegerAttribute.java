@@ -39,19 +39,12 @@
  */
 
 /**
- * $Id: MutableAuthenticatedOrganization.java,v 1.2 2004-08-14 19:53:32 shahid.shah Exp $
+ * $Id: IntegerAttribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.security;
+package com.netspective.commons.attr;
 
-import com.netspective.commons.attr.Attributes;
-
-public interface MutableAuthenticatedOrganization extends AuthenticatedOrganization
+public interface IntegerAttribute extends Attribute
 {
-    public void setPrimary(boolean primary);
-    public void setOrgId(Object id);
-    public void setOrgType(Object type);
-    public void setOrgName(String name);
-    public Attributes createPreferences();
-    public void setPreferences(Attributes attributes);
+    public int getAttributeValue();
 }

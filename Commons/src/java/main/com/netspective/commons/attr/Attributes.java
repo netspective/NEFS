@@ -39,19 +39,21 @@
  */
 
 /**
- * $Id: MutableAuthenticatedOrganization.java,v 1.2 2004-08-14 19:53:32 shahid.shah Exp $
+ * $Id: Attributes.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.security;
+package com.netspective.commons.attr;
 
-import com.netspective.commons.attr.Attributes;
+import java.util.List;
+import java.util.Map;
 
-public interface MutableAuthenticatedOrganization extends AuthenticatedOrganization
+public interface Attributes
 {
-    public void setPrimary(boolean primary);
-    public void setOrgId(Object id);
-    public void setOrgType(Object type);
-    public void setOrgName(String name);
-    public Attributes createPreferences();
-    public void setPreferences(Attributes attributes);
+    public Attribute getAttribute(String name);
+    public List getAttributes(String name);
+    public boolean isAttributeList(String name);
+
+    public String getAttributeValue(String name, String defaultValue);
+    public int getAttributeValue(String name, int defaultValue);
+    public Map getAttributesMap();
 }

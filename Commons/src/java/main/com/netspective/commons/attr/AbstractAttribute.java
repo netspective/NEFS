@@ -39,13 +39,65 @@
  */
 
 /**
- * $Id: MutableEntityPreferences.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
+ * $Id: AbstractAttribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.security;
+package com.netspective.commons.attr;
 
-public interface MutableEntityPreferences extends EntityPreferences
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public abstract class AbstractAttribute implements Attribute, MutableAttribute, java.io.Serializable
 {
-    public EntityPreference createPreference();
-    public void addPreference(EntityPreference preference);
+    private static final Log log = LogFactory.getLog(AbstractAttribute.class);
+
+    private Attributes owner;
+    private Object identifier;
+    private String name;
+
+    public AbstractAttribute(Attributes owner)
+    {
+        this.owner = owner;
+    }
+
+    public AbstractAttribute(Attributes owner, String name)
+    {
+        this.owner = owner;
+        this.name = name;
+    }
+
+    public MutableAttributes getMutableOwner()
+    {
+        return (MutableAttributes) getOwner();
+    }
+
+    public Attributes getOwner()
+    {
+        return owner;
+    }
+
+    public Object getAttributeIdentifier()
+    {
+        return identifier;
+    }
+
+    public void setAttributeIdentifier(Object identifier)
+    {
+        this.identifier = identifier;
+    }
+
+    public String getAttributeName()
+    {
+        return name;
+    }
+
+    public String getAttributeTextValue()
+    {
+        return toString();
+    }
+
+    public boolean isAllowMultiple()
+    {
+        return false;
+    }
 }

@@ -39,19 +39,23 @@
  */
 
 /**
- * $Id: MutableAuthenticatedOrganization.java,v 1.2 2004-08-14 19:53:32 shahid.shah Exp $
+ * $Id: ExceptionAttribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.security;
+package com.netspective.commons.attr;
 
-import com.netspective.commons.attr.Attributes;
-
-public interface MutableAuthenticatedOrganization extends AuthenticatedOrganization
+public class ExceptionAttribute extends BasicTextAttribute
 {
-    public void setPrimary(boolean primary);
-    public void setOrgId(Object id);
-    public void setOrgType(Object type);
-    public void setOrgName(String name);
-    public Attributes createPreferences();
-    public void setPreferences(Attributes attributes);
+    private Exception createdAsResultOfException;
+
+    public ExceptionAttribute(Attributes owner, String key, String value, Exception e)
+    {
+        super(owner, key, value);
+        this.createdAsResultOfException = e;
+    }
+
+    public Exception getCreatedAsResultOfException()
+    {
+        return createdAsResultOfException;
+    }
 }

@@ -39,10 +39,13 @@
  */
 
 /**
- * $Id: BasicAuthenticatedOrganization.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
+ * $Id: BasicAuthenticatedOrganization.java,v 1.2 2004-08-14 19:53:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
+
+import com.netspective.commons.attr.Attributes;
+import com.netspective.commons.attr.BasicAttributes;
 
 public class BasicAuthenticatedOrganization implements MutableAuthenticatedOrganization
 {
@@ -50,7 +53,7 @@ public class BasicAuthenticatedOrganization implements MutableAuthenticatedOrgan
     private Object orgId;
     private Object orgType;
     private String orgName;
-    private EntityPreferences preferences;
+    private Attributes attributes;
 
     public boolean isPrimary()
     {
@@ -92,18 +95,18 @@ public class BasicAuthenticatedOrganization implements MutableAuthenticatedOrgan
         this.orgName = name;
     }
 
-    public EntityPreferences createPreferences()
+    public Attributes createPreferences()
     {
-        return new BasicEntityPreferences();
+        return new BasicAttributes();
     }
 
-    public void setPreferences(EntityPreferences preferences)
+    public void setPreferences(Attributes attributes)
     {
-        this.preferences = preferences;
+        this.attributes = attributes;
     }
 
-    public EntityPreferences getPreferences()
+    public Attributes getPreferences()
     {
-        return preferences;
+        return attributes;
     }
 }

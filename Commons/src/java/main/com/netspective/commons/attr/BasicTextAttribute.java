@@ -39,16 +39,34 @@
  */
 
 /**
- * $Id: EntityPreferences.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
+ * $Id: BasicTextAttribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.security;
+package com.netspective.commons.attr;
 
-import java.util.Map;
-
-public interface EntityPreferences
+public class BasicTextAttribute extends AbstractAttribute implements TextAttribute
 {
-    public EntityPreference getPreference(String key);
-    public String getPreferenceValue(String key, String defaultValue);
-    public Map getPreferences();
+    private String value;
+
+    public BasicTextAttribute(Attributes owner, String key, String value)
+    {
+        super(owner, key);
+        setAttributeValue(value);
+    }
+
+    public String getAttributeValue()
+    {
+        return value;
+    }
+
+    public void setAttributeValue(String value)
+    {
+        this.value = value;
+        getMutableOwner().observeAttributeChange(this);
+    }
+
+    public String toString()
+    {
+        return value;
+    }
 }
