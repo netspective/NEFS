@@ -515,8 +515,9 @@
             Maintains the normalized (DBMS-friendly) version of the denormalized single-column value in {params.parentRef}.
             {params.parentRef} contains a delimited copy of the values in this table in a denormalized manner so that
             a user that needs all the values at once just has to do a single table/column select and not a join to multiple
-            rows. However, if the separated values need to be search, this normalized table can be used. Java-side triggers
-            automatically manage the data in this table and records in this table should not be modified manually.
+            rows. However, if the separated values need to be searched or joined, this normalized table can be used.
+            Java-side triggers automatically manage the data in this table and records in this table should not be modified
+            manually.
         </description>
 
         <column name="${params.parentIdColName}" parent-ref="${params.parentRef}" required="yes" descr="The owner of the enumerated value this entry was created for"/>
