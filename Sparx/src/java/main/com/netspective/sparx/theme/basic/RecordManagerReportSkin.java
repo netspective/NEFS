@@ -67,7 +67,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordManagerReportSkin.java,v 1.4 2003-10-22 02:48:50 shahid.shah Exp $
+ * @version $Id: RecordManagerReportSkin.java,v 1.5 2004-02-10 16:55:19 aye.thu Exp $
  */
 public class RecordManagerReportSkin extends RecordEditorReportSkin
 {
@@ -81,6 +81,14 @@ public class RecordManagerReportSkin extends RecordEditorReportSkin
         super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
 
+    /**
+     * Extends the parent method to display the <i>Add</i> report action 
+     *
+     * @param writer        writer object to write the output to
+     * @param vc            current panel context
+     * @param frame         the panel frame object
+     * @throws IOException
+     */
     public void produceHeadingExtras(Writer writer, HtmlPanelValueContext vc, HtmlPanelFrame frame) throws IOException
     {
         super.produceHeadingExtras(writer, vc, frame);
