@@ -47,7 +47,7 @@
 
     <table width="600" border="0" cellspacing="0" cellpadding="0" class="body-content">
         <tr>
-            <td valign="top" class="page-nav" rowspan=2>
+            <td valign="top" class="page-nav" rowspan=2 width=151>
                 <@primaryAncestorChildren/>
             </td>
             <#if activePage.summary?exists>
@@ -58,11 +58,9 @@
         </tr>
         <tr>
             <td valign="top" class="body-content">
-            <div class="body-content">
 </#macro>
 
 <#macro pageBodyEnd>
-            </div>
             </td>
         </tr>
    </table>

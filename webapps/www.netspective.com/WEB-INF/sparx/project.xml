@@ -10,7 +10,6 @@
     <theme name="netspective-site" default="yes" class="app.AppTheme" inherit-resources-from-themes="console,common"/>
 
     <xdm:include file="main.xml"/>
-    <xdm:include file="sampler.xml"/>
     <xdm:include file="bugzilla.xml"/>
 
 </project>

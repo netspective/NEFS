@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.117 2003-11-21 19:46:39 shahid.shah Exp $
+  * $Id: console.xml,v 1.118 2003-12-07 22:21:49 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -20,6 +20,10 @@
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" heading="Console Home" default="yes">
             <body config="console" source="console-page-content:index.ftl"/>
+
+            <page name="site-map" caption="Sitemap" heading="Console Contents">
+                <body config="console" source="console-page-content:../sitemap.ftl"/>
+            </page>
         </page>
 
         <page name="project" caption="Project" heading="Project Home">
@@ -264,9 +268,7 @@
 
         <!--<xdm:include resource="com/netspective/sparx/conf/console-user-manual-pages.xml"/>-->
 
-        <page name="documentation" caption="Documentation" require-login="no">
-            <body config="console" source="content/documentation.ftl"/>
-        </page>
+        <page name="documentation" caption="Documentation" require-login="no" redirect="netspective-url:docs"/>
         <page name="reference" caption="XDM Tags Reference" require-login="no">
             <page name="tree" caption="Tags Tree" require-login="no" body-affects-navigation="yes">
                 <body config="console" source="content/xdm-tree.ftl"/>

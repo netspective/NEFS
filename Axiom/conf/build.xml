@@ -290,7 +290,7 @@ Setup instructions:
         <!-- copy the latest jar (for people who don't care about the version) -->
         <copy file="${project.lib.dir}/${project.output.versioned.jar-name}" tofile="${project.lib.dir}/${project.output.jar-name}"/>
 
-        <!-- copy the jar to the downloads directory for sampler too -->
+        <!-- copy the jar to the downloads directory for www too -->
         <copy file="${project.lib.dir}/${project.output.versioned.jar-name}" todir="${downloads.path}/lib"/>
     </target>
 

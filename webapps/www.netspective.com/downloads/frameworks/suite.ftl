@@ -45,11 +45,11 @@ latest releases, please refer to the <a href="${servletPath}/support/documentati
     </tr>
 </table>
 
-<h1>All Commons Core Library Releases</h1
+<h1>All Commons Core Library Releases</h1>
 <@showReleases framework="Commons"/>
 
-<h1>All Axiom Data Service Releases</h1
+<h1>All Axiom Data Service Releases</h1>
 <@showReleases framework="Axiom"/>
 
-<h1>All Sparx Application Platform Releases</h1
+<h1>All Sparx Application Platform Releases</h1>
 <@showReleases framework="Sparx"/>

@@ -41,7 +41,8 @@
                         <param name="movie" value="${resourcesPath}/home-flash-features.swf">
                         <param name="quality" value="best">
                         <param name="play" value="true">
-                        <embed height="90" pluginspage="http://www.macromedia.com/go/getflashplayer" src="${resourcesPath}/home-flash-features.swf" type="application/x-shockwave-flash" width="190" quality="best" play="true">
+                        <param name="loop" value="true">
+                        <embed height="90" pluginspage="http://www.macromedia.com/go/getflashplayer" src="${resourcesPath}/home-flash-features.swf" type="application/x-shockwave-flash" width="190" quality="best" play="true" loop="yes">
                     </object>
                     </td>
                 </tr>

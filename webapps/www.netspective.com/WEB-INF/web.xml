@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: web.xml,v 1.5 2003-12-05 16:33:24 shahid.shah Exp $
+$Id: web.xml,v 1.6 2003-12-07 22:24:14 shahid.shah Exp $
 -->
 
 <web-app>
@@ -37,15 +37,6 @@ $Id: web.xml,v 1.5 2003-12-05 16:33:24 shahid.shah Exp $
     <servlet>
         <servlet-name>MainNavigationController</servlet-name>
         <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>SamplerNavigationController</servlet-name>
-        <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
-        <init-param>
-            <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
-            <param-value>--navigation-tree=sampler --theme=sampler</param-value>
-        </init-param>
     </servlet>
 
     <servlet>
@@ -84,11 +75,6 @@ $Id: web.xml,v 1.5 2003-12-05 16:33:24 shahid.shah Exp $
     <servlet-mapping>
         <servlet-name>MainNavigationController</servlet-name>
         <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>SamplerNavigationController</servlet-name>
-        <url-pattern>/sampler/*</url-pattern>
     </servlet-mapping>
 
     <!--

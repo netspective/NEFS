@@ -296,6 +296,15 @@
                 </summary>
                 <body source="company/customers.ftl"/>
             </page>
+
+            <page name="site-map" caption="Sitemap" heading="Netspective Website Contents">
+                <body source="company/sitemap.ftl"/>
+            </page>
+
+            <page name="search" caption="Search" heading="Search Netspective Website">
+                <summary>This feature will be available soon. Please check back later.</summary>
+                <body source="company/search.ftl"/>
+            </page>
         </page>
     </navigation-tree>
 

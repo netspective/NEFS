@@ -33,7 +33,7 @@
         </page>
         <page name="search" caption="Search Books" command="query-defn,books,test,searchBooksDialog"/>
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
-        <page name="sampler" caption="Sampler" redirect="netspective-url:nefs-sample-apps-home"/>
+        <page name="sample-apps-home" caption="Sample Apps Home" redirect="netspective-url:nefs-sample-apps-home"/>
 
         <dialog-next-action-provider class="app.Util"/>
     </navigation-tree>
