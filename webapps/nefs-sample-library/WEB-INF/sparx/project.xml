@@ -45,13 +45,14 @@
         <page name="delete" caption="Delete Book" command="dialog,library.book-info,delete">
         </page>
         <page name="search" caption="Search Books" command="query-defn,library,test,searchBooksDialog"/>
+        <page name="console" caption="Console" redirect="console"/>
     </navigation-tree>
     
     <dialogs package="library">
         <dialog name="book-info" retain-params="*" hide-hints-until-focus="yes" class="app.form.BookDialog">
             <frame heading="create-dialog-perspective-heading:Book"/>
             <field type="text" name="id" caption="Book ID" required="yes"  hint="This field is required"/>
-            <field type="text" name="title" caption="Title" required="yes" hint="This field is required"/>
+            <field type="text" name="name" caption="Name" required="yes" hint="This field is required"/>
             <field type="text" name="author" caption="Author" required="yes" hint="This field is required"/>
             <field type="select" name="genre" caption="Genre" choices="query:library.get-book-genre-list"/>
             <field type="text" name="isbn" caption="ISBN"/>
@@ -102,8 +103,8 @@
                     <report>
                         <actions>
                             <action type="add" caption="Add Book" command="redirect,add,true"/>
-                            <action type="edit" command="redirect,edit?book_id=${0},true"/>
-                            <action type="delete" command="redirect,delete,true"/>
+                            <action type="edit" command="redirect,edit?id=${0},true"/>
+                            <action type="delete" command="redirect,delete?id=${0},true"/>
                             <action type="select" caption="Process selected rows" title="Process the selected rows"
                                 command="redirect,yahoo.com"/>
                         </actions>
@@ -129,7 +130,7 @@
             select * from book_info where id = ?
 
             <params>
-                <param value="request:book_id"/>
+                <param value="request:id"/>
             </params>
             <presentation>
                 <panel name="Test">
