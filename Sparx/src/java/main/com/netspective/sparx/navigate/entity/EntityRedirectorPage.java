@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EntityRedirectorPage.java,v 1.2 2004-08-09 22:15:14 shahid.shah Exp $
+ * $Id: EntityRedirectorPage.java,v 1.3 2004-08-11 05:13:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.entity;
@@ -240,7 +240,7 @@ public class EntityRedirectorPage extends NavigationPage
         return true;
     }
 
-    public ActiveEntity getEntityProfile(NavigationContext nc, ConnectionContext cc) throws NamingException, SQLException
+    public ActiveEntity getActiveEntity(NavigationContext nc, ConnectionContext cc) throws NamingException, SQLException
     {
         if (activeEntityQuery != null)
         {

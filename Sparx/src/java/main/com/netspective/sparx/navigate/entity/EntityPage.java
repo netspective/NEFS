@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EntityPage.java,v 1.4 2004-08-11 05:10:45 shahid.shah Exp $
+ * $Id: EntityPage.java,v 1.5 2004-08-11 05:13:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.entity;
@@ -223,7 +223,7 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
 
             try
             {
-                activeEntity = this.redirectorPage.getEntityProfile(nc, cc);
+                activeEntity = this.redirectorPage.getActiveEntity(nc, cc);
             }
             catch (Exception e)
             {
