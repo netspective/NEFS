@@ -39,42 +39,69 @@
  */
 
 /**
- * $Id: FileTracker.java,v 1.3 2003-08-17 00:04:30 shahid.shah Exp $
+ * $Id: URLTracker.java,v 1.1 2003-08-17 00:04:30 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 
-public class FileTracker extends AbstractSourceTracker
+public class URLTracker extends AbstractSourceTracker
 {
-    private File file;
+    private URL url;
 
-    public FileTracker()
+    public URLTracker()
     {
     }
 
     public String getIdentifier()
     {
-        return file.getAbsolutePath();
+        return url.getFile();
     }
 
-    public File getFile()
+    public URL getUrl()
     {
-        return file;
+        return url;
     }
 
-    public void setFile(File file)
+    public long lastModified()
     {
-	    if (null == file) return;
+        URLConnection conn = null;
+        try
+        {
+            conn = url.openConnection();
+        }
+        catch (IOException e)
+        {
+            return -1L;
+        }
+        long lastModf = conn.getLastModified();
+        if (lastModf == -1L && url.getProtocol().equals("file"))
+        {
+            // Hack for obtaining accurate last modified time for
+            // URLs that point to the local file system. This is fixed
+            // in JDK 1.4, but prior JDKs returns -1 for file:// URLs.
+            lastModf = new File(url.getFile()).lastModified();
+        }
+        return lastModf;
+    }
 
-        this.file = file;
-        lastModified = file.lastModified();
+    public void setUrl(URL url) throws IOException
+    {
+        this.url = url;
+
+        if(null == url)
+            return;
+
+        this.lastModified = lastModified();
     }
 
     public boolean sourceChanged()
     {
-        if(file.lastModified() > this.lastModified)
+        if(lastModified() > this.lastModified)
             return true;
 
         return dependenciesSourcesChanged();
@@ -82,8 +109,7 @@ public class FileTracker extends AbstractSourceTracker
 
 	public void reset()
 	{
-		if (file.lastModified() >= this.lastModified)
-			this.lastModified = file.lastModified();
+        this.lastModified = lastModified();
 	}
 }
 

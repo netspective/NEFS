@@ -39,10 +39,13 @@
  */
 
 /**
- * $Id: InputSourceTracker.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: InputSourceTracker.java,v 1.2 2003-08-17 00:04:30 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
+
+import java.util.List;
+import java.io.File;
 
 /*
  * Copyright (c) 2000-2002 Netspective Corporation -- all rights reserved
@@ -97,11 +100,39 @@ package com.netspective.commons.io;
  */
 
 /**
- * $Id: InputSourceTracker.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: InputSourceTracker.java,v 1.2 2003-08-17 00:04:30 shahid.shah Exp $
  */
 public interface InputSourceTracker
 {
-    public String getIdentifier();
-    public boolean sourceChanged();
-    public int getDependenciesCount();
+    String getIdentifier();
+
+    boolean sourceChanged();
+
+    int getDependenciesCount();
+
+    InputSourceTracker getOwner();
+
+    InputSourceTracker getParent();
+
+    List getIncludes();
+
+    List getPreProcessors();
+
+    void setOwner(InputSourceTracker owner);
+
+    void setParent(InputSourceTracker parent);
+
+    void addPreProcessor(InputSourceTracker value);
+
+    void addPreProcessor(File file);
+
+    void addPreProcessor(String filename);
+
+    void addInclude(InputSourceTracker value);
+
+    void addInclude(File file);
+
+    void addInclude(String filename);
+
+    boolean dependenciesSourcesChanged();
 }
