@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.9 2004-08-08 22:55:16 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.10 2004-08-09 05:42:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
@@ -248,6 +248,8 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
 
                         retrievePreferences(ldc, orgsPrefsQuery, new Object[] { org.getOrgId() }, (MutableEntityPreferences) org.getPreferences(), null);
                     }
+
+                    qrs.close(true);
                 }
             }
             catch (Exception e)
@@ -275,6 +277,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                     mutableOrgs.addOrganization(org);
 
                     retrievePreferences(ldc, primaryOrgPrefsQuery, new Object[] { org.getOrgId() }, (MutableEntityPreferences) org.getPreferences(), ATTRNAME_ORG_PREFS_QUERY_RESULTS);
+                    qrs.close(true);
                 }
             }
             catch (Exception e)
