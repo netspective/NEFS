@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.3 2003-07-21 14:43:31 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.4 2003-07-21 15:04:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -145,8 +145,13 @@ public class AntBuildDialog extends ConsoleDialog
         logger.setOutputPrintStream(pstream);
         logger.setErrorPrintStream(pstream);
 
-        writer.flush();
+        PrintStream saveOut = System.out;
+        PrintStream saveErr = System.err;
+        System.setOut(pstream);
+        System.setErr(pstream);
+
         antProject.addBuildListener(logger);
+        Exception exceptionThrown = null;
         try
         {
             DialogFields fields = getFields();
@@ -166,13 +171,18 @@ public class AntBuildDialog extends ConsoleDialog
         }
         catch (Exception e)
         {
-            renderFormattedExceptionMessage(writer, e);
-            return;
+            exceptionThrown = e;
         }
 
         writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
         writer.write(ostream.toString());
         writer.write("</pre>");
+
+        if(exceptionThrown != null)
+            renderFormattedExceptionMessage(writer, exceptionThrown);
+
+        System.setOut(saveOut);
+        System.setErr(saveErr);
     }
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
