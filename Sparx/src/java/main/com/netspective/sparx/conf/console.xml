@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.57 2003-06-24 17:12:37 shahid.shah Exp $
+  * $Id: console.xml,v 1.58 2003-06-24 18:00:41 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -116,6 +116,10 @@
                     <panel type="console-page-summary"/>
                     <panel type="console-children-summaries">
                         <frame heading="Dialog Features"/>
+                    </panel>
+                    <panel type="html">
+                        <frame heading="Using Dialogs in XML"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
                     </panel>
                 </panels>
 
@@ -234,7 +238,16 @@
                         </panel>
                     </panels>
                 </page>
-		        <page name="transaction" caption="Transactions">
+		        <page name="transactions" caption="Transactions">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Transaction Protection"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="skins" caption="Skins">
                     <panels>
                         <panel type="console-page-summary"/>
                         <panel type="html">
