@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: XdmEnumeratedAttribute.java,v 1.4 2003-08-04 15:45:44 shahid.shah Exp $
+ * $Id: XdmEnumeratedAttribute.java,v 1.5 2003-08-14 17:54:36 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.exception.UnsupportedEnumeratedAttributeValueException;
+import com.netspective.commons.xdm.exception.InvalidXdmEnumeratedAttributeValueException;
 import com.netspective.commons.xdm.XdmParseContext;
 
 /**
@@ -82,11 +83,11 @@ public abstract class XdmEnumeratedAttribute
         this.valueIndex = valueIndex;
     }
 
-    public void setValue(String value)
+    public void setValue(String value) throws InvalidXdmEnumeratedAttributeValueException
     {
         int indexFound = getValueIndex(value);
         if (indexFound == UNKNOWN_VALUE_INDEX)
-            throw new RuntimeException("Invalid "+ this.getClass().getName() +" value: " + value);
+            throw new InvalidXdmEnumeratedAttributeValueException(this, value);
         else
         {
             this.value = value;
