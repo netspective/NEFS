@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ActionWrapper.java,v 1.3 2004-04-28 17:01:59 shahid.shah Exp $
+ * $Id: ActionWrapper.java,v 1.4 2004-08-09 18:59:00 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.action;
@@ -269,7 +269,8 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
                             {
                                 public void set(Object instance, Value value) throws Exception
                                 {
-                                    as.set(null, instance, value.getTextValue());
+                                    if (value.getTextValue() != null)
+                                        as.set(null, instance, value.getTextValue());
                                 }
                             };
                         }
