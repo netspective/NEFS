@@ -220,7 +220,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     public void renderPageMasthead(Writer writer, NavigationContext nc) throws IOException
     {
         writer.write("<body leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\" topmargin=\"0\" onload=\"initializeBody()\">\n");
-
         ValueSource baseAttrs = nc.getActivePage().getBaseAttributes();
         if(baseAttrs != null)
             writer.write("<base " + baseAttrs.getTextValue(nc) + "></base>");
@@ -419,7 +418,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     /**
      * Renders the page heading if one exists
      */
-    private void renderPageHeading(Writer writer, NavigationContext nc) throws IOException
+    protected void renderPageHeading(Writer writer, NavigationContext nc) throws IOException
     {
         Theme theme = getTheme();
 
@@ -454,7 +453,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     /**
      * Render the sub heading in the page content
      */
-    private void renderPageSubHeading(Writer writer, NavigationContext nc) throws IOException
+    protected void renderPageSubHeading(Writer writer, NavigationContext nc) throws IOException
     {
         NavigationPage page = nc.getActivePage();
         if(page == null)
