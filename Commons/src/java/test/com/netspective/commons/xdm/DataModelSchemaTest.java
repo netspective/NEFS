@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataModelSchemaTest.java,v 1.8 2003-04-04 16:26:37 shahid.shah Exp $
+ * $Id: DataModelSchemaTest.java,v 1.9 2003-04-05 18:36:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -928,7 +928,6 @@ public class DataModelSchemaTest extends TestCase
 
     public void testXmlDataModelSchema()
     {
-        System.out.println("\n");
         Map schemas = XmlDataModelSchema.getSchemas();
         Set schemaNames = schemas.keySet();
         Class[] expectedSchemas = new Class[]{DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class};
