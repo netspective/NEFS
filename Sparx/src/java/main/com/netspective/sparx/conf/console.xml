@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.125 2004-08-31 01:59:25 shahid.shah Exp $
+  * $Id: console.xml,v 1.126 2004-09-27 12:57:12 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -166,7 +166,37 @@
             <page name="static-queries" caption="Static Queries">
                 <page name="catalog" caption="Catalog" heading="Static SQL Queries" retain-params="selected-query-id">
                     <panels>
+                        <panel type="template">
+                            <body>
+                                <![CDATA[
+                                If there are no statistics showing on this page, it means that you do not have Commons Logging turned on for a Query.
+                                You may turn on statistics tracking for a single, group, or all Queries using the log4j.properties (or other logger
+                                that you may be using). See examples at bottom of this page for how to turn on statistics.
+                                ]]>
+                            </body>
+                        </panel>
                         <panel class="com.netspective.sparx.console.panel.data.sql.StaticQueriesCatalogPanel"/>
+                        <panel type="template">
+                            <body>
+                                <![CDATA[
+                                The following turns on statistics logging for all Queries:<br><br>
+                                <code>
+                                log4j.logger.com.netspective.axiom.sql.Query=INFO,APPENDER<br>
+                                log4j.logger.com.netspective.sparx.sql.Query=INFO,APPENDER<br>
+                                </code>
+                                <br>
+                                The following example turns on statisics for all queries in the "PKG" package:<br>
+                                <code>
+                                log4j.logger.com.netspective.sparx.sql.Query.PKG=INFO,APPENDER<br>
+                                </code>
+                                <br>
+                                The following example turns on statisics for a specific query called "QUERY_NAME" in the "PKG" package:<br>
+                                <code>
+                                log4j.logger.com.netspective.sparx.sql.Query.PKG.QUERY_NAME=INFO,APPENDER<br>
+                                </code>
+                                ]]>
+                            </body>
+                        </panel>
                     </panels>
                 </page>
                 <page name="detail" caption="Documentation" retain-params="selected-query-id">
