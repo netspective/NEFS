@@ -51,32 +51,31 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.37 2004-03-21 19:15:53 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.38 2004-04-29 12:32:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationPath;
-import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationPathFlags;
-import com.netspective.sparx.theme.basic.AbstractThemeSkin;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.util.HttpUtils;
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.security.AuthenticatedOrgUser;
-import com.netspective.commons.value.ValueSource;
-
-import javax.servlet.Servlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.netspective.commons.security.AuthenticatedOrgUser;
+import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationControllerServlet;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.navigate.NavigationPath;
+import com.netspective.sparx.navigate.NavigationPathFlags;
+import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.sparx.navigate.NavigationTree;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.util.HttpUtils;
 
 public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements NavigationSkin
 {
@@ -142,15 +141,15 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         AuthenticatedUser authUser = nc.getAuthenticatedUser();
         if (authUser != null)
         {
-            String personName = authUser != null ? authUser.getUserId() : "Not logged in";
-            String personId = authUser != null ? authUser.getUserName() : "Not logged in";
+            String personId = authUser.getUserId();
+            String personName = authUser.getUserName();
 
             String orgName = null;
             String orgId = null;
             if (authUser instanceof AuthenticatedOrgUser)
             {
-                orgName = authUser != null ? ((AuthenticatedOrgUser) authUser).getUserOrgId() : "Not logged in";
-                orgId = authUser != null ? ((AuthenticatedOrgUser) authUser).getUserOrgName() : "Not logged in";
+                orgName = ((AuthenticatedOrgUser) authUser).getUserOrgId();
+                orgId = ((AuthenticatedOrgUser) authUser).getUserOrgName();
             }
 
             Theme theme = getTheme();
@@ -173,7 +172,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
             writer.write("	</td>\n");
             writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
             writer.write("	<td width=\"100%\">\n");
-            if (orgName != null)
+            if (orgName != null && ! orgName.equals(personName))
             {
                 writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
                 writer.write("			<tr>\n");
@@ -187,14 +186,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
             else
             {
                 //writer.write("<img src=\"" + nc.getRootUrl() + getThemeImagePath() + "/spacer.gif\" alt=\"\" height=\"1\" width=\"100%\" border=\"0\">");
-                writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-                writer.write("			<tr>\n");
-                writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-                writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Org&nbsp;</span></td>\n");
-                writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/org/summary.jsp?org_id=" + orgId + "\">&nbsp;&nbsp;" +
-                        "TEST ORG</a></td>\n");
-                writer.write("			</tr>\n");
-                writer.write("		</table>\n");
+                writer.write("		&nbsp;");
             }
             writer.write("	</td>\n");
             writer.write("	<td nowrap width=\"50\" >\n");
