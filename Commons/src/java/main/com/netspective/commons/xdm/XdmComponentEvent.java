@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentEvent.java,v 1.1 2003-08-18 22:11:28 shahid.shah Exp $
+ * $Id: XdmComponentEvent.java,v 1.2 2003-08-24 18:37:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -48,13 +48,21 @@ import java.util.EventObject;
 
 public class XdmComponentEvent extends EventObject
 {
-    public XdmComponentEvent(XdmComponent component)
+    private int flags;
+
+    public XdmComponentEvent(XdmComponent component, int flags)
     {
         super(component);
+        this.flags = flags;
     }
 
     public XdmComponent getXdmComponent()
     {
         return (XdmComponent) getSource();
+    }
+
+    public int getFlags()
+    {
+        return flags;
     }
 }

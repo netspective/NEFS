@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponent.java,v 1.4 2003-08-19 13:24:47 shahid.shah Exp $
+ * $Id: DefaultXdmComponent.java,v 1.5 2003-08-24 18:37:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -68,34 +68,34 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public void removedFromCache(Map cache, Object key)
+    public void removedFromCache(Map cache, Object key, int flags)
     {
         List listeners = getLifecycleListeners();
         if(listeners.size() > 0)
         {
-            XdmComponentEvent event = new XdmComponentEvent(this);
+            XdmComponentEvent event = new XdmComponentEvent(this, flags);
             for(int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentRemovedFromCache(event);
         }
     }
 
-    public void addedToCache(Map cache, Object key)
+    public void addedToCache(Map cache, Object key, int flags)
     {
         List listeners = getLifecycleListeners();
         if(listeners.size() > 0)
         {
-            XdmComponentEvent event = new XdmComponentEvent(this);
+            XdmComponentEvent event = new XdmComponentEvent(this, flags);
             for(int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentAddedToCache(event);
         }
     }
 
-    public void loadedFromXml()
+    public void loadedFromXml(int flags)
     {
         List listeners = getLifecycleListeners();
         if(listeners.size() > 0)
         {
-            XdmComponentEvent event = new XdmComponentEvent(this);
+            XdmComponentEvent event = new XdmComponentEvent(this, flags);
             for(int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentLoadedFromXml(event);
         }

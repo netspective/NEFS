@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ProjectComponent.java,v 1.4 2003-08-19 13:27:48 shahid.shah Exp $
+ * $Id: ProjectComponent.java,v 1.5 2003-08-24 18:40:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -49,6 +49,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.List;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
 import com.netspective.commons.xdm.DefaultXdmComponent;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.metric.MetricsGroup;
@@ -56,6 +59,7 @@ import com.netspective.commons.metric.Metric;
 
 public class ProjectComponent extends DefaultXdmComponent
 {
+    private static final Log log = LogFactory.getLog(ProjectComponent.class);
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private Project project;
 
@@ -90,42 +94,63 @@ public class ProjectComponent extends DefaultXdmComponent
         project.generateIdentifiersConstants(rootPath, rootPkgAndClassName);
     }
 
-    public void addedToCache(Map cache, Object key)
+    public void addedToCache(Map cache, Object key, int flags)
     {
-        super.addedToCache(cache, key);
-        if(project != null)
+        try
         {
-            List listeners = project.getLifecycleListeners();
-            ProjectEvent event = new ProjectEvent(project);
-            for(int i = 0; i < listeners.size(); i++)
-                ((ProjectLifecyleListener) listeners.get(i)).projectAddedToCache(event);
+            super.addedToCache(cache, key, flags);
+            if(project != null)
+            {
+                List listeners = project.getLifecycleListeners();
+                ProjectEvent event = new ProjectEvent(project);
+                for(int i = 0; i < listeners.size(); i++)
+                    ((ProjectLifecyleListener) listeners.get(i)).projectAddedToCache(event);
 
+            }
+        }
+        catch (Exception e)
+        {
+            getErrors().add(e);
         }
     }
 
-    public void removedFromCache(Map cache, Object key)
+    public void removedFromCache(Map cache, Object key, int flags)
     {
-        super.removedFromCache(cache, key);
-        if(project != null)
+        try
         {
-            List listeners = project.getLifecycleListeners();
-            ProjectEvent event = new ProjectEvent(project);
-            for(int i = 0; i < listeners.size(); i++)
-                ((ProjectLifecyleListener) listeners.get(i)).projectRemovedFromCache(event);
+            super.removedFromCache(cache, key, flags);
+            if(project != null)
+            {
+                List listeners = project.getLifecycleListeners();
+                ProjectEvent event = new ProjectEvent(project);
+                for(int i = 0; i < listeners.size(); i++)
+                    ((ProjectLifecyleListener) listeners.get(i)).projectRemovedFromCache(event);
 
+            }
+        }
+        catch (Exception e)
+        {
+            getErrors().add(e);
         }
     }
 
-    public void loadedFromXml()
+    public void loadedFromXml(int flags)
     {
-        super.loadedFromXml();
-        if(project != null)
+        try
         {
-            List listeners = project.getLifecycleListeners();
-            ProjectEvent event = new ProjectEvent(project);
-            for(int i = 0; i < listeners.size(); i++)
-                ((ProjectLifecyleListener) listeners.get(i)).projectLoadedFromXml(event);
+            super.loadedFromXml(flags);
+            if(project != null)
+            {
+                List listeners = project.getLifecycleListeners();
+                ProjectEvent event = new ProjectEvent(project);
+                for(int i = 0; i < listeners.size(); i++)
+                    ((ProjectLifecyleListener) listeners.get(i)).projectLoadedFromXml(event);
 
+            }
+        }
+        catch (Exception e)
+        {
+            getErrors().add(e);
         }
     }
 }

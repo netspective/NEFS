@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentFactory.java,v 1.6 2003-08-18 22:11:28 shahid.shah Exp $
+ * $Id: XdmComponentFactory.java,v 1.7 2003-08-24 18:37:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -68,6 +68,7 @@ public class XdmComponentFactory
     public static final int XDMCOMPFLAG_ALLOWRELOAD_IF_FILE = XDMCOMPFLAG_ALLOWRELOAD;  // synonym, value should be same
     public static final int XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS = XDMCOMPFLAG_ALLOWRELOAD * 2;
     public static final int XDMCOMPFLAG_CACHE_ALWAYS = XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS * 2;
+    public static final int XDMCOMPFLAG_INSIDE_ANT = XDMCOMPFLAG_CACHE_ALWAYS * 2;
 
     public static final int XDMCOMPFLAGS_DEFAULT = XDMCOMPFLAG_ALLOWRELOAD | XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS;
 
@@ -95,17 +96,17 @@ public class XdmComponentFactory
             // If we get to this point, we have an existing component and we are allowing reloads but the source seems
             // to have changed; we need to read the entire component again so remove the instance from the map and set
             // it to null to give the GC a hint to get rid of the instance as soon as possible.
-            component.removedFromCache(componentsBySystemId, systemId);
+            component.removedFromCache(componentsBySystemId, systemId, flags);
             componentsBySystemId.remove(systemId);
             component = null;
         }
         return component;
     }
 
-    public static void cacheComponent(String key, XdmComponent component)
+    public static void cacheComponent(String key, XdmComponent component, int flags)
     {
         componentsBySystemId.put(key, component);
-        component.addedToCache(componentsBySystemId, key);
+        component.addedToCache(componentsBySystemId, key, flags);
     }
 
     /**
@@ -147,11 +148,11 @@ public class XdmComponentFactory
         if(pc != null && pc.getWarnings().size() != 0)
             warnings.addAll(pc.getWarnings());
 
-        component.loadedFromXml();
+        component.loadedFromXml(flags);
 
         // if there are no errors, cache this component so if the file is needed again, it's available immediately
         if((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))
-            cacheComponent(file.getAbsolutePath(), component);
+            cacheComponent(file.getAbsolutePath(), component, flags);
 
         return component;
     }
@@ -218,7 +219,7 @@ public class XdmComponentFactory
         if(pc != null && pc.getWarnings().size() != 0)
             warnings.addAll(pc.getWarnings());
 
-        component.loadedFromXml();
+        component.loadedFromXml(flags);
 
         return component;
     }
@@ -289,11 +290,11 @@ public class XdmComponentFactory
                 if(pc != null && pc.getWarnings().size() != 0)
                     warnings.addAll(pc.getWarnings());
 
-                component.loadedFromXml();
+                component.loadedFromXml(flags);
 
                 // if there are no errors, cache this component so if the file is needed again, it's available immediately
                 if((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))
-                    cacheComponent(systemId, component);
+                    cacheComponent(systemId, component, flags);
 
                 return component;
             }

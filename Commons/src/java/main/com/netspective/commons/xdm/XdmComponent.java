@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponent.java,v 1.2 2003-08-18 22:11:28 shahid.shah Exp $
+ * $Id: XdmComponent.java,v 1.3 2003-08-24 18:37:15 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -54,9 +54,9 @@ import com.netspective.commons.metric.Metrics;
 
 public interface XdmComponent extends XmlDataModel, XmlDataModelSchema.InputSourceTrackerListener
 {
-    public void loadedFromXml();
-    public void removedFromCache(Map cache, Object key);
-    public void addedToCache(Map cache, Object key);
+    public void loadedFromXml(int flags);
+    public void removedFromCache(Map cache, Object key, int flags);
+    public void addedToCache(Map cache, Object key, int flags);
     public List getLifecycleListeners();
 
     public List getErrors();
