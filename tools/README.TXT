@@ -3,7 +3,7 @@
 ** programmers.                                                             **
 ******************************************************************************
 
-$Id: README.TXT,v 1.6 2003-08-21 21:31:49 shahid.shah Exp $
+$Id: README.TXT,v 1.7 2003-08-29 12:26:54 shahid.shah Exp $
 
 Standard IDE and App Server
 ------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ Note: All defaults assume development work is being done on a Win32 platform
       OS X, Linux, or UNIX use $HOME/projects/Frameworks as NEFS_HOME.
 
 Note: There is a default resin configuration file called
-      NEFS_HOME/webapps/resin-2.x.conf available for your use. This
+      NEFS_HOME/webapps/nefs-resin-sde.conf available for your use. This
       configuration file points to port 8099 as the webserver and
       NEFS_HOME/webapps as the default war-dir so that it "auto-registers"
       all the web apps automatically.
