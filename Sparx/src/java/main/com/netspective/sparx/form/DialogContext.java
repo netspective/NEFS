@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.19 2003-08-07 03:20:01 aye.thu Exp $
+ * $Id: DialogContext.java,v 1.20 2003-08-07 03:43:47 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -328,6 +328,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     private boolean redirectDisabled;
     private Row lastRowManipulated;
     private String initialContextXml;
+    private boolean cancelButtonPressed;
 
     public DialogContext()
     {
@@ -444,6 +445,13 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         perspectives.setValue(dataCmdStr);
         debugFlags.setValue(debugFlagsStr);
 
+        // check to see if the dialog was submitted using the cancel button
+        String cancelValue = request.getParameter("cancelButton");
+        if (cancelValue != null && cancelValue.length() > 0)
+        {
+            setCancelButtonPressed(true);
+        }
+
         ValueSource ncRetainVS = nc.getActivePage().getRetainParams();
         if(ncRetainVS != null)
         {
@@ -453,6 +461,24 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         }
 
         nc.setDialogContext(this);
+    }
+
+    /**
+     * Checks to see if the cancel button was pressed for dialog submittal
+     * @return true if the dialog was submitted using the cancel cutton
+     */
+    public boolean isCancelButtonPressed()
+    {
+        return cancelButtonPressed;
+    }
+
+    /**
+     * Sets the flag for the cancel button press
+     * @param cancelButtonPressed
+     */
+    public void setCancelButtonPressed(boolean cancelButtonPressed)
+    {
+        this.cancelButtonPressed = cancelButtonPressed;
     }
 
     public DialogValidationContext getValidationContext()
