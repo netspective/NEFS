@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.27 2004-08-09 22:13:32 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.28 2004-08-12 00:20:00 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -472,6 +472,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         // todo: SQL defns for foreign keys, child tables and other stuff still required??
 
         setName(column.getName());
+        setAbbrev(column.getAbbrev());
         setXmlNodeName(column.getXmlNodeName());
         setSize(column.getSize());
         setIndexInRow(column.getIndexInRow());
