@@ -21,6 +21,9 @@
     -->
     <navigation-tree name="app" default="yes">
         <page class="app.AppPage" name="home" default="yes" caption="Home">
+            <summary>
+                This is the home page.
+            </summary>
             <body>
                 <![CDATA[
                 <#include "*/macros.ftl"/>
@@ -77,7 +80,12 @@
                     <panel type="command" command="dialog,test.text-fields"/>
                     <panel type="template">
                         <frame heading="Xml Configuration"/>
-                        <body source="text-fields-form.ftl"/>
+                        <body>
+                            <![CDATA[
+                            <#include "*/macros.ftl"/>
+                            <div class="textbox"> <@formDescription formName="test.text-fields"/> </div>
+                            ]]>
+                        </body>
                     </panel>
                 </panels>
             </page>
@@ -90,7 +98,12 @@
                     <panel type="command" command="dialog,test.numeric-fields"/>
                     <panel type="template">
                         <frame heading="Xml Configuration"/>
-                        <body source="numeric-fields-form.ftl"/>
+                        <body>
+                            <![CDATA[
+                            <#include "*/macros.ftl"/>
+                            <div class="textbox"> <@formDescription formName="test.numeric-fields"/> </div>
+                            ]]>
+                        </body>
                     </panel>
                 </panels>
             </page>
@@ -103,7 +116,12 @@
                     <panel type="command" command="dialog,test.boolean-fields"/>
                     <panel type="template">
                         <frame heading="Xml Configuration"/>
-                        <body source="boolean-fields-form.ftl"/>
+                        <body>
+                            <![CDATA[
+                            <#include "*/macros.ftl"/>
+                            <div class="textbox"> <@formDescription formName="test.boolean-fields"/> </div>
+                            ]]>
+                        </body>
                     </panel>
                 </panels>
             </page>
@@ -117,15 +135,98 @@
                     <panel type="command" command="dialog,test.select-fields"/>
                     <panel type="template">
                         <frame heading="Xml Configuration"/>
-                        <body source="select-fields-form.ftl"/>
+                        <body>
+                            <![CDATA[
+                            <#include "*/macros.ftl"/>
+                            <div class="textbox"> <@formDescription formName="test.select-fields"/> </div>
+                            ]]>
+                        </body>
                     </panel>
                 </panels>
             </page>
+            <!-- This page is for demonstrating grid and composite fields in a form -->
+            <page name="grid-fields" caption="Grids">
+                <summary>
+                    This page demonstrates how to create and use grid and composite fields. More explanation...
+                </summary>
+                <panels style="vertical">
+                    <panel type="command" command="dialog,test.grid-and-composite-fields"/>
+                    <panel type="template">
+                        <frame heading="Xml Configuration"/>
+                        <body>
+                            <![CDATA[
+                            <#include "*/macros.ftl"/>
+                            <div class="textbox"> <@formDescription formName="test.grid-and-composite-fields"/> </div>
+                            ]]>
+                        </body>
+                    </panel>
+                </panels>
+            </page>
+            <!-- This page is for demonstrating "conditional" fields in a form -->
+            <page name="conditional-fields" caption="Conditionals">
+                <summary>
+                    This page demonstrates how to create and use conditional fields. More explanation...
+                </summary>
+                <panels style="vertical">
+                    <panel type="command" command="dialog,test.conditional-fields"/>
+                    <panel type="template">
+                        <frame heading="Xml Configuration"/>
+                        <body>
+                            <![CDATA[
+                            <#include "*/macros.ftl"/>
+                            <div class="textbox">
+                            The best explanation about what <i>conditional</i> fields are is to &quot;play&quot;
+                            with the shown fields, so go ahead and follow the hint texts shown in the dialog.
 
-
+                            Now that you're familiar with how they work in the above example, you can
+                            see that <i>conditional</i> fields are fields whose state depends upon the state of
+                            other entities (in this case, other fields).
+                            </div>
+                            <@formDescription formName="test.conditional-fields"/>
+                            ]]>
+                        </body>
+                    </panel>
+                </panels>
+            </page>
+            <!-- This page is for demonstrating popup fields in a form -->
+            <page name="popup-fields" caption="Popups">
+                <summary>
+                    This page demonstrates how to create and use popup fields. More explanation...
+                </summary>
+                <panels style="vertical">
+                    <panel type="command" command="dialog,test.popup-fields"/>
+                    <panel type="template">
+                        <frame heading="Xml Configuration"/>
+                        <body>
+                            <![CDATA[
+                            <#include "*/macros.ftl"/>
+                            <div class="textbox"> <@formDescription formName="test.popup-fields"/> </div>
+                            ]]>
+                        </body>
+                    </panel>
+                </panels>
+            </page>
         </page>
 
-        <page class="app.AppPage" name="navigation" caption="Navigation"></page>
+        <page class="app.AppPage" name="navigation" caption="Navigation">
+            <summary>
+                This page demonstrates how the navigation structure of this sampler application is designed.
+            </summary>
+        </page>
+        <!--
+        This page is not used for anything except to demonstrate the usage of popup fields.
+        -->
+        <page name="test-popup" caption="Popup Test" popup="yes" heading="Test Popup" hidden="yes">
+            <body>
+                <![CDATA[
+                <div class="textbox">
+                Hello! This is the popup page related to the popup icon you just clicked.
+                <a href="javascript:opener.activeDialogPopup.populateControls('Here it is!')">Click here </a>to populate
+                the partner field of the popup icon with the text <i>Here it is!</i>.
+                </div>
+                ]]>
+            </body>
+        </page>
 
         <!--
         ====================================
@@ -312,5 +413,53 @@
             <field type="select" name="sel_field_popup" caption="Select Field (Popup)" style="popup"
                 choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
         </dialog>
+        <dialog name="grid-and-composite-fields" retain-params="*" redirect-after-execute="false">
+            <frame heading="Test Grid and Composite Field"/>
+            <field type="separator" heading="Grid" />
+            <grid name="grid-01" caption="Grid Test">
+                <row name="row-01" caption="Row 1">
+                    <field type="integer" name="integer_field_01" size="3" max-length="3" caption="A" default="1"/>
+                    <field type="integer" name="integer_field_02" size="3" max-length="3" caption="B" default="2"/>
+                    <field type="integer" name="integer_field_03" size="3" max-length="3" caption="C" default="3"/>
+                    <field type="integer" name="integer_field_04" size="3" max-length="3" caption="D" default="4"/>
+                </row>
+                <row name="row-02" caption="Row 2">
+                    <field type="integer" name="integer_field_01" size="3" max-length="3" caption="A"/>
+                    <field type="integer" name="integer_field_02" size="3" max-length="3" caption="B"/>
+                    <field type="integer" name="integer_field_03" size="3" max-length="3" caption="C"/>
+                    <field type="integer" name="integer_field_04" size="3" max-length="3" caption="D"/>
+                    <field type="integer" name="integer_field_05" size="3" max-length="3" caption="E"/>
+                </row>
+            </grid>
+
+            <field type="separator" heading="Composite" column-break-before="yes"/>
+            <composite name="composite-01" caption="*">
+                <field type="text" caption="Field A" size="5" name="text_field_01" default="default" hint="Testing..."/>
+                <field type="text" caption="Field B" size="6" name="text_field_02" default="default" hint="Testing..."/>
+                <field type="text" caption="Field C" size="7" name="text_field_03" default="default" hint="Testing..."/>
+            </composite>
+        </dialog>
+        <dialog name="conditional-fields" retain-params="*" redirect-after-execute="false">
+            <frame heading="Test Conditionals"/>
+            <field type="select" name="sel_field_list" caption="Select Field (Combo)" style="combo" size="5"
+                choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C" prepend-blank="yes" hint="Partner field is hidden. Select 'Choice 2' to see it."/>
+            <field type="text" name="static_field" caption="Partner Field" default="Here I am!" hint="Partner field of Select Field (Combo)">
+                <conditional action="display" partner-field-name="sel_field_list" expression="control.selectedIndex == 2"/>
+            </field>
+            <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone" hint="Click me to see my hidden static field."/>
+            <field type="static" name="static_field2" default="Checkbox checked!">
+                <conditional action="display" partner-field-name="checkbox_field" expression="control.checked == true"/>
+            </field>
+        </dialog>
+        <dialog name="popup-fields" retain-params="*" redirect-after-execute="false">
+            <frame heading="Test Popup"/>
+            <field type="select" name="sel_field_list" caption="Select Field" style="combo"
+                prepend-blank="yes" choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
+            <field type="text" name="text_field" caption="Text Field" read-only="browser" default="None at this moment"
+                hint="Click on the icon to select a value">
+                <popup action="servlet-context-uri:/test-popup" fill="text_field"/>
+            </field>
+        </dialog>
+
     </dialogs>
 </project>
