@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.37 2003-11-08 16:30:20 shahid.shah Exp $
+ * $Id: Project.java,v 1.38 2003-11-19 05:19:38 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -108,6 +108,7 @@ import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.product.NetspectiveComponent;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.MetricsGroup;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
@@ -516,14 +517,19 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
-
+    /**
+     * Generates the metrics for the different components defined within the project
+     * @param parent
+     */
     public void produceMetrics(Metric parent)
     {
         super.produceMetrics(parent);
+        MetricsGroup mg = parent.addGroupMetric("User Interface");
+        getDialogs().produceMetrics(mg);
+
         parent.addValueMetric("Lifecycle Listeners", Integer.toString(lifecycleListeners.size()));
         parent.addValueMetric("Ant Projects", Integer.toString(antProjects.size()));
         parent.addValueMetric("Navigation Trees", Integer.toString(navigationTrees.size()));
-        parent.addValueMetric("Dialogs", Integer.toString(dialogs.size()));
         parent.addValueMetric("Themes", Integer.toString(themes.size()));
         parent.addValueMetric("Login Managers", Integer.toString(loginManagers.size()));
     }
