@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.7 2003-04-06 04:36:42 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.8 2003-04-06 15:18:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -68,6 +68,7 @@ import java.io.Writer;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.List;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -364,6 +365,56 @@ public class NavigationPage extends NavigationPath
             return vs.getTextValue(vc);
     }
 
+    public static String appendParams(HttpServletValueContext vc, String url, String paramNames)
+    {
+        StringBuffer result = new StringBuffer(url);
+        boolean hasQueryChar = url.indexOf('?') >= 0;
+
+        if(paramNames.equals("*"))
+        {
+            int i = 0;
+            for(Enumeration e = vc.getHttpRequest().getParameterNames(); e.hasMoreElements(); )
+            {
+                String paramName = (String) e.nextElement();
+                String paramValue = vc.getHttpRequest().getParameter(paramName);
+                if(paramValue != null)
+                {
+                    if(i > 0 || hasQueryChar)
+                        result.append("&");
+                    else
+                        result.append("?");
+
+                    result.append(paramName);
+                    result.append("=");
+                    result.append(paramValue);
+                }
+                i++;
+            }
+        }
+        else
+        {
+            String[] retainParams = TextUtils.split(paramNames, ",", true);
+            for(int i = 0; i < retainParams.length; i++)
+            {
+                String paramName = retainParams[i];
+                String paramValue = vc.getHttpRequest().getParameter(paramName);
+                if(paramValue != null)
+                {
+                    if(i > 0 || hasQueryChar)
+                        result.append("&");
+                    else
+                        result.append("?");
+
+                    result.append(paramName);
+                    result.append("=");
+                    result.append(paramValue);
+                }
+            }
+        }
+
+        return result.toString();
+    }
+
     public String getUrl(HttpServletValueContext vc)
     {
         String result;
@@ -378,19 +429,7 @@ public class NavigationPage extends NavigationPath
 
         ValueSource retainParamsVS = getRetainParams();
         if(retainParamsVS != null)
-        {
-            String retainParamsText = retainParamsVS.getTextValue(vc);
-            String[] retainParams = TextUtils.split(retainParamsText, ",", true);
-            for(int i = 0; i < retainParams.length; i++)
-            {
-                if(i > 0 || result.indexOf('?') >= 0)
-                    result += "&";
-                else
-                    result += "?";
-
-                result += retainParams[i] + "=" + vc.getHttpRequest().getParameter(retainParams[i]);
-            }
-        }
+            result = appendParams(vc, result, retainParamsVS.getTextValue(vc));
 
         return result;
     }

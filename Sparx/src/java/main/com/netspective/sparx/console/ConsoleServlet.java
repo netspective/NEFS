@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.3 2003-03-29 13:00:56 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.4 2003-04-06 15:18:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -103,6 +103,13 @@ public class ConsoleServlet extends HttpServlet
         NavigationSkin skin = defaultTheme.getNavigationSkin();
         NavigationContext nc = skin.createContext(getServletContext(), this, httpServletRequest, httpServletResponse,
                                         tree, activePageId);
+
+        if(nc.isRedirectToAlternateChildRequired())
+        {
+            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
+            return;
+        }
+
         nc.setConsoleMode(true);
 
         NavigationPage activePage = nc.getActivePage();

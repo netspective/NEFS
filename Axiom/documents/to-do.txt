@@ -42,6 +42,7 @@
 * Add feature to maintain object identity (multiple lookups on a given table with same primary key should return one and the same object)
 * Add CSV, Tab-delimited, and other text import/export formats with full support for validation, auto-key generation, etc
 * Use the Axiom/documents/sample-graphviz-schema-code.dot GraphViz dot example file to beef up dot graph generation from Schemas.
+* Consider using JGo (www.nwoods.com/go) for graphics output of ERDs to SVG and other formats.
 * Come up with a better name for SchemaDoc and stick to it.
 * Consider using 'proxies' for DAL -- is DAL just a SQL proxy that can plug into JDO, EJBs, etc?
 * Allow reverse engineering policies that includ standard mappings from JDBC data types to axiom.xml data-types.

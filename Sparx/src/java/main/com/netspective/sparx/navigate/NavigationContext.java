@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.5 2003-04-04 17:19:32 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.6 2003-04-06 15:18:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -83,6 +83,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     private NavigationTree ownerTree;
     private NavigationPage activePage;
+    private boolean redirectToAlternateChildRequired;
     private NavigationSkin skin;
     private NavigationTree.FindResults activePathFindResults;
     private String pageTitle;
@@ -103,7 +104,11 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
         NavigationPage firstDescendantWithBody = findFirstMemberWithBody(activePage);
         if(firstDescendantWithBody != null)
+        {
+            if(firstDescendantWithBody != activePage)
+                redirectToAlternateChildRequired = true;
             activePage = firstDescendantWithBody;
+        }
 
         if(activePage != null)
         {
@@ -112,6 +117,11 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
             activePage.makeStateChanges(this);
         }
+    }
+
+    public boolean isRedirectToAlternateChildRequired()
+    {
+        return redirectToAlternateChildRequired;
     }
 
     public NavigationPage findFirstMemberWithBody(NavigationPage parent)
