@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSet.java,v 1.3 2003-05-21 11:04:28 shahid.shah Exp $
+ * $Id: QueryResultSet.java,v 1.4 2003-06-26 07:00:47 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -161,9 +161,16 @@ public class QueryResultSet
         return executionLogEntry;
     }
 
+    /**
+     * Closes the result set object's database and JDBC resources immediately instead of waiting for this to happen. The related
+     * database Connection object is also closed/returned based on the boolean flag passed in.
+     * @param closeConnToo
+     * @throws SQLException
+     */
     public void close(boolean closeConnToo) throws SQLException
     {
-        resultSet.getStatement().close();
+        // according to JDK 1.3 javadocs, "When a Statement object is closed, its current ResultSet object, if one exists, is also closed."
+        //resultSet.getStatement().close();
         resultSet.close();
         resultSet = null;
         if(closeConnToo)
