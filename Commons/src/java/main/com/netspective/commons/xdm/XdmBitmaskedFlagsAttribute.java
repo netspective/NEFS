@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.7 2003-04-16 07:37:03 shahbaz.javeed Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.8 2003-05-05 21:21:17 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -66,11 +66,6 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
 
     public static final int ACCESS_XDM = 1;      // available via XML
     public static final int ACCESS_PRIVATE = 2;  // available only to Java
-
-    protected int flags = 0;
-    protected Map flagDefnsByName;
-    protected Map flagSetterXmlNodeNames;
-    public static final String FLAG_DELIMITER = "|";
 
     public static class FlagDefn
     {
@@ -119,6 +114,21 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         {
             this.name = name;
         }
+    }
+
+    protected int flags = 0;
+    protected Map flagDefnsByName;
+    protected Map flagSetterXmlNodeNames;
+    protected String flagDelimiter = "|";
+
+    public String getFlagDelimiter()
+    {
+        return flagDelimiter;
+    }
+
+    public void setFlagDelimiter(String flagDelimiter)
+    {
+        this.flagDelimiter = flagDelimiter;
     }
 
     /**
@@ -191,7 +201,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
     {
         this.flags = 0;
 
-        String[] flagNames = TextUtils.split(value, FLAG_DELIMITER, true);
+        String[] flagNames = TextUtils.split(value, flagDelimiter, true);
         FlagDefn[] flagDefns = getFlagsDefns();
         for(int i = 0; i < flagNames.length; i++)
         {
@@ -312,7 +322,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
             if((flags & flagDefns[i].mask) != 0)
             {
                 if(text.length() > 0)
-                    text.append(" " + FLAG_DELIMITER + " ");
+                    text.append(" " + flagDelimiter + " ");
                 text.append(flagDefns[i].getName());
             }
         }

@@ -39,15 +39,18 @@
  */
 
 /**
- * $Id: ValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: ValueSource.java,v 1.3 2003-05-05 21:21:17 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.commons.value.source.StaticValueSource;
 
 public interface ValueSource
 {
+    public static final ValueSource NULL_VALUE_SOURCE = new StaticValueSource(null);
+
     /**
      * Returns the complete set of tokens used to initialize a particular instance of a value source.
      */

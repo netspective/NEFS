@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.3 2003-05-05 21:21:17 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -245,4 +245,69 @@ public abstract class AbstractValue implements Value
                 return null;
         }
     }
+
+    /*
+     TODO:
+    public void importFromXml(Element fieldElem)
+    {
+        String valueType = fieldElem.getAttribute("value-type");
+        if(valueType.equals("strings"))
+        {
+            NodeList valuesNodesList = fieldElem.getElementsByTagName("values");
+            if(valuesNodesList.getLength() > 0)
+            {
+                NodeList valueNodesList = ((Element) valuesNodesList.item(0)).getElementsByTagName("value");
+                int valuesCount = valueNodesList.getLength();
+                if(valuesCount > 0)
+                {
+                    values = new String[valuesCount];
+                    for(int i = 0; i < valuesCount; i++)
+                    {
+                        Element valueElem = (Element) valueNodesList.item(i);
+                        if(valueElem.getChildNodes().getLength() > 0)
+                            values[i] = valueElem.getFirstChild().getNodeValue();
+                    }
+                }
+            }
+        }
+        else
+        {
+            NodeList valueList = fieldElem.getElementsByTagName("value");
+            if(valueList.getLength() > 0)
+            {
+                Element valueElem = (Element) valueList.item(0);
+                if(valueElem.getChildNodes().getLength() > 0)
+                    value = valueElem.getFirstChild().getNodeValue();
+            }
+        }
+    }
+
+    public void exportToXml(Element parent)
+    {
+        Document doc = parent.getOwnerDocument();
+        Element fieldElem = doc.createElement("field");
+        fieldElem.setAttribute("name", field.getQualifiedName());
+        if(values != null)
+        {
+            fieldElem.setAttribute("value-type", "strings");
+            Element valuesElem = doc.createElement("values");
+            for(int i = 0; i < values.length; i++)
+            {
+                Element valueElem = doc.createElement("value");
+                valueElem.appendChild(doc.createTextNode(values[i]));
+                valuesElem.appendChild(valueElem);
+            }
+            fieldElem.appendChild(valuesElem);
+            parent.appendChild(fieldElem);
+        }
+        else if(value != null && value.length() > 0)
+        {
+            fieldElem.setAttribute("value-type", "string");
+            Element valueElem = doc.createElement("value");
+            valueElem.appendChild(doc.createTextNode(value));
+            fieldElem.appendChild(valueElem);
+            parent.appendChild(fieldElem);
+        }
+    }
+   */
 }
