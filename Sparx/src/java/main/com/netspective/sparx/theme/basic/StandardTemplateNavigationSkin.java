@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StandardTemplateNavigationSkin.java,v 1.2 2003-11-30 00:34:43 shahid.shah Exp $
+ * $Id: StandardTemplateNavigationSkin.java,v 1.3 2003-12-07 18:06:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -74,6 +74,7 @@ import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.template.TemplateProcessorException;
 
@@ -108,12 +109,13 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
     public NavigationContext createContext(HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
     {
         NavigationContext nc = new NavigationContext(tree, servlet, request, response, this, navTreeId);
+        NavigationPage activePage = nc.getActivePage();
 
         Map tmplVars = new HashMap();
         tmplVars.put("resourcesPath", nc.getServletRootUrl() + "/resources");
         tmplVars.put("servletPath", nc.getServletRootUrl());
-        tmplVars.put("activePage", nc.getActivePage());
-        tmplVars.put("activePageId", nc.getActivePage().getQualifiedName());
+        tmplVars.put("activePage", activePage);
+        tmplVars.put("activePageId", activePage != null ? activePage.getQualifiedName() : "/activePageIsNull");
         tmplVars.put("theme", this.getTheme());
 
         nc.setAttribute(TemplateProcessor.VCATTRNAME_SHARED_TEMPLATE_VARS, tmplVars);

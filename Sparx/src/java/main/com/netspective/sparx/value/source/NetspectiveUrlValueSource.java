@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NetspectiveUrlValueSource.java,v 1.1 2003-12-03 00:35:12 shahid.shah Exp $
+ * $Id: NetspectiveUrlValueSource.java,v 1.2 2003-12-07 18:06:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -65,13 +65,13 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
             "Creates a URL specific to a particular Netspective site.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("site-id", true, "The site identifier (www, sampler, sample-apps, or docs, downloads).")
+                new ValueSourceDocumentation.Parameter("site-id", true, "The site identifier (www, nefs-sample-apps-home, nefs-sample-apps-server, or docs, downloads).")
             }
     );
 
     public static final int URITYPE_WWW = 0;
-    public static final int URITYPE_SAMPLER = 1;
-    public static final int URITYPE_SAMPLE_APPS = 2;
+    public static final int URITYPE_NEFS_SAMPLE_APPS_HOME = 1;
+    public static final int URITYPE_NEFS_SAMPLE_APPS_SERVER = 2;
     public static final int URITYPE_DOCS = 3;
     public static final int URITYPE_DOWNLOADS = 4;
 
@@ -107,10 +107,10 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
     {
         if(typeId.equals("main"))
             return URITYPE_WWW;
-        else if(typeId.equals("sampler"))
-            return URITYPE_SAMPLER;
-        else if (typeId.equals("nefs-sample-apps"))
-            return URITYPE_SAMPLE_APPS;
+        else if (typeId.equals("nefs-sample-apps-home"))
+            return URITYPE_NEFS_SAMPLE_APPS_HOME;
+        else if (typeId.equals("nefs-sample-apps-server"))
+            return URITYPE_NEFS_SAMPLE_APPS_SERVER;
         else if (typeId.equals("docs"))
             return URITYPE_DOCS;
         else if (typeId.equals("downloads"))
@@ -142,17 +142,17 @@ public class NetspectiveUrlValueSource extends AbstractValueSource
             case URITYPE_WWW:
                 return wwwContextUrl;
 
-            case URITYPE_SAMPLER:
-                return wwwContextUrl + "/sampler";
+            case URITYPE_NEFS_SAMPLE_APPS_HOME:
+                return wwwContextUrl + "/products/frameworks/try";
 
-            case URITYPE_SAMPLE_APPS:
-                return wwwContextUrl + "/sampler/sample-apps";
+            case URITYPE_NEFS_SAMPLE_APPS_SERVER:
+                return request.getContextPath() + "/..";
 
             case URITYPE_DOCS:
-                return wwwContextUrl + "/sampler/documentation";
+                return wwwContextUrl + "/support/documentation";
 
             case URITYPE_DOWNLOADS:
-                return wwwContextUrl + "/resources/downloads";
+                return wwwContextUrl + "/downloads";
         }
 
         return null;
