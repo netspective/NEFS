@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.30 2003-08-31 02:01:16 aye.thu Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.31 2003-08-31 14:06:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -66,6 +66,7 @@ import com.netspective.sparx.navigate.NavigationPathFlags;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.console.ConsoleServlet;
+import com.netspective.sparx.ProjectComponent;
 import com.netspective.commons.security.AuthenticatedUser;
 
 import javax.servlet.Servlet;
@@ -124,7 +125,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         Theme theme = getTheme();
 
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/images/favicon.ico") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"SHORTCUT ICON\" href=\"" + theme.getResourceUrl("/images/favicon.ico") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/general.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/navigation.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-input.css") + "\" type=\"text/css\">\n");
@@ -174,8 +175,8 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("		</table>\n");
         writer.write("	</td>\n");
 
-        int errorsCount = nc.getProjectComponent().getErrors().size();
-        boolean haveErrors = errorsCount > 0;
+        ProjectComponent projectManager = nc.getProjectComponent();
+        boolean haveErrors = projectManager.hasErrorsOrWarnings();
 
         writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
         writer.write(haveErrors ? "	<td>\n" : "	<td width=100%>\n");
@@ -191,13 +192,15 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         if(haveErrors)
         {
+            int errorsCount = projectManager.getErrors().size() + projectManager.getWarnings().size();
+
             writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
             writer.write("	<td width=\"100%\">\n");
 
             writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
             writer.write("			<tr>\n");
             writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-            writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\"><span class=\"error-alert-heading\">&nbsp;Errors&nbsp;</span></a></td>\n");
+            writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\"><span class=\"error-alert-heading\">&nbsp;Errors/Warnings&nbsp;</span></a></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\">&nbsp;&nbsp;" +
                     errorsCount +"</a></td>\n");
             writer.write("			</tr>\n");

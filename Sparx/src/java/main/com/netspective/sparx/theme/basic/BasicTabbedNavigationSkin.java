@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.26 2003-08-31 02:01:16 aye.thu Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.27 2003-08-31 14:06:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -65,8 +65,10 @@ import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationPathFlags;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.ProjectComponent;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedOrgUser;
+import com.netspective.commons.RuntimeEnvironmentFlags;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
@@ -435,6 +437,23 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         }
     }
 
+    public static void renderDevelopmentEnvironmentHeader(Writer writer, NavigationContext nc) throws IOException
+    {
+        if(nc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
+        {
+            final ProjectComponent projectComponent = nc.getProjectComponent();
+            if(projectComponent.hasErrors())
+            {
+                int errorsCount = projectComponent.getErrors().size() + projectComponent.getWarnings().size();
+
+                writer.write("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\" bgcolor=darkred><tr>\n");
+                writer.write("  <td nowrap><font size=2 color=white style='font-family: tahoma,arial; font-size: 8pt'><b>You have <font color=yellow>"+ errorsCount +"</font> Netspective Frameworks Project Errors/Warnings.");
+                writer.write("             Visit the <a href='"+ nc.getRootUrl() +"/console/project/input-source#errors' style='color: yellow'>Console</a> to see the messages</b></font></td>\n");
+                writer.write("</tr></table>");
+            }
+        }
+    }
+
     /**
      *
      * @param writer
@@ -443,6 +462,8 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
      */
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException
     {
+        renderDevelopmentEnvironmentHeader(writer, nc);
+
         if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))
             return;
 
@@ -459,7 +480,6 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         writer.write("                  <td align=\"left\" valign=\"top\">");
         writer.write("                  <div align=\"left\">");
         renderPageHeading(writer, nc);
-
     }
 
     /**
