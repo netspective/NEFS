@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.17 2003-08-06 00:56:34 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.18 2003-08-20 22:37:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -347,6 +347,22 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         {
             int copyMask = flagDefns[i].mask;
             updateFlag(copyMask, flags.flagIsSet(copyMask));
+        }
+    }
+
+    /**
+     * Inherit flags from the source
+     * @param flags The source
+     * @param inherit The flags to inherit (all other flags will remain unset)
+     */
+    public void inherit(XdmBitmaskedFlagsAttribute flags, int inherit)
+    {
+        FlagDefn[] flagDefns = flags.getFlagsDefns();
+        for(int i = 0; i < flagDefns.length; i++)
+        {
+            int copyMask = flagDefns[i].mask;
+            if((copyMask & inherit) != 0)
+                updateFlag(copyMask, flags.flagIsSet(copyMask));
         }
     }
 
