@@ -108,6 +108,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.common.CommunicationEventPurposeType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.common.FacilityType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.common.Facility.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyIdentifier.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyIdentifierType.class);
