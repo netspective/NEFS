@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.29 2003-07-05 02:11:43 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.30 2003-07-08 02:30:09 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -24,7 +24,7 @@
 
     <register-connection-provider-entry-statistics class="com.netspective.sparx.console.panel.data.ResinDataSourcePoolStatistics"/>
 
-    <register-ant-project id="Web Application" file="servlet-context-path:/WEB-INF/build.xml"/>
+    <register-ant-project id="Web Application" file="servlet-context-path:/WEB-INF/sparx/ant-build-project.xml"/>
 
     <panel-type name="html" class="com.netspective.sparx.panel.TemplateContentPanel"/>
     <panel-type name="command" class="com.netspective.sparx.panel.HtmlCommandPanel"/>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.3 2003-07-05 02:11:43 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.4 2003-07-08 02:30:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -49,12 +49,13 @@ import java.io.IOException;
 import java.io.File;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -63,18 +64,18 @@ import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.BuildLogger;
 import org.apache.tools.ant.NoBannerLogger;
 import org.apache.tools.ant.Main;
-import org.apache.tools.ant.Target;
 
 import com.netspective.sparx.console.form.ConsoleDialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.SelectField;
-import com.netspective.sparx.form.field.type.HtmlField;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.value.ServletValueContext;
 import com.netspective.sparx.ant.AntProjects;
 import com.netspective.sparx.ant.AntProject;
+import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.ValueContext;
@@ -91,7 +92,14 @@ public class AntBuildDialog extends ConsoleDialog
     private ActiveAntProjectIdValueSource activeAntProjectIdValueSource = new ActiveAntProjectIdValueSource();
     private ActiveAntProjectFileValueSource activeAntProjectFileValueSource = new ActiveAntProjectFileValueSource();
     private ActiveAntProjectTargetsValueSource activeAntProjectTargetsValueSource = new ActiveAntProjectTargetsValueSource();
-    private ActiveAntProjectTargetDescriptionsValueSource activeAntProjectTargetDescriptionsValueSource = new ActiveAntProjectTargetDescriptionsValueSource();
+    private AntTargetsDocumentationPanel activeTargetsDocumentationPanel = new AntTargetsDocumentationPanel();
+
+    /**
+     * If a target name starts with one of characters in this string, it will be considered a "private target" and not
+     * shown to the user.
+     */
+    private String privateTargetPrefixChars = "._";
+    private boolean showPrivateTargets = false;
 
     public static Project getConfiguredProject(File buildFile)
     {
@@ -110,7 +118,20 @@ public class AntBuildDialog extends ConsoleDialog
         fields.getByName("project-id").setDefault(activeAntProjectIdValueSource);
         fields.getByName("project-file").setDefault(activeAntProjectFileValueSource);
         ((SelectField) fields.getByName("target")).setChoices(activeAntProjectTargetsValueSource);
-        ((HtmlField) fields.getByName("target-descriptions")).setHtml(activeAntProjectTargetDescriptionsValueSource);
+    }
+
+    public void populateValues(DialogContext dc, int formatType)
+    {
+        super.populateValues(dc, formatType);
+        if(dc.isInitialEntry() && formatType == DialogContext.STATECALCSTAGE_INITIAL)
+        {
+            File projectFile = new File(activeAntProjectFileValueSource.getTextValue(dc));
+            if(!projectFile.exists())
+                return;
+
+            Project antProject = getConfiguredProject(projectFile);
+            dc.getFieldStates().getState("target").getValue().setTextValue(antProject.getDefaultTarget());
+        }
     }
 
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
@@ -121,7 +142,7 @@ public class AntBuildDialog extends ConsoleDialog
         Value targetValue = states.getState("target").getValue();
         File projectFile = new File(projectValue.getTextValue());
 
-        Project project = getConfiguredProject(projectFile);
+        Project antProject = getConfiguredProject(projectFile);
 
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
         PrintStream pstream = new PrintStream(ostream);
@@ -131,17 +152,69 @@ public class AntBuildDialog extends ConsoleDialog
         logger.setOutputPrintStream(pstream);
         logger.setErrorPrintStream(pstream);
 
-        project.addBuildListener(logger);
-        project.executeTarget(targetValue.getTextValue());
+        antProject.addBuildListener(logger);
+        try
+        {
+            antProject.executeTarget(targetValue.getTextValue());
+        }
+        catch (Exception e)
+        {
+            StringWriter stackTraceWriter = new StringWriter();
+            PrintWriter stackTrace = new PrintWriter(stackTraceWriter);
+            e.printStackTrace(stackTrace);
+            writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
+            writer.write(stackTraceWriter.toString());
+            writer.write("</pre>");
+            return;
+        }
 
         writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
         writer.write(ostream.toString());
         writer.write("</pre>");
     }
 
+    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
+    {
+        super.render(writer, nc, theme, flags);
+        File projectFile = new File(activeAntProjectFileValueSource.getTextValue(nc));
+        if(! projectFile.exists())
+            return;
 
+        writer.write("<p>");
+        activeTargetsDocumentationPanel.render(writer, nc, theme, flags);
+    }
 
-    public class ActiveAntProjectIdValueSource extends AbstractValueSource
+    public ActiveAntProjectFileValueSource getActiveAntProjectFileValueSource()
+    {
+        return activeAntProjectFileValueSource;
+    }
+
+    public ActiveAntProjectIdValueSource getActiveAntProjectIdValueSource()
+    {
+        return activeAntProjectIdValueSource;
+    }
+
+    public ActiveAntProjectTargetsValueSource getActiveAntProjectTargetsValueSource()
+    {
+        return activeAntProjectTargetsValueSource;
+    }
+
+    public String getPrivateTargetPrefixChars()
+    {
+        return privateTargetPrefixChars;
+    }
+
+    public boolean isPrivateTargetName(String targetName)
+    {
+        return privateTargetPrefixChars.indexOf(targetName.charAt(0)) != -1;
+    }
+
+    public boolean isShowPrivateTargets()
+    {
+        return showPrivateTargets;
+    }
+
+    protected class ActiveAntProjectIdValueSource extends AbstractValueSource
     {
         public PresentationValue getPresentationValue(ValueContext vc)
         {
@@ -181,7 +254,7 @@ public class AntBuildDialog extends ConsoleDialog
         }
     }
 
-    public class ActiveAntProjectFileValueSource extends AbstractValueSource
+    protected class ActiveAntProjectFileValueSource extends AbstractValueSource
     {
         public PresentationValue getPresentationValue(ValueContext vc)
         {
@@ -222,7 +295,7 @@ public class AntBuildDialog extends ConsoleDialog
         }
     }
 
-    public class ActiveAntProjectTargetsValueSource extends AbstractValueSource
+    protected class ActiveAntProjectTargetsValueSource extends AbstractValueSource
     {
         public PresentationValue getPresentationValue(ValueContext vc)
         {
@@ -243,7 +316,12 @@ public class AntBuildDialog extends ConsoleDialog
             for(Iterator i = sortedTargetNames.iterator(); i.hasNext(); )
             {
                 String targetName = (String) i.next();
-                items.addItem(targetName, targetName.equals(defaultTargetName) ? (targetName + " (default)") : targetName);
+                if(! isShowPrivateTargets() && isPrivateTargetName(targetName))
+                    continue;
+                if(targetName.equals(defaultTargetName))
+                    items.addItem(targetName + " (default)", targetName);
+                else
+                    items.addItem(targetName);
             }
 
             return result;
@@ -308,53 +386,6 @@ public class AntBuildDialog extends ConsoleDialog
                     return list;
                 }
             };
-        }
-
-        public boolean hasValue(ValueContext vc)
-        {
-            Value value = getValue(vc);
-            return value.getTextValue() != null;
-        }
-    }
-
-    public class ActiveAntProjectTargetDescriptionsValueSource extends AbstractValueSource
-    {
-        public PresentationValue getPresentationValue(ValueContext vc)
-        {
-            return new PresentationValue(getValue(vc));
-        }
-
-        public Value getValue(ValueContext vc)
-        {
-            File projectFile = new File(activeAntProjectFileValueSource.getTextValue(vc));
-            if(! projectFile.exists())
-                return new GenericValue("Project file '"+ projectFile +"' not found.");
-
-            Project project = getConfiguredProject(projectFile);
-            Set sortedTargetNames = new TreeSet(project.getTargets().keySet());
-
-            StringBuffer html = new StringBuffer("<table>\n");
-            html.append("<tr><td class='dialog-entry' style='border-bottom: 1px solid black'>Target</td>" +
-                    "<td class='dialog-entry' style='border-bottom: 1px solid black'>Dependencies</td>" +
-                    "<td class='dialog-entry' style='border-bottom: 1px solid black'>Description</td></tr>");
-            for(Iterator i = sortedTargetNames.iterator(); i.hasNext(); )
-            {
-                String targetName = (String) i.next();
-                Target target = (Target) project.getTargets().get(targetName);
-
-                html.append("<tr valign=top><td class='dialog-entry'>" + targetName + "</td>");
-                html.append("<td class='dialog-entry'>");
-                for(Enumeration e = target.getDependencies(); e.hasMoreElements(); )
-                {
-                    html.append(e.nextElement());
-                    if(e.hasMoreElements())
-                        html.append(", ");
-                }
-                html.append("</td>");
-                html.append("<td class='dialog-entry'>" + target.getDescription() + "</td></tr>");
-            }
-            html.append("</table>");
-            return new GenericValue(html.toString());
         }
 
         public boolean hasValue(ValueContext vc)

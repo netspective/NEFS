@@ -1,16 +1,30 @@
-* Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
-* Add feature that allows Navigation tree to "remember" the last child it was viewing (using cookies) so that traversal will be easier for users (won't have to go down the hierarchy)
-* Create "Define, Declare, Test, Customize, Deploy" tutorials
+* Add DCB's that can populate actions
+* Add permissions, conditionals, etc into navigation trees
+* Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
 * Add feature to hide/disable submit buttons once the submit button is pressed (in case it takes time to submit something) -- perhaps replace button with "please wait..."
 * Create a 16x16 Console icon that will appear in browser window tabs and URL address line
+* In DialogFieldConditionalAction is 'name' attribute needed anymore? If not, remove it. Also, move partner-field-name out of main class into subclasses that need them? It would make auto-documentation easier.
+* Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
+* Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
+* Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
+* Add ID constants generator to Sparx components (just like Axiom components)
+* Add execute, populate, and makeStateChanges interfaces that can be "registered" for dialogs -- to delegate these activities
+* Add DHTML feature to Dialogs so that hints can optional only show up when a control is being edited (instead of all the time)
+* Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
+* Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
+* Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
+* Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
+* Add sorting to report data source (which should also use cookies to store active sort criteria)
+
+* Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
+* Use http://erw.dsi.unimi.it/ (ERW) to help explain Axiom and its features, benefits, etc.
+* Add feature that allows Navigation tree to "remember" the last child it was viewing (using cookies) so that traversal will be easier for users (won't have to go down the hierarchy)
+* Create "Define, Declare, Test, Customize, Deploy" tutorials
 * Use http://informa.sourceforge.net/ RSS library to setup RSS panels that can connect to RSS channels via URLs or files
 * Add documentation capability to TemplateProducers and TemplateConsumers so that those documentation resources may be displayed in Console.
 * Consider removing the capability to create 'dialog' and 'query' tags outside of 'dialogs' and 'queries' package tags. Might be easier to document/explain.
 * Add ability for child element tag documentation to be retrieved from createXXX, addXXX, or class javadoc in that order (right now only class definition javadoc is used).
-* In DialogFieldConditionalAction is 'name' attribute needed anymore? If not, remove it. Also, move partner-field-name out of main class into subclasses that need them? It would make auto-documentation easier.
-* Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
-* Need to add support for table dialogs (from Sparx 2.3)
 * Need to conduct detailed memory leak analysis, performance testing, stress/load testing (see http://www.pushtotest.com)
 * Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
 * Consider ways of allowing Console to be extended in end-user applications by allow "object" insertion capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
@@ -20,27 +34,15 @@
 * Add support for listeners in as many places in Sparx as makes sense -- e.g. for dialogs that don't want to be subclassed let them add DialogExecuteListener? DialogPopuplateListener? etc...
 * Incorporate features from http://www.irongrid.com (IronEye SQL and IronEye Cache) into Console
 * Take a look at http://www.softwareplanner.com to see what kinds of features from there can be added to Console, Beacon
-* Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
-* Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
-* Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
-* Add ID constants generator to Sparx components (just like Axiom components)
 * Ensure that all validation functionality is removed from fields and placed into validator objects so that they can be reused in Axiom
 * Used http://jakarta.apache.org/commons/fileupload/ to add file upload features
 * Add DHTML popup calendar from http://students.infoiasi.ro/~mishoo/site/calendar/cal.html.
-* Add execute, populate, and makeStateChanges interfaces that can be "registered" for dialogs -- to delegate these activities
 * Convert all ValueSource objects so their default points to ValueSource.NULL_VALUE_SOURCE -- this will eliminate many "if null" checks
-* Add DHTML feature to Dialogs so that hints can optional only show up when a control is being edited (instead of all the time)
-* Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add Portlet API implementation for "output" panels (http://www-3.ibm.com/software/webservers/portal/library/InfoCenter/wps/wpspapi.html).
 * Add built-in wiki parsing for panels so any panel/page can parse and show Wiki content
 * Add ability for pages' body to be read in from databases, URLs, etc as well as files and local xml content
 * Add "concurrent users" into console (all people currently logged in, perhaps total time spent doing stuff, etc)
 * Add capability for HTTP request parameters to be automatically populate into beans for dialog context liks Struts does
-* Add permissions, conditionals, etc into navigation trees
-* Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
-* Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
-* Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
-* Add sorting to report data source (which should also use cookies to store active sort criteria)
 * Add a 'tip of the day' feature to Console that would get general usage tips for Sparx, Axiom, etc.
 * Add a 'development tip of the day' feature to Console that would give general software development tips
 * Consider adding rich text editing field mode (for field.memo) for IE/Moz using examples at http://www.kevinroth.com/rte/demo.htm and http://www.bris.ac.uk/is/projects/cms/ttw/ttw.html
@@ -48,7 +50,6 @@
 * Allow documentation panels in console which borrow ideas from Sparx 2.0 documentation (summary blocks, XSL, etc)
 * Add <panel-type>, <page-type> and other style page templates
 * Look at Struts' MessageResources class for creating and 'rb' (resource-bundle) value source for internationlization
-* Add DCB's that can populate actions
 * Create demo Sparx using CD manager example in Sue Spielman's Struts book -- maybe other e.g.'s like that?
 * Add getNavigationContext() as a member of ReportContext and DialogContext -- may return null if not using navigator
 * Allow navigation trees and other tags to be "open" -- meaning if they're defined more than once their definitions are extended not replaced.

@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.68 2003-07-07 01:02:37 shahid.shah Exp $
+  * $Id: console.xml,v 1.69 2003-07-08 02:30:09 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -253,7 +253,6 @@
             <field name="project-id" type="text" caption="Registered Ant Project Id" read-only="yes"/>
             <field name="project-file" type="text" caption="Registered Ant Project File" read-only="yes"/>
             <field name="target" type="select" caption="Execute Target" style="combo" required="yes"/>
-            <field name="target-descriptions" type="html" caption="Target Documentation"/>
         </dialog>
 
         <dialog name="value-source-test" class="com.netspective.sparx.form.TemplateDialog">
