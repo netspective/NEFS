@@ -1,6 +1,7 @@
 package app.test;
 
 import junit.framework.TestCase;
+import junit.framework.Assert;
 import com.meterware.httpunit.HttpUnitOptions;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebResponse;
@@ -21,6 +22,7 @@ public class FormInputTest extends TestCase
     }
 
     protected WebConversation wc;
+    protected WebResponse response;
     private WebResponse pageAfterLogin;
     protected WebLink homeLink, formsInputLink, formsExecuteLink, playLink, sitemapLink, consoleLink, sampleAppsLink;
 
@@ -32,23 +34,36 @@ public class FormInputTest extends TestCase
     protected void setUp() throws Exception
     {
         wc = new WebConversation();
-        pageAfterLogin = wc.getResponse("http://localhost:8099/nefs-sampler");
+        response = wc.getResponse("http://localhost:8099/nefs-sampler");
 
         // check all the page entries
-        homeLink = pageAfterLogin.getLinkWith("Home");
-        formsInputLink = pageAfterLogin.getLinkWith("Forms Input");
-        formsExecuteLink = pageAfterLogin.getLinkWith("Forms Execution");
-        playLink = pageAfterLogin.getLinkWith("Play");
-        sitemapLink = pageAfterLogin.getLinkWith("Sitemap");
-        consoleLink = pageAfterLogin.getLinkWith("Console");
-        sampleAppsLink = pageAfterLogin.getLinkWith("Sample Apps Home");
+        homeLink = response.getLinkWith("Home");
+        formsInputLink = response.getLinkWith("Forms Input");
+        formsExecuteLink = response.getLinkWith("Forms Execution");
+        playLink = response.getLinkWith("Play");
+        sitemapLink = response.getLinkWith("Sitemap");
+        consoleLink = response.getLinkWith("Console");
+        sampleAppsLink = response.getLinkWith("Sample Apps Home");
     }
 
     /**
-     * Tests to make sure all the first level menu items exist
-     * @throws Exception
+     * Checks to see if there is a link with the text in the current response
+     * @param linkText
+     * @throws SAXException
      */
-    public void testTopLevelLinks() throws Exception
+    public void assertLinkPresentWithText(String linkText) throws SAXException
+    {
+        Assert.assertNotNull("Link with text [" + linkText + "] not found in response.",
+                response.getLinkWith(linkText));
+    }
+
+
+    /**
+     * Verify that all the menu items are being displayed
+     * @throws IOException
+     * @throws SAXException
+     */
+    public void testForm() throws IOException, SAXException
     {
         assertNotNull(homeLink);
         assertNotNull(formsInputLink);
@@ -57,42 +72,26 @@ public class FormInputTest extends TestCase
         assertNotNull(sitemapLink);
         assertNotNull(consoleLink);
         assertNotNull(sampleAppsLink);
-    }
 
-    /**
-     * Tests to make sure all the menus for the Forms Input page exist
-     * @throws IOException
-     * @throws SAXException
-     */
-    public void testFormsInputPage() throws IOException, SAXException
-    {
         formsInputLink.click();
-        WebResponse  response = wc.getCurrentPage();
-        assertNotNull(response.getLinkWith("Text"));
-        assertNotNull(response.getLinkWith("Numbers"));
-        assertNotNull(response.getLinkWith("Boolean"));
-        assertNotNull(response.getLinkWith("Selection"));
-        assertNotNull(response.getLinkWith("Grids"));
-        assertNotNull(response.getLinkWith("Conditionals"));
-        assertNotNull(response.getLinkWith("Popups"));
-        assertNotNull(response.getLinkWith("Date/Time"));
-        assertNotNull(response.getLinkWith("Advanced"));
-    }
+        response = wc.getCurrentPage();
+        assertLinkPresentWithText("Text");
+        assertLinkPresentWithText("Numbers");
+        assertLinkPresentWithText("Boolean");
+        assertLinkPresentWithText("Selection");
+        assertLinkPresentWithText("Grids");
+        assertLinkPresentWithText("Conditionals");
+        assertLinkPresentWithText("Popups");
+        assertLinkPresentWithText("Date/Time");
+        assertLinkPresentWithText("Advanced");
 
-    /**
-     * verify that all the menus exist in the Forms Execute page
-     * @throws IOException
-     * @throws SAXException
-     */
-    public void testForm() throws IOException, SAXException
-    {
-        formsInputLink.click();
-        WebResponse  response = wc.getCurrentPage();
-        assertNotNull(response.getLinkWith("Director"));
-        assertNotNull(response.getLinkWith("Templates"));
-        assertNotNull(response.getLinkWith("Handlers"));
-        assertNotNull(response.getLinkWith("Inheritance"));
-        assertNotNull(response.getLinkWith("Delegation"));
+        formsExecuteLink.click();
+        response = wc.getCurrentPage();
+        assertLinkPresentWithText("Director");
+        assertLinkPresentWithText("Templates");
+        assertLinkPresentWithText("Handlers");
+        assertLinkPresentWithText("Inheritance");
+        assertLinkPresentWithText("Delegation");
     }
 
 
