@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.26 2004-04-30 01:36:18 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.27 2004-06-02 23:28:59 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -140,12 +140,6 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
     public HtmlTabularReportValueContext createContext(NavigationContext nc, Theme theme)
     {
         return createContext(nc, (reportSkin == null || theme.getReportSkin(reportSkin) == null )? theme.getDefaultReportSkin() : theme.getReportSkin(reportSkin));
-    }
-
-    public void render(Writer writer, HtmlTabularReportValueContext vc, TabularReportDataSource ds) throws IOException
-    {
-        vc.produceReport(writer, ds);
-        ds.close();
     }
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
