@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.8 2003-11-11 23:08:37 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.9 2003-11-12 04:24:40 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -224,8 +224,6 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                     stmt.setObject(paramNum, value.getTextValue(cc));
                     break;
                 case Types.INTEGER:
-                    System.out.println(" >> " + paramNum + " " + sv.getIntValue());
-
                     stmt.setInt(paramNum, sv.getIntValue());
                     break;
                 case Types.DOUBLE:
@@ -248,12 +246,9 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         }
         if (getType().getValueIndex() == Type.OUT || getType().getValueIndex() == Type.IN_OUT)
         {
+            // result sets are returned differently for different vendors
             if (identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
-            {
-                // result sets are returned differently fod different vendors
                 stmt.registerOutParameter(paramNum, getVendorSpecificResultSetType(cc));
-                System.out.println(" >> " + paramNum +  " " + getVendorSpecificResultSetType(cc));
-            }
             else
                 stmt.registerOutParameter(paramNum, jdbcType);
         }
