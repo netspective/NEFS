@@ -39,39 +39,18 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
+ * $Id: ConfigurationsManagerContainer.java,v 1.1 2003-03-14 03:37:54 shahid.shah Exp $
  */
 
-package com.netspective.commons.acl;
+package com.netspective.commons.config;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
-import junit.framework.TestCase;
-
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xdm.XdmComponentFactory;
-import com.netspective.commons.io.Resource;
-import com.netspective.commons.acl.AccessControlListsManagerComponent;
-
-public class AccessControlListTest extends TestCase
+public interface ConfigurationsManagerContainer
 {
-    public static final String RESOURCE_NAME = "AccessControlListTest.xml";
+    ConfigurationsManager getConfigsManager();
 
-    public void testDataModelSchemaImportFromXmlValid() throws DataModelException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException
-    {
-        AccessControlListsManagerComponent aclc =
-                (AccessControlListsManagerComponent) XdmComponentFactory.get(
-                        AccessControlListsManagerComponent.class,
-                        new Resource(AccessControlListTest.class, RESOURCE_NAME),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+    void addConfiguration(Configuration config);
 
-        assertNotNull(aclc);
+    Configuration getDefaultConfiguration();
 
-        aclc.printErrorsAndWarnings();
-
-        System.out.println(aclc.getAclsManager().size());
-        System.out.println(aclc.getAclsManager().getPermissionsByName().size());
-        System.out.println(aclc.getDefaultAccessControList());
-    }
+    Configuration getConfiguration(String name);
 }

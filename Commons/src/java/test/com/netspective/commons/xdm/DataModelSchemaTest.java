@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataModelSchemaTest.java,v 1.1 2003-03-13 18:33:15 shahid.shah Exp $
+ * $Id: DataModelSchemaTest.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -69,7 +69,7 @@ public class DataModelSchemaTest extends TestCase
     public static final String RESOURCE_NAME = "DataModelSchemaTest.xml";
     public static final String TEMPLATENAMESPACEID_NESTED1 = "/nested1";
 
-    static public class DataModelTest extends AbstractXdmComponent
+    static public class DataModelTest extends DefaultXdmComponent
     {
         public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
         private RootTest root;

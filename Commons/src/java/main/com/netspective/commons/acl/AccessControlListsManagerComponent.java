@@ -39,35 +39,24 @@
  */
 
 /**
- * $Id: AccessControlListsManagerComponent.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: AccessControlListsManagerComponent.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
 
-import com.netspective.commons.xdm.AbstractXdmComponent;
+import com.netspective.commons.xdm.DefaultXdmComponent;
 import com.netspective.commons.acl.AccessControlList;
 import com.netspective.commons.acl.AccessControlListsManager;
 
-public class AccessControlListsManagerComponent extends AbstractXdmComponent
+public class AccessControlListsManagerComponent extends DefaultXdmComponent
 {
-    private AccessControlListsManager manager;
-
-    public AccessControlListsManagerComponent()
+    public AccessControlListsManager createComponent()
     {
+        return getAclsManager();
     }
 
     public void addComponent(AccessControlListsManager manager)
     {
-        this.manager = manager;
-    }
-
-    public AccessControlListsManager getManager()
-    {
-        return manager;
-    }
-
-    public AccessControlList getDefaultAccessControList()
-    {
-        return manager != null ? manager.getAccessControlList() : null;
+        // just a placeholder since the actual access control lists are managed by parent class
     }
 }

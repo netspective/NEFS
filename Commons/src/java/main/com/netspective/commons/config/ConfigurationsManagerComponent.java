@@ -39,37 +39,22 @@
  */
 
 /**
- * $Id: ConfigurationsManagerComponent.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: ConfigurationsManagerComponent.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import com.netspective.commons.xdm.DefaultXdmComponent;
 
-import com.netspective.commons.xdm.XdmComponentFactory;
-import com.netspective.commons.xdm.AbstractXdmComponent;
-
-public class ConfigurationsManagerComponent extends AbstractXdmComponent
+public class ConfigurationsManagerComponent extends DefaultXdmComponent
 {
-    private ConfigurationsManager manager;
-
-    public ConfigurationsManagerComponent()
+    public ConfigurationsManager createComponent()
     {
+        return getConfigsManager();
     }
 
     public void addComponent(ConfigurationsManager manager)
     {
-        this.manager = manager;
-    }
-
-    public ConfigurationsManager getManager()
-    {
-        return manager;
-    }
-
-    public Configuration getDefaultConfiguration()
-    {
-        return manager != null ? manager.getConfiguration() : null;
+        // just a placeholder since the actual configurations are managed by parent class
     }
 }

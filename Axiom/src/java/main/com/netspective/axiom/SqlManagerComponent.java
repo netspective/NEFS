@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManagerComponent.java,v 1.1 2003-03-13 18:25:38 shahid.shah Exp $
+ * $Id: SqlManagerComponent.java,v 1.2 2003-03-14 03:38:17 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -47,13 +47,13 @@ package com.netspective.axiom;
 import java.io.File;
 import java.io.IOException;
 
-import com.netspective.commons.xdm.AbstractXdmComponent;
+import com.netspective.commons.xdm.DefaultXdmComponent;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.metric.MetricsGroup;
 import com.netspective.commons.metric.Metric;
 import com.netspective.axiom.SqlManager;
 
-public class SqlManagerComponent extends AbstractXdmComponent
+public class SqlManagerComponent extends DefaultXdmComponent
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private SqlManager manager;

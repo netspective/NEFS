@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListsManager.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: AccessControlListsManager.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -135,5 +135,15 @@ public class AccessControlListsManager
             throw new PermissionNotFoundException("Permission '"+ name +"' not found in ACL.", this, name);
         else
             return result;
+    }
+
+    public int permissionsCount()
+    {
+        return permissionsByName.size();
+    }
+
+    public int size()
+    {
+        return acls.size();
     }
 }

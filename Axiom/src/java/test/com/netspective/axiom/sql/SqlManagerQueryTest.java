@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.1 2003-03-13 18:26:30 shahid.shah Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.2 2003-03-14 03:38:17 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
 
 import java.io.IOException;
+import java.io.File;
 import java.sql.SQLException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -123,4 +124,16 @@ public class SqlManagerQueryTest extends TestCase
 
         //System.out.println(dtd);
     }
+
+    /*
+    public void testIdConstantsGenerator() throws DataModelException, InstantiationException, InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException, NamingException, SQLException
+    {
+        SqlManagerComponent component =
+                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SqlManagerQueryTest.class, "test-data/statements.xml"), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+        assertNotNull(component);
+
+        File destDir = new File(((FileTracker) component.getInputSource()).getFile().getParent());
+        component.generateIdentifiersConstants(destDir, "app.id");
+    }
+    */
 }

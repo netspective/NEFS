@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ImportConfigurationTask.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: ImportConfigurationTask.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
  */
 
 package com.netspective.commons.ant;
@@ -89,7 +89,7 @@ public class ImportConfigurationTask extends XdmComponentTask
         System.setProperty("com.netspective.sparx.util.value.ServletContextPathValue.simulate", simulatedPath.getAbsolutePath());
 
         ConfigurationsManagerComponent component = (ConfigurationsManagerComponent) getComponent(ConfigurationsManagerComponent.class);
-        ConfigurationsManager manager = component.getManager();
+        ConfigurationsManager manager = component.getConfigsManager();
 
         int imported = 0;
         Configuration config = manager.getConfiguration(configId);
