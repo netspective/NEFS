@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.10 2003-07-09 13:11:59 shahid.shah Exp $
+ * $Id: Project.java,v 1.11 2003-07-12 03:30:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -65,6 +65,7 @@ import com.netspective.sparx.theme.Themes;
 import com.netspective.sparx.theme.basic.AbstractTheme;
 import com.netspective.sparx.console.ConsoleManager;
 import com.netspective.sparx.console.ConsoleNavigationTree;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.form.Dialog;
@@ -99,9 +100,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 {
     private static final Log log = LogFactory.getLog(Project.class);
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
+    public static final String TEMPLATEELEMNAME_DIALOG_TYPE = "dialog-type";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_TYPE = "dialog-field-type";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_CONDITIONAL_ACTION_TYPE = "dialog-field-conditional-action";
     private static final PanelTypeTemplate PANEL_TYPES = new PanelTypeTemplate();
+    private static final DialogTypeTemplate DIALOG_TYPES = new DialogTypeTemplate();
     private static final DialogFieldTypeTemplate FIELD_TYPES = new DialogFieldTypeTemplate();
     private static final DialogFieldConditionalActionTemplate CONDITIONAL_ACTIONS = new DialogFieldConditionalActionTemplate();
 
@@ -110,6 +113,14 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         public PanelTypeTemplate()
         {
             super(HtmlPanel.class.getName(), TEMPLATEELEMNAME_PANEL_TYPE, "name", "extends", true, false);
+        }
+    }
+
+    protected static class DialogTypeTemplate extends TemplateProducer
+    {
+        public DialogTypeTemplate()
+        {
+            super(Dialog.class.getName(), TEMPLATEELEMNAME_DIALOG_TYPE, "name", "extends", true, false);
         }
     }
 
@@ -132,6 +143,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     static
     {
         templateProducers.add(PANEL_TYPES);
+        templateProducers.add(DIALOG_TYPES);
         templateProducers.add(FIELD_TYPES);
         templateProducers.add(CONDITIONAL_ACTIONS);
     }
@@ -166,6 +178,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public DialogFieldConditionalActionTemplate getConditionalActions()
     {
         return CONDITIONAL_ACTIONS;
+    }
+
+    public DialogTypeTemplate getDialogTypes()
+    {
+        return DIALOG_TYPES;
     }
 
     public DialogFieldTypeTemplate getFieldTypes()
@@ -238,7 +255,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     public ConsoleNavigationTree getConsoleNavigationTree()
     {
-        return (ConsoleNavigationTree) getNavigationTree("console");
+        return (ConsoleNavigationTree) getNavigationTree(ConsoleServlet.CONSOLE_ID);
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
@@ -381,7 +398,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
             for(int i = 0; i < dialogs.size(); i++)
             {
                 Dialog dialog = dialogs.get(i);
-                if(dialog.getQualifiedName().startsWith("console"))
+                if(dialog.getQualifiedName().startsWith(ConsoleServlet.CONSOLE_ID))
                     continue;
 
                 constants.put(getFormPackage(dialog), dialog.getQualifiedName());
