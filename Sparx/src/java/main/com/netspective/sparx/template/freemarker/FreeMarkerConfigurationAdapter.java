@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.13 2003-07-05 19:28:07 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapter.java,v 1.14 2003-08-17 00:10:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -50,6 +50,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import freemarker.template.Configuration;
 import freemarker.cache.FileTemplateLoader;
@@ -60,11 +62,15 @@ import freemarker.ext.beans.BeansWrapper;
 
 public class FreeMarkerConfigurationAdapter
 {
+    private static final Log log = LogFactory.getLog(FreeMarkerConfigurationAdapter.class);
+
     private Configuration configuration;
     private boolean defaultAdapter;
     private String name;
     private File baseDir;
     private Class baseClass;
+    private String baseClassPath;
+    private int templateUpdateDelay = 0;
 
     public FreeMarkerConfigurationAdapter()
     {
@@ -87,7 +93,7 @@ public class FreeMarkerConfigurationAdapter
         if(configuration == null)
         {
             configuration = new Configuration();
-            configuration.setTemplateUpdateDelay(0);
+            configuration.setTemplateUpdateDelay(templateUpdateDelay);
             configuration.setTemplateLoader(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
             configuration.setSharedVariable("templateExists", new TemplateExistsMethod());
             configuration.setSharedVariable("getXmlDataModelSchema", new XmlDataModelSchemaMethod());
@@ -101,6 +107,17 @@ public class FreeMarkerConfigurationAdapter
             SyntaxHighlightTransform.registerTransforms(configuration);
         }
         return configuration;
+    }
+
+    protected TemplateLoader getClassTemplateLoader()
+    {
+        if(baseClass == null)
+            return null;
+
+        if(baseClassPath == null)
+            return new ClassTemplateLoader(baseClass);
+
+        return new ClassTemplateLoader(baseClass, baseClassPath);
     }
 
     protected void updateConfiguration()
@@ -119,9 +136,11 @@ public class FreeMarkerConfigurationAdapter
         }
 
         if(baseClass != null)
-            tmplLoaders.add(new ClassTemplateLoader(baseClass));
+            tmplLoaders.add(getClassTemplateLoader());
 
-        getConfiguration().setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()])));
+        TemplateLoader[] templateLoaders = (TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()]);
+        MultiTemplateLoader multiTemplateLoader = new MultiTemplateLoader(templateLoaders);
+        getConfiguration().setTemplateLoader(multiTemplateLoader);
     }
 
     public String getName()
@@ -132,6 +151,17 @@ public class FreeMarkerConfigurationAdapter
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public int getTemplateUpdateDelay()
+    {
+        return templateUpdateDelay;
+    }
+
+    public void setTemplateUpdateDelay(int templateUpdateDelay)
+    {
+        this.templateUpdateDelay = templateUpdateDelay;
+        getConfiguration().setTemplateUpdateDelay(templateUpdateDelay);
     }
 
     public File getBaseDir()
@@ -153,6 +183,17 @@ public class FreeMarkerConfigurationAdapter
     public void setBaseClass(Class baseClass)
     {
         this.baseClass = baseClass;
+        updateConfiguration();
+    }
+
+    public String getBaseClassPath()
+    {
+        return baseClassPath;
+    }
+
+    public void setBaseClassPath(String baseClassPath)
+    {
+        this.baseClassPath = baseClassPath;
         updateConfiguration();
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: InputSourceDependenciesMethod.java,v 1.1 2003-06-20 20:52:51 shahid.shah Exp $
+ * $Id: InputSourceDependenciesMethod.java,v 1.2 2003-08-17 00:10:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -71,46 +71,44 @@ public class InputSourceDependenciesMethod implements TemplateMethodModel
         StringBuffer sb = new StringBuffer();
         InputSourceTracker ist = component.getInputSource();
         if(ist instanceof FileTracker)
-            sb.append(getHtml((FileTracker) ist));
+            sb.append(getHtml(ist));
         else
             sb.append("<code>" + ist.getIdentifier() + "</code> (Dependencies: " + ist.getDependenciesCount() + ")");
 
         return new SimpleScalar(sb.toString());
     }
 
-    public String getHtml(FileTracker ft)
+    public String getHtml(InputSourceTracker inputSourceTracker)
     {
         StringBuffer src = new StringBuffer();
 
-        FileTracker parentFt = ft.getParent();
-        String parentPath = parentFt != null ? ft.getParent().getFile().getParent() : "--";
-        String thisPath = ft.getFile().getAbsolutePath();
+        InputSourceTracker parentFt = inputSourceTracker.getParent();
+        String parentPath = parentFt != null && parentFt instanceof FileTracker ? ((FileTracker) inputSourceTracker.getParent()).getFile().getParent() : "--";
+        String thisPath = inputSourceTracker.getIdentifier();
 
-        src.append("<code style='font-size: 8pt'>");
         if(thisPath.startsWith(parentPath))
             src.append("." + thisPath.substring(parentPath.length()));
         else
-            src.append(ft.getFile().getAbsolutePath());
-        src.append("</code>");
+            src.append(inputSourceTracker.getIdentifier());
 
-        if(ft.getDependenciesCount() > 0)
-            src.append(" (Dependencies: " + ft.getDependenciesCount() + ")");
-        List preProcs = ft.getPreProcessors();
+        if(inputSourceTracker.getDependenciesCount() > 0)
+            src.append(" (Dependencies: " + inputSourceTracker.getDependenciesCount() + ")");
+        List preProcs = inputSourceTracker.getPreProcessors();
         if(preProcs != null && preProcs.size() > 0)
         {
-            src.append("<ol>");
+            src.append("<ul>");
             for(int i = 0; i < preProcs.size(); i++)
-                src.append("<li>"+ getHtml((FileTracker) preProcs.get(i)) +" (pre-processors)</li>");
-            src.append("</ol>");
+                src.append("<li>"+ getHtml((InputSourceTracker) preProcs.get(i)) +" (pre-processors)</li>");
+            src.append("</ul>");
         }
 
-        List dependencies = ft.getIncludes();
+        List dependencies = inputSourceTracker.getIncludes();
         if(dependencies != null && dependencies.size() > 0)
         {
-            src.append("<ol>");
+            src.append("<ul>");
             for(int i = 0; i < dependencies.size(); i++)
-                src.append("<li>"+ getHtml((FileTracker) dependencies.get(i)) +"</li>");
-            src.append("</ol>");
+                src.append("<li>"+ getHtml((InputSourceTracker) dependencies.get(i)) +"</li>");
+            src.append("</ul>");
         }
 
         return src.toString();
