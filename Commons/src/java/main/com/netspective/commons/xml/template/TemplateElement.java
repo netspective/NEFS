@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateElement.java,v 1.2 2003-07-01 01:02:57 shahid.shah Exp $
+ * $Id: TemplateElement.java,v 1.3 2003-07-02 13:58:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -47,6 +47,7 @@ package com.netspective.commons.xml.template;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Map;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -54,6 +55,7 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import com.netspective.commons.text.ExpressionText;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.text.JavaExpressionText;
 import com.netspective.commons.xml.ContentHandlerNodeStackEntry;
 
 public class TemplateElement extends TemplateNode
@@ -115,6 +117,47 @@ public class TemplateElement extends TemplateNode
 
         TemplateElement result = new TemplateElement(defnContentHandler, null, null, elementName, attrs);
         addChild(result);
+        return result;
+    }
+
+    /**
+     * Given the elemToCopy element, copy the element's name and attributes and add them as children in this element.
+     * While copying the attributes, this method will perform Jexl expression replacements of the form ${xxx}.
+     * @param elemToCopy The element that should be copied
+     * @param jexlVars A Map that defines some Jexl variables that should be replaced or empty map if no variables should
+     *                 be replaced. The map should not be null.
+     * @param recurse True if the children should be copied as well or false if only the primary element should be copied
+     * @return
+     */
+    public TemplateElement addCopyOfChildAndReplaceExpressions(TemplateElement elemToCopy, Map jexlVars, boolean recurse)
+    {
+        Attributes copyAttrs = elemToCopy.getAttributes();
+        String[][] attrNamesAndValues = new String[copyAttrs.getLength()][2];
+        JavaExpressionText jet = new JavaExpressionText();
+        jet.init(jexlVars);
+
+        for(int i = 0; i < copyAttrs.getLength(); i++)
+        {
+            attrNamesAndValues[i][0] = copyAttrs.getQName(i);
+            attrNamesAndValues[i][1] = jet.getFinalText(null, copyAttrs.getValue(i));
+        }
+
+        TemplateElement result = addChild(elemToCopy.getElementName(), attrNamesAndValues);
+        if(recurse)
+        {
+            List copyChildren = elemToCopy.getChildren();
+            for(int i = 0; i < copyChildren.size(); i++)
+            {
+                TemplateNode node = (TemplateNode) copyChildren.get(i);
+                if(node instanceof TemplateElement)
+                    result.addCopyOfChildAndReplaceExpressions((TemplateElement) node, jexlVars, recurse);
+                else if(node instanceof TemplateText)
+                    result.addChild(new TemplateText(result, ((TemplateText) node).getText()));
+                else
+                    throw new RuntimeException("This should never happen.");
+            }
+        }
+
         return result;
     }
 
