@@ -2,6 +2,12 @@
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
+    <!-- setup attributes for all input demos -->
+    <dialog-type name="input-sample">
+        <allow-view-source>yes</allow-view-source>
+        <redirect-after-execute>no</redirect-after-execute>
+    </dialog-type>
+
     <!--
        ==============================================================================
        This dialog package contains various dialogs for demonstrating NEFS built-in
@@ -10,23 +16,26 @@
     -->
     <dialogs package="form.input">
 
-        <dialog name="text-fields" retain-params="*" hide-hints-until-focus="yes" redirect-after-execute="false">
+        <dialog type="input-sample" name="text-fields" hide-hints-until-focus="yes">
             <frame heading="Test Text Fields"/>
             <field name="text_field_required" type="text" caption="Text Required" required="yes"
                                               hint="This text field is always required"/>
             <field name="text_field_hidden" type="text" hidden="yes" default="request:id"/>
-            <field name="static_field1" type="static" caption="Static 1" default="request:id" hint="Request attribute 'id' value"/>
+            <field name="static_field1" type="static" caption="Static 1" default="request:id"
+                                        hint="Request attribute 'id' value"/>
             <field name="static_field2" type="static" caption="Static 2 " default="Static Field's Value"/>
             <field name="text_field_conditionally_required" type="text" caption="Text Required"
                 hint="Text field is required only when req param 'abc' has value"
                 default="conditional Required Text" required="no">
                 <conditional action="apply-flags" flags="required" has-value="request:abc"/>
             </field>
-            <field name="text_field" type="text" caption="Text" hint="Text field optional (max-length=5, uppercase=yes)" max-length="5" uppercase="yes"/>
+            <field name="text_field" type="text" caption="Text" max-length="5" uppercase="yes"
+                                     hint="Text field optional (max-length=5, uppercase=yes)" />
             <field name="email_field" type="e-mail" caption="Email" hint="Email field"/>
             <field name="masked_field" type="text" caption="Masked Field" mask-entry="yes" hint="e.g password"/>
         </dialog>
-        <dialog name="memo-and-html-fields" retain-params="*" redirect-after-execute="false">
+
+        <dialog type="input-sample" name="memo-and-html-fields">
             <frame heading="Test Memo and HTML Fields"/>
             <field type="memo" name="memo_field_01" caption="Memo Field" default="A fox jumped over the fence" max-length="10"
                 hint="Max length is 5 characters"/>
@@ -50,7 +59,7 @@
             <director submit-caption="Submit" style="acknowledge"/>
         </dialog>
 
-        <dialog name="numeric-fields" retain-params="*" redirect-after-execute="false">
+        <dialog type="input-sample" name="numeric-fields">
             <frame heading="Test Numeric Fields"/>
             <field type="integer" name="integer_field" caption="Integer Field" hint="Integer field" persist="yes"/>
             <field type="float" name="float_field" caption="Float Field" hint="Float field"/>
@@ -64,7 +73,8 @@
             <field type="ssn" name="ssn_field" caption="SSN" strip-dashes="yes" default="999999999" hint="Social Security Number field"/>
             <director submit-caption="Submit"/>
         </dialog>
-        <dialog name="date-fields" retain-params="*" redirect-after-execute="false">
+
+        <dialog type="input-sample" name="date-fields">
             <frame heading="Test Date/Time Fields"/>
             <field type="duration" name="duration_field" caption="Duration Field" begin-min-value="10/20/1900" end-max-value="today" hint="Format is MM/dd/yyyy"/>
             <field type="date" name="date_field_strict" caption="Date (Strict Year)" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"
@@ -77,7 +87,7 @@
             <director submit-caption="Submit"/>
         </dialog>
 
-        <dialog name="boolean-fields" retain-params="*" redirect-after-execute="false">
+        <dialog type="input-sample" name="boolean-fields">
             <frame heading="Test Boolean Fields"/>
             <field type="boolean" name="bool_field_radio" caption="Boolean Field (Radio)" style="radio"/>
             <field type="boolean" name="bool_field_alone" caption="Boolean Field (Alone)" style="check-alone"/>
@@ -90,7 +100,7 @@
                  seperation. For example, [;=] indicates that the ';' is used to separate the choice items
                  while the '=' is used for value assignment.
         -->
-        <dialog name="select-fields" retain-params="*" redirect-after-execute="false">
+        <dialog type="input-sample" name="select-fields">
             <frame heading="Test Select Fields"/>
             <field type="separator" heading="Select Fields"/>
             <field type="select" name="sel_field_combo" caption="Select Field (Combo)" style="combo"
@@ -124,7 +134,8 @@
             <field type="select" name="sel_field_popup" caption="Select Field (Popup)" style="popup"
                 choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
         </dialog>
-        <dialog name="grid-and-composite-fields" retain-params="*" redirect-after-execute="false">
+
+        <dialog type="input-sample" name="grid-and-composite-fields">
             <frame heading="Test Grid and Composite Field"/>
             <field type="separator" heading="Grid" />
             <grid name="grid-01" caption="Grid Test">
@@ -150,8 +161,24 @@
                 <field type="text" caption="Field C" size="7" name="text_field_03" default="default" hint="Testing..."/>
             </composite>
         </dialog>
-        <dialog name="conditional-fields" retain-params="*" redirect-after-execute="false">
+
+        <dialog type="input-sample" name="conditional-fields">
             <frame heading="Test Conditionals"/>
+            <field type="html">
+                <body>
+                    <![CDATA[
+                    <div class="textbox">
+                    The best explanation about what <i>conditional</i> fields are is to &quot;play&quot; with the<br>
+                    fields below, so go ahead and follow the hint texts shown in the dialog.<br><br>
+
+                    Now that you're familiar with how they work in this example, you can see that<br>
+                    <i>conditional</i> fields are fields whose state depends upon the state of other<br>
+                    entities (in this case, other fields called <i>partner</i> fields).
+                    </div>
+                    <hr/>
+                    ]]>
+                </body>
+            </field>
             <field type="select" name="sel_field_list" caption="Select Field (Combo)" style="combo" size="5"
                 choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C" prepend-blank="yes" hint="Partner field is hidden. Select 'Choice 2' to see it."/>
             <field type="text" name="static_field" caption="Partner Field" default="Here I am!" hint="Partner field of Select Field (Combo)">
@@ -162,7 +189,8 @@
                 <conditional action="display" partner-field-name="checkbox_field" expression="control.checked == true"/>
             </field>
         </dialog>
-        <dialog name="popup-fields" retain-params="*" redirect-after-execute="false">
+
+        <dialog type="input-sample" name="popup-fields">
             <frame heading="Test Popup"/>
             <field type="select" name="sel_field_list" caption="Select Field" style="combo"
                 prepend-blank="yes" choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
@@ -173,7 +201,7 @@
         </dialog>
 
         <!-- Dialog for testing data perspective conditionals -->
-        <dialog name="data-perspective-conditionals" retain-params="*" redirect-after-execute="false">
+        <dialog type="input-sample" name="data-perspective-conditionals">
             <frame heading="Test Data Perspective Conditionals"/>
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
             <field type="static" name="static_field2" default="Checkbox checked!" hint="Hidden static field">
@@ -194,7 +222,7 @@
         </dialog>
 
         <!-- Dialog for testing binding query data to fields -->
-        <dialog name="data-binding" retain-params="*" redirect-after-execute="false">
+        <dialog type="input-sample" name="data-binding">
             <frame heading="Test Data Binding"/>
             <field type="text" name="text_field" caption="Text Field" default="query:org.name-only,-,-,request:org_id"
                 hint="The parameter is being provided in the value source"/>
@@ -209,7 +237,7 @@
         </dialog>
 
         <!-- Dialog for testing pending data -->
-        <dialog name="pending-data" retain-params="*" redirect-after-execute="false" allow-pending-data="yes">
+        <dialog type="input-sample" name="pending-data" allow-pending-data="yes">
             <frame  heading="Test Pending Data" />
 			<field type="separator" heading="Text Fields"/>
 			<field type="text" name="text_field_hidden" hidden="yes" default="request:id"/>
@@ -233,14 +261,14 @@
 		</dialog>
 
         <!-- Dialog for testing uploading files -->
-        <dialog name="upload-data" retain-params="*" redirect-after-execute="false">
+        <dialog type="input-sample" name="upload-data">
             <frame heading="Test Upload Data"/>
             <field type="text" name="text_field_required" caption="Text Required" hint="Text field required" required="yes"/>
             <field type="file" name="file" caption="File" required="yes"/>
         </dialog>
 
         <!-- Dialog for testing custom client side javascripts -->
-        <dialog name="client-side-scripts" retain-params="*" redirect-after-execute="false">
+        <dialog type="input-sample" name="client-side-scripts">
             <frame heading="Test Client Side JavaScript"/>
             <client-js href="servlet-context-path:/resources/scripts/test1.js"/>
             <client-js href="servlet-context-path:/resources/scripts/test2.js"/>
@@ -266,13 +294,13 @@
         </dialog>
 
         <!-- Dialog for testing "command" field -->
-        <dialog name="command-fields" retain-params="*" redirect-after-execute="false">
+        <dialog type="input-sample" name="command-fields">
             <frame heading="Test Command Fields"/>
             <field type="command" name="command_field" caption="Command Field" command="list,reference|text-list:Value1=Value 1;Value2=Value 2;Value3=Value 3"/>
         </dialog>
 
         <!-- Dialog for testing hidden fields -->
-        <dialog name="hidden-fields" retain-params="*" redirect-after-execute="false">
+        <dialog type="input-sample" name="hidden-fields">
             <frame heading="Test Hidden Fields"/>
             <field type="memo" name="memo_field" caption="Memo Field" default="There are two hidden fields\: text_field_hidden and select_field_hidden"/>
             <field type="text" name="text_field" caption="Text Field" default="Text Field's entry"/>
@@ -285,8 +313,6 @@
                 choices="text-list:Choice 1=Choice 1's hidden value;Choice 2=Choice 2's hidden value;Choice 3=Choice 3's hidden value"
                 default="Choice 1's hidden value" prepend-blank="yes" append-blank="yes"/>
         </dialog>
-
-
     </dialogs>
 
 </xdm:container>

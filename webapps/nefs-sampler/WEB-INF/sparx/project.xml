@@ -23,7 +23,7 @@
        ===================================================================
     -->
     <navigation-tree name="app" default="yes">
-        <page class="app.AppPage" name="home" default="yes" caption="Home">
+        <page class="app.AppPage" name="home" default="yes" caption="Home" allow-view-source="yes">
             <summary>
                 This is the home page.
             </summary>
@@ -49,7 +49,7 @@
                 ]]>
             </body>
         </page>
-        <page class="app.AppPage" name="forms-input" caption="Forms Input">
+        <page class="app.AppPage" name="forms-input" caption="Forms Input" allow-view-source="yes">
             <summary>
                 <![CDATA[
                 This section contains brief information about how <b>forms</b> are created and handled in NEF.
@@ -79,156 +79,54 @@
                 <summary>
                     This page demonstrates how to create and use text fields. More explanation...
                 </summary>
-                <panels style="vertical">
-                    <panel type="command" command="dialog,form.input.text-fields"/>
-                    <panel type="template">
-                        <frame heading="Xml Configuration"/>
-                        <body>
-                            <![CDATA[
-                            <#include "*/macros.ftl"/>
-                            <div class="textbox"> <@formDescription formName="form.input.text-fields"/> </div>
-                            ]]>
-                        </body>
-                    </panel>
-                </panels>
+                <page name="line" caption="Line-oriented" command="dialog,form.input.text-fields"/>
+                <page name="block" caption="Block-oriented" command="dialog,form.input.memo-and-html-fields"/>
             </page>
             <!-- This page is for demonstrating numeric fields in a form -->
-            <page name="numeric-fields" caption="Numbers">
+            <page name="numeric-fields" caption="Numbers" command="dialog,form.input.numeric-fields">
                 <summary>
                     This page demonstrates how to create and use numeric fields. More explanation...
                 </summary>
-                <panels style="vertical">
-                    <panel type="command" command="dialog,form.input.numeric-fields"/>
-                    <panel type="template">
-                        <frame heading="Xml Configuration"/>
-                        <body>
-                            <![CDATA[
-                            <#include "*/macros.ftl"/>
-                            <div class="textbox"> <@formDescription formName="form.input.numeric-fields"/> </div>
-                            ]]>
-                        </body>
-                    </panel>
-                </panels>
             </page>
             <!-- This page is for demonstrating boolean fields in a form -->
-            <page name="boolean-fields" caption="Boolean">
+            <page name="boolean-fields" caption="Boolean" command="dialog,form.input.boolean-fields">
                 <summary>
                     This page demonstrates how to create and use boolean fields. More explanation...
                 </summary>
-                <panels style="vertical">
-                    <panel type="command" command="dialog,form.input.boolean-fields"/>
-                    <panel type="template">
-                        <frame heading="Xml Configuration"/>
-                        <body>
-                            <![CDATA[
-                            <#include "*/macros.ftl"/>
-                            <div class="textbox"> <@formDescription formName="form.input.boolean-fields"/> </div>
-                            ]]>
-                        </body>
-                    </panel>
-                </panels>
             </page>
 
             <!-- This page is for demonstrating selection fields in a form -->
-            <page name="select-fields" caption="Selection">
+            <page name="select-fields" caption="Selection" command="dialog,form.input.select-fields">
                 <summary>
                     This page demonstrates how to create and use select fields. More explanation...
                 </summary>
-                <panels style="vertical">
-                    <panel type="command" command="dialog,form.input.select-fields"/>
-                    <panel type="template">
-                        <frame heading="Xml Configuration"/>
-                        <body>
-                            <![CDATA[
-                            <#include "*/macros.ftl"/>
-                            <div class="textbox"> <@formDescription formName="form.input.select-fields"/> </div>
-                            ]]>
-                        </body>
-                    </panel>
-                </panels>
             </page>
             <!-- This page is for demonstrating grid and composite fields in a form -->
-            <page name="grid-fields" caption="Grids">
+            <page name="grid-fields" caption="Grids" command="dialog,form.input.grid-and-composite-fields">
                 <summary>
                     This page demonstrates how to create and use grid and composite fields. More explanation...
                 </summary>
-                <panels style="vertical">
-                    <panel type="command" command="dialog,form.input.grid-and-composite-fields"/>
-                    <panel type="template">
-                        <frame heading="Xml Configuration"/>
-                        <body>
-                            <![CDATA[
-                            <#include "*/macros.ftl"/>
-                            <div class="textbox"> <@formDescription formName="form.input.grid-and-composite-fields"/> </div>
-                            ]]>
-                        </body>
-                    </panel>
-                </panels>
             </page>
             <!-- This page is for demonstrating "conditional" fields in a form -->
-            <page name="conditional-fields" caption="Conditionals">
+            <page name="conditional-fields" caption="Conditionals" command="dialog,form.input.conditional-fields">
                 <summary>
                     This page demonstrates how to create and use conditional fields. More explanation...
                 </summary>
-                <panels style="vertical">
-                    <panel type="command" command="dialog,form.input.conditional-fields"/>
-                    <panel type="template">
-                        <frame heading="Xml Configuration"/>
-                        <body>
-                            <![CDATA[
-                            <#include "*/macros.ftl"/>
-                            <div class="textbox">
-                            The best explanation about what <i>conditional</i> fields are is to &quot;play&quot;
-                            with the shown fields, so go ahead and follow the hint texts shown in the dialog.
-
-                            Now that you're familiar with how they work in the above example, you can
-                            see that <i>conditional</i> fields are fields whose state depends upon the state of
-                            other entities (in this case, other fields).
-                            </div>
-                            <@formDescription formName="form.input.conditional-fields"/>
-                            ]]>
-                        </body>
-                    </panel>
-                </panels>
             </page>
             <!-- This page is for demonstrating popup fields in a form -->
-            <page name="popup-fields" caption="Popups">
+            <page name="popup-fields" caption="Popups" command="dialog,form.input.popup-fields">
                 <summary>
                     This page demonstrates how to create and use popup fields. More explanation...
                 </summary>
-                <panels style="vertical">
-                    <panel type="command" command="dialog,form.input.popup-fields"/>
-                    <panel type="template">
-                        <frame heading="Xml Configuration"/>
-                        <body>
-                            <![CDATA[
-                            <#include "*/macros.ftl"/>
-                            <div class="textbox"> <@formDescription formName="form.input.popup-fields"/> </div>
-                            ]]>
-                        </body>
-                    </panel>
-                </panels>
             </page>
             <!-- This page is for demonstrating date fields in a form -->
-            <page name="date-fields" caption="Date/Time">
+            <page name="date-fields" caption="Date/Time" command="dialog,form.input.date-fields">
                 <summary>
                     This page demonstrates how to create and use date/time fields. More explanation...
                 </summary>
-                <panels style="vertical">
-                    <panel type="command" command="dialog,form.input.date-fields"/>
-                    <panel type="template">
-                        <frame heading="Xml Configuration"/>
-                        <body>
-                            <![CDATA[
-                            <#include "*/macros.ftl"/>
-                            <div class="textbox"> <@formDescription formName="form.input.date-fields"/> </div>
-                            ]]>
-                        </body>
-                    </panel>
-                </panels>
             </page>
 
-            <page name="advance-input" caption="Special!">
+            <page name="advance-input" caption="Advanced">
                 <summary></summary>
                 <page name="perspectives" caption="Perspectives">
 
@@ -237,29 +135,8 @@
             </page>
         </page>
 
-        <page class="app.AppPage" name="forms-exec" caption="Forms Execution">
-            <page name="director" caption="Director">
-                <panels style="vertical">
-                    <panel type="command" command="dialog,form.exec.director-next-action"/>
-                    <panel type="template">
-                        <frame heading="Xml Configuration"/>
-                        <body>
-
-                    <![CDATA[
-                    <#include "*/macros.ftl"/>
-                    <div class="textbox">
-                    Every dialog is associated with a <i>Director</i> which controls the actions available inside
-                    the form (such as the <i>Submit</i> and <i>Cancel</i> buttons) and the destination page to
-                    redirect to after the execution of the dialog. Visually the <i>Director</i> can be configured
-                    to display multiple destinations to allow users to select the destination as shown in the dialog
-                    above.
-                     <@formDescription formName="form.exec.director-next-action"/> </div>
-                    ]]>
-                </body>
-                    </panel>
-                </panels>
-
-            </page>
+        <page class="app.AppPage" name="forms-exec" caption="Forms Execution" allow-view-source="yes">
+            <page name="director" caption="Director" command="dialog,form.exec.director-next-action"/>
             <page name="template" caption="Templates">
                 <page name="body-xml" caption="Body in XML" heading="Get data, execute template body in project.xml" command="dialog,form.exec.template.body-xml"/>
                 <page name="body-file" caption="Body in File" heading="Get data, execute template body in separate file" command="dialog,form.exec.template.body-file"/>
@@ -295,11 +172,6 @@
             </page>
         </page>
 
-        <page class="app.AppPage" name="navigation" caption="Navigation">
-            <summary>
-                This page demonstrates how the navigation structure of this sampler application is designed.
-            </summary>
-        </page>
         <!--
         This page is not used for anything except to demonstrate the usage of popup fields.
         -->
@@ -317,7 +189,7 @@
 
         <xdm:include file="play-page.xml"/>
 
-        <page class="app.AppPage" name="sitemap" caption="Sitemap">
+        <page class="app.AppPage" name="sitemap" caption="Sitemap" allow-view-source="yes">
             <body source="sitemap.ftl"/>
         </page>
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>

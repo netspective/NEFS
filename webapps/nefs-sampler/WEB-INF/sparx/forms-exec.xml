@@ -2,9 +2,29 @@
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
+    <!-- setup attributes for all input demos -->
+    <dialog-type name="exec-sample">
+        <allow-view-source>yes</allow-view-source>
+        <redirect-after-execute>no</redirect-after-execute>
+    </dialog-type>
+
     <dialogs package="form.exec">
-        <dialog name="director-next-action" retain-params="*" redirect-after-execute="true">
+        <dialog type="exec-sample" name="director-next-action" redirect-after-execute="yes">
             <frame heading="Test Dialog Director's Next Action"/>
+            <field type="html">
+                <body>
+                    <![CDATA[
+                    <div class="textbox">
+                    Every dialog is associated with a <i>Director</i> which controls the actions available inside<br>
+                    the form (such as the <i>Submit</i> and <i>Cancel</i> buttons) and the destination page to<br>
+                    redirect to after the execution of the dialog. Visually the <i>Director</i> can be configured<br>
+                    to display multiple destinations to allow users to select the destination as shown in<br>
+                    this dialog.
+                    </div>
+                    <hr/>
+                    ]]>
+                </body>
+            </field>
             <field type="text" name="text_field" caption="Text Field (formOrRequestAttr)"
                 default="request:value"/>
             <director>
@@ -15,7 +35,7 @@
     </dialogs>
 
     <dialogs package="form.exec.template">
-        <dialog name="body-xml" redirect-after-execute="false">
+        <dialog type="exec-sample" name="body-xml">
             <frame heading="Hello World Form"/>
             <field type="text" name="first_name" caption="First Name" required="yes"/>
             <field type="text" name="last_name" caption="Last Name" required="yes"/>
@@ -30,7 +50,7 @@
             </on-execute>
         </dialog>
 
-        <dialog name="body-file" loop="no" redirect-after-execute="false">
+        <dialog type="exec-sample" name="body-file" loop="no">
             <frame heading="Hello World Form"/>
             <field type="text" name="full_name" caption="Full Name" required="yes"/>
             <field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/>
@@ -40,7 +60,7 @@
             </on-execute>
         </dialog>
 
-        <dialog name="inc-jsp" loop="no" redirect-after-execute="false">
+        <dialog type="exec-sample" name="inc-jsp" loop="no">
             <frame heading="Hello World Form"/>
             <field type="text" name="full_name" caption="Full Name" required="yes"/>
             <field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/>
@@ -52,7 +72,7 @@
     </dialogs>
 
     <dialogs package="form.exec.handler">
-        <dialog name="inc-html" loop="prepend" redirect-after-execute="false" allow-multiple-executes="yes">
+        <dialog type="exec-sample" name="inc-html" loop="prepend" allow-multiple-executes="yes">
             <loop-separator>&lt;hr size=1&gt;&lt;p&gt;</loop-separator>
             <frame heading="Get contents of URL"/>
             <field type="text" name="url" caption="URL" size="60" required="yes" default="http\://www.yahoo.com">
@@ -67,7 +87,7 @@
             </on-execute>
         </dialog>
 
-        <dialog name="send-mail" loop="append" redirect-after-execute="false" allow-multiple-executes="yes">
+        <dialog type="exec-sample" name="send-mail" loop="append" allow-multiple-executes="yes">
             <frame heading="Send Mail Handler Example"/>
             <field type="text" name="host" caption="Host" required="yes" default="mail.netspective.com"/>
             <field type="text" name="from" caption="From" required="yes" default="dummy@mail.com"/>
@@ -96,14 +116,14 @@
             </on-execute>
         </dialog>
 
-        <dialog name="exec-cmd" redirect-after-execute="false" allow-multiple-executes="yes">
+        <dialog type="exec-sample" name="exec-cmd" allow-multiple-executes="yes">
             <frame heading="Command Handler Example"/>
             <field type="text" name="command" caption="Command" required="yes" size="60"/>
 
             <on-execute handler="command" command-expr="dialog-field:command"/>
         </dialog>
 
-        <dialog name="exec-panels" redirect-after-execute="false" allow-multiple-executes="yes">
+        <dialog type="exec-sample" name="exec-panels" allow-multiple-executes="yes">
             <frame heading="Panels Handler Example"/>
             <field type="text" name="local-include" caption="Include local" required="yes" size="60" default="/jsp/panel-inc-test.jsp"/>
             <field type="text" name="remote-include" caption="Command 2" required="yes" size="60" default="http\://www.yahoo.com"/>
@@ -118,7 +138,7 @@
             </on-execute>
         </dialog>
 
-        <dialog name="transform-xslt-dc" loop="prepend" redirect-after-execute="false" allow-multiple-executes="yes">
+        <dialog type="exec-sample" name="transform-xslt-dc" loop="prepend" allow-multiple-executes="yes">
             <frame heading="XSLT Handler Example"/>
             <field type="select" name="style-sheet-file" caption="Stylesheet File" required="yes" choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"/>
 
@@ -127,7 +147,7 @@
             </on-execute>
         </dialog>
 
-        <dialog name="transform-xslt-file" loop="prepend" redirect-after-execute="false" allow-multiple-executes="yes">
+        <dialog type="exec-sample" name="transform-xslt-file" loop="prepend" allow-multiple-executes="yes">
             <frame heading="XSLT Handler Example"/>
             <field type="select" name="source-file" caption="Source File" required="yes" choices="filesystem-entries:servlet-context-path:/form/exec,\.x[sm]l$,yes"/>
             <field type="select" name="style-sheet-file" caption="Stylesheet File" required="yes" choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"/>
@@ -146,18 +166,18 @@
           * see WEB-INF/classes/app/inheritance/ExecDialog.java for the code
         -->
 
-        <dialog name="exec1a" class="app.form.exec.inheritance.SampleExecuteDialog" redirect-after-execute="false">
+        <dialog type="exec-sample" name="exec1a" class="app.form.exec.inheritance.SampleExecuteDialog">
             <frame heading="Inheritance Execute Sample 1a"/>
             <field type="text" name="full_name" caption="Full Name" required="yes"/>
         </dialog>
 
-        <dialog name="exec1b" class="app.form.exec.inheritance.SampleExecuteDialog" redirect-after-execute="false">
+        <dialog type="exec-sample" name="exec1b" class="app.form.exec.inheritance.SampleExecuteDialog">
             <frame heading="Inheritance Execute Sample 1b"/>
             <field type="text" name="full_name" caption="Full Name" required="yes"/>
             <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
         </dialog>
 
-        <dialog name="validate" class="app.form.exec.inheritance.SampleValidateDialog" generate-dcb="yes" redirect-after-execute="false">
+        <dialog type="exec-sample" name="validate" class="app.form.exec.inheritance.SampleValidateDialog" generate-dcb="yes">
             <frame heading="Inheritance Validate Sample"/>
             <field type="text" name="full_name" caption="Full Name" required="yes"/>
             <field type="date" name="birth_date" caption="Birth Date" required="yes" max="today"/>
@@ -166,14 +186,14 @@
     </dialogs>
 
     <dialogs package="form.exec.delegation">
-        <dialog name="exec1a" redirect-after-execute="false">
+        <dialog type="exec-sample" name="exec1a">
             <frame heading="Delegation Execute Sample 1a"/>
             <field type="text" name="full_name" caption="Full Name" required="yes"/>
 
             <on-execute class="app.form.exec.delegation.SampleExecuteHandler"/>
         </dialog>
 
-        <dialog name="exec1b" redirect-after-execute="false">
+        <dialog type="exec-sample" name="exec1b">
             <frame heading="Delegation Execute Sample 1b"/>
             <field type="text" name="full_name" caption="Full Name" required="yes"/>
             <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
@@ -181,7 +201,7 @@
             <on-execute class="app.form.exec.delegation.SampleExecuteHandler"/>
         </dialog>
 
-        <dialog name="validate" generate-dcb="yes" redirect-after-execute="false">
+        <dialog type="exec-sample" name="validate" generate-dcb="yes">
             <frame heading="Delegation Validate Sample"/>
             <field type="text" name="full_name" caption="Full Name" required="yes"/>
             <field type="date" name="birth_date" caption="Birth Date" required="yes" max="today"/>
