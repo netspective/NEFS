@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.10 2003-08-17 00:02:04 shahid.shah Exp $
+ * $Id: SchemaColumnsTest.java,v 1.11 2003-08-28 01:17:33 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -416,8 +416,6 @@ public class SchemaColumnsTest extends TestCase
         catch (EnumerationIdRefColumn.InvalidEnumerationValueException e)
         {
             assertEquals(e.getTable().getName(), "Enum_set_Lookup");
-            //The way this is being called, we never get a row object and valid value, therefore, teh value passed to the Exception is null
-            assertNull(e.getValue().getTextValue());
             //This is good
         }
 
@@ -430,8 +428,6 @@ public class SchemaColumnsTest extends TestCase
         {
             //This is good
             assertEquals(e.getTable().getName(), "Enum_set_Lookup");
-            //The way this is being called, we never get a row object and valid value, therefore, teh value passed to the Exception is null
-            assertNull(e.getValue().getTextValue());
         }
 
 
@@ -444,8 +440,6 @@ public class SchemaColumnsTest extends TestCase
         {
             //This is good
             assertEquals(e.getTable().getName(), "Enum_set_Lookup");
-            //The way this is being called, we never get a row object and valid value, therefore, teh value passed to the Exception is null
-            assertNull(e.getValue().getTextValue());
         }
 
 

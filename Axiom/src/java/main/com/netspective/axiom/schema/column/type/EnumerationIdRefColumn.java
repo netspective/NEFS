@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EnumerationIdRefColumn.java,v 1.3 2003-06-21 21:38:48 shahid.shah Exp $
+ * $Id: EnumerationIdRefColumn.java,v 1.4 2003-08-28 01:17:33 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -57,9 +57,9 @@ public class EnumerationIdRefColumn extends IntegerColumn
     public class InvalidEnumerationValueException extends ColumnValueException
     {
         private EnumerationTable table;
-        private EnumerationIdRefValue value;
+        private String value;
 
-        public InvalidEnumerationValueException(EnumerationTable table, EnumerationIdRefValue value)
+        public InvalidEnumerationValueException(EnumerationTable table, String value)
         {
             super("Column '"+ getQualifiedName() +"' value is invalid -- enumeration '"+ table.getName() +"' does not contain an id, caption, or abbrevation called ["+ value +"]. Available: " + TextUtils.join(table.getEnums().getValidValues(), ", "));
             this.table = table;
@@ -71,7 +71,7 @@ public class EnumerationIdRefColumn extends IntegerColumn
             return table;
         }
 
-        public EnumerationIdRefValue getValue()
+        public String getValue()
         {
             return value;
         }
@@ -97,7 +97,7 @@ public class EnumerationIdRefColumn extends IntegerColumn
             if(row != null)
                 super.setValue(row.getIdAsInteger());
             else
-                throw new InvalidEnumerationValueException(enumTable, this);
+                throw new InvalidEnumerationValueException(enumTable, value);
         }
 
         public void setValue(Object value) throws ColumnValueException
@@ -109,7 +109,7 @@ public class EnumerationIdRefColumn extends IntegerColumn
                 if(row != null)
                     super.setValue(value);
                 else
-                    throw new InvalidEnumerationValueException(enumTable, this);
+                    throw new InvalidEnumerationValueException(enumTable, value.toString());
             }
             else if(value != null)
                 setTextValue(value.toString());
