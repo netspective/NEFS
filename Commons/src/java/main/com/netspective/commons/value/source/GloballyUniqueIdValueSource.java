@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GloballyUniqueIdValueSource.java,v 1.1 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: GloballyUniqueIdValueSource.java,v 1.2 2003-05-09 01:23:35 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -66,7 +66,7 @@ public class GloballyUniqueIdValueSource extends AbstractValueSource
             "Returns a GUID each time the value source is called.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("secure", false, null, "no", "Whether or not to generate a secure GUID.")
+                new ValueSourceDocumentation.Parameter("secure", false, "no", "Whether or not to generate a secure GUID.")
             }
     );
 

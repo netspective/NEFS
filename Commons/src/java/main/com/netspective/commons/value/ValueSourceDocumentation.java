@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: ValueSourceDocumentation.java,v 1.4 2003-04-02 22:53:23 shahid.shah Exp $
+ * $Id: ValueSourceDocumentation.java,v 1.5 2003-05-09 01:23:35 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
 public class ValueSourceDocumentation
 {
@@ -54,14 +56,39 @@ public class ValueSourceDocumentation
         private String name;
         private boolean required;
         private String[] enums;
+        private XdmBitmaskedFlagsAttribute flags;
         private String defaultValue;
         private String description;
+
+        public Parameter(String name, boolean required, String description)
+        {
+            this.name = name;
+            this.required = required;
+            this.description = description;
+        }
+
+        public Parameter(String name, boolean required, String defaultValue, String description)
+        {
+            this.name = name;
+            this.required = required;
+            this.defaultValue = defaultValue;
+            this.description = description;
+        }
 
         public Parameter(String name, boolean required, String[] enums, String defaultValue, String description)
         {
             this.name = name;
             this.required = required;
             this.enums = enums;
+            this.defaultValue = defaultValue;
+            this.description = description;
+        }
+
+        public Parameter(String name, boolean required, XdmBitmaskedFlagsAttribute flags, String defaultValue, String description)
+        {
+            this.name = name;
+            this.required = required;
+            this.flags = flags;
             this.defaultValue = defaultValue;
             this.description = description;
         }
@@ -104,6 +131,16 @@ public class ValueSourceDocumentation
         public void setEnums(String[] enums)
         {
             this.enums = enums;
+        }
+
+        public XdmBitmaskedFlagsAttribute getFlags()
+        {
+            return flags;
+        }
+
+        public void setFlags(XdmBitmaskedFlagsAttribute flags)
+        {
+            this.flags = flags;
         }
 
         public String getDescription()

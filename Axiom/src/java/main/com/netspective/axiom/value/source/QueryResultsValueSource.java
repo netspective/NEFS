@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultsValueSource.java,v 1.1 2003-03-16 21:22:56 shahid.shah Exp $
+ * $Id: QueryResultsValueSource.java,v 1.2 2003-05-09 01:23:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -89,14 +89,14 @@ public class QueryResultsValueSource extends AbstractValueSource
             "Executes a static query and returns the results.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("query-source", true, null, null, "The format is 'query-source/query-id@data-source-id'. Where the only required "+
+                new ValueSourceDocumentation.Parameter("query-source", true, "The format is 'query-source/query-id@data-source-id'. Where the only required "+
                                                                                          "item is the query-id. Query-source may be either a static value or a value source and may resolve to either a " +
                                                                                          "resource id or a file name. If a resource id is required, use 'r resourceId' (prefix 'r ' in front of the value "+
                                                                                          "to indicate it's a resource). The Query id is always a static text item and data-source-id may be a value source, "+
                                                                                          "null, or a static text string."),
                 new ValueSourceDocumentation.Parameter("style", false, RESULT_STYLE_NAMES, "multi-row-matrix", "The style of result requested."),
-                new ValueSourceDocumentation.Parameter("cache-timeout", false, null, "0", "Number of milliseconds to cache the query results."),
-                new ValueSourceDocumentation.Parameter("params", false, null, null, "Bind parameters.")
+                new ValueSourceDocumentation.Parameter("cache-timeout", false, "0", "Number of milliseconds to cache the query results."),
+                new ValueSourceDocumentation.Parameter("params", false, "Bind parameters.")
             }
     );
 

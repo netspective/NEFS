@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSource.java,v 1.3 2003-03-16 21:18:50 shahid.shah Exp $
+ * $Id: FilesystemEntriesValueSource.java,v 1.4 2003-05-09 01:23:35 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -73,9 +73,9 @@ public class FilesystemEntriesValueSource extends AbstractValueSource implements
             "path included in the selected value otherwise just the filename is provided.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("path", true, null, null, "The path to search in."),
-                new ValueSourceDocumentation.Parameter("filter-reg-ex", false, null, ".*", "The Perl5 regular expression to use as filter."),
-                new ValueSourceDocumentation.Parameter("include-path", false, null, "no", "Whether or not to include the path in the files returned.")
+                new ValueSourceDocumentation.Parameter("path", true, "The path to search in."),
+                new ValueSourceDocumentation.Parameter("filter-reg-ex", false, ".*", "The Perl5 regular expression to use as filter."),
+                new ValueSourceDocumentation.Parameter("include-path", false, "no", "Whether or not to include the path in the files returned.")
             }
     );
 

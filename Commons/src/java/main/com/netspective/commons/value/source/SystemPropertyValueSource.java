@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SystemPropertyValueSource.java,v 1.1 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: SystemPropertyValueSource.java,v 1.2 2003-05-09 01:23:35 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -68,8 +68,8 @@ public class SystemPropertyValueSource extends AbstractValueSource
             "Provides access to the system property indicated by the property name.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("property-name", true, null, null, "The system property name that should be looked up."),
-                new ValueSourceDocumentation.Parameter("default-value", false, null, null, "The default value of the property if it was not found. This is a value source specficiation.")
+                new ValueSourceDocumentation.Parameter("property-name", true, "The system property name that should be looked up."),
+                new ValueSourceDocumentation.Parameter("default-value", false, "The default value of the property if it was not found. This is a value source specficiation.")
             }
     );
 

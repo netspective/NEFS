@@ -39,13 +39,11 @@
  */
 
 /**
- * $Id: ConnectionProviderEntriesValueSource.java,v 1.1 2003-03-16 21:22:56 shahid.shah Exp $
+ * $Id: ConnectionProviderEntriesValueSource.java,v 1.2 2003-05-09 01:23:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +72,7 @@ public class ConnectionProviderEntriesValueSource extends AbstractValueSource
             "filter criteria.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("filter-reg-ex", false, null, ".*", "The Perl5 regular expression to use as a filter.")
+                new ValueSourceDocumentation.Parameter("filter-reg-ex", false, ".*", "The Perl5 regular expression to use as a filter.")
             }
     );
 
