@@ -111,8 +111,13 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         try
         {
             passwordQueryResultRow = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet(), true);
-            loginPasswordObj = passwordQueryResultRow.get(passwordQueryPasswordColumnLabel);
-            ldc.setAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS, passwordQueryResultRow);
+            if(passwordQueryResultRow != null)
+            {
+                loginPasswordObj = passwordQueryResultRow.get(passwordQueryPasswordColumnLabel);
+                ldc.setAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS, passwordQueryResultRow);
+            }
+            else
+                return false;
         }
         catch(Exception e)
         {
