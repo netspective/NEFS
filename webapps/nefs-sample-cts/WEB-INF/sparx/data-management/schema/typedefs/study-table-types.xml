@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+    <table-type name="Study_Relationship" type="Relationship">
+        <xdm:template-param name="parentRef" default="Study.study_id"/>
+        <xdm:template-param name="relatedEntity" default="Study.study_id"/>
+        <xdm:template-param name="relatedEntityFieldCaption" default="Related Study ID"/>
+        <xdm:template-param name="relatedEntityFieldQuery" default="study.get-all-studies"/>
+        <xdm:template-param name="relationshipMapTablePackage" default="app.dal.table"/>
+        <xdm:template-param name="relationshipMapClassPrefix" default="StudyRelationshipMap"/>
+        <description>Basic information required for an entity that may be related to a person.</description>
+    </table-type>
+    <table-type name="StudyOrg_Relationship" type="Org_Relationship">
+        <xdm:template-param name="parentRef" default="Study.study_id"/>
+        <description>Basic information required for an entity that may be related to a study/org combination.</description>
+    </table-type>
+    <table-type name="StudyPerson_Relationship" type="Person_Relationship">
+        <xdm:template-param name="parentRef" default="Study.study_id"/>
+        <description>Basic information required for an entity that may be related to a study/person combination.</description>
+    </table-type>
+</xdm:container>

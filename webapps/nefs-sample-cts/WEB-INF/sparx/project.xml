@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+
+<project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	<!--
+	**********************************************************************
+	** NETSPECTIVE FRAMEWORKS' RESOURCE FILES                           **
+	********************************************************************** -->
+
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+    <xdm:include file="dialogs/dialogs.xml"/>
+    <xdm:include file="data-management/schema/schema.xml"/>
+
+    <!-- setup the data access layer Singleton to point to our schema -->
+    <listener class="app.Util"/>
+
+
+    <login-manager name="app" default="yes">
+        <login-authenticator class="com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator">
+            <authenticated-user-class>app.AppAuthenticatedUser</authenticated-user-class>
+            <password-query>
+                select
+                    person_login.password
+                from
+                    person_login
+                where
+                    person_login.user_id = ?
+            </password-query>
+        </login-authenticator>
+
+        <login-dialog retain-params="*">
+            <frame heading="Welcome to the Clinical Trial System"/>
+            <field name="user-id" type="text" caption="Login ID" required="yes" persist="yes" initial-focus="yes"/>
+            <field name="password" type="text" caption="Password" mask-entry="yes" required="yes"/>
+        </login-dialog>
+    </login-manager>
+
+
+    <navigation-tree name="app" default="yes">
+        <page caption="Home" name="home" heading="Welcome to CTS" title="CTS - Clinical Trial Management System" default="yes">
+            <page caption="Summary" name="summary" heading="authenticated-user:complete_sortable_name" title="Welcome to CTS" >
+                <panels>
+                    <panel type="html">
+                    <body>
+                        <![CDATA[
+                        <div align="left" style="padding:10">
+                            Welcome to the Netspective Clinical Trial System.
+                        </div>
+                        ]]>
+                    </body>
+                </panel>
+                    <panel type="command" command="query,cts.active-studies-by-person" />
+                    <!--panel type="command" command="statement,person.user-journal-report,-,-,report"/>
+                    <panel type="command" command="statement,person.user-activity-report,-,-,report"/-->
+                </panels>
+            </page>
+            <page caption="Contact Data" name="contact_info" heading="Contact Information" title="Contact Information">
+                <panels>
+                    <panel type="command" command="query,cts.user-info,-,-,-,detail-compressed" />
+                    <panel type="command" command="query,cts.contact-info,-,-,-,record-viewer" />
+                </panels>
+                <page name="add" caption="Add Contact Info" command="dialog,cts.person-contact-info,add" 
+                require-request-param="person_id"  />
+                <page name="edit" caption="Edit Contact Info" command="dialog,cts.person-contact-info,edit" 
+                require-request-param="id" retain-params="id" />
+                <page name="edit-person" caption="Edit Personal Info" command="dialog,cts.person-contact-info,edit" 
+                require-request-param="id" retain-params="id" />
+            </page>
+            <page caption="Journal" name="journal" heading="Add Journal Entry" title="Add Journal Entry">
+                <panels>
+                    <!--panel type="command" command="dialog,person.journal" col-span="2"/-->
+                </panels>
+            </page>
+        </page>
+        <page caption="Study" name="study" heading="Clinical Trial studies" title="CTS - Clinical Trial Management System" 
+        	redirect="study/search">
+        	<page name="search" caption="Search" heading="Search for studies" title="CTS - Search Studies" default="yes"
+            	/>
+        </page>
+        <page caption="Organization" name="org" heading="Organizations" title="CTS - Clinical Trial Management System">
+        	<panels>
+				<panel type="html">
+				<body>
+					<![CDATA[
+					<div align="left" style="padding:10">
+						This section contains information about organizations invoilved with clinical trial studies.
+					</div>
+					</div>
+					]]>
+				</body>
+				</panel>                   
+            </panels>
+            <page name="search" caption="Search" heading="Search for organizations" title="CTS - Search Organizations"
+            	/>
+            	
+        </page>
+    </navigation-tree>
+    <!--
+        *******************************************************************************************************************
+        ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
+        ** ============================================================================================================= **
+        ** Any data source called 'jdbc/default' will automatically be used as the default JDBC data source. If you wish **
+        ** to change the name of the default data source, you may specify it as a tag in project.xml like the following: **
+        ** <project>                                                                                                     **
+        **     <default-data-source>jdbc/other</default-data-source>						     **
+        **														     **
+        ** Or by specifying it in the data source definition as follows:						     **
+        **     <data-source name="theName" default="yes"								     **
+        **														     **
+        ** Note that data sources specified under this connection provider will be managed by the Jakarta Commons DBCP   **
+        ** If you wish to use JNDI, you simply have to specify the resource according to the server you're using.	     **
+        **														     **
+        *******************************************************************************************************************
+        -->
+
+        <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
+
+            <data-source name="jdbc/default">
+                <driver-class>org.hsqldb.jdbcDriver</driver-class>
+                <url>vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}</url>
+                <user>sa</user>
+                <password></password>
+            </data-source>
+
+        </connection-provider>
+
+
+	<!--
+	**********************************************************************
+	** DATA MANAGEMENT QUERY (SQL) SPECIFICATIONS                       **
+	********************************************************************** -->
+    <xdm:include file="data-management/query/statements.xml"/>
+
+
+    <query-defn name="study">
+        <field name="study_id" caption="Study ID" join="Study" column="study_id"/>
+        <field name="study_name" caption="Study Name" join="Study" column="study_name"/>
+
+        <join name="Study" table="study"/>
+
+        <presentation>
+            <select-dialog name="searchStudyDialog"  allow-debug="yes" hide-output-dests="yes" hide-readonly-hints="yes" >
+                <frame heading="Search for Studies" />
+                <field type="text" name="study_id" caption="Study ID" />
+                <field type="text" name="name" caption="Study Name"/>
+
+                <select name="test">
+                    <display field="study_id"/>
+                    <display field="study_name"/>
+                    <condition field="study_id" allow-null="no" comparison="equals" value="field:study_id" connector="and"/>
+                    <condition field="study_name" allow-null="no" comparison="starts-with" value="field:study_name" connector="and"/>
+                </select>
+            </select-dialog>
+        </presentation>
+    </query-defn>
+</project>

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<table name="Default_Questions" abbrev="DefQs" type="Enumeration">
+        <enumerations>
+		<enum abbrev="01">Are you feeling well today?</enum>
+		<enum abbrev="02">Do you have an infection now, or are you taking antibiotics now?</enum>
+		<enum abbrev="03">In the past six months, have you suffered from heart related chest pain or heart disease?</enum>
+		<enum abbrev="04">In the past six months, have you had surgery?</enum>
+        <enum abbrev="05">Have you had oral surgery in the last 3 days?</enum>
+        <enum abbrev="06">Are you a female who, in the last 6 weeks, has been pregnant or is now pregnant?</enum>
+        <enum abbrev="07">Have you ever tested positive for hepatitis?</enum>
+        <enum abbrev="08">Have you ever had a blood disease or a bleeding problem?</enum>
+        <enum abbrev="09">Have you ever used a needle, even once, to take any illegal or non-prescription drug?</enum>
+        <enum abbrev="10">In the past 3 years, have you had malaria or symptoms of malaria?</enum>
+        <enum abbrev="11">In the past 12 months, have you had injections for exposure to rabies or have you received any experimental vaccine?</enum>
+        <enum abbrev="12">In the past 4 weeks, have you had any vaccinations?</enum>
+        </enumerations>
+	</table>
+
+    <table name="Study_Stage_Type" abbrev="StdStTy" type="Enumeration">
+        <enumerations>
+        <enum abbrev="I">Phase I</enum>
+        <enum abbrev="II">Phase II</enum>
+        <enum abbrev="III">Phase III</enum>
+        </enumerations>
+    </table>
+
+    <table name="Study_Duration_Type" abbrev="StdDurTy" type="Enumeration">
+        <enumerations>
+		<enum abbrev="OM">One Month</enum>
+		<enum abbrev="TM">Two Months</enum>
+		<enum abbrev="THM">Three Months</enum>
+		<enum abbrev="FM">Four Months</enum>
+        <enum abbrev="FVM">Five Months</enum>
+        <enum abbrev="SM">Six Months</enum>
+        <enum abbrev="OY">One Year</enum>
+        <enum abbrev="TY">Two Years</enum>
+        <enum abbrev="THY">Three Years</enum>
+        </enumerations>
+	</table>
+    <table name="Study_Status" abbrev="StdSt" type="Status">
+        <enumerations>
+        <enum abbrev="ND">Not Defined</enum>
+        <enum abbrev="PRO">Proposed</enum>
+        <enum abbrev="IP">In Planning</enum>
+        <enum abbrev="IPROG">In Progress</enum>
+        <enum abbrev="OH">On Hold</enum>
+        <enum abbrev="C">Complete</enum>
+        </enumerations>
+    </table>
+
+	<table name="StudyOrg_Relation_Type" abbrev="StdOrgRelTy" type="Relationship_Type">
+        <description>Relationship Types between a Study and  an Organization</description>
+        <enumerations>
+        <enum abbrev="ADMIN" >Administrator</enum>
+        <enum abbrev="SPON" >Sponsor</enum>
+        <enum abbrev="P">Participant</enum>
+        <enum abbrev="S" >Site</enum>
+        <enum abbrev="SS" >Subject Supplier</enum>
+        <enum abbrev="O" >Other</enum>
+        </enumerations>
+	</table>
+
+	<table name="StudyPerson_Relation_Type" abbrev="StdPerRelTy" type="Relationship_Type">
+        <!-- enums for Study/Person relationship -->
+        <enumerations>
+            <enum abbrev="P" >Subject</enum>
+            <enum abbrev="PP" >Subject (Placebo)</enum>
+            <enum abbrev="ADMIN" >Administrator</enum>
+            <enum abbrev="PHY" >Physician</enum>
+            <enum abbrev="PI" >Principal Investigator</enum>
+            <enum abbrev="CO" >Coinvestigator</enum>
+            <enum abbrev="O" >Other</enum>
+        </enumerations>
+	</table>
+</xdm:container>

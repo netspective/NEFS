@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <xdm:include file="org.xml"/>
+    <dialogs package="cts">
+
+        <dialog name="person-contact-info" class="app.cts.form.PersonContactDialog" retain-params="*">
+			<frame heading="create-dialog-perspective-heading:Contact"/>
+			<field type="text" name="id" caption="ID" read-only="yes" default="request:id">
+				<conditional action="apply-flags" flags="unavailable" perspective="add"/>
+			</field>
+			<field type="composite" name="contactType" caption="Contact Type" >
+				<conditional action="apply-flags" flags="read_only" perspective="edit"/>	
+				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type">
+									
+				</field>
+				<field type="text" name="method_name" caption="Other Contact Type">
+					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</field>
+			<field type="text" name="method_value" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+            <!--director>
+                <next-actions caption="Next Action\:" choices="text-list:a=x" display-single-action="yes"/>
+                <next-actions>
+
+                    <choices>
+                        <choice value="simple-expr:${servlet-context-uri:/index.jsp}">Return to home</choice>
+                        <choice value="simple-expr:${servlet-context-uri:/person/contact.jsp}?person_id=${session:user_person_id}&amp;data_cmd=add">Create another subject</choice>
+                    </choices>
+                </next-actions>
+            </director-->
+		</dialog>
+    </dialogs>
+
+    <dialogs package="person">
+        <dialog name="subject-profile" hide-hints-until-focus="yes">
+            <field type="integer" name="person_id" hidden="yes"/>
+			<field type="separator" heading="Personal Profile"/>
+
+			<field type="composite"  name="fullName" show-child-caption="yes">
+                <field type="select" name="name_prefix" caption="Prefix" choices="schema-enum:Name_Prefix_Type" prepend-blank="yes"/>
+				<field type="text" name="name_last" size="16" caption="Last Name" required="yes"/>
+                <field type="text" name="name_first" size="16" caption="First Name" required="yes" />
+                <field type="text" name="name_middle" size="2" caption="MI"/>
+                <field type="text" name="name_suffix" size="4" caption="Suffix"/>
+			</field>
+
+            <field type="separator" heading="Demographic Information"/>
+            <field type="date" caption="Date of Birth" name="date_of_birth" size="12"/>
+            <field type="ssn" caption="Social Security Number"  name="ssn" required="yes" size="11"/>
+			<field type="select" name="gender_id" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes" required="yes"/>
+			<field type="select" name="marital_status_id" caption="Marital Status"  choices="schema-enum:Marital_Status_Type"/>
+			<field type="select" name="blood_type_id" caption="Blood Type" choices="schema-enum:Blood_Type" required="yes"/>
+			<field type="select" caption="Ethnicity" name="ethnicity_id" choices="schema-enum:Ethnicity_Type"
+                hint="Please note that the first ethnicity you select will be considered the primary ethnicity of this person."/>
+			<field type="select" caption="Language" name="language_id" choices="schema-enum:Language_Type"
+                hint="Please note that the first language you select will be considered the primary language of this person."/>
+
+            <field type="separator" heading="Address"/>
+            <field type="text" name="line1" caption="Home Address" required="yes" size="64"/>
+            <field type="text" name="line2" caption="Line 2" size="64"/>
+            <field type="composite" name="cityStateZip" caption="*">
+                <field type="text" name="city" caption="City" required="yes" size="16"/>
+                <field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes"/>
+                <field type="zip-code" name="zip" caption="Zip Code" required="yes"/>
+            </field>
+            <field type="text" name="country" caption="Country" size="16" default="USA"/>
+
+            <field type="separator" heading="Contact Methods"/>
+            <field type="composite" name="primary_contact" show-child-caption="yes">
+                <field type="select" name="type" caption="Primary Contact Method" choices="schema-enum:Contact_Method_Type"
+                    prepend-blank="yes" required="yes"/>
+                <field type="phone" name="phone_value"  size="30">
+                    <conditional action="display" partner-field-name="primary_contact.type"
+                        expression="control.options[control.selectedIndex].text.substring(0, 9) == 'Telephone'"/>
+                </field>
+                <field type="phone" name="fax_value" size="30">
+                    <conditional action="display" partner-field-name="primary_contact.type"
+                        expression="control.options[control.selectedIndex].text.substring(0, 3) == 'Fax'"/>
+                </field>
+                <field type="e-mail" name="email_value" size="30">
+                    <conditional action="display" partner-field-name="primary_contact.type"
+                        expression="control.options[control.selectedIndex].text.substring(0, 5) == 'Email'"/>
+                </field>
+            </field>
+            <field type="composite" name="secondary_contact" show-child-caption="yes">
+                <field type="select" name="type" caption="Secondary Contact Method" choices="schema-enum:Contact_Method_Type"
+                    prepend-blank="yes" required="no"/>
+                <field type="phone" name="phone_value"  size="30">
+                    <conditional action="display" partner-field-name="secondary_contact.type"
+                        expression="control.options[control.selectedIndex].text.substring(0, 9) == 'Telephone'"/>
+                </field>
+                <field  type="phone" name="fax_value" size="30">
+                    <conditional action="display" partner-field-name="secondary_contact.type"
+                        expression="control.options[control.selectedIndex].text.substring(0, 3) == 'Fax'"/>
+                </field>
+                <field type="e-mail" name="email_value" size="30">
+                    <conditional action="display" partner-field-name="secondary_contact.type"
+                        expression="control.options[control.selectedIndex].text.substring(0, 5) == 'Email'"/>
+                </field>
+            </field>
+        </dialog>
+    </dialogs>
+</xdm:container>

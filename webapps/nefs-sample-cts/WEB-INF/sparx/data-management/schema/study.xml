@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+    <table name="Study" abbrev="Std" type="Default">
+        <description>Clinical Trial Study information</description>
+		<column name="study_id" type="auto-inc" primarykey="yes" descr="Unique System ID for any given row"/>
+		<!--column name="parent_id" selfref="Study.study_id" descr="Parent Study (NULL if this is not a sub-study)"/-->
+		<column name="study_code" type="text" size="64" unique="yes" descr="General project code"/>
+		<column name="study_name" type="text" size="256" descr="The name of the cilinical trial study"/>
+		<column name="study_descr" type="text" size="4000" descr="Study details"/>
+        <column name="study_status" lookupref="Study_Status" descr="The active status of this study"/>
+        <column name="study_stage" lookupref="Study_Stage_Type.id" descr="The phase of this study"/>
+        <column name="start_date" type="date" descr="Study start date"/>
+        <column name="target_end_date" type="date" descr="Study target end date"/>
+        <column name="actual_end_date" type="date" descr="Study actual end date"/>
+        <column name="irb_name" descr="Institutional Review Board (IRB) Name" type="text" size="256" />
+        <column name="irb_number" descr="IRB Number" type="text" size="64"  />
+        <column name="irb_approval_date" descr="IRB Approval Date" type="date" />
+        <column name="irb_expiration_date" descr="IRB Expiration Date" type="date"/>
+	</table>
+
+    <table name="StudyOrg_Relationship" abbrev="StdOrgRel" type="StudyOrg_Relationship"
+        xdm:param-recordStatusEnum="StudyOrg_Rel_Status"
+        xdm:param-relationshipTypeEnum="StudyOrg_Relation_Type"
+        xdm:param-relatedEntityFieldCaption="Related Study">
+        <description>Relationship between a Study and an Organization </description>
+	</table>
+    <table name="StudyOrg_Rel_Status" abbrev="StdORelSt" type="Relationship_Status"/>
+
+    <table name="StudyPerson_Relationship" abbrev="StdPerRel" type="StudyPerson_Relationship"
+        xdm:param-recordStatusEnum="StudyPerson_Rel_Status"
+        xdm:param-relationshipTypeEnum="StudyPerson_Relation_Type"
+        xdm:param-relatedEntityFieldCaption="Related person">
+        <description>Relationship between a Study and a Person </description>
+    </table>
+    <table name="StudyPerson_Rel_Status" abbrev="StdPerRelSt" type="Relationship_Status"/>
+</xdm:container>

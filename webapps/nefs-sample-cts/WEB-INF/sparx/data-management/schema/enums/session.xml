@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+    <table name="Session_Activity_Type" abbrev="SessActvtyType" type="Enumeration">
+        <description>Types of session activities that the auditing system can log.</description>
+    </table>
+    <table name="Session_Action_Type" abbrev="SessActType" type="Enumeration">
+        <description>Types of session actions that the auditing system can log.</description>
+    </table>
+</xdm:container>
