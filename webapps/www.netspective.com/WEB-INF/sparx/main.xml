@@ -154,8 +154,8 @@
 
                 <page name="try" caption="Try" heading="Try Us Out for Free">
                     <summary>
-                        If you like what you've seen so far, grab an evaluation copy and give NEFS a spin on your
-                        own workstation. You've got nothing to lose except tedious Java code.
+                        NEFS sample applications demonstrate the major capabilities present in the Netspective Enterprise Frameworks. There are
+                        a variety of applications provided for all levels of programmer experience.
                     </summary>
                     <body source="products/frameworks/try.ftl"/>
                 </page>
@@ -177,9 +177,8 @@
                 </page>
                 <page name="samples" caption="Sample Apps" heading="Download Sample App .war Files">
                     <summary>
-                        All samples are provided as app-server-independent .war files which include binaries of all our
-                        Frameworks. Once you have downloaded any .war file, you have everything you need to start
-                        modifying and adding to the app.
+                        NEFS sample applications demonstrate the major capabilities present in the Netspective Enterprise Frameworks. There are
+                        a variety of applications provided for all levels of programmer experience.
                     </summary>
                     <body source="downloads/frameworks/sample-apps.ftl"/>
                 </page>
@@ -209,7 +208,11 @@
                 <summary>All of our developer guides and documentation are available online.</summary>
                 <body source="support/docs/index.ftl"/>
 
-                <page name="upgrading" heading="Upgrade Guide" hidden="yes">
+                <page name="change-log" caption="NEFS Changes Log" heading="NEFS Changes Log">
+                    <body source="support/docs/change-log.ftl"/>
+                </page>
+
+                <page name="upgrading" caption="NEFS Upgrade Guide">
                     <body source="support/docs/upgrading.ftl"/>
                 </page>
             </page>
@@ -269,11 +272,6 @@
                     <summary>This area is not completed yet but will be available very soon. Please check back later.</summary>
                     <body source="support/index.ftl"/>
                 </page>
-            </page>
-
-            <page name="subscribe" caption="Subscribe to Maillist">
-                <summary>This area is not completed yet but will be available very soon. Please check back later.</summary>
-                <body source="support/index.ftl"/>
             </page>
         </page>
 

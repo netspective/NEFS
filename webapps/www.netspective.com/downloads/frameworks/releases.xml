@@ -154,14 +154,14 @@
         <product name="Sparx" version="7.0.2"/>
         <change-log>
             <summary>Minor bug fixes</summary>
-            <change-log-entry>In
-                <code>com.netspective.sparx.theme.basic.BasicHtmlTabularReportPanelSkin</code>, updated the
+            <change-log-entry><![CDATA[In
+                <code>com.netspective.sparx.theme.basic BasicHtmlTabularReportPanelSkin</code>, updated the
                 code to check if the
                 <code>title</code> attribute of the
                 <code>panel/report/actions/action</code> tag is
                 not null before rendering it. This
                 <code>title</code> attribute is typically only used in selectable
-                reports.
+                reports.]]>
             </change-log-entry>
         </change-log>
     </release>
@@ -182,27 +182,37 @@
         <product name="Sparx" version="7.0.1"/>
         <change-log>
             <summary>New features</summary>
-            <change-log-entry>Improved support for error pages with additional features in &lt;navigation-tree&gt;'s and
-                &lt;page&gt;'s &lt;error-page&gt; tag.</change-log-entry>
             <change-log-entry>
+                <![CDATA[
+                Improved support for error pages with additional features in &lt;navigation-tree&gt;'s and
+                &lt;page&gt;'s &lt;error-page&gt; tag.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
                 Changed the delimiter of the
                 <code>ListValueSourceCommand</code> from comma
                 <code>[,]</code> to
                 pipe
                 <code>[|]</code> so that embedded value sources in the command will work properly. Before this
                 change, only value sources that didn't contain commas in their specs were allowed.
+                ]]>
             </change-log-entry>
             <change-log-entry>
+                <![CDATA[
                 Changed the rule for DialogContext Beans generation so that only
                 <code>&lt;dialog&gt;</code> tags that have the
                 <code>&lt;dialog ... generate-dcb="yes"/&gt;</code> attribute will generate dialog context beans.
+                ]]>
             </change-log-entry>
             <change-log-entry>
+                <![CDATA[
                 Added new attribute called
                 <code>allow-execute-with-cancel-button</code> to the
                 <code>&lt;dialog&gt;</code> tag which allows
                 execution of the dialog even when the Cancel button is pressed. Currently it is up to the developer
                 to check for it and do the appropriate action in the execution listeners.
+                ]]>
             </change-log-entry>
         </change-log>
     </release>

@@ -13,9 +13,10 @@
         </tr>
         <#list releases["netspective/release[product/@name = '${framework}']"] as release>
             <tr>
-                <td><@file framework="${framework}" version=release["product[@name = '${framework}']/@version"]/></td>
+                <#local productVersion = release["product[@name = '${framework}']/@version"]/>
+                <td><@file framework="${framework}" version=productVersion/></td>
                 <td>${release["change-log/summary"]}</td>
-                <td><p align=right>${release["count(change-log/change-log-entry)"]}</p></td>
+                <td><p align=right><a href="${servletPath}/support/documentation/change-log#${framework}-${productVersion}">${release["count(change-log/change-log-entry)"]}</p></td>
             </tr>
         </#list>
     </table>

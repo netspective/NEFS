@@ -89,7 +89,7 @@
         </page>
 
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
-        <page name="sampler" caption="Sampler" redirect="netspective-url:nefs-sample-apps"/>
+        <page name="sampler" caption="Sampler" redirect="netspective-url:nefs-sample-apps-home"/>
     </navigation-tree>
 
 <!--
