@@ -520,7 +520,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         setName(column.getName());
         setAbbrev(column.getAbbrev());
         setXmlNodeName(column.getXmlNodeName());
-        setJavaPropertyName(column.getJavaPropertyName());
+        setJavaPropertyName(column.getJavaPropertyName(null));
         setSize(column.getSize());
         setIndexInRow(column.getIndexInRow());
         setDescr(column.getDescr());
