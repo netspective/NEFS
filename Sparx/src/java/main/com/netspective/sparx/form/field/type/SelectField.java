@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.16 2004-01-06 05:30:21 aye.thu Exp $
+ * $Id: SelectField.java,v 1.17 2004-01-06 19:52:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -319,23 +319,6 @@ public class SelectField extends TextField
     public void setChoices(ValueSource choices)
     {
         this.choices = choices;
-    }
-
-    /**
-     * Sets the choices for the field. The name and caption of each choice will be the same.
-     *
-     * @param choices String array containing the choices
-     */
-    public void setChoices(String[] choices)
-    {
-        if (choices == null)
-            return;
-        SelectFieldChoicesValueSource sv = new SelectFieldChoicesValueSource();
-        setChoices(sv);
-        for (int i=0; i < choices.length; i++)
-        {
-            sv.addItem(choices[i], choices[i]);
-        }
     }
 
     public SelectFieldChoicesValueSource.Items createItems()

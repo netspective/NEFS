@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SelectFieldChoicesValueSource.java,v 1.2 2003-11-26 17:31:42 shahid.shah Exp $
+ * $Id: SelectFieldChoicesValueSource.java,v 1.3 2004-01-06 19:52:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -53,6 +53,7 @@ import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.source.AbstractValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 
 public class SelectFieldChoicesValueSource extends AbstractValueSource
 {
@@ -128,6 +129,11 @@ public class SelectFieldChoicesValueSource extends AbstractValueSource
     {
     }
 
+    public SelectFieldChoicesValueSource(String[] choices)
+    {
+        setItems(choices);
+    }
+
     public Items createItems()
     {
         return items;
@@ -141,6 +147,18 @@ public class SelectFieldChoicesValueSource extends AbstractValueSource
     public Items getItems()
     {
         return items;
+    }
+
+    public void setItems(String[] choices)
+    {
+        for (int i=0; i < choices.length; i++)
+        {
+            Items.Item item = items.createItem();
+            ValueSource vs = new StaticValueSource(choices[i]);
+            item.setCaption(vs);
+            item.setValue(vs);
+            items.addItem(item);
+        }
     }
 
     public PresentationValue getPresentationValue(ValueContext vc)
