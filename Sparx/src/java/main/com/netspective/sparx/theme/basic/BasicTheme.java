@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTheme.java,v 1.11 2004-03-12 06:52:41 aye.thu Exp $
+ * $Id: BasicTheme.java,v 1.12 2004-06-23 15:09:59 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -78,6 +78,9 @@ public class BasicTheme extends AbstractTheme
         addPanelSkin(new PanelEditorSkin(this, "panel-editor-compressed", "panel-editor", "panel/output", false));
         addPanelSkin(new PanelEditorSkin(this, "panel-editor-full", "panel-editor", "panel/output", true));
 
+        addReportSkin(new BasicTabularReportActionSkin(this, "report-action", "panel-output", "panel/output", true));
+        addReportSkin(new BasicHtmlTabularReportPanelSkin(this, "report", "panel-output", "panel/output", true));
+        addReportSkin(new BasicHtmlTabularReportPanelSkin(this, "report-compressed", "panel-output", "panel/output", false));
     }
 
     public NavigationSkin createNavigationSkin()
