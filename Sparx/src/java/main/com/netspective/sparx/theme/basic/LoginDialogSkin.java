@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialogSkin.java,v 1.5 2003-08-22 03:33:44 shahid.shah Exp $
+ * $Id: LoginDialogSkin.java,v 1.6 2003-08-22 14:34:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -92,7 +92,7 @@ public class LoginDialogSkin extends StandardDialogSkin
         writer.write("                                <table border=\"0\" cellspacing=\"0\" cellpadding=\"15\">");
         writer.write("                                    <tr>");
         writer.write("                                        <td align=\"center\" valign=\"middle\">" +
-                "<img src=\"" + theme.getImageResourceUrl("/login/"+ getLoginImage()) + "\" " +
+                "<img src=\"" + theme.getResourceUrl("/images/login/"+ getLoginImage()) + "\" " +
                 "alt=\"\" border=\"0\"></td>");
         writer.write("                                        <td align=\"left\" valign=\"middle\">");
 

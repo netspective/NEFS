@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.16 2003-08-22 03:33:43 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.17 2003-08-22 14:34:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -117,8 +117,30 @@ public class NavigationControllerServlet extends HttpServlet
             throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist. Please " +
                     "correct the context-param called '"+ BasicDbHttpServletValueContext.INITPARAMNAME_PROJECT_FILE +"' in your WEB-INF/web.xml file.");
 
-        setRuntimeEnvironmentFlags(BasicDbHttpServletValueContext.getEnvironmentFlags(servletConfig.getServletContext()));
+        setRuntimeEnvironmentFlags(BasicDbHttpServletValueContext.getEnvironmentFlags(servletContext));
+        initResourceLocators(servletConfig);
+        if(isCacheComponents())
+        {
+            // go ahead and grab all the components now -- so that we don't have to synchronize calls
+            getProject();
+            getTheme();
+            getLoginManager();
+            getNavigationTree();
+        }
+    }
 
+    /**
+     * Initializes the web resource locators to the following:
+     *   - APP_ROOT/resources/sparx (will only exist if user is overriding any defaults)
+     *   - APP_ROOT/sparx (will exist in ITE mode when sparx directory is inside application)
+     *   - [CLASS_PATH]/Sparx/resources (only useful during development in SDE, not production since it won't be found)
+     *   - TODO: allow locators to be specified in servlet init parameters?
+     * @param servletConfig
+     * @throws ServletException
+     */
+    private void initResourceLocators(ServletConfig servletConfig) throws ServletException
+    {
+        ServletContext servletContext = servletConfig.getServletContext();
         try
         {
             List locators = new ArrayList();
@@ -148,15 +170,6 @@ public class NavigationControllerServlet extends HttpServlet
         {
             log.error("error initializing resource locator", e);
             throw new ServletException(e);
-        }
-
-        if(isCacheComponents())
-        {
-            // go ahead and grab all the components now -- so that we don't have to synchronize calls
-            getProject();
-            getTheme();
-            getLoginManager();
-            getNavigationTree();
         }
     }
 

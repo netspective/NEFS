@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Theme.java,v 1.12 2003-08-22 03:33:43 shahid.shah Exp $
+ * $Id: Theme.java,v 1.13 2003-08-22 14:34:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -66,8 +66,6 @@ public interface Theme
     public void setWebResourceLocator(WebResourceLocator locator);
 
     public String getResourceUrl(String relativeUrl);
-
-    public String getImageResourceUrl(String relativeUrl);
 
     public void addNavigationSkin(NavigationSkin skin);
 

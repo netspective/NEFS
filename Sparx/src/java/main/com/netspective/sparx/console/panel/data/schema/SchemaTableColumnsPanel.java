@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableColumnsPanel.java,v 1.11 2003-08-22 03:33:43 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPanel.java,v 1.12 2003-08-22 14:34:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -180,33 +180,33 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
                     Theme theme = ((HtmlTabularReportValueContext) reportValueContext).getActiveTheme();
                     StringBuffer content = new StringBuffer();
                     if(column.isPrimaryKey())
-                        content.append("<img src=\""+ theme.getImageResourceUrl("/dbdd/primary-key.gif") + "\" title=\"Primary key\"> ");
+                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/primary-key.gif") + "\" title=\"Primary key\"> ");
                     if(column.isUnique())
-                        content.append("<img src=\""+ theme.getImageResourceUrl("/dbdd/value-unique.gif") + "\" title=\"Values must be unique\"> ");
+                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/value-unique.gif") + "\" title=\"Values must be unique\"> ");
                     if(column.isRequiredByApp())
-                        content.append("<img src=\""+ theme.getImageResourceUrl("/dbdd/value-required.gif") + "\" title=\"Value is required\"> ");
+                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/value-required.gif") + "\" title=\"Value is required\"> ");
                     if(column.isRequiredByDbms())
-                        content.append("<img src=\""+ theme.getImageResourceUrl("/dbdd/value-required-dbms.gif") + "\" title=\"Value is required (but only in the DBMS)\"> ");
+                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/value-required-dbms.gif") + "\" title=\"Value is required (but only in the DBMS)\"> ");
                     if(column.isIndexed())
-                        content.append("<img src=\""+ theme.getImageResourceUrl("/dbdd/indexed.gif") + "\" title=\"Column is indexed\"> ");
+                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/indexed.gif") + "\" title=\"Column is indexed\"> ");
                     if(column.getForeignKey() != null)
                     {
                         switch(column.getForeignKey().getType())
                         {
                             case ForeignKey.FKEYTYPE_PARENT:
-                                content.append("<img src=\""+ theme.getImageResourceUrl("/dbdd/parent-ref-key.gif") + "\" title=\"Child-key reference\"> ");
+                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/parent-ref-key.gif") + "\" title=\"Child-key reference\"> ");
                                 break;
 
                             case ForeignKey.FKEYTYPE_SELF:
-                                content.append("<img src=\""+ theme.getImageResourceUrl("/dbdd/self-ref-key.gif") + "\" title=\"Self reference\"> ");
+                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/self-ref-key.gif") + "\" title=\"Self reference\"> ");
                                 break;
 
                             default:
-                                content.append("<img src=\""+ theme.getImageResourceUrl("/dbdd/foreign-key.gif") + "\" title=\"Foreign key reference\"> ");
+                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/foreign-key.gif") + "\" title=\"Foreign key reference\"> ");
                         }
                     }
                     if(column.getDependentForeignKeys() != null && column.getDependentForeignKeys().size() > 0)
-                        content.append("<img src=\""+ theme.getImageResourceUrl("/dbdd/foreign-key-elsewhere.gif") + "\" title=\"Referenced as a foreign key elsewhere\"> ");
+                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/foreign-key-elsewhere.gif") + "\" title=\"Referenced as a foreign key elsewhere\"> ");
                     return content.toString();
 
                 case 1:

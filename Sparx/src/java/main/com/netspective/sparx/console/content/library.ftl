@@ -103,14 +103,12 @@
         <#assign settableAttributesDetail = schema.getSettableAttributesDetail(false)/>
     </#if>
     <#assign childElements = schema.getNestedElementsDetail()/>
-    <#assign imageSrc=vc.getThemeResourcesRootUrl(vc.activeTheme) + "/images" />
-    <#assign xmlImageSrc=imageSrc + "/xml" />
     <#assign classSuffix="odd"/>
 
     <table width=100%>
         <tr valign=center>
             <td>
-                <img src="${xmlImageSrc}/xml.gif"/>
+                <img src="${vc.activeTheme.getResourceUrl('/images/xml/xml.gif')}"/>
                 <#if tag != ''>
                 &lt;<b>${tag}</b>&gt;
                 <#else>
@@ -118,7 +116,7 @@
                 </#if>
             </td>
             <td align=right>
-                <img src="${imageSrc}/java-class.gif"/> <code>${schema.bean.name}</code>
+                <img src="${vc.activeTheme.getResourceUrl('/images/java-class.gif')}"/> <code>${schema.bean.name}</code>
             </td>
         </tr>
         <tr class="report-column-even">
@@ -139,9 +137,9 @@
         <tr>
             <td class="report-column-${classSuffix}" rowspan=2>
                 <#if attrDetail.isRequired()>
-                    <img src="${xmlImageSrc}/xml-node-attribute-required.gif" title="Required attribute"/>
+                    <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-attribute-required.gif")}" title="Required attribute"/>
                 <#else>
-                    <img src="${xmlImageSrc}/xml-node-attribute.gif" title="Attribute"/>
+                    <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-attribute.gif")}" title="Attribute"/>
                 </#if>
             </td>
             <td class="report-column-${classSuffix}">
@@ -186,9 +184,9 @@
         <tr>
             <td class="report-column-${classSuffix}" rowspan=2>
                 <#if childDetail.isTemplateProducer()>
-                    <img src="${xmlImageSrc}/xml-node-template-producer.gif" title="Template Producer"/>
+                    <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-template-producer.gif")}" title="Template Producer"/>
                 <#else>
-                    <img src="${xmlImageSrc}/xml-node-element.gif" title="Element"/>
+                    <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-element.gif")}" title="Element"/>
                 </#if>
             </td>
             <td class="report-column-${classSuffix}">
@@ -246,8 +244,7 @@
 <#macro contentImage image="">
     <#assign navigationContext = vc.navigationContext?default(vc)/>
     <#assign activePage = navigationContext.activePage/>
-    <#assign imagePath=vc.resourcesRootUrl + "/content/console/" + activePage.qualifiedName />
-    <img src='${imagePath}/${image?default(activePage.name + '.gif')}'>
+    <img src='${navigationContext.getSparxResourceUrl("/content/console" + activePage.qualifiedName + "/" + image?default(activePage.name + '.gif'))}'>
 </#macro>
 
 

@@ -13,12 +13,12 @@
         <td class="report-column-even"><code>${fieldState.value.textValue}</code></td>
     </tr>
     <tr>
-        <td class="report-column-odd"><img src="${vc.getThemeResourcesRootUrl(vc.activeTheme) + "/images/java-class.gif"}"/></td>
+        <td class="report-column-odd"><img src="${vc.activeTheme.getResourceUrl('/images/java-class.gif')}"/></td>
         <td class="report-column-odd">Value Source Class</td>
         <td class="report-column-odd"><code>${valueSource.class.name}</code></td>
     </tr>
     <tr>
-        <td class="report-column-even"><img src="${vc.getThemeResourcesRootUrl(vc.activeTheme) + "/images/java-class.gif"}"/></td>
+        <td class="report-column-even"><img src="${vc.activeTheme.getResourceUrl('/images/java-class.gif')}"/></td>
         <td class="report-column-even">Value Class</td>
         <td class="report-column-even"><code>${value.class.name}</code></td>
     </tr>

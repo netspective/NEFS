@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.26 2003-08-22 03:33:44 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.27 2003-08-22 14:34:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -125,7 +125,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         Theme theme = getTheme();
 
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getImageResourceUrl("/favicon.ico") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/images/favicon.ico") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/general.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/navigation.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-input.css") + "\" type=\"text/css\">\n");
@@ -162,11 +162,11 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("<!-- Active User Begins -->\n");
         writer.write("<table class=\"active-user-table\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("<tr>\n");
-        writer.write("	<td><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"10\" border=\"0\"></td>\n");
+        writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"10\" border=\"0\"></td>\n");
         writer.write("	<td valign=\"middle\" nowrap >\n");
         writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("			<tr>\n");
-        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" " +
+        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" " +
                 "height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;User&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/person/summary.jsp?person_id=" + personId + "\">&nbsp;&nbsp;" +
@@ -178,11 +178,11 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         int errorsCount = nc.getProjectComponent().getErrors().size();
         boolean haveErrors = errorsCount > 0;
 
-        writer.write("	<td><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+        writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
         writer.write(haveErrors ? "	<td>\n" : "	<td width=100%>\n");
         writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("			<tr>\n");
-        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getImageResourceUrl("spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;App&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getServletContext().getServletContextName() + "\">&nbsp;&nbsp;" +
                 nc.getServletContext().getServletContextName() +" ("+ nc.getServletContext().getServerInfo() +")</a></td>\n");
@@ -192,12 +192,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         if(haveErrors)
         {
-            writer.write("	<td><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+            writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
             writer.write("	<td width=\"100%\">\n");
 
             writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
             writer.write("			<tr>\n");
-            writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+            writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\"><span class=\"error-alert-heading\">&nbsp;Errors&nbsp;</span></a></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\">&nbsp;&nbsp;" +
                     errorsCount +"</a></td>\n");
@@ -210,13 +210,13 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("			<tr>\n");
         writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" +
-                theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+                theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Action&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/console?_logout=yes\">&nbsp;&nbsp;Logout&nbsp;</a></td>\n");
         writer.write("			</tr>\n");
         writer.write("		</table>\n");
         writer.write("	</td>\n");
-        writer.write("	<td><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+        writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
         writer.write("</tr>\n");
         writer.write("</table>\n");
 
@@ -234,8 +234,8 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         writer.write("<table class=\"masthead\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("	<tr>\n");
-        writer.write("	<td class=\"masthead-left\" align=\"left\" ><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"65\" width=\"351\" border=\"0\"></td>\n");
-        writer.write("	<td class=\"masthead-top-right\" align=\"right\" ><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"65\" width=\"244\" border=\"0\"></td>\n");
+        writer.write("	<td class=\"masthead-left\" align=\"left\" ><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"65\" width=\"351\" border=\"0\"></td>\n");
+        writer.write("	<td class=\"masthead-top-right\" align=\"right\" ><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"65\" width=\"244\" border=\"0\"></td>\n");
         writer.write("  </tr>\n");
         writer.write("</table>\n");
 
@@ -269,7 +269,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("			</table>\n");
         writer.write("		</td>\n");
         writer.write("		<td class=\"masthead-right\" align=\"right\" valign=\"bottom\" width=\"100%\">" +
-                "<img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" width=\"100%\" height=\"18\"></td>\n");
+                "<img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" width=\"100%\" height=\"18\"></td>\n");
         writer.write("	</tr>\n");
         writer.write("</table>\n");
     }
@@ -340,10 +340,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                 {
                     writer.write("  <tr>\n");
                     writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\">" +
-                            "<img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
-                    writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" " +
+                            "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
+                    writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" " +
                             "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
-                    writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
+                    writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                     writer.write("  </tr>\n");
                     writer.write("  <tr>\n");
                     writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\" height=\"100%\">\n");
@@ -355,10 +355,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             case 3:
                 writer.write("  <tr>\n");
                 writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\">" +
-                        "<img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
-                writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" " +
+                        "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
+                writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" " +
                         "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
-                writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
+                writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
                 writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\" height=\"100%\">\n");
@@ -369,10 +369,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             case 4:
                 writer.write("  <tr>\n");
                 writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\">" +
-                        "<img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
-                writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" " +
+                        "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
+                writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" " +
                         "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
-                writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
+                writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
                 writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\" height=\"100%\">\n");
@@ -382,7 +382,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
             default:
                 writer.write("  <tr>\n");
-                writer.write("      <td colspan=\"3\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" " +
+                writer.write("      <td colspan=\"3\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" " +
                         "alt=\"\" width=\"100%\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
@@ -432,7 +432,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         NavigationPage page = nc.getActivePage();
         String heading = page != null ? nc.getPageHeading() : "No active page";
 
-        String pageHeadingImageUrl = theme.getImageResourceUrl("/page-icons" + (page != null ? (page.getQualifiedName() + "/page-heading.gif") : "/page-heading.gif"));
+        String pageHeadingImageUrl = theme.getResourceUrl("/images/page-icons" + (page != null ? (page.getQualifiedName() + "/page-heading.gif") : "/page-heading.gif"));
 
         writer.write("<!-- Page Header Begins -->\n");
         writer.write("<table class=\"page-heading-table\" height=\"36\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
@@ -534,7 +534,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         buffer.append("            <table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n");
         buffer.append("                <tr>\n");
         buffer.append("                <td class=\"menu-level-1-start\" valign=\"bottom\" nowrap><img src=\"" +
-                theme.getImageResourceUrl("/login/spacer.gif") + "\" width=\"10\" height=\"10\"></td>");
+                theme.getResourceUrl("/images/login/spacer.gif") + "\" width=\"10\" height=\"10\"></td>");
         for (int i = 0; i < tabElements.size(); i++)
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
@@ -704,7 +704,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         }
         writer.append("          <tr height=\"100%\">\n");
         writer.append("              <td class=\"menu-table-end\" align=\"left\" valign=\"top\" height=\"100%\">" +
-                "<img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" height=\"100%\" width=\"100%\"></td>\n");
+                "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" height=\"100%\" width=\"100%\"></td>\n");
         writer.append("          </tr>\n");
         writer.append("      </table>\n");
         writer.append("      <!-- Level 3 Ends -->\n");

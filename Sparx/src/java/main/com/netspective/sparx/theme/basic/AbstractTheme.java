@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.15 2003-08-22 03:33:44 shahid.shah Exp $
+ * $Id: AbstractTheme.java,v 1.16 2003-08-22 14:34:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 
 import org.apache.commons.logging.LogFactory;
@@ -58,6 +60,7 @@ import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.form.DialogSkin;
 import com.netspective.sparx.util.WebResourceLocator;
 import com.netspective.sparx.util.WebResource;
+import com.netspective.commons.text.TextUtils;
 
 public class AbstractTheme implements Theme
 {
@@ -76,6 +79,7 @@ public class AbstractTheme implements Theme
     private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel-output", "panel/output", false);
     private StandardDialogSkin defaultDialogSkin = new StandardDialogSkin(this, "panel-input", "panel/input", false);
     private LoginDialogSkin defaulLoginDialogSkin = new LoginDialogSkin(this, "panel-input", "panel/input", false);
+    private String[] inheritResourcesFromThemes = new String[0];
 
     public AbstractTheme()
     {
@@ -94,14 +98,19 @@ public class AbstractTheme implements Theme
         this.resourceLocator = locator;
     }
 
-    public String getResourceUrl(final String relativeUrl)
+    protected String getResourceUrlWithThemePrefix(final String themeName, final String relativeUrl)
     {
         StringBuffer themeRelativeUrlBuf = new StringBuffer("theme/");
-        themeRelativeUrlBuf.append(name);
+        themeRelativeUrlBuf.append(themeName);
         if(! relativeUrl.startsWith("/"))
             themeRelativeUrlBuf.append('/');
         themeRelativeUrlBuf.append(relativeUrl);
-        String themeRelativeUrl = themeRelativeUrlBuf.toString();
+        return themeRelativeUrlBuf.toString();
+    }
+
+    public String getResourceUrl(final String relativeUrl)
+    {
+        String themeRelativeUrl = getResourceUrlWithThemePrefix(name, relativeUrl);
 
         if(resourceLocator == null)
         {
@@ -114,6 +123,13 @@ public class AbstractTheme implements Theme
             WebResource resource = resourceLocator.findWebResource(themeRelativeUrl);
             if(resource != null)
                 return resource.getUrl();
+
+            for(int i = 0; i < inheritResourcesFromThemes.length; i++)
+            {
+                resource = resourceLocator.findWebResource(getResourceUrlWithThemePrefix(inheritResourcesFromThemes[i], relativeUrl));
+                if(resource != null)
+                    return resource.getUrl();
+            }
         }
         catch (IOException e)
         {
@@ -125,13 +141,15 @@ public class AbstractTheme implements Theme
         return themeRelativeUrl;
     }
 
-    public String getImageResourceUrl(final String relativeUrl)
+    public void setInheritResourcesFromThemes(String delimitedThemeNames)
     {
-        StringBuffer imageRelativeUrlBuf = new StringBuffer("/images");
-        if(! relativeUrl.startsWith("/"))
-            imageRelativeUrlBuf.append('/');
-        imageRelativeUrlBuf.append(relativeUrl);
-        return getResourceUrl(imageRelativeUrlBuf.toString());
+        List themeNamesList = new ArrayList();
+        String[] themeNames = TextUtils.split(delimitedThemeNames, ",", true);
+        for(int i = 0; i < themeNames.length; i++)
+            themeNamesList.add(themeNames[i]);
+        for(int i = 0; i < inheritResourcesFromThemes.length; i++)
+            themeNamesList.add(inheritResourcesFromThemes[i]);
+        inheritResourcesFromThemes = (String[]) themeNamesList.toArray(new String[themeNamesList.size()]);
     }
 
     protected NavigationSkin constructDefaultNavigationSkin()

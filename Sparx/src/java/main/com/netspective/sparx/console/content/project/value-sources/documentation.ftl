@@ -65,7 +65,7 @@
             </#list>
             </@reportTable>
             <div class=textbox>
-            <img src="${vc.getThemeResourcesRootUrl(vc.activeTheme) + "/images/java-class.gif"}"> Handler: <code>${valueSourceClass.name}</code>
+            <img src="${vc.activeTheme.getResourceUrl('/images/java-class.gif')}"> Handler: <code>${valueSourceClass.name}</code>
             </div>
         </@panel>
     <#else>

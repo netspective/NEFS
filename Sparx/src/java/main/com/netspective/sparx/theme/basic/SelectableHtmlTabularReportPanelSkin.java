@@ -20,7 +20,7 @@ import java.io.Writer;
 
 /**
  * @author aye
- * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.2 2003-08-22 03:33:44 shahid.shah Exp $
+ * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.3 2003-08-22 14:34:08 shahid.shah Exp $
  */
 public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularReportPanelSkin
 {
@@ -52,8 +52,8 @@ public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularRepor
                 Theme theme = rc.getActiveTheme();
                 Command command = reportAction.getCommand(vc);
                 if (frameActions.size() > 0)
-                    writer.write("            <td bgcolor=\"white\"><img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
-                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");
+                    writer.write("            <td bgcolor=\"white\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");
                 if (command instanceof RedirectCommand)
                 {
                      writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleLoginDialogSkin.java,v 1.5 2003-08-22 03:33:44 shahid.shah Exp $
+ * $Id: ConsoleLoginDialogSkin.java,v 1.6 2003-08-22 14:34:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -86,7 +86,7 @@ public class ConsoleLoginDialogSkin extends LoginDialogSkin
         writer.write("                                <table border=\"0\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
         writer.write("                                    <tr>");
         writer.write("                                        <td align=\"left\" valign=\"bottom\">" +
-                "<img src=\"" + theme.getImageResourceUrl("/login/"+ getLoginImage()) +"\" " +
+                "<img src=\"" + theme.getResourceUrl("/images/login/"+ getLoginImage()) +"\" " +
                 "alt=\"\" border=\"0\"></td>");
         writer.write("                                        <td align=\"left\" valign=\"middle\">");
 
@@ -114,9 +114,9 @@ public class ConsoleLoginDialogSkin extends LoginDialogSkin
         writer.write("                        </tr>");
         writer.write("<table class=\"panel-input-login\" border=\"0\" width=\"692\" height=\"85\" cellspacing=\"0\" cellpadding=\"17\">");
 		writer.write("	<tr>");
-		writer.write("	    <td align=\"center\" valign=\"middle\"><img src=\"" + theme.getImageResourceUrl("/login/box-logo-sparx-76px.gif") + "\" alt=\"\" border=\"0\"></td>\n");
-        writer.write("	    <td align=\"center\"><img src=\"" + theme.getImageResourceUrl("/login/box-logo-axiom-76px.gif") + "\" alt=\"\" border=\"0\"></td>\n");
-        writer.write("	    <td align=\"center\"><img src=\"" + theme.getImageResourceUrl("/login/box-logo-commons-76px.gif") + "\" alt=\"\" border=\"0\"></td>\n");
+		writer.write("	    <td align=\"center\" valign=\"middle\"><img src=\"" + theme.getResourceUrl("/images/login/box-logo-sparx-76px.gif") + "\" alt=\"\" border=\"0\"></td>\n");
+        writer.write("	    <td align=\"center\"><img src=\"" + theme.getResourceUrl("/images/login/box-logo-axiom-76px.gif") + "\" alt=\"\" border=\"0\"></td>\n");
+        writer.write("	    <td align=\"center\"><img src=\"" + theme.getResourceUrl("/images/login/box-logo-commons-76px.gif") + "\" alt=\"\" border=\"0\"></td>\n");
 		writer.write("	</tr>  ");
 		writer.write("</table> ");
         writer.write("                    </table>");
