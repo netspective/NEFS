@@ -380,6 +380,10 @@
 
         <xdm:include file="play-page.xml"/>
 
+        <page type="top-level" name="profile" caption="Profile" hidden="yes">
+            <body source="profile.ftl"/>
+        </page>
+
         <page type="top-level" name="sitemap" caption="Sitemap">
             <body source="sitemap.ftl"/>
         </page>
@@ -392,6 +396,16 @@
     ** SAMPLE SECURITY DECLARATIONS                                            **
     **********************************************************************
     -->
+
+    <!-- simulated login so that the sampler can use roles/permissions/auth-user -->
+    <login-manager name="app" default="yes">
+        <login-authenticator class="com.netspective.sparx.security.simulate.SimulatedLoginAuthenticator"/>
+        <login-dialog class="com.netspective.sparx.security.simulate.SimulatedLoginDialog">
+            <user-id>sampler</user-id>
+            <password>letmein</password>
+            <user-roles>/acl/role/restricted-user</user-roles>
+        </login-dialog>
+    </login-manager>
 
     <access-control-list name="acl">
         <permission name="app">
@@ -416,6 +430,5 @@
             </role>
         </role>
     </access-control-list>
-
 
 </project>
