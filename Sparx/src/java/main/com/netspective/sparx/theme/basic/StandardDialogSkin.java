@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.18 2003-08-18 05:32:54 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.19 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -84,7 +84,6 @@ import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.commons.validate.ValidationContext;
 
 public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
@@ -562,7 +561,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
         String imageUrl = popup.getImageSrc().getTextValue(dc);
         if(imageUrl == null)
-            imageUrl = dc.getNavigationContext().getThemeResourcesRootUrl(getTheme()) + "/images/popup.gif";
+            imageUrl = getTheme().getImageResourceUrl("/popup.gif");
 
         return "&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression + ";return false;\"><img border='0' src='" + imageUrl + "'></a>&nbsp;";
 
@@ -848,9 +847,6 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             }
         }
 
-        String resourcesUrl = dc.getNavigationContext().getThemeResourcesRootUrl(getTheme());
-        String sharedScriptsUrl = resourcesUrl + "/scripts";
-
         StringBuffer errorMsgsHtml = new StringBuffer();
         if(fieldErrorMsgs.size() > 0)
         {
@@ -869,9 +865,11 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             DialogIncludeJavascriptFile jsFileObj = (DialogIncludeJavascriptFile) fileList.get(i);
             includeJSList[i] = jsFileObj.getHref().getTextValue(dc);
         }
+
+        Theme theme = getTheme();
         if(includePreStyleSheets != null)
             writer.write(includePreStyleSheets);
-        writer.write("<link rel='stylesheet' href='" + resourcesUrl + "/css/dialog.css'>\n");
+        writer.write("<link rel='stylesheet' href='" + theme.getResourceUrl("/css/dialog.css") + "'>\n");
         if(includePostStyleSheets != null)
             writer.write(includePostStyleSheets);
         if(prependPreScript != null)
@@ -885,15 +883,12 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(includePreScripts != null)
             writer.write(includePreScripts);
 
-        writer.write("<script src='" + sharedScriptsUrl + "/popup.js' language='JavaScript1.1'></script>\n");
-        writer.write("<script src='" + sharedScriptsUrl + "/dialog.js' language='JavaScript1.2'></script>\n");
-
         writer.write(
                 "<script language='JavaScript'>\n" +
                  "<!--\n" +
                 "	if(typeof dialogLibraryLoaded == 'undefined')\n" +
                 "	{\n" +
-                "		alert('ERROR: " + sharedScriptsUrl + "/dialog.js could not be loaded');\n" +
+                "		alert('ERROR: dialog.js was not loaded.');\n" +
                 "	}\n" +
                 "-->\n" +
                 "</script>\n");

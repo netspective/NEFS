@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.19 2003-08-19 13:27:48 shahid.shah Exp $
+ * $Id: Project.java,v 1.20 2003-08-22 03:33:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -189,6 +189,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private DialogsPackage activeDialogsNameSpace;
     private AntProjects antProjects = new AntProjects();
     private HttpLoginManagers loginManagers = new HttpLoginManagers();
+    private Themes themes = new Themes();
 
     public Project()
     {
@@ -277,9 +278,14 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         return new AbstractTheme();
     }
 
+    public Themes getThemes()
+    {
+        return themes;
+    }
+
     public void addRegisterTheme(Theme theme)
     {
-        Themes.getInstance().registerTheme(theme);
+        getThemes().registerTheme(theme);
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */

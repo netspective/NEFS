@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.25 2003-08-19 18:04:01 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.26 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -67,7 +67,6 @@ import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.io.InheritableFileResources;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
@@ -100,12 +99,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         this.sidebarWidth = sidebarWidth;
     }
 
-    public String getInheritableImageUrl(NavigationContext nc, String pageId, String imageId)
-    {
-        InheritableFileResources resources = getTheme().getResources(nc);
-        return (String) resources.getRelativeFileNamesByRelativeResourceName().get(pageId + InheritableFileResources.PATH_SEPARATOR + imageId);
-    }
-
     public NavigationContext createContext(javax.servlet.jsp.PageContext jspPageContext, NavigationTree tree, String navTreeId)
     {
         return new NavigationContext(tree,
@@ -130,23 +123,20 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("<head>\n");
         writer.write("<title>" + (activePage != null ? nc.getPageTitle() : "") + "</title>\n");
 
-        String resourcesUrl = nc.getThemeResourcesRootUrl(getTheme());
-        String cssRootUrl = resourcesUrl + "/css";
-        String scriptsRootUrl = resourcesUrl + "/scripts";
-        String imagesRootUrl = resourcesUrl + "/images";
+        Theme theme = getTheme();
 
-        writer.write("  <LINK REL='SHORTCUT ICON' HREF='"+ imagesRootUrl +"/favicon.ico'>\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/general.css\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/navigation.css\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-input.css\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-output.css\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-dialog.css\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-report.css\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-text.css\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/syntax-highlight.css\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + resourcesUrl + "/calendar-0.9.2/calendar-win2k-1.css\" type=\"text/css\">\n");
-        writer.write("  <script src=\"" + scriptsRootUrl + "/panel.js\" language=\"JavaScript1.1\"></script>\n");
-        writer.write("  <script src=\"" + scriptsRootUrl + "/dialog.js\" language=\"JavaScript1.1\"></script>\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getImageResourceUrl("/favicon.ico") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/general.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/navigation.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-input.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-output.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-dialog.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-report.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-text.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/syntax-highlight.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/calendar-0.9.2/calendar-win2k-1.css") + "\" type=\"text/css\">\n");
+        writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/panel.js") + "\" language=\"JavaScript1.1\"></script>\n");
+        writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/dialog.js") + "\" language=\"JavaScript1.2\"></script>\n");
 
         writer.write("</head>\n");
     }
@@ -167,17 +157,16 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         if(authUser != null && authUser.isRemembered())
             personName += " (remembered)";
 
-        String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
+        Theme theme = getTheme();
 
         writer.write("<!-- Active User Begins -->\n");
         writer.write("<table class=\"active-user-table\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("<tr>\n");
-        writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"10\" border=\"0\"></td>\n");
+        writer.write("	<td><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"10\" border=\"0\"></td>\n");
         writer.write("	<td valign=\"middle\" nowrap >\n");
         writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("			<tr>\n");
-        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath +
-                "/spacer.gif\" alt=\"\" " +
+        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" " +
                 "height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;User&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/person/summary.jsp?person_id=" + personId + "\">&nbsp;&nbsp;" +
@@ -189,12 +178,11 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         int errorsCount = nc.getProjectComponent().getErrors().size();
         boolean haveErrors = errorsCount > 0;
 
-        writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+        writer.write("	<td><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
         writer.write(haveErrors ? "	<td>\n" : "	<td width=100%>\n");
         writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("			<tr>\n");
-        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath +
-                "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getImageResourceUrl("spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;App&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getServletContext().getServletContextName() + "\">&nbsp;&nbsp;" +
                 nc.getServletContext().getServletContextName() +" ("+ nc.getServletContext().getServerInfo() +")</a></td>\n");
@@ -204,13 +192,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         if(haveErrors)
         {
-            writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+            writer.write("	<td><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
             writer.write("	<td width=\"100%\">\n");
 
             writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
             writer.write("			<tr>\n");
-            writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + themeImagesPath +
-                    "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+            writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\"><span class=\"error-alert-heading\">&nbsp;Errors&nbsp;</span></a></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\">&nbsp;&nbsp;" +
                     errorsCount +"</a></td>\n");
@@ -223,13 +210,13 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("			<tr>\n");
         writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" +
-                themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+                theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Action&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/console?_logout=yes\">&nbsp;&nbsp;Logout&nbsp;</a></td>\n");
         writer.write("			</tr>\n");
         writer.write("		</table>\n");
         writer.write("	</td>\n");
-        writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+        writer.write("	<td><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
         writer.write("</tr>\n");
         writer.write("</table>\n");
 
@@ -241,14 +228,14 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("<body leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\" topmargin=\"0\" onload=\"initializeBody()\">\n");
 
         renderAuthenticatedUser(writer, nc);
-        String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
+        Theme theme = getTheme();
 
         writer.write("<!-- Master Header Begins -->\n");
 
         writer.write("<table class=\"masthead\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("	<tr>\n");
-        writer.write("	<td class=\"masthead-left\" align=\"left\" ><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"65\" width=\"351\" border=\"0\"></td>\n");
-        writer.write("	<td class=\"masthead-top-right\" align=\"right\" ><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"65\" width=\"244\" border=\"0\"></td>\n");
+        writer.write("	<td class=\"masthead-left\" align=\"left\" ><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"65\" width=\"351\" border=\"0\"></td>\n");
+        writer.write("	<td class=\"masthead-top-right\" align=\"right\" ><img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" alt=\"\" height=\"65\" width=\"244\" border=\"0\"></td>\n");
         writer.write("  </tr>\n");
         writer.write("</table>\n");
 
@@ -269,7 +256,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     public void renderPageMenusLevelOne(Writer writer, NavigationContext nc) throws IOException
     {
-        String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
+        Theme theme = getTheme();
 
         writer.write("<!-- Level 1 Begins -->\n");
         NavigationPath activePath = nc.getActivePage();
@@ -282,7 +269,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("			</table>\n");
         writer.write("		</td>\n");
         writer.write("		<td class=\"masthead-right\" align=\"right\" valign=\"bottom\" width=\"100%\">" +
-                "<img src=\"" + themeImagesPath + "/spacer.gif\" width=\"100%\" height=\"18\"></td>\n");
+                "<img src=\"" + theme.getImageResourceUrl("/spacer.gif") + "\" width=\"100%\" height=\"18\"></td>\n");
         writer.write("	</tr>\n");
         writer.write("</table>\n");
     }
@@ -344,7 +331,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         if (activePath == null)
             return;
 
-        String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
+        Theme theme = getTheme();
         switch (activePath.getLevel())
         {
             case 2:
@@ -353,11 +340,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                 {
                     writer.write("  <tr>\n");
                     writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\">" +
-                            "<img src=\"" + themeImagesPath + "/spacer-big.gif\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
-                    writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + themeImagesPath + "/spacer-big.gif\" " +
+                            "<img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
+                    writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" " +
                             "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
-                    writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + themeImagesPath +
-                            "/spacer-big.gif\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
+                    writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                     writer.write("  </tr>\n");
                     writer.write("  <tr>\n");
                     writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\" height=\"100%\">\n");
@@ -369,11 +355,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             case 3:
                 writer.write("  <tr>\n");
                 writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\">" +
-                        "<img src=\"" + themeImagesPath + "/spacer-big.gif\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
-                writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + themeImagesPath + "/spacer-big.gif\" " +
+                        "<img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
+                writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" " +
                         "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
-                writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + themeImagesPath +
-                        "/spacer-big.gif\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
+                writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
                 writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\" height=\"100%\">\n");
@@ -384,11 +369,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             case 4:
                 writer.write("  <tr>\n");
                 writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\">" +
-                        "<img src=\"" + themeImagesPath + "/spacer-big.gif\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
-                writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + themeImagesPath + "/spacer-big.gif\" " +
+                        "<img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
+                writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" " +
                         "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
-                writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + themeImagesPath +
-                        "/spacer-big.gif\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
+                writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
                 writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\" height=\"100%\">\n");
@@ -398,7 +382,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
             default:
                 writer.write("  <tr>\n");
-                writer.write("      <td colspan=\"3\"><img src=\"" + themeImagesPath + "/spacer-big.gif\" " +
+                writer.write("      <td colspan=\"3\"><img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" " +
                         "alt=\"\" width=\"100%\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
@@ -443,12 +427,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     private void renderPageHeading(Writer writer, NavigationContext nc) throws IOException
     {
-        String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
+        Theme theme = getTheme();
 
         NavigationPage page = nc.getActivePage();
         String heading = page != null ? nc.getPageHeading() : "No active page";
 
-        String actionIcon = page != null ? getInheritableImageUrl(nc, page.getQualifiedName(), HEADING_ACTION_IMAGE) : null;
+        String pageHeadingImageUrl = theme.getImageResourceUrl("/page-icons" + (page != null ? (page.getQualifiedName() + "/page-heading.gif") : "/page-heading.gif"));
 
         writer.write("<!-- Page Header Begins -->\n");
         writer.write("<table class=\"page-heading-table\" height=\"36\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
@@ -456,13 +440,8 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("        <td align=\"left\" valign=\"middle\">\n");
         writer.write("            <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("                <tr>\n");
-        if (actionIcon != null && actionIcon.length() > 0)
-            writer.write("                    <td align=\"right\" class=\"page-heading-icon\"><img class=\"page-icon\" src=\"" +
-                    nc.getRootUrl() + actionIcon + "\" alt=\"\" height=\"22\" width=\"22\" border=\"0\"></td>\n");
-        else
-            writer.write("                    <td align=\"right\" class=\"page-heading-icon\"><img class=\"page-icon\" src=\"" +
-                    themeImagesPath + "/page-icons/home.gif\" alt=\"\" height=\"22\" width=\"22\" border=\"0\"></td>\n");
-
+        writer.write("                    <td align=\"right\" class=\"page-heading-icon\"><img class=\"page-icon\" src=\"" +
+                pageHeadingImageUrl + "\" alt=\"\" height=\"22\" width=\"22\" border=\"0\"></td>\n");
         writer.write("                    <td class=\"page-heading\">" + heading + "</td>\n");
         writer.write("                </tr>\n");
         writer.write("            </table>\n");
@@ -544,7 +523,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     protected String generateLevelOneHtml(NavigationPath currentNavTree, NavigationContext nc) throws IOException
     {
-        String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
+        Theme theme = getTheme();
         StringBuffer buffer = new StringBuffer();
         List tabElements = currentNavTree.getSibilingList();
 
@@ -555,7 +534,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         buffer.append("            <table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n");
         buffer.append("                <tr>\n");
         buffer.append("                <td class=\"menu-level-1-start\" valign=\"bottom\" nowrap><img src=\"" +
-                themeImagesPath + "/login/spacer.gif\" width=\"10\" height=\"10\"></td>");
+                theme.getImageResourceUrl("/login/spacer.gif") + "\" width=\"10\" height=\"10\"></td>");
         for (int i = 0; i < tabElements.size(); i++)
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
@@ -678,7 +657,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     protected String generateLevelThreeHtml(NavigationPath currentNavTree, NavigationContext nc) throws IOException
     {
-        String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
+        Theme theme = getTheme();
 
         StringBuffer writer = new StringBuffer();
         List sideBarElements = currentNavTree.getSibilingList();
@@ -725,7 +704,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         }
         writer.append("          <tr height=\"100%\">\n");
         writer.append("              <td class=\"menu-table-end\" align=\"left\" valign=\"top\" height=\"100%\">" +
-                "<img src=\"" + themeImagesPath + "/spacer-big.gif\" height=\"100%\" width=\"100%\"></td>\n");
+                "<img src=\"" + theme.getImageResourceUrl("/spacer-big.gif") + "\" height=\"100%\" width=\"100%\"></td>\n");
         writer.append("          </tr>\n");
         writer.append("      </table>\n");
         writer.append("      <!-- Level 3 Ends -->\n");

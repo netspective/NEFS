@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.43 2003-08-20 04:03:37 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.44 2003-08-22 03:33:43 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -17,7 +17,7 @@
     <register-value-source class="com.netspective.sparx.value.source.AuthenticatedUserValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.EncryptParameterValueSource"/>
 
-    <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/slate">
+    <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme">
         <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"
             panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output" />
         <report-skin class="com.netspective.sparx.theme.basic.RecordEditorReportSkin" name="record-editor"

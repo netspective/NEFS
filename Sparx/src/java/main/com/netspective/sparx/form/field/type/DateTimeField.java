@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.7 2003-07-09 02:12:50 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.8 2003-08-22 03:33:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -73,6 +73,7 @@ import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValidations;
+import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.exception.ValueException;
@@ -502,16 +503,14 @@ public class DateTimeField extends TextField
             return;
         if (getDataType().getValueIndex() != DataType.TIME_ONLY)
         {
-            String resourcesRootUrl = dc.getNavigationContext().getThemeResourcesRootUrl(dc.getSkin().getTheme());
-            String calendarRootUrl = resourcesRootUrl + "/calendar-0.9.2";
-
-            writer.write("<script src='" + calendarRootUrl + "/calendar.js'></script>\n");
-            writer.write("<script src='" + calendarRootUrl + "/lang/calendar-en.js'></script>\n");
-            writer.write("<script src='" + resourcesRootUrl + "/scripts/calendar-helper.js'></script>\n");
+            Theme theme = dc.getSkin().getTheme();
+            writer.write("<script src='" + theme.getResourceUrl("/calendar-0.9.2/calendar.js") + "'></script>\n");
+            writer.write("<script src='" + theme.getResourceUrl("/calendar-0.9.2/lang/calendar-en.js") + "'></script>\n");
+            writer.write("<script src='" + theme.getResourceUrl("/calendar-0.9.2/scripts/calendar-helper.js") + "'></script>\n");
 
             writer.write(
                     "<a href='#' onclick='javascript:showCalendar(\"" + getQualifiedName() + "\", \""+ getClientCalendarFormat() +"\")'>" +
-                    "<img src='" + resourcesRootUrl + "/images/calendar.gif' title='Select from Calendar' border=0></a>");
+                    "<img src='" + theme.getImageResourceUrl("/calendar.gif") + "' title='Select from Calendar' border=0></a>");
         }
     }
 }

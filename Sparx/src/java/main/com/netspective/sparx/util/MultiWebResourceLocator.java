@@ -39,69 +39,59 @@
  */
 
 /**
- * $Id: Themes.java,v 1.5 2003-08-22 03:33:43 shahid.shah Exp $
+ * $Id: MultiWebResourceLocator.java,v 1.1 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.util;
 
-import java.util.Map;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
+import java.io.IOException;
 
-import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class Themes
+public class MultiWebResourceLocator implements WebResourceLocator
 {
-    protected static final Log log = LogFactory.getLog(Themes.class);
+    private static final Log log = LogFactory.getLog(MultiWebResourceLocator.class);
+    private final WebResourceLocator[] locators;
+    private final Map cache = Collections.synchronizedMap(new HashMap());
+    private final boolean cacheLocations;
 
-    private Map themesByName = new HashMap();
-    private Theme defaultTheme;
-
-    public Themes()
+    public MultiWebResourceLocator(WebResourceLocator[] locators, final boolean cacheLocations)
     {
+        this.locators = locators;
+        this.cacheLocations = cacheLocations;
     }
 
-    public void registerTheme(Theme theme)
+    public WebResource findWebResource(String name) throws IOException
     {
-        themesByName.put(theme.getName(), theme);
-        if(log.isTraceEnabled())
-            log.trace("Registered theme "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
+        final boolean logging = log.isDebugEnabled();
 
-        if(theme.isDefault())
+        if(cacheLocations)
         {
-            defaultTheme = theme;
-            if(log.isTraceEnabled())
-                log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
-        }
-    }
-
-    public Map getThemesByName()
-    {
-        return themesByName;
-    }
-
-    public Theme getTheme(String name)
-    {
-        Theme result = (Theme) themesByName.get(name);
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find theme '"+ name +"'. Available: " + themesByName);
-            return null;
+            WebResource resource = (WebResource) cache.get(name);
+            if(resource != null)
+            {
+                if(logging) log.debug("MultiWebResourceLocator cache hit for " + resource);
+                return resource;
+            }
         }
 
-        return result;
-    }
-
-    public Theme getDefaultTheme()
-    {
-        Theme result = defaultTheme;
-        if(result == null && log.isDebugEnabled())
+        for (int i = 0; i < locators.length; ++i)
         {
-            log.debug("No theme defined using the 'default' attribute was found. Available: " + themesByName);
-            return null;
+            WebResourceLocator locator = locators[i];
+            if(logging) log.debug("MultiWebResourceLocator checking '"+ name +"' in locator " + locator);
+            WebResource resource = locator.findWebResource(name);
+            if (resource != null)
+            {
+                if(logging) log.debug("MultiWebResourceLocator found '"+ name +"' in locator " + locator);
+                if(cacheLocations) cache.put(name, locator);
+                return resource;
+            }
         }
 
-        return result;
+        return null;
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialogSkin.java,v 1.4 2003-08-10 17:15:19 shahid.shah Exp $
+ * $Id: LoginDialogSkin.java,v 1.5 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -73,7 +73,7 @@ public class LoginDialogSkin extends StandardDialogSkin
 
     public void renderContentsHtml(Writer writer, DialogContext dc, String dialogName, String actionURL, String encType, int dlgTableColSpan, StringBuffer errorMsgsHtml, StringBuffer fieldsHtml) throws IOException
     {
-        String themeImagesRootUrl = dc.getNavigationContext().getThemeImagesRootUrl(dc.getActiveTheme());
+        Theme theme = getTheme();
         ValueSource heading = dc.getDialog().getFrame().getHeading();
 
         writer.write("        <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
@@ -92,7 +92,7 @@ public class LoginDialogSkin extends StandardDialogSkin
         writer.write("                                <table border=\"0\" cellspacing=\"0\" cellpadding=\"15\">");
         writer.write("                                    <tr>");
         writer.write("                                        <td align=\"center\" valign=\"middle\">" +
-                "<img src=\"" + themeImagesRootUrl + "/login/"+ getLoginImage() +"\" " +
+                "<img src=\"" + theme.getImageResourceUrl("/login/"+ getLoginImage()) + "\" " +
                 "alt=\"\" border=\"0\"></td>");
         writer.write("                                        <td align=\"left\" valign=\"middle\">");
 

@@ -39,69 +39,87 @@
  */
 
 /**
- * $Id: Themes.java,v 1.5 2003-08-22 03:33:43 shahid.shah Exp $
+ * $Id: InheritableFileWebResourceLocator.java,v 1.1 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Collections;
 import java.util.HashMap;
 
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
-public class Themes
+import com.netspective.commons.text.TextUtils;
+
+/**
+ * A {@link WebResourceLocator} that uses files in a specified directory as the
+ * source of resource.
+ */
+public class InheritableFileWebResourceLocator extends FileWebResourceLocator
 {
-    protected static final Log log = LogFactory.getLog(Themes.class);
+    private static final Log log = LogFactory.getLog(InheritableFileWebResourceLocator.class);
+    private final Map cache = Collections.synchronizedMap(new HashMap());
+    private final boolean cacheLocations;
 
-    private Map themesByName = new HashMap();
-    private Theme defaultTheme;
-
-    public Themes()
+    public InheritableFileWebResourceLocator(final String rootUrl, final File baseDir, final boolean cacheLocations) throws IOException
     {
+        super(rootUrl, baseDir, cacheLocations);
+        this.cacheLocations = cacheLocations;
     }
 
-    public void registerTheme(Theme theme)
+    public WebResource findWebResource(final String name) throws IOException
     {
-        themesByName.put(theme.getName(), theme);
-        if(log.isTraceEnabled())
-            log.trace("Registered theme "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
+        final boolean logging = log.isDebugEnabled();
+        WebResource result = null;
 
-        if(theme.isDefault())
+        if(cacheLocations)
         {
-            defaultTheme = theme;
-            if(log.isTraceEnabled())
-                log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
-        }
-    }
-
-    public Map getThemesByName()
-    {
-        return themesByName;
-    }
-
-    public Theme getTheme(String name)
-    {
-        Theme result = (Theme) themesByName.get(name);
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find theme '"+ name +"'. Available: " + themesByName);
-            return null;
+            result = (WebResource) cache.get(name);
+            if(result != null)
+            {
+                if(logging) log.debug("InheritableFileResourceLocator cache hit for " + result);
+                return result;
+            }
         }
 
-        return result;
-    }
-
-    public Theme getDefaultTheme()
-    {
-        Theme result = defaultTheme;
-        if(result == null && log.isDebugEnabled())
+        result = super.findWebResource(name);
+        if(result != null)
         {
-            log.debug("No theme defined using the 'default' attribute was found. Available: " + themesByName);
-            return null;
+            cache.put(name, result);
+            return result;
         }
 
-        return result;
+        String[] pathItems = TextUtils.split(SEP_IS_SLASH ? name : name.replace(File.separatorChar, '/'), "/", false);
+        String justName = pathItems[pathItems.length-1];
+
+        // get just the name then start looking "up" the parents until we get to the base directory
+        // e.g. if pathItems is /a/b/c/d.gif then we start searching at /a/b/d.gif, then /a/d.gif, then /d.gif, etc
+        int pathItemToSearch = pathItems.length - 2;
+        while(pathItemToSearch >= 0)
+        {
+            StringBuffer buildPath = new StringBuffer();
+            for(int i = 0; i < pathItemToSearch; i++)
+            {
+                buildPath.append(pathItems[i]);
+                buildPath.append('/');
+            }
+            buildPath.append(justName);
+
+            result = super.findWebResource(buildPath.toString());
+            if(result != null)
+            {
+                // even if we inherited the file we look for it in the cache as the original name
+                if(cacheLocations) cache.put(name, result);
+                return result;
+            }
+
+            pathItemToSearch--;
+        }
+
+        return null;
     }
 }

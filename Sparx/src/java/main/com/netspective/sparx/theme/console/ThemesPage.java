@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ThemesPage.java,v 1.1 2003-03-24 13:28:02 shahid.shah Exp $
+ * $Id: ThemesPage.java,v 1.2 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -54,7 +54,6 @@ import javax.servlet.ServletException;
 
 import com.netspective.sparx.console.ConsoleServletPage;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.theme.Themes;
 import com.netspective.sparx.theme.Theme;
 
 public class ThemesPage extends ConsoleServletPage
@@ -66,7 +65,7 @@ public class ThemesPage extends ConsoleServletPage
 
         // check to see if all the themes are loaded
         List children = getChildrenList();
-        Map themes = Themes.getInstance().getThemesByName();
+        Map themes = nc.getProject().getThemes().getThemesByName();
 
         if(children.size() != themes.size())
             syncronize(nc);
@@ -78,7 +77,7 @@ public class ThemesPage extends ConsoleServletPage
     {
         removeAllChildren();
 
-        Map themes = Themes.getInstance().getThemesByName();
+        Map themes = nc.getProject().getThemes().getThemesByName();
         for(Iterator i = themes.entrySet().iterator(); i.hasNext(); )
         {
             Map.Entry entry = (Map.Entry) i.next();

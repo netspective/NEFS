@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.16 2003-07-14 04:10:56 aye.thu Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.17 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -49,7 +49,6 @@ import java.io.IOException;
 
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.*;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.command.CommandNotFoundException;
@@ -161,9 +160,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
         if(actions != null && actions.size() > 0)
         {
-            Theme theme = ((HtmlTabularReportValueContext) vc).getActiveTheme();
-            String imgPath = ((HtmlTabularReportValueContext) vc).getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
-
+            Theme theme = getTheme();
             int colCount = 0;
 
             // create a temporary string buffer for the HTML of the heading action items
@@ -172,7 +169,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
             {
                 if (i != 0)
                 {
-                    itemBuffer.append("            <td bgcolor=\"white\"><img src=\"" + imgPath + "/login/spacer.gif\" width=\"5\" height=\"5\"></td>");
+                    itemBuffer.append("            <td bgcolor=\"white\"><img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
                     colCount++;
                 }
                 HtmlPanelAction item = actions.get(i);
@@ -187,7 +184,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 }
                 else
                 {
-                    itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + imgPath + "/spacer.gif\" width=\"18\" height=\"19\"></td>");
+                    itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");
                     colCount++;
                 }
                 itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
@@ -211,8 +208,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         HtmlPanel panel = vc.getPanel();
         HtmlPanelFrame frame = panel.getFrame();
 
-        Theme theme = ((BasicDbHttpServletValueContext) vc).getActiveTheme();
-        String imgPath = ((BasicDbHttpServletValueContext) vc).getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
+        Theme theme = getTheme();
 
         writer.write("<table id=\""+ panel.getPanelIdentifier() +"_frame\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap ");
         if(flags.flagIsSet(Flags.FULL_WIDTH))
@@ -235,24 +231,24 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 {
                     if (vc.isMinimized())
                         writer.write("            <td id=\""+ panel.getPanelIdentifier() +"_action\" class=\""+ panelClassNamePrefix +"-frame-heading-action-expand\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('"+ panel.getPanelIdentifier() +"')\">" +
-                            "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
+                            "<!-- <img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
                     else
                         writer.write("            <td id=\""+ panel.getPanelIdentifier() +"_action\" class=\""+ panelClassNamePrefix +"-frame-heading-action-collapse\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('"+ panel.getPanelIdentifier() +"')\">" +
-                            "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
+                            "<!-- <img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
 
                     writer.write("<script>ALL_PANELS.getPanel(\""+ panel.getPanelIdentifier() +"\").minimized = "+ (vc.isMinimized() ? "true" : "false") +"</script>");
                 }
                 else
                 {
                     writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-left-blank\" align=\"left\" valign=\"middle\" nowrap width=\"17\">" +
-                        "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
+                        "<!-- <img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
                 }
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading\" align=\"left\" valign=\"middle\" nowrap>" + heading +
                         "</td>\n");
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-right-blank\" align=\"center\" valign=\"middle\" nowrap width=\"17\">" +
-                    "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
+                    "<!-- <img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-mid\" align=\"right\" valign=\"top\" nowrap width=\"100%\">" +
-                    "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"100%\" border=\"0\">--></td>\n");
+                    "<!-- <img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"100%\" border=\"0\">--></td>\n");
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\"></td>\n");
                 produceHeadingExtras(writer, vc, frame);
                 writer.write("        </tr>\n");

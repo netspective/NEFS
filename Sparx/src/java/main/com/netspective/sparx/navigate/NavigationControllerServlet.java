@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.15 2003-08-20 19:00:22 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.16 2003-08-22 03:33:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -47,11 +47,14 @@ package com.netspective.sparx.navigate;
 import java.io.IOException;
 import java.io.Writer;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -61,11 +64,15 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.util.HttpUtils;
+import com.netspective.sparx.util.MultiWebResourceLocator;
+import com.netspective.sparx.util.WebResourceLocator;
+import com.netspective.sparx.util.InheritableFileWebResourceLocator;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.io.FileFind;
 import com.netspective.commons.text.TextUtils;
 
 public class NavigationControllerServlet extends HttpServlet
@@ -88,11 +95,14 @@ public class NavigationControllerServlet extends HttpServlet
     private Theme theme;
     private NavigationTree navigationTree;
     private RuntimeEnvironmentFlags runtimeEnvironmentFlags;
+    private WebResourceLocator resourceLocator;
     private boolean cacheComponents;
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
         super.init(servletConfig);
+
+        ServletContext servletContext = servletConfig.getServletContext();
 
         loginManagerName = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_MANAGER_NAME);
         logoutActionReqParamName = servletConfig.getInitParameter(INITPARAMNAME_LOGOUT_ACTION_REQ_PARAM_NAME);
@@ -102,12 +112,44 @@ public class NavigationControllerServlet extends HttpServlet
         themeName = servletConfig.getInitParameter(INITPARAMNAME_THEME_NAME);
         navigationTreeName = servletConfig.getInitParameter(INITPARAMNAME_NAVIGATION_TREE_NAME);
 
-        File xdmSourceFile = new File(BasicDbHttpServletValueContext.getProjectFileName(getServletContext()));
+        File xdmSourceFile = new File(BasicDbHttpServletValueContext.getProjectFileName(servletContext));
         if(! xdmSourceFile.exists())
             throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist. Please " +
                     "correct the context-param called '"+ BasicDbHttpServletValueContext.INITPARAMNAME_PROJECT_FILE +"' in your WEB-INF/web.xml file.");
 
-        setRuntimeEnvironmentFlags(BasicDbHttpServletValueContext.getEnvironmentFlags(this.getServletContext()));
+        setRuntimeEnvironmentFlags(BasicDbHttpServletValueContext.getEnvironmentFlags(servletConfig.getServletContext()));
+
+        try
+        {
+            List locators = new ArrayList();
+            File sparxOverrides = new File(servletConfig.getServletContext().getRealPath("/resources/sparx"));
+            if(sparxOverrides.exists() && sparxOverrides.isDirectory())
+                locators.add(new InheritableFileWebResourceLocator(servletContext.getServletContextName() + "/resources/sparx", sparxOverrides, isCacheComponents()));
+            File sparxMain = new File(servletConfig.getServletContext().getRealPath("/sparx"));
+            if(sparxMain.exists() && sparxMain.isDirectory())
+                locators.add(new InheritableFileWebResourceLocator(servletContext.getServletContextName() + "/sparx", sparxMain, isCacheComponents()));
+
+            FileFind.FileFindResults ffResults = FileFind.findInClasspath("Sparx/resources", FileFind.FINDINPATHFLAG_DEFAULT);
+            if(ffResults.isFileFound() && ffResults.getFoundFile().isDirectory())
+                locators.add(new InheritableFileWebResourceLocator(servletContext.getServletContextName() + "/sparx", ffResults.getFoundFile(), isCacheComponents()));
+
+            if(log.isDebugEnabled())
+            {
+                for(int i = 0; i < locators.size(); i++)
+                    log.debug("Registered web resources locator " + locators.get(i));
+            }
+
+            if(locators.size() == 0)
+                System.err.println("Unable to register any web resource locators (/resources/sparx and /sparx were not found).");
+
+            resourceLocator = new MultiWebResourceLocator((WebResourceLocator[]) locators.toArray(new WebResourceLocator[locators.size()]), isCacheComponents());
+        }
+        catch (IOException e)
+        {
+            log.error("error initializing resource locator", e);
+            throw new ServletException(e);
+        }
+
         if(isCacheComponents())
         {
             // go ahead and grab all the components now -- so that we don't have to synchronize calls
@@ -186,12 +228,14 @@ public class NavigationControllerServlet extends HttpServlet
         this.logoutActionReqParamName = logoutActionReqParamName;
     }
 
-    public Theme getTheme()
+    public Theme getTheme() throws ServletException
     {
         if(theme == null || ! isCacheComponents())
         {
             String themeName = getThemeName();
-            theme = themeName != null ? Themes.getInstance().getTheme(themeName) : Themes.getInstance().getDefaultTheme();
+            Themes themes = getProject().getThemes();
+            theme = themeName != null ? themes.getTheme(themeName) : themes.getDefaultTheme();
+            theme.setWebResourceLocator(resourceLocator);
         }
 
         return theme;

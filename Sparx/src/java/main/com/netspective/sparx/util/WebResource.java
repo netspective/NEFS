@@ -39,69 +39,57 @@
  */
 
 /**
- * $Id: Themes.java,v 1.5 2003-08-22 03:33:43 shahid.shah Exp $
+ * $Id: WebResource.java,v 1.1 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme;
+package com.netspective.sparx.util;
 
-import java.util.Map;
-import java.util.HashMap;
+import java.io.File;
 
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-public class Themes
+public final class WebResource
 {
-    protected static final Log log = LogFactory.getLog(Themes.class);
+    private final String rootUrl;
+    private final String relativeUrl;
+    private final String url;
+    private final File physicalFile;
 
-    private Map themesByName = new HashMap();
-    private Theme defaultTheme;
-
-    public Themes()
+    public WebResource(String rootUrl, String relativeUrl, File physicalFile)
     {
+        this.rootUrl = rootUrl;
+        this.relativeUrl = relativeUrl;
+        this.physicalFile = physicalFile;
+
+        if(! rootUrl.endsWith("/"))
+            rootUrl += "/";
+
+        if(relativeUrl.startsWith("/"))
+            relativeUrl = relativeUrl.substring(1);
+
+        this.url = rootUrl + relativeUrl;
     }
 
-    public void registerTheme(Theme theme)
+    public String getRootUrl()
     {
-        themesByName.put(theme.getName(), theme);
-        if(log.isTraceEnabled())
-            log.trace("Registered theme "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
-
-        if(theme.isDefault())
-        {
-            defaultTheme = theme;
-            if(log.isTraceEnabled())
-                log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
-        }
+        return rootUrl;
     }
 
-    public Map getThemesByName()
+    public final String getRelativeUrl()
     {
-        return themesByName;
+        return relativeUrl;
     }
 
-    public Theme getTheme(String name)
+    public final String getUrl()
     {
-        Theme result = (Theme) themesByName.get(name);
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("Unable to find theme '"+ name +"'. Available: " + themesByName);
-            return null;
-        }
-
-        return result;
+        return url;
     }
 
-    public Theme getDefaultTheme()
+    public final File getPhysicalFile()
     {
-        Theme result = defaultTheme;
-        if(result == null && log.isDebugEnabled())
-        {
-            log.debug("No theme defined using the 'default' attribute was found. Available: " + themesByName);
-            return null;
-        }
+        return physicalFile;
+    }
 
-        return result;
+    public String toString()
+    {
+        return "WebResource ["+ hashCode()+"] '" + url + "' = " + physicalFile;
     }
 }

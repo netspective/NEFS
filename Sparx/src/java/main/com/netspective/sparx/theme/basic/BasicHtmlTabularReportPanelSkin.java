@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.21 2003-08-19 04:53:06 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.22 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -220,11 +220,9 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         TabularReportColumnState[] states = rc.getStates();
         int dataColsCount = columns.size();
 
-        Theme theme = rc.getActiveTheme();
-        String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
-
-        String sortAscImgTag = " <img src=\""+ imgPath + "/column-sort-ascending.gif\" border=0>";
-        String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";
+        Theme theme = getTheme();
+        String sortAscImgTag = " <img src=\""+ theme.getImageResourceUrl(panelResourcesPrefix + "/column-sort-ascending.gif") + "\" border=0>";
+        String sortDescImgTag = " <img src=\""+ theme.getImageResourceUrl(panelResourcesPrefix + "/column-sort-descending.gif") + "\" border=0>";
 
         writer.write("<tr>");
         int prependColCount = getRowDecoratorPrependColsCount(rc);

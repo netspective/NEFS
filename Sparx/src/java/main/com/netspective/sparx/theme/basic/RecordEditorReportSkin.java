@@ -65,7 +65,7 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordEditorReportSkin.java,v 1.7 2003-08-19 04:51:43 aye.thu Exp $
+ * $Id: RecordEditorReportSkin.java,v 1.8 2003-08-22 03:33:44 shahid.shah Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -93,10 +93,9 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
         if (reportAction != null)
         {
             Command actionCommand = reportAction.getCommand(rc);
-            Theme theme = rc.getActiveTheme();
-            String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
+            Theme theme = getTheme();
 
-            String label = "<img src=\"" + imgPath + "/content-action-delete.gif\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+            String label = "<img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/content-action-delete.gif") + "\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String deleteRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
             deleteRecordUrl = report.replaceOutputPatterns(rc, ds, deleteRecordUrl);
 
@@ -129,10 +128,9 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
         if (reportAction != null)
         {
             Command actionCommand = reportAction.getCommand(rc);
-            Theme theme = rc.getActiveTheme();
-            String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
+            Theme theme = getTheme();
 
-            String label = "<img src=\"" + imgPath + "/content-action-edit.gif\" " +
+            String label = "<img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/content-action-edit.gif") + "\" " +
                 "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
             editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);

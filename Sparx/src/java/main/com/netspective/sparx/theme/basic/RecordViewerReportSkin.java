@@ -70,7 +70,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordViewerReportSkin.java,v 1.6 2003-08-19 04:51:22 aye.thu Exp $
+ * $Id: RecordViewerReportSkin.java,v 1.7 2003-08-22 03:33:44 shahid.shah Exp $
  */
 public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -105,11 +105,10 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
             if (reportAction != null)
             {
                 Theme theme = rc.getActiveTheme();
-                String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
                 Command command = reportAction.getCommand(vc);
                 if (frameActions.size() > 0)
-                    writer.write("            <td bgcolor=\"white\"><img src=\"" + imgPath + "/spacer.gif\" width=\"5\" height=\"5\"></td>");
-                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + imgPath + "/spacer.gif\" width=\"18\" height=\"19\"></td>");
+                    writer.write("            <td bgcolor=\"white\"><img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");
                 if (command instanceof RedirectCommand)
                 {
                      writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
@@ -142,9 +141,8 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
         {
             Command actionCommand = reportAction.getCommand(rc);
             Theme theme = rc.getActiveTheme();
-            String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
 
-            String label = "<img src=\"" + imgPath + "/content-action-edit.gif\" " +
+            String label = "<img src=\"" + theme.getImageResourceUrl(panelResourcesPrefix + "/content-action-edit.gif") + "\" " +
                 "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
             editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);

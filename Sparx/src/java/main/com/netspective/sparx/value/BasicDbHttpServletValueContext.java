@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.27 2003-08-17 00:15:23 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.28 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -355,6 +355,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return rootUrl;
     }
 
+/*
     public final String getThemeResourcesRootUrl(Theme theme)
     {
         return rootUrl + "/sparx/theme/" + theme.getName();
@@ -369,6 +370,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     {
         return rootUrl + "/sparx/";
     }
+*/
 
     public final String getServletRootUrl()
     {

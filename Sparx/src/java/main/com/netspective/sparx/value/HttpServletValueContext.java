@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpServletValueContext.java,v 1.6 2003-08-08 01:03:33 shahid.shah Exp $
+ * $Id: HttpServletValueContext.java,v 1.7 2003-08-22 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -76,10 +76,6 @@ public interface HttpServletValueContext extends ServletValueContext
     public HttpLoginManager getActiveLoginManager();
 
     public Theme getActiveTheme();
-
-    public String getThemeResourcesRootUrl(Theme theme);
-
-    public String getThemeImagesRootUrl(Theme theme);
 
     public String getRootUrl();
 
