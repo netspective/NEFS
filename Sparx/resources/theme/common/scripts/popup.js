@@ -200,6 +200,7 @@ function DialogFieldPopup(sourceForm, sourceField, actionURL, windowClass, close
 	// the remaining are object-based methods
 	this.populateControl = DialogFieldPopup_populateControl;
 	this.populateControls = DialogFieldPopup_populateControls;
+	this.populateControlsEncoded = DialogFieldPopup_populateControlsEncoded;
 	this.doPopup = DialogFieldPopup_doPopup;
 
     if (this.prePopupScript != null)
@@ -248,6 +249,27 @@ function DialogFieldPopup_populateControls()
     {
         controls[i].populateValue(arguments[i]);
 	}	
+	if(this.closeAfterSelect)
+		this.popupWindow.close();
+}
+
+function decode(text)
+{
+  // Create a regular expression to search all +s in the string
+  var lsRegExp = /\+/g;
+  // Return the decoded string
+  return unescape(String(text).replace(lsRegExp, " "));
+}
+
+function DialogFieldPopup_populateControlsEncoded()
+{
+	// any number of arguments may be passed in, with each one being filled appropriately
+	var controls = this.controlsInfo;
+    for(var i = 0; i < arguments.length; i++)
+    {
+        alert(arguments[i] = " " + decode(arguments[i]));
+        controls[i].populateValue(decode(arguments[i]));
+	}
 	if(this.closeAfterSelect)
 		this.popupWindow.close();
 }
