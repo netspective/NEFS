@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ActionWrapper.java,v 1.2 2004-04-03 23:15:51 shahid.shah Exp $
+ * $Id: ActionWrapper.java,v 1.3 2004-04-28 17:01:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.action;
@@ -61,7 +61,10 @@ import javax.servlet.ServletResponse;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XmlDataModelSchema.ConstructionFinalizeListener;
@@ -77,7 +80,8 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     private final ActionDialog actionDialog;
     private final Method setActionDialogContextMethod;
     private final Method setServletEnvironmentMethod;
-    private final Method getDataSourceIdMethod;
+    private final Method getDataSourceNameMethod;
+    private final Method getDataSourceInfoMethod;
     private final Method setConnectionMethod;
     private final Method setConnectionContextMethod;
     private ActionConstructor actionConstructor;
@@ -94,7 +98,8 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         this.actionDialog = actionDialog;
         this.actionSchema = actionClass == null ? null : XmlDataModelSchema.getSchema(actionClass);
         this.setServletEnvironmentMethod = getMethod("setServletEnvironment", new Class[] { Servlet.class, ServletRequest.class, ServletResponse.class });
-        this.getDataSourceIdMethod = getMethod("getDataSourceId", (Class[]) null);
+        this.getDataSourceNameMethod = getMethod("getDataSourceName", (Class[]) null);
+        this.getDataSourceInfoMethod = getMethod("getDataSourceInfo", (Class[]) null);
         this.setConnectionMethod = getMethod("setConnection", Connection.class);
         this.setConnectionContextMethod = getMethod("setConnectionContext", ConnectionContext.class);
         this.setActionDialogContextMethod = getMethod("setActionDialogContext", ActionDialogContext.class);
@@ -382,17 +387,6 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     {
         if(setActionDialogContextMethod != null) setActionDialogContextMethod.invoke(instance, new Object[] { dc });
         if(setServletEnvironmentMethod != null) setServletEnvironmentMethod.invoke(instance, new Object[] { dc.getServlet(), dc.getRequest(), dc.getResponse() });
-
-        if(setConnectionContextMethod != null || setConnectionMethod != null)
-        {
-            String dataSourceId = dc.getDefaultDataSource();
-            if(getDataSourceIdMethod != null)
-                dataSourceId = (String) getDataSourceIdMethod.invoke(instance, null);
-
-            ConnectionContext cc = dc.openActionConnection(dataSourceId);
-            if(setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[] { cc });
-            if(setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[] { cc.getConnection() });
-        }
     }
 
     protected void assignInstanceValues(Object instance, ActionDialogContext dc) throws Exception
@@ -412,6 +406,61 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
             HttpUtils.assignParamsToInstance(dc.getHttpRequest(), instance, assignRequestParams);
     }
 
+    protected void assignDatabaseConnection(Object instance, ActionDialogContext dc) throws Exception
+    {
+        if(setConnectionContextMethod != null || setConnectionMethod != null)
+        {
+            String dataSourceId = dc.getDefaultDataSource();
+            if(getDataSourceNameMethod != null)
+                dataSourceId = (String) getDataSourceNameMethod.invoke(instance, null);
+
+            if(dataSourceId != null)
+            {
+                ValueSource dataSourceIdValueSource = ValueSources.getInstance().getValueSourceOrStatic(dataSourceId);
+                dataSourceId = dataSourceIdValueSource.getTextValue(dc);
+
+                if(dataSourceId.equals("DEFAULT"))
+                    dataSourceId = null;
+
+                ConnectionContext cc = dc.openActionConnection(dataSourceId);
+                if(setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[] { cc });
+                if(setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[] { cc.getConnection() });
+            }
+            else
+            {
+                if(getDataSourceInfoMethod != null)
+                {
+                    Object dataSourceInfo = getDataSourceInfoMethod.invoke(instance, null);
+                    if(dataSourceInfo != null)
+                    {
+                        DriverManagerConnectionProvider.DataSourceInfo dsInfo = DriverManagerConnectionProvider.PROVIDER.createDataSource();
+                        if(dataSourceInfo instanceof List)
+                        {
+                            if(! dsInfo.setInfo((List) dataSourceInfo))
+                                dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class and it returns type List but has fewer than two entries. Need at least driver class and URL.");
+                        }
+                        else if(dataSourceInfo instanceof String[])
+                        {
+                            if(! dsInfo.setInfo((String[]) dataSourceInfo))
+                                dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class and it returns type String[] but has fewer than two entries. Need at least driver class and URL.");
+                        }
+                        else if(dataSourceInfo instanceof Map)
+                        {
+                            if(! dsInfo.setInfo((Map) dataSourceInfo, null))
+                                dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class and it returns type Map but does not have 'jdbc-driver-class' or 'jdbc-connection-url'.");
+                        }
+                        else
+                            dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class but it returns an object ("+ dataSourceInfo +") that NEFS doesn't understand.");
+
+                        ConnectionContext cc = dc.openActionConnection(dsInfo);
+                        if(setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[] { cc });
+                        if(setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[] { cc.getConnection() });
+                    }
+                }
+            }
+        }
+    }
+
     public Object constructInstance(ActionDialogContext dc) throws Exception
     {
         Object result;
@@ -427,6 +476,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
 
         initInstance(result, dc);
         assignInstanceValues(result, dc);
+        assignDatabaseConnection(result, dc);
 
         return result;
     }
