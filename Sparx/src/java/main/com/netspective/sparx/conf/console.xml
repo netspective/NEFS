@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.120 2004-04-28 17:04:32 shahid.shah Exp $
+  * $Id: console.xml,v 1.121 2004-06-13 21:19:04 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -91,9 +91,7 @@
             <page name="folders" caption="Project Folders">
                 <body config="console" source="console-page-content:../folders.ftl"/>
             </page>
-            <page name="files" caption="Project Files">
-                <body config="console" source="console-page-content:../files.ftl"/>
-            </page>
+            <page name="files" caption="Project Files" class="com.netspective.sparx.navigate.fs.FileSystemBrowserPage" project-browser="yes"/>
         </page>
 
         <page name="presentation" caption="Presentation" heading="Presentation Layer">

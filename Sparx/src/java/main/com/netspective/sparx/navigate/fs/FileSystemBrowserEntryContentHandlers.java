@@ -39,89 +39,19 @@
  */
 
 /**
- * $Id: FileSystemDirectoryPage.java,v 1.3 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: FileSystemBrowserEntryContentHandlers.java,v 1.1 2004-06-13 21:19:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
 
-import java.io.File;
-import java.util.Set;
+import com.netspective.sparx.navigate.FileSystemEntry;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.commons.value.source.StaticValueSource;
-
-public class FileSystemDirectoryPage extends FileSystemEntryPage
+public interface FileSystemBrowserEntryContentHandlers
 {
-    private File dir;
-    private long lastModified;
-    private Set ignoreEntries;
-
-    public FileSystemDirectoryPage(NavigationTree owner)
-    {
-        super(owner);
-    }
-
-    public boolean isValid(NavigationContext npc)
-    {
-        if(! dir.exists())
-            return false;
-
-        if(dir.lastModified() > lastModified)
-        {
-            removeAllChildren();
-            setDir(dir);
-        }
-
-        return true;
-    }
-
-    public Set getIgnoreEntries()
-    {
-        return ignoreEntries;
-    }
-
-    public void setIgnoreEntries(Set ignoreEntries)
-    {
-        this.ignoreEntries = ignoreEntries;
-    }
-
-    public void addIgnoreEntry(String entry)
-    {
-        ignoreEntries.add(entry);
-    }
-
-    public File getDir()
-    {
-        return dir;
-    }
-
-    public void setDir(File dir)
-    {
-        this.dir = dir;
-        this.lastModified = dir.lastModified();
-        setCaption(new StaticValueSource(dir.getName().replace('_', ' ')));
-
-        File[] files = dir.listFiles();
-        for (int i = 0; files != null && i < files.length; i++)
-        {
-            File file = files[i];
-            if(ignoreEntries.contains(file.getName()))
-                continue;
-
-            FileSystemEntryPage page = null;
-            if (file.isDirectory())
-            {
-                page = new FileSystemDirectoryPage(getOwner());
-                ((FileSystemDirectoryPage) page).setDir(new File(dir, file.getName()));
-            }
-            else
-            {
-                page = new FileSystemFilePage(getOwner());
-                ((FileSystemFilePage) page).setFile(file);
-            }
-
-            appendChild(page);
-        }
-    }
+    /**
+     * Ascertain whether any rules were provided to serve a particular entry
+     * @param fileSystemEntry The entry we want to know about
+     * @return The content handler that can handle the file contents
+     */
+    public FileSystemBrowserEntryContentHandler getContentHandler(FileSystemEntry fileSystemEntry);
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: FileSystemEntry.java,v 1.3 2003-10-09 15:11:52 shahid.shah Exp $
+ * $Id: FileSystemEntry.java,v 1.4 2004-06-13 21:19:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -65,6 +65,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -154,7 +155,7 @@ public class FileSystemEntry
         return rootPath == null;
     }
 
-    public ArrayList getParents()
+    public List getParents()
     {
         ArrayList result = new ArrayList();
         if(rootPath == null)
@@ -173,7 +174,7 @@ public class FileSystemEntry
             }
             else
             {
-                result.add(0, new FileSystemEntry(parentLevel, isRootPath ? null : rootPath, parent));
+                result.add(0, new FileSystemEntry(parentLevel, rootPath, parent));
                 parent = parent.getParentFile();
             }
             parentLevel--;
@@ -210,7 +211,7 @@ public class FileSystemEntry
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    public ArrayList getChildren()
+    public List getChildren()
     {
         ArrayList result = new ArrayList();
         File[] children = file.listFiles();
@@ -248,13 +249,13 @@ public class FileSystemEntry
         return null;
     }
 
-    public int send(HttpServletResponse response) throws IOException
+    public int send(final HttpServletResponse response, final String contentType) throws IOException
     {
         int sentsize = 0;
 
         InputStream in = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()));
 
-        response.setContentType(contentType);
+        response.setContentType(contentType == null ? this.contentType : contentType);
         response.setContentLength((int) file.length()); // seems that here sits a possible problem for files >= 2 GB...
 
         OutputStream out = response.getOutputStream();
