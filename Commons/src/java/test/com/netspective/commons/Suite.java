@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Suite.java,v 1.2 2003-03-16 16:17:01 shahbaz.javeed Exp $
+ * $Id: Suite.java,v 1.3 2003-03-18 13:54:35 shahid.shah Exp $
  */
 
 package com.netspective.commons;
@@ -48,7 +48,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import com.netspective.commons.xdm.DataModelSchemaTest;
 import com.netspective.commons.text.GloballyUniqueIdentifierTest;
-import com.netspective.commons.value.ValueSourceFactoryTest;
+import com.netspective.commons.value.ValueSourcesTest;
 import com.netspective.commons.config.ConfigurationTest;
 import com.netspective.commons.acl.AccessControlListTest;
 
@@ -60,7 +60,7 @@ public class Suite
         suite.addTest(new TestSuite(DataModelSchemaTest.class));
         suite.addTest(com.netspective.commons.set.Suite.suite());
         suite.addTest(com.netspective.commons.text.Suite.suite());
-        suite.addTest(new TestSuite(ValueSourceFactoryTest.class));
+        suite.addTest(new TestSuite(ValueSourcesTest.class));
         suite.addTest(new TestSuite(ConfigurationTest.class));
 	    suite.addTest(new TestSuite(AccessControlListTest.class));
         return suite;

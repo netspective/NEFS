@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.5 2003-03-16 21:17:28 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.6 2003-03-18 13:54:35 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -64,8 +64,12 @@ import com.netspective.commons.value.source.SystemPropertyValueSource;
 import com.netspective.commons.value.exception.ValueSourceNotFoundException;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.exception.UnexpectedValueContextException;
+import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.MetricsGroup;
+import com.netspective.commons.metric.CountMetric;
 
-public class ValueSources
+public class ValueSources implements MetricsProducer
 {
     private static DiscoverClass discoverClass = new DiscoverClass();
     protected static final Log log = LogFactory.getLog(ValueSources.class);
@@ -100,6 +104,18 @@ public class ValueSources
         srcClassesSet = createSourceClassesSet();
         srcInstancesMap = createSourceInstancesMap();
         registerDefaultValueSources();
+    }
+
+    public void produceMetrics(Metric parent)
+    {
+        parent.addValueMetric("Value Source Classes", Integer.toString(srcClassesSet.size()));
+        MetricsGroup instancesMetrics = parent.addGroupMetric("Value Source Instances");
+        for(Iterator i = srcInstancesMap.values().iterator(); i.hasNext(); )
+        {
+            ValueSource instance = (ValueSource) i.next();
+            CountMetric instanceMetric = instancesMetrics.addCountMetric(instance.getClass().getName());
+            instanceMetric.incrementCount();
+        }
     }
 
     protected Map createSourceClassesMap()

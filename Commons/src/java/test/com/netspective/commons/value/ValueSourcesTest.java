@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceFactoryTest.java,v 1.2 2003-03-16 02:23:21 shahid.shah Exp $
+ * $Id: ValueSourcesTest.java,v 1.1 2003-03-18 13:54:35 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -51,10 +51,11 @@ import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.source.ExpressionValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.metric.Metrics;
 
-public class ValueSourceFactoryTest extends TestCase
+public class ValueSourcesTest extends TestCase
 {
-    public ValueSourceFactoryTest(String name)
+    public ValueSourcesTest(String name)
     {
         super(name);
     }
@@ -67,24 +68,29 @@ public class ValueSourceFactoryTest extends TestCase
         assertEquals("test-id", vss.getIdOrClassName());
         assertEquals("abc", vss.getParams());
 
+        // since the ':' is escaped, this is not a valid value source specification
         vss = ValueSources.createSpecification("test-id\\:abc");
         assertFalse(vss.isValid());
         assertTrue(vss.isEscaped());
 
+        // very basic expression that should not be seen as a value source
         vss = ValueSources.createSpecification("this is a simple expression");
         assertFalse(vss.isValid());
         assertFalse(vss.isEscaped());
 
+        // xyz should be treated as a processing instruction since it's in []
         vss = ValueSources.createSpecification("test-id:[xyz]abc");
         assertTrue(vss.isValid());
         assertFalse(vss.isEscaped());
         assertEquals("xyz", vss.getProcessingInstructions());
 
+        // xyz should NOT be treated as a processing instruction since the first [ is escaped
         vss = ValueSources.createSpecification("test-id:\\[xyz]abc");
         assertTrue(vss.isValid());
         assertFalse(vss.isEscaped());
         assertEquals("[xyz]abc", vss.getParams());
 
+        // this is an invalid specification since the [ is not closed
         vss = ValueSources.createSpecification("test-id:[xyzabc");
         assertFalse(vss.isValid());
         assertFalse(vss.isEscaped());
@@ -122,5 +128,12 @@ public class ValueSourceFactoryTest extends TestCase
         svs = ValueSources.getInstance().getValueSourceOrStatic(configExpr);
         assertTrue(svs != null);
         assertEquals(ExpressionValueSource.class, svs.getClass());
+    }
+
+    public void dumpMetrics()
+    {
+        Metrics metrics = new Metrics(null, "Test");
+        ValueSources.getInstance().produceMetrics(metrics);
+        System.out.println(metrics);
     }
 }
