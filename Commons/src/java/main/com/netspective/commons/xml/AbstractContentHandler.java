@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.9 2003-07-16 19:33:27 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.10 2003-10-12 18:08:58 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -66,6 +66,7 @@ import org.xml.sax.Locator;
 
 import com.netspective.commons.xml.template.*;
 import com.netspective.commons.io.Resource;
+import com.netspective.commons.io.InputSourceLocator;
 
 public abstract class AbstractContentHandler implements TemplateContentHandler
 {
@@ -313,7 +314,8 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
             if(templateName == null || templateName.length() == 0)
                 throw new SAXParseException("Template must have a '"+ NodeIdentifiers.ATTRNAME_GENERIC_TEMPLATE_NAME +"' attribute in <"+ elementName +"> ", parseContext.getLocator());
 
-            Template template = new Template(templateName, this, templateCatalog, nodeIdentifiers.getGenericTemplateProducer(), url, localName, qName, attributes);
+            InputSourceLocator inputSourceLocator = new InputSourceLocator(getParseContext().getInputSrcTracker(), getParseContext().getLocator().getLineNumber());
+            Template template = new Template(templateName, this, inputSourceLocator, templateCatalog, nodeIdentifiers.getGenericTemplateProducer(), url, localName, qName, attributes);
             templateCatalog.registerTemplate(nodeIdentifiers.getGenericTemplateProducer(), templateName, template);
             templateDefnStack.push(template);
             return true;

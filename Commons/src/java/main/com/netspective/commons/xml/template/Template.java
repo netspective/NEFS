@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Template.java,v 1.2 2003-04-23 15:41:52 shahid.shah Exp $
+ * $Id: Template.java,v 1.3 2003-10-12 18:08:59 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -62,9 +62,11 @@ import org.apache.commons.jexl.JexlContext;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xml.ContentHandlerNodeStackEntry;
 import com.netspective.commons.xml.NodeIdentifiers;
+import com.netspective.commons.io.InputSourceLocator;
 
 public class Template extends TemplateElement
 {
+    private InputSourceLocator inputSourceLocator;
     private String templateName;
     private TemplateCatalog templateCatalog;
     private TemplateProducer templateProducer;
@@ -136,9 +138,10 @@ public class Template extends TemplateElement
         }
     }
 
-    public Template(String templateName, TemplateContentHandler handler, TemplateCatalog catalog, TemplateProducer producer, String url, String localName, String qName, Attributes attributes) throws SAXException
+    public Template(String templateName, TemplateContentHandler handler, InputSourceLocator inputSourceLocator, TemplateCatalog catalog, TemplateProducer producer, String url, String localName, String qName, Attributes attributes) throws SAXException
     {
         super(handler, url, localName, qName, attributes);
+        this.inputSourceLocator = inputSourceLocator;
         this.templateName = templateName;
         this.templateCatalog = catalog;
         this.templateProducer = producer;
@@ -147,6 +150,11 @@ public class Template extends TemplateElement
     public String getTemplateName()
     {
         return templateName;
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
     }
 
     public void declareParameter(TemplateContentHandler contentHandler, String url, String localName, String qName, Attributes attributes) throws SAXException

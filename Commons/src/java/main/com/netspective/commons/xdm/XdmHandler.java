@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmHandler.java,v 1.5 2003-10-11 14:34:00 shahid.shah Exp $
+ * $Id: XdmHandler.java,v 1.6 2003-10-12 18:08:57 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -146,7 +146,8 @@ public class XdmHandler extends AbstractContentHandler
             if (tp != null)
             {
                 String templateName = tp.getTemplateName(url, localName, qName, attributes);
-                Template template = new Template(templateName, this, templateCatalog, tp, url, localName, qName, attributes);
+                InputSourceLocator inputSourceLocator = new InputSourceLocator(getParseContext().getInputSrcTracker(), getParseContext().getLocator().getLineNumber());
+                Template template = new Template(templateName, this, inputSourceLocator, templateCatalog, tp, url, localName, qName, attributes);
                 templateCatalog.registerTemplate(tp, templateName, template);
                 getTemplateDefnStack().push(template);
                 return true;
