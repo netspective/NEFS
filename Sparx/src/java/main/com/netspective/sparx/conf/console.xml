@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.78 2003-08-08 01:03:32 shahid.shah Exp $
+  * $Id: console.xml,v 1.79 2003-08-08 13:55:55 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -75,7 +75,10 @@
 	            <page name="servlet" caption="Servlet Config"/>
 	            <page name="application" caption="App Config"/>
             </page>
-	        <page name="access-control" caption="Access Control"/>
+	        <page name="access-control" caption="Access Control">
+                <page name="acl" caption="ACLs"/>
+                <page name="login-managers" caption="Login Managers"/>
+            </page>
             <page name="documents" caption="Documents"/>
         </page>
 
