@@ -10,7 +10,7 @@
     <title>Netspective Enterprise Frameworks (NEF) 7.0 Release Candidate 1
     User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-11 21:41:02 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-11 22:27:28 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 30, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -3312,7 +3312,7 @@ id="project-file-basic-eg-7" />
               tags on one screen. There is a dynamic tree that allows you to
               get a sense of all the tags&#39; hierarchy and when you click on
               any tag it will show the documentation for a particular tag in a
-              window next to the tree. </para>
+              window next to the tree.</para>
 
               <screenshot>
                 <graphic
@@ -3411,7 +3411,7 @@ id="project-file-basic-eg-7" />
 
               <screenshot>
                 <graphic
-                fileref="resources/images/screen-console-xdm-tags-ref-tmpl-catalog.gif" />
+                fileref="./resources/images/screen-console-xdm-tags-ref-tmpl-catalog.gif" />
               </screenshot>
             </listitem>
           </varlistentry>
