@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="templates/person.xml"/>
+	
+	<dialogs package="person">	
+	    <dialog name="account" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Account Information"/>
+			<xdm:include template="person.account-information"/>
+			<xdm:include template="person.contact-information"/>
+			<xdm:include template="person.account-preferences"/>
+            <!--listener class="app.form.person.NurseDialog" /-->
+            <on-add-data>
+                <login login_id="field:login_id" password="field:password" rec-stat-id="static:Active"/>
+                <account _auto-map="*" rec_stat_id="static:Active"/>
+                </on-add-data>
+	</dialog>
+
+	</dialogs>
+</xdm:container>

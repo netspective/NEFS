@@ -1,32 +1,12 @@
-<TABLE cellSpacing=0 width="100%" 
-background="${vc.getAppResourceUrl('/images/bkg-topbar.gif')}" border=0>
-  <TBODY>
-  <TR>
-    <TD><A 
-      href="home"><IMG 
-      src="${vc.getAppResourceUrl('/images/logo-topbar.gif')}" border=0></A> 
-    </TD>
-    <TD align=left>
-     <FONT 
-      color=cyan size=-1>What are you looking for?</FONT> <BR><INPUT size=14 
-      name=search_text> <INPUT type=image 
-      src="${vc.getAppResourceUrl('/images/search.gif')}" border=0 
-      name=search></TD>
-    <TD align=right><A onmouseover="img_on('cart')" 
-      onmouseout="img_off('cart')" 
-      href="http://gallery.bluestone.com/scripts/SaISAPI.dll/JPS112.class/petstore/control/cart"><IMG 
-      src="${vc.getAppResourceUrl('/images/cart.gif')}" border=0 
-      name=img_cart></A> <IMG 
-      src="${vc.getAppResourceUrl('/images/separator.gif')}" border=0> <A 
-      onmouseover="img_on('signin')" onmouseout="img_off('signin')" 
-      href="http://gallery.bluestone.com/scripts/SaISAPI.dll/JPS112.class/petstore/control/signin"><IMG 
-      src="${vc.getAppResourceUrl('/images/sign-in.gif')}" border=0 
-      name=img_signin></A> <IMG 
-      src="${vc.getAppResourceUrl('/images/separator.gif')}" border=0> <A 
-      onmouseover="img_on('help')" onmouseout="img_off('help')" 
-      href="http://gallery.bluestone.com/scripts/SaISAPI.dll/JPS112.class/petstore/control/help"><IMG 
-      src="${vc.getAppResourceUrl('/images/help.gif')}" border=0 
-      name=img_help></A> </TD></TR></TBODY></TABLE>
+<#if !(vc.request.session.getAttribute("signedin")?exists)> 
+   <#global signedin = false/>
+<#else>
+  <#if vc.request.session.getAttribute("signedin") = "yes">
+     <#global signedin = true/>
+  <#else>
+      <#global signedin = false/>
+  </#if>
+</#if>
  <TABLE height="85%" cellSpacing=0 width="100%" border=0>
   <TBODY>
   <TR>

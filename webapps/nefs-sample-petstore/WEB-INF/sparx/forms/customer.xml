@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="templates/org.xml"/>
+
+	<dialogs package="org">
+		<dialog name="main"  class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Main Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.classification-information"/>
+			<xdm:include template="org.contact-information"/>
+			<xdm:include template="org.demographic-information"/>
+			<xdm:include template="org.identification-information"/>
+			<xdm:include template="org.service-information"/>
+            <on-add-data>
+                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active"
+                    ticker-symbol="field:ticker_symbol" sic-code="field:sic_code">
+                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
+                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
+                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
+                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
+                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                </org>
+            </on-add-data>
+		</dialog>
+
+		<dialog name="department" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Department Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+			<xdm:include template="org.service-information"/>
+            <!--listener class="app.form.org.DepartmentDialog"/-->
+            <on-add-data>
+                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
+                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
+                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
+                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
+                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                </org>
+            </on-add-data>
+		</dialog>
+
+		<dialog name="associatedProvider" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Associated Provider Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+			<xdm:include template="org.identification-information"/>
+			<xdm:include template="org.service-information"/>
+            <!--listener class="app.form.org.AssociatedProviderDialog"/-->
+            <on-add-data>
+                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
+                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
+                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
+                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
+                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                </org>
+            </on-add-data>
+		</dialog>
+
+		<dialog name="pharmacy" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Pharmacy"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+			<xdm:include template="org.identification-information"/>
+			<xdm:include template="org.service-information"/>
+            <!--listener class="app.form.org.PharmacyDialog"/-->
+            <on-add-data>
+                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
+                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
+                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
+                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
+                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                </org>
+            </on-add-data>
+		</dialog>
+
+		<dialog name="employer" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Employer Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+            <!--listener class="app.form.org.EmployerDialog"/-->
+            <on-add-data>
+                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
+                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
+                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
+                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
+                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                </org>
+            </on-add-data>
+		</dialog>
+
+		<dialog name="insurance" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Insurance Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+            <!--listener class="app.form.org.InsuranceDialog"/-->
+            <on-add-data>
+                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
+                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
+                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
+                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
+                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                </org>
+            </on-add-data>
+		</dialog>
+
+		<dialog name="ipa" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:IPA Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+            <!--listener class="app.form.org.IPADialog"/-->
+            <on-add-data>
+                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
+                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
+                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
+                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
+                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                </org>
+            </on-add-data>
+		</dialog>
+
+		<dialog name="ancilliaryService" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Ancilliary Service Organization"/>
+			<xdm:include template="org.org-profile"/>
+			<xdm:include template="org.contact-information"/>
+            <!--listener class="app.form.org.AncilliaryServiceDialog"/-->
+            <on-add-data>
+                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
+                <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
+                <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
+                    city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
+                <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-type-id="static:Telephone: Business" method-value="field:primary.phone"
+                    _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method-type-id="static:Fax: Business" method-value="field:primary.fax"
+                    _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-type-id="static:Email: Business" method-value="field:email"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                <org-contact rec-stat-id="static:Active" method-type="static:URL" method-type-id="static:URL" method-value="field:website"
+                    _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
+                </org>
+            </on-add-data>
+		</dialog>
+
+	</dialogs>
+</xdm:container>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+	<xdm:include file="person.xml"/>
+	<!--xdm:include file="attributes/person.xml"/-->
+
+</xdm:container>

@@ -6,6 +6,10 @@
     <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+    <!-- setup the data access layer Singleton to point to our schema -->
+    <listener class="app.Util"/>
+    <xdm:include file="forms/dialogs.xml"/>
+    <theme name="survey" default="yes" class="app.AppTheme" inherit-resources-from-themes="slate,common"/>
 
     <navigation-tree name="app" default="yes">
         <!--page name="home" default="yes" caption="Home">
@@ -38,9 +42,30 @@
         <page name="product" caption="Product" require-request-param="product_id" retain-params="product_id">
             <body source="product.ftl" />
         </page>
-        <page name="productdetails" caption="Poduct Details" require-request-param="item_id" retain-params="item_id">
+        <page name="productdetails" caption="Product Details" require-request-param="item_id" retain-params="item_id">
             <body  source="productdetails.ftl" />
         </page>
+        <page name="cart" caption="Cart" require-request-param="item_id" retain-params="item_id">
+            <body  source="cart.ftl" />
+        </page>
+        <page name="checkout" caption="Check Out">
+            <body  source="checkout.ftl" />
+        </page>
+        <page name="placeorder" caption="Place Order">
+            <body   source="placeorder.ftl" />
+        </page>
+        <page name="signin" caption="Sign In">
+            <body  source="signin.ftl" />
+         </page>
+        <page name="verifysignin" caption="Verify Sign-In">
+            <body  source="verifysignin.ftl" />
+         </page>
+        <page name="signout" caption="Sign Out">
+            <body  source="signout.ftl" />
+         </page>
+
+        <!--page name="createnewaccount" caption="Create New Account" command="dialog,schema.db.account,add"-->
+        <page name="createnewaccount" caption="Create New Account" command="dialog,person.account,add"/>
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
 
     </navigation-tree>
@@ -77,34 +102,32 @@
         </table-type>
 
 
-        <table-type name="Login" type="StrEntity">
-            <column name="password" type="text" size="20" descr="Signon Password"/>
-        </table-type>
-
-        <table name="Profile" abbrev="profiles" type="StrEntity,Presentation">
-            <column name="account_id" parent-ref="Account.account_id" descr="User's Account ID" />
-            <column name="langpref" lookup-ref="Language" required="yes" descr="Preferered Language"/>
-            <column name="favcategory" lookup-ref="BannerData.bannerdata_id" descr="User's favorite pet category"/>
-            <column name="mylstopt" type="text" required="no" descr="User display options"/>
-            <column name="banneropt" type="text" required="no" descr="User banner display option"/>
+        <table name="Login" type="StrEntity">
+            <column name="password" type="text" size="20" descr="Login Password"/>
         </table>
 
+
         <table name="Account" abbrev="accounts" type="Entity,Presentation">
-            <column name="login_id" type="text" required="yes" descr="User's login id" />
+            <column name="login_id" lookup-ref="Login.login_id" required="yes" descr="User login ID"/>>
             <column name="email" type="text" size="30" required="yes" descr="Email ID"/>
-            <column name="firstname" type="text" size="20" required="yes" descr="First Name"/>
-            <column name="lastname" type="text" size="25" required="yes" descr="Last Name"/>
-            <column name="status" type="text" required="yes" descr="Users account status"/>
+            <column name="first_name" type="text" size="20" required="yes" descr="First Name"/>
+            <column name="last_name" type="text" size="25" required="yes" descr="Last Name"/>
+            <column name="status" type="text" required="no" descr="Users account status"/>
             <column name="addr1" type="text" size="64" required="yes" descr="User's street address"/>
             <column name="addr2" type="text" size="64" required="yes" descr="User's street address"/>
             <column name="city" type="text" size="64" required="yes" descr="User's city"/>
             <column name="state" type="text" size="64" required="yes" descr="User's state or province"/>
             <column name="country" type="text" size="64" required="yes" descr="User's country"/>
+            <column name="zip_code" type="text" size="5" required="yes" descr="User's Zip Code"/>>
             <column name="phone" type="text" size="30" required="yes" descr="User's phone number"/>
+            <column name="langpref" lookup-ref="Language" required="yes" descr="Preferered Language"/>
+            <column name="favcategory" lookup-ref="Favorite_Type" descr="User's favorite pet category"/>
+            <column name="mylstopt" type="text" required="no" descr="User display options"/>
+            <column name="banneropt" type="text" required="no" descr="User banner display option"/>
         </table>
 
-         <table name="BannerData" abbrev="profiles" type="StrEntity, Presentation">
-            <column name="bannername" type="text" size="64" required="yes" descr="Display banner name"/>
+         <table name="Banner_Data" abbrev="banner" type="StrEntity, Presentation">
+            <column name="banner_name" type="text" size="64" required="yes" descr="Display banner name"/>
         </table>
 
         <!---Tables for Petstore Information-->
@@ -121,8 +144,8 @@
 
         <table name="Item" abbrev="items" type="StrEntity, Presentation">
              <column name="product_id" parent-ref="Product.product_id" descr="Product ID"/>
-             <column name="listprice" type="currency" size="16" required="yes" descr="Price of animal"/>
-             <column name="unitcost" type="currency" size="16" required="no" descr="Cost of an animal to store"/>
+             <column name="list_price" type="currency" size="16" required="yes" descr="Price of animal"/>
+             <column name="unit_cost" type="currency" size="16" required="no" descr="Cost of an animal to store"/>
              <column name="supplier_id" lookup-ref="Supplier.supplier_id" descr="Supplier for this animal"/>
              <column name="status" type="text" size="20" required="yes" descr="Current status of stock"/>
              <column name="name" type="text" size="30" required="yes" descr="Type name of this animal"/>
@@ -146,19 +169,19 @@
         <!--Order specific tables-->
         <table name="Orders" abbrev="ords" type="Entity, Presentation">
              <column name="account_id" parent-ref="Account.account_id" descr="Account id for order"/>
-             <column name="orderdate" type="date" required="yes" descr="Date of order"/>
-             <column name="shipaddr1" type="text" size="64" required="yes" descr="Shipping street address"/>
-             <column name="shipaddr2" type="text" size="64" required="yes" descr="Shipping street address"/>
-             <column name="shipcity" type="text" size="64" required="yes" descr="Shipping city"/>
-             <column name="shipstate" type="text" size="64" required="yes" descr="Shipping state or province"/>
-             <column name="shipcountry" type="text" size="64" required="yes" descr="Shipping country"/>
-             <column name="shipphone" type="text" size="30" required="yes" descr="Shipping phone number"/>
-             <column name="billaddr1" type="text" size="64" required="yes" descr="Billping street address"/>
-             <column name="billaddr2" type="text" size="64" required="yes" descr="Billping street address"/>
-             <column name="billcity" type="text" size="64" required="yes" descr="Billping city"/>
-             <column name="billstate" type="text" size="64" required="yes" descr="Billping state or province"/>
-             <column name="billcountry" type="text" size="64" required="yes" descr="Billping country"/>
-             <column name="billphone" type="text" size="30" required="yes" descr="Billping phone number"/>
+             <column name="order_date" type="date" required="yes" descr="Date of order"/>
+             <column name="ship_addr1" type="text" size="64" required="yes" descr="Shipping street address"/>
+             <column name="ship_addr2" type="text" size="64" required="yes" descr="Shipping street address"/>
+             <column name="ship_city" type="text" size="64" required="yes" descr="Shipping city"/>
+             <column name="ship_state" type="text" size="64" required="yes" descr="Shipping state or province"/>
+             <column name="ship_country" type="text" size="64" required="yes" descr="Shipping country"/>
+             <column name="ship_phone" type="text" size="30" required="yes" descr="Shipping phone number"/>
+             <column name="bill_addr1" type="text" size="64" required="yes" descr="Billping street address"/>
+             <column name="bill_addr2" type="text" size="64" required="yes" descr="Billping street address"/>
+             <column name="bill_city" type="text" size="64" required="yes" descr="Billping city"/>
+             <column name="bill_state" type="text" size="64" required="yes" descr="Billping state or province"/>
+             <column name="bill_country" type="text" size="64" required="yes" descr="Billping country"/>
+             <column name="bill_phone" type="text" size="30" required="yes" descr="Billping phone number"/>
         </table>
 
         <table name="OrderStatus" abbrev="orderstat" type="Entity, Presentation">
@@ -171,10 +194,21 @@
         <table name="LineItem" abbrev="lineitems" type="Entity, Presentation">
            <column name="orders_id" parent-ref="orders.orders_id" descr="Order ID"/>
            <column name="itemnum" type="integer" descr="Item number for order" />
-           <column name="item_id" parent-ref="item.item_id" descr="Item id for order"/>
+           <column name="item_id" lookup-ref="item.item_id" descr="Item id for order"/>
            <column name="quantity" type="integer" required="yes" descr="Quantity for this item in the order"/>
-           <column name="unitprice" type="currency" required="yes" descr="Item number for order" />
+           <column name="unit_price" type="currency" required="yes" descr="Item number for order" />
         </table>
+         <table name="Status_Type" abbrev="stat" type="Enumeration">
+            <enumerations>
+                <enum>Active</enum>
+             </enumerations>
+        </table>Status_Type
+        <table name="Country_Type" abbrev="country" type="Enumeration">
+             <enumerations>
+                 <enum>USA</enum>
+                 <enum>Canada</enum>
+            </enumerations>
+         </table>Country_Type
 
         <table name="Language" abbrev="lang" type="Enumeration">
             <enumerations>
@@ -183,19 +217,108 @@
                 <enum>Japanese</enum>
                 <enum>Urdu</enum>
             </enumerations>
+        </table>Favorite_Type
+        <table name="Favorite_Type" abbrev="FavTy" type="Enumeration">
+             <enumerations>
+                 <enum>Birds</enum>
+                 <enum>Cats</enum>
+                 <enum>Dogs</enum>
+                 <enum>Reptiles</enum>
+                 <enum>Fish</enum>
+             </enumerations>
+         </table>
+
+        <table name="Language_Type" abbrev="LngTy" type="Enumeration">
+            <enumerations>
+                <enum>English</enum>
+                <enum>Spanish</enum>
+                <enum>French</enum>
+                <enum>German</enum>
+                <enum>Italian</enum>
+                <enum>Chinese</enum>
+                <enum>Japanese</enum>
+                <enum>Korean</enum>
+                <enum>Vietnamese</enum>
+                <enum>Other</enum>
+            </enumerations>
         </table>
+
+        <table name="US_State_Type" abbrev="USStates" type="Enumeration">
+            <enumerations>
+                <enum abbrev="AL">Alabama</enum>
+                <enum abbrev="AK">Alaska</enum>
+                <enum abbrev="AZ">Arizona</enum>
+                <enum abbrev="AR">Arkansas</enum>
+                <enum abbrev="CA">California</enum>
+                <enum abbrev="CO">Colorado</enum>
+                <enum abbrev="CT">Connecticut</enum>
+                <enum abbrev="DE">Delaware</enum>
+                <enum abbrev="DC">District of Columbia</enum>
+                <enum abbrev="FL">Florida</enum>
+                <enum abbrev="GA">Georgia</enum>
+                <enum abbrev="HI">Hawaii</enum>
+                <enum abbrev="ID">Idaho</enum>
+                <enum abbrev="IL">Illinois</enum>
+                <enum abbrev="IN">Indiana</enum>
+                <enum abbrev="IA">Iowa</enum>
+                <enum abbrev="KS">Kansas</enum>
+                <enum abbrev="KY">Kentucky</enum>
+                <enum abbrev="LA">Louisiana</enum>
+                <enum abbrev="ME">Maine</enum>
+                <enum abbrev="MD">Maryland</enum>
+                <enum abbrev="MA">Massacusetts</enum>
+                <enum abbrev="MI">Michigan</enum>
+                <enum abbrev="MN">Minnesota</enum>
+                <enum abbrev="MS">Mississippi</enum>
+                <enum abbrev="MO">Missouri</enum>
+                <enum abbrev="MT">Montana</enum>
+                <enum abbrev="NE">Nebraska</enum>
+                <enum abbrev="NV">Nevada</enum>
+                <enum abbrev="NH">New Hampshire</enum>
+                <enum abbrev="NJ">New Jersey</enum>
+                <enum abbrev="NM">New Mexico</enum>
+                <enum abbrev="NY">New York</enum>
+                <enum abbrev="NC">North Carolina</enum>
+                <enum abbrev="ND">North Dakota</enum>
+                <enum abbrev="OH">Ohio</enum>
+                <enum abbrev="OK">Oklahoma</enum>
+                <enum abbrev="OR">Oregon</enum>
+                <enum abbrev="PA">Pennsylvania</enum>
+                <enum abbrev="RI">Rhode Island</enum>
+                <enum abbrev="SC">South Carolina</enum>
+                <enum abbrev="SD">South Dakota</enum>
+                <enum abbrev="TN">Tennessee</enum>
+                <enum abbrev="TX">Texas</enum>
+                <enum abbrev="UT">Utah</enum>
+                <enum abbrev="VT">Vermont</enum>
+                <enum abbrev="VA">Virginia</enum>
+                <enum abbrev="WA">Washington</enum>
+                <enum abbrev="WV">West Virginia</enum>
+                <enum abbrev="WI">Wisconsin</enum>
+                <enum abbrev="WY">Wyoming</enum>
+                <enum abbrev="A_S">American Samoa</enum>
+                <enum abbrev="F_S_M">Federated States of Micronesia</enum>
+                <enum abbrev="GUAM">Guam</enum>
+                <enum abbrev="M_I">Marshall Islands</enum>
+                <enum abbrev="N_M_I">Northern Mariana Islands</enum>
+                <enum abbrev="PALAU">Palau</enum>
+                <enum abbrev="P_R">Puerto Rico</enum>
+                <enum abbrev="V_I">Virgin Islands</enum>
+                <enum abbrev="XX">Other</enum>
+            </enumerations>
+        </table>
+
     </schema>
-    <dialogs package="templates">
-    <dialog name="body-file" loop="no" redirect-after-execute="false">
-        <frame heading="Hello World Form"/>
-        <field type="text" name="full_name" caption="Full Name" required="yes"/>
-        <field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/>
-        <on-execute handler="template">
-            <source>category.ftl</source>  <!-- source is relative to the app root -->
-        </on-execute>
-    </dialog>
-    </dialogs>
+
     <queries package="petstore">
+         <query name="getUserLogin">
+             select count(*) as valid from login
+                where login_id = ? and password = ?
+             <params>
+                 <param value="request:j_username"/>
+                 <param value="request:j_password"/>
+             </params>
+         </query>
          <query name="getProducts">
              select product_id, name, descr from product where category_id = ?
             <params>
@@ -227,7 +350,7 @@
             </presentation>
         </query>
         <query name="getItems">
-             select i.item_id, i.listprice, i.name, p.name
+             select i.item_id, i.list_price, i.name, p.name
              from item i, product p
              where p.product_id = ?
              and p.product_id = i.product_id
@@ -248,7 +371,7 @@
               </presentation>
         </query>
         <query name="getProductDetail">
-             select name, descr, image, listprice, status from item
+             select name, descr, image, list_price, status, item_id from item
             where item_id = ?
             <params>
               <param value="request:item_id"/>
@@ -267,7 +390,24 @@
                   </panel>
               </presentation>
         </query>
-
+         <query name="getCartDetail">
+             select item_id, name, status, list_price  from item
+            where item_id = ?
+            <params>
+              <param value="session:item_id"/>
+            </params>
+             <presentation>
+                 <panel name="main" height="300">
+                     <frame heading="static:Pets"/>
+                     <report>
+                         <column heading="ID" format="plain"/>
+                         <column heading="Name" format="plain"/>
+                         <column heading="Status" format="plain"/>
+                         <column heading="Price" format="plain"/>
+                      </report>
+                  </panel>
+              </presentation>
+        </query>
 
     </queries>
 </project>
