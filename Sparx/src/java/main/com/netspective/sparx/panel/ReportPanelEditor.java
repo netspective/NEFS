@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ReportPanelEditor.java,v 1.1 2004-03-05 20:17:11 aye.thu Exp $
+ * $Id: ReportPanelEditor.java,v 1.2 2004-03-05 20:18:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -83,7 +83,7 @@ import com.netspective.sparx.util.HttpUtils;
 import java.io.IOException;
 import java.io.Writer;
 
-public class ReportPanelEditor extends AbstractPanelEditor
+public class ReportPanelEditor extends PanelEditor
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
 

@@ -83,12 +83,12 @@ public class PanelEditorsPackage
         return dialogsPkg;
     }
 
-    public PanelEditor createPanelEditor()
+    public ReportPanelEditor createPanelEditor()
     {
-        return new PanelEditor(container.getProject(), this);
+        return new ReportPanelEditor(container.getProject(), this);
     }
 
-    public void addPanelEditor(PanelEditor panel)
+    public void addPanelEditor(ReportPanelEditor panel)
     {
         panel.setNameSpace(this);
         container.add(panel);

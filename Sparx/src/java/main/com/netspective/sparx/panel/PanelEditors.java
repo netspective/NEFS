@@ -96,7 +96,7 @@ public class PanelEditors implements MetricsProducer
      *
      * @param panel
      */
-    public void add(PanelEditor panel)
+    public void add(ReportPanelEditor panel)
     {
         panels.add(panel);
         byName.put(panel.getNameForMapKey(), panel);
@@ -119,9 +119,9 @@ public class PanelEditors implements MetricsProducer
      * @param i
      * @return
      */
-    public PanelEditor get(int i)
+    public ReportPanelEditor get(int i)
     {
-        return (PanelEditor) panels.get(i);
+        return (ReportPanelEditor) panels.get(i);
     }
 
     /**
@@ -130,9 +130,9 @@ public class PanelEditors implements MetricsProducer
      * @param name
      * @return
      */
-    public PanelEditor get(String name)
+    public ReportPanelEditor get(String name)
     {
-        return (PanelEditor) byName.get(PanelEditor.translateNameForMapKey(name));
+        return (ReportPanelEditor) byName.get(ReportPanelEditor.translateNameForMapKey(name));
     }
 
     /**
