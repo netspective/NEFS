@@ -46,7 +46,7 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 
     public void formatForeignKeyEdge(final HibernateDiagramGenerator generator, final ForeignKey foreignKey, final GraphvizDiagramEdge edge)
     {
-        if (showReferenceData && isReferenceRelationship(generator, foreignKey))
+        if (showReferenceData && (isReferenceRelationship(generator, foreignKey) || isCustomReferenceRelationship(generator, foreignKey)))
         {
             edge.setArrowHead("normal");
             edge.setStyle("dotted");
@@ -106,15 +106,20 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 
     public String getColumnDataType(HibernateDiagramGenerator generator, Column column, PrimaryKey partOfPrimaryKey, ForeignKey partOfForeignKey)
     {
-        if (showReferenceData && partOfForeignKey != null && isReferenceRelationship(generator, partOfForeignKey))
+        if (showReferenceData && partOfForeignKey != null && (isReferenceRelationship(generator, partOfForeignKey) || isCustomReferenceRelationship(generator, partOfForeignKey)))
             return partOfForeignKey.getReferencedTable().getName();
         else
             return column.getSqlType(generator.getDialect(), generator.getMapping());
     }
 
+    public boolean isCustomReferenceRelationship(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
+    {
+        return CustomReferenceEntity.class.isAssignableFrom(generator.getClassForTable(foreignKey.getReferencedTable()).getMappedClass());
+    }
+
     public boolean isIncludeEdgePort(final HibernateDiagramGenerator generator, final ForeignKey foreignKey, boolean source)
     {
-        if (showReferenceData && isReferenceRelationship(generator, foreignKey))
+        if (showReferenceData && (isReferenceRelationship(generator, foreignKey) || isCustomReferenceRelationship(generator, foreignKey)))
             return false;
         else
             return true;
