@@ -54,10 +54,11 @@ public class ShortIntegerColumn extends BasicColumn
                 {
                     // try and get the text representation and assign it instead
                     setTextValue(value.toString());
+                    return;
                 }
-                catch(Exception e)
+                catch(ValueException e)
                 {
-                    throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
+                    throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName() + " with on valid setTextValue(value.toString()) converter.");
                 }
             }
 

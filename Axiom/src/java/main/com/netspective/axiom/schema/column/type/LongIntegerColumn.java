@@ -54,8 +54,9 @@ public class LongIntegerColumn extends BasicColumn
                 {
                     // try and get the text representation and assign it instead
                     setTextValue(value.toString());
+                    return;
                 }
-                catch(Exception e)
+                catch(ValueException e)
                 {
                     throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
                 }
@@ -66,7 +67,14 @@ public class LongIntegerColumn extends BasicColumn
 
         public void setTextValue(String value) throws ValueException
         {
-            setValue(new Long(Long.parseLong(value)));
+            try
+            {
+                setValue(new Long(Long.parseLong(value)));
+            }
+            catch(NumberFormatException e)
+            {
+                throw new ValueException(e);
+            }
         }
     }
 
