@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section>
+<title>Assumptions</title>
+
+<para>For the purpose of this tutorial, we will be assuming that you
+installed the following:</para>
+
+<itemizedlist>
+<listitem>
+<para>Java Developer Kit (JDK) 1.2, 1.3 or 1.4</para>
+</listitem>
+
+<listitem>
+<para>A Servlet Container (application server) supporting the Servlet
+2.2 or higher specification</para>
+</listitem>
+</itemizedlist>
+
+<para>We assume that you are using the default port
+<literal>8080</literal> for your web server. If you chose different values
+for the installation path andthe port number, you should substitute the
+paths and the URLs in our example with your values as needed. This
+tutorial also assumes your familiarity with XML, SQL, Java, Servlets and
+JDBC.</para>
+</section>
