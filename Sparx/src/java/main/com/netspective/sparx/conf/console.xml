@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.80 2003-08-08 17:19:22 shahid.shah Exp $
+  * $Id: console.xml,v 1.81 2003-08-09 16:37:04 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -74,6 +74,9 @@
 	        <page name="configuration" caption="Configuration">
 	            <page name="servlet" caption="Servlet Config"/>
 	            <page name="application" caption="App Config"/>
+	            <page name="class-path" caption="Class Path">
+                    <body config="console" source="console-page-content:../class-path.ftl"/>
+                </page>
             </page>
 	        <page name="access-control" caption="Access Control">
                 <page name="acl" caption="ACLs"/>

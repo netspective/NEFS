@@ -39,10 +39,10 @@
  */
 
 /**
- * $Id: ResinDataSourcePoolStatistics.java,v 1.1 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: ResinDataSourcePoolStatistics.java,v 1.1 2003-08-09 16:37:04 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.data;
+package com.netspective.sparx.console.util;
 
 import java.lang.reflect.Method;
 

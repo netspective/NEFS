@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.14 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: Project.java,v 1.15 2003-08-09 16:37:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -90,6 +90,7 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
 import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.lang.ClassPath;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
@@ -279,6 +280,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void addRegisterConnectionProviderEntryStatistics(ConnectionProviderEntryStatistics stats)
     {
         BasicConnectionProviderEntry.registerStatisticsProvider(stats);
+    }
+
+    public void addRegisterClassPathProvider(ClassPath.ClassPathProvider provider)
+    {
+        ClassPath.registerClassPathProvider(provider);
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
