@@ -97,22 +97,22 @@ public class EntitySeedDataPopulator
     {
         try
         {
-            Hashtable pdsByName = new Hashtable();
-            BeanInfo beanInfo = Introspector.getBeanInfo(entityClass);
-            PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+            final Hashtable pdsByName = new Hashtable();
+            final BeanInfo beanInfo = Introspector.getBeanInfo(entityClass);
+            final PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
             for (int i = 0; i < descriptors.length; i++)
             {
-                PropertyDescriptor descriptor = descriptors[i];
+                final PropertyDescriptor descriptor = descriptors[i];
                 if (descriptor.getWriteMethod() != null)
                     pdsByName.put(descriptor.getName(), descriptor.getWriteMethod());
             }
 
             for (int i = 0; i < data.length; i++)
             {
-                Object entityObject = entityClass.newInstance();
+                final Object entityObject = entityClass.newInstance();
                 for (int j = 0; j < propertyList.length; j++)
                 {
-                    Method setter = (Method) pdsByName.get(propertyList[j]);
+                    final Method setter = (Method) pdsByName.get(propertyList[j]);
                     if (setter != null)
                         setter.invoke(entityObject, new Object[] {data[i][j]});
                 }
