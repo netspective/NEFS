@@ -44,7 +44,7 @@ public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
     public static final int PRODUCTION = STAGING * 2;
     public static final int SERVER = PRODUCTION * 2;
     public static final int WORKSTATION = SERVER * 2;
-    public static final int DEMONSTRATION = PRODUCTION * 2;
+    public static final int DEMONSTRATION = WORKSTATION * 2;
 
     /**
      * Checks whether the current runtime environment, based on the given value source, is under maintenance.
