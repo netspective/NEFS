@@ -73,6 +73,7 @@ public class PanelTransform implements TemplateTransformModel
         private Map args;
         private Writer out;
         private HtmlPanel panel;
+        private boolean panelIsExternalInstance;
         private HttpServletValueContext vc;
         private String panelSkinName;
         private HtmlPanelSkin tabbedPanelSkin;
@@ -101,11 +102,28 @@ public class PanelTransform implements TemplateTransformModel
 
         public PanelWriter(Writer out, Map args)
         {
+            Environment env = Environment.getCurrentEnvironment();
+
             this.out = out;
             this.args = args;
-            this.panel = new TransformPanel();
+            StringModel panelInstanceRef = (freemarker.ext.beans.StringModel) args.get("instance");
+            if(panelInstanceRef != null)
+            {
+                Object panelInstance = panelInstanceRef.getWrappedObject();
+                if(panelInstance instanceof HtmlPanel)
+                {
+                    this.panel = (HtmlPanel) panelInstance;
+                    panelIsExternalInstance = true;
+                }
+                else
+                {
+                    this.panel = new TransformPanel();
+                    log.error("Panel instance " + panelInstance + " is not an HtmlPanel implementation. Instead, it is a " + panelInstance.getClass());
+                }
+            }
+            else
+                this.panel = new TransformPanel();
 
-            Environment env = Environment.getCurrentEnvironment();
             StringModel model = null;
             try
             {
@@ -117,18 +135,32 @@ public class PanelTransform implements TemplateTransformModel
             }
 
             vc = (HttpServletValueContext) model.getWrappedObject();
-            pvc = new BasicHtmlPanelValueContext(vc.getServlet(), vc.getRequest(), vc.getResponse(), panel);
-            tabbedPanelSkin = panelSkinName == null
-                              ? vc.getActiveTheme().getTabbedPanelSkin()
-                              : (HtmlPanelSkin) vc.getActiveTheme().getPanelSkins().get(panelSkinName);
-            try
+            if(!panelIsExternalInstance)
             {
-                tabbedPanelSkin.renderPanelRegistration(out, pvc);
-                tabbedPanelSkin.renderFrameBegin(out, pvc);
+                pvc = new BasicHtmlPanelValueContext(vc.getServlet(), vc.getRequest(), vc.getResponse(), panel);
+                tabbedPanelSkin = panelSkinName == null
+                                  ? vc.getActiveTheme().getTabbedPanelSkin()
+                                  : (HtmlPanelSkin) vc.getActiveTheme().getPanelSkins().get(panelSkinName);
+                try
+                {
+                    tabbedPanelSkin.renderPanelRegistration(out, pvc);
+                    tabbedPanelSkin.renderFrameBegin(out, pvc);
+                }
+                catch(IOException e)
+                {
+                    log.error(e);
+                }
             }
-            catch(IOException e)
+            else
             {
-                log.error(e);
+                try
+                {
+                    panel.render(out, (NavigationContext) vc, vc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+                }
+                catch(IOException e)
+                {
+                    log.error(e);
+                }
             }
         }
 
@@ -144,7 +176,8 @@ public class PanelTransform implements TemplateTransformModel
 
         public void close() throws IOException
         {
-            tabbedPanelSkin.renderFrameEnd(out, pvc);
+            if(!panelIsExternalInstance)
+                tabbedPanelSkin.renderFrameEnd(out, pvc);
         }
     }
 }
