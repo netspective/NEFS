@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.21 2003-08-28 00:46:21 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.22 2003-08-28 01:18:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -112,6 +112,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private HttpLoginManager loginManager;
     private Theme theme;
     private NavigationTree navigationTree;
+    private UriAddressableFileLocator resourceLocator;
     private RuntimeEnvironmentFlags runtimeEnvironmentFlags;
     private boolean cacheComponents;
     private String executionPropertiesFileName;
@@ -321,10 +322,14 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
      *   - APP_ROOT/resources/sparx (will only exist if user is overriding any defaults)
      *   - APP_ROOT/sparx (will exist in ITE mode when sparx directory is inside application)
      *   - [CLASS_PATH]/Sparx/resources (only useful during development in SDE, not production since it won't be found)
+     * TODO: this method is _not_ thread-safe because two requests could call the method at the same time
      * @throws ServletException
      */
     protected UriAddressableFileLocator getResourceLocator(HttpServletRequest request) throws ServletException
     {
+        if(resourceLocator != null)
+            return resourceLocator;
+
         ServletContext servletContext = getServletContext();
         try
         {
@@ -353,7 +358,8 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             if(locators.size() == 0)
                 System.err.println("Unable to register any web resource locators (/resources/sparx and /sparx were not found).");
 
-            return new MultipleUriAddressableFileLocators((UriAddressableFileLocator[]) locators.toArray(new UriAddressableFileLocator[locators.size()]), isCacheComponents());
+            resourceLocator = new MultipleUriAddressableFileLocators((UriAddressableFileLocator[]) locators.toArray(new UriAddressableFileLocator[locators.size()]), isCacheComponents());
+            return resourceLocator;
         }
         catch (IOException e)
         {
@@ -451,9 +457,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         this.logoutActionReqParamName = logoutActionReqParamName;
     }
 
-    // TODO: this method is _not_ thread-safe because two requests could call the method at the same time
-    //       fix it to make it thread-safe
-    //
     public Theme getTheme(HttpServletRequest request) throws ServletException
     {
         if(theme == null || ! isCacheComponents())
