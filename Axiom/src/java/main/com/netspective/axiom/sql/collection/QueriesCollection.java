@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueriesCollection.java,v 1.2 2003-04-06 03:57:12 shahid.shah Exp $
+ * $Id: QueriesCollection.java,v 1.3 2003-04-06 23:46:54 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.sql.collection;
@@ -68,7 +68,10 @@ public class QueriesCollection implements Queries
     {
         queries.add(query);
         byName.put(query.getNameForMapKey(), query);
-        nameSpaceNames.add(query.getNameSpace().getNameSpaceId());
+
+		//TODO: Modify this to also use a method similar to getNameForMapKey() for case-insensitive namespaces
+		if (null != query.getNameSpace())
+            nameSpaceNames.add(query.getNameSpace().getNameSpaceId());
     }
 
     public Query get(int i)
