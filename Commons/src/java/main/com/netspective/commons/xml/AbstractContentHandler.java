@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.2 2003-03-23 04:44:03 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.3 2003-03-26 00:36:41 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -209,6 +209,13 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
                 throw new ContentHandlerException(parseContext, "The result of '"+ NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO +"' attribute expression '"+ relativeTo +"' in <"+ nodeIdentifiers.getIncludeElementName()  +"> ("+ relativeToExpr +") must be either a Class or a ClassLoader.");
             else
                 resource = new Resource(activeEntry.getClass(), resourceName);
+
+            if(parseContext.getInputFileTracker() != null && resource.getFile() != null)
+            {
+                FileTracker includeFile = new FileTracker();
+                includeFile.setFile(resource.getFile());
+                includeFile.setParent(parseContext.getInputFileTracker());
+            }
 
             ParseContext includePC = activeEntry.parseInclude(parseContext, resource);
             parseContext.getErrors().addAll(includePC.getErrors());
