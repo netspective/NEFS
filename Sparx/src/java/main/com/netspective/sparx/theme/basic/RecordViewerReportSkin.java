@@ -61,12 +61,8 @@ import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.panel.HtmlPanelActions;
-import com.netspective.sparx.panel.HtmlPanelAction;
 import com.netspective.sparx.command.RedirectCommand;
 import com.netspective.commons.command.Command;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -74,7 +70,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordViewerReportSkin.java,v 1.4 2003-07-14 04:10:56 aye.thu Exp $
+ * $Id: RecordViewerReportSkin.java,v 1.5 2003-08-01 05:52:23 aye.thu Exp $
  */
 public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -132,7 +128,7 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
      * @param isOddRow
      * @throws IOException
      */
-    public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, boolean isOddRow) throws IOException
+    public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();

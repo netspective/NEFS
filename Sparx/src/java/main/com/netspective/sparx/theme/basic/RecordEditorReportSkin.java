@@ -58,8 +58,6 @@ import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
-import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.command.Command;
 
 import java.io.Writer;
@@ -67,7 +65,7 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordEditorReportSkin.java,v 1.4 2003-07-14 04:10:56 aye.thu Exp $
+ * $Id: RecordEditorReportSkin.java,v 1.5 2003-08-01 05:51:51 aye.thu Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -81,7 +79,7 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
         super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
 
-    public void produceDataRowDecoratorAppend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, boolean isOddRow) throws IOException
+    public void produceDataRowDecoratorAppend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
@@ -116,7 +114,7 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
      * @param isOddRow
      * @throws IOException
      */
-    public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, boolean isOddRow) throws IOException
+    public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
