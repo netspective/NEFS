@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.3 2003-03-16 17:03:52 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -137,7 +137,7 @@ public class ValueSources
 
     public final void assertValueContextInstance(Class expected, ValueContext vc, ValueSource vs) throws UnexpectedValueContextException
     {
-        if(! vc.getClass().isAssignableFrom(expected))
+        if(! expected.isAssignableFrom(vc.getClass()))
         {
             UnexpectedValueContextException e = new UnexpectedValueContextException(expected, vc, vs);
             log.error(e);
