@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Transform.java,v 1.2 2003-11-14 19:45:09 shahid.shah Exp $
+ * $Id: Transform.java,v 1.3 2003-11-15 18:53:55 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -248,12 +248,12 @@ public class Transform
         }
     }
 
-    public void render(Writer writer, ValueContext vc, Map additionalParams) throws IOException
+    public void render(Writer writer, ValueContext vc, Map additionalParams) throws TransformerConfigurationException, TransformerException, IOException
     {
         render(writer, vc, null, additionalParams, true);
     }
 
-    public boolean render(Writer writer, ValueContext vc, Source transformSource, Map additionalParams, boolean writeErrors) throws IOException
+    public boolean render(Writer writer, ValueContext vc, Source transformSource, Map additionalParams, boolean writeErrors) throws TransformerConfigurationException, TransformerException, IOException
     {
         if(source == null && transformSource == null)
         {
@@ -315,17 +315,23 @@ public class Transform
         }
         catch(TransformerConfigurationException e)
         {
-            if(writeErrors)
-                writer.write("<pre>"+ TextUtils.getStackTrace(e) +"</pre>");
             log.error("XSLT error in " + this.getClass().getName(), e);
-            return false;
+            if(writeErrors)
+            {
+                writer.write("<pre>"+ TextUtils.getStackTrace(e) +"</pre>");
+                return false;
+            }
+            else throw e;
         }
         catch(TransformerException e)
         {
-            if(writeErrors)
-                writer.write("<pre>"+ TextUtils.getStackTrace(e) +"</pre>");
             log.error("XSLT error in " + this.getClass().getName(), e);
-            return false;
+            if(writeErrors)
+            {
+                writer.write("<pre>"+ TextUtils.getStackTrace(e) +"</pre>");
+                return false;
+            }
+            else throw e;
         }
     }
 }
