@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Theme.java,v 1.10 2003-07-12 02:17:46 aye.thu Exp $
+ * $Id: Theme.java,v 1.11 2003-08-08 01:03:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -50,6 +50,7 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.form.DialogSkin;
+import com.netspective.sparx.theme.basic.LoginDialogSkin;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.io.InheritableFileResources;
@@ -93,6 +94,8 @@ public interface Theme
     public void addDialogSkin(DialogSkin skin);
 
     public Map getDialogSkins();
+
+    public LoginDialogSkin getLoginDialogSkin();
 
     public DialogSkin getDefaultDialogSkin();
 

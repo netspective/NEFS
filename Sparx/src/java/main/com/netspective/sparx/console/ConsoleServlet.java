@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.13 2003-06-26 16:05:57 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.14 2003-08-08 01:03:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -48,20 +48,85 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
+import javax.servlet.ServletConfig;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.form.security.LoginDialog;
+import com.netspective.sparx.form.security.LoginDialogContext;
+import com.netspective.sparx.form.listener.DialogValidateListener;
+import com.netspective.sparx.form.DialogValidationContext;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
-import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.security.Crypt;
+import com.netspective.commons.security.AuthenticatedUser;
 
 public class ConsoleServlet extends NavigationControllerServlet
 {
     public static final String CONSOLE_ID = "console";
     public static final String REQATTRNAME_INCONSOLE = "in-console";
     public static final Boolean REQATTRVALUE_INCONSOLE = new Boolean(true);
+    public static final String INITPARAMNAME_LOGIN_USER_ID = "login-user-id";
+    public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_UNENCRYPTED = "login-password";
+    public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED = "login-password-encrypted";
+
+    private HttpLoginManager loginManager;
+    private String loginUserId;
+    private String loginPasswordEncrypted;
+
+    protected class LoginValidator implements DialogValidateListener
+    {
+        public void validateDialog(DialogValidationContext dvc)
+        {
+            LoginDialogContext ldc = (LoginDialogContext) dvc.getDialogContext();
+            LoginDialog loginDialog = (LoginDialog) ldc.getDialog();
+
+            if(loginUserId == null)
+            {
+                loginDialog.getUserIdField().invalidate(ldc, "No '"+ INITPARAMNAME_LOGIN_USER_ID +"' servlet init parameter provided.");
+                return;
+            }
+
+            if(loginPasswordEncrypted == null)
+            {
+                loginDialog.getPasswordField().invalidate(ldc, "No '"+ INITPARAMNAME_LOGIN_USER_PASSWORD_UNENCRYPTED +"' or '"+ INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED +"' servlet init parameter provided.");
+                return;
+            }
+
+            DialogContext.DialogFieldStates states = ldc.getFieldStates();
+            String userId = states.getState(loginDialog.getUserIdFieldName()).getValue().getTextValue();
+            if(! loginUserId.equals(userId))
+            {
+                loginDialog.getUserIdField().invalidate(ldc, "Invalid user name.");
+                return;
+            }
+
+            String providedPassword = states.getState(loginDialog.getPasswordFieldName()).getValue().getTextValue();
+            String encryptedProvidedPassword =
+                    ldc.hasEncryptedPassword() ? providedPassword :
+                        Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, providedPassword);
+            if(! encryptedProvidedPassword.equals(loginPasswordEncrypted))
+                loginDialog.getPasswordField().invalidate(ldc, "Invalid password -- comparing '"+ encryptedProvidedPassword +"' against '"+ loginPasswordEncrypted +"'.");
+        }
+    }
+
+    public void init(ServletConfig servletConfig) throws ServletException
+    {
+        super.init(servletConfig);
+
+        loginUserId = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_USER_ID);
+        loginPasswordEncrypted = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED);
+        if(loginPasswordEncrypted == null)
+        {
+            String loginPasswordUnencrypted = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_USER_PASSWORD_UNENCRYPTED);
+            if(loginPasswordUnencrypted != null)
+                loginPasswordEncrypted = Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, loginPasswordUnencrypted);
+        }
+    }
 
     protected Theme getTheme()
     {
@@ -73,12 +138,23 @@ public class ConsoleServlet extends NavigationControllerServlet
         return project.getConsoleNavigationTree();
     }
 
+    protected HttpLoginManager getLoginManager(Project project)
+    {
+        if(loginManager == null)
+        {
+            loginManager = project.getLoginManagers().getLoginManager("console");
+            loginManager.getLoginDialog().addListener(new LoginValidator());
+        }
+        return loginManager;
+    }
+
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
         long startTime = System.currentTimeMillis();
         httpServletRequest.setAttribute(REQATTRNAME_INCONSOLE, REQATTRVALUE_INCONSOLE);
 
         NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
+        checkForLogout(nc);
         if(nc.isRedirectToAlternateChildRequired())
         {
             httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Themes.java,v 1.3 2003-07-11 23:30:03 shahid.shah Exp $
+ * $Id: Themes.java,v 1.4 2003-08-08 01:03:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -47,14 +47,12 @@ package com.netspective.sparx.theme;
 import java.util.Map;
 import java.util.HashMap;
 
-import org.apache.commons.discovery.tools.DiscoverClass;
 import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class Themes
 {
-    private static DiscoverClass discoverClass = new DiscoverClass();
     protected static final Log log = LogFactory.getLog(Themes.class);
 
     private static Themes instance = (Themes) DiscoverSingleton.find(Themes.class, Themes.class.getName());

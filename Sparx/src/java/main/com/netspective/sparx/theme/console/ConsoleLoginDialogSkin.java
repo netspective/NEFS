@@ -39,26 +39,25 @@
  */
 
 /**
- * $Id: ConsoleTheme.java,v 1.3 2003-08-08 01:03:33 shahid.shah Exp $
+ * $Id: ConsoleLoginDialogSkin.java,v 1.1 2003-08-08 01:03:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
 
-import com.netspective.sparx.theme.basic.BasicTheme;
+import java.io.Writer;
+import java.io.IOException;
+
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.theme.basic.StandardDialogSkin;
 import com.netspective.sparx.theme.basic.LoginDialogSkin;
-import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.commons.value.ValueSource;
 
-public class ConsoleTheme extends BasicTheme
+public class ConsoleLoginDialogSkin extends LoginDialogSkin
 {
-    private LoginDialogSkin defaulLoginDialogSkin = new ConsoleLoginDialogSkin(this, "panel-input", "panel/input", false);
-
-    protected NavigationSkin constructDefaultNavigationSkin()
+    public ConsoleLoginDialogSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        return new ConsoleNavigationSkin(this);
-    }
-
-    public LoginDialogSkin getLoginDialogSkin()
-    {
-        return defaulLoginDialogSkin;
+        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        setLoginImage("login.gif");
     }
 }

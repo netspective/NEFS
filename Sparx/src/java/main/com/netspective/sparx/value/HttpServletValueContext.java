@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpServletValueContext.java,v 1.5 2003-08-05 17:11:44 shahid.shah Exp $
+ * $Id: HttpServletValueContext.java,v 1.6 2003-08-08 01:03:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -52,6 +52,7 @@ import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.security.HttpLoginManager;
 
 public interface HttpServletValueContext extends ServletValueContext
 {
@@ -71,6 +72,8 @@ public interface HttpServletValueContext extends ServletValueContext
      * Retrive the active servlet response.
      */
     public HttpServletResponse getHttpResponse();
+
+    public HttpLoginManager getActiveLoginManager();
 
     public Theme getActiveTheme();
 
@@ -95,4 +98,5 @@ public interface HttpServletValueContext extends ServletValueContext
     public DialogContext getDialogContext();
 
     public void setDialogContext(DialogContext dialogContext);
+
 }

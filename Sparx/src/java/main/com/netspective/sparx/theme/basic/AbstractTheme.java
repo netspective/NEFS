@@ -27,6 +27,7 @@ public class AbstractTheme implements Theme
     private HtmlPanelSkin templatePanelSkin;
     private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel-output", "panel/output", false);
     private StandardDialogSkin defaultDialogSkin = new StandardDialogSkin(this, "panel-input", "panel/input", false);
+    private LoginDialogSkin defaulLoginDialogSkin = new LoginDialogSkin(this, "panel-input", "panel/input", false);
 
     public AbstractTheme()
     {
@@ -120,6 +121,11 @@ public class AbstractTheme implements Theme
     public HtmlTabularReportSkin getReportSkin(String name)
     {
         return (HtmlTabularReportSkin) tabularReportSkins.get(name);
+    }
+
+    public LoginDialogSkin getLoginDialogSkin()
+    {
+        return defaulLoginDialogSkin;
     }
 
     public DialogSkin getDefaultDialogSkin()

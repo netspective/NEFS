@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.77 2003-08-06 18:03:43 shahid.shah Exp $
+  * $Id: console.xml,v 1.78 2003-08-08 01:03:32 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -222,6 +222,21 @@
 
         <xdm:include resource="com/netspective/sparx/conf/console-user-manual-pages.xml"/>
     </navigation-tree>
+
+    <register-login-manager name="console">
+        <authenticated-user-session-attr-name>nefs-console-authenticated-user-01</authenticated-user-session-attr-name>
+        <allow-remember-user-id>yes</allow-remember-user-id>
+        <remember-user-id-cookie-name>nefs-console-user-id-01</remember-user-id-cookie-name>
+        <remember-password-cookie-name>nefs-console-password-01</remember-password-cookie-name>
+
+        <login-dialog retain-params="*">
+            <frame heading="Netspective Enterprise Console Login" hide-heading="true"/> <!-- we hid the heading because the skin renders the heading within the dialog -->
+
+            <field name="user-id" type="text" caption="User Id" required="yes" persist="yes" initial-focus="yes"/>
+            <field name="password" type="text" caption="Password" mask-entry="yes" required="yes"/>
+            <field name="remember" type="boolean" caption="" check-label="Remember my ID on this computer" style="check"/>
+        </login-dialog>
+    </register-login-manager>
 
     <dialogs package="console">
         <dialog name="sql-editor" class="com.netspective.sparx.console.form.SqlEditorDialog">

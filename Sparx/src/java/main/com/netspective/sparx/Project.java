@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.12 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: Project.java,v 1.13 2003-08-08 01:03:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -81,6 +81,8 @@ import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
 import com.netspective.sparx.ant.AntProjects;
 import com.netspective.sparx.ant.AntProject;
+import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.HttpLoginManagers;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateContentHandler;
@@ -164,6 +166,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private Dialogs dialogs = new Dialogs();
     private DialogsPackage activeDialogsNameSpace;
     private AntProjects antProjects = new AntProjects();
+    private HttpLoginManagers loginManagers = new HttpLoginManagers();
 
     public Project()
     {
@@ -235,6 +238,23 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void addRegisterTheme(Theme theme)
     {
         Themes.getInstance().registerTheme(theme);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
+
+    public HttpLoginManager createRegisterLoginManager()
+    {
+        return new HttpLoginManager();
+    }
+
+    public void addRegisterLoginManager(HttpLoginManager loginManager)
+    {
+        loginManagers.addLoginManager(loginManager);
+    }
+
+    public HttpLoginManagers getLoginManagers()
+    {
+        return loginManagers;
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */

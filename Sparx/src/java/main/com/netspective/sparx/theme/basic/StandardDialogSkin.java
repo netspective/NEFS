@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.15 2003-08-05 04:21:31 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.16 2003-08-08 01:03:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -720,13 +720,20 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                         "</td></tr>\n");
 				}
 			}
-			else
+			else if(caption.length() > 0)
 			{
 				fieldsHtml.append(
                     "<tr" + rowAttr + "><td " + captionClass + ">" + caption + "</td>" +
                     "<td "+ controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
                     "</td></tr>\n");
 			}
+            else
+            {
+                fieldsHtml.append(
+                    "<tr" + rowAttr + "><td>&nbsp;</td>" +
+                    "<td "+ controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+                    "</td></tr>\n");
+            }
 
             if (haveErrors)
                 fieldsHtml.append("<tr><td>&nbsp;</td><td>" +

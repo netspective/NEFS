@@ -39,26 +39,47 @@
  */
 
 /**
- * $Id: ConsoleTheme.java,v 1.3 2003-08-08 01:03:33 shahid.shah Exp $
+ * $Id: HttpLoginManagers.java,v 1.1 2003-08-08 01:03:32 shahid.shah Exp $
  */
 
-package com.netspective.sparx.theme.console;
+package com.netspective.sparx.security;
 
-import com.netspective.sparx.theme.basic.BasicTheme;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
-import com.netspective.sparx.navigate.NavigationSkin;
+import java.util.Map;
+import java.util.HashMap;
 
-public class ConsoleTheme extends BasicTheme
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public class HttpLoginManagers
 {
-    private LoginDialogSkin defaulLoginDialogSkin = new ConsoleLoginDialogSkin(this, "panel-input", "panel/input", false);
+    private static final Log log = LogFactory.getLog(HttpLoginManagers.class);
 
-    protected NavigationSkin constructDefaultNavigationSkin()
+    private Map loginManagers = new HashMap();
+    private HttpLoginManager defaultManager;
+
+    public HttpLoginManagers()
     {
-        return new ConsoleNavigationSkin(this);
     }
 
-    public LoginDialogSkin getLoginDialogSkin()
+    public void addLoginManager(HttpLoginManager manager)
     {
-        return defaulLoginDialogSkin;
+        loginManagers.put(manager.getName().toUpperCase(), manager);
+        if(manager.isDefault())
+            setDefaultManager(manager);
+    }
+
+    public HttpLoginManager getLoginManager(String identifier)
+    {
+        return (HttpLoginManager) loginManagers.get(identifier.toUpperCase());
+    }
+
+    public HttpLoginManager getDefaultManager()
+    {
+        return defaultManager;
+    }
+
+    public void setDefaultManager(HttpLoginManager defaultManager)
+    {
+        this.defaultManager = defaultManager;
     }
 }

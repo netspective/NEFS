@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.7 2003-07-20 19:42:49 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.8 2003-08-08 01:03:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -53,24 +53,52 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import javax.servlet.ServletConfig;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.form.security.LoginDialog;
+import com.netspective.sparx.form.security.LoginDialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.text.TextUtils;
 
 public class NavigationControllerServlet extends HttpServlet
 {
+    private static final Log log = LogFactory.getLog(NavigationControllerServlet.class);
+
+    private boolean secure;
+
     public void init(ServletConfig servletConfig) throws ServletException
     {
         super.init(servletConfig);
+
+        String secureParamValue = servletConfig.getInitParameter("secure");
+        if(secureParamValue != null)
+            secure = TextUtils.toBoolean(secureParamValue);
+
         File xdmSourceFile = new File(BasicDbHttpServletValueContext.getProjectFileName(getServletContext()));
         if(! xdmSourceFile.exists())
             throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist. Please " +
                     "correct the context-param called '"+ BasicDbHttpServletValueContext.INITPARAMNAME_PROJECT_FILE +"' in your WEB-INF/web.xml file.");
+    }
+
+    public boolean isSecure()
+    {
+        return secure;
+    }
+
+    protected String getLogoutActionReqParamName()
+    {
+        return "_logout";
     }
 
     protected Theme getTheme()
@@ -81,6 +109,11 @@ public class NavigationControllerServlet extends HttpServlet
     protected NavigationTree getNavigationTree(Project project)
     {
         return project.getDefaultNavigationTree();
+    }
+
+    protected HttpLoginManager getLoginManager(Project project)
+    {
+        return project.getLoginManagers().getDefaultManager();
     }
 
     protected Project getProject() throws ServletException
@@ -110,8 +143,52 @@ public class NavigationControllerServlet extends HttpServlet
                                         tree, activePageId);
     }
 
+    protected boolean loginDialogPresented(NavigationContext nc) throws ServletException, IOException
+    {
+        Project project = getProject();
+        HttpLoginManager loginManager = getLoginManager(project);
+        if(loginManager != null)
+        {
+            nc.getRequest().setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_LOGIN_MANAGER, loginManager);
+
+            if(! loginManager.accessAllowed(nc))
+            {
+                Theme theme = getTheme();
+                LoginDialog loginDialog = loginManager.getLoginDialog();
+                LoginDialogContext ldc = (LoginDialogContext) loginDialog.createContext(nc, theme.getLoginDialogSkin());
+
+                if(ldc.hasRememberedValues(loginManager))
+                    nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
+                loginDialog.prepareContext(ldc);
+
+                Writer writer = nc.getResponse().getWriter();
+
+                if(! ldc.inExecuteMode())
+                {
+                    nc.getSkin().renderPageMetaData(writer, nc);
+                    ldc.getSkin().renderHtml(writer, ldc);
+                    return true;
+                }
+                try
+                {
+                    loginDialog.execute(writer, ldc);
+                }
+                catch (DialogExecuteException e)
+                {
+                    log.error("Unable to execute login dialog", e);
+                    throw new ServletException(e);
+                }
+            }
+        }
+
+        return false;
+    }
+
     protected void renderPage(NavigationContext nc) throws ServletException, IOException
     {
+        if(isSecure() && loginDialogPresented(nc))
+            return;
+
         NavigationPage activePage = nc.getActivePage();
         Writer writer = nc.getResponse().getWriter();
 
@@ -135,9 +212,20 @@ public class NavigationControllerServlet extends HttpServlet
         }
     }
 
+    protected void checkForLogout(NavigationContext nc) throws ServletException, IOException
+    {
+        if(isSecure())
+        {
+            String logoutActionReqParamValue = nc.getHttpRequest().getParameter(getLogoutActionReqParamName());
+            if(logoutActionReqParamValue != null && TextUtils.toBoolean(logoutActionReqParamValue))
+                getLoginManager(getProject()).logout(nc);
+        }
+    }
+
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
         NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
+        checkForLogout(nc);
         if(nc.isRedirectToAlternateChildRequired())
         {
             httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));

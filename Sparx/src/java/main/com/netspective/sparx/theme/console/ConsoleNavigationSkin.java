@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.18 2003-08-05 17:41:53 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.19 2003-08-08 01:03:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -155,11 +155,14 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     public void renderAuthenticatedUser(Writer writer, NavigationContext nc) throws IOException
     {
-        AuthenticatedUser authUser = (AuthenticatedUser) nc.getHttpRequest().getSession().getAttribute("authenticated-user");
+        AuthenticatedUser authUser = nc.getActiveLoginManager().getAuthenticatedUser(nc);
         if (true)
         {
             String personName = authUser != null ? authUser.getUserId() : "Not logged in";
             String personId = authUser != null ? authUser.getUserName() : "Not logged in";
+
+            if(authUser.isRemembered())
+                personName += " (remembered)";
 
             String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
 
@@ -175,7 +178,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                     "height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
             writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;User&nbsp;</span></td>\n");
             writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/person/summary.jsp?person_id=" + personId + "\">&nbsp;&nbsp;" +
-                    personName.toUpperCase() + "</a></td>\n");
+                    personName + "</a></td>\n");
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
             writer.write("	</td>\n");
@@ -219,7 +222,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" +
                     themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
             writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Action&nbsp;</span></td>\n");
-            writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "?_logout=yes\">&nbsp;&nbsp;Logout&nbsp;</a></td>\n");
+            writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/console?_logout=yes\">&nbsp;&nbsp;Logout&nbsp;</a></td>\n");
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
             writer.write("	</td>\n");

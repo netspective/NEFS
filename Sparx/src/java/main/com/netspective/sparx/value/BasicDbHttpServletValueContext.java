@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.24 2003-08-05 17:11:44 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.25 2003-08-08 01:03:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -62,6 +62,7 @@ import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.SqlManager;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.ProjectComponent;
+import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.navigate.NavigationContext;
@@ -89,6 +90,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public static final String CONTEXTATTRNAME_FREEMARKER_CONFIG = "freemarker-config";
     public static final String INITPARAMNAME_DEFAULT_DATA_SRC_ID = "com.netspective.sparx.DEFAULT_DATA_SOURCE";
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
+    public static final String REQATTRNAME_ACTIVE_LOGIN_MANAGER = "sparx-active-login-manager";
 
     public static final Class PROJECT_COMPONENT_CLASS = discoverClass.find(ProjectComponent.class, ProjectComponent.class.getName());
 
@@ -368,6 +370,11 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public Theme getActiveTheme()
     {
         return (Theme) request.getAttribute(REQATTRNAME_ACTIVE_THEME);
+    }
+
+    public HttpLoginManager getActiveLoginManager()
+    {
+        return (HttpLoginManager) request.getAttribute(REQATTRNAME_ACTIVE_LOGIN_MANAGER);
     }
 
     public Configuration getFreeMarkerConfiguration()
