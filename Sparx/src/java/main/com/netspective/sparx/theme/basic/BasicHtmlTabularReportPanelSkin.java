@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.20 2003-08-01 05:50:48 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.21 2003-08-19 04:53:06 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -143,20 +143,29 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         return "<span title=\""+ ClassPath.getClassFileName(cls) +"\">" + className + "</span>";
     }
 
+    /**
+     * Constructs the redirect URL from the passed in command
+     * @param rc
+     * @param command
+     * @param label
+     * @param hint
+     * @param target
+     * @return
+     */
     public String constructRedirect(TabularReportValueContext rc, Command command, String label, String hint, String target)
     {
-        if(command instanceof RedirectCommand)
+        if (command instanceof RedirectCommand)
         {
             StringBuffer sb = new StringBuffer();
-            sb.append("<a href=\"" + ((RedirectCommand) command).getLocation().getTextValue(rc) + "\"");
-            if(hint != null)
+            sb.append("<a href=\"" + ((RedirectCommand)command).getLocation().getTextValue(rc) + "\"");
+            if (hint != null)
                 sb.append(" title=\"" + hint + "\"");
-            if(target != null)
+            if (target != null)
                 sb.append(" target=\"" + target + "\"");
             sb.append(">" + label + "</a");
             return sb.toString();
         }
-        return this.getClass().getName() + ".constructAction(Action action, String label, String hint) not implemented.";
+        return null;
     }
 
     public String getBlankValue()
@@ -452,7 +461,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             if (reportAction != null)
             {
                 TabularReportColumns columns = rc.getColumns();
-                int colsCount = columns.size() + getRowDecoratorPrependColsCount(rc);
+                int colsCount = columns.size() + getRowDecoratorPrependColsCount(rc) + getRowDecoratorAppendColsCount(rc);
 
                 Theme theme = rc.getActiveTheme();
                 Command command = reportAction.getCommand(rc);
