@@ -121,11 +121,19 @@
 		</page>
 
         <!-- Entities -->
+        <page-type name="entity-redirector" type="default"/>
         <page-type name="entity" type="default"/>
         <page-type name="entity-view" type="default"/>
 
-        <page type="entity" name="person" hidden="yes" retain-params="person_id">
-            <page type="entity-view" name="summary" caption="Summary" require-request-param="person_id">
+        <page type="entity-redirector" class="app.navigate.entity.person.PersonRedirectorPage" name="person" caption="Person Entity Redirector" hidden="yes">
+            <entity-subtype id="5" redirect="page-id:/patient"/>
+            <entity-subtype id="6" redirect="page-id:/physician"/>
+
+            <body>Unknown page subtype for page ${vc.activePage.class.name}, id = ${vc.activeState.entitySubtypeId}, name = ${vc.activeState.entitySubtypeName?default('null')}.</body>
+        </page>
+
+        <page type="entity" name="patient" class="app.navigate.entity.person.PatientPage" hidden="yes">
+            <page name="summary" caption="Summary">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
                     <panel type="command" command="query,personAttribute.address,-,-,-,record-viewer"/>
@@ -137,13 +145,28 @@
                     <panel type="command" command="query,personAttribute.relationship,-,-,-,record-viewer"/>
                 </panels>
             </page>
-            <page type="entity-view" name="chart" caption="Chart"/>
-            <page type="entity-view" name="clinical-note" caption="Clinical Note"/>
-            <page type="entity-view" name="account" caption="Account"/>
-            <page type="entity-view" name="billing" caption="Billing"/>
-            <page type="entity-view" name="associate" caption="Associate"/>
-            <page type="entity-view" name="documents" caption="Documents"/>
+            <page name="chart" caption="Chart"/>
+            <page name="clinical-note" caption="Clinical Note"/>
+            <page name="account" caption="Account"/>
+            <page name="billing" caption="Billing"/>
+            <page name="associate" caption="Associate"/>
+            <page name="documents" caption="Documents"/>
         </page>
+
+        <page type="entity" name="physician" class="app.navigate.entity.person.PhysicianPage" hidden="yes" retain-params="person_id">
+            <page name="summary" caption="Summary">
+                <panels style="two-columns-stacked">
+                    <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
+                    <panel type="command" command="query,personAttribute.address,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.classification,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.contact,-,-,-,record-viewer"/>
+                    <panel type="command" command="query,personAttribute.relationship,-,-,-,record-viewer"/>
+                </panels>
+            </page>
+            <page name="associate" caption="Associate"/>
+            <page name="documents" caption="Documents"/>
+        </page>
+
         <page type="entity" name="org" hidden="yes" retain-params="org_id">
             <page type="entity-view" name="summary" caption="Summary" require-request-param="org_id">
                 <panels style="two-columns">
