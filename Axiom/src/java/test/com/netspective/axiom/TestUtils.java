@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TestUtils.java,v 1.6 2003-07-08 02:29:16 shahid.shah Exp $
+ * $Id: TestUtils.java,v 1.7 2003-09-06 16:45:20 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -101,7 +101,7 @@ public class TestUtils {
    static public DriverManagerConnectionProvider getConnProvider(String connProviderId, boolean reCreateDb){
 
 
-      ConnectionProviderEntry entry = connProvider.getDataSourceEntry(connProviderId);
+      ConnectionProviderEntry entry = connProvider.getDataSourceEntry(null, connProviderId);
 
       if (entry == null || reCreateDb)
          setupDb(connProviderId, true, true);
@@ -112,7 +112,7 @@ public class TestUtils {
    static public DriverManagerConnectionProvider getConnProvider(String connProviderId, boolean createDb, boolean loadData){
 
 
-      ConnectionProviderEntry entry = connProvider.getDataSourceEntry(connProviderId);
+      ConnectionProviderEntry entry = connProvider.getDataSourceEntry(null, connProviderId);
 
       if (entry == null)
          setupDb(connProviderId, createDb, loadData);
