@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SampleExecuteHandler.java,v 1.1 2003-12-11 17:37:49 shahid.shah Exp $
+ * $Id: SampleExecuteHandler.java,v 1.2 2004-03-05 14:48:57 zahara.khan Exp $
  */
 
 package app.form.exec.delegation;
@@ -60,8 +60,8 @@ public class SampleExecuteHandler implements DialogExecuteHandler
         writer.write("You are running the dialog called <b>"+ dc.getDialog().getName() +"</b> in package <b>"+
                      dc.getDialog().getNameSpace().getNameSpaceId() +"</b>.");
 
-        // because we're handling both forms (sample1a and sample1b we need to check if we're running the second form)
-        if(dc.getDialog().getQualifiedName().equals("inheritance.sample1b"))
+        // because we're handling both forms (exec1a and exec1b we need to check if we're running the second form)
+        if(dc.getDialog().getQualifiedName().equals("form.exec.delegation.exec1b"))
             writer.write("<p>You are <b>"+ dc.getFieldStates().getState("age").getValue().getIntValue() + "</b> " +
                          "years old.");
 
@@ -71,7 +71,7 @@ public class SampleExecuteHandler implements DialogExecuteHandler
         writer.write("This method of execution is called <i>Dialog Delegation</i> because a class separate from the " +
                      "Dialog class handles the execution.<p>");
 
-        String relativePath = "/WEB-INF/classes/app/delegation/SampleExecuteHandler.java";
+        String relativePath = "/WEB-INF/classes/app/form/exec/delegation/SampleExecuteHandler.java";
         String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt(
                                    dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
                                    relativePath);
