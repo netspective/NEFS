@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationPageHtmlSubsiteBodyHandler.java,v 1.1 2003-10-24 03:28:10 shahid.shah Exp $
+ * $Id: NavigationPageHtmlSubsiteBodyHandler.java,v 1.2 2003-10-28 12:26:35 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.handler;
@@ -51,6 +51,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.List;
 import java.util.ArrayList;
+import java.text.MessageFormat;
 import javax.servlet.ServletException;
 
 import org.apache.oro.text.perl.Perl5Util;
@@ -88,6 +89,7 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
     private ValueSource indexFile = new StaticValueSource("index.html");
     private ValueSource root;
     private List substitutions = new ArrayList();
+    private String fileNotFoundMessage = "URI {0} does not exist";
 
     public ValueSource getIndexFile()
     {
@@ -119,6 +121,16 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
         substitutions.add(replace);
     }
 
+    public String getFileNotFoundMessage()
+    {
+        return fileNotFoundMessage;
+    }
+
+    public void setFileNotFoundMessage(String fileNotFoundMessage)
+    {
+        this.fileNotFoundMessage = fileNotFoundMessage;
+    }
+
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         if(root == null)
@@ -140,7 +152,7 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
 
         if(! activeFile.exists())
         {
-            writer.write("URI " + activeFile.getAbsolutePath() + " does not exist");
+            writer.write(MessageFormat.format(getFileNotFoundMessage(), new Object[] { activeFile.getAbsolutePath() }));
             return;
         }
 
@@ -166,13 +178,14 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
                     for(int i = 0; i < regExs.length; i++)
                         rec = perl5Util.substitute(regExs[i], rec);
                     writer.write(rec);
+                    writer.write("\n");
                 }
             }
             else
             {
-                String rec;
-                while((rec = br.readLine()) != null)
-                    writer.write(rec);
+                int c;
+                while ((c = br.read()) != -1)
+                   writer.write(c);
             }
         }
         finally
