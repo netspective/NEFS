@@ -1296,7 +1296,7 @@ public class XmlDataModelSchema
         catch(InvocationTargetException ite)
         {
             pc.addError("Unable to set attribute '" + attributeName + "' to '" + value + "' using " + as.getDeclaringClass() + " at " + pc.getLocator().getSystemId() +
-                        " line " + pc.getLocator().getLineNumber() + ": " + ite.getTargetException().getMessage());
+                        " line " + pc.getLocator().getLineNumber() + ": " + ite.getTargetException());
             log.error(ite.getTargetException());
             if(pc.isThrowErrorException())
             {
