@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FileFind.java,v 1.2 2003-03-17 23:23:37 shahid.shah Exp $
+ * $Id: FileFind.java,v 1.3 2003-03-23 16:42:41 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.io;
@@ -48,6 +48,9 @@ import com.netspective.commons.text.TextUtils;
 
 import java.io.*;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -58,6 +61,9 @@ public class FileFind
     public static final int FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING = FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_FIRST * 2;
     public static final int FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_LAST = FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING * 2;
     public static final int FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY = FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_LAST * 2;
+    public static final int FINDINPATHFLAG_SEARCH_RECURSIVELY = FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY * 2;
+
+	public static final int FINDINPATHFLAG_DEFAULT = FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING;
 
     /**
      * Return 'true' if the given file appears to be a compressed file
@@ -207,6 +213,7 @@ public class FileFind
         private boolean searchJarsDuring;
         private boolean searchJarsLate;
         private boolean searchFileMayBeDirectory;
+	    private boolean searchRecursive;
         private int foundFileInPathItem;
         private File foundFile;
         private boolean foundFileAbsoluteAndDoesntExist;
@@ -220,6 +227,7 @@ public class FileFind
             this.searchJarsDuring = (flags & FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING) != 0;
             this.searchJarsLate = (flags & FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_LAST) != 0;
             this.searchFileMayBeDirectory = (flags & FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY) != 0;
+	        this.searchRecursive = (flags & FINDINPATHFLAG_SEARCH_RECURSIVELY) != 0;
             this.foundFileInPathItem = -1;
 
             File file = new File(searchFileName);
@@ -345,6 +353,62 @@ public class FileFind
                     foundFile = findFile;
                     foundFileInPathItem = i;
                     return;
+                }
+	            else
+                {
+	                if (searchPath.isDirectory()) {
+		                // Do a breadth first search if the file isnt found ...
+		                RegexpFileFilter fileFilter = new RegexpFileFilter("^" + searchFileName + "$", true);
+		                List searchCandidates = new ArrayList();
+		                List dynamicallyUpdatedCandidates = new ArrayList();
+		                File[] initialCandidates = searchPath.listFiles(fileFilter);
+
+		                for (int j = 0; j < initialCandidates.length; j ++)
+			                searchCandidates.add(initialCandidates[j]);
+
+		                Iterator candidate = searchCandidates.listIterator();
+		                while (candidate.hasNext() || dynamicallyUpdatedCandidates.size() > 0)
+		                {
+							if (! candidate.hasNext())
+							{
+								// We're at the end of the initial set of directories...
+								// Populate them with the ones we found during our search ...
+								searchCandidates.clear();
+								searchCandidates.addAll(dynamicallyUpdatedCandidates);
+								dynamicallyUpdatedCandidates.clear();
+								candidate = searchCandidates.listIterator();
+							}
+
+			                File theCandidate = (File) candidate.next();
+
+			                if (theCandidate.isDirectory())
+			                {
+				                File findFileInCandidate = new File(theCandidate, searchFileName);
+				                if (findFileInCandidate.exists())
+				                {
+					                foundFile = findFileInCandidate;
+					                foundFileInPathItem = i;
+					                return;
+				                }
+
+				                File[] moreCandidates = theCandidate.listFiles(fileFilter);
+
+				                for (int c = 0; c < moreCandidates.length; c ++)
+					                dynamicallyUpdatedCandidates.add(moreCandidates[c]);
+			                }
+			                else
+			                {
+				                // This must be a file...
+				                if (theCandidate.getName().equals(searchFileName))
+				                {
+					                // Exact match found...
+					                foundFile = theCandidate;
+					                foundFileInPathItem = i;
+					                return;
+				                }
+			                }
+		                }
+	                }
                 }
             }
 
