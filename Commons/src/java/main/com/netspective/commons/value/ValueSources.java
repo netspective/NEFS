@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.4 2003-03-16 17:14:44 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.5 2003-03-16 21:17:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -52,6 +52,7 @@ import org.apache.commons.discovery.tools.DiscoverClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.collections.LRUMap;
 
 import com.netspective.commons.value.source.ExpressionValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -75,11 +76,13 @@ public class ValueSources
     public static final int VSNOTFOUNDHANDLER_ERROR_VS = 2;
     public static final int VSNOTFOUNDHANDLER_THROW_EXCEPTION = 3;
 
+    protected static final int VS_INSTANCES_LRU_MAP_MAX_SIZE = 4096;
+
     private static ValueSources instance = (ValueSources) DiscoverSingleton.find(ValueSources.class, ValueSources.class.getName());
 
-    private Map srcClassesMap = new HashMap();
-    private Map srcInstancesMap = new HashMap();
-    private Set srcClassesSet = new HashSet();
+    private Map srcClassesMap;
+    private Map srcInstancesMap;
+    private Set srcClassesSet;
 
     public static final ValueSources getInstance()
     {
@@ -92,6 +95,29 @@ public class ValueSources
     }
 
     public ValueSources()
+    {
+        srcClassesMap = createSourceClassesMap();
+        srcClassesSet = createSourceClassesSet();
+        srcInstancesMap = createSourceInstancesMap();
+        registerDefaultValueSources();
+    }
+
+    protected Map createSourceClassesMap()
+    {
+        return new HashMap();
+    }
+
+    protected Set createSourceClassesSet()
+    {
+        return new HashSet();
+    }
+
+    protected Map createSourceInstancesMap()
+    {
+        return new LRUMap(VS_INSTANCES_LRU_MAP_MAX_SIZE);
+    }
+
+    protected void registerDefaultValueSources()
     {
         registerValueSource(ExpressionValueSource.class);
         registerValueSource(FilesystemEntriesValueSource.class);
@@ -109,6 +135,11 @@ public class ValueSources
     public Set getValueSourceClassesSet()
     {
         return srcClassesSet;
+    }
+
+    public Map getValueSourceInstancesMap()
+    {
+        return srcClassesMap;
     }
 
     public void registerValueSource(Class vsClass)
