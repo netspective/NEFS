@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: RiskResponseDialog.java,v 1.2 2003-08-30 00:32:43 shahid.shah Exp $
+ * $Id: RiskResponseDialog.java,v 1.3 2003-08-31 03:15:28 shahid.shah Exp $
  */
 
 package app;
@@ -119,7 +119,7 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
             for(int i = 0; i < riskIdentifiers.size(); i++)
             {
                 String riskIdentifier = (String) riskIdentifiers.get(i);
-                Integer pin = ((AuthenticatedRespondent) dc.getAuthenticatedUser()).getRespondentPin();
+                Integer pin = ((AuthenticatedRespondent) dc.getAuthenticatedUser()).getRespondent().getPin();
                 String riskGroup = fieldStates.getState(FIELDPREFIXID_RISK_GROUP + riskIdentifier).getValue().getTextValue();
                 String risk = fieldStates.getState(FIELDPREFIX_RISK_ID + riskIdentifier).getValue().getTextValue();
 
@@ -178,7 +178,7 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
                 String riskIdentifier = (String) riskIdentifiers.get(i);
                 String riskResponseGridName = FIELDPREFIXID_RISK_RESPONSE + riskIdentifier;
 
-                Integer pin = ((AuthenticatedRespondent) dc.getAuthenticatedUser()).getRespondentPin();
+                Integer pin = ((AuthenticatedRespondent) dc.getAuthenticatedUser()).getRespondent().getPin();
                 String riskGroup = fieldStates.getState(FIELDPREFIXID_RISK_GROUP + riskIdentifier).getValue().getTextValue();
                 String risk = fieldStates.getState(FIELDPREFIX_RISK_ID + riskIdentifier).getValue().getTextValue();
 

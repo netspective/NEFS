@@ -13,21 +13,14 @@
     <!-- setup the data access layer Singleton to point to our schema -->
     <listener class="app.Util"/>
 
-    <theme name="slate" default="yes" class="app.AppTheme" inherit-resources-from-themes="common">
-        <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"
-            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output" />
-        <report-skin class="com.netspective.sparx.theme.basic.RecordEditorReportSkin" name="record-editor"
-            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
-        <report-skin class="com.netspective.sparx.theme.basic.HtmlSingleRowReportPanelSkin" name="detail"
-            panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
-    </theme>
+    <theme name="slate" default="yes" class="app.AppTheme" inherit-resources-from-themes="common"/>
 
     <login-manager name="app" default="yes">
         <login-authenticator class="com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator">
             <authenticated-user-class>app.AuthenticatedRespondent</authenticated-user-class>
             <password-query>
                 <!-- in our case the user id (pin) and password are the same so the SQL is a bit funny -->
-                select pin from Respondent where pin = ?
+                select pin from Respondent where pin = ? and (locked = 0 or locked is null)
             </password-query>
         </login-authenticator>
 
@@ -93,7 +86,33 @@
             <page name="current-rm-environment" caption="Risk Management Environment" command="dialog,schema.db.Current_Environment,edit"/>
         </page>
 
-        <page name="summary" caption="Summary/Submit"/>
+        <page name="summary" caption="Summary">
+            <panels>
+                <panel type="html">
+                    <body>
+                        <![CDATA[
+                        <div align="left" style="padding:10">
+                            <font size="3">
+                                    <b>Have you completed the survey? If so, please click <a href="submit">here</a> to submit the results to Marsh.</b>
+                            </font>
+                            <p>
+                            Please realize that once you submit the results, your responses will be e-mailed to Marsh and you will no longer be
+                            able to modify the responses. If you would like to change any of your responses before submitting, please make the
+                            appropriate changes by clicking the menus on the left and then return to this Summary page to submit the results.
+                        </div>
+                        ]]>
+                    </body>
+                </panel>
+                <panel type="command" command="query,db.Respondent.summary,-,-,-,detail-compressed"/>
+                <panel type="command" command="dialog,schema.db.Current_Environment,print,report-compressed"/>
+                <panel type="html">
+                    <frame heading="Survey Responses Summary"/>
+                    <body source="risk-responses-summary.ftl"/>
+                </panel>
+            </panels>
+        </page>
+
+        <page name="submit" caption="Submit" command="dialog,app.submit,confirm"/>
     </navigation-tree>
 
     <!-- **********************************************************************************************************
@@ -176,6 +195,19 @@
         </dialog>
     </dialogs>
 
+    <dialogs package="app">
+        <dialog name="submit" class="app.SubmitDialog">
+            <field type="separator" name="confirm" heading="Are you sure you're ready to submit the information?"/>
+            <on-execute handler="mail">
+                <host>mail.netspective.com</host>
+                <from>shahid.shah@netspective.com</from>
+                <to>shahid@shah.org</to>
+                <subject>No subject</subject>
+                <body>This is the body!</body>
+            </on-execute>
+        </dialog>
+    </dialogs>
+
     <!-- **********************************************************************************************************
          ** STAND-ALONE DATA MANAGEMENT QUERIES                                                                  **
          ********************************************************************************************************** -->
@@ -188,7 +220,7 @@
             where pin = ?
             order by risk_group, risk
             <params>
-                <param value="session:respondent-pin"/>
+                <param value="authenticated-user:user-id"/>
             </params>
         </query>
 
@@ -219,19 +251,11 @@
             <column name="yrs_current_pos" type="integer" caption="Years in Current Position" descr="The number of years the respondent has spent in her current position."/>
             <column name="locked" type="integer" descr="Whether or not the PIN is locked (can enter survey).">
                 <presentation>
-                    <field type="text" unavailable="yes"/>
+                    <field name="${column.name}" type="text" unavailable="yes"/>
                 </presentation>
             </column>
 
-            <query name="lookup">
-                select * from Respondent where pin = ?
-
-                <params>
-                    <param value="session:respondent-pin"/>
-                </params>
-            </query>
-
-            <query name="all">
+            <query name="all-respondents">
                 select locked, pin, job_title.caption as "title", job_function.caption as "function", location, business_unit, division
                 from Respondent, Job_Title, Job_Function
                 where Job_Title.id = Respondent.title and Job_Function.id = Respondent.function
@@ -247,22 +271,23 @@
             </query>
 
             <query name="summary">
-                select pin, job_title.caption, job_function.caption, location, business_unit, division, yrs_firm, yrs_current_pos
-                from Respondent, Job_Title, Job_Function
-                where Job_Title.id = Respondent.title and Job_Function.id = Respondent.function and pin = ?
+                select pin, job_title.caption as "Title", job_function.caption as "Function",
+                       job_location.caption as "Location", business_unit.caption "Unit", division.caption as "Division",
+                       yrs_firm, yrs_current_pos
+                from Respondent, Job_Title, Job_Function, Job_Location, Business_Unit, Division
+                where Job_Title.id = Respondent.title and
+                      Job_Function.id = Respondent.function and
+                      Job_Location.id = Respondent.location and
+                      Business_Unit.id = Respondent.business_unit and
+                      pin = ?
 
                 <params>
-                    <param value="session:respondent-pin"/>
+                    <param value="authenticated-user:user-id"/>
                 </params>
 
                 <presentation>
                     <panel>
                         <frame heading="My General Information"/>
-                        <report>
-                            <column format="plain"/>
-                            <column heading="Title"/>
-                            <column heading="Function"/>
-                        </report>
                     </panel>
                 </presentation>
             </query>
@@ -270,7 +295,7 @@
             <query name="lock">
                 update Respondent set locked = 1 where pin = ?
                 <params>
-                    <param value="session:respondent-pin"/>
+                    <param value="authenticated-user:user-id"/>
                 </params>
             </query>
 
@@ -298,6 +323,25 @@
             <column name="lbg_eff" lookup-ref="Risk_Rating"/>
             <column name="firm_sig" lookup-ref="Risk_Rating"/>
             <column name="firm_eff" lookup-ref="Risk_Rating"/>
+
+            <query name="all-responses-for-particular-pin">
+                select  risk_group, risk,
+                        ibu_sig_rr.caption, ibu_eff_rr.caption,
+                        lbg_sig_rr.caption, lbg_eff_rr.caption,
+                        firm_sig_rr.caption, firm_eff_rr.caption
+                from risk_response,
+                     risk_rating ibu_sig_rr, risk_rating ibu_eff_rr,
+                     risk_rating lbg_sig_rr, risk_rating lbg_eff_rr,
+                     risk_rating firm_sig_rr, risk_rating firm_eff_rr
+                where pin = ? and
+                      ibu_sig = ibu_sig_rr.id and ibu_eff = ibu_eff_rr.id and
+                      lbg_sig = lbg_sig_rr.id and lbg_eff = lbg_eff_rr.id and
+                      firm_sig = firm_sig_rr.id and firm_eff = firm_eff_rr.id
+                order by risk_group, risk
+                <params>
+                    <param value="authenticated-user:user-id"/>
+                </params>
+            </query>
 
             <index name="unique_risk" unique="yes" columns="pin,risk_group,risk"/>
         </table>

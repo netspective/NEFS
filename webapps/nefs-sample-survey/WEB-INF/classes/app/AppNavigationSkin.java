@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AppNavigationSkin.java,v 1.3 2003-08-30 00:32:43 shahid.shah Exp $
+ * $Id: AppNavigationSkin.java,v 1.4 2003-08-31 03:15:28 shahid.shah Exp $
  */
 
 package app;
@@ -78,9 +78,9 @@ import com.netspective.commons.security.AuthenticatedUser;
 
 public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSkin
 {
-    public AppNavigationSkin(Theme theme)
+    public AppNavigationSkin(Theme theme, String name)
     {
-        super(theme);
+        super(theme, name);
     }
 
     public NavigationContext createContext(javax.servlet.jsp.PageContext jspPageContext, NavigationTree tree, String navTreeId)

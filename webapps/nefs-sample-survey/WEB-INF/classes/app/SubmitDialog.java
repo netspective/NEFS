@@ -39,26 +39,35 @@
  */
 
 /**
- * $Id: AppTheme.java,v 1.2 2003-08-31 03:15:28 shahid.shah Exp $
+ * $Id: SubmitDialog.java,v 1.1 2003-08-31 03:15:28 shahid.shah Exp $
  */
 
 package app;
 
-import app.AppNavigationSkin;
+import java.io.Writer;
+import java.io.IOException;
 
-import com.netspective.sparx.theme.basic.BasicTheme;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
-import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
 
-public class AppTheme extends BasicTheme
+public class SubmitDialog extends Dialog
 {
-    protected NavigationSkin constructDefaultNavigationSkin()
+    public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        return new AppNavigationSkin(this, "default");
-    }
+        try
+        {
+            AuthenticatedRespondent user = (AuthenticatedRespondent) dc.getAuthenticatedUser();
+            if(user != null)
+                user.lockUserAccount(dc.getNavigationContext());
+        }
+        catch (Exception e)
+        {
+            dc.getDialog().getLog().error("Unable to lock user account", e);
+        }
 
-    protected LoginDialogSkin constructLoginDialogSkin()
-    {
-        return new AppLoginDialogSkin(this, "login", "panel-input", "panel/input", false);
+        // this will run the normal stuff in the XML
+        super.execute(writer, dc);
+        handlePostExecute(writer, dc, "?_logout=1");
     }
 }

@@ -39,26 +39,43 @@
  */
 
 /**
- * $Id: AppTheme.java,v 1.2 2003-08-31 03:15:28 shahid.shah Exp $
+ * $Id: AppLoginDialogSkin.java,v 1.1 2003-08-31 03:15:28 shahid.shah Exp $
  */
 
 package app;
 
-import app.AppNavigationSkin;
+import java.io.Writer;
+import java.io.IOException;
 
-import com.netspective.sparx.theme.basic.BasicTheme;
 import com.netspective.sparx.theme.basic.LoginDialogSkin;
-import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.form.DialogContext;
 
-public class AppTheme extends BasicTheme
+public class AppLoginDialogSkin extends LoginDialogSkin
 {
-    protected NavigationSkin constructDefaultNavigationSkin()
+    public AppLoginDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        return new AppNavigationSkin(this, "default");
+        super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
 
-    protected LoginDialogSkin constructLoginDialogSkin()
+    public void renderHtml(Writer writer, DialogContext dc) throws IOException
     {
-        return new AppLoginDialogSkin(this, "login", "panel-input", "panel/input", false);
+        String resourcesUrl = dc.getHttpRequest().getContextPath() + "/resources";
+
+        writer.write("<title>Welcome to the Survey</title>");
+        writer.write("</head>");
+        writer.write("<body leftmargin='0' topmargin='0' marginwidth='0' marginheight='0'>\n");
+        writer.write("<!-- BEGIN MASTHEAD -->\n");
+        writer.write("<table width='100%' height='50' border='0' cellpadding='0' cellspacing='0' background='"+ resourcesUrl +"/top-back.gif'>\n");
+        writer.write("  <tr>\n");
+        writer.write("    <td><div align='center'><img src='"+ resourcesUrl +"/masthead.gif' width='520' height='50' alt='Risk Management'></div></td>\n");
+        writer.write("    <td><div align='right'><img src='"+ resourcesUrl +"/marsh-logo.gif' width='126' height='50' alt='Marsh'></div></td>\n");
+        writer.write("  </tr>\n");
+        writer.write("</table>\n");
+        writer.write("<!-- END MASTHEAD -->\n");
+        writer.write("<center>");
+        writer.write("<p>&nbsp;<p>&nbsp;<p>");
+
+        super.renderHtml(writer, dc);
     }
 }

@@ -5,8 +5,7 @@ package auto.id.sql.query.db;
 
 public interface Respondent
 {
-    static public final String ALL = "db.Respondent.all";
+    static public final String ALL_RESPONDENTS = "db.Respondent.all-respondents";
     static public final String LOCK = "db.Respondent.lock";
-    static public final String LOOKUP = "db.Respondent.lookup";
     static public final String SUMMARY = "db.Respondent.summary";
 }

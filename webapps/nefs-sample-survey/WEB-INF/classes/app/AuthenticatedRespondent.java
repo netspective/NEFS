@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedRespondent.java,v 1.2 2003-08-30 00:32:43 shahid.shah Exp $
+ * $Id: AuthenticatedRespondent.java,v 1.3 2003-08-31 03:15:28 shahid.shah Exp $
  */
 
 package app;
@@ -52,32 +52,94 @@ import javax.servlet.ServletRequest;
 import javax.naming.NamingException;
 
 import auto.dal.db.dao.VisitedPageTable;
+import auto.dal.db.dao.RespondentTable;
 import auto.dal.db.DataAccessLayer;
 import auto.dal.db.vo.VisitedPage;
+import auto.dal.db.vo.Respondent;
 import auto.dal.db.vo.impl.VisitedPageVO;
 
 import com.netspective.commons.security.BasicAuthenticatedUser;
+import com.netspective.commons.security.AuthenticatedUserInitializationException;
+import com.netspective.commons.value.ValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.security.LoginDialogContext;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.schema.TableRowTrigger;
+import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.sql.QueryResultSet;
 
-public class AuthenticatedRespondent extends BasicAuthenticatedUser
+public class AuthenticatedRespondent extends BasicAuthenticatedUser implements TableRowTrigger
 {
     private static final String REQATTRNAME_VISITED_PAGES_CACHE = AuthenticatedRespondent.class.getName() + ".VISITED_PAGES_CACHE";
+    private Respondent respondent;
 
-    private Integer pin;
-
-    public void setUserId(String id)
+    public void init(ValueContext vc) throws AuthenticatedUserInitializationException
     {
-        super.setUserId(id);
-        pin = Integer.valueOf(id);
+        super.init(vc);
+
+        LoginDialogContext ldc = (LoginDialogContext) vc;
+        RespondentTable respondentTable = DataAccessLayer.getInstance().getRespondentTable();
+        respondentTable.getTable().addTrigger(this);
+
+        ConnectionContext cc = null;
+        RespondentTable.Record record = null;
+        try
+        {
+            cc = ldc.getConnection(null, false, ConnectionContext.OWNERSHIP_DEFAULT);
+            record = respondentTable.getRecordByPrimaryKey(cc, Integer.valueOf(ldc.getUserIdInput()));
+        }
+        catch(Exception e)
+        {
+            ldc.getDialog().getLog().error("Unable to initialize user", e);
+            throw new AuthenticatedUserInitializationException(e, this);
+        }
+        finally
+        {
+            try
+            {
+                if(cc != null)
+                    cc.close();
+            }
+            catch (SQLException e)
+            {
+                ldc.getDialog().getLog().error("Unable to close connection", e);
+                throw new AuthenticatedUserInitializationException(e, this);
+            }
+        }
+        respondent = record.getValues();
     }
 
-    public Integer getRespondentPin()
+    public void setRespondent(Respondent respondent)
     {
-        return pin;
+        this.respondent = respondent;
+    }
+
+    public Respondent getRespondent()
+    {
+        return respondent;
+    }
+
+    public void lockUserAccount(NavigationContext nc) throws NamingException, SQLException
+    {
+        RespondentTable respondentTable = DataAccessLayer.getInstance().getRespondentTable();
+        ConnectionContext cc = null;
+        try
+        {
+            cc = nc.getConnection(null, false, ConnectionContext.OWNERSHIP_DEFAULT);
+            RespondentTable.Record record = respondentTable.getRecordByPrimaryKey(cc, respondent.getPin());
+            if(record != null)
+            {
+                record.getLocked().setValue(new Integer(1));
+                record.update(cc);
+            }
+        }
+        finally
+        {
+            if(cc != null)
+                cc.close();
+        }
     }
 
     private Set getVisitedPaths(NavigationContext nc)
@@ -92,7 +154,7 @@ public class AuthenticatedRespondent extends BasicAuthenticatedUser
             {
                 VisitedPageTable table = DataAccessLayer.getInstance().getVisitedPageTable();
                 cc = nc.getConnection(null, true, ConnectionContext.OWNERSHIP_DEFAULT);
-                VisitedPageTable.Records records = table.getAccessorRecords(cc, table.getAccessorByPinEquality(), new Object[] { getRespondentPin() });
+                VisitedPageTable.Records records = table.getAccessorRecords(cc, table.getAccessorByPinEquality(), new Object[] { respondent.getPin() });
                 for(int i = 0; i < records.size(); i++)
                 {
                     VisitedPage visitedPage = records.get(i).getValues();
@@ -139,14 +201,14 @@ public class AuthenticatedRespondent extends BasicAuthenticatedUser
         {
             cc = nc.getConnection(null, true, ConnectionContext.OWNERSHIP_DEFAULT);
 
-            QueryResultSet qrs = table.getAccessorByIndexUniqueVisitEquality().execute(cc, new Object[] { getRespondentPin(), page.getQualifiedName() }, false);
+            QueryResultSet qrs = table.getAccessorByIndexUniqueVisitEquality().execute(cc, new Object[] { respondent.getPin(), page.getQualifiedName() }, false);
             boolean existsAlready = qrs.getResultSet().next();
             qrs.close(false);
 
             if(! existsAlready)
             {
                 VisitedPage visitedPage = new VisitedPageVO();
-                visitedPage.setPin(getRespondentPin());
+                visitedPage.setPin(respondent.getPin());
                 visitedPage.setPageId(page.getQualifiedName());
 
                 VisitedPageTable.Record record = table.createRecord();
@@ -173,27 +235,38 @@ public class AuthenticatedRespondent extends BasicAuthenticatedUser
         }
     }
 
-/*
-    public static void sendEmail(String subject, String messageText) throws AddressException, MessagingException
+    /* -------- IMPLEMENTATIONS FOR TableRowTrigger INTERFACE -------------- */
+
+    public void afterTableRowDelete(ConnectionContext connectionContext, Row row) throws SQLException
     {
-        String host = "localhost";
-        String from = "marsh.survey@netspective.com";
-        String to = "Julian.S.Wassenaar@marsh.com";
-        String cc = "shahid.shah@netspective.com";
-
-        Properties props = System.getProperties();
-        props.put("mail.smtp.host", host);
-
-        Session mailSession = Session.getDefaultInstance(props, null);
-
-        MimeMessage message = new MimeMessage(mailSession);
-        message.setFrom(new InternetAddress(from));
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-        message.addRecipient(Message.RecipientType.CC, new InternetAddress(cc));
-        message.setSubject(subject);
-        message.setText(messageText);
-
-        Transport.send(message);
+        // do nothing
     }
-*/
+
+    public void afterTableRowInsert(ConnectionContext connectionContext, Row row) throws SQLException
+    {
+        // do nothing
+    }
+
+    public void afterTableRowUpdate(ConnectionContext connectionContext, Row row) throws SQLException
+    {
+        RespondentTable respondentTable = DataAccessLayer.getInstance().getRespondentTable();
+        RespondentTable.Record record = respondentTable.getRecord(row);
+        respondent = record.getValues();
+        System.out.println("Respondent VO refreshed after update.");
+    }
+
+    public void beforeTableRowDelete(ConnectionContext connectionContext, Row row) throws SQLException
+    {
+        throw new SQLException("Respondent should never be deleted");
+    }
+
+    public void beforeTableRowInsert(ConnectionContext connectionContext, Row row) throws SQLException
+    {
+        throw new SQLException("Respondent should never be inserted, should it?");
+    }
+
+    public void beforeTableRowUpdate(ConnectionContext connectionContext, Row row) throws SQLException
+    {
+        // do nothing
+    }
 }

@@ -148,6 +148,12 @@ public final class VisitedPageTable
             this.values = row.getColumnValues();
         }
         
+        public final boolean dataChangedInStorage(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            return table.dataChangedInStorage(cc, row);
+        }
+        
         public final void delete(ConnectionContext cc, String whereCond, Object[] whereCondBindParams)
         throws NamingException, SQLException
         {
@@ -204,6 +210,12 @@ public final class VisitedPageTable
         throws NamingException, SQLException
         {
             table.insert(cc, row);
+        }
+        
+        public final void refresh(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            table.refreshData(cc, row);
         }
         
         public final void setPageId(com.netspective.commons.value.Value value)
