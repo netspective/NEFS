@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.6 2003-05-16 20:32:56 shahid.shah Exp $
+ * $Id: Query.java,v 1.7 2003-05-21 11:04:28 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -361,9 +361,9 @@ public class Query
             logEntry.registerBindParamsEnd();
 
             logEntry.registerExecSqlBegin();
-            boolean executStmtResult = stmt.execute();
+            boolean executeStmtResult = stmt.execute();
             logEntry.registerExecSqlEndSuccess();
-            return new QueryResultSet(this, cc, executStmtResult, stmt.getResultSet(), logEntry);
+            return new QueryResultSet(this, cc, executeStmtResult, stmt.getResultSet(), logEntry);
         }
         catch(SQLException e)
         {
@@ -398,8 +398,8 @@ public class Query
             else if(parameters != null)
                 parameters.apply(cc, stmt);
 
-            boolean executStmtResult = stmt.execute();
-            return new QueryResultSet(this, cc, executStmtResult, stmt.getResultSet());
+            boolean executeStmtResult = stmt.execute();
+            return new QueryResultSet(this, cc, executeStmtResult, stmt.getResultSet());
         }
         catch(SQLException e)
         {

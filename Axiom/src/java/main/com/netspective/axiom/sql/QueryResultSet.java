@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSet.java,v 1.2 2003-05-16 20:32:56 shahid.shah Exp $
+ * $Id: QueryResultSet.java,v 1.3 2003-05-21 11:04:28 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -177,5 +177,15 @@ public class QueryResultSet
     {
         close(false);
         super.finalize();
+    }
+
+    /**
+     * Throw away the existing result set and re-execute the query given the same parameters -- this is used mainly
+     * for non-scrollable cursors used in paged results.
+     * @throws SQLException
+     */
+    public void reExecute() throws SQLException
+    {
+        throw new RuntimeException("Not implemented yet.");
     }
 }
