@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RelationshipMapTable.java,v 1.1 2003-06-28 00:47:06 shahid.shah Exp $
+ * $Id: RelationshipMapTable.java,v 1.2 2004-06-21 04:26:36 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table.type;
@@ -50,6 +50,9 @@ import com.netspective.axiom.schema.Schema;
 
 public class RelationshipMapTable extends BasicTable
 {
+    private String primaryIdColName;
+    private String relatedIdColName;
+
     public RelationshipMapTable(Column parentColumn)
     {
         super(parentColumn);
@@ -58,5 +61,25 @@ public class RelationshipMapTable extends BasicTable
     public RelationshipMapTable(Schema schema)
     {
         super(schema);
+    }
+
+    public String getPrimaryIdColName()
+    {
+        return primaryIdColName;
+    }
+
+    public void setPrimaryIdColName(String primaryIdColName)
+    {
+        this.primaryIdColName = primaryIdColName;
+    }
+
+    public String getRelatedIdColName()
+    {
+        return relatedIdColName;
+    }
+
+    public void setRelatedIdColName(String relatedIdColName)
+    {
+        this.relatedIdColName = relatedIdColName;
     }
 }
