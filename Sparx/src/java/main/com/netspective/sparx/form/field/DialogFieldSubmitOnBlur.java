@@ -39,11 +39,17 @@
  */
 
 /**
- * $Id: DialogFieldSubmitOnBlur.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogFieldSubmitOnBlur.java,v 1.2 2004-03-24 15:20:38 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.field;
 
+/**
+ * A <code>DialogFieldSubmitOnBlur</code> object represents the settings for
+ * automatically submitting a dialog when its field (for which submit-on-blur is
+ * set) loses focus.
+ *
+ */
 public class DialogFieldSubmitOnBlur
 {
     private String partner;
@@ -58,6 +64,12 @@ public class DialogFieldSubmitOnBlur
         return customScript;
     }
 
+    /**
+     * Sets the custom Javascript to be executed on auto-blur (submit).
+     *
+     * @customScript name of custom Javascript
+     */
+
     public void setCustomScript(String customScript)
     {
         this.customScript = customScript;
@@ -68,6 +80,12 @@ public class DialogFieldSubmitOnBlur
         return partner;
     }
 
+    /**
+     * If set, the auto-blur (submit) will only happen if the current field and
+     * its partner are both filled in.
+     *
+     * @param partner partner field name
+     */
     public void setPartner(String partner)
     {
         this.partner = partner;

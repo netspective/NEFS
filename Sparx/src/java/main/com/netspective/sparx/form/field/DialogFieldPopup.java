@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldPopup.java,v 1.2 2004-03-22 14:27:42 zahara.khan Exp $
+ * $Id: DialogFieldPopup.java,v 1.3 2004-03-24 15:20:38 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -84,6 +84,12 @@ public class DialogFieldPopup
         return action;
     }
 
+    /**
+     * Sets the value source object containing the action to be performed when
+     * popup link is clicked.
+     *
+     * @param action value source object containing the action to be performed
+     */
     public void setAction(ValueSource action)
     {
         this.action = action;
@@ -104,6 +110,12 @@ public class DialogFieldPopup
         return closeAfterSelect;
     }
 
+    /**
+     * Is set, the popup window closes automatically after the user selects a value.
+     *
+     * @param closeAfterSelect <code>true</code> if popup window should be closed automatically,
+     *                         after selection of value by the user; <code>false</code> otherwise
+     */
     public void setCloseAfterSelect(boolean closeAfterSelect)
     {
         this.closeAfterSelect = closeAfterSelect;
@@ -114,6 +126,12 @@ public class DialogFieldPopup
         return imageSrc;
     }
 
+    /**
+     * Sets the source path for the image that is displayed with the
+     * popup's link.
+     *
+     * @param imageSrc
+     */
     public void setImageSrc(ValueSource imageSrc)
     {
         this.imageSrc = imageSrc;
@@ -124,6 +142,13 @@ public class DialogFieldPopup
         return windowClass;
     }
 
+    /**
+     * Sets the name of the class used for displaying and handling the popup window.
+     * The window class contains functionalities such as setting the popup window size
+     * and display style.
+     *
+     * @param windowClass name of the class handling popup window
+     */
     public void setWindowClass(String windowClass)
     {
         this.windowClass = windowClass;
@@ -144,6 +169,11 @@ public class DialogFieldPopup
         return fill;
     }
 
+    /**
+     * Dialog field(s) to be populated with the value(s) obtained from the popup.
+     *
+     * @param fields field(s) to be populated
+     */
     public void setFill(String fields)
     {
         fill = TextUtils.split(fields, ",", true);

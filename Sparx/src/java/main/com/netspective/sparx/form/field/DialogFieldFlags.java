@@ -51,13 +51,15 @@
  */
 
 /**
- * $Id: DialogFieldFlags.java,v 1.6 2004-03-22 14:30:55 zahara.khan Exp $
+ * $Id: DialogFieldFlags.java,v 1.7 2004-03-24 15:20:38 zahara.khan Exp $
  */
 package com.netspective.sparx.form.field;
 
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
 /**
+ * The <code>DialogFieldFlags</code> object specifies all the flags defined for
+ * a dialog's fields.
  */
 public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
 {
@@ -163,7 +165,8 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     }
 
     /**
-     * Sets the dialog field this flag is associated with
+     * Sets the dialog field this flag is associated with.
+     *
      * @param field
      */
     public void setField(DialogField field)
@@ -172,7 +175,8 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     }
 
     /**
-     * Gets the dialog field this flag is associated with
+     * Gets the dialog field this flag is associated with.
+     *
      * @return dialog field object
      */
     public DialogField getField()
@@ -181,7 +185,8 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     }
 
     /**
-     * Clears a flag
+     * Clears a flag.
+     *
      * @param flag
      */
     public void clearFlag(long flag)
@@ -209,7 +214,8 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     }
 
     /**
-     * Sets a flag
+     * Sets a flag.
+     *
      * @param flag
      */
     public void setFlag(long flag)

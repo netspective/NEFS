@@ -39,11 +39,15 @@
  */
 
 /**
- * $Id: DialogListener.java,v 1.1 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: DialogListener.java,v 1.2 2004-03-24 15:19:44 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.listener;
 
+/**
+ * Interface to incorporate custom business logic into the behavior of a dialog.
+ * Dialog listener is invoked when state changes occur in the dialog.
+ */
 public interface DialogListener
 {
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFieldValidations.java,v 1.4 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: DialogFieldValidations.java,v 1.5 2004-03-24 15:20:38 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -48,6 +48,13 @@ import com.netspective.commons.validate.ValidationRulesCollection;
 import com.netspective.commons.validate.ValidationRule;
 import com.netspective.commons.value.ValueSource;
 
+/**
+ * The <code>DialogFieldValidations</code> object specifies the validation conditions
+ * applicable on a dialog's field.  It contains functionalities such as adding
+ * validation rules for the field.  These validations rules are used during the
+ * dialog validation phase to determine if the dialog fields contain valid values or not.
+ *
+ */
 public class DialogFieldValidations extends ValidationRulesCollection
 {
     private DialogField field;

@@ -39,19 +39,22 @@
  */
 
 /**
- * $Id: DialogNextActionProvider.java,v 1.1 2003-08-30 00:23:34 shahid.shah Exp $
+ * $Id: DialogNextActionProvider.java,v 1.2 2004-03-24 15:20:11 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.handler;
 
 import com.netspective.sparx.form.DialogContext;
 
+/**
+ * Interface to set up the URL that should be called after a successful dialog execution.
+ */
 public interface DialogNextActionProvider
 {
     /**
-     * Return the URL that the user should be redirected to
-     * @param dc
-     * @return
+     * Returns the URL that the user should be redirected to.
+     * @param dc  current dialog context
+     * @return    URL of the page that the user should be redirected to
      */
     public String getDialogNextActionUrl(DialogContext dc, String defaultUrl);
 }

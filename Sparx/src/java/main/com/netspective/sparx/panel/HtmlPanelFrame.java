@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlPanelFrame.java,v 1.6 2004-03-03 08:12:06 aye.thu Exp $
+ * $Id: HtmlPanelFrame.java,v 1.7 2004-03-24 15:22:17 zahara.khan Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -74,13 +74,13 @@ public class HtmlPanelFrame
 
         public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
         {
-            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_HEADING", HAS_HEADING),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_HEADING", HAS_HEADING, "If set, the frame has a heading."),
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_HEADING_EXTRA", HAS_HEADING_EXTRA),
-            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_FOOTING", HAS_FOOTING),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_FOOTING", HAS_FOOTING, "If set, the frame has a footer"),
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_SELECTABLE", IS_SELECTABLE),
-            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "ALLOW_COLLAPSE", ALLOW_COLLAPSE),
-            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_COLLAPSED", IS_COLLAPSED),
-            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "HIDE_HEADING", HIDE_HEADING)
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "ALLOW_COLLAPSE", ALLOW_COLLAPSE, "If set, the frame is collapsable.  The user may collapse/restore the frame by using a collapse/restore button provided in the frame."),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_COLLAPSED", IS_COLLAPSED, "If set, the frame is collapsed.  Otherwise, the frame and its contents are displayed."),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "HIDE_HEADING", HIDE_HEADING, "If set, the frame heading is not displayer.")
         };
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
@@ -161,6 +161,11 @@ public class HtmlPanelFrame
         return footing;
     }
 
+    /**
+     * Sets the footer for the frame from value source.
+     *
+     * @param footing footer value source object
+     */
     public void setFooting(ValueSource footing)
     {
         this.footing = footing;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CompositeField.java,v 1.4 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: CompositeField.java,v 1.5 2004-03-24 15:21:32 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -49,6 +49,10 @@ import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
+/**
+ * Custom field class for handling data entry of composite fields. A composite
+ * field is a logical field that contains several children fields.
+ */
 public class CompositeField extends DialogField
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GridFieldRow.java,v 1.5 2003-12-31 05:07:20 aye.thu Exp $
+ * $Id: GridFieldRow.java,v 1.6 2004-03-24 15:20:57 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -50,6 +50,9 @@ import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
+/**
+ * Custom class for declaring and handling row for a grid field.
+ */
 public class GridFieldRow extends DialogField
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
