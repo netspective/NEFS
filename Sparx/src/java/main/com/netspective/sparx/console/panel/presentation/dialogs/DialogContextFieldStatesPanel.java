@@ -39,21 +39,21 @@
  */
 
 /**
- * $Id: DialogContextFieldStatesPanel.java,v 1.3 2003-06-26 16:05:58 shahid.shah Exp $
+ * $Id: DialogContextFieldStatesPanel.java,v 1.4 2004-04-01 04:55:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldValue;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 
 public class DialogContextFieldStatesPanel extends DialogDetailPanel
 {
@@ -154,7 +154,15 @@ public class DialogContextFieldStatesPanel extends DialogDetailPanel
 
                 case 4:
                     if(activeFieldState != null)
-                        return activeFieldState.getValue().getTextValue();
+                    {
+                        DialogFieldValue value = activeFieldState.getValue();
+                        // use the getListValue() since the toString() of Collection types
+                        // return the array in square brackets
+                        if (value.isListValue())
+                            return value.getListValue();
+                        else
+                            return value.getTextValue();
+                    }
 
                 case 5:
                     if(activeFieldState != null)
