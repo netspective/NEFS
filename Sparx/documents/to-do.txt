@@ -1,3 +1,4 @@
+* In DialogFieldConditionalAction is 'name' attribute needed anymore? If not, remove it. Also, move partner-field-name out of main class into subclasses that need them? It would make auto-documentation easier.
 * Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
 * Need to move error messages that occur in XDM parsing into Console too (instead of just stdout)
