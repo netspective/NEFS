@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DataSourceNavigatorButtonsField.java,v 1.5 2003-06-28 05:25:07 aye.thu Exp $
+ * $Id: DataSourceNavigatorButtonsField.java,v 1.6 2003-07-30 23:33:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -132,7 +132,7 @@ public class DataSourceNavigatorButtonsField extends DialogField
         TabularReportDataSourceScrollState scrollState = HtmlTabularReportDataSourceScrollStates.getInstance().getScrollStateByDialogTransactionId(dc);
         if(scrollState == null)
         {
-            writer.write("<input type='submit' name='" + dc.getDialog().getResetContextParamName() + "' value='" + submitCaption.getTextValue(dc) + "' " + attrs + "> ");
+            writer.write("<input type='submit' class=\"dialog-button\" name='" + dc.getDialog().getResetContextParamName() + "' value='" + submitCaption.getTextValue(dc) + "' " + attrs + "> ");
             return;
         }
 
@@ -140,7 +140,7 @@ public class DataSourceNavigatorButtonsField extends DialogField
         boolean isScrollable = dataSource.isScrollable();
         int activePage = scrollState.getActivePage();
         int lastPage = scrollState.getTotalPages();
-        writer.write("<center>");
+        writer.write("<span class=\"textbox\"><center>");
         if(lastPage > 0)
         {
             writer.write("<nobr>Page ");
@@ -152,23 +152,23 @@ public class DataSourceNavigatorButtonsField extends DialogField
             }
             writer.write("</nobr>&nbsp;&nbsp;");
             if(activePage > 1)
-                writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_FIRST +"' value='" + firstCaption.getTextValue(dc) + "' " + attrs + "> ");
+                writer.write("<input type='submit' class=\"dialog-button\" name='"+ RSNAV_BUTTONNAME_FIRST +"' value='" + firstCaption.getTextValue(dc) + "' " + attrs + "> ");
 
             if(activePage > 2)
-                writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_PREV + "' value='" + prevCaption.getTextValue(dc) + "' " + attrs + "> ");
+                writer.write("<input type='submit' class=\"dialog-button\" name='"+ RSNAV_BUTTONNAME_PREV + "' value='" + prevCaption.getTextValue(dc) + "' " + attrs + "> ");
 
             boolean hasMoreRows = false;
             //dataSource.hasMoreRows()
             if(activePage != lastPage)
             {
-                writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_NEXT +"' value='" + nextCaption.getTextValue(dc) + "' " + attrs + "> ");
+                writer.write("<input type='submit' class=\"dialog-button\" name='"+ RSNAV_BUTTONNAME_NEXT +"' value='" + nextCaption.getTextValue(dc) + "' " + attrs + "> ");
                 hasMoreRows = true;
             }
 
             if(isScrollable)
             {
                 if(activePage < lastPage)
-                    writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_LAST +"' value='" + lastCaption.getTextValue(dc) + "' " + attrs + "> ");
+                    writer.write("<input type='submit' class=\"dialog-button\" name='"+ RSNAV_BUTTONNAME_LAST +"' value='" + lastCaption.getTextValue(dc) + "' " + attrs + "> ");
                 writer.write("&nbsp;&nbsp;<nobr>");
                 writer.write(NumberFormat.getNumberInstance().format(dataSource.getTotalRows()));
                 writer.write(" total rows</nobr>");
@@ -191,12 +191,12 @@ public class DataSourceNavigatorButtonsField extends DialogField
         if(doneCaption != null)
         {
             if(doneUrl == null)
-                writer.write("&nbsp;&nbsp;<input type='submit' name='" + dc.getDialog().getResetContextParamName() + "' value='" + doneCaption.getTextValue(dc) + "' " + attrs + "> ");
+                writer.write("&nbsp;&nbsp;<input type='submit' class=\"dialog-button\" name='" + dc.getDialog().getResetContextParamName() + "' value='" + doneCaption.getTextValue(dc) + "' " + attrs + "> ");
             else
-                writer.write("&nbsp;&nbsp;<input type='button' name='jump' value='" + doneCaption.getTextValue(dc) +
+                writer.write("&nbsp;&nbsp;<input type='button' class=\"dialog-button\" name='jump' value='" + doneCaption.getTextValue(dc) +
                         "' onclick='this.form.action=\"" + doneUrl.getTextValue(dc) + "\";this.form.submit();'" + attrs + "> ");
         }
-        writer.write("</center>");
+        writer.write("</center></span>");
     }
 
     public ValueSource getDoneCaption()
