@@ -38,6 +38,8 @@ import java.util.List;
 
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
+import com.netspective.axiom.sql.Queries;
+import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
@@ -96,6 +98,21 @@ public interface Schema extends XmlDataModelSchema.InputSourceLocatorListener
      * Returns all tables registered in the schema
      */
     public Tables getTables();
+
+    /**
+     * Factory method to construct a new view instance in this schema.
+     */
+    public Query createView();
+
+    /**
+     * Factory method to register a view instance.
+     */
+    public void addView(Query view);
+
+    /**
+     * Returns all views registered in the schema
+     */
+    public Queries getViews();
 
     /**
      * Returns all tables registered in the schema that are designed to store application data. This would include

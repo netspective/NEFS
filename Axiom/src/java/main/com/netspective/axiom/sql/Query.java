@@ -116,7 +116,7 @@ public class Query
         }
     }
 
-    private class QueryDbmsSqlTexts extends DbmsSqlTexts
+    public class QueryDbmsSqlTexts extends DbmsSqlTexts
     {
         public QueryDbmsSqlTexts()
         {

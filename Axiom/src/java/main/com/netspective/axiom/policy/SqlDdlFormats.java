@@ -60,6 +60,8 @@ public interface SqlDdlFormats
 
     public String getCreateTableAppendParamsFormat();
 
+    public String getCreateViewClauseFormat();
+
     public String getDropTableStatementFormat();
 
     public String getCreateIndexStatementFormat();

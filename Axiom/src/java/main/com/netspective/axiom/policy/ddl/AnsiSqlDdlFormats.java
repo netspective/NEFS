@@ -47,6 +47,7 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
     private String scriptStatementTerminator;
     private String createTableClauseFormat;
     private String createTableAppendParamsFormat;
+    private String createViewClauseFormat;
     private String dropTableStatementFormat;
     private String createIndexStatementFormat;
     private String createIndexAppendParamsFormat;
@@ -67,6 +68,7 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
         setCreateTableClauseFormat("CREATE TABLE ${table.name}");
         setDropTableStatementFormat("DROP TABLE ${table.name}");
         setCreateIndexStatementFormat("CREATE ${index.type.toUpperCase()} INDEX ${index.name} on ${index.table.name} (${index.columns.getNamesDelimited(', ')})");
+        setCreateViewClauseFormat("CREATE VIEW ${view.name.toUpperCase()} AS\n");
         setDropIndexStatementFormat("DROP INDEX ${index.name}");
         setCreateSequenceStatementFormat("CREATE SEQUENCE ${column.sequenceName} increment 1 start 1");
         setDropSequenceStatementFormat("DROP SEQUENCE ${column.sequenceName}");
@@ -132,6 +134,16 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
     public void setCreateTableAppendParamsFormat(String createTableAppendParamsFormat)
     {
         this.createTableAppendParamsFormat = createTableAppendParamsFormat;
+    }
+
+    public String getCreateViewClauseFormat()
+    {
+        return createViewClauseFormat;
+    }
+
+    public void setCreateViewClauseFormat(String createViewClauseFormat)
+    {
+        this.createViewClauseFormat = createViewClauseFormat;
     }
 
     public String getDropTableStatementFormat()

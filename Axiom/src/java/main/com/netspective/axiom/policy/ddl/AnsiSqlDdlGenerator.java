@@ -69,6 +69,8 @@ import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.table.IndexesCollection;
 import com.netspective.axiom.schema.table.TablesCollection;
 import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.sql.Queries;
+import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.value.DatabasePolicyValueContext;
 import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.text.JavaExpressionText;
@@ -175,6 +177,14 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 writer.write(ddlFormats.getScriptStatementTerminator());
                 writer.write("\n");
             }
+        }
+
+        Queries views = gc.getSchema().getViews();
+        for(int i = 0; i < views.size(); i++)
+        {
+            Query view = views.get(i);
+            if(i > 0) writer.write("\n");
+            renderSqlDdlViewStatement(gc, view);
         }
 
         if(preStaticDataContent != null)
@@ -679,4 +689,26 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         if(column.isRequiredByApp() || column.isRequiredByDbms())
             writer.write(" NOT NULL");
     }
+
+    public boolean renderSqlDdlViewStatement(final SqlDdlGeneratorContext gc, final Query view) throws IOException
+    {
+        final Writer writer = gc.getWriter();
+        final DatabasePolicy policy = gc.getDatabasePolicy();
+        final SqlDdlFormats sqlDdlFormats = gc.getSqlDdlFormats();
+
+        String sql = view.getSqlTexts().getByDbmsOrAnsi(policy).getSql();
+        if(sql != null)
+        {
+            Map vars = sqlDdlFormats.createJavaExpressionVars();
+            vars.put("view", view);
+
+            JavaExpressionText jet = new JavaExpressionText(sqlDdlFormats.getCreateViewClauseFormat(), vars);
+            writer.write(jet.getFinalText(gc.getValueContext()));
+            writer.write(sql);
+            writer.write(sqlDdlFormats.getScriptStatementTerminator());
+        }
+
+        return sql != null;
+    }
+
 }

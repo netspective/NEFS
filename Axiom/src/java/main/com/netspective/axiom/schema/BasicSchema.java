@@ -53,6 +53,9 @@ import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.schema.table.BasicIndex;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TablesCollection;
+import com.netspective.axiom.sql.Queries;
+import com.netspective.axiom.sql.Query;
+import com.netspective.axiom.sql.collection.QueriesCollection;
 import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.commons.io.InputSourceLocator;
@@ -93,6 +96,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     private String name = "schema" + (counter++);
     private String xmlNodeName;
     private Tables tables = new TablesCollection();
+    private Queries views = new QueriesCollection();
     private TemplateProducer tableTypes;
     private TemplateProducer indexTypes;
     private TemplateProducer dataTypes;
@@ -269,6 +273,21 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     public Tables getTables()
     {
         return tables;
+    }
+
+    public void addView(Query view)
+    {
+        views.add(view);
+    }
+
+    public Query createView()
+    {
+        return new Query();
+    }
+
+    public Queries getViews()
+    {
+        return views;
     }
 
     public Tables getApplicationTables()
